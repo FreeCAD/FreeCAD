@@ -179,9 +179,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* lines = new Gui::MenuItem;
     lines->setCommand("Add Lines");
     *lines << "TechDraw_LeaderLine";
-    *lines << "TechDraw_FaceCenterLine";
-    *lines << "TechDraw_2LineCenterLine";
-    *lines << "TechDraw_2PointCenterLine";
+    *lines << "TechDraw_CenterLine";
     *lines << "TechDraw_2PointCosmeticLine";
     *lines << "Separator";
     *lines << "TechDraw_DecorateLine";
@@ -390,7 +388,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_RichTextAnnotation";
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_CosmeticVertexGroup";
-    *anno << "TechDraw_CenterLineGroup";
+    *anno << "TechDraw_CenterLine";
     *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
@@ -454,7 +452,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
 
     Gui::ToolBarItem* extcenter = new Gui::ToolBarItem(root);
     extcenter->setCommand("TechDraw Centerlines");
-    *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
+    *extcenter << "TechDraw_ExtensionCircleCenterLineGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
     *extcenter << "TechDraw_CommandVertexCreationGroup";
     //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
@@ -487,7 +485,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_LeaderLine";
     *anno << "TechDraw_RichTextAnnotation";
     *anno << "TechDraw_CosmeticVertexGroup";
-    *anno << "TechDraw_CenterLineGroup";
+    *anno << "TechDraw_CenterLine";
     *anno << "TechDraw_2PointCosmeticLine";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
