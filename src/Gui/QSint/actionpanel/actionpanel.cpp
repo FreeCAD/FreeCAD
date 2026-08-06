@@ -45,6 +45,11 @@ void ActionPanel::setScheme(ActionPanelScheme *scheme)
     update();
 }
 
+bool ActionPanel::empty()
+{
+    return layout()->count() == 0;
+}
+
 void ActionPanel::addWidget(QWidget *w)
 {
     if (w) layout()->addWidget(w);
