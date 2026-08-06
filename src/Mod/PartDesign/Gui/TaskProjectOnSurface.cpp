@@ -41,8 +41,7 @@ public:
             return false;
         }
 
-        if (!support && (!subName || !subName[0])
-            && object->isDerivedFrom<Part::Part2DObject>()) {
+        if (!support && (!subName || !subName[0]) && object->isDerivedFrom<Part::Part2DObject>()) {
             return true;
         }
 
@@ -105,10 +104,7 @@ void populateList(QListWidget* list, const App::PropertyLinkSubList& property)
 
 }  // namespace
 
-TaskProjectOnSurface::TaskProjectOnSurface(
-    ViewProviderProjectOnSurface* view,
-    QWidget* parent
-)
+TaskProjectOnSurface::TaskProjectOnSurface(ViewProviderProjectOnSurface* view, QWidget* parent)
     : Gui::TaskView::TaskBox(
           Gui::BitmapFactory().pixmap("Part_ProjectionOnSurface"),
           tr("Project on Surface Parameters"),
@@ -132,17 +128,15 @@ TaskProjectOnSurface::TaskProjectOnSurface(
     connect(ui->buttonRemoveProjection, &QToolButton::clicked, this, [this] {
         removeSelected(false);
     });
-    connect(ui->buttonRemoveSupport, &QToolButton::clicked, this, [this] {
-        removeSelected(true);
-    });
+    connect(ui->buttonRemoveSupport, &QToolButton::clicked, this, [this] { removeSelected(true); });
     connect(ui->comboResult, &QComboBox::currentIndexChanged, this, [this](int index) {
         if (vp.expired()) {
             return;
         }
         auto* feature = vp->getObject<PartDesign::ProjectOnSurface>();
         const char* mode = index == 0 ? Part::ProjectOnSurface::AllMode
-            : index == 1             ? Part::ProjectOnSurface::EdgesMode
-                                     : Part::ProjectOnSurface::FacesMode;
+            : index == 1              ? Part::ProjectOnSurface::EdgesMode
+                                      : Part::ProjectOnSurface::FacesMode;
         feature->Mode.setValue(mode);
         updateFeature();
     });
@@ -249,7 +243,7 @@ void TaskProjectOnSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
     // Both inputs are list properties. This lets users select several source
     // elements and several target faces without leaving selection mode.
     auto& property = selectionMode == SelectionMode::Support ? feature->SupportFaces
-                                                              : feature->Projection;
+                                                             : feature->Projection;
     for (const auto& subName : subNames) {
         if (selectionMode == SelectionMode::Projection && subName.empty()
             && object->isDerivedFrom<Part::Part2DObject>()) {
@@ -334,9 +328,9 @@ void TaskProjectOnSurface::updateUI()
     const QSignalBlocker blocker(ui->comboResult);
     const char* mode = feature->Mode.getValueAsString();
     ui->comboResult->setCurrentIndex(
-        strcmp(mode, Part::ProjectOnSurface::AllMode) == 0 ? 0
+        strcmp(mode, Part::ProjectOnSurface::AllMode) == 0         ? 0
             : strcmp(mode, Part::ProjectOnSurface::EdgesMode) == 0 ? 1
-                                                                    : 2
+                                                                   : 2
     );
 }
 

@@ -432,14 +432,9 @@ void CmdPartDesignProjectOnSurface::activated(int iMsg)
 
     const std::string featureName = getUniqueObjectName("ProjectionOnSurface", body);
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Project on Surface"));
-    FCMD_OBJ_CMD(
-        body,
-        "newObject('PartDesign::ProjectOnSurface','" << featureName << "')"
-    );
+    FCMD_OBJ_CMD(body, "newObject('PartDesign::ProjectOnSurface','" << featureName << "')");
 
-    auto* feature = dynamic_cast<PartDesign::ProjectOnSurface*>(
-        body->getObject(featureName.c_str())
-    );
+    auto* feature = dynamic_cast<PartDesign::ProjectOnSurface*>(body->getObject(featureName.c_str()));
     if (!feature) {
         abortCommand();
         return;

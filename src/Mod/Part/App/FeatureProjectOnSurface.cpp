@@ -109,8 +109,7 @@ App::DocumentObjectExecReturn* ProjectOnSurface::execute()
 void ProjectOnSurface::tryExecute()
 {
     if (AutoDirection.getValue()
-        && (Projection.getSize() == 0
-            || (SupportFaces.getSize() == 0 && !SupportFace.getValue()))) {
+        && (Projection.getSize() == 0 || (SupportFaces.getSize() == 0 && !SupportFace.getValue()))) {
         Shape.setValue(TopoDS_Shape());
         return;
     }
@@ -137,9 +136,7 @@ void ProjectOnSurface::tryExecute()
 
     results = filterShapes(results);
     if (AutoDirection.getValue() && results.empty()) {
-        throw Base::ValueError(
-            "Projection produced no result; verify that the source-plane normal intersects a target face"
-        );
+        throw Base::ValueError("Projection produced no result; verify that the source-plane normal intersects a target face");
     }
     auto currentPlacement = Placement.getValue();
     Shape.setValue(createCompound(results));
@@ -474,10 +471,7 @@ std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
     return wiresInParametricSpace;
 }
 
-TopoDS_Shape ProjectOnSurface::createSolidIfHeight(
-    const TopoDS_Face& face,
-    const gp_Dir& direction
-) const
+TopoDS_Shape ProjectOnSurface::createSolidIfHeight(const TopoDS_Face& face, const gp_Dir& direction) const
 {
     if (face.IsNull()) {
         return face;

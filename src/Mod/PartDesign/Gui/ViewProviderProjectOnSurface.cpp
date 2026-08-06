@@ -9,10 +9,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(
-    PartDesignGui::ViewProviderProjectOnSurface,
-    PartGui::ViewProviderProjectOnSurface
-)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderProjectOnSurface, PartGui::ViewProviderProjectOnSurface)
 
 ViewProviderProjectOnSurface::ViewProviderProjectOnSurface()
 {

@@ -8,8 +8,7 @@
 namespace PartDesignGui
 {
 
-class PartDesignGuiExport ViewProviderProjectOnSurface:
-    public PartGui::ViewProviderProjectOnSurface
+class PartDesignGuiExport ViewProviderProjectOnSurface: public PartGui::ViewProviderProjectOnSurface
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderProjectOnSurface);
 

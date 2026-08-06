@@ -66,9 +66,7 @@ class TestProjectOnSurface(unittest.TestCase):
 
         projection = body.newObject("PartDesign::ProjectOnSurface", "Projection")
         projection.Projection = [(sketch, [""])]
-        projection.SupportFaces = [
-            (cylinder, ["Face1"]) for cylinder in cylinders
-        ]
+        projection.SupportFaces = [(cylinder, ["Face1"]) for cylinder in cylinders]
         self.doc.recompute()
 
         self.assertEqual(projection.Mode, "All")
@@ -76,6 +74,7 @@ class TestProjectOnSurface(unittest.TestCase):
         self.assertTrue(projection.isValid(), projection.getStatusString())
         self.assertEqual(len(projection.SupportFaces), 2)
         self.assertGreaterEqual(len(projection.Shape.Edges), 8)
+
 
 if __name__ == "__main__":
     unittest.main()
