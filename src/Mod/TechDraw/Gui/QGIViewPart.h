@@ -91,7 +91,6 @@ public:
     virtual void drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b);
     virtual void drawMatting();
     virtual void drawBreakLines();
-    bool showSection;
 
     void draw() override;
     void rotateView() override;
@@ -148,8 +147,8 @@ protected:
     bool prefFaceEdges();
     Base::Color prefBreaklineColor();
 
-    bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
-    bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
+    bool formatGeomFromCosmetic(const std::string& cTag, QGIEdge* item);
+    bool formatGeomFromCenterLine(const std::string& cTag, QGIEdge* item);
 
     bool showVertices() const;
 
