@@ -564,6 +564,7 @@ protected:
     void reset()
     {
         clearEdit();
+        resetParallelPerpendicularHint();
 
         for (auto& ac : sugConstraints) {
             ac.clear();

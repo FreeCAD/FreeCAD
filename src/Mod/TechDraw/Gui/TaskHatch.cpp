@@ -26,6 +26,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
+#include <Base/Tools.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -208,6 +209,7 @@ void TaskHatch::createHatch()
 
     auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);
+    filespec = Base::Tools::escapeEncodeFilename(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
                        filespec.c_str());
@@ -238,6 +240,7 @@ void TaskHatch::updateHatch()
 
     auto filespec = ui->fcFile->fileName().toStdString();
     filespec = DU::cleanFilespecBackslash(filespec);
+    filespec = Base::Tools::escapeEncodeFilename(filespec);
     Command::doCommand(Command::Doc, "App.activeDocument().%s.HatchPattern = '%s'",
                        FeatName.c_str(),
                        filespec.c_str());

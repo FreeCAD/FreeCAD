@@ -34,6 +34,7 @@
 # @{
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
+import ast
 import os
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -620,16 +621,16 @@ if App.GuiUp:
             elif index.column() == 3:  # Line style
                 model.setData(index, utils.DRAW_STYLES[editor.currentIndex()])
             elif index.column() == 4:  # Line color
-                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
-                model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
+                model.setData(index, ast.literal_eval(editor.text()), QtCore.Qt.UserRole)
+                model.itemFromIndex(index).setIcon(getColorIcon(ast.literal_eval(editor.text())))
             elif index.column() == 5:  # Shape color
-                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
-                model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
+                model.setData(index, ast.literal_eval(editor.text()), QtCore.Qt.UserRole)
+                model.itemFromIndex(index).setIcon(getColorIcon(ast.literal_eval(editor.text())))
             elif index.column() == 6:  # Transparency
                 model.setData(index, editor.value())
             elif index.column() == 7:  # Line prin color
-                model.setData(index, eval(editor.text()), QtCore.Qt.UserRole)
-                model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
+                model.setData(index, ast.literal_eval(editor.text()), QtCore.Qt.UserRole)
+                model.itemFromIndex(index).setIcon(getColorIcon(ast.literal_eval(editor.text())))
 
 
 Gui.addCommand("Draft_Layer", Layer())

@@ -901,7 +901,16 @@ void TopoShape::exportStep(const char* filename) const
 
         // write step file
         STEPControl_Writer aWriter;
-
+#if OCC_VERSION_HEX >= 0x070900
+        // Temporary workaround for OCCT 7.9+, see:
+        // https://github.com/Open-Cascade-SAS/OCCT/issues/1327
+        // TODO: Remove or refine the guards or remove when the issue is fixed in OCCT 8.0.1
+        aWriter.SetShapeFixParameters(DESTEP_Parameters::GetDefaultShapeFixParameters());
+        ShapeProcess::OperationsFlags aFlags;
+        aFlags.set(ShapeProcess::Operation::SplitCommonVertex);
+        aFlags.set(ShapeProcess::Operation::DirectFaces);
+        aWriter.SetShapeProcessFlags(aFlags);
+#endif
         const Handle(XSControl_TransferWriter) & hTransferWriter = aWriter.WS()->TransferWriter();
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
 

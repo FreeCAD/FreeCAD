@@ -94,6 +94,7 @@
 #include <Base/PrecisionPy.h>
 #include <Base/ProgressIndicatorPy.h>
 #include <Base/RotationPy.h>
+#include <Base/ConsoleModulePy.h>
 #include <Base/UniqueNameManager.h>
 #include <Base/TimeInfo.h>
 #include <Base/SystemHandler.h>
@@ -103,6 +104,7 @@
 #include <Base/TypePy.h>
 #include <Base/UnitPy.h>
 #include <Base/UnitsApi.h>
+#include <Base/UnitsModulePy.h>
 #include <Base/VectorPy.h>
 
 #include "Annotation.h"
@@ -110,6 +112,7 @@
 #include "ApplicationDirectories.h"
 #include "ApplicationDirectoriesPy.h"
 #include "ApplicationPy.h"
+#include "FreeCADModulePy.h"
 #include "CleanupProcess.h"
 #include "ComplexGeoData.h"
 #include "ConsoleQtBridge.h"
@@ -345,23 +348,6 @@ DocumentObject* RecomputeRequest::resolveDocumentObject() const
 // Construction and destruction
 
 // clang-format off
-PyDoc_STRVAR(FreeCAD_doc,
-     "The functions in the FreeCAD module allow working with documents.\n"
-     "The FreeCAD instance provides a list of references of documents which\n"
-     "can be addressed by a string. Hence the document name must be unique.\n"
-     "\n"
-     "The document has the read-only attribute FileName which points to the\n"
-     "file the document should be stored to.\n"
-    );
-
-PyDoc_STRVAR(Console_doc,
-    "FreeCAD Console module.\n\n"
-    "The Console module contains functions to manage log entries, messages,\n"
-    "warnings and errors.\n"
-    "There are also functions to get/set the status of the observers used as\n"
-    "logging interfaces."
-    );
-
 PyDoc_STRVAR(Base_doc,
     "The Base module contains the classes for the geometric basics\n"
     "like vector, matrix, bounding box, placement, rotation, axis, ...\n"
@@ -381,19 +367,18 @@ init_freecad_base_module(void)
     return PyModule_Create(&BaseModuleDef);
 }
 
-// Set in inside Application
-static PyMethodDef* ApplicationMethods = nullptr;
-
 PyMODINIT_FUNC
 init_freecad_module(void)
 {
     static struct PyModuleDef FreeCADModuleDef = {
         PyModuleDef_HEAD_INIT,
-        "FreeCAD", FreeCAD_doc, -1,
-        ApplicationMethods,
+        "FreeCAD", App::FreeCADModulePy::moduleDocumentation(), -1,
+        nullptr,
         nullptr, nullptr, nullptr, nullptr
     };
-    return PyModule_Create(&FreeCADModuleDef);
+    PyObject* module = PyModule_Create(&FreeCADModuleDef);
+    App::FreeCADModulePy::addModuleMethods(module);
+    return module;
 }
 
 PyMODINIT_FUNC
@@ -438,7 +423,6 @@ void Application::setupPythonTypes()
     Base::PyGILStateLocker lock;
     PyObject* modules = PyImport_GetModuleDict();
 
-    ApplicationMethods = ApplicationPy::Methods;
     PyObject* pAppModule = PyImport_ImportModule ("FreeCAD");
     if (!pAppModule) {
         PyErr_Clear();
@@ -450,11 +434,12 @@ void Application::setupPythonTypes()
     // clang-format off
     static struct PyModuleDef ConsoleModuleDef = {
         PyModuleDef_HEAD_INIT,
-        "__FreeCADConsole__", Console_doc, -1,
-        Base::ConsoleSingleton::Methods,
+        "__FreeCADConsole__", Base::ConsoleModulePy::moduleDocumentation(), -1,
+        nullptr,
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pConsoleModule = PyModule_Create(&ConsoleModuleDef);
+    Base::ConsoleModulePy::addModuleMethods(pConsoleModule);
 
     // fake Image module
     PyObject* imageModule = init_image_module();
@@ -541,11 +526,12 @@ void Application::setupPythonTypes()
     //insert Units module
     static struct PyModuleDef UnitsModuleDef = {
         PyModuleDef_HEAD_INIT,
-        "Units", "The Unit API", -1,
-        Base::UnitsApi::Methods,
+        "Units", Base::UnitsModulePy::moduleDocumentation(), -1,
+        nullptr,
         nullptr, nullptr, nullptr, nullptr
     };
     PyObject* pUnitsModule = PyModule_Create(&UnitsModuleDef);
+    Base::UnitsModulePy::addModuleMethods(pUnitsModule);
     Base::InterpreterSingleton::addType(&Base::QuantityPy  ::Type,pUnitsModule,"Quantity");
     // make sure to set the 'nb_true_divide' slot
     Base::InterpreterSingleton::addType(&Base::UnitPy      ::Type,pUnitsModule,"Unit");
@@ -2818,7 +2804,6 @@ void Application::initConfig(int argc, char ** argv)
 
         auto moduleName = "FreeCAD";
         PyImport_AddModule(moduleName);
-        ApplicationMethods = ApplicationPy::Methods;
         PyObject *pyModule = init_freecad_module();
         PyDict_SetItemString(sysModules, moduleName, pyModule);
         Py_DECREF(pyModule);

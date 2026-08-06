@@ -263,7 +263,7 @@ void TaskFemConstraintHeatflux::onConstrTypeChanged(int item)
     auto obj = ConstraintView->getObject<Fem::ConstraintHeatflux>();
     obj->ConstraintType.setValue(item);
     const char* type = obj->ConstraintType.getValueAsString();
-    if (strcmp(type, "DistributedHeatFlux") == 0) {
+    if (strcmp(type, "Flux") == 0) {
         this->Flux();
     }
     else if (strcmp(type, "Convection") == 0) {

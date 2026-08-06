@@ -2252,8 +2252,8 @@ Visit https://openscad.org/ to install it.</source>
       <translation>ສະແດງສີ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
       <translation>ອອກຈາກໂໝດຂໍ້ມູນ</translation>
     </message>

@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-"""GUI visual regression test for Coin selection/preselection ordering.
+"""GUI visual regression test for selection/preselection ordering.
 
 Run with:
-    FreeCAD -t TestCoinSelectionVisual
+    FreeCAD -t TestSelectionVisual
 """
 
 from contextlib import suppress
@@ -14,7 +14,6 @@ import FreeCAD
 import FreeCADGui
 from FreeCADGui import Selection
 import Part
-from pivy import coin
 
 try:
     from PySide6 import QtWidgets
@@ -25,19 +24,17 @@ except ImportError:
 PART_PLANE_TYPE = f"{Part.__name__}::Plane"
 
 
-class TestCoinSelectionVisual(unittest.TestCase):
-    """Verify that live preselection draws above Coin selection overlays."""
+class TestSelectionVisual(unittest.TestCase):
+    """Verify that live preselection draws above selection overlays."""
 
     _COLOR_DELTA_MIN = 0.15
     _COLOR_DELTA_RESTORE_MAX = 0.05
 
     def setUp(self):
-        self.doc = FreeCAD.newDocument("TestCoinSelectionVisual")
+        self.doc = FreeCAD.newDocument("TestSelectionVisual")
         FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
         self.view = FreeCADGui.ActiveDocument.ActiveView
         self.viewer = self.view.getViewer()
-        self._path = None
-
         self._had_axis_cross = self.view.hasAxisCross()
         self.view.setAxisCross(False)
 
@@ -47,14 +44,8 @@ class TestCoinSelectionVisual(unittest.TestCase):
     def tearDown(self):
         with suppress(Exception):
             Selection.clearPreselection()
-
-        if self._path is not None:
-            with suppress(Exception):
-                Selection.clearCoinSelection(self._path)
-            with suppress(Exception):
-                Selection.clearCoinHighlight(self._path)
-            with suppress(Exception):
-                self._path.unref()
+        with suppress(Exception):
+            Selection.clearSelection()
 
         with suppress(Exception):
             self.view.setAxisCross(self._had_axis_cross)
@@ -64,18 +55,13 @@ class TestCoinSelectionVisual(unittest.TestCase):
         if FreeCAD.getDocument(self.doc.Name):
             FreeCAD.closeDocument(self.doc.Name)
 
-    def test_preselection_overrides_coin_selection_overlay(self):
+    def test_preselection_overrides_selection_overlay(self):
         plane = self._create_test_plane()
         self._prepare_view()
-        self._path = self._find_scene_path(plane.ViewObject.RootNode)
 
         base_color = self._center_pixel_color()
 
-        Selection.applyCoinSelection(
-            self._path,
-            mode=Selection.SelectionActionMode.All,
-            color=(0.0, 0.6, 0.0),
-        )
+        Selection.addSelection(plane)
         self._flush_gui()
         selection_color = self._center_pixel_color()
 
@@ -87,7 +73,7 @@ class TestCoinSelectionVisual(unittest.TestCase):
             self._color_distance(base_color, selection_color),
             self._COLOR_DELTA_MIN,
             msg=(
-                "Coin selection overlay did not visibly change the rendered face. "
+                "Selection overlay did not visibly change the rendered face. "
                 f"base={base_color}, selection={selection_color}"
             ),
         )
@@ -95,65 +81,59 @@ class TestCoinSelectionVisual(unittest.TestCase):
             self._color_distance(selection_color, preselection_color),
             self._COLOR_DELTA_MIN,
             msg=(
-                "Preselection did not visibly override the Coin selection overlay. "
+                "Preselection did not visibly override the selection overlay. "
                 f"selection={selection_color}, preselection={preselection_color}"
             ),
         )
 
-    def test_coin_selection_can_be_cleared(self):
+    def test_selection_can_be_cleared(self):
         plane = self._create_test_plane()
         self._prepare_view()
-        self._path = self._find_scene_path(plane.ViewObject.RootNode)
 
         base_color = self._center_pixel_color()
 
-        Selection.applyCoinSelection(
-            self._path,
-            mode=Selection.SelectionActionMode.All,
-            color=(0.0, 0.6, 0.0),
-        )
+        Selection.addSelection(plane)
         self._flush_gui()
         selection_color = self._center_pixel_color()
 
-        Selection.clearCoinSelection(self._path)
+        Selection.clearSelection()
         self._flush_gui()
         cleared_color = self._center_pixel_color()
 
         self._assert_color_changed(
             base_color,
             selection_color,
-            "Coin selection overlay did not visibly change the rendered face.",
+            "Selection overlay did not visibly change the rendered face.",
         )
         self._assert_color_restored(
             base_color,
             cleared_color,
-            "Clearing Coin selection did not restore the original rendering.",
+            "Clearing selection did not restore the original rendering.",
         )
 
-    def test_coin_highlight_can_be_cleared(self):
+    def test_preselection_can_be_cleared(self):
         plane = self._create_test_plane()
         self._prepare_view()
-        self._path = self._find_scene_path(plane.ViewObject.RootNode)
 
         base_color = self._center_pixel_color()
 
-        Selection.applyCoinHighlight(self._path, color=(0.85, 0.2, 0.2))
+        Selection.setPreselection(plane, "Face1")
         self._flush_gui()
-        highlight_color = self._center_pixel_color()
+        preselection_color = self._center_pixel_color()
 
-        Selection.clearCoinHighlight(self._path)
+        Selection.clearPreselection()
         self._flush_gui()
         cleared_color = self._center_pixel_color()
 
         self._assert_color_changed(
             base_color,
-            highlight_color,
-            "Coin highlight did not visibly change the rendered face.",
+            preselection_color,
+            "Preselection overlay did not visibly change the rendered face.",
         )
         self._assert_color_restored(
             base_color,
             cleared_color,
-            "Clearing Coin highlight did not restore the original rendering.",
+            "Clearing preselection did not restore the original rendering.",
         )
 
     def _create_test_plane(self):
@@ -184,20 +164,6 @@ class TestCoinSelectionVisual(unittest.TestCase):
             QtWidgets.QApplication.processEvents()
             self.view.redraw()
             time.sleep(0.05)
-
-    def _find_scene_path(self, root_node):
-        search = coin.SoSearchAction()
-        search.setNode(root_node)
-        search.setSearchingAll(False)
-        search.apply(self.view.getSceneGraph())
-
-        path = search.getPath()
-        self.assertIsNotNone(
-            path, "Could not find the object root node in the active 3D scene graph"
-        )
-        # Retain the returned path; SoSearchAction owns it otherwise.
-        path.ref()
-        return path
 
     def _center_pixel_color(self):
         image = self.viewer.grabFramebuffer()

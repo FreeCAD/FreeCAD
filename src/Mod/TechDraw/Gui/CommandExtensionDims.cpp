@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 # include <QApplication>
+# include <QLabel>
 # include <QLineEdit>
 # include <QMessageBox>
 # include <cmath>

@@ -423,6 +423,9 @@
         <property name="text">
          <string>Enable coarse snapping while dragging</string>
         </property>
+        <property name="toolTip">
+         <string>Enables larger snapping increments while  manipulating draggers</string>
+        </property>
         <property name="checked">
          <bool>true</bool>
         </property>
@@ -445,6 +448,9 @@
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="fineSnapModifier">
+          <property name="toolTip">
+           <string>Defines the modifier key used for fine snapping while dragging</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>FineSnapModifier</cstring>
           </property>
@@ -505,6 +511,9 @@
           <property name="value">
            <number>5</number>
           </property>
+          <property name="toolTip">
+           <string>Multiplies the base movement increment when coarse snapping is active</string>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>CoarseLinearSnapMultiplier</cstring>
           </property>
@@ -534,6 +543,9 @@
           </property>
           <property name="value">
            <number>5</number>
+          </property>
+          <property name="toolTip">
+          <string>Sets the rotation step in degrees applied when coarse snapping is active</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>CoarseRotationSnapMultiplier</cstring>

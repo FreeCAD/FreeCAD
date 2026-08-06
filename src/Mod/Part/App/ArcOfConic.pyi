@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export
+from Base.Metadata import export, deprecated_attributes
 from Base.Vector import Vector
 from TrimmedCurve import TrimmedCurve
 from typing import overload
@@ -15,6 +15,13 @@ from typing import overload
     Include="Mod/Part/App/Geometry.h",
     FatherInclude="Mod/Part/App/TrimmedCurvePy.h",
     Constructor=True,
+)
+@deprecated_attributes(
+    Center={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "Location",
+    },
 )
 class ArcOfConic(TrimmedCurve):
     """

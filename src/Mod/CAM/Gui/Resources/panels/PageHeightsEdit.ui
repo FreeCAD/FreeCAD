@@ -68,9 +68,6 @@
          <property name="toolTip">
           <string>The height where lateral movement of the toolbit is not obstructed by any fixtures or the part / stock material itself.</string>
          </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
          <property name="minimum">
           <double>-999999999.000000000000000</double>
          </property>
@@ -102,9 +99,6 @@
         <widget class="Gui::QuantitySpinBox" name="safeHeight">
          <property name="toolTip">
           <string>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
          <property name="minimum">
           <double>-999999999.000000000000000</double>
@@ -325,9 +319,6 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
        <widget class="Gui::QuantitySpinBox" name="CollisionClearance">
         <property name="toolTip">
          <string>Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
         <property name="minimum">
          <double>0.000000000000000</double>

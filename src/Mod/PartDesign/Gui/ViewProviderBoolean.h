@@ -28,6 +28,7 @@
 #pragma once
 
 #include <optional>
+#include <vector>
 
 #include <App/DocumentObserver.h>
 #include "ViewProvider.h"
@@ -59,6 +60,7 @@ public:
     void beforeDelete() override;
     bool onDelete(const std::vector<std::string>&) override;
     const char* getDefaultDisplayMode() const override;
+    std::vector<App::DocumentObject*> claimChildren3D() const override;
     void onChanged(const App::Property* prop) override;
     void update(const App::Property* prop) override;
 
@@ -73,22 +75,37 @@ protected:
     static const char* DisplayEnum[];
 
 private:
+    struct ViewProviderExposure
+    {
+        App::DocumentObjectWeakPtrT object;
+        int mode;
+        bool wasVisible;
+        bool topLevelExposed;
+    };
+
     struct ActiveBodyExposure
     {
         App::DocumentObjectWeakPtrT body;
-        int bodyMode;
         int booleanMode;
-        bool bodyWasVisible;
         bool booleanWasVisible;
         bool indirect;
+        std::vector<ViewProviderExposure> viewProviders;
     };
 
     const char* getConfiguredDisplayMode();
     void updateBasePreviewVisibility();
+    void updateToolsDisplay();
+    void exposeViewProvider(
+        ActiveBodyExposure& exposure,
+        App::DocumentObject* object,
+        bool groupMode,
+        bool topLevel
+    );
     void restoreActiveBodyExposure();
     void syncActiveBodyVisibility();
     void onBodyActivated(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
+    Gui::CoinPtr<SoGroup> pcToolsDisplay;
     Gui::CoinPtr<SoGroup> pcToolsPreview;
     Gui::CoinPtr<SoToggleSwitch> pcBasePreviewToggle;
     fastsignals::scoped_connection _bodyActivationConn;

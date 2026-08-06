@@ -339,6 +339,18 @@ generate_from_py(AxisOrigin)
 generate_from_py(Command)
 generate_from_py(EditableDatumLabel)
 generate_from_py(Navigation/NavigationStyle)
+generate_module_from_py(
+    FreeCADGui
+    FreeCADGui_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCADGui.Selection
+    Selection_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCADGui.PySideUic
+    PySideUic_MODULE_GENERATED_SRCS
+)
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 generate_embed_from_py(FreeCADGuiTest GuiTestScript.h)
@@ -351,6 +363,8 @@ SET(FreeCADGui_Pyi_SRCS
     ViewProviderExtension.pyi
     PythonWorkbench.pyi
     Workbench.pyi
+    FreeCADGui.module.pyi
+    FreeCADGui.Selection.module.pyi
     Selection/SelectionObject.pyi
     Document.pyi
     LinkView.pyi
@@ -444,7 +458,10 @@ set(Gui_RES_SRCS
     ${FreeCAD_TR_QRC}
 )
 
-qt_add_resources(Gui_QRC_SRCS ${Gui_RES_SRCS})
+qt_add_resources(Gui_QRC_SRCS
+    ${Gui_RES_SRCS}
+    OPTIONS ${FREECAD_RCC_OPTIONS}
+)
 
 SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
@@ -486,6 +503,7 @@ SET(Dialog_CPP_SRCS
     Dialogs/DlgAbout.cpp
     Dialogs/DlgActivateWindowImp.cpp
     Dialogs/DlgCreateNewPreferencePackImp.cpp
+    Dialogs/DlgDocumentObject.cpp
     Dialogs/DlgUnitsCalculatorImp.cpp
     Dialogs/DlgInputDialogImp.cpp
     Dialogs/DlgMacroExecuteImp.cpp
@@ -529,6 +547,7 @@ SET(Dialog_HPP_SRCS
     Dialogs/DlgAbout.h
     Dialogs/DlgActivateWindowImp.h
     Dialogs/DlgCreateNewPreferencePackImp.h
+    Dialogs/DlgDocumentObject.h
     Dialogs/DlgUnitsCalculatorImp.h
     Dialogs/DlgInputDialogImp.h
     Dialogs/DlgMacroExecuteImp.h
@@ -577,6 +596,7 @@ SET(Dialog_SRCS
     Dialogs/DlgAuthorization.ui
     Dialogs/DlgInputDialog.ui
     Dialogs/DlgAddProperty.ui
+    Dialogs/DlgDocumentObject.ui
     Dialogs/DlgLocationAngle.ui
     Dialogs/DlgLocationPos.ui
     Dialogs/DlgMacroExecute.ui
@@ -588,7 +608,6 @@ SET(Dialog_SRCS
     Dialogs/DlgPreferencePackManagement.ui
     Dialogs/DlgProjectInformation.ui
     Dialogs/DlgProjectUtility.ui
-    Dialogs/DlgPropertyLink.ui
     Dialogs/DlgRevertToBackupConfig.ui
     Dialogs/DlgCheckableMessageBox.ui
     Dialogs/DlgTreeWidget.ui
@@ -851,8 +870,6 @@ SET(Task_View_SRCS
 SOURCE_GROUP("Task View" FILES ${Task_View_SRCS})
 
 SET(qsintActionPanel_SRCS
-    QSint/actionpanel/actionbox.cpp
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.cpp
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.cpp
@@ -868,7 +885,6 @@ SET(qsintActionPanel_SRCS
 )
 SOURCE_GROUP("Widget\\QSintActionPanel" FILES ${qsintActionPanel_SRCS})
 set(qsint_MOC_HDRS
-    QSint/actionpanel/actionbox.h
     QSint/actionpanel/actionlabel.h
     QSint/actionpanel/actiongroup.h
     QSint/actionpanel/actionpanel.h
@@ -884,6 +900,7 @@ SET(View3D_CPP_SRCS
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
+    RubberbandOverlay.cpp
     Multisample.cpp
     MouseSelection.cpp
     SplitView3DInventor.cpp
@@ -903,6 +920,7 @@ SET(View3D_SRCS
     Camera.h
     Flag.h
     GLBuffer.h
+    RubberbandOverlay.h
     GLPainter.h
     Multisample.h
     MouseSelection.h
@@ -1064,6 +1082,7 @@ SET(Inventor_CPP_SRCS
     Inventor/SoAxisCrossKit.cpp
     Inventor/SoFCPlacementIndicatorKit.cpp
     Inventor/SoDrawingGrid.cpp
+    Inventor/SoFCScreenSpaceGroup.cpp
     Inventor/SoFCBackgroundGradient.cpp
     Inventor/SoFCBoundingBox.cpp
     Inventor/SoNaviCube.cpp
@@ -1077,10 +1096,9 @@ SET(Inventor_CPP_SRCS
     Inventor/Draggers/SoRotationDragger.cpp
     Inventor/Draggers/SoRotationDraggerGeometry.cpp
     Inventor/Draggers/Gizmo.cpp
+    ColorScaleOverlay.cpp
     SoFCColorBar.cpp
     SoFCColorBarNotifier.cpp
-    SoFCColorGradient.cpp
-    SoFCColorLegend.cpp
     SoFCDB.cpp
     SoFCInteractiveElement.cpp
     SoFCOffscreenRenderer.cpp
@@ -1092,7 +1110,8 @@ SET(Inventor_CPP_SRCS
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
     SoDevicePixelRatioElement.cpp
-    SoTextLabel.cpp
+    SoLabelNodes.cpp
+    TranslateManip.cpp
     SoDatumLabel.cpp
     SoTouchEvents.cpp
     ArcEngine.cpp
@@ -1105,6 +1124,7 @@ SET(Inventor_SRCS
     Inventor/SoAxisCrossKit.h
     Inventor/SoFCPlacementIndicatorKit.h
     Inventor/SoDrawingGrid.h
+    Inventor/SoFCScreenSpaceGroup.h
     Inventor/SoFCBackgroundGradient.h
     Inventor/SoFCBoundingBox.h
     Inventor/SoNaviCube.h
@@ -1119,10 +1139,9 @@ SET(Inventor_SRCS
     Inventor/Draggers/SoRotationDraggerGeometry.h
     Inventor/Draggers/Gizmo.h
     Inventor/Draggers/GizmoStyleParameters.h
+    ColorScaleOverlay.h
     SoFCColorBar.h
     SoFCColorBarNotifier.h
-    SoFCColorGradient.h
-    SoFCColorLegend.h
     SoFCDB.h
     SoFCInteractiveElement.h
     SoFCOffscreenRenderer.h
@@ -1134,7 +1153,8 @@ SET(Inventor_SRCS
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
     SoDevicePixelRatioElement.h
-    SoTextLabel.h
+    SoLabelNodes.h
+    TranslateManip.h
     SoDatumLabel.h
     SoTouchEvents.h
     ArcEngine.h
@@ -1289,6 +1309,7 @@ SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 SET(Selection_SRCS
     Selection/BoxSelection.cpp
     Selection/BoxSelection.h
+    ${Selection_MODULE_GENERATED_SRCS}
     Selection/SelectionObjectPyImp.cpp
     Selection/SelectionObject.h
     Selection/SelectionObject.cpp
@@ -1307,6 +1328,8 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
 # The FreeCADGui sources
 SET(FreeCADGui_CPP_SRCS
+    ${FreeCADGui_MODULE_GENERATED_SRCS}
+    ${PySideUic_MODULE_GENERATED_SRCS}
     Application.cpp
     ApplicationPy.cpp
     AutoSaver.cpp

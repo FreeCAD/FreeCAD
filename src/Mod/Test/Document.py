@@ -300,6 +300,17 @@ class DocumentBasicCases(unittest.TestCase):
     def testMem(self):
         self.Doc.MemSize
 
+    def testViewObjectWithFreeCADGuiImportedInConsoleMode(self):
+        if FreeCAD.GuiUp:
+            self.skipTest("Console-mode regression test")
+
+        import FreeCADGui
+
+        obj = self.Doc.addObject("App::FeatureTest", "HeadlessViewObject")
+        self.assertIsNotNone(FreeCADGui)
+        self.assertFalse(hasattr(FreeCADGui, "getDocument"))
+        self.assertIsNone(obj.ViewObject)
+
     def testDuplicateLinks(self):
         obj = self.Doc.addObject("App::FeatureTest", "obj")
         grp = self.Doc.addObject("App::DocumentObjectGroup", "group")
@@ -696,6 +707,72 @@ class DocumentBasicCases(unittest.TestCase):
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("CreateTest")
+
+
+class DocumentDuplicateLabelCases(unittest.TestCase):
+    """Tests for the DuplicateLabels document preference (issue #25519)."""
+
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("DuplicateLabelTest")
+        self.Params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
+        self.OldDuplicateLabels = self.Params.GetBool("DuplicateLabels", False)
+
+    def tearDown(self):
+        self.Params.SetBool("DuplicateLabels", self.OldDuplicateLabels)
+        FreeCAD.closeDocument("DuplicateLabelTest")
+
+    def testNewObjectKeepsRequestedLabel(self):
+        # With duplicate labels allowed, the label of a new object must be the
+        # requested name, not the numbered internal name generated from it
+        self.Params.SetBool("DuplicateLabels", True)
+        first = self.Doc.addObject("App::FeatureTest", "Label")
+        second = self.Doc.addObject("App::FeatureTest", "Label")
+        self.assertEqual(first.Name, "Label")
+        self.assertEqual(second.Name, "Label001")
+        self.assertEqual(first.Label, "Label")
+        self.assertEqual(second.Label, "Label")
+
+    def testNewObjectLabelIsSanitized(self):
+        # The requested name is sanitized the same way as the internal name
+        self.Params.SetBool("DuplicateLabels", True)
+        first = self.Doc.addObject("App::FeatureTest", "My Label")
+        second = self.Doc.addObject("App::FeatureTest", "My Label")
+        self.assertEqual(first.Name, "My_Label")
+        self.assertEqual(second.Name, "My_Label001")
+        self.assertEqual(first.Label, "My_Label")
+        self.assertEqual(second.Label, "My_Label")
+
+    def testNewObjectWithoutNameUsesInternalName(self):
+        # Without a requested name the internal name is the only choice
+        self.Params.SetBool("DuplicateLabels", True)
+        first = self.Doc.addObject("App::FeatureTest")
+        second = self.Doc.addObject("App::FeatureTest")
+        self.assertEqual(first.Label, first.Name)
+        self.assertEqual(second.Label, second.Name)
+
+    def testNewObjectGetsUniqueLabelWhenDisabled(self):
+        # With duplicate labels disallowed (default), the label of the second
+        # object is made unique
+        self.Params.SetBool("DuplicateLabels", False)
+        first = self.Doc.addObject("App::FeatureTest", "Label")
+        second = self.Doc.addObject("App::FeatureTest", "Label")
+        self.assertEqual(first.Label, "Label")
+        self.assertEqual(second.Label, "Label001")
+
+    def testCopyObjectPreservesDuplicateLabel(self):
+        # With duplicate labels allowed, copying an object must not rename the
+        # label of the copy
+        self.Params.SetBool("DuplicateLabels", True)
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        copy = self.Doc.copyObject(obj)
+        self.assertEqual(copy.Label, "Label")
+
+    def testCopyObjectGetsUniqueLabelWhenDisabled(self):
+        # With duplicate labels disallowed (default), the copy gets a unique label
+        self.Params.SetBool("DuplicateLabels", False)
+        obj = self.Doc.addObject("App::FeatureTest", "Label")
+        copy = self.Doc.copyObject(obj)
+        self.assertEqual(copy.Label, "Label001")
 
 
 class DocumentSettingsCases(unittest.TestCase):
@@ -1836,6 +1913,26 @@ class DocumentFileIncludeCases(unittest.TestCase):
         L7.File = (L5.File, "Copy.txt")
         self.assertTrue(os.path.exists(L7.File))
         FreeCAD.closeDocument("Doc2")
+
+    def testBinarySaveRestore(self):
+        payload = bytes((i % 251 for i in range(150000))) + b"\x00FreeCAD\x00restore\x00"
+        source_path = os.path.join(tempfile.gettempdir(), "FileIncludeBinarySource.bin")
+        doc_path = os.path.join(tempfile.gettempdir(), "FileIncludeTests.FCStd")
+
+        with open(source_path, "wb") as file:
+            file.write(payload)
+
+        obj = self.Doc.addObject("App::DocumentObjectFileIncluded", "BinaryFile")
+        obj.File = (source_path, "BinaryPayload.bin")
+        self.Doc.saveAs(doc_path)
+
+        FreeCAD.closeDocument("FileIncludeTests")
+        self.Doc = FreeCAD.open(doc_path)
+        obj = self.Doc.getObject("BinaryFile")
+
+        with open(obj.File, "rb") as file:
+            self.assertEqual(file.read(), payload)
+        self.assertEqual(obj.File.split("/")[-1], "BinaryPayload.bin")
 
     def tearDown(self):
         # closing doc

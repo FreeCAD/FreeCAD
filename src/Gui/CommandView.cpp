@@ -59,6 +59,7 @@
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "Base/Tools2D.h"
 #include "Command.h"
@@ -2227,29 +2228,27 @@ void StdViewScreenShot::activated(int iMsg)
             }
             hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
 
+            std::string imageFile = Base::Tools::escapeEncodeFilename(fn.toStdString());
             QString comment = opt->comment();
             if (!comment.isEmpty()) {
-                // Replace newline escape sequence through '\\n' string to build one big string,
-                // otherwise Python would interpret it as an invalid command.
-                // Python does the decoding for us.
-                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
-
-                comment = lines.join(QLatin1String("\\n"));
+                std::string escapedComment = Base::Tools::escapeEncodeString(
+                    comment.toUtf8().toStdString()
+                );
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background,
-                    comment.toUtf8().constData()
+                    escapedComment.c_str()
                 );
             }
             else {
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background
@@ -2440,6 +2439,7 @@ StdCmdAxisCross::StdCmdAxisCross()
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_AxisCross";
     sPixmap = "Std_AxisCross";
+    eType = Alter3DView;
     sAccel = "A,C";
 }
 
@@ -4048,15 +4048,21 @@ StdCmdAlignToSelection::StdCmdAlignToSelection()
     eType = Alter3DView;
 }
 
-void StdCmdAlignToSelection::activated(int iMsg)
+void StdCmdAlignToSelection::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"AlignToSelection\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->alignToSelection();
+    }
+    else {
+        Base::Console().developerError("StdCmdAlignToSelection", "active view is not a 3D view");
+    }
 }
 
 bool StdCmdAlignToSelection::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("AlignToSelection");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================
