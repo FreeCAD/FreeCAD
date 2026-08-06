@@ -49,6 +49,8 @@ Preferences keys (in "User parameter:BaseApp/Preferences/Mod/Help"):
     Location (string): offline location
     Suffix (string): a suffix to add to the URL, ex: /fr
     StyleSheet (string): optional CSS stylesheet to style the output
+    ExternalBrowserPolicy (int): behavior for opening links in external browser:
+                                 0 ask each time, 1 always open, 2 never open
 
 Defaults are to open the wiki in the desktop browser
 """
@@ -85,6 +87,9 @@ CONVERTTXT = translate(
 )
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"
+ASK_EXTERNAL_BROWSER_POLICY = 0
+ALWAYS_OPEN_EXTERNAL_BROWSER_POLICY = 1
+NEVER_OPEN_EXTERNAL_BROWSER_POLICY = 2
 
 
 def show(page, view=None, conv=None):
@@ -248,6 +253,10 @@ def show_browser(url):
 
     from PySide import QtCore, QtGui
 
+    if not can_open_external_browser(url):
+        FreeCAD.Console.PrintLog("Help: external browser launch cancelled by user settings\n")
+        return False
+
     try:
         ret = QtGui.QDesktopServices.openUrl(QtCore.QUrl(url))
         if not ret:
@@ -255,10 +264,86 @@ def show_browser(url):
             import webbrowser
 
             webbrowser.open_new(url)
+            return True
+        return True
     except:
         import webbrowser
 
         webbrowser.open_new(url)
+        return True
+
+
+def can_open_external_browser(url):
+    """checks browser launch policy and asks user confirmation when needed"""
+
+    policy = PREFS.GetInt("ExternalBrowserPolicy", ASK_EXTERNAL_BROWSER_POLICY)
+    if policy not in (
+        ASK_EXTERNAL_BROWSER_POLICY,
+        ALWAYS_OPEN_EXTERNAL_BROWSER_POLICY,
+        NEVER_OPEN_EXTERNAL_BROWSER_POLICY,
+    ):
+        policy = ASK_EXTERNAL_BROWSER_POLICY
+        PREFS.SetInt("ExternalBrowserPolicy", policy)
+    if policy == ALWAYS_OPEN_EXTERNAL_BROWSER_POLICY:
+        return True
+    if policy == NEVER_OPEN_EXTERNAL_BROWSER_POLICY:
+        if FreeCAD.GuiUp:
+            try:
+                import FreeCADGui
+                from PySide import QtWidgets
+
+                QtWidgets.QMessageBox.warning(
+                    FreeCADGui.getMainWindow(),
+                    translate("Help", "External links are disabled"),
+                    translate(
+                        "Help",
+                        "Opening web pages in the default browser is disabled.\n"
+                        "Change this in Preferences > General > Help > External browser links.",
+                    ),
+                )
+            except Exception as err:
+                FreeCAD.Console.PrintLog(
+                    "Help: failed to show 'external links disabled' warning: {}\n".format(err)
+                )
+        return False
+
+    if not FreeCAD.GuiUp:
+        return True
+
+    try:
+        import FreeCADGui
+        from PySide import QtWidgets
+    except Exception:
+        return True
+
+    title = translate("Help", "Open external web page")
+    text = translate(
+        "Help",
+        "FreeCAD wants to open the following web page in your default browser:\n{}\n\nDo you want to allow this?",
+    ).format(url)
+    check_text = translate("Help", "Remember my choice for future external web pages")
+
+    msg = QtWidgets.QMessageBox(FreeCADGui.getMainWindow())
+    msg.setIcon(QtWidgets.QMessageBox.Question)
+    msg.setWindowTitle(title)
+    msg.setText(text)
+    msg.setStandardButtons(QtWidgets.QMessageBox.Open | QtWidgets.QMessageBox.Cancel)
+    msg.setDefaultButton(QtWidgets.QMessageBox.Cancel)
+
+    checkbox = QtWidgets.QCheckBox(check_text, msg)
+    if hasattr(msg, "setCheckBox"):
+        msg.setCheckBox(checkbox)
+
+    result = msg.exec_()
+    allow = result == QtWidgets.QMessageBox.Open
+
+    if checkbox.isChecked():
+        PREFS.SetInt(
+            "ExternalBrowserPolicy",
+            ALWAYS_OPEN_EXTERNAL_BROWSER_POLICY if allow else NEVER_OPEN_EXTERNAL_BROWSER_POLICY,
+        )
+
+    return allow
 
 
 def show_dialog(html, baseurl, title, view=None):

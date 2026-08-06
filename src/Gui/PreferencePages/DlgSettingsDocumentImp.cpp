@@ -25,6 +25,7 @@
 #include <zlib.h>
 #include <App/License.h>
 #include <Gui/AutoSaver.h>
+#include <Gui/OnlineDocumentation.h>
 
 #include "DlgSettingsDocumentImp.h"
 #include "ui_DlgSettingsDocument.h"
@@ -61,7 +62,12 @@ DlgSettingsDocumentImp::DlgSettingsDocumentImp(QWidget* parent)
     )
                        .arg(tr("Show format documentation"));
     ui->prefSaveBackupDateFormat->setToolTip(tip);
+    ui->FormatTimeDocsLabel->setOpenExternalLinks(false);
     ui->FormatTimeDocsLabel->setText(link);
+    connect(ui->FormatTimeDocsLabel, &QLabel::linkActivated, this, [](const QString& url) {
+        const auto encoded = url.toUtf8();
+        Gui::OpenURLInBrowser(encoded.constData());
+    });
 
     ui->prefCountBackupFiles->setMaximum(std::numeric_limits<int>::max());
     ui->prefCompression->setMinimum(Z_NO_COMPRESSION);
