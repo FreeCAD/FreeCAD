@@ -1256,6 +1256,53 @@ bool CmdSketcher3DConstrainProjectOnPlane::isActive()
     return isSketch3DInEdit();
 }
 
+DEF_STD_CMD_A(CmdSketcher3DConstrainSymmetric)
+
+CmdSketcher3DConstrainSymmetric::CmdSketcher3DConstrainSymmetric()
+    : Command("Sketcher3D_ConstrainSymmetric")
+{
+    sAppModule = "Sketcher3D";
+    sGroup = QT_TR_NOOP("Sketcher3D");
+    sMenuText = QT_TR_NOOP("Constrain symmetric");
+    sToolTipText = QT_TR_NOOP("Force two 3D points to be symmetric about a reference plane");
+    sWhatsThis = "Sketcher3D_ConstrainSymmetric";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Symmetric";
+    eType = ForEdit;
+}
+
+void CmdSketcher3DConstrainSymmetric::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Sketcher3D::Sketch3DObject* sketch = activeSketch3D();
+    if (!sketch) {
+        return;
+    }
+
+    auto sel = collectSketch3DSelection(sketch, true, false, true);
+    if (sel.points.size() != 2 || sel.planes.size() != 1) {
+        Base::Console().warning(
+            "Sketcher3D: select exactly two 3D points and one reference plane for Symmetric.\n"
+        );
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain symmetric"));
+    Sketcher3D::Constraint3D c;
+    c.Type = Sketcher3D::Constraint3D::Symmetric3D;
+    c.setElements({sel.points[0], sel.points[1], sel.planes[0]});
+    sketch->addConstraint(c);
+    sketch->recomputeFeature();
+    commitCommand();
+    Gui::Selection().clearSelection();
+}
+
+bool CmdSketcher3DConstrainSymmetric::isActive()
+{
+    return isSketch3DInEdit();
+}
+
 DEF_STD_CMD_A(CmdSketcher3DConstrainAngle)
 
 CmdSketcher3DConstrainAngle::CmdSketcher3DConstrainAngle()
@@ -1634,6 +1681,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointAtLineMidpoint());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCollinear());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainProjectOnPlane());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainSymmetric());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompParallel());
 }

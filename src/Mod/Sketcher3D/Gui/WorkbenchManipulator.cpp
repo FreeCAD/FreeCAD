@@ -92,5 +92,6 @@ void WorkbenchManipulator::setupEditModeToolbar(Gui::ToolBarItem* toolBar)
             << "Sketcher3D_ConstrainPointOnCurve"
             << "Sketcher3D_ConstrainPointAtLineMidpoint"
             << "Sketcher3D_ConstrainCollinear"
-            << "Sketcher3D_ConstrainProjectOnPlane";
+            << "Sketcher3D_ConstrainProjectOnPlane"
+            << "Sketcher3D_ConstrainSymmetric";
 }

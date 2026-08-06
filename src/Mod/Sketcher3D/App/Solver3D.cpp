@@ -295,6 +295,34 @@ void Solver3D::addConstraintProjectOnPlane(int tagId, int pointHandle, int plane
     GCSsys.addConstraintProjectOnPlane3D(points[pointHandle], plane.origin, plane.normal, tagId);
 }
 
+void Solver3D::addConstraintSymmetric(
+    int tagId,
+    int pointHandleA,
+    int pointHandleB,
+    int planeHandle,
+    int originHandle
+)
+{
+    Plane3D& plane = planes[planeHandle];
+    GCS::Point3D& p1 = points[pointHandleA];
+    GCS::Point3D& p2 = points[pointHandleB];
+
+    // internal midpoint
+    int midHandle = addPoint(
+        Base::Vector3d(0.5 * (*p1.x + *p2.x), 0.5 * (*p1.y + *p2.y), 0.5 * (*p1.z + *p2.z))
+    );
+
+    GCSsys.addConstraintP2PSymmetric3D(
+        p1,
+        p2,
+        points[midHandle],
+        plane.origin,
+        plane.normal,
+        points[originHandle],
+        tagId
+    );
+}
+
 void Solver3D::addConstraintCircleRadius(int tagId, int circleHandle, double radius)
 {
     double* r = allocFixParam(radius);

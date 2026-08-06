@@ -160,6 +160,15 @@ public:
     /// Project a point onto a fixed plane.
     void addConstraintProjectOnPlane(int tagId, int pointHandle, int planeHandle);
 
+    /// Two points symmetric about a reference plane.
+    void addConstraintSymmetric(
+        int tagId,
+        int pointHandleA,
+        int pointHandleB,
+        int planeHandle,
+        int originHandle
+    );
+
     void addConstraintCircleRadius(int tagId, int circleHandle, double radius);
     void addConstraintArcRadius(int tagId, int arcHandle, double radius);
 

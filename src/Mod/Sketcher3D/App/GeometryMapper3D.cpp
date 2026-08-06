@@ -432,6 +432,19 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
 
             return -1;
         }
+        case Constraint3D::Symmetric3D: {
+            if (elements.size() != 3) {
+                return -1;
+            }
+            int a = getPointId(elements[0]);
+            int b = getPointId(elements[1]);
+            int plane = getPlaneId(elements[2]);
+            if (a < 0 || b < 0 || plane < 0 || a == b) {
+                return -1;
+            }
+            solver.addConstraintSymmetric(tagId, a, b, plane, rootPointId);
+            return tagId;
+        }
         default:
             return -1;
     }

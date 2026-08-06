@@ -67,6 +67,7 @@ public:
         Collinear3D,
         ProjectOnPlane3D,
         Radius3D,
+        Symmetric3D,
         NumConstraintTypes
     };
 
@@ -113,6 +114,7 @@ private:
         "Collinear3D",
         "ProjectOnPlane3D",
         "Radius3D",
+        "Symmetric3D",
     }};
 
     std::vector<GeoElementId3D> elements;

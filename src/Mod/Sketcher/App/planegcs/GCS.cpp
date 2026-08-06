@@ -1142,6 +1142,23 @@ int System::addConstraintProjectOnPlane3D(
     return addConstraint(constr);
 }
 
+// TODO: we can use mathematical formula, instead mid point trick, so we have one const instead of 3.
+int System::addConstraintP2PSymmetric3D(
+    Point3D& p1,
+    Point3D& p2,
+    Point3D& mid,
+    Point3D& planeOrigin,
+    Point3D& planeNormalTip,
+    Point3D& origin,
+    int tagId,
+    bool driving
+)
+{
+    addConstraintParallel3D(p1, p2, planeNormalTip, origin, tagId, driving);
+    addConstraintPointAtLineMidpoint3D(mid, p1, p2, tagId, driving);
+    return addConstraintProjectOnPlane3D(mid, planeOrigin, planeNormalTip, tagId, driving);
+}
+
 int System::addConstraintP2LDistance3D(Point3D& p, Line3D& l, double* distance, int tagId, bool driving)
 {
     Constraint* constr = new ConstraintP2LDistance3D(p, l, distance);

@@ -118,6 +118,8 @@ inline QIcon iconForConstraint(Sketcher3D::Constraint3D::Constraint3DType type)
             return Gui::BitmapFactory().iconFromTheme("Constraint_PointOnObject");
         case Sketcher3D::Constraint3D::PointAtLineMidpoint3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric");
+        case Sketcher3D::Constraint3D::Symmetric3D:
+            return Gui::BitmapFactory().iconFromTheme("Constraint_Symmetric");
         case Sketcher3D::Constraint3D::Collinear3D:
             return Gui::BitmapFactory().iconFromTheme("Constraint_Tangent");
         case Sketcher3D::Constraint3D::Radius3D:

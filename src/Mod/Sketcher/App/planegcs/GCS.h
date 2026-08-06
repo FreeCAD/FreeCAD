@@ -576,6 +576,18 @@ public:
         bool driving = true
     );
 
+    // Two points symmetric about a plane
+    int addConstraintP2PSymmetric3D(
+        Point3D& p1,
+        Point3D& p2,
+        Point3D& mid,
+        Point3D& planeOrigin,
+        Point3D& planeNormalTip,
+        Point3D& origin,
+        int tagId = 0,
+        bool driving = true
+    );
+
     // absolute distance from point to line.
     int addConstraintP2LDistance3D(
         Point3D& p,
