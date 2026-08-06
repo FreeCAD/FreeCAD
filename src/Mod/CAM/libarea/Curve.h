@@ -106,6 +106,10 @@ class CCurve
 
 public:
     std::list<CVertex> m_vertices;
+
+    // Per-edge tags set by NaiveOffset: 1 = positive offset, -1 = negative offset, 0 = end cap.
+    // Either empty (no tags) or one entry per edge (i.e. per vertex after the first).
+    std::list<int> m_edgeTags;
     void append(const CVertex& vertex);
 
     void Discretize();

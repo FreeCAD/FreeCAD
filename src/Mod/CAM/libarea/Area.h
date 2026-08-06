@@ -99,10 +99,6 @@ class CArea
 public:
     std::list<CCurve> m_curves;
 
-    // Either empty or one entry for each edge in each curve
-    // Meant to store values 1/0/-1 set in NaiveOffset, recording how each offset edge was produced
-    std::list<std::list<int>> m_edgeTags;
-
     static double m_accuracy;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
@@ -199,11 +195,7 @@ private:
 
     void NaiveOffset(double offset, double arcTolerance = 0);
 
-    Clipper2Lib::Path64 MakePoly(
-        const CCurve& curve,
-        ConversionMetadata& metadata,
-        std::list<int> edge_orientations = {}
-    ) const;
+    Clipper2Lib::Path64 MakePoly(const CCurve& curve, ConversionMetadata& metadata) const;
 
     void SetFromResult(
         Clipper2Lib::Paths64& paths,

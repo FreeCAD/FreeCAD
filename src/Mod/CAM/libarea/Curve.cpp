@@ -5,6 +5,7 @@
 
 #include "Curve.h"
 #include "Area.h"
+#include <stdexcept>
 
 namespace heeks
 {
@@ -259,6 +260,7 @@ void CCurve::Reverse()
     }
 
     m_vertices.swap(new_vertices);
+    m_edgeTags.reverse();
 }
 
 double CCurve::GetArea() const
@@ -287,6 +289,13 @@ bool CCurve::IsClosed() const
 
 void CCurve::ChangeStart(const Point& p)
 {
+    if (!m_edgeTags.empty()) {
+        // This could be implemented but it isn't needed, so I'm not bothering
+        throw std::logic_error(
+            "ChangeStart called on a curve with edge tags, but it does not handle tags"
+        );
+    }
+
     CCurve new_curve;
 
     bool started = false;
@@ -553,6 +562,7 @@ void CCurve::operator+=(const CCurve& curve)
             m_vertices.push_back(vt);
         }
     }
+    m_edgeTags.insert(m_edgeTags.end(), curve.m_edgeTags.begin(), curve.m_edgeTags.end());
 }
 
 const Point Span::null_point = Point(0, 0);

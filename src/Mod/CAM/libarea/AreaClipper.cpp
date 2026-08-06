@@ -86,17 +86,14 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ConversionMetadata& meta
     Paths64 closed_paths;
     Paths64 open_paths;
 
-    auto tagIt = m_edgeTags.cbegin();
     for (const CCurve& curve : m_curves) {
-        const std::optional<std::list<int>> tags = m_edgeTags.empty() ? std::nullopt
-                                                                      : std::make_optional(*tagIt++);
         bool is_closed = curve.IsClosed();
 
         if (!is_closed && as_clip) {
             throw std::logic_error("Open curves cannot be used as clip geometry");
         }
 
-        Path64 p = MakePoly(curve, metadata, tags.value_or(std::list<int> {}));
+        Path64 p = MakePoly(curve, metadata);
 
         if (is_closed) {
             closed_paths.push_back(p);
@@ -199,7 +196,6 @@ void CArea::_Clip(
     m_curves.clear();
     SetFromResult(closedPaths, /*is_closed=*/true, metadata, cNeg);
     SetFromResult(openPaths, /*is_closed=*/false, metadata, cNeg);
-    m_edgeTags = {};
 }
 
 void CArea::Clip(ClipType op, const CArea& clip_area, FillRule fillType)
@@ -258,10 +254,10 @@ void CArea::TestIntersectOpenPathReversal(
 //
 // This function operates natively on arcs and line segments/CVertex; no arc approximation/clipper.
 //
-// The output geometry is written to m_curves, and tags are written to m_edgeTags with one tag per
-// edge of each curve, matching the layout of m_curves. A tag of 0 indicates that the segment is an
-// end cap. 1 indicates that it was produced by offsetting in the requested/positive direction, and
-// -1 indicates that it was produced by offsetting in the opposite/negative direction.
+// The output geometry is written to m_curves, with each curve's m_edgeTags holding one tag per
+// edge. A tag of 0 indicates that the segment is an end cap. 1 indicates that it was produced by
+// offsetting in the requested/positive direction, and -1 indicates that it was produced by
+// offsetting in the opposite/negative direction.
 void CArea::NaiveOffset(double offset, double arcTolerance)
 {
     // Positive oriented curves should be CCW (positive area) but some callers use the
@@ -276,7 +272,6 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
     }
 
     std::list<CCurve> offset_curves;
-    m_edgeTags = {};
 
     int curveIdx = 0;
     for (CCurve& curve : m_curves) {
@@ -296,16 +291,12 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
             output_curve.m_vertices.emplace_back(0, right, heeks::Point {0, 0});
             output_curve.m_vertices.emplace_back(1, left, center);
             output_curve.m_vertices.emplace_back(1, right, center);
-            offset_curves.push_back(output_curve);
-
-            // Construct direction labels
-            std::list<int> directions;
             for (auto it = std::next(output_curve.m_vertices.begin());
                  it != output_curve.m_vertices.end();
                  ++it) {
-                directions.push_back(1);
+                output_curve.m_edgeTags.push_back(1);
             }
-            m_edgeTags.push_back(directions);
+            offset_curves.push_back(output_curve);
 
             continue;
         }
@@ -493,50 +484,42 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
             cNeg.Reverse();
 
             // Save positive offset to the output list
+            for (auto it = std::next(cPos.m_vertices.begin()); it != cPos.m_vertices.end(); ++it) {
+                cPos.m_edgeTags.push_back(1);
+            }
             offset_curves.push_back(cPos);
 
-            std::list<int> posTags;
-            for (auto it = std::next(cPos.m_vertices.begin()); it != cPos.m_vertices.end(); ++it) {
-                posTags.push_back(1);
-            }
-            m_edgeTags.push_back(posTags);
-
             // Save the negative offset to the output list
-            offset_curves.push_back(cNeg);
-
-            std::list<int> negTags;
             for (auto it = std::next(cNeg.m_vertices.begin()); it != cNeg.m_vertices.end(); ++it) {
-                negTags.push_back(-1);
+                cNeg.m_edgeTags.push_back(-1);
             }
-            m_edgeTags.push_back(negTags);
+            offset_curves.push_back(cNeg);
         }
         else {
             // Reverse cNeg so it's correctly oriented to join with cPos and the end caps
             cNeg.Reverse();
 
             // Tag positive offset edges
-            std::list<int> tags;
-            while (tags.size() < cPos.m_vertices.size() - 1) {
-                tags.push_back(1);
+            while (cPos.m_edgeTags.size() < cPos.m_vertices.size() - 1) {
+                cPos.m_edgeTags.push_back(1);
             }
 
             // Append the first end cap
             cPos.m_vertices.emplace_back(1, cNeg.m_vertices.begin()->m_p, curve.m_vertices.back().m_p);
-            tags.push_back(0);
+            cPos.m_edgeTags.push_back(0);
 
             // Concatenate cNeg
             for (auto it = std::next(cNeg.m_vertices.begin()); it != cNeg.m_vertices.end(); ++it) {
                 cPos.m_vertices.push_back(*it);
-                tags.push_back(-1);
+                cPos.m_edgeTags.push_back(-1);
             }
 
             // Append the final end cap
             cPos.m_vertices.emplace_back(1, cPos.m_vertices.begin()->m_p, curve.m_vertices.front().m_p);
-            tags.push_back(0);
+            cPos.m_edgeTags.push_back(0);
 
             // Save results to the output list
             offset_curves.push_back(cPos);
-            m_edgeTags.push_back(tags);
         }
     }
 
@@ -549,7 +532,7 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
 // as edges in the curve. Tags are meant to track positive/negative offset edges
 // from NaiveOffset, and are stored appropriately in the metadata. If tags are
 // not provided, all edges are tagged as positive offset edges.
-Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata, std::list<int> edgeTags) const
+Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 {
     if (!curve.m_vertices.size()) {
         return {};
@@ -575,14 +558,14 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata, std::l
     Point64 pPrev = getPoint64(curve.m_vertices.front().m_p.x, curve.m_vertices.front().m_p.y);
     result.push_back(pPrev);
     heeks::Point ptPrev = curve.m_vertices.front().m_p;
-    auto tagIt = edgeTags.cbegin();
+    auto tagIt = curve.m_edgeTags.cbegin();
     int vertexIndex = 0;
 
     // Iterate through edges
     for (auto vIt = std::next(curve.m_vertices.cbegin()); vIt != curve.m_vertices.cend(); vIt++) {
         const CVertex& vertex = *vIt;
         const bool isLoop = std::next(vIt) == curve.m_vertices.end() && curve.IsClosed();
-        const int edgeTag = edgeTags.empty() ? 1 : *tagIt;
+        const int edgeTag = curve.m_edgeTags.empty() ? 1 : *tagIt;
 
         if (vertex.m_type == 0) {
             // The current edge is a line segment; add a single point to clipper
@@ -658,7 +641,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata, std::l
 
         ptPrev = vertex.m_p;
         vertexIndex++;
-        if (!edgeTags.empty()) {
+        if (!curve.m_edgeTags.empty()) {
             tagIt++;
         }
     }
@@ -880,9 +863,9 @@ void CArea::Offset(double offset, double arcTolerance)
 
     // If we want to keep the negative edges, flip all the edge labels
     if (offset < 0) {
-        for (auto& curve_dirs : m_edgeTags) {
-            for (auto& dir : curve_dirs) {
-                dir = -dir;
+        for (CCurve& curve : m_curves) {
+            for (int& tag : curve.m_edgeTags) {
+                tag = -tag;
             }
         }
     }
@@ -934,8 +917,8 @@ void CArea::Thicken(double value)
     NaiveOffset(abs(value));
 
     // We want to keep all offset curves, so clear the edge tags
-    for (auto& curve_dirs : m_edgeTags) {
-        curve_dirs.clear();
+    for (CCurve& curve : m_curves) {
+        curve.m_edgeTags.clear();
     }
 
     // Union (fill rule positive), keeping positive edges and dropping negative edges
