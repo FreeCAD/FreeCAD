@@ -42,7 +42,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
 
     // fill solvers combo with available solvers
     ui->cmb_def_solver->clear();
-    std::vector<std::string> Solvers = {"None", "CalculiX", "Elmer", "Mystran", "Z88"};
+    std::vector<std::string> Solvers = {"None", "CalculiX", "CodeAster", "Elmer", "Mystran", "Z88"};
 
     QStringList solversList;
     for (auto item : Solvers) {

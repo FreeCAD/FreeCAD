@@ -36,6 +36,7 @@ are supported:
     - ElmerSolver
     - Mystran
     - Z88
+    - Code Aster (under development)
 
 To query settings about those solver the solver name must be given exactly in
 the form written in the list above. To make the solver recognize settings for a
@@ -176,6 +177,7 @@ def get_default_solver():
         2: "Elmer",
         3: "Mystran",
         4: "Z88",
+        5: "CodeAster",
     }
     param_group = FreeCAD.ParamGet(_GENERAL_PARAM)
     return solver_map[param_group.GetInt("DefaultSolver", 0)]
@@ -260,6 +262,11 @@ _SOLVER_PARAM = {
         default="ccx",
         param_path=_PARAM_PATH + "Ccx",
         custom_path="ccxBinaryPath",
+    ),
+    "CodeAster": _SolverDlg(
+        default="run_aster",
+        param_path=_PARAM_PATH + "CodeAster",
+        custom_path="codeasterBinaryPath",
     ),
     "ElmerSolver": _SolverDlg(
         default="ElmerSolver",

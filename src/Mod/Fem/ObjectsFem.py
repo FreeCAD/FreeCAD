@@ -410,6 +410,24 @@ def makeElementGeometry2D(doc, thickness=1.0, name="ElementGeometry2D"):
     return obj
 
 
+def makeElementGeometryLaminate(
+    doc, thicknesses=[], orientations=[], name="ElementGeometryLaminate"
+):
+    """makeElementGeometryLaminate(document, [layup], [name]):
+    creates a laminate geometry element object to define the layup"""
+    obj = doc.addObject("Fem::FeaturePython", name)
+    from femobjects import element_geometry_laminate
+
+    element_geometry_laminate.ElementGeometryLaminate(obj)
+    obj.Thicknesses = thicknesses
+    obj.Orientations = orientations
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_element_geometry_laminate
+
+        view_element_geometry_laminate.VPElementGeometryLaminate(obj.ViewObject)
+    return obj
+
+
 def makeElementRotation1D(doc, name="ElementRotation1D"):
     """makeElementRotation1D(document, [name]):
     creates a 1D geometry rotation element object to rotate a 1D cross section"""
@@ -977,9 +995,18 @@ def makeEquationDeformation(doc, base_solver=None, name="Deformation"):
 def makeEquationElasticity(doc, base_solver=None, name="Elasticity"):
     """makeEquationElasticity(document, [base_solver], [name]):
     creates a FEM elasticity equation for a solver"""
-    from femsolver.elmer.equations import elasticity
+    from femsolver.elmer.equations import elasticity as elasticityElm
+    from femsolver.codeaster.equations import elasticity as elasticityCA
 
-    return _equation_creator(elasticity, base_solver, doc, name)
+    if "Elmer" in base_solver.Label:
+        obj = elasticityElm.create(doc, name)
+        base_solver.addObject(obj)
+    elif "Aster" in base_solver.Label:
+        obj = elasticityCA.create(doc, name)
+        base_solver.addObject(obj)
+    else:
+        obj = None
+    return obj
 
 
 def makeEquationElectricforce(doc, base_solver=None, name="Electricforce"):
@@ -1071,6 +1098,21 @@ def makeSolverCalculiX(doc, name="SolverCalculiX"):
         from femviewprovider import view_solver_calculix
 
         view_solver_calculix.VPSolverCalculiX(obj.ViewObject)
+    return obj
+
+
+def makeSolverCodeAster(doc, name="SolverCodeAster"):
+    """makeSolverCodeAster(document, [name]):
+    makes a CodeAster solver object"""
+    obj = doc.addObject("Fem::FemSolverObjectPython", name)
+    from femobjects import solver_codeaster
+
+    solver_codeaster.SolverCodeAster(obj)
+
+    if FreeCAD.GuiUp:
+        from femviewprovider import view_solver_codeaster
+
+        view_solver_codeaster.VPSolverCodeAster(obj.ViewObject)
     return obj
 
 
