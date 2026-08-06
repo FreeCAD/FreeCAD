@@ -134,6 +134,10 @@
         <file>icons/TechDraw_ExtensionThreadBoltSide.svg</file>
         <file>icons/TechDraw_ExtensionThreadHoleBottom.svg</file>
         <file>icons/TechDraw_ExtensionThreadHoleSide.svg</file>
+        <file>icons/TechDraw_ThreadBoltBottom_Pointer.svg</file>
+        <file>icons/TechDraw_ThreadBoltSide_Pointer.svg</file>
+        <file>icons/TechDraw_ThreadHoleBottom_Pointer.svg</file>
+        <file>icons/TechDraw_ThreadHoleSide_Pointer.svg</file>
         <file>icons/TechDraw_ExtensionVertexAtIntersection.svg</file>
         <file>icons/TechDraw_HorizontalDimension.svg</file>
         <file>icons/TechDraw_HorizontalExtentDimension.svg</file>
