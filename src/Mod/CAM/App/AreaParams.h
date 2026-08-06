@@ -251,37 +251,15 @@
 
 /** Offset configuration parameters */
 #define AREA_PARAMS_OFFSET_CONF \
-    ((enum2, \
-         join_type, \
-         JoinType, \
-         Clipper2Lib::JoinType::Round, \
-         "Clipper2 offset join type. \nSee " \
-         "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/JoinType.htm", \
-         (Clipper2Lib::JoinType::Round)(Clipper2Lib::JoinType::Square)(Clipper2Lib::JoinType::Miter), \
-         Clipper2Lib::JoinType) \
-    ) \
-    ((enum2, \
-      end_type, \
-      EndType, \
-      Clipper2Lib::EndType::Round, \
-      "\nClipper2 offset end type. See " \
-      "http://www.angusj.com/clipper2/Docs/Units/Clipper/Types/EndType.htm", \
-      (Clipper2Lib::EndType::Round)(Clipper2Lib::EndType:: \
-                                        Polygon)(Clipper2Lib::EndType:: \
-                                                     Joined)(Clipper2Lib::EndType:: \
-                                                                 Square)(Clipper2Lib::EndType::Butt), \
-      Clipper2Lib:: \
-          EndType, ))((double, miter_limit, MiterLimit, 2.0, "Miter limit for joint type Miter. See http://www.angusj.com/clipper2/Docs/Units/Clipper.Offset/Classes/ClipperOffset/Properties/MiterLimit.htm", App::PropertyFloat))( \
-        (double, \
-         round_precision, \
-         RoundPrecision, \
-         0.0, \
-         "Round joint precision. If =0, it defaults to Accuracy. \n" \
-         "See " \
-         "http://www.angusj.com/clipper2/Docs/Units/Clipper.Offset/Classes/ClipperOffset/" \
-         "Properties/ArcTolerance.htm", \
-         App::PropertyPrecision) \
-    )
+    ((double, \
+      round_precision, \
+      RoundPrecision, \
+      0.0, \
+      "Round joint precision. If =0, it defaults to Accuracy. \n" \
+      "See " \
+      "http://www.angusj.com/clipper2/Docs/Units/Clipper.Offset/Classes/ClipperOffset/" \
+      "Properties/ArcTolerance.htm", \
+      App::PropertyPrecision))
 
 #define AREA_PARAMS_MIN_DIST \
     ((double, \

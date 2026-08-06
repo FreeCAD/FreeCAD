@@ -298,14 +298,8 @@ class TestAreaOperations(unittest.TestCase):
 
     def test_open_offset_negative(self):
         """Test that open offset with a negative offset produces swapped positive and negative results."""
-
-        def make_l_curve():
-            a = area.Area()
-            a.append(make_curve([(0, 0), (10, 0), (10, 10)]))
-            return a
-
-        a1 = make_l_curve()
-        a2 = make_l_curve()
+        a1 = make_area(make_curve([(0, 0), (10, 0), (10, 10)]))
+        a2 = area.copy_area(a1)
 
         neg1 = a1.OpenOffset(1.0)
         neg2 = a2.OpenOffset(-1.0)
@@ -538,6 +532,16 @@ class TestAreaOperations(unittest.TestCase):
 
         self.assert_areas_equal(a, expected_pos)
         self.assert_areas_equal(neg, expected_neg)
+
+    def test_open_offset_collapse_u_curve(self):
+        a = make_area(make_curve([(0, 0), (0, -10), (3, -10), (3, 0)]))
+        neg = a.OpenOffset(2)
+        self.assertEqual(neg.num_curves(), 0)
+
+    def test_open_offset_collapse_o_curve(self):
+        a = make_area(make_curve([(0, 0), (0, -10), (3, -10), (3, 0), (0, 0)]))
+        neg = a.OpenOffset(2)
+        self.assertEqual(neg.num_curves(), 0)
 
     # ========================================================================
     # Geometry Manipulation Tests

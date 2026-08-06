@@ -63,7 +63,7 @@ struct SegmentData
 };
 
 
-// Arc fitting map for tracking arc information through Clipper operations
+// Metadata structure to facilitate correct conversion from clipper lines back to CCurves
 struct ConversionMetadata
 {
     // New points may be created by clipper at the intersection of segments. This multimap tracks
@@ -77,12 +77,12 @@ struct ConversionMetadata
     // Maps (zMin, zMax) edge pairs to their original CVertex, edge tag, and ordering. This
     // information is used in SetFromResult to convert from clipper back to CCurves, and to restore
     // the order and orientation of open curves.
-    std::map<std::pair<int64_t, int64_t>, SegmentData> zData;
+    std::map<std::pair<int64_t, int64_t>, SegmentData> edgeData;
 
     // Deduplication cache: maps (x,y) in Clipper coordinates to the z-label already assigned there
     std::map<std::pair<int64_t, int64_t>, int64_t> xy_to_z;
 
-    // Track the maximum z-value used for allocation
+    // Track the next z-value available for allocation
     int64_t z_next;
 
     // Track the next curve index for MakePoly calls
@@ -127,19 +127,14 @@ public:
     void OffsetInward(double inwards_value);  // Deprecated: use Offset
 
     // Offsets wires; input wires must be closed shapes
-    void Offset(
-        double offset,
-        Clipper2Lib::JoinType joinType = Clipper2Lib::JoinType::Round,
-        Clipper2Lib::EndType endType = Clipper2Lib::EndType::Round,
-        double miterLimit = 5.0,
-        double arcTolerance = 0.0
-    );
+    void Offset(double offset, double arcTolerance = 0.0);
 
     // Offsets wires; open wires allowed. Positive offset is kept in this CArea, and
     // negative offset is returned in a new CArea. Endcaps (round) are filtered out
     CArea OpenOffset(double offset, double arcTolerance = 0.0);
 
-    void ClipperNoop();  // converts to clipper and back (arc fiting) without performing clipper ops
+    void ClipperNoop();  // converts to clipper and back (i.e. arc fitting) without any clipping
+                         // operations
     void Thicken(double value);
     unsigned int num_curves()
     {
@@ -155,7 +150,7 @@ public:
     void Split(std::list<CArea>& m_areas) const;
     double GetArea(bool always_add = false) const;
 
-    // Test helper method for checking that if clipper reverses open paths,
+    // Test helper method for checking that if clipper reverses/reorders open paths,
     // it is handled properly.
     //
     // This CArea should hold an open path, and the provided clip_area should have a closed
@@ -187,7 +182,7 @@ public:
     void Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
-        Clipper2Lib::FillRule subjFillType = Clipper2Lib::FillRule::EvenOdd
+        Clipper2Lib::FillRule fillType = Clipper2Lib::FillRule::EvenOdd
     );
 
     // Reorders open paths so they match the original input order and direction.
@@ -221,7 +216,7 @@ private:
     void _Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
-        Clipper2Lib::FillRule subjFillType,
+        Clipper2Lib::FillRule fillType,
         bool reverseOpenPathContents = false,
         bool reverseOpenPathOrder = false,
         std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt

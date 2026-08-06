@@ -533,21 +533,6 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
 
         w = getWireOutside(obj)
 
-        def printWire(w):
-            for i, e in enumerate(w.Edges):
-                v0, v1 = e.Vertexes[0].Point, e.Vertexes[1].Point
-                print(
-                    f"  edge[{i}] ({type(e.Curve).__name__}): ({v0.x:.4f}, {v0.y:.4f}, {v0.z:.4f}) -> ({v1.x:.4f}, {v1.y:.4f}, {v1.z:.4f})"
-                )
-
-        print("\noutside wire edges:")
-        printWire(w)
-        print("\nall wires in obj.Shape:")
-        for wi, wire in enumerate(obj.Shape.Wires):
-            print(f"\n  wire[{wi}]:")
-            printWire(wire)
-        print()
-
         length = 40 * math.cos(math.pi / 6)
         for e in w.Edges:
             self.assertRoughly(length, e.Length)
@@ -568,8 +553,6 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         wires = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, self.tolerance)
         self.assertEqual(1, len(wires))
         wire = wires[0]
-        print("offsetWire output")
-        printWire(wire)
         self.assertEqual(1, len(wire.Edges))
 
         y = y - 5
@@ -581,8 +564,6 @@ class TestPathOpUtil(PathTestUtils.PathTestBase):
         wires = PathOpUtil.offsetWire(Part.Wire([edge]), obj.Shape, 5, self.tolerance)
         self.assertEqual(1, len(wires))
         wire = wires[0]
-        print("offsetWire output")
-        printWire(wire)
         self.assertEqual(1, len(wire.Edges))
 
         self.assertCoincide(Vector(+x, y, 0), wire.Edges[0].Vertexes[0].Point)
@@ -1049,11 +1030,8 @@ class TestStripRotaryAxes(PathTestUtils.PathTestBase):
         plain = Path.Path(moves)
         rotated = Path.Path([Path.Command("G0", {"B": -90.0})] + moves)
 
-        print("plain.getClearedArea()\n")
         plainArea = plain.getClearedArea(5.0, 0.0, bbox)
-        print("rotated.getClearedArea()\n")
         rotatedRawArea = rotated.getClearedArea(5.0, 0.0, bbox)
-        print("rotatedStripped.getClearedArea()\n")
         rotatedStrippedArea = PathOpUtil._stripRotaryAxes(rotated).getClearedArea(5.0, 0.0, bbox)
 
         # Compare via Wires count + bounding box of resulting shape — we just

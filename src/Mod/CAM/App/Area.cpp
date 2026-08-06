@@ -694,7 +694,7 @@ std::shared_ptr<Area> Area::getClearedArea(
 {
     // Note: these estimates for precision loss are old, based on previous-generation clipper 1 and
     // heuristic arc fitting. I am unsure what would be a better estimate now so I am leaving it as
-    // is, but is definitely a conservative estimate now (very conservative? I'm not sure the 2.3
+    // is, but it is definitely a conservative estimate now (very conservative? I'm not sure the 2.3
     // applies at all any more, and arc precision is much improved by the new fitting process) so it
     // should be ok. The old/original comment on precision follows:
     //
@@ -767,8 +767,8 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     CArea clearable(*myArea);
-    clearable.Offset(-diameter / 2, myParams.JoinType, myParams.EndType, params.MiterLimit, roundPrecision);
-    clearable.Offset(diameter / 2, myParams.JoinType, myParams.EndType, params.MiterLimit, roundPrecision);
+    clearable.Offset(-diameter / 2, roundPrecision);
+    clearable.Offset(diameter / 2, roundPrecision);
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
@@ -777,13 +777,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
-    restCArea.Offset(
-        diameter + buffer,
-        myParams.JoinType,
-        myParams.EndType,
-        params.MiterLimit,
-        roundPrecision
-    );
+    restCArea.Offset(diameter + buffer, roundPrecision);
     restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill);
 
     if (restCArea.m_curves.size() == 0) {
@@ -2348,7 +2342,7 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
 {
     auto area = make_shared<CArea>();
     *area = *myArea;
-    area->Offset(offset, myParams.JoinType, myParams.EndType, myParams.MiterLimit, myParams.RoundPrecision);
+    area->Offset(offset, myParams.RoundPrecision);
 
     return area;
 }
@@ -2386,8 +2380,6 @@ void Area::makeOffset(
     bool check_gaps = !myParams.ForceMaxStepover && abs(stepover) > tool_radius;
     const double gap_tolerance = myParams.Accuracy;
     double sign_stepover = (stepover > 0) ? 1.0 : -1.0;
-    auto jt = myParams.JoinType;
-    auto et = myParams.EndType;
 
     for (int i = 0; count < 0 || i < count; ++i, offset += stepover) {
         double prevOffset = offset - stepover;
@@ -2397,13 +2389,7 @@ void Area::makeOffset(
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
             CArea curr_offset_opposite = *area;
-            curr_offset_opposite.Offset(
-                -sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            curr_offset_opposite.Offset(-sign_stepover * tool_radius, myParams.RoundPrecision);
             CArea gap = *previous_area_offset;
             gap.Subtract(curr_offset_opposite);
             bool has_gap = !gap.m_curves.empty();
@@ -2420,13 +2406,7 @@ void Area::makeOffset(
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
-                    test_offset_opposite.Offset(
-                        -sign_stepover * tool_radius,
-                        jt,
-                        et,
-                        myParams.MiterLimit,
-                        myParams.RoundPrecision
-                    );
+                    test_offset_opposite.Offset(-sign_stepover * tool_radius, myParams.RoundPrecision);
                     gap = *previous_area_offset;
                     gap.Subtract(test_offset_opposite);
 
@@ -2446,13 +2426,7 @@ void Area::makeOffset(
 
             // Cache this pass's inner offset, and check if done
             previous_area_offset = *area;
-            previous_area_offset->Offset(
-                sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            previous_area_offset->Offset(sign_stepover * tool_radius, myParams.RoundPrecision);
             if (previous_area_offset->m_curves.empty()) {
                 // Done after this pass; do another binary search to determine the minimum offset
                 // required to be done
@@ -2484,13 +2458,7 @@ void Area::makeOffset(
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
-            previous_area_offset->Offset(
-                sign_stepover * tool_radius,
-                jt,
-                et,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            previous_area_offset->Offset(sign_stepover * tool_radius, myParams.RoundPrecision);
         }
 
         if (area->m_curves.empty()) {
@@ -2640,13 +2608,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 }
             }
             auto area = *myArea;
-            area.Offset(
-                -tool_radius - extra_offset,
-                myParams.JoinType,
-                myParams.EndType,
-                myParams.MiterLimit,
-                myParams.RoundPrecision
-            );
+            area.Offset(-tool_radius - extra_offset, myParams.RoundPrecision);
             out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill);
             done = true;
             break;

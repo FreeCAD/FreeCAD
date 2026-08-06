@@ -126,21 +126,42 @@ void CArea::PopulateClipper(Clipper64& c, bool as_clip, ConversionMetadata& meta
     }
 }
 
-// Generates a ZCallback64 for clipper to log information about points created during
-// a clipper operation.
+// Internal function to apply a clipping operation with clipper. Results (for edges tagged 1,
+// or if there are no tags) are stored in `this`.
 //
-// Important note: the life time of metadata *must* be as long as the clipper object
-// that uses the callback returned by this method. This is the caller's responsibility.
-// TODO consider inlining this ot prevent issues with misuse.
-static ZCallback64 MakeZCallback(ConversionMetadata& metadata)
+// op: the boolean clipping operation to perform (Union, Difference, etc)
+// this: subject geometry
+// clip_area: clipping geometry
+// fillType: fill rule applied to determine inside/outside (Positive, EvenOdd, etc)
+// reverseOpenPathContents: if true, reverse the point order within each open path result
+// reverseOpenPathOrder: if true, reverse the ordering of open path results
+// cNeg: if provided, edges tagged -1 (i.e. negative-offset segments from NaiveOffset) are
+//       stored in cNeg instead of being dropped. Edges tagged 1always go into `this`. End caps
+//       (tagged 0) are always dropped.
+void CArea::_Clip(
+    ClipType op,
+    const CArea& clip_area,
+    FillRule fillType,
+    bool reverseOpenPathContents,
+    bool reverseOpenPathOrder,
+    std::optional<std::reference_wrapper<CArea>> cNeg
+)
 {
-    return [&metadata](
-               const Point64& e1bot,
-               const Point64& e1top,
-               const Point64& e2bot,
-               const Point64& e2top,
-               Point64& pt
-           ) {
+    // Initialize a clipper object and populate it with subject/clip geometry
+    Clipper64 c;
+    ConversionMetadata metadata;
+    PopulateClipper(c, false, metadata);
+    clip_area.PopulateClipper(c, true, metadata);
+
+    // Set up a callback for clipper to log information about points created during
+    // the clipper operation.
+    c.SetZCallback([&metadata](
+                       const Point64& e1bot,
+                       const Point64& e1top,
+                       const Point64& e2bot,
+                       const Point64& e2top,
+                       Point64& pt
+                   ) {
         if (pt.x == e1bot.x && pt.y == e1bot.y) {
             pt.z = e1bot.z;
         }
@@ -167,50 +188,33 @@ static ZCallback64 MakeZCallback(ConversionMetadata& metadata)
                   << " e1top=(" << e1top.x << "," << e1top.y << "," << e1top.z << ")"
                   << " e2bot=(" << e2bot.x << "," << e2bot.y << "," << e2bot.z << ")"
                   << " e2top=(" << e2top.x << "," << e2top.y << "," << e2top.z << ")" << "\n";
-    };
-}
+    });
 
-void CArea::_Clip(
-    ClipType op,
-    const CArea& clip_area,
-    FillRule subjFillType,
-    bool reverseOpenPathContents,
-    bool reverseOpenPathOrder,
-    std::optional<std::reference_wrapper<CArea>> cNeg
-)
-{
-    ConversionMetadata metadata;
-    Clipper64 c;
-    c.SetZCallback(MakeZCallback(metadata));
-    PopulateClipper(c, false, metadata);
-    clip_area.PopulateClipper(c, true, metadata);
-
-    // Execute to get both closed and open paths
-    Paths64 closed_paths;
-    Paths64 open_paths;
-    c.Execute(op, subjFillType, closed_paths, open_paths);
+    // Execute the operation, potentially producing both closed and open path results
+    Paths64 closedPaths, openPaths;
+    c.Execute(op, fillType, closedPaths, openPaths);
 
     // Reverse open path contents if requested
     if (reverseOpenPathContents) {
-        for (auto& path : open_paths) {
+        for (auto& path : openPaths) {
             std::reverse(path.begin(), path.end());
         }
     }
 
     // Reverse open path order if requested
     if (reverseOpenPathOrder) {
-        std::reverse(open_paths.begin(), open_paths.end());
+        std::reverse(openPaths.begin(), openPaths.end());
     }
 
     m_curves.clear();
-    SetFromResult(closed_paths, /*is_closed=*/true, metadata, cNeg);
-    SetFromResult(open_paths, /*is_closed=*/false, metadata, cNeg);
+    SetFromResult(closedPaths, /*is_closed=*/true, metadata, cNeg);
+    SetFromResult(openPaths, /*is_closed=*/false, metadata, cNeg);
     m_edgeTags = {};
 }
 
-void CArea::Clip(ClipType op, const CArea& clip_area, FillRule subjFillType)
+void CArea::Clip(ClipType op, const CArea& clip_area, FillRule fillType)
 {
-    _Clip(op, clip_area, subjFillType);
+    _Clip(op, clip_area, fillType);
 }
 
 void CArea::ClipperNoop()
@@ -252,24 +256,22 @@ void CArea::TestIntersectOpenPathReversal(
 
 // Creates the naive offset of curves by offsetting each segment by +-offset.
 //
+// The "naive offset" is produced by offsetting each individual segment on its own and
+// joining adjacent offset segments to produce a closed curve. Open curves are closed
+// with round end caps. The final result of this operation is expected to be self intersecting,
+// and should be post-processed with a union operation with positive fill rule.
+//
 // This function should always be called with positive offset. Also, closed
 // input curves should be correctly oriented. These input requirements are
-// necessary to ensure that the output has positive winding.
+// necessary to ensure that the output has positive winding, so subsequent
+// union operations (with positive fill type) behave as expected.
 //
-// The "naive offset" is produced by offsetting each individual segment on its own and
-// joining adjacent offset segments to produce a closed curve. The final output of this
-// operation is expected to be self intersecting, and should be post-processed with a
-// union operation with positive fill rule. Open curves are closed with round end caps.
+// This function operates natively on arcs and line segments/CVertex; no arc approximation/clipper.
 //
-// This function operates natively on arcs and line segments; no arc approximation/clipper.
-//
-// Returns a list of lists of tags, one tag per edge of each curve, matching the layout of m_curves.
-// A tag of 0 indicates that the segment is an end cap. 1 indicates that it was produced by
-// offsetting in the requested direction, and -1 indicates that it was produced by offsetting in the
-// opposite direction.
-//
-// TODO I want to be sure I have a test where the negative offset completely collapses
-// TODO consider adding join type, for "use" in the Profile op
+// The output geometry is written to m_curves, and tags are written to m_edgeTags with one tag per
+// edge of each curve, matching the layout of m_curves. A tag of 0 indicates that the segment is an
+// end cap. 1 indicates that it was produced by offsetting in the requested/positive direction, and
+// -1 indicates that it was produced by offsetting in the opposite/negative direction.
 void CArea::NaiveOffset(double offset, double arcTolerance)
 {
     {
@@ -412,8 +414,6 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
                            const double exitQ,
                            const heeks::Point& pOrig) {
             // Skip the join if the points already match in clipper coordinates
-            // TODO I'd rather have a cleaner check than this, I should only need to do the
-            // conversion from doubles to clipper once
             const Point64 posTarget64 = ToPoint64(PointD(posTarget.x, posTarget.y, 0));
             const Point64 negTarget64 = ToPoint64(PointD(negTarget.x, negTarget.y, 0));
             const Point64 posBack64 = ToPoint64(
@@ -424,12 +424,17 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
             );
             if ((posTarget64.x == posBack64.x && posTarget64.y == posBack64.y)
                 || (negTarget64.x == negBack64.x && negTarget64.y == negBack64.y)) {
+                // Skip join. I checked if either point is equal in clipper coordinates rather than
+                // both because, besides for rounding error, they should agree with each other, and
+                // I'm not interested in having single-unit clipper lines anyway. We can round
+                // within that range, and the curve data structure ensures connectivity
                 std::cerr << "[NaiveOffset] join(skip): targets match current endpoints in Point64 "
                              "space\n";
                 return;
             }
 
-            int joinType = 0;  // 0 = no join, 1 = positive arc, -1 = negative arc
+            // Determine how the join is done. 0 = no join, 1 = positive arc, -1 = negative arc
+            int joinType = 0;
 
             // Check the angle of the tangents. If not (anti-)parallel, it is easy to choose if the
             // round join belongs to the positive side or the negative side.
@@ -443,7 +448,10 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
                 dbgPair("join(pLine/nArc)", 0, posTarget, heeks::Point {0, 0}, -1, negTarget, arcCenter);
             }
             else {
-                // Check which it is, parallel or anti-parallel. If parallel the no join is required
+                // Check which it is, parallel or anti-parallel. If parallel, no join is required.
+                // In principle parallel tangents should already be filtered out by the check at the
+                // top for skipping joins, but I'm not so confident in the numerics that it isn't
+                // worth checking.
                 const double dot = enterDirX * exitDirX + enterDirY * exitDirY;
                 if (dot > 0) {
                     // Parallel --> the ends of the previous/current offset segments already align,
@@ -480,6 +488,7 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
                 }
             }
 
+            // Join methodology has been determined; now construct the joining segments
             if (joinType == 1) {
                 cPos.m_vertices.emplace_back(1, posTarget, arcCenter);
                 cNeg.m_vertices.emplace_back(0, pOrig, heeks::Point {0, 0});
@@ -781,14 +790,14 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata, std::l
             const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
             std::cerr << " point (line[" << key.first << "," << key.second << "]): (" << newPt.x
                       << "," << newPt.y << ")\n";
-            if (metadata.zData.count(key)) {
-                std::cerr << "MakePoly: ERROR (line): zData key (" << key.first << "," << key.second
-                          << ") already present, edgeTag " << metadata.zData[key].edgeTag << " -> "
-                          << edgeTag
-                          << (metadata.zData[key].edgeTag != edgeTag ? " (CHANGED)" : " (same)")
+            if (metadata.edgeData.count(key)) {
+                std::cerr << "MakePoly: ERROR (line): edgeData key (" << key.first << ","
+                          << key.second << ") already present, edgeTag "
+                          << metadata.edgeData[key].edgeTag << " -> " << edgeTag
+                          << (metadata.edgeData[key].edgeTag != edgeTag ? " (CHANGED)" : " (same)")
                           << "\n";
             }
-            metadata.zData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
+            metadata.edgeData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
             pPrev = newPt;
         }
         else if (vertex.m_p.x != pPrevD.x || vertex.m_p.y != pPrevD.y) {
@@ -852,16 +861,16 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata, std::l
                 }
 
                 const auto key = std::make_pair(std::min(pPrev.z, newPt.z), std::max(pPrev.z, newPt.z));
-                std::cerr << "MakePoly: arc zData[(" << key.first << "," << key.second
+                std::cerr << "MakePoly: arc edgeData[(" << key.first << "," << key.second
                           << ")] edgeTag=" << edgeTag << "\n";
-                if (metadata.zData.count(key)) {
-                    std::cerr << "MakePoly: ERROR (arc): zData key (" << key.first << ","
+                if (metadata.edgeData.count(key)) {
+                    std::cerr << "MakePoly: ERROR (arc): edgeData key (" << key.first << ","
                               << key.second << ") already present, edgeTag "
-                              << metadata.zData[key].edgeTag << " -> " << edgeTag
-                              << (metadata.zData[key].edgeTag != edgeTag ? " (CHANGED)" : " (same)")
+                              << metadata.edgeData[key].edgeTag << " -> " << edgeTag
+                              << (metadata.edgeData[key].edgeTag != edgeTag ? " (CHANGED)" : " (same)")
                               << "\n";
                 }
-                metadata.zData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
+                metadata.edgeData[key] = SegmentData {vertex, edgeTag, curveIndex, vertexIndex};
                 pPrev = newPt;
             }
         }
@@ -892,7 +901,7 @@ void CArea::SetFromResult(
 )
 {
     std::cerr << "SetFromResult: " << paths.size() << " paths, isClosed=" << isClosed
-              << ", metadata.zData.size()=" << metadata.zData.size() << "\n";
+              << ", metadata.edgeData.size()=" << metadata.edgeData.size() << "\n";
     if (!isClosed) {
         ReorderOpenPaths(paths, metadata);
     }
@@ -985,8 +994,8 @@ void CArea::SetFromResult(
             const Point64& v0 = path[iEdge];
             const Point64& v1 = path[(iEdge + 1) % path.size()];
             const auto parentEdge = getParentEdge(v0, v1, metadata);
-            const auto zIt = metadata.zData.find(parentEdge);
-            const bool inZData = zIt != metadata.zData.end();
+            const auto zIt = metadata.edgeData.find(parentEdge);
+            const bool inZData = zIt != metadata.edgeData.end();
             static const SegmentData kMissingSegment {};
             const SegmentData& parentData = inZData ? zIt->second : kMissingSegment;
 
@@ -1154,7 +1163,7 @@ void CArea::SetFromResult(
 }
 
 
-void CArea::Offset(double offset, JoinType joinType, EndType unused, double miterLimit, double arcTolerance)
+void CArea::Offset(double offset, double arcTolerance)
 {
     if (offset == 0) {
         return;
@@ -1237,7 +1246,7 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
 {
     // Check for a direct edge p1.z to p2.z
     std::pair<int64_t, int64_t> testEdge = {min(p1.z, p2.z), max(p1.z, p2.z)};
-    if (metadata.zData.count(testEdge)) {
+    if (metadata.edgeData.count(testEdge)) {
         return testEdge;
     }
 
@@ -1248,13 +1257,13 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
         const auto& [e1min, e1max, e2min, e2max] = z1it->second;
         if (p2.z == e1min || p2.z == e1max) {
             testEdge = {e1min, e1max};
-            if (metadata.zData.count(testEdge)) {
+            if (metadata.edgeData.count(testEdge)) {
                 return testEdge;
             }
         }
         if (p2.z == e2min || p2.z == e2max) {
             testEdge = {e2min, e2max};
-            if (metadata.zData.count(testEdge)) {
+            if (metadata.edgeData.count(testEdge)) {
                 return testEdge;
             }
         }
@@ -1265,13 +1274,13 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
         const auto& [e1min, e1max, e2min, e2max] = z2it->second;
         if (p1.z == e1min || p1.z == e1max) {
             testEdge = {e1min, e1max};
-            if (metadata.zData.count(testEdge)) {
+            if (metadata.edgeData.count(testEdge)) {
                 return testEdge;
             }
         }
         if (p1.z == e2min || p1.z == e2max) {
             testEdge = {e2min, e2max};
-            if (metadata.zData.count(testEdge)) {
+            if (metadata.edgeData.count(testEdge)) {
                 return testEdge;
             }
         }
@@ -1284,13 +1293,13 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
             const auto& [e3min, e3max, e4min, e4max] = z2it->second;
             if ((e1min == e3min && e1max == e3max) || (e1min == e4min && e1max == e4max)) {
                 testEdge = {e1min, e1max};
-                if (metadata.zData.count(testEdge)) {
+                if (metadata.edgeData.count(testEdge)) {
                     return testEdge;
                 }
             }
             if ((e2min == e3min && e2max == e3max) || (e2min == e4min && e2max == e4max)) {
                 testEdge = {e2min, e2max};
-                if (metadata.zData.count(testEdge)) {
+                if (metadata.edgeData.count(testEdge)) {
                     return testEdge;
                 }
             }
@@ -1326,10 +1335,10 @@ void CArea::ReorderOpenPaths(Paths64& paths, const ConversionMetadata& metadata)
 
             // Look up parent edge metadata
             const auto parentEdge = getParentEdge(p1, p2, metadata);
-            const auto it = metadata.zData.find(parentEdge);
-            if (it == metadata.zData.end()) {
-                // Error, this should not happen; there should always be zData for parent edges
-                std::cerr << "ReorderOpenPaths: ERROR: no zData for parentEdge ("
+            const auto it = metadata.edgeData.find(parentEdge);
+            if (it == metadata.edgeData.end()) {
+                // Error, this should not happen; there should always be edgeData for parent edges
+                std::cerr << "ReorderOpenPaths: ERROR: no edgeData for parentEdge ("
                           << parentEdge.first << "," << parentEdge.second << ")\n";
                 continue;
             }

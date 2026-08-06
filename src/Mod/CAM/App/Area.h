@@ -102,7 +102,7 @@ struct PathExport CAreaConfig
     /** The constructor automatically saves current setting and apply user defined ones
      *
      * \arg \c p user defined configurations
-     * \arg \c noFitArgs if true, will override and disable arc fitting.
+     * \arg \c noFitArcs if true, will override and disable arc fitting.
      **/
     explicit CAreaConfig(const CAreaParams& p, bool noFitArcs = false);
 

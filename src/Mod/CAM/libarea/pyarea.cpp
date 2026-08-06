@@ -103,9 +103,7 @@ static void set_clipper_scale(double scale)
 
 static CArea copy_area(const CArea& area)
 {
-    CArea copy;
-    copy.m_curves = area.m_curves;
-    return copy;
+    return area;
 }
 
 static bool holes_linked()
