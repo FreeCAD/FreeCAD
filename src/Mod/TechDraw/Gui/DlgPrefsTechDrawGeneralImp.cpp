@@ -81,6 +81,7 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->cbMultiSelection->onSave();
 
     ui->cb_viewFramesVisibility->onSave();
+    ui->cb_screenMode->onSave();
     ui->cb_useCameraDirection->onSave();
     ui->cb_SnapViews->onSave();
     ui->psb_SnapFactor->onSave();
@@ -129,6 +130,7 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->cbMultiSelection->onRestore();
 
     ui->cb_viewFramesVisibility->onRestore();
+    ui->cb_screenMode->onRestore();
     ui->cb_useCameraDirection->onRestore();
 
     ui->cb_SnapViews->onRestore();
