@@ -3859,10 +3859,20 @@ static inline void addParameter(
     bool relative = false
 )
 {
-    double d = next - last;
-    if (verbose || fabs(d) > Precision::Confusion()) {
-        cmd.Parameters[name] = relative ? d : next;
+    if (std::isnan(next)) {
+        return;
     }
+
+    if (std::isnan(last) && relative) {
+        throw std::invalid_argument("trying to add relative parameter with unknown last value");
+    }
+
+    double d = next - last;
+    if (!verbose && fabs(d) <= Precision::Confusion()) {
+        return;
+    }
+
+    cmd.Parameters[name] = relative ? d : next;
 }
 
 static inline void addGCode(
@@ -4058,25 +4068,19 @@ void Area::toPath(
         (pstart.*setter)(resume_height);
     }
 
-    gp_Pnt plast, p;
+    gp_Pnt plast = {NAN, NAN, NAN};
+    gp_Pnt p = {NAN, NAN, NAN};
     // initial vertical rapid pull up to retraction (or start Z height if higher)
     (p.*setter)(std::max(retraction, (pstart.*getter)()));
     addGCode(false, path, plast, p, "G0");
     plast = p;
-    p = pstart;
 
     // rapid horizontal move to start point
-    gp_Pnt tmpPlast = plast;
-    (tmpPlast.*setter)((p.*getter)());
-    if (_pstart && p.IsEqual(tmpPlast, Precision::Confusion())) {
-        plast.SetCoord(10.0, 10.0, 10.0);
-        (plast.*setter)(retraction);
-    }
+    p = pstart;
     (p.*setter)(retraction);
     addGCode(false, path, plast, p, "G0");
-
-
     plast = p;
+
     bool first = true;
     bool arcWarned = false;
     double cur_f = 0.0;            // current feed rate
