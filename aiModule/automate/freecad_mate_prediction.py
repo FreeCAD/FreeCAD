@@ -218,8 +218,8 @@ def _axial_face_bounds(obj, face_name, placement, axis):
 
 
 def _candidate_placement(object_a, object_b, face_name_a, face_name_b,
-                         original_b, recommendation):
-    desired_global = _rank1_placement(object_a, recommendation, ALIGN_OPPOSITE)
+                         original_b, recommendation, align_opposite=ALIGN_OPPOSITE):
+    desired_global = _rank1_placement(object_a, recommendation, align_opposite)
     current_global_b = _global_placement(object_b)
     parent_global_b = current_global_b.multiply(original_b.inverse())
     placement = parent_global_b.inverse().multiply(desired_global)
@@ -247,9 +247,26 @@ def _candidate_placement(object_a, object_b, face_name_a, face_name_b,
         desired_global = axial_delta.multiply(desired_global)
         placement = parent_global_b.inverse().multiply(desired_global)
         delta = placement.multiply(original_b.inverse())
+
+    # One MCF contains only an origin and one axis, so rotation around that
+    # axis is not predicted. Provide the other common discrete orientation by
+    # rotating 180 degrees around A's mating axis through the mating origin.
+    frame_a = _frame_in_freecad_units(recommendation["a"])
+    placement_a = _global_placement(object_a)
+    roll_origin = placement_a.multVec(App.Vector(*frame_a["origin"]))
+    roll_axis = placement_a.Rotation.multVec(App.Vector(*frame_a["axis"]))
+    roll_axis.normalize()
+    roll_rotation = App.Rotation(roll_axis, 180.0)
+    roll_translation = roll_origin - roll_rotation.multVec(roll_origin)
+    roll_delta_global = App.Placement(roll_translation, roll_rotation)
+    desired_global_180 = roll_delta_global.multiply(desired_global)
+    placement_180 = parent_global_b.inverse().multiply(desired_global_180)
+    delta_180 = placement_180.multiply(original_b.inverse())
     return {
         "placement": placement,
         "delta": delta,
+        "placement_180": placement_180,
+        "delta_180": delta_180,
         "axial_correction_mm": correction,
         "axial_correction_enabled": correction_enabled,
     }
@@ -284,7 +301,7 @@ def _global_bbox_stats(obj):
 
 def _preview_topk(object_b, original_placement, recommendations, placements):
     if not SHOW_TOPK_PREVIEW or not recommendations:
-        return 0
+        return 0, False, False
     try:
         try:
             from PySide import QtCore, QtWidgets
@@ -295,7 +312,7 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
                 from PySide import QtCore, QtGui as QtWidgets
     except ImportError:
         App.Console.PrintWarning("AutoMate: Qt unavailable; applying Rank 1 without preview.\n")
-        return 0
+        return 0, False, False
 
     dialog = QtWidgets.QDialog(Gui.getMainWindow())
     dialog.setWindowTitle("AutoMate Top-K Placement Preview")
@@ -319,6 +336,14 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
             )
         )
     layout.addWidget(combo)
+    flip_orientation = QtWidgets.QCheckBox(
+        "Rotate object B 180 degrees around the mating axis"
+    )
+    layout.addWidget(flip_orientation)
+    same_axis = QtWidgets.QCheckBox(
+        "Align MCF axes in the same direction (default: opposed)"
+    )
+    layout.addWidget(same_axis)
     note = QtWidgets.QLabel(
         "Cylindrical correction aligns the nearest axial boundaries. "
         "Rotation about the cylinder axis remains unconstrained."
@@ -332,7 +357,9 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
     layout.addWidget(buttons)
 
     def preview(index):
-        object_b.Placement = App.Placement(placements[index]["placement"])
+        candidate = placements[index]["same"] if same_axis.isChecked() else placements[index]
+        key = "placement_180" if flip_orientation.isChecked() else "placement"
+        object_b.Placement = App.Placement(candidate[key])
         _refresh_object_document(object_b)
         try:
             Gui.activeDocument().activeView().redraw()
@@ -340,6 +367,8 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
             pass
 
     combo.currentIndexChanged.connect(preview)
+    flip_orientation.stateChanged.connect(lambda _state: preview(combo.currentIndex()))
+    same_axis.stateChanged.connect(lambda _state: preview(combo.currentIndex()))
     buttons.accepted.connect(dialog.accept)
     buttons.rejected.connect(dialog.reject)
     preview(0)
@@ -360,7 +389,11 @@ def _preview_topk(object_b, original_placement, recommendations, placements):
     _refresh_object_document(object_b)
     if not accepted:
         return None
-    return selected_index
+    return (
+        selected_index,
+        bool(flip_orientation.isChecked()),
+        bool(same_axis.isChecked()),
+    )
 
 
 def _transform_frame(frame, placement):
@@ -429,21 +462,30 @@ def run(top_k=TOP_K):
             result = json.load(stream)
 
     original_placement = App.Placement(selected[1].Placement)
-    candidate_placements = [
-        _candidate_placement(
+    candidate_placements = []
+    for recommendation in result["recommendations"]:
+        opposed_candidate = _candidate_placement(
             selected[0], selected[1], face_selections[0][1], face_selections[1][1],
-            original_placement, recommendation,
+            original_placement, recommendation, align_opposite=True,
         )
-        for recommendation in result["recommendations"]
-    ]
+        opposed_candidate["same"] = _candidate_placement(
+            selected[0], selected[1], face_selections[0][1], face_selections[1][1],
+            original_placement, recommendation, align_opposite=False,
+        )
+        candidate_placements.append(opposed_candidate)
     selected_recommendation_index = None
+    selected_orientation_180 = False
+    selected_same_axis = False
     if APPLY_BEST and result["recommendations"]:
-        selected_recommendation_index = _preview_topk(
+        preview_selection = _preview_topk(
             selected[1], original_placement, result["recommendations"], candidate_placements
         )
-        if selected_recommendation_index is None:
+        if preview_selection is None:
             App.Console.PrintMessage("AutoMate: placement preview cancelled; no document changes.\n")
             return None, result
+        (selected_recommendation_index,
+         selected_orientation_180,
+         selected_same_axis) = preview_selection
 
     _remove_previous(doc)
     doc.openTransaction("Apply AutoMate selected placement")
@@ -460,6 +502,7 @@ def run(top_k=TOP_K):
     group.addProperty("App::PropertyInteger", "AppliedRank", "AutoMate")
     group.addProperty("App::PropertyFloat", "AxialCorrectionMm", "AutoMate")
     group.addProperty("App::PropertyBool", "AxialCorrectionEnabled", "AutoMate")
+    group.addProperty("App::PropertyFloat", "RollCorrectionDeg", "AutoMate")
     group.addProperty("App::PropertyBool", "AutoPlacementEnabled", "AutoMate")
     group.LocationCheckpoint = result.get("location_checkpoint", "")
     group.LocationCheckpointEpoch = int(result.get("location_checkpoint_epoch", -1))
@@ -472,10 +515,17 @@ def run(top_k=TOP_K):
     group.AppliedRank = 0
     group.AxialCorrectionMm = 0.0
     group.AxialCorrectionEnabled = False
+    group.RollCorrectionDeg = 0.0
     group.AutoPlacementEnabled = bool(APPLY_BEST)
     applied_delta = None
     if selected_recommendation_index is not None:
-        chosen = candidate_placements[selected_recommendation_index]
+        candidate = candidate_placements[selected_recommendation_index]
+        if selected_same_axis:
+            candidate = candidate["same"]
+        chosen = dict(candidate)
+        if selected_orientation_180:
+            chosen["placement"] = chosen["placement_180"]
+            chosen["delta"] = chosen["delta_180"]
         chosen_recommendation = result["recommendations"][selected_recommendation_index]
         applied_delta = chosen["delta"]
         selected[1].Placement = App.Placement(chosen["placement"])
@@ -492,14 +542,18 @@ def run(top_k=TOP_K):
         group.MovedObject = selected[1]
         group.OriginalPlacement = original_placement
         group.AppliedDelta = applied_delta
-        group.AxesOpposed = ALIGN_OPPOSITE
+        group.AxesOpposed = not selected_same_axis
         group.AppliedRank = int(chosen_recommendation["rank"])
         group.AxialCorrectionMm = float(chosen["axial_correction_mm"])
         group.AxialCorrectionEnabled = bool(chosen["axial_correction_enabled"])
+        group.RollCorrectionDeg = 180.0 if selected_orientation_180 else 0.0
         App.Console.PrintMessage(
-            "AutoMate Placement: selected Rank {}, axial correction={:+.3f} mm; "
+            "AutoMate Placement: selected Rank {}, axial correction={:+.3f} mm, "
+            "axis relation={}, roll correction={:.0f} deg; "
             "B before={} delta={} after={}\n".format(
                 chosen_recommendation["rank"], chosen["axial_correction_mm"],
+                "same" if selected_same_axis else "opposed",
+                group.RollCorrectionDeg,
                 original_placement, applied_delta, moved_placement
             )
         )
