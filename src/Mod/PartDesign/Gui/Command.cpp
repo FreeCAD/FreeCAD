@@ -412,7 +412,7 @@ CmdPartDesignProjectOnSurface::CmdPartDesignProjectOnSurface()
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Project on Surface");
     sToolTipText = QT_TR_NOOP(
-        "Projects a sketch or planar edges, wires, and faces onto a target face "
+        "Projects a sketch or planar edges, wires, and faces onto one or more target faces "
         "along the source-plane normal"
     );
     sWhatsThis = "PartDesign_ProjectOnSurface";
@@ -445,19 +445,11 @@ void CmdPartDesignProjectOnSurface::activated(int iMsg)
         return;
     }
 
+    // Capture the current selection before opening the task panel. Separate
+    // LinkSubList properties mirror the inherited Part data model: arbitrary
+    // planar sources in Projection and any number of faces in SupportFaces.
     App::PropertyLinkSubList projection;
-    App::PropertyLinkSub supportFace;
-    const auto addPart2DEdges = [&projection](App::DocumentObject* object) {
-        auto shape = Part::Feature::getTopoShape(
-            object,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
-            ""
-        );
-        const auto edgeCount = shape.countSubShapes(TopAbs_EDGE);
-        for (std::size_t index = 1; index <= edgeCount; ++index) {
-            projection.addValue(object, {"Edge" + std::to_string(index)});
-        }
-    };
+    App::PropertyLinkSubList supportFaces;
     for (auto& selected : selection) {
         auto* object = selected.getObject();
         if (!object || object == feature || !feature->testIfLinkDAGCompatible(object)) {
@@ -470,11 +462,10 @@ void CmdPartDesignProjectOnSurface::activated(int iMsg)
         }
         for (const auto& subName : subNames) {
             if (subName.empty() && object->isDerivedFrom<Part::Part2DObject>()) {
-                try {
-                    addPart2DEdges(object);
-                }
-                catch (const Base::Exception&) {
-                }
+                // Preserve a whole-Sketch reference. Part::ProjectOnSurface now
+                // traverses compound source shapes, so it can reconstruct the
+                // sketch as a unit and derive its normal from the sketch plane.
+                projection.addValue(object, {subName});
                 continue;
             }
 
@@ -495,9 +486,7 @@ void CmdPartDesignProjectOnSurface::activated(int iMsg)
                         projection.addValue(object, {subName});
                         break;
                     case TopAbs_FACE:
-                        if (!supportFace.getValue()) {
-                            supportFace.setValue(object, {subName});
-                        }
+                        supportFaces.addValue(object, {subName});
                         break;
                     default:
                         break;
@@ -511,15 +500,8 @@ void CmdPartDesignProjectOnSurface::activated(int iMsg)
     if (projection.getSize() > 0) {
         FCMD_OBJ_CMD(feature, "Projection = " << projection.getPyReprString());
     }
-    if (supportFace.getValue()) {
-        FCMD_OBJ_CMD(
-            feature,
-            "SupportFace = "
-                << PartDesignGui::buildLinkSingleSubPythonStr(
-                       supportFace.getValue(),
-                       supportFace.getSubValues()
-                   )
-        );
+    if (supportFaces.getSize() > 0) {
+        FCMD_OBJ_CMD(feature, "SupportFaces = " << supportFaces.getPyReprString());
     }
 
     Gui::Selection().clearSelection();

@@ -28,7 +28,7 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupSupport">
-     <property name="title"><string>Target face</string></property>
+     <property name="title"><string>Target faces</string></property>
      <layout class="QVBoxLayout" name="supportLayout">
       <item>
        <layout class="QHBoxLayout" name="supportButtonsLayout">
@@ -36,7 +36,7 @@
         <item><widget class="QToolButton" name="buttonRemoveSupport"><property name="text"><string>Remove</string></property></widget></item>
        </layout>
       </item>
-      <item><widget class="QListWidget" name="listSupport"><property name="selectionMode"><enum>QAbstractItemView::SingleSelection</enum></property></widget></item>
+      <item><widget class="QListWidget" name="listSupport"><property name="selectionMode"><enum>QAbstractItemView::ExtendedSelection</enum></property></widget></item>
      </layout>
     </widget>
    </item>

@@ -30,6 +30,7 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepProj_Projection.hxx>
+#include <gp_Pln.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
@@ -46,6 +47,8 @@
 
 #include "FeatureProjectOnSurface.h"
 #include <Base/Exception.h>
+#include <Base/Rotation.h>
+#include <Mod/Part/App/Part2DObject.h>
 
 
 using namespace Part;
@@ -66,7 +69,14 @@ ProjectOnSurface::ProjectOnSurface()
         App::Prop_None,
         "Direction of projection"
     );
-    ADD_PROPERTY_TYPE(SupportFace, (nullptr), "Projection", App::Prop_None, "Support faceo");
+    ADD_PROPERTY_TYPE(SupportFace, (nullptr), "Projection", App::Prop_None, "Support face");
+    ADD_PROPERTY_TYPE(
+        SupportFaces,
+        (nullptr),
+        "Projection",
+        App::Prop_None,
+        "Faces onto which the source geometry is projected"
+    );
     ADD_PROPERTY_TYPE(
         Projection,
         (nullptr),
@@ -74,6 +84,15 @@ ProjectOnSurface::ProjectOnSurface()
         App::Prop_None,
         "Shapes to project onto support face"
     );
+    ADD_PROPERTY_TYPE(
+        AutoDirection,
+        (false),
+        "Projection",
+        App::Prop_None,
+        "Use the normal of each planar source instead of Direction"
+    );
+    SupportFaces.setStatus(App::Property::Hidden, true);
+    AutoDirection.setStatus(App::Property::Hidden, true);
 }
 
 App::DocumentObjectExecReturn* ProjectOnSurface::execute()
@@ -89,63 +108,147 @@ App::DocumentObjectExecReturn* ProjectOnSurface::execute()
 
 void ProjectOnSurface::tryExecute()
 {
-    TopoDS_Face supportFace = getSupportFace();
+    if (AutoDirection.getValue()
+        && (Projection.getSize() == 0
+            || (SupportFaces.getSize() == 0 && !SupportFace.getValue()))) {
+        Shape.setValue(TopoDS_Shape());
+        return;
+    }
 
-    std::vector<TopoDS_Shape> shapes = getProjectionShapes();
-    const auto& vec = Direction.getValue();
-    gp_Dir dir(vec.x, vec.y, vec.z);
+    const auto supportFaces = getSupportFaces();
+    const auto sources = getProjectionSources();
 
     std::vector<TopoDS_Shape> results;
-    for (const auto& shape : shapes) {
-        auto shapes = createProjectedWire(shape, supportFace, dir);
-        results.insert(results.end(), shapes.begin(), shapes.end());
+    for (const auto& source : sources) {
+        for (const auto& supportFace : supportFaces) {
+            const gp_Dir direction = AutoDirection.getValue()
+                ? orientDirectionToFace(source.shape, supportFace, source.direction)
+                : source.direction;
+            auto projected = createProjectedWire(source.shape, supportFace, direction);
+            const TopLoc_Location offset = getOffsetPlacement(direction);
+            for (auto& shape : projected) {
+                if (!shape.IsNull() && !offset.IsIdentity()) {
+                    shape.Move(offset);
+                }
+                results.push_back(std::move(shape));
+            }
+        }
     }
 
     results = filterShapes(results);
+    if (AutoDirection.getValue() && results.empty()) {
+        throw Base::ValueError(
+            "Projection produced no result; verify that the source-plane normal intersects a target face"
+        );
+    }
     auto currentPlacement = Placement.getValue();
     Shape.setValue(createCompound(results));
     Placement.setValue(currentPlacement);
 }
 
-TopoDS_Face ProjectOnSurface::getSupportFace() const
+std::vector<TopoDS_Face> ProjectOnSurface::getSupportFaces() const
 {
-    auto support = SupportFace.getValue<Part::Feature*>();
-    if (!support) {
+    std::vector<App::DocumentObject*> objects;
+    std::vector<std::string> subNames;
+
+    if (SupportFaces.getSize() > 0) {
+        objects = SupportFaces.getValues();
+        subNames = SupportFaces.getSubValues();
+    }
+    else if (auto* support = SupportFace.getValue()) {
+        const auto legacySubNames = SupportFace.getSubValues();
+        objects.assign(legacySubNames.size(), support);
+        subNames = legacySubNames;
+    }
+
+    if (objects.empty()) {
         throw Base::ValueError("No support face specified");
     }
-
-    std::vector<std::string> subStrings = SupportFace.getSubValues();
-    if (subStrings.size() != 1) {
-        throw Base::ValueError("Expect exactly one support face");
+    if (objects.size() != subNames.size()) {
+        throw Base::ValueError("Number of support objects and sub-names differ");
     }
 
-    auto topoSupport = Feature::getTopoShape(
-        support,
-        ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
-        subStrings[0].c_str()
-    );
-    return TopoDS::Face(topoSupport.getShape());
+    std::vector<TopoDS_Face> faces;
+    faces.reserve(objects.size());
+    for (std::size_t index = 0; index < objects.size(); ++index) {
+        auto topoSupport = Feature::getTopoShape(
+            objects[index],
+            ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
+            subNames[index].c_str()
+        );
+        if (topoSupport.isNull() || topoSupport.getShape().ShapeType() != TopAbs_FACE) {
+            throw Base::TypeError("Projection target must be a face");
+        }
+        faces.push_back(TopoDS::Face(topoSupport.getShape()));
+    }
+
+    return faces;
 }
 
-std::vector<TopoDS_Shape> ProjectOnSurface::getProjectionShapes() const
+std::vector<ProjectOnSurface::ProjectionSource> ProjectOnSurface::getProjectionSources() const
 {
-    std::vector<TopoDS_Shape> shapes;
+    std::vector<ProjectionSource> sources;
     auto objects = Projection.getValues();
     auto subvalues = Projection.getSubValues();
     if (objects.size() != subvalues.size()) {
         throw Base::ValueError("Number of objects and sub-names differ");
     }
 
-    for (std::size_t index = 0; index < objects.size(); index++) {
+    const auto& manualVector = Direction.getValue();
+    for (std::size_t index = 0; index < objects.size(); ++index) {
+        Base::Matrix4D transform;
+        App::DocumentObject* owner = nullptr;
         auto topoSupport = Feature::getTopoShape(
             objects[index],
             ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
-            subvalues[index].c_str()
+            subvalues[index].c_str(),
+            &transform,
+            &owner
         );
-        shapes.push_back(topoSupport.getShape());
+        if (topoSupport.isNull()) {
+            throw Part::NullShapeException("Projection source has an empty shape");
+        }
+
+        gp_Dir direction(manualVector.x, manualVector.y, manualVector.z);
+        if (AutoDirection.getValue()) {
+            if (owner && owner->isDerivedFrom<Part::Part2DObject>()) {
+                Base::Vector3d normal;
+                Base::Rotation(transform).multVec(Base::Vector3d(0, 0, 1), normal);
+                direction = gp_Dir(normal.x, normal.y, normal.z);
+            }
+            else {
+                gp_Pln plane;
+                if (!topoSupport.findPlane(plane)) {
+                    throw Base::ValueError(
+                        "Cannot determine a projection direction: source geometry is not planar"
+                    );
+                }
+                direction = plane.Axis().Direction();
+            }
+        }
+        sources.push_back({topoSupport.getShape(), direction});
     }
 
-    return shapes;
+    return sources;
+}
+
+gp_Dir ProjectOnSurface::orientDirectionToFace(
+    const TopoDS_Shape& source,
+    const TopoDS_Face& supportFace,
+    const gp_Dir& direction
+) const
+{
+    gp_Dir result = direction;
+    BRepExtrema_DistShapeShape distance(source, supportFace);
+    distance.Perform();
+    if (distance.IsDone() && distance.NbSolution() > 0) {
+        const gp_Vec towardTarget(distance.PointOnShape1(1), distance.PointOnShape2(1));
+        if (towardTarget.SquareMagnitude() > Precision::SquareConfusion()
+            && towardTarget.Dot(result) < 0) {
+            result.Reverse();
+        }
+    }
+    return result;
 }
 
 std::vector<TopoDS_Shape> ProjectOnSurface::filterShapes(const std::vector<TopoDS_Shape>& shapes) const
@@ -188,22 +291,20 @@ std::vector<TopoDS_Shape> ProjectOnSurface::filterShapes(const std::vector<TopoD
 
 TopoDS_Shape ProjectOnSurface::createCompound(const std::vector<TopoDS_Shape>& shapes)
 {
-    TopLoc_Location loc = getOffsetPlacement();
-    bool isIdentity = loc.IsIdentity();
     TopoDS_Compound aCompound;
     if (!shapes.empty()) {
         TopoDS_Builder aBuilder;
         aBuilder.MakeCompound(aCompound);
         for (const auto& it : shapes) {
-            if (isIdentity) {
-                aBuilder.Add(aCompound, it);
-            }
-            else {
-                aBuilder.Add(aCompound, it.Moved(loc));
-            }
+            aBuilder.Add(aCompound, it);
         }
     }
     return {std::move(aCompound)};
+}
+
+namespace
+{
+TopoDS_Wire getProjectedWire(BRepProj_Projection& projection, const TopoDS_Shape& reference);
 }
 
 std::vector<TopoDS_Shape> ProjectOnSurface::createProjectedWire(
@@ -218,7 +319,7 @@ std::vector<TopoDS_Shape> ProjectOnSurface::createProjectedWire(
     if (shape.ShapeType() == TopAbs_FACE) {
         auto wires = projectFace(TopoDS::Face(shape), supportFace, dir);
         auto face = createFaceFromWire(wires, supportFace);
-        auto face_or_solid = createSolidIfHeight(face);
+        auto face_or_solid = createSolidIfHeight(face, dir);
         if (!face_or_solid.IsNull()) {
             return {face_or_solid};
         }
@@ -229,10 +330,45 @@ std::vector<TopoDS_Shape> ProjectOnSurface::createProjectedWire(
         return wires;
     }
     if (shape.ShapeType() == TopAbs_WIRE || shape.ShapeType() == TopAbs_EDGE) {
+        if (shape.Closed()) {
+            BRepProj_Projection projection(shape, supportFace, dir);
+            TopoDS_Wire projectedWire = getProjectedWire(projection, shape);
+            TopoDS_Wire fixedWire = fixWire(projectedWire, supportFace);
+            if (!fixedWire.IsNull()) {
+                auto face = createFaceFromWire({fixedWire}, supportFace);
+                auto face_or_solid = createSolidIfHeight(face, dir);
+                if (!face_or_solid.IsNull()) {
+                    return {face_or_solid};
+                }
+                if (!face.IsNull()) {
+                    return {face};
+                }
+            }
+        }
         return projectWire(shape, supportFace, dir);
     }
 
-    return {};
+    std::vector<TopoDS_Shape> projected;
+    bool foundSubshape = false;
+    for (TopExp_Explorer xp(shape, TopAbs_FACE); xp.More(); xp.Next()) {
+        foundSubshape = true;
+        auto result = createProjectedWire(xp.Current(), supportFace, dir);
+        projected.insert(projected.end(), result.begin(), result.end());
+    }
+    if (!foundSubshape) {
+        for (TopExp_Explorer xp(shape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
+            foundSubshape = true;
+            auto result = createProjectedWire(xp.Current(), supportFace, dir);
+            projected.insert(projected.end(), result.begin(), result.end());
+        }
+    }
+    if (!foundSubshape) {
+        for (TopExp_Explorer xp(shape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
+            auto result = createProjectedWire(xp.Current(), supportFace, dir);
+            projected.insert(projected.end(), result.begin(), result.end());
+        }
+    }
+    return projected;
 }
 
 TopoDS_Face ProjectOnSurface::createFaceFromWire(
@@ -338,7 +474,10 @@ std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
     return wiresInParametricSpace;
 }
 
-TopoDS_Shape ProjectOnSurface::createSolidIfHeight(const TopoDS_Face& face) const
+TopoDS_Shape ProjectOnSurface::createSolidIfHeight(
+    const TopoDS_Face& face,
+    const gp_Dir& direction
+) const
 {
     if (face.IsNull()) {
         return face;
@@ -348,8 +487,7 @@ TopoDS_Shape ProjectOnSurface::createSolidIfHeight(const TopoDS_Face& face) cons
         return face;
     }
 
-    const auto& vec = Direction.getValue();
-    gp_Vec directionToExtrude(vec.x, vec.y, vec.z);
+    gp_Vec directionToExtrude(direction);
     directionToExtrude.Reverse();
     directionToExtrude.Multiply(height);
 
@@ -474,16 +612,15 @@ std::vector<TopoDS_Shape> ProjectOnSurface::projectWire(
     return shapes;
 }
 
-TopLoc_Location ProjectOnSurface::getOffsetPlacement() const
+TopLoc_Location ProjectOnSurface::getOffsetPlacement(const gp_Dir& direction) const
 {
     double offset = Offset.getValue();
     if (offset == 0) {
         return {};
     }
 
-    auto vec = Direction.getValue();
-    vec.Normalize();
-    vec.Scale(offset, offset, offset);
+    Base::Vector3d vec(direction.X(), direction.Y(), direction.Z());
+    vec *= offset;
     Base::Matrix4D mat;
     mat.move(vec);
     gp_Trsf move = TopoShape::convert(mat);

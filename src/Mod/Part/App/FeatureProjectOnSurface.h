@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <gp_Dir.hxx>
+
 #include "PartFeature.h"
 #include <App/PropertyLinks.h>
 #include <App/PropertyUnits.h>
@@ -45,7 +47,9 @@ public:
     App::PropertyDistance Offset;
     App::PropertyDirection Direction;
     App::PropertyLinkSub SupportFace;
+    App::PropertyLinkSubList SupportFaces;
     App::PropertyLinkSubList Projection;
+    App::PropertyBool AutoDirection;
 
     static constexpr const char* AllMode = "All";
     static constexpr const char* FacesMode = "Faces";
@@ -59,9 +63,20 @@ public:
     //@}
 
 private:
+    struct ProjectionSource
+    {
+        TopoDS_Shape shape;
+        gp_Dir direction;
+    };
+
     void tryExecute();
-    TopoDS_Face getSupportFace() const;
-    std::vector<TopoDS_Shape> getProjectionShapes() const;
+    std::vector<TopoDS_Face> getSupportFaces() const;
+    std::vector<ProjectionSource> getProjectionSources() const;
+    gp_Dir orientDirectionToFace(
+        const TopoDS_Shape& source,
+        const TopoDS_Face& supportFace,
+        const gp_Dir& direction
+    ) const;
     std::vector<TopoDS_Shape> createProjectedWire(
         const TopoDS_Shape& shape,
         const TopoDS_Face& supportFace,
@@ -75,7 +90,7 @@ private:
         const std::vector<TopoDS_Wire>& wires,
         const TopoDS_Face& supportFace
     ) const;
-    TopoDS_Shape createSolidIfHeight(const TopoDS_Face& face) const;
+    TopoDS_Shape createSolidIfHeight(const TopoDS_Face& face, const gp_Dir& direction) const;
     std::vector<TopoDS_Wire> createWiresFromWires(
         const std::vector<TopoDS_Shape>& wires,
         const TopoDS_Face& supportFace
@@ -94,8 +109,8 @@ private:
     TopoDS_Wire fixWire(const TopoDS_Shape& shape, const TopoDS_Face& supportFace) const;
     TopoDS_Wire fixWire(const std::vector<TopoDS_Edge>& edges, const TopoDS_Face& supportFace) const;
     std::vector<TopoDS_Shape> filterShapes(const std::vector<TopoDS_Shape>& shapes) const;
-    TopoDS_Shape createCompound(const std::vector<TopoDS_Shape>& shapes);
-    TopLoc_Location getOffsetPlacement() const;
+    static TopoDS_Shape createCompound(const std::vector<TopoDS_Shape>& shapes);
+    TopLoc_Location getOffsetPlacement(const gp_Dir& direction) const;
 };
 
 }  // namespace Part

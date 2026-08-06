@@ -41,16 +41,41 @@ class TestProjectOnSurface(unittest.TestCase):
         cylinder.Height = 10
 
         projection = body.newObject("PartDesign::ProjectOnSurface", "Projection")
-        projection.Projection = [(sketch, ["Edge1", "Edge2", "Edge3", "Edge4"])]
-        projection.SupportFace = (cylinder, ["Face1"])
+        # An empty sub-name deliberately passes the entire Sketch to Part. This
+        # exercises Part's compound traversal as well as its sketch-plane normal.
+        projection.Projection = [(sketch, [""])]
+        projection.SupportFaces = [(cylinder, ["Face1"])]
         self.doc.recompute()
 
         self.assertEqual(projection.Mode, "All")
-        self.assertAlmostEqual(abs(projection.Direction.x), 1.0)
+        self.assertTrue(projection.AutoDirection)
         self.assertTrue(projection.isValid(), projection.getStatusString())
         self.assertGreater(len(projection.Shape.Edges), 0)
         self.assertIn(projection, body.Group)
         self.assertEqual(body.Tip, cylinder)
+
+    def test_multiple_curved_target_faces(self):
+        body, sketch = self.make_source_sketch()
+        cylinders = []
+        for index, x_position in enumerate((0, -15), start=1):
+            cylinder = self.doc.addObject("Part::Cylinder", f"Cylinder{index}")
+            cylinder.Radius = 5
+            cylinder.Height = 10
+            cylinder.Placement.Base.x = x_position
+            cylinders.append(cylinder)
+
+        projection = body.newObject("PartDesign::ProjectOnSurface", "Projection")
+        projection.Projection = [(sketch, [""])]
+        projection.SupportFaces = [
+            (cylinder, ["Face1"]) for cylinder in cylinders
+        ]
+        self.doc.recompute()
+
+        self.assertEqual(projection.Mode, "All")
+        self.assertTrue(projection.AutoDirection)
+        self.assertTrue(projection.isValid(), projection.getStatusString())
+        self.assertEqual(len(projection.SupportFaces), 2)
+        self.assertGreaterEqual(len(projection.Shape.Edges), 8)
 
 if __name__ == "__main__":
     unittest.main()

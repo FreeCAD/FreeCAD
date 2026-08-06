@@ -92,6 +92,8 @@ bool containsReference(
 
 void populateList(QListWidget* list, const App::PropertyLinkSubList& property)
 {
+    // LinkSubList stores the owning object and the selected sub-element name in
+    // parallel arrays. Display one row for each object/sub-element pair.
     list->clear();
     const auto& objects = property.getValues();
     const auto& subNames = property.getSubValues();
@@ -100,29 +102,6 @@ void populateList(QListWidget* list, const App::PropertyLinkSubList& property)
     }
 }
 
-void populateList(QListWidget* list, const App::PropertyLinkSub& property)
-{
-    list->clear();
-    if (auto* object = property.getValue()) {
-        list->addItem(getRefStr(object, property.getSubValues()));
-    }
-}
-
-void addPart2DEdges(App::PropertyLinkSubList& property, App::DocumentObject* object)
-{
-    auto shape = Part::Feature::getTopoShape(
-        object,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
-        ""
-    );
-    const auto edgeCount = shape.countSubShapes(TopAbs_EDGE);
-    for (std::size_t index = 1; index <= edgeCount; ++index) {
-        const std::string subName = "Edge" + std::to_string(index);
-        if (!containsReference(property, object, subName)) {
-            property.addValue(object, {subName});
-        }
-    }
-}
 }  // namespace
 
 TaskProjectOnSurface::TaskProjectOnSurface(
@@ -223,13 +202,18 @@ void TaskProjectOnSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
         subNames.emplace_back();
     }
 
+    // Both inputs are list properties. This lets users select several source
+    // elements and several target faces without leaving selection mode.
+    auto& property = selectionMode == SelectionMode::Support ? feature->SupportFaces
+                                                              : feature->Projection;
     for (const auto& subName : subNames) {
         if (selectionMode == SelectionMode::Projection && subName.empty()
             && object->isDerivedFrom<Part::Part2DObject>()) {
-            try {
-                addPart2DEdges(feature->Projection, object);
-            }
-            catch (const Base::Exception&) {
+            // An empty sub-name means the whole Sketch was selected. The Part
+            // implementation knows how to traverse its compound of wires/edges,
+            // so retain the whole-object reference rather than expanding EdgeN.
+            if (!containsReference(property, object, subName)) {
+                property.addValue(object, {subName});
             }
             continue;
         }
@@ -252,12 +236,8 @@ void TaskProjectOnSurface::onSelectionChanged(const Gui::SelectionChanges& msg)
                 && type != TopAbs_EDGE && type != TopAbs_WIRE && type != TopAbs_FACE) {
                 continue;
             }
-            if (selectionMode == SelectionMode::Support) {
-                feature->SupportFace.setValue(object, {subName});
-                break;
-            }
-            if (!containsReference(feature->Projection, object, subName)) {
-                feature->Projection.addValue(object, {subName});
+            if (!containsReference(property, object, subName)) {
+                property.addValue(object, {subName});
             }
         }
         catch (const Base::Exception&) {
@@ -277,17 +257,11 @@ void TaskProjectOnSurface::removeSelected(bool support)
     auto* feature = vp->getObject<PartDesign::ProjectOnSurface>();
     auto* list = support ? ui->listSupport : ui->listProjection;
 
-    if (support) {
-        if (!list->selectedItems().empty()) {
-            feature->SupportFace.setValue(nullptr);
-            updateUI();
-            updateFeature();
-        }
-        return;
-    }
-
-    auto objects = feature->Projection.getValues();
-    auto subNames = feature->Projection.getSubValues();
+    // Removing rows rebuilds the matching LinkSubList. Erase from highest row
+    // to lowest so earlier indices remain stable while several rows are removed.
+    auto& property = support ? feature->SupportFaces : feature->Projection;
+    auto objects = property.getValues();
+    auto subNames = property.getSubValues();
     std::vector<int> rows;
     for (auto* item : list->selectedItems()) {
         rows.push_back(list->row(item));
@@ -299,7 +273,7 @@ void TaskProjectOnSurface::removeSelected(bool support)
             subNames.erase(subNames.begin() + row);
         }
     }
-    feature->Projection.setValues(std::move(objects), std::move(subNames));
+    property.setValues(std::move(objects), std::move(subNames));
     updateUI();
     updateFeature();
 }
@@ -311,7 +285,7 @@ void TaskProjectOnSurface::updateUI()
     }
     auto* feature = vp->getObject<PartDesign::ProjectOnSurface>();
     populateList(ui->listProjection, feature->Projection);
-    populateList(ui->listSupport, feature->SupportFace);
+    populateList(ui->listSupport, feature->SupportFaces);
 
     const QSignalBlocker blocker(ui->comboResult);
     const char* mode = feature->Mode.getValueAsString();
@@ -349,8 +323,8 @@ bool TaskDlgProjectOnSurface::accept()
         if (feature->Projection.getSize() == 0) {
             throw Base::ValueError("Select at least one sketch, edge, wire, or face to project");
         }
-        if (!feature->SupportFace.getValue() || feature->SupportFace.getSubValues().size() != 1) {
-            throw Base::ValueError("Select a target face");
+        if (feature->SupportFaces.getSize() == 0) {
+            throw Base::ValueError("Select at least one target face");
         }
         Gui::cmdAppDocument(feature, "recompute()");
         if (!feature->isValid() || feature->Shape.getValue().IsNull()) {

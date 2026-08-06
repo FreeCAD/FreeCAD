@@ -317,13 +317,14 @@ class ProjectOnSurfaceGuiTestCases(unittest.TestCase):
         self.assertIsNotNone(projection_list)
         self.assertIsNotNone(support_list)
         self.assertEqual(projection_list.count(), 2)
-        self.assertEqual(support_list.count(), 1)
+        self.assertEqual(support_list.count(), 2)
 
         projection = self.Doc.getObject("ProjectionOnSurface")
         self.assertIsNotNone(projection)
         self.assertEqual(projection.Projection[0][0], sketch)
         self.assertEqual(projection.Projection[1][0], sketch2)
-        self.assertEqual(projection.SupportFace[0], cylinder)
+        self.assertEqual(projection.SupportFaces[0][0], cylinder)
+        self.assertEqual(projection.SupportFaces[1][0], cylinder2)
         self.assertEqual(projection.Mode, "All")
         self.assertGreater(len(projection.Shape.Edges), 0)
 
@@ -343,7 +344,8 @@ class ProjectOnSurfaceGuiTestCases(unittest.TestCase):
         Gui.updateGui()
 
         self.assertEqual(projection.Projection[0][0], sketch)
-        self.assertEqual(projection.SupportFace[0], cylinder)
+        self.assertEqual(projection.SupportFaces[0][0], cylinder)
+        self.assertEqual(len(projection.SupportFaces), 2)
         self.assertGreater(len(projection.Shape.Edges), 0)
 
 

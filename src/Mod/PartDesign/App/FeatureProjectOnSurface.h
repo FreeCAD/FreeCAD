@@ -2,22 +2,21 @@
 
 #pragma once
 
-#include <Base/Vector3D.h>
 #include <Mod/Part/App/FeatureProjectOnSurface.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
 namespace PartDesign
 {
 
-/** PartDesign policy layer over Part::ProjectOnSurface.
+/** PartDesign presentation of Part::ProjectOnSurface.
  *
- * Part continues to own the projection, wire healing, pcurve reconstruction,
- * face construction, offset and extrusion algorithms. This subclass only
- * calculates the shared projection direction from the planar inputs before
- * delegating to Part::ProjectOnSurface::execute().
+ * The Part feature owns the complete geometric algorithm: it derives a normal
+ * for every planar source, points that normal toward each target face, projects
+ * the source, reconstructs wires/faces, and applies offset or height.
  *
- * The upstream Part API has one Direction and one SupportFace, so multiple
- * source elements are accepted only when their plane normals are parallel.
+ * This subclass deliberately adds no duplicate geometry code. Its constructor
+ * only changes property visibility, link scope, and defaults so the inherited
+ * feature behaves naturally inside a PartDesign Body and task panel.
  */
 class PartDesignExport ProjectOnSurface: public Part::ProjectOnSurface
 {
@@ -26,11 +25,7 @@ class PartDesignExport ProjectOnSurface: public Part::ProjectOnSurface
 public:
     ProjectOnSurface();
 
-    App::DocumentObjectExecReturn* execute() override;
     const char* getViewProviderName() const override;
-
-private:
-    Base::Vector3d calculateDirection() const;
 };
 
 }  // namespace PartDesign
