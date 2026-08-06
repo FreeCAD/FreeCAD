@@ -660,25 +660,15 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
     }
     else if (strcmp(recipient, "Tree") == 0) {
         if (!sels.empty()) {
-            bool hasSuppressible
-                = std::any_of(sels.begin(), sels.end(), [](const SelectionSingleton::SelObj& sel) {
-                      App::DocumentObject* obj = sel.pObject;
-                      if (!obj) {
-                          return false;
-                      }
-                      auto ext = obj->getExtensionByType<App::SuppressibleExtension>(true);
-                      return ext && !ext->Suppressed.testStatus(App::Property::Hidden);
-                  });
-            if (hasSuppressible) {
+            const CommandManager& cmd = Application::Instance->commandManager();
+            if (cmd.isActive("Std_ToggleSuppress")) {
                 *item << "Std_ToggleSuppress";
             }
             *item << "Std_ToggleFreeze" << "Separator"
-                  << "Std_ToggleVisibility" << "Std_ShowSelection"
-                  << "Std_HideSelection"
+                  << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
-                  << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
-                  << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
-                  << "Std_SendToPythonConsole";
+                  << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Cut"
+                  << "Std_Copy" << "Std_Paste" << "Std_Delete" << "Std_SendToPythonConsole";
         }
     }
 

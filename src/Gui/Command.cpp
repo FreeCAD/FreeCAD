@@ -2178,11 +2178,15 @@ Command* CommandManager::getCommandByName(const char* sName) const
     return (it != _sCommands.end()) ? it->second : 0;
 }
 
-void CommandManager::runCommandByName(const char* sName) const
+bool CommandManager::isActive(const char* sName) const
 {
     Command* pCmd = getCommandByName(sName);
+    return pCmd && pCmd->isActive();
+}
 
-    if (pCmd) {
+void CommandManager::runCommandByName(const char* sName) const
+{
+    if (Command* pCmd = getCommandByName(sName)) {
         pCmd->invoke(0);
     }
 }
