@@ -57,6 +57,7 @@
 #include "TaskCustomizeFormat.h"
 #include "TaskSelectLineAttributes.h"
 #include "CommandExtensionDims.h"
+#include "TechDrawDimensionHandler.h"
 
 
 using namespace TechDrawGui;
@@ -99,6 +100,7 @@ namespace TechDrawGui {
         std::vector<Gui::SelectionObject>& selection,
         TechDraw::DrawViewPart*& objFeat,
         std::string message);
+    bool _checkSelectionFeatures();
 }
 
 //===========================================================================
@@ -655,7 +657,17 @@ CmdTechDrawExtensionPosHorizChainDimension::CmdTechDrawExtensionPosHorizChainDim
 void CmdTechDrawExtensionPosHorizChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execPosHorizChainDimension(this);
+    if (_checkSelectionFeatures()) {
+        execPosHorizChainDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+    
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "HorizontalChainDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionPosHorizChainDimension::isActive()
@@ -717,7 +729,17 @@ CmdTechDrawExtensionPosVertChainDimension::CmdTechDrawExtensionPosVertChainDimen
 void CmdTechDrawExtensionPosVertChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execPosVertChainDimension(this);
+    if (_checkSelectionFeatures()) {
+        execPosVertChainDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "VerticalChainDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionPosVertChainDimension::isActive()
@@ -784,7 +806,17 @@ CmdTechDrawExtensionPosObliqueChainDimension::CmdTechDrawExtensionPosObliqueChai
 void CmdTechDrawExtensionPosObliqueChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execPosObliqueChainDimension(this);
+    if (_checkSelectionFeatures()) {
+        execPosObliqueChainDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "ObliqueChainDimension"));
+    }
     ///Base::Console().message("TechDraw_ExtensionPosObliqueChainDimension started\n");
 }
 
@@ -1298,8 +1330,17 @@ CmdTechDrawExtensionCreateHorizChainDimension::CmdTechDrawExtensionCreateHorizCh
 void CmdTechDrawExtensionCreateHorizChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateHorizChainDimension(this);
-    //execSortieren(this);
+    if (_checkSelectionFeatures()) {
+        execCreateHorizChainDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "HorizontalChainDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateHorizChainDimension::isActive()
@@ -1364,7 +1405,17 @@ CmdTechDrawExtensionCreateVertChainDimension::CmdTechDrawExtensionCreateVertChai
 void CmdTechDrawExtensionCreateVertChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateVertChainDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateVertChainDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "VerticalChainDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateVertChainDimension::isActive()
@@ -1486,7 +1537,17 @@ CmdTechDrawExtensionCreateObliqueChainDimension::CmdTechDrawExtensionCreateObliq
 void CmdTechDrawExtensionCreateObliqueChainDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateObliqueChainDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateObliqueChainDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "ObliqueChainDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateObliqueChainDimension::isActive()
@@ -1662,7 +1723,17 @@ CmdTechDrawExtensionCreateHorizCoordDimension::CmdTechDrawExtensionCreateHorizCo
 void CmdTechDrawExtensionCreateHorizCoordDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateHorizCoordDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateHorizCoordDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "HorizontalCoordDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateHorizCoordDimension::isActive()
@@ -1731,7 +1802,18 @@ CmdTechDrawExtensionCreateVertCoordDimension::CmdTechDrawExtensionCreateVertCoor
 void CmdTechDrawExtensionCreateVertCoordDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateVertCoordDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateVertCoordDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "VerticalCoordDimension"));
+    }
+    
 }
 
 bool CmdTechDrawExtensionCreateVertCoordDimension::isActive()
@@ -1856,7 +1938,17 @@ CmdTechDrawExtensionCreateObliqueCoordDimension::CmdTechDrawExtensionCreateObliq
 void CmdTechDrawExtensionCreateObliqueCoordDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateObliqueCoordDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateObliqueCoordDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "ObliqueCoordDimension"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateObliqueCoordDimension::isActive()
@@ -2028,7 +2120,17 @@ CmdTechDrawExtensionCreateHorizChamferDimension::CmdTechDrawExtensionCreateHoriz
 void CmdTechDrawExtensionCreateHorizChamferDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateHorizChamferDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateHorizChamferDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "HorizontalChamfer"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateHorizChamferDimension::isActive()
@@ -2094,7 +2196,17 @@ CmdTechDrawExtensionCreateVertChamferDimension::CmdTechDrawExtensionCreateVertCh
 void CmdTechDrawExtensionCreateVertChamferDimension::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    execCreateVertChamferDimension(this);
+    if (_checkSelectionFeatures()) {
+        execCreateVertChamferDimension(this);
+    }
+    else {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "VerticalChamfer"));
+    }
 }
 
 bool CmdTechDrawExtensionCreateVertChamferDimension::isActive()
@@ -2219,6 +2331,17 @@ CmdTechDrawExtensionCreateLengthArc::CmdTechDrawExtensionCreateLengthArc()
 void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
     // create arc length dimension
     Q_UNUSED(iMsg);
+
+    if (!_checkSelectionFeatures()) {
+        ReferenceVector references2d;
+        ReferenceVector references3d;
+        TechDraw::DrawViewPart* partFeat =
+            TechDraw::getReferencesFromSelection(references2d, references3d);
+    
+        activateHandler(new TDHandlerDimension(references2d, partFeat, "ArcLength"));
+        return;
+    }
+
     std::vector<Gui::SelectionObject> selection;
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSelObjAndSubs(this, selection, objFeat, QT_TRANSLATE_NOOP("QObject","TechDraw Create Arc Length Dimension"))) {
@@ -2387,6 +2510,22 @@ namespace TechDrawGui {
         }
         return true;
     }
+
+    bool _checkSelectionFeatures() {
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+        if (selection.empty()) {
+            return false;
+        }
+        std::vector<std::string> SubNames = selection[0].getSubNames();
+        for (auto& subName : SubNames) {
+            std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(subName);
+            if (GeoType == "Edge" || GeoType == "Vertex" || GeoType == "Face") {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     TechDraw::DrawViewDimension* _createLinDimension(
         TechDraw::DrawViewPart* objFeat,
