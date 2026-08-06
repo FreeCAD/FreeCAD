@@ -543,6 +543,25 @@ private:
     SbBool lockButton1 {false};
 };
 
+class GuiExport FusionNavigationStyle: public UserNavigationStyle
+{
+    using inherited = UserNavigationStyle;
+
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
+public:
+    FusionNavigationStyle();
+    ~FusionNavigationStyle() override;
+    const char* mouseButtons(ViewerMode) override;
+
+protected:
+    SbBool processSoEvent(const SoEvent* const ev) override;
+
+private:
+    SbBool lockButton1 {false};
+    SbVec2s doubleClickPos {0, 0};  // last middle-button press position (fit on double-click)
+};
+
 class GuiExport SolidWorksNavigationStyle: public UserNavigationStyle
 {
     using inherited = UserNavigationStyle;
