@@ -267,7 +267,7 @@ class Nester:
                 bof = rotface.BoundBox
                 rotverts = self.order(rotface)
                 # for i,v in enumerate(rotverts):
-                #    Draft.makeText([str(i)],point=v)
+                #    Draft.make_text([str(i)], point=v)
                 basepoint = rotverts[0]  # leftmost point of the rotated face
                 basecorner = boc.getPoint(0)  # lower left corner of the container
 
@@ -362,7 +362,7 @@ class Nester:
 
                                 if outside:
                                     fpts.append([faceverts[0], i])
-                                    # Draft.makeText([str(i)],point=faceverts[0])
+                                    # Draft.make_text([str(i)], point=faceverts[0])
 
                             # reorder available solutions around a same point if needed
                             # ensure they are in the correct order
@@ -450,7 +450,7 @@ class Nester:
                                 Part.show(p[1])
                             Part.show(facecopy)
                             # for i,p in enumerate(faceverts):
-                            #    Draft.makeText([str(i)],point=p)
+                            #    Draft.make_text([str(i)] ,point=p)
                             return
 
                         if pol.isValid():

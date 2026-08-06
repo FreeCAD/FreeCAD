@@ -59,6 +59,10 @@ def make_workingplaneproxy(placement):
         return obj
 
 
-makeWorkingPlaneProxy = make_workingplaneproxy
+def makeWorkingPlaneProxy(*args, **kwarg):
+    """DEPRECATED. Use 'make_workingplaneproxy'."""
+    utils.use_instead("make_workingplaneproxy")
+    return make_workingplaneproxy(*args, **kwarg)
+
 
 ## @}

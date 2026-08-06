@@ -39,7 +39,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Checking Arch Roof..."
         self.printTestMessage(operation)
 
-        r = Draft.makeRectangle(length=2, height=-1)
+        r = Draft.make_rectangle(length=2, height=-1)
         r.recompute()  # required before calling Arch.makeRoof
         ro = Arch.makeRoof(r)
         self.assertTrue(ro, "Arch Roof failed")
@@ -69,7 +69,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
                 runsLst = runsMod[iX % 3] + [0, 0, 0]
                 overhangsLst = overhangsMod[iX // 3] + [0, 0, 0]
                 pla.Base = App.Vector(iX * delta, iY * delta, 0)
-                wire = Draft.makeWire(pts, closed=True)
+                wire = Draft.make_wire(pts, closed=True)
                 wire.MakeFace = False
                 wire.Placement = pla
                 wire.recompute()  # required before calling Arch.makeRoof
@@ -92,7 +92,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
             App.Vector(0, 2000, 0),
         ]
 
-        wire = Draft.makeWire(pts, closed=True)
+        wire = Draft.make_wire(pts, closed=True)
         wire.MakeFace = False
         wire.recompute()  # required before calling Arch.makeRoof
         roof = Arch.makeRoof(wire, angles=[90, 90, 90, 90])
@@ -107,7 +107,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
         operation = "Arch Roof testRoofApex"
         self.printTestMessage(operation)
 
-        rec = Draft.makeRectangle(length=4000, height=3000, face=False)
+        rec = Draft.make_rectangle(length=4000, height=3000, face=False)
         rec.recompute()  # required before calling Arch.makeRoof
         roof = Arch.makeRoof(
             rec,
@@ -134,7 +134,7 @@ class TestArchRoof(TestArchBase.TestArchBase):
             App.Vector(4000, 2000, 0),
             App.Vector(-2000, 2000, 0),
         ]
-        wire = Draft.makeWire(pts, closed=True)
+        wire = Draft.make_wire(pts, closed=True)
         wire.MakeFace = False
         wire.recompute()  # required before calling Arch.makeRoof
         roof = Arch.makeRoof(

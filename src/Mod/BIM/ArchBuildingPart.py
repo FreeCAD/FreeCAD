@@ -1275,7 +1275,7 @@ class ViewProviderBuildingPart:
             ng = []
             if hasattr(self.Object, "Group") and self.Object.Group:
                 for o in self.Object.Group:
-                    no = Draft.clone(o)
+                    no = Draft.make_clone(o)
                     Draft.move(no, FreeCAD.Vector(0, 0, height))
                     ng.append(no)
             nobj = Arch.makeBuildingPart()

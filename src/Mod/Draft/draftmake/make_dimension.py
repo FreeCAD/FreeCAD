@@ -673,7 +673,7 @@ def make_angular_dimension(
 
 
 def makeAngularDimension(center, angles, p3, normal=None):
-    """Create an angle dimension. DEPRECATED. Use 'make_angular_dimension'."""
+    """DEPRECATED. Use 'make_angular_dimension'."""
     utils.use_instead("make_angular_dimension")
 
     ang1, ang2 = angles
