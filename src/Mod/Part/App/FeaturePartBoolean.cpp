@@ -44,6 +44,30 @@ using namespace Part;
 
 namespace Part
 {
+const char* shapeTypeName(TopAbs_ShapeEnum type)
+{
+    switch (type) {
+        case TopAbs_COMPOUND:
+            return "Compound";
+        case TopAbs_COMPSOLID:
+            return "CompSolid";
+        case TopAbs_SOLID:
+            return "Solid";
+        case TopAbs_SHELL:
+            return "Shell";
+        case TopAbs_FACE:
+            return "Face";
+        case TopAbs_WIRE:
+            return "Wire";
+        case TopAbs_EDGE:
+            return "Edge";
+        case TopAbs_VERTEX:
+            return "Vertex";
+        default:
+            return "Shape";
+    }
+}
+
 void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
@@ -60,19 +84,9 @@ void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
     }
 }
 
-bool getRefineModelParameter()
-{
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication()
-                                             .GetUserParameter()
-                                             .GetGroup("BaseApp")
-                                             ->GetGroup("Preferences")
-                                             ->GetGroup("Mod/Part/Boolean");
-    return hGrp->GetBool("RefineModel", true);
-}
-
 }  // namespace Part
 
-PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::Feature)
+PROPERTY_SOURCE_ABSTRACT(Part::Boolean, Part::RefinableFeature)
 
 
 Boolean::Boolean()
@@ -87,16 +101,6 @@ Boolean::Boolean()
         "Shape history"
     );
     History.setSize(0);
-
-    ADD_PROPERTY_TYPE(
-        Refine,
-        (0),
-        "Boolean",
-        (App::PropertyType)(App::Prop_None),
-        "Refine shape (clean up redundant edges) after this boolean operation"
-    );
-
-    this->Refine.setValue(getRefineModelParameter());
 }
 
 short Boolean::mustExecute() const
@@ -151,12 +155,24 @@ App::DocumentObjectExecReturn* Boolean::execute()
         if (!mkBool->IsDone()) {
             std::stringstream error;
             error << "Boolean operation failed";
-            if (BaseShape.ShapeType() != TopAbs_SOLID) {
-                error << std::endl << base->Label.getValue() << " is not a solid";
-            }
-            if (ToolShape.ShapeType() != TopAbs_SOLID) {
-                error << std::endl << tool->Label.getValue() << " is not a solid";
-            }
+            error << std::endl << std::endl;
+            error << "This is usually caused by a limitation in the geometry "
+                     "engine, not a problem with your model. Faces that are "
+                     "exactly aligned, nearly touching, or in complex coplanar "
+                     "arrangements can be difficult for the engine to process.";
+            error << std::endl << std::endl;
+            error << "Things to try:" << std::endl;
+            error << "  - Reposition one shape slightly (e.g. add 0.01 mm "
+                     "in Placement)"
+                  << std::endl;
+            error << "  - Combine shapes in a different order" << std::endl;
+            error << "  - Check each input with Part > Check Geometry";
+            error << std::endl << std::endl;
+            error << "Input types: '" << base->Label.getValue() << "' ("
+                  << shapeTypeName(BaseShape.ShapeType()) << "), '" << tool->Label.getValue()
+                  << "' (" << shapeTypeName(ToolShape.ShapeType()) << ")";
+            error << std::endl;
+            error << "See: https://wiki.freecad.org/Boolean_Troubleshooting";
             return new App::DocumentObjectExecReturn(error.str());
         }
         TopoDS_Shape resShape = mkBool->Shape();
@@ -168,9 +184,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
 
         TopoShape res(0);
         res.makeElementShape(*mkBool, shapes, opCode());
-        if (this->Refine.getValue()) {
-            res = res.makeElementRefine();
-        }
+        this->applyRefine(res);
         this->Shape.setValue(res);
         copyMaterial(base);
         return Part::Feature::execute();
