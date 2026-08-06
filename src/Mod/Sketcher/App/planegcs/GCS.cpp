@@ -53,6 +53,7 @@
 #include <iostream>
 #include <limits>
 #include <numbers>
+#include <vector>
 
 #include "GCS.h"
 #include "qp_eq.h"
@@ -99,9 +100,6 @@
 
 #include <Base/Console.h>
 #include <FCConfig.h>
-
-#include <boost/graph/connected_components.hpp>
-#include <boost_graph_adjacency_list.hpp>
 
 using MatrixIndexType = Eigen::FullPivHouseholderQR<Eigen::MatrixXd>::IntDiagSizeVectorType;
 
@@ -457,8 +455,6 @@ void SolverReportingManager::LogMatrix(const std::string str, MatrixIndexType ma
 #endif
 
 
-using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS>;
-
 ///////////////////////////////////////
 // Solver
 ///////////////////////////////////////
@@ -520,7 +516,6 @@ void System::clear()
 {
     plist.clear();
     pdrivenlist.clear();
-    pIndex.clear();
     pDependentParameters.clear();
     pDependentParametersGroups.clear();
     hasUnknowns = false;
@@ -1722,10 +1717,6 @@ void System::rescaleConstraint(int id, double coeff)
 void System::declareUnknowns(VEC_pD& params)
 {
     plist = params;
-    pIndex.clear();
-    for (int i = 0; i < int(plist.size()); ++i) {
-        pIndex[plist[i]] = i;
-    }
     hasUnknowns = true;
 }
 
@@ -1765,114 +1756,250 @@ void System::initSolution(Algorithm alg)
         return;
     }
 
-    std::vector<Constraint*> clistR;
-    if (!redundant.empty()) {
-        std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
-            return this->redundant.count(constr) == 0 && constr->isDriving();
-        });
-    }
-    else {
-        std::ranges::copy_if(clist, std::back_inserter(clistR), [](auto constr) {
-            return constr->isDriving();
-        });
-    }
+    auto [redMap, constraints, params] = computeReductionMap(plist, solvableConstraints(clist));
+    reductionMap = redMap;
 
-    // partitioning into decoupled components
-    Graph g;
-    for (int i = 0; i < int(plist.size() + clistR.size()); i++) {
-        boost::add_vertex(g);
-    }
+    auto subSystemDescriptions = partitionIntoSubSystems(params, constraints, reductionMap);
 
-    int cvtid = int(plist.size());
-    for (const auto constr : clistR) {
-        VEC_pD& cparams = c2p[constr];
-        for (const auto param : cparams) {
-            MAP_pD_I::const_iterator it = pIndex.find(param);
-            if (it != pIndex.end()) {
-                boost::add_edge(cvtid, it->second, g);
-            }
-        }
-        ++cvtid;
-    }
-
-    VEC_I components(boost::num_vertices(g));
-    int componentsSize = 0;
-    if (!components.empty()) {
-        componentsSize = boost::connected_components(g, &components[0]);
-    }
-
-    // identification of equality constraints and parameter reduction
-    std::set<Constraint*> reducedConstrs;  // constraints that will be eliminated through reduction
-    reductionmaps.clear();                 // destroy any maps
-    reductionmaps.resize(componentsSize);  // create empty maps to be filled in
-    {
-        VEC_pD reducedParams = plist;
-
-        for (const auto& constr : clistR) {
-            if (!(constr->getTag() >= 0 && constr->getTypeId() == Equal)) {
-                continue;
-            }
-            const auto it1 = pIndex.find(constr->params()[0]);
-            const auto it2 = pIndex.find(constr->params()[1]);
-            if (it1 == pIndex.end() || it2 == pIndex.end()) {
-                continue;
-            }
-            reducedConstrs.insert(constr);
-            double* p_kept = reducedParams[it1->second];
-            double* p_replaced = reducedParams[it2->second];
-            std::ranges::replace(reducedParams, p_replaced, p_kept);
-        }
-        for (size_t i = 0; i < plist.size(); ++i) {
-            if (plist[i] != reducedParams[i]) {
-                int cid = components[i];
-                reductionmaps[cid][plist[i]] = reducedParams[i];
-            }
-        }
-    }
-
-    // TODO: Why are the later (constraint-related) items added first?
-    // Adding plist-related items first would simplify assignment of `i`, but is not a big expense
-    // overall. Leaving as is to avoid any unintended consequences.
-    clists.clear();                 // destroy any lists
-    clists.resize(componentsSize);  // create empty lists to be filled in
-    size_t i = plist.size();
-    for (const auto& constr : clistR) {
-        if (reducedConstrs.count(constr) == 0) {
-            int cid = components[i];
-            clists[cid].push_back(constr);
-        }
-        ++i;
-    }
-
-    plists.clear();                 // destroy any lists
-    plists.resize(componentsSize);  // create empty lists to be filled in
-    for (size_t i = 0; i < plist.size(); ++i) {
-        int cid = components[i];
-        plists[cid].push_back(plist[i]);
-    }
-
-    // calculates subSystems and subSystemsAux from clists, plists and reductionmaps
+    // calculates subSystems and subSystemsAux from clists, plists
     clearSubSystems();
-    subSystems.resize(clists.size(), nullptr);
-    subSystemsAux.resize(clists.size(), nullptr);
-    for (std::size_t cid = 0; cid < clists.size(); ++cid) {
+    subSystems.resize(subSystemDescriptions.size(), nullptr);
+    subSystemsAux.resize(subSystemDescriptions.size(), nullptr);
+    for (size_t cid = 0; cid < subSystemDescriptions.size(); ++cid) {
+        const auto& subSystemDescription = subSystemDescriptions[cid];
         std::vector<Constraint*> clist0, clist1;
         std::ranges::partition_copy(
-            clists[cid],
+            subSystemDescription.constraints,
             std::back_inserter(clist0),
             std::back_inserter(clist1),
             [](auto constr) { return constr->getTag() >= 0; }
         );
 
         if (!clist0.empty()) {
-            subSystems[cid] = new SubSystem(clist0, plists[cid], reductionmaps[cid]);
+            subSystems[cid] = new SubSystem(clist0, subSystemDescription.params, reductionMap);
         }
         if (!clist1.empty()) {
-            subSystemsAux[cid] = new SubSystem(clist1, plists[cid], reductionmaps[cid]);
+            subSystemsAux[cid] = new SubSystem(clist1, subSystemDescription.params, reductionMap);
         }
     }
 
     isInit = true;
+}
+std::vector<Constraint*> System::solvableConstraints(const std::vector<Constraint*>& constraints)
+{
+    std::vector<Constraint*> solvable;
+    if (!redundant.empty()) {
+        std::ranges::copy_if(constraints, std::back_inserter(solvable), [this](auto constr) {
+            return this->redundant.count(constr) == 0 && constr->isDriving();
+        });
+    }
+    else {
+        std::ranges::copy_if(constraints, std::back_inserter(solvable), [](auto constr) {
+            return constr->isDriving();
+        });
+    }
+    return solvable;
+}
+System::ReductionOutput System::computeReductionMap(
+    const std::vector<double*>& params,
+    const std::vector<Constraint*>& constraints
+)
+{
+    std::map<double*, int> paramToIndex = buildParamToIndex(params);
+    VEC_pD reducedParams = params;
+    std::vector<Constraint*> remainingConstraints;
+    std::map<double*, double*> reductionMap;
+    std::vector<double*> remainingParams;
+
+    for (const auto& constr : constraints) {
+        if (!(constr->getTag() >= 0 && constr->getTypeId() == Equal)) {
+            remainingConstraints.push_back(constr);
+            continue;
+        }
+        const auto it1 = paramToIndex.find(constr->params()[0]);
+        const auto it2 = paramToIndex.find(constr->params()[1]);
+        if (it1 == paramToIndex.end() || it2 == paramToIndex.end()) {
+            remainingConstraints.push_back(constr);
+            continue;
+        }
+        double* p_kept = reducedParams[it1->second];
+        double* p_replaced = reducedParams[it2->second];
+        std::ranges::replace(reducedParams, p_replaced, p_kept);
+    }
+    for (size_t i = 0; i < params.size(); ++i) {
+        if (params[i] != reducedParams[i]) {
+            reductionMap[params[i]] = reducedParams[i];
+        }
+        else {
+            remainingParams.push_back(params[i]);
+        }
+    }
+
+    return ReductionOutput {
+        .reductionMap = reductionMap,
+        .constraints = remainingConstraints,
+        .params = remainingParams
+    };
+}
+
+void fillComponent(
+    int vertexIndex,
+    const std::vector<std::vector<size_t>>& adjacencyList,
+    std::vector<bool>& visited,
+    std::vector<size_t>& component
+)
+{
+    visited[vertexIndex] = true;
+    component.push_back(vertexIndex);
+
+    for (int adjVertex : adjacencyList[vertexIndex]) {
+        if (!visited[adjVertex]) {
+            fillComponent(adjVertex, adjacencyList, visited, component);
+        }
+    }
+}
+
+std::vector<System::SubSystemDescription> System::partitionIntoSubSystems(
+    const std::vector<double*>& params,
+    std::vector<Constraint*> constraints,
+    const std::map<double*, double*>& reductionMap
+)
+{
+    std::map<double*, int> paramToIndex = buildParamToIndex(params);
+
+    // We sort by constraint type because we know
+    // equality and difference constraint have more chances
+    // to be solved singled out, so we edge our bet to have
+    // other, more complex constraints be reduced to 1 parameter
+    std::ranges::sort(constraints, [](Constraint* a, Constraint* b) -> bool {
+        return a->getTypeId() < b->getTypeId();
+    });
+
+    // This is used to find parameter indices for constraints parameters, it
+    // 1. Follows reduction indirection
+    // 2. Ensures uniqueness (no duplicate parameters)
+    // 3. Maps parameters to their index in the `params` vector
+    auto reduceParameters = [&](std::vector<double*> cparams) -> std::vector<size_t> {
+        std::ranges::transform(cparams, cparams.begin(), [&](double* cparam) {
+            auto foundReduction = reductionMap.find(cparam);
+            if (foundReduction != reductionMap.end()) {
+                cparam = foundReduction->second;
+            }
+            return cparam;
+        });
+
+        std::ranges::sort(cparams);
+        std::ranges::unique(cparams);
+        std::vector<size_t> paramIndices;
+        paramIndices.reserve(cparams.size());
+        for (auto param : cparams) {
+            auto foundIndex = paramToIndex.find(param);
+            if (foundIndex != paramToIndex.end()) {
+                paramIndices.push_back(foundIndex->second);
+            }
+        }
+
+        return paramIndices;
+    };
+
+    // Build an index
+    std::vector<std::pair<size_t, std::vector<size_t>>> constraintToParams;
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        auto indices = reduceParameters(constraints[i]->origParams());
+        // if (indices.size() == 1) {
+        //     paramToIndex.erase(params[indices[0]]); // Will make simple systems discovery faster
+        //     later
+        // }
+        constraintToParams.push_back(std::make_pair(i, indices));
+    }
+
+    // Build the adjacency list. Every constraint and every parameter
+    // has a position in the vector. Each vector position contains
+    // a vector of indices to the adjacency list vector this represent
+    // adjacent vertices
+    // In practice, there should never be an edge between 2 constraints
+    // or between 2 parameters. Constraints occupy the first index range
+    // [0, constraints.size()[ and parameters occupy the second
+    // [constraints.size(), constraints.size() + params.size()[
+    std::vector<std::vector<size_t>> adjacencyList(constraints.size() + params.size());
+    for (size_t i = 0; i < constraints.size(); ++i) {
+        for (size_t paramInd : constraintToParams[i].second) {
+            size_t paramAdjInd = constraints.size() + paramInd;
+            adjacencyList[i].push_back(paramAdjInd);
+            adjacencyList[paramAdjInd].push_back(i);
+        }
+    }
+
+    // This cleanly removes a parameter from the adjacency list,
+    // severing every edge to or from it
+    // to preserve indexing, it does not actualy remove the parameter's
+    // position in the adjacencyList, but we can later test for
+    // vertices with no outgoing edge and refuse to make a subsystem
+    // from it
+    auto removeParam = [&](size_t paramAdjIndex) {
+        for (auto constrIndex : adjacencyList[paramAdjIndex]) {
+            std::erase(adjacencyList[constrIndex], paramAdjIndex);
+        }
+        adjacencyList[paramAdjIndex].clear();
+    };
+    std::vector<SubSystemDescription> subSystems;
+
+    bool retrySmallSystems = true;
+    size_t numSmallSystems = 0;
+    while (retrySmallSystems) {
+        retrySmallSystems = false;
+        for (size_t i = 0; i < constraints.size(); ++i) {
+            if (adjacencyList[i].size() != 1 || constraints[i]->getTag() < 0) {
+                continue;
+            }
+            size_t paramAdjIndex = adjacencyList[i][0];
+
+            subSystems.push_back(
+                SubSystemDescription {
+                    .constraints = {constraints[i]},
+                    .params = {params[paramAdjIndex - constraints.size()]}
+                }
+            );
+            removeParam(paramAdjIndex);
+            numSmallSystems++;
+            retrySmallSystems = true;
+        }
+    }
+
+    // Builds a subsystem description from constraints & parameters
+    // indices, it pulls from the `constraints` and `params` vectors
+    auto componentToSubsystem = [&](const std::vector<size_t>& component) -> SubSystemDescription {
+        System::SubSystemDescription desc;
+        for (size_t vertex : component) {
+            if (vertex < constraints.size()) {
+                desc.constraints.push_back(constraints[vertex]);
+            }
+            else {
+                desc.params.push_back(params[vertex - constraints.size()]);
+            }
+        }
+        return desc;
+    };
+
+    // Find every remaining connected components
+    std::vector<bool> visited(adjacencyList.size(), false);
+    for (size_t i = 0; i < constraints.size(); i++) {
+        if (!visited[i] && !adjacencyList[i].empty()) {
+            std::vector<size_t> component;
+            fillComponent(i, adjacencyList, visited, component);
+            subSystems.push_back(componentToSubsystem(component));
+        }
+    }
+    return subSystems;
+}
+
+std::map<double*, int> System::buildParamToIndex(const std::vector<double*> params)
+{
+    std::map<double*, int> paramToIndex;
+    for (size_t i = 0; i < params.size(); ++i) {
+        paramToIndex[params[i]] = static_cast<int>(i);
+    }
+    return paramToIndex;
 }
 
 void System::setReference()
@@ -2077,6 +2204,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
     }
 
     subsys->revertParams();
+    subsys->applySolution();
 
     if (err <= smallF) {
         return Success;
@@ -2262,6 +2390,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     }
 
     subsys->revertParams();
+    subsys->applySolution();
 
     return (stop == 1) ? Success : Failed;
 }
@@ -2470,6 +2599,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     }
 
     subsys->revertParams();
+    subsys->applySolution();
 
     if (debugMode == IterationLevel) {
         std::stringstream stream;
@@ -4692,6 +4822,9 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
 
     subsysA->revertParams();
     subsysB->revertParams();
+
+    subsysA->applySolution();
+    subsysB->applySolution();
     return ret;
 }
 
@@ -4704,11 +4837,9 @@ void System::applySolution()
         if (subSystems[cid]) {
             subSystems[cid]->applySolution();
         }
-        for (MAP_pD_pD::const_iterator it = reductionmaps[cid].begin();
-             it != reductionmaps[cid].end();
-             ++it) {
-            *(it->first) = *(it->second);
-        }
+    }
+    for (auto reduced : reductionMap) {
+        *(reduced.first) = *(reduced.second);
     }
     evaluateDrivenConstraints();
 }

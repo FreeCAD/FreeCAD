@@ -36,14 +36,18 @@ namespace GCS
 {
 
 // SubSystem
-SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params)
+SubSystem::SubSystem(const std::vector<Constraint*>& clist_, const VEC_pD& params)
     : clist(clist_)
 {
     MAP_pD_pD dummymap;
     initialize(params, dummymap);
 }
 
-SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD& reductionmap)
+SubSystem::SubSystem(
+    const std::vector<Constraint*>& clist_,
+    const VEC_pD& params,
+    const MAP_pD_pD& reductionmap
+)
     : clist(clist_)
 {
     initialize(params, reductionmap);
@@ -52,53 +56,32 @@ SubSystem::SubSystem(std::vector<Constraint*>& clist_, VEC_pD& params, MAP_pD_pD
 SubSystem::~SubSystem()
 {}
 
-void SubSystem::initialize(VEC_pD& params, MAP_pD_pD& reductionmap)
+void SubSystem::initialize(const VEC_pD& params, const MAP_pD_pD& reductionmap)
 {
     csize = static_cast<int>(clist.size());
+    plist = params;
 
-    // tmpplist will contain the subset of parameters from params that are
-    // relevant for the constraints listed in clist
-    VEC_pD tmpplist;
-    {
-        SET_pD s1(params.begin(), params.end());
-        SET_pD s2;
-        for (std::vector<Constraint*>::iterator constr = clist.begin(); constr != clist.end();
-             ++constr) {
-            (*constr)->revertParams();  // ensure that the constraint points to the original parameters
-            VEC_pD constr_params = (*constr)->params();
-            s2.insert(constr_params.begin(), constr_params.end());
-        }
-        std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(), std::back_inserter(tmpplist));
-    }
-
-    plist.clear();
+    MAP_pD_I pindex;
     MAP_pD_I rindex;
-    if (!reductionmap.empty()) {
-        int i = 0;
-        MAP_pD_I pindex;
-        for (VEC_pD::const_iterator itt = tmpplist.begin(); itt != tmpplist.end(); ++itt) {
-            MAP_pD_pD::const_iterator itr = reductionmap.find(*itt);
-            if (itr != reductionmap.end()) {
-                MAP_pD_I::const_iterator itp = pindex.find(itr->second);
-                if (itp == pindex.end()) {  // the reduction target is not in plist yet, so add it now
-                    plist.push_back(itr->second);
-                    rindex[itr->first] = i;
-                    pindex[itr->second] = i;
-                    i++;
-                }
-                else {  // the reduction target is already in plist, just inform rindex
-                    rindex[itr->first] = itp->second;
-                }
-            }
-            else if (pindex.find(*itt) == pindex.end()) {  // not in plist yet, so add it now
-                plist.push_back(*itt);
-                pindex[*itt] = i;
-                i++;
-            }
-        }
+
+    for (size_t i = 0; i < params.size(); ++i) {
+        pindex[params[i]] = i;
     }
-    else {
-        plist = tmpplist;
+    for (const auto& constr : clist) {
+        for (const auto& param : constr->origParams()) {
+            if (rindex.find(param) != rindex.end()) {
+                continue;  // Already in index
+            }
+            auto foundReduction = reductionmap.find(param);
+            if (foundReduction == reductionmap.end()) {
+                continue;
+            }
+            auto foundParam = pindex.find(foundReduction->second);
+            if (foundParam == pindex.end()) {
+                continue;
+            }
+            rindex[param] = foundParam->second;
+        }
     }
 
     psize = static_cast<int>(plist.size());
