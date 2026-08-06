@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.0"
+   width="1280.000000pt"
+   height="1126.000000pt"
+   viewBox="0 0 1280.000000 1126.000000"
+   preserveAspectRatio="xMidYMid meet"
+   id="svg3"
+   sodipodi:docname="Sign - Attention.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3" />
+  <sodipodi:namedview
+     id="namedview3"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="0.31862194"
+     inkscape:cx="644.965"
+     inkscape:cy="510.00882"
+     inkscape:window-width="3840"
+     inkscape:window-height="1571"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3" />
+  <metadata
+     id="metadata1">
+Created by potrace 1.15, written by Peter Selinger 2001-2017
+</metadata>
+  <g
+     transform="translate(0.000000,1126.000000) scale(0.100000,-0.100000)"
+     fill="#000000"
+     stroke="none"
+     id="g3">
+    <path
+       d="m 6201,11240 c -41,-10 -113,-37 -160,-61 -70,-35 -105,-62 -187,-144 -61,-60 -124,-134 -157,-185 C 3775.178,7499.9066 81.501187,941.7528 57,884 -22,697 -15,490 76,325 91,297 140,239 184,195 275,105 361,56 490,20 L 566,0 c 3919.667,0.93451395 7839.3335,3.0001701 11759,5 l 81,27 c 363,124 494,499 304,878 -1464.521,2574.4886 -5592.5353,9783.093 -5688,9925 -118,177 -268,311 -419,373 -125,52 -272,64 -402,32 z M 11815,835 C 8197.0004,828.94313 4578.9994,831.00221 961,835 3652.1068,5665.1311 3644.9259,5658.7193 6361,10352 8182.3233,7181.5722 9997.745,4007.7602 11815,835 Z"
+       id="path1"
+       sodipodi:nodetypes="ccccccccccccccccccc" />
+    <path
+       d="m 6290,7874 c -14,-3 -61,-14 -104,-25 -390,-98 -706,-474 -706,-837 0,-46 22,-254 50,-461 157.8016,-1217.4094 173.3223,-1272.8634 406,-3027 42,-165 141,-297 271,-361 67,-33 86,-38 168,-41 152,-7 246,30 348,136 99,105 144,224 176,464 25494.154,194682.63 -25081.326,-191543.95 402,3056 24,182 25,305 4,387 -82,323 -360,599 -693,686 -75,20 -266,33 -322,23 z"
+       id="path2"
+       sodipodi:nodetypes="ccscccccccccc" />
+    <path
+       d="M6322 2739 c-345 -44 -594 -371 -552 -726 20 -166 86 -301 204 -410 114 -107 237 -160 391 -170 187 -11 336 47 475 187 134 134 192 273 193 465 1 116 -13 183 -58 280 -120 261 -379 409 -653 374z"
+       id="path3" />
+  </g>
+</svg>
