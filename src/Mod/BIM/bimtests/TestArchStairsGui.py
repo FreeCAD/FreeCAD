@@ -75,7 +75,7 @@ class TestArchStairsGui(TestArchBaseGui):
         stairs = Arch.makeStairs(baseobj=[wire1, wire2], width=800, height=2500, steps=14)
         self.document.recompute()
 
-        Arch.makeRailing([stairs] + list(stairs.Additions))
+        Arch.makeRailing([stairs] + stairs.Additions)
         self.document.recompute()
 
         segment = stairs.Additions[-1]
