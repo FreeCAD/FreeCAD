@@ -50,6 +50,7 @@
 
 
 #include "FeatureGeomFillSurface.h"
+#include "ShapeUtils.h"
 
 
 using namespace Surface;
@@ -218,8 +219,8 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
     ShapeValidator validator;
     for (const auto& set : boundary) {
         if (set.first->isDerivedFrom<Part::Feature>()) {
+            const Part::TopoShape ts = getTopoShapeInGlobalCoordinates(set.first);
             for (const auto& jt : set.second) {
-                const Part::TopoShape& ts = static_cast<Part::Feature*>(set.first)->Shape.getShape();
                 validator.checkAndAdd(ts, jt.c_str(), &aWD);
             }
         }
