@@ -5,7 +5,7 @@ concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,-rea
 -readability-redundant-access-specifiers,-readability-qualified-auto,-readability-implicit-bool-conversion,
 -cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,-cppcoreguidelines-avoid-do-while,
 -readability-convert-member-functions-to-static,-bugprone-easily-swappable-parameters,
--cppcoreguidelines-pro-type-static-cast-downcast'
+-cppcoreguidelines-pro-type-static-cast-downcast,-readability-isolate-declaration'
 WarningsAsErrors: ''
 HeaderFilterRegex: ''
 FormatStyle:     file
