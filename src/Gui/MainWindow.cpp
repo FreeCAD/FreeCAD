@@ -51,6 +51,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QToolBar>
+#include <QToolButton>
 #include <QUrlQuery>
 #include <QWhatsThis>
 #include <QWindow>
@@ -360,6 +361,23 @@ struct MainWindowP
 
 /* TRANSLATOR Gui::MainWindow */
 
+// Sets the toggle bottom panels button checked state to reflect actual panel visibility.
+static void syncBottomPanelsButtonState(QMainWindow* mainWindow)
+{
+    auto* button = mainWindow->findChild<QToolButton*>(QStringLiteral("toggleBottomPanelsButton"));
+    if (!button) {
+        return;
+    }
+    bool anyVisible = false;
+    for (auto* panel : mainWindow->findChildren<QDockWidget*>()) {
+        if (mainWindow->dockWidgetArea(panel) == Qt::BottomDockWidgetArea && panel->isVisible()) {
+            anyVisible = true;
+            break;
+        }
+    }
+    button->setChecked(anyVisible);
+}
+
 MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     : QMainWindow(parent, f /*WDestructiveClose*/)
 {
@@ -539,10 +557,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     toggleBottomPanelsButton->setIconSize(QSize(16, 16));
     toggleBottomPanelsButton->setIcon(BitmapFactory().pixmap("Std_ToggleBottomPanels"));
     toggleBottomPanelsButton->setCheckable(true);
-    // Starts checked because FreeCAD shows bottom panels by default on first launch. On subsequent
-    // launches the command restores the persisted state, but that happens after this point, so
-    // the button state is always an approximation until the first toggle.
-    toggleBottomPanelsButton->setChecked(true);
     //: Tooltip for the status bar button that toggles bottom dock panels
     toggleBottomPanelsButton->setToolTip(tr("Toggles the bottom dock panels"));
     toggleBottomPanelsButton->setAutoRaise(true);
@@ -627,6 +641,15 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     connect(d->mdiArea, &QMdiArea::subWindowActivated, this, &MainWindow::onWindowActivated);
 
     setupDockWindows();
+
+    for (auto* panel : findChildren<QDockWidget*>()) {
+        connect(panel, &QDockWidget::visibilityChanged, this, [this](bool) {
+            syncBottomPanelsButtonState(this);
+        });
+        connect(panel, &QDockWidget::dockLocationChanged, this, [this](Qt::DockWidgetArea) {
+            syncBottomPanelsButtonState(this);
+        });
+    }
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
@@ -2224,6 +2247,7 @@ void MainWindow::loadWindowSettings()
     std::clog << "Toolbars restored" << std::endl;
 
     OverlayManager::instance()->restore();
+    syncBottomPanelsButtonState(this);
 }
 
 bool MainWindow::isRestoringWindowState() const
