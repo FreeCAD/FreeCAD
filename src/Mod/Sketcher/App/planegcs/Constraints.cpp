@@ -3229,4 +3229,785 @@ void ConstraintArcLength::evaluate()
     *distance() = (endA - startA) * *arc.rad;
 }
 
+// --------------------------------------------------------
+// P2PDistance3D
+ConstraintP2PDistance3D::ConstraintP2PDistance3D(Point3D& p1, Point3D& p2, double* d)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(d);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintP2PDistance3D::getTypeId()
+{
+    return P2PDistance3D;
+}
+
+double ConstraintP2PDistance3D::value()
+{
+    double dx = (*p1x() - *p2x());
+    double dy = (*p1y() - *p2y());
+    double dz = (*p1z() - *p2z());
+    return sqrt(dx * dx + dy * dy + dz * dz);
+}
+
+double ConstraintP2PDistance3D::error()
+{
+    return scale * (value() - *distance());
+}
+
+double ConstraintP2PDistance3D::grad(double* param)
+{
+    double deriv = 0.;
+    if (param == p1x() || param == p1y() || param == p1z() || param == p2x() || param == p2y()
+        || param == p2z()) {
+        double dx = (*p1x() - *p2x());
+        double dy = (*p1y() - *p2y());
+        double dz = (*p1z() - *p2z());
+        double d = sqrt(dx * dx + dy * dy + dz * dz);
+        if (param == p1x()) {
+            deriv += dx / d;
+        }
+        if (param == p1y()) {
+            deriv += dy / d;
+        }
+        if (param == p1z()) {
+            deriv += dz / d;
+        }
+        if (param == p2x()) {
+            deriv += -dx / d;
+        }
+        if (param == p2y()) {
+            deriv += -dy / d;
+        }
+        if (param == p2z()) {
+            deriv += -dz / d;
+        }
+    }
+    if (param == distance()) {
+        deriv += -1.;
+    }
+
+    return scale * deriv;
+}
+
+double ConstraintP2PDistance3D::maxStep(MAP_pD_D& dir, double lim)
+{
+    MAP_pD_D::iterator it;
+    // distance() >= 0
+    it = dir.find(distance());
+    if (it != dir.end()) {
+        if (it->second < 0.) {
+            lim = std::min(lim, -(*distance()) / it->second);
+        }
+    }
+    return lim;
+}
+void ConstraintP2PDistance3D::evaluate()
+{
+    *distance() = value();
+}
+
+// --------------------------------------------------------
+// Parallel3D
+ConstraintParallel3D::ConstraintParallel3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, Component comp)
+    : component(comp)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(p3.x);
+    pvec.push_back(p3.y);
+    pvec.push_back(p3.z);
+    pvec.push_back(p4.x);
+    pvec.push_back(p4.y);
+    pvec.push_back(p4.z);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintParallel3D::getTypeId()
+{
+    return Parallel3D;
+}
+
+void ConstraintParallel3D::rescale(double coef)
+{
+    double dx1 = (*p1x() - *p2x());
+    double dy1 = (*p1y() - *p2y());
+    double dz1 = (*p1z() - *p2z());
+    double dx2 = (*p3x() - *p4x());
+    double dy2 = (*p3y() - *p4y());
+    double dz2 = (*p3z() - *p4z());
+    double lengthProduct = (dx1 * dx1 + dy1 * dy1 + dz1 * dz1) * (dx2 * dx2 + dy2 * dy2 + dz2 * dz2);
+    scale = coef / sqrt(lengthProduct);
+}
+
+double ConstraintParallel3D::error()
+{
+    double dx1 = (*p1x() - *p2x());
+    double dy1 = (*p1y() - *p2y());
+    double dz1 = (*p1z() - *p2z());
+    double dx2 = (*p3x() - *p4x());
+    double dy2 = (*p3y() - *p4y());
+    double dz2 = (*p3z() - *p4z());
+
+    double err = 0;
+    switch (component) {
+        case X:
+            err = dy1 * dz2 - dz1 * dy2;
+            break;
+        case Y:
+            err = dz1 * dx2 - dx1 * dz2;
+            break;
+        case Z:
+            err = dx1 * dy2 - dy1 * dx2;
+            break;
+    }
+    return scale * err;
+}
+
+double ConstraintParallel3D::grad(double* param)
+{
+    double dx1 = (*p1x() - *p2x());
+    double dy1 = (*p1y() - *p2y());
+    double dz1 = (*p1z() - *p2z());
+    double dx2 = (*p3x() - *p4x());
+    double dy2 = (*p3y() - *p4y());
+    double dz2 = (*p3z() - *p4z());
+
+    double deriv = 0;
+
+    if (component == X) {
+        // f = dy1 * dz2 - dz1 * dy2
+        if (param == p1y()) {
+            deriv += dz2;
+        }
+        if (param == p2y()) {
+            deriv -= dz2;
+        }
+        if (param == p1z()) {
+            deriv -= dy2;
+        }
+        if (param == p2z()) {
+            deriv += dy2;
+        }
+        if (param == p3y()) {
+            deriv -= dz1;
+        }
+        if (param == p4y()) {
+            deriv += dz1;
+        }
+        if (param == p3z()) {
+            deriv += dy1;
+        }
+        if (param == p4z()) {
+            deriv -= dy1;
+        }
+    }
+    else if (component == Y) {
+        // f = dz1 * dx2 - dx1 * dz2
+        if (param == p1z()) {
+            deriv += dx2;
+        }
+        if (param == p2z()) {
+            deriv -= dx2;
+        }
+        if (param == p1x()) {
+            deriv -= dz2;
+        }
+        if (param == p2x()) {
+            deriv += dz2;
+        }
+        if (param == p3z()) {
+            deriv -= dx1;
+        }
+        if (param == p4z()) {
+            deriv += dx1;
+        }
+        if (param == p3x()) {
+            deriv += dz1;
+        }
+        if (param == p4x()) {
+            deriv -= dz1;
+        }
+    }
+    else if (component == Z) {
+        // f = dx1 * dy2 - dy1 * dx2
+        if (param == p1x()) {
+            deriv += dy2;
+        }
+        if (param == p2x()) {
+            deriv -= dy2;
+        }
+        if (param == p1y()) {
+            deriv -= dx2;
+        }
+        if (param == p2y()) {
+            deriv += dx2;
+        }
+        if (param == p3x()) {
+            deriv -= dy1;
+        }
+        if (param == p4x()) {
+            deriv += dy1;
+        }
+        if (param == p3y()) {
+            deriv += dx1;
+        }
+        if (param == p4y()) {
+            deriv -= dx1;
+        }
+    }
+
+    return scale * deriv;
+}
+
+// --------------------------------------------------------
+// L2LAngle3D
+ConstraintL2LAngle3D::ConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* a)
+{
+    pvec.push_back(l1.p1.x);
+    pvec.push_back(l1.p1.y);
+    pvec.push_back(l1.p1.z);
+    pvec.push_back(l1.p2.x);
+    pvec.push_back(l1.p2.y);
+    pvec.push_back(l1.p2.z);
+    pvec.push_back(l2.p1.x);
+    pvec.push_back(l2.p1.y);
+    pvec.push_back(l2.p1.z);
+    pvec.push_back(l2.p2.x);
+    pvec.push_back(l2.p2.y);
+    pvec.push_back(l2.p2.z);
+    pvec.push_back(a);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintL2LAngle3D::ConstraintL2LAngle3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, double* a)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(p3.x);
+    pvec.push_back(p3.y);
+    pvec.push_back(p3.z);
+    pvec.push_back(p4.x);
+    pvec.push_back(p4.y);
+    pvec.push_back(p4.z);
+    pvec.push_back(a);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintL2LAngle3D::getTypeId()
+{
+    return L2LAngle3D;
+}
+
+double ConstraintL2LAngle3D::value()
+{
+    double dx1 = *p2x() - *p1x();
+    double dy1 = *p2y() - *p1y();
+    double dz1 = *p2z() - *p1z();
+    double dx2 = *p4x() - *p3x();
+    double dy2 = *p4y() - *p3y();
+    double dz2 = *p4z() - *p3z();
+    double dot = dx1 * dx2 + dy1 * dy2 + dz1 * dz2;
+    double cx = dy1 * dz2 - dz1 * dy2;
+    double cy = dz1 * dx2 - dx1 * dz2;
+    double cz = dx1 * dy2 - dy1 * dx2;
+    double crossMag = sqrt(cx * cx + cy * cy + cz * cz);
+
+    // angle in [0, pi], because 3d lacks the refrence plane so there is
+    // not clockwise or anticlockwise
+    return atan2(crossMag, dot);
+}
+
+double ConstraintL2LAngle3D::error()
+{
+    return scale * (value() - *angle());
+}
+
+double ConstraintL2LAngle3D::grad(double* param)
+{
+    double deriv = 0.;
+
+    if (param == p1x() || param == p1y() || param == p1z() || param == p2x() || param == p2y()
+        || param == p2z() || param == p3x() || param == p3y() || param == p3z() || param == p4x()
+        || param == p4y() || param == p4z()) {
+        double dx1 = *p2x() - *p1x();
+        double dy1 = *p2y() - *p1y();
+        double dz1 = *p2z() - *p1z();
+        double dx2 = *p4x() - *p3x();
+        double dy2 = *p4y() - *p3y();
+        double dz2 = *p4z() - *p3z();
+
+        double len1Sq = dx1 * dx1 + dy1 * dy1 + dz1 * dz1;
+        double len2Sq = dx2 * dx2 + dy2 * dy2 + dz2 * dz2;
+        double cx = dy1 * dz2 - dz1 * dy2;
+        double cy = dz1 * dx2 - dx1 * dz2;
+        double cz = dx1 * dy2 - dy1 * dx2;
+        double crossSq = cx * cx + cy * cy + cz * cz;
+        if (len1Sq > 1e-24 && len2Sq > 1e-24 && crossSq > 1e-24) {
+            double dot = dx1 * dx2 + dy1 * dy2 + dz1 * dz2;
+            double cross = sqrt(crossSq);
+
+            double inv1 = 1.0 / (cross * len1Sq);
+            double inv2 = 1.0 / (cross * len2Sq);
+            double d1x = (dot * dx1 - len1Sq * dx2) * inv1;
+            double d1y = (dot * dy1 - len1Sq * dy2) * inv1;
+            double d1z = (dot * dz1 - len1Sq * dz2) * inv1;
+            double d2x = (dot * dx2 - len2Sq * dx1) * inv2;
+            double d2y = (dot * dy2 - len2Sq * dy1) * inv2;
+            double d2z = (dot * dz2 - len2Sq * dz1) * inv2;
+
+            if (param == p1x()) {
+                deriv -= d1x;
+            }
+            if (param == p1y()) {
+                deriv -= d1y;
+            }
+            if (param == p1z()) {
+                deriv -= d1z;
+            }
+            if (param == p2x()) {
+                deriv += d1x;
+            }
+            if (param == p2y()) {
+                deriv += d1y;
+            }
+            if (param == p2z()) {
+                deriv += d1z;
+            }
+            if (param == p3x()) {
+                deriv -= d2x;
+            }
+            if (param == p3y()) {
+                deriv -= d2y;
+            }
+            if (param == p3z()) {
+                deriv -= d2z;
+            }
+            if (param == p4x()) {
+                deriv += d2x;
+            }
+            if (param == p4y()) {
+                deriv += d2y;
+            }
+            if (param == p4z()) {
+                deriv += d2z;
+            }
+        }
+    }
+    if (param == angle()) {
+        deriv += -1.0;
+    }
+
+    return scale * deriv;
+}
+
+double ConstraintL2LAngle3D::maxStep(MAP_pD_D& dir, double lim)
+{
+    constexpr double pi_18 = std::numbers::pi / 18;
+
+    MAP_pD_D::iterator it = dir.find(angle());
+    if (it != dir.end()) {
+        double step = std::abs(it->second);
+        if (step > pi_18) {
+            lim = std::min(lim, pi_18 / step);
+        }
+    }
+    return lim;
+}
+
+void ConstraintL2LAngle3D::evaluate()
+{
+    *angle() = value();
+}
+
+// --------------------------------------------------------
+// EqualLineLength3D
+ConstraintEqualLineLength3D::ConstraintEqualLineLength3D(Line3D& l1, Line3D& l2)
+    : l1(l1)
+    , l2(l2)
+{
+    this->l1.PushOwnParams(pvec);
+    this->l2.PushOwnParams(pvec);
+    origpvec = pvec;
+    reconstructGeomPointers();
+    rescale();
+}
+
+void ConstraintEqualLineLength3D::reconstructGeomPointers()
+{
+    int i = 0;
+    l1.ReconstructOnNewPvec(pvec, i);
+    l2.ReconstructOnNewPvec(pvec, i);
+}
+
+ConstraintType ConstraintEqualLineLength3D::getTypeId()
+{
+    return EqualLineLength3D;
+}
+
+void ConstraintEqualLineLength3D::errorgrad(double* err, double* grad, double* param)
+{
+    DeriVector3 p1(l1.p1, param);
+    DeriVector3 p2(l1.p2, param);
+    DeriVector3 p3(l2.p1, param);
+    DeriVector3 p4(l2.p2, param);
+
+    DeriVector3 v1 = p1.subtr(p2);
+    DeriVector3 v2 = p3.subtr(p4);
+
+    double length1, dlength1;
+    length1 = v1.length(dlength1);
+
+    double length2, dlength2;
+    length2 = v2.length(dlength2);
+
+    if (err) {
+        *err = length2 - length1;
+    }
+
+    if (grad) {
+        *grad = dlength2 - dlength1;
+        // if the one of the lines gets vertical or horizontal, the gradients will become zero. this
+        // will affect the diagnose function and the detection of dependent/independent parameters.
+        //
+        // So here we maintain the very small derivative of 1e-10 when the gradient is under such
+        // value, such that the diagnose function with pivot threshold of 1e-13 treats the value as
+        // non-zero and correctly detects and can tell apart when a parameter is fully constrained
+        // or just locked into a maximum/minimum
+        if (fabs(*grad) < 1e-10) {
+            double surrogate = 1e-10;
+            if (param == l1.p1.x) {
+                *grad = v1.x > 0 ? surrogate : -surrogate;
+            }
+            if (param == l1.p1.y) {
+                *grad = v1.y > 0 ? surrogate : -surrogate;
+            }
+            if (param == l1.p1.z) {
+                *grad = v1.z > 0 ? surrogate : -surrogate;
+            }
+            if (param == l1.p2.x) {
+                *grad = v1.x > 0 ? -surrogate : surrogate;
+            }
+            if (param == l1.p2.y) {
+                *grad = v1.y > 0 ? -surrogate : surrogate;
+            }
+            if (param == l1.p2.z) {
+                *grad = v1.z > 0 ? -surrogate : surrogate;
+            }
+            if (param == l2.p1.x) {
+                *grad = v2.x > 0 ? surrogate : -surrogate;
+            }
+            if (param == l2.p1.y) {
+                *grad = v2.y > 0 ? surrogate : -surrogate;
+            }
+            if (param == l2.p1.z) {
+                *grad = v2.z > 0 ? surrogate : -surrogate;
+            }
+            if (param == l2.p2.x) {
+                *grad = v2.x > 0 ? -surrogate : surrogate;
+            }
+            if (param == l2.p2.y) {
+                *grad = v2.y > 0 ? -surrogate : surrogate;
+            }
+            if (param == l2.p2.z) {
+                *grad = v2.z > 0 ? -surrogate : surrogate;
+            }
+        }
+    }
+}
+
+// --------------------------------------------------------
+// P2LDistance3D
+ConstraintP2LDistance3D::ConstraintP2LDistance3D(Point3D& p, Line3D& l, double* d)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(p.z);
+    pvec.push_back(l.p1.x);
+    pvec.push_back(l.p1.y);
+    pvec.push_back(l.p1.z);
+    pvec.push_back(l.p2.x);
+    pvec.push_back(l.p2.y);
+    pvec.push_back(l.p2.z);
+    pvec.push_back(d);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintP2LDistance3D::getTypeId()
+{
+    return P2LDistance3D;
+}
+
+double ConstraintP2LDistance3D::value()
+{
+    double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
+    double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
+    double z0 = *p0z(), z1 = *p1z(), z2 = *p2z();
+
+    double vx = x0 - x1;
+    double vy = y0 - y1;
+    double vz = z0 - z1;
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+    double dz = z2 - z1;
+
+    double cx = vy * dz - vz * dy;
+    double cy = vz * dx - vx * dz;
+    double cz = vx * dy - vy * dx;
+    double len = std::sqrt(dx * dx + dy * dy + dz * dz);
+    if (len < 1e-18) {
+        return 0.0;
+    }
+    double cross = std::sqrt(cx * cx + cy * cy + cz * cz);
+    return cross / len;
+}
+
+double ConstraintP2LDistance3D::error()
+{
+    double dist = std::fabs(*distance());
+    return scale * (value() - dist);
+}
+
+double ConstraintP2LDistance3D::grad(double* param)
+{
+    double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
+    double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
+    double z0 = *p0z(), z1 = *p1z(), z2 = *p2z();
+
+    double vx = x0 - x1;
+    double vy = y0 - y1;
+    double vz = z0 - z1;
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+    double dz = z2 - z1;
+
+    double cx = vy * dz - vz * dy;
+    double cy = vz * dx - vx * dz;
+    double cz = vx * dy - vy * dx;
+
+    double len2 = dx * dx + dy * dy + dz * dz;
+    double len = std::sqrt(len2);
+
+    if (len < 1e-18) {
+        return 0.0;
+    }
+    double crossLen = std::sqrt(cx * cx + cy * cy + cz * cz);
+
+    if (crossLen < 1e-18) {
+        if (param == distance()) {
+            return -1.0;
+        }
+        return 0.0;
+    }
+
+    double nx = cx / crossLen;
+    double ny = cy / crossLen;
+    double nz = cz / crossLen;
+
+    double deriv = 0.0;
+
+    auto grad = [&](double dCrossX, double dCrossY, double dCrossZ, double dBaseLen) {
+        double dCrossLen = (nx * dCrossX) + (ny * dCrossY) + (nz * dCrossZ);
+        return (dCrossLen * len - crossLen * dBaseLen) / len2;
+    };
+
+    if (param == p0x()) {
+        deriv += grad(0.0, -dz, dy, 0.0);
+    }
+    if (param == p0y()) {
+        deriv += grad(dz, 0.0, -dx, 0.0);
+    }
+    if (param == p0z()) {
+        deriv += grad(-dy, dx, 0.0, 0.0);
+    }
+
+    if (param == p1x()) {
+        deriv += grad(0.0, dz - vz, vy - dy, -dx / len);
+    }
+    if (param == p1y()) {
+        deriv += grad(vz - dz, 0.0, dx - vx, -dy / len);
+    }
+    if (param == p1z()) {
+        deriv += grad(dy - vy, vx - dx, 0.0, -dz / len);
+    }
+
+    if (param == p2x()) {
+        deriv += grad(0.0, vz, -vy, dx / len);
+    }
+    if (param == p2y()) {
+        deriv += grad(-vz, 0.0, vx, dy / len);
+    }
+    if (param == p2z()) {
+        deriv += grad(vy, -vx, 0.0, dz / len);
+    }
+
+    if (param == distance()) {
+        deriv -= 1.0;
+    }
+
+    return scale * deriv;
+}
+
+double ConstraintP2LDistance3D::maxStep(MAP_pD_D& dir, double lim)
+{
+    MAP_pD_D::iterator it = dir.find(distance());
+    if (it != dir.end() && it->second < 0.0) {
+        lim = std::min(lim, -(*distance()) / it->second);
+    }
+    return lim;
+}
+
+void ConstraintP2LDistance3D::evaluate()
+{
+    *distance() = value();
+}
+
+// --------------------------------------------------------
+// ProjectOnPlane3D
+ConstraintProjectOnPlane3D::ConstraintProjectOnPlane3D(Point3D& p, Point3D& origin, Point3D& normal)
+{
+    p.PushOwnParams(pvec);
+    origin.PushOwnParams(pvec);
+    normal.PushOwnParams(pvec);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintProjectOnPlane3D::getTypeId()
+{
+    return ProjectOnPlane3D;
+}
+
+double ConstraintProjectOnPlane3D::error()
+{
+    DeriVector3 nhat = DeriVector3(*nx(), *ny(), *nz()).getNormalized();
+    double dx = *px() - *ox();
+    double dy = *py() - *oy();
+    double dz = *pz() - *oz();
+    return scale * (dx * nhat.x + dy * nhat.y + dz * nhat.z);
+}
+
+double ConstraintProjectOnPlane3D::grad(double* param)
+{
+    Point3D pRef(px(), py(), pz());
+    Point3D oRef(ox(), oy(), oz());
+    Point3D nRef(nx(), ny(), nz());
+
+    DeriVector3 pvec(pRef, param);
+    DeriVector3 ovec(oRef, param);
+    DeriVector3 delta = pvec.subtr(ovec);
+    DeriVector3 nhat = DeriVector3(nRef, param).getNormalized();
+
+    double dprd;
+    delta.scalarProd(nhat, &dprd);
+    return scale * dprd;
+}
+
+// --------------------------------------------------------
+// CurveValue3D
+ConstraintCurveValue3D::ConstraintCurveValue3D(Point3D& p, double* pcoord, Curve3D& c, double* u)
+    : crv(c.Copy())
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    pvec.push_back(p.z);
+    pvec.push_back(pcoord);
+    pvec.push_back(u);
+    crv->PushOwnParams(pvec);
+    reconstructGeomPointers();
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintCurveValue3D::~ConstraintCurveValue3D()
+{
+    delete this->crv;
+    this->crv = nullptr;
+}
+
+void ConstraintCurveValue3D::reconstructGeomPointers()
+{
+    int i = 0;
+    p.x = pvec[i];
+    i++;
+    p.y = pvec[i];
+    i++;
+    p.z = pvec[i];
+    i++;
+    i++;  // we have an inline function for point coordinate
+    i++;  // we have an inline function for the parameterU
+    this->crv->ReconstructOnNewPvec(pvec, i);
+}
+
+ConstraintType ConstraintCurveValue3D::getTypeId()
+{
+    return CurveValue3D;
+}
+
+void ConstraintCurveValue3D::errorgrad(double* err, double* grad, double* param)
+{
+    double u, du;
+    u = *(this->u());
+    du = (param == this->u()) ? 1.0 : 0.0;
+
+    DeriVector3 P_to;  // point of curve at parameter value of u, in global coordinates
+    P_to = this->crv->Value(u, du, param);
+
+    DeriVector3 P_from(this->p, param);  // point to be constrained
+
+    DeriVector3 err_vec = P_from.subtr(P_to);
+
+    if (this->pcoord() == this->p.x) {  // this constraint is for X projection
+        if (err) {
+            *err = err_vec.x;
+        }
+        if (grad) {
+            *grad = err_vec.dx;
+        }
+    }
+    else if (this->pcoord() == this->p.y) {  // this constraint is for Y projection
+        if (err) {
+            *err = err_vec.y;
+        }
+        if (grad) {
+            *grad = err_vec.dy;
+        }
+    }
+    else if (this->pcoord() == this->p.z) {  // this constraint is for Z projection
+        if (err) {
+            *err = err_vec.z;
+        }
+        if (grad) {
+            *grad = err_vec.dz;
+        }
+    }
+    else {
+        assert(false /*this constraint is neither X, Y nor Z. Nothing to do*/);
+    }
+}
+
+double ConstraintCurveValue3D::maxStep(MAP_pD_D& /*dir*/, double lim)
+{
+    return lim;
+}
+
 }  // namespace GCS

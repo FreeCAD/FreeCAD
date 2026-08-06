@@ -85,6 +85,13 @@ enum ConstraintType
     AngleViaPointAndTwoParams = 34,
     AngleViaTwoPoints = 35,
     ArcLength = 36,
+    P2PDistance3D = 37,
+    Parallel3D = 38,
+    L2LAngle3D = 39,
+    EqualLineLength3D = 40,
+    ProjectOnPlane3D = 41,
+    P2LDistance3D = 42,
+    CurveValue3D = 43,
 };
 
 enum InternalAlignmentType
@@ -1395,6 +1402,363 @@ private:
 public:
     ConstraintArcLength(Arc& a, double* d);
     ConstraintType getTypeId() override;
+};
+
+// P2PDistance3D
+class ConstraintP2PDistance3D: public Constraint
+{
+private:
+    inline double* p1x()
+    {
+        return pvec[0];
+    }
+    inline double* p1y()
+    {
+        return pvec[1];
+    }
+    inline double* p1z()
+    {
+        return pvec[2];
+    }
+    inline double* p2x()
+    {
+        return pvec[3];
+    }
+    inline double* p2y()
+    {
+        return pvec[4];
+    }
+    inline double* p2z()
+    {
+        return pvec[5];
+    }
+    inline double* distance()
+    {
+        return pvec[6];
+    }
+    double value();
+
+public:
+    ConstraintP2PDistance3D(Point3D& p1, Point3D& p2, double* d);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintP2PDistance3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
+    double maxStep(MAP_pD_D& dir, double lim = 1.) override;
+    void evaluate() override;
+};
+
+// Parallel3D
+class ConstraintParallel3D: public Constraint
+{
+public:
+    enum Component
+    {
+        X,  // (y2-y1)(z4-z3) - (z2-z1)(y4-y3) = 0
+        Y,  // (z2-z1)(x4-x3) - (x2-x1)(z4-z3) = 0
+        Z   // (x2-x1)(y4-y3) - (y2-y1)(x4-x3) = 0
+    };
+
+private:
+    Component component;
+    inline double* p1x()
+    {
+        return pvec[0];
+    }
+    inline double* p1y()
+    {
+        return pvec[1];
+    }
+    inline double* p1z()
+    {
+        return pvec[2];
+    }
+    inline double* p2x()
+    {
+        return pvec[3];
+    }
+    inline double* p2y()
+    {
+        return pvec[4];
+    }
+    inline double* p2z()
+    {
+        return pvec[5];
+    }
+    inline double* p3x()
+    {
+        return pvec[6];
+    }
+    inline double* p3y()
+    {
+        return pvec[7];
+    }
+    inline double* p3z()
+    {
+        return pvec[8];
+    }
+    inline double* p4x()
+    {
+        return pvec[9];
+    }
+    inline double* p4y()
+    {
+        return pvec[10];
+    }
+    inline double* p4z()
+    {
+        return pvec[11];
+    }
+
+public:
+    ConstraintParallel3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, Component comp);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintParallel3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    void rescale(double coef = 1.) override;
+    double error() override;
+    double grad(double*) override;
+};
+
+// Angle3D
+class ConstraintL2LAngle3D: public Constraint
+{
+private:
+    inline double* p1x()
+    {
+        return pvec[0];
+    }
+    inline double* p1y()
+    {
+        return pvec[1];
+    }
+    inline double* p1z()
+    {
+        return pvec[2];
+    }
+    inline double* p2x()
+    {
+        return pvec[3];
+    }
+    inline double* p2y()
+    {
+        return pvec[4];
+    }
+    inline double* p2z()
+    {
+        return pvec[5];
+    }
+    inline double* p3x()
+    {
+        return pvec[6];
+    }
+    inline double* p3y()
+    {
+        return pvec[7];
+    }
+    inline double* p3z()
+    {
+        return pvec[8];
+    }
+    inline double* p4x()
+    {
+        return pvec[9];
+    }
+    inline double* p4y()
+    {
+        return pvec[10];
+    }
+    inline double* p4z()
+    {
+        return pvec[11];
+    }
+    inline double* angle()
+    {
+        return pvec[12];
+    }
+    double value();
+
+public:
+    ConstraintL2LAngle3D(Line3D& l1, Line3D& l2, double* a);
+    ConstraintL2LAngle3D(Point3D& p1, Point3D& p2, Point3D& p3, Point3D& p4, double* a);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintL2LAngle3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
+    double maxStep(MAP_pD_D& dir, double lim = 1.) override;
+    void evaluate() override;
+};
+
+class ConstraintEqualLineLength3D: public Constraint
+{
+private:
+    Line3D l1;
+    Line3D l2;
+
+    // writes pointers in pvec to the parameters of line1, line2
+    void reconstructGeomPointers() override;
+    void errorgrad(double* err, double* grad, double* param) override;
+
+public:
+    ConstraintEqualLineLength3D(Line3D& l1, Line3D& l2);
+    ConstraintType getTypeId() override;
+};
+
+class ConstraintProjectOnPlane3D: public Constraint
+{
+private:
+    inline double* px()
+    {
+        return pvec[0];
+    }
+    inline double* py()
+    {
+        return pvec[1];
+    }
+    inline double* pz()
+    {
+        return pvec[2];
+    }
+    inline double* ox()
+    {
+        return pvec[3];
+    }
+    inline double* oy()
+    {
+        return pvec[4];
+    }
+    inline double* oz()
+    {
+        return pvec[5];
+    }
+    inline double* nx()
+    {
+        return pvec[6];
+    }
+    inline double* ny()
+    {
+        return pvec[7];
+    }
+    inline double* nz()
+    {
+        return pvec[8];
+    }
+
+public:
+    ConstraintProjectOnPlane3D(Point3D& p, Point3D& plane_p, Point3D& plane_n);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintProjectOnPlane3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
+};
+
+// P2LDistance3D
+class ConstraintP2LDistance3D: public Constraint
+{
+private:
+    double* p0x()
+    {
+        return pvec[0];
+    }
+    double* p0y()
+    {
+        return pvec[1];
+    }
+    double* p0z()
+    {
+        return pvec[2];
+    }
+    double* p1x()
+    {
+        return pvec[3];
+    }
+    double* p1y()
+    {
+        return pvec[4];
+    }
+    double* p1z()
+    {
+        return pvec[5];
+    }
+    double* p2x()
+    {
+        return pvec[6];
+    }
+    double* p2y()
+    {
+        return pvec[7];
+    }
+    double* p2z()
+    {
+        return pvec[8];
+    }
+    double* distance()
+    {
+        return pvec[9];
+    }
+
+    double value();
+
+public:
+    ConstraintP2LDistance3D(Point3D& p, Line3D& l, double* d);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintP2LDistance3D()
+    {}
+#endif
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
+    double maxStep(MAP_pD_D& dir, double lim = 1.) override;
+    void evaluate() override;
+};
+
+// CurveValue3D
+class ConstraintCurveValue3D: public Constraint
+{
+private:
+    // defines, which coordinate of point is being constrained by this constraint
+    inline double* pcoord()
+    {
+        return pvec[3];
+    }
+    inline double* u()
+    {
+        return pvec[4];
+    }
+    void errorgrad(double* err, double* grad, double* param) override;
+    // writes pointers in pvec to the parameters of crv
+    void reconstructGeomPointers() override;
+    Curve3D* crv;
+    Point3D p;
+
+public:
+    /**
+     * @brief ConstraintCurveValue3D: solver constraint that ties parameter value with point
+     * coordinates, according to curve's parametric equation.
+     * @param p : endpoint to be constrained
+     * @param pcoord : pointer to point coordinate to be constrained. Must be either p.x or p.y
+     * @param crv : the curve (crv->Value() must be functional)
+     * @param u : pointer to u parameter corresponding to the point
+     */
+    ConstraintCurveValue3D(Point3D& p, double* pcoord, Curve3D& crv, double* u);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintCurveValue3D()
+    {}
+#endif
+    ~ConstraintCurveValue3D() override;
+    ConstraintType getTypeId() override;
+    double maxStep(MAP_pD_D& dir, double lim = 1.) override;
 };
 
 }  // namespace GCS
