@@ -138,7 +138,7 @@ public:
 
 QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     : QGraphicsView(parent), m_renderer(RendererType::Native), drawBkg(true), m_vpPage(nullptr),
-      m_scene(scenePage), balloonPlacing(false), m_showGrid(false),
+      m_scene(scenePage), m_showGrid(false),
       m_navStyle(nullptr), d(new Private(this)), toolHandler(nullptr)
 {
     assert(vpPage);
@@ -174,11 +174,6 @@ QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
     resetCursor();
 
     bkgBrush = new QBrush(getBackgroundColor());
-
-    balloonCursor = new QLabel(this);
-    balloonCursor->setPixmap(
-        prepareCursorPixmap("TechDraw_Balloon.svg", balloonHotspot = QPoint(8, 59)));
-    balloonCursor->hide();
 
     initNavigationStyle();
 
@@ -273,22 +268,6 @@ void QGVPage::deactivateHandler()
         toolHandler->deactivate();
         toolHandler = nullptr;
     }
-}
-
-void QGVPage::startBalloonPlacing(DrawView* parent)
-{
-    balloonPlacing = true;
-    m_balloonParent = parent;
-    activateCursor(
-        QCursor(balloonCursor->pixmap(Qt::ReturnByValue), balloonHotspot.x(), balloonHotspot.y()));
-}
-
-void QGVPage::cancelBalloonPlacing()
-{
-    balloonPlacing = false;
-    m_balloonParent = nullptr;
-    balloonCursor->hide();
-    resetCursor();
 }
 
 void QGVPage::drawBackground(QPainter* painter, const QRectF&)

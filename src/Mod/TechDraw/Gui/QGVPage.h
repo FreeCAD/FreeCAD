@@ -92,9 +92,6 @@ public:
 
     QGSPage* getScene() { return m_scene; }
 
-    void startBalloonPlacing(TechDraw::DrawView* parent);
-    void cancelBalloonPlacing();
-
     TechDraw::DrawPage* getDrawPage();
 
     void makeGrid(int width, int height, double step);
@@ -105,15 +102,7 @@ public:
     void deactivateHandler();
     bool isHandlerActive() { return toolHandler != nullptr; }
 
-    bool isBalloonPlacing() const { return balloonPlacing; }
-    void setBalloonPlacing(bool isPlacing) { balloonPlacing = isPlacing; }
-
-    QLabel* getBalloonCursor() const { return balloonCursor; }
-    void setBalloonCursor(QLabel* label) { balloonCursor = label; }
-
     void kbPanScroll(int xMove = 1, int yMove = 1);
-    QPointF getBalloonCursorPos() const { return balloonCursorPos; }
-    void setBalloonCursorPos(QPoint pos) { balloonCursorPos = pos; }
 
     void activateCursor(QCursor cursor);
     void resetCursor();
@@ -124,10 +113,10 @@ public:
 
     void centerOnPage();
 
-    TechDraw::DrawView* getBalloonParent() { return m_balloonParent; }
-
     void zoomIn();
     void zoomOut();
+
+    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
 public Q_SLOTS:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -150,8 +139,6 @@ protected:
     void contextMenuEvent(QContextMenuEvent* event) override;
 
     QColor getBackgroundColor();
-
-    QPixmap prepareCursorPixmap(const char* iconName, QPoint& hotspot);
 
     void drawForeground(QPainter* painter, const QRectF& rect) override;
 

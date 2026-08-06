@@ -886,6 +886,21 @@ void QGIViewBalloon::setPrettyNormal(void)
     balloonLines->setPrettyNormal();
 }
 
+void QGIViewBalloon::setPreviewMode(bool previewing)
+{
+    // When in preview mode, we make sure that the user
+    // Cannot interact with the balloon, as it is under the users cursor
+    // And would therefore interfere
+    setAcceptHoverEvents(!previewing);
+    setFlag(QGraphicsItem::ItemIsSelectable, !previewing);
+    setAcceptedMouseButtons(previewing ? Qt::NoButton : Qt::AllButtons);
+
+    balloonLabel->setAcceptHoverEvents(!previewing);
+    balloonLabel->setFlag(QGraphicsItem::ItemIsSelectable, !previewing);
+    balloonLabel->setFlag(QGraphicsItem::ItemIsMovable, !previewing);
+    balloonLabel->setAcceptedMouseButtons(previewing ? Qt::NoButton : Qt::AllButtons);
+}
+
 
 void QGIViewBalloon::drawBorder(void)
 {
