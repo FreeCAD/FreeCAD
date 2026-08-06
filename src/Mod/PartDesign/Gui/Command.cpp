@@ -26,6 +26,7 @@
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
+#include <QCursor>
 #include <QMessageBox>
 #include <TopExp_Explorer.hxx>
 #include <TopLoc_Location.hxx>
@@ -46,11 +47,14 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
+#include <Mod/PartDesign/App/FeatureProjectOnSurface.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
 #include <Mod/PartDesign/App/DatumLine.h>
@@ -62,6 +66,7 @@
 
 #include "DlgActiveBody.h"
 #include "ReferenceSelection.h"
+#include "RadialMenu.h"
 #include "SketchWorkflow.h"
 #include "TaskFeaturePick.h"
 #include "Utils.h"
@@ -77,6 +82,38 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace std;
 using namespace Attacher;
+
+//===========================================================================
+// PartDesign_RadialMenu
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignRadialMenu)
+
+CmdPartDesignRadialMenu::CmdPartDesignRadialMenu()
+    : Command("PartDesign_RadialMenu")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Contextual Radial Menu");
+    sToolTipText = QT_TR_NOOP("Shows context-sensitive Part Design tools around the pointer");
+    sWhatsThis = "PartDesign_RadialMenu";
+    sStatusTip = sToolTipText;
+    sPixmap = "PartDesignWorkbench";
+    sAccel = "S";
+    eType = NoTransaction;
+    bCanLog = false;
+}
+
+void CmdPartDesignRadialMenu::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    PartDesignGui::toggleRadialMenu(QCursor::pos());
+}
+
+bool CmdPartDesignRadialMenu::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog();
+}
 
 static void copyPlacementExpressions(App::DocumentObject* target, const App::DocumentObject* source)
 {
@@ -394,6 +431,115 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
 bool CmdPartDesignShapeBinder::isActive()
 {
     return hasActiveDocument();
+}
+
+//===========================================================================
+// PartDesign_ProjectOnSurface
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartDesignProjectOnSurface)
+
+CmdPartDesignProjectOnSurface::CmdPartDesignProjectOnSurface()
+    : Command("PartDesign_ProjectOnSurface")
+{
+    sAppModule = "PartDesign";
+    sGroup = QT_TR_NOOP("PartDesign");
+    sMenuText = QT_TR_NOOP("Project on Surface");
+    sToolTipText = QT_TR_NOOP(
+        "Projects a sketch or planar edges, wires, and faces onto one or more target faces "
+        "along the source-plane normal"
+    );
+    sWhatsThis = "PartDesign_ProjectOnSurface";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_ProjectionOnSurface";
+}
+
+void CmdPartDesignProjectOnSurface::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    auto* body = PartDesignGui::getBody(/*messageIfNot = */ true);
+    if (!body) {
+        return;
+    }
+
+    auto selection = getSelection().getSelectionEx();
+
+    const std::string featureName = getUniqueObjectName("ProjectionOnSurface", body);
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Project on Surface"));
+    FCMD_OBJ_CMD(
+        body,
+        "newObject('PartDesign::ProjectOnSurface','" << featureName << "')"
+    );
+
+    auto* feature = dynamic_cast<PartDesign::ProjectOnSurface*>(
+        body->getObject(featureName.c_str())
+    );
+    if (!feature) {
+        abortCommand();
+        return;
+    }
+
+    App::PropertyLinkSubList projection;
+    App::PropertyLinkSubList supportFaces;
+    for (auto& selected : selection) {
+        auto* object = selected.getObject();
+        if (!object || object == feature || !feature->testIfLinkDAGCompatible(object)) {
+            continue;
+        }
+
+        auto subNames = selected.getSubNames();
+        if (subNames.empty()) {
+            subNames.emplace_back();
+        }
+        for (const auto& subName : subNames) {
+            if (subName.empty() && object->isDerivedFrom<Part::Part2DObject>()) {
+                projection.addValue(object, {subName});
+                continue;
+            }
+
+            try {
+                auto shape = Part::Feature::getTopoShape(
+                    object,
+                    Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                        | Part::ShapeOption::Transform,
+                    subName.c_str()
+                );
+                if (shape.isNull()) {
+                    continue;
+                }
+
+                switch (shape.getShape().ShapeType()) {
+                    case TopAbs_EDGE:
+                    case TopAbs_WIRE:
+                        projection.addValue(object, {subName});
+                        break;
+                    case TopAbs_FACE:
+                        supportFaces.addValue(object, {subName});
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch (const Base::Exception&) {
+            }
+        }
+    }
+
+    if (projection.getSize() > 0) {
+        FCMD_OBJ_CMD(feature, "Projection = " << projection.getPyReprString());
+    }
+    if (supportFaces.getSize() > 0) {
+        FCMD_OBJ_CMD(feature, "SupportFaces = " << supportFaces.getPyReprString());
+    }
+
+    Gui::Selection().clearSelection();
+    updateActive();
+    PartDesignGui::setEdit(feature, body);
+}
+
+bool CmdPartDesignProjectOnSurface::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog(getDocument());
 }
 
 //===========================================================================
@@ -2755,7 +2901,10 @@ void CreatePartDesignCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdPartDesignRadialMenu());
+
     rcCmdMgr.addCommand(new CmdPartDesignShapeBinder());
+    rcCmdMgr.addCommand(new CmdPartDesignProjectOnSurface());
     rcCmdMgr.addCommand(new CmdPartDesignSubShapeBinder());
     rcCmdMgr.addCommand(new CmdPartDesignClone());
     rcCmdMgr.addCommand(new CmdPartDesignPlane());

@@ -17,6 +17,7 @@ from . import TestPad
 from . import TestPipe
 from . import TestPocket
 from . import TestPolarPattern
+from . import TestProjectOnSurface
 from . import TestPrimitive
 from . import TestRevolve
 from . import TestShapeBinder

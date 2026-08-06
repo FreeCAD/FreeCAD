@@ -32,6 +32,7 @@
 #include "Body.h"
 #include "BodyPy.h"
 #include "FeatureBase.h"
+#include "FeatureProjectOnSurface.h"
 #include "FeatureSketchBased.h"
 #include "FeatureSolid.h"
 #include "FeatureTransformed.h"
@@ -206,7 +207,8 @@ bool Body::isAllowed(const App::DocumentObject* obj)
         obj->isDerivedFrom<PartDesign::Feature>() || obj->isDerivedFrom<Part::Datum>() ||
         // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
         obj->isDerivedFrom<Part::Part2DObject>() || obj->isDerivedFrom<PartDesign::ShapeBinder>()
-        || obj->isDerivedFrom<PartDesign::SubShapeBinder>() ||
+        || obj->isDerivedFrom<PartDesign::SubShapeBinder>()
+        || obj->isDerivedFrom<PartDesign::ProjectOnSurface>() ||
         // TODO Why this lines was here? why should we allow anything of those? (2015-08-13,
         // Fat-Zer) obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!?
         // Linker fails to find getClassTypeId() of the Part::FeaturePython...

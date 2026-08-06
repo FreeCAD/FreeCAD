@@ -51,6 +51,7 @@
 #include "FeaturePocket.h"
 #include "FeaturePolarPattern.h"
 #include "FeaturePrimitive.h"
+#include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
 #include "FeatureScaled.h"
 #include "FeatureSketchBased.h"
@@ -159,6 +160,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::AdditiveWedge               ::init();
     PartDesign::SubtractiveWedge            ::init();
     PartDesign::FeatureBase                 ::init();
+    PartDesign::ProjectOnSurface            ::init();
 
     PartDesign::Measure ::initialize();
     // clang-format on

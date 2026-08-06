@@ -56,6 +56,7 @@
 #include "ViewProviderPocket.h"
 #include "ViewProviderPolarPattern.h"
 #include "ViewProviderPrimitive.h"
+#include "ViewProviderProjectOnSurface.h"
 #include "ViewProviderRevolution.h"
 #include "ViewProviderScaled.h"
 #include "ViewProviderShapeBinder.h"
@@ -161,6 +162,7 @@ PyMOD_INIT_FUNC(PartDesignGui)
     PartDesignGui::ViewProviderLoft          ::init();
     PartDesignGui::ViewProviderHelix         ::init();
     PartDesignGui::ViewProviderBase          ::init();
+    PartDesignGui::ViewProviderProjectOnSurface::init();
     // clang-format on
 
     // add resources and reloads the translators

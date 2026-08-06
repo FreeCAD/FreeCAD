@@ -25,6 +25,8 @@ SET(Features_SRCS
     Body.h
     FeatureBase.h
     FeatureBase.cpp
+    FeatureProjectOnSurface.h
+    FeatureProjectOnSurface.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 

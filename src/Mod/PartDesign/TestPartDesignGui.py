@@ -264,6 +264,89 @@ class PartDesignGuiTestCases(unittest.TestCase):
         FreeCAD.closeDocument("SketchGuiTest")
 
 
+class ProjectOnSurfaceGuiTestCases(unittest.TestCase):
+    def setUp(self):
+        self.Doc = FreeCAD.newDocument("PartDesignProjectOnSurfaceGuiTest")
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        Gui.activateView("Gui::View3DInventor", True)
+        Gui.activeView().setActiveObject("pdbody", self.Body)
+
+    def tearDown(self):
+        Gui.Selection.clearSelection()
+        gui_document = Gui.getDocument(self.Doc.Name)
+        if Gui.Control.activeDialog(gui_document):
+            Gui.Control.closeDialog(gui_document)
+        FreeCAD.closeDocument(self.Doc.Name)
+
+    def testCommandUsesPartDesignTaskPanel(self):
+        sketch = self.Body.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.addGeometry(Part.LineSegment(App.Vector(-2, 0), App.Vector(2, 0)), False)
+        sketch.Placement = App.Placement(
+            App.Vector(10, 0, 5), App.Rotation(App.Vector(0, 1, 0), 90)
+        )
+        empty_sketch = self.Body.newObject("Sketcher::SketchObject", "EmptySketch")
+        sketch2 = self.Body.newObject("Sketcher::SketchObject", "Sketch2")
+        sketch2.addGeometry(Part.LineSegment(App.Vector(-1, 1), App.Vector(1, 1)), False)
+        sketch2.Placement = sketch.Placement
+        cylinder = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        cylinder.Radius = 5
+        cylinder.Height = 10
+        cylinder2 = self.Doc.addObject("Part::Cylinder", "Cylinder2")
+        cylinder2.Radius = 5
+        cylinder2.Height = 10
+        cylinder2.Placement.Base.x = 20
+        self.Doc.recompute()
+
+        Gui.activateWorkbench("PartDesignWorkbench")
+        Gui.Selection.addSelection(sketch)
+        Gui.Selection.addSelection(sketch2)
+        Gui.Selection.addSelection(cylinder, "Face1")
+        Gui.Selection.addSelection(cylinder2, "Face1")
+        Gui.runCommand("PartDesign_ProjectOnSurface")
+        Gui.updateGui()
+
+        task_dialog = Gui.Control.activeTaskDialog()
+        self.assertIsNotNone(task_dialog)
+        task_widget = task_dialog.getDialogContent()[0]
+        add_projection = task_widget.findChild(QtGui.QToolButton, "buttonAddProjection")
+        add_support = task_widget.findChild(QtGui.QToolButton, "buttonAddSupport")
+        projection_list = task_widget.findChild(QtGui.QListWidget, "listProjection")
+        support_list = task_widget.findChild(QtGui.QListWidget, "listSupport")
+        self.assertIsNotNone(add_projection)
+        self.assertIsNotNone(add_support)
+        self.assertIsNotNone(projection_list)
+        self.assertIsNotNone(support_list)
+        self.assertEqual(projection_list.count(), 2)
+        self.assertEqual(support_list.count(), 2)
+
+        projection = self.Doc.getObject("ProjectionOnSurface")
+        self.assertIsNotNone(projection)
+        self.assertEqual(projection.Projection[0][0], sketch)
+        self.assertEqual(projection.Projection[1][0], sketch2)
+        self.assertEqual(projection.SupportFaces[0][0], cylinder)
+        self.assertEqual(projection.SupportFaces[1][0], cylinder2)
+        self.assertGreater(len(projection.Shape.Edges), 0)
+
+        add_projection.click()
+        Gui.Selection.setPreselection(empty_sketch)
+        self.assertEqual(Gui.Selection.getPreselection().Object, empty_sketch)
+        Gui.Selection.clearPreselection()
+        Gui.Selection.setPreselection(sketch)
+        self.assertEqual(Gui.Selection.getPreselection().Object, sketch)
+        Gui.Selection.clearPreselection()
+        Gui.Selection.setPreselection(self.Body, "Sketch.")
+        self.assertEqual(Gui.Selection.getPreselection().Object, self.Body)
+        Gui.Selection.clearPreselection()
+        Gui.Selection.addSelection(sketch)
+        add_support.click()
+        Gui.Selection.addSelection(cylinder, "Face1")
+        Gui.updateGui()
+
+        self.assertEqual(projection.Projection[0][0], sketch)
+        self.assertEqual(projection.SupportFaces[0][0], cylinder)
+        self.assertGreater(len(projection.Shape.Edges), 0)
+
+
 class PartDesignTransformed(unittest.TestCase):
     def setUp(self):
         self.Doc = App.newDocument("PartDesignTransformed")
