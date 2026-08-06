@@ -52,13 +52,24 @@ public:
     ~DlgProjectInformationImp() override;
     void accept() override;
 
+    /*!
+     * Shows the options that are only offered the first time a document is saved:
+     * remembering the creator, the company and the license as defaults, and
+     * suppressing the dialog on subsequent first saves. The file section is hidden
+     * because none of it is known until the document has been written.
+     */
+    void setFirstSaveMode();
+
 private Q_SLOTS:
     void open_url();
     void onLicenseTypeChanged(int index);
 
 private:
+    void applyFirstSaveOptions();
+
     App::Document* _doc;
     Ui_DlgProjectInformation* ui;
+    bool _firstSaveMode {false};
 };
 
 }  // namespace Dialog

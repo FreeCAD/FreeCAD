@@ -29,6 +29,7 @@
 #include <QLocale>
 #include <QUrl>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <App/License.h>
 #include <Base/UnitsApi.h>
@@ -85,7 +86,19 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     ui->lineEditName->setText(QString::fromUtf8(doc->Label.getValue()));
     ui->lineEditPath->setText(QString::fromUtf8(doc->FileName.getValue()));
     ui->lineEditUuid->setText(QString::fromUtf8(doc->Uid.getValueStr().c_str()));
-    ui->lineEditProgramVersion->setText(QString::fromUtf8(doc->getProgramVersion()));
+    // A document that has never been saved or loaded carries no program version yet,
+    // so show the version that saving it would write.
+    QString programVersion = QString::fromUtf8(doc->getProgramVersion());
+    if (programVersion.isEmpty()) {
+        auto config = App::Application::Config();
+        programVersion = QStringLiteral("%1.%2R%3")
+                             .arg(
+                                 QString::fromStdString(config["BuildVersionMajor"]),
+                                 QString::fromStdString(config["BuildVersionMinor"]),
+                                 QString::fromStdString(config["BuildRevision"])
+                             );
+    }
+    ui->lineEditProgramVersion->setText(programVersion);
     ui->lineEditCreator->setText(QString::fromUtf8(doc->CreatedBy.getValue()));
     ui->lineEditDate->setText(convertISODate(doc->CreationDate.getValue()));
     ui->lineEditLastMod->setText(QString::fromUtf8(doc->LastModifiedBy.getValue()));
@@ -130,6 +143,10 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
 
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText(text);
+
+    // Only shown when the dialog is opened on the first save of a document
+    ui->widgetFirstSaveOptions->hide();
+
     connect(ui->pushButtonOpenURL, &QPushButton::clicked, this, &DlgProjectInformationImp::open_url);
     connect(
         ui->comboLicense,
@@ -146,6 +163,16 @@ DlgProjectInformationImp::~DlgProjectInformationImp()
 {
     // no need to delete child widgets, Qt does it all for us
     delete ui;
+}
+
+void DlgProjectInformationImp::setFirstSaveMode()
+{
+    _firstSaveMode = true;
+    ui->widgetFirstSaveOptions->show();
+
+    // Nothing in this section is known yet: the document has not been written, so it
+    // has no path, no name of its own and no modification history
+    ui->groupBoxFileInfo->hide();
 }
 
 /**
@@ -172,7 +199,47 @@ void DlgProjectInformationImp::accept()
     QString text = lines.join(QLatin1String("\\n"));
     _doc->Comment.setValue(text.isEmpty() ? QByteArray() : text.toUtf8());
 
+    applyFirstSaveOptions();
+
     QDialog::accept();
+}
+
+/**
+ * Stores the creator, the company and the license as defaults for new documents, and
+ * suppresses this dialog on future first saves, according to the options the user
+ * selected. Each option is applied independently of the others.
+ */
+void DlgProjectInformationImp::applyFirstSaveOptions()
+{
+    if (!_firstSaveMode) {
+        return;
+    }
+
+    ParameterGrp::handle paramGrp {
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+    };
+
+    if (ui->checkBoxRememberAuthor->isChecked()) {
+        paramGrp->SetASCII("prefAuthor", ui->lineEditCreator->text().toUtf8());
+    }
+
+    if (ui->checkBoxRememberCompany->isChecked()) {
+        paramGrp->SetASCII("prefCompany", ui->lineEditCompany->text().toUtf8());
+    }
+
+    if (ui->checkBoxRememberLicense->isChecked()) {
+        // A license the document carries but that FreeCAD does not know about is appended
+        // after the known ones, and has no index that the preference can refer to.
+        const int index = ui->comboLicense->currentIndex();
+        if (index >= 0 && index < App::countOfLicenses) {
+            paramGrp->SetInt("prefLicenseType", index);
+            paramGrp->SetASCII("prefLicenseUrl", ui->lineEditLicenseURL->text().toUtf8());
+        }
+    }
+
+    if (ui->checkBoxDontShowAgain->isChecked()) {
+        paramGrp->SetBool("AskProjectInfoOnFirstSave", false);
+    }
 }
 
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
