@@ -5,6 +5,7 @@ add_executable(Base_tests_run
         BoundBox.cpp
         Builder3D.cpp
         Color.cpp
+        ColorShading.cpp
         Console.cpp
         CoordinateSystem.cpp
         DualNumber.cpp
@@ -14,6 +15,7 @@ add_executable(Base_tests_run
         InputSource.cpp
         Handle.cpp
         Matrix.cpp
+        OkLch.cpp
         Parameter.cpp
         ParameterObserver.cpp
         Placement.cpp

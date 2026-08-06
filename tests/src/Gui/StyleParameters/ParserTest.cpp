@@ -23,8 +23,12 @@
 
 #include <gtest/gtest.h>
 
+#include <Base/OkLch.h>
 #include <Gui/Utilities.h>
 
+#include <Gui/StyleParameters/Corners.h>
+#include <Gui/StyleParameters/Gradient.h>
+#include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/Parser.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 
@@ -1105,6 +1109,42 @@ TEST_F(ParserTest, TupleScalarMultiplyScalarFirst)
     EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 6.0);
 }
 
+TEST_F(ParserTest, TupleScalarMultiplyUnitOnScalar)
+{
+    Parser parser("4px * (1, 2, 3, 4)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 4.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 8.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 12.0);
+    EXPECT_EQ(tuple.at(2).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(3).get<Numeric>().value, 16.0);
+    EXPECT_EQ(tuple.at(3).get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, TupleScalarDivideUnitOnTuple)
+{
+    Parser parser("(10px, 20px) / 2");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 5.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 10.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+}
+
 TEST_F(ParserTest, TupleScalarDivide)
 {
     Parser parser("(10, 20) / 2");
@@ -1287,28 +1327,13 @@ TEST_F(ParserTest, TupleNestedScalarMultiply)
 
 class ArgumentParserTest: public ::testing::Test
 {
-    struct NameValuePair
-    {
-        std::optional<std::string> name;
-        Value value;
-    };
-
-protected:
-    static Tuple makeTuple(std::vector<NameValuePair> elements)
-    {
-        Tuple tuple;
-        for (auto& [name, value] : elements) {
-            tuple.elements.emplace_back(name, std::make_shared<const Value>(std::move(value)));
-        }
-        return tuple;
-    }
 };
 
 TEST_F(ArgumentParserTest, AllPositional)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1320,9 +1345,9 @@ TEST_F(ArgumentParserTest, AllPositional)
 
 TEST_F(ArgumentParserTest, AllNamed)
 {
-    auto args = makeTuple({
-        {.name = std::string("x"), .value = Numeric {.value = 10, .unit = ""}},
-        {.name = std::string("y"), .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("x", Numeric {.value = 10, .unit = ""}),
+        Tuple::Element::named("y", Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1332,9 +1357,9 @@ TEST_F(ArgumentParserTest, AllNamed)
 
 TEST_F(ArgumentParserTest, AllNamedReversedOrder)
 {
-    auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {.value = 20, .unit = ""}},
-        {.name = std::string("x"), .value = Numeric {.value = 10, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("y", Numeric {.value = 20, .unit = ""}),
+        Tuple::Element::named("x", Numeric {.value = 10, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1345,9 +1370,9 @@ TEST_F(ArgumentParserTest, AllNamedReversedOrder)
 TEST_F(ArgumentParserTest, MixedPositionalThenNamed)
 {
     // f(1, y: 2) with signature (x, y)
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1358,9 +1383,9 @@ TEST_F(ArgumentParserTest, MixedPositionalThenNamed)
 TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
 {
     // f(y: 2, 1) with signature (x, y) — positional 1 fills unclaimed x
-    auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1370,8 +1395,8 @@ TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
 
 TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     auto resolved = ArgumentParser {
         {.name = "x"},
@@ -1384,9 +1409,9 @@ TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
 
 TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {
         {.name = "x"},
@@ -1398,9 +1423,9 @@ TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
 
 TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {
         {.name = "x"},
@@ -1412,9 +1437,9 @@ TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
 
 TEST_F(ArgumentParserTest, ResolvedTupleHasCorrectOrder)
 {
-    auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1425,9 +1450,9 @@ TEST_F(ArgumentParserTest, ResolvedTupleHasCorrectOrder)
 
 TEST_F(ArgumentParserTest, MixedTypes)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
-        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Base::Color(1.0, 0.0, 0.0)),
+        Tuple::Element::unnamed(Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
@@ -1437,8 +1462,8 @@ TEST_F(ArgumentParserTest, MixedTypes)
 
 TEST_F(ArgumentParserTest, ErrorOnUnknownName)
 {
-    auto args = makeTuple({
-        {.name = std::string("unknown"), .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("unknown", Numeric {.value = 1, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1446,9 +1471,9 @@ TEST_F(ArgumentParserTest, ErrorOnUnknownName)
 
 TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
 {
-    auto args = makeTuple({
-        {.name = std::string("x"), .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::string("x"), .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("x", Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::named("x", Numeric {.value = 2, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1456,8 +1481,8 @@ TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
 
 TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1465,10 +1490,10 @@ TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
 
 TEST_F(ArgumentParserTest, ErrorOnExcessPositional)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 3, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 2, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 3, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1476,9 +1501,9 @@ TEST_F(ArgumentParserTest, ErrorOnExcessPositional)
 
 TEST_F(ArgumentParserTest, TypedGetSuccess)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
-        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Base::Color(1.0, 0.0, 0.0)),
+        Tuple::Element::unnamed(Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
@@ -1489,9 +1514,9 @@ TEST_F(ArgumentParserTest, TypedGetSuccess)
 
 TEST_F(ArgumentParserTest, TypedGetWrongType)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 10, .unit = "px"}},
-        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 10, .unit = "px"}),
+        Tuple::Element::unnamed(Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
@@ -1500,8 +1525,1344 @@ TEST_F(ArgumentParserTest, TypedGetWrongType)
 
 TEST_F(ArgumentParserTest, TypedGetMissingName)
 {
-    auto args = makeTuple({{.name = std::nullopt, .value = Numeric {.value = 10, .unit = ""}}});
+    Tuple args({Tuple::Element::unnamed(Numeric {.value = 10, .unit = ""})});
     auto resolved = ArgumentParser {{.name = "x"}}.resolve(args);
 
     EXPECT_THROW(resolved.get<Numeric>("nonexistent"), Base::ExpressionError);
+}
+
+// Insets / shorthand constructor tests
+
+TEST_F(ParserTest, PaddingShorthand1Arg)
+{
+    Parser parser("padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 10.0);
+}
+
+TEST_F(ParserTest, PaddingShorthand2Args)
+{
+    Parser parser("padding(10px, 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 5.0);
+}
+
+TEST_F(ParserTest, PaddingShorthand3Args)
+{
+    Parser parser("padding(10px, 5px, 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 5.0);
+}
+
+TEST_F(ParserTest, PaddingShorthand4Args)
+{
+    Parser parser("padding(10px, 5px, 20px, 15px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 15.0);
+}
+
+TEST_F(ParserTest, PaddingNamedVerticalHorizontal)
+{
+    Parser parser("padding(vertical: 10px, horizontal: 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 5.0);
+}
+
+TEST_F(ParserTest, PaddingNamedExplicitSides)
+{
+    Parser parser("padding(top: 1px, right: 2px, bottom: 3px, left: 4px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 2.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 3.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 4.0);
+}
+
+TEST_F(ParserTest, PaddingMixedNamedOverride)
+{
+    // Start with uniform 10px, then override top
+    Parser parser("padding(10px, top: 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 10.0);
+}
+
+TEST_F(ParserTest, MarginsFunction)
+{
+    Parser parser("margins(5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Margins);
+}
+
+TEST_F(ParserTest, InsetsConvertsTupleArgToTargetKind)
+{
+    // padding(margins(...)) should re-tag the margins tuple as padding
+    Parser parser("padding(margins(1px, 2px, 3px, 4px))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 2.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 3.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 4.0);
+}
+
+TEST_F(ParserTest, InsetsConvertsGenericTupleArg)
+{
+    Parser parser("padding((top: 5px, right: 10px, bottom: 15px, left: 20px))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 20.0);
+}
+
+TEST_F(ParserTest, BorderThicknessFunction)
+{
+    Parser parser("border_thickness(1px, 2px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::BorderThickness);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 1.0);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("right").value, 2.0);
+}
+
+// Kind propagation through arithmetic
+
+TEST_F(ParserTest, KindPreservedThroughAdd)
+{
+    Parser parser("padding(10px) + padding(5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 15.0);
+}
+
+TEST_F(ParserTest, KindPreservedThroughScalarMultiply)
+{
+    Parser parser("padding(10px) * 2");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 20.0);
+}
+
+TEST_F(ParserTest, KindPreservedThroughNegate)
+{
+    Parser parser("-padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, -10.0);
+}
+
+TEST_F(ParserTest, KindMismatchError)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("padding(10px) + margins(5px)");
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, TypedKindPlusGenericKeepsKind)
+{
+    Parser parser("padding(10px) + (top: 5px, right: 5px, bottom: 5px, left: 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 15.0);
+}
+
+// Insets C++ wrapper tests
+
+TEST_F(ParserTest, InsetsPaddingWrapper)
+{
+    Parser parser("padding(1px, 2px, 3px, 4px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    Padding padding(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(padding.top().value, 1.0);
+    EXPECT_DOUBLE_EQ(padding.right().value, 2.0);
+    EXPECT_DOUBLE_EQ(padding.bottom().value, 3.0);
+    EXPECT_DOUBLE_EQ(padding.left().value, 4.0);
+    EXPECT_DOUBLE_EQ(padding.horizontal().value, 6.0);
+    EXPECT_DOUBLE_EQ(padding.vertical().value, 4.0);
+}
+
+TEST_F(ParserTest, InsetsWrongKindCoercedFromNamedElements)
+{
+    // A Padding tuple has named top/right/bottom/left elements; constructing Margins from it
+    // re-expands via those names and produces valid Margins with the same values.
+    Parser parser("padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    Margins margins(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(margins.top().value, 10.0);
+    EXPECT_DOUBLE_EQ(margins.right().value, 10.0);
+    EXPECT_DOUBLE_EQ(margins.bottom().value, 10.0);
+    EXPECT_DOUBLE_EQ(margins.left().value, 10.0);
+}
+
+// Typed resolve via ParameterManager
+
+TEST_F(ParserTest, ResolveTypedPadding)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{.name = "TestPadding", .value = "padding(1px, 2px, 3px, 4px)"}},
+        ParameterSource::Metadata {.name = "Insets Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    // Construct a default Padding for the definition
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
+
+    ParameterDefinition<Padding> def {.name = "TestPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 2.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 3.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 4.0);
+}
+
+TEST_F(ParserTest, ResolveGenericTupleAsPadding)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {
+            {.name = "ButtonPadding", .value = "(top: 10px, right: 5px, bottom: 10px, left: 20px)"}
+        },
+        ParameterSource::Metadata {.name = "Generic Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
+
+    ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 20.0);
+}
+
+TEST_F(ParserTest, ResolveGenericTupleWithGroupNames)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{.name = "ButtonPadding", .value = "(horizontal: 10px, vertical: 20px)"}},
+        ParameterSource::Metadata {.name = "Generic Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
+
+    ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 20.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 20.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 10.0);
+}
+
+TEST_F(ParserTest, ResolveGenericTupleWithPositionalShorthand)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{.name = "ButtonPadding", .value = "(10px, 5px)"}},
+        ParameterSource::Metadata {.name = "Generic Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
+
+    ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 5.0);
+}
+
+TEST_F(ParserTest, ResolveTypedPaddingFromMarginsToken)
+{
+    // A Margins token has named top/right/bottom/left elements; resolving it as Padding
+    // re-expands via those names and produces valid Padding with the token's values.
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{.name = "TestMargins", .value = "margins(10px)"}},
+        ParameterSource::Metadata {.name = "Insets Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 5, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 5, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 5, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 5, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
+
+    ParameterDefinition<Padding> def {.name = "TestMargins", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    // Kind coercion succeeds — returns the token's values, not the default.
+    EXPECT_DOUBLE_EQ(resolved.top().value, 10.0);
+}
+
+TEST_F(ParserTest, ResolveTypedPaddingFallsBackOnMissing)
+{
+    Gui::StyleParameters::ParameterManager mgr;
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 7, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 7, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 7, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 7, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
+
+    ParameterDefinition<Padding> def {.name = "NonExistent", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 7.0);
+}
+
+// Corners / border_radius tests
+
+TEST_F(ParserTest, BorderRadiusShorthand1Arg)
+{
+    Parser parser("border_radius(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 10.0);
+}
+
+TEST_F(ParserTest, BorderRadiusShorthand2Args)
+{
+    // 2 values: top-left/bottom-right, top-right/bottom-left (diagonal pairing)
+    Parser parser("border_radius(10px, 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 5.0);
+}
+
+TEST_F(ParserTest, BorderRadiusShorthand3Args)
+{
+    // 3 values: top-left, top-right/bottom-left, bottom-right
+    Parser parser("border_radius(10px, 5px, 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 5.0);
+}
+
+TEST_F(ParserTest, BorderRadiusShorthand4Args)
+{
+    Parser parser("border_radius(10px, 5px, 20px, 15px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 15.0);
+}
+
+TEST_F(ParserTest, BorderRadiusNamedOverride)
+{
+    Parser parser("border_radius(10px, top_left: 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 10.0);
+}
+
+TEST_F(ParserTest, BorderRadiusConvertsTupleArg)
+{
+    // Single tuple argument gets re-tagged
+    Parser parser(
+        "border_radius((top_left: 1px, top_right: 2px, bottom_right: 3px, bottom_left: 4px))"
+    );
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 3.0);
+}
+
+TEST_F(ParserTest, BorderRadiusKindPreservedThroughArithmetic)
+{
+    Parser parser("border_radius(10px) + border_radius(5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top_left").value, 15.0);
+}
+
+TEST_F(ParserTest, BorderRadiusKindMismatchWithInsetsThrows)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("border_radius(10px) + padding(5px)");
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, CornersWrapper)
+{
+    Parser parser("border_radius(1px, 2px, 3px, 4px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    Corners radii(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(radii.topLeft().value, 1.0);
+    EXPECT_DOUBLE_EQ(radii.topRight().value, 2.0);
+    EXPECT_DOUBLE_EQ(radii.bottomRight().value, 3.0);
+    EXPECT_DOUBLE_EQ(radii.bottomLeft().value, 4.0);
+}
+
+TEST_F(ParserTest, CornersFromUnrelatedTupleDefaultsToZero)
+{
+    // A Padding tuple has no corner-named elements; constructing Corners from it
+    // produces zero radii for all corners rather than throwing.
+    Parser parser("padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    Corners corners(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(corners.topLeft().value, 0.0);
+    EXPECT_DOUBLE_EQ(corners.topRight().value, 0.0);
+    EXPECT_DOUBLE_EQ(corners.bottomRight().value, 0.0);
+    EXPECT_DOUBLE_EQ(corners.bottomLeft().value, 0.0);
+}
+
+TEST_F(ParserTest, ResolveTypedCorners)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{.name = "TestRadius", .value = "border_radius(1px, 2px, 3px, 4px)"}},
+        ParameterSource::Metadata {.name = "Corners Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top_left", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("top_right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom_right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom_left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Corners
+    );
+
+    ParameterDefinition<Corners> def {.name = "TestRadius", .defaultValue = Corners(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.topLeft().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.topRight().value, 2.0);
+    EXPECT_DOUBLE_EQ(resolved.bottomRight().value, 3.0);
+    EXPECT_DOUBLE_EQ(resolved.bottomLeft().value, 4.0);
+}
+
+// Gradient tests
+
+TEST_F(ParserTest, LinearGradientMinimal)
+{
+    Parser parser("linear_gradient(#ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    // Default geometry: top to bottom
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x2").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y2").value, 1.0);
+
+    // Stops gathered in named "stops" element
+    const auto* stopsValue = tuple.find("stops");
+    ASSERT_NE(stopsValue, nullptr);
+    ASSERT_TRUE(stopsValue->holds<Tuple>());
+    const auto& stopsTuple = stopsValue->get<Tuple>();
+    EXPECT_EQ(stopsTuple.size(), 2);
+
+    // First stop: position 0, red
+    const auto& firstStop = stopsTuple.at(0).get<Tuple>();
+    EXPECT_DOUBLE_EQ(firstStop.at(0).get<Numeric>().value, 0.0);
+    EXPECT_DOUBLE_EQ(firstStop.at(1).get<Base::Color>().r, 1.0);
+    EXPECT_DOUBLE_EQ(firstStop.at(1).get<Base::Color>().g, 0.0);
+    EXPECT_DOUBLE_EQ(firstStop.at(1).get<Base::Color>().b, 0.0);
+
+    // Second stop: position 1, blue
+    const auto& secondStop = stopsTuple.at(1).get<Tuple>();
+    EXPECT_DOUBLE_EQ(secondStop.at(0).get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(secondStop.at(1).get<Base::Color>().r, 0.0);
+    EXPECT_DOUBLE_EQ(secondStop.at(1).get<Base::Color>().g, 0.0);
+    EXPECT_DOUBLE_EQ(secondStop.at(1).get<Base::Color>().b, 1.0);
+}
+
+TEST_F(ParserTest, LinearGradientExplicitStops)
+{
+    Parser parser("linear_gradient((0, #ff0000), (0.5, #00ff00), (1, #0000ff))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    const auto& stopsTuple = tuple.get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 3);
+
+    EXPECT_DOUBLE_EQ(stopsTuple.at(0).get<Tuple>().at(0).get<Numeric>().value, 0.0);
+    EXPECT_DOUBLE_EQ(stopsTuple.at(1).get<Tuple>().at(0).get<Numeric>().value, 0.5);
+    EXPECT_DOUBLE_EQ(stopsTuple.at(2).get<Tuple>().at(0).get<Numeric>().value, 1.0);
+
+    // Middle stop is green
+    EXPECT_DOUBLE_EQ(stopsTuple.at(1).get<Tuple>().at(1).get<Base::Color>().g, 1.0);
+}
+
+TEST_F(ParserTest, LinearGradientCustomGeometry)
+{
+    Parser parser("linear_gradient(x1: 0, y1: 0, x2: 1, y2: 0, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    // Custom geometry: left to right
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x2").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y2").value, 0.0);
+
+    const auto& stopsTuple = tuple.get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 2);
+}
+
+TEST_F(ParserTest, LinearGradientMixedStops)
+{
+    // Bare color + explicit (position, color) tuples
+    Parser parser("linear_gradient(#ff0000, (0.5, #00ff00), #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    const auto& stopsTuple = result.get<Tuple>().get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 3);
+
+    // Bare #ff0000 at index 0 → position 0/2 = 0.0
+    EXPECT_DOUBLE_EQ(stopsTuple.at(0).get<Tuple>().at(0).get<Numeric>().value, 0.0);
+    // Explicit (0.5, #00ff00)
+    EXPECT_DOUBLE_EQ(stopsTuple.at(1).get<Tuple>().at(0).get<Numeric>().value, 0.5);
+    // Bare #0000ff at index 2 → position 2/2 = 1.0
+    EXPECT_DOUBLE_EQ(stopsTuple.at(2).get<Tuple>().at(0).get<Numeric>().value, 1.0);
+}
+
+TEST_F(ParserTest, RadialGradientMinimal)
+{
+    Parser parser("radial_gradient(#ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::RadialGradient);
+
+    // Default geometry
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cx").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cy").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("radius").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fx").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fy").value, 0.5);
+
+    const auto& stopsTuple = tuple.get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 2);
+}
+
+TEST_F(ParserTest, RadialGradientCustomGeometry)
+{
+    Parser parser("radial_gradient(cx: 0.3, cy: 0.3, radius: 0.8, (0, #ff0000), (1, #0000ff))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cx").value, 0.3);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cy").value, 0.3);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("radius").value, 0.8);
+    // fx/fy default to cx/cy when not specified
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fx").value, 0.3);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fy").value, 0.3);
+}
+
+TEST_F(ParserTest, RadialGradientExplicitFocalPoint)
+{
+    Parser parser("radial_gradient(cx: 0.5, cy: 0.5, fx: 0.2, fy: 0.8, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fx").value, 0.2);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fy").value, 0.8);
+}
+
+TEST_F(ParserTest, GradientTooFewStops)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("linear_gradient(#ff0000)");
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+
+    EXPECT_THROW(
+        {
+            Parser parser("radial_gradient()");
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, GradientKindMismatchThrows)
+{
+    // Build a RadialGradient tuple, then try to wrap it as LinearGradient
+    Parser parser("radial_gradient(#ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    EXPECT_THROW(LinearGradient(result.get<Tuple>()), Base::TypeError);
+}
+
+TEST_F(ParserTest, GradientWrapper)
+{
+    Parser parser("linear_gradient(x1: 0.1, y1: 0.2, x2: 0.3, y2: 0.4, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    LinearGradient gradient(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(gradient.x1(), 0.1);
+    EXPECT_DOUBLE_EQ(gradient.y1(), 0.2);
+    EXPECT_DOUBLE_EQ(gradient.x2(), 0.3);
+    EXPECT_DOUBLE_EQ(gradient.y2(), 0.4);
+
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[0].color.r, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].color.b, 1.0);
+}
+
+TEST_F(ParserTest, RadialGradientWrapper)
+{
+    Parser parser("radial_gradient(cx: 0.3, cy: 0.4, radius: 0.7, fx: 0.1, fy: 0.2, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    RadialGradient gradient(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(gradient.cx(), 0.3);
+    EXPECT_DOUBLE_EQ(gradient.cy(), 0.4);
+    EXPECT_DOUBLE_EQ(gradient.radius(), 0.7);
+    EXPECT_DOUBLE_EQ(gradient.fx(), 0.1);
+    EXPECT_DOUBLE_EQ(gradient.fy(), 0.2);
+
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+}
+
+TEST_F(ParserTest, GradientStopsAccessibleViaMemberAccess)
+{
+    Parser parser("linear_gradient(#ff0000, #0000ff).stops");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().size(), 2);
+}
+
+TEST_F(ParserTest, ResolveTypedLinearGradient)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {
+            {.name = "TestGradient", .value = "linear_gradient(#ff0000, #00ff00, #0000ff)"}
+        },
+        ParameterSource::Metadata {.name = "Gradient Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    // Build a default LinearGradient tuple
+    Tuple defaultStopsTuple({
+        Tuple::Element::unnamed(Tuple({
+            Tuple::Element::unnamed(Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::unnamed(Base::Color(0, 0, 0)),
+        })),
+        Tuple::Element::unnamed(Tuple({
+            Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+            Tuple::Element::unnamed(Base::Color(1, 1, 1)),
+        })),
+    });
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("x1", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("y1", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("x2", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("y2", Numeric {.value = 1, .unit = ""}),
+            Tuple::Element::named("stops", std::move(defaultStopsTuple)),
+        },
+        TupleKind::LinearGradient
+    );
+
+    ParameterDefinition<LinearGradient> def {
+        .name = "TestGradient",
+        .defaultValue = LinearGradient(defaultTuple),
+    };
+    auto resolved = mgr.resolve(def);
+
+    auto stops = resolved.colorStops();
+    ASSERT_EQ(stops.size(), 3);
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 0.5);
+    EXPECT_DOUBLE_EQ(stops[2].position.value, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].color.g, 1.0);  // middle stop is green
+}
+
+// Gradient color function tests
+
+TEST_F(ParserTest, LightenGradient)
+{
+    Parser parser("lighten(linear_gradient(#ff0000, #0000ff), 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // Each stop should be lighter than the original
+    auto originalRed = QColor(0xff, 0x00, 0x00);
+    auto originalBlue = QColor(0x00, 0x00, 0xff);
+    EXPECT_GT(stops[0].color.asValue<QColor>().lightness(), originalRed.lightness());
+    EXPECT_GT(stops[1].color.asValue<QColor>().lightness(), originalBlue.lightness());
+
+    // Positions should be preserved
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 1.0);
+}
+
+TEST_F(ParserTest, DarkenGradient)
+{
+    Parser parser("darken(radial_gradient(#ff0000, #00ff00), 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::RadialGradient);
+
+    RadialGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // Each stop should be darker than the original
+    auto originalRed = QColor(0xff, 0x00, 0x00);
+    auto originalGreen = QColor(0x00, 0xff, 0x00);
+    EXPECT_LT(stops[0].color.asValue<QColor>().lightness(), originalRed.lightness());
+    EXPECT_LT(stops[1].color.asValue<QColor>().lightness(), originalGreen.lightness());
+
+    // Geometry should be preserved
+    EXPECT_DOUBLE_EQ(gradient.cx(), 0.5);
+    EXPECT_DOUBLE_EQ(gradient.cy(), 0.5);
+    EXPECT_DOUBLE_EQ(gradient.radius(), 0.5);
+}
+
+TEST_F(ParserTest, BlendGradientWithColor)
+{
+    Parser parser("blend(linear_gradient(#ff0000, #0000ff), #000000, 50)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // 50% blend of red with black should be ~half red
+    EXPECT_NEAR(stops[0].color.r, 0.5, 0.02);
+    EXPECT_NEAR(stops[0].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[0].color.b, 0.0, 0.02);
+
+    // 50% blend of blue with black should be ~half blue
+    EXPECT_NEAR(stops[1].color.r, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.b, 0.5, 0.02);
+}
+
+TEST_F(ParserTest, BlendColorWithGradient)
+{
+    Parser parser("blend(#000000, linear_gradient(#ff0000, #0000ff), 50)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // 50% blend of black with red should be ~half red
+    EXPECT_NEAR(stops[0].color.r, 0.5, 0.02);
+    EXPECT_NEAR(stops[0].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[0].color.b, 0.0, 0.02);
+
+    // 50% blend of black with blue should be ~half blue
+    EXPECT_NEAR(stops[1].color.r, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.b, 0.5, 0.02);
+}
+
+TEST_F(ParserTest, BlendTwoGradientsThrows)
+{
+    EXPECT_THROW(
+        {
+            Parser parser(
+                "blend(linear_gradient(#ff0000, #0000ff), linear_gradient(#00ff00, #ffff00), 50)"
+            );
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, CoalesceReturnsFirstDefined)
+{
+    Parser parser("coalesce(@UndefinedParam, @TestParam)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Numeric>());
+    EXPECT_DOUBLE_EQ(result.get<Numeric>().value, 10.0);
+    EXPECT_EQ(result.get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, CoalesceReturnsFirstWhenDefined)
+{
+    Parser parser("coalesce(@TestColor, @TestParam)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+    EXPECT_NEAR(result.get<Base::Color>().r, 1.0F, 0.01F);
+}
+
+TEST_F(ParserTest, CoalesceAllUndefinedReturnsFallbackString)
+{
+    Parser parser("coalesce(@Undefined1, @Undefined2)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<std::string>());
+    EXPECT_EQ(result.get<std::string>(), "@Undefined2");
+}
+
+TEST_F(ParserTest, CoalesceSkipsMultipleUndefined)
+{
+    Parser parser("coalesce(@A, @B, @C, @TestNumber)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Numeric>());
+    EXPECT_DOUBLE_EQ(result.get<Numeric>().value, 5.0);
+}
+
+// Shade function tests
+
+TEST_F(ParserTest, ShadeBasicColor)
+{
+    // Position 0.8 = darker than anchor (0.5), so result should be darker than original
+    Parser parser("shade(#ff0000, 0.8)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    auto shaded = result.get<Base::Color>();
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_LT(shadedOklch.lightness, originalOklch.lightness);
+
+    // Hue should be approximately preserved
+    EXPECT_NEAR(shadedOklch.hue, originalOklch.hue, 5.0f);
+}
+
+TEST_F(ParserTest, ShadeWithPercentage)
+{
+    // 80% = position 0.8, same as shade(#ff0000, 0.8)
+    Parser parser("shade(#ff0000, 80%)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    auto shaded = result.get<Base::Color>();
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_LT(shadedOklch.lightness, originalOklch.lightness);
+}
+
+TEST_F(ParserTest, ShadeAnchorReturnsOriginal)
+{
+    // Position 0.5 = anchor, color should be returned unchanged
+    Parser parser("shade(#E01B24, 0.5)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    // NOLINTNEXTLINE(*-magic-numbers)
+    Base::Color original(0xE0 / 255.0F, 0x1B / 255.0F, 0x24 / 255.0F);
+    auto shaded = result.get<Base::Color>();
+    EXPECT_NEAR(shaded.r, original.r, 0.01f);
+    EXPECT_NEAR(shaded.g, original.g, 0.01f);
+    EXPECT_NEAR(shaded.b, original.b, 0.01f);
+}
+
+TEST_F(ParserTest, ShadeLighterPosition)
+{
+    // Position 0.2 = lighter than anchor, result should be lighter than original
+    Parser parser("shade(#ff0000, 0.2)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    auto shaded = result.get<Base::Color>();
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_GT(shadedOklch.lightness, originalOklch.lightness);
+}
+
+TEST_F(ParserTest, ShadeGradient)
+{
+    // Position 0.5 = anchor, gradient stops should be unchanged
+    Parser parser("shade(linear_gradient(#ff0000, #0000ff), 0.5)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    auto originalRedOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    auto originalBlueOklch = Base::toOkLch(Base::Color(0.0f, 0.0f, 1.0f));
+    auto firstOklch = Base::toOkLch(stops[0].color);
+    auto secondOklch = Base::toOkLch(stops[1].color);
+    EXPECT_NEAR(firstOklch.lightness, originalRedOklch.lightness, 0.01f);
+    EXPECT_NEAR(secondOklch.lightness, originalBlueOklch.lightness, 0.01f);
+
+    // Positions should be preserved
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 1.0);
+}
+
+TEST_F(ParserTest, ShadesLighterAndDarker)
+{
+    // Position 0.1 = lighter than anchor, 0.9 = darker than anchor
+    Parser parser("shades(#ff0000, (light: 0.1, dark: 0.9))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto originalOklch = Base::toOkLch(Base::Color(1.0F, 0.0F, 0.0F));
+
+    // "light" shade should be lighter than anchor
+    const auto* lightValue = tuple.find("light");
+    ASSERT_NE(lightValue, nullptr);
+    ASSERT_TRUE(lightValue->holds<Base::Color>());
+    auto lightOklch = Base::toOkLch(lightValue->get<Base::Color>());
+    EXPECT_GT(lightOklch.lightness, originalOklch.lightness);
+
+    // "dark" shade should be darker than anchor
+    const auto* darkValue = tuple.find("dark");
+    ASSERT_NE(darkValue, nullptr);
+    ASSERT_TRUE(darkValue->holds<Base::Color>());
+    auto darkOklch = Base::toOkLch(darkValue->get<Base::Color>());
+    EXPECT_LT(darkOklch.lightness, originalOklch.lightness);
+}
+
+TEST_F(ParserTest, ShadesAnchorExactMatch)
+{
+    // Position 0.5 should produce the exact input color
+    // NOLINTNEXTLINE(*-magic-numbers)
+    Base::Color input(0xE0 / 255.0F, 0x1B / 255.0F, 0x24 / 255.0F);
+
+    Parser parser("shades(#E01B24, (500: 50%))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 1);
+
+    auto* shade500 = tuple.find("500");
+    ASSERT_NE(shade500, nullptr);
+    auto color = shade500->get<Base::Color>();
+    EXPECT_NEAR(color.r, input.r, 0.001F);
+    EXPECT_NEAR(color.g, input.g, 0.001F);
+    EXPECT_NEAR(color.b, input.b, 0.001F);
+}
+
+TEST_F(ParserTest, ShadesMonotonicLightness)
+{
+    // Lightness must strictly decrease from 050 to 900 — no duplicate shades
+    Parser parser(
+        "shades(#E01B24, "
+        "(050: 5%, 100: 10%, 200: 20%, 300: 30%, 400: 40%, "
+        "500: 50%, 600: 60%, 700: 70%, 800: 80%, 900: 90%))"
+    );
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 10);
+
+    std::vector<std::string> steps
+        = {"050", "100", "200", "300", "400", "500", "600", "700", "800", "900"};
+    float previousLightness = 1.0F;
+    for (const auto& step : steps) {
+        auto* value = tuple.find(step);
+        ASSERT_NE(value, nullptr) << "Missing step " << step;
+        auto oklch = Base::toOkLch(value->get<Base::Color>());
+        EXPECT_LT(oklch.lightness, previousLightness)
+            << "Step " << step << " should be darker than previous";
+        previousLightness = oklch.lightness;
+    }
+
+    // Lightest should not be pure white, darkest should not be pure black
+    auto lightest = Base::toOkLch(tuple.find("050")->get<Base::Color>());
+    auto darkest = Base::toOkLch(tuple.find("900")->get<Base::Color>());
+    EXPECT_LT(lightest.lightness, 0.99F);
+    EXPECT_GT(darkest.lightness, 0.10F);
+}
+
+TEST_F(ParserTest, ShadesPreservesHue)
+{
+    Parser parser("shades(#ff0000, (a: 10%, b: 50%, c: 90%))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+
+    auto originalOklch = Base::toOkLch(Base::Color(1.0F, 0.0F, 0.0F));
+
+    for (const auto& element : tuple.elements) {
+        ASSERT_TRUE(element.value->holds<Base::Color>());
+        auto shadeOklch = Base::toOkLch(element.value->get<Base::Color>());
+        // At extreme lightness, chroma can be very low making hue unreliable
+        if (shadeOklch.chroma > 0.01F) {
+            EXPECT_NEAR(shadeOklch.hue, originalOklch.hue, 5.0F);
+        }
+    }
+}
+
+TEST_F(ParserTest, ShadesCustomRange)
+{
+    // A narrower range should produce less variation in lightness
+    Parser parser("shades(#E01B24, (light: 5%, dark: 95%), range: 40%)");
+    auto expr = parser.parse();
+    auto narrowResult = expr->evaluate({.manager = &manager, .context = {}});
+
+    Parser wideParser("shades(#E01B24, (light: 5%, dark: 95%), range: 80%)");
+    auto wideExpr = wideParser.parse();
+    auto wideResult = wideExpr->evaluate({.manager = &manager, .context = {}});
+
+    const auto& narrowTuple = narrowResult.get<Tuple>();
+    const auto& wideTuple = wideResult.get<Tuple>();
+
+    auto narrowLight = Base::toOkLch(narrowTuple.find("light")->get<Base::Color>());
+    auto narrowDark = Base::toOkLch(narrowTuple.find("dark")->get<Base::Color>());
+    float narrowSpan = narrowLight.lightness - narrowDark.lightness;
+
+    auto wideLight = Base::toOkLch(wideTuple.find("light")->get<Base::Color>());
+    auto wideDark = Base::toOkLch(wideTuple.find("dark")->get<Base::Color>());
+    float wideSpan = wideLight.lightness - wideDark.lightness;
+
+    EXPECT_LT(narrowSpan, wideSpan);
+}
+
+TEST_F(ParserTest, ShadesCustomMinMax)
+{
+    // Custom min/max should clamp the lightness range
+    Parser parser("shades(#E01B24, (light: 5%, dark: 95%), min: 20%, max: 90%)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+
+    auto lightOklch = Base::toOkLch(tuple.find("light")->get<Base::Color>());
+    auto darkOklch = Base::toOkLch(tuple.find("dark")->get<Base::Color>());
+
+    // Lightness should stay within the specified bounds (with some tolerance for OKLCH conversion)
+    EXPECT_LE(lightOklch.lightness, 0.91F);
+    EXPECT_GE(darkOklch.lightness, 0.19F);
+}
+
+// content_box() tests
+
+TEST_F(ParserTest, ContentBoxWithSizeTupleAndPadding)
+{
+    Parser parser("content_box((width: 100px, height: 50px), padding(10px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 80.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 30.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithAsymmetricPadding)
+{
+    // padding(top, right, bottom, left): horizontal = right + left = 5 + 15 = 20
+    //                                    vertical   = top + bottom = 10 + 20 = 30
+    Parser parser("content_box((width: 200px, height: 100px), padding(10px, 5px, 20px, 15px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 180.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 70.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithMultipleInsets)
+{
+    // padding(4px): horizontal = 8, vertical = 8
+    // border_thickness(2px): horizontal = 4, vertical = 4
+    // total: width -= 12, height -= 12
+    Parser parser("content_box((width: 100px, height: 60px), padding(4px), border_thickness(2px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 88.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 48.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithSingleNumericInset)
+{
+    // Single numeric: all sides 4px → horizontal=8, vertical=8
+    Parser parser("content_box((width: 100px, height: 60px), 4px)");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 92.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 52.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithTwoNumericInsets)
+{
+    // Each numeric arg is a separate uniform inset, accumulated independently:
+    // 4px all sides + 2px all sides → width -= 12, height -= 12
+    Parser parser("content_box((width: 100px, height: 60px), 4px, 2px)");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 88.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 48.0);
+}
+
+TEST_F(ParserTest, ContentBoxWithNumericValue)
+{
+    // Single Numeric: both width and height start at 32px, subtract padding(4px) = 8px each side
+    Parser parser("content_box(32px, padding(4px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("width").value, 24.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("height").value, 24.0);
+}
+
+TEST_F(ParserTest, ContentBoxPreservesUnit)
+{
+    Parser parser("content_box((width: 100px, height: 50px), padding(10px))");
+    auto result = parser.parse()->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.get<Numeric>("width").unit, "px");
+    EXPECT_EQ(tuple.get<Numeric>("height").unit, "px");
+}
+
+TEST_F(ParserTest, ContentBoxTooFewArguments)
+{
+    Parser parser("content_box((width: 100px, height: 50px))");
+    auto expr = parser.parse();
+    EXPECT_THROW(expr->evaluate({.manager = &manager, .context = {}}), Base::ExpressionError);
 }
