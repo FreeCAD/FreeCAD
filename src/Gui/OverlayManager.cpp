@@ -659,9 +659,7 @@ public:
         if (OverlayParams::getDockOverlayCheckNaviCube() && activeView
             && activeView->getViewer()->isEnabledNaviCube()) {
             naviCorner = App::GetApplication()
-                             .GetParameterGroupByPath(
-                                 "User parameter:BaseApp/Preferences/NaviCube"
-                             )
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/NaviCube")
                              ->GetInt("CornerNaviCube", 1);
         }
 
