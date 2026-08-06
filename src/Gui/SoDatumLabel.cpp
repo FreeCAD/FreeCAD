@@ -292,9 +292,8 @@ SoDatumLabel::SoDatumLabel()
     m_TextSwitch->addChild(m_TextSeparator);
 
     m_TextDepth = new SoDepthBuffer;
-    m_TextDepth->test.setValue(false);
+    m_TextDepth->test.setValue(true);
     m_TextDepth->write.setValue(false);
-    m_TextDepth->function.setValue(SoDepthBuffer::ALWAYS);
     m_TextSeparator->addChild(m_TextDepth);
 
     auto* textLightModel = new SoLightModel;
