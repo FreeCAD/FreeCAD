@@ -145,33 +145,33 @@ void PatternPathParametersWidget::updatePathButton()
         return;
         ui->pathButton->setText(tr("Select path…"));
 
-    QString text = QString::fromUtf8(pathProperty->getValue()->Label.getValue());
-    if (text.isEmpty()) {
-        text = QString::fromLatin1(pathProperty->getValue()->getNameInDocument());
-    }
-    const auto subnames = pathProperty->getSubValues();
-    if (!subnames.empty()) {
-        text += QStringLiteral(" : %1").arg(QString::fromStdString(subnames.front()));
-        if (subnames.size() > 1) {
-            text += tr(" (+%1)").arg(subnames.size() - 1);
+        QString text = QString::fromUtf8(pathProperty->getValue()->Label.getValue());
+        if (text.isEmpty()) {
+            text = QString::fromLatin1(pathProperty->getValue()->getNameInDocument());
         }
+        const auto subnames = pathProperty->getSubValues();
+        if (!subnames.empty()) {
+            text += QStringLiteral(" : %1").arg(QString::fromStdString(subnames.front()));
+            if (subnames.size() > 1) {
+                text += tr(" (+%1)").arg(subnames.size() - 1);
+            }
+        }
+        ui->pathButton->setText(text);
     }
-    ui->pathButton->setText(text);
-}
 
-void PatternPathParametersWidget::applyQuantitySpinboxes() const
-{
-    ui->count->apply();
-    ui->spacing->apply();
-    ui->startOffset->apply();
-    ui->endOffset->apply();
-}
+    void PatternPathParametersWidget::applyQuantitySpinboxes() const
+    {
+        ui->count->apply();
+        ui->spacing->apply();
+        ui->startOffset->apply();
+        ui->endOffset->apply();
+    }
 
-void PatternPathParametersWidget::updateVisibility()
-{
-    const int mode = ui->spacingMode->currentIndex();
-    ui->countLabel->setVisible(mode != 1);
-    ui->count->setVisible(mode != 1);
-    ui->spacingLabel->setVisible(mode != 0);
-    ui->spacing->setVisible(mode != 0);
-}
+    void PatternPathParametersWidget::updateVisibility()
+    {
+        const int mode = ui->spacingMode->currentIndex();
+        ui->countLabel->setVisible(mode != 1);
+        ui->count->setVisible(mode != 1);
+        ui->spacingLabel->setVisible(mode != 0);
+        ui->spacing->setVisible(mode != 0);
+    }
