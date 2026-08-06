@@ -44,7 +44,7 @@
 
 #include "AssemblyObject.h"
 #include "AssemblyUtils.h"
-#include "JointGroup.h"
+#include "Groups.h"
 
 #include "AssemblyLink.h"
 #include "AssemblyLinkPy.h"
@@ -100,6 +100,14 @@ void AssemblyLink::onChanged(const App::Property* prop)
     if (App::GetApplication().isRestoring()) {
         App::Part::onChanged(prop);
         return;
+    }
+
+    if (prop == &Group) {
+        for (auto* obj : getInList()) {
+            if (auto* assemblyLink = freecad_cast<AssemblyLink*>(obj)) {
+                assemblyLink->updateContents();
+            }
+        }
     }
 
     if (prop == &Rigid) {
@@ -220,9 +228,16 @@ void AssemblyLink::onChanged(const App::Property* prop)
                 propPlc->setValue(movePlc);
             }
         }
+        updateParentJoints();
         return;
     }
     App::Part::onChanged(prop);
+}
+
+void AssemblyLink::onDocumentRestored()
+{
+    App::Part::onDocumentRestored();
+    updateContents();
 }
 
 void AssemblyLink::updateParentJoints()
@@ -234,7 +249,7 @@ void AssemblyLink::updateParentJoints()
 
     bool rigid = Rigid.getValue();
     // Iterate joints in the immediate parent assembly only (recursive=false)
-    for (auto* joint : parent->getJoints(false, false, false)) {
+    for (auto* joint : parent->getJoints(false, false)) {
         for (const char* refName : {"Reference1", "Reference2"}) {
             auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
             if (!prop) {
@@ -513,7 +528,7 @@ void copyPropertyIfDifferent(
     }
 }
 
-std::string removeUpToName(const std::string& sub, const std::string& name)
+[[maybe_unused]] std::string removeUpToName(const std::string& sub, const std::string& name)
 {
     size_t pos = sub.find(name);
     if (pos != std::string::npos) {
@@ -527,7 +542,7 @@ std::string removeUpToName(const std::string& sub, const std::string& name)
     return sub;
 }
 
-std::string replaceLastOccurrence(
+[[maybe_unused]] std::string replaceLastOccurrence(
     const std::string& str,
     const std::string& oldStr,
     const std::string& newStr
@@ -553,8 +568,7 @@ void AssemblyLink::synchronizeJoints()
 
     JointGroup* jGroup = ensureJointGroup();
 
-    std::vector<App::DocumentObject*> assemblyJoints
-        = assembly->getJoints(assembly->isTouched(), false, false);
+    std::vector<App::DocumentObject*> assemblyJoints = assembly->getJoints(false, false);
     std::vector<App::DocumentObject*> assemblyLinkJoints = getJoints();
 
     // We delete the excess of joints if any

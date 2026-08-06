@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Clone object."""
+
 ## @package clone
 # \ingroup draftobjects
 # \brief Provides the object code for the Clone object.

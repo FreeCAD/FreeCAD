@@ -30,71 +30,81 @@
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="128"/>
+      <source>&amp;Copy</source>
+      <translation>&amp;Copia</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="131"/>
+      <source>Ctrl+C</source>
+      <translation>Ctrl+C</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Help</source>
       <translation>&amp;Aiuto</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="131"/>
+      <location filename="../../UnitTest.ui" line="144"/>
       <source>F1</source>
       <translation>F1</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="141"/>
+      <location filename="../../UnitTest.ui" line="154"/>
       <source>&amp;About</source>
       <translation>&amp;Informazioni su</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="144"/>
+      <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+A</source>
       <translation>Alt+I</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="154"/>
-      <source>&amp;Close</source>
-      <translation>&amp;Chiudi</translation>
+      <location filename="../../UnitTest.ui" line="167"/>
+      <source>Close</source>
+      <translation>Chiudi</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="157"/>
+      <location filename="../../UnitTest.ui" line="170"/>
       <source>Alt+C</source>
       <translation>Alt+C</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="169"/>
+      <location filename="../../UnitTest.ui" line="182"/>
       <source>Progress</source>
       <translation>Avanzamento</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="188"/>
+      <location filename="../../UnitTest.ui" line="201"/>
       <source>Run</source>
       <translation>Esegui</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="205"/>
+      <location filename="../../UnitTest.ui" line="218"/>
       <source>Failures</source>
       <translation>Fallimenti</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="222"/>
+      <location filename="../../UnitTest.ui" line="235"/>
       <source>Errors</source>
       <translation>Errori</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="239"/>
+      <location filename="../../UnitTest.ui" line="252"/>
       <source>Remaining</source>
       <translation>Rimanente</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="259"/>
+      <location filename="../../UnitTest.ui" line="272"/>
       <source>Failures and Errors</source>
       <translation>Fallimenti ed errori</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="275"/>
+      <location filename="../../UnitTest.ui" line="288"/>
       <source>Description</source>
       <translation>Descrizione</translation>
     </message>
     <message>
-      <location filename="../../UnitTest.ui" line="292"/>
+      <location filename="../../UnitTest.ui" line="305"/>
       <source>Idle</source>
       <translation>Inattivo</translation>
     </message>
@@ -102,12 +112,12 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="167"/>
+      <location filename="../../UnitTestImp.cpp" line="172"/>
       <source>Help</source>
       <translation>Aiuto</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="168"/>
+      <location filename="../../UnitTestImp.cpp" line="173"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
@@ -117,18 +127,23 @@ Double click on an error in the tree view to see more information about it, incl
 Fare doppio clic su un errore nell'albero per visualizzare maggiori informazioni, inclusa la cronologia.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="182"/>
+      <location filename="../../UnitTestImp.cpp" line="187"/>
       <source>About FreeCAD UnitTest</source>
       <translation>Informazioni su FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="183"/>
+      <location filename="../../UnitTestImp.cpp" line="188"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>
       <translation>Copyright (c) Werner Mayer 
 
 FreeCAD UnitTest fa parte di FreeCAD e supporta la scrittura di Unit test per i propri moduli.</translation>
+    </message>
+    <message>
+      <location filename="../../UnitTestImp.cpp" line="206"/>
+      <source>Errors copied to clipboard</source>
+      <translation>Errore copiato negli appunti</translation>
     </message>
   </context>
 </TS>

@@ -109,7 +109,9 @@ public:
     Part ::PropertyPartShape InternalShape;
     App ::PropertyPrecision InternalTolerance;
     App ::PropertyBool MakeInternals;
-    App ::PropertyInteger _ExternalGeoVersion;
+    // Internal-face pipeline: 1 = legacy FaceMakerRing (<= 1.1), 2 = FaceMakerBuildFace.
+    // Kept so old documents' internal-face names stay stable and references resolve.
+    App::PropertyInteger _InternalFaceVersion;
     /** @name methods override Feature */
     //@{
     short mustExecute() const override;
@@ -152,6 +154,7 @@ public:
      */
     bool isInGroup(int geoId, bool includeHandle = true) const;
     bool isGroupHandle(int geoId) const;
+    std::set<int> getGroupGeometries(int handleGeoId) const;
     /*!
      \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
      \param geoId - the geometry id in the sketch
@@ -398,15 +401,12 @@ public:
     /// Change an angle constraint to its supplementary angle.
     void reverseAngleConstraintToSupplementary(Constraint* constr, int constNum);
     void inverseAngleConstraint(Constraint* constr);
-    /// Modify an angle constraint expression string to its supplementary angle
-    static std::string reverseAngleConstraintExpression(std::string expression);
 
     // Check if a constraint has an expression associated.
     bool constraintHasExpression(int constNum) const;
     // Get a constraint associated expression
     std::string getConstraintExpression(int constNum) const;
     // Set a constraint associated expression
-    void setConstraintExpression(int constNum, const std::string& newExpression);
     void setExpression(const App::ObjectIdentifier& path, std::shared_ptr<App::Expression> expr) override;
 
     /// set the driving status of this constraint and solve
@@ -481,7 +481,7 @@ public:
     );
 
     /// trim a curve
-    int trim(int geoId, const Base::Vector3d& point);
+    int trim(int geoId, const Base::Vector3d& point, bool includeSketchAxes = false);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
     /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
@@ -940,6 +940,7 @@ public:
     bool seekTrimPoints(
         int GeoId,
         const Base::Vector3d& point,
+        bool includeSketchAxes,
         int& GeoId1,
         Base::Vector3d& intersect1,
         int& GeoId2,
@@ -1089,6 +1090,9 @@ protected:
 
     // migration functions
     void migrateSketch();
+    /// Derive the signed-constraint orientations of a legacy sketch from its stored geometry.
+    /// Must be called once the external geometry of the sketch is available.
+    void migrateConstraintOrientations();
 
     static void appendConstraintsMsg(
         const std::vector<int>& vector,
@@ -1137,6 +1141,13 @@ protected:
         Sketcher::PointPos thirdPos = Sketcher::PointPos::none
     );
 
+    // sets the constraint's orientation flag
+    // if applicable using the geometric state
+    // if reset is set to false, the function
+    // will return early when the constraint
+    // already has an orientation
+    void setOrientation(Constraint* constr, bool reset);
+
 public:
     // FIXME: These may not need to be public. Decide before merging.
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(
@@ -1147,6 +1158,15 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    /// As getGeometry, but warns instead of quietly returning nullptr when @p geoId cannot be
+    /// resolved, so that a constraint left without an orientation is traceable.
+    const Part::Geometry* getGeometryOrWarn(int geoId) const;
+    void setOrientationDistance(Constraint* constr);
+    void setOrientationTangent(Constraint* constr);
+    /// Re-derive the orientation of every signed constraint that references one of
+    /// @p reversedGeoIds, whose projection came back running the other way.
+    void reorientConstraintsOnReversedGeometry(const std::set<int>& reversedGeoIds);
+
     /// Internal helper method for exposeInternalGeometryForType
     /// Add geometry and constraints to `this`, then delete the geometry and constraints in the
     /// vectors Note that the contents of the two vectors are invalid after this call.

@@ -26,9 +26,8 @@
 #pragma once
 
 #include <CXX/Extensions.hxx>
-#include <QTranslator>
-#include <memory>
-#include <list>
+#include <string>
+#include <vector>
 #include <FCGlobal.h>
 
 namespace Py
@@ -42,6 +41,8 @@ namespace Base
 
 class BaseExport Translate: public Py::ExtensionModule<Translate>  // NOLINT
 {
+    friend class QtModulePy;
+
 public:
     Translate();
     ~Translate() override;
@@ -55,7 +56,7 @@ private:
     Py::Object removeTranslators(const Py::Tuple& args);
 
 private:
-    std::list<std::shared_ptr<QTranslator>> translators;
+    std::vector<std::string> translators;
 };
 
 }  // namespace Base

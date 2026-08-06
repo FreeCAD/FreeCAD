@@ -31,6 +31,8 @@ QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
+view_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+arch_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
 
 class BIM_DrawingView:
@@ -56,29 +58,35 @@ class BIM_DrawingView:
 
         import Draft
 
+        default_line_width = view_params.GetInt("DefaultShapeLineWidth", 2)
+        thickness_ratio = arch_params.GetFloat("CutLineThickness", 2.0)
+        cut_lines_width = default_line_width * thickness_ratio
+
         FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Create 2D View"))
         FreeCADGui.addModule("Arch")
         FreeCADGui.addModule("Draft")
         FreeCADGui.addModule("WorkingPlane")
-        FreeCADGui.doCommand("obj = Arch.make2DDrawing()")
-        FreeCADGui.doCommand("Draft.autogroup(obj)")
         s = FreeCADGui.Selection.getSelection()
-        if len(s) == 1:
-            s = s[0]
-            if Draft.getType(s) == "SectionPlane":
-                FreeCADGui.doCommand(
-                    "vobj = Draft.make_shape2dview(FreeCAD.ActiveDocument." + s.Name + ")"
-                )
-                FreeCADGui.doCommand('vobj.Label = "' + translate("BIM", "Viewed lines") + '"')
-                FreeCADGui.doCommand("vobj.InPlace = False")
-                FreeCADGui.doCommand("obj.addObject(vobj)")
-                FreeCADGui.doCommand(
-                    "cobj = Draft.make_shape2dview(FreeCAD.ActiveDocument." + s.Name + ")"
-                )
-                FreeCADGui.doCommand('cobj.Label = "' + translate("BIM", "Cut lines") + '"')
-                FreeCADGui.doCommand("cobj.InPlace = False")
-                FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
-                FreeCADGui.doCommand("obj.addObject(cobj)")
+        section = None
+        if len(s) == 1 and Draft.getType(s[0]) == "SectionPlane":
+            section = s[0]
+        if section:
+            section_object = "FreeCAD.ActiveDocument.getObject(" + repr(section.Name) + ")"
+            FreeCADGui.doCommand("obj = Arch.make2DDrawing(baseobj=" + section_object + ")")
+        else:
+            FreeCADGui.doCommand("obj = Arch.make2DDrawing()")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
+        if section:
+            FreeCADGui.doCommand("vobj = Draft.make_shape2dview(" + section_object + ")")
+            FreeCADGui.doCommand("vobj.Label = " + repr(translate("BIM", "Viewed lines")))
+            FreeCADGui.doCommand("vobj.InPlace = False")
+            FreeCADGui.doCommand("obj.addObject(vobj)")
+            FreeCADGui.doCommand("cobj = Draft.make_shape2dview(" + section_object + ")")
+            FreeCADGui.doCommand("cobj.Label = " + repr(translate("BIM", "Cut lines")))
+            FreeCADGui.doCommand("cobj.InPlace = False")
+            FreeCADGui.doCommand('cobj.ProjectionMode = "Cutfaces"')
+            FreeCADGui.doCommand("cobj.ViewObject.LineWidth = " + str(cut_lines_width))
+            FreeCADGui.doCommand("obj.addObject(cobj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

@@ -15,12 +15,14 @@ macro(ConfigureCMakeVariables)
         include(GNUInstallDirs)
     endif()
 
-    set(PYCXX_INCLUDE_DIR
-        "${CMAKE_SOURCE_DIR}/src/3rdParty/PyCXX" CACHE PATH
-        "Path to the directory containing PyCXX's CXX/Config.hxx include file")
-    set(PYCXX_SOURCE_DIR
-        "${CMAKE_SOURCE_DIR}/src/3rdParty/PyCXX/CXX" CACHE PATH
-        "Path to the directory containing PyCXX's cxxextensions.c source file")
+    if (NOT FREECAD_USE_EXTERNAL_PYCXX)
+        set(PYCXX_INCLUDE_DIRS
+            "${CMAKE_SOURCE_DIR}/src/3rdParty/PyCXX" CACHE PATH
+            "Path to the directory containing PyCXX's CXX/Config.hxx include file")
+        set(PYCXX_SOURCE_DIR
+            "${CMAKE_SOURCE_DIR}/src/3rdParty/PyCXX/CXX" CACHE PATH
+            "Path to the directory containing PyCXX's cxxextensions.c source file")
+    endif()
 
     # used as compiler defines
     set(RESOURCEDIR "${CMAKE_INSTALL_DATADIR}")

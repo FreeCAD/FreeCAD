@@ -28,7 +28,7 @@
 
 #include <Base/Parameter.h>
 
-#include "MDIView.h"
+#include "MDIViewWithCamera.h"
 
 #include "Base/Vector3D.h"
 
@@ -78,7 +78,7 @@ protected:
  *  It consists out of the 3D view
  *  \author Juergen Riegel
  */
-class GuiExport View3DInventor: public MDIView
+class GuiExport View3DInventor: public MDIViewWithCamera
 {
     Q_OBJECT
 
@@ -121,8 +121,8 @@ public:
      */
     void setCurrentViewMode(ViewMode b) override;
     RayPickInfo getObjInfoRay(Base::Vector3d* startvec, Base::Vector3d* dirvec);
-    const std::string& getCamera() const;
-    bool setCamera(const char* pCamera);
+    const std::string& getCamera() const override;
+    bool setCamera(const char* pCamera) override;
     void toggleClippingPlane();
     bool hasClippingPlane() const;
 

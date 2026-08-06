@@ -75,9 +75,6 @@ public:
     Py::Object isPopupMenuEnabled();
     Py::Object dump(const Py::Tuple&);
     Py::Object dumpNode(const Py::Tuple&);
-    Py::Object setStereoType(const Py::Tuple&);
-    Py::Object getStereoType();
-    Py::Object listStereoTypes();
     Py::Object saveImage(const Py::Tuple&);
     Py::Object saveVectorGraphic(const Py::Tuple&);
     Py::Object getCamera();
@@ -107,6 +104,8 @@ public:
     Py::Object getViewer();
     Py::Object addEventCallbackPivy(const Py::Tuple&);
     Py::Object removeEventCallbackPivy(const Py::Tuple&);
+    Py::Object addEventCallbackSWIG(const Py::Tuple&);
+    Py::Object removeEventCallbackSWIG(const Py::Tuple&);
     Py::Object listNavigationTypes();
     Py::Object getNavigationType();
     Py::Object setNavigationType(const Py::Tuple&);

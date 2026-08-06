@@ -723,97 +723,98 @@ TEST_F(SketchObjectTest, testDeleteOnlyUnusedInternalGeometryOfBSpline)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
 }
 
+auto setupAngleConstraint(Sketcher::SketchObject* obj, const std::string& expr)
+{
+    auto constraint = std::make_unique<Sketcher::Constraint>();
+    constraint->Type = Sketcher::ConstraintType::Angle;
+    auto id = obj->addConstraint(constraint.get());
+    obj->setExpression(obj->Constraints.createPath(id), App::Expression::parse(obj, expr));
+    return std::tuple {std::move(constraint), id};
+}
+
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits1)
 {
-    std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("180 - 60");
-    EXPECT_EQ(expr, std::string("60"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "180 - 60");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("60"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionNoUnits2)
 {
-    std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("60");
-    EXPECT_EQ(expr, std::string("180 - (60)"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "60");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180 - 60"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionWithUnits1)
 {
-    std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("180 ° - 60 °");
-    EXPECT_EQ(expr, std::string("60 °"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "180 ° - 60 °");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("60 °"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionWithUnits2)
 {
-    std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("60 °");
-    EXPECT_EQ(expr, std::string("180 ° - (60 °)"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "60 °");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180 ° - 60 °"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionWithUnits3)
 {
-    std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("60 deg");
-    EXPECT_EQ(expr, std::string("180 ° - (60 deg)"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "60 deg");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180 ° - 60 deg"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionWithUnits4)
 {
-    std::string expr = Sketcher::SketchObject::reverseAngleConstraintExpression("1rad");
-    EXPECT_EQ(expr, std::string("180 ° - (1rad)"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "1rad");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180 ° - 1 rad"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionApplyAndReverse1)
 {
-    std::string expr = "180";
-    expr = Sketcher::SketchObject::reverseAngleConstraintExpression(expr);
-    expr = Sketcher::SketchObject::reverseAngleConstraintExpression(expr);
-    EXPECT_EQ(expr, std::string("(180)"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "180");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionApplyAndReverse2)
 {
-    std::string expr = "(30 + 15) * 2 / 3";
-    expr = Sketcher::SketchObject::reverseAngleConstraintExpression(expr);
-    expr = Sketcher::SketchObject::reverseAngleConstraintExpression(expr);
-    EXPECT_EQ(expr, std::string("((30 + 15) * 2 / 3)"));
+    auto [constraint, id] = setupAngleConstraint(getObject(), "(30 + 15) * 2 / 3");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    auto supExpr = getObject()->getConstraintExpression(id);
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180 - (30 + 15) * 2 / 3"), supExpr);
+    EXPECT_EQ(std::string("(30 + 15) * 2 / 3"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionSimple)
 {
-    // Arrange
-    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
-    constraint->Type = Sketcher::ConstraintType::Angle;
-    auto id = getObject()->addConstraint(constraint);
-
-    App::ObjectIdentifier path(App::ObjectIdentifier::parse(getObject(), "Constraints[0]"));
-    std::shared_ptr<App::Expression> shared_expr(App::Expression::parse(getObject(), "0"));
-    getObject()->setExpression(path, shared_expr);
-
-    getObject()->setConstraintExpression(id, "180 - (60)");
-
-    // Act
-    getObject()->reverseAngleConstraintToSupplementary(constraint, id);
-
-    // Assert
+    auto [constraint, id] = setupAngleConstraint(getObject(), "180 - (60)");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
     EXPECT_EQ(std::string("60"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionApplyAndReverse)
 {
-    // Arrange
-    auto constraint = new Sketcher::Constraint();  // Ownership will be transferred to the sketch
-    constraint->Type = Sketcher::ConstraintType::Angle;
-    auto id = getObject()->addConstraint(constraint);
-
-    App::ObjectIdentifier path(App::ObjectIdentifier::parse(getObject(), "Constraints[0]"));
-    std::shared_ptr<App::Expression> shared_expr(App::Expression::parse(getObject(), "0"));
-    getObject()->setExpression(path, shared_expr);
-
-    getObject()->setConstraintExpression(id, "32 °");
-
-    // Act
-    getObject()->reverseAngleConstraintToSupplementary(constraint, id);
-    getObject()->reverseAngleConstraintToSupplementary(constraint, id);
-
-    // Assert
+    auto [constraint, id] = setupAngleConstraint(getObject(), "32 °");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
     EXPECT_EQ(std::string("32 °"), getObject()->getConstraintExpression(id));
+}
+
+TEST_F(SketchObjectTest, testReverseAngleConstraintToSupplementaryExpressionFunction)
+{
+    auto [constraint, id] = setupAngleConstraint(getObject(), "atan(0.03)");
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    auto supExpr = getObject()->getConstraintExpression(id);
+    getObject()->reverseAngleConstraintToSupplementary(constraint.get(), id);
+    EXPECT_EQ(std::string("180 ° - atan(0.03)"), supExpr);
+    EXPECT_EQ(std::string("atan(0.03)"), getObject()->getConstraintExpression(id));
 }
 
 TEST_F(SketchObjectTest, testGetElementName)

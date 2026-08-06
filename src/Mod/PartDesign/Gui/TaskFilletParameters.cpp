@@ -219,6 +219,7 @@ void TaskFilletParameters::setupGizmos(ViewProviderDressUp* vp)
     gizmoContainer = GizmoContainer::create({radiusGizmo, radiusGizmo2}, vp);
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskFilletParameters::setGizmoPositions()

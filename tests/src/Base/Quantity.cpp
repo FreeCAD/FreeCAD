@@ -85,6 +85,18 @@ TEST(BaseQuantity, TestString)
     EXPECT_EQ(q2.getUnit(), Unit::Work);
 }
 
+TEST(BaseQuantityFormat, NumberOptionsAreBaseOwnedBitmask)
+{
+    Base::QuantityFormat fmt;
+    EXPECT_EQ(
+        fmt.option,
+        Base::QuantityFormat::OmitGroupSeparator | Base::QuantityFormat::RejectGroupSeparator
+    );
+
+    fmt.option = Base::QuantityFormat::None;
+    EXPECT_EQ(fmt.option, Base::QuantityFormat::None);
+}
+
 TEST(BaseQuantity, TestCopy)
 {
     const Quantity q1 {1.0, Unit::Length};

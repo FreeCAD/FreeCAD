@@ -201,7 +201,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
              << "Mesh_SectionByPlane"
              << "Mesh_CrossSections";
 
-    mesh->setCommand("&Meshes");
+    mesh->setCommand("Mes&hes");
     *mesh << "Mesh_Import"
           << "Mesh_Export"
           << "Mesh_FromPartShape"

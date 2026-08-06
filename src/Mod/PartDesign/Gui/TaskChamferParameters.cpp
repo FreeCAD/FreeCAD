@@ -115,14 +115,14 @@ TaskChamferParameters::TaskChamferParameters(ViewProviderDressUp* DressUpView, Q
             this, &TaskChamferParameters::doubleClicked);
     // clang-format on
 
+    setupGizmos(DressUpView);
+
     if (strings.size() == 0) {
         setSelectionMode(refSel);
     }
     else {
         hideOnError();
     }
-
-    setupGizmos(DressUpView);
 }
 
 void TaskChamferParameters::setUpUI(PartDesign::Chamfer* pcChamfer)
@@ -386,6 +386,7 @@ void TaskChamferParameters::setupGizmos(ViewProviderDressUp* vp)
     setGizmoPositions();
 
     ui->chamferType->currentIndexChanged(ui->chamferType->currentIndex());
+    showDraggerHints();
 }
 
 void TaskChamferParameters::setGizmoPositions()

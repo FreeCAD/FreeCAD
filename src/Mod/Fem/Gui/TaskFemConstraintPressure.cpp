@@ -125,7 +125,7 @@ void TaskFemConstraintPressure::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintPressure* pcConstraint = ConstraintView->getObject<Fem::ConstraintPressure>();
@@ -134,7 +134,7 @@ void TaskFemConstraintPressure::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -142,7 +142,7 @@ void TaskFemConstraintPressure::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -154,7 +154,7 @@ void TaskFemConstraintPressure::addToSelection()
             if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only faces (edges in 2D models) can be picked")
                 );
                 return;
@@ -191,7 +191,7 @@ void TaskFemConstraintPressure::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintPressure* pcConstraint = ConstraintView->getObject<Fem::ConstraintPressure>();
@@ -200,7 +200,7 @@ void TaskFemConstraintPressure::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -318,7 +318,7 @@ bool TaskDlgFemConstraintPressure::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
     /* */

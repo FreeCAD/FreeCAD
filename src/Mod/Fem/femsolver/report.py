@@ -30,7 +30,6 @@ __url__ = "https://www.freecad.org"
 
 import FreeCAD as App
 
-
 INFO = 10
 WARNING = 20
 ERROR = 30

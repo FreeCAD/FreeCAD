@@ -55,6 +55,8 @@ enum class MeasureElementType
     CYLINDER,
     VOLUME,
     SURFACE,
+    TORUS,
+    SPHERE,
 };
 
 

@@ -38,7 +38,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Preferences
 
-
 __title__ = "Assembly Command Create Exploded View"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"

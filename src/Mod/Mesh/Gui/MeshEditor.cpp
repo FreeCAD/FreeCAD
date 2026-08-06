@@ -48,9 +48,11 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/Widgets.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
@@ -240,9 +242,20 @@ void MeshFaceAddition::addFace()
     f._aulPoints[2] = faceView->index[2];
     std::vector<MeshCore::MeshFacet> faces;
     faces.push_back(f);
+    auto numFaces = mesh->countFacets();
     mesh->addFacets(faces, true);
     mf->Mesh.finishEditing();
-    doc->commitTransaction();
+    if (mesh->countFacets() > numFaces) {
+        doc->commitTransaction();
+    }
+    else {
+        doc->abortTransaction();
+        auto label = new Gui::StatusWidget(Gui::getMainWindow());
+        label->setAttribute(Qt::WA_DeleteOnClose);
+        label->setStatusText(tr("Cannot add triangle to avoid non-manifolds."));
+        label->show();
+        QTimer::singleShot(3000, label, &Gui::StatusWidget::close);
+    }
 
     clearPoints();
 }
@@ -386,8 +399,9 @@ void MeshFaceAddition::addFacetCallback(void* ud, SoEventCallback* n)
             && mbe->getState() == SoButtonEvent::DOWN) {
             that->addMarkerPoint();
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP
+        ) {
             if (face->index.size() == 3) {
                 QMenu menu;
                 QAction* add = menu.addAction(MeshFaceAddition::tr("Add Triangle"));
@@ -405,8 +419,9 @@ void MeshFaceAddition::addFacetCallback(void* ud, SoEventCallback* n)
                 }
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP
+        ) {
             QMenu menu;
             QAction* fin = menu.addAction(MeshFaceAddition::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());
@@ -756,8 +771,9 @@ void MeshFillHole::fileHoleCallback(void* ud, SoEventCallback* n)
                 }
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP
+        ) {
             QMenu menu;
             QAction* fin = menu.addAction(MeshFillHole::tr("Finish"));
             QAction* act = menu.exec(QCursor::pos());

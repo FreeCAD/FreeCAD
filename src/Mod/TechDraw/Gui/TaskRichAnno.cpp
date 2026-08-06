@@ -515,7 +515,7 @@ void TaskRichAnno::refocusAnnotation()
     // Use a zero-delay timer to schedule the focus change.
     // This allows the current widget interaction (e.g., the checkbox toggling)
     // to complete fully before we shift focus.
-    QTimer::singleShot(0, [this]() {
+    QTimer::singleShot(0, this, [this]() {
         if (m_qgiAnno) {
             m_qgiAnno->refocusAnnotation();
         }

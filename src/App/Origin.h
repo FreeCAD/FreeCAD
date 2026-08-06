@@ -43,6 +43,8 @@ public:
     Origin();
     ~Origin() override;
 
+    void onDocumentRestored() override;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {

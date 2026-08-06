@@ -26,6 +26,7 @@
 #include <memory>
 
 class QMainWindow;
+class QSocketNotifier;
 
 namespace Gui
 {
@@ -46,6 +47,7 @@ private:
     GuiNativeEvent& operator=(const GuiNativeEvent&);
 
     std::unique_ptr<DeadzoneCache> dzCache;
+    QSocketNotifier* spnavNotifier {nullptr};
 
 private Q_SLOTS:
     void pollSpacenav();

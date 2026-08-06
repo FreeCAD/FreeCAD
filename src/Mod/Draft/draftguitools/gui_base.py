@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the base classes for newer Draft Gui Commands."""
+
 ## @package gui_base
 # \ingroup draftguitools
 # \brief Provides the base classes for newer Draft Gui Commands.

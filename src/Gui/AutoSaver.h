@@ -26,38 +26,67 @@
 #include <QObject>
 
 #include <map>
-#include <set>
 #include <string>
 #include <fastsignals/signal.h>
-#include <Base/Writer.h>
 
 namespace App
 {
 class Document;
-class DocumentObject;
-class Property;
 }  // namespace App
 
 namespace Gui
 {
-class ViewProvider;
-
+/**
+ * Per-document autosave scheduling state shared between document change
+ * notifications, timer callbacks, and queued stable-state retries.
+ *
+ * State model:
+ * - dirty: the document changed since the last successful autosave.
+ * - blockedUntilStable: a save was attempted while the document could not write
+ *   a consistent recovery snapshot, so signalBecameStable() should queue one
+ *   retry.
+ *
+ * Save flow:
+ * 1. Document/object changes call markDirtyForAutosave().
+ * 2. A timer pass, explicit flush, or queued stable-state retry calls
+ *    beginSaveAttempt() to claim the dirty state for one save attempt.
+ * 3. saveDocument() writes a full recovery snapshot through App::Document.
+ * 4. If the document is unstable, deferSaveUntilStable() keeps the dirty
+ *    state and retries once the document becomes stable. Ordinary document
+ *    changes only mark dirty state; they do not bypass the autosave timeout.
+ *
+ * All callbacks arrive on the GUI thread: document change signals are delivered
+ * via MainThreadSignal, and timer/retry callbacks run on AutoSaver's thread.
+ * No additional locking is required.
+ */
 class AutoSaveProperty
 {
 public:
+    friend class AutoSaver;
     AutoSaveProperty(const App::Document* doc);
     ~AutoSaveProperty();
     int timerId;
-    std::set<std::string> touched;
-    std::string dirName;
-    std::map<std::string, std::string> fileMap;
+    void markDirtyForAutosave();
+    bool beginSaveAttempt();
+    void deferSaveUntilStable();
+    void restoreFailedSaveAttempt();
 
 private:
-    void slotNewObject(const App::DocumentObject&);
-    void slotChangePropertyData(const App::Property&);
+    void scheduleQueuedRetry();
+    void slotDocumentBecameStable(const App::Document&);
     using Connection = fastsignals::connection;
+    Connection documentChanged;
     Connection documentNew;
+    Connection documentDeleted;
     Connection documentMod;
+    Connection documentUndo;
+    Connection documentRedo;
+    Connection documentStable;
+    std::string documentName;
+    // True when newer document state still needs a recovery snapshot.
+    bool dirty {false};
+    // True when a save attempt is waiting for a stable document.
+    bool blockedUntilStable {false};
 };
 
 /*!
@@ -91,30 +120,12 @@ protected:
     void saveDocument(const std::string&, AutoSaveProperty&);
 
 public Q_SLOTS:
-    void renameFile(QString dirName, QString file, QString tmpFile);
+    void flushPendingSave(const QString& documentName);
 
 private:
     int timeout; /*!< Timeout in milliseconds */
     bool compressed;
     std::map<std::string, AutoSaveProperty*> saverMap;
-};
-
-class RecoveryWriter: public Base::FileWriter
-{
-public:
-    RecoveryWriter(AutoSaveProperty&);
-    ~RecoveryWriter() override;
-
-    /*!
-     This method can be re-implemented in sub-classes to avoid
-     to write out certain objects. The default implementation
-     always returns true.
-     */
-    bool shouldWrite(const std::string&, const Base::Persistence*) const override;
-    void writeFiles() override;
-
-private:
-    AutoSaveProperty& saver;
 };
 
 }  // namespace Gui

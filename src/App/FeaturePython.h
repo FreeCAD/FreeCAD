@@ -83,6 +83,8 @@ public:
 
     int canLoadPartial() const;
 
+    ValueT supportsAsyncRecompute() const;
+
     /// return true to activate tree view group object handling
     ValueT hasChildElement() const;
     /// Get sub-element visibility
@@ -117,6 +119,7 @@ private:
     FC_PY_ELEMENT(allowDuplicateLabel)                                                             \
     FC_PY_ELEMENT(redirectSubName)                                                                 \
     FC_PY_ELEMENT(canLoadPartial)                                                                  \
+    FC_PY_ELEMENT(supportsAsyncRecompute)                                                          \
     FC_PY_ELEMENT(hasChildElement)                                                                 \
     FC_PY_ELEMENT(isElementVisible)                                                                \
     FC_PY_ELEMENT(setElementVisible)                                                               \
@@ -341,6 +344,15 @@ public:
             return ret;
         }
         return FeatureT::canLoadPartial();
+    }
+
+    bool canRecomputeOnWorker() const override
+    {
+        if (!FeatureT::canRecomputeOnWorker()) {
+            return false;
+        }
+
+        return imp->supportsAsyncRecompute() == FeaturePythonImp::Accepted;
     }
 
     /**

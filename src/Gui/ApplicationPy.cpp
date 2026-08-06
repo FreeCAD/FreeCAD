@@ -1,40 +1,55 @@
-/***************************************************************************
- *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2005 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <QApplication>
 #include <QDir>
 #include <QPrinter>
 #include <QFileInfo>
+#include <map>
+#include <QIcon>
+#if defined(Q_OS_WIN)
+# include <windows.h>
+#elif defined(Q_WS_X11)
+# include <QX11EmbedWidget>
+#endif
 #include <Inventor/SoInput.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/SoDB.h>
+#include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/nodekits/SoNodeKit.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <xercesc/util/TranscodingException.hpp>
 #include <xercesc/util/XMLString.hpp>
 
 #include <boost/regex.hpp>
+#include <thread>
 
+#include <App/Application.h>
 #include <App/DocumentObjectPy.h>
 #include <App/DocumentPy.h>
 #include <App/PropertyFile.h>
+#include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
@@ -59,6 +74,7 @@
 #include "PythonWrapper.h"
 #include "SoFCDB.h"
 #include "SplitView3DInventor.h"
+#include "StartupProcess.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
 #include "WaitCursor.h"
@@ -68,496 +84,434 @@
 #include "WorkbenchManipulatorPython.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Language/Translator.h"
+#include "Selection/SoFCUnifiedSelection.h"
 
 
 using namespace Gui;
 
-// Application methods structure
-PyMethodDef ApplicationPy::Methods[] = {
-    {"activateWorkbench",
-     (PyCFunction)ApplicationPy::sActivateWorkbenchHandler,
-     METH_VARARGS,
-     "activateWorkbench(name) -> bool\n"
-     "\n"
-     "Activate workbench by its name. Return False if the workbench is\n"
-     "already active.\n"
-     "\n"
-     "name : str\n    Name of the workbench to activate."},
-    {"addWorkbench",
-     (PyCFunction)ApplicationPy::sAddWorkbenchHandler,
-     METH_VARARGS,
-     "addWorkbench(workbench) -> None\n"
-     "\n"
-     "Add a workbench.\n"
-     "\n"
-     "workbench : Workbench, Workbench type\n"
-     "    Instance of a Workbench subclass or subclass of the\n"
-     "    Workbench class."},
-    {"removeWorkbench",
-     (PyCFunction)ApplicationPy::sRemoveWorkbenchHandler,
-     METH_VARARGS,
-     "removeWorkbench(name) -> None\n"
-     "\n"
-     "Remove a workbench.\n"
-     "\n"
-     "name : str\n    Name of the workbench to remove."},
-    {"getWorkbench",
-     (PyCFunction)ApplicationPy::sGetWorkbenchHandler,
-     METH_VARARGS,
-     "getWorkbench(name) -> Workbench\n"
-     "\n"
-     "Get the workbench by its name.\n"
-     "\n"
-     "name : str\n    Name of the workbench to return."},
-    {"listWorkbenches",
-     (PyCFunction)ApplicationPy::sListWorkbenchHandlers,
-     METH_VARARGS,
-     "listWorkbenches() -> dict\n"
-     "\n"
-     "Get a dictionary with all workbenches."},
-    {"activeWorkbench",
-     (PyCFunction)ApplicationPy::sActiveWorkbenchHandler,
-     METH_VARARGS,
-     "activeWorkbench() -> Workbench\n"
-     "\n"
-     "Return the active workbench object."},
-    {"addResourcePath",
-     (PyCFunction)ApplicationPy::sAddResPath,
-     METH_VARARGS,
-     "addResourcePath(path) -> None\n"
-     "\n"
-     "Add a new path to the system where to find resource files\n"
-     "like icons or localization files.\n"
-     "\n"
-     "path : str, bytes, bytearray\n    Path to resource files."},
-    {"addLanguagePath",
-     (PyCFunction)ApplicationPy::sAddLangPath,
-     METH_VARARGS,
-     "addLanguagePath(path) -> None\n"
-     "\n"
-     "Add a new path to the system where to find language files.\n"
-     "\n"
-     "path : str, bytes, bytearray\n    Path to language files."},
-    {"addIconPath",
-     (PyCFunction)ApplicationPy::sAddIconPath,
-     METH_VARARGS,
-     "addIconPath(path) -> None\n"
-     "\n"
-     "Add a new path to the system where to find icon files.\n"
-     "\n"
-     "path : str, bytes, bytearray\n    Path to icon files."},
-    {"addIcon",
-     (PyCFunction)ApplicationPy::sAddIcon,
-     METH_VARARGS,
-     "addIcon(name, content, format='XPM') -> None\n"
-     "\n"
-     "Add an icon to the system.\n"
-     "\n"
-     "name : str\n    Name of the icon.\n"
-     "content : str, bytes-like\n    Content of the icon.\n"
-     "format : str\n    Format of the icon."},
-    {"getIcon",
-     (PyCFunction)ApplicationPy::sGetIcon,
-     METH_VARARGS,
-     "getIcon(name) -> QIcon or None\n"
-     "\n"
-     "Get an icon in the system. If the pixmap is null, return None.\n"
-     "\n"
-     "name : str\n    Name of the icon."},
-    {"isIconCached",
-     (PyCFunction)ApplicationPy::sIsIconCached,
-     METH_VARARGS,
-     "isIconCached(name) -> Bool\n"
-     "\n"
-     "Check if an icon with the given name is cached.\n"
-     "\n"
-     "name : str\n    Name of the icon."},
-    {"getMainWindow",
-     (PyCFunction)ApplicationPy::sGetMainWindow,
-     METH_VARARGS,
-     "getMainWindow() -> QMainWindow\n"
-     "\n"
-     "Return the main window instance."},
-    {"updateGui",
-     (PyCFunction)ApplicationPy::sUpdateGui,
-     METH_VARARGS,
-     "updateGui() -> None\n"
-     "\n"
-     "Update the main window and all its windows."},
-    {"updateLocale",
-     (PyCFunction)ApplicationPy::sUpdateLocale,
-     METH_VARARGS,
-     "updateLocale() -> None\n"
-     "\n"
-     "Update the localization."},
-    {"getLocale",
-     (PyCFunction)ApplicationPy::sGetLocale,
-     METH_VARARGS,
-     "getLocale() -> str\n"
-     "\n"
-     "Returns the locale currently used by FreeCAD."},
-    {"setLocale",
-     (PyCFunction)ApplicationPy::sSetLocale,
-     METH_VARARGS,
-     "setLocale(name) -> None\n"
-     "\n"
-     "Sets the locale used by FreeCAD. Can be set by top-level\n"
-     "domain (e.g. \"de\") or the language name (e.g. \"German\").\n"
-     "\n"
-     "name : str\n    Locale name."},
-    {"supportedLocales",
-     (PyCFunction)ApplicationPy::sSupportedLocales,
-     METH_VARARGS,
-     "supportedLocales() -> dict\n"
-     "\n"
-     "Returns a dict of all supported locales. The keys are the language\n"
-     "names and the values the top-level domains."},
-    {"createDialog",
-     (PyCFunction)ApplicationPy::sCreateDialog,
-     METH_VARARGS,
-     "createDialog(path) -> PyResource\n"
-     "\n"
-     "Open a UI file.\n"
-     "\n"
-     "path : str\n    UI file path."},
-    {"addPreferencePage",
-     (PyCFunction)ApplicationPy::sAddPreferencePage,
-     METH_VARARGS,
-     "addPreferencePage(path, group) -> None\n"
-     "addPreferencePage(dialog, group) -> None\n"
-     "\n"
-     "Add a UI form to the preferences dialog in the specified group.\n"
-     "\n"
-     "path : str\n    UI file path.\n"
-     "group : str\n    Group name.\n"
-     "dialog : type\n    Preference page."},
-    {"addCommand",
-     (PyCFunction)ApplicationPy::sAddCommand,
-     METH_VARARGS,
-     "addCommand(name, cmd, activation) -> None\n"
-     "\n"
-     "Add a command object.\n"
-     "\n"
-     "name : str\n    Name of the command.\n"
-     "cmd : object\n    Command instance.\n"
-     "activation : str\n    Activation sequence. Optional."},
-    {"runCommand",
-     (PyCFunction)ApplicationPy::sRunCommand,
-     METH_VARARGS,
-     "runCommand(name, index=0) -> None\n"
-     "\n"
-     "Run command by its name.\n"
-     "\n"
-     "name : str\n    Name of the command.\n"
-     "index : int\n    Index of the child command."},
-    {"SendMsgToActiveView",
-     (PyCFunction)ApplicationPy::sSendActiveView,
-     METH_VARARGS,
-     "SendMsgToActiveView(name, suppress=False) -> None\n"
-     "\n"
-     "Send message to the active view. Deprecated, use class View.\n"
-     "\n"
-     "name : str\n    Name of the view command.\n"
-     "suppress : bool\n    If the sent message fail, suppress warning message."},
-    {"sendMsgToFocusView",
-     (PyCFunction)ApplicationPy::sSendFocusView,
-     METH_VARARGS,
-     "sendMsgToFocusView(name, suppress=False) -> None\n"
-     "\n"
-     "Send message to the focused view.\n"
-     "\n"
-     "name : str\n    Name of the view command.\n"
-     "suppress : bool\n    If send message fail, suppress warning message."},
-    {"hide",
-     (PyCFunction)ApplicationPy::sHide,
-     METH_VARARGS,
-     "hide(name) -> None\n"
-     "\n"
-     "Hide the given feature. Deprecated.\n"
-     "\n"
-     "name : str\n    Feature name."},
-    {"show",
-     (PyCFunction)ApplicationPy::sShow,
-     METH_VARARGS,
-     "show(name) -> None\n"
-     "\n"
-     "Show the given feature. Deprecated.\n"
-     "\n"
-     "name : str\n    Feature name."},
-    {"hideObject",
-     (PyCFunction)ApplicationPy::sHideObject,
-     METH_VARARGS,
-     "hideObject(obj) -> None\n"
-     "\n"
-     "Hide the view provider of the given object.\n"
-     "\n"
-     "obj : App.DocumentObject"},
-    {"showObject",
-     (PyCFunction)ApplicationPy::sShowObject,
-     METH_VARARGS,
-     "showObject(obj) -> None\n"
-     "\n"
-     "Show the view provider of the given object.\n"
-     "\n"
-     "obj : App.DocumentObject"},
-    {"open",
-     (PyCFunction)ApplicationPy::sOpen,
-     METH_VARARGS,
-     "open(fileName) -> None\n"
-     "\n"
-     "Open a macro, Inventor or VRML file.\n"
-     "\n"
-     "fileName : str, bytes, bytearray\n    File name."},
-    {"insert",
-     (PyCFunction)ApplicationPy::sInsert,
-     METH_VARARGS,
-     "insert(fileName, docName) -> None\n"
-     "\n"
-     "Insert a macro, Inventor or VRML file. If no document name\n"
-     "is given the active document is used.\n"
-     "\n"
-     "fileName : str, bytes, bytearray\n    File name.\n"
-     "docName : str\n    Document name."},
-    {"export",
-     (PyCFunction)ApplicationPy::sExport,
-     METH_VARARGS,
-     "export(objs, fileName) -> None\n"
-     "\n"
-     "Save scene to Inventor or VRML file.\n"
-     "\n"
-     "objs : sequence of App.DocumentObject\n    Sequence of objects to save.\n"
-     "fileName : str, bytes, bytearray\n    File name."},
-    {"activeDocument",
-     (PyCFunction)ApplicationPy::sActiveDocument,
-     METH_VARARGS,
-     "activeDocument() -> Gui.Document or None\n"
-     "\n"
-     "Return the active document. If no one exists, return None."},
-    {"setActiveDocument",
-     (PyCFunction)ApplicationPy::sSetActiveDocument,
-     METH_VARARGS,
-     "setActiveDocument(doc) -> None\n"
-     "\n"
-     "Activate the specified document.\n"
-     "\n"
-     "doc : str, App.Document\n    Document to activate."},
-    {"activeView",
-     (PyCFunction)ApplicationPy::sActiveView,
-     METH_VARARGS,
-     "activeView(typeName) -> object or None\n"
-     "\n"
-     "Return the active view of the active document. If no one\n"
-     "exists, return None.\n"
-     "\n"
-     "typeName : str\n    Type name."},
-    {"activateView",
-     (PyCFunction)ApplicationPy::sActivateView,
-     METH_VARARGS,
-     "activateView(typeName, create=False) -> None\n"
-     "\n"
-     "Activate a view of the given type in the active document.\n"
-     "If a view of this type doesn't exist and create is True, a\n"
-     "new view of this type is created.\n"
-     "\n"
-     "type : str\n    Type name.\n"
-     "create : bool"},
-    {"editDocument",
-     (PyCFunction)ApplicationPy::sEditDocument,
-     METH_VARARGS,
-     "editDocument() -> Gui.Document or None\n"
-     "\n"
-     "Return the current editing document. If no one exists,\n"
-     "return None."},
-    {"getDocument",
-     (PyCFunction)ApplicationPy::sGetDocument,
-     METH_VARARGS,
-     "getDocument(doc) -> Gui.Document\n"
-     "\n"
-     "Get a document.\n"
-     "\n"
-     "doc : str, App.Document\n    `App.Document` name or `App.Document` object."},
-    {"doCommand",
-     (PyCFunction)ApplicationPy::sDoCommand,
-     METH_VARARGS,
-     "doCommand(cmd) -> None\n"
-     "\n"
-     "Prints the given string in the python console and runs it.\n"
-     "\n"
-     "cmd : str"},
-    {"doCommandGui",
-     (PyCFunction)ApplicationPy::sDoCommandGui,
-     METH_VARARGS,
-     "doCommandGui(cmd) -> None\n"
-     "\n"
-     "Prints the given string in the python console and runs it\n"
-     "but doesn't record it in macros.\n"
-     "\n"
-     "cmd : str"},
-    {"doCommandEval",
-     (PyCFunction)ApplicationPy::sDoCommandEval,
-     METH_VARARGS,
-     "doCommandEval(cmd) -> PyObject\n"
-     "\n"
-     "Runs the given string without showing in the python console or recording in\n"
-     "macros, and returns the result.\n"
-     "\n"
-     "cmd : str"},
-    {"doCommandSkip",
-     (PyCFunction)ApplicationPy::sDoCommandSkip,
-     METH_VARARGS,
-     "doCommandSkip(cmd) -> None\n"
-     "\n"
-     "Record the given string in the Macro but comment it out in the console\n"
-     "\n"
-     "cmd : str"},
-    {"addModule",
-     (PyCFunction)ApplicationPy::sAddModule,
-     METH_VARARGS,
-     "addModule(mod) -> None\n"
-     "\n"
-     "Prints the given module import only once in the macro recording.\n"
-     "\n"
-     "mod : str"},
-    {"showDownloads",
-     (PyCFunction)ApplicationPy::sShowDownloads,
-     METH_VARARGS,
-     "showDownloads() -> None\n\n"
-     "Show the downloads manager window."},
-    {"showPreferences",
-     (PyCFunction)ApplicationPy::sShowPreferences,
-     METH_VARARGS,
-     "showPreferences(grp, index=0) -> None\n"
-     "\n"
-     "Show the preferences window.\n"
-     "\n"
-     "grp: str\n    Group to show.\n"
-     "index : int\n    Page index."},
-    {"showPreferencesByName",
-     (PyCFunction)ApplicationPy::sShowPreferencesByName,
-     METH_VARARGS,
-     "showPreferencesByName(grp, pagename) -> None\n"
-     "\n"
-     "Show the preferences window.\n"
-     "\n"
-     "grp: str\n    Group to show.\n"
-     "pagename : str\n    Page to show."},
-    {"createViewer",
-     (PyCFunction)ApplicationPy::sCreateViewer,
-     METH_VARARGS,
-     "createViewer(views=1, name) -> View3DInventorPy or AbstractSplitViewPy\n"
-     "\n"
-     "Show and returns a viewer.\n"
-     "\n"
-     "views : int\n    If > 1 a `AbstractSplitViewPy` object is returned.\n"
-     "name : str\n    Viewer title."},
-    {"getMarkerIndex",
-     (PyCFunction)ApplicationPy::sGetMarkerIndex,
-     METH_VARARGS,
-     "getMarkerIndex(marker, size=9) -> int\n"
-     "\n"
-     "Get marker index according to marker name and size.\n"
-     "\n"
-     "marker : str\n    Marker style name.\n"
-     "size : int\n    Marker size."},
-    {"addDocumentObserver",
-     (PyCFunction)ApplicationPy::sAddDocObserver,
-     METH_VARARGS,
-     "addDocumentObserver(obj) -> None\n"
-     "\n"
-     "Add an observer to get notifications about changes on documents.\n"
-     "\n"
-     "obj : object"},
-    {"removeDocumentObserver",
-     (PyCFunction)ApplicationPy::sRemoveDocObserver,
-     METH_VARARGS,
-     "removeDocumentObserver(obj) -> None\n"
-     "\n"
-     "Remove an added document observer.\n"
-     "\n"
-     "obj : object"},
-    {"addWorkbenchManipulator",
-     (PyCFunction)ApplicationPy::sAddWbManipulator,
-     METH_VARARGS,
-     "addWorkbenchManipulator(obj) -> None\n"
-     "\n"
-     "Add a workbench manipulator to modify a workbench when it is activated.\n"
-     "\n"
-     "obj : object"},
-    {"removeWorkbenchManipulator",
-     (PyCFunction)ApplicationPy::sRemoveWbManipulator,
-     METH_VARARGS,
-     "removeWorkbenchManipulator(obj) -> None\n"
-     "\n"
-     "Remove an added workbench manipulator.\n"
-     "\n"
-     "obj : object"},
-    {"listUserEditModes",
-     (PyCFunction)ApplicationPy::sListUserEditModes,
-     METH_VARARGS,
-     "listUserEditModes() -> list\n"
-     "\n"
-     "List available user edit modes."},
-    {"getUserEditMode",
-     (PyCFunction)ApplicationPy::sGetUserEditMode,
-     METH_VARARGS,
-     "getUserEditMode() -> str\n"
-     "\n"
-     "Get current user edit mode."},
-    {"setUserEditMode",
-     (PyCFunction)ApplicationPy::sSetUserEditMode,
-     METH_VARARGS,
-     "setUserEditMode(mode) -> bool\n"
-     "\n"
-     "Set user edit mode. Returns True if exists, False otherwise.\n"
-     "\n"
-     "mode : str"},
-    {"reload",
-     (PyCFunction)ApplicationPy::sReload,
-     METH_VARARGS,
-     "reload(name) -> App.Document or None\n"
-     "\n"
-     "Reload a partial opened document. If the document is not open,\n"
-     "return None.\n"
-     "\n"
-     "name : str\n    `App.Document` name."},
-    {"loadFile",
-     (PyCFunction)ApplicationPy::sLoadFile,
-     METH_VARARGS,
-     "loadFile(fileName, module) -> None\n"
-     "\n"
-     "Loads an arbitrary file by delegating to the given Python module.\n"
-     "If no module is given it will be determined by the file extension.\n"
-     "If more than one module can load a file the first one will be taken.\n"
-     "If no module exists to load the file an exception will be raised.\n"
-     "\n"
-     "fileName : str\n"
-     "module : str"},
-    {"coinRemoveAllChildren",
-     (PyCFunction)ApplicationPy::sCoinRemoveAllChildren,
-     METH_VARARGS,
-     "coinRemoveAllChildren(node) -> None\n"
-     "\n"
-     "Remove all children from a group node.\n"
-     "\n"
-     "node : object"},
-    {"suspendWaitCursor",
-     (PyCFunction)ApplicationPy::sSuspendWaitCursor,
-     METH_VARARGS,
-     "suspendWaitCursor() -> None\n\n"
-     "Temporarily suspends the application's wait cursor and event filter."},
-    {"resumeWaitCursor",
-     (PyCFunction)ApplicationPy::sResumeWaitCursor,
-     METH_VARARGS,
-     "resumeWaitCursor() -> None\n\n"
-     "Resumes the application's wait cursor and event filter."},
-    {nullptr, nullptr, 0, nullptr} /* Sentinel */
+namespace
+{
+void requirePythonMainThread(const char* api)
+{
+    try {
+        Gui::requireMainThread(api);
+    }
+    catch (const Base::Exception& exception) {
+        throw Py::RuntimeError(exception.what());
+    }
+}
+
+struct CoinActionTarget
+{
+    SoNode* node {nullptr};
+    SoPath* path {nullptr};
 };
+
+std::string pythonStringToStdString(PyObject* value)
+{
+    if (PyUnicode_Check(value)) {
+        const char* utf8 = PyUnicode_AsUTF8(value);
+        if (!utf8) {
+            throw Py::Exception();
+        }
+        return utf8;
+    }
+
+    if (PyBytes_Check(value)) {
+        char* data = nullptr;
+        Py_ssize_t size = 0;
+        if (PyBytes_AsStringAndSize(value, &data, &size) != 0) {
+            throw Py::Exception();
+        }
+        return std::string(data, static_cast<std::size_t>(size));
+    }
+
+    throw Py::TypeError("color override keys must be strings");
+}
+
+Base::Color pythonToColor(PyObject* value)
+{
+    Base::Color color;
+    if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
+        PyObject* item = PyTuple_GetItem(value, 0);
+        if (PyFloat_Check(item)) {
+            color.r = static_cast<float>(PyFloat_AsDouble(item));
+            item = PyTuple_GetItem(value, 1);
+            if (!PyFloat_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent float components");
+            }
+            color.g = static_cast<float>(PyFloat_AsDouble(item));
+            item = PyTuple_GetItem(value, 2);
+            if (!PyFloat_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent float components");
+            }
+            color.b = static_cast<float>(PyFloat_AsDouble(item));
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (!PyFloat_Check(item)) {
+                    throw Py::TypeError("color tuples must use consistent float components");
+                }
+                color.a = static_cast<float>(PyFloat_AsDouble(item));
+            }
+            return color;
+        }
+
+        if (PyLong_Check(item)) {
+            color.r = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 1);
+            if (!PyLong_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent integer components");
+            }
+            color.g = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            item = PyTuple_GetItem(value, 2);
+            if (!PyLong_Check(item)) {
+                throw Py::TypeError("color tuples must use consistent integer components");
+            }
+            color.b = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            if (PyTuple_Size(value) == 4) {
+                item = PyTuple_GetItem(value, 3);
+                if (!PyLong_Check(item)) {
+                    throw Py::TypeError("color tuples must use consistent integer components");
+                }
+                color.a = static_cast<float>(PyLong_AsLong(item)) / 255.0F;
+            }
+            return color;
+        }
+
+        throw Py::TypeError("color tuples must contain either floats or integers");
+    }
+
+    if (PyLong_Check(value)) {
+        color.setPackedValue(PyLong_AsUnsignedLong(value));
+        return color;
+    }
+
+    throw Py::TypeError("colors must be packed integers or RGB/RGBA tuples");
+}
+
+std::map<std::string, Base::Color> pythonToColorOverrideMap(PyObject* value)
+{
+    if (!PyDict_Check(value)) {
+        throw Py::TypeError("colors must be a dict mapping element names to colors");
+    }
+
+    std::map<std::string, Base::Color> colors;
+    PyObject* key = nullptr;
+    PyObject* item = nullptr;
+    Py_ssize_t pos = 0;
+    while (PyDict_Next(value, &pos, &key, &item)) {
+        colors.emplace(pythonStringToStdString(key), pythonToColor(item));
+    }
+    return colors;
+}
+
+CoinActionTarget pythonToCoinActionTarget(PyObject* proxy)
+{
+    CoinActionTarget target;
+    void* ptr = nullptr;
+
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoPath *", proxy, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        ptr = nullptr;
+    }
+    if (ptr) {
+        target.path = static_cast<SoPath*>(ptr);
+        return target;
+    }
+
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoNode *", proxy, &ptr, 0);
+    }
+    catch (const Base::Exception&) {
+        ptr = nullptr;
+    }
+    if (ptr) {
+        target.node = static_cast<SoNode*>(ptr);
+        return target;
+    }
+
+    throw Py::TypeError("target must be of type coin.SoNode or coin.SoPath");
+}
+
+void applyElementColorOverrideAction(
+    const CoinActionTarget& target,
+    std::map<std::string, Base::Color> colors
+)
+{
+    SoSelectionElementAction action(SoSelectionElementAction::Color, true);
+    action.swapColors(colors);
+    if (target.path) {
+        action.apply(target.path);
+    }
+    else if (target.node) {
+        action.apply(target.node);
+    }
+    else {
+        throw Py::TypeError("target must be of type coin.SoNode or coin.SoPath");
+    }
+}
+}  // namespace
+
+static bool _isSetupWithoutGui = false;
+
+static QWidget* setupMainWindow();
+
+class QtApplication: public QApplication
+{
+public:
+    QtApplication(int& argc, char** argv)
+        : QApplication(argc, argv)
+    {}
+    bool notify(QObject* receiver, QEvent* event) override
+    {
+        try {
+            return QApplication::notify(receiver, event);
+        }
+        catch (const Base::SystemExitException& e) {
+            exit(e.getExitCode());
+            return true;
+        }
+    }
+};
+
+#if defined(Q_OS_WIN)
+HHOOK hhook;
+
+LRESULT CALLBACK FilterProc(int nCode, WPARAM wParam, LPARAM lParam)
+{
+    if (qApp) {
+        qApp->sendPostedEvents(0, -1);  // special DeferredDelete
+    }
+    return CallNextHookEx(hhook, nCode, wParam, lParam);
+}
+#endif
+
+PyObject* Gui::ApplicationPy::sShowMainWindow(PyObject* /*self*/, PyObject* args)
+{
+    if (_isSetupWithoutGui) {
+        PyErr_SetString(
+            PyExc_RuntimeError,
+            "Cannot call showMainWindow() after calling setupWithoutGUI()\n"
+        );
+        return nullptr;
+    }
+
+    PyObject* inThread = Py_False;
+    if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &inThread)) {
+        return nullptr;
+    }
+
+    static bool thr = false;
+    if (!qApp) {
+        if (Base::asBoolean(inThread) && !thr) {
+            thr = true;
+            std::thread t([]() {
+                static int argc = 0;
+                static char** argv = {nullptr};
+                QApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
+                // This only works well if the QApplication is the very first created instance
+                // of a QObject. Otherwise the application lives in a different thread than the
+                // main thread which will cause hazardous behaviour.
+                QtApplication app(argc, argv);
+                if (setupMainWindow()) {
+                    app.exec();
+                }
+            });
+            t.detach();
+        }
+        else {
+            // In order to get Jupiter notebook integration working we must create a direct instance
+            // of QApplication. Not even a sub-class can be used because otherwise PySide2 wraps it
+            // with a QtCore.QCoreApplication which will raise an exception in ipykernel
+#if defined(Q_OS_WIN)
+            static int argc = 0;
+            static char** argv = {0};
+            (void)new QApplication(argc, argv);
+            // When QApplication is constructed
+            hhook = SetWindowsHookEx(WH_GETMESSAGE, FilterProc, 0, GetCurrentThreadId());
+#elif !defined(QT_NO_GLIB)
+            static int argc = 0;
+            static char** argv = {nullptr};
+            (void)new QApplication(argc, argv);
+#else
+            PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
+            return nullptr;
+#endif
+        }
+    }
+    else if (!qobject_cast<QApplication*>(qApp)) {
+        PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
+        return nullptr;
+    }
+
+    if (!thr) {
+        if (!setupMainWindow()) {
+            PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
+            return nullptr;
+        }
+    }
+
+    // if successful then enable Console logger
+    Base::ILogger* console = Base::Console().get("Console");
+    if (console) {
+        console->bMsg = true;
+        console->bWrn = true;
+        console->bErr = true;
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Gui::ApplicationPy::sExec_loop(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    if (!qApp) {
+        PyErr_SetString(PyExc_RuntimeError, "Must construct a QApplication before a QPaintDevice\n");
+        return nullptr;
+    }
+    else if (!qobject_cast<QApplication*>(qApp)) {
+        PyErr_SetString(PyExc_RuntimeError, "Cannot create widget when no GUI is being used\n");
+        return nullptr;
+    }
+
+    qApp->exec();
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Gui::ApplicationPy::sSetupWithoutGUI(PyObject* /*self*/, PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    if (!Gui::Application::Instance) {
+        static Gui::Application* app = new Gui::Application(false);
+        _isSetupWithoutGui = true;
+        Q_UNUSED(app);
+    }
+    if (!SoDB::isInitialized()) {
+        // init the Inventor subsystem
+        SoDB::init();
+        SoNodeKit::init();
+        SoInteraction::init();
+    }
+    if (!Gui::SoFCDB::isInitialized()) {
+        Gui::SoFCDB::init();
+    }
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+PyObject* Gui::ApplicationPy::sEmbedToWindow(PyObject* /*self*/, PyObject* args)
+{
+    char* pointer;
+    if (!PyArg_ParseTuple(args, "s", &pointer)) {
+        return nullptr;
+    }
+
+    QWidget* widget = Gui::getMainWindow();
+    if (!widget) {
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "No main window");
+        return nullptr;
+    }
+
+    std::string pointer_str = pointer;
+    std::stringstream str(pointer_str);
+
+#if defined(Q_OS_WIN)
+    void* window = 0;
+    str >> window;
+    HWND winid = (HWND)window;
+
+    LONG oldLong = GetWindowLong(winid, GWL_STYLE);
+    SetWindowLong(winid, GWL_STYLE, oldLong | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+    // SetWindowLong(widget->winId(), GWL_STYLE,
+    //     WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
+    SetParent((HWND)widget->winId(), winid);
+
+    QEvent embeddingEvent(QEvent::EmbeddingControl);
+    QApplication::sendEvent(widget, &embeddingEvent);
+#elif defined(Q_WS_X11)
+    WId winid;
+    str >> winid;
+
+    QX11EmbedWidget* x11 = new QX11EmbedWidget();
+    widget->setParent(x11);
+    x11->embedInto(winid);
+    x11->show();
+#else
+    PyErr_SetString(PyExc_NotImplementedError, "Not implemented for this platform");
+    return nullptr;
+#endif
+
+    Py_INCREF(Py_None);
+    return Py_None;
+}
+
+static QWidget* setupMainWindow()
+{
+    if (!Gui::Application::Instance) {
+        static Gui::Application* app = new Gui::Application(true);
+        Q_UNUSED(app);
+    }
+
+    if (!Gui::MainWindow::getInstance()) {
+        static bool hasMainWindow = false;
+        if (hasMainWindow) {
+            // if a main window existed and has been deleted it's not supported
+            // to re-create it
+            return nullptr;
+        }
+
+        Gui::StartupProcess process;
+        process.execute();
+
+        Base::PyGILStateLocker lock;
+        // It's sufficient to create the config key
+        App::Application::Config()["DontOverrideStdIn"] = "";
+        Gui::MainWindow* mw = new Gui::MainWindow();
+        hasMainWindow = true;
+
+        QIcon icon = qApp->windowIcon();
+        if (icon.isNull()) {
+            qApp->setWindowIcon(
+                Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str())
+            );
+        }
+        mw->setWindowIcon(qApp->windowIcon());
+
+        try {
+            Gui::StartupPostProcess postProcess(mw, *Gui::Application::Instance, qApp);
+            postProcess.setLoadFromPythonModule(true);
+            postProcess.execute();
+        }
+        catch (const Base::Exception&) {
+            return nullptr;
+        }
+    }
+    else {
+        Gui::getMainWindow()->show();
+    }
+
+    return Gui::getMainWindow();
+}
 
 PyObject* Gui::ApplicationPy::sEditDocument(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.editDocument");
 
     Document* pcDoc = Application::Instance->editDocument();
     if (pcDoc) {
@@ -573,6 +527,8 @@ PyObject* Gui::ApplicationPy::sActiveDocument(PyObject* /*self*/, PyObject* args
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.activeDocument");
+
     Document* pcDoc = Application::Instance->activeDocument();
     if (pcDoc) {
         return pcDoc->getPyObject();
@@ -587,6 +543,8 @@ PyObject* Gui::ApplicationPy::sActiveView(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "|s", &typeName)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.activeView");
 
     PY_TRY
     {
@@ -630,6 +588,8 @@ PyObject* Gui::ApplicationPy::sActivateView(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.activateView");
+
     Base::Type type = Base::Type::fromName(typeStr);
     Application::Instance->activateView(type, Base::asBoolean(create));
 
@@ -671,6 +631,8 @@ PyObject* Gui::ApplicationPy::sSetActiveDocument(PyObject* /*self*/, PyObject* a
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.setActiveDocument");
+
     if (Application::Instance->activeDocument() != pcDoc) {
         Gui::MDIView* view = pcDoc->getActiveView();
         getMainWindow()->setActiveWindow(view);
@@ -681,6 +643,13 @@ PyObject* Gui::ApplicationPy::sSetActiveDocument(PyObject* /*self*/, PyObject* a
 
 PyObject* ApplicationPy::sGetDocument(PyObject* /*self*/, PyObject* args)
 {
+    requirePythonMainThread("FreeCADGui.getDocument");
+
+    if (!Application::Instance) {
+        PyErr_SetString(PyExc_ImportError, "FreeCADGui is not initialized");
+        return nullptr;
+    }
+
     char* pstr = nullptr;
     if (PyArg_ParseTuple(args, "s", &pstr)) {
         Document* pcDoc = Application::Instance->getDocument(pstr);
@@ -716,6 +685,20 @@ PyObject* ApplicationPy::sHide(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.hide");
+
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui.hide",
+            Base::PythonApiDeprecation {
+                .deprecatedIn = "26.3",
+                .removedIn = "27.2",
+                .replacement = "hideObject",
+            }
+        )) {
+        return nullptr;
+    }
+
     Document* pcDoc = Application::Instance->activeDocument();
 
     if (pcDoc) {
@@ -729,6 +712,20 @@ PyObject* ApplicationPy::sShow(PyObject* /*self*/, PyObject* args)
 {
     char* psFeatStr = nullptr;
     if (!PyArg_ParseTuple(args, "s;Name of the object to show has to be given!", &psFeatStr)) {
+        return nullptr;
+    }
+
+    requirePythonMainThread("FreeCADGui.show");
+
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui.show",
+            Base::PythonApiDeprecation {
+                .deprecatedIn = "26.3",
+                .removedIn = "27.2",
+                .replacement = "showObject",
+            }
+        )) {
         return nullptr;
     }
 
@@ -748,6 +745,8 @@ PyObject* ApplicationPy::sHideObject(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.hideObject");
+
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-static-cast-downcast)
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
     Application::Instance->hideViewProvider(obj);
@@ -761,6 +760,8 @@ PyObject* ApplicationPy::sShowObject(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &object)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.showObject");
 
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-static-cast-downcast)
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
@@ -919,12 +920,26 @@ PyObject* ApplicationPy::sExport(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* ApplicationPy::sSendActiveView(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSendMsgToActiveView(PyObject* /*self*/, PyObject* args)
 {
     char* psCommandStr = nullptr;
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
     PyObject* suppress = Py_False;
     if (!PyArg_ParseTuple(args, "s|O!", &psCommandStr, &PyBool_Type, &suppress)) {
+        return nullptr;
+    }
+
+    requirePythonMainThread("FreeCADGui.SendMsgToActiveView");
+
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui.SendMsgToActiveView",
+            Base::PythonApiDeprecation {
+                .deprecatedIn = "26.3",
+                .removedIn = "27.2",
+                .replacement = "View",
+            }
+        )) {
         return nullptr;
     }
 
@@ -937,7 +952,7 @@ PyObject* ApplicationPy::sSendActiveView(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* ApplicationPy::sSendFocusView(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSendMsgToFocusView(PyObject* /*self*/, PyObject* args)
 {
     char* psCommandStr = nullptr;
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
@@ -945,6 +960,8 @@ PyObject* ApplicationPy::sSendFocusView(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "s|O!", &psCommandStr, &PyBool_Type, &suppress)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.SendMsgToFocusView");
 
     if (!Application::Instance->sendMsgToFocusView(psCommandStr)) {
         if (!Base::asBoolean(suppress)) {
@@ -961,6 +978,8 @@ PyObject* ApplicationPy::sGetMainWindow(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.getMainWindow");
+
     try {
         return Py::new_reference_to(MainWindowPy::createWrapper(Gui::getMainWindow()));
     }
@@ -974,6 +993,8 @@ PyObject* ApplicationPy::sUpdateGui(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.updateGui");
 
     qApp->processEvents();
 
@@ -1087,12 +1108,14 @@ PyObject* ApplicationPy::sAddPreferencePage(PyObject* /*self*/, PyObject* args)
     return nullptr;
 }
 
-PyObject* ApplicationPy::sActivateWorkbenchHandler(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sActivateWorkbench(PyObject* /*self*/, PyObject* args)
 {
     char* psKey = nullptr;
     if (!PyArg_ParseTuple(args, "s", &psKey)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.activateWorkbench");
 
     // search for workbench handler from the dictionary
     PyObject* pcWorkbench = PyDict_GetItemString(Application::Instance->_pcWorkbenchDictionary, psKey);
@@ -1130,7 +1153,7 @@ PyObject* ApplicationPy::sActivateWorkbenchHandler(PyObject* /*self*/, PyObject*
     }
 }
 
-PyObject* ApplicationPy::sAddWorkbenchHandler(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddWorkbench(PyObject* /*self*/, PyObject* args)
 {
     PyObject* pcObject = nullptr;
     if (!PyArg_ParseTuple(args, "O", &pcObject)) {
@@ -1193,7 +1216,7 @@ PyObject* ApplicationPy::sAddWorkbenchHandler(PyObject* /*self*/, PyObject* args
     Py_Return;
 }
 
-PyObject* ApplicationPy::sRemoveWorkbenchHandler(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sRemoveWorkbench(PyObject* /*self*/, PyObject* args)
 {
     char* psKey = nullptr;
     if (!PyArg_ParseTuple(args, "s", &psKey)) {
@@ -1213,7 +1236,7 @@ PyObject* ApplicationPy::sRemoveWorkbenchHandler(PyObject* /*self*/, PyObject* a
     Py_Return;
 }
 
-PyObject* ApplicationPy::sGetWorkbenchHandler(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetWorkbench(PyObject* /*self*/, PyObject* args)
 {
     char* psKey = nullptr;
     if (!PyArg_ParseTuple(args, "s", &psKey)) {
@@ -1231,7 +1254,7 @@ PyObject* ApplicationPy::sGetWorkbenchHandler(PyObject* /*self*/, PyObject* args
     return pcWorkbench;
 }
 
-PyObject* ApplicationPy::sListWorkbenchHandlers(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sListWorkbenches(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -1241,7 +1264,7 @@ PyObject* ApplicationPy::sListWorkbenchHandlers(PyObject* /*self*/, PyObject* ar
     return Application::Instance->_pcWorkbenchDictionary;
 }
 
-PyObject* ApplicationPy::sActiveWorkbenchHandler(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sActiveWorkbench(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -1267,7 +1290,7 @@ PyObject* ApplicationPy::sActiveWorkbenchHandler(PyObject* /*self*/, PyObject* a
     return pcWorkbench;
 }
 
-PyObject* ApplicationPy::sAddResPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddResourcePath(PyObject* /*self*/, PyObject* args)
 {
     char* filePath = nullptr;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath)) {
@@ -1288,7 +1311,7 @@ PyObject* ApplicationPy::sAddResPath(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* ApplicationPy::sAddLangPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddLanguagePath(PyObject* /*self*/, PyObject* args)
 {
     char* filePath = nullptr;
     if (!PyArg_ParseTuple(args, "et", "utf-8", &filePath)) {
@@ -1404,6 +1427,8 @@ PyObject* ApplicationPy::sAddCommand(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.addCommand");
+
     // get the call stack to find the Python module name
     //
     std::string module;
@@ -1501,6 +1526,8 @@ PyObject* ApplicationPy::sRunCommand(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.runCommand");
+
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
 
@@ -1520,6 +1547,8 @@ PyObject* ApplicationPy::sDoCommand(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &sCmd)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.doCommand");
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1551,6 +1580,8 @@ PyObject* ApplicationPy::sDoCommandGui(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.doCommandGui");
+
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
 
@@ -1581,6 +1612,8 @@ PyObject* ApplicationPy::sDoCommandEval(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.doCommandEval");
+
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
 
@@ -1607,6 +1640,8 @@ PyObject* ApplicationPy::sDoCommandSkip(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "s", &sCmd)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.doCommandSkip");
 
     Gui::Command::LogDisabler d1;
     Gui::SelectionLogDisabler d2;
@@ -1639,6 +1674,8 @@ PyObject* ApplicationPy::sShowDownloads(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
+    requirePythonMainThread("FreeCADGui.showDownloads");
+
     Gui::Dialog::DownloadManager::getInstance();
 
     Py_Return;
@@ -1651,6 +1688,8 @@ PyObject* ApplicationPy::sShowPreferences(PyObject* /*self*/, PyObject* args)
     if (!PyArg_ParseTuple(args, "|si", &pstr, &idx)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.showPreferences");
 
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     if (pstr) {
@@ -1672,6 +1711,8 @@ PyObject* ApplicationPy::sShowPreferencesByName(PyObject* /*self*/, PyObject* ar
     if (!PyArg_ParseTuple(args, "s|s", &pstr, &prefType)) {
         return nullptr;
     }
+
+    requirePythonMainThread("FreeCADGui.showPreferences");
 
     Gui::Dialog::DlgPreferencesImp cDlg(getMainWindow());
     if (pstr && prefType) {
@@ -1699,6 +1740,7 @@ PyObject* ApplicationPy::sCreateViewer(PyObject* /*self*/, PyObject* args)
         PyErr_Format(PyExc_ValueError, "views must be > 0");
         return nullptr;
     }
+    requirePythonMainThread("FreeCADGui.createViewer");
     if (num_of_views == 1) {
         auto viewer = new View3DInventor(nullptr, nullptr);
         if (title) {
@@ -1818,7 +1860,7 @@ PyObject* ApplicationPy::sLoadFile(PyObject* /*self*/, PyObject* args)
     PY_CATCH
 }
 
-PyObject* ApplicationPy::sAddDocObserver(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddDocumentObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o = nullptr;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -1833,7 +1875,7 @@ PyObject* ApplicationPy::sAddDocObserver(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ApplicationPy::sRemoveDocObserver(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sRemoveDocumentObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o = nullptr;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -1848,7 +1890,7 @@ PyObject* ApplicationPy::sRemoveDocObserver(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ApplicationPy::sAddWbManipulator(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddWorkbenchManipulator(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o = nullptr;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -1863,7 +1905,7 @@ PyObject* ApplicationPy::sAddWbManipulator(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* ApplicationPy::sRemoveWbManipulator(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sRemoveWorkbenchManipulator(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o = nullptr;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -1895,6 +1937,42 @@ PyObject* ApplicationPy::sCoinRemoveAllChildren(PyObject* /*self*/, PyObject* ar
         }
 
         coinRemoveAllChildren(static_cast<SoGroup*>(ptr));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sApplyElementColorOverride(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* targetObj = nullptr;
+    PyObject* colorsObj = nullptr;
+    if (!PyArg_ParseTuple(args, "OO", &targetObj, &colorsObj)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        requirePythonMainThread("FreeCADGui.applyElementColorOverride");
+        auto target = pythonToCoinActionTarget(targetObj);
+        auto colors = pythonToColorOverrideMap(colorsObj);
+        applyElementColorOverrideAction(target, std::move(colors));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sClearElementColorOverride(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* targetObj = nullptr;
+    if (!PyArg_ParseTuple(args, "O", &targetObj)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        requirePythonMainThread("FreeCADGui.clearElementColorOverride");
+        auto target = pythonToCoinActionTarget(targetObj);
+        applyElementColorOverrideAction(target, {});
         Py_Return;
     }
     PY_CATCH;

@@ -27,6 +27,10 @@ if(BUILD_GUI)
 
     add_executable(FreeCADMain WIN32 ${FreeCAD_SRCS})
     target_link_libraries(FreeCADMain ${FreeCAD_LIBS})
+    if(BUILD_TEST)
+        add_dependencies(FreeCADMain TestSources)
+        add_dependencies(FreeCADMain TestGuiSources)
+    endif()
     if (FREECAD_WARN_ERROR)
         target_compile_warn_error(FreeCADMain)
     endif()
@@ -58,6 +62,9 @@ SET(FreeCADMainCmd_SRCS
 )
 
 add_executable(FreeCADMainCmd ${FreeCADMainCmd_SRCS})
+if(BUILD_TEST)
+    add_dependencies(FreeCADMainCmd TestSources)
+endif()
 
 SET(FreeCADMainCmd_LIBS
     FreeCADApp

@@ -47,6 +47,7 @@ protected:
     void saveSettings() override;
     void loadSettings() override;
     void changeEvent(QEvent* e) override;
+    void populateSolverType();
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemZ88Imp> ui;

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Point object."""
+
 ## @package view_point
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Point object.

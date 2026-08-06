@@ -51,6 +51,7 @@ set(PartDesign_TestScripts
     PartDesignTests/TestPolarPattern.py
     PartDesignTests/TestMultiTransform.py
     PartDesignTests/TestBoolean.py
+    PartDesignTests/TestBaseFeature.py
     PartDesignTests/TestFillet.py
     PartDesignTests/TestChamfer.py
     PartDesignTests/TestDraft.py
@@ -63,6 +64,7 @@ set(PartDesign_TestScripts
 if(BUILD_GUI)
     list(APPEND PartDesign_TestScripts
         PartDesignTests/TestMaterial.py
+        PartDesignTests/TestSuppressed.py
     )
 endif(BUILD_GUI)
 

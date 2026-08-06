@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+from Base.Metadata import constmethod
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
-from typing import Final, Sequence
+from DocumentSettings import DocumentSettings
+from typing import TYPE_CHECKING, Final, Literal, Sequence, overload
+
+if TYPE_CHECKING:
+    from Part import Feature as _PartFeature
 
 
 class Document(PropertyContainer):
@@ -102,6 +107,16 @@ class Document(PropertyContainer):
         """
         ...
 
+    def canWriteRecoverySnapshot(self) -> bool:
+        """
+        Return whether the document is in an App-side state that allows writing
+        a recovery snapshot.
+
+        This does not account for GUI-only constraints such as an active Gui
+        transaction.
+        """
+        ...
+
     def load(self, path: str, /) -> None:
         """
         Load the document from the given path.
@@ -130,6 +145,15 @@ class Document(PropertyContainer):
         """
         For a regular document it returns its file name property.
         For a temporary document it returns its transient directory.
+        """
+        ...
+
+    @constmethod
+    def settings(self, namespace: str, /) -> DocumentSettings:
+        """
+        Return document-persisted settings for a namespace backed by this document's Meta map.
+
+        The namespace may contain dot-separated identifier segments.
         """
         ...
 
@@ -183,6 +207,28 @@ class Document(PropertyContainer):
         Commit an Undo/Redo transaction
         """
         ...
+
+    @overload
+    def addObject(
+        self,
+        type: Literal["Part::Feature"],
+        name: str = None,
+        objProxy: object = None,
+        viewProxy: object = None,
+        attach: bool = False,
+        viewType: str = None,
+    ) -> _PartFeature: ...
+
+    @overload
+    def addObject(
+        self,
+        type: str,
+        name: str = None,
+        objProxy: object = None,
+        viewProxy: object = None,
+        attach: bool = False,
+        viewType: str = None,
+    ) -> DocumentObject: ...
 
     def addObject(
         self,
@@ -253,13 +299,36 @@ class Document(PropertyContainer):
         """
         ...
 
+    @overload
+    def copyObject(
+        self,
+        object: Sequence[DocumentObject],
+        recursive: bool = False,
+        return_all: bool = False,
+    ) -> tuple[DocumentObject, ...]: ...
+
+    @overload
     def copyObject(
         self,
         object: DocumentObject,
-        *,
+        recursive: bool = False,
+        return_all: Literal[False] = False,
+    ) -> DocumentObject: ...
+
+    @overload
+    def copyObject(
+        self,
+        object: DocumentObject,
+        recursive: bool = False,
+        return_all: Literal[True] = True,
+    ) -> DocumentObject | tuple[DocumentObject, ...]: ...
+
+    def copyObject(
+        self,
+        object: DocumentObject | Sequence[DocumentObject],
         recursive: bool = False,
         return_all: bool = False,
-    ) -> tuple[DocumentObject, ...]:
+    ) -> DocumentObject | tuple[DocumentObject, ...]:
         """
         Copy an object or objects from another document to this document.
 
@@ -453,6 +522,6 @@ class Document(PropertyContainer):
         getBookedTransactionID() -> int
 
         Returns the currently booked transaction id, which is the id of the current transaction OR the id
-        the next transaction will stick to if no change has occured yet
+        the next transaction will stick to if no change has occurred yet
         """
         ...

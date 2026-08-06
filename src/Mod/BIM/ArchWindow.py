@@ -323,7 +323,7 @@ class _Window(ArchComponent.Component):
 
         if prop in ["Base", "WindowParts", "Placement", "HoleDepth", "Height", "Width", "Hosts"]:
             setattr(self, prop, getattr(obj, prop))
-        if prop in ["Height", "Width"] and obj.CloneOf is None:
+        if prop in ["Height", "Width", "Opening", "WindowParts"] and obj.CloneOf is None:
             self.TouchOnShapeChange = True  # touch hosts after next "Shape" change
 
     def onChanged(self, obj, prop):
@@ -339,6 +339,7 @@ class _Window(ArchComponent.Component):
                 "Width",
                 "Hosts",
                 "Shape",
+                "Opening",
             ]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 touchhosts = False
@@ -980,15 +981,12 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             elif obj.Base and hasattr(obj.Base, "Shape"):
                 # Type-based window: obj.Base furnishes the window solids
                 sol1 = self.getSolidSignature(solids[i])
-                # here we look for all the ways to retrieve a name for each
-                # solid. Currently we look for similar solids in the
-                if hasattr(obj.Base, "Group"):
-                    for child in obj.Base.Group:
-                        if hasattr(child, "Shape") and child.Shape and child.Shape.Solids:
-                            sol2 = self.getSolidSignature(child.Shape)
-                            if sol1 == sol2:
-                                color = self.getSolidMaterial(obj, arch_mat, child.Label)
-                                break
+                for child in getattr(obj.Base, "Group", []) + getattr(obj.Base, "ElementList", []):
+                    if hasattr(child, "Shape") and child.Shape and child.Shape.Solids:
+                        sol2 = self.getSolidSignature(child.Shape)
+                        if sol1 == sol2:
+                            color = self.getSolidMaterial(obj, arch_mat, child.Label)
+                            break
             if color is None:
                 typeidx = (i * 5) + 1
                 if typeidx < len(obj.WindowParts):
@@ -1740,7 +1738,7 @@ class _ArchWindowTaskPanel:
         )
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get Selected Edge", None))
         self.field6.setToolTip(
-            QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None)
+            QtGui.QApplication.translate("Arch", "Retrieves the selected edge", None)
         )
         self.invertOpeningButton.setText(
             QtGui.QApplication.translate("Arch", "Invert Opening Direction", None)

@@ -63,6 +63,7 @@
 
 #include "SoFCSelectionAction.h"
 #include "SoFCSelection.h"
+#include "SoFullPathHelper.h"
 
 
 using namespace Gui;
@@ -1130,9 +1131,11 @@ void SoBoxSelectionRenderAction::apply(SoNode* node)
                     }
                     PRIVATE(this)->selectsearch->reset();
                 }
-                else if (selection->isHighlighted()
-                         && selection->selected.getValue() == SoFCSelection::NOTSELECTED
-                         && selection->style.getValue() == SoFCSelection::BOX) {
+                else if (
+                    selection->isHighlighted()
+                    && selection->selected.getValue() == SoFCSelection::NOTSELECTED
+                    && selection->style.getValue() == SoFCSelection::BOX
+                ) {
                     PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
                     if (!PRIVATE(this)->selectsearch) {
@@ -1177,9 +1180,10 @@ void SoBoxSelectionRenderAction::apply(SoPath* path)
             // because this will destroy the box immediately
             selection->touch();  // force a redraw when dehighlighting
         }
-        else if (selection->isHighlighted()
-                 && selection->selected.getValue() == SoFCSelection::NOTSELECTED
-                 && selection->style.getValue() == SoFCSelection::BOX) {
+        else if (
+            selection->isHighlighted() && selection->selected.getValue() == SoFCSelection::NOTSELECTED
+            && selection->style.getValue() == SoFCSelection::BOX
+        ) {
             PRIVATE(this)->basecolor->rgb.setValue(selection->colorHighlight.getValue());
 
             if (!PRIVATE(this)->selectsearch) {
@@ -1243,7 +1247,7 @@ float SoBoxSelectionRenderAction::getLineWidth() const
 void SoBoxSelectionRenderAction::drawBoxes(SoPath* pathtothis, const SoPathList* pathlist)
 {
     int i;
-    int thispos = static_cast<SoFullPath*>(pathtothis)->getLength() - 1;
+    int thispos = Gui::toFullPath(pathtothis)->getLength() - 1;
     assert(thispos >= 0);
     PRIVATE(this)->postprocpath->truncate(0);  // reset
 
@@ -1260,7 +1264,7 @@ void SoBoxSelectionRenderAction::drawBoxes(SoPath* pathtothis, const SoPathList*
     thestate->push();
 
     for (i = 0; i < pathlist->getLength(); i++) {
-        auto path = static_cast<SoFullPath*>((*pathlist)[i]);
+        auto path = Gui::toFullPath((*pathlist)[i]);
 
         for (int j = 0; j < path->getLength(); j++) {
             PRIVATE(this)->postprocpath->append(path->getNode(j));

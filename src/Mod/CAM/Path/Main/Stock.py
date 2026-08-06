@@ -607,4 +607,18 @@ def CreateFromTemplate(job, template):
         return None
 
 
+def ApplyStockViewDefaults(stock):
+    """Apply default appearance settings to a stock object's ViewObject."""
+    if stock and stock.ViewObject:
+        stock.ViewObject.ShapeColor = (0.792, 0.718, 0.537)
+        stock.ViewObject.Transparency = 85
+        stock.ViewObject.LineColor = (0.553, 0.502, 0.376)
+        stock.ViewObject.PointColor = (0.553, 0.502, 0.376)
+        stock.ViewObject.DrawStyle = "Dotted"
+        stock.ViewObject.DisplayMode = "Flat Lines"
+        stock.ViewObject.PointSize = 1
+        stock.ViewObject.LineWidth = 1
+        stock.ViewObject.Selectable = False
+
+
 FreeCAD.Console.PrintLog("Loading PathStock... done\n")

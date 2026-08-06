@@ -68,6 +68,7 @@ public:
     void paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
     QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     void drawBorder() override;
     void updateView(bool update = false) override;
@@ -84,7 +85,6 @@ public:
     void closeEdit();
 
     double getLineWidth();
-    double getEdgeFuzz() const;
 
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;

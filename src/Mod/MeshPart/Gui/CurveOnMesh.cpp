@@ -655,8 +655,9 @@ void CurveOnMeshHandler::Private::vertexCallback(void* ud, SoEventCallback* cb)
                 Gui::getMainWindow()->statusBar()->showMessage(tr("No point was selected"));
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP
+        ) {
             CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
             QTimer::singleShot(100, self, &CurveOnMeshHandler::onContextMenu);
         }

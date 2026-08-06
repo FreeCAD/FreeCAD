@@ -334,8 +334,10 @@ void EditModeGeometryCoinConverter::convert(
     auto coinLayer = geometryLayerParameters.getSafeCoinLayer(layerId);
 
     auto addPoint = [&dMg = boundingBoxMaxMagnitude](auto& pushvector, Base::Vector3d point) {
-        if constexpr (analysemode == AnalyseMode::BoundingBoxMagnitude
-                      || analysemode == AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature) {
+        if constexpr (
+            analysemode == AnalyseMode::BoundingBoxMagnitude
+            || analysemode == AnalyseMode::BoundingBoxMagnitudeAndBSplineCurvature
+        ) {
             dMg = dMg > std::abs(point.x) ? dMg : std::abs(point.x);
             dMg = dMg > std::abs(point.y) ? dMg : std::abs(point.y);
             pushvector.push_back(point);

@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from Path.Op.Util import getCycleTimeEstimate
 from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -32,7 +33,6 @@ import Path.Main.Stock as PathStock
 import Path.Tool.Controller as PathToolController
 import json
 import time
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -88,7 +88,11 @@ def createResourceClone(obj, orig, name, icon):
 
         Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
-        clone.ViewObject.Transparency = 80
+        clone.ViewObject.DisplayMode = "Flat Lines"
+        clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+        clone.ViewObject.Transparency = 0
+        clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
+        clone.ViewObject.ShapeMaterial.Shininess = 0.85
     obj.Document.recompute()  # necessary to create the clone shape
     return clone
 
@@ -161,7 +165,7 @@ class ObjectJob:
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
         obj.addProperty(
-            "App::PropertyDistance",
+            "App::PropertyLength",
             "GeometryTolerance",
             "Geometry",
             QT_TRANSLATE_NOOP(
@@ -392,8 +396,9 @@ class ObjectJob:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:
                 obj.Stock = PathStock.CreateFromBase(obj)
-        if obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = False
+        PathStock.ApplyStockViewDefaults(obj.Stock)
+        if obj.Stock and obj.Stock.ViewObject:
+            obj.Stock.ViewObject.Visibility = True
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -639,7 +644,16 @@ class ObjectJob:
                 if attrs.get(JobTemplate.GeometryTolerance):
                     obj.GeometryTolerance = float(attrs.get(JobTemplate.GeometryTolerance))
                 if attrs.get(JobTemplate.PostProcessor):
-                    obj.PostProcessor = attrs.get(JobTemplate.PostProcessor)
+                    templatePost = attrs.get(JobTemplate.PostProcessor)
+                    # Validate that the template's postprocessor exists in current enumeration
+                    if templatePost in obj.PostProcessor:
+                        obj.PostProcessor = templatePost
+                    else:
+                        Path.Log.warning(
+                            f"PostProcessor '{templatePost}' from template not found in available postprocessors. Using default."
+                        )
+                        Path.Log.debug(f"Available postprocessors: {obj.PostProcessor}")
+                        # Keep the default postprocessor that was already set
                     if attrs.get(JobTemplate.PostProcessorArgs):
                         obj.PostProcessorArgs = attrs.get(JobTemplate.PostProcessorArgs)
                     else:
@@ -723,6 +737,9 @@ class ObjectJob:
         return None
 
     def execute(self, obj):
+        if not obj.GeometryTolerance:
+            obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
+
         if getattr(obj, "Operations", None):
             # obj.Path = obj.Operations.Path
             self.getCycleTime()
@@ -731,34 +748,15 @@ class ObjectJob:
 
     def getCycleTime(self):
         seconds = 0
-
-        if len(self.obj.Operations.Group):
-            for op in self.obj.Operations.Group:
-
-                # Skip inactive operations
-                if PathUtil.opProperty(op, "Active") is False:
-                    continue
-
-                # Skip operations that don't have a cycletime attribute
-                if PathUtil.opProperty(op, "CycleTime") is None:
-                    continue
-
-                formattedCycleTime = PathUtil.opProperty(op, "CycleTime")
-                opCycleTime = 0
-                try:
-                    # Convert the formatted time from HH:MM:SS to just seconds
-                    opCycleTime = sum(
-                        x * int(t)
-                        for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":")))
-                    )
-                except Exception:
-                    continue
-
-                if opCycleTime > 0:
-                    seconds = seconds + opCycleTime
-
-        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds))
-        self.obj.CycleTime = cycleTimeString
+        errorStr = ""
+        for op in self.obj.Operations.Group:
+            result = getCycleTimeEstimate(op, formatted=False)
+            if isinstance(result, (int, float)):
+                seconds += result
+            else:
+                errorStr = f" ({op.Label}: {result})"
+        timeStr = time.strftime("%H:%M:%S", time.gmtime(seconds))
+        self.obj.CycleTime = f"{timeStr}{errorStr}"
 
     def addOperation(self, op, before=None, removeBefore=False):
         group = self.obj.Operations.Group

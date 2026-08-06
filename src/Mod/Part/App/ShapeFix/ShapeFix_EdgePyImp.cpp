@@ -269,15 +269,9 @@ PyObject* ShapeFix_EdgePy::fixSameParameter(PyObject* args)
 
     PyErr_Clear();
     PyObject* face;
-    if (PyArg_ParseTuple(
-            args,
-            "O!O!|d",
-            &TopoShapeEdgePy::Type,
-            &edge,
-            &TopoShapeFacePy::Type,
-            &face,
-            &tolerance
-        )) {
+    if (
+        PyArg_ParseTuple(args, "O!O!|d", &TopoShapeEdgePy::Type, &edge, &TopoShapeFacePy::Type, &face, &tolerance)
+    ) {
         TopoDS_Shape e = static_cast<TopoShapePy*>(edge)->getTopoShapePtr()->getShape();
         TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
 

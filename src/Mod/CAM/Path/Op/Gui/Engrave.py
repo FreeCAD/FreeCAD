@@ -31,7 +31,6 @@ import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
 
-
 __title__ = "CAM Engrave Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
@@ -55,7 +54,11 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def selectionSupportedAsBaseGeometry(self, sel, ignoreErrors):
         # allow selection of an entire 2D object, which is generally not the case
-        if not sel.HasSubObjects and sel.Object.isDerivedFrom("Part::Part2DObject"):
+        if (
+            not sel.HasSubObjects
+            and sel.Object.isDerivedFrom("Part::Feature")
+            and Path.Geom.isRoughly(sel.Object.Shape.Volume, 0)
+        ):
             return True
 
         # Let general logic handle all other cases.
@@ -79,7 +82,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     % (sel.Object.Label)
                 )
                 continue
-            if base.isDerivedFrom("Part::Part2DObject"):
+            if base.isDerivedFrom("Part::Feature") and Path.Geom.isRoughly(base.Shape.Volume, 0):
                 if sel.HasSubObjects:
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
@@ -93,12 +96,15 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     shapes.append(base)
                     self.obj.BaseShapes = shapes
                 added = True
-            else:
+            elif self.super().addBaseGeometry(selection):
                 # user wants us to engrave an edge of face of a base model
-                base = self.super().addBaseGeometry(selection)
-                added = added or base
+                added = True
 
         return added
+
+    def clearBase(self):
+        self.obj.BaseShapes = []
+        self.super().clearBase()
 
     def setFields(self, obj):
         self.super().setFields(obj)
@@ -135,21 +141,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.startVertex.setValue(obj.StartVertex)
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.startVertex.editingFinished)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):

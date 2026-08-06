@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # test to check color per face when after restore

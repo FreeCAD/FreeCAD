@@ -87,6 +87,11 @@ MayaGestureNavigationStyle::MayaGestureNavigationStyle()
 
 MayaGestureNavigationStyle::~MayaGestureNavigationStyle() = default;
 
+int MayaGestureNavigationStyle::selectionMoveThreshold() const
+{
+    return mouseMoveThreshold;
+}
+
 const char* MayaGestureNavigationStyle::mouseButtons(ViewerMode mode)
 {
     switch (mode) {
@@ -497,9 +502,23 @@ SbBool MayaGestureNavigationStyle::processSoEvent(const SoEvent* const ev)
                     && mousedownConsumedCount > 0) {
                     // mousemovethreshold has JUST been broken
 
+                    bool startedBoxSelection = false;
+                    if (this->button1down && this->shiftdown && !this->button2down
+                        && !this->button3down) {
+                        auto event = static_cast<const SoLocation2Event*>(ev);
+                        startedBoxSelection
+                            = tryStartBoxSelection(this->mousedownPos, event, this->ctrldown);
+                    }
+
                     // test if we should enter navigation
-                    if ((this->button1down && !suppressLMBDrag && this->altdown)
-                        || (this->button2down && this->altdown)) {
+                    if (startedBoxSelection) {
+                        this->mousedownConsumedCount = 0;
+                        processed = true;
+                    }
+                    else if (
+                        (this->button1down && !suppressLMBDrag && this->altdown)
+                        || (this->button2down && this->altdown)
+                    ) {
                         // yes, we are entering navigation.
                         // throw away consumed mousedowns.
                         this->mousedownConsumedCount = 0;

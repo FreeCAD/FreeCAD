@@ -212,39 +212,43 @@ const char* DynamicProperty::getPropertyDocumentation(const char* name) const
     return nullptr;
 }
 
-Property* DynamicProperty::addDynamicProperty(PropertyContainer& pc,
-                                              const char* type,
-                                              const char* name,
-                                              const char* group,
-                                              const char* doc,
-                                              short attr,
-                                              bool ro,
-                                              bool hidden)
+Property* DynamicProperty::addDynamicProperty(
+    PropertyContainer& pc,
+    std::string_view type,
+    const char* cstrName,
+    const char* group,
+    const char* doc,
+    short attr,
+    bool ro,
+    bool hidden
+)
 {
-    if (!type) {
+    if (type.empty()) {
         type = "<null>";
     }
 
-    std::string _name;
+    std::string name {(cstrName && cstrName[0] != '\0') ? cstrName : ""};
 
     static ParameterGrp::handle hGrp =
         GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
     if (hGrp->GetBool("AutoNameDynamicProperty", false)) {
-        if (!name || !name[0]) {
+        if (name.empty()) {
             name = type;
         }
-        _name = getUniquePropertyName(pc, name);
-        if (_name != name) {
-            FC_WARN(pc.getFullName()
-                    << " rename dynamic property from '" << name << "' to '" << _name << "'");
+        std::string uniqueName = getUniquePropertyName(pc, name.c_str());
+        if (uniqueName != name) {
+            FC_WARN(
+                pc.getFullName() << " rename dynamic property from '" << name << "' to '"
+                                 << uniqueName << "'"
+            );
+            name = uniqueName;
         }
-        name = _name.c_str();
     }
-    else if (!name) {
+    else if (name.empty()) {
         name = "<null>";  // setting a bad name to trigger exception
     }
 
-    auto prop = pc.getPropertyByName(name);
+    auto prop = pc.getPropertyByName(name.c_str());
     if (prop && prop->getContainer() == &pc) {
         FC_THROWM(Base::NameError,
                   "Property " << pc.getFullName() << '.' << name << " already exists");
@@ -270,7 +274,8 @@ Property* DynamicProperty::addDynamicProperty(PropertyContainer& pc,
 
     Property* pcProperty = static_cast<Property*>(propInstance);
 
-    auto res = impl->props.get<0>().emplace(pcProperty, name, nullptr, group, doc, attr, ro, hidden);
+    auto res = impl->props.get<0>()
+                   .emplace(pcProperty, name.c_str(), nullptr, group, doc, attr, ro, hidden);
 
     pcProperty->setContainer(&pc);
     pcProperty->myName = res.first->name.c_str();
@@ -477,7 +482,7 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
         FC_THROWM(Base::NameError, "Invalid property name '" << newName << "'");
     }
 
-    std::string oldName{data.getName()};
+    std::string oldName {data.getName()};
     auto& nameIndex = impl->props.get<0>();
     auto nameIt = nameIndex.find(data.getName());
     if (nameIt == nameIndex.end()) {

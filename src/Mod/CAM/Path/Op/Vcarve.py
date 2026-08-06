@@ -22,13 +22,18 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.EngraveBase as PathEngraveBase
 import PathScripts.PathUtils as PathUtils
 import math
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
+
+# lazily loaded modules
+from lazy_loader.lazy_loader import LazyLoader
+
+Part = LazyLoader("Part", globals(), "Part")
 
 __doc__ = "Class and implementation of CAM Vcarve operation"
 
@@ -130,8 +135,8 @@ def _sortVoronoiWires(wires, start=FreeCAD.Vector(0, 0, 0)):
 
     result = []
     while begin:
-        (bIdx, bLen) = closestTo(start, begin)
-        (eIdx, eLen) = closestTo(start, end)
+        bIdx, bLen = closestTo(start, begin)
+        eIdx, eLen = closestTo(start, end)
         if bLen < eLen:
             result.append(wires[bIdx])
             start = end[bIdx]
@@ -307,8 +312,10 @@ class _Geometry(object):
         return _Geometry(zStart + zOff, max(zStop + zOff, zFinal), zScale, zStepDown)
 
     @classmethod
-    def FromObj(cls, obj, model):
-        if obj.BaseShapes and hasattr(obj.BaseShapes[0], "Shape"):
+    def FromObj(cls, obj, model, faces=None):
+        if faces:
+            zStart = max(f.BoundBox.ZMax for f in faces)
+        elif obj.BaseShapes and hasattr(obj.BaseShapes[0], "Shape"):
             zStart = obj.BaseShapes[0].Shape.BoundBox.ZMax
         elif obj.Base and obj.Base[0][0] and hasattr(obj.Base[0][0], "Shape"):
             if len(obj.Base[0]) > 1 and "Face" in obj.Base[0][1][0]:
@@ -377,6 +384,10 @@ def _getPartEdges(obj, vWire, geom):
 
 class ObjectVcarve(PathEngraveBase.ObjectOp):
     """Proxy class for Vcarve operation."""
+
+    def __init__(self, obj, name, parentJob):
+        super().__init__(obj, name, parentJob)
+        self.wires = []
 
     def opFeatures(self, obj):
         """opFeatures(obj) ... return all standard features and edges based geometries"""
@@ -479,7 +490,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         def is_exterior(vertex, face):
             vector = FreeCAD.Vector(vertex.toPoint(face.BoundBox.ZMin))
-            (u, v) = face.Surface.parameter(vector)
+            u, v = face.Surface.parameter(vector)
             # isPartOfDomain is faster than face.IsInside(...)
             return not face.isPartOfDomain(u, v)
 
@@ -551,7 +562,8 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
     def buildCommandList(self, obj, faces):
         """
         Build command list to cut wires - based on voronoi
-        wire list from buildMedialWires
+        wire list from buildMedialWires.
+        :returns: list of Path.Command objects
         """
 
         def getPositionHistory(wire):
@@ -596,47 +608,21 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             edge_list = backtrack_edges + wire
 
             e = edge_list[0]
-            newPosition = e.valueAt(e.FirstParameter)
+            pos = e.valueAt(e.FirstParameter)
 
             hSpeed = obj.ToolController.HorizFeed.Value
             vSpeed = obj.ToolController.VertFeed.Value
 
             # check if we can smart-skip using G0 repositioning which is slow
-            if not canSkipRepositioning(positionHistory, newPosition, obj.Tolerance):
+            if not canSkipRepositioning(positionHistory, pos, obj.Tolerance):
                 path.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
-                path.append(
-                    Path.Command(
-                        "G0",
-                        {
-                            "X": newPosition.x,
-                            "Y": newPosition.y,
-                            "Z": obj.SafeHeight.Value,
-                        },
-                    )
-                )
-
-                path.append(
-                    Path.Command(
-                        "G1",
-                        {
-                            "X": newPosition.x,
-                            "Y": newPosition.y,
-                            "Z": newPosition.z,
-                            "F": vSpeed,
-                        },
-                    )
-                )
+                path.append(Path.Command("G0", {"X": pos.x, "Y": pos.y, "Z": obj.SafeHeight.Value}))
+                path.append(Path.Command("G1", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": vSpeed}))
             else:  # skip repositioning
                 # technically hSpeed + vSpeed should be properly recalculated into F parameter
                 # as cmdsForEdge does but we either cut max 0.5 mm through stock or backtrack
                 # over already carved edges, so hSpeed will be just fine
-                path.append(
-                    Path.Command(
-                        "G1 X{} Y{} Z{} F{}".format(
-                            newPosition.x, newPosition.y, newPosition.z, hSpeed
-                        )
-                    )
-                )
+                path.append(Path.Command("G1", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": hSpeed}))
 
             for e in edge_list:
                 path.extend(Path.Geom.cmdsForEdge(e, hSpeed=hSpeed, vSpeed=vSpeed))
@@ -646,7 +632,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
         pathlist = []
         pathlist.append(Path.Command("(starting)"))
 
-        geom = _Geometry.FromObj(obj, self.model[0])
+        geom = _Geometry.FromObj(obj, self.model[0], faces)
 
         # iterate over each face separately
         for face, wires in self.buildMedialWires(obj, faces).items():
@@ -655,6 +641,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
             # This is done to avoid adding additional step-down engraving passes when it
             # would make no sense as depth is limited by Maximum Inscribed Circle anyway.
 
+            geom.stepDownPass = 1  # reset pass number
             maximumUsableDepth = geom.stop
 
             if geom.stepDown > 0:
@@ -677,7 +664,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
                 cutWires(wires, pathlist, obj.OptimizeMovements)
 
-        self.commandlist = pathlist
+        return pathlist
 
     def opExecute(self, obj):
         """opExecute(obj) ... process engraving operation"""
@@ -706,13 +693,18 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
         try:
             faces = []
+            matrix = getattr(self, "_geom_transform_matrix", None)
 
             for base in obj.BaseShapes:
-                faces.extend(base.Shape.Faces)
+                if matrix is not None:
+                    transformed = base.Shape.copy().transformShape(matrix, True, False)
+                    faces.extend(transformed.Faces)
+                else:
+                    faces.extend(base.Shape.Faces)
 
-            for base in obj.Base:
-                for sub in base[1]:
-                    shape = getattr(base[0].Shape, sub)
+            for base, subs in self.baseShapes(obj):
+                for sub in subs:
+                    shape = base.Shape.getElement(sub)
                     if isinstance(shape, Part.Face):
                         faces.append(shape)
 
@@ -724,7 +716,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
                         faces.extend(model.Shape.Faces)
 
             if faces:
-                self.buildCommandList(obj, faces)
+                self.commandlist.extend(self.buildCommandList(obj, faces))
             else:
                 Path.Log.error(
                     translate(
@@ -741,7 +733,7 @@ class ObjectVcarve(PathEngraveBase.ObjectOp):
 
             Path.Log.error(f"Engraving operation exception: {traceback.format_exc()}")
 
-    def opUpdateDepths(self, obj, ignoreErrors=False):
+    def opUpdateDepths(self, obj):
         """updateDepths(obj) ... engraving is always done at the top most z-value"""
         job = PathUtils.findParentJob(obj)
         self.opSetDefaultValues(obj, job)

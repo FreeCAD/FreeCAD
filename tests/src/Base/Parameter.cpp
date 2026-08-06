@@ -1,8 +1,15 @@
 #include <gtest/gtest.h>
 #include <boost/core/ignore_unused.hpp>
-#include <QLockFile>
 #include <Base/FileInfo.h>
+#include <Base/FileLock.h>
 #include <Base/Parameter.h>
+
+#include <filesystem>
+
+#if !defined(_WIN32) && !defined(__EMSCRIPTEN__)
+# include <sys/wait.h>
+# include <unistd.h>
+#endif
 
 class FakeObserver: public ParameterGrp::ObserverType
 {
@@ -445,21 +452,63 @@ TEST_F(ParameterTest, TestObserverNoRef)
 
 TEST_F(ParameterTest, TestLockFile)
 {
+#if defined(__EMSCRIPTEN__)
+    GTEST_SKIP() << "File locking is a no-op in Emscripten/WASM (single-process).";
+#endif
+
     std::string fn = getFileName();
     fn.append(".lock");
 
-    QLockFile lockFile1(QString::fromStdString(fn));
-    EXPECT_TRUE(lockFile1.tryLock(100));
+    // tryLock(0) should still attempt the lock once (no polling) and succeed when available.
+    Base::FileLock lockFile1(fn);
+    ASSERT_TRUE(lockFile1.tryLock(0));
     EXPECT_TRUE(lockFile1.isLocked());
 
-    QLockFile lockFile2(QString::fromStdString(fn));
-    EXPECT_FALSE(lockFile2.tryLock(100));
+#if defined(_WIN32)
+    // Windows file locks are per-handle, so another handle in the same process conflicts.
+    Base::FileLock lockFile2(fn);
+    EXPECT_FALSE(lockFile2.tryLock(0));
     EXPECT_FALSE(lockFile2.isLocked());
 
     lockFile1.unlock();
-    EXPECT_TRUE(lockFile2.lock());
-    EXPECT_FALSE(lockFile1.tryLock(500));
+    ASSERT_TRUE(lockFile2.tryLock(0));
     lockFile2.unlock();
+#else
+    // POSIX fcntl locks are per-process, so we normally test contention via a separate process.
+    //
+    // macOS differs here (locks can be inherited across fork), which makes it hard to test
+    // contention without launching an unrelated helper process. We still validate tryLock(0)
+    // and that unlock() releases the lock.
+# if defined(__APPLE__)
+    lockFile1.unlock();
+
+    Base::FileLock lockFile2(fn);
+    ASSERT_TRUE(lockFile2.tryLock(0));
+    lockFile2.unlock();
+# else
+    const pid_t pid = fork();
+    ASSERT_NE(pid, -1);
+    if (pid == 0) {
+        Base::FileLock lockFile2(fn);
+        const bool locked = lockFile2.tryLock(0);
+        _exit(locked ? 1 : 0);
+    }
+
+    int status = 0;
+    ASSERT_NE(waitpid(pid, &status, 0), -1);
+    ASSERT_TRUE(WIFEXITED(status));
+    EXPECT_EQ(0, WEXITSTATUS(status));
+
+    lockFile1.unlock();
+    Base::FileLock lockFile3(fn);
+    ASSERT_TRUE(lockFile3.tryLock(0));
+    lockFile3.unlock();
+# endif
+#endif
+
+    // Best-effort cleanup to avoid leaving lock files behind.
+    std::error_code ec;
+    (void)std::filesystem::remove(std::filesystem::path(fn), ec);
 }
 
 // NOLINTEND(cppcoreguidelines-*,readability-*)

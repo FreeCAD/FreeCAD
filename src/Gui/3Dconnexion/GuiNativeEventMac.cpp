@@ -60,7 +60,7 @@ void Gui::GuiNativeEvent::tdx_drv_handler(
     static bool firstTime = true;
     if (firstTime) {
         firstTime = false;
-        Base::Console().log("Call connexion handler\n");
+        // Base::Console().log("Call connexion handler\n");
     }
     Q_UNUSED(connection)
     // printf("tdx_drv_handler\n");
@@ -77,7 +77,7 @@ void Gui::GuiNativeEvent::tdx_drv_handler(
              * assigned id when the connection to the driver was established.
              */
             // printf("msg->client: %d, tdxClientID: %d\n", msg->client, tdxClientID);
-            Base::Console().log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
+            // Base::Console().log("msg->client: %d, msg->command: %d\n", msg->client, msg->command);
 
             if (msg->client == tdxClientID) {
                 switch (msg->command) {
@@ -141,7 +141,7 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
             UnregisterConnexionClient(tdxClientID);
         }
         CleanupConnexionHandlers();
-        Base::Console().log("Disconnected from 3Dconnexion driver\n");
+        Base::Console().log("Disconnected from 3Dconnexion legacy driver.\n");
     }
 }
 
@@ -149,16 +149,16 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
 {
     Q_UNUSED(window)
     OSStatus err;
+    Base::Console().log("Connecting to 3Dconnexion legacy driver...\n");
     /* make sure the framework is installed */
     if (SetConnexionHandlers == NULL) {
-        Base::Console().log("3Dconnexion framework not found!\n");
+        Base::Console().error("3DconnexionClient framework not found.\n");
         return;
     }
     /* install 3dx message handler in order to receive driver events */
     err = SetConnexionHandlers(tdx_drv_handler, 0L, 0L, false);
-    assert(err == 0);
     if (err) {
-        Base::Console().log("Error installing 3Dconnexion handler\n");
+        Base::Console().error("Error registering with 3Dconnexion legacy driver: %d\n", err);
         return;
     }
     /* register our app with the driver */
@@ -171,7 +171,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
         kConnexionMaskAll
     );
     if (tdxClientID == 0) {
-        Base::Console().log("Couldn't connect to 3Dconnexion driver\n");
+        Base::Console().error("Couldn't connect to 3Dconnexion legacy driver.\n");
         return;
     }
 
@@ -179,7 +179,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
     SetConnexionClientMask(tdxClientID, kConnexionMaskAll);
     SetConnexionClientButtonMask(tdxClientID, kConnexionMaskAllButtons);
 
-    Base::Console().log("3Dconnexion driver initialized. Client ID: %d\n", tdxClientID);
+    Base::Console().log("3Dconnexion legacy driver initialized. Client ID: %d\n", tdxClientID);
     mainApp->setSpaceballPresent(true);
 }
 

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to join wires together into a single wire."""
+
 ## @package join
 # \ingroup draftfunctions
 # \brief Provides functions to join wires together into a single wire.

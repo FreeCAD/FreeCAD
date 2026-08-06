@@ -161,11 +161,35 @@
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="RunKinematicsButton">
-     <property name="text">
-      <string>Generate</string>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="RunKinematicsButton">
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="SaveAnimationButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="toolTip">
+        <string>Save the animation as a GIF or video file.</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="Icons/resource.qrc">
+         <normaloff>:/icons/document-save.svg</normaloff>:/icons/document-save.svg</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_player">
@@ -191,7 +215,7 @@
            </sizepolicy>
           </property>
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
          </widget>
         </item>
@@ -220,13 +244,35 @@
       </item>
       <item row="2" column="0">
        <layout class="QHBoxLayout" name="controls_layout">
+        <property name="topMargin">
+         <number>20</number>
+        </property>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item>
          <widget class="QToolButton" name="StepBackwardButton">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Step backward</string>
@@ -238,15 +284,27 @@
            <iconset resource="Icons/resource.qrc">
            <normaloff>:/icons/media-playback-step-back.svg</normaloff>:/icons/media-playback-step-back.svg</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="PlayBackwardButton">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Play backward</string>
@@ -255,18 +313,36 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="Icons/resource.qrc">
-           <normaloff>:/icons/media-playback-start-back.svg</normaloff>:/icons/media-playback-start-back.svg</iconset>
+           <iconset>
+            <normaloff>:/icons/media-playback-start-back.svg</normaloff>:/icons/media-playback-start-back.svg</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="StopButton">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Stop</string>
@@ -278,15 +354,27 @@
            <iconset resource="Icons/resource.qrc">
            <normaloff>:/icons/media-playback-stop.svg</normaloff>:/icons/media-playback-stop.svg</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="PlayForwardButton">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Play forward</string>
@@ -298,15 +386,27 @@
            <iconset resource="Icons/resource.qrc">
            <normaloff>:/icons/media-playback-start.svg</normaloff>:/icons/media-playback-start.svg</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QToolButton" name="StepForwardButton">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>60</height>
+           </size>
           </property>
           <property name="toolTip">
            <string>Step forward</string>
@@ -318,7 +418,26 @@
            <iconset resource="Icons/resource.qrc">
            <normaloff>:/icons/media-playback-step.svg</normaloff>:/icons/media-playback-step.svg</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
          </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
        </layout>
       </item>

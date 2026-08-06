@@ -212,6 +212,12 @@ SET(Features_SRCS
     FeatureRevolution.h
     FeatureOffset.cpp
     FeatureOffset.h
+    LinearPatternExtension.cpp
+    LinearPatternExtension.h
+    PolarPatternExtension.cpp
+    PolarPatternExtension.h
+    OCCTMessagePrinter.cpp
+    OCCTMessagePrinter.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
@@ -569,6 +575,8 @@ SET(Part_SRCS
     Interface.cpp
     Interface.h
     PreCompiled.h
+    ProgressIndicator.cpp
+    ProgressIndicator.h
     Services.cpp
     Services.h
     SignalException.cpp
@@ -588,6 +596,8 @@ SET(Part_SRCS
     MeasureInfo.h
     modelRefine.cpp
     modelRefine.h
+    PyException.cpp
+    PyException.h
     Tools.cpp
     Tools.h
     encodeFilename.h
@@ -600,6 +610,10 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    FaceMakerBuildFace.cpp
+    FaceMakerBuildFace.h
+    FaceMakerUnified.cpp
+    FaceMakerUnified.h
     WireJoiner.cpp
     WireJoiner.h
 )

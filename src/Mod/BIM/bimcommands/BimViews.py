@@ -43,7 +43,6 @@ class BIM_Views:
             "Pixmap": "BIM_Views",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Views", "Views Manager"),
             "ToolTip": QT_TRANSLATE_NOOP("BIM_Views", "Shows or hides the views manager"),
-            "Accel": "Ctrl+9",
         }
 
     def Activated(self):
@@ -87,7 +86,7 @@ class BIM_Views:
             self.dialog.menu = QtGui.QMenu()
             for button in [
                 ("Active", translate("BIM", "Active")),
-                ("AddLevel", translate("BIM", "New Level")),
+                ("AddLevel", translate("BIM", "New Level Above")),
                 ("AddProxy", translate("BIM", "New Working Plane Proxy")),
                 ("Delete", translate("BIM", "Delete")),
                 ("Toggle", translate("BIM", "Toggle Visibility")),
@@ -117,7 +116,9 @@ class BIM_Views:
             self.dialog.buttonRename.setIcon(QtGui.QIcon(":/icons/edit-edit.svg"))
 
             # set tooltips
-            self.dialog.buttonAddLevel.setToolTip(translate("BIM", "Creates a new level"))
+            self.dialog.buttonAddLevel.setToolTip(
+                translate("BIM", "Creates a new level above the highest existing one")
+            )
             self.dialog.buttonAddProxy.setToolTip(
                 translate("BIM", "Creates a new working plane proxy")
             )
@@ -205,7 +206,7 @@ class BIM_Views:
             children = []
             for i in range(itm.childCount()):
                 children.append(_toStringList(itm.child(i)))
-            return [itm.toolTip(0), itm.text(0), itm.text(1), children]
+            return [itm.toolTip(0), itm.text(0), itm.text(1), itm.text(2), children]
 
         return [_toStringList(itm) for itm in treeViewItems]
 
@@ -391,15 +392,61 @@ class BIM_Views:
                 FreeCADGui.Selection.addSelection(obj)
 
     def addLevel(self):
-        "adds a building part"
+        """Add a new level, auto-stacked above the highest sibling level.
+
+        The new level is placed at the elevation of the highest existing
+        level's top and added to the same parent building. This mirrors the
+        level workflow in Revit and ArchiCAD: levels are sequential, sorted by
+        elevation, and adding one extends the stack upward rather than
+        colliding with existing storeys at z=0.
+        """
 
         import Arch
+        import Draft
 
-        FreeCAD.ActiveDocument.openTransaction("Create BuildingPart")
+        DEFAULT_SPACING = 3000.0  # mm, fallback vertical spacing for stacking
+
+        # Determine sibling levels (children of the same parent), if any.
+        sel = FreeCADGui.Selection.getSelection()
+        parent = None
+        if len(sel) == 1:
+            s = sel[0]
+            t = Draft.getType(s)
+            if t in ["Building", "IfcBuilding"] or getattr(s, "IfcType", "") == "Building":
+                parent = s
+            elif t in ["BuildingPart", "Building Storey", "IfcBuildingStorey"]:
+                parent = getParent(s)
+
+        siblings = []
+        scope = (
+            parent.Group if parent and hasattr(parent, "Group") else FreeCAD.ActiveDocument.Objects
+        )
+        for o in scope:
+            t = Draft.getType(o)
+            if (
+                t in ["BuildingPart", "Building Storey", "IfcBuildingStorey"]
+                or getattr(o, "IfcType", "") == "Building Storey"
+            ):
+                siblings.append(o)
+
+        top_elevation = 0.0
+        if siblings:
+            highest = max(siblings, key=getObjectElevation)
+            h = getattr(highest, "Height", None)
+            # Use the explicit height of the level below when set, otherwise a
+            # default spacing, so the new level does not overlap the one below.
+            spacing = h.Value if (h is not None and h.Value) else DEFAULT_SPACING
+            top_elevation = getObjectElevation(highest) + spacing
+
+        FreeCAD.ActiveDocument.openTransaction("Create Level")
         obj = Arch.makeFloor()
-        self.addToSelection(obj)
+        setObjectElevation(obj, top_elevation)
+        if parent is not None and hasattr(parent, "addObject"):
+            parent.addObject(obj)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection(obj)
         self.update(False)
 
     def addProxy(self):
@@ -463,26 +510,35 @@ class BIM_Views:
 
     @staticmethod
     def activate(dialog=None):
-        from draftutils.gui_utils import toggle_working_plane
-
         vm = findWidget()
         if vm:
             if vm.tree.selectedItems():
                 item = vm.tree.selectedItems()[-1]
                 obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-                if obj:
-                    toggle_working_plane(obj, None, restore=True, dialog=dialog)
+                if obj and hasattr(obj.ViewObject, "DoubleClickActivates"):
+                    _toggle_active_container(obj, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
     def editObject(self, item, column):
-        "renames or edit height of the actual object"
+        "renames or edits the elevation or height of the actual object"
 
         obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
-        if obj:
+        if not obj:
+            return
+        text = item.text(column)
+        FreeCAD.ActiveDocument.openTransaction("Edit level")
+        try:
             if column == 0:
-                obj.Label = item.text(column)
-            if column == 1:
-                obj.Placement.Base.z = FreeCAD.Units.parseQuantity(item.text(column))
+                obj.Label = text
+            elif column == 1:
+                if text:
+                    setObjectElevation(obj, FreeCAD.Units.parseQuantity(text))
+            elif column == 2:
+                if text and hasattr(obj, "Height"):
+                    obj.Height = FreeCAD.Units.parseQuantity(text)
+        finally:
+            FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
     def toggle(self):
         "toggle selected item on/off"
@@ -604,7 +660,9 @@ class BIM_Views:
             if selobj:
                 if Draft.getType(selobj).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
-                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == selobj:
+                    self.dialog.buttonActive.setChecked(True)
+                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
                     self.dialog.buttonActive.setChecked(True)
                 else:
                     self.dialog.buttonActive.setChecked(False)
@@ -656,8 +714,8 @@ def show(item, column=None):
         obj = FreeCAD.ActiveDocument.getObject(item)
     else:
         # called from GUI
-        if column == 1:
-            # user clicked the level field
+        if column in (1, 2):
+            # user clicked the elevation or height field
             if vm:
                 vm.tree.editItem(item, column)
                 return
@@ -669,13 +727,11 @@ def show(item, column=None):
         FreeCADGui.Selection.addSelection(obj)
         vparam = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
         if obj.isDerivedFrom("TechDraw::DrawPage"):
-
-            # case 1: the object is a TD page. We switch to it simply
+            # TD page: We switch to it.
             obj.ViewObject.Visibility = True
         elif isView(obj):
-
-            # case 2: the object is a 2D view
-            ssel = [obj] + obj.OutListRecursive
+            # 2D view
+            ssel = [obj] + obj.Group
             FreeCADGui.Selection.clearSelection()
             for o in ssel:
                 o.ViewObject.Visibility = True
@@ -696,11 +752,11 @@ def show(item, column=None):
                 vparam.SetBool("Simple", True)
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
+        elif Draft.getType(obj) in ("BuildingPart", "IfcBuilding", "IfcBuildingStorey"):
+            BIM_Views.activate()
         else:
-            # case 3: This is maybe a BuildingPart. Place the WP on it")
-            type = Draft.getType(obj)
-            if type == "BuildingPart" or type == "IfcBuildingStorey":
-                BIM_Views.activate()
+            # WP Proxy
+            FreeCADGui.runCommand("Draft_SelectPlane")
 
     if vm:
         # store the last double-clicked item for the BIM WPView command
@@ -731,25 +787,46 @@ def isView(obj):
 
 def getTreeViewItem(obj):
     """
-    from FreeCAD object make the TreeWidgetItem including icon Label and LevelHeight
-    and also make a level height in number to sort the order after
+    Build a QTreeWidgetItem for obj with three columns: label, elevation, height.
+
+    Elevation is always read from Placement.Base.z, which is the source of
+    truth for a level's position. The IFC Elevation attribute is derived from
+    this placement and must never be used as a fallback. Height comes from the
+    BuildingPart Height property when present. Returns the item together with
+    the elevation as a number, used to sort levels vertically.
     """
     from PySide import QtCore, QtGui
 
-    z = obj.Placement.Base.z
-    lvHStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
-    if z == 0:
-        # override with Elevation property if available
-        if hasattr(obj, "Elevation"):
-            z = obj.Elevation.Value
-            lvHStr = obj.Elevation.UserString
-    it = QtGui.QTreeWidgetItem([obj.Label, lvHStr])
+    z = getObjectElevation(obj)
+    elevStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
+
+    heightStr = ""
+    if hasattr(obj, "Height") and hasattr(obj.Height, "UserString"):
+        heightStr = obj.Height.UserString
+
+    it = QtGui.QTreeWidgetItem([obj.Label, elevStr, heightStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
     it.setToolTip(0, obj.Name)
     if obj.ViewObject:
-        if hasattr(obj.ViewObject, "Proxy") and hasattr(obj.ViewObject.Proxy, "getIcon"):
-            it.setIcon(0, QtGui.QIcon(obj.ViewObject.Proxy.getIcon()))
+        if hasattr(obj.ViewObject, "Icon"):
+            it.setIcon(0, obj.ViewObject.Icon)
     return (it, z)
+
+
+def getObjectElevation(obj):
+    """Return the elevation represented by an object's placement."""
+
+    return obj.Placement.Base.z
+
+
+def setObjectElevation(obj, elevation):
+    """Set an object's elevation through its Placement property.
+
+    Placement is the source of truth; IFC Elevation is derived from it.
+    Assign the complete placement to notify dependent objects.
+    """
+
+    obj.Placement.Base.z = elevation
 
 
 def getAllItemsInTree(tree_widget):
@@ -787,6 +864,63 @@ def getParent(obj):
         for parent in obj.InList:
             if hasattr(parent, "Group") and obj in parent.Group:
                 return parent
+
+
+def _toggle_active_container(obj, action=None, dialog=None):
+    """Toggle the active state of a BIM building or level.
+
+    This function handles the logic for activating BuildingParts (buildings and levels),
+    IfcBuildings and IfcBuildingStoreys.
+
+    Parameters
+    ----------
+    obj : App::DocumentObject
+        The object to activate or deactivate as a working plane.
+        Must be a BuildingPart, an IfcBuilding or an IfcBuildingStorey.
+    action : QAction, optional
+        The action button that triggered this function, to update its checked state.
+    dialog : QDialog, optional
+        If provided, will update the checked state of the activate button in the dialog.
+
+    Returns
+    -------
+    bool
+        True if the object was activated, False if it was deactivated.
+    """
+
+    active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+    if active_obj is None:
+        active_obj = FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+    is_active = obj == active_obj
+
+    if getattr(obj.ViewObject, "SetWorkingPlane", False):
+        obj.ViewObject.Proxy.setWorkingPlane(restore=is_active)
+    elif (
+        not is_active
+        and active_obj is not None
+        and getattr(active_obj.ViewObject, "SetWorkingPlane", False)
+    ):
+        active_obj.ViewObject.Proxy.setWorkingPlane(restore=True)
+
+    if action:
+        action.setChecked((not is_active))
+    if dialog and hasattr(dialog, "buttonActive"):
+        dialog.buttonActive.setChecked((not is_active))
+
+    if is_active:
+        # Deactivate the object
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("NativeIFC", None)
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject("Arch", None)
+        return False
+    else:
+        # Activate the object
+        import Draft
+
+        context = (
+            "NativeIFC" if Draft.getType(obj) in ("IfcBuilding", "IfcBuildingStorey") else "Arch"
+        )
+        FreeCADGui.ActiveDocument.ActiveView.setActiveObject(context, obj)
+        return True
 
 
 FreeCADGui.addCommand("BIM_Views", BIM_Views())

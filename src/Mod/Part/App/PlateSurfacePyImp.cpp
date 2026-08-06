@@ -148,8 +148,8 @@ int PlateSurfacePy::PyInit(PyObject* args, PyObject* kwds)
             Py::Sequence list(points);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Base::Vector3d vec = Py::Vector(*it).toVector();
-                Handle(GeomPlate_PointConstraint) PCont
-                    = new GeomPlate_PointConstraint(gp_Pnt(vec.x, vec.y, vec.z), 0);
+                Handle(GeomPlate_PointConstraint)
+                    PCont = new GeomPlate_PointConstraint(gp_Pnt(vec.x, vec.y, vec.z), 0);
                 buildPlate.Add(PCont);
             }
         }

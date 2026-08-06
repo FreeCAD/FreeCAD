@@ -74,6 +74,7 @@ public:
 
     bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
+    void onRelabel(Gui::Document* pDoc) override;
 
     void print() override;
     void print(QPrinter* printer) override;
@@ -101,6 +102,7 @@ public:
     ViewProviderPage* getViewProviderPage() const {return m_vpPage;}
 
     void setTabText(std::string tabText);
+    void closeWithoutSavePrompt();
 
     void contextMenuEvent(QContextMenuEvent *event) override;
 
@@ -121,6 +123,7 @@ public Q_SLOTS:
     void saveDXF();
     void slotContextExportPdf();
     void toggleFrame();
+    void toggleGrid();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -144,6 +147,7 @@ private:
     Connection connectDeletedObject;
 
     QAction *m_toggleFrameAction;
+    QAction *m_toggleGridAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;

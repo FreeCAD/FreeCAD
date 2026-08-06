@@ -36,6 +36,7 @@ and text created on screen through Coin (pivy).
 
 Its edit mode launches the `Draft_Edit` command.
 """
+
 ## @package view_draft_annotation
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for all annotation type objects.

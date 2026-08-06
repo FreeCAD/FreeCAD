@@ -35,6 +35,7 @@ jobs:
     #   - https://gh.io/using-larger-runners (GitHub.com only)
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
+    if: github.repository_owner == 'FreeCAD' || github.event_name == 'workflow_dispatch'
     permissions:
       # required for all workflows
       security-events: write
@@ -68,7 +69,7 @@ jobs:
         # your codebase is analyzed, see https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/codeql-code-scanning-for-compiled-languages
     steps:
     - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@fa2e9d605c4eeb9fcad4c99c224cee0c6c7f3594 # v2.16.0
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
         egress-policy: audit
 
@@ -84,7 +85,7 @@ jobs:
         remove-docker-images: 'true' # (frees ~3.2 GB)
 
     - name: Checkout repository
-      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       with:
         fetch-depth: 2
         submodules: recursive
@@ -140,7 +141,7 @@ jobs:
         upload: failure-only
 
     - name: filter-sarif
-      uses: advanced-security/filter-sarif@v1
+      uses: advanced-security/filter-sarif@f3b8118a9349d88f7b1c0c488476411145b6270d # v1.0.1
       with:
         patterns: |
           -tests/**/*
@@ -151,12 +152,12 @@ jobs:
         output: sarif-results/cpp.sarif
 
     - name: Upload SARIF
-      uses: github/codeql-action/upload-sarif@v3
+      uses: github/codeql-action/upload-sarif@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # v3.36.0
       with:
         sarif_file: sarif-results/cpp.sarif
 
     - name: Upload loc as a Build Artifact
-      uses: actions/upload-artifact@v7.0.0
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       with:
         name: sarif-results
         path: sarif-results

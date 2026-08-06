@@ -74,6 +74,7 @@
 # include "ViewProviderFemPostObject.h"
 # include "ViewProviderFemPostPipeline.h"
 # include "ViewProviderFemPostBranchFilter.h"
+# include "ViewProviderShapeExtension.h"
 #endif
 
 
@@ -156,6 +157,15 @@ PyMOD_INIT_FUNC(FemGui)
     FemGui::ViewProviderResult                                  ::init();
     FemGui::ViewProviderResultPython                            ::init();
 
+    FemGui::ViewProviderShapeExtension                          ::init();
+    FemGui::ViewProviderBoxExtension                            ::init();
+    FemGui::ViewProviderBoxExtensionPython                      ::init();
+    FemGui::ViewProviderCylinderExtension                       ::init();
+    FemGui::ViewProviderCylinderExtensionPython                 ::init();
+    FemGui::ViewProviderSphereExtension                         ::init();
+    FemGui::ViewProviderSphereExtensionPython                   ::init();
+    FemGui::ViewProviderPlaneExtension                          ::init();
+    FemGui::ViewProviderPlaneExtensionPython                    ::init();
 
 #ifdef FC_USE_VTK
     FemGui::ViewProviderFemPostObject                           ::init();

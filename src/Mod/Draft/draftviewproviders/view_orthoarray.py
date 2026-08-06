@@ -26,6 +26,7 @@
 
 Currently unused.
 """
+
 ## @package view_orthoarray
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the orthogonal Array object.

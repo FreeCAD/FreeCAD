@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to repair objects created with older versions."""
+
 ## @package gui_heal
 # \ingroup draftguitools
 # \brief Provides GUI tools to repair objects created with older versions.

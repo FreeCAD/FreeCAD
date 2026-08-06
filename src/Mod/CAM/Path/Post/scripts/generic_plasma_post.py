@@ -137,10 +137,23 @@ class GenericPlasma(PostProcessor):
                 "type": "bool",
                 "label": translate("CAM", "Force Rapid Feeds"),
                 "default": False,
+                "runtime": True,
                 "help": translate(
                     "CAM",
                     "Force rapid-feed speeds for all feed specified commands. "
                     "Useful for dry runs to verify paths without cutting.",
+                ),
+            },
+            {
+                "name": "mark_entry_only",
+                "type": "bool",
+                "label": translate("CAM", "Mark Entry Points Only"),
+                "default": False,
+                "runtime": True,
+                "help": translate(
+                    "CAM",
+                    "Mark first entry points only (for drilling prep). "
+                    "Skips cutting moves and only marks where the torch would pierce.",
                 ),
             },
         ]
@@ -190,12 +203,6 @@ class GenericPlasma(PostProcessor):
 
         return reset_commands
 
-    def _get_property_value(self, name, default):
-        """Get a property value from machine configuration with fallback to default."""
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            return self._machine.postprocessor_properties.get(name, default)
-        return default
-
     def init_values(self, values: Values) -> None:
         """Initialize values that are used throughout the postprocessor."""
         #
@@ -230,25 +237,16 @@ class GenericPlasma(PostProcessor):
             "P",
         ]
 
-        values["MACHINE_NAME"] = "GenericPlasma"
         values["POSTPROCESSOR_FILE_NAME"] = __name__
-        #
-        # Load preamble from machine configuration if available
-        #
-        if self._machine and hasattr(self._machine, "postprocessor_properties"):
-            props = self._machine.postprocessor_properties
-            values["PREAMBLE"] = props.get("preamble", "")
-        else:
-            values["PREAMBLE"] = ""
 
     def _inject_pierce_delay(self, postables):
         """Inject pierce delay after torch ignition command."""
-        pierce_delay_ms = int(self._get_property_value("pierce_delay", 1000))
+        pierce_delay_ms = int(self.values["PIERCE_DELAY"])
         if pierce_delay_ms <= 0:
             return
 
         # Marking doesn't pierce through stock (i.e. no delay needed)
-        if self._get_property_value("mark_entry_only", False):
+        if self.values["MARK_ENTRY_ONLY"]:
             return
 
         # Convert milliseconds to seconds for G4 command
@@ -272,7 +270,7 @@ class GenericPlasma(PostProcessor):
 
     def _inject_cooling_delay(self, postables):
         """Inject cooling delay after torch extinguish command."""
-        cooling_delay_ms = int(self._get_property_value("cooling_delay", 500))
+        cooling_delay_ms = int(self.values["COOLING_DELAY"])
         if cooling_delay_ms <= 0:
             return
 
@@ -297,7 +295,7 @@ class GenericPlasma(PostProcessor):
 
     def _inject_torch_control(self, postables):
         """Handle torch ignition/extinguishment based on Z-axis movement."""
-        if not self._get_property_value("torch_zaxis_control", True):
+        if not self.values["TORCH_ZAXIS_CONTROL"]:
             return
 
         for section_name, sublist in postables:
@@ -321,7 +319,7 @@ class GenericPlasma(PostProcessor):
                         if not self._torch_active and CompValue(cmd.Parameters["Z"]) <= CompValue(
                             cut_height
                         ):
-                            if self._get_property_value("mark_entry_only", False):
+                            if self.values["MARK_ENTRY_ONLY"]:
                                 new_commands.append(cmd)
                                 new_commands.append(self.TorchIgniteCommand)
                                 self._torch_active = True
@@ -376,10 +374,10 @@ class GenericPlasma(PostProcessor):
 
     def _inject_mark_entry_only(self, postables):
         """Mark first entry points only (Z- to cut height, torch on, short delay, torch off, Z+ to clearance)."""
-        if not self._get_property_value("mark_entry_only", False):
+        if not self.values["MARK_ENTRY_ONLY"]:
             return
 
-        marking_delay_ms = int(self._get_property_value("marking_delay", 100))
+        marking_delay_ms = int(self.values["MARKING_DELAY"])
 
         # Convert milliseconds to seconds for G4 command
         marking_delay_sec = marking_delay_ms / 1000.0
@@ -407,7 +405,7 @@ class GenericPlasma(PostProcessor):
                         ):
 
                             # Mark the entry point
-                            # 1. Keep move decending to cut height (torch on)
+                            # 1. Keep move descending to cut height (torch on)
                             new_commands.append(cmd)
 
                             # 2. Very short delay (torch mark)
@@ -451,7 +449,7 @@ class GenericPlasma(PostProcessor):
 
     def _force_rapid_feeds(self, postables):
         """Replace all feed rates with rapid speeds for dry runs."""
-        if not self._get_property_value("force_rapid_feeds", False):
+        if not self.values["FORCE_RAPID_FEEDS"]:
             return
 
         for section_name, sublist in postables:
@@ -473,96 +471,6 @@ class GenericPlasma(PostProcessor):
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
 
-    def pre_processing_dialog(self):
-        """
-        Show plasma cutting mode dialog to ask user about mark-only operation.
-
-        Returns:
-            bool: True to continue with post-processing, False to cancel
-        """
-        try:
-            from PySide import QtWidgets
-
-            app = QtWidgets.QApplication.instance()
-            if app is None:
-                return True
-
-            # Get current mark_entry_only setting from machine config
-            mark_only = False
-            if self._machine and hasattr(self._machine, "postprocessor_properties"):
-                props = self._machine.postprocessor_properties
-                mark_only = props.get("mark_entry_only", False)
-
-            # Create dialog
-            dialog = QtWidgets.QDialog()
-            dialog.setWindowTitle("Plasma Cutting Mode")
-            dialog.resize(400, 200)
-            layout = QtWidgets.QVBoxLayout(dialog)
-
-            # Add description label
-            label = QtWidgets.QLabel(
-                "Select plasma cutting mode:\n\n"
-                "• Normal: Full cutting with torch control\n"
-                "• Mark Only: Only mark first entry points (for drilling prep)"
-            )
-            label.setWordWrap(True)
-            layout.addWidget(label)
-
-            # Add radio buttons for mode selection
-            button_group = QtWidgets.QButtonGroup(dialog)
-
-            normal_radio = QtWidgets.QRadioButton("Normal Cutting")
-            normal_radio.setChecked(not mark_only)
-            button_group.addButton(normal_radio, 0)
-            layout.addWidget(normal_radio)
-
-            mark_radio = QtWidgets.QRadioButton("Mark Entry Points Only")
-            mark_radio.setChecked(mark_only)
-            button_group.addButton(mark_radio, 1)
-            layout.addWidget(mark_radio)
-
-            # Add info text about mark mode
-            info_label = QtWidgets.QLabel(
-                "Mark mode will:\n"
-                "• Mark first entry point with torch\n"
-                "• Skip all cutting movements\n"
-                "• Useful for preparing holes for drilling"
-            )
-            info_label.setWordWrap(True)
-            info_label.setStyleSheet("color: #666; font-size: 11px;")
-            layout.addWidget(info_label)
-
-            # Add OK/Cancel buttons
-            button_box = QtWidgets.QDialogButtonBox(
-                QtWidgets.QDialogButtonBox.Ok | QtWidgets.QDialogButtonBox.Cancel
-            )
-            button_box.accepted.connect(dialog.accept)
-            button_box.rejected.connect(dialog.reject)
-            layout.addWidget(button_box)
-
-            # Show dialog and get result
-            result = dialog.exec_()
-
-            if result == QtWidgets.QDialog.Accepted:
-                # Update machine config with user's choice
-                mark_only_selected = mark_radio.isChecked()
-                if self._machine and hasattr(self._machine, "postprocessor_properties"):
-                    props = self._machine.postprocessor_properties
-                    props["mark_entry_only"] = mark_only_selected
-                    mode_text = "Mark Only" if mark_only_selected else "Normal Cutting"
-                    Path.Log.info(f"Plasma cutting mode set to: {mode_text}")
-                return True
-            else:
-                Path.Log.info("Plasma cutting mode dialog cancelled")
-                return False
-
-        except ImportError:
-            Path.Log.debug("GUI not available - using machine config for mark_entry_only")
-            return True
-        except Exception as e:
-            Path.Log.error(f"Error showing plasma cutting dialog: {str(e)}")
-            return True
-
     def _expand_postprocessor_commands(self, postables):
         """Apply plasma-specific transformations to postables.
 
@@ -577,6 +485,74 @@ class GenericPlasma(PostProcessor):
         self._inject_cooling_delay(postables)
         self._force_rapid_feeds(postables)
 
+    def get_sanity_checks(self, job):
+        """Plasma cutter specific sanity checks."""
+        Path.Log.track("GenericPlasma.get_sanity_checks() called")
+        squawks = []
+
+        # Test squawk.  Remove this.  It will always add a warning. # FIXME: @sliptonic (rework test323_generic_plasma_sanity_checks_integration)
+        Path.Log.track("Adding test squawk from GenericPlasma")
+        squawks.append(self._create_squawk("WARNING", "This is a test warning message"))
+
+        # Check pierce delay vs material thickness
+        pierce_delay = self.values.get("pierce_delay", 1000)
+        if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
+            thickness_mm = job.Stock.Thickness
+            # Recommended pierce delay: ~70ms per mm of thickness, minimum 500ms
+            recommended_delay = max(500, int(thickness_mm * 70))
+
+            if pierce_delay < recommended_delay:
+                if thickness_mm > 6.35:  # > 1/4 inch is more critical
+                    squawks.append(
+                        self._create_squawk(
+                            "WARNING",
+                            f"Pierce delay ({pierce_delay}ms) may be insufficient for {thickness_mm:.1f}mm material. Recommended: {recommended_delay}ms",
+                        )
+                    )
+                else:
+                    squawks.append(
+                        self._create_squawk(
+                            "NOTE",
+                            f"Pierce delay ({pierce_delay}ms) may be short for {thickness_mm:.1f}mm material. Consider: {recommended_delay}ms",
+                        )
+                    )
+
+        # Check cooling delay for thick materials
+        cooling_delay = self.values.get("cooling_delay", 500)
+        if hasattr(job, "Stock") and hasattr(job.Stock, "Thickness"):
+            thickness_mm = job.Stock.Thickness
+            if thickness_mm > 10.0 and cooling_delay < 1000:  # Thick materials need more cooling
+                squawks.append(
+                    self._create_squawk(
+                        "NOTE",
+                        f"Consider increasing cooling delay for {thickness_mm:.1f}mm material to prevent torch overheating",
+                    )
+                )
+
+        # Check for rapid moves with torch enabled
+        if self.values.get("torch_zaxis_control", True):
+            for op in getattr(job.Operations, "Group", []):
+                if hasattr(op, "HoriFeed") and op.HoriFeed > 3000:  # High feed rates
+                    squawks.append(
+                        self._create_squawk(
+                            "CAUTION",
+                            f"Operation '{op.Label}' has high feed rate ({op.HoriFeed}) with torch Z-control - verify safe operation",
+                        )
+                    )
+
+        # Check marking delay vs pierce delay
+        marking_delay = self.values.get("marking_delay", 100)
+        if marking_delay >= pierce_delay:
+            squawks.append(
+                self._create_squawk(
+                    "NOTE",
+                    f"Marking delay ({marking_delay}ms) >= pierce delay ({pierce_delay}ms) - marking may not be distinct from cutting",
+                )
+            )
+
+        Path.Log.track(f"GenericPlasma.get_sanity_checks() returning {len(squawks)} squawks")
+        return squawks
+
     @property
     def tooltip(self):
         tooltip: str = """
@@ -588,11 +564,9 @@ class GenericPlasma(PostProcessor):
         - Torch Z-axis control (M3/M5 based on Z movement)
         - Pierce delay after torch ignition
         - Cooling delay after torch extinguishment
-        - Mark entry points only mode (via dialog)
+        - Mark entry points only mode
         - Force rapid feeds for dry runs
-
-        The postprocessor will show a dialog to select between
-        normal cutting and mark-only modes.
+        - Material-aware sanity checks
         """
         return tooltip
 

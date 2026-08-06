@@ -26,14 +26,20 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/Console.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/ServiceProvider.h>
 
+#include "DepEdge.h"
+#include "DepEdgePy.h"
 #include "DocumentObject.h"
 #include "Document.h"
 #include "ExpressionParser.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "GroupExtension.h"
+#include "MainThreadSignal.h"
+#include "Services.h"
 
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
@@ -168,7 +174,7 @@ PyObject* DocumentObjectPy::supportedProperties(PyObject* args)
         Base::BaseClass* data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it.getName()));
+            res.append(Base::toPyString(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -275,6 +281,16 @@ Py::Object DocumentObjectPy::getViewObject() const
             // document methods)
             return Py::None();
         }
+        if (!App::MainThreadSignalConfig::isMainThread()) {
+            Base::Console().error(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread.\n"
+            );
+            throw Py::RuntimeError(
+                "GUI API 'App::DocumentObjectPy::getViewObject' may only be used from the main "
+                "thread"
+            );
+        }
         if (!getDocumentObjectPtr()->getDocument()) {
             throw Py::RuntimeError("Object has no document");
         }
@@ -331,6 +347,21 @@ Py::List DocumentObjectPy::getInListRecursive() const
     return ret;
 }
 
+Py::List DocumentObjectPy::getInListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getInListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
+    }
+
+    return ret;
+}
+
 Py::List DocumentObjectPy::getOutList() const
 {
     Py::List ret;
@@ -356,6 +387,21 @@ Py::List DocumentObjectPy::getOutListRecursive() const
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
+    }
+
+    return ret;
+}
+
+Py::List DocumentObjectPy::getOutListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getOutListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
     }
 
     return ret;
@@ -889,11 +935,23 @@ PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
         Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
 }
 
-PyObject* DocumentObjectPy::getCustomAttributes(const char*) const
+PyObject* DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
+    // Must call PropertyContainerPy here, not ExtensionContainerPy
+    if (PyObject* py = PropertyContainerPy::getCustomAttributes(attr)) {  // NOLINT
+        return py;
+    }
+
+    if (auto customProvider = Base::provideService<App::CustomAttributeProvider>()) {
+        auto opt = customProvider->getAttribute(getDocumentObjectPtr(), attr);
+        if (opt.has_value()) {
+            return opt.value();
+        }
+    }
+
     return nullptr;
 }
-// remove
+
 int DocumentObjectPy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;

@@ -25,6 +25,7 @@
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
+#include <Message_ProgressRange.hxx>
 #include <TDocStd_Document.hxx>
 
 namespace Import
@@ -35,7 +36,10 @@ class ImportExport ReaderIges
 public:
     explicit ReaderIges(const Base::FileInfo& file);
 
-    void read(Handle(TDocStd_Document) hDoc);
+    void read(
+        Handle(TDocStd_Document) hDoc,
+        const Message_ProgressRange& theProgress = Message_ProgressRange()
+    );
 
 private:
     Base::FileInfo file;

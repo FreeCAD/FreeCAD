@@ -31,6 +31,7 @@ For example, add objects to groups, select objects inside groups,
 set the automatic group in which to create objects, and add objects
 to the construction group.
 """
+
 ## @package gui_groups
 # \ingroup draftguitools
 # \brief Provides GUI tools to do various operations with groups.
@@ -50,7 +51,6 @@ from draftutils import groups
 from draftutils import params
 from draftutils import utils
 from draftutils.translate import translate
-
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False

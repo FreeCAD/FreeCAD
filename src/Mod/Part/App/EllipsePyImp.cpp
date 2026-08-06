@@ -67,12 +67,10 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
     PyObject* pElips;
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!", keywords_e, &(EllipsePy::Type), &pElips)) {
         EllipsePy* pEllipse = static_cast<EllipsePy*>(pElips);
-        Handle(Geom_Ellipse) Elips1 = Handle(Geom_Ellipse)::DownCast(
-            pEllipse->getGeomEllipsePtr()->handle()
-        );
-        Handle(Geom_Ellipse) Elips2 = Handle(Geom_Ellipse)::DownCast(
-            this->getGeomEllipsePtr()->handle()
-        );
+        Handle(Geom_Ellipse)
+            Elips1 = Handle(Geom_Ellipse)::DownCast(pEllipse->getGeomEllipsePtr()->handle());
+        Handle(Geom_Ellipse)
+            Elips2 = Handle(Geom_Ellipse)::DownCast(this->getGeomEllipsePtr()->handle());
         Elips2->SetElips(Elips1->Elips());
         return 0;
     }

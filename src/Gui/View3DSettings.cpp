@@ -32,6 +32,7 @@
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
+#include "Selection/SelectionColors.h"
 #include "SoFCSelectionAction.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
@@ -260,26 +261,16 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
         }
     }
     else if (strcmp(Reason, "HighlightColor") == 0) {
-        float transparency;
-        SbColor highlightColor(0.8f, 0.1f, 0.1f);
-        auto highlight = (unsigned long)(highlightColor.getPackedValue());
-        highlight = rGrp.GetUnsigned("HighlightColor", highlight);
-        highlightColor.setPackedValue((uint32_t)highlight, transparency);
         SoSFColor col;
-        col.setValue(highlightColor);
+        col.setValue(SelectionColors::defaultHighlightColor());
         SoFCHighlightColorAction cAct(col);
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
         }
     }
     else if (strcmp(Reason, "SelectionColor") == 0) {
-        float transparency;
-        SbColor selectionColor(0.1f, 0.8f, 0.1f);
-        auto selection = (unsigned long)(selectionColor.getPackedValue());
-        selection = rGrp.GetUnsigned("SelectionColor", selection);
-        selectionColor.setPackedValue((uint32_t)selection, transparency);
         SoSFColor col;
-        col.setValue(selectionColor);
+        col.setValue(SelectionColors::defaultSelectionColor());
         SoFCSelectionColorAction cAct(col);
         for (auto _viewer : _viewers) {
             cAct.apply(_viewer->getSceneGraph());
@@ -288,8 +279,10 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     else if (strcmp(Reason, "NavigationStyle") == 0) {
         if (!ignoreNavigationStyle) {
             // check whether the simple or the full mouse model is used
-            std::string model
-                = rGrp.GetASCII("NavigationStyle", CADNavigationStyle::getClassTypeId().getName());
+            std::string model = rGrp.GetASCII(
+                "NavigationStyle",
+                std::string {CADNavigationStyle::getClassTypeId().getName()}.c_str()
+            );
             Base::Type type = Base::Type::fromName(model.c_str());
             for (auto _viewer : _viewers) {
                 _viewer->setNavigationType(type);
@@ -416,16 +409,21 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
             _viewer->setEnabledNaviCube(rGrp.GetBool("ShowNaviCube", true));
         }
     }
-    else if (strcmp(Reason, "AxisXColor") == 0 || strcmp(Reason, "AxisYColor") == 0
-             || strcmp(Reason, "AxisZColor") == 0) {
+    else if (
+        strcmp(Reason, "AxisXColor") == 0 || strcmp(Reason, "AxisYColor") == 0
+        || strcmp(Reason, "AxisZColor") == 0
+    ) {
         for (auto _viewer : _viewers) {
             _viewer->updateColors();
         }
     }
     else if (strcmp(Reason, "UseVBO") == 0) {
         if (!ignoreVBO) {
+            // Assume no value means "on" as Coin only disables
+            // VBOs for some (very old) drivers and hardware.
+            const auto useVbo = rGrp.GetBool("UseVBO", true);
             for (auto _viewer : _viewers) {
-                _viewer->setEnabledVBO(rGrp.GetBool("UseVBO", false));
+                _viewer->setEnabledVBO(useVbo);
             }
         }
     }
@@ -653,9 +651,11 @@ void NaviCubeSettings::parameterChanged(const char* Name)
         float opacity = static_cast<float>(hGrp->GetInt("InactiveOpacity", 50)) / 100;
         nc->setInactiveOpacity(opacity);
     }
-    else if (strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
-             || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
-             || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0) {
+    else if (
+        strcmp(Name, "TextTop") == 0 || strcmp(Name, "TextBottom") == 0
+        || strcmp(Name, "TextFront") == 0 || strcmp(Name, "TextRear") == 0
+        || strcmp(Name, "TextLeft") == 0 || strcmp(Name, "TextRight") == 0
+    ) {
         std::vector<std::string> labels;
         QByteArray frontByteArray = tr("FRONT").toUtf8();
         labels.push_back(hGrp->GetASCII("TextFront", frontByteArray.constData()));

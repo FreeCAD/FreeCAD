@@ -3168,7 +3168,7 @@ Check one or more edge entities first.</source>
     </message>
     <message>
         <location filename="../../DlgImportStep.ui" line="29"/>
-        <source>Merges compounds during file reading (slower but higher details)</source>
+        <source>Merges all shapes into a single compound during import, resolving part instances and applying transforms. Increases import time but does not affect geometry accuracy or rendering quality.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

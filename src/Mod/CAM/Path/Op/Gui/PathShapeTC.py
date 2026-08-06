@@ -164,7 +164,7 @@ class ObjectPartShape:
     def execute(self, obj):
         edges = []
         if obj.Base:
-            (base, subNames) = obj.Base[0]
+            base, subNames = obj.Base[0]
             edges = [
                 base.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")
             ]

@@ -35,6 +35,9 @@
 #include "modelRefine.h"
 #include "TopoShapeOpCode.h"
 
+#include <Base/ProgramVersion.h>
+
+
 FC_LOG_LEVEL_INIT("Part", true, true);
 
 using namespace Part;
@@ -225,5 +228,16 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
     }
     else {
         throw Base::CADKernelError("Not enough shape objects linked");
+    }
+}
+
+void MultiFuse::Restore(Base::XMLReader& reader)
+{
+    ExtensionContainer::Restore(reader);
+
+    // The Refine property was added in FreeCAD 0.17, so any file before that will not have it set.
+    // For these files, the appropriate default value is false.
+    if (Base::getVersion(reader.ProgramVersion) < Base::Version::v0_17) {
+        Refine.setValue(false);
     }
 }

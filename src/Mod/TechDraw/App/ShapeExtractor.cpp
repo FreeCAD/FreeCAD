@@ -417,8 +417,8 @@ bool ShapeExtractor::isDraftPoint(const App::DocumentObject* obj)
 
 bool ShapeExtractor::isDatumPoint(const App::DocumentObject* obj)
 {
-    std::string objTypeName = obj->getTypeId().getName();
-    std::string pointToken("Point");
+    const auto objTypeName = obj->getTypeId().getName();
+    constexpr std::string_view pointToken {"Point"};
     if (objTypeName.find(pointToken) != std::string::npos) {
         return true;
     }

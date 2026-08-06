@@ -4,7 +4,6 @@ from .camotics import CamoticsToolBitSerializer
 from .fctb import FCTBSerializer
 from .yaml import YamlToolBitSerializer
 
-
 all_serializers = (
     CamoticsToolBitSerializer,
     FCTBSerializer,

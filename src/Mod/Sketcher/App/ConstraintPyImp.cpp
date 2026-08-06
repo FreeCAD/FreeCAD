@@ -353,7 +353,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siOOO", &ConstraintType, &FirstIndex, &index_or_value, &activated, &driving)) {
+    if (
+        PyArg_ParseTuple(args, "siOOO", &ConstraintType, &FirstIndex, &index_or_value, &activated, &driving)
+    ) {
         if (PyBool_Check(activated) && PyBool_Check(driving)) {
             if (handleSiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -467,7 +469,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiOO", &ConstraintType, &FirstIndex, &any_index, &index_or_value, &activated)) {
+    if (
+        PyArg_ParseTuple(args, "siiOO", &ConstraintType, &FirstIndex, &any_index, &index_or_value, &activated)
+    ) {
         if (PyBool_Check(activated)) {
             if (handleSiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -547,11 +551,13 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 constraint->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
                 return true;
             }
-            else if (strstr(
-                         ConstraintType,
-                         "InternalAlignment"
-                     )) {  // InteralAlignment with
-                           // InternalElementIndex argument
+            else if (
+                strstr(
+                    ConstraintType,
+                    "InternalAlignment"
+                )
+            ) {  // InteralAlignment with
+                 // InternalElementIndex argument
                 constraint->Type = InternalAlignment;
 
                 valid = true;
@@ -605,7 +611,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(args, "siiiOO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4, &activated)) {
+    if (
+        PyArg_ParseTuple(args, "siiiOO", &ConstraintType, &intArg1, &intArg2, &intArg3, &oNumArg4, &activated)
+    ) {
         if (PyBool_Check(activated)) {
             if (handleSiiiO()) {
                 constraint->isActive = PyObject_IsTrue(activated);
@@ -715,7 +723,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return false;
     };
 
-    if (PyArg_ParseTuple(args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)) {
+    if (
+        PyArg_ParseTuple(args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)
+    ) {
         if (handleSiiiiO()) {
             return 0;
         }

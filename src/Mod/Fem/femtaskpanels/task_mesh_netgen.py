@@ -39,21 +39,21 @@ from femmesh import netgentools
 from . import base_femlogtaskpanel
 
 
-class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
+class _TaskPanel(base_femlogtaskpanel._BaseWorkerTaskPanel):
     """
     The TaskPanel for editing References property of
     MeshNetgen objects and creation of new FEM mesh
     """
 
     def __init__(self, obj):
-        super().__init__(obj, netgentools.NetgenTools(obj))
-
+        # set Tool, form and observer before init base class
+        netgentools.NetgenTools(obj)
         self.form = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/MeshNetgen.ui"
         )
+        self.observer = _Observer(self)
 
-        self.text_log = self.form.te_output
-        self.text_time = self.form.l_time
+        super().__init__(obj)
 
         self.setup_connections()
 
@@ -121,6 +121,8 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
 
     def set_widgets(self):
         "fills the widgets"
+        super().set_widgets()
+
         self.form.qsb_max_size.setProperty("value", self.max_size)
         FreeCADGui.ExpressionBinding(self.form.qsb_max_size).bind(self.obj, "MaxSize")
 
@@ -147,18 +149,23 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
 
     def max_size_changed(self, base_quantity_value):
         self.max_size = base_quantity_value
+        self.obj.MaxSize = self.max_size
 
     def min_size_changed(self, base_quantity_value):
         self.min_size = base_quantity_value
+        self.obj.MinSize = self.min_size
 
     def seg_per_edge_changed(self, value):
         self.seg_per_edge = value
+        self.obj.SegmentsPerEdge = self.seg_per_edge
 
     def curvature_safety_changed(self, value):
         self.curvature_safety = value
+        self.obj.CurvatureSafety = self.curvature_safety
 
     def growth_rate_changed(self, value):
         self.growth_rate = value
+        self.obj.GrowthRate = self.growth_rate
 
     def fineness_changed(self, index):
         self.fineness = self.fineness_enum[index]
@@ -184,9 +191,11 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
             self.form.dsb_growth_rate.setProperty("value", p["grading"])
             self.form.dsb_seg_per_edge.setProperty("value", p["segmentsperedge"])
             self.form.dsb_curvature_safety.setProperty("value", p["curvaturesafety"])
+        self.obj.Fineness = self.fineness
 
     def second_order_changed(self, bool_value):
         self.second_order = bool_value
+        self.obj.SecondOrder = self.second_order
 
     def get_user_fineness_params(self, obj):
         # parameters affected by the fineness value. If initial fineness is "UserDefined"
@@ -200,3 +209,16 @@ class _TaskPanel(base_femlogtaskpanel._BaseLogTaskPanel):
             p["closeedgefac"] = obj.CloseEdgeFactor
 
         return p
+
+
+class _Observer(base_femlogtaskpanel._WorkerObserver):
+    def __init__(self, task):
+        super().__init__(task)
+        # define property groups to be observed
+        self.groups = ["Mesh Parameters"]
+
+    def slotChangedObject(self, observed, prop):
+        super().slotChangedObject(observed, prop)
+        # check if shape changes
+        if observed == self.task.obj and prop == "Shape":
+            self.task.prepared = False

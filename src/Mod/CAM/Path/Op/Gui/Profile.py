@@ -26,15 +26,15 @@ import FreeCADGui
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Profile as PathProfile
-import PathGui
+import Path
 from PySide.QtCore import QT_TRANSLATE_NOOP
-
 
 __title__ = "CAM Profile Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "Profile operation page controller and command implementation."
 
+translate = FreeCAD.Qt.translate
 
 FeatureSide = 0x01
 FeatureProcessing = 0x02
@@ -46,9 +46,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     FeatureProcessing ... Are the processing check boxes supported by the operation
     """
 
-    # def initPage(self, obj):
-    #     self.setTitle("Profile - " + obj.Label)
-    #     self.updateVisibility()
+    def initPage(self, obj):
+        self.form.extraOffset.setProperty("unit", obj.OffsetExtra.getUserPreferred()[2])
+        self.form.stepover.setProperty("unit", obj.Stepover.getUserPreferred()[2])
 
     def profileFeatures(self):
         """profileFeatures() ... return which of the optional profile features are supported.
@@ -70,9 +70,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
-
         if obj.Side != str(self.form.cutSide.currentData()):
             obj.Side = str(self.form.cutSide.currentData())
         if obj.Direction != str(self.form.direction.currentData()):
@@ -95,18 +92,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
-
         self.selectInComboBox(obj.Side, self.form.cutSide)
         self.selectInComboBox(obj.Direction, self.form.direction)
-        self.form.extraOffset.setText(
-            FreeCAD.Units.Quantity(obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString
-        )
+        self.form.extraOffset.setProperty("rawValue", obj.OffsetExtra.Value)
         self.form.numPasses.setValue(obj.NumPasses)
-        self.form.stepover.setText(
-            FreeCAD.Units.Quantity(obj.Stepover.Value, FreeCAD.Units.Length).UserString
-        )
+        self.form.stepover.setProperty("rawValue", obj.Stepover.Value)
 
         self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
@@ -119,8 +109,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.cutSide.currentIndexChanged)
         signals.append(self.form.direction.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
@@ -172,6 +160,19 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:  # Qt version < 6.7.0
             self.form.useCompensation.stateChanged.connect(self.updateVisibility)
         self.form.numPasses.editingFinished.connect(self.updateVisibility)
+
+        self.form.setStartPoint.clicked.connect(self.setStartPoint)
+
+    def setStartPoint(self):
+        selEx = FreeCADGui.Selection.getSelectionEx()
+        if selEx and selEx[0].PickedPoints:
+            point = selEx[0].PickedPoints[0]
+            self.obj.StartPoint = point
+            self.setDirty()
+            Path.Log.info(
+                translate("CAM_Profile", "Set start point: %s, %s")
+                % (round(point.x, 3), round(point.y, 3))
+            )
 
 
 # Eclass

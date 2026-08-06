@@ -118,6 +118,8 @@ protected:
     void setText(const char* pszTxt) override;
     /** Starts the progress bar */
     void startStep() override;
+    /** Stops the progress bar */
+    void stopStep() override;
     /** Increase the progress bar. */
     void nextStep(bool canAbort) override;
     /** Sets the progress indicator to a certain position. */
@@ -142,6 +144,7 @@ private:
 class ProgressBar: public QProgressBar
 {
     Q_OBJECT
+    Q_PROPERTY(bool userEnabled READ isUserEnabled WRITE setUserEnabled)
 
 public:
     /** Construction */
@@ -156,6 +159,12 @@ public:
     /** Returns the time in milliseconds that must pass before the progress bar appears.
      */
     int minimumDuration() const;
+
+    bool isUserEnabled() const;
+    void setUserEnabled(bool enabled);
+
+protected:
+    void setVisible(bool visible) override;
 
 private Q_SLOTS:
     void resetEx();

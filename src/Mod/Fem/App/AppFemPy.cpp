@@ -330,14 +330,9 @@ private:
         char* fileName = nullptr;
         PyObject* pcObj = nullptr;
 
-        if (!PyArg_ParseTuple(
-                args.ptr(),
-                "et|O!",
-                "utf-8",
-                &fileName,
-                &(App::DocumentObjectPy::Type),
-                &pcObj
-            )) {
+        if (
+            !PyArg_ParseTuple(args.ptr(), "et|O!", "utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj)
+        ) {
             throw Py::Exception();
         }
         std::string EncodedName = std::string(fileName);

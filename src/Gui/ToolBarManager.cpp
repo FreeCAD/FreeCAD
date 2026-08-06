@@ -433,8 +433,17 @@ void ToolBarManager::setupStatusBar()
         sb->installEventFilter(this);
         statusBarAreaWidget
             = new ToolBarAreaWidget(sb, ToolBarArea::StatusBarToolBarArea, hStatusBar, connParam);
-        statusBarAreaWidget->setObjectName(QStringLiteral("StatusBarArea"));
-        sb->insertPermanentWidget(2, statusBarAreaWidget);
+        // Register through MainWindow's status-bar registry so ordering/layout is
+        // owned centrally. No title => not user-toggleable; it is an infrastructure
+        // host for toolbars the user drags into the status bar.
+        getMainWindow()->addStatusBarItem(
+            statusBarAreaWidget,
+            {.id = "StatusBarArea",
+             .title = {},
+             .slot = StatusBarSlot::Right,
+             .order = 500,
+             .persistentVisibility = false}
+        );
         statusBarAreaWidget->show();
     }
 }
@@ -628,8 +637,10 @@ int ToolBarManager::toolBarIconSize(QWidget* widget) const
                 s *= 0.6;
             }
         }
-        else if (widget->parentWidget() == menuBarLeftAreaWidget
-                 || widget->parentWidget() == menuBarRightAreaWidget) {
+        else if (
+            widget->parentWidget() == menuBarLeftAreaWidget
+            || widget->parentWidget() == menuBarRightAreaWidget
+        ) {
             if (_menuBarIconSize > 0) {
                 s = _menuBarIconSize;
             }
@@ -704,6 +715,7 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
             toolbar->setObjectName(name);
 
             getMainWindow()->addToolBar(toolbar);
+            setToolBarIconSize(toolbar);
 
             if (nameAsToolTip) {
                 auto tooltip = QChar::fromLatin1('[')
@@ -754,7 +766,8 @@ void ToolBarManager::setup(ToolBarItem* toolBarItems)
         }
 
         // try to add some breaks to avoid to have all toolbars in one line
-        if (toolbar_added) {
+        // only account for visible toolbars: hidden ones occupy no row space
+        if (toolbar_added && visible) {
             if (top_width > 0 && getMainWindow()->toolBarBreak(toolbar)) {
                 top_width = 0;
             }
@@ -841,21 +854,8 @@ void ToolBarManager::onTimer()
 void ToolBarManager::saveState() const
 {
     auto ignoreSave = [](QAction* action) {
-        // If the toggle action is invisible then it's controlled by the application.
-        // In this case the current state is not saved.
-        if (!action->isVisible()) {
-            return true;
-        }
-
-        QVariant property = action->property("DefaultVisibility");
-        if (property.isNull()) {
-            return false;
-        }
-
-        // If DefaultVisibility is Unavailable then never save the state because it's
-        // always controlled by the client code.
-        auto value = static_cast<ToolBarItem::DefaultVisibility>(property.toInt());
-        return value == ToolBarItem::DefaultVisibility::Unavailable;
+        // Only save state for toolbars whose toggle action is user-visible.
+        return !action->isVisible();
     };
 
     QList<ToolBar*> toolbars = toolBars();

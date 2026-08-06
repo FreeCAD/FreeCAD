@@ -57,12 +57,14 @@ class ShapeWidget(QtGui.QWidget):
         icon = self.shape.get_icon()
         if icon:
             pixmap = icon.get_qpixmap(size)
+            pixmap.setDevicePixelRatio(ratio)
             self.icon_widget.setPixmap(pixmap)
             return
 
         thumbnail = self.shape.get_thumbnail()
         if thumbnail:
             pixmap = _png2qpixmap(thumbnail, size)
+            pixmap.setDevicePixelRatio(ratio)
             self.icon_widget.setPixmap(pixmap)
             return
 

@@ -158,6 +158,8 @@ def face_from_points(ptLst):
 class _Roof(ArchComponent.Component):
     """The Roof object"""
 
+    _SUPERSIZE = 100000.0  # Value (100m) for oversized extrusions used as subtractions.
+
     def __init__(self, obj):
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Roof"
@@ -748,7 +750,7 @@ class _Roof(ArchComponent.Component):
                         overhangV = profilCurr["overhang"] * math.tan(
                             math.radians(profilCurr["angle"])
                         )
-                        sol = face.extrude(Vector(0.0, 0.0, profilCurr["height"] + 1000000.0))
+                        sol = face.extrude(Vector(0.0, 0.0, profilCurr["height"] + self._SUPERSIZE))
                         sol.translate(Vector(0.0, 0.0, -2.0 * overhangV))
 
                         ## baseVolume shape
@@ -774,8 +776,10 @@ class _Roof(ArchComponent.Component):
                         ptsSubVolProfil = [
                             Vector(-profilCurr["overhang"], -overhangV, 0.0),
                             Vector(profilCurr["run"], profilCurr["height"], 0.0),
-                            Vector(profilCurr["run"], profilCurr["height"] + 900000.0, 0.0),
-                            Vector(-profilCurr["overhang"], profilCurr["height"] + 900000.0, 0.0),
+                            Vector(profilCurr["run"], profilCurr["height"] + self._SUPERSIZE, 0.0),
+                            Vector(
+                                -profilCurr["overhang"], profilCurr["height"] + self._SUPERSIZE, 0.0
+                            ),
                         ]
                         self.subVolShps.append(
                             self.createProfilShape(
@@ -800,7 +804,7 @@ class _Roof(ArchComponent.Component):
                             1.0, self.profilsDico[0]["thickness"]
                         )  # FreeCAD will crash when extruding with a null vector here
                         self.shps = [face.extrude(Vector(0.0, 0.0, thk))]
-                        self.subVolShps = [face.extrude(Vector(0.0, 0.0, 1000000.0))]
+                        self.subVolShps = [face.extrude(Vector(0.0, 0.0, self._SUPERSIZE))]
 
                 ## baseVolume
                 base = self.shps.pop()
@@ -873,7 +877,7 @@ class _Roof(ArchComponent.Component):
                     # points happens to be pointing upward. So add in any rate.
 
             for f in faces:
-                solid = f.extrude(Vector(0.0, 0.0, 1000000.0))
+                solid = f.extrude(Vector(0.0, 0.0, self._SUPERSIZE))
                 if not solid.isNull() and solid.isValid() and solid.Volume > 1e-3:
                     solids.append(solid)
 

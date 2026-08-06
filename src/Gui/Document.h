@@ -102,7 +102,6 @@ protected:
     void slotSkipRecompute(const App::Document& doc, const std::vector<App::DocumentObject*>& objs);
     void slotTouchedObject(const App::DocumentObject&);
     void slotChangePropertyEditor(const App::Document&, const App::Property&);
-    void callSignalBeforeRecompute();
     //@}
 
 public:
@@ -243,9 +242,9 @@ public:
     /// call relabel to all attached views
     void onRelabel();
     /// returns a list of all attached MDI views
-    std::list<MDIView*> getMDIViews() const;
+    std::list<MDIView*> getMDIViews(bool includePassive = false) const;
     /// returns a list of all MDI views of a certain type
-    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId) const;
+    std::list<MDIView*> getMDIViewsOfType(const Base::Type& typeId, bool includePassive = false) const;
     MDIView* setActiveView(
         const ViewProviderDocumentObject* vp = nullptr,
         Base::Type typeId = Base::Type()
@@ -363,6 +362,8 @@ private:
     bool checkTransactionID(bool undo, int iSteps);
     /// Ask for user interaction if saving has failed
     bool askIfSavingFailed(const QString&);
+    /// Warn if saving a document from an older FreeCAD version (returns false if user cancels)
+    bool warnIfOlderVersion();
 
     struct DocumentP* d;
     static int _iDocCount;

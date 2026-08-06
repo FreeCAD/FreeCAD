@@ -28,6 +28,8 @@
 #include <App/PropertyFile.h>
 #include <Mod/Fem/FemGlobal.h>
 
+#include "WorkerExtension.h"
+
 namespace Fem
 {
 /// Father of all result data in a Fem Analysis
@@ -41,8 +43,6 @@ public:
     ~FemSolverObject() override;
 
     App::PropertyLinkList Results;
-    App::PropertyPythonObject Tool;
-    App::PropertyPath WorkingDirectory;
     // Attributes are implemented in the FemSolverObjectPython
 
     /// returns the type name of the ViewProvider
@@ -56,6 +56,9 @@ public:
     }
     short mustExecute() const override;
     PyObject* getPyObject() override;
+
+private:
+    WorkerExtension worker;
 };
 
 using FemSolverObjectPython = App::FeaturePythonT<FemSolverObject>;

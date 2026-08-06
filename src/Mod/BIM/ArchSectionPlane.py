@@ -65,6 +65,50 @@ else:
 ISRENDERING = False  # flag to prevent concurrent runs of the coin renderer
 
 
+def getSectionPlaneLocalBoundBox(objects, placement):
+    """Return object bounds expressed in section plane local coordinates."""
+
+    if not objects:
+        return FreeCAD.BoundBox()
+
+    inverse_matrix = placement.inverse().Matrix
+    local_boundbox = None
+    for obj in Draft.get_group_contents(objects):
+        if not hasattr(obj, "Shape") or not hasattr(obj.Shape, "BoundBox"):
+            continue
+        boundbox = obj.Shape.BoundBox
+        if not boundbox.isValid():
+            continue
+        transformed_boundbox = boundbox.transformed(inverse_matrix)
+        local_boundbox = (
+            transformed_boundbox
+            if local_boundbox is None
+            else local_boundbox.united(transformed_boundbox)
+        )
+    return local_boundbox or FreeCAD.BoundBox()
+
+
+def getSectionPlaneFit(objects, placement):
+    """Return display length and height needed to cover objects from a placement."""
+
+    local_boundbox = getSectionPlaneLocalBoundBox(objects, placement)
+    if not local_boundbox.isValid():
+        return None
+
+    margin = local_boundbox.XLength * 0.1
+    return local_boundbox.XLength + margin, local_boundbox.YLength + margin
+
+
+def getSectionPlaneCenter(objects, placement):
+    """Return the world-space center of object bounds for a section placement."""
+
+    local_boundbox = getSectionPlaneLocalBoundBox(objects, placement)
+    if not local_boundbox.isValid():
+        return None
+
+    return placement.multVec(local_boundbox.Center)
+
+
 def getSectionData(source):
     """Returns some common data from section planes and building parts"""
 
@@ -90,7 +134,8 @@ def getSectionData(source):
     p = FreeCAD.Placement(source.Placement)
     direction = p.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     if objs:
-        objs = Draft.get_group_contents(objs, walls=True)
+        # Include spaces for their labels:
+        objs = Draft.get_group_contents(objs, walls=True, spaces=True)
     return objs, cutplane, onlySolids, clip, direction
 
 
@@ -163,21 +208,39 @@ def getCutShapes(
     shapes = []
     for o, shapeList in objectShapes:
         tmpSshapes = []
-        for sh in shapeList:
+
+        # For multi-material objects, track section faces per layer so each
+        # layer can be rendered with its own fill color.
+        layer_materials = None
+        if (
+            groupSshapesByObject
+            and not isinstance(o, str)
+            and hasattr(o, "Material")
+            and o.Material
+            and hasattr(o.Material, "Materials")
+            and o.Material.Materials
+            and hasattr(o.Material, "Thicknesses")
+        ):
+            activematerials = [
+                o.Material.Materials[i]
+                for i in range(len(o.Material.Materials))
+                if o.Material.Thicknesses[i] >= 0
+            ]
+            if len(activematerials) == len(shapeList):
+                layer_materials = activematerials
+
+        per_layer_sshapes = [[] for _ in shapeList] if layer_materials else None
+
+        for sh_idx, sh in enumerate(shapeList):
             for sub in (sh.SubShapes if sh.ShapeType == "Compound" else [sh]):
                 if cutvolume:
                     if sub.Volume < 0:
                         sub = sub.reversed()  # Use reversed as sub is immutable.
                     c = sub.cut(cutvolume)
-                    s = sub.section(cutface)
-                    try:
-                        wires = DraftGeomUtils.findWires(s.Edges)
-                        for w in wires:
-                            f = Part.Face(w)
-                            tmpSshapes.append(f)
-                    except Part.OCCError:
-                        # print "ArchView: unable to get a face"
-                        tmpSshapes.append(s)
+                    s = sub.common(cutface)
+                    tmpSshapes.extend(s.Faces)
+                    if per_layer_sshapes is not None:
+                        per_layer_sshapes[sh_idx].extend(s.Faces)
                     shapes.extend(c.SubShapes if c.ShapeType == "Compound" else [c])
                     if showHidden:
                         c = sub.cut(invcutvolume)
@@ -185,10 +248,15 @@ def getCutShapes(
                 else:
                     shapes.append(sub)
 
-            if len(tmpSshapes) > 0:
-                sshapes.extend(tmpSshapes)
+        if len(tmpSshapes) > 0:
+            sshapes.extend(tmpSshapes)
 
-                if groupSshapesByObject:
+            if groupSshapesByObject:
+                if per_layer_sshapes and layer_materials:
+                    for mat, layer_faces in zip(layer_materials, per_layer_sshapes):
+                        if layer_faces:
+                            objectSshapes.append((mat, layer_faces))
+                else:
                     objectSshapes.append((o, tmpSshapes))
 
     if groupSshapesByObject:
@@ -202,7 +270,10 @@ def getFillForObject(o, defaultFill, source):
 
     if hasattr(source, "UseMaterialColorForFill") and source.UseMaterialColorForFill:
         material = None
-        if hasattr(o, "Material") and o.Material:
+        if hasattr(o, "SectionColor"):
+            # o is an Arch::Material layer passed directly (from a MultiMaterial split)
+            material = o
+        elif hasattr(o, "Material") and o.Material:
             material = o.Material
         elif isinstance(o, str):
             material = FreeCAD.ActiveDocument.getObject(o)
@@ -211,6 +282,14 @@ def getFillForObject(o, defaultFill, source):
                 return material.SectionColor
             elif hasattr(material, "Color") and material.Color:
                 return material.Color
+            elif hasattr(material, "Materials") and material.Materials:
+                # Fallback: multi-material without per-layer split — use first layer's color
+                for layer in material.Materials:
+                    if not layer:
+                        continue
+                    color = getattr(layer, "SectionColor", None) or getattr(layer, "Color", None)
+                    if color:
+                        return color
         elif hasattr(o, "ViewObject") and hasattr(o.ViewObject, "ShapeColor"):
             return o.ViewObject.ShapeColor
     return defaultFill
@@ -494,9 +573,10 @@ def getSVG(
                     "stroke-width": "SVGLINEWIDTH",
                     "stroke-dasharray": "SVGHIDDENPATTERN",
                 }
+                svgcache += '<g transform="scale(-1,1)">\n'
                 svgcache += TechDraw.projectToSVG(
                     hshapes,
-                    direction,
+                    -direction,
                     hStyle=style,
                     h0Style=style,
                     h1Style=style,
@@ -504,6 +584,7 @@ def getSVG(
                     v0Style=style,
                     v1Style=style,
                 )
+                svgcache += "</g>\n"
             if sshapes:
                 if showFill:
                     # svgcache += fillpattern
@@ -1347,17 +1428,10 @@ class _ViewProviderSectionPlane:
 
     def updateData(self, obj, prop):
         vobj = obj.ViewObject
-        if prop in ["Placement"]:
+        if prop in ["Placement", "Shape"]:
             self.onChanged(vobj, "DisplayLength")
-
-            # Defer the clipping plane update until after the current event
-            # loop finishes. This ensures the scene graph has been updated with the
-            # new placement before we try to recalculate the clip plane.
             if vobj and hasattr(vobj, "CutView") and vobj.CutView:
-                from PySide import QtCore
-
-                # We use a lambda to pass the vobj argument to the delayed function.
-                QtCore.QTimer.singleShot(0, lambda: self.refreshCutView(vobj))
+                self.refreshCutView(vobj)
         elif prop == "Label":
             if hasattr(obj.ViewObject, "ShowLabel") and obj.ViewObject.ShowLabel:
                 self.txt.string = obj.Label
@@ -1478,6 +1552,11 @@ class _ViewProviderSectionPlane:
                 self.txtfont.size = vobj.FontSize.Value
         return
 
+    def onDelete(self, vobj, subelements):
+
+        vobj.CutView = False
+        return True
+
     def dumps(self):
 
         return None
@@ -1516,7 +1595,7 @@ class _ViewProviderSectionPlane:
         menu.addAction(actionEdit)
 
         actionToggleCutview = QtGui.QAction(
-            QtGui.QIcon(":/icons/Draft_Edit.svg"), translate("Arch", "Toggle Cutview"), menu
+            QtGui.QIcon(":/icons/Arch_CutPlane.svg"), translate("Arch", "Toggle Cut View"), menu
         )
         actionToggleCutview.triggered.connect(lambda: self.toggleCutview(vobj))
         menu.addAction(actionToggleCutview)
@@ -1682,39 +1761,19 @@ class SectionPlaneTaskPanel:
     def rotateZ(self):
         self.rotate(FreeCAD.Vector(0, 0, 1))
 
-    def getBB(self):
-        bb = FreeCAD.BoundBox()
-        if self.obj:
-            for o in Draft.get_group_contents(self.obj.Objects):
-                if hasattr(o, "Shape") and hasattr(o.Shape, "BoundBox"):
-                    bb.add(o.Shape.BoundBox)
-        return bb
-
     def resize(self):
         if self.obj and self.obj.ViewObject:
-            bb = self.getBB()
-            n = self.obj.Proxy.getNormal(self.obj)
-            margin = bb.XLength * 0.1
-            if (n.getAngle(FreeCAD.Vector(1, 0, 0)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(-1, 0, 0)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.YLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
-            elif (n.getAngle(FreeCAD.Vector(0, 1, 0)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(0, -1, 0)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.XLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.ZLength + margin
-            elif (n.getAngle(FreeCAD.Vector(0, 0, 1)) < 0.1) or (
-                n.getAngle(FreeCAD.Vector(0, 0, -1)) < 0.1
-            ):
-                self.obj.ViewObject.DisplayLength = bb.XLength + margin
-                self.obj.ViewObject.DisplayHeight = bb.YLength + margin
-            self.obj.Proxy.execute(self.obj)
+            fit = getSectionPlaneFit(self.obj.Objects, self.obj.Placement)
+            if fit is not None:
+                self.obj.ViewObject.DisplayLength = fit[0]
+                self.obj.ViewObject.DisplayHeight = fit[1]
+                self.obj.Proxy.execute(self.obj)
 
     def recenter(self):
         if self.obj:
-            self.obj.Placement.Base = self.getBB().Center
+            center = getSectionPlaneCenter(self.obj.Objects, self.obj.Placement)
+            if center is not None:
+                self.obj.Placement.Base = center
 
     def onTreeClick(self):
         if self.tree.selectedItems():

@@ -424,7 +424,7 @@ PyObject* RotationPy::toMatrix(PyObject* args) const
     return new MatrixPy(new Matrix4D(mat));
 }
 
-PyObject* RotationPy::isSame(PyObject* args)
+PyObject* RotationPy::isSame(PyObject* args) const
 {
     PyObject* rot {};
     double tol = 0.0;

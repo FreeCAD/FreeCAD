@@ -67,7 +67,6 @@ from . import write_step_output
 from .. import writerbase
 from femtools import constants
 
-
 # Interesting forum topic: https://forum.freecad.org/viewtopic.php?&t=48451
 # TODO somehow set units at beginning and every time a value is retrieved use this identifier
 # this would lead to support of unit system, force might be retrieved in base writer!

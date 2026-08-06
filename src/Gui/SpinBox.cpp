@@ -43,6 +43,51 @@ using namespace Gui;
 using namespace App;
 using namespace Base;
 
+namespace SpinBoxPrivate
+{
+class ExpressionResetDoubleClickFilter: public QObject
+{
+public:
+    explicit ExpressionResetDoubleClickFilter(ExpressionSpinBox& binding, QObject* parent)
+        : QObject(parent)
+        , m_binding(binding)
+    {}
+
+    bool eventFilter(QObject*, QEvent* event) override
+    {
+        if (event->type() == QEvent::MouseButtonDblClick && m_binding.hasExpression()
+            && !m_binding.isTentativeDiscard()) {
+            m_binding.stashExpression();
+            return true;
+        }
+        return false;
+    }
+
+private:
+    ExpressionSpinBox& m_binding;
+};
+
+class ExpressionFocusOutFilter: public QObject
+{
+public:
+    explicit ExpressionFocusOutFilter(ExpressionSpinBox& binding, QObject* parent)
+        : QObject(parent)
+        , m_binding(binding)
+    {}
+
+    bool eventFilter(QObject*, QEvent* event) override
+    {
+        if (event->type() == QEvent::FocusOut) {
+            m_binding.restoreExpression();
+        }
+        return false;
+    }
+
+private:
+    ExpressionSpinBox& m_binding;
+};
+}  // namespace SpinBoxPrivate
+
 ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     : spinbox(sb)
 {
@@ -56,9 +101,48 @@ ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
 
     makeLabel(lineedit);
     QObject::connect(iconLabel, &ExpressionLabel::clicked, [this]() { this->openFormulaDialog(); });
+
+    lineedit->installEventFilter(new SpinBoxPrivate::ExpressionResetDoubleClickFilter(*this, spinbox));
+    // FocusOut filter goes on the spinbox, not lineedit
+    // QAbstractSpinBox handles focus at the spinbox level.
+    spinbox->installEventFilter(new SpinBoxPrivate::ExpressionFocusOutFilter(*this, spinbox));
 }
 
 ExpressionSpinBox::~ExpressionSpinBox() = default;
+
+void ExpressionSpinBox::stashExpression()
+{
+    if (!hasExpression() || m_tentativeDiscard) {
+        return;
+    }
+    m_savedExpr = getExpression();
+    m_textAtDiscard = lineedit->text();
+    m_tentativeDiscard = true;
+    setExpression(std::shared_ptr<Expression>());
+    updateExpression();
+    lineedit->selectAll();
+}
+
+bool ExpressionSpinBox::isValueTouched() const
+{
+    return lineedit->text() != m_textAtDiscard;
+}
+
+void ExpressionSpinBox::restoreExpression()
+{
+    if (!m_tentativeDiscard) {
+        return;
+    }
+    m_tentativeDiscard = false;
+    if (!isValueTouched()) {
+        setExpression(m_savedExpr);
+        m_savedExpr.reset();
+        updateExpression();
+    }
+    else {
+        m_savedExpr.reset();
+    }
+}
 
 int ExpressionSpinBox::getMargin()
 {

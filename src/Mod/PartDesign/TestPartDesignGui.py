@@ -38,6 +38,7 @@ from PySide.QtGui import QApplication
 
 from PartDesignTests.TestMaterial import TestMaterial
 from PartDesignTests.TestActiveObject import TestActiveObject
+from PartDesignTests.TestSuppressed import TestSuppressedStrikethrough
 
 
 # timer runs this class in order to access modal dialog
@@ -313,16 +314,14 @@ class CreateSketch(unittest.TestCase):
         FreeCADGui.activateView("Gui::View3DInventor", True)
         FreeCADGui.activeView().setActiveObject("pdbody", App.activeDocument().Body)
         FreeCADGui.Selection.clearSelection()
-        FreeCADGui.Selection.addSelection(App.ActiveDocument.Body)
         FreeCADGui.runCommand("Std_OrthographicCamera", 1)
-        mw = FreeCADGui.getMainWindow()
         workflowcheck = CallableCheckExemptionDialog(self)
         QtCore.QTimer.singleShot(100, workflowcheck)
         FreeCADGui.runCommand("PartDesign_CompSketches", 0)
-        taskspanel = mw.findChild(QtGui.QWidget, "PartDesignGui__TaskFeaturePick")
-        self.assertTrue(taskspanel is not None)
-        if taskspanel is not None:
-            QtCore.QTimer.singleShot(0, taskspanel, QtCore.SLOT("hide()"))
+        activeDialog = FreeCADGui.Control.activeDialog()
+        self.assertIsNotNone(activeDialog)
+        if activeDialog is not None:
+            FreeCADGui.Control.closeDialog()
         App.closeDocument(App.ActiveDocument.Name)
         param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
 

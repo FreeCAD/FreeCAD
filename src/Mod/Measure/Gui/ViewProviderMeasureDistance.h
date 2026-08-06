@@ -102,6 +102,10 @@ protected:
         Base::Vector3d elementDirection,
         double tolerance = defaultTolerance
     ) override;
+    // Keep the label draggable in the distance annotation's local measurement frame instead of
+    // rotating the dragger into the current view plane.
+    void onLabelMoveStart() override
+    {}
     void onChanged(const App::Property* prop) override;
 
 private:

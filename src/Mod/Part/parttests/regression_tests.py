@@ -185,6 +185,40 @@ class RegressionTests(unittest.TestCase):
         for name, pos, normal, xaxis in expected_planes:
             check_plane(name, pos, normal, xaxis)
 
+    def test_issue_29733_transformShape_bakes_in_transformation(self):
+        """
+        29733: transformShape(matrix, True) must bake the transformation into the
+        underlying geometry, leaving the shape's Placement untouched. Part Explode
+        Compound and many third-party addons depend on this behavior.
+        """
+        sphere = Part.makeSphere(5.0)
+        move = FreeCAD.Placement(FreeCAD.Vector(10, 0, 0), FreeCAD.Rotation()).toMatrix()
+
+        returned = sphere.transformShape(move, True)
+
+        self.assertIs(returned, sphere)
+        self.assertAlmostEqual(sphere.Placement.Base.x, 0.0)
+        self.assertAlmostEqual(sphere.Placement.Base.y, 0.0)
+        self.assertAlmostEqual(sphere.Placement.Base.z, 0.0)
+        self.assertAlmostEqual(sphere.CenterOfGravity.x, 10.0, places=5)
+        self.assertAlmostEqual(sphere.CenterOfGravity.y, 0.0, places=5)
+        self.assertAlmostEqual(sphere.CenterOfGravity.z, 0.0, places=5)
+
+    def test_transformed_returns_independent_baked_in_copy(self):
+        """
+        transformed() must return a new shape with the transformation baked into
+        the geometry, leaving the original shape unchanged.
+        """
+        sphere = Part.makeSphere(5.0)
+        move = FreeCAD.Placement(FreeCAD.Vector(10, 0, 0), FreeCAD.Rotation()).toMatrix()
+
+        moved = sphere.transformed(move, copy=True)
+
+        self.assertIsNot(moved, sphere)
+        self.assertAlmostEqual(sphere.CenterOfGravity.x, 0.0, places=5)
+        self.assertAlmostEqual(moved.Placement.Base.x, 0.0)
+        self.assertAlmostEqual(moved.CenterOfGravity.x, 10.0, places=5)
+
     def test_issue_15716_AttacherEngine_sync(self):
         """
         15716: AttacherType and AttacherEngine property conflict
@@ -209,6 +243,21 @@ class RegressionTests(unittest.TestCase):
 
             # AttacherEngine should show "Engine Plane" (not "Engine 3D")
             self.assertEqual(attacher_engine, "Engine Plane")
+
+    def test_getSortedClusters(self):
+        "Part.getSortedClusters() may crash with short edges"
+        poly = self.Doc.addObject("Part::RegularPolygon", "RegularPolygon")
+        poly.Circumradius = 1
+        for i in range(3, 1004, 50):
+            poly.Polygon = i
+            poly.recompute()
+            clusters = Part.getSortedClusters(poly.Shape.Edges)
+
+            # should be only one cluster
+            self.assertEqual(len(clusters), 1)
+
+            # cluster should contain all edges
+            self.assertEqual(len(clusters[0]), i)
 
     def tearDown(self):
         """Clean up our test, optionally preserving the test document"""

@@ -28,8 +28,7 @@
 
 #include <FCGlobal.h>
 
-
-class QAtomicInt;
+#include <atomic>
 
 namespace Base
 {
@@ -183,7 +182,7 @@ public:
     Handled& operator=(Handled&&) = delete;
 
 private:
-    QAtomicInt* _lRefCount;
+    mutable std::atomic_int _refCount {0};
 };
 
 }  // namespace Base

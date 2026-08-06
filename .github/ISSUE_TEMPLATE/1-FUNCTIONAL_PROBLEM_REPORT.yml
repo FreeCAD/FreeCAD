@@ -5,7 +5,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this problem report! Please [search](https://github.com/FreeCAD/FreeCAD/issues) if a similar issue already exists and check out [how to report issues](https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues). By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/main/CODE_OF_CONDUCT.md).
+        
+        > [!TIP]
+        > If this is your first time, read [how to report an issue to FreeCAD][Guide].
+        
+        [Guide]: https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues
 
   - type: textarea
     id: description

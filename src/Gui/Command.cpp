@@ -23,6 +23,8 @@
 #include <Inventor/SbSphere.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
+#include <xercesc/util/XMLException.hpp>
+#include <xercesc/util/XMLString.hpp>
 #include <sstream>
 #include <QApplication>
 #include <QByteArray>
@@ -129,8 +131,8 @@ using namespace Gui::DockWnd;
  * protected:
  *   void activated(int)
  *   {
- *     QString filter ... // make a filter of all supported file formats
- *     QStringList FileList = QFileDialog::getOpenFileNames( filter,QString(), getMainWindow() );
+ *     QStringList filters ... // make a filter list of all supported file formats
+ *     QStringList FileList = QFileDialog::getOpenFileNames( filters, QString(), getMainWindow() );
  *     for ( QStringList::Iterator it = FileList.begin(); it != FileList.end(); ++it ) {
  *       getGuiApplication()->open((*it).latin1());
  *     }
@@ -495,8 +497,8 @@ void Command::_invoke(int id, bool disablelog)
 
             getMainWindow()->updateActions();
         }
-        // here we assume that the overriden activated() function
-        // commited, aborted or gave the transaction id to a dialog
+        // here we assume that the overridden activated() function
+        // committed, aborted or gave the transaction id to a dialog
         currentTransactionID = App::NullTransaction;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
@@ -516,6 +518,11 @@ void Command::_invoke(int id, bool disablelog)
         e.reportException();
         // Pop-up a dialog for FreeCAD-specific exceptions
         QMessageBox::critical(Gui::getMainWindow(), QObject::tr("Exception"), QLatin1String(e.what()));
+    }
+    catch (const XERCES_CPP_NAMESPACE::XMLException& e) {
+        char* message = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
+        Base::Console().error("XML exception thrown (%s)\n", message);
+        XERCES_CPP_NAMESPACE::XMLString::release(&message);
     }
     catch (std::exception& e) {
         Base::Console().error("C++ exception thrown (%s)\n", e.what());
@@ -1105,7 +1112,9 @@ void Command::updateAction(int)
 
 GroupCommand::GroupCommand(const char* name)
     : Command(name)
-{}
+{
+    eType = 0;
+}
 
 bool GroupCommand::isCheckable() const
 {

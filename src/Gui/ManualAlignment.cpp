@@ -948,7 +948,7 @@ void ManualAlignment::closeViewer()
     myViewer = nullptr;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    QTimer::singleShot(0, [this]() {
+    QTimer::singleShot(0, this, [this]() {
         auto* activeDoc = Gui::Application::Instance->activeDocument();
         if (!activeDoc) {
             return;
@@ -1360,8 +1360,9 @@ void ManualAlignment::probePickedCallback(void* ud, SoEventCallback* n)
                 Gui::getMainWindow()->showMessage(tr("No point was picked"));
             }
         }
-        else if (mbe->getButton() == SoMouseButtonEvent::BUTTON2
-                 && mbe->getState() == SoButtonEvent::UP) {
+        else if (
+            mbe->getButton() == SoMouseButtonEvent::BUTTON2 && mbe->getState() == SoButtonEvent::UP
+        ) {
             ManualAlignment* self = ManualAlignment::instance();
             if (self->myAlignModel.isEmpty() || self->myFixedGroup.isEmpty()) {
                 return;

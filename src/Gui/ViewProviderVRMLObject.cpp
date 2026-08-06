@@ -46,8 +46,9 @@
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 
-#include "ViewProviderVRMLObject.h"
 #include "SoFCSelection.h"
+#include "SoFullPathHelper.h"
+#include "ViewProviderVRMLObject.h"
 
 
 using namespace Gui;
@@ -102,7 +103,7 @@ void ViewProviderVRMLObject::getResourceFile(SoNode* node, std::list<std::string
     sa.apply(node);
     const SoPathList& pathlist = sa.getPaths();
     for (int i = 0; i < pathlist.getLength(); i++) {
-        auto path = static_cast<SoFullPath*>(pathlist[i]);
+        auto path = Gui::toFullPath(pathlist[i]);
         if (path->getTail()->isOfType(T::getClassTypeId())) {
             T* tex = static_cast<T*>(path->getTail());
             for (int j = 0; j < tex->url.getNum(); j++) {
@@ -128,7 +129,7 @@ void ViewProviderVRMLObject::getResourceFile<SoVRMLBackground>(
     sa.apply(node);
     const SoPathList& pathlist = sa.getPaths();
     for (int i = 0; i < pathlist.getLength(); i++) {
-        auto path = static_cast<SoFullPath*>(pathlist[i]);
+        auto path = Gui::toFullPath(pathlist[i]);
         if (path->getTail()->isOfType(SoVRMLBackground::getClassTypeId())) {
             auto vrml = static_cast<SoVRMLBackground*>(path->getTail());
             // backUrl
@@ -252,8 +253,9 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
             SoInput::removeDirectory(subpath.constData());
         }
     }
-    else if (prop->isDerivedFrom<App::PropertyPlacement>()
-             && strcmp(prop->getName(), "Placement") == 0) {
+    else if (
+        prop->isDerivedFrom<App::PropertyPlacement>() && strcmp(prop->getName(), "Placement") == 0
+    ) {
         // Note: If R is the rotation, c the rotation center and t the translation
         // vector then Inventor applies the following transformation: R*(x-c)+c+t
         // In FreeCAD a placement only has a rotation and a translation part but

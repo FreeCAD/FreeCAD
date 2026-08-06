@@ -63,7 +63,7 @@ private Q_SLOTS:
     void onShapeScaleChanged();
     void onEndSymbolChanged();
     void onEndSymbolScaleChanged();
-    void onLineVisibleChanged();
+    void onLineVisibleChanged(bool isVisible);
     void onLineWidthChanged();
     void onKinkLengthChanged();
 

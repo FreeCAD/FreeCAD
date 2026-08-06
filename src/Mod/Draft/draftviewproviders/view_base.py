@@ -26,6 +26,7 @@
 
 Many viewprovider classes may inherit this class in order to have
 the same basic behavior."""
+
 ## @package view_base
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the base Draft object.
@@ -479,9 +480,9 @@ class ViewProviderDraft(object):
 
         # The default Part::FeaturePython context menu contains a `Set colors`
         # option. This option makes no sense for objects without a face or that
-        # can only have a single face. In those cases we override this menu and
-        # have to add our own `Transform` item.
+        # can only have a single face.
         # To override the default menu this function must return `True`.
+
         if tp in (
             "Wire",
             "Circle",
@@ -497,20 +498,10 @@ class ViewProviderDraft(object):
             "PanelSheet",
             "Profile",
         ):
-            action_transform = QtGui.QAction(
-                Gui.getIcon("Std_TransformManip.svg"),
-                translate("Command", "Transform"),  # Context `Command` instead of `draft`.
-                menu,
-            )
-            QtCore.QObject.connect(action_transform, QtCore.SIGNAL("triggered()"), self.transform)
-            menu.addAction(action_transform)
             return True
 
     def edit(self):
         Gui.ActiveDocument.setEdit(self.Object, 0)
-
-    def transform(self):
-        Gui.ActiveDocument.setEdit(self.Object, 1)
 
     def getIcon(self):
         """Return the path to the icon used by the view provider.
@@ -597,6 +588,10 @@ class ViewProviderDraftAlt(ViewProviderDraft):
 
     def claimChildren(self):
         return []
+
+    def updateData(self, obj, prop):
+        if prop == "AutoUpdate":
+            obj.ViewObject.signalChangeIcon()
 
 
 # Alias for compatibility with v0.18 and earlier

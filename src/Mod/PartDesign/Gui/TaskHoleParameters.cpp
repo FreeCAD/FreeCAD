@@ -1262,6 +1262,7 @@ void TaskHoleParameters::setupGizmos(ViewProviderHole* vp)
     gizmoContainer = GizmoContainer::create({holeDepthGizmo}, vp);
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 std::vector<Base::Vector3d> getHolePositionFromShape(

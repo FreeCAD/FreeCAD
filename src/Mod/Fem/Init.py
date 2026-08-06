@@ -47,7 +47,6 @@ import FreeCAD
 # needed imports
 from femtools.migrate_app import FemMigrateApp
 
-
 translate = FreeCAD.Qt.translate
 
 # migrate old FEM App objects
@@ -108,7 +107,7 @@ FreeCAD.addImportType("FEM result Z88 displacements (*.txt *.TXT)", "feminout.im
 
 if "BUILD_FEM_VTK" in FreeCAD.__cmake__:
     FreeCAD.addImportType(
-        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.vtm *.VTM, *.pvd)",
+        "FEM result VTK (*.vtk *.VTK *.vtu *.VTU *.pvtu *.PVTU *.vtm *.VTM *.pvd *.PVD)",
         "feminout.importVTKResults",
     )
     FreeCAD.addTranslatableExportType(

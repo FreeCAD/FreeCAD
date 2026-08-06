@@ -5,7 +5,7 @@ from __future__ import annotations
 from Base.Metadata import export, constmethod
 from App.GeoFeature import GeoFeature
 from App.DocumentObject import DocumentObject
-from typing import List, Tuple, Union
+from typing import TYPE_CHECKING, List, Tuple, Union
 
 @export(
     Twin="Feature",
@@ -20,6 +20,9 @@ class PartFeature(GeoFeature):
     Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
     Licence: LGPL
     """
+
+    if TYPE_CHECKING:
+        Shape: "Part.Shape" = ...
 
     @constmethod
     def getElementHistory(

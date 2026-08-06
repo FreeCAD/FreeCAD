@@ -34,6 +34,7 @@
 #include <Base/QuantityPy.h>
 #include <Base/Console.h>
 #include <Base/Reader.h>
+#include <Base/ServiceProvider.h>
 #include <CXX/Objects.hxx>
 
 #include "ObjectIdentifier.h"
@@ -42,6 +43,7 @@
 #include "ExpressionParser.h"
 #include "Link.h"
 #include "Property.h"
+#include "Services.h"
 
 
 FC_LOG_LEVEL_INIT("Expression", true, true)
@@ -1453,8 +1455,15 @@ void ObjectIdentifier::String::checkImport(const App::DocumentObject* owner,
 Py::Object
 ObjectIdentifier::access(const ResolveResults& result, const Py::Object* value, Dependencies* deps) const
 {
-    if (!result.resolvedDocumentObject || !result.resolvedProperty
-        || (!subObjectName.getString().empty() && !result.resolvedSubObject)) {
+    if (!result.resolvedDocumentObject) {
+        FC_THROWM(Base::RuntimeError, result.resolveErrorString()
+                      << " in '" << result.resolvedDocumentName.getString() << "'");
+    }
+    if (!result.resolvedProperty) {
+        FC_THROWM(Base::RuntimeError, result.resolveErrorString()
+                  << " in '" << result.resolvedDocumentObjectName.getString() << "'");
+    }
+    if (!subObjectName.getString().empty() && !result.resolvedSubObject) {
         FC_THROWM(Base::RuntimeError, result.resolveErrorString() << " in '" << toString() << "'");
     }
 
@@ -1505,17 +1514,10 @@ ObjectIdentifier::access(const ResolveResults& result, const Py::Object* value, 
             break;
         case PseudoShape: {
             GET_MODULE(Part);
-            Py::Callable func(pyobj.getAttr("getShape"));
-            Py::Tuple tuple(1);
-            tuple.setItem(0, Py::Object(result.resolvedDocumentObject->getPyObject(), true));
-            if (result.subObjectName.getString().empty()) {
-                pyobj = func.apply(tuple);
-            }
-            else {
-                Py::Dict dict;
-                dict.setItem("subname", Py::String(result.subObjectName.getString()));
-                dict.setItem("needSubElement", Py::True());
-                pyobj = func.apply(tuple, dict);
+            if (auto pseudoShape = Base::provideService<App::PseudoShapeProvider>()) {
+                Py::Object docobj(result.resolvedDocumentObject->getPyObject(), true);
+                std::string subname = result.subObjectName.getString();
+                pyobj = pseudoShape->getElement(pyobj, docobj, subname);
             }
             break;
         }

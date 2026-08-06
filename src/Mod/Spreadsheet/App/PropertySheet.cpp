@@ -722,11 +722,38 @@ void PropertySheet::setAlignment(CellAddress address, int _alignment)
     cell->setAlignment(_alignment);
 }
 
+void PropertySheet::setAlignment(Range range, int _alignment)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        CellAddress address = *range;
+        if (Cell* cell = nonNullCellAt(address)) {
+            if (cell->address == address) {
+                cell->_setAlignment(_alignment);
+            }
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
+}
+
 void PropertySheet::setStyle(CellAddress address, const std::set<std::string>& _style)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setStyle(_style);
+}
+
+void PropertySheet::setStyle(Range range, const std::set<std::string>& _style)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setStyle(_style);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
 }
 
 void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
@@ -736,6 +763,25 @@ void PropertySheet::setForeground(CellAddress address, const Base::Color& color)
     cell->setForeground(color);
 }
 
+void PropertySheet::setForeground(Range range, const Base::Color& color)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setForeground(color);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
+}
+
+void PropertySheet::clearForeground(CellAddress address)
+{
+    Cell* cell = nonNullCellAt(address);
+    assert(cell);
+    cell->clearForeground();
+}
+
 void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
 {
     Cell* cell = nonNullCellAt(address);
@@ -743,11 +789,42 @@ void PropertySheet::setBackground(CellAddress address, const Base::Color& color)
     cell->setBackground(color);
 }
 
+void PropertySheet::setBackground(Range range, const Base::Color& color)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setBackground(color);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
+}
+
+void PropertySheet::clearBackground(CellAddress address)
+{
+    Cell* cell = nonNullCellAt(address);
+    assert(cell);
+    cell->clearBackground();
+}
+
 void PropertySheet::setDisplayUnit(CellAddress address, const std::string& unit)
 {
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setDisplayUnit(unit);
+}
+
+void PropertySheet::setDisplayUnit(Range range, const std::string& unit)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setDisplayUnit(unit);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
 }
 
 
@@ -810,6 +887,18 @@ void PropertySheet::setComputedUnit(CellAddress address, const Base::Unit& unit)
     Cell* cell = nonNullCellAt(address);
     assert(cell);
     cell->setComputedUnit(unit);
+}
+
+void PropertySheet::setComputedUnit(Range range, const Base::Unit& unit)
+{
+    PropertySheet::AtomicPropertyChange signaller(*this);
+    do {
+        if (Cell* cell = nonNullCellAt(*range)) {
+            cell->_setComputedUnit(unit);
+        }
+    } while (range.next());
+
+    signaller.tryInvoke();
 }
 
 void PropertySheet::setSpans(CellAddress address, int rows, int columns)
@@ -1368,25 +1457,42 @@ void PropertySheet::addDependencies(CellAddress key)
             ++updateCount;
 
             for (auto& name : dep.second) {
-                std::string propName = docObjName + "." + name;
-                FC_LOG("dep " << key.toString() << " -> " << name);
+                std::string propName = name;
+
+                // Fixes #7645: Absolute cells in a spreadsheet are not updated
+                //
+                // Check if the property name is a cell address. If yes then get a clean name
+                // without the characters of absolute addresses because they are invalid for a
+                // correct property name.
+                // This is needed in getDeps() where a clean name is passed to find the referenced
+                // cell addresses and to setup the correct execution order in the sheet's execute
+                // method. If the execution order is arbitrary it can happen that a cell references
+                // a not yet processed cell. This leads to a failing resolution of the property of
+                // the object identifier because the property hasn't been added to the object yet
+                // and results into a failed processing of the cell.
+                App::CellAddress addr = stringToAddress(propName.c_str(), true);
+                if (addr.isValid()) {
+                    propName = addr.toString(App::CellAddress::Cell::ShowRowColumn);
+                }
+                std::string fullName = docObjName + "." + propName;
+                FC_LOG("dep " << key.toString() << " -> " << propName);
 
                 // Insert into maps
-                propertyNameToCellMap[propName].insert(key);
-                cellToPropertyNameMap[key].insert(propName);
+                propertyNameToCellMap[fullName].insert(key);
+                cellToPropertyNameMap[key].insert(fullName);
 
                 // Also an alias?
-                if (!name.empty() && docObj->isDerivedFrom<Sheet>()) {
+                if (!propName.empty() && docObj->isDerivedFrom<Sheet>()) {
                     auto other = static_cast<Sheet*>(docObj);
-                    auto j = other->cells.revAliasProp.find(name);
+                    auto j = other->cells.revAliasProp.find(propName);
 
                     if (j != other->cells.revAliasProp.end()) {
-                        propName = docObjName + "." + j->second.toString();
-                        FC_LOG("dep " << key.toString() << " -> " << propName);
+                        fullName = docObjName + "." + j->second.toString();
+                        FC_LOG("dep " << key.toString() << " -> " << fullName);
 
                         // Insert into maps
-                        propertyNameToCellMap[propName].insert(key);
-                        cellToPropertyNameMap[key].insert(std::move(propName));
+                        propertyNameToCellMap[fullName].insert(key);
+                        cellToPropertyNameMap[key].insert(std::move(fullName));
                     }
                 }
             }

@@ -65,7 +65,9 @@ int ShapeFix_WirePy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyObject* wire;
     PyObject* face;
     double prec;
-    if (PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire, &TopoShapeFacePy::Type, &face, &prec)) {
+    if (
+        PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire, &TopoShapeFacePy::Type, &face, &prec)
+    ) {
         setHandle(new ShapeFix_Wire);
         TopoDS_Shape w = static_cast<TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
         TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
@@ -88,7 +90,9 @@ PyObject* ShapeFix_WirePy::init(PyObject* args)
     PyObject* wire;
     PyObject* face;
     double prec;
-    if (!PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire, &TopoShapeFacePy::Type, &face, &prec)) {
+    if (
+        !PyArg_ParseTuple(args, "O!O!d", &TopoShapeWirePy::Type, &wire, &TopoShapeFacePy::Type, &face, &prec)
+    ) {
         return nullptr;
     }
 
@@ -159,7 +163,9 @@ PyObject* ShapeFix_WirePy::setSurface(PyObject* args)
 {
     PyObject* surface;
     PyObject* plm = nullptr;
-    if (!PyArg_ParseTuple(args, "O!|O!", &GeometrySurfacePy::Type, &surface, &Base::PlacementPy::Type, &plm)) {
+    if (
+        !PyArg_ParseTuple(args, "O!|O!", &GeometrySurfacePy::Type, &surface, &Base::PlacementPy::Type, &plm)
+    ) {
         return nullptr;
     }
 

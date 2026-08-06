@@ -142,6 +142,7 @@
         <file>LinkImport.svg</file>
         <file>LinkImportAll.svg</file>
         <file>LinkOverlay.svg</file>
+        <file>LinkOverlayReadOnly.svg</file>
         <file>LinkReplace.svg</file>
         <file>LinkSelect.svg</file>
         <file>LinkSelectAll.svg</file>
@@ -227,6 +228,7 @@
         <file>Std_ShowObjects.svg</file>
         <file>Std_ShowSelection.svg</file>
         <file>Std_TextureMapping.svg</file>
+        <file>Std_ToggleBottomPanels.svg</file>
         <file>Std_ToggleClipPlane.svg</file>
         <file>Std_ToggleFreeze.svg</file>
         <file>Std_ToggleNavigation.svg</file>
@@ -253,11 +255,6 @@
         <file>Std_ViewDimetric.svg</file>
         <file>Std_ViewHome.svg</file>
         <file>Std_ViewIvIssueCamPos.svg</file>
-        <file>Std_ViewIvStereoInterleavedColumns.svg</file>
-        <file>Std_ViewIvStereoInterleavedRows.svg</file>
-        <file>Std_ViewIvStereoOff.svg</file>
-        <file>Std_ViewIvStereoQuadBuff.svg</file>
-        <file>Std_ViewIvStereoRedGreen.svg</file>
         <file>Std_ViewScreenShot.svg</file>
         <file>Std_ViewTrimetric.svg</file>
         <file>Std_WindowCascade.svg</file>
