@@ -22,6 +22,7 @@
 ***************************************************************************/"""
 
 import os
+import tempfile
 import threading
 import time
 import unittest
@@ -43,7 +44,8 @@ class TestGuiDocument(unittest.TestCase):
 
     def tearDown(self):
         # Close the document
-        FreeCAD.closeDocument("TestDoc")
+        if self.doc is not None and self.doc.Name in FreeCAD.listDocuments():
+            FreeCAD.closeDocument(self.doc.Name)
 
     def _findAutoSaver(self):
         app = QtWidgets.QApplication.instance()
@@ -94,6 +96,22 @@ class TestGuiDocument(unittest.TestCase):
             if expected_label is not None:
                 document_xml = recovery.read("Document.xml").decode("utf-8", errors="replace")
                 self.assertIn(expected_label, document_xml)
+
+    def _writeArchiveWithoutGuiDocument(self, source_path, target_path):
+        with zipfile.ZipFile(source_path, "r") as source:
+            self.assertIn("Document.xml", source.namelist())
+            self.assertIn("GuiDocument.xml", source.namelist())
+
+            with zipfile.ZipFile(target_path, "w") as target:
+                for item in source.infolist():
+                    if item.filename == "GuiDocument.xml":
+                        continue
+
+                    target.writestr(item, source.read(item.filename))
+
+        with zipfile.ZipFile(target_path, "r") as target:
+            self.assertIn("Document.xml", target.namelist())
+            self.assertNotIn("GuiDocument.xml", target.namelist())
 
     def testGetTreeRootObject(self):
         # Create objects at the root level
@@ -197,6 +215,67 @@ class TestGuiDocument(unittest.TestCase):
         self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.doc))
 
         self._assertRecoveryArchiveContains()
+
+    def testRestoreWithoutGuiDocumentFitsViewAndRestoresVisibility(self):
+        try:
+            from pivy import coin  # noqa: F401
+        except ImportError as exc:
+            raise unittest.SkipTest(f"Coin bindings are unavailable: {exc}") from exc
+
+        try:
+            import Part  # noqa: F401
+        except ImportError as exc:
+            raise unittest.SkipTest(f"Part workbench objects are unavailable: {exc}") from exc
+
+        visible_box = self.doc.addObject("Part::Box", "VisibleBox")
+        hidden_cylinder = self.doc.addObject("Part::Cylinder", "HiddenCylinder")
+
+        visible_box.Length = 25
+        visible_box.Width = 20
+        visible_box.Height = 15
+        visible_box.Placement.Base = FreeCAD.Vector(80, 35, 45)
+        visible_box.Visibility = True
+        visible_box.ViewObject.Visibility = True
+
+        hidden_cylinder.Radius = 5
+        hidden_cylinder.Height = 20
+        hidden_cylinder.Placement.Base = FreeCAD.Vector(120, 50, 55)
+        hidden_cylinder.Visibility = False
+        hidden_cylinder.ViewObject.Visibility = False
+
+        self.doc.recompute()
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_path = os.path.join(temp_dir, "with_gui_document.FCStd")
+            target_path = os.path.join(temp_dir, "without_gui_document.FCStd")
+
+            self.doc.saveAs(source_path)
+            self._writeArchiveWithoutGuiDocument(source_path, target_path)
+
+            FreeCAD.closeDocument(self.doc.Name)
+            self.doc = None
+
+            restored_doc = FreeCAD.openDocument(target_path)
+            self.doc = restored_doc
+            try:
+                FreeCAD.setActiveDocument(restored_doc.Name)
+
+                view = FreeCADGui.getDocument(restored_doc.Name).ActiveView
+                self.assertIsNotNone(view)
+
+                self.assertTrue(restored_doc.VisibleBox.ViewObject.Visibility)
+                self.assertFalse(restored_doc.HiddenCylinder.Visibility)
+                self.assertFalse(restored_doc.HiddenCylinder.ViewObject.Visibility)
+
+                def cameraIsFitted():
+                    position = view.getCameraNode().position.getValue().getValue()
+                    return sum(abs(component) for component in position) > 10.0
+
+                self.assertTrue(self._processEventsUntil(cameraIsFitted), view.getCamera())
+            finally:
+                if self.doc is not None and self.doc.Name in FreeCAD.listDocuments():
+                    FreeCAD.closeDocument(self.doc.Name)
+                self.doc = None
 
     def testAutoSaverFlushWritesRecoverySnapshot(self):
         obj = self.doc.addObject("App::FeaturePython", "AutoSaveGuiObject")
