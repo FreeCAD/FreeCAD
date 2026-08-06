@@ -9,7 +9,6 @@
 
 #include <map>
 #include <optional>
-#include <set>
 #include <tuple>
 #include <vector>
 #include "Curve.h"
@@ -123,11 +122,11 @@ public:
     void OffsetInward(double inwards_value);  // Deprecated: use Offset
 
     // Offsets wires; input wires must be closed shapes
-    void Offset(double offset, double arcTolerance = 0.0);
+    void Offset(double offset);
 
     // Offsets wires; open wires allowed. Positive offset is kept in this CArea, and
     // negative offset is returned in a new CArea. Endcaps (round) are filtered out
-    CArea OpenOffset(double offset, double arcTolerance = 0.0);
+    CArea OpenOffset(double offset);
 
     void ClipperNoop();  // converts to clipper and back (i.e. arc fitting) without any clipping
                          // operations
@@ -193,7 +192,7 @@ private:
         const ConversionMetadata& metadata
     );
 
-    void NaiveOffset(double offset, double arcTolerance = 0);
+    void NaiveOffset(double offset);
 
     Clipper2Lib::Path64 MakePoly(const CCurve& curve, ConversionMetadata& metadata) const;
 

@@ -249,17 +249,6 @@
          "will be created. A small offset is usually required to avoid the tangential cut.",       \
          App::PropertyPrecision))AREA_PARAMS_SECTION_EXTRA
 
-/** Offset configuration parameters */
-#define AREA_PARAMS_OFFSET_CONF \
-    ((double, \
-      round_precision, \
-      RoundPrecision, \
-      0.0, \
-      "Round joint precision. If =0, it defaults to Accuracy. \n" \
-      "See " \
-      "http://www.angusj.com/clipper2/Docs/Units/Clipper.Offset/Classes/ClipperOffset/" \
-      "Properties/ArcTolerance.htm", \
-      App::PropertyPrecision))
 
 #define AREA_PARAMS_MIN_DIST \
     ((double, \
@@ -385,7 +374,6 @@
 #define AREA_PARAMS_AREA \
     AREA_PARAMS_BASE \
     AREA_PARAMS_OFFSET \
-    AREA_PARAMS_OFFSET_CONF \
     AREA_PARAMS_POCKET \
     AREA_PARAMS_SECTION
 

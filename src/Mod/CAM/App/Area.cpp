@@ -739,9 +739,9 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // must match that computation
     build();
     AreaParams params = myParams;
-    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
     const double buffer = myParams.Accuracy * 3;
-    const double roundPrecision = params.Accuracy;
+    params.Accuracy = myParams.Accuracy * .7 / 4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    CAreaConfig conf(params);
 
     // transform all clearedAreas into our workplane
     Area clearedAreasInPlane(&params);
@@ -767,8 +767,8 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     CArea clearable(*myArea);
-    clearable.Offset(-diameter / 2, roundPrecision);
-    clearable.Offset(diameter / 2, roundPrecision);
+    clearable.Offset(-diameter / 2);
+    clearable.Offset(diameter / 2);
 
     // remaining = clearable - prevCleared
     CArea remaining(clearable);
@@ -777,7 +777,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
     CArea restCArea(remaining);
-    restCArea.Offset(diameter + buffer, roundPrecision);
+    restCArea.Offset(diameter + buffer);
     restCArea.Clip(Clipper2Lib::ClipType::Intersection, clearable, myParams.SubjectFill);
 
     if (restCArea.m_curves.size() == 0) {
@@ -2342,7 +2342,7 @@ std::shared_ptr<CArea> Area::performSingleOffset(double offset)
 {
     auto area = make_shared<CArea>();
     *area = *myArea;
-    area->Offset(offset, myParams.RoundPrecision);
+    area->Offset(offset);
 
     return area;
 }
@@ -2389,7 +2389,7 @@ void Area::makeOffset(
         if (previous_area_offset && check_gaps) {
             // Offset backwards by tool radius and subtract to find a gap
             CArea curr_offset_opposite = *area;
-            curr_offset_opposite.Offset(-sign_stepover * tool_radius, myParams.RoundPrecision);
+            curr_offset_opposite.Offset(-sign_stepover * tool_radius);
             CArea gap = *previous_area_offset;
             gap.Subtract(curr_offset_opposite);
             bool has_gap = !gap.m_curves.empty();
@@ -2406,7 +2406,7 @@ void Area::makeOffset(
 
                     // Recompute gap check
                     CArea test_offset_opposite = *test_area;
-                    test_offset_opposite.Offset(-sign_stepover * tool_radius, myParams.RoundPrecision);
+                    test_offset_opposite.Offset(-sign_stepover * tool_radius);
                     gap = *previous_area_offset;
                     gap.Subtract(test_offset_opposite);
 
@@ -2426,7 +2426,7 @@ void Area::makeOffset(
 
             // Cache this pass's inner offset, and check if done
             previous_area_offset = *area;
-            previous_area_offset->Offset(sign_stepover * tool_radius, myParams.RoundPrecision);
+            previous_area_offset->Offset(sign_stepover * tool_radius);
             if (previous_area_offset->m_curves.empty()) {
                 // Done after this pass; do another binary search to determine the minimum offset
                 // required to be done
@@ -2458,7 +2458,7 @@ void Area::makeOffset(
         // Compute and cache the offset of current area for next iteration's gap check
         if (check_gaps && !previous_area_offset) {
             previous_area_offset = *area;
-            previous_area_offset->Offset(sign_stepover * tool_radius, myParams.RoundPrecision);
+            previous_area_offset->Offset(sign_stepover * tool_radius);
         }
 
         if (area->m_curves.empty()) {
@@ -2608,7 +2608,7 @@ TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG, AREA_PARAMS_POCK
                 }
             }
             auto area = *myArea;
-            area.Offset(-tool_radius - extra_offset, myParams.RoundPrecision);
+            area.Offset(-tool_radius - extra_offset);
             out.Clip(Clipper2Lib::ClipType::Intersection, area, myParams.SubjectFill);
             done = true;
             break;

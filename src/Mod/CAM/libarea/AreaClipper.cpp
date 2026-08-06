@@ -8,8 +8,6 @@
 #include "clipper2/clipper.h"
 #include <algorithm>
 #include <cmath>
-#include <iomanip>
-#include <iostream>
 #include <optional>
 #include <stdexcept>
 #include <vector>
@@ -258,7 +256,7 @@ void CArea::TestIntersectOpenPathReversal(
 // edge. A tag of 0 indicates that the segment is an end cap. 1 indicates that it was produced by
 // offsetting in the requested/positive direction, and -1 indicates that it was produced by
 // offsetting in the opposite/negative direction.
-void CArea::NaiveOffset(double offset, double arcTolerance)
+void CArea::NaiveOffset(double offset)
 {
     // Positive oriented curves should be CCW (positive area) but some callers use the
     // wrong convention. For backwards compatibility/to support them, we check if the
@@ -273,7 +271,6 @@ void CArea::NaiveOffset(double offset, double arcTolerance)
 
     std::list<CCurve> offset_curves;
 
-    int curveIdx = 0;
     for (CCurve& curve : m_curves) {
         if (curve.m_vertices.empty()) {
             continue;
@@ -852,14 +849,14 @@ void CArea::SetFromResult(
 }
 
 
-void CArea::Offset(double offset, double arcTolerance)
+void CArea::Offset(double offset)
 {
     if (offset == 0) {
         return;
     }
 
     // Perform the naive offset, offsetting each edge and joining
-    NaiveOffset(abs(offset), arcTolerance);
+    NaiveOffset(abs(offset));
 
     // If we want to keep the negative edges, flip all the edge labels
     if (offset < 0) {
@@ -885,7 +882,7 @@ void CArea::Offset(double offset, double arcTolerance)
     this->Reorder();
 }
 
-CArea CArea::OpenOffset(double offset, double arcTolerance)
+CArea CArea::OpenOffset(double offset)
 {
     CArea cNeg;
     if (offset == 0) {
@@ -893,7 +890,7 @@ CArea CArea::OpenOffset(double offset, double arcTolerance)
     }
 
     // Perform the naive offset, offsetting each edge and joining
-    NaiveOffset(abs(offset), arcTolerance);
+    NaiveOffset(abs(offset));
 
     // Union (fill rule positive), separating out the positive and negative edges
     _Clip(ClipType::Union, CArea {}, FillRule::Positive, false, false, std::ref(cNeg));
