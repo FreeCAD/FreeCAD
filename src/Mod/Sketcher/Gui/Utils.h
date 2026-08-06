@@ -35,6 +35,11 @@
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
 
+namespace Base
+{
+class Placement;
+}
+
 namespace App
 {
 class DocumentObject;
@@ -85,6 +90,9 @@ enum OffsetMode : bool
 
 // to improve readability, expose the enum cases directly in the namespace
 using enum OffsetMode;
+
+/// Convert a point from sketch-plane coordinates to global coordinates.
+Base::Vector3d sketchPlanePointToWorld(const Base::Placement& sketchPlacement, double x, double y);
 
 /// This function tries to auto-recompute the active document if the option
 /// is set in the user parameter. If the option is not set nothing will be done
