@@ -43,6 +43,34 @@ from draftutils import utils
 from draftutils.translate import translate
 
 
+class _DecimalSpinBox(QtWidgets.QDoubleSpinBox):
+    """QDoubleSpinBox that allows inserting digits among trailing zeros."""
+
+    def validate(self, text, pos):
+        dec = self.locale().decimalPoint()
+        if dec in text:
+            dec_idx = text.index(dec)
+            decimal_places = len(text) - dec_idx - len(dec)
+            if decimal_places > self.decimals():
+                n_trailing = len(text) - len(text.rstrip("0"))
+                to_strip = min(n_trailing, decimal_places - self.decimals())
+                if to_strip > 0:
+                    stripped = text[:-to_strip]
+                    new_pos = min(pos, len(stripped))
+                    result = super().validate(stripped, new_pos)
+                    if result[0] == QtGui.QValidator.Acceptable:
+                        return QtGui.QValidator.Acceptable, stripped, new_pos
+        return super().validate(text, pos)
+
+    def valueFromText(self, text):
+        dec = self.locale().decimalPoint()
+        if dec in text:
+            text = text.rstrip("0")
+            if text.endswith(dec):
+                text = text[: -len(dec)]
+        return super().valueFromText(text)
+
+
 class ScaleTaskPanel:
     """The task panel for the Draft Scale tool."""
 
@@ -56,7 +84,7 @@ class ScaleTaskPanel:
         self.xLabel = QtWidgets.QLabel()
         self.xLabel.setText(translate("Draft", "X-factor"))
         layout.addWidget(self.xLabel, 0, 0, 1, 1)
-        self.xValue = QtWidgets.QDoubleSpinBox()
+        self.xValue = _DecimalSpinBox()
         self.xValue.setRange(-1000000.0, 1000000.0)
         self.xValue.setDecimals(decimals)
         self.xValue.setValue(1)
@@ -64,7 +92,7 @@ class ScaleTaskPanel:
         self.yLabel = QtWidgets.QLabel()
         self.yLabel.setText(translate("Draft", "Y-factor"))
         layout.addWidget(self.yLabel, 1, 0, 1, 1)
-        self.yValue = QtWidgets.QDoubleSpinBox()
+        self.yValue = _DecimalSpinBox()
         self.yValue.setRange(-1000000.0, 1000000.0)
         self.yValue.setDecimals(decimals)
         self.yValue.setValue(1)
@@ -72,7 +100,7 @@ class ScaleTaskPanel:
         self.zLabel = QtWidgets.QLabel()
         self.zLabel.setText(translate("Draft", "Z-factor"))
         layout.addWidget(self.zLabel, 2, 0, 1, 1)
-        self.zValue = QtWidgets.QDoubleSpinBox()
+        self.zValue = _DecimalSpinBox()
         self.zValue.setRange(-1000000.0, 1000000.0)
         self.zValue.setDecimals(decimals)
         self.zValue.setValue(1)
