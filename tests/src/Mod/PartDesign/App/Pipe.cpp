@@ -12,6 +12,7 @@
 #include "Mod/Sketcher/App/Sketch.h"
 #include "Mod/Sketcher/App/SketchObject.h"
 #include <BRepGProp.hxx>
+#include <filesystem>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -100,7 +101,10 @@ protected:
         doc_->recompute();
 
 #ifdef PIPE_SAVE_TEST_FCSTD
-        doc_->saveAs("/tmp/test-circle.FCStd");
+        {
+            auto p = std::filesystem::temp_directory_path();
+            doc_->saveAs((p / "FeaturePipeTest-circle.FCStd").c_str());
+        }
 #endif
         //
         // Create fully constrained line sketch
@@ -148,7 +152,10 @@ protected:
         sketch_line_->solve();
 
 #ifdef PIPE_SAVE_TEST_FCSTD
-        doc_->saveAs("/tmp/test-circle-line.FCStd");
+        {
+            auto p = std::filesystem::temp_directory_path();
+            doc_->saveAs((p / "FeaturePipeTest-circle-line.FCStd").c_str());
+        }
 #endif
 
         ASSERT_TRUE(sketch_circle_->FullyConstrained.getValue());
@@ -187,7 +194,10 @@ TEST_F(FeaturePipeTest, SketchProfileSketchSpine)
     pipe->Profile.setValue(sketch_circle_);
     doc_->recompute();
 #ifdef PIPE_SAVE_TEST_FCSTD
-    doc_->saveAs("/tmp/test-additivepipe-sketchprofile-sketchspine.FCStd");
+    {
+        auto p = std::filesystem::temp_directory_path();
+        doc_->saveAs((p / "FeaturePipeTest-SketchProfileSketchSpine.FCStd").c_str());
+    }
 #endif
 
     auto shape = pipe->Shape.getShape().getShape();
@@ -208,7 +218,10 @@ TEST_F(FeaturePipeTest, SketchProfileBinderSpine)
     pipe->Profile.setValue(sketch_circle_);
     doc_->recompute();
 #ifdef PIPE_SAVE_TEST_FCSTD
-    doc_->saveAs("/tmp/test-additivepipe-sketchprofile-binderspine.FCStd");
+    {
+        auto p = std::filesystem::temp_directory_path();
+        doc_->saveAs((p / "FeaturePipeTest-SketchProfileBinderSpine.FCStd").c_str());
+    }
 #endif
 
     auto shape = pipe->Shape.getShape().getShape();
