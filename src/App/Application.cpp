@@ -818,7 +818,7 @@ bool Application::isFineGrainedRecomputeEnabled()
     static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General"
     );
-    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute", true);
     return enableFineGrainedRecompute;
 }
 
