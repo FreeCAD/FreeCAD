@@ -844,7 +844,7 @@ def get_quantity_value(ifcentity, quantity_name):
         pset = rel.RelatingPropertyDefinition
         if not pset or not pset.is_a("IfcElementQuantity"):
             continue
-        for quantity in getattr(pset, "Quantities", []) or []:
+        for quantity in getattr(pset, "Quantities", []):
             if quantity.Name != quantity_name:
                 continue
             for attr in (
@@ -869,7 +869,7 @@ def restore_freecad_property(obj, ifcentity, property_name, ifcfile, pset=None, 
         pset = ifc_psets.get_pset("FreeCADPropertySet", ifcentity)
     if not pset:
         return False
-    for prop in getattr(pset, "HasProperties", []) or []:
+    for prop in getattr(pset, "HasProperties", []):
         if prop.Name != f"FreeCAD_{property_name}" or not getattr(prop, "NominalValue", None):
             continue
         value = prop.NominalValue.wrappedValue
@@ -886,19 +886,12 @@ def restore_freecad_property(obj, ifcentity, property_name, ifcfile, pset=None, 
 
 
 def restore_spatial_data(obj, ifcentity, ifcfile):
-    """Restores placement and level metadata not covered by geometry import."""
+    """Restores level metadata not covered by geometry import."""
 
-    if ifcentity.is_a("IfcAnnotation"):
-        return
-    placement = getattr(ifcentity, "ObjectPlacement", None)
-    if placement and ("Placement" in obj.PropertiesList):
-        obj.Placement = ifc_export.get_placement(placement, ifcfile)
-    if ifcentity.is_a("IfcBuildingStorey"):
+    if ifcentity.is_a("IfcBuilding") or ifcentity.is_a("IfcBuildingStorey"):
         elevation = getattr(ifcentity, "Elevation", None)
-        if (not placement) and ("Placement" in obj.PropertiesList) and (elevation is not None):
-            restored = FreeCAD.Placement(obj.Placement)
-            restored.Base.z = elevation * (1 / get_scale(ifcfile))
-            obj.Placement = restored
+        if ("Placement" in obj.PropertiesList) and (elevation is not None):
+            obj.Placement.Base.z = elevation * (1 / get_scale(ifcfile))
         if "LevelOffset" in obj.PropertiesList:
             restore_freecad_property(obj, ifcentity, "LevelOffset", ifcfile)
         if ("Height" in obj.PropertiesList) and not restore_freecad_property(
