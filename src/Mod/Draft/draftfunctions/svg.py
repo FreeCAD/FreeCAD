@@ -1008,7 +1008,7 @@ def get_svg(
             n = vobj.FontName
             a = 0
             if rotation != 0:
-                a = math.radians(rotation)
+                a = -math.radians(rotation)  # negative to keep text horizontal
 
             t1 = vobj.Proxy.text1.string.getValues()
             t2 = vobj.Proxy.text2.string.getValues()
