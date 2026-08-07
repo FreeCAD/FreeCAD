@@ -189,7 +189,13 @@ void QGIBalloonLabel::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
     QGraphicsItem::hoverLeaveEvent(event);
 }
 
-QRectF QGIBalloonLabel::boundingRect() const { return childrenBoundingRect(); }
+QRectF QGIBalloonLabel::boundingRect() const 
+{ 
+    if(verticalSep){
+        return m_customBoundingRect;
+    }
+    return childrenBoundingRect(); 
+}
 
 void QGIBalloonLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* option,
                             QWidget* widget)
@@ -204,9 +210,14 @@ void QGIBalloonLabel::paint(QPainter* painter, const QStyleOptionGraphicsItem* o
 
 void QGIBalloonLabel::setPosFromCenter(const double& xCenter, const double& yCenter)
 {
-    //set label's Qt position(top, left) given boundingRect center point
-    setPos(xCenter - m_labelText->boundingRect().center().x(),
-           yCenter - m_labelText->boundingRect().center().y());
+    //Get the font metrics to find the invisible descent space
+    QFontMetrics fm(m_labelText->font());
+    
+    //Calculate the visual offset (push down by half the descent)
+    double visualYOffset = fm.descent() / 2.0;
+
+    setPos(xCenter - boundingRect().center().x(),
+           yCenter - boundingRect().center().y() + visualYOffset);
 }
 
 Base::Vector3d QGIBalloonLabel::getLabelCenter() const
@@ -214,7 +225,11 @@ Base::Vector3d QGIBalloonLabel::getLabelCenter() const
     return Base::Vector3d(getCenterX(), getCenterY(), 0.0);
 }
 
-void QGIBalloonLabel::setFont(QFont font) { m_labelText->setFont(font); }
+void QGIBalloonLabel::setFont(QFont font) 
+{ 
+    m_labelText->setFont(font);
+    for(auto* cell : m_cellTexts) cell->setFont(font); 
+}
 
 void QGIBalloonLabel::setDimString(QString text)
 {
@@ -229,16 +244,91 @@ void QGIBalloonLabel::setDimString(QString text, qreal maxWidth)
     m_labelText->setTextWidth(maxWidth);
 }
 
-void QGIBalloonLabel::setPrettySel() { m_labelText->setPrettySel(); }
+void QGIBalloonLabel::setPrettySel() 
+{ 
+    m_labelText->setPrettySel(); 
+    for(auto* cell : m_cellTexts) cell->setPrettySel();
+}
 
-void QGIBalloonLabel::setPrettyPre() { m_labelText->setPrettyPre(); }
+void QGIBalloonLabel::setPrettyPre() 
+{ 
+    m_labelText->setPrettyPre(); 
+    for(auto* cell : m_cellTexts) cell->setPrettyPre();
+}
 
-void QGIBalloonLabel::setPrettyNormal() { m_labelText->setPrettyNormal(); }
+void QGIBalloonLabel::setPrettyNormal() 
+{ 
+    m_labelText->setPrettyNormal(); 
+    for(auto* cell : m_cellTexts) cell->setPrettyNormal();
+}
 
 void QGIBalloonLabel::setColor(QColor color)
 {
     m_colNormal = color;
     m_labelText->setColor(m_colNormal);
+    for(auto* cell : m_cellTexts) cell->setColor(m_colNormal);
+}
+
+void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeScale)
+{
+    prepareGeometryChange();
+
+    for(auto* cell : m_cellTexts){
+        delete cell;
+    }
+
+    m_cellTexts.clear();
+    seps.clear();
+    verticalSep = split;
+
+    if(!split){
+        m_labelText->setPlainText(text);
+        m_labelText->show();
+        return;
+    }
+
+    m_labelText->hide();
+    QStringList parts = text.split(QStringLiteral("|"));
+
+    double currentX = 0; //this is a tracker for the separators position
+    double basePad = Rez::guiX(2.0);
+    QFont font = m_labelText->font();
+
+    //we need to know the height so we can make the customBoundingRect 
+    double maxTextHeight = m_labelText->boundingRect().height();
+
+    for(int i=0; i < parts.size(); i++){
+        QString cellString = parts[i];
+
+        QGCustomText* cell = new QGCustomText();
+        cell->setParentItem(this);
+        cell->setTightBounding(true);
+        cell->setFont(font);
+        cell->setPlainText(cellString);
+        cell->setColor(m_colNormal);
+        cell->show();
+
+        double rawTextWidth = cell->boundingRect().width();
+        double cellWidth = 0;
+
+        cellWidth = (rawTextWidth * shapeScale) + (basePad * 2 * shapeScale);
+        
+
+        double textOffsetX = (cellWidth - rawTextWidth) / 2.0;
+        cell->setPos(currentX + textOffsetX, 0);
+
+
+        currentX += cellWidth;
+
+        //if this is not the last cell in the list then save the current x coordinate
+        if(i < parts.size()-1){
+            seps.push_back(currentX);
+        }
+
+        //store the cell so we can mange it in the styling functions
+        m_cellTexts.push_back(cell);
+    }
+    m_customBoundingRect = QRectF(0,0,currentX,maxTextHeight);
 }
 
 //**************************************************************
@@ -428,20 +518,12 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
     balloonLabel->setFont(font);
 
     QString labelText = QString::fromUtf8(balloon->Text.getStrValue().data());
-    balloonLabel->setVerticalSep(false);
-    balloonLabel->setSeps(std::vector<int>());
 
-    if (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0) {
-        std::vector<int> newSeps;
-        while (labelText.contains(QStringLiteral("|"))) {
-            int pos = labelText.indexOf(QStringLiteral("|"));
-            labelText.replace(pos, 1, QStringLiteral("   "));
-            QFontMetrics fm(balloonLabel->getFont());
-            newSeps.push_back(Gui::QtTools::horizontalAdvance(fm, labelText.left(pos + 2)));
-            balloonLabel->setVerticalSep(true);
-        }
-        balloonLabel->setSeps(newSeps);
-    }
+    bool isRect = (strcmp(balloon->BubbleShape.getValueAsString(), "Rectangle") == 0);
+    bool hasSeps = labelText.contains(QStringLiteral("|"));
+    double shapeScale = balloon->ShapeScale.getValue();
+        
+    balloonLabel->buildCells(labelText,(isRect && hasSeps), shapeScale);
 
     balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
 
@@ -679,20 +761,31 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
         offsetLR = (textWidth / 2.0) + Rez::guiX(2.0);
     }
     else if (strcmp(balloonType, "Rectangle") == 0) {
-        //Add some room
-        textHeight = (textHeight * scale) + Rez::guiX(1.0);
-        // we add some textWidth later because we first need to handle the text separators
-        if (balloonLabel->getVerticalSep()) {
-            for (auto& sep : balloonLabel->getSeps()) {
-                balloonPath.moveTo(lblCenter.x - (textWidth / 2.0) + sep,
-                                   lblCenter.y - (textHeight / 2.0));
-                balloonPath.lineTo(lblCenter.x - (textWidth / 2.0) + sep,
-                                   lblCenter.y + (textHeight / 2.0));
+        //because the buildCells function already did the horizontal scaling
+        //this width is perfectly accurate without needing to be multiplied by scale again
+        textWidth = balloonLabel->boundingRect().width();
+
+        //the vertical height wasn't scaled in the horizontal cell loop 
+        //so we need to scale it
+        double basePad = Rez::guiX(2.0);
+        textHeight = (balloonLabel->boundingRect().height() * scale) + (basePad * 2 * scale);
+
+        balloonPath.addRect(lblCenter.x - (textWidth / 2.0),
+                            lblCenter.y - (textHeight / 2.0),
+                            textWidth, textHeight);
+        
+        if(balloonLabel->getVerticalSep()){
+
+            double startX = lblCenter.x - (textWidth / 2.0);
+            
+            for(auto sep : balloonLabel->getSeps()){
+                double lineX = startX + sep;
+
+                balloonPath.moveTo(lineX, lblCenter.y - (textHeight / 2.0));
+                balloonPath.lineTo(lineX, lblCenter.y + (textHeight / 2.0));
             }
         }
-        textWidth = (textWidth * scale) + Rez::guiX(2.0);
-        balloonPath.addRect(lblCenter.x - (textWidth / 2.0), lblCenter.y - (textHeight / 2.0),
-                            textWidth, textHeight);
+
         offsetLR = (textWidth / 2.0);
     }
     else if (strcmp(balloonType, "Triangle") == 0) {
