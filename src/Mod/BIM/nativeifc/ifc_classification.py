@@ -130,6 +130,8 @@ def _get_object_ifc_type(obj):
 def _coerce_contract_value(value, data_type="", allowed_values=None):
     if isinstance(value, dict):
         value = _first_non_empty(value.get("value"), value.get("code"), value.get("name"))
+    if value in [None, ""]:
+        return None
     if isinstance(value, str):
         upper_value = value.strip().upper()
         if upper_value in ["TRUE", ".T.", "YES"]:
@@ -155,8 +157,6 @@ def _coerce_contract_value(value, data_type="", allowed_values=None):
             return int(value)
         except Exception:
             return value
-    if value in [None, ""]:
-        return None
     return value
 
 
