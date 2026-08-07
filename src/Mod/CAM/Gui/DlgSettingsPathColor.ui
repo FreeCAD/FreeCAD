@@ -430,6 +430,37 @@
         </property>
        </widget>
       </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Maximum G-code length to use highlighter</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefSpinBox" name="MaxHighlighterSize">
+        <property name="toolTip">
+         <string>Limits G-code length which will allow to use highlighter.
+Decrease value if gets perfomance problem in Inspect or export G-code windows.
+Set to zero to disable G-code highlighter.</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>999999999</number>
+        </property>
+        <property name="value">
+         <number>100000</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>MaxHighlighterSize</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/CAM</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

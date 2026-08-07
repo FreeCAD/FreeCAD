@@ -32,7 +32,7 @@ from Path.Base.MachineState import MachineState
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Geom import CmdMoveDrill
 
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 import FreeCAD
 import Path
@@ -190,34 +190,6 @@ class FilenameGenerator:
             yield os.path.normpath(full_path)
 
 
-class GCodeHighlighter(QtGui.QSyntaxHighlighter):
-    def __init__(self, parent=None):
-        super(GCodeHighlighter, self).__init__(parent)
-
-        keywordFormat = QtGui.QTextCharFormat()
-        keywordFormat.setForeground(QtCore.Qt.cyan)
-        keywordFormat.setFontWeight(QtGui.QFont.Bold)
-        keywordPatterns = ["\\bG[0-9]+\\b", "\\bM[0-9]+\\b"]
-
-        self.highlightingRules = [
-            (QtCore.QRegularExpression(pattern), keywordFormat) for pattern in keywordPatterns
-        ]
-
-        speedFormat = QtGui.QTextCharFormat()
-        speedFormat.setFontWeight(QtGui.QFont.Bold)
-        speedFormat.setForeground(QtCore.Qt.green)
-        self.highlightingRules.append((QtCore.QRegularExpression("\\bF[0-9\\.]+\\b"), speedFormat))
-
-    def highlightBlock(self, text):
-        for pattern, hlFormat in self.highlightingRules:
-            expression = QtCore.QRegularExpression(pattern)
-            index = expression.match(text)
-            while index.hasMatch():
-                length = index.capturedLength()
-                self.setFormat(index.capturedStart(), length, hlFormat)
-                index = expression.match(text, index.capturedStart() + length)
-
-
 class GCodeEditorDialog(QtGui.QDialog):
     def __init__(self, text="", parent=None, refactored=False):
         if parent is None:
@@ -226,15 +198,7 @@ class GCodeEditorDialog(QtGui.QDialog):
         self.setWindowTitle(translate("CAM", "CAM Export Gcode"))
         layout = QtGui.QVBoxLayout(self)
 
-        # self.editor = QtGui.QTextEdit()  # without lines enumeration
-        self.editor = CodeEditor()  # with lines enumeration
-
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
-        font = QtGui.QFont()
-        font.setFamily(p.GetString("Font", "Courier"))
-        font.setFixedPitch(True)
-        font.setPointSize(p.GetInt("FontSize", 10))
-        self.editor.setFont(font)
+        self.editor = CodeEditor()
         self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
@@ -332,30 +296,10 @@ def fmt(num, dec, units):
 
 def editor(gcode):
     """Pops up a handy little editor to look at the code output."""
-    prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
-    # default Max Highlighter Size = 512 Ko
-    defaultMHS = 512 * 1024
-    mhs = prefs.GetUnsigned("inspecteditorMaxHighlighterSize", defaultMHS)
-
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
     dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
-    gcodeSize = len(dia.editor.toPlainText())
-    if gcodeSize <= mhs:
-        # because of poor performance, syntax highlighting is
-        # limited to mhs octets (default 512 KB).
-        # It seems than the response time curve has an inflexion near 500 KB
-        # beyond 500 KB, the response time increases exponentially.
-        dia.highlighter = GCodeHighlighter(dia.editor.document())
-    else:
-        FreeCAD.Console.PrintMessage(
-            translate(
-                "Path",
-                "GCode size too big ({} o), disabling syntax highlighter.".format(gcodeSize),
-            )
-        )
-    result = dia.exec_()
-    if result:  # If user selected 'OK' get modified G Code
+    if dia.exec_():  # If user selected 'OK' get modified G Code
         final = dia.editor.toPlainText()
     else:
         final = gcode

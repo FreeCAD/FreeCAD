@@ -32,6 +32,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Preferences as PathPref
+from Path.Main.Gui.Editor import CodeEditor
 from PySide import QtCore, QtGui
 
 translate = FreeCAD.Qt.translate
@@ -142,6 +143,11 @@ class PostProcessDialog:
             self._on_output_files_context_menu
         )
         dlg.buttonSaveOutput.clicked.connect(self._save_output_files)
+
+        self.gcodeEditor = CodeEditor()
+        self.gcodeEditor.setToolTip(dlg.plainTextEditGcode.toolTip())
+        dlg.plainTextEditGcode.hide()
+        dlg.splitterOutput.addWidget(self.gcodeEditor)
 
     # ------------------------------------------------------------------
     # Population
@@ -957,7 +963,7 @@ class PostProcessDialog:
         dlg.listWidgetOutputFiles.blockSignals(True)
         dlg.listWidgetOutputFiles.clear()
         dlg.listWidgetOutputFiles.blockSignals(False)
-        dlg.plainTextEditGcode.setPlainText("")
+        self.gcodeEditor.setPlainText("")
         dlg.labelOutputStatus.setVisible(True)
         dlg.buttonSaveOutput.setEnabled(False)
         dlg.buttonApplyTemplate.setEnabled(False)
@@ -1157,7 +1163,7 @@ class PostProcessDialog:
         if lw.count() > 0:
             lw.setCurrentRow(0)  # triggers _on_output_file_selected
         else:
-            dlg.plainTextEditGcode.setPlainText("")
+            self.gcodeEditor.setPlainText("")
 
         n = len(self._generated_outputs)
         dlg.labelOutputStatus.setVisible(n == 0)
@@ -1170,11 +1176,11 @@ class PostProcessDialog:
         if previous is not None:
             prev_fname = previous.data(QtCore.Qt.ItemDataRole.UserRole)
             if prev_fname in self._generated_outputs:
-                self._generated_outputs[prev_fname] = dlg.plainTextEditGcode.toPlainText()
+                self._generated_outputs[prev_fname] = self.gcodeEditor.toPlainText()
 
         if current is not None:
             fname = current.data(QtCore.Qt.ItemDataRole.UserRole)
-            dlg.plainTextEditGcode.setPlainText(self._generated_outputs.get(fname, ""))
+            self.gcodeEditor.setPlainText(self._generated_outputs.get(fname, ""))
 
     def _on_output_files_context_menu(self, pos):
         """Show rename context menu on right-click."""
@@ -1218,7 +1224,7 @@ class PostProcessDialog:
         if current is not None:
             fname = current.data(QtCore.Qt.ItemDataRole.UserRole)
             if fname in self._generated_outputs:
-                self._generated_outputs[fname] = dlg.plainTextEditGcode.toPlainText()
+                self._generated_outputs[fname] = self.gcodeEditor.toPlainText()
 
     def _regenerate_filenames(self):
         """Re-apply the filename template to rename all items in the output list."""
