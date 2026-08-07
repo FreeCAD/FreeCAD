@@ -56,12 +56,18 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.radialStockToLeaveOuterSpinBox = PathGuiUtil.QuantitySpinBox(
             self.form.radialStockToLeaveOuter, obj, "RadialStockToLeaveOuter"
         )
+        self.radialStockToLeaveInnerSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.radialStockToLeaveInner, obj, "RadialStockToLeaveInner"
+        )
+        self.coneAngleSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.coneAngle, obj, "HelixConeAngle"
+        )
 
     def getForm(self):
         """getForm() ... return UI"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpHelixEdit.ui")
 
-        comboToPropertyMap = [("startAt", "StartAt"), ("cutMode", "CutMode")]
+        comboToPropertyMap = [("side", "Side"), ("startAt", "StartAt"), ("cutMode", "CutMode")]
         enumTups = PathHelix.ObjectHelix.helixOpPropertyEnumerations(dataType="raw")
         self.populateCombobox(form, enumTups, comboToPropertyMap)
 
@@ -71,6 +77,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.helixMaxPitchSpinBox.updateWidget()
         self.helixMaxRampAngleSpinBox.updateWidget()
         self.radialStockToLeaveOuterSpinBox.updateWidget()
+        self.radialStockToLeaveInnerSpinBox.updateWidget()
+        self.coneAngleSpinBox.updateWidget()
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -78,14 +86,29 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.helixMaxPitchSpinBox.updateProperty()
         self.helixMaxRampAngleSpinBox.updateProperty()
         self.radialStockToLeaveOuterSpinBox.updateProperty()
+        self.radialStockToLeaveInnerSpinBox.updateProperty()
+        self.coneAngleSpinBox.updateProperty()
 
         if obj.CutMode != str(self.form.cutMode.currentData()):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StartAt != str(self.form.startAt.currentData()):
             obj.StartAt = str(self.form.startAt.currentData())
+        if obj.Side != str(self.form.side.currentData()):
+            obj.Side = str(self.form.side.currentData())
 
         if obj.StepOver != self.form.stepOver.value():
             obj.StepOver = self.form.stepOver.value()
+
+        if obj.SpiralMill != self.form.spiralMill.isChecked():
+            obj.SpiralMill = self.form.spiralMill.isChecked()
+        if obj.SingleHelix != self.form.singleHelix.isChecked():
+            obj.SingleHelix = self.form.singleHelix.isChecked()
+        if obj.StartConeFromBottom != self.form.startBottom.isChecked():
+            obj.StartConeFromBottom = self.form.startBottom.isChecked()
+        if obj.RetractFromWall != self.form.retractFromWall.isChecked():
+            obj.RetractFromWall = self.form.retractFromWall.isChecked()
+        if obj.OverrideArcFeedRate != self.form.overrideArcFeed.isChecked():
+            obj.OverrideArcFeedRate = self.form.overrideArcFeed.isChecked()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
@@ -96,6 +119,15 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartAt, self.form.startAt)
+        self.selectInComboBox(obj.Side, self.form.side)
+
+        self.form.spiralMill.setChecked(obj.SpiralMill)
+        self.form.singleHelix.setChecked(obj.SingleHelix)
+        self.form.startBottom.setChecked(obj.StartConeFromBottom)
+        self.form.retractFromWall.setChecked(obj.RetractFromWall)
+        self.form.overrideArcFeed.setChecked(obj.OverrideArcFeedRate)
+
+        self.updateVisibility()
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
@@ -104,12 +136,36 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         signals.append(self.form.helixMaxPitch.editingFinished)
         signals.append(self.form.helixMaxRampAngle.editingFinished)
         signals.append(self.form.radialStockToLeaveOuter.editingFinished)
+        signals.append(self.form.radialStockToLeaveInner.editingFinished)
+        signals.append(self.form.coneAngle.editingFinished)
         signals.append(self.form.stepOver.editingFinished)
 
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startAt.currentIndexChanged)
+        signals.append(self.form.side.currentIndexChanged)
+
+        signals.append(self.form.spiralMill.checkStateChanged)
+        signals.append(self.form.singleHelix.checkStateChanged)
+        signals.append(self.form.startBottom.checkStateChanged)
+        signals.append(self.form.retractFromWall.checkStateChanged)
+        signals.append(self.form.overrideArcFeed.checkStateChanged)
 
         return signals
+
+    def updateVisibility(self):
+        if self.form.coneAngle.property("rawValue"):
+            self.form.startBottom.show()
+        else:
+            self.form.startBottom.hide()
+
+        if self.form.spiralMill.isChecked():
+            self.form.singleHelix.hide()
+        else:
+            self.form.singleHelix.show()
+
+    def registerSignalHandlers(self, obj):
+        self.form.coneAngle.editingFinished.connect(self.updateVisibility)
+        self.form.spiralMill.checkStateChanged.connect(self.updateVisibility)
 
 
 Command = PathOpGui.SetupOperation(
