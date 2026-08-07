@@ -72,6 +72,7 @@
 #include "TaskActiveView.h"
 #include "TaskComplexSection.h"
 #include "TaskDetail.h"
+#include "TaskNewPage.h"
 #include "TaskProjGroup.h"
 #include "TaskProjection.h"
 #include "TaskSectionView.h"
@@ -95,6 +96,38 @@ class Vertex;
 using namespace TechDrawGui;
 using namespace TechDraw;
 using DU = DrawUtil;
+
+//===========================================================================
+// TechDraw_NewPage
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewPage)
+
+CmdTechDrawNewPage::CmdTechDrawNewPage()
+    : Command("TechDraw_NewPage")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Insert New Page");
+    sToolTipText = QT_TR_NOOP(
+        "Opens a task panel for selecting the template standard, size and language"
+    );
+    sWhatsThis = "TechDraw_NewPage";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_PageDefault";
+}
+
+void CmdTechDrawNewPage::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Control().showDialog(new TaskDlgNewPage());
+}
+
+bool CmdTechDrawNewPage::isActive()
+{
+    return hasActiveDocument();
+}
 
 //===========================================================================
 // TechDraw_PageDefault
@@ -166,8 +199,8 @@ CmdTechDrawPageTemplate::CmdTechDrawPageTemplate() : Command("TechDraw_PageTempl
 {
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("New Page From Template");
-    sToolTipText = QT_TR_NOOP("Creates a new page from a custom template");
+    sMenuText = QT_TR_NOOP("Insert Page Using Browser…");
+    sToolTipText = QT_TR_NOOP("Opens a file browser for directly selecting an SVG template");
     sWhatsThis = "TechDraw_PageTemplate";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_PageTemplate";
@@ -224,6 +257,40 @@ void CmdTechDrawPageTemplate::activated(int iMsg)
 }
 
 bool CmdTechDrawPageTemplate::isActive() { return hasActiveDocument(); }
+
+//===========================================================================
+// TechDraw_NewGroup
+//===========================================================================
+class CmdTechDrawNewGroup: public Gui::GroupCommand
+{
+public:
+    CmdTechDrawNewGroup()
+        : GroupCommand("TechDraw_NewGroup")
+    {
+        sAppModule = "TechDraw";
+        sGroup = QT_TR_NOOP("TechDraw");
+        sMenuText = QT_TR_NOOP("Insert New Page");
+        sToolTipText = sMenuText;
+        sWhatsThis = "TechDraw_NewGroup";
+        sStatusTip = sToolTipText;
+        sPixmap = "actions/TechDraw_PageDefault";
+
+        setCheckable(false);
+
+        addCommand("TechDraw_NewPage");
+        addCommand("TechDraw_PageTemplate");
+    }
+
+    const char* className() const override
+    {
+        return "CmdTechDrawNewGroup";
+    }
+
+    bool isActive() override
+    {
+        return hasActiveDocument();
+    }
+};
 
 //===========================================================================
 // TechDraw_RedrawPage
@@ -1948,8 +2015,10 @@ void CreateTechDrawCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdTechDrawNewPage());
     rcCmdMgr.addCommand(new CmdTechDrawPageDefault());
     rcCmdMgr.addCommand(new CmdTechDrawPageTemplate());
+    rcCmdMgr.addCommand(new CmdTechDrawNewGroup());
     rcCmdMgr.addCommand(new CmdTechDrawRedrawPage());
     rcCmdMgr.addCommand(new CmdTechDrawPrintAll());
     rcCmdMgr.addCommand(new CmdTechDrawView());
