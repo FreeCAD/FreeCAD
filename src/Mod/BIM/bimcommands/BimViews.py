@@ -103,7 +103,7 @@ class BIM_Views:
                 ("Delete", translate("BIM", "Delete")),
                 ("Toggle", translate("BIM", "Toggle Visibility")),
                 ("Isolate", translate("BIM", "Isolate")),
-                ("SaveView", translate("BIM", "Save View Position")),
+                ("SaveView", translate("BIM", "Save Camera View")),
                 ("SaveVisibility", translate("BIM", "Save Visibility of Objects")),
                 ("Rename", translate("BIM", "Rename")),
             ]:
@@ -143,7 +143,7 @@ class BIM_Views:
                 translate("BIM", "Turns all items off except the selected ones")
             )
             self.dialog.buttonSaveView.setToolTip(
-                translate("BIM", "Saves the current camera position to the selected items")
+                translate("BIM", "Saves the current camera view to the selected items")
             )
             self.dialog.buttonRename.setToolTip(translate("BIM", "Renames the selected item"))
             self.dialog.buttonActive.setToolTip(translate("BIM", "Activates the selected item"))
