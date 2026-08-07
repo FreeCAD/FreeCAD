@@ -176,7 +176,7 @@ if(FREECAD_WARN_ERROR)
     target_compile_warn_error(Materials)
 endif()
 
-SET_BIN_DIR(Materials Materials /Mod/Material)
+SET_BIN_DIR(Materials)
 SET_PYTHON_PREFIX_SUFFIX(Materials)
 
 INSTALL(TARGETS Materials DESTINATION ${CMAKE_INSTALL_LIBDIR})
