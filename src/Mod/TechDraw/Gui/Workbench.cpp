@@ -381,9 +381,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
 
     Gui::ToolBarItem* decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
-    *decor << "TechDraw_ToggleFrame";
-    *decor << "TechDraw_Hatch";
-    *decor << "TechDraw_GeometricHatch";
+    *decor << "TechDraw_HatchFace";
 
     Gui::ToolBarItem* anno = new Gui::ToolBarItem(root);
     anno->setCommand("TechDraw Annotation");

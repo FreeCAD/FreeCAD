@@ -574,6 +574,57 @@ void DrawGeomHatch::translateLabel(std::string context, std::string baseName, st
     Label.setValue(DU::translateArbitrary(context, baseName, uniqueName));
 }
 
+// Duplicated from DrawHatch. We need to refactor this.
+bool DrawGeomHatch::affectsFace(int i)
+{
+    const std::vector<std::string>& sourceNames = Source.getSubValues();
+    for (auto& s : sourceNames) {
+        int fdx = TechDraw::DrawUtil::getIndexFromName(s);
+        if (fdx == i) {
+            return true;  // Found something
+        }
+    }
+    return false;  // Found nothing
+}
+
+// remove a subElement(Face) from Source PropertyLinkSub
+bool DrawGeomHatch::removeSub(std::string toRemove)
+{
+    //    Base::Console().message("DH::removeSub(%s)\n", toRemove.c_str());
+    bool removed = false;
+    const std::vector<std::string>& sourceNames = Source.getSubValues();
+    std::vector<std::string> newList;
+    App::DocumentObject* sourceFeat = Source.getValue();
+    for (auto& s : sourceNames) {
+        if (s == toRemove) {
+            removed = true;
+        }
+        else {
+            newList.push_back(s);
+        }
+    }
+    if (removed) {
+        Source.setValue(sourceFeat, newList);
+    }
+    return removed;
+}
+
+bool DrawGeomHatch::removeSub(int i)
+{
+    //    Base::Console().message("DH::removeSub(%d)\n", i);
+    std::stringstream ss;
+    ss << "Face" << i;
+    return removeSub(ss.str());
+}
+
+bool DrawGeomHatch::empty(void)
+{
+    const std::vector<std::string>& sourceNames = Source.getSubValues();
+    return sourceNames.empty();
+}
+
+
+
 //--------------------------------------------------------------------------------------------------
 
 PyObject *DrawGeomHatch::getPyObject()

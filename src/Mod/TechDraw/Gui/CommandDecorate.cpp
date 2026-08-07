@@ -48,6 +48,7 @@
 #include "DrawGuiUtil.h"
 #include "TaskGeomHatch.h"
 #include "TaskHatch.h"
+#include "TaskHatchFace.h"
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
@@ -328,6 +329,186 @@ bool CmdTechDrawGeometricHatch::isActive()
 }
 
 //===========================================================================
+// TechDraw_HatchFace - New hatching tool replacing the 2 others.
+//===========================================================================
+DEF_STD_CMD_A(CmdTechDrawHatchFace)
+
+CmdTechDrawHatchFace::CmdTechDrawHatchFace()
+    : Gui::Command("TechDraw_HatchFace")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Hatch Face");
+    sToolTipText = sMenuText;
+    sWhatsThis = "TechDraw_HatchFace";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_Hatch";
+}
+
+void CmdTechDrawHatchFace::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // Check for existing selection to launch in edit mode
+    std::vector<Gui::SelectionObject> currentSelection = Gui::Selection().getSelectionEx();
+    if (currentSelection.size() == 1) {
+        App::DocumentObject* selObj = currentSelection[0].getObject();
+        if (selObj && currentSelection[0].getSubNames().empty()) {  // Only object, no sub-elements
+            if (selObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())
+                || selObj->isDerivedFrom(TechDraw::DrawGeomHatch::getClassTypeId())) {
+                Gui::Control().showDialog(new TechDrawGui::TaskDlgHatchFace(selObj));
+                return;
+            }
+        }
+    }
+
+    if (!_checkSelectionHatch(this)) {
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    auto partFeat = static_cast<TechDraw::DrawViewPart*>(selection[0].getObject());
+
+    const std::vector<std::string>& subNames = selection[0].getSubNames();
+    if (subNames.empty()) {
+        QMessageBox::information(
+            Gui::getMainWindow(),
+            QObject::tr("No Faces Selected"),
+            QObject::tr("No faces are selected in the TechDraw view."));
+        return;
+    }
+
+    std::vector<int> selFaceIndices;
+    for (const auto& s : subNames) {
+        selFaceIndices.push_back(TechDraw::DrawUtil::getIndexFromName(s));
+    }
+
+    bool removeOld = false;
+    std::vector<App::DocumentObject*> hatchesToRemoveCompletely;
+    std::vector<std::pair<App::DocumentObject*, int>> facesToUnHatch;  // HatchObject, faceIndex
+
+
+    // Check for existing hatches on selected faces
+    for (int faceIdx : selFaceIndices) {
+        for (TechDraw::DrawHatch* h : partFeat->getHatches()) {
+            if (h->affectsFace(faceIdx)) {
+                removeOld = true;
+                break;
+            }
+        }
+        if (removeOld) {
+            break;
+        }
+
+        for (TechDraw::DrawGeomHatch* gh : partFeat->getGeomHatches()) {
+            if (gh->affectsFace(faceIdx)) {
+                removeOld = true;
+                break;
+            }
+        }
+        if (removeOld) {
+            break;
+        }
+    }
+
+
+    if (removeOld) {
+        QMessageBox::StandardButton rc = QMessageBox::question(
+            Gui::getMainWindow(),
+            QObject::tr("Replace Hatch?"),
+            QObject::tr("Some faces in the selection are already hatched. Replace existing hatches?"));
+        if (rc == QMessageBox::No || rc == QMessageBox::Cancel) {  // Or just check for Yes
+            return;
+        }
+        // User wants to replace. Proceed to identify specific hatches/faces.
+        openCommand(QT_TRANSLATE_NOOP("Command", "Remove Old Hatch"));
+        bool changesMade = false;
+
+        // Handle DrawHatch objects
+        std::vector<TechDraw::DrawHatch*> dvpSvgHatches = partFeat->getHatches();
+        for (TechDraw::DrawHatch* h : dvpSvgHatches) {
+            bool modifiedHatch = false;
+            for (int faceIdxToClear : selFaceIndices) {
+                if (h->affectsFace(faceIdxToClear)) {
+                    h->removeSub(
+                        faceIdxToClear);  // removeSub should use commands internally or be wrapped
+                    modifiedHatch = true;
+                    changesMade = true;
+                }
+            }
+            if (modifiedHatch && h->empty()) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.activeDocument().removeObject('%s')",
+                                        h->getNameInDocument());
+            }
+        }
+
+        // Handle DrawGeomHatch objects
+        std::vector<TechDraw::DrawGeomHatch*> dvpPatHatches = partFeat->getGeomHatches();
+        for (TechDraw::DrawGeomHatch* gh : dvpPatHatches) {
+            bool modifiedGeomHatch = false;
+            for (int faceIdxToClear : selFaceIndices) {
+                if (gh->affectsFace(faceIdxToClear)) {
+                    gh->removeSub(faceIdxToClear);  // removeSub should use commands internally or be wrapped
+                    modifiedGeomHatch = true;
+                    changesMade = true;
+                }
+            }
+            if (modifiedGeomHatch && gh->empty()) {
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.activeDocument().removeObject('%s')",
+                                        gh->getNameInDocument());
+            }
+        }
+        if (changesMade) {
+            Gui::Command::commitCommand();
+        }
+        else {
+            Gui::Command::abortCommand();
+        }
+    }
+
+    Gui::Control().showDialog(new TechDrawGui::TaskDlgHatchFace(partFeat, subNames));
+}
+
+bool CmdTechDrawHatchFace::isActive()
+{
+    // Allow edit mode if a single DrawHatch or DrawGeomHatch is selected
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.empty()) {
+        return false;
+    }
+
+    if (selection.size() == 1) {
+        App::DocumentObject* selObj = selection[0].getObject();
+        if (selObj && selection[0].getSubNames().empty()) {
+            if (selObj->isDerivedFrom(TechDraw::DrawHatch::getClassTypeId())
+                || selObj->isDerivedFrom(TechDraw::DrawGeomHatch::getClassTypeId())) {
+                return true;  // Edit mode
+            }
+        }
+    }
+
+    // Standard creation mode check
+    if (!TechDrawGui::DrawGuiUtil::needPage(this)) {
+        return false;
+    }
+    else if (!TechDrawGui::DrawGuiUtil::needView(this)) {
+        return false;
+    }
+    
+    const std::vector<std::string>& SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) {
+        return false;
+    }
+    std::string gType = TechDraw::DrawUtil::getGeomTypeFromName(SubNames.at(0));
+    if (!(gType == "Face")) {
+        return false;
+    }
+    return true;
+}
+
+//===========================================================================
 // TechDraw_Image
 //===========================================================================
 
@@ -400,6 +581,7 @@ void CreateTechDrawCommandsDecorate()
 
     rcCmdMgr.addCommand(new CmdTechDrawHatch());
     rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawHatchFace());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
     rcCmdMgr.addCommand(new CmdTechDrawToggleGrid());
