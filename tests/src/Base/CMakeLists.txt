@@ -7,6 +7,7 @@ add_executable(Base_tests_run
         Color.cpp
         Console.cpp
         CoordinateSystem.cpp
+        CrashReporter_tests.cpp
         DualNumber.cpp
         DualQuaternion.cpp
         FileLock.cpp
