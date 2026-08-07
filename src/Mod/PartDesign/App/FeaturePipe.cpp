@@ -163,7 +163,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
     Part::TopoShape profilePoint;
 
     // if the Base property has a valid shape, fuse the pipe into it
-	Part::TopoShape base;
+    Part::TopoShape base;
     try {
         base = getBaseTopoShape();
     }
@@ -261,7 +261,8 @@ App::DocumentObjectExecReturn* Pipe::execute()
                 }
 
                 // if the section is an object's face then take just the face
-                Part::TopoShape shape = getTopoShapeVerifiedFace(false, false, subSet.first, subSet.second);
+                Part::TopoShape shape
+                    = getTopoShapeVerifiedFace(false, false, subSet.first, subSet.second);
                 if (shape.isNull()) {
                     return new App::DocumentObjectExecReturn(
                         QT_TRANSLATE_NOOP("Exception", "Pipe: Could not obtain section shape")
