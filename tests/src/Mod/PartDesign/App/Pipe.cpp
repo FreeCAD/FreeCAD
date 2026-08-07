@@ -5,14 +5,11 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
-#include "Mod/Part/App/FeaturePartBox.h"
 #include "Mod/PartDesign/App/Body.h"
 #include "Mod/PartDesign/App/ShapeBinder.h"
 #include "Mod/PartDesign/App/FeaturePipe.h"
-#include "Mod/Sketcher/App/Sketch.h"
 #include "Mod/Sketcher/App/SketchObject.h"
 #include <BRepGProp.hxx>
-#include <filesystem>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
@@ -84,7 +81,6 @@ protected:
             diameter.First = 0;
             diameter.setValue(1.0);
             sketch_circle_->addConstraint(&diameter);
-            // auto kind = diameter.typeToString();
         }
 
         auto obj = std::vector<std::pair<int, long>> {{0, 1}};
@@ -94,10 +90,9 @@ protected:
             sketch_circle_->solve();
         }
         catch (const Base::Exception& e) {
-            std::string break_on_me;
+            FAIL() << e.what();
         }
 
-        // sketch_circle_->setDatum(1, Base::Quantity(1.0, "mm"));
         doc_->recompute();
 
 #ifdef PIPE_SAVE_TEST_FCSTD
@@ -170,7 +165,7 @@ protected:
     // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
 
     App::Document* doc_ = nullptr;
-    std::string docName_ = "";
+    std::string docName_;
     Sketcher::SketchObject* sketch_circle_ = nullptr;
     Sketcher::SketchObject* sketch_line_ = nullptr;
     PartDesign::Body* body_ = nullptr;
