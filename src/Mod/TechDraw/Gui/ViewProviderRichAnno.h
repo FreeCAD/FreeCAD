@@ -56,6 +56,7 @@ public:
     void onChanged(const App::Property* prop) override;
     bool onDelete(const std::vector<std::string>&) override;
     bool doubleClicked() override;
+    void setupContextMenu(QMenu*, QObject*, const char*) override;
     bool canDelete(App::DocumentObject* obj) const override;
     bool setEdit(int ModNum) override;
 
