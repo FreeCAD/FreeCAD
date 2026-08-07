@@ -40,20 +40,15 @@ bool GeoElementId::operator!=(const GeoElementId& obj) const
     return this->GeoId != obj.GeoId || this->Pos != obj.Pos;
 }
 
-std::string GeoElementId::pointPosToString(PointPos Pos)
+std::string GeoElementId::pointPosToString(PointPos pos)
 {
-    switch (Pos) {
-        case PointPos::none:
-            return "none";
-        case PointPos::start:
-            return "start";
-        case PointPos::end:
-            return "end";
-        case PointPos::mid:
-            return "mid";
-        default:
-            return "unknown";
+    const auto index = static_cast<size_t>(pos);
+
+    if (index < pointPos2str.size()) {
+        return pointPos2str[index];
     }
+
+    return "unknown";
 }
 
 std::string GeoElementId::toString() const
