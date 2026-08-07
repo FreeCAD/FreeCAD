@@ -157,7 +157,7 @@ class BIM_Views:
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
             self.dialog.buttonSaveVisibility.triggered.connect(self.saveVisibility)
             self.dialog.buttonRename.triggered.connect(self.rename)
-            self.dialog.buttonActive.triggered.connect(lambda: BIM_Views.activate(self.dialog))
+            self.dialog.buttonActive.triggered.connect(self.activateContextItem)
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -533,6 +533,21 @@ class BIM_Views:
                     _toggle_active_container(obj, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
+    def activateContextItem(self):
+        """Activate the item under the context menu."""
+
+        import Draft
+
+        if not self.contextObject:
+            return
+        if Draft.getType(self.contextObject) == "WorkingPlaneProxy":
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(self.contextObject)
+            FreeCADGui.runCommand("Draft_SelectPlane")
+        elif hasattr(self.contextObject.ViewObject, "DoubleClickActivates"):
+            _toggle_active_container(self.contextObject, dialog=self.dialog)
+            FreeCADGui.Selection.clearSelection()
+
     def editObject(self, item, column):
         "renames or edits the elevation or height of the actual object"
 
@@ -679,15 +694,32 @@ class BIM_Views:
         import Draft
 
         self.dialog.buttonAddProxy.setEnabled(True)
-        selobj = self.dialog.tree.currentItem()
-        if selobj:
-            selobj = FreeCAD.ActiveDocument.getObject(selobj.toolTip(0))
-            if selobj:
-                if Draft.getType(selobj).startswith("Ifc"):
+        self.contextObject = None
+        self.dialog.buttonActive.setText(translate("BIM", "Active"))
+        self.dialog.buttonActive.setCheckable(True)
+        self.dialog.buttonActive.setChecked(False)
+        self.dialog.buttonActive.setToolTip(translate("BIM", "Activates the selected item"))
+        item = self.dialog.tree.itemAt(pos)
+        if item:
+            self.contextObject = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+            if self.contextObject:
+                if Draft.getType(self.contextObject).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
-                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == selobj:
+                if Draft.getType(self.contextObject) == "WorkingPlaneProxy":
+                    self.dialog.buttonActive.setText(translate("BIM", "Set Working Plane"))
+                    self.dialog.buttonActive.setCheckable(False)
+                    self.dialog.buttonActive.setToolTip(
+                        translate("BIM", "Sets the selected item as the current working plane")
+                    )
+                elif (
+                    FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+                    == self.contextObject
+                ):
                     self.dialog.buttonActive.setChecked(True)
-                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                elif (
+                    FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                    == self.contextObject
+                ):
                     self.dialog.buttonActive.setChecked(True)
                 else:
                     self.dialog.buttonActive.setChecked(False)
