@@ -173,6 +173,67 @@
      </layout>
     </widget>
    </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QGroupBox" name="gbLeader">
+     <property name="title">
+      <string>Leader Line</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1" columnminimumwidth="0,0">
+      <property name="verticalSpacing">
+       <number>12</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelLeaderType">
+        <property name="text">
+         <string>Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="cboxLeaderType">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>22</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Leader line type</string>
+        </property>
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <item>
+         <property name="text">
+          <string>Normal</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Straight</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Complex</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Complex with kink</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
   </layout>
  </widget>
  <customwidgets>

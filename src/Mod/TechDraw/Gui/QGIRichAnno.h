@@ -76,6 +76,7 @@ public:
                const QStyleOptionGraphicsItem* option,
                QWidget* widget = nullptr) override;
     QRectF boundingRect() const override;
+    using QGIView::frameRect;
 
     void updateView(bool update = false) override;
 
@@ -154,6 +155,7 @@ protected:
 
 private Q_SLOTS:
     void onContentsChanged();
+    void updateAttachedLeaderLine();
 };
 
 }

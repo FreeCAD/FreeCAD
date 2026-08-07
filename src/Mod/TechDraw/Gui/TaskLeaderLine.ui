@@ -31,65 +31,45 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout_3" columnstretch="1,1">
-     <property name="verticalSpacing">
-      <number>12</number>
-     </property>
+    <layout class="QGridLayout" name="gridLayout_leaderType" columnstretch="1,1">
      <item row="0" column="0">
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="labelLeaderType">
        <property name="text">
-        <string>Base view</string>
+        <string>Type</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QTextBrowser" name="tbBaseView">
-       <property name="enabled">
-        <bool>true</bool>
-       </property>
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="maximumSize">
+      <widget class="QComboBox" name="cboxLeaderType">
+       <property name="minimumSize">
         <size>
-         <width>16777215</width>
+         <width>0</width>
          <height>22</height>
         </size>
        </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <property name="focusPolicy">
-        <enum>Qt::FocusPolicy::NoFocus</enum>
-       </property>
-       <property name="acceptDrops">
-        <bool>false</bool>
-       </property>
-       <property name="verticalScrollBarPolicy">
-        <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QPushButton" name="pbTracker">
-       <property name="toolTip">
-        <string>First pick the start point of the line,
-then at least one more point.
-You can pick further points to get line segments.</string>
-       </property>
-       <property name="text">
-        <string>Pick Points</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QPushButton" name="pbCancelEdit">
-       <property name="text">
-        <string>Discard Changes</string>
-       </property>
+       <item>
+        <property name="text">
+         <string>Normal</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Straight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Complex</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Complex with kink</string>
+        </property>
+       </item>
       </widget>
      </item>
     </layout>
@@ -272,6 +252,26 @@ You can pick further points to get line segments.</string>
          <widget class="QLabel" name="label_5">
           <property name="text">
            <string>Width</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="labelKinkLength">
+          <property name="text">
+           <string>Kink length</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="Gui::QuantitySpinBox" name="dsbKinkLength" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Length of leader line kink</string>
           </property>
          </widget>
         </item>
