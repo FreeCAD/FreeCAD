@@ -567,11 +567,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     else:
                         vertFaces.append(sub)
 
-        for face in horFaces:
-            for base in bases:
-                if base.Shape.isInside(face.Vertexes[0].Point, self.tol, True):
-                    shapeTups.extend(self._processHorFace(obj, base, face))
-                    break
+        for face in Path.Geom.fuseHorizontalFaces(horFaces):
+            shapeTups.extend(self._processHorFace(obj, face))
 
         # extend list of selected edges by bottom edges from vertical faces
         for face in vertFaces:
@@ -593,8 +590,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         return shapeTups
 
-    def _processHorFace(self, obj, base, face):
-        """_processHorFace(obj, base, face) ... returns envelope of horizontal face"""
+    def _processHorFace(self, obj, face):
+        """_processHorFace(obj, face) ... returns envelope of horizontal face"""
         shapeTups = []
 
         ohash = face.OuterWire.hashCode()
@@ -602,12 +599,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         for wire in holes:
             f = Part.makeFace(wire, "Part::FaceMakerSimple")
-            drillable = Drillable.isDrillable(base.Shape, f, vector=None)
+            drillable = Drillable.isDrillable(None, f, vector=None)
             Path.Log.debug(drillable)
             if (obj.processCircles and drillable) or (obj.processHoles and not drillable):
-                shapeEnv = PathUtils.getEnvelope(
-                    base.Shape, subshape=f, depthparams=self.depthparams
-                )
+                shapeEnv = PathUtils.getEnvelope(f, depthparams=self.depthparams)
                 if shapeEnv:
                     self._addDebugObject("HoleShapeEnvelope", shapeEnv)
                     shapeTups.append((shapeEnv, True, "pathProfile"))
