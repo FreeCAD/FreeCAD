@@ -297,6 +297,15 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 "\nSet to zero to disable limitation by ramp angle",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "StartConeFromBottom",
+            "Helix Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Allows to process cone helix from bottom to top",
+            ),
+        )
 
         for n in self.helixOpPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -306,6 +315,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
     def opOnChanged(self, obj, prop):
         if not obj.Document.Restoring:
             self.opCheckParameters(obj)
+
+        if prop == "HelixConeAngle":
+            self.opUpdateEditorModes(obj)
 
         super().opOnChanged(obj, prop)
 
@@ -320,6 +332,11 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.setEditorMode("OverrideProfileDiameter", 2)  # hide
         obj.setEditorMode("RetractFromWall", 2)  # hide
         obj.setEditorMode("SingleHelix", 2)  # hide
+        obj.setEditorMode("StartConeFromBottom", 2)  # hide
+
+    def opUpdateEditorModes(self, obj):
+        mode = 0 if obj.HelixConeAngle else 2
+        obj.setEditorMode("StartConeFromBottom", mode)
 
     def opSetDefaultValues(self, obj, job):
         obj.CutMode = "Conventional"
@@ -544,8 +561,19 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 obj.Direction = ("CW", "CCW")
                 obj.Direction = new_dir
             obj.CutMode = _caclulateCutMode(obj.Direction, obj.StartAt)
+        if not hasattr(obj, "StartConeFromBottom"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "StartConeFromBottom",
+                "Helix Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Allows to process cone helix from bottom to top",
+                ),
+            )
 
         self.opSetEditorModes(obj)
+        self.opUpdateEditorModes(obj)
 
     # Automatic calculation angle of direction
     def getDirAngle(self, obj, holes, i):
@@ -728,7 +756,10 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 if isRoughly(centerBottom.z, obj.FinalDepth.Value):
                     centerBottom.z = obj.FinalDepth.Value
 
-                args["edge"] = Part.makeLine(centerTop, centerBottom)
+                if obj.StartConeFromBottom:
+                    args["edge"] = Part.makeLine(centerBottom, centerTop)
+                else:
+                    args["edge"] = Part.makeLine(centerTop, centerBottom)
                 retractHeight = centerTop.z + retractDistance
 
                 if isRoughly(args["inner_radius"], 0) or isRoughly(args["outer_radius"], 0):
@@ -748,7 +779,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         self.commandlist.extend(linkingMoves)
                         machinestate.addCommands(linkingMoves)
                     drillStep = obj.HelixMaxPitch.Value or obj.StepDown.Value
-                    drillSteps = math.ceil(round((centerTop.z - centerBottom.z) / drillStep, 6))
+                    drillSteps = Path.Geom.ceil((centerTop.z - centerBottom.z) / drillStep)
                     for iDrill in range(1, drillSteps + 1):
                         # drilling in peck mode
                         zDrill = centerTop.z - drillStep * iDrill
@@ -775,7 +806,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     self.commandlist.extend(helixCommands[1:])
                     machinestate.addCommands(self.commandlist[-2:])
 
-                if obj.SpiralMill:
+                if obj.SpiralMill and not (obj.HelixConeAngle and obj.StartConeFromBottom):
                     if obj.Side == "Inside":
                         spiralInnerRadius = toolradius + obj.RadialStockToLeaveInner.Value
                         spiralOuterRadius = (
