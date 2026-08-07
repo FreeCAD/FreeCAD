@@ -29,6 +29,8 @@ import Path.Dressup.Utils as PathDressup
 import PathScripts.PathUtils as PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide.QtCore import Qt
+from PySide.QtWidgets import QApplication
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -50,25 +52,27 @@ class _CommandSelectLoop:
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_SelectLoop",
-                "Completes the selection of edges or faces that forms a loop"
-                "\n\nSelect vertical faces: searching loops faces which forms the walls."
-                "\n\nSelect horizontal face: searching inner edges of the face or coplanar faces."
-                "\n\nSelect one edge: searching loop edges in horizontal plane"
-                "\nor wire which contain selected edge."
-                "\n\nSelect two edges: searching loop edges in wires of the shape"
-                "\nor tangent edges."
-                "\n\nSelect three or more edges: searching horizontal wires."
-                "\n\nWithout sub selection all edges of the shape will be selected.",
+                "Completes the selection of edges or faces that forms a loop."
+                "\nWorks in described sequence, but can be forced by modifier key."
+                "\n\nFace selection:"
+                "\n    Vertical face: searching loops faces which forms the walls."
+                "\n    Horizontal face: searching inner edges of the face (CTRL),"
+                "\n        outer edges of the face (CTRL + ALT)"
+                "\n        or horizontal faces at the same height (SHIFT)."
+                "\n    Otherwise select all edges of the face (ALT)."
+                "\n\nEdge selection:"
+                "\n    One edge: searching loop edges in horizontal plane."
+                "\n    Two edges: searching loop edges in wires of the shape or tangent edges (CTRL)."
+                "\n    Otherwise searching horizontal wires which contain selected edges (ALT)."
+                "\n\nWithout sub selection:"
+                "\n    Select all edges, faces (ALT) or vertexes (CTRL) of the model.",
             ),
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelectionEx()
-        if not selection:
-            return False
-
-        return True
+        selection = FreeCADGui.Selection.getSelection()
+        return selection and hasattr(selection[0], "Shape")
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelectionEx()
@@ -76,39 +80,68 @@ class _CommandSelectLoop:
             return
         if any(not s.Object.isDerivedFrom("Part::Feature") for s in selection):
             return
+        for sel in selection:
+            for name in sel.SubElementNames:
+                if "Vertex" in name:  # remove vertexes from selection
+                    FreeCADGui.Selection.removeSelection(sel.Object, name)
+        selection = FreeCADGui.Selection.getSelectionEx()
 
+        kmods = getKeyboardModifiers()
         newSelection = []
         for sel in selection:
             obj = sel.Object
             obj.recompute()  # need in some cases to get identical hash codes
             subs = sel.SubObjects
-            edges = None
-            names = None
+            edges = []
+            names = []
 
             if not sel.SubObjects:
-                names = [f"Edge{i}" for i in range(1, len(obj.Shape.Edges) + 1)]
+                if kmods == ["ALT"]:
+                    names = [f"Face{i}" for i in range(1, len(obj.Shape.Faces) + 1)]
+                elif kmods == ["CTRL"]:
+                    names = [f"Vertex{i}" for i in range(1, len(obj.Shape.Vertexes) + 1)]
+                else:
+                    names = [f"Edge{i}" for i in range(1, len(obj.Shape.Edges) + 1)]
 
             elif all(isinstance(sub, Part.Face) for sub in subs):
                 # face(s) selected
-                edges = PathUtils.innerEdgesFromFace(obj, subs[0])
-                if not edges:
-                    if all(Path.Geom.isVertical(face) for face in subs):
-                        names = PathUtils.horizontalFaceLoops(obj, subs)
-                    elif Path.Geom.isHorizontal(subs[0]):
-                        names = PathUtils.horizontalFacesAtHeight(obj, subs[0].CenterOfMass.z)
-                    if not names:
-                        edges = [e for sub in subs for e in sub.Edges]
-
-            elif isinstance(subs[0], Part.Edge):
-                if len(subs) == 1:
-                    # one edge selected: searching horizontal edge loop
-                    edges = PathUtils.horizontalEdgeLoop(obj, subs[0])
-                elif len(subs) == 2:
-                    # two edges selected: searching wire in shape which contain both edges
-                    edges = PathUtils.loopdetect(obj, subs[0], subs[1])
+                if kmods == ["CTRL"]:
+                    edges = [e for f in subs for e in PathUtils.innerEdgesFromFace(obj, f)]
+                elif set(kmods) == set(("ALT", "CTRL")):
+                    edges = [e for sub in subs for e in sub.OuterWire.Edges]
+                elif kmods == ["SHIFT"]:
+                    names = [
+                        e
+                        for f in subs
+                        for e in PathUtils.horizontalFacesAtHeight(obj, f.CenterOfMass.z)
+                    ]
+                elif kmods == ["ALT"]:
+                    edges = [e for sub in subs for e in sub.Edges]
+                else:
+                    edges = PathUtils.innerEdgesFromFace(obj, subs[0])
                     if not edges:
-                        # two edges selected: searching edges in tangency
-                        edges = PathUtils.tangentEdgeLoop(obj, subs[0], subs[1])
+                        if all(Path.Geom.isVertical(face) for face in subs):
+                            names = PathUtils.horizontalFaceLoops(obj, subs)
+                        elif Path.Geom.isHorizontal(subs[0]):
+                            names = PathUtils.horizontalFacesAtHeight(obj, subs[0].CenterOfMass.z)
+                        if not names:
+                            edges = [e for sub in subs for e in sub.Edges]
+
+            elif all(isinstance(sub, Part.Edge) for sub in subs):
+                if kmods == ["CTRL"] and len(subs) >= 2:
+                    edges = PathUtils.tangentEdgeLoop(obj, subs[0], subs[1])
+                elif kmods == ["ALT"]:
+                    edges = PathUtils.wiresdetect(obj, subs)
+                else:
+                    if len(subs) == 1:
+                        # one edge selected: searching horizontal edge loop
+                        edges = PathUtils.horizontalEdgeLoop(obj, subs[0])
+                    elif len(subs) == 2:
+                        # two edges selected: searching wire in shape which contain both edges
+                        edges = PathUtils.loopdetect(obj, subs[0], subs[1])
+                        if not edges:
+                            # two edges selected: searching edges in tangency
+                            edges = PathUtils.tangentEdgeLoop(obj, subs[0], subs[1])
 
                 if not edges:
                     # searching all horizontal wires which contains selected edges
@@ -126,7 +159,8 @@ class _CommandSelectLoop:
                     translate(
                         "CAM_SelectLoop",
                         "Closed loop detection failed in model %s."
-                        " This type of selection not supported yet." % obj.Label,
+                        "\nThis type of selection did not give result or not supported yet."
+                        % obj.Label,
                     )
                 )
 
@@ -280,3 +314,22 @@ def findShape(shape, subname=None, subtype=None):
             if sobj.isEqual(ret):
                 return obj
     return ret
+
+
+def getKeyboardModifiers():
+    """getKeyboardModifiers() ... returns list of holding modifier keys
+    Modifiers names: "ALT", "CTRL", "SHIFT"
+    Returns [] if no any modifier key holding
+    Returns ["ALT", "CTRL"] if holding Alt and Ctrl buttons
+    """
+    k = int(QApplication.queryKeyboardModifiers().value)
+    if k == int(Qt.NoModifier.value):
+        return []
+    modifiers = []
+    if k & int(Qt.AltModifier.value):
+        modifiers.append("ALT")
+    if k & int(Qt.ShiftModifier.value):
+        modifiers.append("SHIFT")
+    if k & int(Qt.ControlModifier.value):
+        modifiers.append("CTRL")
+    return modifiers
