@@ -283,6 +283,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
             "tool_shape": None,
             "tool_diameter": None,
             "collision_clearance": obj.CollisionClearance.Value,
+            "split_plunge_height": obj.SafeHeight.Value,
         }
         if obj.CollisionAvoidanceStrategy == "Clearance Height":
             linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
@@ -456,7 +457,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                             abs(pre3["Z"] - self.commandlist[-1].Parameters.get("Z", pre3["Z"] + 1))
                             > 1e-9
                         ):
-                            self.commandlist.append(Path.Command("G0", pre3))
+                            self.commandlist.append(Path.Command("G1", pre3))
 
                     # Now append the base commands, skipping the generator's initial positioning move
                     for i, cmd in enumerate(base_commands):
@@ -586,28 +587,12 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         # Build target position at cutting depth
                         first_position = FreeCAD.Vector(target_xy[0], target_xy[1], depth)
 
-                        # Generate collision-aware linking moves up to safe/clearance and back down
+                        # Append collision-aware linking moves
                         linkingArgs["start_position"] = last_position
                         linkingArgs["target_position"] = first_position
                         link_commands = linking.get_linking_moves(**linkingArgs)
-
-                        # Append linking moves, ensuring full XYZ continuity
-                        current = last_position
-                        for lc in link_commands:
-                            params = lc.Parameters
-                            X = params["X"]
-                            Y = params["Y"]
-                            Z = params["Z"]
-                            # Skip zero-length moves
-                            if not (
-                                abs(X - current.x) <= 1e-9
-                                and abs(Y - current.y) <= 1e-9
-                                and abs(Z - current.z) <= 1e-9
-                            ):
-                                self.commandlist.append(
-                                    Path.Command(lc.Name, {"X": X, "Y": Y, "Z": Z})
-                                )
-                                current = FreeCAD.Vector(X, Y, Z)
+                        self.commandlist.extend(link_commands)
+                        self.commandlist[-1].Name = "G1"
 
                         # Remove the entire initial G0 bundle (up, XY, down) from the copy
                         del copy_commands[bundle_start:bundle_end]

@@ -207,3 +207,6 @@ GCODE_NON_CONFORMING = (
 # i.e. allow any gcode
 # absence for false; any non-false presence for true: use "True"
 ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
+
+# Moves from linking generator
+ANNOT_LINKING = {"type": "linking"}
