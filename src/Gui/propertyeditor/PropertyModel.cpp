@@ -238,15 +238,72 @@ QModelIndex PropertyModel::propertyIndexFromPath(const QStringList& path) const
     return index;
 }
 
-static void setPropertyItemName(PropertyItem* item, const char* propName, QString groupName)
+static QString propertyGroupName(const App::Property* prop)
+{
+    const char* group = prop->getGroup();
+    bool isEmpty = Base::Tools::isNullOrEmpty(group);
+    return QString::fromUtf8(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
+}
+
+static QString shortenedPropertyName(const QString& name, const QString& groupName)
+{
+    if (name.size() > groupName.size() + 1 && name.startsWith(groupName + QLatin1Char('_'))) {
+        return name.right(name.size() - groupName.size() - 1);
+    }
+
+    return name;
+}
+
+static void setPropertyItemName(
+    PropertyItem* item,
+    const char* propName,
+    const QString& groupName,
+    bool keepFullName
+)
 {
     QString name = QString::fromUtf8(propName);
     QString realName = name;
-    if (name.size() > groupName.size() + 1 && name.startsWith(groupName + QLatin1Char('_'))) {
-        name = name.right(name.size() - groupName.size() - 1);
+    if (!keepFullName) {
+        name = shortenedPropertyName(name, groupName);
     }
 
     item->setPropertyName(name, realName);
+}
+
+static bool groupHasPropertyName(
+    const PropertyModel::PropertyList& props,
+    const QString& groupName,
+    const QString& propName
+)
+{
+    for (const auto& propInfo : props) {
+        App::Property* prop = propInfo.second.front();
+        if (propertyGroupName(prop) != groupName) {
+            continue;
+        }
+        if (QString::fromUtf8(prop->getName()) == propName) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+static bool groupHasPropertyName(
+    PropertyItem* groupItem,
+    const QString& propName,
+    const App::Property* ignoredProp = nullptr
+)
+{
+    for (int row = 0; row < groupItem->childCount(); ++row) {
+        auto child = groupItem->child(row);
+        auto prop = child->getFirstProperty();
+        if (prop && prop != ignoredProp && QString::fromUtf8(prop->getName()) == propName) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 static PropertyItem* createPropertyItem(App::Property* prop)
@@ -269,9 +326,7 @@ static PropertyItem* createPropertyItem(App::Property* prop)
 
 PropertyModel::GroupInfo& PropertyModel::getGroupInfo(App::Property* prop)
 {
-    const char* group = prop->getGroup();
-    bool isEmpty = Base::Tools::isNullOrEmpty(group);
-    QString groupName = QString::fromUtf8(isEmpty ? QT_TRANSLATE_NOOP("App::Property", "Base") : group);
+    QString groupName = propertyGroupName(prop);
 
     auto res = groupItems.insert(std::make_pair(groupName, GroupInfo()));
     if (res.second) {
@@ -374,7 +429,15 @@ void PropertyModel::findOrCreateChildren(const PropertyModel::PropertyList& prop
         groupInfo.children.push_back(item);
 
         item->setLinked(boost::ends_with(jt.first, "*"));
-        setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
+        QString groupName = propertyGroupName(prop);
+        QString realName = QString::fromUtf8(prop->getName());
+        QString shortName = shortenedPropertyName(realName, groupName);
+        setPropertyItemName(
+            item,
+            prop->getName(),
+            groupName,
+            shortName != realName && groupHasPropertyName(props, groupName, shortName)
+        );
 
         if (jt.second != item->getPropertyData()) {
             for (auto prop : item->getPropertyData()) {
@@ -540,9 +603,31 @@ void PropertyModel::appendProperty(const App::Property& _prop)
     QModelIndex midx = this->index(groupInfo.groupItem->_row, 0, QModelIndex());
     beginInsertRows(midx, row, row);
     groupInfo.groupItem->insertChild(row, item);
-    setPropertyItemName(item, prop->getName(), groupInfo.groupItem->propertyName());
     item->setPropertyData({prop});
     endInsertRows();
+
+    QString groupName = propertyGroupName(prop);
+    for (int changedRow = 0; changedRow < groupInfo.groupItem->childCount(); ++changedRow) {
+        auto child = groupInfo.groupItem->child(changedRow);
+        auto childProp = child->getFirstProperty();
+        if (!childProp) {
+            continue;
+        }
+
+        QString oldName = child->propertyName();
+        QString realName = QString::fromUtf8(childProp->getName());
+        QString shortName = shortenedPropertyName(realName, groupName);
+        setPropertyItemName(
+            child,
+            childProp->getName(),
+            groupName,
+            shortName != realName && groupHasPropertyName(groupInfo.groupItem, shortName, childProp)
+        );
+        if (child->propertyName() != oldName) {
+            QModelIndex changed = this->index(changedRow, 0, midx);
+            Q_EMIT dataChanged(changed, changed);
+        }
+    }
 }
 
 void PropertyModel::removeProperty(const App::Property& _prop)
