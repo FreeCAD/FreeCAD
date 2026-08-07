@@ -92,6 +92,7 @@ class BIM_Views:
                 ("Toggle", translate("BIM", "Toggle Visibility")),
                 ("Isolate", translate("BIM", "Isolate")),
                 ("SaveView", translate("BIM", "Save View Position")),
+                ("SaveVisibility", translate("BIM", "Save Visibility of Objects")),
                 ("Rename", translate("BIM", "Rename")),
             ]:
                 action = QtGui.QAction(button[1])
@@ -142,6 +143,7 @@ class BIM_Views:
             self.dialog.buttonToggle.triggered.connect(self.toggle)
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
+            self.dialog.buttonSaveVisibility.triggered.connect(self.saveVisibility)
             self.dialog.buttonRename.triggered.connect(self.rename)
             self.dialog.buttonActive.triggered.connect(lambda: BIM_Views.activate(self.dialog))
             self.dialog.tree.itemClicked.connect(self.select)
@@ -618,6 +620,17 @@ class BIM_Views:
                 if obj:
                     if hasattr(obj.ViewObject.Proxy, "writeCamera"):
                         obj.ViewObject.Proxy.writeCamera()
+        FreeCAD.ActiveDocument.recompute()
+
+    def saveVisibility(self):
+        "save the current visibility state to the selected item"
+
+        vm = findWidget()
+        if vm:
+            for item in vm.tree.selectedItems():
+                obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                if obj and hasattr(obj.ViewObject.Proxy, "writeState"):
+                    obj.ViewObject.Proxy.writeState()
         FreeCAD.ActiveDocument.recompute()
 
     def onDockLocationChanged(self, area):
