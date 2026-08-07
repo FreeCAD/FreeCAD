@@ -415,17 +415,78 @@ def cAreaToWires(carea, z=0.0, tolerance=0.01):
 
 
 def offsetWire(wire, base, offset, tolerance=0.01):
-    """offsetWire ... offsets the wire away from base using Clipper library.
+    """offsetWire performs an open path offset using Clipper library.
+
     tolerance: Deflection tolerance for discretization. Must be positive
 
-    Result orientation: for compatibility with the old offsetWire, results are
-    generally returned in the correct orientation for climb cutting an offset path.
-    However, also for compatibility, single-edge circular wires are always clockwise.
-    Imo this is probably a bug and should be undone in a later PR. Also I think wires
-    ought to be returned positively oriented for their enclosed shapes, and callers
-    should post-process to modify that orientation as needed. Perhaps that change
-    can happen later too, or at least the "old/compatibile orientation" feature can
-    be hidden behind a flag.
+    Note that there is also offsetWireCompat, which is a direct migration of
+    the old offsetWire implementation. This version makes simpler choices
+    about the direction in which it offsets, and the orientation of its result curves.
+
+    return: (pos_wires, neg_wires): the wires resulting from performing the requested
+    open wire offset, and the negative of the requested offset. If the input wire is
+    open, all output wires are oriented in the same direction as the input. If it is
+    closed, output orientation will match the input if the input encloses positive
+    area, and be flipped if the input encloses negative area. (Future note: if this
+    flipping behavior is undesirable, we'll need a new flag to disable it in the C++
+    implementation. It was needed in C++ for compatibility with old behavior.)
+    """
+    if len(wire.Edges) == 0:
+        return [], []
+
+    debugWire("wire", wire)
+
+    # Store original accuracy and set to tolerance for better precision
+    original_accuracy = area.get_accuracy()
+    try:
+        area.set_accuracy(min(original_accuracy, tolerance))
+
+        # Convert wire to CArea, and offset
+        posArea = wireToCArea(wire, tolerance)
+        negArea = posArea.OpenOffset(offset)
+
+        # Convert back to FreeCAD wires
+        z = wire.Edges[0].Vertexes[0].Point.z
+        pos_wires = cAreaToWires(posArea, z, tolerance)
+        neg_wires = cAreaToWires(negArea, z, tolerance)
+
+        # Show debug wires, if in debug mode
+        for i, w in enumerate(pos_wires):
+            debugWire(f"positiveOffset_{i}", w)
+
+        for i, w in enumerate(neg_wires):
+            debugWire(f"negativeOffset_{i}", w)
+
+        # Return
+        return pos_wires, neg_wires
+
+    finally:
+        # Restore original accuracy
+        area.set_accuracy(original_accuracy)
+
+
+def offsetWireCompat(wire, base, offset, tolerance=0.01):
+    """offsetWire performs an open path offset using Clipper library.
+
+    tolerance: Deflection tolerance for discretization. Must be positive
+
+    offsetWireCompat is a direct migration of the old offsetWire implementation.
+    It preserves old decisions about how the offset side is chosen, and the orientation
+    of output wires. Some of these choices are poor choices, imo, so I have also
+    implemented an alternative offsetWire function with that simply does type
+    conversions and connects to the C++ open wire offset functionality.
+
+    Compat offset side: this method tries to automatically detect which offset
+    direction is into the part and which direction is outside the part, and returns
+    the outside-direction offset, regardless of the sign of the offset parameter.
+
+    Compat result orientation: for the most part, results are returned in the correct
+    orientation for climb cutting an offset path. This means that external offsets
+    are clockwise, and internal offsets are counterclockwise. However, to preserve
+    old behavior, single-edge circular wires are always returned in the clockwise
+    orientation. I think this is a bug that should be fixed. Also I think the caller
+    ought to be able to choose if the output wires are oriented for climb cutting (or
+    conventional) or if they should be oriented correctly for positive winding rules.
     """
     debugWire("wire", wire)
 

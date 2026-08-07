@@ -173,7 +173,6 @@ public:
 
     void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ConversionMetadata& metadata) const;
 
-    // Following functions is add to operate on possible open curves
     void Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
