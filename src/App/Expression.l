@@ -322,6 +322,7 @@ EXPO    [eE][-+]?[0-9]+
 "mJ"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliJoule;          yylval.quantity.unitStr = yytext; return UNIT; // milli Joule
 "kJ"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::KiloJoule;           yylval.quantity.unitStr = yytext; return UNIT; // kilo Joule
 "Nm"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMeter;         yylval.quantity.unitStr = yytext; return UNIT; // N*m = Joule
+"Nmm"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::NewtonMilliMeter;    yylval.quantity.unitStr = yytext; return UNIT; // N*mm = milli Joule
 "VAs"                        COUNTCHARS; yylval.quantity.scaler  = Quantity::VoltAmpereSecond;    yylval.quantity.unitStr = yytext; return UNIT; // V*A*s = Joule
 "CV"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; //
 "Ws"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::WattSecond;          yylval.quantity.unitStr = yytext; return UNIT; // W*s = Joule
