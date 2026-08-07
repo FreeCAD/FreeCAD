@@ -581,6 +581,16 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         tooldiameter = obj.ToolController.Tool.Diameter.Value
         toolradius = tooldiameter / 2
 
+        if obj.StartDepth < obj.FinalDepth or isRoughly(obj.StartDepth.Value, obj.FinalDepth.Value):
+            obj.Path = Path.Path()
+            Path.Log.warning("StartDepth should be greater than FinalDepth")
+            return
+
+        if obj.StepDown < 0 or isRoughly(obj.StepDown.Value, 0):
+            obj.Path = Path.Path()
+            Path.Log.warning("StepDown should be greater than 0")
+            return
+
         if safeHeight > clearanceHeight:
             Path.Log.warning(
                 f"SafeHeight ({safeHeight}) is above ClearanceHeight ({clearanceHeight}). "
