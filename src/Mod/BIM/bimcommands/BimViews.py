@@ -36,6 +36,17 @@ UPDATEINTERVAL = 2000  # number of milliseconds between BIM Views Manager update
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+    class _HeightEditDelegate(QtGui.QStyledItemDelegate):
+        """Allow editing the Height column only for objects that provide it."""
+
+        def createEditor(self, parent, option, index):
+            if index.data(QtCore.Qt.UserRole):
+                return QtGui.QStyledItemDelegate.createEditor(self, parent, option, index)
+
+
 class BIM_Views:
 
     def GetResources(self):
@@ -81,6 +92,7 @@ class BIM_Views:
 
             # set context menu
             self.dialog.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.dialog.tree.setItemDelegateForColumn(2, _HeightEditDelegate(self.dialog.tree))
 
             # set button
             self.dialog.menu = QtGui.QMenu()
@@ -819,6 +831,7 @@ def getTreeViewItem(obj):
 
     it = QtGui.QTreeWidgetItem([obj.Label, elevStr, heightStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
+    it.setData(2, QtCore.Qt.UserRole, hasattr(obj, "Height"))
     it.setToolTip(0, obj.Name)
     if obj.ViewObject:
         if hasattr(obj.ViewObject, "Icon"):
