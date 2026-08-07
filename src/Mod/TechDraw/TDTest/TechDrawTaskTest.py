@@ -4,7 +4,6 @@
 
 import FreeCAD
 import FreeCADGui
-import os
 import unittest
 
 
@@ -40,8 +39,8 @@ class TechDrawTaskTest(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             obj.ViewObject.doubleClicked()
 
-    #def testDrawViewDetail(self):
-    #    obj = self.doc.addObject("TechDraw::DrawViewDetail")
-    #    with self.assertRaises(RuntimeError):
-    #        obj.ViewObject.doubleClicked()
+    def testDrawViewDetail(self):
+        obj = self.doc.addObject("TechDraw::DrawViewDetail")
+        with self.assertRaises(RuntimeError):
+            obj.ViewObject.doubleClicked()
 
