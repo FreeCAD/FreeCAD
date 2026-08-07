@@ -52,6 +52,7 @@ set(PartDesignGui_UIC_SRCS
     DlgReference.ui
     DlgActiveBody.ui
     TaskHelixParameters.ui
+    TaskThreadParameters.ui
 )
 
 SET(PartDesignGuiViewProvider_SRCS
@@ -117,6 +118,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderLoft.cpp
     ViewProviderHelix.h
     ViewProviderHelix.cpp
+    ViewProviderThread.h
+    ViewProviderThread.cpp
     ViewProviderBase.h
     ViewProviderBase.cpp
 )
@@ -197,6 +200,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskHelixParameters.ui
     TaskHelixParameters.h
     TaskHelixParameters.cpp
+    TaskThreadParameters.ui
+    TaskThreadParameters.h
+    TaskThreadParameters.cpp
     DlgActiveBody.h
     DlgActiveBody.cpp
 )
