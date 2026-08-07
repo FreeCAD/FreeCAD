@@ -560,19 +560,71 @@ void QuantitySpinBox::normalize()
 
 bool QuantitySpinBox::isNormalized()
 {
-    static const QRegularExpression operators(
-        QStringLiteral("[+\\-/*]"),
-        QRegularExpression::CaseInsensitiveOption
-    );
-
     Q_D(const QuantitySpinBox);
 
-    // this check is two level
-    // 1. We consider every string that does not contain operators as normalized
-    // 2. If it does contain operators we check if it differs from normalized input - as some
-    //    operators like - can be allowed even in normalized case.
-    return !d->validStr.contains(operators)
-        || d->validStr.toStdString() == d->quantity.getUserString();
+    // check if the input is simplified to a solution or if further calculation
+    // has to be done
+
+    try {
+        auto expr = ExpressionParser::parse(
+            getPath().getDocumentObject(),
+            d->validStr.toUtf8().constData()
+        );
+
+        // plain numbers
+        if (freecad_cast<NumberExpression*>(expr.get())) {
+            return true;
+        }
+
+        auto operatorExpr = freecad_cast<OperatorExpression*>(expr.get());
+        if (!operatorExpr) {
+            return false;
+        }
+
+        if (operatorExpr->getOperator() == OperatorExpression::UNIT
+            && freecad_cast<UnitExpression*>(operatorExpr->getRight())
+            && freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
+            // numbers without sign but with unit
+            return true;
+        }
+
+        if ((operatorExpr->getOperator() != OperatorExpression::NEG
+             && operatorExpr->getOperator() != OperatorExpression::POS)) {
+            return false;
+        }
+
+        // numbers with positive or negative sign without unit
+        if (freecad_cast<NumberExpression*>(operatorExpr->getLeft())) {
+            return true;
+        }
+
+        auto innerOperatorExpr = freecad_cast<OperatorExpression*>(operatorExpr->getLeft());
+        if (innerOperatorExpr->getOperator() != OperatorExpression::UNIT) {
+            return false;
+        }
+        if (!freecad_cast<UnitExpression*>(innerOperatorExpr->getRight())) {
+            return false;
+        }
+
+        // numbers with positive or negative sign and unit
+        auto left = innerOperatorExpr->getLeft();
+        if (freecad_cast<NumberExpression*>(left)) {
+            return true;
+        }
+        auto leftOp = freecad_cast<OperatorExpression*>(left);
+        if (leftOp
+            && (leftOp->getOperator() == OperatorExpression::NEG
+                || leftOp->getOperator() == OperatorExpression::POS)
+            && freecad_cast<NumberExpression*>(leftOp->getLeft())) {
+            return true;
+        }
+    }
+    catch (Base::Exception) {
+        // The exception is intentionally ignored here and should be handled,
+        // when the value is assigned
+        return false;
+    }
+    return false;
 }
 
 void QuantitySpinBox::setValue(const Base::Quantity& value)
