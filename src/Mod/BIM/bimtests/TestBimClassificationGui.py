@@ -17,16 +17,20 @@ from PySide import QtCore
 from bimtests import TestArchBaseGui
 
 
-def _ensure_stub_module(name):
-    module = sys.modules.get(name)
+def _ensure_stub_module(name, stubbed_modules):
+    module = stubbed_modules.get(name)
     if module is None:
         module = types.ModuleType(name)
-        sys.modules[name] = module
+        stubbed_modules[name] = module
     return module
 
 
-_bsdd_stub = _ensure_stub_module("BimBsdd")
-_contract_stub = _ensure_stub_module("BimBsddContract")
+_original_bsdd_modules = {
+    name: sys.modules.get(name) for name in ["BimBsdd", "BimBsddContract"]
+}
+_stubbed_bsdd_modules = {}
+_bsdd_stub = _ensure_stub_module("BimBsdd", _stubbed_bsdd_modules)
+_contract_stub = _ensure_stub_module("BimBsddContract", _stubbed_bsdd_modules)
 
 
 def _build_canonical_contract(concept, detail_payload=None, active_object=None):
@@ -76,7 +80,15 @@ if not hasattr(_bsdd_stub, "get_bsdd_network_client"):
     _bsdd_stub.get_bsdd_network_client = lambda: None
 
 
-BimClassification = importlib.import_module("bimcommands.BimClassification")
+try:
+    sys.modules.update(_stubbed_bsdd_modules)
+    BimClassification = importlib.import_module("bimcommands.BimClassification")
+finally:
+    for module_name, module in _original_bsdd_modules.items():
+        if module is None:
+            sys.modules.pop(module_name, None)
+        else:
+            sys.modules[module_name] = module
 
 
 class FakeBsddClient(QtCore.QObject):
@@ -156,10 +168,12 @@ class TestBimClassificationGui(TestArchBaseGui.TestArchBaseGui):
             if getattr(self, "cmd", None) and getattr(self.cmd, "form", None):
                 self.cmd.reject()
         except Exception:
+          
             pass
         try:
             self.client_patch.stop()
         except Exception:
+            
             pass
         FreeCADGui.Selection.clearSelection()
         self.params.SetString(BimClassification.BSDD_PROVIDER_MODE_KEY, self._saved_provider)
