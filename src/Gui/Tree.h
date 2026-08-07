@@ -100,6 +100,7 @@ public:
 
     static const int DocumentType;
     static const int ObjectType;
+    static const int TreeGroupType;
 
     void markItem(const App::DocumentObject* Obj, bool mark);
     void syncView(ViewProviderDocumentObject* vp);
@@ -137,6 +138,7 @@ public:
 
     static void synchronizeSelectionCheckBoxes();
     static void updateVisibilityIcons();
+    static void refreshTreeGroups();
 
     QList<QTreeWidgetItem*> childrenOfItem(const QTreeWidgetItem& item) const;
 
@@ -430,6 +432,9 @@ protected:
     );
 
     int findRootIndex(App::DocumentObject* childObj);
+    void clearTreeGroups(DocumentObjectItem* item);
+    void syncTreeGroups(DocumentObjectItem* item);
+    void refreshTreeGroups();
 
     DocumentObjectItem* findItemByObject(
         bool sync,
@@ -501,6 +506,7 @@ public:
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant& value) override;
     bool isChildOfItem(DocumentObjectItem*);
+    bool isTreeGroupChild() const;
 
     void restoreBackground();
 

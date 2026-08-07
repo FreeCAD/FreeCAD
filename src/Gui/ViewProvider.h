@@ -28,6 +28,7 @@
 #include <vector>
 #include <memory>
 #include <QIcon>
+#include <QString>
 #include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
 
@@ -439,6 +440,24 @@ public:
      */
     virtual std::vector<App::DocumentObject*> claimChildren() const;
     //@}
+
+    /**
+     * Describes an additional, presentation-only group of children in the tree.
+     *
+     * Unlike claimChildren(), the objects in these groups keep their regular tree
+     * positions. The tree creates aliases for them below this view provider.
+     */
+    struct TreeGroup
+    {
+        QString label;
+        QString icon;
+        std::vector<App::DocumentObject*> children;
+    };
+
+    virtual std::vector<TreeGroup> getTreeGroups() const
+    {
+        return {};
+    }
 
     /** deliver the children belonging to this object recursively.
      */
