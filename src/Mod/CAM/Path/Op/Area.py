@@ -211,6 +211,108 @@ class ObjectOp(PathOp.ObjectOp):
 
         return candidate.discretize(3)[1]
 
+    def _springPassLayers(self, obj, layerCount):
+        """_springPassLayers(obj, layerCount) ... returns (springPasses, layerIndexes).
+
+        A spring pass is an exact repetition of the immediately preceding cutting pass -
+        same depth, same offset, same feed - to recover the deflection of tool and
+        workpiece. Returns how many repetitions to make and the indexes of the depth
+        layers they apply to. Returns (0, []) if the operation makes no spring passes."""
+        springPasses = getattr(obj, "SpringPasses", 0)
+        if not springPasses or layerCount < 1:
+            return 0, []
+
+        if getattr(obj, "SpringPassScope", "Final Depth") == "Every Depth":
+            return springPasses, list(range(layerCount))
+
+        return springPasses, [layerCount - 1]
+
+    def _isOpenEdgeFinishOffset(self, obj, openWire):
+        """_isOpenEdgeFinishOffset(obj, openWire) ... returns True if the given open-edge
+        wire belongs to the finishing offset rather than to a roughing offset.
+
+        Operations that expand multiple offsets into separate open wires record all of
+        them in self.openEdgeWires and the finishing ones in self.openEdgeFinishWires. A
+        wire that is in neither - a compound assembled by 'Collectively' handling, for
+        instance - cannot be attributed to an offset and so is not repeated."""
+        if getattr(obj, "NumPasses", 1) <= 1:
+            # A single offset makes every open wire a finishing wire.
+            return True
+
+        if any(openWire is w for w in getattr(self, "openEdgeFinishWires", [])):
+            return True
+        if any(openWire is w for w in getattr(self, "openEdgeWires", [])):
+            return False
+
+        Path.Log.warning(
+            translate(
+                "PathAreaOp",
+                "Cannot identify the finishing offset of these open edges. Skipping spring passes.",
+            )
+        )
+        return False
+
+    def _finishOffsetShapes(self, obj, baseobject, isHole, heights, areaParams):
+        """_finishOffsetShapes(obj, baseobject, isHole, heights, areaParams) ... returns the
+        section shapes of the finishing offset alone - without the multi-pass offset
+        ladder - at the given heights."""
+        area = Path.Area()
+        area.setPlane(PathUtils.makeWorkplane(baseobject))
+        area.add(baseobject)
+
+        params = self.areaOpAreaParams(obj, isHole, finalPassOnly=True)
+        params["SectionTolerance"] = areaParams["SectionTolerance"]
+        area.setParams(**params)
+
+        sections = area.makeSections(mode=0, project=self.areaOpUseProjection(obj), heights=heights)
+        return [sec.getShape() for sec in sections]
+
+    def _addSpringPasses(self, obj, baseobject, isHole, shapelist, heights, areaParams):
+        """_addSpringPasses(obj, baseobject, isHole, shapelist, heights, areaParams) ...
+        returns shapelist with the spring passes inserted after the layers they repeat.
+
+        The repeats are added to the same shapelist rather than emitted as a separate
+        path so the tool carries on from where the previous pass ended, instead of
+        retracting and plunging back into the wall it has just finished."""
+        springPasses, layers = self._springPassLayers(obj, len(shapelist))
+        if not springPasses:
+            return shapelist
+
+        if len(shapelist) != len(heights):
+            Path.Log.warning(
+                translate(
+                    "PathAreaOp",
+                    "Depth layers do not match the requested depths. Skipping spring passes.",
+                )
+            )
+            return shapelist
+
+        if getattr(obj, "NumPasses", 1) > 1:
+            # A layer's section holds the whole multi-pass offset ladder, but a spring
+            # pass repeats only the finishing offset, so rebuild that offset on its own.
+            springShapes = self._finishOffsetShapes(
+                obj, baseobject, isHole, [heights[i] for i in layers], areaParams
+            )
+            if len(springShapes) != len(layers):
+                Path.Log.warning(
+                    translate(
+                        "PathAreaOp",
+                        "Unable to build the finishing offset. Skipping spring passes.",
+                    )
+                )
+                return shapelist
+            byLayer = dict(zip(layers, springShapes))
+        else:
+            byLayer = {i: shapelist[i] for i in layers}
+
+        withSprings = []
+        for i, shape in enumerate(shapelist):
+            withSprings.append(shape)
+            if i in byLayer:
+                withSprings.extend([byLayer[i]] * springPasses)
+
+        return withSprings
+
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
         Path.Log.track()
@@ -246,6 +348,8 @@ class ObjectOp(PathOp.ObjectOp):
 
         shapelist = [sec.getShape() for sec in sections]
         Path.Log.debug("shapelist = %s" % shapelist)
+
+        shapelist = self._addSpringPasses(obj, baseobject, isHole, shapelist, heights, areaParams)
 
         pathParams = self.areaOpPathParams(obj, isHole)
         pathParams["shapes"] = shapelist
@@ -309,6 +413,13 @@ class ObjectOp(PathOp.ObjectOp):
         paths = []
         heights = [i for i in self.depthparams]
         Path.Log.debug("depths: {}".format(heights))
+
+        # Spring passes repeat the finishing offset only. Multi-pass profiles hand each
+        # offset to this method as its own wire, so the roughing wires make no repeats.
+        springPasses, springLayers = self._springPassLayers(obj, len(heights))
+        if springPasses and not self._isOpenEdgeFinishOffset(obj, openWire):
+            springPasses, springLayers = 0, []
+
         for i in range(0, len(heights)):
             openWire.translate(FreeCAD.Vector(0, 0, heights[i] - openWire.BoundBox.ZMin))
 
@@ -351,6 +462,12 @@ class ObjectOp(PathOp.ObjectOp):
             pp, end_vector = Path.fromShapes(**pathParams)
             paths.extend(pp.Commands)
             Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
+
+            # An open wire cannot be closed back onto itself, so a repetition is the
+            # same emission again: retract, return to the start vertex, cut once more.
+            if i in springLayers:
+                for _ in range(springPasses):
+                    paths.extend(Path.fromShapes(**pathParams)[0].Commands)
 
         self.endVector = end_vector
         simobj = None

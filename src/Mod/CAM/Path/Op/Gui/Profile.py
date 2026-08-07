@@ -62,7 +62,11 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getForm() ... returns UI customized according to profileFeatures()"""
         form = FreeCADGui.PySideUic.loadUi(":/panels/PageOpProfileFullEdit.ui")
 
-        comboToPropertyMap = [("cutSide", "Side"), ("direction", "Direction")]
+        comboToPropertyMap = [
+            ("cutSide", "Side"),
+            ("direction", "Direction"),
+            ("springPassScope", "SpringPassScope"),
+        ]
         enumTups = PathProfile.ObjectProfile.areaOpPropertyEnumerations(dataType="raw")
 
         self.populateCombobox(form, enumTups, comboToPropertyMap)
@@ -77,6 +81,9 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
         obj.NumPasses = self.form.numPasses.value()
         PathGuiUtil.updateInputField(obj, "Stepover", self.form.stepover)
+        obj.SpringPasses = self.form.springPasses.value()
+        if obj.SpringPassScope != str(self.form.springPassScope.currentData()):
+            obj.SpringPassScope = str(self.form.springPassScope.currentData())
 
         if obj.UseComp != self.form.useCompensation.isChecked():
             obj.UseComp = self.form.useCompensation.isChecked()
@@ -97,6 +104,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.extraOffset.setProperty("rawValue", obj.OffsetExtra.Value)
         self.form.numPasses.setValue(obj.NumPasses)
         self.form.stepover.setProperty("rawValue", obj.Stepover.Value)
+        self.form.springPasses.setValue(obj.SpringPasses)
+        self.selectInComboBox(obj.SpringPassScope, self.form.springPassScope)
 
         self.form.useCompensation.setChecked(obj.UseComp)
         self.form.useStartPoint.setChecked(obj.UseStartPoint)
@@ -114,6 +123,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.numPasses.editingFinished)
         signals.append(self.form.stepover.editingFinished)
+        signals.append(self.form.springPasses.editingFinished)
+        signals.append(self.form.springPassScope.currentIndexChanged)
         if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.useCompensation.checkStateChanged)
             signals.append(self.form.useStartPoint.checkStateChanged)
@@ -153,6 +164,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.processPerimeter.hide()
 
         self.form.stepover.setEnabled(self.obj.NumPasses > 1)
+        self.form.springPassScope.setEnabled(self.obj.SpringPasses > 0)
 
     def registerSignalHandlers(self, obj):
         if hasattr(self.form.useCompensation, "checkStateChanged"):  # Qt version >= 6.7.0
@@ -160,6 +172,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         else:  # Qt version < 6.7.0
             self.form.useCompensation.stateChanged.connect(self.updateVisibility)
         self.form.numPasses.editingFinished.connect(self.updateVisibility)
+        self.form.springPasses.editingFinished.connect(self.updateVisibility)
 
         self.form.setStartPoint.clicked.connect(self.setStartPoint)
 

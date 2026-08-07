@@ -112,6 +112,45 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="springPassesLabel">
+        <property name="text">
+         <string>Spring passes</string>
+        </property>
+       </widget>
+      </item>
+     <item row="5" column="1">
+       <widget class="QSpinBox" name="springPasses">
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="toolTip">
+         <string>The number of exact repetitions of the final cutting pass, at the same depth and offset, to recover tool deflection. Zero means no spring passes.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="springPassScopeLabel">
+        <property name="text">
+         <string>Spring pass scope</string>
+        </property>
+       </widget>
+      </item>
+     <item row="6" column="1">
+       <widget class="QComboBox" name="springPassScope">
+        <property name="toolTip">
+         <string>Whether spring passes are added only at the final depth or at every depth layer</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>PLACEHOLDER</string>
+         </property>
+        </item>
+       </widget>
+      </item>
       </layout>
     </widget>
    </item>
