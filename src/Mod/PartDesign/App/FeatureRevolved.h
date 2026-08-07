@@ -32,6 +32,8 @@ namespace Part
 enum class RevolMode;
 }
 
+class TopLoc_Location;
+
 namespace PartDesign
 {
 
@@ -42,7 +44,11 @@ class PartDesignExport Revolved: public ProfileBased
 public:
     Revolved();
 
+    static const char* SideTypesEnums[];
+
+    App::PropertyEnumeration SideType;
     App::PropertyEnumeration Type;
+    App::PropertyEnumeration Type2;
     App::PropertyVector Base;
     App::PropertyVector Axis;
     App::PropertyAngle Angle;
@@ -56,6 +62,7 @@ public:
     /** @name methods override feature */
     //@{
     short mustExecute() const override;
+    void onChanged(const App::Property* prop) override;
     //@}
 
     /// suggests a value for Reversed flag so that material is always added to the support
@@ -80,20 +87,40 @@ protected:
      * created material will be fused with the sketch support (if there is one)
      */
     App::DocumentObjectExecReturn* executeRevolved(Part::RevolMode revolMode);
+    void onDocumentRestored() override;
 
 private:
     App::DocumentObjectExecReturn* tryExecuteRevolved(Part::RevolMode revolMode);
     TopoShape tryGetBaseShape() const;
     TopoShape tryGetSupportShape() const;
+    TopoShape getRevolutionUpToFace(
+        RevolMethod method,
+        const App::PropertyLinkSub& upToFaceProp,
+        const TopoShape& base,
+        const TopoShape& sketchshape,
+        const TopLoc_Location& invObjLoc,
+        const gp_Ax1& axis
+    ) const;
     TopoShape tryToRevolveToFace(
         const TopoShape& upToFace,
-        gp_Pnt pnt,
-        gp_Dir dir,
-        TopoShape& base,
-        TopoShape& supportface,
+        const gp_Ax1& axis,
+        const TopoShape& base,
+        TopoShape supportface,
         const TopoShape& sketchshape,
         Part::RevolMode revolMode
     ) const;
+    TopoShape generateSingleRevolutionSide(
+        RevolMethod method,
+        double angle,
+        App::PropertyLinkSub& upToFaceProp,
+        const TopoShape& sketchshape,
+        const TopoShape& base,
+        TopoShape supportface,
+        const gp_Pnt& pnt,
+        const gp_Dir& dir,
+        const TopLoc_Location& invObjLoc,
+        Part::RevolMode revolMode
+    );
     void setResult(const TopoShape& base, const TopoShape& revolved);
 
     /// updates Axis from ReferenceAxis
@@ -135,7 +162,7 @@ private:
     /**
      * Disables settings that are not valid for the current method
      */
-    void updateProperties(RevolMethod method);
+    void updateProperties();
 
     static const App::PropertyAngle::Constraints floatAngle;
 };
