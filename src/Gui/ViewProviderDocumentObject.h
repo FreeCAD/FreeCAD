@@ -114,6 +114,8 @@ public:
     }
     /// Get the GUI document to this ViewProvider object
     Gui::Document* getDocument() const;
+    /// Get the GUI document when this provider is fully attached, or nullptr.
+    Gui::Document* getDocumentIfAttached() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject() override;
 
