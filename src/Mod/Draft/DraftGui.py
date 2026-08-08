@@ -486,6 +486,9 @@ class DraftToolBar:
         )  # Required to detect snap cycling in case of Z constraining.
         self.zValue.setText(FreeCAD.Units.Quantity(0, FreeCAD.Units.Length).UserString)
         self.pointButton = self._pushbutton("addButton", bl, icon="Draft_AddPoint")
+        self.attachNodeButton = self._pushbutton(
+            "attachNodeButton", bl, icon=":/icons/tools/Part_Attachment.svg"
+        )
 
         # text
 
@@ -613,6 +616,7 @@ class DraftToolBar:
         self.angleValue.textEdited.connect(self.checkSpecialChars)
         self.zValue.returnPressed.connect(self.validatePoint)
         self.pointButton.clicked.connect(self.validatePoint)
+        self.attachNodeButton.clicked.connect(self.attachNode)
         self.radiusValue.returnPressed.connect(self.validatePoint)
         self.angleValue.returnPressed.connect(self.validatePoint)
         self.textValue.textChanged.connect(self.checkEnterText)
@@ -705,6 +709,10 @@ class DraftToolBar:
         self.zValue.setToolTip(translate("draft", "Z coordinate of the point"))
         self.pointButton.setText(translate("draft", "Enter Point"))
         self.pointButton.setToolTip(translate("draft", "Enter a point with given coordinates"))
+        self.attachNodeButton.setText(translate("draft", "Attach"))
+        self.attachNodeButton.setToolTip(
+            translate("draft", "Attaches the edited node to a selected vertex or point")
+        )
         self.labellength.setText(translate("draft", "Length"))
         self.labelangle.setText(translate("draft", "Angle"))
         self._sync_field_label_widths()
@@ -973,6 +981,7 @@ class DraftToolBar:
         self.yValue.hide()
         self.zValue.hide()
         self.pointButton.hide()
+        self.attachNodeButton.hide()
         self.lengthValue.hide()
         self.angleValue.hide()
         self.isRelative.hide()
@@ -1067,6 +1076,7 @@ class DraftToolBar:
         self.new_point = None
         self.last_point = None
         self.pointButton.show()
+        self.attachNodeButton.hide()
         if rel:
             self.isRelative.show()
         todo.delay(self.setFocus, None)
@@ -1153,6 +1163,7 @@ class DraftToolBar:
             self.state.append(self.labellength.isVisible())
             self.state.append(self.labelangle.isVisible())
             self.state.append(self.pointButton.isVisible())
+            self.state.append(self.attachNodeButton.isVisible())
             self.state.append(self.lengthValue.isVisible())
             self.state.append(self.angleValue.isVisible())
             self.state.append(self.isRelative.isVisible())
@@ -1179,12 +1190,14 @@ class DraftToolBar:
                 if self.state[8]:
                     self.pointButton.show()
                 if self.state[9]:
-                    self.lengthValue.show()
+                    self.attachNodeButton.show()
                 if self.state[10]:
-                    self.angleValue.show()
+                    self.lengthValue.show()
                 if self.state[11]:
-                    self.isRelative.show()
+                    self.angleValue.show()
                 if self.state[12]:
+                    self.isRelative.show()
+                if self.state[13]:
                     self.isGlobal.show()
                 self.state = None
 
@@ -1421,6 +1434,12 @@ class DraftToolBar:
 
     def acceptPointInput(self):
         self._locks.unlock_all()
+
+    def attachNode(self):
+        """Attach or detach the current Draft_Edit node."""
+        if self.sourceCmd and hasattr(self.sourceCmd, "attachCurrentNode"):
+            return self.sourceCmd.attachCurrentNode()
+        return False
 
     def finish(self, cont=None):
         """finish button action"""
