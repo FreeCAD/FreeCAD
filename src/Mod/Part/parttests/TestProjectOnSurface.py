@@ -7,6 +7,8 @@ import Part
 
 
 class TestProjectOnSurface(unittest.TestCase):
+    """
+    Regression test for github issues #27000 and #20203"""
     def setUp(self):
         self.doc = App.newDocument("PartProjectOnSurfaceTest")
 
