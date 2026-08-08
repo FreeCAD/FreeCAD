@@ -202,6 +202,13 @@ void SectionAnalysisWidget::setupUi()
 
     perSolidColorCheck = new QCheckBox(tr("Per-Body Colors"), this);
     perSolidColorCheck->setChecked(viewProvider->PerBodyColors.getValue());
+    // Nothing to tell apart below two bodies, and while it is on the single
+    // colour picker would overwrite the per-body colours it assigns
+    perSolidColorCheck->setEnabled(feature->SourceParts.getValues().size() > 1);
+    if (!perSolidColorCheck->isEnabled()) {
+        perSolidColorCheck->setToolTip(tr("The section only comes from a single body"));
+    }
+    sectionColorBtn->setEnabled(!perSolidColorCheck->isChecked());
     appearLayout->addWidget(perSolidColorCheck, 2, 0, 1, 2);
 
     showPlaneCheck = new QCheckBox(tr("Show Cutting Plane"), this);
@@ -483,6 +490,8 @@ void SectionAnalysisWidget::onPerSolidColorToggled(bool on)
     if (vp) {
         vp->setPerSolidColors(on);
     }
+    // The single colour would be applied to every face, undoing the per-body one
+    sectionColorBtn->setEnabled(!on);
 }
 
 void SectionAnalysisWidget::onShowPlaneToggled(bool on)

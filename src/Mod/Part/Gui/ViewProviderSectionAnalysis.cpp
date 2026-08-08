@@ -796,6 +796,13 @@ void ViewProviderSectionAnalysis::applyPerSolidColors()
     const auto& srcIdx = feat->SolidSourceIndex.getValues();
     const auto& parts = feat->SourceParts.getValues();
 
+    // With a single source body there is nothing to tell apart, and taking that
+    // body's colour would only replace the section's own — most visibly when the
+    // body still has the default grey, which reads as the colour disappearing.
+    if (parts.size() < 2) {
+        return;
+    }
+
     // Predefined fallback palette
     static const float palette[][3] = {
         {0.8f, 0.3f, 0.2f},
