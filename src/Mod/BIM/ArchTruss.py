@@ -405,6 +405,10 @@ class Truss(ArchComponent.Component):
         rod = rod.extrude(p2.sub(p1))
         return rod
 
+    def getTrimexData(self, obj):
+        """Return Trimex data for the endpoints of an open wire or line base."""
+        return ArchComponent.getTrimexDataFromBase(obj)
+
 
 class TrussTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
     """A task panel for Arch Trusses using the generic options box"""

@@ -300,6 +300,10 @@ class _Frame(ArchComponent.Component):
                 obj.Shape = Part.makeCompound(shapes)
                 obj.Placement = pl
 
+    def getTrimexData(self, obj):
+        """Return Trimex data for the endpoints of an open wire or line base."""
+        return ArchComponent.getTrimexDataFromBase(obj)
+
 
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     "A View Provider for the Frame object"

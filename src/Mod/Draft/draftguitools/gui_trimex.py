@@ -24,15 +24,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides GUI tools to trim and extend lines.
-
-It also extends closed faces to create solids, that is, it can be used
-to extrude a closed profile.
-
-Make sure the snapping is active so that the extrusion is done following
-the direction of a line, and up to the distance specified
-by the snapping point.
-"""
+"""Provides GUI tools to trim and extend lines and extrude faces."""
 
 ## @package gui_trimex
 # \ingroup draftguitools
@@ -59,15 +51,35 @@ from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
+def _get_trimex_data(obj):
+    """Return a Trimex data dict for ``obj``, or None.
+
+    BIM objects opt in by implementing ``obj.Proxy.getTrimexData(obj)``.
+    The returned dict must contain ``endpoints`` (two world-space points
+    bounding the object's editable axis) and ``axes`` (matching outward unit
+    vectors used to identify end faces), plus either:
+
+    - ``redirect``: an object to operate on instead (for example a base wire)
+    - ``set``: callable(list[Vector]) committing new world endpoints
+    """
+    proxy = getattr(obj, "Proxy", None)
+    if proxy is not None and hasattr(proxy, "getTrimexData"):
+        adapter = proxy.getTrimexData(obj)
+        if adapter is not None:
+            return adapter
+    return None
+
+
 class Trimex(gui_base_original.Modifier):
     """Gui Command for the Trimex tool.
 
-    This tool trims or extends lines, wires and arcs,
-    or extrudes single faces.
+    This tool trims or extends lines, wires, arcs and supported BIM objects.
 
-    SHIFT constrains to the last point
-    or extrudes in direction to the face normal.
+    SHIFT constrains to the active endpoint.
     """
+
+    command_name = "Trimex"
+    selection_message = "Select objects to trim or extend"
 
     def GetResources(self):
         """Set icon, menu and tooltip."""
@@ -76,24 +88,29 @@ class Trimex(gui_base_original.Modifier):
             "Pixmap": "Draft_Trimex",
             "Accel": "T, R",
             "MenuText": QT_TRANSLATE_NOOP("Draft_Trimex", "Trimex"),
-            "ToolTip": QT_TRANSLATE_NOOP(
-                "Draft_Trimex", "Trims or extends the selected object, or extrudes single faces"
-            ),
+            "ToolTip": QT_TRANSLATE_NOOP("Draft_Trimex", "Trims or extends the selected object"),
         }
 
     def Activated(self):
         """Execute when the command is called."""
-        super().Activated(name="Trimex")
+        super().Activated(name=self.command_name)
         self.edges = []
         self.placement = None
         self.ghost = []
         self.linetrack = None
         self.color = None
         self.width = None
+        self.trimexHost = None
+        self.trimexSet = None
+        self.trimexEndpoints = None
+        self.lockedActivePoint = None
+        self.extrudeMode = False
+        self.extrudeBase = None
+        self.extrudeShape = None
         if self.ui:
             if not Gui.Selection.getSelection():
                 self.ui.selectUi(on_close_call=self.finish)
-                _msg(translate("draft", "Select objects to trim or extend"))
+                _msg(translate("draft", self.selection_message))
                 self.call = self.view.addEventCallback("SoEvent", gui_tool_utils.selectObject)
             else:
                 self.proceed()
@@ -110,63 +127,54 @@ class Trimex(gui_base_original.Modifier):
         self.obj = sel[0]
         sel = Gui.Selection.getSelectionEx("", 0)[0]
 
-        import Part
+        # BIM integration. If the selected object opts in via getTrimexData
+        # and an end face is pre-selected, route the operation to its base
+        # wire or to a property-update setter.
+        if self._setupTrimexData(sel):
+            return
 
-        reason = utils.get_trimex_unsupported_reason(self.obj, sel.SubObjects)
+        reason = utils.get_trimex_unsupported_reason(self.obj)
         if reason:
             self.obj = None
             self.finish()
             _err(reason)
             return
+        self._startWireTrimex()
+
+    def _startWireTrimex(self):
+        """Set up the common trim/extend interaction for editable edges."""
+        import Part
+
         self.ui.trimUi(title=translate("draft", self.featureName))
         self.linetrack = trackers.lineTracker()
         if hasattr(self.obj, "Placement"):
             self.placement = self.obj.Placement
-        if self.obj.Shape.Faces:
-            self.obj = sel.Object
-            if len(self.obj.Shape.Faces) == 1:
-                # simple extrude mode, the object itself is extruded
-                pass
-            elif len(sel.SubObjects) == 1 and sel.SubObjects[0].ShapeType == "Face":
-                # face extrude mode, a new object is created
-                self.obj = self.doc.addObject("Part::Feature", "Face")
-                self.obj.Shape = sel.SubObjects[0]
-            else:
+        if self.obj.Shape.Wires:
+            self.edges = self.obj.Shape.Wires[0].Edges
+            self.edges = Part.__sortEdges__(self.edges)
+        else:
+            self.edges = self.obj.Shape.Edges
+        for edge in self.edges:
+            if isinstance(edge.Curve, (Part.BSplineCurve, Part.BezierCurve)):
                 self.obj = None
                 self.finish()
-                _err(translate("draft", "Only a single face can be extruded"))
+                _err(translate("draft", "Trimex does not support this object type"))
                 return
-            self.extrudeMode = True
-            self.normal = self.obj.Shape.Faces[0].normalAt(0.5, 0.5)
-            self.ghost = [trackers.ghostTracker([self.obj]), trackers.lineTracker(dotted=True)]
-            self.ghost += [trackers.lineTracker() for _ in self.obj.Shape.Vertexes]
-        else:
-            # normal wire trimex mode
-            self.color = self.obj.ViewObject.LineColor
-            self.width = self.obj.ViewObject.LineWidth
-            if self.obj.Shape.Wires:
-                self.edges = self.obj.Shape.Wires[0].Edges
-                self.edges = Part.__sortEdges__(self.edges)
+        self.color = self.obj.ViewObject.LineColor
+        self.width = self.obj.ViewObject.LineWidth
+        self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
+        self.obj.ViewObject.LineWidth = 1
+        self.ghost = []
+        line_color = (self.color[0], self.color[1], self.color[2])
+        for edge in self.edges:
+            if geo_general.geomType(edge) == "Line":
+                self.ghost.append(trackers.lineTracker(scolor=line_color, swidth=self.width))
             else:
-                self.edges = self.obj.Shape.Edges
-            for e in self.edges:
-                if isinstance(e.Curve, (Part.BSplineCurve, Part.BezierCurve)):
-                    self.obj = None
-                    self.finish()
-                    _err(translate("draft", "Trimex does not support this object type"))
-                    return
-            self.obj.ViewObject.LineColor = (0.5, 0.5, 0.5)
-            self.obj.ViewObject.LineWidth = 1
-            self.extrudeMode = False
-            self.ghost = []
-            lc = self.color
-            sc = (lc[0], lc[1], lc[2])
-            sw = self.width
-            for e in self.edges:
-                if geo_general.geomType(e) == "Line":
-                    self.ghost.append(trackers.lineTracker(scolor=sc, swidth=sw))
-                else:
-                    self.ghost.append(trackers.arcTracker(scolor=sc, swidth=sw))
+                self.ghost.append(trackers.arcTracker(scolor=line_color, swidth=self.width))
+        self._startInteraction()
+
+    def _startInteraction(self):
+        """Start the shared point-picking interaction for the active mode."""
         if not self.ghost:
             self.obj = None
             self.finish()
@@ -183,6 +191,120 @@ class Trimex(gui_base_original.Modifier):
         _toolmsg(translate("draft", "Pick distance"))
         self.selection_done = True
         self.update_hints()
+
+    def _startFaceExtrude(self, sel):
+        """Set up face extrusion without creating document objects yet."""
+        source = sel.Object
+        if not hasattr(source, "Shape"):
+            self.obj = None
+            self.finish()
+            _err(translate("draft", "Select a single face to extrude"))
+            return
+        shape = source.Shape
+        if len(shape.Faces) == 1:
+            self.extrudeBase = source
+            self.extrudeShape = shape
+        elif len(sel.SubObjects) == 1 and sel.SubObjects[0].ShapeType == "Face":
+            self.extrudeShape = sel.SubObjects[0]
+        else:
+            self.obj = None
+            self.finish()
+            _err(translate("draft", "Only a single face can be extruded"))
+            return
+
+        self.obj = source
+        self.extrudeMode = True
+        self.normal = self.extrudeShape.Faces[0].normalAt(0.5, 0.5)
+        self.ghost = [trackers.ghostTracker(self.extrudeShape), trackers.lineTracker(dotted=True)]
+        self.ghost += [trackers.lineTracker() for _ in self.extrudeShape.Vertexes]
+        self.ui.trimUi(title=translate("draft", self.featureName))
+        self.linetrack = trackers.lineTracker()
+        self._startInteraction()
+
+    def _setupTrimexData(self, sel):
+        """Set up a BIM object that exposes Trimex data."""
+        import Part
+
+        adapter = _get_trimex_data(self.obj)
+        if adapter is None:
+            return False
+
+        endpoints = adapter.get("endpoints") or []
+        axes = adapter.get("axes") or []
+        if len(endpoints) != 2 or len(axes) != 2:
+            return False
+
+        ends = list(zip(endpoints, axes))
+        end_idx = None
+        for sub in sel.SubObjects:
+            if getattr(sub, "ShapeType", None) != "Face":
+                continue
+            match = self._matchEndFace(sub, ends)
+            if match is not None:
+                end_idx = match
+                break
+        if end_idx is None:
+            return False
+
+        redirect = adapter.get("redirect")
+        setter = adapter.get("set")
+        host = self.obj
+
+        if redirect is not None:
+            self.trimexHost = host
+            self.obj = redirect
+            if end_idx == 0:
+                self.lockedActivePoint = 0
+            else:
+                self.lockedActivePoint = self._wireEdgeCount(redirect)
+            return False
+
+        if setter is None:
+            return False
+
+        self.trimexHost = host
+        self.trimexSet = setter
+        self.trimexEndpoints = [App.Vector(p) for p in endpoints]
+        self.lockedActivePoint = end_idx
+
+        p1, p2 = self.trimexEndpoints
+        self.edges = [Part.LineSegment(p1, p2).toShape()]
+        self.placement = None
+        self.extrudeMode = False
+        self.ghost = [trackers.lineTracker(scolor=(0.5, 0.5, 0.5), swidth=1)]
+        self.ui.trimUi(title=translate("draft", self.featureName))
+        self.linetrack = trackers.lineTracker()
+        self._startInteraction()
+        return True
+
+    @staticmethod
+    def _wireEdgeCount(obj):
+        """Return the index of a wire's final vertex."""
+        import Part
+
+        shape = obj.Shape
+        if shape.Wires:
+            return len(Part.__sortEdges__(shape.Wires[0].Edges))
+        return len(shape.Edges)
+
+    @staticmethod
+    def _matchEndFace(face, ends):
+        """Index of the end whose axis is parallel to ``face``'s normal and
+        whose endpoint lies on the face's plane. ``None`` if the face is not
+        an end face (side, top, bottom, etc.)."""
+        center = face.CenterOfMass
+        normal = face.normalAt(*face.Surface.parameter(center)).normalize()
+        best = None
+        best_dot = 0.95  # require strong alignment to discount side/top/bottom faces
+        for i, (endpoint, axis) in enumerate(ends):
+            dot = abs(normal.dot(axis))
+            if dot < best_dot:
+                continue
+            if abs(normal.dot(endpoint - center)) > face.Tolerance:
+                continue
+            best_dot = dot
+            best = i
+        return best
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -250,7 +372,7 @@ class Trimex(gui_base_original.Modifier):
 
     def extrude(self, shift=False, real=False):
         """Redraw the ghost in extrude mode."""
-        self.newpoint = self.obj.Shape.Faces[0].CenterOfMass
+        self.newpoint = self.extrudeShape.Faces[0].CenterOfMass
         dvec = self.point.sub(self.newpoint)
         if not shift:
             delta = DraftVecUtils.project(dvec, self.normal)
@@ -270,7 +392,7 @@ class Trimex(gui_base_original.Modifier):
         self.ghost[1].p2(self.newpoint + dvec)
         # Update the vertex lineTrackers:
         for i in range(2, len(self.ghost)):
-            base = self.obj.Shape.Vertexes[i - 2].Point
+            base = self.extrudeShape.Vertexes[i - 2].Point
             self.ghost[i].p1(base)
             self.ghost[i].p2(base + delta)
         return delta.Length
@@ -291,7 +413,9 @@ class Trimex(gui_base_original.Modifier):
         for e in self.edges:
             vlist.append(e.Vertexes[0].Point)
         vlist.append(self.edges[-1].Vertexes[-1].Point)
-        if shift:
+        if self.lockedActivePoint is not None:
+            npoint = self.lockedActivePoint
+        elif shift:
             npoint = self.activePoint
         else:
             npoint = geo_general.findClosest(point, vlist)
@@ -424,17 +548,24 @@ class Trimex(gui_base_original.Modifier):
 
         if self.extrudeMode:
             delta = self.extrude(self.shift, real=True)
-            # print("delta", delta)
             self.doc.openTransaction("Extrude")
             Gui.addModule("Draft")
-            obj = extrude.extrude(self.obj, delta, solid=True)
+            base = self.extrudeBase
+            if base is None:
+                base = self.doc.addObject("Part::Feature", "Face")
+                base.Shape = self.extrudeShape
+            obj = extrude.extrude(base, delta, solid=True)
             self.doc.commitTransaction()
             self.obj = obj
         else:
             edges = self.redraw(self.point, self.snapped, self.shift, self.alt, real=True)
             newshape = Part.Wire(edges)
             self.doc.openTransaction("Trim/extend")
-            if utils.getType(self.obj) in ["Wire", "BSpline"]:
+            if self.trimexSet is not None:
+                pts = list(self.trimexEndpoints)
+                pts[self.lockedActivePoint] = App.Vector(self.newpoint)
+                self.trimexSet(pts)
+            elif utils.getType(self.obj) in ["Wire", "BSpline"]:
                 p = []
                 if self.placement:
                     invpl = self.placement.inverse()
@@ -443,6 +574,12 @@ class Trimex(gui_base_original.Modifier):
                     if self.placement:
                         np = invpl.multVec(np)
                     p.append(np)
+                old = self.obj.Points
+                if self.trimexHost is not None and len(p) == len(old) and len(old) >= 2:
+                    same = (p[0] - old[0]).Length + (p[-1] - old[-1]).Length
+                    flipped = (p[0] - old[-1]).Length + (p[-1] - old[0]).Length
+                    if flipped < same:
+                        p.reverse()
                 self.obj.Points = p
             elif utils.getType(self.obj) == "Part::Line":
                 p = []
@@ -582,7 +719,7 @@ class Trimex(gui_base_original.Modifier):
                     self.obj.ViewObject.LineColor = self.color
                 if self.width:
                     self.obj.ViewObject.LineWidth = self.width
-                gui_utils.select(self.obj)
+                gui_utils.select(self.trimexHost or self.obj)
         super().finish()
 
     def numericRadius(self, dist):
@@ -612,6 +749,34 @@ class Trimex(gui_base_original.Modifier):
                 Gui.InputHint(translate("draft", "Hold %1 invert trim direction"), alt_key)
             )
         return hints + gui_tool_utils._get_hint_mod_snap()
+
+
+class ExtrudeFace(Trimex):
+    """BIM-only face extrusion command sharing Trimex's interaction tools."""
+
+    command_name = "Extrude face"
+    selection_message = "Select a face to extrude"
+    multi_object_selection = False
+
+    def GetResources(self):
+        return {
+            "Pixmap": "BIM_ExtrudeFace",
+            "MenuText": QT_TRANSLATE_NOOP("BIM_ExtrudeFace", "Extrude Face"),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "BIM_ExtrudeFace", "Extrudes a selected face into a solid"
+            ),
+        }
+
+    def proceed(self):
+        """Start the face-extrude interaction from exactly one selection."""
+        if self.call:
+            self.view.removeEventCallback("SoEvent", self.call)
+        selected = Gui.Selection.getSelection()
+        if len(selected) != 1:
+            self.finish()
+            _err(translate("draft", "Select a single face to extrude"))
+            return
+        self._startFaceExtrude(Gui.Selection.getSelectionEx("", 0)[0])
 
 
 Gui.addCommand("Draft_Trimex", Trimex())

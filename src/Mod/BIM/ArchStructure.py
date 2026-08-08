@@ -1406,6 +1406,63 @@ class _Structure(ArchComponent.Component):
                     )
         return edges
 
+    def getTrimexData(self, obj):
+        """Return Trimex data for a straight structure extrusion.
+
+        Structures with an extrusion path are excluded; their path is the
+        editable object.
+        """
+        if obj.Tool:
+            return None
+
+        if obj.IfcType in ("Beam", "Column") and obj.Length.Value > obj.Height.Value:
+            prop_name = "Length"
+        else:
+            prop_name = "Height"
+
+        # Derive the axis from getExtrusionData so we reuse the exact rules
+        # the executor uses (handles Normal=auto, profile orientation, etc.).
+        extdata = self.getExtrusionData(obj)
+        if not extdata:
+            return None
+        ev = extdata[1]
+        pla = extdata[2]
+        if isinstance(ev, list):
+            if not ev:
+                return None
+            ev = ev[0]
+            pla = pla[0] if isinstance(pla, list) else pla
+        if not isinstance(ev, FreeCAD.Vector):
+            # Tool-wire extrusion: filtered above, but guard anyway.
+            return None
+
+        # The extrusion vector is expressed in ``pla``'s local frame;
+        # ``pla`` itself is relative to obj.Placement.
+        ext_world = obj.Placement.Rotation.multVec(pla.Rotation.multVec(ev))
+        ext_length = ext_world.Length
+        if ext_length == 0:
+            return None
+        axis_world = FreeCAD.Vector(ext_world).multiply(1.0 / ext_length)
+        p1 = obj.Placement.multVec(pla.Base)
+        p2 = p1 + axis_world * ext_length
+
+        def _set(pts):
+            new_p1 = FreeCAD.Vector(pts[0])
+            new_p2 = FreeCAD.Vector(pts[1])
+            new_len = (new_p2 - new_p1).dot(axis_world)
+            if new_len <= 0:
+                return
+            shift = new_p1 - p1
+            shift_axial = shift.dot(axis_world)
+            obj.Placement.Base = obj.Placement.Base + axis_world * shift_axial
+            setattr(obj, prop_name, new_len)
+
+        return {
+            "endpoints": [p1, p2],
+            "axes": [FreeCAD.Vector(axis_world).negative(), FreeCAD.Vector(axis_world)],
+            "set": _set,
+        }
+
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
     "A View Provider for the Structure object"

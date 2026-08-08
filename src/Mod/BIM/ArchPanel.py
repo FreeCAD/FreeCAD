@@ -567,6 +567,38 @@ class _Panel(ArchComponent.Component):
                     if not pl.isNull():
                         obj.Placement = pl
 
+    def getTrimexData(self, obj):
+        """Return Trimex data for the two faces created by panel thickness."""
+        if obj.Thickness.Value == 0:
+            return None
+
+        faces = sorted(obj.Shape.Faces, key=lambda face: face.Area, reverse=True)
+        first_face = faces[0]
+        first_normal = first_face.normalAt(*first_face.Surface.parameter(first_face.CenterOfMass))
+        second_face = next(
+            face
+            for face in faces[1:]
+            if first_normal.dot(face.normalAt(*face.Surface.parameter(face.CenterOfMass))) < -0.95
+        )
+        p1 = first_face.CenterOfMass
+        p2 = second_face.CenterOfMass
+        axis = p2.sub(p1).normalize()
+
+        def _set(pts):
+            new_p1 = FreeCAD.Vector(pts[0])
+            new_p2 = FreeCAD.Vector(pts[1])
+            new_length = new_p1.distanceToPoint(new_p2)
+            if new_length == 0:
+                return
+            obj.Placement.Base = obj.Placement.Base + new_p1.sub(p1)
+            obj.Thickness = new_length
+
+        return {
+            "endpoints": [p1, p2],
+            "axes": [FreeCAD.Vector(axis).negative(), axis],
+            "set": _set,
+        }
+
 
 class PanelTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
     """A task panel for Curtain Walls using the generic options task box"""

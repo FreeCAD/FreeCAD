@@ -157,6 +157,7 @@ class BIMWorkbench(Workbench):
             "BIM_ArrayTools",
             "Arch_CutPlane",
             "BIM_Extrude",
+            "BIM_ExtrudeFace",
             "BIM_BooleanTools",
         ]
 

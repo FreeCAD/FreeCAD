@@ -141,6 +141,7 @@ SET(bimcommands_SRCS
     bimcommands/BimEquipment.py
     bimcommands/BimExamples.py
     bimcommands/BimExtrude.py
+    bimcommands/BimExtrudeFace.py
     bimcommands/BimFence.py
     bimcommands/BimFrame.py
     bimcommands/BimFuse.py
