@@ -1,3 +1,5 @@
+#include <numbers>
+
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
 #include <Mod/CAM/App/Command.h>
@@ -13,8 +15,7 @@ TEST(PathTest, deleteCommand1)
 TEST(PathTest, deleteCommand2)
 {
     Path::Toolpath path;
-    path.deleteCommand(-1);
-    EXPECT_TRUE(true);
+    EXPECT_THROW(path.deleteCommand(-1), Base::IndexError);
 }
 
 TEST(PathTest, deleteCommand3)
@@ -123,25 +124,75 @@ TEST(PathTest, getLength4)
 {
     Path::Toolpath path;
     Path::Command cmd;
-    cmd.setFromGCode("G0 X0 Y0");
+    cmd.setFromGCode("G0 X2 Y0");
     path.addCommand(cmd);
-    cmd.setFromGCode("G2 X1 Y1 I1 F10");
+    cmd.setFromGCode("G3 X3 Y1 I0 J1 F10");
     path.addCommand(cmd);
-    EXPECT_GT(path.getLength(), 1.57);  // PI/2
+    EXPECT_NEAR(path.getLength(), 2.0 + std::numbers::pi / 2, 1e-12);
+}
+
+TEST(PathTest, getLength5)
+{
+    Path::Toolpath path;
+    Path::Command cmd;
+    cmd.setFromGCode("G0 X2 Y0");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G2 X3 Y1 I0 J1 F10");
+    path.addCommand(cmd);
+    EXPECT_NEAR(path.getLength(), 2.0 + std::numbers::pi * 3 / 2, 1e-12);
+}
+
+TEST(PathTest, getLength6)
+{
+    Path::Toolpath path;
+    Path::Command cmd;
+    cmd.setFromGCode("G0 X2 Y0");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G2 X2 Y0 I1 J0 F10");
+    path.addCommand(cmd);
+    EXPECT_NEAR(path.getLength(), 2.0 + std::numbers::pi * 2, 1e-12);
+}
+
+TEST(PathTest, getLength7)
+{
+    Path::Toolpath path;
+    Path::Command cmd;
+    cmd.setFromGCode("G0 X2 Y0");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G90.1");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G3 X3 Y1 I2 J1 F10");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G91.1");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G3 X4 Y2 I0 J1 F10");
+    path.addCommand(cmd);
+    EXPECT_NEAR(path.getLength(), 2.0 + std::numbers::pi, 1e-12);
+}
+
+TEST(PathTest, getCycleTime)
+{
+    Path::Toolpath path;
+    Path::Command cmd;
+    cmd.setFromGCode("G0 X2 Y0");
+    path.addCommand(cmd);
+    cmd.setFromGCode("G2 X3 Y1 I0 J1 F10");
+    path.addCommand(cmd);
+    EXPECT_NEAR(path.getCycleTime(1.0, 1.0, 1.0, 1.0), 2.0 + std::numbers::pi * 3 / 2, 1e-12);
 }
 
 TEST(PathTest, assign)
 {
     Path::Toolpath path;
     Path::Command cmd;
-    cmd.setFromGCode("G0 X0 Y0");
+    cmd.setFromGCode("G0 X2 Y0");
     path.addCommand(cmd);
-    cmd.setFromGCode("G2 X1 Y1 I1 F10");
+    cmd.setFromGCode("G3 X3 Y1 I0 J1 F10");
     path.addCommand(cmd);
 
     Path::Toolpath path2;
     path2 = path;
-    EXPECT_GT(path.getLength(), 1.57);   // PI/2
-    EXPECT_GT(path2.getLength(), 1.57);  // PI/2
+    EXPECT_NEAR(path.getLength(), 2.0 + std::numbers::pi / 2, 1e-12);
+    EXPECT_NEAR(path2.getLength(), 2.0 + std::numbers::pi / 2, 1e-12);
 }
 // NOLINTEND(cppcoreguidelines-*,readability-*)
