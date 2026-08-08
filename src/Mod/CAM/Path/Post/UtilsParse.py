@@ -40,6 +40,7 @@ import Path
 import Path.Post.Utils as PostUtils
 from Path.Base.MachineState import MachineState
 from Path.Post.DrillCycleExpander import DrillCycleExpander
+from Path.Post.GcodeProcessingUtils import NO_COLLAPSE_ANNOTATION, NO_COLLAPSE_MARKER
 
 # Define some types that are used throughout this file
 CommandLine = List[str]
@@ -481,6 +482,11 @@ def _format_expanded_command(values: Values, gcode: Gcode, cmd) -> None:
     if "P" in params:
         parts.append(f"P{params['P']}")
 
+    # Marked moves get a marker word which filter_inefficient_moves honors
+    # and strips; only emit it when that filter will actually run.
+    if values.get("FILTER_INEFFICIENT_MOVES") and cmd.Annotations.get(NO_COLLAPSE_ANNOTATION):
+        parts.append(NO_COLLAPSE_MARKER)
+
     gcode.append(f"{linenumber(values)}{format_command_line(values, parts)}")
 
 
@@ -787,6 +793,15 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
             command_line = []
         if check_for_suppressed_commands(values, gcode, command, command_line):
             command_line = []
+
+        # Marked moves get a marker word which filter_inefficient_moves
+        # honors and strips; only emit it when that filter will actually run.
+        if (
+            command_line
+            and values.get("FILTER_INEFFICIENT_MOVES")
+            and c.Annotations.get(NO_COLLAPSE_ANNOTATION)
+        ):
+            command_line.append(NO_COLLAPSE_MARKER)
 
         if command_line:
             if command in ("M6", "M06") and swap_tool_change_order:
