@@ -277,7 +277,8 @@ void PropertyGeometryList::Restore(Base::XMLReader& reader)
         Geometry* newG = static_cast<Geometry*>(Base::Type::fromName(TypeName).createInstance());
         if (newG) {
             tryRestoreGeometry(newG, reader);
-        } else {
+        }
+        else {
             Base::Console().log("Geometry within a PropertyGeometryList was skipped.\n");
             break;
         }
