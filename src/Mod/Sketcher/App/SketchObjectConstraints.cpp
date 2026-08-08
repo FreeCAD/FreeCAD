@@ -1451,7 +1451,8 @@ bool SketchObject::deriveConstraintsForPieces(
     const int oldId,
     const std::vector<int>& newIds,
     const Constraint* con,
-    std::vector<Constraint*>& newConstraints
+    std::vector<Constraint*>& newConstraints,
+    const bool assumeTangency
 ) const
 {
     std::vector<const Part::Geometry*> newGeos;
@@ -1459,7 +1460,7 @@ bool SketchObject::deriveConstraintsForPieces(
         newGeos.push_back(getGeometry(newId));
     }
 
-    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints);
+    return deriveConstraintsForPieces(oldId, newIds, newGeos, con, newConstraints, assumeTangency);
 }
 
 bool SketchObject::deriveConstraintsForPieces(
@@ -1467,7 +1468,8 @@ bool SketchObject::deriveConstraintsForPieces(
     const std::vector<int>& newIds,
     const std::vector<const Part::Geometry*>& newGeos,
     const Constraint* con,
-    std::vector<Constraint*>& newConstraints
+    std::vector<Constraint*>& newConstraints,
+    const bool assumeTangency
 ) const
 {
     const Part::Geometry* geo = getGeometry(oldId);
@@ -1482,18 +1484,22 @@ bool SketchObject::deriveConstraintsForPieces(
 
     bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
 
-    bool transferToFirst = false;
+    bool transferToAll = false;
     switch (con->Type) {
         case Horizontal:
         case Vertical:
         case Parallel: {
-            transferToFirst = true;
+            transferToAll = geo->is<Part::GeomLineSegment>();
         } break;
         case Tangent:
         case Perpendicular: {
+            if (!assumeTangency && geo->is<Part::GeomLineSegment>()) {
+                transferToAll = true;
+                break;
+            }
+
             // we assume the parts are forced to be tangential, so we only need to apply it to the
             // ones intersecting
-
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
                 return false;
@@ -1586,7 +1592,7 @@ bool SketchObject::deriveConstraintsForPieces(
             }
             else {
                 // Straight up angle, can transfer to all or first
-                transferToFirst = true;
+                transferToAll = true;
                 break;
             }
         } break;
@@ -1658,13 +1664,24 @@ bool SketchObject::deriveConstraintsForPieces(
             break;
     }
 
-    if (!transferToFirst) {
+    if (!transferToAll) {
         return false;
     }
 
-    Constraint* trans = con->copy();
-    trans->substituteIndex(oldId, newIds[0]);
-    newConstraints.push_back(trans);
+    if (assumeTangency) {
+        // because the geometries are tangential, we can apply the constraint only to the first one
+        // and the rest will follow
+        Constraint* trans = con->copy();
+        trans->substituteIndex(oldId, newIds[0]);
+        newConstraints.push_back(trans);
+    }
+    else {
+        for (auto& newId : newIds) {
+            Constraint* trans = con->copy();
+            trans->substituteIndex(oldId, newId);
+            newConstraints.push_back(trans);
+        }
+    }
 
     return true;
 }

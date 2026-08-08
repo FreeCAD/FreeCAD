@@ -788,7 +788,7 @@ void createNewConstraintsForTrim(
         }
         // constraint has not yet been changed
         size_t sizeBefore = newConstraints.size();
-        obj->deriveConstraintsForPieces(GeoId, newIds, newGeos, con, newConstraints);
+        obj->deriveConstraintsForPieces(GeoId, newIds, newGeos, con, newConstraints, false);
         // Map all newly added derived constraints to the old ID
         for (size_t i = sizeBefore; i < newConstraints.size(); ++i) {
             newToOldConstraintMap[newConstraints[i]] = oldConstrId;
@@ -1110,17 +1110,6 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     // TODO: figure out why, and if that check must be used
     geoAsCurve = getGeometry<Part::GeomCurve>(GeoId);
 
-    for (int i : idsOfOldConstraints) {
-        auto* c = allConstraints[i];
-        Base::Console().log(
-            "id=%d type=%s elements=%s match=%d\n",
-            i,
-            c->typeToString().c_str(),
-            c->elementsToString().c_str(),
-            c->involvesGeoIdAndPosId(GeoId, PointPos::none)
-        );
-    }
-
     std::erase_if(idsOfOldConstraints, [&GeoId, &allConstraints](const auto& i) {
         return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
     });
@@ -1133,7 +1122,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
     }
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints);
+        deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints, true);
     }
 
     Constraint* joint;
