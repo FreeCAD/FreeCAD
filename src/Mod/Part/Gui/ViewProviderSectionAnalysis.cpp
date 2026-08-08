@@ -922,25 +922,46 @@ void ViewProviderSectionAnalysis::setEditViewer(Gui::View3DInventorViewer* viewe
 
     transformDragger->setUpAutoScale(viewer->getSoRenderManager()->getCamera());
 
-    // Orient the dragger so Z aligns with the cutting plane normal.
+    // Orient the dragger so Z points out of the cut, away from the material.
     // Translation along Z = change PlaneOffset.
     // Rotation around X/Y = change PlaneNormal.
-    auto* feat = getObject<Part::SectionAnalysis>();
-    if (feat) {
-        Base::Vector3d n = feat->PlaneNormal.getValue();
-        double len = n.Length();
-        if (len > 1e-10) {
-            n = n / len;
-        }
-
-        // Build rotation that maps (0,0,1) → plane normal
+    // This was tricky to get right
+    Base::Vector3d n;
+    double d = 0.0;
+    if (getCutFrame(n, d)) {
         Base::Rotation rot(Base::Vector3d(0, 0, 1), n);
-        Base::Vector3d planePoint = n * feat->PlaneOffset.getValue();
-        Base::Matrix4D mat = Base::Placement(planePoint, rot).toMatrix();
+        Base::Matrix4D mat = Base::Placement(n * d, rot).toMatrix();
 
         viewer->getDocument()->setEditingTransform(mat);
         viewer->setupEditingRoot(transformDragger, &mat);
     }
+}
+
+bool ViewProviderSectionAnalysis::getCutFrame(Base::Vector3d& normal, double& offset)
+{
+    auto* feat = getObject<Part::SectionAnalysis>();
+    if (!feat) {
+        return false;
+    }
+    Base::Vector3d n = feat->PlaneNormal.getValue();
+    const double len = n.Length();
+    if (len < 1e-10) {
+        return false;
+    }
+    n = n / len;
+    double d = feat->PlaneOffset.getValue();
+
+    // FlipCut swaps which half-space survives, so the material ends up on the
+    // other side of the plane and the dragger has to turn around with it.
+    // Negating the offset too keeps n * d on the same point of the plane.
+    if (feat->FlipCut.getValue()) {
+        n = -n;
+        d = -d;
+    }
+
+    normal = n;
+    offset = d;
+    return true;
 }
 
 void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* viewer)
@@ -948,20 +969,40 @@ void ViewProviderSectionAnalysis::unsetEditViewer(Gui::View3DInventorViewer* vie
     ViewProviderDragger::unsetEditViewer(viewer);
 }
 
+void ViewProviderSectionAnalysis::syncDraggerPlacement()
+{
+    // Only meaningful while editing, and never mid-drag: there the dragger is
+    // the one driving the plane, so resyncing it would fight the drag.
+    if (!transformDragger || draggerInMotion || !getDocument()) {
+        return;
+    }
+
+    Base::Vector3d n;
+    double d = 0.0;
+    if (!getCutFrame(n, d)) {
+        return;
+    }
+
+    Base::Rotation rot(Base::Vector3d(0, 0, 1), n);
+    getDocument()->setEditingTransform(Base::Placement(n * d, rot).toMatrix());
+
+    // The new transform is absolute, so drop whatever offset an earlier drag
+    // left in the dragger itself
+    transformDragger->translation.setValue(0.0f, 0.0f, 0.0f);
+    transformDragger->rotation.setValue(SbRotation::identity());
+    transformDragger->clearIncrementCounts();
+}
+
 void ViewProviderSectionAnalysis::sectionDragStartCallback(void* data, SoDragger*)
 {
     auto* vp = static_cast<ViewProviderSectionAnalysis*>(data);
+    vp->draggerInMotion = true;
     vp->transformDragger->clearIncrementCounts();
 
-    // Save the initial plane state
-    auto* feat = vp->getObject<Part::SectionAnalysis>();
-    if (feat) {
-        Base::Vector3d n = feat->PlaneNormal.getValue();
-        double d = feat->PlaneOffset.getValue();
-        double len = n.Length();
-        if (len > 1e-10) {
-            n = n / len;
-        }
+    // Save the initial plane state, in the same cut frame the dragger sits in
+    Base::Vector3d n;
+    double d = 0.0;
+    if (vp->getCutFrame(n, d)) {
         Base::Rotation rot(Base::Vector3d(0, 0, 1), n);
         vp->draggerStartPlacement = Base::Placement(n * d, rot);
     }
@@ -1005,6 +1046,12 @@ void ViewProviderSectionAnalysis::sectionDragMotionCallback(void* data, SoDragge
     Base::Vector3d newNormal = deltaRot.multVec(startNormal);
     newNormal.Normalize();
 
+    // Back out of the cut frame the dragger works in
+    if (feat->FlipCut.getValue()) {
+        newNormal = -newNormal;
+        newOffset = -newOffset;
+    }
+
     feat->PlaneNormal.setValue(newNormal);
     feat->PlaneOffset.setValue(newOffset);
 
@@ -1021,6 +1068,7 @@ void ViewProviderSectionAnalysis::sectionDragFinishCallback(void* data, SoDragge
     if (vp->transformDragger) {
         vp->transformDragger->clearIncrementCounts();
     }
+    vp->draggerInMotion = false;
 
     // Recompute the section faces once for the final plane pose
     auto* feat = vp->getObject<Part::SectionAnalysis>();
@@ -1072,6 +1120,9 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         // Runs on every gizmo motion and so must stay cheap
         updateClipPlaneEquation();
         updatePlaneVisual();
+        // Presets and the angle spin boxes move the plane behind the dragger's
+        // back, so the gizmo has to follow
+        syncDraggerPlacement();
         if (prop == &feat->PlaneNormal || prop == &feat->FlipCut) {
             // Direction of the 45° pattern and the side the lines are lifted
             // towards both follow the plane orientation

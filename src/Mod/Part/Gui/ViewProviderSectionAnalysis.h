@@ -97,6 +97,14 @@ private:
 
     /// Rebuild the hatch line segments from the tessellated section faces.
     void updateHatchGeometry();
+
+    /// Re-orient the dragger after the plane was changed from outside it
+    void syncDraggerPlacement();
+
+    /// Plane in "cut frame": normal pointing away from the material that
+    /// survives the cut, i.e. PlaneNormal/PlaneOffset negated when FlipCut is
+    /// set. Returns false if the feature has no usable normal.
+    bool getCutFrame(Base::Vector3d& normal, double& offset);
     void applyPerSolidColors();
 
     /// Cache the source bbox; expensive on large assemblies, so refreshed only
@@ -110,6 +118,7 @@ private:
     static void sectionDragMotionCallback(void* data, SoDragger* d);
     static void sectionDragFinishCallback(void* data, SoDragger* d);
     Base::Placement draggerStartPlacement;
+    bool draggerInMotion = false;
 
     SoSwitch* pcPlaneSwitch = nullptr;
     SoSeparator* pcPlaneRoot = nullptr;
