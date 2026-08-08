@@ -2078,6 +2078,20 @@ def getRepresentation(
             if not obj.Shape.Solids:
                 forcebrep = True
 
+    requires_brep = False
+    requires_brep_export = getattr(getattr(obj, "Proxy", None), "requires_brep_export", None)
+    if callable(requires_brep_export):
+        # End-condition planes are applied after getExtrusionData() builds the
+        # wall. Preserve the processed wall shape instead of exporting the
+        # untrimmed construction as an IFC swept extrusion. ArchWall documents
+        # this contract in requires_brep_export()/isStandardCase().
+        requires_brep = requires_brep_export(obj)
+        forcebrep = forcebrep or requires_brep
+        if requires_brep:
+            # A mapped clone may point at an untrimmed shared representation.
+            # Prefer the exact processed shape for end-conditioned walls.
+            forceclone = False
+
     # check for clones
 
     if ((not subtraction) and (not forcebrep)) or forceclone:
