@@ -83,9 +83,11 @@
 #include "EditorView.h"
 #include "ExpressionBindingPy.h"
 #include "FileDialog.h"
+#include "GraphvizView.h"
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
 #include "GuiTestScript.h"
+#include "ImageView.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -2389,6 +2391,8 @@ void Application::initTypes()
     Gui::TextDocumentEditorView                 ::init();
     Gui::EditorView                             ::init();
     Gui::PythonEditorView                       ::init();
+    Gui::ImageView                              ::init();
+    Gui::GraphvizView                           ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();
