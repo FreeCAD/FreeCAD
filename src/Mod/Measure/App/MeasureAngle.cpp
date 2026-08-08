@@ -45,7 +45,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Tools.h>
-#include <Mod/Part/App/Datums.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <TopTools_IndexedMapOfShape.hxx>
 
 using namespace Measure;
@@ -279,7 +279,7 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
         }
     }
 
-    if (!isMeasuringDatum() || !areLocationsEqual()) {
+    if (!isMeasuringInfinite() || !areLocationsEqual()) {
         _isImgOrigin = true;
     }
 
@@ -302,7 +302,7 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
 bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
-    if (!isMeasuringDatum()) {
+    if (!isMeasuringInfinite()) {
         TopoDS_Edge e1 = TopoDS::Edge(s1);
         TopoDS_Edge e2 = TopoDS::Edge(s2);
         TopoDS_Vertex common;
@@ -348,7 +348,7 @@ bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
 bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
 {
-    if (!isMeasuringDatum() || !areLocationsEqual()) {
+    if (!isMeasuringInfinite() || !areLocationsEqual()) {
         _isImgOrigin = true;
     }
 
@@ -385,25 +385,26 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
 
 namespace
 {
-bool isDatum(App::DocumentObject* ob, const std::vector<std::string>& subNames)
+bool isInfinite(App::DocumentObject* ob, const std::vector<std::string>& subNames)
 {
     if (!ob || !ob->isValid() || subNames.empty()) {
         return false;
     }
 
-    App::SubObjectT subject {ob, subNames.at(0).c_str()};
-    App::DocumentObject* subObject = subject.getSubObjectList().back();
-    if (!subObject || !subObject->isValid()) {
-        return false;
-    }
-    return Measure::isDatum(*subObject);
+    return Part::Feature::getTopoShape(
+               ob,
+               Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                   | Part::ShapeOption::Transform,
+               subNames.at(0).c_str()
+    )
+        .isInfinite();
 }
 }  // namespace
 
-bool Measure::MeasureAngle::isMeasuringDatum()
+bool Measure::MeasureAngle::isMeasuringInfinite()
 {
-    return ::isDatum(Element1.getValue(), Element1.getSubValues())
-        || ::isDatum(Element2.getValue(), Element2.getSubValues());
+    return ::isInfinite(Element1.getValue(), Element1.getSubValues())
+        || ::isInfinite(Element2.getValue(), Element2.getSubValues());
 }
 
 bool Measure::MeasureAngle::areLocationsEqual()

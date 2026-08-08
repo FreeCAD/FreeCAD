@@ -26,7 +26,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/MeasureManager.h>
-#include <Mod/Part/App/Datums.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Base/Tools.h>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
@@ -329,10 +329,11 @@ bool MeasureDistance::distanceInfiniteInfinite(
 )
 {
     App::SubObjectT subject1 = {&ob1, subs1.at(0).c_str()};
-    App::DocumentObject* subObject1 = subject1.getSubObjectList().back();
+    App::DocumentObject* subObject1 = subject1.getSubObject();
     App::SubObjectT subject2 = {&ob2, subs2.at(0).c_str()};
-    App::DocumentObject* subObject2 = subject2.getSubObjectList().back();
-    if (!subObject1 || !subObject2 || !isDatum(*subObject1) || !isDatum(*subObject2)) {
+    App::DocumentObject* subObject2 = subject2.getSubObject();
+    if (!subObject1 || !subObject2 || !Part::TopoShape(shape1).isInfinite()
+        || !Part::TopoShape(shape2).isInfinite()) {
         return false;
     }
 

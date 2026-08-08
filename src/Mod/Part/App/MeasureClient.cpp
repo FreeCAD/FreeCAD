@@ -43,6 +43,8 @@
 #include <GProp_GProps.hxx>
 #include <ShapeAnalysis_Edge.hxx>
 #include <gp_Circ.hxx>
+#include <gp_Lin.hxx>
+#include <gp_Pln.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <GeomLib_IsPlanarSurface.hxx>
 
@@ -186,8 +188,8 @@ App::MeasureElementType PartMeasureTypeCb(App::DocumentObject* ob, const char* s
 
             switch (curve.GetType()) {
                 case GeomAbs_Line: {
-                    return isDatum(subject) ? App::MeasureElementType::LINE
-                                            : App::MeasureElementType::LINESEGMENT;
+                    return TopoShape(shape).isInfinite() ? App::MeasureElementType::LINE
+                                                         : App::MeasureElementType::LINESEGMENT;
                 }
                 case GeomAbs_Circle: {
                     return App::MeasureElementType::CIRCLE;
@@ -479,10 +481,39 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     }
 
     TopAbs_ShapeEnum sType = shape.ShapeType();
-    if (isDatum(subject) && sType != TopAbs_VERTEX) {
+    if (TopoShape(shape).isInfinite() && sType != TopAbs_VERTEX) {
         Base::Placement placement = getPlacement(subject);
-        Base::Vector3d orientation = placement.getRotation().multVec(Base::Vector3d(0, 0, -1));
-        return std::make_shared<MeasureAngleInfo>(true, orientation, placement.getPosition());
+        if (isDatum(subject)) {
+            Base::Vector3d orientation = placement.getRotation().multVec(Base::Vector3d(0, 0, -1));
+            return std::make_shared<MeasureAngleInfo>(true, orientation, placement.getPosition());
+        }
+        if (sType == TopAbs_EDGE) {
+            BRepAdaptor_Curve curve(TopoDS::Edge(shape));
+            if (curve.GetType() == GeomAbs_Line) {
+                gp_Lin line = curve.Line();
+                return std::make_shared<MeasureAngleInfo>(
+                    true,
+                    Base::Vector3d(line.Direction().X(), line.Direction().Y(), line.Direction().Z()),
+                    Base::Vector3d(line.Location().X(), line.Location().Y(), line.Location().Z())
+                );
+            }
+        }
+        else if (sType == TopAbs_FACE) {
+            BRepAdaptor_Surface surface(TopoDS::Face(shape));
+            if (surface.GetType() == GeomAbs_Plane) {
+                gp_Pln plane = surface.Plane();
+                return std::make_shared<MeasureAngleInfo>(
+                    true,
+                    Base::Vector3d(
+                        plane.Axis().Direction().X(),
+                        plane.Axis().Direction().Y(),
+                        plane.Axis().Direction().Z()
+                    ),
+                    Base::Vector3d(plane.Location().X(), plane.Location().Y(), plane.Location().Z())
+                );
+            }
+        }
+        return std::make_shared<MeasureAngleInfo>();
     }
 
     gp_Pnt position;
