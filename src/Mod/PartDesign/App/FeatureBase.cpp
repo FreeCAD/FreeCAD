@@ -37,20 +37,6 @@
 namespace PartDesign
 {
 
-namespace
-{
-
-Part::TopoShape getGeometryShape(const App::DocumentObject* object)
-{
-    auto* geoFeature = freecad_cast<const App::GeoFeature*>(object);
-    auto* shapeProperty = geoFeature
-        ? freecad_cast<const Part::PropertyPartShape*>(geoFeature->getPropertyOfGeometry())
-        : nullptr;
-    return shapeProperty ? shapeProperty->getShape() : Part::TopoShape();
-}
-
-}  // namespace
-
 PROPERTY_SOURCE(PartDesign::FeatureBase, PartDesign::Feature)
 
 FeatureBase::FeatureBase()
@@ -102,7 +88,12 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
         if (shape.isNull()) {
-            shape = getGeometryShape(base);
+            auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+                App::GeoFeature::getPropertyOfGeometry(base)
+            );
+            if (shapeProperty) {
+                shape = shapeProperty->getShape();
+            }
         }
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
@@ -122,7 +113,12 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
         ? static_cast<Part::Feature*>(base)->Shape.getShape()
         : Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink);
     if (shape.isNull()) {
-        shape = getGeometryShape(base);
+        auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+            App::GeoFeature::getPropertyOfGeometry(base)
+        );
+        if (shapeProperty) {
+            shape = shapeProperty->getShape();
+        }
     }
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn(

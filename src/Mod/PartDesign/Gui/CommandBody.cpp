@@ -30,8 +30,8 @@
 
 #include <App/Datums.h>
 #include <App/Document.h>
-#include <App/GeoFeatureGroupExtension.h>
 #include <App/GeoFeature.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Base/Console.h>
@@ -65,10 +65,9 @@ static Part::TopoShape getBaseFeatureShape(const App::DocumentObject* object)
 {
     auto shape = Part::Feature::getTopoShape(object, Part::ShapeOption::ResolveLink);
     if (shape.isNull()) {
-        auto* geoFeature = freecad_cast<const App::GeoFeature*>(object);
-        auto* shapeProperty = geoFeature
-            ? freecad_cast<const Part::PropertyPartShape*>(geoFeature->getPropertyOfGeometry())
-            : nullptr;
+        auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+            App::GeoFeature::getPropertyOfGeometry(object)
+        );
         if (shapeProperty) {
             shape = shapeProperty->getShape();
         }

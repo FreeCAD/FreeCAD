@@ -62,10 +62,9 @@ bool hasBaseFeatureShape(const App::DocumentObject* object)
     if (!Part::Feature::getTopoShape(object, Part::ShapeOption::ResolveLink).isNull()) {
         return true;
     }
-    auto* geoFeature = freecad_cast<const App::GeoFeature*>(object);
-    auto* shapeProperty = geoFeature
-        ? freecad_cast<const Part::PropertyPartShape*>(geoFeature->getPropertyOfGeometry())
-        : nullptr;
+    auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+        App::GeoFeature::getPropertyOfGeometry(object)
+    );
     if (shapeProperty) {
         return !shapeProperty->getShape().isNull();
     }
