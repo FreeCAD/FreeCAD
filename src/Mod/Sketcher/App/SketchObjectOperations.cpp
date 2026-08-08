@@ -202,9 +202,11 @@ std::vector<int> SketchObject::chooseFilletsEdges(const std::vector<int>& GeoIdL
     }
     return dst;
 }
+
 int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bool createCorner, bool chamfer)
 {
     if (GeoId < 0 || GeoId > getHighestCurveIndex()) {
+        Base::Console().log("Invalid GeoId: %d\n", GeoId);
         return -1;
     }
 
@@ -217,6 +219,7 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
 
     // only coincident points between two (non-external) edges can be filleted
     if (GeoIdList.size() != 2 || GeoIdList[0] < 0 || GeoIdList[1] < 0) {
+        Base::Console().log("Invalid number of edges connected to GeoId: %d\n", GeoId);
         return -1;
     }
 
@@ -232,6 +235,18 @@ int SketchObject::fillet(int GeoId, PointPos PosId, double radius, bool trim, bo
         Base::Vector3d midPnt2 = (lineSeg2->getStartPoint() + lineSeg2->getEndPoint()) / 2;
         return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
     }
+    // TODO: Find a way to eval two correct points that can be bound by an arc created using
+    // Here is an attempt for reference, works some times but it depends on the curves, their direction, etc
+    // else if (geo1->isDerivedFrom<Part::GeomCurve>()
+    //     && geo2->isDerivedFrom<Part::GeomCurve>()) {
+    //     auto* lineSeg1 = static_cast<const Part::GeomCurve*>(geo1);
+    //     auto* lineSeg2 = static_cast<const Part::GeomCurve*>(geo2);
+
+    //     // .05 is a safe bet, if the param becomes too large, it won't be able to form the fillet's arc
+    //     Base::Vector3d midPnt1 = lineSeg1->pointAtParameter(.05f);
+    //     Base::Vector3d midPnt2 = lineSeg2->pointAtParameter(.05f);
+    //     return fillet(GeoIdList[0], GeoIdList[1], midPnt1, midPnt2, radius, trim, createCorner, chamfer);
+    // }
 
     return -1;
 }
@@ -265,6 +280,7 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
     Base::Vector3d cornerPoint;
     std::unique_ptr<Part::GeomArcOfCircle> arc(createFilletGeometry(geo1, geo2, refPnt1, refPnt2, radius, pos1, pos2, reverse, cornerPoint));
     if (!arc) {
+        Base::Console().log("no arc\n");
         return -1;
     }
 

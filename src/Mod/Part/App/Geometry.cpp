@@ -6567,7 +6567,6 @@ GeomArcOfCircle* createFilletGeometry(
         return arc;
     }
     else if (geo1->isDerivedFrom<GeomBoundedCurve>() && geo2->isDerivedFrom<GeomBoundedCurve>()) {
-
         auto distanceToRefPoints =
             [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
                 return (ip1 - ref1).Length() + (ip2 - ref2).Length();
