@@ -303,6 +303,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_SectionGroup";
     *views << "TechDraw_DetailView";
     *views << "TechDraw_DraftView";
+    *views << "TechDraw_SpreadsheetView";
     *views << "TechDraw_ClipGroup";
 
     Gui::ToolBarItem* stacking = new Gui::ToolBarItem(root);
