@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <string>
+#include <array>
 
 #include <FCConfig.h>
 
