@@ -51,6 +51,10 @@ class Arch_Wall:
     https://wiki.freecad.org/Arch_Wall
     """
 
+    def __init__(self):
+        self.tracker = None
+        self._reset_interactive_buffers()
+
     def GetResources(self):
         """Returns a dictionary with the visual aspects of the Arch Wall tool."""
 
@@ -68,6 +72,45 @@ class Arch_Wall:
 
         v = hasattr(FreeCADGui.getMainWindow().getActiveWindow(), "getSceneGraph")
         return v
+
+    def _reset_interactive_buffers(self):
+        """Clear Arch Wall's local interactive buffers."""
+        self.points = []
+        self.existing = []
+        self.Length = None
+
+    def _restore_working_plane(self):
+        wp = getattr(self, "wp", None)
+        if wp is not None:
+            wp._restore()
+
+    def _teardown_interactive_session(self, restore_working_plane=True):
+        """Tear down the active interactive wall session."""
+        if restore_working_plane:
+            self._restore_working_plane()
+
+        tracker = self.tracker
+        self.tracker = None
+        if tracker is not None:
+            tracker.finalize()
+
+        # Snapper.off() leaves command-owned UI active while a Draft command is
+        # registered, so clear the command before canceling the point request.
+        FreeCAD.activeDraftCommand = None
+
+        snapper = getattr(FreeCADGui, "Snapper", None)
+        if snapper is not None:
+            snapper.cancelPointRequest()
+
+        self._reset_interactive_buffers()
+
+    def cancel_interactive(self):
+        """Cancel the current interactive wall creation session."""
+        self._teardown_interactive_session()
+
+    def finish(self):
+        """Finish the interactive wall command."""
+        self.cancel_interactive()
 
     def Activated(self):
         """Executed when Arch Wall is called.
@@ -101,7 +144,7 @@ class Arch_Wall:
             self.baseline_mode = WallBaselineMode.NONE
         self.AUTOJOIN = params.get_param_arch("autoJoinWalls")
         sel = FreeCADGui.Selection.getSelectionEx()
-        self.existing = []
+        self._reset_interactive_buffers()
         self.wp = None
 
         if sel:
@@ -178,18 +221,11 @@ class Arch_Wall:
         """
 
         import Draft
-        import ArchWall
-        from draftutils import gui_utils
 
-        if obj:
-            if Draft.getType(obj) == "Wall":
-                if not obj in self.existing:
-                    self.existing.append(obj)
+        if obj and Draft.getType(obj) == "Wall" and obj not in self.existing:
+            self.existing.append(obj)
         if point is None:
-            self.wp._restore()
-            FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
-            self.tracker.finalize()
+            self.cancel_interactive()
             return
         self.points.append(point)
         if len(self.points) == 1:
@@ -399,10 +435,7 @@ class Arch_Wall:
         """Orchestrate wall creation according to the baseline mode."""
         from draftutils import params
 
-        self.wp._restore()
-        FreeCAD.activeDraftCommand = None
-        FreeCADGui.Snapper.off()
-        self.tracker.off()
+        self._restore_working_plane()
 
         p0 = self.wp.get_local_coords(self.points[0])
         p1 = self.wp.get_local_coords(self.points[1])
@@ -429,8 +462,9 @@ class Arch_Wall:
         # Finalization
         self.doc.commitTransaction()
         self.doc.recompute()
-        self.tracker.finalize()
-        if FreeCADGui.draftToolBar.continueMode:
+        continue_mode = FreeCADGui.draftToolBar.continueMode
+        self._teardown_interactive_session(restore_working_plane=False)
+        if continue_mode:
             self.Activated()
 
     def update(self, point, info):
