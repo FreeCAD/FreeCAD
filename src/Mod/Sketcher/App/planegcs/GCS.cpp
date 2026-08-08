@@ -529,6 +529,7 @@ void System::clear()
     emptyDiagnoseMatrix = true;
 
     redundant.clear();
+    conflicting.clear();
     conflictingTags.clear();
     redundantTags.clear();
     partiallyRedundantTags.clear();
@@ -1778,28 +1779,8 @@ void System::initSolution(Algorithm alg)
     }
 
     // partitioning into decoupled components
-    Graph g;
-    for (int i = 0; i < int(plist.size() + clistR.size()); i++) {
-        boost::add_vertex(g);
-    }
-
-    int cvtid = int(plist.size());
-    for (const auto constr : clistR) {
-        VEC_pD& cparams = c2p[constr];
-        for (const auto param : cparams) {
-            MAP_pD_I::const_iterator it = pIndex.find(param);
-            if (it != pIndex.end()) {
-                boost::add_edge(cvtid, it->second, g);
-            }
-        }
-        ++cvtid;
-    }
-
-    VEC_I components(boost::num_vertices(g));
-    int componentsSize = 0;
-    if (!components.empty()) {
-        componentsSize = boost::connected_components(g, &components[0]);
-    }
+    VEC_I components;
+    int componentsSize = computeComponents(clistR, components);
 
     // identification of equality constraints and parameter reduction
     std::set<Constraint*> reducedConstrs;  // constraints that will be eliminated through reduction
@@ -4725,10 +4706,12 @@ void System::undoSolution()
 }
 
 void System::makeReducedJacobian(
+    const VEC_pD& plist,
+    const VEC_pD& pdrivenlist,
+    const std::vector<Constraint*>& clist,
     Eigen::MatrixXd& J,
     std::map<int, int>& jacobianconstraintmap,
-    GCS::VEC_pD& pdiagnoselist,
-    std::map<int, int>& tagmultiplicity
+    GCS::VEC_pD& pdiagnoselist
 )
 {
     // construct specific parameter list for diagonose ignoring driven constraint parameters
@@ -4754,14 +4737,6 @@ void System::makeReducedJacobian(
                 J(jacobianconstraintcount - 1, j) = constr->grad(pdiagnoselist[j]);
             }
 
-            // parallel processing: create tag multiplicity map
-            if (tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end()) {
-                tagmultiplicity[constr->getTag()] = 0;
-            }
-            else {
-                tagmultiplicity[constr->getTag()]++;
-            }
-
             jacobianconstraintmap[jacobianconstraintcount - 1] = allcount - 1;
         }
     }
@@ -4769,6 +4744,29 @@ void System::makeReducedJacobian(
     if (jacobianconstraintcount == 0) {  // only driven constraints
         J.resize(0, 0);
     }
+}
+
+int System::computeComponents(const std::vector<Constraint*>& clist, VEC_I& components)
+{
+    Graph graph(plist.size() + clist.size());
+    int cvtid = int(plist.size());
+    for (const auto constr : clist) {
+        VEC_pD& cparams = c2p[constr];
+        for (const auto param : cparams) {
+            MAP_pD_I::const_iterator it = pIndex.find(param);
+            if (it != pIndex.end()) {
+                boost::add_edge(cvtid, it->second, graph);
+            }
+        }
+        ++cvtid;
+    }
+
+    components.resize(boost::num_vertices(graph));
+    int componentsSize = 0;
+    if (!components.empty()) {
+        componentsSize = boost::connected_components(graph, &components[0]);
+    }
+    return componentsSize;
 }
 
 int System::diagnose(Algorithm alg)
@@ -4799,21 +4797,154 @@ int System::diagnose(Algorithm alg)
     // pdrivenlist      =>  list of the parameters that are driven by other parameters
     //                      (e.g. value of driven constraints)
 
-    // When adding an external geometry or a constraint on an external geometry the array
-    // 'plist' is empty.
-    // So, we must abort here because otherwise we would create an invalid matrix and make
-    // the application eventually crash. This fixes issues #0002372/#0002373.
-    if (plist.empty() || (plist.size() - pdrivenlist.size()) == 0) {
-        hasDiagnosis = true;
-        emptyDiagnoseMatrix = true;
-        dofs = 0;
-        return dofs;
-    }
-
+    emptyDiagnoseMatrix = true;
     redundant.clear();
+    conflicting.clear();
     conflictingTags.clear();
     redundantTags.clear();
     partiallyRedundantTags.clear();
+    pDependentParameters.clear();
+    pDependentParametersGroups.clear();
+
+    std::vector<Constraint*> drivingConstraints;
+    std::ranges::copy_if(clist, std::back_inserter(drivingConstraints), [](auto constr) {
+        return constr->isDriving();
+    });
+
+    // tag multiplicity gives the number of solver constraints associated with the same tag
+    // A tag generally corresponds to the Sketcher constraint index - There are special tag values,
+    // like 0 and -1.
+    std::map<int, int> tagmultiplicity;
+    for (auto& constr : drivingConstraints) {
+        if (constr->getTag() >= 0) {
+            if (tagmultiplicity.find(constr->getTag()) == tagmultiplicity.end()) {
+                tagmultiplicity[constr->getTag()] = 0;
+            }
+            else {
+                tagmultiplicity[constr->getTag()]++;
+            }
+        }
+    }
+
+    auto finalizeConstraintTags = [this](const std::vector<Constraint*>& universe) {
+        SET_I redundantTagsSet, partiallyRedundantTagsSet;
+        for (const auto& constr : universe) {
+            if (redundant.count(constr) != 0) {
+                redundantTagsSet.insert(constr->getTag());
+                partiallyRedundantTagsSet.insert(constr->getTag());
+            }
+        }
+        for (const auto& constr : universe) {
+            if (redundant.count(constr) == 0) {
+                redundantTagsSet.erase(constr->getTag());
+            }
+        }
+        for (auto r : redundantTagsSet) {
+            partiallyRedundantTagsSet.erase(r);
+        }
+        redundantTags.assign(redundantTagsSet.begin(), redundantTagsSet.end());
+        partiallyRedundantTags.assign(
+            partiallyRedundantTagsSet.begin(),
+            partiallyRedundantTagsSet.end()
+        );
+
+        SET_I conflictingTagsSet;
+        for (const auto& constr : universe) {
+            if (conflicting.count(constr) != 0) {
+                bool isinternalalignment
+                    = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
+                conflictingTagsSet.insert(isinternalalignment ? 0 : constr->getTag());
+            }
+        }
+        conflictingTagsSet.erase(0);
+        conflictingTags.assign(conflictingTagsSet.begin(), conflictingTagsSet.end());
+    };
+
+    VEC_I components;
+    int componentsSize = computeComponents(drivingConstraints, components);
+
+    if (componentsSize <= 1) {
+        dofs = diagnoseComponent(alg, plist, pdrivenlist, clist, tagmultiplicity);
+        finalizeConstraintTags(clist);
+        hasDiagnosis = true;
+        return dofs;
+    }
+
+    std::vector<VEC_pD> plists(componentsSize);
+    for (std::size_t i = 0; i < plist.size(); ++i) {
+        plists[components[i]].push_back(plist[i]);
+    }
+    std::vector<std::vector<Constraint*>> clists(componentsSize);
+    for (std::size_t i = 0; i < drivingConstraints.size(); ++i) {
+        clists[components[int(plist.size()) + int(i)]].push_back(drivingConstraints[i]);
+    }
+    std::vector<VEC_pD> pdrivenlists(componentsSize);
+    for (const auto& param : pdrivenlist) {
+        MAP_pD_I::const_iterator it = pIndex.find(param);
+        if (it != pIndex.end()) {
+            pdrivenlists[components[it->second]].push_back(param);
+        }
+    }
+
+    int pdofs = 0;  // positive degrees of freedom
+    int ndofs = 0;  // negative degrees of freedom
+
+    for (int i = 0; i < componentsSize; ++i) {
+        if (plists[i].empty() && clists[i].empty()) {
+            continue;
+        }
+
+        int d = diagnoseComponent(alg, plists[i], pdrivenlists[i], clists[i], tagmultiplicity);
+        pdofs += std::max(d, 0);
+        ndofs += std::min(d, 0);
+    }
+
+    dofs = pdofs > 0 ? pdofs : ndofs;
+
+    finalizeConstraintTags(drivingConstraints);
+
+    hasDiagnosis = true;
+    return dofs;
+}
+
+int System::diagnoseComponent(
+    Algorithm alg,
+    const VEC_pD& plist,
+    const VEC_pD& pdrivenlist,
+    const std::vector<Constraint*>& clist,
+    const std::map<int, int>& tagmultiplicity
+)
+{
+    // 'plist' is empty when a component's driving constraints touch only
+    // external/fixed geometry, so classify each constraint directly
+    if (plist.empty()) {
+        int conflictingCount = 0;
+        for (auto* constr : clist) {
+            if (constr->getTag() < 0 || !constr->isDriving()) {
+                continue;
+            }
+            bool priorityOrAlignment = constr->getTag() == 0
+                || constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment;
+            if (priorityOrAlignment) {
+                ++conflictingCount;
+                continue;
+            }
+
+            double err = constr->error();
+            if (err * err < convergenceRedundant) {
+                redundant.insert(constr);
+            }
+            else {
+                ++conflictingCount;
+                conflicting.insert(constr);
+            }
+        }
+        return conflictingCount > 0 ? -conflictingCount : 0;
+    }
+
+    if ((plist.size() - pdrivenlist.size()) == 0) {
+        return 0;
+    }
 
     // This QR diagnosis uses a reduced Jacobian matrix to calculate the rank of the system
     // and identify conflicting and redundant constraints.
@@ -4832,17 +4963,13 @@ int System::diagnose(Algorithm alg)
     // constraints)
     GCS::VEC_pD pdiagnoselist;
 
-    // tag multiplicity gives the number of solver constraints associated with the same tag
-    // A tag generally corresponds to the Sketcher constraint index - There are special tag values,
-    // like 0 and -1.
-    std::map<int, int> tagmultiplicity;
+    makeReducedJacobian(plist, pdrivenlist, clist, J, jacobianconstraintmap, pdiagnoselist);
 
-    makeReducedJacobian(J, jacobianconstraintmap, pdiagnoselist, tagmultiplicity);
+    if (stats) {
+        stats->cumulativeDiagnoseMatrixSize += J.rows() * J.cols();
+    }
 
-    // this function will exit with a diagnosis and, unless overridden by functions below, with full
-    // DoFs
-    hasDiagnosis = true;
-    dofs = pdiagnoselist.size();
+    int dofs = pdiagnoselist.size();
 
     // Use DenseQR for small to medium systems to avoid SparseQR rank issues.
     // SparseQR is known to fail rank detection on specific geometric structures (e.g. aligned slots).
@@ -4910,6 +5037,10 @@ int System::diagnose(Algorithm alg)
 #endif
 
     if (J.rows() == 0) {
+        for (auto* param : pdiagnoselist) {
+            pDependentParametersGroups.push_back({param});
+            pDependentParameters.push_back(param);
+        }
         return dofs;
     }
 
@@ -4966,6 +5097,7 @@ int System::diagnose(Algorithm alg)
             int nonredundantconstrNum;
             identifyConflictingRedundantConstraints(
                 alg,
+                clist,
                 qrJT,
                 jacobianconstraintmap,
                 tagmultiplicity,
@@ -5045,6 +5177,7 @@ int System::diagnose(Algorithm alg)
 
             identifyConflictingRedundantConstraints(
                 alg,
+                clist,
                 SqrJT,
                 jacobianconstraintmap,
                 tagmultiplicity,
@@ -5318,19 +5451,20 @@ void System::identifyDependentParameters(
     }
 #endif
 
-    pDependentParametersGroups.resize(qrJ.cols() - rank);
+    std::size_t groupBase = pDependentParametersGroups.size();
+    pDependentParametersGroups.resize(groupBase + (qrJ.cols() - rank));
     for (int j = rank; j < qrJ.cols(); j++) {
         for (int row = 0; row < rank; row++) {
             if (fabs(Rparams(row, j)) > 1e-10) {
                 int origCol = qrJ.colsPermutation().indices()[row];
 
-                pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
+                pDependentParametersGroups[groupBase + j - rank].push_back(pdiagnoselist[origCol]);
                 pDependentParameters.push_back(pdiagnoselist[origCol]);
             }
         }
         int origCol = qrJ.colsPermutation().indices()[j];
 
-        pDependentParametersGroups[j - rank].push_back(pdiagnoselist[origCol]);
+        pDependentParametersGroups[groupBase + j - rank].push_back(pdiagnoselist[origCol]);
         pDependentParameters.push_back(pdiagnoselist[origCol]);
     }
 
@@ -5459,6 +5593,7 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
 template<typename T>
 void System::identifyConflictingRedundantConstraints(
     Algorithm alg,
+    const std::vector<Constraint*>& clist,
     const T& qrJT,
     const std::map<int, int>& jacobianconstraintmap,
     const std::map<int, int>& tagmultiplicity,
@@ -5658,50 +5793,11 @@ void System::identifyConflictingRedundantConstraints(
     }
     delete subSysTmp;
 
-    // simplified output of conflicting tags
-    SET_I conflictingTagsSet;
     for (const auto& cGroup : conflictGroups) {
-        // exclude internal alignment
-        std::ranges::transform(
-            cGroup,
-            std::inserter(conflictingTagsSet, conflictingTagsSet.begin()),
-            [](const auto& constr) {
-                bool isinternalalignment
-                    = (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
-                return (isinternalalignment ? 0 : constr->getTag());
-            }
-        );
-    }
-
-    // exclude constraints tagged with zero
-    conflictingTagsSet.erase(0);
-
-    conflictingTags.resize(conflictingTagsSet.size());
-    std::ranges::copy(conflictingTagsSet, conflictingTags.begin());
-
-    // output of redundant tags
-    SET_I redundantTagsSet, partiallyRedundantTagsSet;
-    for (const auto& constr : redundant) {
-        redundantTagsSet.insert(constr->getTag());
-        partiallyRedundantTagsSet.insert(constr->getTag());
-    }
-
-    // remove tags represented at least in one non-redundant constraint
-    for (const auto& constr : clist) {
-        if (redundant.count(constr) == 0) {
-            redundantTagsSet.erase(constr->getTag());
+        for (const auto& constr : cGroup) {
+            conflicting.insert(constr);
         }
     }
-
-    redundantTags.resize(redundantTagsSet.size());
-    std::ranges::copy(redundantTagsSet, redundantTags.begin());
-
-    for (auto r : redundantTagsSet) {
-        partiallyRedundantTagsSet.erase(r);
-    }
-
-    partiallyRedundantTags.resize(partiallyRedundantTagsSet.size());
-    std::ranges::copy(partiallyRedundantTagsSet, partiallyRedundantTags.begin());
 
     nonredundantconstrNum = constrNum;
 }
