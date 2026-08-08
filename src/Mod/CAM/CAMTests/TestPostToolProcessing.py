@@ -20,6 +20,8 @@
 # *   <https://www.gnu.org/licenses/>.                                      *
 # * *************************************************************************
 
+import re
+
 import FreeCAD
 import Constants
 import Path
@@ -360,12 +362,15 @@ class TestToolProcessing(unittest.TestCase):
 
         # Create a second operation using the second tool
         profile_op2 = self.doc.addObject("Path::FeaturePython", "TestProfile2")
+        profile_op2.addProperty("App::PropertyLink", "ToolController", "Base", "Tool controller")
+        profile_op2.ToolController = tc2
         profile_op2.Label = "TestProfile2"
         profile_op2.Path = Path.Path(
             [
                 Path.Command("G0", {"X": 50.0, "Y": 50.0, "Z": 5.0}),
                 Path.Command("G1", {"X": 60.0, "Y": 50.0, "Z": -5.0, "F": 100.0}),
                 Path.Command("G0", {"X": 50.0, "Y": 50.0, "Z": 5.0}),
+                Path.Command("(END)"),  # to find end of relevant gcode
             ]
         )
         self.job.Operations.addObject(profile_op2)
@@ -384,43 +389,38 @@ class TestToolProcessing(unittest.TestCase):
             # Test with early_tool_prep enabled
             results_with = self._run_export2(machine_with_prep)
             gcode_with = self._get_all_gcode(results_with)
+            # remove pre/post stuff that we don't care about
+            starting_with_toolcontroller = re.search(
+                r"\(TC: 6mm Endmill\).+\(END\)", gcode_with, re.DOTALL
+            ).group(0)
+
+            # Note the "bare" T2
+            expected = """(TC: 6mm Endmill)
+M6 T1
+G43 H1
+T2
+G0 X0.000 Y0.000 Z5.000
+G1 X10.000 Y0.000 Z-5.000 F6000.000
+G0 X0.000 Y0.000 Z5.000
+(TC: 3mm Endmill)
+M6 T2
+G43 H2
+G0 X50.000 Y50.000 Z5.000
+G1 X60.000 Y50.000 Z-5.000 F6000.000
+G0 X50.000 Y50.000 Z5.000
+(END)"""
+            self.assertEqual(expected, starting_with_toolcontroller)
 
             # Test without early_tool_prep
             results_without = self._run_export2(machine_no_prep)
+            gcode_with = self._get_all_gcode(results_without)
+            starting_with_toolcontroller = re.search(
+                r"\(TC: 6mm Endmill\).+\(END\)", gcode_with, re.DOTALL
+            ).group(0)
 
-            lines_with = [line.strip() for line in gcode_with.split("\n") if line.strip()]
-
-            # Find M6 commands in output with early_tool_prep enabled
-            m6_lines_with = [i for i, line in enumerate(lines_with) if "M6" in line]
-
-            # With early_tool_prep, should have standalone T commands (tool prep)
-            # Look for lines that start with T followed by a digit
-            import re
-
-            standalone_t_with = [line for line in lines_with if re.match(r"^T\d+$", line)]
-
-            # Should have standalone T commands when early_tool_prep is enabled
-            # Note: early_tool_prep only works when there are multiple tools
-            if len(m6_lines_with) >= 2:
-                self.assertGreater(
-                    len(standalone_t_with),
-                    0,
-                    "Should have standalone T prep commands when early_tool_prep is enabled with multiple tools",
-                )
-
-                # Verify the early prep command appears after first M6
-                first_m6_idx = m6_lines_with[0]
-                # Look for standalone T command shortly after first M6
-                found_early_prep = False
-                for i in range(first_m6_idx + 1, min(first_m6_idx + 20, len(lines_with))):
-                    line = lines_with[i]
-                    if re.match(r"^T\d+$", line):
-                        found_early_prep = True
-                        break
-
-                self.assertTrue(
-                    found_early_prep, "Should have early tool prep command shortly after first M6"
-                )
+            # remove the T2 line, otherwise the same
+            expected = re.sub(r"\nT2\n", "\n", expected)
+            self.assertEqual(expected, starting_with_toolcontroller)
 
         finally:
             # Clean up the second tool controller and operation
@@ -537,7 +537,6 @@ class TestToolProcessing(unittest.TestCase):
 
         # With tool list enabled, header should contain tool information in comments
         # Look for specific tool listing format: (T<number>=toolname)
-        import re
 
         tool_pattern = re.compile(r"\(T\d+=.*?\)")
 
