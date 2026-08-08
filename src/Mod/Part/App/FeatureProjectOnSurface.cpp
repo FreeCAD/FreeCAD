@@ -338,6 +338,67 @@ std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
     return wiresInParametricSpace;
 }
 
+TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
+    const TopoDS_Face& sourceFace,
+    const TopoDS_Face& supportFace,
+    const gp_Dir& direction
+) const
+{
+    // creates an extrusion, prism and then boolean common operation
+    // to create the projected face
+    if (sourceFace.IsNull()) {
+        return {};
+    }
+
+    // find the combined bounding box of source and target
+    Bnd_Box bounds;
+    BRepBndLib::Add(sourceFace, bounds);
+    BRepBndLib::Add(supportFace, bounds);
+    if (bounds.IsVoid()) {
+        return {};
+    }
+
+    // extrude the source face towards the target
+    const auto length = 2.0 * Max(Sqrt(bounds.SquareExtent()), 1.0);
+    gp_Vec extrusion(direction);
+    extrusion.Multiply(length);
+
+    // and make prism for boolean common op to trim
+    BRepPrimAPI_MakePrism prismMaker(sourceFace, extrusion);
+    if (!prismMaker.IsDone()) {
+        return {};
+    }
+
+    // boolean common operation to get trimmed face
+    BRepAlgoAPI_Common common(supportFace, prismMaker.Shape());
+    common.Build();
+    if (!common.IsDone()) {
+        return {};
+    }
+
+    // we only want the first intersection in case of curved target that may have multiple hits
+    auto nearestDistance = Precision::Infinite();
+    TopoDS_Face nearestFace;
+    // traverse faces to find the nearest intersection
+    for (TopExp_Explorer explorer(common.Shape(), TopAbs_FACE); explorer.More(); explorer.Next()) {
+        const auto candidate = TopoDS::Face(explorer.Current());
+        if (!BRepCheck_Analyzer(candidate).IsValid()) {
+            continue;
+        }
+
+        BRepExtrema_DistShapeShape distance(candidate, sourceFace);
+        distance.Perform();
+        if (!distance.IsDone() || distance.Value() >= nearestDistance) {
+            continue;
+        }
+
+        nearestDistance = distance.Value();
+        nearestFace = candidate;
+    }
+
+    return nearestFace;
+}
+
 TopoDS_Shape ProjectOnSurface::createSolidIfHeight(const TopoDS_Face& face) const
 {
     if (face.IsNull()) {
