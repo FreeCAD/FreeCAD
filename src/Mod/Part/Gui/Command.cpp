@@ -2522,8 +2522,8 @@ void CmdPartSectionAnalysis::activated(int iMsg)
         if (!sourceList.empty()) {
             sourceList += ", ";
         }
-        sourceList += "App.getDocument('" + docName + "').getObject('"
-            + obj->getNameInDocument() + "')";
+        sourceList += "App.getDocument('" + docName + "').getObject('" + obj->getNameInDocument()
+            + "')";
     }
 
     // Snap initial cutting plane to the nearest principal axis based on camera direction

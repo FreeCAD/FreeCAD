@@ -71,11 +71,8 @@
 
 using namespace PartGui;
 
-App::PropertyFloatConstraint::Constraints ViewProviderSectionAnalysis::hatchWidthRange = {
-    1.0,
-    64.0,
-    1.0
-};
+App::PropertyFloatConstraint::Constraints ViewProviderSectionAnalysis::hatchWidthRange
+    = {1.0, 64.0, 1.0};
 
 // Fade-out steps for the hatching, from crisp to nearly gone: the transparency
 // of each level-of-detail step, paired with the on-screen pixels per hatch line
@@ -240,7 +237,8 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
 
     pcHatchSwitch = new SoSwitch();
     pcHatchSwitch->addChild(pcHatchLod);
-    pcHatchSwitch->whichChild = (hatchEnabled && Visibility.getValue()) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    pcHatchSwitch->whichChild = (hatchEnabled && Visibility.getValue()) ? SO_SWITCH_ALL
+                                                                        : SO_SWITCH_NONE;
     pcRoot->addChild(pcHatchSwitch);
 
     updateHatchGeometry();

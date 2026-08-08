@@ -63,13 +63,7 @@ PROPERTY_SOURCE(Part::SectionAnalysis, Part::Feature)
 
 SectionAnalysis::SectionAnalysis()
 {
-    ADD_PROPERTY_TYPE(
-        Source,
-        (nullptr),
-        "Section Analysis",
-        App::Prop_None,
-        "Source shapes to section"
-    );
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Section Analysis", App::Prop_None, "Source shapes to section");
     ADD_PROPERTY_TYPE(
         PlaneNormal,
         (Base::Vector3d(0, 0, 1)),
