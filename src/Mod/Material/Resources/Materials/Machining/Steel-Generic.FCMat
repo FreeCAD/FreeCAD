@@ -1,0 +1,31 @@
+General:
+  UUID: "3eeccaf6-847b-46b0-aff8-5ffe08b7fdb7"
+  Author: "FreeCAD"
+  License: "CC-BY-SA-4.0"
+  Name: "Steel (Generic)"
+  Description: >-
+    Generic prototype for soft unalloyed carbon steels (mild steel class),
+    suitable as a starter material for CAM exploration. Specific grades
+    (1018, 1045, 4140, A36, stainless variants, tool steels, etc.) deviate
+    significantly and are available in the Supplemental Materials addon.
+    Surface speeds given for uncoated bits and conservative roughing
+    conditions; coated carbide bits can run 70%-260% faster.
+    Machinability values derived from Jonas Bähr's mild-steel data
+    (Tabellenbuch Zerspantechnik ISBN 978-3-7585-1315-2) released under
+    CC-BY-3.0 in earlier FreeCAD releases.
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Steel"
+  Machinability:
+    UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+    SurfaceSpeedHSS: '25 m/min'
+    SurfaceSpeedCarbide: '70 m/min'
+    UnitCuttingForce: '2298 N/mm^2'
+    ChipThicknessExponent: 0.20
