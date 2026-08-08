@@ -232,7 +232,7 @@ void DlgSettingsEditor::saveSettings()
         hGrp->SetUnsigned(textType.toLatin1(), col);
     }
     hGrp->SetInt("FontSize", ui->fontSize->value());
-    hGrp->SetASCII("Font", ui->fontFamily->currentText().toLatin1());
+    hGrp->setString("Font", ui->fontFamily->currentText().toStdString());
 
     setEditorTabWidth(ui->tabSize->value());
 }
@@ -278,7 +278,7 @@ void DlgSettingsEditor::loadSettings()
     ui->fontSize->setValue(10);
     ui->fontSize->setValue(hGrp->GetInt("FontSize", ui->fontSize->value()));
 
-    QByteArray defaultMonospaceFont = getMonospaceFont().family().toLatin1();
+    const auto defaultMonospaceFont = getMonospaceFont().family().toStdString();
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     QStringList familyNames = QFontDatabase().families(QFontDatabase::Any);
@@ -314,7 +314,7 @@ void DlgSettingsEditor::loadSettings()
     ui->fontFamily->setProperty("doNotSearch", true);
 
     int index = fixedFamilyNames.indexOf(
-        QString::fromLatin1(hGrp->GetASCII("Font", defaultMonospaceFont).c_str())
+        QString::fromStdString(hGrp->getString("Font", defaultMonospaceFont))
     );
     if (index < 0) {
         index = 0;
@@ -335,7 +335,7 @@ void DlgSettingsEditor::resetSettingsToDefaults()
     // reset "FontSize" parameter
     hGrp->RemoveInt("FontSize");
     // reset "Font" parameter
-    hGrp->RemoveASCII("Font");
+    hGrp->removeString("Font");
 
     // finally reset all the parameters associated to Gui::Pref* widgets
     PreferencePage::resetSettingsToDefaults();

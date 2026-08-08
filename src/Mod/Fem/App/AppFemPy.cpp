@@ -248,8 +248,8 @@ private:
                     if (file.hasExtension({"vtk", "vtu"})) {
                         // get VTK prefs
                         ParameterGrp::handle g = hGrp->GetGroup("InOutVtk");
-                        std::string level = g->GetASCII("MeshExportLevel", "Highest");
-                        femMesh.writeVTK(file.filePath().c_str(), level == "Highest" ? true : false);
+                        std::string level = g->getString("MeshExportLevel", "Highest");
+                        femMesh.writeVTK(file.filePath(), level == "Highest" ? true : false);
                     }
                     else if (file.hasExtension("inp")) {
                         // get Abaqus inp prefs

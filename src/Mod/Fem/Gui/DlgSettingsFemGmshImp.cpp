@@ -110,7 +110,7 @@ void DlgSettingsFemGmshImp::populateLogVerbosity()
 
     // set default index
     auto hGrp = ui->cb_log_verbosity->getWindowParameter();
-    std::string current = hGrp->GetASCII(ui->cb_log_verbosity->entryName(), "3");
+    std::string current = hGrp->getString(ui->cb_log_verbosity->entryName().toStdString(), "3");
     int index = ui->cb_log_verbosity->findData(QByteArray::fromStdString(current));
     ui->cb_log_verbosity->setCurrentIndex(index);
 }

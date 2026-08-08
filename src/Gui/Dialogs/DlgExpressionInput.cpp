@@ -565,9 +565,9 @@ static void storePreferences(
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/ExpressionEditor"
     );
-    paramExpressionEditor->SetASCII("LastDocument", nameDoc);
-    paramExpressionEditor->SetASCII("LastVarSet", nameVarSet);
-    paramExpressionEditor->SetASCII("LastGroup", nameGroup);
+    paramExpressionEditor->setString("LastDocument", nameDoc);
+    paramExpressionEditor->setString("LastVarSet", nameVarSet);
+    paramExpressionEditor->setString("LastGroup", nameGroup);
 }
 
 static const App::NumberExpression* toNumberExpr(const App::Expression* expr)
@@ -689,7 +689,7 @@ static App::Document* getPreselectedDocument()
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/ExpressionEditor"
     );
-    std::string lastDoc = paramExpressionEditor->GetASCII("LastDocument", "");
+    std::string lastDoc = paramExpressionEditor->getString("LastDocument", "");
 
     if (lastDoc.empty()) {
         return App::GetApplication().getActiveDocument();
@@ -709,7 +709,7 @@ int DlgExpressionInput::getVarSetIndex(const App::Document* doc) const
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/ExpressionEditor"
     );
-    std::string lastVarSet = paramExpressionEditor->GetASCII("LastVarSet", "VarSet");
+    std::string lastVarSet = paramExpressionEditor->getString("LastVarSet", "VarSet");
 
     auto* model = qobject_cast<QStandardItemModel*>(ui->comboBoxVarSet->model());
     for (int i = 0; i < model->rowCount(); ++i) {
@@ -867,7 +867,7 @@ void DlgExpressionInput::preselectGroup()
     auto paramExpressionEditor = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/ExpressionEditor"
     );
-    std::string lastGroup = paramExpressionEditor->GetASCII("LastGroup", "");
+    std::string lastGroup = paramExpressionEditor->getString("LastGroup", "");
 
     if (lastGroup.empty()) {
         return;

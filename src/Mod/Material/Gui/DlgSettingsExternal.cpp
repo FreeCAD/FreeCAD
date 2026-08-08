@@ -52,7 +52,7 @@ void DlgSettingsExternal::saveSettings()
 
     bool useExternal = ui->groupExternal->isChecked();
     hGrp->SetBool("UseExternal", useExternal);
-    hGrp->SetASCII("Current", ui->comboInterface->currentText().toStdString());
+    hGrp->setString("Current", ui->comboInterface->currentText().toStdString());
 }
 
 QString DlgSettingsExternal::toPerCent(double value) const
@@ -101,7 +101,7 @@ void DlgSettingsExternal::loadInterfaces()
     }
 
     hGrp = App::GetApplication().GetParameterGroupByPath(getPreferences().c_str());
-    auto current = hGrp->GetASCII("Current", "None");
+    auto current = hGrp->getString("Current", "None");
     ui->comboInterface->setCurrentText(QString::fromStdString(current));
 }
 

@@ -438,12 +438,11 @@ void Application::initStyleParameterManager()
             "User parameter:BaseApp/Preferences/MainWindow"
         );
 
-        if (const std::string& path = hMainWindowGrp->GetASCII("ThemeStyleParametersFile");
-            !path.empty()) {
+        if (const auto path = hMainWindowGrp->getString("ThemeStyleParametersFile"); !path.empty()) {
             return path;
         }
 
-        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
+        return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->getString("Theme", "Classic"));
     };
 
     auto themeParametersSource = new StyleParameters::YamlParameterSource(
@@ -459,7 +458,7 @@ void Application::initStyleParameterManager()
             themeParametersSource->changeFilePath(deduceParametersFilePath());
             styleParameterManager()->reload();
 
-            std::string sheet = hGrp->GetASCII("StyleSheet");
+            std::string sheet = hGrp->getString("StyleSheet");
             bool tiledBG = hGrp->GetBool("TiledBackground", false);
 
             setStyleSheet(QString::fromStdString(sheet), tiledBG);
@@ -534,7 +533,7 @@ Application::Application(bool GUIenabled)
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
         QString lang = QLocale::languageToString(QLocale().language());
         Translator::instance()->activateLanguage(
-            hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
+            hPGrp->getString("Language", lang.toStdString()));
         GetWidgetFactorySupplier();
 
         // Coin3d disables VBO support for some (typically very old) drivers and hardware.
@@ -1962,7 +1961,7 @@ bool Application::activateWorkbench(const char* name)
                 std::string nameWb = newWb->name();
                 App::GetApplication()
                     .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-                    ->SetASCII("LastModule", nameWb.c_str());
+                    ->setString("LastModule", nameWb);
             }
             newWb->activated();
         }

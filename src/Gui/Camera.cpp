@@ -170,7 +170,10 @@ SbRotation Camera::defaultOrientation(const char* fallbackView)
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/View"
     );
-    return rotation(hGrp->GetASCII("NewDocumentCameraOrientation", fallbackView), Top);
+    return rotation(
+        hGrp->getString("NewDocumentCameraOrientation", std::string_view {fallbackView}),
+        Top
+    );
 }
 
 bool Camera::rotationsMatch(const SbRotation& lhs, const SbRotation& rhs, float squaredTolerance)
