@@ -1573,8 +1573,8 @@ bool SketchObject::deriveConstraintsForPieces(
                 // by coincident or point on object constraint
                 bool found = false;
                 for (const auto* constraint : this->Constraints.getValues()) {
-                    if ((constraint->Type == Coincident || constraint->Type == PointOnObject)
-                        && constraint->involvesGeoId(newIds[i]) && constraint->involvesGeoId(conId)) {
+                    if (constraint->Type == Coincident && constraint->involvesGeoId(newIds[i])
+                        && constraint->involvesGeoId(conId)) {
                         found = true;
                         break;
                     }
@@ -1879,8 +1879,8 @@ int SketchObject::getSingleScaleDefiningConstraint() const
 
 const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups()
 {
-    // this function is different from that in getCoincidentPoints in that:
-    // - getCoincidentPoints only considers direct coincidence (the points that are linked via a
+    // this function is different from that in getDirectlyCoincidentPoints in that:
+    // - getDirectlyCoincidentPoints only considers direct coincidence (the points that are linked via a
     // single coincidence)
     // - this function provides an array of maps of points, each map containing the points that are
     // coincident by virtue
@@ -2045,6 +2045,38 @@ void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& G
     PointPos PosId;
     getGeoVertexIndex(VertexId, GeoId, PosId);
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+}
+
+int SketchObject::getDirectlyCoincidentPoints(
+    const int GeoId1,
+    const int GeoId2,
+    std::vector<int>& GeoIds3,
+    std::vector<PointPos>& PosIds3
+) const
+{
+    std::vector<int> constraints;
+    getConstraintIndices(GeoId1, constraints);
+
+    for (auto idx : constraints) {
+        const auto* con = Constraints.getValues()[idx];
+
+        if (!con->involvesGeoId(GeoId2)) {
+            continue;
+        }
+
+        if (con->Type == Sketcher::ConstraintType::Coincident) {
+            if (con->getElement(0).GeoId == GeoId1) {
+                GeoIds3.push_back(con->getElement(0).GeoId);
+                PosIds3.push_back(con->getElement(0).Pos);
+            }
+            else {
+                GeoIds3.push_back(con->getElement(1).GeoId);
+                PosIds3.push_back(con->getElement(1).Pos);
+            }
+        }
+    }
+
+    return GeoIds3.size();
 }
 
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
