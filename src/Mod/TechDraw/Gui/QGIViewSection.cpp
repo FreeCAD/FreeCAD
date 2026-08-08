@@ -84,14 +84,16 @@ void QGIViewSection::drawSectionFace()
             return;
         }
 
+        QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
+        faceColor.setAlpha((100 - sectionVp->CutSurfaceTransparency.getValue())*255/100);
+
         if (section->CutSurfaceDisplay.isValue("Color")) {
             newFace->isHatched(true);
-            QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
-            faceColor.setAlpha((100 - sectionVp->CutSurfaceTransparency.getValue())*255/100);
             newFace->setFillColor(faceColor);
             newFace->setFillMode(faceColor.alpha() ? FillMode::PlainFill : FillMode::NoFill);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
             newFace->isHatched(true);
+            newFace->setFillColor(faceColor);
             newFace->setFillMode(FillMode::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());
@@ -101,6 +103,7 @@ void QGIViewSection::drawSectionFace()
             newFace->setHatchFile(hatchSpec);
         } else if (section->CutSurfaceDisplay.isValue("PatHatch")) {
             newFace->isHatched(true);
+            newFace->setFillColor(faceColor);
             newFace->setFillMode(FillMode::GeomHatchFill);
             newFace->setHatchColor(sectionVp->GeomHatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());

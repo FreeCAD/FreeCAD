@@ -99,6 +99,8 @@ public Q_SLOTS:
     void onMakeDetailFinished(void);
 
 protected:
+    TopoDS_Shape getShapeForGeometryBuild() const override;
+
     void getParameters(void);
     double m_fudge;
     bool debugDetail() const;

@@ -330,7 +330,13 @@ void QGIViewPart::drawAllFaces(void)
     int iFace(0);
     for (auto& face : faceGeoms) {
         QGIFace* newFace = drawFace(face, iFace);
-        if (faceColor.isValid()) {
+        if (face->getRepresentation() == FaceRepresentation::Hollow
+            || face->getRepresentation() == FaceRepresentation::Sliced) {
+                // No filling of voids and section faces here (these are stored and drawn separately by section views)
+                newFace->setFillMode(FillMode::NoFill);
+                newFace->setFillColor(Qt::transparent);
+        }
+        else if (faceColor.isValid()) {
             newFace->setFillColor(faceColor);
             newFace->setFillMode(faceColor.alpha() ? FillMode::PlainFill : FillMode::NoFill);
         }

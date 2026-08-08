@@ -182,13 +182,18 @@ public Q_SLOTS:
     virtual void onSectionCutFinished();
 
 protected:
+    TopoDS_Compound unprojectedSectionFaces; // Temporary variable to hold 3D section faces for Face finder v1.2
     TopoDS_Compound m_sectionTopoDSFaces;//needed for hatching
     std::vector<LineSet> m_lineSets;
     std::vector<TechDraw::FacePtr> m_tdSectionFaces;
 
-
     virtual gp_Pln getSectionPlane() const;
     virtual TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
+    TopoDS_Shape getShapeForGeometryBuild() const override;
+
+    void assignFaceRepresentations(const std::vector<TechDraw::FacePtr>& faces,
+                                   const std::vector<TopoDS_Face>& occFaces) override;
+
     void getParameters();
     bool debugSection() const;
     int prefCutSurface() const;
