@@ -890,7 +890,7 @@ class TaskPanel:
 
     def assignMaterial(self):
         current_uuid, _ = self._currentStockMaterial()
-        dialog = MaterialDialog(current_uuid=current_uuid)
+        dialog = MaterialDialog(parent=FreeCADGui.getMainWindow(), current_uuid=current_uuid)
         result = dialog.exec_()
 
         if result == QtWidgets.QDialog.Accepted and dialog.uuid is not None:
