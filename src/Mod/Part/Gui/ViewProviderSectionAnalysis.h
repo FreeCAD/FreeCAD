@@ -31,14 +31,14 @@
 
 class SoClipPlane;
 class SoCoordinate3;
+class SoDrawStyle;
 class SoFaceSet;
 class SoIndexedLineSet;
+class SoLevelOfDetail;
 class SoMaterial;
 class SoSeparator;
 class SoShapeHints;
 class SoSwitch;
-class SoTexture2;
-class SoTextureCoordinatePlane;
 
 namespace App
 {
@@ -60,6 +60,9 @@ class PartGuiExport ViewProviderSectionAnalysis: public ViewProviderPart
 
 public:
     App::PropertyBool ShowHatching;
+    App::PropertyFloatConstraint HatchLineWidth;
+    App::PropertyLength HatchSpacing;
+    App::PropertyBool AutoHideHatching;
     App::PropertyBool PerBodyColors;
 
     ViewProviderSectionAnalysis();
@@ -84,13 +87,16 @@ public:
 protected:
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
+    void onChanged(const App::Property* prop) override;
 
 private:
     void installClipPlane();
     void removeClipPlane();
     void updateClipPlaneEquation();
     void updatePlaneVisual();
-    void updateHatchProjection();
+
+    /// Rebuild the hatch line segments from the tessellated section faces.
+    void updateHatchGeometry();
     void applyPerSolidColors();
 
     /// Cache the source bbox; expensive on large assemblies, so refreshed only
@@ -113,8 +119,15 @@ private:
     SoFaceSet* pcPlaneFaceSet = nullptr;
     SoMaterial* pcPlaneBorderMaterial = nullptr;
     SoIndexedLineSet* pcPlaneBorderLines = nullptr;
-    SoTexture2* pcHatchTexture = nullptr;
-    SoTextureCoordinatePlane* pcHatchCoordGen = nullptr;
+
+    // Hatching drawn as real line geometry (crisp at any zoom, arbitrary width)
+    SoSwitch* pcHatchSwitch = nullptr;
+    SoLevelOfDetail* pcHatchLod = nullptr;
+    SoSeparator* pcHatchRoot = nullptr;
+    SoDrawStyle* pcHatchStyle = nullptr;
+    SoCoordinate3* pcHatchCoords = nullptr;
+    SoIndexedLineSet* pcHatchLines = nullptr;
+
     bool clipInstalled = false;
     bool hatchEnabled = true;
     bool usePerSolidColors = false;
@@ -129,6 +142,8 @@ private:
     double sourceBBox[6] = {0, 0, 0, 0, 0, 0};
 
     fastsignals::scoped_connection visibilityConn;
+
+    static App::PropertyFloatConstraint::Constraints hatchWidthRange;
 };
 
 }  // namespace PartGui

@@ -89,6 +89,7 @@ private:
     QCheckBox* flipCheck = nullptr;
     Gui::ColorButton* sectionColorBtn = nullptr;
     QCheckBox* hatchCheck = nullptr;
+    QCheckBox* autoHideHatchCheck = nullptr;
     QCheckBox* perSolidColorCheck = nullptr;
     QCheckBox* showPlaneCheck = nullptr;
     QCheckBox* updateViewCheck = nullptr;

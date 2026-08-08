@@ -19,8 +19,13 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
 #include <functional>
+#include <iterator>
+#include <limits>
+#include <vector>
 
 #include <QAction>
 #include <QMenu>
@@ -29,20 +34,18 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 
-#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/nodes/SoClipPlane.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFaceSet.h>
-#include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
+#include <Inventor/nodes/SoLevelOfDetail.h>
 #include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoMaterialBinding.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
-#include <Inventor/nodes/SoTexture2.h>
-#include <Inventor/nodes/SoTextureCoordinatePlane.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -60,12 +63,25 @@
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
 
+#include "SoBrepFaceSet.h"
 #include "ViewProviderExt.h"
 #include "ViewProviderSectionAnalysis.h"
 #include "TaskSectionAnalysis.h"
 
 
 using namespace PartGui;
+
+App::PropertyFloatConstraint::Constraints ViewProviderSectionAnalysis::hatchWidthRange = {
+    1.0,
+    64.0,
+    1.0
+};
+
+// Fade-out steps for the hatching, from crisp to nearly gone: the transparency
+// of each level-of-detail step, paired with the on-screen pixels per hatch line
+// at which that step takes over. Below the last one the hatching is dropped.
+constexpr float hatchFadeSteps[] = {0.0f, 0.45f, 0.75f};
+constexpr double hatchFadePixelsPerLine[] = {3.0, 1.5, 0.75};
 
 PROPERTY_SOURCE(PartGui::ViewProviderSectionAnalysis, PartGui::ViewProviderPart)
 
@@ -79,6 +95,29 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
         "Section Analysis",
         App::Prop_None,
         "Show diagonal hatching lines on cross-section faces"
+    );
+    ADD_PROPERTY_TYPE(
+        HatchLineWidth,
+        (2.0),
+        "Section Analysis",
+        App::Prop_None,
+        "Width of the hatching lines in pixels"
+    );
+    HatchLineWidth.setConstraints(&hatchWidthRange);
+    ADD_PROPERTY_TYPE(
+        HatchSpacing,
+        (2.0),
+        "Section Analysis",
+        App::Prop_None,
+        "Distance between the hatching lines"
+    );
+    ADD_PROPERTY_TYPE(
+        AutoHideHatching,
+        (true),
+        "Section Analysis",
+        App::Prop_None,
+        "Hide the hatching once the section is too small on screen for the\n"
+        "individual lines to be told apart"
     );
     ADD_PROPERTY_TYPE(
         PerBodyColors,
@@ -97,14 +136,6 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
 ViewProviderSectionAnalysis::~ViewProviderSectionAnalysis()
 {
     removeClipPlane();
-    if (pcHatchTexture) {
-        pcHatchTexture->unref();
-        pcHatchTexture = nullptr;
-    }
-    if (pcHatchCoordGen) {
-        pcHatchCoordGen->unref();
-        pcHatchCoordGen = nullptr;
-    }
 }
 
 void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
@@ -163,41 +194,56 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     pcPlaneSwitch->whichChild = SO_SWITCH_ALL;
     pcRoot->addChild(pcPlaneSwitch);
 
-    // Create hatching texture — 45° diagonal lines per ISO 128-50.
-    // Large texture + binary alpha for crisp lines.
-    pcHatchTexture = new SoTexture2();
-    pcHatchTexture->ref();
-    {
-        // Small tileable texture — GPU repeats it via GL_REPEAT.
-        // 16x16 with one diagonal line = minimal memory, same visual.
-        const int sz = 16;
-        const int lineWidth = 1;
-        unsigned char* img = new unsigned char[sz * sz * 3];
-        std::memset(img, 255, sz * sz * 3);  // white background
-        for (int y = 0; y < sz; y++) {
-            for (int x = 0; x < sz; x++) {
-                int idx = (y * sz + x) * 3;
-                if (((x + y) % sz) < lineWidth) {
-                    img[idx] = 25;
-                    img[idx + 1] = 25;
-                    img[idx + 2] = 25;
-                }
-            }
-        }
-        pcHatchTexture->image.setValue(SbVec2s(sz, sz), 3, img);
-        pcHatchTexture->wrapS = SoTexture2::REPEAT;
-        pcHatchTexture->wrapT = SoTexture2::REPEAT;
-        pcHatchTexture->model = SoTexture2::MODULATE;
-        delete[] img;
+    // Hatching 45° diagonal lines per ISO 128-50, built as real line geometry
+    // rather than a repeating texture: the lines stay one pixel-crisp at any
+    // zoom level and their width is whatever HatchLineWidth says.
+    pcHatchRoot = new SoSeparator();
+    pcHatchRoot->setName("SectionHatching");
+    pcHatchRoot->renderCaching = SoSeparator::OFF;
+
+    auto* hatchPick = new SoPickStyle();
+    hatchPick->style = SoPickStyle::UNPICKABLE;
+    pcHatchRoot->addChild(hatchPick);
+
+    auto* hatchBind = new SoMaterialBinding();
+    hatchBind->value = SoMaterialBinding::OVERALL;
+    pcHatchRoot->addChild(hatchBind);
+
+    pcHatchStyle = new SoDrawStyle();
+    pcHatchStyle->style = SoDrawStyle::LINES;
+    pcHatchStyle->lineWidth.setValue(static_cast<float>(HatchLineWidth.getValue()));
+    pcHatchRoot->addChild(pcHatchStyle);
+
+    pcHatchCoords = new SoCoordinate3();
+    pcHatchRoot->addChild(pcHatchCoords);
+
+    pcHatchLines = new SoIndexedLineSet();
+    pcHatchRoot->addChild(pcHatchLines);
+
+    // As the section shrinks on screen the lines crowd together and would merge
+    // into a solid tone, so the LOD node steps through increasingly transparent
+    // copies of the same geometry before dropping it altogether (last, empty
+    // child). Each level only differs by its material, so they all share the one
+    // set of coordinates and the one line set below pcHatchRoot.
+    pcHatchLod = new SoLevelOfDetail();
+    for (float alpha : hatchFadeSteps) {
+        auto* level = new SoSeparator();
+        level->renderCaching = SoSeparator::OFF;
+        auto* levelMat = new SoMaterial();
+        levelMat->diffuseColor.setValue(0.1f, 0.1f, 0.1f);
+        levelMat->transparency.setValue(alpha);
+        level->addChild(levelMat);
+        level->addChild(pcHatchRoot);
+        pcHatchLod->addChild(level);
     }
+    pcHatchLod->addChild(new SoGroup());
 
-    // Auto-generate texture coordinates by projecting onto the cutting plane.
-    // directionS/T are updated in updateHatchProjection() to match the
-    // current normal so the 45° pattern is always correct.
-    pcHatchCoordGen = new SoTextureCoordinatePlane();
-    pcHatchCoordGen->ref();
-    updateHatchProjection();
+    pcHatchSwitch = new SoSwitch();
+    pcHatchSwitch->addChild(pcHatchLod);
+    pcHatchSwitch->whichChild = (hatchEnabled && Visibility.getValue()) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+    pcRoot->addChild(pcHatchSwitch);
 
+    updateHatchGeometry();
     updatePlaneVisual();
 }
 
@@ -215,13 +261,10 @@ void ViewProviderSectionAnalysis::finishRestoring()
         installClipPlane();
     }
     updatePlaneVisual();
-    updateHatchProjection();
     if (usePerSolidColors) {
         applyPerSolidColors();
     }
-    if (hatchEnabled) {
-        setHatching(true);
-    }
+    setHatching(hatchEnabled);
 }
 
 void ViewProviderSectionAnalysis::installClipPlane()
@@ -541,23 +584,29 @@ void ViewProviderSectionAnalysis::updatePlaneVisual()
     pcPlaneBorderLines->coordIndex.setValues(0, 6, borderIndices);
 }
 
-void ViewProviderSectionAnalysis::updateHatchProjection()
+void ViewProviderSectionAnalysis::updateHatchGeometry()
 {
-    if (!pcHatchCoordGen) {
+    if (!pcHatchCoords || !pcHatchLines) {
         return;
     }
 
+    pcHatchLines->coordIndex.setNum(0);
+    pcHatchCoords->point.setNum(0);
+
     auto* feat = getObject<Part::SectionAnalysis>();
-    Base::Vector3d n(0, 0, 1);
-    if (feat) {
-        n = feat->PlaneNormal.getValue();
-        double len = n.Length();
-        if (len > 1e-10) {
-            n = n / len;
-        }
+    if (!hatchEnabled || !feat) {
+        return;
     }
 
-    // Build orthonormal frame on the cutting plane
+    Base::Vector3d n = feat->PlaneNormal.getValue();
+    const double len = n.Length();
+    if (len < 1e-10) {
+        return;
+    }
+    n = n / len;
+
+    // Build orthonormal frame on the cutting plane (same convention as the
+    // plane visual, so hatching and plane quad stay in step)
     Base::Vector3d u, v;
     if (std::abs(n.x) < 0.9) {
         u = Base::Vector3d(1, 0, 0).Cross(n);
@@ -569,10 +618,161 @@ void ViewProviderSectionAnalysis::updateHatchProjection()
     v = n.Cross(u);
     v.Normalize();
 
-    // 1 texture repeat per 8mm — gives ~1 line every 2mm
-    float scale = 1.0f / 8.0f;
-    pcHatchCoordGen->directionS.setValue(SbVec3f(u.x * scale, u.y * scale, u.z * scale));
-    pcHatchCoordGen->directionT.setValue(SbVec3f(v.x * scale, v.y * scale, v.z * scale));
+    // Hatch lines run at 45° in that frame; `levelDir` is their in-plane normal,
+    // so a hatch line is the set of points with p * levelDir == k * spacing.
+    Base::Vector3d levelDir = u - v;
+    levelDir.Normalize();
+
+    // PropertyLength only clamps to >= 0 through the editor, and setValue() from
+    // C++ or a restored file bypasses even that, so anything can land here
+    constexpr double minHatchSpacing = 0.001;
+    const double spacing = HatchSpacing.getValue();
+    if (!std::isfinite(spacing) || spacing < minHatchSpacing) {
+        return;
+    }
+
+    // The section faces lie exactly on the cutting plane, so the lines would
+    // z-fight with them. Lift them by a fraction of the model size towards the
+    // cut-away side, i.e. the side the section face is looked at from.
+    const Base::Vector3d cutNormal = feat->FlipCut.getValue() ? -n : n;
+    double modelSize = 1.0;
+    if (sourceBBoxValid) {
+        const double dx = sourceBBox[3] - sourceBBox[0];
+        const double dy = sourceBBox[4] - sourceBBox[1];
+        const double dz = sourceBBox[5] - sourceBBox[2];
+        modelSize = std::max(std::sqrt(dx * dx + dy * dy + dz * dz), 1.0);
+    }
+    const Base::Vector3d lift = cutNormal * (modelSize * 1e-4);
+
+    // Walk the tessellation of the section faces and slice every triangle with
+    // the family of hatch lines (marching triangles). Using the triangles the
+    // viewer already renders means the hatching is trimmed to exactly the same
+    // outline as the visible faces, with no extra shape/boolean work.
+    const int numPts = coords->point.getNum();
+    const int numIdx = faceset->coordIndex.getNum();
+    if (numPts < 3 || numIdx < 4) {
+        return;
+    }
+    const SbVec3f* pts = coords->point.getValues(0);
+    const int32_t* cidx = faceset->coordIndex.getValues(0);
+
+    // Guard against a pathologically small spacing eating all the memory
+    constexpr int maxSegments = 500000;
+
+    std::vector<SbVec3f> segPts;
+    std::vector<int32_t> segIdx;
+
+    // How far the hatched region reaches across the lines, i.e. how many lines
+    // there are — the auto-hide threshold below is derived from it
+    double spanMin = std::numeric_limits<double>::max();
+    double spanMax = std::numeric_limits<double>::lowest();
+
+    // If there is an easier way to do this already existing in FreeCAD codebase,
+    // I could not find it...
+    auto sliceTriangle = [&](int32_t ia, int32_t ib, int32_t ic) {
+        const Base::Vector3d p[3] = {
+            Base::Vector3d(pts[ia][0], pts[ia][1], pts[ia][2]),
+            Base::Vector3d(pts[ib][0], pts[ib][1], pts[ib][2]),
+            Base::Vector3d(pts[ic][0], pts[ic][1], pts[ic][2])
+        };
+        const double s[3] = {p[0] * levelDir, p[1] * levelDir, p[2] * levelDir};
+
+        const double smin = std::min({s[0], s[1], s[2]});
+        const double smax = std::max({s[0], s[1], s[2]});
+        spanMin = std::min(spanMin, smin);
+        spanMax = std::max(spanMax, smax);
+        // Bound the range while it is still floating point, where overflow only
+        // saturates: an out-of-range float to integer cast is undefined
+        // behaviour, and `long` is 32 bit on Windows
+        const double kminD = std::ceil(smin / spacing);
+        const double kmaxD = std::floor(smax / spacing);
+        if (!(kmaxD - kminD <= maxSegments)) {
+            return;
+        }
+        const auto kmin = static_cast<std::int64_t>(kminD);
+        const auto kmax = static_cast<std::int64_t>(kmaxD);
+
+        for (std::int64_t k = kmin; k <= kmax; ++k) {
+            const double level = static_cast<double>(k) * spacing;
+            // Half-open sign test: every triangle yields exactly 0 or 2
+            // crossings, so vertices sitting on a hatch line can't produce
+            // duplicate or dangling segments.
+            const bool above[3] = {s[0] > level, s[1] > level, s[2] > level};
+
+            Base::Vector3d hit[2];
+            int numHits = 0;
+            for (int e = 0; e < 3 && numHits < 2; ++e) {
+                const int a = e;
+                const int b = (e + 1) % 3;
+                if (above[a] == above[b]) {
+                    continue;
+                }
+                const double t = (level - s[a]) / (s[b] - s[a]);
+                hit[numHits++] = p[a] + (p[b] - p[a]) * t;
+            }
+            if (numHits < 2) {
+                continue;
+            }
+            if (static_cast<int>(segIdx.size()) / 3 >= maxSegments) {
+                return;
+            }
+
+            const auto base = static_cast<int32_t>(segPts.size());
+            for (auto& h : hit) {
+                const Base::Vector3d q = h + lift;
+                segPts.emplace_back(
+                    static_cast<float>(q.x),
+                    static_cast<float>(q.y),
+                    static_cast<float>(q.z)
+                );
+            }
+            segIdx.push_back(base);
+            segIdx.push_back(base + 1);
+            segIdx.push_back(SO_END_LINE_INDEX);
+        }
+    };
+
+    // SoBrepFaceSet stores triangles as {i0, i1, i2, -1}, but parse generically
+    // (fan-triangulating any polygon) so this survives a different tesselation.
+    std::vector<int32_t> poly;
+    poly.reserve(4);
+    for (int i = 0; i <= numIdx; ++i) {
+        const int32_t idx = (i < numIdx) ? cidx[i] : SO_END_LINE_INDEX;
+        if (idx >= 0) {
+            if (idx < numPts) {
+                poly.push_back(idx);
+            }
+            continue;
+        }
+        for (size_t j = 2; j < poly.size(); ++j) {
+            sliceTriangle(poly[0], poly[j - 1], poly[j]);
+        }
+        poly.clear();
+    }
+
+    if (segPts.empty()) {
+        return;
+    }
+
+    // Screen areas at which each fade step takes over: the region holds
+    // `span / spacing` lines and each needs a few pixels to read as a line, so
+    // the thresholds grow with the line count rather than being a fixed size.
+    // An empty screenArea makes the LOD node always pick the first child.
+    if (pcHatchLod) {
+        pcHatchLod->screenArea.setNum(0);
+        if (AutoHideHatching.getValue() && spanMax > spanMin) {
+            const double lines = (spanMax - spanMin) / spacing;
+            float thresholds[std::size(hatchFadePixelsPerLine)];
+            for (size_t i = 0; i < std::size(hatchFadePixelsPerLine); ++i) {
+                const double px = hatchFadePixelsPerLine[i] * lines;
+                thresholds[i] = static_cast<float>(px * px);
+            }
+            pcHatchLod->screenArea.setValues(0, static_cast<int>(std::size(thresholds)), thresholds);
+        }
+    }
+
+    pcHatchCoords->point.setValues(0, static_cast<int>(segPts.size()), segPts.data());
+    pcHatchLines->coordIndex.setValues(0, static_cast<int>(segIdx.size()), segIdx.data());
 }
 
 
@@ -656,49 +856,36 @@ void ViewProviderSectionAnalysis::applyPerSolidColors()
 void ViewProviderSectionAnalysis::setHatching(bool on)
 {
     hatchEnabled = on;
-    ShowHatching.setValue(on);
-
-    if (!pcHatchTexture || !pcHatchCoordGen || !pcRoot) {
-        return;
+    if (ShowHatching.getValue() != on) {
+        ShowHatching.setValue(on);
     }
 
-    if (on) {
-        SoSearchAction sa;
-        sa.setType(SoIndexedFaceSet::getClassTypeId());
-        sa.setInterest(SoSearchAction::FIRST);
-        sa.apply(pcRoot);
-        SoPath* path = sa.getPath();
-        if (path && path->getLength() >= 2) {
-            auto* parent = static_cast<SoSeparator*>(path->getNodeFromTail(1));
-            int faceIdx = parent->findChild(path->getTail());
-            if (faceIdx >= 0 && parent->findChild(pcHatchTexture) < 0) {
-                parent->insertChild(pcHatchTexture, faceIdx);
-                parent->insertChild(pcHatchCoordGen, faceIdx);
-            }
-        }
+    // The hatching hangs off pcRoot rather than the display-mode switch, so it
+    // has to follow the object's visibility explicitly
+    if (pcHatchSwitch) {
+        pcHatchSwitch->whichChild = (on && Visibility.getValue()) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
     }
-    else {
-        SoSearchAction sa;
-        sa.setNode(pcHatchTexture);
-        sa.setInterest(SoSearchAction::FIRST);
-        sa.apply(pcRoot);
-        SoPath* path = sa.getPath();
-        if (path && path->getLength() >= 2) {
-            auto* parent = static_cast<SoSeparator*>(path->getNodeFromTail(1));
-            parent->removeChild(pcHatchTexture);
-        }
+    updateHatchGeometry();
+}
 
-        SoSearchAction sa2;
-        sa2.setNode(pcHatchCoordGen);
-        sa2.setInterest(SoSearchAction::FIRST);
-        sa2.apply(pcRoot);
-        SoPath* path2 = sa2.getPath();
-        if (path2 && path2->getLength() >= 2) {
-            auto* parent = static_cast<SoSeparator*>(path2->getNodeFromTail(1));
-            parent->removeChild(pcHatchCoordGen);
+void ViewProviderSectionAnalysis::onChanged(const App::Property* prop)
+{
+    if (prop == &HatchLineWidth) {
+        if (pcHatchStyle) {
+            pcHatchStyle->lineWidth.setValue(static_cast<float>(HatchLineWidth.getValue()));
         }
-        // Clear per-part texture rotations
     }
+    else if (prop == &HatchSpacing || prop == &AutoHideHatching) {
+        updateHatchGeometry();
+    }
+    else if (prop == &ShowHatching) {
+        // Keep the property editor and the task panel switch in sync
+        if (ShowHatching.getValue() != hatchEnabled) {
+            setHatching(ShowHatching.getValue());
+        }
+    }
+
+    ViewProviderPart::onChanged(prop);
 }
 
 void ViewProviderSectionAnalysis::setShowPlane(bool on)
@@ -846,18 +1033,18 @@ void ViewProviderSectionAnalysis::show()
 {
     installClipPlane();
     updatePlaneVisual();
-    updateHatchProjection();
     if (usePerSolidColors) {
         applyPerSolidColors();
-    }
-    if (hatchEnabled) {
-        setHatching(true);
     }
     // Plane visual hidden by default — shown when editing via task panel
     if (pcPlaneSwitch) {
         pcPlaneSwitch->whichChild = SO_SWITCH_NONE;
     }
     ViewProviderPart::show();
+
+    // After the base class, which rebuilds the tessellation the hatching is
+    // sliced from when it went stale while hidden
+    setHatching(hatchEnabled);
 }
 
 void ViewProviderSectionAnalysis::hide()
@@ -865,6 +1052,9 @@ void ViewProviderSectionAnalysis::hide()
     removeClipPlane();
     if (pcPlaneSwitch) {
         pcPlaneSwitch->whichChild = SO_SWITCH_NONE;
+    }
+    if (pcHatchSwitch) {
+        pcHatchSwitch->whichChild = SO_SWITCH_NONE;
     }
     ViewProviderPart::hide();
 }
@@ -882,8 +1072,10 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         // Runs on every gizmo motion and so must stay cheap
         updateClipPlaneEquation();
         updatePlaneVisual();
-        if (prop == &feat->PlaneNormal) {
-            updateHatchProjection();
+        if (prop == &feat->PlaneNormal || prop == &feat->FlipCut) {
+            // Direction of the 45° pattern and the side the lines are lifted
+            // towards both follow the plane orientation
+            updateHatchGeometry();
         }
     }
 
@@ -906,9 +1098,8 @@ void ViewProviderSectionAnalysis::updateData(const App::Property* prop)
         if (usePerSolidColors) {
             applyPerSolidColors();
         }
-        if (hatchEnabled) {
-            setHatching(true);
-        }
+        // New tessellation, so the hatching has to be sliced again
+        updateHatchGeometry();
     }
 }
 

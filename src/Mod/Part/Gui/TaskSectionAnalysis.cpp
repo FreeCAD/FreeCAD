@@ -192,6 +192,14 @@ void SectionAnalysisWidget::setupUi()
     hatchCheck->setChecked(viewProvider->ShowHatching.getValue());
     appearLayout->addWidget(hatchCheck, 1, 0, 1, 2);
 
+    autoHideHatchCheck = new QCheckBox(tr("Hide Hatching When Zoomed Out"), this);
+    autoHideHatchCheck->setToolTip(
+        tr("Stop drawing the hatching once the lines are too close together on\n"
+           "screen to be told apart, where they would merge into a solid tone")
+    );
+    autoHideHatchCheck->setChecked(viewProvider->AutoHideHatching.getValue());
+    appearLayout->addWidget(autoHideHatchCheck, 4, 0, 1, 2);
+
     perSolidColorCheck = new QCheckBox(tr("Per-Body Colors"), this);
     perSolidColorCheck->setChecked(viewProvider->PerBodyColors.getValue());
     appearLayout->addWidget(perSolidColorCheck, 2, 0, 1, 2);
@@ -235,6 +243,9 @@ void SectionAnalysisWidget::setupConnections()
         onSectionColorChanged(sectionColorBtn->color());
     });
     connect(hatchCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onHatchToggled);
+    connect(autoHideHatchCheck, &QCheckBox::toggled, this, [this](bool on) {
+        viewProvider->AutoHideHatching.setValue(on);
+    });
     connect(perSolidColorCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onPerSolidColorToggled);
     connect(showPlaneCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onShowPlaneToggled);
     connect(updateViewCheck, &QCheckBox::toggled, this, &SectionAnalysisWidget::onUpdateViewToggled);
