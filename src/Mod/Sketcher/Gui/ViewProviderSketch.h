@@ -1079,6 +1079,10 @@ private:
 
     std::unique_ptr<DrawSketchHandlerDragAutoConstraint> dragAutoConstraintHandler;
 
+    // Queued callbacks capture a weak reference to this token before accessing
+    // the view provider, so deleting the provider safely cancels them.
+    std::shared_ptr<void> deferredCallbackLifetime {std::make_shared<int>(0)};
+
     ViewProviderParameters viewProviderParameters;
 
     using Connection = fastsignals::connection;

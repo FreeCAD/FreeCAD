@@ -982,6 +982,16 @@ EditModeCoinManager::~EditModeCoinManager()
     editModeScenegraphNodes.EditRoot->unref();
 }
 
+void EditModeCoinManager::useLightBackgroundColors()
+{
+    drawingParameters.CurveColor.setValue(0.12F, 0.12F, 0.12F);
+    drawingParameters.CurveDraftColor.setValue(0.10F, 0.30F, 0.70F);
+    drawingParameters.FullyConstrainedColor.setValue(0.00F, 0.45F, 0.10F);
+    drawingParameters.InformationColor.setValue(0.12F, 0.12F, 0.12F);
+    drawingParameters.CursorTextColor.setValue(0.12F, 0.12F, 0.12F);
+    updateInventorColors();
+}
+
 /***** Temporary edit curves and markers *****/
 
 void EditModeCoinManager::drawEditMarkers(
