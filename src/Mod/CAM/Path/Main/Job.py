@@ -89,10 +89,10 @@ def createResourceClone(obj, orig, name, icon):
         Path.Base.Gui.IconViewProvider.Attach(clone.ViewObject, icon)
         clone.ViewObject.Visibility = False
         clone.ViewObject.DisplayMode = "Flat Lines"
-        clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+        # clone.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
         clone.ViewObject.Transparency = 0
-        clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
-        clone.ViewObject.ShapeMaterial.Shininess = 0.85
+        # clone.ViewObject.LineColor = (0.310, 0.333, 0.357)
+        # clone.ViewObject.ShapeMaterial.Shininess = 0.85
     obj.Document.recompute()  # necessary to create the clone shape
     return clone
 
@@ -396,9 +396,11 @@ class ObjectJob:
                 obj.Stock = PathStock.CreateFromTemplate(obj, json.loads(stockTemplate))
             if not obj.Stock:
                 obj.Stock = PathStock.CreateFromBase(obj)
-        PathStock.ApplyStockViewDefaults(obj.Stock)
-        if obj.Stock and obj.Stock.ViewObject:
-            obj.Stock.ViewObject.Visibility = True
+        # I think this is dedundant code, and is handled in SetupStockObject,
+        # but leaving here for now just in case
+        # PathStock.ApplyStockViewDefaults(obj.Stock)
+        # if obj.Stock and obj.Stock.ViewObject:
+        #     obj.Stock.ViewObject.Visibility = True
 
     def removeBase(self, obj, base, removeFromModel):
         if isResourceClone(obj, base, None):
@@ -601,6 +603,23 @@ class ObjectJob:
 
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
+
+        # Re-apply view defaults for older documents that may be missing them.
+        # These are safe to always apply since they restore intended CAM visual behaviour
+        # (stock non-selectable/transparent/dotted, model clones hidden with correct style).
+        if FreeCAD.GuiUp:
+            if getattr(obj, "Stock", None) and obj.Stock.ViewObject:
+                PathStock.ApplyStockViewDefaults(obj.Stock)
+
+            if getattr(obj, "Model", None) and getattr(obj.Model, "Group", None):
+                for base in obj.Model.Group:
+                    if isResourceClone(obj, base, "Model") and base.ViewObject:
+                        # base.ViewObject.Visibility = False
+                        base.ViewObject.DisplayMode = "Flat Lines"
+                        # base.ViewObject.ShapeColor = (0.447, 0.475, 0.502)
+                        base.ViewObject.Transparency = 0
+                        # base.ViewObject.LineColor = (0.310, 0.333, 0.357)
+                        # base.ViewObject.ShapeMaterial.Shininess = 0.85
 
     def onChanged(self, obj, prop):
         if prop == "PostProcessor" and obj.PostProcessor:
