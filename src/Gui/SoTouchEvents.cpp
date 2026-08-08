@@ -205,7 +205,7 @@ const SoEvent* GesturesDevice::translateEvent(QEvent* event)
         auto sg = static_cast<QSwipeGesture*>(gevent->gesture(Qt::SwipeGesture));
         if (sg) {
             gevent->setAccepted(Qt::SwipeGesture, true);
-            return new SoGesturePanEvent(pg, this->widget);
+            return new SoGestureSwipeEvent(sg, this->widget);
         }
     }
     return nullptr;

@@ -27,6 +27,7 @@
 
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoSubEvent.h>
+#include <Inventor/SbLinear.h>
 #include <FCGlobal.h>
 
 /**
@@ -59,8 +60,21 @@ public:  // methods
     {
         this->delta = delta;
     }
+    const SbVec2f& getPixelDelta() const
+    {
+        return pixelDelta;
+    }
+    void setPixelDelta(const SbVec2f& logicalDelta, float devicePixelRatio)
+    {
+        pixelDelta = SbVec2f(logicalDelta[0] * devicePixelRatio, -logicalDelta[1] * devicePixelRatio);
+    }
+    bool isPrecise() const
+    {
+        return pixelDelta != SbVec2f(0.0F, 0.0F);
+    }
     ~SoMouseWheelEvent() override = default;
 
 private:  // data
     int delta;
+    SbVec2f pixelDelta {0.0F, 0.0F};
 };

@@ -734,6 +734,28 @@ Mouse tilting is not disabled by this setting.</string>
         </property>
        </widget>
       </item>
+      <item row="9" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxTouchpadScrollPans">
+        <property name="toolTip">
+         <string>Two-finger scroll on a touchpad pans the view,
+Shift + scroll orbits, and Ctrl + scroll (Cmd on macOS) zooms.
+Only affects devices that report pixel-precise scrolling.
+Mouse wheels always zoom.</string>
+        </property>
+        <property name="text">
+         <string>Touchpad scroll pans instead of zooming</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>TouchpadScrollPans</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

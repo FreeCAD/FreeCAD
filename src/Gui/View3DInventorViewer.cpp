@@ -106,6 +106,7 @@
 #include <QSurfaceFormat>
 #include <QTimer>
 #include <QVariantAnimation>
+#include <QtMath>
 #include <QWheelEvent>
 
 #include <App/Document.h>
@@ -798,22 +799,82 @@ private:
     QPoint pressPosition;
     View3DInventorViewer* currentViewer = nullptr;
 
+    SbVec2f pinchBeginCenter {0.0F, 0.0F};
+
+    bool handleNativeGesture(QObject* obj, QEvent* event)
+    {
+        if (event->type() != QEvent::NativeGesture) {
+            return false;
+        }
+        auto* viewer = qobject_cast<View3DInventorViewer*>(obj);
+        if (!viewer) {
+            viewer = qobject_cast<View3DInventorViewer*>(obj->parent());
+        }
+        if (!viewer) {
+            return false;
+        }
+        auto* navigation = viewer->navigationStyle();
+        if (!navigation) {
+            return false;
+        }
+        auto* ev = static_cast<QNativeGestureEvent*>(event);
+
+        SoGesturePinchEvent pinch;
+        const QPoint local = viewer->mapFromGlobal(ev->globalPosition().toPoint());
+        const auto dpr = static_cast<double>(viewer->devicePixelRatio());
+        pinch.curCenter = SbVec2f(
+            static_cast<float>(local.x() * dpr),
+            static_cast<float>((viewer->height() - local.y()) * dpr)
+        );
+        pinch.setPosition(SbVec2s(pinch.curCenter));
+        pinch.setTime(SbTime::getTimeOfDay());
+
+        switch (ev->gestureType()) {
+            case Qt::BeginNativeGesture:
+                pinch.state = SoGestureEvent::SbGSStart;
+                pinchBeginCenter = pinch.curCenter;
+                break;
+            case Qt::EndNativeGesture:
+                pinch.state = SoGestureEvent::SbGSEnd;
+                break;
+            case Qt::ZoomNativeGesture:
+                pinch.state = SoGestureEvent::SbGSUpdate;
+                pinch.deltaZoom = 1.0 + ev->value();
+                break;
+            case Qt::RotateNativeGesture:
+                pinch.state = SoGestureEvent::SbGSUpdate;
+                pinch.deltaAngle = -qDegreesToRadians(ev->value());
+                break;
+            default:
+                return false;
+        }
+
+        pinch.startCenter = pinchBeginCenter;
+        navigation->processPinchEvent(&pinch);
+        event->accept();
+        return true;
+    }
+
 public:
     bool eventFilter(QObject* obj, QEvent* event) override
     {
+        if (handleNativeGesture(obj, event)) {
+            return true;
+        }
+
         // Bug #0000607: Some mice also support horizontal scrolling which however might
         // lead to some unwanted zooming when pressing the MMB for panning.
         // Thus, we filter out horizontal scrolling.
         if (event->type() == QEvent::Wheel) {
             auto we = static_cast<QWheelEvent*>(event);  // NOLINT
-            if (qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y())) {
+            if (we->pixelDelta().isNull() && qAbs(we->angleDelta().x()) > qAbs(we->angleDelta().y())) {
                 return true;
             }
         }
         else if (event->type() == QEvent::KeyPress) {
             auto ke = static_cast<QKeyEvent*>(event);  // NOLINT
-            if (ke->matches(QKeySequence::SelectAll)) {
-                auto* viewer3d = static_cast<View3DInventorViewer*>(obj);
+            auto* viewer3d = qobject_cast<View3DInventorViewer*>(obj);
+            if (viewer3d && ke->matches(QKeySequence::SelectAll)) {
                 auto* editingVP = viewer3d->getEditingViewProvider();
                 if (!editingVP || !editingVP->selectAll()) {
                     viewer3d->selectAll();
@@ -843,8 +904,9 @@ public:
 
         if (event->type() == QEvent::MouseButtonPress) {
             auto mouseEvent = static_cast<QMouseEvent*>(event);
-            if (mouseEvent->button() == Qt::LeftButton) {
-                currentViewer = static_cast<View3DInventorViewer*>(obj);
+            auto* pressViewer = qobject_cast<View3DInventorViewer*>(obj);
+            if (pressViewer && mouseEvent->button() == Qt::LeftButton) {
+                currentViewer = pressViewer;
                 pressPosition = mouseEvent->pos();
                 bool ctrlPressed = (mouseEvent->modifiers() & Qt::ControlModifier) != 0;
 
@@ -1028,6 +1090,14 @@ View3DInventorViewer::View3DInventorViewer(
     , _viewerPy(nullptr)
 {
     init();
+}
+
+void View3DInventorViewer::setupViewport(QWidget* widget)
+{
+    inherited::setupViewport(widget);
+    if (viewerEventFilter && widget) {
+        widget->installEventFilter(viewerEventFilter);
+    }
 }
 
 void View3DInventorViewer::init()
@@ -1282,6 +1352,7 @@ void View3DInventorViewer::init()
     // filter a few qt events
     viewerEventFilter = new ViewerEventFilter;
     installEventFilter(viewerEventFilter);
+    viewport()->installEventFilter(viewerEventFilter);
 #if defined(USE_3DCONNEXION_NAVLIB)
     if (SpaceMouseParameter::instance()->getLegacySpaceMouseDevices()) {
         getEventFilter()->registerInputDevice(new SpaceNavigatorDevice);
@@ -1292,8 +1363,10 @@ void View3DInventorViewer::init()
     getEventFilter()->registerInputDevice(new GesturesDevice(this));
 
     try {
+#ifndef Q_OS_MACOS
         this->grabGesture(Qt::PanGesture);
         this->grabGesture(Qt::PinchGesture);
+#endif
     }
     catch (Base::Exception& e) {
         Base::Console().warning("Failed to set up gestures. Error: %s\n", e.what());

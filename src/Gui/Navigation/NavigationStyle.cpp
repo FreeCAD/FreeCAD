@@ -59,6 +59,7 @@
 #include "Command.h"
 #include "Action.h"
 #include "Inventor/SoMouseWheelEvent.h"
+#include "SoTouchEvents.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
 #include "Navigation/NavigationAnimator.h"
@@ -2280,6 +2281,10 @@ SbBool NavigationStyle::processSoEvent(const SoEvent* const ev)
         offeredtoViewerEventBase = true;
     }
 
+    if (!processed && ev->isOfType(SoGesturePinchEvent::getClassTypeId())) {
+        processed = processPinchEvent(static_cast<const SoGesturePinchEvent*>(ev));
+    }
+
     if (!processed && !offeredtoViewerEventBase) {
         processed = viewer->processSoEventBase(ev);
     }
@@ -2530,13 +2535,87 @@ void NavigationStyle::replayDeferredMouseDownEvent()
     clearDeferredMouseDownEvent();
 }
 
+namespace
+{
+bool touchpadScrollPans()
+{
+#ifdef Q_OS_MACOS
+    constexpr bool defaultValue = true;
+#else
+    constexpr bool defaultValue = false;
+#endif
+    return App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+        ->GetBool("TouchpadScrollPans", defaultValue);
+}
+}  // namespace
+
 SbBool NavigationStyle::processWheelEvent(const SoMouseWheelEvent* const event)
 {
     const SbVec2s pos(event->getPosition());
     const SbVec2f posn = normalizePixelPos(pos);
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+
+    if (event->isPrecise() && touchpadScrollPans()) {
+        if (!camera) {
+            return true;
+        }
+
+        if (event->wasShiftDown()) {
+            const SbVec2f center(0.5F, 0.5F);
+            spin_simplified(center + normalizePixelPos(event->getPixelDelta()), center);
+            return true;
+        }
+
+        if (!event->wasCtrlDown()) {
+            setupPanningPlane(camera);
+            const float ratio
+                = viewer->getSoRenderManager()->getViewportRegion().getViewportAspectRatio();
+            panCamera(
+                camera,
+                ratio,
+                this->panningplane,
+                normalizePixelPos(event->getPixelDelta()),
+                SbVec2f(0, 0)
+            );
+            return true;
+        }
+    }
 
     // handle mouse wheel zoom
-    doZoom(viewer->getSoRenderManager()->getCamera(), event->getDelta(), posn);
+    doZoom(camera, event->getDelta(), posn);
+    return true;
+}
+
+SbBool NavigationStyle::processPinchEvent(const SoGesturePinchEvent* const event)
+{
+    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
+    if (!camera) {
+        return false;
+    }
+
+    if (event->state == SoGestureEvent::SbGSStart) {
+        setupPanningPlane(camera);
+        return true;
+    }
+
+    if (event->state == SoGestureEvent::SbGSEnd) {
+        return true;
+    }
+
+    const SbVec2f posn = normalizePixelPos(event->curCenter);
+
+    if (event->deltaZoom > 0.0) {
+        doZoom(camera, -logf(static_cast<float>(event->deltaZoom)), posn);
+    }
+
+    const bool enableTilt = !(App::GetApplication()
+                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                                  ->GetBool("DisableTouchTilt", true));
+    if (event->deltaAngle != 0.0 && enableTilt) {
+        doRotate(camera, static_cast<float>(event->deltaAngle), posn);
+    }
+
     return true;
 }
 

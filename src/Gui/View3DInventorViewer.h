@@ -592,6 +592,7 @@ Q_SIGNALS:
     void cameraChanged();
 
 protected:
+    void setupViewport(QWidget* widget) override;
     static GLenum getInternalTextureFormat();
     void renderScene();
     void renderRubberbandOverlay();

@@ -61,6 +61,9 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     ui->setupUi(this);
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
+#ifdef Q_OS_MACOS
+    ui->checkBoxTouchpadScrollPans->setChecked(true);
+#endif
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
