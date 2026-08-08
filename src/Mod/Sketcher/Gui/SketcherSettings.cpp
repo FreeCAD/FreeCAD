@@ -688,6 +688,9 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
     ui->InformationPattern->setIconSize(LineIconSize);
     ui->InformationPattern->setItemDelegate(lineStyleDelegate);
+    ui->AxisLinePattern->setIconSize(LineIconSize);
+    ui->AxisLinePattern->setItemDelegate(lineStyleDelegate);
+
     const QBrush brush = palette().windowText();
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
@@ -696,6 +699,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
         ui->ExternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
         ui->InformationPattern->addItem(QString(), QVariant(style.pattern));
+        ui->AxisLinePattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -721,6 +725,7 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->ExternalPattern->setItemIcon(i, icon);
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
             ui->InformationPattern->setItemIcon(i, icon);
+            ui->AxisLinePattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -761,6 +766,7 @@ void SketcherSettingsAppearance::saveSettings()
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
     ui->InformationWidth->onSave();
+    ui->SpinBox_AxisLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -790,6 +796,10 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->InformationPattern->itemData(ui->InformationPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("InformationPattern", pattern);
+
+    data = ui->AxisLinePattern->itemData(ui->AxisLinePattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("AxisLinePattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -826,6 +836,7 @@ void SketcherSettingsAppearance::loadSettings()
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
     ui->InformationWidth->onRestore();
+    ui->SpinBox_AxisLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -874,6 +885,13 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->InformationPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("AxisLinePattern", 0b1111111111111111);
+    index = ui->AxisLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->AxisLinePattern->setCurrentIndex(index);
 }
 
 /**

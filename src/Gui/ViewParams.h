@@ -152,6 +152,9 @@ public:
     bool getRenderProjectedBBox() const;
     void setRenderProjectedBBox(bool);
 
+    long getAxisLineWidth() const;
+    void setAxisLineWidth(long);
+
 private:
     void setup();
 };
