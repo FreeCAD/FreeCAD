@@ -888,6 +888,7 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     //glDrawBuffer(w->format().swapBehavior() == QSurfaceFormat::DoubleBuffer ? GL_BACK : GL_FRONT);
 
     w->makeCurrent();
+    PRIVATE(this)->timesincelastframe.restart();
     this->actualRedraw();
 
     QOpenGLFunctions* functions = w->context() ? w->context()->functions() : nullptr;
@@ -917,6 +918,11 @@ void QuarterWidget::paintEvent(QPaintEvent* event)
     // process the delay queue the next time we enter this function,
     // unless we get here after a call to redraw().
     PRIVATE(this)->processdelayqueue = true;
+
+    // Nothing above can have asked for another frame, so any request that is
+    // still outstanding has been satisfied by the render we just did. The
+    // frame is timed from before actualRedraw(), not from here.
+    PRIVATE(this)->frameRendered();
 }
 
 bool QuarterWidget::viewportEvent(QEvent* event)
@@ -967,10 +973,9 @@ bool QuarterWidget::viewportEvent(QEvent* event)
 void
 QuarterWidget::redraw()
 {
-  // we're triggering the next paintGL(). Set a flag to remember this
-  // to avoid that we process the delay queue in paintGL()
-  PRIVATE(this)->processdelayqueue = false;
-
+  // The request may be deferred to honor the frame rate limit, but it is
+  // never dropped, so every caller still gets its frame.
+  //
   // When stylesheet is used, there is recursive repaint warning caused by
   // repaint() here. It happens when switching active documents. Based on call
   // stacks, it happens like this, the repaint event first triggers a series
@@ -982,10 +987,35 @@ QuarterWidget::redraw()
   // back to the first QuarterWidget, at which time the "Recursive repaint
   // detected" Qt warning message will be printed.
   //
-  // Note that, the recursive repaint is not infinite due to setting
-  // 'processdelayqueue = false' above. However, it does cause annoying
-  // flickering, and actually crash on Windows.
-  this->viewport()->update();
+  // Note that the recursive repaint is not infinite due to setting
+  // 'processdelayqueue = false' in issueRedraw(). However, it does cause
+  // annoying flickering, and actually crash on Windows.
+  PRIVATE(this)->requestRedraw();
+}
+
+/*!
+  Returns the upper limit on how often the scene is rendered. A negative value
+  follows the refresh rate of the screen the widget is shown on, zero renders
+  as fast as the driver allows and a positive value is a limit in frames per
+  second.
+*/
+int
+QuarterWidget::maxFrameRate() const
+{
+  return PRIVATE(this)->maxframerate;
+}
+
+/*!
+  Sets the upper limit on how often the scene is rendered. Rendering faster
+  than the display can show only wastes GPU work, so the default is to follow
+  the refresh rate of the screen.
+
+  \sa maxFrameRate()
+*/
+void
+QuarterWidget::setMaxFrameRate(int fps)
+{
+  PRIVATE(this)->setMaxFrameRate(fps);
 }
 
 /*!
