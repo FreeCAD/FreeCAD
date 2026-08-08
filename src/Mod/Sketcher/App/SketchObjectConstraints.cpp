@@ -1189,7 +1189,7 @@ int SketchObject::transferConstraints(
                 // If it is, we need to be sure at most ONE of these is external
                 continue;
             }
-
+            Base::Console().log("transfer: %s\n", vals[i]->toString().c_str());
             switch (vals[i]->Type) {
                 case Sketcher::Tangent:
                 case Sketcher::Perpendicular: {
@@ -1482,21 +1482,17 @@ bool SketchObject::deriveConstraintsForPieces(
 
     bool newGeosLikelyNotCreated = std::ranges::find(newGeos, nullptr) != newGeos.end();
 
-    bool transferToAll = false;
+    bool transferToFirst = false;
     switch (con->Type) {
         case Horizontal:
         case Vertical:
         case Parallel: {
-            transferToAll = geo->is<Part::GeomLineSegment>();
+            transferToFirst = true;
         } break;
         case Tangent:
         case Perpendicular: {
             // we assume the parts are forced to be tangential, so we only need to apply it to the
             // ones intersecting
-            // if (geo->is<Part::GeomLineSegment>()) {
-            //     transferToAll = true;
-            //     break;
-            // }
 
             const Part::Geometry* conGeo = getGeometry(conId);
             if (!(conGeo && conGeo->isDerivedFrom<Part::GeomCurve>())) {
@@ -1590,7 +1586,7 @@ bool SketchObject::deriveConstraintsForPieces(
             }
             else {
                 // Straight up angle, can transfer to all or first
-                transferToAll = true;
+                transferToFirst = true;
                 break;
             }
         } break;
@@ -1662,15 +1658,13 @@ bool SketchObject::deriveConstraintsForPieces(
             break;
     }
 
-    if (!transferToAll) {
+    if (!transferToFirst) {
         return false;
     }
 
-    for (auto& newId : newIds) {
-        Constraint* trans = con->copy();
-        trans->substituteIndex(oldId, newId);
-        newConstraints.push_back(trans);
-    }
+    Constraint* trans = con->copy();
+    trans->substituteIndex(oldId, newIds[0]);
+    newConstraints.push_back(trans);
 
     return true;
 }
