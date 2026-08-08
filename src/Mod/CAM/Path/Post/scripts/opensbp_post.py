@@ -37,12 +37,10 @@ from typing import Any, Dict
 
 import FreeCAD
 import Path
-
-Path.Log.debug(f"### RELOADED {__file__}")
-import Constants
-
+from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
 from Path.Post.Processor import PostProcessor
 from Path.Post.GcodeProcessingUtils import insert_line_numbers
+import Constants
 
 translate = FreeCAD.Qt.translate
 
@@ -268,7 +266,13 @@ class OpenSBPPost(PostProcessor):
 
         # FIXME: optional blockdelete emulation w/"if somevariable"
         if command.Annotations.get("blockdelete", False):
-            raise ValueError(f"opensbp does not support blockdelete, at {command.toGCode()}")
+            raise CAMValueError(
+                f"opensbp does not support blockdelete, at {command.toGCode()}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
+            )
 
         return super().convert_command_to_gcode(command)
 
@@ -336,19 +340,30 @@ class OpenSBPPost(PostProcessor):
         AllowedParameters = set("XYZIJFN")
 
         if illegal := [x for x in params if x not in AllowedParameters]:
-            # FIXME: what is the right way to report error? How to include context?
-            raise ValueError(
-                f"Only {''.join(AllowedParameters)} allowed for {command.Name}, saw {illegal} in {command}"
+            raise CAMValueError(
+                f"Only {''.join(AllowedParameters)} allowed for {command.Name}, saw {illegal} in {command}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
             )
         if missing := [x for x in AllowedParameters - {"N"} if x not in params]:
-            raise ValueError(
-                f"Requires XYZIFJ for a {command.Name}, missing {missing} in {command} (and in machine-state {machine_state_params})"
+            raise CAMValueError(
+                f"Requires XYZIFJ for a {command.Name}, missing {missing} in {command} (and in machine-state {machine_state_params})",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
             )
 
         RequiredState = "XYZ"
         if modal_missing := [p for p in RequiredState if machine_state_params[p] is None]:
-            raise ValueError(
-                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}, previous machine-state = {machine_state_params}"
+            raise CAMValueError(
+                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}, previous machine-state = {machine_state_params}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
             )
 
         # GCODE if no dZ
@@ -482,7 +497,7 @@ class OpenSBPPost(PostProcessor):
         if has_atc:
             # Automatic tool changer
             output.append(f"&ToolName={tool_name}")
-            output.append(f"&Tool={tool_num}")  # FIXME: we want the Tool name, not tc name
+            output.append(f"&Tool={tool_num}")
         else:
             # Manual tool change - pause and prompt
             output.append(f"'Manual tool change to T{tool_num}: {tool_name}")
@@ -540,7 +555,7 @@ class OpenSBPPost(PostProcessor):
     def _quote(self, string):
         """Return a string that is safe for double-quotes (for opensbp)"""
         # very conservative: only alpha-numeric and /-_.
-        return re.sub(r"[^A-Za-z0-9/_ .-]", "", string)
+        return re.sub(r"[^A-Za-z0-9/_ .,-]", "", string)
 
     def _convert_probe_open(self, command):
         """We need to setup for this probe-sequence,
@@ -563,6 +578,8 @@ class OpenSBPPost(PostProcessor):
         # only insert subroutines once per section FIXME: need to be told when starting a section
         if self._first_probe_open:
             self._first_probe_open = False
+            #
+            where = self._quote(f"{self._job}, {self._operation}")
             rez.extend(textwrap.dedent("""\
                     ' Loads my-variables, notably my_ZzeroInput
                     C#,90
@@ -578,7 +595,7 @@ class OpenSBPPost(PostProcessor):
                     FailedToTouch:
                       ' for g38.2 probe, when
                       ' failed to trigger w/in movement
-                      MSGBOX(Failed to touch...Exiting,16,Probe Failed) # fixme: which job/op label, and file?
+                      MSGBOX("Failed to touch during {where}. Exiting",16,Probe Failed)
                       END
                     SkipProbeSubRoutines:
                     ' ------
@@ -612,12 +629,24 @@ class OpenSBPPost(PostProcessor):
         # We are being strict here, Z motion only
         excess = set(command.Parameters.keys()) - set(list("ZF"))
         if len(excess) > 0:
-            raise Exception(f"A probing move (G38.2) must only have Z and F, saw {command}")
+            raise CAMAttributeError(
+                f"A probing move (G38.2) must only have Z and F, saw {command}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
+            )
         required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
         if self.machine_state.F is not None:
             required["F"] = self.machine_state.F
         if len(required) != 2:
-            raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
+            raise CAMAttributeError(
+                f"A probing move (G38.2) must have a Z and F, only saw: {command}",
+                job=self._job,
+                operation=self._operation,
+                command=command,
+                pp=self.values["MACHINE_NAME"],
+            )
 
         # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
         probe_movement = self._convert_move(Path.Command("G1", required))
