@@ -194,6 +194,7 @@ SET(FreeCADBase_CPP_SRCS
     BindingManager.cpp
     BoundBoxPyImp.cpp
     Builder3D.cpp
+    ByteBuffer.cpp
     Console.cpp
     ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
@@ -201,6 +202,7 @@ SET(FreeCADBase_CPP_SRCS
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     DualQuaternion.cpp
+    DirectoryUtils.cpp
     Exception.cpp
     ExceptionFactory.cpp
     Factory.cpp
@@ -208,6 +210,8 @@ SET(FreeCADBase_CPP_SRCS
     FileLock.cpp
     GeometryPyCXX.cpp
     Handle.cpp
+    PathUtils.cpp
+    PlatformPaths.cpp
     InputSource.cpp
     Interpreter.cpp
     Matrix.cpp
@@ -232,6 +236,7 @@ SET(FreeCADBase_CPP_SRCS
     RotationPyImp.cpp
     Sequencer.cpp
     ServiceProvider.cpp
+    Sha1.cpp
     SmartPtrPy.cpp
     Stream.cpp
     StringUtils.cpp
@@ -269,11 +274,14 @@ SET(FreeCADBase_HPP_SRCS
     Bitmask.h
     BoundBox.h
     Builder3D.h
+    ByteBuffer.h
+    BytesView.h
     Console.h
     ConsoleObserver.h
     Converter.h
     Color.h
     CoordinateSystem.h
+    DirectoryUtils.h
     DualNumber.h
     DualQuaternion.h
     Exception.h
@@ -283,6 +291,9 @@ SET(FreeCADBase_HPP_SRCS
     FileLock.h
     GeometryPyCXX.h
     Handle.h
+    HashUtils.h
+    PathUtils.h
+    PlatformPaths.h
     InputSource.h
     Interpreter.h
     Matrix.h
@@ -302,6 +313,7 @@ SET(FreeCADBase_HPP_SRCS
     Rotation.h
     ServiceProvider.h
     Sequencer.h
+    Sha1.h
     SmartPtrPy.h
     Stream.h
     StringUtils.h

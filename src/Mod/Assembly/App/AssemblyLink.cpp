@@ -701,7 +701,8 @@ JointGroup* AssemblyLink::ensureJointGroup()
     JointGroup* jGroup = getJointGroup(this);
     if (!jGroup) {
         jGroup = new JointGroup();
-        getDocument()->addObject(jGroup, tr("Joints").toStdString().c_str());
+        const std::string label = tr("Joints");
+        getDocument()->addObject(jGroup, label.c_str());
 
         std::vector<DocumentObject*> grp = Group.getValues();
         grp.insert(grp.begin(), jGroup);

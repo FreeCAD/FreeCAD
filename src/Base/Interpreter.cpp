@@ -33,6 +33,7 @@
 #include "Console.h"
 #include "ExceptionFactory.h"
 #include "FileInfo.h"
+#include "PlatformPaths.h"
 #include "PyObjectBase.h"
 #include "PyTools.h"
 #include "Stream.h"
@@ -588,10 +589,7 @@ std::string InterpreterSingleton::getPythonPath()
     PyGILStateLocker lock;
     PyObject* path = PySys_GetObject("path");
     std::string result;
-    const char* separator = ":";  // Use ":" on Unix-like systems, ";" on Windows
-#ifdef FC_OS_WIN32
-    separator = ";";
-#endif
+    const char separator = Base::pathListSeparator();
     Py_ssize_t length = PyList_Size(path);
     for (Py_ssize_t i = 0; i < length; ++i) {
         PyObject* item = PyList_GetItem(path, i);  // Borrowed reference

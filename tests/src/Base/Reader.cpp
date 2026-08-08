@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <QString>
-
 #ifdef _MSC_VER
 # pragma warning(disable : 4996)
 # pragma warning(disable : 4305)
@@ -385,7 +383,7 @@ TEST_F(ReaderTest, readNextStartEndElement)
     // next element
     EXPECT_TRUE(xml.Reader()->readNextElement());
     EXPECT_STREQ(xml.Reader()->localName(), "node11");
-    EXPECT_EQ(xml.Reader()->getAttribute<QString>("attr"), QStringLiteral("11"));
+    EXPECT_EQ(xml.Reader()->getAttribute<std::string>("attr"), "11");
 
     EXPECT_FALSE(xml.Reader()->readNextElement());
     EXPECT_TRUE(xml.Reader()->isEndOfDocument());
