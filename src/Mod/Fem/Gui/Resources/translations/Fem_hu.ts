@@ -1811,102 +1811,102 @@ hibaüzenet megjelenik, lehetséges, hogy ezt az
       <translation>Törlés</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="196"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="239"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="250"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="342"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="374"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="384"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="244"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="255"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="440"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="449"/>
       <source>Selection Error</source>
       <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Csak egy felület az objektumon! - a fő felületre költözött</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
       <source>Select slave geometry of type: </source>
       <translation>Válassza ki a következő típusok függő geometriáját </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
       <source>Select master geometry of type: </source>
       <translation>Válassza ki az alapgeometriát típusa szerint </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Csak egy fő felület és egy másodlagos felület a kényszer érintkezéséhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="440"/>
       <source>Nothing selected!</source>
       <translation>Semmi sincs kiválasztva!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="245"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Csak egy másodlagos felület a kényszer érintkezéséhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="449"/>
       <source>Selected object is not a part!</source>
       <translation>A kijelölt objektum nem alkotórész!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="235"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="380"/>
       <source>External object selection is not supported</source>
       <translation>A külső objektum kiválasztása nem támogatott</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="396"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="401"/>
       <source>Only faces can be picked (edges in 2D models)</source>
       <translation>Csak felületek választhatók ki (élek 2D modellekben)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Csak egy mester egy érintkezési kényszerhez!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="385"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="390"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Csak egy fő felület a kényszer érintkezéséhez!</translation>
     </message>
@@ -2881,6 +2881,16 @@ hibaüzenet megjelenik, lehetséges, hogy ezt az
       <translation>Igazítás engedélyezése</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintTie.ui" line="70"/>
+      <source>Reverse master</source>
+      <translation type="unfinished">Reverse master</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintTie.ui" line="77"/>
+      <source>Reverse slave</source>
+      <translation type="unfinished">Reverse slave</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
@@ -2893,12 +2903,12 @@ hibaüzenet megjelenik, lehetséges, hogy ezt az
       <translation>Fordulatszám másodpercenként</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paraméter</translation>
     </message>
@@ -3023,6 +3033,16 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <translation>A peremfeltétel meghatároz-e egy rögzített potenciált</translation>
     </message>
     <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation type="unfinished">Far field</translation>
+    </message>
+    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>Állandó feszültség</translation>
@@ -3036,59 +3056,6 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>Az elektromos eltolódási tér normál komponense</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="608"/>
-      <source>Capacitance</source>
-      <translation>Kapacitás</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="39"/>
-      <source>Dirichlet</source>
-      <translation>Dirichlet</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="81"/>
-      <source>To define scalar potential and magnetic vector potential</source>
-      <translation>Határozza meg a skaláris feszültséget és a mágneses vektoriális feszültséget</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
-      <location filename="../ui/CurrentDensity.ui" line="61"/>
-      <location filename="../ui/CurrentDensity.ui" line="246"/>
-      <location filename="../ui/Magnetization.ui" line="39"/>
-      <source>Real</source>
-      <translation>Valós</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
-      <location filename="../ui/CurrentDensity.ui" line="71"/>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
-      <location filename="../ui/Magnetization.ui" line="49"/>
-      <source>Imaginary</source>
-      <translation>Elképzelt</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="130"/>
-      <source>Scalar</source>
-      <translation>Skaláris</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="162"/>
-      <source>Imaginary part of scalar potential</source>
-      <translation>A skalárpotenciál képzetes része</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="400"/>
@@ -3129,6 +3096,49 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <location filename="../ui/Electromagnetic.ui" line="583"/>
       <source>Imaginary part of magnetic flux density z-component</source>
       <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="608"/>
+      <source>Capacitance</source>
+      <translation>Kapacitás</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="39"/>
+      <source>Dirichlet</source>
+      <translation>Dirichlet</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="81"/>
+      <source>To define scalar potential and magnetic vector potential</source>
+      <translation>Határozza meg a skaláris feszültséget és a mágneses vektoriális feszültséget</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="39"/>
+      <location filename="../ui/CurrentDensity.ui" line="61"/>
+      <location filename="../ui/CurrentDensity.ui" line="246"/>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
+      <source>Real</source>
+      <translation>Valós</translation>
+    </message>
+    <message>
+      <location filename="../ui/Magnetization.ui" line="49"/>
+      <location filename="../ui/CurrentDensity.ui" line="71"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
+      <source>Imaginary</source>
+      <translation>Elképzelt</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="130"/>
+      <source>Scalar</source>
+      <translation>Skaláris</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="162"/>
+      <source>Imaginary part of scalar potential</source>
+      <translation>A skalárpotenciál képzetes része</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3208,6 +3218,7 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <translation>Szélesség</translation>
     </message>
     <message>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
@@ -3215,7 +3226,6 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3236,11 +3246,59 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <translation>Külső átmérő</translation>
     </message>
     <message>
+      <location filename="../ui/MeshShape.ui" line="38"/>
+      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
+      <translation>A mintázat méretét a forma belsejében és kívül is meg kell határozni, szükség esetén átmeneti rétegvastagsággal</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="54"/>
+      <location filename="../ui/MeshShape.ui" line="70"/>
+      <source>Mesh size within the shape</source>
+      <translation>A mintázat mérete a formán belül</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="57"/>
+      <source>Size inside</source>
+      <translation>Belső méret</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="80"/>
+      <location filename="../ui/MeshShape.ui" line="96"/>
+      <source>Mesh size outside of the shape</source>
+      <translation>A mintázat mérete a formán kívül</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="83"/>
+      <source>Size outside</source>
+      <translation>Küldő méret</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="106"/>
+      <location filename="../ui/MeshShape.ui" line="122"/>
+      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
+      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="109"/>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
-      <location filename="../ui/MeshShape.ui" line="109"/>
       <source>Thickness</source>
       <translation>Vastagság</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="145"/>
+      <source>Box</source>
+      <translation>Doboz</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="150"/>
+      <source>Sphere</source>
+      <translation>Gömb</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshShape.ui" line="155"/>
+      <source>Cylinder</source>
+      <translation>Henger</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="204"/>
@@ -3316,14 +3374,14 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <translation>Merőleges a határra</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
+      <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>Elemzési jellemzők tulajdonságai</translation>
     </message>
@@ -3333,9 +3391,9 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <translation>Hőforrás</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <location filename="../ui/BodyHeatSource.ui" line="35"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="25"/>
+      <location filename="../ui/CurrentDensity.ui" line="29"/>
       <source>Mode</source>
       <translation>Mód</translation>
     </message>
@@ -3350,8 +3408,8 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <translation>Veszteségteljesítmény</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <location filename="../ui/Magnetization.ui" line="26"/>
+      <location filename="../ui/CurrentDensity.ui" line="48"/>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>A képzetes rész csak harmonikus/rezgő hajtóerővel rendelkező 
@@ -3424,10 +3482,10 @@ egyenletek esetén használatos</translation>
       <translation>Válassza a testreszabás módot az áram sűrűségének vektoriális meghatározásának bekapcsolásához</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/MeshManipulate.ui" line="594"/>
       <source>X</source>
       <translation>X</translation>
@@ -3443,10 +3501,10 @@ egyenletek esetén használatos</translation>
       <translation>Áramsűrűség x-komponensének képzetes része</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/MeshManipulate.ui" line="599"/>
       <source>Y</source>
       <translation>Y</translation>
@@ -3462,10 +3520,10 @@ egyenletek esetén használatos</translation>
       <translation>Áramsűrűség y-komponensének képzetes része</translation>
     </message>
     <message>
+      <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/MeshManipulate.ui" line="604"/>
       <source>Z</source>
       <translation>Z</translation>
@@ -3506,139 +3564,61 @@ egyenletek esetén használatos</translation>
       <translation>Maximális elemméret</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
       <source>Form</source>
       <translation>Űrlap</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
+      <location filename="../ui/MeshAdvanced.ui" line="971"/>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
+      <source>Field</source>
+      <translation>Mező</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <source>Frames</source>
+      <translation>Keretek</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
+      <source>One field for each frame</source>
+      <translation>Egy mező minden képkockához</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <source>Icon</source>
-      <translation>Ikon</translation>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
+      <source>Index</source>
+      <translation>Index szám</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
+      <source>X field</source>
+      <translation>X mező</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
+      <source>Y field</source>
+      <translation>Y mező</translation>
     </message>
     <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
-      <source>Nodes</source>
-      <translation>Csomópontok</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
-      <source>Constant</source>
-      <translation>Állandó</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
-      <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
-      <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>Felület</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
+      <source>One Y field for each frame</source>
+      <translation>Egy Y mező minden képkockához</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="34"/>
@@ -3649,17 +3629,17 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="48"/>
       <source>AttractorAnisoCurve</source>
-      <translation type="unfinished">AttractorAnisoCurve</translation>
+      <translation>Az atomok vonzási görbéjének anizotróp görbéje</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="53"/>
       <source>MathEval</source>
-      <translation type="unfinished">MathEval</translation>
+      <translation>Matematikai értékelés</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="58"/>
       <source>MathEvalAniso</source>
-      <translation type="unfinished">MathEvalAniso</translation>
+      <translation>Anizotróp matematikai értékelés</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="63"/>
@@ -3677,53 +3657,74 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="100"/>
       <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
+      <translation>Számítsa ki a kiválasztott referenciaélekhez viszonyított távolságot, és határozza meg a rács méretét függetlenül a legközelebbi görbéhez merőleges és azzal párhuzamos irányban. A teljesítmény növelése érdekében minden görbét egy mintavételi pontokból álló halmaz helyettesít, amelyekhez viszonyítva a távolságot ténylegesen kiszámítják.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <source>Icon</source>
+      <translation>Ikon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
+      <translation>Az anizotróp hálófinomítások kizárólag a BAMG (2D) és az MMG3D (3D) algoritmusokkal működnek</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
       <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
       <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
+      <translation>Az a távolság, amelynél a háló rács szélessége eléri a maximális értéket</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="210"/>
       <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
       <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
       <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
+      <translation>A rácsméret, amikor a távolság megegyezik a maximális távolsággal</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <source>Diagram</source>
+      <translation>Diagram</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="315"/>
       <source>Size Tangent</source>
-      <translation type="unfinished">Size Tangent</translation>
+      <translation>Érintő méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="337"/>
       <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
       <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
       <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
+      <translation>Rács méret, ha a távolság kisebb, mint a minimális távolság</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
       <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
       <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
+      <translation>Az a távolság, amelyig a rácsméret a minimális méret marad</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="449"/>
       <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
+      <translation>Merőleges méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="460"/>
@@ -3734,13 +3735,13 @@ Notes:
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="505"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;A rácsméret kiszámítása az (x, y, z) koordinátákon alapuló képlet és egyéb sűrítési tényezők (F1, F2 stb.) alapján&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="539"/>
       <location filename="../ui/MeshAdvanced.ui" line="659"/>
       <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
+      <translation>Húzza a sűrítéseket a fa szerkezetében az „advanced Mesh” objektumra, hogy azok a képletben elérhetővé váljanak</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="569"/>
@@ -3765,22 +3766,22 @@ Example: "F2 + Sin(z)"</translation>
       <location filename="../ui/MeshAdvanced.ui" line="826"/>
       <location filename="../ui/MeshAdvanced.ui" line="847"/>
       <source>Mesh size equation</source>
-      <translation type="unfinished">Mesh size equation</translation>
+      <translation>A rácsméretre vonatkozó egyenlet</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="590"/>
       <source>EQIcon</source>
-      <translation type="unfinished">EQIcon</translation>
+      <translation>EQIcon</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="625"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Az anizotróp háló méretének kiszámítása több, az (x, y, z) koordinátáktól függő képlet és egyéb sűrítési tényezők (F1, F2 stb.) alapján.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="728"/>
       <source>M12</source>
-      <translation type="unfinished">M12</translation>
+      <translation>M12</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="735"/>
@@ -3803,32 +3804,33 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="763"/>
       <source>M33</source>
-      <translation type="unfinished">M33</translation>
+      <translation>M33</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="770"/>
       <source>M22</source>
-      <translation type="unfinished">M22</translation>
+      <translation>M22</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="805"/>
       <source>M11</source>
-      <translation type="unfinished">M11</translation>
+      <translation>M11</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="812"/>
       <source>M23</source>
-      <translation type="unfinished">M23</translation>
+      <translation>M23</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="833"/>
       <source>M13</source>
-      <translation type="unfinished">M13</translation>
+      <translation>M13</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="904"/>
       <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
+      <translation>Kiszámítja a távolságot a kiválasztott referenciageometria (csúcsok, élek és felületek) alapján. A hatékonyság érdekében a
+görbéket és a felületeket pontsorozattal helyettesítik</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="952"/>
@@ -3836,75 +3838,9 @@ Example: "F2 + Sin(z)"</translation>
       <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
-      <source>Field</source>
-      <translation>Mező</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
-      <source>Frames</source>
-      <translation>Keretek</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
-      <source>One field for each frame</source>
-      <translation>Egy mező minden képkockához</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="59"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="61"/>
-      <source>Index</source>
-      <translation>Index szám</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="32"/>
-      <source>X field</source>
-      <translation>X mező</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="32"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="59"/>
-      <source>Y field</source>
-      <translation>Y mező</translation>
-    </message>
-    <message>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="93"/>
-      <source>One Y field for each frame</source>
-      <translation>Egy Y mező minden képkockához</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings</source>
-      <translation type="unfinished">Global refinement preview settings</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>Szerkezeti algoritmus segítségével egy meghatározott számú hálózati csomópontot hozunk létre az éleken.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
@@ -3912,9 +3848,37 @@ Example: "F2 + Sin(z)"</translation>
       <translation type="unfinished">Number of nodes on the edge</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
+      <source>Progression</source>
+      <translation>Előrehaladás</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
       <source>Invert</source>
       <translation>Invertálás</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
+      <source>Nodes</source>
+      <translation>Csomópontok</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
+      <source>Bump</source>
+      <translation>Kétoldali sűrítés</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
+      <source>Constant</source>
+      <translation>Állandó</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
@@ -3927,53 +3891,6 @@ Example: "F2 + Sin(z)"</translation>
       <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreview.ui" line="96"/>
-      <location filename="../ui/MeshPreview.ui" line="109"/>
-      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="99"/>
-      <source>Min</source>
-      <translation type="unfinished">Min</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="112"/>
-      <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="138"/>
-      <location filename="../ui/MeshPreview.ui" line="151"/>
-      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="141"/>
-      <source>Max</source>
-      <translation type="unfinished">Max</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="154"/>
-      <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="187"/>
-      <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="197"/>
-      <source>…</source>
-      <translation>…</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
       <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
@@ -3981,34 +3898,40 @@ Example: "F2 + Sin(z)"</translation>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;vagy&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válasszon ki egy olyan felületet, amelynek több mint 4 éle van, és emellett jelölje ki a 3 vagy 4 sarokcsúcsot is.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+      <translation>Az egymással szemben fekvő éleknek (vagyis a sarokpontok közötti összekötő vonalaknak) azonos számú rácscsúcsot kell tartalmazniuk. Ezt a legegyszerűbben átmeneti görbével lehet megvalósítani.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+      <translation>Meg kell határozni, hogy a felületen lévő háromszögeket négyszögekké kell-e összevonni</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <source>Recombine</source>
+      <translation>Új kombinációk</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+      <translation>Meg kell határozni, hogy a háromszögek hogyan helyezkednek el a átfedő hálózatban (amennyiben nem kerül sor új kombinációk kialakítására)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>Háromszög beállítás</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4019,54 +3942,109 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+      <translation>Ha ez az opció aktív, a kiválasztott felületek összes olyan éle, amelyhez még nincs transzfinit görbe-definíció, automatikusan transzfinit görbeként kerül megjelölésre.
+Az automatikus algoritmus működésének szabályozása érdekében célszerű stratégiailag elhelyezni az transzfinit görbe-definíciókat.
 
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </translation>
+Megjegyzések:
+1. A felhasználó által definiált görbék az összes kijelölt fal ellenkező oldalára is kiterjednek.
+2. Csak 3 vagy 4 éllel rendelkező falak esetében működik. A több éllel rendelkező falakat manuálisan kell átalakítani.
+3. A legtöbb fal esetében működik, mind az összekapcsolt, mind az összekapcsolatlan falaknál. </translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>A transfinit típusú görbék automatikus alkalmazása</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <source>Distribution</source>
+      <translation>Elosztás</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>Méret</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <source>Bump Inverted</source>
+      <translation>Fordított kétoldali sűrítés</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <source>Progression Inverted</source>
+      <translation>Fordított előrehaladás</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation>A finomítás során a legkisebb szemméret, amelyet a háló előnézetében zöld színnel jelöltek.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min</source>
+      <translation type="unfinished">Min</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation>1.00e+02</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation>A finomítás során a legnagyobb szemméret, amelyet a háló előnézetében pirossal jelöltek.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max</source>
+      <translation type="unfinished">Max</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation>1.00e+03</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation>Megjelenítés</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>…</source>
+      <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation type="unfinished">Global refinement preview settings</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>Az automatikus sűrítés feladat párbeszédablakának megnyitásakor automatikusan megjeleníti a rácsméret sűrítését.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>Automatikus aktiválás megnyitáskor</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>Állítsd be, milyen finom legyen az előszűrő hálója. A magasabb érték finomabb hálót jelent (kisebb hálószemek)</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>A hálófinomítás előnézete</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="56"/>
@@ -4076,23 +4054,23 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="84"/>
       <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
+      <translation>Korlátozás</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="89"/>
       <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
+      <translation>Küszöb</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="94"/>
       <location filename="../ui/MeshManipulate.ui" line="609"/>
       <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
+      <translation>Középérték</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="99"/>
       <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
+      <translation>Színátmenet</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="104"/>
@@ -4102,48 +4080,54 @@ Notes:
     <message>
       <location filename="../ui/MeshManipulate.ui" line="109"/>
       <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
+      <translation>Laplace-operátor</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="138"/>
       <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
+      <translation>A másodlagos finomítás alkalmazását a kiválasztott referenciaelemekre korlátozza.</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="160"/>
       <location filename="../ui/MeshManipulate.ui" line="173"/>
       <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
+      <translation>A kiválasztott referenciaelemek határainak figyelembevétele</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="163"/>
       <source>Include boundary</source>
-      <translation type="unfinished">Include boundary</translation>
+      <translation>Szűkítés bekapcsolása</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="209"/>
       <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
+      <translation>Egy küszöbérték alkalmazása az alárendelt finomítások értékére</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="308"/>
       <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
+      <translation>Kimeneti méret</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="365"/>
       <source>Input value</source>
-      <translation type="unfinished">Input value</translation>
+      <translation>Bemeneti érték</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="452"/>
       <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
+      <translation>Lineáris interpoláció</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>Meghatározza, hogy a SizeMinimum és a SizeMaximum közötti hálóméret-interpoláció lineáris vagy szigmoid függvény szerint történjen</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="472"/>
       <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
+      <translation>Maximális bevitel esetén leállítani</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="493"/>
@@ -4151,7 +4135,7 @@ Notes:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
+      <translation>Kiszámítja a G alkategória átlagértékét:
 
 F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
 </translation>
@@ -4162,7 +4146,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
       <location filename="../ui/MeshManipulate.ui" line="689"/>
       <location filename="../ui/MeshManipulate.ui" line="761"/>
       <source>Delta</source>
-      <translation type="unfinished">Delta</translation>
+      <translation>Delta</translation>
     </message>
     <message>
       <location filename="../ui/MeshManipulate.ui" line="527"/>
@@ -4178,7 +4162,7 @@ F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - del
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
+      <translation>Számítsd ki a G alrácsfinomítás véges differenciákból származó szakaszát:
 
 F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
 </translation>
@@ -4186,55 +4170,82 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshManipulate.ui" line="580"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Fajta</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="38"/>
-      <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="54"/>
-      <location filename="../ui/MeshShape.ui" line="70"/>
-      <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>Méret</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="57"/>
-      <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>Interpoláció</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="80"/>
-      <location filename="../ui/MeshShape.ui" line="96"/>
-      <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>Minta mérete</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="83"/>
-      <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="106"/>
-      <location filename="../ui/MeshShape.ui" line="122"/>
-      <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>Lineáris</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="145"/>
-      <source>Box</source>
-      <translation>Doboz</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>Létrehoz egy szerkezeti hálót egy térfogatban, amelyet annak átmeneti felületei határoznak meg.</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="150"/>
-      <source>Sphere</source>
-      <translation>Gömb</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
     </message>
     <message>
-      <location filename="../ui/MeshShape.ui" line="155"/>
-      <source>Cylinder</source>
-      <translation>Henger</translation>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>Minden térfogatfelületnek átmenetesnek kell lennie. Ha a felületek hálótípusa eltérő (négyzetes háló helyett háromszög háló), akkor a térfogatot is úgy kell hálózni, hogy a vegyes elemek használata engedélyezve legyen.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>Vegyes hálós elemek</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>Az átmeneti síkok és görbék automatikus alkalmazása</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>Felület</translation>
     </message>
   </context>
   <context>
@@ -5018,34 +5029,44 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
       <translation>Válasszon alárendelt geometria típust: felület; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="151"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="150"/>
       <source>Parameters</source>
       <translation>Paraméterek</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="157"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="156"/>
       <source>Contact stiffness</source>
       <translation>Kapcsolati merevség</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="180"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="179"/>
       <source>Clearance adjustment</source>
       <translation>Hézag igazítása</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="203"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="202"/>
       <source>Enable friction</source>
       <translation>Súrlódás engedélyezése</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="210"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="209"/>
       <source>Friction coefficient</source>
       <translation>Súrlódási együttható</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="233"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="232"/>
       <source>Stick slope</source>
       <translation>Dőlésszög</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="255"/>
+      <source>Reverse master</source>
+      <translation type="unfinished">Reverse master</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="262"/>
+      <source>Reverse slave</source>
+      <translation type="unfinished">Reverse slave</translation>
     </message>
   </context>
   <context>
@@ -6520,23 +6541,23 @@ Please select a result type first.</source>
 Kérjük, először válassza ki az eredmény típusát.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="617"/>
       <source>Histogram of {}</source>
       <translation>Hisztogram {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
       <source>Nodes</source>
       <translation>Csomópontok</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="770"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="769"/>
       <source>Result mesh is empty</source>
       <translation>Az eredményháló üres</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="784"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="793"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="783"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="792"/>
       <source>No result object</source>
       <translation>Nincs eredményobjektum</translation>
     </message>
@@ -6695,8 +6716,8 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
       <translation>A Y tengelyhez használni kívánt Y mezővektor melyik része</translation>
     </message>
     <message>
-      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <location filename="../../../femobjects/post_extract2D.py" line="64"/>
+      <location filename="../../../femobjects/post_extract1D.py" line="64"/>
       <source>Specify if the field shall be extracted for every available frame</source>
       <translation>Adja meg, hogy az mezőt ki kell-e nyerni minden rendelkezésre álló képkockához</translation>
     </message>
@@ -6716,14 +6737,14 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
       <translation>Szerkesztés {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>A nyomvonal megjelenítése</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>Adat megjelenítése</translation>
     </message>
@@ -6758,8 +6779,8 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
       <translation>Táblázat adat</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="267"/>
       <source>The name used in the plots legend</source>
       <translation>A nyomvonal legendájában használt név</translation>
     </message>
@@ -6786,8 +6807,8 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
       <translation>A sáv szélessége 0 és 1 között (1 a hézagok nélküli)</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="297"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="311"/>
       <source>The style the line is drawn in</source>
       <translation>A vonal rajzolási stílusa</translation>
     </message>
@@ -6812,28 +6833,28 @@ A jelenlegi Python-útvonalon nem található megfelelő modul.</translation>
       <translation>Az adatokra osztott kategóriák száma</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="421"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="437"/>
       <source>The histogram plot title</source>
       <translation>Hisztogram feltüntetett címe</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="428"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="444"/>
       <source>The label shown for the histogram X axis</source>
       <translation>A hisztogram X-tengelyén megjelenő felirat</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="435"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="451"/>
       <source>The label shown for the histogram Y axis</source>
       <translation>A hisztogram Y-tengelyén megjelenő felirat</translation>
     </message>
     <message>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
-      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="442"/>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="449"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="458"/>
+      <location filename="../../../femviewprovider/view_post_histogram.py" line="465"/>
       <source>Determines if the legend is plotted</source>
       <translation>Megerősíti, hogy a jelmagyarázat fel van-e tüntetve</translation>
     </message>
@@ -7810,10 +7831,10 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>A szimbólum formája</translation>
     </message>
@@ -7853,12 +7874,12 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>Gömb</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
+      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
       <location filename="../ui/TaskPostGlyph.ui" line="75"/>
       <location filename="../ui/TaskPostGlyph.ui" line="91"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="81"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
       <translation>Vektormező, amelyet a szimbólumok irányítására használnak</translation>
     </message>
@@ -7868,10 +7889,10 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>Tájolás</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
@@ -7892,10 +7913,10 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>Adat</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>Szimbólumokat méretező szorzótényező állandó</translation>
     </message>
@@ -7910,9 +7931,9 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>A méretezési tényező módosítása a beállított méretezési tényező ±50%-ára</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostGlyph.ui" line="226"/>
-      <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>Ha a méretarány adat egy vektor, ez a tulajdonság meghatározza, hogy a szimbólumokat a vektor nagysága vagy az egyes összetevők alapján méretezik-e</translation>
     </message>
@@ -8004,27 +8025,27 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>Összesítő</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <location filename="../ui/TaskPostLineplot.ui" line="64"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="103"/>
       <source>Legend</source>
       <translation>Jelmagyarázat</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="112"/>
       <source>Show</source>
       <translation>Mutat</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <location filename="../ui/TaskPostLineplot.ui" line="117"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="138"/>
       <source>Labels</source>
       <translation>Címkék</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <location filename="../ui/TaskPostLineplot.ui" line="135"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="156"/>
       <source>Y-axis</source>
       <translation>Y tengely</translation>
     </message>
@@ -8034,8 +8055,8 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>X tengely</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <location filename="../ui/TaskPostLineplot.ui" line="158"/>
+      <location filename="../ui/TaskPostHistogram.ui" line="179"/>
       <source>Title</source>
       <translation>Cím</translation>
     </message>
@@ -8499,35 +8520,35 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
   <context>
     <name>PostHistogramEdit</name>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>Űrlap</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="40"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="75"/>
       <source>Outline draw style (None does not draw outlines)</source>
       <translation>Kontúrrajzolási stílus ('Nincs' nem rajzol kontúrokat)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="44"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="81"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="51"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="79"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="58"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="129"/>
       <source>Width of all lines (outline and hatch)</source>
       <translation>Az összes vonal szélessége (kontúr és kitöltés)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="77"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="47"/>
       <source>Hatch pattern</source>
       <translation>Kitöltési minta</translation>
     </message>
@@ -8547,8 +8568,8 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>Gerenda</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="122"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="62"/>
       <source>Legend</source>
       <translation>Jelmagyarázat</translation>
     </message>
@@ -8558,8 +8579,8 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <translation>Összes vonal színe (kontúr és kitöltés)</translation>
     </message>
     <message>
-      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="148"/>
+      <location filename="../ui/PostLineplotFieldViewEdit.ui" line="100"/>
       <source>Color of the bars in histogram</source>
       <translation>Hisztogram oszlopainak színe</translation>
     </message>
@@ -8716,6 +8737,45 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../../../Init.py" line="114"/>
       <source>FEM result VTK</source>
       <translation type="unfinished">FEM result VTK</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.sel_master</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
+      <source>Master Geometry Reference Selector</source>
+      <translation type="unfinished">Master Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.sel_slave</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
+      <source>Slave Geometry Reference Selector</source>
+      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Hiányzó vagy hibás CalculiX xszámítás bináris fájl</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>VEM: az xszámítás bináris érvénytelen</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>VEM: A CalculiX xszámítás '{}' bináris fájl nem található. Kérlek, állítsd be a CalculiX xszámítás bináris fájl elérési útját a VEM beállításoknál a CalculiX fülön.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>VEM: A CalculiX xszámítás '{}' kimenete '{}' nem tartalmazza a várt kifejezést '{}'. Valami gond van a xszámítás futtatásakor. Nézd meg, hogy a xszámítás önállóan, FreeCAD nélkül le tud-e futni.</translation>
     </message>
   </context>
   <context>
@@ -8961,112 +9021,9 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     </message>
   </context>
   <context>
-    <name>FemToolsCcx</name>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="421"/>
-      <source>No or wrong CalculiX binary ccx</source>
-      <translation>Hiányzó vagy hibás CalculiX xszámítás bináris fájl</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="455"/>
-      <source>FEM: wrong ccx binary</source>
-      <translation>VEM: az xszámítás bináris érvénytelen</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="468"/>
-      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>VEM: A CalculiX xszámítás '{}' bináris fájl nem található. Kérlek, állítsd be a CalculiX xszámítás bináris fájl elérési útját a VEM beállításoknál a CalculiX fülön.</translation>
-    </message>
-    <message>
-      <location filename="../../../femtools/ccxtools.py" line="480"/>
-      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>VEM: A CalculiX xszámítás '{}' kimenete '{}' nem tartalmazza a várt kifejezést '{}'. Valami gond van a xszámítás futtatásakor. Nézd meg, hogy a xszámítás önállóan, FreeCAD nélkül le tud-e futni.</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
-    <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
-      <source>Input Error</source>
-      <translation>Beviteli hiba</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
       <source>Input Error</source>
       <translation>Beviteli hiba</translation>
     </message>
@@ -9075,6 +9032,14 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
       <source>Input Error</source>
       <translation>Beviteli hiba</translation>
     </message>
@@ -9093,9 +9058,17 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgPost</name>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
       <source>Input Error</source>
       <translation>Beviteli hiba</translation>
     </message>
@@ -9109,9 +9082,73 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     </message>
   </context>
   <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>Beviteli hiba</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
       <source>Input Error</source>
       <translation>Beviteli hiba</translation>
     </message>

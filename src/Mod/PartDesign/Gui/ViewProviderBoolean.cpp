@@ -27,6 +27,8 @@
 #include <QMenu>
 #include <Inventor/nodes/SoTransform.h>
 
+#include <algorithm>
+#include <set>
 #include <utility>
 
 #include "ViewProviderBoolean.h"
@@ -37,6 +39,7 @@
 #include <Base/ServiceProvider.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <App/Document.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/GroupExtension.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/Application.h>
@@ -46,6 +49,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
 #include <Gui/Utilities.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Sketcher/Gui/TaskDlgEditSketch.h>
@@ -57,14 +62,64 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBoolean, PartDesignGu
 
 const char* PartDesignGui::ViewProviderBoolean::DisplayEnum[] = {"Result", "Tools", nullptr};
 
+static Part::TopoShape getBooleanPreviewShape(
+    const PartDesign::Boolean* boolean,
+    const App::DocumentObject* object
+)
+{
+    if (!boolean || !object) {
+        return {};
+    }
+
+    if (boolean->UseLegacyBodyPlacement.getValue()) {
+        return Part::Feature::getTopoShape(
+            object,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
+    }
+
+    return boolean->getTopoShapeInLocalCoordinates(object);
+}
+
+static bool referencesObject(
+    const App::DocumentObject* object,
+    const App::DocumentObject* target,
+    std::set<const App::DocumentObject*>& visited
+)
+{
+    if (!object || !target || !visited.insert(object).second) {
+        return false;
+    }
+    if (object == target) {
+        return true;
+    }
+
+    auto* group = object->getExtensionByType<App::GroupExtension>(/*no_except=*/true);
+    if (!group) {
+        return false;
+    }
+
+    return std::ranges::any_of(group->Group.getValues(), [target, &visited](const auto* child) {
+        return referencesObject(child, target, visited);
+    });
+}
+
+static bool referencesObject(const App::DocumentObject* object, const App::DocumentObject* target)
+{
+    std::set<const App::DocumentObject*> visited;
+    return referencesObject(object, target, visited);
+}
+
 
 ViewProviderBoolean::ViewProviderBoolean()
-    : pcToolsPreview(new SoGroup)
+    : pcToolsDisplay(new SoGroup)
+    , pcToolsPreview(new SoGroup)
     , pcBasePreviewToggle(new SoToggleSwitch)
 {
     sPixmap = "PartDesign_Boolean.svg";
 
     ViewProviderGeoFeatureGroupExtension::initExtension(this);
+    addDisplayMaskMode(pcToolsDisplay, "BooleanTools");
 
     ADD_PROPERTY(Display, ((long)0));
     Display.setEnums(DisplayEnum);
@@ -84,24 +139,13 @@ void ViewProviderBoolean::attach(App::DocumentObject* pcObject)
 
 void ViewProviderBoolean::update(const App::Property* prop)
 {
-    if (!_activeBodyExposure || prop == &getObject()->Visibility) {
-        Gui::ViewProviderDocumentObject::update(prop);
-        return;
-    }
-
-    // A tool body is temporarily shown via setDisplayMaskMode("Group").
-    // The normal ViewProvider::update() briefly sets pcModeSwitch=-1 (hide/show
-    // optimization) which hides the entire Group subtree, making the tool body flash.
-    // Call updateData() directly to skip that cycle.
-    if (isUpdatesEnabled()) {
-        updateData(prop);
-    }
+    Gui::ViewProviderDocumentObject::update(prop);
 }
 
 const char* ViewProviderBoolean::getConfiguredDisplayMode()
 {
     if (Display.getValue() != 0) {
-        return "Group";
+        return "BooleanTools";
     }
 
     if (auto bodyViewProvider = getBodyViewProvider()) {
@@ -122,6 +166,85 @@ static void setTemporaryVisible(Gui::ViewProvider* vp, bool visible)
     }
 }
 
+static void removeFromTopLevelSceneGraph(Gui::Document* document, Gui::ViewProvider* viewProvider)
+{
+    if (!document || !viewProvider) {
+        return;
+    }
+
+    for (auto* view : document->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId(), true)) {
+        if (auto* view3d = freecad_cast<Gui::View3DInventor*>(view)) {
+            view3d->getViewer()->removeViewProvider(viewProvider);
+        }
+    }
+}
+
+static bool addToTopLevelSceneGraph(Gui::Document* document, Gui::ViewProvider* viewProvider)
+{
+    if (!document || !viewProvider) {
+        return false;
+    }
+
+    bool added = false;
+    for (auto* view : document->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId(), true)) {
+        if (auto* view3d = freecad_cast<Gui::View3DInventor*>(view)) {
+            auto* viewer = view3d->getViewer();
+            if (!viewer->hasViewProvider(viewProvider)) {
+                viewer->addViewProvider(viewProvider);
+                added = true;
+            }
+        }
+    }
+    return added;
+}
+
+void ViewProviderBoolean::exposeViewProvider(
+    ActiveBodyExposure& exposure,
+    App::DocumentObject* object,
+    bool groupMode,
+    bool topLevel
+)
+{
+    if (!object) {
+        return;
+    }
+
+    auto* vp = Gui::Application::Instance->getViewProvider(object);
+    if (!vp) {
+        return;
+    }
+
+    const auto alreadyStored
+        = std::ranges::any_of(exposure.viewProviders, [object](const ViewProviderExposure& state) {
+              return state.object.get<App::DocumentObject>() == object;
+          });
+    if (!alreadyStored) {
+        exposure.viewProviders.push_back(
+            ViewProviderExposure {
+                .object = App::DocumentObjectWeakPtrT(object),
+                .mode = vp->getActualMode(),
+                .wasVisible = vp->Gui::ViewProvider::isShow(),
+                .topLevelExposed = false,
+            }
+        );
+    }
+    if (groupMode) {
+        vp->setDisplayMaskMode("Group");
+    }
+    setTemporaryVisible(vp, true);
+    if (topLevel) {
+        auto state = std::ranges::find_if(
+            exposure.viewProviders,
+            [object](const ViewProviderExposure& stored) {
+                return stored.object.get<App::DocumentObject>() == object;
+            }
+        );
+        if (state != exposure.viewProviders.end()) {
+            state->topLevelExposed = addToTopLevelSceneGraph(getDocument(), vp);
+        }
+    }
+}
+
 void ViewProviderBoolean::restoreActiveBodyExposure()
 {
     if (!_activeBodyExposure) {
@@ -131,11 +254,16 @@ void ViewProviderBoolean::restoreActiveBodyExposure()
     auto exposure = std::move(*_activeBodyExposure);
     _activeBodyExposure.reset();
 
-    auto* body = exposure.body.get<App::DocumentObject>();
-    if (body) {
-        if (auto* bodyVP = Gui::Application::Instance->getViewProvider(body)) {
-            bodyVP->setDefaultMode(exposure.bodyMode);
-            setTemporaryVisible(bodyVP, exposure.bodyWasVisible);
+    for (auto it = exposure.viewProviders.rbegin(); it != exposure.viewProviders.rend(); ++it) {
+        auto* object = it->object.get<App::DocumentObject>();
+        if (object) {
+            if (auto* vp = Gui::Application::Instance->getViewProvider(object)) {
+                if (it->topLevelExposed) {
+                    removeFromTopLevelSceneGraph(getDocument(), vp);
+                }
+                vp->setDefaultMode(it->mode);
+                setTemporaryVisible(vp, it->wasVisible);
+            }
         }
     }
 
@@ -169,10 +297,7 @@ void ViewProviderBoolean::onBodyActivated(const Gui::ViewProviderDocumentObject*
     App::DocumentObject* matchingMember = nullptr;
     if (activatedBody) {
         for (auto* member : feature->Group.getValues()) {
-            auto* group = member
-                ? member->getExtensionByType<App::GroupExtension>(/*no_except=*/true)
-                : nullptr;
-            if (member == activatedBody || (group && group->hasObject(activatedBody, true))) {
+            if (referencesObject(member, activatedBody)) {
                 matchingMember = member;
                 break;
             }
@@ -190,32 +315,34 @@ void ViewProviderBoolean::onBodyActivated(const Gui::ViewProviderDocumentObject*
         return;
     }
 
-    auto* bodyVP = Gui::Application::Instance->getViewProvider(matchingMember);
-    if (!bodyVP) {
-        restoreActiveBodyExposure();
-        return;
-    }
-
     if (!sameExposure) {
         _activeBodyExposure.emplace(
             ActiveBodyExposure {
                 .body = App::DocumentObjectWeakPtrT(matchingMember),
-                .bodyMode = bodyVP->getActualMode(),
                 .booleanMode = getActualMode(),
-                .bodyWasVisible = bodyVP->Gui::ViewProvider::isShow(),
                 .booleanWasVisible = Gui::ViewProvider::isShow(),
                 .indirect = indirectActivation,
+                .viewProviders = {},
             }
         );
     }
 
-    setDisplayMaskMode("Group");
-    if (_activeBodyExposure->indirect) {
-        bodyVP->setDisplayMaskMode("Group");
+    auto& exposure = *_activeBodyExposure;
+    std::set<App::DocumentObject*> exposedGroups;
+    std::vector<App::DocumentObject*> groups;
+
+    auto* placementOwner = activatedBody ? activatedBody : matchingMember;
+    for (auto* group = App::GeoFeatureGroupExtension::getGroupOfObject(placementOwner);
+         group && exposedGroups.insert(group).second;
+         group = App::GeoFeatureGroupExtension::getGroupOfObject(group)) {
+        groups.push_back(group);
     }
-    else {
-        setTemporaryVisible(bodyVP, true);
+
+    for (auto it = groups.rbegin(); it != groups.rend(); ++it) {
+        exposeViewProvider(exposure, *it, true, true);
     }
+
+    exposeViewProvider(exposure, matchingMember, true, true);
 }
 
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -250,16 +377,22 @@ const char* ViewProviderBoolean::getDefaultDisplayMode() const
     return "Flat Lines";
 }
 
+std::vector<App::DocumentObject*> ViewProviderBoolean::claimChildren3D() const
+{
+    auto* feature = getObject<PartDesign::Boolean>();
+    return feature ? feature->Group.getValues() : std::vector<App::DocumentObject*> {};
+}
+
 void ViewProviderBoolean::onChanged(const App::Property* prop)
 {
 
     ViewProvider::onChanged(prop);
 
     if (prop == &Display) {
+        updateToolsDisplay();
         setDisplayMode(getConfiguredDisplayMode());
         if (_activeBodyExposure) {
             _activeBodyExposure->booleanMode = getActualMode();
-            setDisplayMaskMode("Group");
         }
     }
 
@@ -295,6 +428,7 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
     }
 
     ViewProvider::updateData(prop);
+    updateToolsDisplay();
 
     if (prop == &feature->Group) {
         syncActiveBodyVisibility();
@@ -322,14 +456,17 @@ void ViewProviderBoolean::updatePreview()
         return;
     }
 
-    const auto addToolPreview = [this, toolTransparency](App::DocumentObject* tool) {
+    const auto addToolPreview = [this, toolTransparency, boolean](App::DocumentObject* tool) {
         const auto feature = freecad_cast<Part::Feature*>(tool);
 
         if (!feature) {
             return;
         }
 
-        Part::TopoShape toolShape = feature->Shape.getShape();
+        Part::TopoShape toolShape = getBooleanPreviewShape(boolean, feature);
+        if (toolShape.isNull()) {
+            return;
+        }
 
         auto pcToolPreview = new PartGui::SoPreviewShape;
         updatePreviewShape(toolShape, pcToolPreview);
@@ -354,8 +491,13 @@ void ViewProviderBoolean::updatePreview()
             return;
         }
 
+        Part::TopoShape baseShape = getBooleanPreviewShape(boolean, baseFeature);
+        if (baseShape.isNull()) {
+            return;
+        }
+
         auto pcBaseShapePreview = new PartGui::SoPreviewShape;
-        updatePreviewShape(baseFeature->Shape.getShape(), pcBaseShapePreview);
+        updatePreviewShape(baseShape, pcBaseShapePreview);
 
         pcBaseShapePreview->transparency.setValue(static_cast<float>(toolTransparency));
         pcBaseShapePreview->color.setValue(
@@ -384,6 +526,37 @@ void ViewProviderBoolean::updatePreview()
     }
 
     ViewProvider::updatePreview();
+}
+
+void ViewProviderBoolean::updateToolsDisplay()
+{
+    auto boolean = getObject<PartDesign::Boolean>();
+    if (!boolean) {
+        return;
+    }
+
+    Gui::coinRemoveAllChildren(pcToolsDisplay);
+
+    const auto addTool = [this, boolean](App::DocumentObject* tool) {
+        auto* feature = freecad_cast<Part::Feature*>(tool);
+        if (!feature) {
+            return;
+        }
+
+        auto shape = getBooleanPreviewShape(boolean, feature);
+        if (shape.isNull()) {
+            return;
+        }
+
+        auto* preview = new PartGui::SoPreviewShape;
+        updatePreviewShape(shape, preview);
+        preview->color.connectFrom(&pcPreviewShape->color);
+        preview->lineWidth.connectFrom(&pcPreviewShape->lineWidth);
+        preview->transparency.setValue(0.0F);
+        pcToolsDisplay->addChild(preview);
+    };
+
+    std::ranges::for_each(boolean->Group.getValues(), addTool);
 }
 
 TaskDlgFeatureParameters* ViewProviderBoolean::getEditDialog()

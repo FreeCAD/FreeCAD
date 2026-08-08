@@ -559,94 +559,24 @@ QPixmap BitmapFactoryInst::empty(QSize size) const
 
 void BitmapFactoryInst::convert(const QImage& p, SoSFImage& img) const
 {
+    // Coin3D also supports grayscale, grayscale+alpha and RGB888 formats,
+    // but RGBA8888 is universal and is simple and fast to obtain.
+    QImage::Format targetFormat = QImage::Format_RGBA8888;
+    int numcomponents = 4;
+
+    QImage reformattedImage = p.convertedTo(targetFormat);
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 9, 0)
+    reformattedImage.mirror(/* horizontal= */ false, /* vertical= */ true);
+#else
+    reformattedImage.flip(Qt::Vertical);
+#endif
+
     SbVec2s size;
     size[0] = p.width();
     size[1] = p.height();
 
-    int buffersize = static_cast<int>(p.sizeInBytes());
-
-    int numcomponents = 0;
-    QVector<QRgb> table = p.colorTable();
-    if (!table.isEmpty()) {
-        if (p.hasAlphaChannel()) {
-            if (p.allGray()) {
-                numcomponents = 2;
-            }
-            else {
-                numcomponents = 4;
-            }
-        }
-        else {
-            if (p.allGray()) {
-                numcomponents = 1;
-            }
-            else {
-                numcomponents = 3;
-            }
-        }
-    }
-    else {
-        numcomponents = buffersize / (size[0] * size[1]);
-    }
-
-    int depth = numcomponents;
-
-    // Coin3D only supports up to 32-bit images
-    if (numcomponents == 8) {
-        numcomponents = 4;
-    }
-
-    // allocate image data
-    img.setValue(size, numcomponents, nullptr);
-
-    unsigned char* bytes = img.startEditing(size, numcomponents);
-
-    int width = (int)size[0];
-    int height = (int)size[1];
-
-    for (int y = 0; y < height; y++) {
-        unsigned char* line = &bytes[width * numcomponents * (height - (y + 1))];
-        for (int x = 0; x < width; x++) {
-            QColor col = p.pixelColor(x, y);
-            switch (depth) {
-                default:
-                    break;
-                case 1: {
-                    QRgb rgb = col.rgb();
-                    line[0] = qGray(rgb);
-                } break;
-                case 2: {
-                    QRgb rgb = col.rgba();
-                    line[0] = qGray(rgb);
-                    line[1] = qAlpha(rgb);
-                } break;
-                case 3: {
-                    QRgb rgb = col.rgb();
-                    line[0] = qRed(rgb);
-                    line[1] = qGreen(rgb);
-                    line[2] = qBlue(rgb);
-                } break;
-                case 4: {
-                    QRgb rgb = col.rgba();
-                    line[0] = qRed(rgb);
-                    line[1] = qGreen(rgb);
-                    line[2] = qBlue(rgb);
-                    line[3] = qAlpha(rgb);
-                } break;
-                case 8: {
-                    QRgba64 rgb = col.rgba64();
-                    line[0] = qRed(rgb);
-                    line[1] = qGreen(rgb);
-                    line[2] = qBlue(rgb);
-                    line[3] = qAlpha(rgb);
-                } break;
-            }
-
-            line += numcomponents;
-        }
-    }
-
-    img.finishEditing();
+    img.setValue(size, numcomponents, reformattedImage.constBits());
 }
 
 void BitmapFactoryInst::convert(const SoSFImage& p, QImage& img) const

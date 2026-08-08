@@ -392,6 +392,23 @@ class FineGrainedRecomputeCases(unittest.TestCase):
         self.Doc.removeObject(cube1.Name)
 
     @finegrained((True, False))
+    def testChildVisibilityTouchesPart(self):
+        part = self.Doc.addObject("App::Part", "Part")
+        cylinder = self.Doc.addObject("Part::Cylinder", "Cylinder")
+        part.addObject(cylinder)
+        self.Doc.recompute()
+
+        self.assertNotIn("Touched", part.State)
+        self.assertNotIn("Touched", cylinder.State)
+
+        cylinder.Visibility = False
+
+        self.assertIn("Touched", part.State)
+
+        self.Doc.removeObject(cylinder.Name)
+        self.Doc.removeObject(part.Name)
+
+    @finegrained((True, False))
     def testExpression(self):
         # arrange
         cube1 = self.Doc.addObject("Part::Box", "Cube1")

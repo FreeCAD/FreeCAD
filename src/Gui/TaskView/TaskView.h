@@ -64,20 +64,6 @@ class GuiExport TaskContent {
         //~TaskContent();
 };
 
-class GuiExport TaskGroup: public QSint::ActionBox, public TaskContent
-{
-    Q_OBJECT
-
-public:
-    explicit TaskGroup(QWidget* parent = nullptr);
-    explicit TaskGroup(const QString& headerText, QWidget* parent = nullptr);
-    explicit TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent = nullptr);
-    ~TaskGroup() override;
-
-protected:
-    void actionEvent(QActionEvent*) override;
-};
-
 /// Father class of content with header and Icon
 class GuiExport TaskBox: public QSint::ActionGroup, public TaskContent
 {

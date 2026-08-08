@@ -117,6 +117,206 @@ class TestBoolean(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.BooleanCommon.Shape.Volume, 500)
 
+    def testBooleanCutUsesActiveBodyPlacement(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "ToolBody")
+        self.Body.Placement.Base = App.Vector(25, 0, 0)
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "ToolBox")
+        self.Box.Length = 10
+        self.Box.Width = 10
+        self.Box.Height = 10
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+
+        self.Body001 = self.Doc.addObject("PartDesign::Body", "ActiveBody")
+        self.Body001.Placement.Base = App.Vector(20, 0, 0)
+        self.Box001 = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
+        self.Box001.Length = 10
+        self.Box001.Width = 10
+        self.Box001.Height = 10
+        self.Body001.addObject(self.Box001)
+        self.Doc.recompute()
+
+        self.BooleanCut = self.Doc.addObject("PartDesign::Boolean", "BooleanCut")
+        self.Body001.addObject(self.BooleanCut)
+        self.BooleanCut.setObjects([self.Body])
+        self.BooleanCut.Type = 1
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.BooleanCut.Shape.Volume, 500)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMax, 5)
+
+    def testBooleanCutUsesActiveBodyGlobalPlacement(self):
+        container = self.Doc.addObject("App::Part", "Part")
+        container.Placement.Base = App.Vector(100, 0, 0)
+
+        self.Body = self.Doc.addObject("PartDesign::Body", "ToolBody")
+        container.addObject(self.Body)
+        self.Body.Placement.Base = App.Vector(25, 0, 0)
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "ToolBox")
+        self.Box.Length = 10
+        self.Box.Width = 10
+        self.Box.Height = 10
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+
+        self.Body001 = self.Doc.addObject("PartDesign::Body", "ActiveBody")
+        container.addObject(self.Body001)
+        self.Body001.Placement.Base = App.Vector(20, 0, 0)
+        self.Box001 = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
+        self.Box001.Length = 10
+        self.Box001.Width = 10
+        self.Box001.Height = 10
+        self.Body001.addObject(self.Box001)
+        self.Doc.recompute()
+
+        self.BooleanCut = self.Doc.addObject("PartDesign::Boolean", "BooleanCut")
+        self.Body001.addObject(self.BooleanCut)
+        self.BooleanCut.setObjects([self.Body])
+        self.assertIn(self.Body, container.Group)
+        self.BooleanCut.Type = 1
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.BooleanCut.Shape.Volume, 500)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMax, 5)
+
+    def testBooleanCutUsesNestedContainerGlobalPlacement(self):
+        outer = self.Doc.addObject("App::Part", "OuterPart")
+        outer.Placement.Base = App.Vector(100, 0, 0)
+        inner = self.Doc.addObject("App::Part", "InnerPart")
+        outer.addObject(inner)
+        inner.Placement.Base = App.Vector(10, 0, 0)
+
+        self.Body = self.Doc.addObject("PartDesign::Body", "ToolBody")
+        inner.addObject(self.Body)
+        self.Body.Placement.Base = App.Vector(25, 0, 0)
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "ToolBox")
+        self.Box.Length = 10
+        self.Box.Width = 10
+        self.Box.Height = 10
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+
+        self.Body001 = self.Doc.addObject("PartDesign::Body", "ActiveBody")
+        inner.addObject(self.Body001)
+        self.Body001.Placement.Base = App.Vector(20, 0, 0)
+        self.Box001 = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
+        self.Box001.Length = 10
+        self.Box001.Width = 10
+        self.Box001.Height = 10
+        self.Body001.addObject(self.Box001)
+        self.Doc.recompute()
+
+        self.BooleanCut = self.Doc.addObject("PartDesign::Boolean", "BooleanCut")
+        self.Body001.addObject(self.BooleanCut)
+        self.BooleanCut.setObjects([self.Body])
+        self.assertIn(self.Body, inner.Group)
+        self.BooleanCut.Type = 1
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.BooleanCut.Shape.Volume, 500)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMax, 5)
+
+    def testBooleanCutUsesDifferentContainerGlobalPlacements(self):
+        tool_container = self.Doc.addObject("App::Part", "ToolContainer")
+        tool_container.Placement.Base = App.Vector(100, 0, 0)
+        active_container = self.Doc.addObject("App::Part", "ActiveContainer")
+        active_container.Placement.Base = App.Vector(200, 0, 0)
+
+        self.Body = self.Doc.addObject("PartDesign::Body", "ToolBody")
+        tool_container.addObject(self.Body)
+        self.Body.Placement.Base = App.Vector(25, 0, 0)
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "ToolBox")
+        self.Box.Length = 10
+        self.Box.Width = 10
+        self.Box.Height = 10
+        self.Body.addObject(self.Box)
+        self.Doc.recompute()
+
+        self.Body001 = self.Doc.addObject("PartDesign::Body", "ActiveBody")
+        active_container.addObject(self.Body001)
+        self.Body001.Placement.Base = App.Vector(-80, 0, 0)
+        self.Box001 = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
+        self.Box001.Length = 10
+        self.Box001.Width = 10
+        self.Box001.Height = 10
+        self.Body001.addObject(self.Box001)
+        self.Doc.recompute()
+
+        self.BooleanCut = self.Doc.addObject("PartDesign::Boolean", "BooleanCut")
+        self.Body001.addObject(self.BooleanCut)
+        self.BooleanCut.setObjects([self.Body])
+        self.assertIn(self.Body, tool_container.Group)
+        self.BooleanCut.Type = 1
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.BooleanCut.Shape.Volume, 500)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMin, 0)
+        self.assertAlmostEqual(self.BooleanCut.Shape.BoundBox.XMax, 5)
+
+    def testBooleanFirstFeatureUsesSourcePlacement(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        box.Placement.Base = App.Vector(20, 0, 0)
+
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.BooleanFuse = self.Doc.addObject("PartDesign::Boolean", "BooleanFuse")
+        self.Body.addObject(self.BooleanFuse)
+        self.assertFalse(self.BooleanFuse.UseLegacyBodyPlacement)
+        self.BooleanFuse.setObjects([box])
+        self.BooleanFuse.Type = 0
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.XMin, 20)
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.XMax, 30)
+
+    def testBooleanFirstFeatureUsesSubShapeBinderPlacement(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        box.Placement.Base = App.Vector(20, 0, 0)
+
+        binder = self.Doc.addObject("PartDesign::SubShapeBinder", "Binder")
+        binder.Support = [box]
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(binder.Shape.BoundBox.XMin, 20)
+        self.assertAlmostEqual(binder.Shape.BoundBox.XMax, 30)
+
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.BooleanFuse = self.Doc.addObject("PartDesign::Boolean", "BooleanFuse")
+        self.Body.addObject(self.BooleanFuse)
+        self.assertFalse(self.BooleanFuse.UseLegacyBodyPlacement)
+        self.BooleanFuse.setObjects([binder])
+        self.BooleanFuse.Type = 0
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.XMin, 20)
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.XMax, 30)
+
+    def testBooleanLegacyPlacementKeepsOldFirstFeatureBehavior(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        box.Placement.Base = App.Vector(20, 0, 0)
+
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.BooleanFuse = self.Doc.addObject("PartDesign::Boolean", "BooleanFuse")
+        self.Body.addObject(self.BooleanFuse)
+        self.BooleanFuse.UseLegacyBodyPlacement = True
+        self.BooleanFuse.setObjects([box])
+        self.BooleanFuse.Type = 0
+        self.Doc.recompute()
+
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.XMin, 20)
+        self.assertAlmostEqual(self.Body.Shape.BoundBox.XMax, 30)
+
     def testBooleanSelectUI(self):
         if not App.GuiUp:
             return

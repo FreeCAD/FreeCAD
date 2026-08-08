@@ -23,10 +23,10 @@ import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path.Base.Util as PathUtil
 from Path.Dressup.Utils import toolController
+from Path.Op.Util import getCycleTimeEstimate
 import tsp_solver
 
 import random
@@ -288,7 +288,7 @@ class ObjectArray:
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
             )
-            obj.CycleTime = self.getCycleTimeEstimate(obj)
+            obj.CycleTime = getCycleTimeEstimate(obj)
 
         if not hasattr(obj, "ReverseDirection"):
             obj.addProperty(
@@ -383,7 +383,7 @@ class ObjectArray:
         )
 
         obj.Path = pa.getPath()
-        obj.CycleTime = PathOp.getCycleTimeEstimate(obj)
+        obj.CycleTime = getCycleTimeEstimate(obj)
 
     def isBaseCompatible(self, obj):
         if not obj.Base:

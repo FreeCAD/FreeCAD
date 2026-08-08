@@ -317,6 +317,9 @@ struct StatusBarItem
     /// widget->isVisible(), which is unreliable while MainWindow is still being
     /// constructed (the window is not shown yet, so every child reports hidden).
     bool enabled = true;
+    /// Whether the widget is currently held by the QStatusBar. A freshly-registered  item is not,
+    /// so relayout should skip it to avoid Qt warnings about removing an unknown widget.
+    bool placed = false;
 };
 
 // -------------------------------------
@@ -457,8 +460,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // sequence regardless of the order they register at runtime. The menu uses the
     // same order. Workbenches use the 550-699 band so they land just left of the
     // Bottom Panel Toggle; see also Draft/BIM/Tux and ToolBarManager::setupStatusBar.
-    //   Left : Preselection(0), Progress(50), Input Hints(100)
-    //   Right: Quick Measure(400), ToolBarArea(500), [workbench 550-699],
+    //   Left : Preselection(0), Progress(50)
+    //   Right: Input Hints(100), Quick Measure(400), ToolBarArea(500), [workbench 550-699],
     //          Bottom Panel Toggle(700), Notifications(800), Navigation Styles(900),
     //          Unit System(1000, rightmost)
     d->actionLabel = new StatusBarLabel(statusBar());
@@ -487,7 +490,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
         {.id = "hintLabel",
          //: A context menu action used to show or hide the input hints in the status bar
          .title = tr("Input Hints"),
-         .slot = StatusBarSlot::Left,
+         .slot = StatusBarSlot::Right,
          .order = 100,
          .persistentVisibility = true}
     );
@@ -2795,7 +2798,7 @@ void MainWindow::removeStatusBarItem(const QByteArray& id)
     if (it == items.end()) {
         return;
     }
-    if (it->widget) {
+    if (it->widget && it->placed) {
         statusBar()->removeWidget(it->widget);
     }
     items.erase(it);
@@ -2813,7 +2816,10 @@ void MainWindow::relayoutStatusBar()
     for (auto& item : d->statusBarItems) {
         if (item.widget) {
             wasVisible.insert(item.widget, item.widget->isVisible());
-            sb->removeWidget(item.widget);
+            if (item.placed) {
+                sb->removeWidget(item.widget);
+                item.placed = false;
+            }
         }
     }
 
@@ -2839,6 +2845,7 @@ void MainWindow::relayoutStatusBar()
         else {
             sb->addPermanentWidget(item.widget, item.spec.stretch);
         }
+        item.placed = true;
 
         if (ownsVisibility(item.widget)) {
             // Progress bar: registry drives userEnabled; actual visibility stays

@@ -25,13 +25,17 @@
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <memory>
 #include <numbers>
 
+#include <QTimer>
 #include <QWidget>
 
+#include <App/Application.h>
 #include <Precision.hxx>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
+#include <Mod/Sketcher/App/Sketch.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchHandlerDragAutoConstraint.h"
@@ -44,7 +48,23 @@ using namespace Sketcher;
 namespace
 {
 constexpr double DragAutoConstraintSnapDistanceFactor = 0.25;
+constexpr int DefaultDragAutoConstraintDelay = 400;
+
+int getDragAutoConstraintDelay()
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
+    const auto delay = hGrp->GetInt("DragAutoConstraintDelay", DefaultDragAutoConstraintDelay);
+    return static_cast<int>(std::clamp(delay, 0L, static_cast<long>(std::numeric_limits<int>::max())));
 }
+}  // namespace
+
+DrawSketchHandlerDragAutoConstraint::DrawSketchHandlerDragAutoConstraint()
+    : dwellTimerContext(std::make_unique<QObject>())
+{}
+
+DrawSketchHandlerDragAutoConstraint::~DrawSketchHandlerDragAutoConstraint() = default;
 
 bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoElementId>& dragged) const
 {
@@ -54,7 +74,7 @@ bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoEle
 
 void DrawSketchHandlerDragAutoConstraint::initDragging(const std::vector<GeoElementId>& dragged)
 {
-    suggestedConstraints.clear();
+    clear();
 
     if (QWidget* widget = getCursorWidget()) {
         oldCursor = widget->cursor();
@@ -80,7 +100,9 @@ void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type,
 
 void DrawSketchHandlerDragAutoConstraint::clear()
 {
+    ++dwellTimerGeneration;
     suggestedConstraints.clear();
+    draggedElements.clear();
     unsetCursor();
 }
 
@@ -89,29 +111,14 @@ bool DrawSketchHandlerDragAutoConstraint::hasMoved(const Base::Vector2d& actualP
     return (actualPos - startPos).Sqr() > Precision::SquareConfusion();
 }
 
-Base::Vector2d DrawSketchHandlerDragAutoConstraint::getDirection(
-    const GeoElementId& dragged,
-    const Base::Vector2d& pos
-) const
+Base::Vector2d DrawSketchHandlerDragAutoConstraint::getDirection(const Part::Geometry* geometry) const
 {
-    const Part::Geometry* geo = sketchgui->getSketchObject()->getGeometry(dragged.GeoId);
-    if (!geo || !geo->isDerivedFrom<Part::GeomLineSegment>()) {
+    if (!geometry || !geometry->isDerivedFrom<Part::GeomLineSegment>()) {
         return Base::Vector2d(0.0, 0.0);
     }
 
-    const auto* line = static_cast<const Part::GeomLineSegment*>(geo);
-
-    Base::Vector2d startPoint = toVector2d(line->getStartPoint());
-    Base::Vector2d endPoint = toVector2d(line->getEndPoint());
-
-    if (dragged.Pos == PointPos::start) {
-        startPoint = pos;
-    }
-    else if (dragged.Pos == PointPos::end) {
-        endPoint = pos;
-    }
-
-    return endPoint - startPoint;
+    const auto* line = static_cast<const Part::GeomLineSegment*>(geometry);
+    return toVector2d(line->getEndPoint()) - toVector2d(line->getStartPoint());
 }
 
 bool DrawSketchHandlerDragAutoConstraint::isExistingConstraint(
@@ -211,6 +218,25 @@ void DrawSketchHandlerDragAutoConstraint::update(
     const Base::Vector2d& /*pos*/
 )
 {
+    const auto timerGeneration = ++dwellTimerGeneration;
+    suggestedConstraints.clear();
+    unsetCursor();
+
+    this->draggedElements = draggedElements;
+
+    if (!canSuggestFor(this->draggedElements)) {
+        return;
+    }
+
+    QTimer::singleShot(getDragAutoConstraintDelay(), dwellTimerContext.get(), [this, timerGeneration]() {
+        if (timerGeneration == dwellTimerGeneration) {
+            updateSuggestions();
+        }
+    });
+}
+
+void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
+{
     suggestedConstraints.clear();
 
     SketchObject* obj = getSketchObject();
@@ -220,9 +246,21 @@ void DrawSketchHandlerDragAutoConstraint::update(
     }
 
     const auto& dragged = draggedElements.front();
-    const Base::Vector2d actualPos = toVector2d(
-        sketchgui->getSolvedSketch().getPoint(dragged.GeoId, dragged.Pos)
-    );
+    const Sketch& solvedSketch = sketchgui->getSolvedSketch();
+
+    std::vector<std::unique_ptr<Part::Geometry>> solvedGeometry;
+    for (Part::Geometry* geometry : solvedSketch.extractGeometry(true, false)) {
+        solvedGeometry.emplace_back(geometry);
+    }
+
+    auto getSolvedGeometry = [&solvedGeometry](int geoId) -> const Part::Geometry* {
+        if (geoId < 0 || static_cast<std::size_t>(geoId) >= solvedGeometry.size()) {
+            return nullptr;
+        }
+        return solvedGeometry[geoId].get();
+    };
+
+    const Base::Vector2d actualPos = toVector2d(solvedSketch.getPoint(dragged.GeoId, dragged.Pos));
 
     if (!hasMoved(actualPos)) {
         unsetCursor();
@@ -252,7 +290,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
             continue;
         }
 
-        const double dist = (actualPos - toVector2d(obj->getPoint(geoId, posId))).Length();
+        const double dist = (actualPos - toVector2d(solvedSketch.getPoint(geoId, posId))).Length();
         if (dist < bestPointDist) {
             bestPointDist = dist;
             bestPointGeoId = geoId;
@@ -287,7 +325,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
         };
 
         for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); ++geoId) {
-            const Part::Geometry* geo = obj->getGeometry(geoId);
+            const Part::Geometry* geo = getSolvedGeometry(geoId);
             if (!geo) {
                 continue;
             }
@@ -309,7 +347,9 @@ void DrawSketchHandlerDragAutoConstraint::update(
 
                 const Base::Vector2d projection = a + ab * t;
                 const double distance = (actualPos - projection).Length();
-                considerCurve(geoId, distance, isLineCenterAutoConstraint(geoId, actualPos));
+                const Base::Vector2d midpoint = (a + b) / 2.0;
+                const bool lineCenter = (actualPos - midpoint).Length() < ab.Length() * 0.05;
+                considerCurve(geoId, distance, lineCenter);
             }
             else if (geo->isDerivedFrom<Part::GeomCurve>()) {
                 const auto* curve = static_cast<const Part::GeomCurve*>(geo);
@@ -333,7 +373,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
         }
     }
 
-    const Base::Vector2d dir = getDirection(dragged, actualPos);
+    const Base::Vector2d dir = getDirection(getSolvedGeometry(dragged.GeoId));
     if (dir.Sqr() > Precision::SquareConfusion()) {
         using std::numbers::pi;
         constexpr double angleDevRad = Base::toRadians<double>(2);
@@ -372,5 +412,30 @@ void DrawSketchHandlerDragAutoConstraint::create(const std::vector<GeoElementId>
         return;
     }
 
-    createAutoConstraints(suggestedConstraints, dragged.front().GeoId, dragged.front().Pos, false);
+    SketchObject* obj = getSketchObject();
+    if (!obj) {
+        return;
+    }
+
+    std::vector<std::unique_ptr<Constraint>> autoConstraints;
+
+    for (const AutoConstraint& suggestion : suggestedConstraints) {
+        if (!generateOneAutoConstraintFromSuggestion(
+                suggestion,
+                dragged.front().GeoId,
+                dragged.front().Pos,
+                autoConstraints
+            )) {
+            break;
+        }
+    }
+
+    const bool valid = filterRedundantAutoConstraints(autoConstraints);
+    obj->solve(false);
+
+    if (!valid) {
+        return;
+    }
+
+    addGeneratedAutoConstraints(autoConstraints);
 }

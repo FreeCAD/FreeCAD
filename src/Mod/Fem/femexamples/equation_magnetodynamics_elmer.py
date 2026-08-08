@@ -110,7 +110,7 @@ def setup(doc=None, solvertype="elmer"):
     if solvertype == "elmer":
         solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
         eq_electrostatic = ObjectsFem.makeEquationMagnetodynamic(doc, solver_obj)
-        eq_electrostatic.AngularFrequency = "100 kHz"
+        eq_electrostatic.Frequency = "100 kHz"
         eq_electrostatic.BiCGstablDegree = 4
         eq_electrostatic.IsHarmonic = True
         eq_electrostatic.LinearIterativeMethod = "BiCGStabl"

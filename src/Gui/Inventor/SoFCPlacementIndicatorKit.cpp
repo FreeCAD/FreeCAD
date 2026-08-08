@@ -43,7 +43,7 @@
 #include "So3DAnnotation.h"
 #include "SoAxisCrossKit.h"
 
-#include <Gui/SoTextLabel.h>
+#include <Gui/SoLabelNodes.h>
 #include <Utilities.h>
 #include <ViewParams.h>
 #include <ViewProvider.h>
@@ -70,8 +70,8 @@ SoFCPlacementIndicatorKit::SoFCPlacementIndicatorKit()
     SO_NODE_ADD_FIELD(parts, (AxisCross));
     SO_NODE_ADD_FIELD(axes, (AllAxes));
     SO_NODE_ADD_FIELD(axisLabels, ("X"));
-    axisLabels.set1Value(1, "Y");
-    axisLabels.set1Value(2, "Z");
+    static const char* defaultAxisLabels[] = {"X", "Y", "Z"};
+    axisLabels.setValues(0, 3, defaultAxisLabels);
 
     SO_NODE_DEFINE_ENUM_VALUE(Part, Axes);
     SO_NODE_DEFINE_ENUM_VALUE(Part, ArrowHeads);
@@ -91,6 +91,7 @@ SoFCPlacementIndicatorKit::SoFCPlacementIndicatorKit()
     auto root = SO_GET_ANY_PART(this, "root", SoShapeScale);
     root->scaleFactor.connectFrom(&scaleFactor);
 
+    geometryReady = true;
     recomputeGeometry();
 }
 
@@ -108,7 +109,9 @@ void SoFCPlacementIndicatorKit::notify(SoNotList* l)
         // everything from the scratch. It is however very easy to implement and this node should
         // not really change too often so the performance penalty is better than making code that
         // is harder to maintain.
-        recomputeGeometry();
+        if (geometryReady) {
+            recomputeGeometry();
+        }
         return;
     }
 

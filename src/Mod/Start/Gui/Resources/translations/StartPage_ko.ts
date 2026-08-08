@@ -174,29 +174,29 @@
       <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="251"/>
       <source>Theme</source>
       <translation>테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>더 많은 테마를 찾고 계십니까? &lt;a href="freecad:Std_AddonMgr"&gt;애드온 관리자&lt;/a&gt;에서 추가할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="263"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 기본 테마</translation>
