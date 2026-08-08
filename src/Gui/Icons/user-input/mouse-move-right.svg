@@ -5,11 +5,11 @@
    fill="none"
    viewBox="0 0 24 24"
    version="1.1"
-   id="svg1"
+   id="svg2"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <defs
-     id="defs1" />
+     id="defs2" />
   <path
      stroke="#ffffff"
      stroke-linecap="round"
@@ -17,6 +17,10 @@
      stroke-width="2"
      d="M12 3v7m-6 0h12M6 7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V7Z"
      id="path1" />
+  <path
+     fill="#ffffff"
+     d="M12 3v7h6V6l-3-3h-3Z"
+     id="path2" />
   <path
      stroke="#ffffff"
      stroke-linecap="round"

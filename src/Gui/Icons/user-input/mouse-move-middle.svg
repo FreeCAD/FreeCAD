@@ -15,7 +15,7 @@
      stroke-linecap="round"
      stroke-linejoin="round"
      stroke-width="2"
-     d="M12 3v7m-6 0h12M6 7a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V7Z"
+     d="M 12,7.0481328 V 11.155187 M 6,7 C 6,4.790861 7.790861,3 10,3 h 4 c 2.209139,0 4,1.790861 4,4 v 10 c 0,2.209139 -1.790861,4 -4,4 H 10 C 7.790861,21 6,19.209139 6,17 Z"
      id="path1" />
   <path
      stroke="#ffffff"
