@@ -34,6 +34,7 @@
 #include <App/Document.h>
 #include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -52,7 +53,10 @@
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
+#include <App/GeoFeatureGroupExtension.h>
+#include <App/Part.h>
 #include <Mod/Part/App/Datums.h>
+#include <Mod/Part/App/FeatureSectionAnalysis.h>
 #include <Mod/Part/App/Part2DObject.h>
 
 #include "BoxSelection.h"
@@ -71,6 +75,7 @@
 #include "TaskShapeBuilder.h"
 #include "TaskSweep.h"
 #include "ViewProvider.h"
+#include "ViewProviderSectionAnalysis.h"
 
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -2447,6 +2452,183 @@ bool CmdPartProjectionOnSurface::isActive()
 }
 
 //===========================================================================
+// Part_SectionAnalysis
+//===========================================================================
+
+DEF_STD_CMD_A(CmdPartSectionAnalysis)
+
+CmdPartSectionAnalysis::CmdPartSectionAnalysis()
+    : Command("Part_SectionAnalysis")
+{
+    sAppModule = "Part";
+    sGroup = QT_TR_NOOP("Part");
+    sMenuText = QT_TR_NOOP("Section Analysis");
+    sToolTipText = QT_TR_NOOP("Creates a section analysis with a cutting plane");
+    sWhatsThis = "Part_SectionAnalysis";
+    sStatusTip = sToolTipText;
+    sPixmap = "Part_SectionAnalysis";
+}
+
+void CmdPartSectionAnalysis::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // An object only counts as shown if it and all its claiming ancestors
+    // (Body, Part, ...) are visible. Any features inside hidden Bodies keep
+    // their own Visibility bool flag
+    auto effectivelyVisible = [](App::DocumentObject* obj) {
+        for (auto* o = obj; o; o = App::GeoFeatureGroupExtension::getGroupOfObject(o)) {
+            if (!o->Visibility.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    // Find sources: every shown selected object, otherwise all shown top-level
+    // shapes in the document (no selection required).
+    std::vector<App::DocumentObject*> sources;
+    auto sel = Gui::Selection().getSelectionEx();
+    for (auto& selObj : sel) {
+        auto* obj = selObj.getObject();
+        if (obj && effectivelyVisible(obj)) {
+            sources.push_back(obj);
+        }
+    }
+    if (sources.empty()) {
+        auto* doc = App::GetApplication().getActiveDocument();
+        for (auto* obj : doc->getObjects()) {
+            if (obj->isDerivedFrom(Part::Feature::getClassTypeId())
+                || obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+                // Skip objects claimed inside a Bodies or Parts. Their container is
+                // the candidate, not the internal feature.
+                if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
+                    continue;
+                }
+                if (effectivelyVisible(obj)) {
+                    sources.push_back(obj);
+                }
+            }
+        }
+    }
+
+    if (sources.empty()) {
+        return;
+    }
+
+    std::string docName = getDocument()->getName();
+    std::string sourceList;
+    for (auto* obj : sources) {
+        if (!sourceList.empty()) {
+            sourceList += ", ";
+        }
+        sourceList += "App.getDocument('" + docName + "').getObject('" + obj->getNameInDocument()
+            + "')";
+    }
+
+    // Snap initial cutting plane to the nearest principal axis based on camera direction
+    SbVec3f viewDir(0, 0, -1);
+    auto* mdiView = qobject_cast<Gui::View3DInventor*>(Gui::Application::Instance->activeView());
+    if (mdiView) {
+        viewDir = mdiView->getViewer()->getViewDirection();
+    }
+    float vx, vy, vz;
+    viewDir.getValue(vx, vy, vz);
+
+    // Find which axis the camera is most aligned with and snap to it
+    float ax = std::abs(vx), ay = std::abs(vy), az = std::abs(vz);
+    float nx = 0, ny = 0, nz = 0;
+    if (ax >= ay && ax >= az) {
+        nx = (vx < 0) ? 1.0f : -1.0f;  // face toward camera
+    }
+    else if (ay >= ax && ay >= az) {
+        ny = (vy < 0) ? 1.0f : -1.0f;
+    }
+    else {
+        nz = (vz < 0) ? 1.0f : -1.0f;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Create Section Analysis"));
+    doCommand(
+        Doc,
+        "App.getDocument('%s').addObject('Part::SectionAnalysis', 'SectionAnalysis')",
+        docName.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.getDocument('%s').ActiveObject.Source = [%s]",
+        docName.c_str(),
+        sourceList.c_str()
+    );
+
+    // Set the plane normal to the snapped axis
+    doCommand(
+        Doc,
+        "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
+        docName.c_str(),
+        nx,
+        ny,
+        nz
+    );
+
+    // Center the offset on the bounding box along the normal
+    doCommand(
+        Doc,
+        "__sa = App.getDocument('%s').ActiveObject\n"
+        "__bb = __b = None\n"
+        "for __src in __sa.Source:\n"
+        "    if hasattr(__src, 'Shape') and not __src.Shape.isNull():\n"
+        "        __b = __src.Shape.BoundBox\n"
+        "        __bb = __b if __bb is None else __bb.united(__b)\n"
+        "if __bb is not None:\n"
+        "    __n = __sa.PlaneNormal\n"
+        "    __sa.PlaneOffset = (__bb.XMin + __bb.XMax) / 2 * __n.x + "
+        "(__bb.YMin + __bb.YMax) / 2 * __n.y + "
+        "(__bb.ZMin + __bb.ZMax) / 2 * __n.z\n"
+        "    del __n\n"
+        "del __sa, __bb, __b",
+        docName.c_str()
+    );
+
+    // Don't commitCommand() here — leave the transaction open.
+    // The task panel's accept() commits it, reject()/Cancel aborts and removes the object.
+    updateActive();
+
+    // Give each new section a distinct default colour so successive sections
+    // are easy to tell apart (pierreporte review feedback).
+    if (App::Document* appDoc = App::GetApplication().getActiveDocument()) {
+        if (App::DocumentObject* saObj = appDoc->getActiveObject()) {
+            auto* vp = dynamic_cast<PartGui::ViewProviderSectionAnalysis*>(
+                Gui::Application::Instance->getViewProvider(saObj)
+            );
+            if (vp) {
+                static const float palette[][3] = {
+                    {0.80F, 0.30F, 0.20F},
+                    {0.20F, 0.50F, 0.80F},
+                    {0.30F, 0.70F, 0.30F},
+                    {0.80F, 0.70F, 0.20F},
+                    {0.60F, 0.30F, 0.70F},
+                    {0.90F, 0.50F, 0.30F},
+                };
+                size_t count = appDoc->getObjectsOfType(Part::SectionAnalysis::getClassTypeId()).size();
+                const auto& p = palette[(count > 0 ? count - 1 : 0) % 6];
+                App::Material matSA;
+                matSA.diffuseColor.set(p[0], p[1], p[2], 0.0F);
+                vp->ShapeAppearance.setValues({matSA});
+            }
+        }
+    }
+
+    // Enter edit mode
+    doCommand(Gui, "Gui.ActiveDocument.setEdit(App.ActiveDocument.ActiveObject.Name)");
+}
+
+bool CmdPartSectionAnalysis::isActive()
+{
+    return getDocument() && !Gui::Control().activeDialog(getDocument());
+}
+
+//===========================================================================
 // Part_SectionCut
 //===========================================================================
 
@@ -2733,6 +2915,7 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdColorPerFace());
     rcCmdMgr.addCommand(new CmdBoxSelection());
     rcCmdMgr.addCommand(new CmdPartProjectionOnSurface());
+    rcCmdMgr.addCommand(new CmdPartSectionAnalysis());
     rcCmdMgr.addCommand(new CmdPartSectionCut());
 
     rcCmdMgr.addCommand(new CmdPartCoordinateSystem());
