@@ -292,9 +292,15 @@ TopoDS_Face ProjectOnSurface::createFaceFromParametricWire(
             }
         }
     }
-    // auto doneFlag = faceMaker.IsDone();
-    // auto error = faceMaker.Error();
-    return faceMaker.Face();
+    // check validity of make face result
+    if (!faceMaker.IsDone()) {
+        return {};
+    }
+    TopoDS_Face result = faceMaker.Face();
+    if (result.IsNull() || !BRepCheck_Analyzer(result).IsValid()) {
+        return {};
+    }
+    return result;
 }
 
 std::vector<TopoDS_Wire> ProjectOnSurface::createWiresFromWires(
