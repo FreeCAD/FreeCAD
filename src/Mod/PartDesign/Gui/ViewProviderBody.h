@@ -103,6 +103,8 @@ public:
     /// Override to return the color of the tip instead of the body, which doesn't really have color
     std::map<std::string, Base::Color> getElementColors(const char* element) const override;
 
+    App::DocumentObject* resolveTreeSelectTarget(const char* subname) const override;
+
     void show() override;
 
 protected:

@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include <functional>
 #include "DocumentObject.h"
 #include "PropertyGeo.h"
 #include "Material.h"
@@ -218,6 +219,16 @@ public:
     getGlobalPlacement(DocumentObject* targetObj, DocumentObject* rootObj, const std::string& sub);
     static Base::Placement getGlobalPlacement(DocumentObject* targetObj, PropertyXLinkSub* prop);
     static Base::Placement getGlobalPlacement(const DocumentObject* obj);
+
+    struct ElementCreatorResult {
+        App::DocumentObject* elementOwner = nullptr;
+        App::DocumentObject* creator = nullptr;
+    };
+
+    static bool resolveElementCreator(const App::DocumentObject* topParent,
+                                      const char* subname,
+                                      ElementCreatorResult& out,
+                                      const std::function<bool(App::DocumentObject*)>& isValidCreator = {});
 
 protected:
     void onChanged(const Property* prop) override;

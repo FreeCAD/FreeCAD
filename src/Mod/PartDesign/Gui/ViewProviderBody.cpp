@@ -37,6 +37,8 @@
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
 #include <Gui/ViewProviderDatum.h>
+#include <App/ElementNamingUtils.h>
+#include <App/GeoFeature.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
@@ -436,6 +438,36 @@ std::map<std::string, Base::Color> ViewProviderBody::getElementColors(const char
         return vp->getElementColors(element);
     }
     return ViewProviderPart::getElementColors(element);
+}
+
+App::DocumentObject* ViewProviderBody::resolveTreeSelectTarget(const char* subname) const
+{
+    // Only redirect in Through display mode (value 0). In Tip mode the body
+    // shows only the tip shape, so the natural selection of the body is correct.
+    if (DisplayModeBody.getValue() != 0) {
+        return nullptr;
+    }
+
+    if (!subname || subname[0] == '\0') {
+        return nullptr;
+    }
+    const char* elementToken = Data::findElementName(subname);
+    if (!elementToken || elementToken[0] == '\0') {
+        return nullptr;
+    }
+
+    // Only accept solid PartDesign features (Pad, Hole, Chamfer, etc.).
+    // This prevents the history walk from ending on a sketch or profile.
+    App::GeoFeature::ElementCreatorResult result;
+    if (!App::GeoFeature::resolveElementCreator(getObject(), subname, result, [](App::DocumentObject* obj) {
+            // Static local is initialized once; no capture needed.
+            static const Base::Type pdFeatureType = Base::Type::fromName("PartDesign::Feature");
+            return !pdFeatureType.isBad() && obj->isDerivedFrom(pdFeatureType);
+        })) {
+        return nullptr;
+    }
+
+    return result.creator;
 }
 
 
