@@ -93,7 +93,7 @@ double getFaceArea(TopoDS_Shape& face)
 
 bool isDatum(const App::SubObjectT& subject)
 {
-    App::DocumentObject* obj = subject.getSubObjectList().back();
+    App::DocumentObject* obj = subject.getSubObject();
     if (!obj || !obj->isValid()) {
         return false;
     }
@@ -102,7 +102,7 @@ bool isDatum(const App::SubObjectT& subject)
 
 Base::Placement getPlacement(const App::SubObjectT& subject)
 {
-    App::DocumentObject* obj = subject.getSubObjectList().back();
+    App::DocumentObject* obj = subject.getSubObject();
     if (obj && obj->isValid()) {
         return App::GeoFeature::getGlobalPlacement(obj, subject.getObject(), subject.getSubName());
     }
@@ -113,7 +113,7 @@ Base::Placement getPlacement(const App::SubObjectT& subject)
 
 TopoDS_Shape getLocatedShape(const App::SubObjectT& subject)
 {
-    App::DocumentObject* obj = subject.getSubObjectList().back();
+    App::DocumentObject* obj = subject.getSubObject();
     if (!obj || !obj->getNameInDocument()) {
         return {};
     }
@@ -483,6 +483,10 @@ MeasureAngleInfoPtr MeasureAngleHandler(const App::SubObjectT& subject)
     TopAbs_ShapeEnum sType = shape.ShapeType();
     if (TopoShape(shape).isInfinite() && sType != TopAbs_VERTEX) {
         Base::Placement placement = getPlacement(subject);
+        if (auto* datum = dynamic_cast<App::DatumElement*>(subject.getSubObject())) {
+            Base::Vector3d orientation = placement.getRotation().multVec(datum->getBaseDirection());
+            return std::make_shared<MeasureAngleInfo>(true, orientation, placement.getPosition());
+        }
         if (isDatum(subject)) {
             Base::Vector3d orientation = placement.getRotation().multVec(Base::Vector3d(0, 0, -1));
             return std::make_shared<MeasureAngleInfo>(true, orientation, placement.getPosition());
@@ -572,6 +576,7 @@ MeasureDistanceInfoPtr MeasureDistanceHandler(const App::SubObjectT& subject)
 
 void Part::MeasureClient::initialize()
 {
+    App::MeasureManager::addMeasureHandler("App", PartMeasureTypeCb);
     App::MeasureManager::addMeasureHandler("Part", PartMeasureTypeCb);
 }
 
@@ -592,6 +597,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportPositionCB()
     callbacks.emplace_back("PartDesign", "Position", MeasurePositionHandler);
     callbacks.emplace_back("Sketcher", "Position", MeasurePositionHandler);
     callbacks.emplace_back("Surface", "Position", MeasurePositionHandler);
+    callbacks.emplace_back("App", "Position", MeasurePositionHandler);
     return callbacks;
 }
 
@@ -613,6 +619,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportAngleCB()
     callbacks.emplace_back("PartDesign", "Angle", MeasureAngleHandler);
     callbacks.emplace_back("Sketcher", "Angle", MeasureAngleHandler);
     callbacks.emplace_back("Surface", "Angle", MeasureAngleHandler);
+    callbacks.emplace_back("App", "Angle", MeasureAngleHandler);
     return callbacks;
 }
 
@@ -624,6 +631,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportDistanceCB()
     callbacks.emplace_back("PartDesign", "Distance", MeasureDistanceHandler);
     callbacks.emplace_back("Sketcher", "Distance", MeasureDistanceHandler);
     callbacks.emplace_back("Surface", "Distance", MeasureDistanceHandler);
+    callbacks.emplace_back("App", "Distance", MeasureDistanceHandler);
     return callbacks;
 }
 

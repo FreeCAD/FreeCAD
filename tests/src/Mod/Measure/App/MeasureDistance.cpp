@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <src/App/InitApplication.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/MeasureManager.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <Mod/Part/App/MeasureClient.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -170,4 +172,60 @@ TEST_F(MeasureDistance, testTwoBoxesMovedByContainers)
     EXPECT_DOUBLE_EQ(md->DistanceY.getValue(), 0.0);
     EXPECT_DOUBLE_EQ(md->DistanceZ.getValue(), 0.0);
 }
+
+TEST_F(MeasureDistance, testLcsSubelementsAreValidSelections)
+{
+    App::Document* doc = getDocument();
+    auto lcs1 = doc->addObject<App::LocalCoordinateSystem>("LCS1");
+    auto lcs2 = doc->addObject<App::LocalCoordinateSystem>("LCS2");
+    doc->recompute();
+
+    App::MeasureSelectionItem origin {App::SubObjectT {lcs1, "Origin"}, Base::Vector3d {}};
+    App::MeasureSelectionItem axis {App::SubObjectT {lcs1, "X_Axis"}, Base::Vector3d {}};
+    App::MeasureSelectionItem plane {App::SubObjectT {lcs2, "XY_Plane"}, Base::Vector3d {}};
+
+    EXPECT_EQ(App::MeasureManager::getMeasureElementType(origin), App::MeasureElementType::POINT);
+    EXPECT_EQ(App::MeasureManager::getMeasureElementType(axis), App::MeasureElementType::LINE);
+    EXPECT_EQ(App::MeasureManager::getMeasureElementType(plane), App::MeasureElementType::PLANE);
+    EXPECT_TRUE(Measure::MeasureDistance::isValidSelection({axis, plane}));
+}
+
+TEST_F(MeasureDistance, testDistanceBetweenParallelLcsPlanes)
+{
+    App::Document* doc = getDocument();
+    auto lcs1 = doc->addObject<App::LocalCoordinateSystem>("LCS1");
+    auto lcs2 = doc->addObject<App::LocalCoordinateSystem>("LCS2");
+    lcs2->Placement.setValue(Base::Placement(Base::Vector3d(0.0, 0.0, 5.0), Base::Rotation()));
+    doc->recompute();
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(lcs1, {"XY_Plane"});
+    md->Element2.setValue(lcs2, {"XY_Plane"});
+    doc->recompute();
+
+    EXPECT_DOUBLE_EQ(md->Distance.getValue(), 5.0);
+    EXPECT_DOUBLE_EQ(md->DistanceX.getValue(), 0.0);
+    EXPECT_DOUBLE_EQ(md->DistanceY.getValue(), 0.0);
+    EXPECT_DOUBLE_EQ(md->DistanceZ.getValue(), 5.0);
+}
+
+TEST_F(MeasureDistance, testDistanceBetweenParallelLcsAxes)
+{
+    App::Document* doc = getDocument();
+    auto lcs1 = doc->addObject<App::LocalCoordinateSystem>("LCS1");
+    auto lcs2 = doc->addObject<App::LocalCoordinateSystem>("LCS2");
+    lcs2->Placement.setValue(Base::Placement(Base::Vector3d(0.0, 5.0, 0.0), Base::Rotation()));
+    doc->recompute();
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(lcs1, {"X_Axis"});
+    md->Element2.setValue(lcs2, {"X_Axis"});
+    doc->recompute();
+
+    EXPECT_DOUBLE_EQ(md->Distance.getValue(), 5.0);
+    EXPECT_DOUBLE_EQ(md->DistanceX.getValue(), 0.0);
+    EXPECT_DOUBLE_EQ(md->DistanceY.getValue(), 5.0);
+    EXPECT_DOUBLE_EQ(md->DistanceZ.getValue(), 0.0);
+}
+
 // NOLINTEND
