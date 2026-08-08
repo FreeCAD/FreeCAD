@@ -104,6 +104,14 @@ enum class SpinDirection {
     CCW
 };
 
+enum class ViewDisplayStyle {
+    AllEdges,
+    HiddenEdges,
+    VisibleEdges,
+    ShadedWithEdges,
+    Shaded
+};
+
 class TechDrawExport DrawViewPart: public DrawView, public CosmeticExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(TechDraw::DrawViewPart);
@@ -118,6 +126,7 @@ public:
     App::PropertyVector XDirection;
     App::PropertyBool Perspective;
     App::PropertyDistance Focus;
+    App::PropertyEnumeration DisplayStyle;
 
     App::PropertyBool CoarseView;
     App::PropertyBool SeamVisible;
@@ -133,6 +142,12 @@ public:
     App::PropertyInteger IsoCount;
 
     App::PropertyInteger ScrubCount;
+
+    static const char* DisplayStyleEnums[];
+    ViewDisplayStyle getDisplayStyle() const;
+    bool hasShadedDisplay() const;
+    bool showsVisibleEdges() const;
+    bool hiddenEdgesAreSolid() const;
 
     short mustExecute() const override;
     App::DocumentObjectExecReturn* execute() override;
@@ -282,6 +297,7 @@ private:
     bool nowUnsetting;
     bool m_waitingForFaces;
     bool m_waitingForHlr;
+    bool m_syncingDisplayStyle{false};
 
     QMetaObject::Connection connectHlrWatcher;
     QFutureWatcher<void> m_hlrWatcher;

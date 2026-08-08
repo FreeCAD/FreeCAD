@@ -78,6 +78,7 @@ public:
     QRectF boundingRect() const override;
 
     virtual void drawAllFaces();
+    virtual void drawShaded();
     virtual void drawAllEdges();
     virtual void drawAllVertexes();
 
