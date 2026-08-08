@@ -97,8 +97,12 @@ def number_of_components_in(assembly):
         return 0
     i = 0
     for obj in assembly.Group:
+        if isLinkArray(obj):
+            i = i + 1
+            continue
+
         if isLinkGroup(obj):
-            i = i + obj.ElementCount
+            i = i + sum(1 for elt in obj.ElementList if not isSuppressedLinkElement(elt))
             continue
 
         if obj.isDerivedFrom("Assembly::AssemblyObject") or obj.isDerivedFrom(
@@ -109,6 +113,9 @@ def number_of_components_in(assembly):
 
         if obj.isDerivedFrom("App::Link"):
             obj = obj.getLinkedObject()
+            if isLinkArray(obj):
+                i = i + 1
+                continue
 
         if not obj.isDerivedFrom("App::GeoFeature"):
             continue
@@ -127,8 +134,18 @@ def isLink(obj):
     return (obj.TypeId == "App::Link" and obj.ElementCount == 0) or obj.TypeId == "App::LinkElement"
 
 
+def isLinkArray(obj):
+    return obj is not None and obj.isDerivedFrom("Part::LinkArray")
+
+
 def isLinkGroup(obj):
     return obj.TypeId == "App::Link" and obj.ElementCount > 0
+
+
+def isSuppressedLinkElement(obj):
+    return (
+        obj is not None and obj.TypeId == "App::LinkElement" and getattr(obj, "Suppressed", False)
+    )
 
 
 def getObject(ref):
@@ -177,13 +194,14 @@ def getObject(ref):
                 if obj2 and obj2.isDerivedFrom("App::DatumElement"):
                     return obj2
 
-        elif obj.isDerivedFrom("App::DatumElement"):
-            return obj
-
         elif obj.TypeId == "PartDesign::Body":
             return process_body(obj, obj, names, i)
 
-        elif obj.isDerivedFrom("Part::Feature"):
+        elif (
+            isLinkArray(obj)
+            or obj.isDerivedFrom("App::DatumElement")
+            or obj.isDerivedFrom("Part::Feature")
+        ):
             # primitive, fastener, gear ...
             return obj
 
@@ -191,6 +209,8 @@ def getObject(ref):
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body":
                 return process_body(linked_obj, obj, names, i)
+            elif isLinkArray(linked_obj):
+                return obj
             elif linked_obj.isDerivedFrom("Part::Feature"):
                 return obj
             else:
@@ -758,7 +778,10 @@ def getMovablePartsWithin(group, partsAsSolid=False):
 
 
 def getSubMovingParts(obj, partsAsSolid):
-    if obj.isDerivedFrom("Part::Feature"):
+    if obj is None or isSuppressedLinkElement(obj):
+        return []
+
+    if isLinkArray(obj) or obj.isDerivedFrom("Part::Feature"):
         return [obj]
 
     elif obj.isDerivedFrom("App::Part"):
@@ -773,7 +796,11 @@ def getSubMovingParts(obj, partsAsSolid):
 
     if isLink(obj):
         linked_obj = obj.getLinkedObject()
-        if linked_obj.isDerivedFrom("App::Part") or linked_obj.isDerivedFrom("Part::Feature"):
+        if (
+            linked_obj.isDerivedFrom("App::Part")
+            or linked_obj.isDerivedFrom("Part::Feature")
+            or isLinkArray(linked_obj)
+        ):
             return [obj]
 
     return []
@@ -846,6 +873,8 @@ def getObjMassAndCom(obj, containingPart=None):
             children = obj.Group
 
         for subObj in children:
+            if isSuppressedLinkElement(subObj):
+                continue
             mass, com = getObjMassAndCom(subObj, containingPart)
             total_mass += mass
             total_com += com
@@ -1283,9 +1312,10 @@ def getComponentReference(assembly, root_obj, sub_string):
                 linkedObj
                 and not isLink(linkedObj)
                 and not linkedObj.isDerivedFrom("App::GeoFeature")
+                and not isLinkArray(linkedObj)
             ):
                 continue
-        elif not obj.isDerivedFrom("App::GeoFeature"):
+        elif not obj.isDerivedFrom("App::GeoFeature") and not isLinkArray(obj):
             continue
 
         component = obj

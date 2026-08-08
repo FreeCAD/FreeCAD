@@ -104,7 +104,7 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(
             throw Base::TypeError("Transformation features must be subclasses of Transformed");
         }
 
-        std::list<gp_Trsf> newTransformations = transFeature->getTransformations(originals);
+        std::list<gp_Trsf> newTransformations = transFeature->getFilteredTransformations(originals);
         // Computing transformations can update derived helper properties such as Spacings and
         // Offset. The helper is not executed independently, so do not let those updates schedule
         // the parent MultiTransform for a second document recompute pass.
