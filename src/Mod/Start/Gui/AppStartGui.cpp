@@ -73,7 +73,7 @@ class StartLauncher
 public:
     StartLauncher()
     {
-        if (Gui::isInternalGuiTestRun()) {
+        if (Gui::isInternalGuiRun()) {
             return;
         }
 
@@ -83,7 +83,7 @@ public:
 
     void Launch()
     {
-        if (Gui::isInternalGuiTestRun()) {
+        if (Gui::isInternalGuiRun()) {
             return;
         }
 
@@ -99,7 +99,7 @@ public:
 
     void EnsureLaunched()
     {
-        if (Gui::isInternalGuiTestRun()) {
+        if (Gui::isInternalGuiRun()) {
             return;
         }
 

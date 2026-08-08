@@ -86,6 +86,7 @@
 #include "GuiApplication.h"
 #include "GuiInitScript.h"
 #include "GuiTestScript.h"
+#include "GuiDiffScript.h"
 #include "InputHintPy.h"
 #include "LinkViewPy.h"
 #include "MainWindow.h"
@@ -2364,6 +2365,7 @@ void Application::initApplication()
         initTypes();
         new Base::ScriptProducer("FreeCADGuiInit", FreeCADGuiInit);
         new Base::ScriptProducer("FreeCADGuiTest", FreeCADGuiTest);
+        new Base::ScriptProducer("FreeCADGuiDiff", FreeCADGuiDiff);
         init_resources();
         setCategoryFilterRules();
         old_qtmsg_handler = qInstallMessageHandler(messageHandler);

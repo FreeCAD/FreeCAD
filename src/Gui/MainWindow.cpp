@@ -1853,37 +1853,36 @@ void MainWindow::processMessages(const QList<QString>& msg)
     }
 }
 
-void MainWindow::delayedStartup()
+void MainWindow::runInternalScripts()
 {
-    // automatically run unit tests in Gui
-    if (Gui::isInternalGuiTestRun()) {
-        try {
-            // Command-line GUI tests should not depend on the interactive QtUnitGui
-            // dialog. In headless runs such as QT_QPA_PLATFORM=offscreen/minimal,
-            // that dialog path can hang before the test body executes. Run the
-            // embedded text-based GUI test script directly once startup reaches
-            // delayedStartup().
-            Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiTest"));
-            if (App::Application::Config()["ExitTests"] == "yes") {
-                Base::Interpreter().runString(
-                    "import sys\n"
-                    "sys.exit(0 if test_result.wasSuccessful() else 1)\n"
-                );
-            }
-        }
-        catch (const Base::SystemExitException&) {
-            // Properly quit the Qt event loop before propagating the exception
-            QApplication::quit();
-            throw;
-        }
-        catch (const Base::Exception& e) {
-            e.reportException();
-            QApplication::quit();
-            throw;
-        }
+    std::string scriptFileName = App::Application::Config()["ScriptFileName"];
+    if (scriptFileName.empty()) {
         return;
     }
+    else if (scriptFileName == "FreeCADTest") {
+        // Command-line GUI tests should not depend on the interactive QtUnitGui
+        // dialog. In headless runs such as QT_QPA_PLATFORM=offscreen/minimal,
+        // that dialog path can hang before the test body executes. Run the
+        // embedded text-based GUI test script directly once startup reaches
+        // delayedStartup().
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiTest"));
+        if (App::Application::Config()["ExitTests"] == "yes") {
+            Base::Interpreter().runString(
+                "import sys\n"
+                "sys.exit(0 if test_result.wasSuccessful() else 1)\n"
+            );
+        }
+    }
+    else if (scriptFileName == "FreeCADDiff") {
+        Base::Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADGuiDiff"));
+    }
+    else {
+        throw Base::Exception("Unknown script file name: " + scriptFileName);
+    }
+}
 
+void MainWindow::delayedStartup()
+{
     // processing all command line files
     try {
         std::list<std::string> files = App::Application::getCmdLineFiles();
@@ -1897,6 +1896,24 @@ void MainWindow::delayedStartup()
     }
     catch (const Base::SystemExitException&) {
         throw;
+    }
+
+    // automatically run unit tests in Gui
+    if (Gui::isInternalGuiRun()) {
+        try {
+            runInternalScripts();
+        }
+        catch (const Base::SystemExitException&) {
+            // Properly quit the Qt event loop before propagating the exception
+            QApplication::quit();
+            throw;
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
+            QApplication::quit();
+            throw;
+        }
+        return;
     }
 
     if (Application::hiddenMainWindow()) {
