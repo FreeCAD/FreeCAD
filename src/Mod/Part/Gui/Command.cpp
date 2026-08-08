@@ -2485,18 +2485,17 @@ void CmdPartSectionAnalysis::activated(int iMsg)
         return true;
     };
 
-    // Find source: first shown selected object, otherwise the first shown
-    // top-level shape in the document (no selection required).
-    App::DocumentObject* source = nullptr;
+    // Find sources: every shown selected object, otherwise all shown top-level
+    // shapes in the document (no selection required).
+    std::vector<App::DocumentObject*> sources;
     auto sel = Gui::Selection().getSelectionEx();
     for (auto& selObj : sel) {
         auto* obj = selObj.getObject();
         if (obj && effectivelyVisible(obj)) {
-            source = obj;
-            break;
+            sources.push_back(obj);
         }
     }
-    if (!source) {
+    if (sources.empty()) {
         auto* doc = App::GetApplication().getActiveDocument();
         for (auto* obj : doc->getObjects()) {
             if (obj->isDerivedFrom(Part::Feature::getClassTypeId())
@@ -2507,19 +2506,25 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                     continue;
                 }
                 if (effectivelyVisible(obj)) {
-                    source = obj;
-                    break;
+                    sources.push_back(obj);
                 }
             }
         }
     }
 
-    if (!source) {
+    if (sources.empty()) {
         return;
     }
 
-    std::string objName = source->getNameInDocument();
     std::string docName = getDocument()->getName();
+    std::string sourceList;
+    for (auto* obj : sources) {
+        if (!sourceList.empty()) {
+            sourceList += ", ";
+        }
+        sourceList += "App.getDocument('" + docName + "').getObject('"
+            + obj->getNameInDocument() + "')";
+    }
 
     // Snap initial cutting plane to the nearest principal axis based on camera direction
     SbVec3f viewDir(0, 0, -1);
@@ -2551,10 +2556,9 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     );
     doCommand(
         Doc,
-        "App.getDocument('%s').ActiveObject.Source = App.getDocument('%s').getObject('%s')",
+        "App.getDocument('%s').ActiveObject.Source = [%s]",
         docName.c_str(),
-        docName.c_str(),
-        objName.c_str()
+        sourceList.c_str()
     );
 
     // Set the plane normal to the snapped axis
@@ -2571,16 +2575,18 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     doCommand(
         Doc,
         "__sa = App.getDocument('%s').ActiveObject\n"
-        "__src = __sa.Source\n"
-        "if hasattr(__src, 'Shape') and not __src.Shape.isNull():\n"
-        "    __bb = __src.Shape.BoundBox\n"
+        "__bb = __b = None\n"
+        "for __src in __sa.Source:\n"
+        "    if hasattr(__src, 'Shape') and not __src.Shape.isNull():\n"
+        "        __b = __src.Shape.BoundBox\n"
+        "        __bb = __b if __bb is None else __bb.united(__b)\n"
+        "if __bb is not None:\n"
         "    __n = __sa.PlaneNormal\n"
-        "    __center = (__bb.XMin + __bb.XMax) / 2 * __n.x + "
+        "    __sa.PlaneOffset = (__bb.XMin + __bb.XMax) / 2 * __n.x + "
         "(__bb.YMin + __bb.YMax) / 2 * __n.y + "
         "(__bb.ZMin + __bb.ZMax) / 2 * __n.z\n"
-        "    __sa.PlaneOffset = __center\n"
-        "    del __bb, __n, __center\n"
-        "del __sa, __src",
+        "    del __n\n"
+        "del __sa, __bb, __b",
         docName.c_str()
     );
 

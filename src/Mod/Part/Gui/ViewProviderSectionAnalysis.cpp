@@ -284,8 +284,8 @@ void ViewProviderSectionAnalysis::installClipPlane()
     // inverse global placement. A shared node can't work as each insertion point
     // sits under a different accumulated transform.
     std::vector<App::DocumentObject*> targets = feat->SourceParts.getValues();
-    if (targets.empty() && feat->Source.getValue()) {
-        targets.push_back(feat->Source.getValue());
+    if (targets.empty()) {
+        targets = feat->Source.getValues();
     }
     for (auto* obj : targets) {
         if (!obj || obj == feat) {
@@ -418,7 +418,6 @@ void ViewProviderSectionAnalysis::slotChangedObject(
     }
 
     // Figure out if there's a dependency, so that we dont cut hidden objects
-    App::DocumentObject* src = feat->Source.getValue();
     auto isAncestorOrSelf = [](const App::DocumentObject* a, const App::DocumentObject* b) {
         for (const auto* o = b; o; o = App::GeoFeatureGroupExtension::getGroupOfObject(o)) {
             if (o == a) {
@@ -427,7 +426,11 @@ void ViewProviderSectionAnalysis::slotChangedObject(
         }
         return false;
     };
-    if (!isAncestorOrSelf(src, &obj) && !isAncestorOrSelf(&obj, src)) {
+    const auto& sources = feat->Source.getValues();
+    const bool related = std::any_of(sources.begin(), sources.end(), [&](const auto* src) {
+        return isAncestorOrSelf(src, &obj) || isAncestorOrSelf(&obj, src);
+    });
+    if (!related) {
         return;
     }
 
@@ -449,24 +452,22 @@ void ViewProviderSectionAnalysis::refreshSourceBBoxCache()
     if (!feat) {
         return;
     }
-    App::DocumentObject* source = feat->Source.getValue();
-    if (!source) {
-        return;
-    }
-
     // Resolving the whole source shape is the expensive part on large
     // assemblies, which is exactly why the result is cached here rather than
     // recomputed on every plane move.
-    TopoDS_Shape sourceShape = Part::Feature::getShape(
-        source,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-    );
-    if (sourceShape.IsNull()) {
-        return;
-    }
-
     Bnd_Box bbox;
-    BRepBndLib::Add(sourceShape, bbox);
+    for (App::DocumentObject* source : feat->Source.getValues()) {
+        if (!source) {
+            continue;
+        }
+        TopoDS_Shape sourceShape = Part::Feature::getShape(
+            source,
+            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        );
+        if (!sourceShape.IsNull()) {
+            BRepBndLib::Add(sourceShape, bbox);
+        }
+    }
     if (bbox.IsVoid()) {
         return;
     }

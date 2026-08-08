@@ -329,24 +329,26 @@ void SectionAnalysisWidget::onPresetChanged(int index)
 
     feature->PlaneNormal.setValue(normal);
 
-    // Center the offset on the bounding box
-    App::DocumentObject* source = feature->Source.getValue();
-    if (source) {
+    // Center the offset on the combined bounding box of every source
+    Bnd_Box bbox;
+    for (App::DocumentObject* source : feature->Source.getValues()) {
+        if (!source) {
+            continue;
+        }
         TopoDS_Shape sourceShape = Part::Feature::getShape(
             source,
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
         if (!sourceShape.IsNull()) {
-            Bnd_Box bbox;
             BRepBndLib::Add(sourceShape, bbox);
-            if (!bbox.IsVoid()) {
-                double xmin, ymin, zmin, xmax, ymax, zmax;
-                bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-                Base::Vector3d center((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
-                double centerProj = center.x * normal.x + center.y * normal.y + center.z * normal.z;
-                feature->PlaneOffset.setValue(centerProj);
-            }
         }
+    }
+    if (!bbox.IsVoid()) {
+        double xmin, ymin, zmin, xmax, ymax, zmax;
+        bbox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+        Base::Vector3d center((xmin + xmax) / 2, (ymin + ymax) / 2, (zmin + zmax) / 2);
+        double centerProj = center.x * normal.x + center.y * normal.y + center.z * normal.z;
+        feature->PlaneOffset.setValue(centerProj);
     }
 
     recompute();

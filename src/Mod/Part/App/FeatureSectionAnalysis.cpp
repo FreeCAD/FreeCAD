@@ -63,7 +63,13 @@ PROPERTY_SOURCE(Part::SectionAnalysis, Part::Feature)
 
 SectionAnalysis::SectionAnalysis()
 {
-    ADD_PROPERTY_TYPE(Source, (nullptr), "Section Analysis", App::Prop_None, "Source shape to section");
+    ADD_PROPERTY_TYPE(
+        Source,
+        (nullptr),
+        "Section Analysis",
+        App::Prop_None,
+        "Source shapes to section"
+    );
     ADD_PROPERTY_TYPE(
         PlaneNormal,
         (Base::Vector3d(0, 0, 1)),
@@ -109,6 +115,26 @@ SectionAnalysis::SectionAnalysis()
 
     Source.setScope(App::LinkScope::Global);
     SourceParts.setScope(App::LinkScope::Global);
+}
+
+void SectionAnalysis::handleChangedPropertyType(
+    Base::XMLReader& reader,
+    const char* TypeName,
+    App::Property* prop
+)
+{
+    // Source used to hold a single object before it could section several
+    if (prop == &Source && strcmp(TypeName, "App::PropertyLink") == 0) {
+        App::PropertyLink single;
+        single.setContainer(this);
+        single.Restore(reader);
+        if (single.getValue()) {
+            Source.setValues({single.getValue()});
+        }
+    }
+    else {
+        Part::Feature::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 short SectionAnalysis::mustExecute() const
@@ -246,8 +272,8 @@ TopoDS_Shape SectionAnalysis::prepareSolidForSection(const TopoDS_Shape& solid) 
 
 App::DocumentObjectExecReturn* SectionAnalysis::execute()
 {
-    App::DocumentObject* source = Source.getValue();
-    if (!source) {
+    const std::vector<App::DocumentObject*> sources = Source.getValues();
+    if (sources.empty()) {
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }
 
@@ -256,15 +282,16 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
     // shows what the user sees. Each shape stays paired with the object that
     // produced it, for per-body colouring.
     std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> parts;
+    App::DocumentObject* root = nullptr;
     std::function<void(const std::string&)> collectShapes = [&](const std::string& sub) {
-        App::DocumentObject* obj = sub.empty() ? source : source->getSubObject(sub.c_str());
+        App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
         // The root must be effectively visible (its containers too); nested
         // objects only need their own flag, their path is already checked.
         if (!obj || (sub.empty() ? !isEffectivelyVisible(obj) : !obj->Visibility.getValue())) {
             return;
         }
         TopoDS_Shape shape = Feature::getShape(
-            source,
+            root,
             ShapeOption::ResolveLink | ShapeOption::Transform,
             sub.empty() ? nullptr : sub.c_str()
         );
@@ -276,7 +303,13 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
             collectShapes(sub + child);
         }
     };
-    collectShapes({});
+    for (App::DocumentObject* src : sources) {
+        if (!src || src == this) {
+            continue;
+        }
+        root = src;
+        collectShapes({});
+    }
 
     // Nothing visible is a valid state (e.g. all bodies hidden) — publish an
     // empty section rather than erroring out and leaving a stale Shape behind.

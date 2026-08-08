@@ -40,7 +40,10 @@ class PartExport SectionAnalysis: public Part::Feature
 public:
     SectionAnalysis();
 
-    App::PropertyLink Source;
+    /// Objects to section. A container (App::Part, Body) is walked recursively,
+    /// so listing several roots is only needed for objects that sit side by
+    /// side at document level.
+    App::PropertyLinkList Source;
     App::PropertyVector PlaneNormal;
     App::PropertyDistance PlaneOffset;
     App::PropertyBool FlipCut;
@@ -61,6 +64,8 @@ public:
 
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
+        override;
     const char* getViewProviderName() const override
     {
         return "PartGui::ViewProviderSectionAnalysis";
