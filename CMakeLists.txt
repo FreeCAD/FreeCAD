@@ -91,6 +91,11 @@ mark_as_advanced(
         FREECAD_USE_SANITIZER_MSAN
 )
 
+if(APPLE)
+    enable_language(OBJC)
+    enable_language(OBJCXX)
+endif()
+
 # include local modules
 include(CheckCXXCompilerFlag)
 include(AddFileDependencies)
