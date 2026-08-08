@@ -161,6 +161,11 @@
 # include <tracy/Tracy.hpp>
 #endif
 
+#if defined(BUILD_QTTESTING)
+# include <QtTesting/QtTestUtility.h>
+# include <QtTesting/QtTestUtilityPy.h>
+#endif
+
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace std;
@@ -673,6 +678,10 @@ Application::Application(bool GUIenabled)
                                     module,
                                     "ViewProviderGeometryObject");
         Base::Interpreter().addType(&ViewProviderLinkPy::Type, module, "ViewProviderLink");
+
+#if defined(BUILD_QTTESTING)
+        Base::Interpreter().addType(&QtTesting::QtTestUtilityPy::Type, module, "QtTestUtility");
+#endif
     }
 
     Base::PyGILStateLocker lock;
@@ -1038,6 +1047,9 @@ void Application::createStandardOperations()
     Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
     Gui::CreateLinkCommands();
+#if defined(BUILD_QTTESTING)
+    Gui::CreateQtTestingCommands();
+#endif
 }
 
 void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
@@ -2350,6 +2362,9 @@ static void init_resources()
     Q_INIT_RESOURCE(resource);
     Q_INIT_RESOURCE(translation);
     Q_INIT_RESOURCE(FreeCAD_translation);
+#if defined(BUILD_QTTESTING)
+    Q_INIT_RESOURCE(QtTesting);
+#endif
 }
 
 void Application::initApplication()
@@ -2447,6 +2462,10 @@ void Application::initTypes()
     Gui::PythonBaseWorkbench                    ::init();
     Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
+
+#if defined(BUILD_QTTESTING)
+    QtTesting::QtTestUtility                    ::init();
+#endif
 
     // register transaction type
     new App::TransactionProducer<TransactionViewProvider>
