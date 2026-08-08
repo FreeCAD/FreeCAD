@@ -64,9 +64,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         self.propertiesReady = False
         self.initAreaOpProperties(obj)
 
-        obj.setEditorMode("MiterLimit", 2)
-        obj.setEditorMode("JoinType", 2)
-
     def execute(self, obj):
         """execute(obj) ... override to handle 3+2 transformation for Area-based operations."""
         # Call the base class execute() method which handles 3+2 transformation
@@ -116,23 +113,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Choose how to process multiple Base Geometry features.",
-                ),
-            ),
-            (
-                "App::PropertyEnumeration",
-                "JoinType",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Controls how tool moves around corners. Default=Round",
-                ),
-            ),
-            (
-                "App::PropertyFloat",
-                "MiterLimit",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Maximum distance before a miter joint is truncated"
                 ),
             ),
             (
@@ -248,11 +228,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Collectively"), "Collectively"),
                 (translate("PathProfile", "Individually"), "Individually"),
             ],
-            "JoinType": [
-                (translate("PathProfile", "Round"), "Round"),
-                (translate("PathProfile", "Square"), "Square"),
-                (translate("PathProfile", "Miter"), "Miter"),
-            ],  # this is the direction that the Profile runs
             "Side": [
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
@@ -284,8 +259,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return {
             "Direction": "CW",
             "HandleMultipleFeatures": "Individually",
-            "JoinType": "Round",
-            "MiterLimit": 0.1,
             "OffsetExtra": 0.0,
             "Side": "Outside",
             "UseComp": True,
@@ -321,7 +294,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def setOpEditorProperties(self, obj):
         """setOpEditorProperties(obj, porp) ... Process operation-specific changes to properties visibility."""
         fc = 2
-        # ml = 0 if obj.JoinType == 'Miter' else 2
         side = 0 if obj.UseComp else 2
         opType = self._getOperationType(obj)
 
@@ -339,8 +311,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         multiPassMode = 0 if obj.NumPasses > 1 else 2
 
         obj.setEditorMode("Stepover", multiPassMode)
-        obj.setEditorMode("JoinType", 2)
-        obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
         obj.setEditorMode("HandleMultipleFeatures", 0)
         obj.setEditorMode("processCircles", fc)
@@ -358,6 +328,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         return subsList[0][:4]
 
     def areaOpOnDocumentRestored(self, obj):
+        for prop in ["JoinType", "MiterLimit"]:
+            if hasattr(obj, prop):
+                obj.removeProperty(prop)
+
         self.propertiesReady = False
         self.initAreaOpProperties(obj, warn=True)
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
@@ -404,17 +378,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["ExtraPass"] = num_passes - 1
         params["Stepover"] = stepover
 
-        # Map JoinType string to AreaParams enum value
-        jointype_map = {
-            "Round": Path.ClipperJoinTypeRound,
-            "Square": Path.ClipperJoinTypeSquare,
-            "Miter": Path.ClipperJoinTypeMiter,
-        }
-        params["JoinType"] = jointype_map.get(obj.JoinType, Path.ClipperJoinTypeRound)
-
-        if obj.JoinType == "Miter":
-            params["MiterLimit"] = obj.MiterLimit
-
         if obj.SplitArcs:
             params["Explode"] = True
             params["FitArcs"] = False
@@ -440,11 +403,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         offset = obj.OffsetExtra.Value
         if obj.UseComp:
             offset = self.radius + obj.OffsetExtra.Value
-        if offset == 0.0:
-            if direction == "CCW":
-                params["orientation"] = 1
-            else:
-                params["orientation"] = 0
 
         if obj.NumPasses > 1:
             # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
@@ -1087,17 +1045,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if isHole is False:
             offset = 0 - offset
 
-        # Map JoinType string to AreaParams enum value
-        jointype_map = {
-            "Round": Path.ClipperJoinTypeRound,
-            "Square": Path.ClipperJoinTypeSquare,
-            "Miter": Path.ClipperJoinTypeMiter,
-        }
-        joinType = jointype_map.get(obj.JoinType, Path.ClipperJoinTypeRound)
-
-        return PathUtils.getOffsetArea(
-            fcShape, offset, plane=fcShape, tolerance=tolerance, joinType=joinType
-        )
+        return PathUtils.getOffsetArea(fcShape, offset, plane=fcShape, tolerance=tolerance)
 
     def _findNearestVertex(self, shape, point):
         Path.Log.debug("_findNearestVertex()")

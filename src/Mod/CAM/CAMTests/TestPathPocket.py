@@ -59,6 +59,79 @@ def countOffsetLoops(commands, pocket_depth):
     return plunge_count
 
 
+def getLoopDirection(commands, pocket_depth, loop_index=0):
+    """Determine if a specific offset loop is clockwise or counter-clockwise.
+
+    Uses the shoelace formula to calculate signed area from XY moves.
+    Positive area = CCW, negative area = CW.
+
+    Args:
+        commands: List of G-code commands
+        pocket_depth: The Z height where cutting occurs
+        loop_index: Which loop to check (0 = first loop)
+
+    Returns:
+        "CCW" or "CW", or None if loop not found
+    """
+    # Find the loop by counting plunges
+    current_loop = -1
+    prev_z = None
+    loop_points = []
+    current_pos = FreeCAD.Vector(0, 0, 0)
+    in_target_loop = False
+
+    for cmd in commands:
+        params = cmd.Parameters
+
+        # Update current position
+        if "X" in params:
+            current_pos.x = params["X"]
+        if "Y" in params:
+            current_pos.y = params["Y"]
+        if "Z" in params:
+            current_z = params["Z"]
+            current_pos.z = current_z
+
+            # Check for plunge (start of new loop)
+            if cmd.Name == "G1" and abs(current_z - pocket_depth) < 0.01:
+                if prev_z is not None and prev_z > pocket_depth + 0.5:
+                    current_loop += 1
+                    if current_loop == loop_index:
+                        in_target_loop = True
+                        loop_points = [FreeCAD.Vector(current_pos.x, current_pos.y, 0)]
+                    elif current_loop > loop_index:
+                        # We've passed the target loop, stop collecting
+                        break
+
+            # Check for retract (end of loop)
+            if (
+                prev_z is not None
+                and abs(prev_z - pocket_depth) < 0.01
+                and current_z > pocket_depth + 0.5
+            ):
+                if in_target_loop:
+                    break
+
+            prev_z = current_z
+
+        # Collect points for the target loop (only G1 moves at cutting depth)
+        if in_target_loop and cmd.Name in ("G1", "G2", "G3"):
+            if abs(current_pos.z - pocket_depth) < 0.01:
+                loop_points.append(FreeCAD.Vector(current_pos.x, current_pos.y, 0))
+
+    if len(loop_points) < 3:
+        return None
+
+    # Calculate signed area using shoelace formula
+    signed_area = 0.0
+    for i in range(len(loop_points) - 1):
+        p1 = loop_points[i]
+        p2 = loop_points[i + 1]
+        signed_area += (p2.x - p1.x) * (p2.y + p1.y)
+
+    return "CCW" if signed_area > 0 else "CW"
+
+
 class TestPathPocket(PathTestBase):
     """Unit tests for the Pocket operation."""
 
@@ -185,6 +258,10 @@ class TestPathPocket(PathTestBase):
         # Actual: Count plunge moves from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
 
+        # Check that first offset loop is clockwise
+        first_loop_direction = getLoopDirection(pocket.Path.Commands, pocket_bottom_z, 0)
+        self.assertEqual(first_loop_direction, "CW", "First offset loop should be clockwise")
+
         # Expected: Calculate from geometry and stepover
         # Each offset loop moves inward by stepover distance on each side
         # Available clearance = (pocket_size - tool_diameter) / 2
@@ -257,6 +334,10 @@ class TestPathPocket(PathTestBase):
 
         # Count offset loops from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
+
+        # Check that offset loops are clockwise (climb cutting for this pocket)
+        first_loop_direction = getLoopDirection(pocket.Path.Commands, pocket_bottom_z, 0)
+        self.assertEqual(first_loop_direction, "CW", "First offset loop should be clockwise")
 
         # Without ForceMaxStepOver, pocket should generate more loops than base-calculated max
         # to ensure full area coverage

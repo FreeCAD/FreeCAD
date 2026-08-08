@@ -148,14 +148,6 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         )
         # obj.Direction = ["CW", "CCW"]
         obj.addProperty(
-            "App::PropertyEnumeration",
-            "Side",
-            "Deburr",
-            QT_TRANSLATE_NOOP("App::Property", "Side of base object"),
-        )
-        obj.Side = ["Outside", "Inside"]
-        obj.setEditorMode("Side", 2)  # Hide property, it's calculated by op
-        obj.addProperty(
             "App::PropertyInteger",
             "EntryPoint",
             "Deburr",
@@ -206,6 +198,9 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         obj.setEditorMode("Join", 2)  # hide for now
+
+        if hasattr(obj, "Side"):
+            obj.removeProperty("Side")
 
     def opExecute(self, obj):
         Path.Log.track(obj.Label)
@@ -420,32 +415,15 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             self.basewires.extend(basewires)
             Path.Log.debug(f"  Total basewires: {len(basewires)}")
 
-            # Set default side
-            side = ["Outside"]
-
-            for i, w in enumerate(basewires):
+            for w in basewires:
                 self.adjusted_basewires.append(w)
-                # Debug: examine the wire geometry
-                Path.Log.debug(f"  Wire {i}: {len(w.Edges)} edges")
-                for j, e in enumerate(w.Edges):
-                    if hasattr(e, "Curve") and e.Curve:
-                        Path.Log.debug(f"    Edge {j} type: {type(e.Curve).__name__}")
-                        if hasattr(e.Curve, "Radius"):
-                            Path.Log.debug(f"    Edge {j} radius: {e.Curve.Radius}")
                 tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
-                wire = PathOpUtil.offsetWire(w, base.Shape, offset, True, side, tol)
-                Path.Log.debug(f"  offsetWire returned: {wire is not None}")
+                wire = PathOpUtil.offsetWireCompat(w, base.Shape, offset, tol)
                 if wire:
                     wires.append(wire)
 
         # Set direction of op
         forward = obj.Direction == "CW"
-
-        # Set value of side
-        obj.Side = side[0]
-        # Check side extra for angled faces
-        if radius_top > radius_bottom:
-            obj.Side = "Inside"
 
         zValues = []
         z = 0
@@ -476,7 +454,6 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         obj.setExpression("StepDown", "0 mm")
         obj.StepDown = "0 mm"
         obj.Direction = "CW"
-        obj.Side = "Outside"
         obj.EntryPoint = 0
 
 

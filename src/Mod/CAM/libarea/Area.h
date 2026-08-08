@@ -7,6 +7,10 @@
 
 #pragma once
 
+#include <map>
+#include <optional>
+#include <tuple>
+#include <vector>
 #include "Curve.h"
 #include "clipper2/clipper.h"
 
@@ -49,14 +53,52 @@ struct CAreaPocketParams
     }
 };
 
+struct SegmentData
+{
+    CVertex orig;
+    int edgeTag;  // 1 = offset kept (positive side), -1 = offset discarded (negative side), 0 = end cap
+    int curveIndex;
+    int vertexIndex;
+};
+
+
+// Metadata structure to facilitate correct conversion from clipper lines back to CCurves
+struct ConversionMetadata
+{
+    // New points may be created by clipper at the intersection of segments. This multimap tracks
+    // the origin of such points; new points map to the segments that generated them. Edges are
+    // specified by their end points, and all points are specified by their z values. This data
+    // structure is used to determine the parent edge of edges connecting to new points.
+    //
+    // Format: newZ -> (e1ZMin, e1ZMax, e2ZMin, e2ZMax)
+    std::multimap<int64_t, std::tuple<int64_t, int64_t, int64_t, int64_t>> intersections;
+
+    // Maps (zMin, zMax) edge pairs to their original CVertex, edge tag, and ordering. This
+    // information is used in SetFromResult to convert from clipper back to CCurves, and to restore
+    // the order and orientation of open curves.
+    std::map<std::pair<int64_t, int64_t>, SegmentData> edgeData;
+
+    // Deduplication cache: maps (x,y) in Clipper coordinates to the z-label already assigned there
+    std::map<std::pair<int64_t, int64_t>, int64_t> xy_to_z;
+
+    // Track the next z-value available for allocation
+    int64_t z_next;
+
+    // Track the next curve index for MakePoly calls
+    int nextCurveIndex;
+
+    ConversionMetadata()
+        : z_next(1)
+        , nextCurveIndex(0)
+    {}
+};
+
 class CArea
 {
 public:
     std::list<CCurve> m_curves;
+
     static double m_accuracy;
-    static double m_units;  // 1.0 for mm, 25.4 for inches. All points are multiplied by this before
-                            // going to the engine
-    static bool m_clipper_simple;
     static double m_clipper_clean_distance;
     static bool m_fit_arcs;
     static int m_min_arc_points;
@@ -77,16 +119,18 @@ public:
     void Intersect(const CArea& a2);
     void Union(const CArea& a2);
     void Xor(const CArea& a2);
-    void Offset(double inwards_value);
-    void OffsetWithClipper(
-        double offset,
-        Clipper2Lib::JoinType joinType = Clipper2Lib::JoinType::Round,
-        Clipper2Lib::EndType endType = Clipper2Lib::EndType::Round,
-        double miterLimit = 5.0,
-        double arcTolerance = 0.0
-    );
+    void OffsetInward(double inwards_value);  // Deprecated: use Offset
+
+    // Offsets wires; input wires must be closed shapes
+    void Offset(double offset);
+
+    // Offsets wires; open wires allowed. Positive offset is kept in this CArea, and
+    // negative offset is returned in a new CArea. Endcaps (round) are filtered out
+    CArea OpenOffset(double offset);
+
+    void ClipperNoop();  // converts to clipper and back (i.e. arc fitting) without any clipping
+                         // operations
     void Thicken(double value);
-    void FitArcs();
     unsigned int num_curves()
     {
         return static_cast<int>(m_curves.size());
@@ -100,11 +144,21 @@ public:
     static bool HolesLinked();
     void Split(std::list<CArea>& m_areas) const;
     double GetArea(bool always_add = false) const;
-    void SpanIntersections(const Span& span, std::list<Point>& pts) const;
-    void CurveIntersections(const CCurve& curve, std::list<Point>& pts) const;
-    void InsideCurves(const CCurve& curve, std::list<CCurve>& curves_inside) const;
 
-    void ChangeStartToNearest(const Point* pstart = NULL, double min_dist = 1.0);
+    // Test helper method for checking that if clipper reverses/reorders open paths,
+    // it is handled properly.
+    //
+    // This CArea should hold an open path, and the provided clip_area should have a closed
+    // path. This method will behave the same as Intersect, but before converting clipper
+    // results back to CArea it will optionally reverse the open paths.
+    //
+    // reverseOpenPathContents: if true, reverse the contents (vertices) of each open path
+    // reverseOpenPathOrder: if true, reverse the order of the open paths themselves
+    void TestIntersectOpenPathReversal(
+        const CArea& clip_area,
+        bool reverseOpenPathContents,
+        bool reverseOpenPathOrder
+    );
 
     // Avoid outside direct accessing static member variable because of Windows DLL issue
 #define CAREA_PARAM_DECLARE(_type, _name) \
@@ -113,22 +167,49 @@ public:
 
     CAREA_PARAM_DECLARE(double, tolerance)
     CAREA_PARAM_DECLARE(bool, fit_arcs)
-    CAREA_PARAM_DECLARE(bool, clipper_simple)
     CAREA_PARAM_DECLARE(double, clipper_clean_distance)
     CAREA_PARAM_DECLARE(double, accuracy)
-    CAREA_PARAM_DECLARE(double, units)
-    CAREA_PARAM_DECLARE(short, min_arc_points)
-    CAREA_PARAM_DECLARE(short, max_arc_points)
     CAREA_PARAM_DECLARE(double, clipper_scale)
 
-    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip) const;
+    void PopulateClipper(Clipper2Lib::Clipper64& c, bool as_clip, ConversionMetadata& metadata) const;
 
-    // Following functions is add to operate on possible open curves
     void Clip(
         Clipper2Lib::ClipType op,
         const CArea& clip_area,
-        Clipper2Lib::FillRule subjFillType = Clipper2Lib::FillRule::EvenOdd,
-        Clipper2Lib::FillRule clipFillType = Clipper2Lib::FillRule::EvenOdd
+        Clipper2Lib::FillRule fillType = Clipper2Lib::FillRule::EvenOdd
+    );
+
+    // Reorders open paths so they match the original input order and direction.
+    // Must be run after Clipper operations, before converting back to arcs.
+    void ReorderOpenPaths(Clipper2Lib::Paths64& paths, const ConversionMetadata& metadata);
+
+private:
+    // Returns (minZ, maxZ) of the vertices of the parent edge
+    static std::pair<int64_t, int64_t> getParentEdge(
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
+        const ConversionMetadata& metadata
+    );
+
+    void NaiveOffset(double offset);
+
+    Clipper2Lib::Path64 MakePoly(const CCurve& curve, ConversionMetadata& metadata) const;
+
+    void SetFromResult(
+        Clipper2Lib::Paths64& paths,
+        bool isClosed,
+        ConversionMetadata& metadata,
+        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
+    );
+
+    // Internal implementation of Clip with optional open path reversal
+    void _Clip(
+        Clipper2Lib::ClipType op,
+        const CArea& clip_area,
+        Clipper2Lib::FillRule fillType,
+        bool reverseOpenPathContents = false,
+        bool reverseOpenPathOrder = false,
+        std::optional<std::reference_wrapper<CArea>> cNeg = std::nullopt
     );
 };
 
@@ -142,7 +223,5 @@ enum eOverlapType
 
 eOverlapType GetOverlapType(const CCurve& c1, const CCurve& c2);
 eOverlapType GetOverlapType(const CArea& a1, const CArea& a2);
-bool IsInside(const Point& p, const CCurve& c);
-bool IsInside(const Point& p, const CArea& a);
 
 }  // namespace heeks
