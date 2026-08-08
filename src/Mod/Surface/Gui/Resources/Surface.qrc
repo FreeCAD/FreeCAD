@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/Surface_GordonSurface.svg</file>
         <file>icons/Surface_BezierSurface.svg</file>
         <file>icons/Surface_BSplineSurface.svg</file>
         <file>icons/Surface_CurveOnMesh.svg</file>
