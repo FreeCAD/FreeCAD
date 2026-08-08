@@ -448,7 +448,7 @@ public:
                               const ElementIDRefs* sid = nullptr,
                               bool overwrite = false)
     {
-        return _elementMap->setElementName(element, name, masterTag, sid, overwrite);
+        return ensureElementMap()->setElementName(element, name, masterTag, sid, overwrite);
     }
 
     /// Check if there is an element map.
@@ -488,11 +488,12 @@ public:
      * @param[in] postfix An optional postfix to append after the tag.
      */
     virtual void
-    reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix = nullptr)
+    reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix = nullptr, bool force = true)
     {
         (void)tag;
         (void)hasher;
         (void)postfix;
+        (void)force;
     }
 
     /**

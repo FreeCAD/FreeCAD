@@ -26,6 +26,7 @@
 
 #include <Base/Tools.h>
 
+#include "Base/Console.h"
 #include "ComplexGeoData.h"
 #include "Document.h"
 #include "GeoFeature.h"
@@ -36,6 +37,7 @@
 
 using namespace App;
 
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 

@@ -30,6 +30,7 @@
 #include "Application.h"
 #include "MappedElement.h"
 #include "StringHasher.h"
+#include "ElementNamingUtils.h"
 
 #include <cstring>
 #include <deque>
@@ -306,6 +307,14 @@ public:
      */
     void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
 
+    App::HistoryAlgorithm getHistoryAlgorithm() const {
+        return usedHistoryAlgorithm;
+    }
+
+    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
+        usedHistoryAlgorithm = newAlgorithm;
+    }
+
 
 private:
     /** Serialize this map
@@ -400,6 +409,9 @@ private:
     std::map<const char*, IndexedElements, CStringComp> indexedNames;
 
     std::map<MappedName, IndexedName, std::less<>> mappedNames;
+
+    App::HistoryAlgorithm usedHistoryAlgorithm = App::HistoryAlgorithm::V2;
+
 
     struct ChildMapInfo
     {

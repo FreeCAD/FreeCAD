@@ -284,3 +284,7 @@ def checkAbort() -> None:
     abort by pressing Esc.
     """
     ...
+
+def getDecodedMappedName(name: str, /) -> list[dict]:
+    """Returns the decoding of `name` in the form of a dictionary."""
+    ...

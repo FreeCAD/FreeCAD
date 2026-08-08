@@ -47,6 +47,8 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
+    void saveHistorySelector();
+
     std::unique_ptr<Ui_DlgSettingsGeneral> ui;
 };
 

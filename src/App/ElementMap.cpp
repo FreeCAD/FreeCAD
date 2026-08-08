@@ -12,6 +12,7 @@
 #include "Base/Console.h"
 #include "Document.h"
 #include "DocumentObject.h"
+#include <Base/Profiler.h>
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -48,6 +49,8 @@ static std::unordered_map<unsigned, ElementMapPtr> _idToElementMap;
 
 void ElementMap::init()
 {
+    ZoneScoped;
+
     static bool inited;
     if (!inited) {
         inited = true;
@@ -506,7 +509,9 @@ MappedName ElementMap::addName(MappedName& name,
                                bool overwrite,
                                IndexedName* existing)
 {
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+    ZoneScoped;
+
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
             FC_ERR("missing tag postfix " << name);  // NOLINT
         }
@@ -541,6 +546,8 @@ void ElementMap::addPostfix(const QByteArray& postfix,
                             std::map<QByteArray, int>& postfixMap,
                             std::vector<QByteArray>& postfixes)
 {
+    ZoneScoped;
+
     if (postfix.isEmpty()) {
         return;
     }
@@ -557,6 +564,8 @@ MappedName ElementMap::setElementName(const IndexedName& element,
                                       const ElementIDRefs* sid,
                                       bool overwrite)
 {
+    ZoneScoped;
+
     if (!element) {
         throw Base::ValueError("Invalid input");
     }
@@ -591,29 +600,92 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         sid = &_sid;
     }
 
-    std::ostringstream ss;
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
     Data::MappedName mappedName(name);
-    for (int i = 0;;) {
+
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+        std::ostringstream ss;
+
+        for (int i = 0;;) {
+            ZoneScopedN("V1 Duplicate Loop");
+
+            IndexedName existing;
+            MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
+            if (res) {
+                return res;
+            }
+            const int maxAttempts {100};
+            if (++i == maxAttempts) {
+                FC_ERR("unresolved duplicate element mapping '"  // NOLINT
+                    << name << ' ' << element << '/' << existing);
+                return name;
+            }
+            if (sid != &_sid) {
+                _sid = *sid;
+            }
+            mappedName = renameDuplicateElement(i, element, existing, name, _sid, masterTag);
+            if (!mappedName) {
+                return name;
+            }
+            sid = &_sid;
+        }
+    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+        size_t duplicateIndex = 1;
+
         IndexedName existing;
         MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
         if (res) {
+            ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
             return res;
         }
-        const int maxAttempts {100};
-        if (++i == maxAttempts) {
-            FC_ERR("unresolved duplicate element mapping '"  // NOLINT
-                   << name << ' ' << element << '/' << existing);
-            return name;
+
+        auto spliceStringByDuplicateCount = [](const std::string& nameString, std::string* beforeDuplicateCount, std::string* afterDuplicateCount) {
+            *beforeDuplicateCount = nameString;
+
+            constexpr int DUPLICATE_COUNT_REVERSE_INDEX = Data::SECTION_SIZE - Data::SECTION_DUPLICATE_COUNT_INDEX;
+            int currentSectionIndex = 0;
+
+            for (size_t i = beforeDuplicateCount->size(); i-- > 0;) {
+                const char& currentCharacter = (*beforeDuplicateCount)[i];
+
+                if (currentSectionIndex < (DUPLICATE_COUNT_REVERSE_INDEX - 1)) {
+                    afterDuplicateCount->insert(0, 1, currentCharacter);
+                }
+
+                if (currentCharacter == (*Data::SECTION_SUB_DELIMINATOR) && ++currentSectionIndex == DUPLICATE_COUNT_REVERSE_INDEX) {
+                    break;
+                }
+
+                beforeDuplicateCount->pop_back();
+            }
+        };
+
+        std::string mappedNameBeforeDuplicateCount;
+        std::string mappedNameAfterDuplicateCount;
+
+        spliceStringByDuplicateCount(mappedName.toString(), &mappedNameBeforeDuplicateCount, &mappedNameAfterDuplicateCount);
+
+        Data::MappedName fixedName;
+
+        for (size_t i = 0; i < mappedNames.size(); i++) {
+            ZoneScopedN("V2 Duplicate Loop");
+
+            fixedName = {mappedNameBeforeDuplicateCount + std::to_string(duplicateIndex) + mappedNameAfterDuplicateCount};
+            res = this->addName(fixedName, element, *sid, overwrite, &existing);
+
+            if (res) {
+                ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
+                return res;
+            }
+
+            duplicateIndex++;
         }
-        if (sid != &_sid) {
-            _sid = *sid;
-        }
-        mappedName = renameDuplicateElement(i, element, existing, name, _sid, masterTag);
-        if (!mappedName) {
-            return name;
-        }
-        sid = &_sid;
+
+        ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
+        return res ? res : name;
     }
+
+    return { };
 }
 
 // try to hash element name while preserving the source tag
@@ -626,6 +698,11 @@ void ElementMap::encodeElementName(char element_type,
                                    long tag,
                                    bool forceTag) const
 {
+    ZoneScoped;
+
+    if (App::getSelectedHistoryAlgorithm() != App::HistoryAlgorithm::V1)
+        return;
+
     if (postfix && (postfix[0] != 0)) {
         if (!boost::starts_with(postfix, ELEMENT_MAP_PREFIX)) {
             ss << ELEMENT_MAP_PREFIX;
@@ -695,6 +772,8 @@ void ElementMap::encodeElementName(char element_type,
 
 MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& sids) const
 {
+    ZoneScoped;
+
     if (!this->hasher || !name) {
         return name;
     }
@@ -722,6 +801,8 @@ MappedName ElementMap::hashElementName(const MappedName& name, ElementIDRefs& si
 
 MappedName ElementMap::dehashElementName(const MappedName& name) const
 {
+    ZoneScoped;
+
     if (name.empty()) {
         return name;
     }
@@ -760,27 +841,26 @@ MappedName ElementMap::renameDuplicateElement(int index,
                                               ElementIDRefs& sids,
                                               long masterTag) const
 {
-    int idx {0};
-#ifdef FC_DEBUG
-    idx = index;
-#else
-    static std::random_device _RD;
-    static std::mt19937 _RGEN(_RD());
-    static std::uniform_int_distribution<> _RDIST(1, 10000);
-    (void)index;
-    idx = _RDIST(_RGEN);
-#endif
-    std::ostringstream ss;
-    ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
-    MappedName renamed(name);
-    encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
-    FC_TRACE("resolved duplicate element mapping '"  // NOLINT
+    ZoneScoped;
+
+    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        int idx = index;
+        std::ostringstream ss;
+        ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
+        MappedName renamed(name);
+        encodeElementName(element.getType()[0], renamed, ss, &sids, masterTag);
+        FC_TRACE("resolved duplicate element mapping '"  // NOLINT
              << name << " -> " << renamed << ' ' << element << '/' << element2);
-    return renamed;
+        return renamed;
+    }
+
+    return { };
 }
 
 void ElementMap::erase(const MappedName& name)
 {
+    ZoneScoped;
+
     auto it = this->mappedNames.find(name);
     if (it == this->mappedNames.end()) {
         return;
@@ -795,6 +875,8 @@ void ElementMap::erase(const MappedName& name)
 
 void ElementMap::erase(const IndexedName& idx)
 {
+    ZoneScoped;
+
     auto iter = this->indexedNames.find(idx.getType());
     if (iter == this->indexedNames.end()) {
         return;
@@ -812,16 +894,22 @@ void ElementMap::erase(const IndexedName& idx)
 
 unsigned long ElementMap::size() const
 {
+    ZoneScoped;
+
     return mappedNames.size() + childElementSize;
 }
 
 bool ElementMap::empty() const
 {
+    ZoneScoped;
+
     return mappedNames.empty() && childElementSize == 0;
 }
 
 IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 {
+    ZoneScoped;
+
     auto nameIter = mappedNames.find(name);
     if (nameIter == mappedNames.end()) {
         if (childElements.isEmpty()) {
@@ -878,6 +966,8 @@ IndexedName ElementMap::find(const MappedName& name, ElementIDRefs* sids) const
 
 MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
 {
+    ZoneScoped;
+
     if (!idx) {
         return {};
     }
@@ -925,6 +1015,8 @@ MappedName ElementMap::find(const IndexedName& idx, ElementIDRefs* sids) const
 
 std::vector<std::pair<MappedName, ElementIDRefs>> ElementMap::findAll(const IndexedName& idx) const
 {
+    ZoneScoped;
+
     std::vector<std::pair<MappedName, ElementIDRefs>> res;
     if (!idx) {
         return res;
@@ -976,6 +1068,8 @@ std::vector<std::pair<MappedName, ElementIDRefs>> ElementMap::findAll(const Inde
 
 const MappedNameRef* ElementMap::findMappedRef(const IndexedName& idx) const
 {
+    ZoneScoped;
+
     auto iter = this->indexedNames.find(idx.getType());
     if (iter == this->indexedNames.end()) {
         return nullptr;
@@ -989,6 +1083,8 @@ const MappedNameRef* ElementMap::findMappedRef(const IndexedName& idx) const
 
 MappedNameRef* ElementMap::findMappedRef(const IndexedName& idx)
 {
+    ZoneScoped;
+
     auto iter = this->indexedNames.find(idx.getType());
     if (iter == this->indexedNames.end()) {
         return nullptr;
@@ -1002,6 +1098,8 @@ MappedNameRef* ElementMap::findMappedRef(const IndexedName& idx)
 
 MappedNameRef& ElementMap::mappedRef(const IndexedName& idx)
 {
+    ZoneScoped;
+
     assert(idx);
     auto& indices = this->indexedNames[idx.getType()];
     if (idx.getIndex() >= (int)indices.names.size()) {
@@ -1012,11 +1110,15 @@ MappedNameRef& ElementMap::mappedRef(const IndexedName& idx)
 
 bool ElementMap::hasChildElementMap() const
 {
+    ZoneScoped;
+
     return !childElements.empty();
 }
 
 void ElementMap::hashChildMaps(long masterTag)
 {
+    ZoneScoped;
+
     if (childElements.empty() || !this->hasher) {
         return;
     }
@@ -1057,6 +1159,8 @@ void ElementMap::collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
                                   std::map<QByteArray, int>& postfixMap,
                                   std::vector<QByteArray>& postfixes) const
 {
+    ZoneScoped;
+
     auto res = childMapSet.insert(std::make_pair(this, 0));
     if (!res.second) {
         return;
@@ -1086,6 +1190,9 @@ void ElementMap::collectChildMaps(std::map<const ElementMap*, int>& childMapSet,
 
 void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildElements>& children)
 {
+    ZoneScoped;
+
+    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
     std::ostringstream ss;
     ss << std::hex;
 
@@ -1197,7 +1304,10 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
         // skip encoding only when masterTag=0, child.tag=0, and count is exactly at threshold
         bool skipEncoding = (masterTag == 0 && child.tag == 0 && child.count == threshold && child.elementMap);
 
-        if ((child.count >= threshold && !skipEncoding) || !child.elementMap) {
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1
+            && ((child.count >= threshold && !skipEncoding)
+               || !child.elementMap))
+        {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,
@@ -1223,31 +1333,42 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
             IndexedName childIdx(child.indexedName);
             IndexedName idx(childIdx.getType(), childIdx.getIndex() + child.offset);
             for (int i = 0; i < child.count; ++i, ++childIdx, ++idx) {
-                ElementIDRefs sids;
-                MappedName name = child.elementMap->find(childIdx, &sids);
-                if (!name) {
-                    if ((child.tag == 0) || child.tag == masterTag) {
-                        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            FC_WARN("unmapped element");  // NOLINT
+                if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+                    ElementIDRefs sids;
+                    MappedName name = child.elementMap->find(childIdx, &sids);
+                    if (!name) {
+                        if ((child.tag == 0) || child.tag == masterTag) {
+                            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                FC_WARN("unmapped element");  // NOLINT
+                            }
+                            continue;
                         }
-                        continue;
+                        name = MappedName(childIdx);
                     }
-                    name = MappedName(childIdx);
+                    ss.str("");
+                    encodeElementName(idx[0],
+                                      name,
+                                      ss,
+                                      &sids,
+                                      masterTag,
+                                      child.postfix.constData(),
+                                      child.tag);
+                    setElementName(idx, name, masterTag, &sids);
+                } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2 && child.elementMap) {
+                    std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> names = child.elementMap->findAll(childIdx);
+
+                    for (const auto& name : names) {
+                        if (!name.first)
+                            continue;
+
+                        setElementName(idx, name.first, masterTag);
+                    }
                 }
-                ss.str("");
-                encodeElementName(idx[0],
-                                  name,
-                                  ss,
-                                  &sids,
-                                  masterTag,
-                                  child.postfix.constData(),
-                                  child.tag);
-                setElementName(idx, name, masterTag, &sids);
             }
             continue;
         }
 
-        if (entry->index != 1) {
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V1 && entry->index != 1) {
             // There is some ambiguity in child mapping. We need some
             // additional postfix for disambiguation. NOTE: We are not
             // using ComplexGeoData::indexPostfix() so we don't confuse
@@ -1295,6 +1416,8 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
 std::vector<ElementMap::MappedChildElements> ElementMap::getChildElements() const
 {
+    ZoneScoped;
+
     std::vector<MappedChildElements> res;
     res.reserve(this->childElements.size());
     for (auto& childElement : this->childElements) {
@@ -1305,6 +1428,8 @@ std::vector<ElementMap::MappedChildElements> ElementMap::getChildElements() cons
 
 std::vector<MappedElement> ElementMap::getAll() const
 {
+    ZoneScoped;
+
     std::vector<MappedElement> ret;
     ret.reserve(size());
     for (auto& mappedName : this->mappedNames) {
@@ -1337,6 +1462,8 @@ long ElementMap::getElementHistory(const MappedName& name,
                                    MappedName* original,
                                    std::vector<MappedName>* history) const
 {
+    ZoneScoped;
+
     long tag = 0;
     int len = 0;
     int pos = name.findTagInElementName(&tag, &len, nullptr, nullptr, true);
@@ -1393,6 +1520,8 @@ long ElementMap::getElementHistory(const MappedName& name,
 
 void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallback cb) const
 {
+    ZoneScoped;
+
     long encodedTag = 0;
     int len = 0;
 

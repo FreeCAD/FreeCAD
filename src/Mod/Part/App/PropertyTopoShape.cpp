@@ -79,10 +79,14 @@ void PropertyPartShape::setValue(const TopoShape& sh)
         if (_Shape.Tag && tag != _Shape.Tag) {
             auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
 
-            _Shape.reTagElementMap(tag, hasher);
+            _Shape.reTagElementMap(tag, hasher, nullptr, false);
         }
         else {
             _Shape.Tag = obj->getID();
+
+            if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                _Shape.reTagElementMap(_Shape.Tag, nullptr, nullptr, false);
+            }
         }
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
             _Shape.Hasher = obj->getDocument()->getStringHasher();
@@ -490,11 +494,11 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
         }
         else {
             _Shape.Restore(reader);
-            if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
-                      : _Shape.checkElementMapVersion(_Ver.c_str())) {
-                auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
+            std::string correctVersion = _Shape.getElementMapVersion();
+
+            if (_Ver != correctVersion) {
                 if (!owner || !owner->getNameInDocument()) {
-                    _Ver = ver;
+                    _Ver = correctVersion;
                 }
                 else {
                     // version mismatch, signal for regenerating.
@@ -504,14 +508,14 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
                         FC_WARN(
                             "Recomputation required for document '"
                             << warnedDoc << "' on geo element version change in " << getFullName()
-                            << ": " << _Ver << " -> " << ver
+                            << ": " << _Ver << " -> " << correctVersion
                         );
                     }
                     owner->getDocument()->addRecomputeObject(owner);
 
                     // sometimes objects will not update _Ver properly,
                     // so lets do it here to avoid unnecessary remigration
-                    _Ver = ver;
+                    _Ver = correctVersion;
                 }
             }
         }
