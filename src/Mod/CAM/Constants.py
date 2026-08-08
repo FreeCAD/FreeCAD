@@ -207,3 +207,6 @@ GCODE_NON_CONFORMING = (
 # i.e. allow any gcode
 # absence for false; any non-false presence for true: use "True"
 ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
+
+# Pass through string in annotation as command without any changes
+ANNOT_AS_IS = "as-is"

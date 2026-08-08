@@ -50,7 +50,7 @@ class TestPathCustomConverted(PathTestUtils.PathTestBase):
     """Test Custom through Processor.py's _convert_item_commands()"""
 
     @classmethod
-    def _make_op(cls, gcode):
+    def _make_op(cls, gcode, as_is=False):
         """make the op and postable from lines of gcode or ["gcode",...] or [Path.Command...]"""
         op = Custom.Create(name="dumy", obj=Mock(), parentJob=cls.job).Proxy
         op.Active = True
@@ -59,7 +59,7 @@ class TestPathCustomConverted(PathTestUtils.PathTestBase):
             gcode = gcode.rstrip().split("\n")
         if isinstance(gcode, (list, tuple)):
             gcode = [(s if isinstance(s, str) else s.toGCode()) for s in gcode]
-        custom_gcode = SimpleNamespace(Source="Text", Gcode=gcode)
+        custom_gcode = SimpleNamespace(Source="Text", Gcode=gcode, AddWithoutProcessing=as_is)
         op.opExecute(custom_gcode)
 
         postable = Postable(
@@ -105,5 +105,32 @@ G1 X1.000
             "\n".join(output),
             """(Begin Custom)
 G666 X1.000
+(End Custom)""",
+        )
+
+    def test_as_is_one_line(self):
+        """Processor allows add lines without processing"""
+        _, postable = self._make_op("!G68 R#100 X#150 Y#151")
+
+        output = []
+        self.pp._convert_item_commands(postable, output)
+        self.assertEqual(
+            "\n".join(output),
+            """(Begin Custom)
+G68 R#100 X#150 Y#151
+(End Custom)""",
+        )
+
+    def test_as_is_all_line(self):
+        """Processor allows add lines without processing"""
+        _, postable = self._make_op(";EX1: REFERENCE LEFT 0\nG68 R#100 X#150 Y#151", True)
+
+        output = []
+        self.pp._convert_item_commands(postable, output)
+        self.assertEqual(
+            "\n".join(output),
+            """(Begin Custom)
+;EX1: REFERENCE LEFT 0
+G68 R#100 X#150 Y#151
 (End Custom)""",
         )
