@@ -23,6 +23,8 @@
  **************************************************************************/
 
 #include <BRep_Tool.hxx>
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
@@ -30,6 +32,7 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <BRepProj_Projection.hxx>
+#include <Bnd_Box.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
@@ -37,11 +40,11 @@
 #include <ShapeFix_Wire.hxx>
 #include <ShapeFix_Wireframe.hxx>
 #include <Standard_Failure.hxx>
+#include <Standard_Real.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
-#include <sstream>
 
 
 #include "FeatureProjectOnSurface.h"
