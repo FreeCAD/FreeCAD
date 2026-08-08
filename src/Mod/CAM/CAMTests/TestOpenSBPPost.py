@@ -36,6 +36,7 @@ from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Base.MachineState import MachineState
 from Path.Post.Processor import PostProcessorFactory
+from Path.Post.CAMErrors import CAMValueError
 from Machine.models.machine import Machine, Toolhead, ToolheadType, OutputUnits
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -366,7 +367,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
                 # exception
                 self.assertRaisesRegex(
-                    ValueError,
+                    CAMValueError,
                     r"Arcs require a previous " + required,
                     self.post._convert_arc_move,
                     command,
@@ -385,7 +386,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
                 self.post.machine_state.addCommand(command)
 
                 self.assertRaisesRegex(
-                    ValueError,
+                    CAMValueError,
                     r"missing \['" + missing + r"'\]",
                     self.post._convert_arc_move,
                     command,
