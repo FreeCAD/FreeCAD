@@ -285,7 +285,3 @@ class Maneuver(object):
             begin = i.positionEnd()
         maneuver.instr = instr
         return maneuver
-
-    @classmethod
-    def FromGCode(cls, gcode, begin=None):
-        return cls.FromPath(Path.Path(gcode), begin)
