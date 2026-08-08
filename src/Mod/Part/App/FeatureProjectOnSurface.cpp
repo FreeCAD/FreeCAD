@@ -23,7 +23,7 @@
  **************************************************************************/
 
 #include <BRep_Tool.hxx>
-#include <BRepAlgoAPI_Common.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -386,7 +386,7 @@ TopoDS_Face ProjectOnSurface::createFaceByClippingSource(
     }
 
     // boolean common operation to get trimmed face
-    BRepAlgoAPI_Common common(supportFace, prismMaker.Shape());
+    FCBRepAlgoAPI_Common common(supportFace, prismMaker.Shape());
     common.Build();
     if (!common.IsDone()) {
         return {};
