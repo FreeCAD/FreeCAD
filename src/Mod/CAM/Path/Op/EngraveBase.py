@@ -203,13 +203,13 @@ class ObjectOp(PathOp.ObjectOp):
                         flip = reverseDir
                     elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.FirstParameter)):
                         flip = False
-                        lastPoint = edge.valueAt(edge.LastParameter)
                     elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.LastParameter)):
                         flip = True
-                        lastPoint = edge.valueAt(edge.FirstParameter)
                     else:
                         Path.Log.warning("Error while checks points coincide")
                         return
+
+                    lastPoint = edge.valueAt(edge.FirstParameter if flip else edge.LastParameter)
 
                     for cmd in Path.Geom.cmdsForEdge(edge, flip=flip, tol=tol):
                         # Add gcode for edge
