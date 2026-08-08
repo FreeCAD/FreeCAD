@@ -179,7 +179,7 @@ void MaterialLibraryLocal::renameFolder(const QString& oldPath, const QString& n
         }
     }
 
-    updatePaths(oldPath, newPath);
+    updatePaths(MaterialManager::getManager(), oldPath, newPath);
 }
 
 void MaterialLibraryLocal::deleteRecursive(const QString& path)
@@ -247,12 +247,15 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
         QString rPath = getRelativePath(path);
         try {
             auto material = getMaterialByPath(rPath);
+            Material deletedMaterial(*material);
             manager.remove(material->getUUID());
+            _materialPathMap->erase(rPath);
+            manager.notifyDeletedMaterial(deletedMaterial);
         }
         catch (const MaterialNotFound&) {
             Base::Console().log("Unable to remove file from materials list\n");
+            _materialPathMap->erase(rPath);
         }
-        _materialPathMap->erase(rPath);
     }
     else {
         QString error = QStringLiteral("DeleteError: Unable to delete ") + path;
@@ -260,23 +263,35 @@ void MaterialLibraryLocal::deleteFile(MaterialManager& manager, const QString& p
     }
 }
 
-void MaterialLibraryLocal::updatePaths(const QString& oldPath, const QString& newPath)
+void MaterialLibraryLocal::updatePaths(MaterialManager& manager,
+                                       const QString& oldPath,
+                                       const QString& newPath)
 {
     // Update the path map
     QString op = getRelativePath(oldPath);
     QString np = getRelativePath(newPath);
     std::unique_ptr<std::map<QString, std::shared_ptr<Material>>> pathMap =
         std::make_unique<std::map<QString, std::shared_ptr<Material>>>();
+    std::vector<std::shared_ptr<Material>> changedMaterials;
     for (auto& itp : *_materialPathMap) {
         QString path = itp.first;
+        bool changed = false;
         if (path.startsWith(op)) {
             path = np + path.remove(0, op.size());
+            changed = true;
         }
-        itp.second->setDirectory(path);
+        itp.second->setDirectory(getLibraryPath(path, itp.second->getFilename()));
         (*pathMap)[path] = itp.second;
+        if (changed) {
+            changedMaterials.push_back(itp.second);
+        }
     }
 
     _materialPathMap = std::move(pathMap);
+
+    for (const auto& material : changedMaterials) {
+        manager.notifyChangedMaterial(*material);
+    }
 }
 
 std::shared_ptr<Material>
