@@ -32,13 +32,39 @@ using namespace TechDraw;
 
 //! general purpose line format specifier
 
-LineFormat::LineFormat()
+LineFormat::LineFormat() :
+    m_style(getDefEdgeStyle()),
+    m_weight(getDefEdgeWidth()),
+    m_color(getDefEdgeColor()),
+    m_visible(true),
+    m_lineNumber(1)     // Solid (continuous) line
 {
-    m_style = getDefEdgeStyle();
-    m_weight = getDefEdgeWidth();
-    m_color= getDefEdgeColor();
-    m_visible = true;
-    m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
+}
+
+LineFormat::LineFormat(const int style,
+                       const double weight,
+                       const Base::Color& color,
+                       const bool visible,
+                       const int lineNumber) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible),
+    m_lineNumber(lineNumber)
+{
+}
+
+//! this is the old constructor. retained for compatibility.
+LineFormat::LineFormat(const int style,
+                       const double weight,
+                       const Base::Color& color,
+                       const bool visible) :
+    m_style(style),
+    m_weight(weight),
+    m_color(color),
+    m_visible(visible),
+    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
+{
 }
 
 // static loader of default format
@@ -66,17 +92,7 @@ void LineFormat::setCurrentLineFormat(LineFormat& newFormat)
     getCurrentLineFormat().setLineNumber(newFormat.getLineNumber());
 }
 
-LineFormat::LineFormat(const int style,
-                       const double weight,
-                       const Base::Color& color,
-                       const bool visible) :
-    m_style(style),
-    m_weight(weight),
-    m_color(color),
-    m_visible(visible),
-    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
-{
-}
+
 
 void LineFormat::dump(const char* title)
 {

@@ -120,10 +120,11 @@ void CosmeticEdgePy::setFormat(Py::Dict arg)
     double weight = 0.5;
     PyObject* pColor = color.ptr();
     PyObject* visible = Py_True;
-    static const std::array<const char *, 5> kw{"style", "weight", "color", "visible", nullptr};
-    if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!", kw,
-                                             &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible)) {
-        throw Py::ValueError("Expected {'style':int, 'weight':float, 'color':tuple, 'visible':bool} dict");
+    int lineNumber{1};
+    static const std::array<const char *, 6> kw{"style", "weight", "color", "visible", "lineNumber", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(dummy.ptr(), arg.ptr(), "|idO!O!i", kw,
+                                             &style, &weight, &PyTuple_Type, &pColor, &PyBool_Type, &visible, &lineNumber)) {
+        throw Py::ValueError("Expected {'style':int, 'weight':float, 'color':tuple, 'visible':bool, 'lineNumber':int } dict");
     }
 
     TechDraw::LineFormat* format = &(this->getCosmeticEdgePtr()->m_format);
@@ -131,6 +132,7 @@ void CosmeticEdgePy::setFormat(Py::Dict arg)
     format->setWidth(weight);
     format->setColor(DrawUtil::pyTupleToColor(pColor));
     format->setVisible(Base::asBoolean(visible));
+    format->setLineNumber(lineNumber);
 }
 
 Py::Dict CosmeticEdgePy::getFormat() const
@@ -142,6 +144,7 @@ Py::Dict CosmeticEdgePy::getFormat() const
     dict.setItem("weight", Py::Float(format->getWidth()));
     dict.setItem("color", Py::Tuple(DrawUtil::colorToPyTuple(format->getColor()), true));
     dict.setItem("visible", Py::Boolean(format->getVisible()));
+    dict.setItem("lineNumber", Py::Long(format->getLineNumber()));
 
     return dict;
 }
