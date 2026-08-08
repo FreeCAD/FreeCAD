@@ -28,6 +28,8 @@
 #include <QFont>
 #include <QPainterPath>
 #include <QPointF>
+#include <functional>
+#include <optional>
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
@@ -54,8 +56,13 @@ public:
 
     void setBounds(double left, double top, double right, double bottom);
     void setBounds(Base::Vector3d topLeft, Base::Vector3d bottomRight);
+    void setLineGeometry(const QPointF& first,
+                         const QPointF& second,
+                         const QPointF& tangent,
+                         const QRectF& bounds);
     void setDirection(Base::Vector3d dir);      // horizontal(1,0,0) vertical(0,1,0);
     void draw() override;
+    void setDeleteCallback(std::function<void()> callback);
 
     void setLinePen(QPen isoPen);
     void setBreakColor(QColor c);
@@ -64,9 +71,17 @@ public:
     BreakType breakType() const { return m_breakType; }
 
 protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
 private:
     void drawLargeZigZag();
+    void drawGenericLines();
+    QPainterPath makeStyledLine(const QPointF& start,
+                                const QPointF& end,
+                                double outwardSign = 0.0) const;
+    std::optional<std::pair<QPointF, QPointF>>
+        clippedLine(const QPointF& point, const QPointF& tangent) const;
     QPainterPath makeHorizontalZigZag(Base::Vector3d start) const;
     QPainterPath makeVerticalZigZag(Base::Vector3d start) const;
     void drawSimpleLines();
@@ -76,7 +91,7 @@ private:
 
     QGraphicsPathItem* m_line0;
     QGraphicsPathItem* m_line1;
-    QGraphicsRectItem* m_background;
+    QGraphicsPathItem* m_background;
 
     Base::Vector3d     m_direction;
 
@@ -84,6 +99,12 @@ private:
     double             m_bottom;
     double             m_left;
     double             m_right;
+    QPointF m_firstPoint;
+    QPointF m_secondPoint;
+    QPointF m_tangent;
+    QRectF m_clipBounds;
+    bool m_genericGeometry{false};
+    std::function<void()> m_deleteCallback;
 
     BreakType m_breakType = BreakType::NONE;
 };
