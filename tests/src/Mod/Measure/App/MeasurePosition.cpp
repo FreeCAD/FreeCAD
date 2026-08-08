@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <src/App/InitApplication.h>
+#include <App/Datums.h>
 #include <App/Document.h>
 #include <App/Part.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/MeasureManager.h>
 #include <Mod/Measure/App/MeasurePosition.h>
+#include <Mod/Part/App/MeasureClient.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Base/Placement.h>
 #include <Base/Rotation.h>
@@ -172,5 +174,19 @@ TEST_F(MeasurePosition, testVertexContainerAndLocalPlacementCombine)
     doc->recompute();
 
     EXPECT_EQ(mp->Position.getValue(), Base::Vector3d(11.0, 20.0, 31.0));
+}
+
+TEST_F(MeasurePosition, testLcsOriginUsesGlobalPlacement)
+{
+    App::Document* doc = getDocument();
+    auto lcs = doc->addObject<App::LocalCoordinateSystem>("LCS");
+    lcs->Placement.setValue(Base::Placement(Base::Vector3d(10.0, 20.0, 30.0), Base::Rotation()));
+    doc->recompute();
+
+    auto mp = doc->addObject<Measure::MeasurePosition>("Position");
+    mp->Element.setValue(lcs, {"Origin"});
+    doc->recompute();
+
+    EXPECT_EQ(mp->Position.getValue(), Base::Vector3d(10.0, 20.0, 30.0));
 }
 // NOLINTEND

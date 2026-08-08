@@ -122,7 +122,7 @@ private:
 
     bool setDirections(TopoDS_Shape& s1);  // not the actual normals adjusted for arc visualization
 
-    bool isMeasuringDatum();  // check if one of the selected elements is a datum plane/axis/point
+    bool isMeasuringInfinite();
     bool areLocationsEqual();
 
     void onChanged(const App::Property* prop) override;
