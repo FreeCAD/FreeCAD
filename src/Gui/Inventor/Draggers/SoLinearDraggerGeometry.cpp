@@ -21,11 +21,14 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <cmath>
+
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCone.h>
 #include <Inventor/nodes/SoCylinder.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoPickStyle.h>
+#include <Inventor/nodes/SoSphere.h>
 #include <Inventor/nodes/SoTranslation.h>
 
 #include "SoLinearDraggerGeometry.h"
@@ -63,6 +66,7 @@ SoArrowGeometry::SoArrowGeometry()
     SO_KIT_ADD_CATALOG_ENTRY(pickStyle, SoPickStyle, false, separator, "", false);
     SO_KIT_ADD_CATALOG_ENTRY(arrowBody, SoCylinder, false, separator, "", true);
     SO_KIT_ADD_CATALOG_ENTRY(arrowTip, SoCone, false, separator, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(point, SoSphere, false, separator, "", true);
 
     SO_KIT_ADD_CATALOG_ENTRY(_arrowBodyTranslation, SoTranslation, false, separator, arrowBody, false);
     SO_KIT_ADD_CATALOG_ENTRY(_arrowTipTranslation, SoTranslation, false, separator, arrowTip, false);
@@ -71,6 +75,7 @@ SoArrowGeometry::SoArrowGeometry()
     SO_KIT_ADD_FIELD(coneHeight, (2.5f));
     SO_KIT_ADD_FIELD(cylinderHeight, (10.0f));
     SO_KIT_ADD_FIELD(cylinderRadius, (0.1f));
+    SO_KIT_ADD_FIELD(pointRadius, (0.0f));
 
     SO_KIT_INIT_INSTANCE();
 
@@ -81,6 +86,9 @@ SoArrowGeometry::SoArrowGeometry()
     auto arrowTip = SO_GET_ANY_PART(this, "arrowTip", SoCone);
     arrowTip->height.connectFrom(&coneHeight);
     arrowTip->bottomRadius.connectFrom(&coneBottomRadius);
+
+    auto* point = SO_GET_ANY_PART(this, "point", SoSphere);
+    point->radius.connectFrom(&pointRadius);
 
     auto lightModel = SO_GET_ANY_PART(this, "lightModel", SoLightModel);
     lightModel->model = SoLightModel::BASE_COLOR;
@@ -96,6 +104,10 @@ void SoArrowGeometry::notify(SoNotList* notList)
 {
     SoField* lastField = notList->getLastField();
 
+    if (lastField == &pointRadius && pointRadius.getValue() > 0.0F) {
+        tipPosition = {0, pointRadius.getValue(), 0};
+    }
+
     if (lastField == &cylinderHeight) {
         auto translation = SO_GET_ANY_PART(this, "_arrowBodyTranslation", SoTranslation);
         translation->translation = SbVec3f(0, cylinderHeight.getValue() / 2.0f, 0);
@@ -106,7 +118,9 @@ void SoArrowGeometry::notify(SoNotList* notList)
         translation->translation
             = SbVec3f(0, (cylinderHeight.getValue() + coneHeight.getValue()) / 2.0f, 0);
 
-        tipPosition = {0, cylinderHeight.getValue() + 1.5f * coneHeight.getValue(), 0};
+        if (pointRadius.getValue() <= 0.0F) {
+            tipPosition = {0, cylinderHeight.getValue() + 1.5f * coneHeight.getValue(), 0};
+        }
     }
 }
 
@@ -148,6 +162,7 @@ SoArrowBase::SoArrowBase()
 
     SO_KIT_ADD_FIELD(cylinderHeight, (1.0));
     SO_KIT_ADD_FIELD(cylinderRadius, (0.15));
+    SO_KIT_ADD_FIELD(startOffset, (0.0));
     SO_KIT_ADD_FIELD(color, (0, 0, 1));
 
     SO_KIT_INIT_INSTANCE();
@@ -174,12 +189,15 @@ void SoArrowBase::notify(SoNotList* notList)
 {
     SoField* lastField = notList->getLastField();
 
-    if (lastField == &cylinderHeight || lastField == &translation) {
+    if (lastField == &cylinderHeight || lastField == &translation || lastField == &startOffset) {
         auto cylinder = SO_GET_ANY_PART(this, "cylinder", SoCylinder);
-        cylinder->height = cylinderHeight.getValue() * translation.getValue()[1];
+        const float start = startOffset.getValue();
+        const float end = translation.getValue()[1];
+        const float length = end - start;
+        cylinder->height = cylinderHeight.getValue() * std::fabs(length);
 
         auto cylinderTranslation = SO_GET_ANY_PART(this, "_cylinderTranslation", SoTranslation);
-        cylinderTranslation->translation = {0, cylinder->height.getValue() / 2, 0};
+        cylinderTranslation->translation = {0, start + length / 2, 0};
     }
     else if (lastField == &cylinderRadius || lastField == &geometryScale) {
         auto cylinder = SO_GET_ANY_PART(this, "cylinder", SoCylinder);

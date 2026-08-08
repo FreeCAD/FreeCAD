@@ -42,8 +42,16 @@ using namespace PartDesign;
 // because the files store the enum index. So it is not possible to migrate files if the
 // enum entry is removed (see #23612). In the distant future, when all files are reasonably
 // migrated we can drop this.
-const char* Pad::TypeEnums[]
-    = {"Length", "UpToLast", "UpToFirst", "UpToFace", "?TwoLengths", "UpToShape", nullptr};
+const char* Pad::TypeEnums[] = {
+    "Length",
+    "UpToLast",
+    "UpToFirst",
+    "UpToFace",
+    "?TwoLengths",
+    "UpToShape",
+    "LengthFromOrigin",
+    nullptr
+};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::FeatureExtrude)
 

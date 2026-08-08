@@ -34,7 +34,7 @@ namespace PartDesign
 /* TRANSLATOR PartDesign::Revolution */
 
 const char* Revolution::TypeEnums[]
-    = {"Angle", "UpToLast", "UpToFirst", "UpToFace", "TwoAngles", nullptr};
+    = {"Angle", "UpToLast", "UpToFirst", "UpToFace", "TwoAngles", "AngleFromOrigin", nullptr};
 
 const char* Revolution::FuseOrderEnums[] = {"BaseFirst", "FeatureFirst", nullptr};
 
@@ -62,7 +62,15 @@ Revolution::Revolution()
         App::PropertyType(App::Prop_ReadOnly | App::Prop_Hidden),
         "Axis"
     );
+    ADD_PROPERTY_TYPE(StartAngle, (emptyAngle), "Revolution", App::Prop_None, "Start angle");
     ADD_PROPERTY_TYPE(Angle, (fullAngle), "Revolution", App::Prop_None, "Angle");
+    ADD_PROPERTY_TYPE(
+        StartAngle2,
+        (emptyAngle),
+        "Revolution",
+        App::Prop_None,
+        "Start angle in 2nd direction"
+    );
     ADD_PROPERTY_TYPE(
         Angle2,
         (emptyAngle),

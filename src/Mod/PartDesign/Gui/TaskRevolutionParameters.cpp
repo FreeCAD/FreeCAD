@@ -22,6 +22,12 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <QSignalBlocker>
+
+#include <algorithm>
+
+#include <Inventor/SbRotation.h>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Origin.h>
@@ -50,6 +56,61 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskRevolutionParameters */
 
+namespace
+{
+constexpr double minimumRevolveAngle = 1.0e-7;
+
+bool isSingleAngleMethod(PartDesign::Revolution::RevolMethod mode)
+{
+    return mode == PartDesign::Revolution::RevolMethod::Angle
+        || mode == PartDesign::Revolution::RevolMethod::AngleFromOrigin;
+}
+
+bool isAngleFromStartMethod(PartDesign::Revolution::RevolMethod mode)
+{
+    return mode == PartDesign::Revolution::RevolMethod::Angle
+        || mode == PartDesign::Revolution::RevolMethod::TwoAngles;
+}
+
+PartDesign::Revolution::RevolMethod modeFromUiIndex(int index)
+{
+    switch (index) {
+        case 1:
+            return PartDesign::Revolution::RevolMethod::AngleFromOrigin;
+        case 2:
+            return PartDesign::Revolution::RevolMethod::ThroughAll;
+        case 3:
+            return PartDesign::Revolution::RevolMethod::ToFirst;
+        case 4:
+            return PartDesign::Revolution::RevolMethod::ToFace;
+        case 5:
+            return PartDesign::Revolution::RevolMethod::TwoAngles;
+        default:
+            return PartDesign::Revolution::RevolMethod::Angle;
+    }
+}
+
+int uiIndexFromMode(PartDesign::Revolution::RevolMethod mode)
+{
+    switch (mode) {
+        case PartDesign::Revolution::RevolMethod::AngleFromOrigin:
+            return 1;
+        case PartDesign::Revolution::RevolMethod::ThroughAll:
+            return 2;
+        case PartDesign::Revolution::RevolMethod::ToFirst:
+            return 3;
+        case PartDesign::Revolution::RevolMethod::ToFace:
+            return 4;
+        case PartDesign::Revolution::RevolMethod::TwoAngles:
+            return 5;
+        case PartDesign::Revolution::RevolMethod::Angle:
+        default:
+            return 0;
+    }
+}
+
+}  // namespace
+
 TaskRevolutionParameters::TaskRevolutionParameters(
     PartDesignGui::ViewProvider* RevolutionView,
     const char* pixname,
@@ -70,13 +131,17 @@ TaskRevolutionParameters::TaskRevolutionParameters(
     // bind property mirrors
     if (auto rev = getObject<PartDesign::Revolved>()) {
         isGroove = rev->getAddSubType() == PartDesign::Revolved::Subtractive;
+        this->propStartAngle = &(rev->StartAngle);
         this->propAngle = &(rev->Angle);
+        this->propStartAngle2 = &(rev->StartAngle2);
         this->propAngle2 = &(rev->Angle2);
         this->propMidPlane = &(rev->Midplane);
         this->propReferenceAxis = &(rev->ReferenceAxis);
         this->propReversed = &(rev->Reversed);
         this->propUpToFace = &(rev->UpToFace);
+        ui->revolveStartAngle->bind(rev->StartAngle);
         ui->revolveAngle->bind(rev->Angle);
+        ui->revolveStartAngle2->bind(rev->StartAngle2);
         ui->revolveAngle2->bind(rev->Angle2);
     }
     else {
@@ -123,6 +188,10 @@ void TaskRevolutionParameters::setupDialog()
     ui->checkBoxMidplane->setChecked(propMidPlane->getValue());
     ui->checkBoxReversed->setChecked(propReversed->getValue());
 
+    ui->revolveStartAngle->setValue(propStartAngle->getValue());
+    ui->revolveStartAngle->setMaximum(propStartAngle->getMaximum());
+    ui->revolveStartAngle->setMinimum(propStartAngle->getMinimum());
+
     ui->revolveAngle->setValue(propAngle->getValue());
     ui->revolveAngle->setMaximum(propAngle->getMaximum());
     ui->revolveAngle->setMinimum(propAngle->getMinimum());
@@ -160,19 +229,26 @@ void TaskRevolutionParameters::setupDialog()
     int index = 0;
 
     auto rev = getObject<PartDesign::Revolved>();
+    ui->revolveStartAngle2->setValue(propStartAngle2->getValue());
+    ui->revolveStartAngle2->setMaximum(propStartAngle2->getMaximum());
+    ui->revolveStartAngle2->setMinimum(propStartAngle2->getMinimum());
+
     ui->revolveAngle2->setValue(propAngle2->getValue());
     ui->revolveAngle2->setMaximum(propAngle2->getMaximum());
     ui->revolveAngle2->setMinimum(propAngle2->getMinimum());
 
-    index = int(rev->Type.getValue());
-
+    index = uiIndexFromMode(static_cast<PartDesign::Revolution::RevolMethod>(rev->Type.getValue()));
     translateModeList(index);
+
+    syncAngleLimits(false);
+    syncAngleLimits(true);
 }
 
 void TaskRevolutionParameters::translateModeList(int index)
 {
     ui->changeMode->clear();
-    ui->changeMode->addItem(tr("Angle"));
+    ui->changeMode->addItem(tr("Angle from start"));
+    ui->changeMode->addItem(tr("Angle from origin"));
     if (!isGroove) {
         ui->changeMode->addItem(tr("To last"));
     }
@@ -281,7 +357,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     bool isReversedEnabled = false;
     bool isFaceEditEnabled = false;
 
-    if (mode == PartDesign::Revolution::RevolMethod::Angle) {
+    if (isSingleAngleMethod(mode)) {
         isRevolveAngleVisible = true;
         ui->revolveAngle->selectNumber();
         QMetaObject::invokeMethod(ui->revolveAngle, "setFocus", Qt::QueuedConnection);
@@ -313,9 +389,17 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
         isReversedEnabled = true;
     }
 
+    ui->revolveStartAngle->setVisible(isRevolveAngleVisible);
+    ui->revolveStartAngle->setEnabled(isRevolveAngleVisible);
+    ui->labelStartAngle->setVisible(isRevolveAngleVisible);
+
     ui->revolveAngle->setVisible(isRevolveAngleVisible);
     ui->revolveAngle->setEnabled(isRevolveAngleVisible);
     ui->labelAngle->setVisible(isRevolveAngleVisible);
+
+    ui->revolveStartAngle2->setVisible(isRevolveAngle2Visible);
+    ui->revolveStartAngle2->setEnabled(isRevolveAngle2Visible);
+    ui->labelStartAngle2->setVisible(isRevolveAngle2Visible);
 
     ui->revolveAngle2->setVisible(isRevolveAngle2Visible);
     ui->revolveAngle2->setEnabled(isRevolveAngle2Visible);
@@ -333,13 +417,20 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     if (!isFaceEditEnabled) {
         ui->buttonFace->setChecked(false);
     }
+
+    syncAngleLimits(false);
+    syncAngleLimits(true);
 }
 
 void TaskRevolutionParameters::connectSignals()
 {
     // clang-format off
+    connect(ui->revolveStartAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskRevolutionParameters::onStartAngleChanged);
     connect(ui->revolveAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskRevolutionParameters::onAngleChanged);
+    connect(ui->revolveStartAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this, &TaskRevolutionParameters::onStartAngle2Changed);
     connect(ui->revolveAngle2, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskRevolutionParameters::onAngle2Changed);
     connect(ui->axis, qOverload<int>(&QComboBox::activated),
@@ -367,7 +458,89 @@ void TaskRevolutionParameters::updateUI(int index)
 
     Base::StateLocker lock(getUpdateBlockRef(), true);
     fillAxisCombo();
-    setCheckboxes(static_cast<PartDesign::Revolution::RevolMethod>(index));
+    setCheckboxes(modeFromUiIndex(index));
+}
+
+void TaskRevolutionParameters::syncAngleLimits(bool secondSide)
+{
+    auto* startEdit = secondSide ? ui->revolveStartAngle2 : ui->revolveStartAngle;
+    auto* angleEdit = secondSide ? ui->revolveAngle2 : ui->revolveAngle;
+    auto* startProperty = secondSide ? propStartAngle2 : propStartAngle;
+    auto* angleProperty = secondSide ? propAngle2 : propAngle;
+
+    QSignalBlocker startBlock(startEdit);
+    QSignalBlocker angleBlock(angleEdit);
+
+    const double startMinimum = startProperty->getMinimum();
+    const double startMaximum = startProperty->getMaximum();
+    const double angleMinimum = angleProperty->getMinimum();
+    const double angleMaximum = angleProperty->getMaximum();
+
+    startEdit->setMinimum(startMinimum);
+    startEdit->setMaximum(startMaximum);
+    angleEdit->setMinimum(angleMinimum);
+    angleEdit->setMaximum(angleMaximum);
+
+    const auto mode = modeFromUiIndex(ui->changeMode->currentIndex());
+    const bool active = secondSide
+        ? mode == PartDesign::Revolution::RevolMethod::TwoAngles
+        : isSingleAngleMethod(mode) || mode == PartDesign::Revolution::RevolMethod::TwoAngles;
+    if (!active) {
+        return;
+    }
+
+    const bool angleFromStart = secondSide || isAngleFromStartMethod(mode);
+    const bool forceNonZero = mode != PartDesign::Revolution::RevolMethod::TwoAngles;
+
+    double start = startEdit->value().getValue();
+    double angle = angleEdit->value().getValue();
+
+    if (angleFromStart) {
+        const double endMaximum = std::min(startMaximum, angleMaximum);
+        const double spanMinimum = forceNonZero ? std::max(angleMinimum, minimumRevolveAngle)
+                                                : angleMinimum;
+        const double startUpper
+            = std::max(startMinimum, std::min(startMaximum, endMaximum - spanMinimum));
+
+        start = std::clamp(start, startMinimum, startUpper);
+        const double spanMaximum = std::max(spanMinimum, std::min(angleMaximum, endMaximum - start));
+        angle = std::clamp(angle, spanMinimum, spanMaximum);
+
+        const double dynamicStartMaximum
+            = std::max(startMinimum, std::min(startMaximum, endMaximum - angle));
+        const double dynamicAngleMaximum
+            = std::max(spanMinimum, std::min(angleMaximum, endMaximum - start));
+
+        startEdit->setValue(start);
+        angleEdit->setValue(angle);
+        startProperty->setValue(start);
+        angleProperty->setValue(angle);
+
+        startEdit->setMaximum(dynamicStartMaximum);
+        angleEdit->setMinimum(spanMinimum);
+        angleEdit->setMaximum(dynamicAngleMaximum);
+        return;
+    }
+
+    const double endMinimum = angleMinimum;
+    const double endMaximum = angleMaximum;
+    const double spanMinimum = minimumRevolveAngle;
+    const double startUpper = std::max(startMinimum, std::min(startMaximum, endMaximum - spanMinimum));
+
+    start = std::clamp(start, startMinimum, startUpper);
+    const double dynamicEndMinimum = std::min(endMaximum, std::max(endMinimum, start + spanMinimum));
+    angle = std::clamp(angle, dynamicEndMinimum, endMaximum);
+
+    const double dynamicStartMaximum
+        = std::max(startMinimum, std::min(startMaximum, angle - spanMinimum));
+
+    startEdit->setValue(start);
+    angleEdit->setValue(angle);
+    startProperty->setValue(start);
+    angleProperty->setValue(angle);
+
+    startEdit->setMaximum(dynamicStartMaximum);
+    angleEdit->setMinimum(dynamicEndMinimum);
 }
 
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -483,23 +656,47 @@ void TaskRevolutionParameters::clearFaceName()
     ui->lineFaceName->setProperty("FaceName", QVariant());
 }
 
-void TaskRevolutionParameters::onAngleChanged(double len)
+void TaskRevolutionParameters::onStartAngleChanged(double start)
 {
     if (getObject()) {
-        propAngle->setValue(len);
+        propStartAngle->setValue(start);
+        syncAngleLimits(false);
         exitSelectionMode();
         recomputeFeature();
+        setGizmoPositions();
     }
 }
 
-void TaskRevolutionParameters::onAngle2Changed(double len)
+void TaskRevolutionParameters::onAngleChanged(double angle)
 {
     if (getObject()) {
-        if (propAngle2) {
-            propAngle2->setValue(len);
-        }
+        propAngle->setValue(angle);
+        syncAngleLimits(false);
         exitSelectionMode();
         recomputeFeature();
+        setGizmoPositions();
+    }
+}
+
+void TaskRevolutionParameters::onStartAngle2Changed(double start)
+{
+    if (getObject()) {
+        propStartAngle2->setValue(start);
+        syncAngleLimits(true);
+        exitSelectionMode();
+        recomputeFeature();
+        setGizmoPositions();
+    }
+}
+
+void TaskRevolutionParameters::onAngle2Changed(double angle)
+{
+    if (getObject()) {
+        propAngle2->setValue(angle);
+        syncAngleLimits(true);
+        exitSelectionMode();
+        recomputeFeature();
+        setGizmoPositions();
     }
 }
 
@@ -598,12 +795,16 @@ void TaskRevolutionParameters::onReversed(bool on)
 void TaskRevolutionParameters::onModeChanged(int index)
 {
     App::PropertyEnumeration* propEnum = &(getObject<PartDesign::Revolved>()->Type);
+    const auto mode = modeFromUiIndex(index);
 
-    switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
+    switch (mode) {
         case PartDesign::Revolution::RevolMethod::Angle:
             propEnum->setValue("Angle");
             break;
-        case PartDesign::Revolution::RevolMethod::ToLast:
+        case PartDesign::Revolution::RevolMethod::AngleFromOrigin:
+            propEnum->setValue("AngleFromOrigin");
+            break;
+        case PartDesign::Revolution::RevolMethod::ThroughAll:
             propEnum->setValue(isGroove ? "ThroughAll" : "UpToLast");
             break;
         case PartDesign::Revolution::RevolMethod::ToFirst:
@@ -614,6 +815,8 @@ void TaskRevolutionParameters::onModeChanged(int index)
             break;
         case PartDesign::Revolution::RevolMethod::TwoAngles:
             propEnum->setValue("TwoAngles");
+            break;
+        default:
             break;
     }
 
@@ -686,7 +889,9 @@ void TaskRevolutionParameters::changeEvent(QEvent* event)
 void TaskRevolutionParameters::apply()
 {
     // Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Revolution changed"));
+    ui->revolveStartAngle->apply();
     ui->revolveAngle->apply();
+    ui->revolveStartAngle2->apply();
     ui->revolveAngle2->apply();
     std::vector<std::string> sub;
     App::DocumentObject* obj {};
@@ -696,11 +901,10 @@ void TaskRevolutionParameters::apply()
     FCMD_OBJ_CMD(tobj, "ReferenceAxis = " << axis);
     FCMD_OBJ_CMD(tobj, "Midplane = " << (getMidplane() ? 1 : 0));
     FCMD_OBJ_CMD(tobj, "Reversed = " << (getReversed() ? 1 : 0));
-    int mode = ui->changeMode->currentIndex();
-    FCMD_OBJ_CMD(tobj, "Type = " << mode);
+    const auto mode = modeFromUiIndex(ui->changeMode->currentIndex());
+    FCMD_OBJ_CMD(tobj, "Type = " << static_cast<int>(mode));
     QString facename = QStringLiteral("None");
-    if (static_cast<PartDesign::Revolution::RevolMethod>(mode)
-        == PartDesign::Revolution::RevolMethod::ToFace) {
+    if (mode == PartDesign::Revolution::RevolMethod::ToFace) {
         facename = getFaceName();
     }
     FCMD_OBJ_CMD(tobj, "UpToFace = " << facename.toLatin1().data());
@@ -712,12 +916,19 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
         return;
     }
 
+    startRotationGizmo = new Gui::RadialGizmo(ui->revolveStartAngle);
     rotationGizmo = new Gui::RadialGizmo(ui->revolveAngle);
+    startRotationGizmo2 = new Gui::RadialGizmo(ui->revolveStartAngle2);
     rotationGizmo2 = new Gui::RadialGizmo(ui->revolveAngle2);
 
-    gizmoContainer = GizmoContainer::create({rotationGizmo, rotationGizmo2}, vp);
+    gizmoContainer = GizmoContainer::create(
+        {startRotationGizmo, rotationGizmo, startRotationGizmo2, rotationGizmo2},
+        vp
+    );
     rotationGizmo->flipArrow();
     rotationGizmo2->flipArrow();
+    startRotationGizmo->setPointStyle();
+    startRotationGizmo2->setPointStyle();
 
     defaultGizmoMultFactor = rotationGizmo->getMultFactor();
 
@@ -736,7 +947,7 @@ void TaskRevolutionParameters::setGizmoPositions()
     Base::Vector3d axisDir;
     bool reversed = false;
     bool symmetric = false;
-    std::string sideType;
+    PartDesign::Revolution::RevolMethod mode = PartDesign::Revolution::RevolMethod::Angle;
 
     auto getFeatureProps = [&](auto* feature) {
         if (!feature || feature->isError()) {
@@ -749,7 +960,7 @@ void TaskRevolutionParameters::setGizmoPositions()
         axisDir = feature->Axis.getValue();
         reversed = feature->Reversed.getValue();
         symmetric = feature->Midplane.getValue();
-        sideType = std::string(feature->Type.getValueAsString());
+        mode = static_cast<PartDesign::Revolution::RevolMethod>(feature->Type.getValue());
         return true;
     };
 
@@ -775,20 +986,54 @@ void TaskRevolutionParameters::setGizmoPositions()
         axisDir = -axisDir;
     }
 
-    rotationGizmo->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
-    rotationGizmo->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(axisDir));
-    rotationGizmo->setVisibility(sideType == "Angle" || sideType == "TwoAngles");
+    const double firstSideMultFactor = isSingleAngleMethod(mode) && symmetric
+        ? defaultGizmoMultFactor / 2.0
+        : defaultGizmoMultFactor;
+    startRotationGizmo->setMultFactor(firstSideMultFactor);
+    rotationGizmo->setMultFactor(firstSideMultFactor);
+    startRotationGizmo2->setMultFactor(defaultGizmoMultFactor);
+    rotationGizmo2->setMultFactor(defaultGizmoMultFactor);
 
-    rotationGizmo2->Gizmo::setDraggerPlacement(basePos + axisComp, normalComp);
-    rotationGizmo2->getDraggerContainer()->setArcNormalDirection(Base::convertTo<SbVec3f>(-axisDir));
-    rotationGizmo2->setVisibility(sideType == "TwoAngles");
+    const double startAngleRad = ui->revolveStartAngle->rawValue() * firstSideMultFactor;
+    const double angleRad = ui->revolveAngle->rawValue() * firstSideMultFactor;
+    const double startAngle2Rad = ui->revolveStartAngle2->rawValue() * defaultGizmoMultFactor;
+    const double angle2Rad = ui->revolveAngle2->rawValue() * defaultGizmoMultFactor;
+    const bool angleFromStart = isAngleFromStartMethod(mode);
 
-    if (sideType == "TwoAngles" || !symmetric) {
-        rotationGizmo->setMultFactor(defaultGizmoMultFactor);
+    const SbVec3f basePosition = Base::convertTo<SbVec3f>(basePos + axisComp);
+    const SbVec3f firstAxis = Base::convertTo<SbVec3f>(axisDir);
+    const SbVec3f secondAxis = Base::convertTo<SbVec3f>(-axisDir);
+    const SbVec3f baseDirection = Base::convertTo<SbVec3f>(normalComp);
+    SbVec3f firstAngleDirection = baseDirection;
+    SbVec3f secondAngleDirection = baseDirection;
+    if (angleFromStart) {
+        SbRotation(firstAxis, static_cast<float>(startAngleRad))
+            .multVec(baseDirection, firstAngleDirection);
     }
-    else {
-        rotationGizmo->setMultFactor(defaultGizmoMultFactor / 2.0);
-    }
+    SbRotation(secondAxis, static_cast<float>(startAngle2Rad))
+        .multVec(baseDirection, secondAngleDirection);
+
+    startRotationGizmo->setDraggerPlacement(basePosition, baseDirection);
+    startRotationGizmo->getDraggerContainer()->setArcNormalDirection(firstAxis);
+    startRotationGizmo->setVisibility(
+        isSingleAngleMethod(mode) || mode == PartDesign::Revolution::RevolMethod::TwoAngles
+    );
+
+    rotationGizmo->setDraggerPlacement(basePosition, firstAngleDirection);
+    rotationGizmo->getDraggerContainer()->setArcNormalDirection(firstAxis);
+    rotationGizmo->setBaseAngleRange(angleFromStart ? 0.0 : startAngleRad, angleRad);
+    rotationGizmo->setVisibility(
+        isSingleAngleMethod(mode) || mode == PartDesign::Revolution::RevolMethod::TwoAngles
+    );
+
+    startRotationGizmo2->setDraggerPlacement(basePosition, baseDirection);
+    startRotationGizmo2->getDraggerContainer()->setArcNormalDirection(secondAxis);
+    startRotationGizmo2->setVisibility(mode == PartDesign::Revolution::RevolMethod::TwoAngles);
+
+    rotationGizmo2->setDraggerPlacement(basePosition, secondAngleDirection);
+    rotationGizmo2->getDraggerContainer()->setArcNormalDirection(secondAxis);
+    rotationGizmo2->setBaseAngleRange(0.0, angle2Rad);
+    rotationGizmo2->setVisibility(mode == PartDesign::Revolution::RevolMethod::TwoAngles);
 }
 
 //**************************************************************************

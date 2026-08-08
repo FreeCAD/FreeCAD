@@ -74,7 +74,8 @@ TaskPocketParameters::~TaskPocketParameters() = default;
 void TaskPocketParameters::translateModeList(QComboBox* box, int index)
 {
     box->clear();
-    box->addItem(tr("Dimension"));
+    box->addItem(tr("Dimension from start"));
+    box->addItem(tr("Dimension from origin"));
     box->addItem(tr("Through all"));
     box->addItem(tr("To first"));
     box->addItem(tr("Up to face"));
@@ -96,16 +97,19 @@ void TaskPocketParameters::onModeChanged(int index, Side side)
 
     switch (static_cast<Mode>(index)) {
         case Mode::Dimension:
-            sideCtrl.Type->setValue("Length");
+        case Mode::DimensionFromOrigin:
+            sideCtrl.Type->setValue(
+                isDimensionFromStartMode(static_cast<Mode>(index)) ? "Length" : "LengthFromOrigin"
+            );
             if (side == Side::First) {
                 // Avoid error message
-                double L = sideCtrl.lengthEdit->value().getValue();
+                double L = sideSpan(sideCtrl);
                 Side otherSide = side == Side::First ? Side::Second : Side::First;
                 auto& sideCtrl2 = getSideController(otherSide);
                 double L2 = static_cast<SidesMode>(getSidesMode()) == SidesMode::TwoSides
-                    ? sideCtrl2.lengthEdit->value().getValue()
+                    ? sideSpan(sideCtrl2)
                     : 0;
-                if (std::abs(L + L2) < Precision::Confusion()) {
+                if (L + L2 < Precision::Confusion()) {
                     sideCtrl.lengthEdit->setValue(5.0);
                 }
             }
