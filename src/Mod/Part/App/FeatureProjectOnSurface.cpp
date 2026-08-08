@@ -216,8 +216,15 @@ std::vector<TopoDS_Shape> ProjectOnSurface::createProjectedWire(
         return {};
     }
     if (shape.ShapeType() == TopAbs_FACE) {
-        auto wires = projectFace(TopoDS::Face(shape), supportFace, dir);
-        auto face = createFaceFromWire(wires, supportFace);
+        const auto sourceFace = TopoDS::Face(shape);
+        auto wires = projectFace(sourceFace, supportFace, dir);
+
+        // trim target with boolean common operation to create face
+        auto face = createFaceByClippingSource(sourceFace, supportFace, dir);
+        if (face.IsNull()) {
+            // fallback to original
+            face = createFaceFromWire(wires, supportFace);
+        }
         auto face_or_solid = createSolidIfHeight(face);
         if (!face_or_solid.IsNull()) {
             return {face_or_solid};
