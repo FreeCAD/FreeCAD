@@ -2104,9 +2104,7 @@ void EditModeCoinManager::updateElementSizeParameters()
 
     int markerSize = hGrp->GetInt("MarkerSize", 7);
 
-    drawingParameters.labelFontName = QString::fromStdString(
-        hGrp->getString("EditSketcherFontName")
-    );
+    drawingParameters.labelFontName = QString::fromStdString(hGrp->getString("EditSketcherFontName"));
 
     int defaultFontSizePixels = defaultApplicationFontSizePixels();  // returns height in pixels,
                                                                      // not points
