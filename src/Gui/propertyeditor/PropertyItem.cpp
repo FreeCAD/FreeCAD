@@ -1229,6 +1229,8 @@ QWidget* PropertyUnitItem::createEditor(
     auto infield = new Gui::QuantitySpinBox(parent);
     infield->setFrame(static_cast<bool>(frameOption));
     infield->setMinimumHeight(0);
+    // avoid triggering a recompute on every keystroke while typing
+    infield->setKeyboardTracking(false);
 
     // if we are bound to an expression we need to bind it to the input field
     if (isBound()) {
