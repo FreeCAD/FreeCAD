@@ -29,6 +29,7 @@
 #include <Mod/Part/App/Tools.h>
 #include <Base/BaseClass.h>
 #include <Base/Matrix.h>
+#include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/Converter.h>
 
@@ -55,7 +56,8 @@ MassPropertiesData CalculateMassProperties(
     const std::vector<MassPropertiesInput>& objects,
     MassPropertiesMode mode,
     const App::DocumentObject* referenceDatum,
-    const Base::Placement* referencePlacement
+    const Base::Placement* referencePlacement,
+    const MassPropertiesAxisReference* referenceAxis
 )
 {
     MassPropertiesData data {};
@@ -234,23 +236,36 @@ MassPropertiesData CalculateMassProperties(
         );
     }
     else if (mode == MassPropertiesMode::Custom) {
-        if (!referenceDatum) {
+        if (!referenceDatum && !referenceAxis) {
             return data;
         }
 
         const App::LocalCoordinateSystem* lcs = nullptr;
-        if (auto referenceDatumElement = freecad_cast<App::DatumElement const*>(referenceDatum)) {
-            lcs = referenceDatumElement->getLCS();
+        if (referenceDatum) {
+            if (auto referenceDatumElement = freecad_cast<App::DatumElement const*>(referenceDatum)) {
+                lcs = referenceDatumElement->getLCS();
+            }
         }
 
+        if (referenceAxis || (referenceDatum && freecad_cast<App::Line const*>(referenceDatum))) {
 
-        if (auto const* line = freecad_cast<App::Line const*>(referenceDatum)) {
-
-            Base::Vector3d axisOrigin = line->getBasePoint();
-            Base::Vector3d axisDir = line->getDirection();
+            Base::Vector3d axisOrigin;
+            Base::Vector3d axisDir;
+            if (referenceAxis) {
+                axisOrigin = referenceAxis->origin;
+                axisDir = referenceAxis->direction;
+            }
+            else {
+                auto const* line = freecad_cast<App::Line const*>(referenceDatum);
+                axisOrigin = line->getBasePoint();
+                axisDir = line->getDirection();
+            }
+            if (axisDir.Length() <= Base::Precision::Confusion()) {
+                return data;
+            }
             axisDir.Normalize();
 
-            if (referencePlacement) {
+            if (!referenceAxis && referencePlacement) {
                 Base::Vector3d transformedOrigin;
                 referencePlacement->multVec(axisOrigin, transformedOrigin);
                 axisOrigin = transformedOrigin;
