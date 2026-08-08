@@ -38,6 +38,7 @@ from parttests.TopoShapeListTest import TopoShapeListTest
 from parttests.TopoShapeTest import TopoShapeTest
 from parttests.TestLinkArrayCircular import TestLinkArrayCircular
 from parttests.TestPartMirror import TestPartMirroringRegression
+from parttests.TestProjectOnSurface import TestProjectOnSurface
 from parttests.TestFaceMakerUnifiedPlanar import *
 from parttests.TestFaceMakerUnifiedNonPlanar import *
 
