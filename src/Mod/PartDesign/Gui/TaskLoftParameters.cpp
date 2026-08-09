@@ -84,6 +84,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onRefButtonRemove);
     connect(ui->checkBoxRuled, &QCheckBox::toggled,
             this, &TaskLoftParameters::onRuled);
+    connect(ui->checkBoxRuled, &QCheckBox::toggled,
+            ui->checkBoxSmoothing, &QWidget::setDisabled);
+    connect(ui->checkBoxSmoothing, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onSmoothing);
     connect(ui->checkBoxClosed, &QCheckBox::toggled,
             this, &TaskLoftParameters::onClosed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
@@ -139,6 +143,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
 
     // get options
     ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
+    ui->checkBoxSmoothing->setChecked(loft->Smoothing.getValue());
+    ui->checkBoxSmoothing->setEnabled(!loft->Ruled.getValue());
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
     // activate and de-activate dialog elements as appropriate
@@ -355,6 +361,14 @@ void TaskLoftParameters::onRuled(bool val)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Ruled.setValue(val);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onSmoothing(bool val)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Smoothing.setValue(val);
         recomputeFeature();
     }
 }

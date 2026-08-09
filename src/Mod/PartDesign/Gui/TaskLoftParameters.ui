@@ -22,6 +22,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkBoxSmoothing">
+     <property name="toolTip">
+      <string>Use variational smoothing algorithm</string>
+     </property>
+     <property name="text">
+      <string>Variational smoothing</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="checkBoxClosed">
      <property name="text">
       <string>Closed</string>
@@ -128,6 +138,7 @@
  </widget>
  <tabstops>
   <tabstop>checkBoxRuled</tabstop>
+  <tabstop>checkBoxSmoothing</tabstop>
   <tabstop>checkBoxClosed</tabstop>
   <tabstop>buttonProfileBase</tabstop>
   <tabstop>profileBaseEdit</tabstop>

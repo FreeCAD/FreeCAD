@@ -63,6 +63,7 @@ private Q_SLOTS:
     void onRefButtonRemove(bool);
     void onClosed(bool);
     void onRuled(bool);
+    void onSmoothing(bool);
     void onDeleteSection();
     void indexesMoved();
 
