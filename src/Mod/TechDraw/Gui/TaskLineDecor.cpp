@@ -167,6 +167,7 @@ void TaskLineDecor::initializeRejectArrays()
 // get the current line tool appearance default
 void TaskLineDecor::getDefaults()
 {
+    m_style = LineFormat::getCurrentLineFormat().getStyle();
     m_color = LineFormat::getCurrentLineFormat().getColor();
     m_weight = LineFormat::getCurrentLineFormat().getWidth();
     m_visible = LineFormat::getCurrentLineFormat().getVisible();
