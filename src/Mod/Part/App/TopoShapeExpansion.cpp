@@ -2245,12 +2245,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a
         // little bit copypasted.
 
-        NamingMap generatedNamingMap {};
-        NamingMap modifiedNamingMap {};
+        NamingMap generatedNamingMap;
+        NamingMap modifiedNamingMap;
 
         // The key is a MappedName from an incoming shape (the element that created the new
         // shape(s)). The value are the resultant shape(s).
-        std::unordered_map<std::string, std::vector<TopoDS_Shape>> normalGeneratedMap {};
+        std::unordered_map<std::string, std::vector<TopoDS_Shape>> normalGeneratedMap;
 
         const std::map<std::string, TopAbs_ShapeEnum> upperMapTypes {
             {"Edge", TopAbs_FACE},
@@ -2275,8 +2275,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         // These loops generate names with the Modified and Generated methods of the Maker class.
         // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
-        std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes {};
-        std::unordered_map<std::string, Data::MappedName> includedModifiedNameMap {};
+        std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes;
+        std::unordered_map<std::string, Data::MappedName> includedModifiedNameMap;
 
         // add names found with mapSubElement.
         for (Data::MappedElement mappedElement : getElementMap()) {
@@ -2322,9 +2322,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     std::vector<TopoDS_Shape> modifiedShapes = mapper.modified(incomingShapeElement);
                     std::vector<TopoDS_Shape> generatedShapes = mapper.generated(incomingShapeElement);
 
-                    std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>> connectedElementMap {};
+                    std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>> connectedElementMap;
                     std::unordered_multiset<Data::MappedName, Data::MappedNameHasher>
-                        allConnectedElementNames {};
+                        allConnectedElementNames;
 
                     if (modifiedShapes.size() > 1 && lowerMapTypeEntry != lowerMapTypes.end()) {
                         const char* lowerSubshapeType = shapeName(lowerMapTypeEntry->second).c_str();
@@ -2372,7 +2372,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         for (std::pair<const TopoDS_Shape, std::vector<Data::MappedName>>&
                                  connectedElementEntry : connectedElementMap) {
-                            std::vector<Data::MappedName> newConnectedElementNames {};
+                            std::vector<Data::MappedName> newConnectedElementNames;
 
                             for (const Data::MappedName& connectedElementName :
                                  connectedElementEntry.second) {
@@ -2416,7 +2416,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         for (const auto& incomingShapeMappedName : incomingShapeElementMappedNames) {
                             std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames
                                 = getElementMappedNames(element);
-                            std::vector<Data::MappedName> newConnectedElementNames {};
+                            std::vector<Data::MappedName> newConnectedElementNames;
                             Data::MappedName newName = Data::MappedName(incomingShapeMappedName.first);
 
                             if (connectedElementMap.find(modifiedShape) != connectedElementMap.end()) {
@@ -2512,9 +2512,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         // key is the new generated shape, value is a pair where the first value is the `IndexedName`
         // of the key, and the second is the `DecodedMappedSection` associated with the key.
-        std::unordered_map<size_t, Data::DecodedMappedSection> namedGeneratedShapes {};
+        std::unordered_map<size_t, Data::DecodedMappedSection> namedGeneratedShapes;
         std::unordered_map<std::vector<NamingMapKey>, Data::DecodedMappedSection, Part::NamingMapKeyHasher>
-            delayedGeneratedMap {};
+            delayedGeneratedMap;
 
         generatedNamingMap.build();
 
@@ -2522,7 +2522,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         for (const std::pair<const std::vector<Part::NamingMapKey>, std::vector<Part::NamingMapValue>>&
                  generatedShapeEntry : generatedNamingMap.getMultiMap()) {
-            std::vector<Data::MappedName> linkedNames {};
+            std::vector<Data::MappedName> linkedNames;
 
             if (generatedShapeEntry.second.size()) {
                 for (const NamingMapValue& generatedInfo : generatedShapeEntry.second) {
@@ -2579,8 +2579,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        std::unordered_map<TopoDS_Shape, std::vector<std::string>> generatedConnectedElementMap {};
-        std::unordered_multiset<std::string> allGeneratedConnectedElementNames {};
+        std::unordered_map<TopoDS_Shape, std::vector<std::string>> generatedConnectedElementMap;
+        std::unordered_multiset<std::string> allGeneratedConnectedElementNames;
         int emptyConnectedElementsIndex = 0;
 
         // pair<const std::vector<NamingMapKey>, Data::DecodedMappedSection>
@@ -2659,9 +2659,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             emptyConnectedElementsIndex = 0;
         }
 
-        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedUpperNames {};
-        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedLowerNames {};
-        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> usedPartnerNames {};
+        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedUpperNames;
+        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedLowerNames;
+        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> usedPartnerNames;
         std::array<ShapeInfo*, 3> topologyMapElementOrder = {&faceInfo, &edgeInfo, &vertexInfo};
 
         // Now let's map any unmapped shapes with the IsPartner and ancestor method.
@@ -2727,7 +2727,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 if (!wasMapped && upperMapTypeEntry != upperMapTypes.end()) {
                     std::vector<int> ancestors = findAncestors(mainElement, upperMapTypeEntry->second);
-                    std::vector<Data::MappedName> linkedUpperNames {};
+                    std::vector<Data::MappedName> linkedUpperNames;
 
                     for (const auto& ancestorIndex : ancestors) {
                         Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(
@@ -2767,7 +2767,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     auto lowerMapTypeEntry = lowerMapTypes.find(stringSubshapeType);
 
                     if (lowerMapTypeEntry != lowerMapTypes.end()) {
-                        std::vector<Data::MappedName> linkedLowerNames {};
+                        std::vector<Data::MappedName> linkedLowerNames;
 
                         TopExp_Explorer xp;
                         if (stringSubshapeType == "Face") {
@@ -2782,7 +2782,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         }
 
                         for (; xp.More(); xp.Next()) {
-                            Data::IndexedName lowerSubshapeIndexName {};
+                            Data::IndexedName lowerSubshapeIndexName;
                             TopoDS_Shape foundLowerSubshape = xp.Current();
                             std::string stringLowerSubshapeType = shapeName(lowerMapTypeEntry->second);
                             const char* lowerSubshapeType = stringLowerSubshapeType.c_str();
