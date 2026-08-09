@@ -397,6 +397,14 @@ Base::Vector3d PlacementHandler::computeCenterOfMass() const
     return centerOfMass;
 }
 
+Base::Vector3d PlacementHandler::relativeCenter(
+    const Base::Vector3d& globalCenter,
+    const Base::Vector3d& objectPosition
+)
+{
+    return globalCenter - objectPosition;
+}
+
 void PlacementHandler::setCenterOfMass(const Base::Vector3d& pnt)
 {
     cntOfMass = pnt;
@@ -620,6 +628,7 @@ void Placement::onCenterOfMassToggled(bool on)
 
     if (on) {
         Base::Vector3d pnt = handler.computeCenterOfMass();
+        pnt = PlacementHandler::relativeCenter(pnt, getPositionData());
         handler.setCenterOfMass(pnt);
         ui->xCnt->setValue(pnt.x);
         ui->yCnt->setValue(pnt.y);
@@ -739,6 +748,10 @@ void Placement::onSelectedVertexClicked()
         ui->rotationInput->setCurrentIndex(0);  // use rotation with axis instead of euler
         ui->stackedWidget->setCurrentIndex(0);
         success = true;
+    }
+
+    if (success) {
+        center = PlacementHandler::relativeCenter(center, getPositionData());
     }
 
     handler.setCenterOfMass(center);
