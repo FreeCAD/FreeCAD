@@ -53,6 +53,7 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         self.Body.addObject(self.AdditiveLoft)
+        self.assertFalse(self.AdditiveLoft.Smoothing)
         self.AdditiveLoft.Profile = self.ProfileSketch
         self.AdditiveLoft.Sections = [self.LoftSketch]
         self.Doc.recompute()
