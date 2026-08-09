@@ -24,6 +24,8 @@
 import unittest
 
 import FreeCAD
+import Part
+from FreeCAD import Base
 import TestSketcherApp
 
 
@@ -79,6 +81,29 @@ class TestPocket(unittest.TestCase):
         self.Pocket.Length = 0.25
         self.Doc.recompute()
         self.assertAlmostEqual(self.Pocket.Shape.Volume, 93.75)
+
+    def testStartFromNonPlanarReference(self):
+        self.PocketSketch = self.Doc.addObject("Sketcher::SketchObject", "PocketSketch")
+        TestSketcherApp.CreateRectangleSketch(self.PocketSketch, (-0.5, -0.5), (0.5, 0.5))
+        self.Doc.recompute()
+
+        reference = self.Doc.addObject("Part::Feature", "Reference")
+        reference.Shape = Part.makeSphere(2, Base.Vector(0, 0, -3))
+
+        self.Pocket = self.Doc.addObject("PartDesign::Pocket", "Pocket")
+        self.Pocket.Profile = self.PocketSketch
+        self.Pocket.Length = 1
+        self.Pocket.StartReference = (reference, ["Face1"])
+        self.Pocket.StartType = "Reference"
+        self.Doc.recompute()
+
+        self.assertLess(self.Pocket.Shape.BoundBox.ZMin, -2.1)
+        self.assertLess(self.Pocket.Shape.BoundBox.ZMax, -0.9)
+
+        self.Pocket.Length = -2
+        self.Doc.recompute()
+        self.assertLess(self.Pocket.Shape.BoundBox.ZMin, -1.1)
+        self.assertGreater(self.Pocket.Shape.BoundBox.ZMax, 0.9)
 
     def testPocketThroughAllCase(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
