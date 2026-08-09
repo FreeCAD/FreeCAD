@@ -75,6 +75,19 @@ class MbDFEMGuiViewProviderTest(unittest.TestCase):
         self.assertNotIn("AxisTriad", marker.ViewObject.PropertiesList)
         self.assertTrue(marker.ViewObject.Visibility)
 
+    def test_solve_command_resolves_active_assembly_without_module_global_helper(self):
+        import InitGui
+
+        assembly = self.document.addObject("MbDFEM::MbDAssembly", "Assembly")
+        self.document.recompute()
+        self.Gui.Selection.clearSelection()
+        self.Gui.Selection.addSelection(assembly)
+        command = InitGui.SolveMbDAssemblyCommand()
+
+        self.assertIs(command.activeAssembly(), assembly)
+        self.assertNotIn("_active_mbdfem_assembly", InitGui.SolveMbDAssemblyCommand.Activated.__code__.co_names)
+        self.assertNotIn("_active_mbd_assembly", InitGui.SolveMbDAssemblyCommand.Activated.__code__.co_names)
+
 
 if __name__ == "__main__":
     sys.exit(unittest.main())

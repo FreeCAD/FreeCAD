@@ -1,11 +1,16 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import os
+import json
 import tempfile
 import unittest
+from pathlib import Path
 
 import FreeCAD as App
 import MbDFEM  # noqa: F401
+import FreeCADMbDBackend
+import FreeCADMbDExporter
+import MbDFEMResults
 import Part
 
 
@@ -637,4 +642,221 @@ class MbDFEMAssemblyTest(unittest.TestCase):
             self.assertNotIn(marker, part.Group)
             self.assertIsNone(marker.getParentGeoFeatureGroup())
         finally:
+            App.closeDocument(document.Name)
+
+    def test_freecadmbd_exporter_writes_assembly_model(self):
+        with tempfile.TemporaryDirectory() as directory:
+            document = App.newDocument("MbDFEMExportTest")
+
+            try:
+                assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+                part = document.addObject("MbDFEM::MbDPart", "Part")
+                fixed_part = document.addObject("MbDFEM::MbDPart", "FixedPart")
+                marker_i = document.addObject("MbDFEM::MbDMarker", "MarkerI")
+                marker_j = document.addObject("MbDFEM::MbDMarker", "MarkerJ")
+                joint = document.addObject("MbDFEM::MbDJoint", "Joint")
+
+                part.Placement.Base = App.Vector(1, 2, 3)
+                fixed_part.Placement.Base = App.Vector(4, 5, 6)
+                marker_i.Placement = App.Placement(
+                    App.Vector(7, 8, 9),
+                    App.Rotation(App.Vector(0, 0, 1), 90),
+                )
+                marker_j.Placement.Base = App.Vector(10, 11, 12)
+
+                assembly.addPart(part)
+                assembly.addFixedPart(fixed_part)
+                part.addMarker(marker_i)
+                fixed_part.addMarker(marker_j)
+                joint.setMarkers(marker_i, marker_j)
+                joint.jointType = "Revolute"
+                assembly.addJoint(joint)
+                assembly.ensureGravity()
+                assembly.ensureSimulationParameters()
+
+                filename = os.path.join(directory, "assembly.asmt")
+                FreeCADMbDExporter.export_assembly(assembly, filename)
+                with open(filename, encoding="utf-8") as file:
+                    exported = file.read()
+
+                self.assertIn("FreeCADMbD\nAssembly\n", exported)
+                self.assertIn(
+                    "\tNotes\n\t\t(Text string: '' runs: (Core.RunArray new))\n",
+                    exported,
+                )
+                self.assertIn("\t\tPart\n\t\t\tName\n\t\t\t\tPart\n", exported)
+                self.assertNotIn("\t\tPart\n\t\t\tName\n\t\t\t\tFixedPart\n", exported)
+                self.assertIn("\t\t\t\t0.001\t0.002\t0.003\t\n", exported)
+                self.assertIn("\t\t\t0.004\t0.005\t0.006\t\n", exported)
+                self.assertIn("\t\t\t\t\t0.01\t0.011\t0.012\t\n", exported)
+                stripped_lines = [line.strip() for line in exported.splitlines()]
+
+                def vector_text(values):
+                    return "\t".join(FreeCADMbDExporter._number(value) for value in values)
+
+                def find_sequence(sequence, start=0):
+                    for index in range(start, len(stripped_lines) - len(sequence) + 1):
+                        if stripped_lines[index : index + len(sequence)] == sequence:
+                            return index
+                    self.fail(f"Could not find ASMT sequence: {sequence!r}")
+
+                part_index = find_sequence(["Part", "Name", "Part"])
+                refpoints_index = stripped_lines.index("RefPoints", part_index)
+                refpoint_index = stripped_lines.index("RefPoint", refpoints_index)
+                refpoint_position_index = stripped_lines.index("Position3D", refpoint_index)
+                self.assertEqual(stripped_lines[refpoint_position_index + 1], "0\t0\t0")
+                refpoint_rotation_index = stripped_lines.index(
+                    "RotationMatrix",
+                    refpoint_position_index,
+                )
+                self.assertEqual(
+                    stripped_lines[refpoint_rotation_index + 1 : refpoint_rotation_index + 4],
+                    ["1\t0\t0", "0\t1\t0", "0\t0\t1"],
+                )
+
+                marker_index = find_sequence(["Name", "MarkerI"], refpoint_index)
+                marker_position_index = stripped_lines.index("Position3D", marker_index)
+                self.assertEqual(
+                    stripped_lines[marker_position_index + 1],
+                    vector_text([0.007, 0.008, 0.009]),
+                )
+                marker_rotation_index = stripped_lines.index("RotationMatrix", marker_position_index)
+                self.assertEqual(
+                    stripped_lines[marker_rotation_index + 1 : marker_rotation_index + 4],
+                    [
+                        vector_text(row)
+                        for row in FreeCADMbDExporter._rotation_rows(marker_i.Placement)
+                    ],
+                )
+                self.assertLess(
+                    exported.index("\t\t\tFeatureOrder\n"),
+                    exported.index("\t\t\tPrincipalMassMarker\n"),
+                )
+                self.assertLess(
+                    exported.index("\t\t\tPrincipalMassMarker\n"),
+                    exported.index("\t\t\tRefPoints\n"),
+                )
+                self.assertIn("\t\t\tRevoluteJoint\n", exported)
+                self.assertIn("/Assembly/Part/MarkerI", exported)
+                self.assertIn("/Assembly/Ground_FixedPart_MarkerJ", exported)
+                self.assertNotIn("/Assembly/FixedPart/MarkerJ", exported)
+                self.assertIn("\tConstantGravity\n\t\t0\t0\t-9.81", exported)
+            finally:
+                App.closeDocument(document.Name)
+
+    def test_freecadmbd_exporter_absorbs_folder_fixed_parts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            document = App.newDocument("MbDFEMExportFixedFolderTest")
+
+            try:
+                assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+                stale_part = document.addObject("MbDFEM::MbDPart", "StalePart")
+                moving_part = document.addObject("MbDFEM::MbDPart", "MovingPart")
+                marker = document.addObject("MbDFEM::MbDMarker", "Marker")
+
+                stale_part.Placement.Base = App.Vector(4, 5, 6)
+                marker.Placement.Base = App.Vector(10, 11, 12)
+                stale_part.addMarker(marker)
+                assembly.addPart(stale_part)
+                assembly.addPart(moving_part)
+                assembly.getPartsFolder().removeObject(stale_part)
+                assembly.getFixedPartsFolder().addObject(stale_part)
+
+                self.assertEqual(assembly.parts, [moving_part])
+                self.assertEqual(assembly.fixedparts, [stale_part])
+                self.assertEqual(assembly.getPartsFolder().Group, [moving_part])
+                self.assertEqual(assembly.getFixedPartsFolder().Group, [stale_part])
+
+                filename = os.path.join(directory, "assembly.asmt")
+                FreeCADMbDExporter.export_assembly(assembly, filename)
+                with open(filename, encoding="utf-8") as file:
+                    exported = file.read()
+
+                self.assertNotIn("\t\tPart\n\t\t\tName\n\t\t\t\tStalePart\n", exported)
+                self.assertIn("\t\tPart\n\t\t\tName\n\t\t\t\tMovingPart\n", exported)
+                self.assertIn("\t\t\t0.004\t0.005\t0.006\t\n", exported)
+                self.assertIn("\t\t\t\t\t0.01\t0.011\t0.012\t\n", exported)
+                self.assertIn("Ground_StalePart_Marker", exported)
+            finally:
+                App.closeDocument(document.Name)
+
+    def test_freecadmbd_default_asmt_path_uses_document_name(self):
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "RealisticPendulumMbDFEM.FCStd")
+            document = App.newDocument("MbDFEMExportPathTest")
+
+            try:
+                assembly = document.addObject("MbDFEM::MbDAssembly", "MbDAssembly")
+                document.saveAs(filename)
+                self.assertEqual(
+                    FreeCADMbDBackend.default_asmt_path(assembly),
+                    Path(directory) / "RealisticPendulumMbDFEM.asmt",
+                )
+            finally:
+                App.closeDocument(document.Name)
+
+    def test_freecadmbd_result_import_creates_frame_data_and_applies_last_frame(self):
+        with tempfile.TemporaryDirectory() as directory:
+            document = App.newDocument("MbDFEMResultImportTest")
+
+            try:
+                assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+                part = document.addObject("MbDFEM::MbDPart", "Part")
+                assembly.addPart(part)
+
+                result_file = os.path.join(directory, "assembly.results.json")
+                with open(result_file, "w", encoding="utf-8") as file:
+                    json.dump(
+                        {
+                            "frames": [
+                                {
+                                    "time": 0.0,
+                                    "placements": {
+                                        "Part": {
+                                            "base": [1.0, 2.0, 3.0],
+                                            "rotation": [0.0, 0.0, 0.0, 1.0],
+                                        }
+                                    },
+                                },
+                                {
+                                    "time": 0.1,
+                                    "placements": {
+                                        "Part": {
+                                            "base": [4.0, 5.0, 6.0],
+                                            "rotation": [0.0, 0.0, 0.0, 1.0],
+                                        }
+                                    },
+                                },
+                            ]
+                        },
+                        file,
+                    )
+
+                result = MbDFEMResults.import_results(assembly, result_file)
+
+                self.assertEqual(result.Assembly, assembly)
+                self.assertEqual(result.PartNames, ["Part"])
+                self.assertEqual(result.Times, [0.0, 0.1])
+                self.assertEqual(len(result.Placements), 2)
+                self.assertEqual(result.CurrentFrame, 1)
+                self.assertEqual(part.Placement.Base, App.Vector(4.0, 5.0, 6.0))
+            finally:
+                App.closeDocument(document.Name)
+
+    def test_freecadmbd_backend_requires_configured_executable(self):
+        document = App.newDocument("MbDFEMBackendConfigTest")
+        old_env = os.environ.pop("FREECADMBD_EXE", None)
+        preferences = App.ParamGet(FreeCADMbDBackend.PREF_GROUP)
+        old_preference = preferences.GetString(FreeCADMbDBackend.EXE_PREF, "")
+
+        try:
+            preferences.SetString(FreeCADMbDBackend.EXE_PREF, "")
+            assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+
+            with self.assertRaisesRegex(RuntimeError, "executable is not configured"):
+                FreeCADMbDBackend.FreeCADMbDProcessBackend().solve(assembly)
+        finally:
+            preferences.SetString(FreeCADMbDBackend.EXE_PREF, old_preference)
+            if old_env is not None:
+                os.environ["FREECADMBD_EXE"] = old_env
             App.closeDocument(document.Name)

@@ -6,7 +6,10 @@ if(BUILD_GUI)
 endif()
 
 set(MbDFEM_Scripts
+    FreeCADMbDBackend.py
+    FreeCADMbDExporter.py
     Init.py
+    MbDFEMResults.py
     TestMbDFEMApp.py
 )
 
@@ -32,6 +35,13 @@ fc_target_copy_resource(MbDFEMScripts
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/Mod/MbDFEM
     ${MbDFEM_Examples}
+)
+
+add_custom_command(
+    TARGET MbDFEMScripts
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E rm -rf "${CMAKE_BINARY_DIR}/Mod/MbDFEM/__pycache__"
+    COMMENT "Removing stale MbDFEM Python bytecode cache"
 )
 
 install(

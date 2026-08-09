@@ -7,6 +7,9 @@
 #include <cstring>
 
 #include <App/Document.h>
+#include <App/GroupExtension.h>
+#include <App/Property.h>
+#include <Base/Tools.h>
 
 #include "MbDAction.h"
 #include "MbDAssemblyPy.h"
@@ -186,6 +189,63 @@ MbDFEM::MbDGravity* findExistingGravity(MbDFEM::MbDAssembly* assembly)
     return nullptr;
 }
 
+std::vector<App::DocumentObject*> partObjectsFromFolder(App::DocumentObjectGroup* folder)
+{
+    if (!folder) {
+        return {};
+    }
+
+    std::vector<App::DocumentObject*> parts;
+    for (auto* object : folder->Group.getValues()) {
+        if (object && object->isDerivedFrom<MbDFEM::MbDPart>()) {
+            parts.push_back(object);
+        }
+    }
+    return parts;
+}
+
+std::vector<App::DocumentObject*> partObjectsFromProperty(const App::PropertyLinkList& property)
+{
+    std::vector<App::DocumentObject*> parts;
+    for (auto* object : property.getValues()) {
+        if (object && object->isDerivedFrom<MbDFEM::MbDPart>()) {
+            parts.push_back(object);
+        }
+    }
+    return parts;
+}
+
+void appendUniqueObject(std::vector<App::DocumentObject*>& objects, App::DocumentObject* object)
+{
+    if (object && std::find(objects.begin(), objects.end(), object) == objects.end()) {
+        objects.push_back(object);
+    }
+}
+
+void setFolderObjects(App::DocumentObjectGroup* folder,
+                      const std::vector<App::DocumentObject*>& objects)
+{
+    if (!folder) {
+        return;
+    }
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(App::Property::User3,
+                                                                         &folder->Group);
+    folder->Group.setValues(objects);
+}
+
+void addToAssemblyGeoGroup(App::DocumentObject* owner, App::DocumentObject* child)
+{
+    if (!owner || !child) {
+        return;
+    }
+
+    auto* group = owner->getExtensionByType<App::GroupExtension>();
+    if (group) {
+        MbDFEM::appendUnique(group->Group, child);
+    }
+}
+
 }  // namespace
 
 MbDFEM::MbDAssembly::MbDAssembly()
@@ -299,8 +359,10 @@ void MbDFEM::MbDAssembly::addPart(MbDPart* part)
         return;
     }
 
+    removeFixedPart(part);
     addChildToListFolderAndGeoGroup(this, parts, ensureFolder(this, assemblyCategories[2]), part);
     ensureFixedPartsFolder();
+    synchronizePartCategories();
 }
 
 void MbDFEM::MbDAssembly::removePart(MbDPart* part)
@@ -314,8 +376,10 @@ void MbDFEM::MbDAssembly::addFixedPart(MbDPart* part)
         return;
     }
 
+    removePart(part);
     addChildToListFolderAndGeoGroup(this, fixedparts, ensureFolder(this, assemblyCategories[1]), part);
     ensurePartsFolder();
+    synchronizePartCategories();
 }
 
 void MbDFEM::MbDAssembly::removeFixedPart(MbDPart* part)
@@ -519,6 +583,66 @@ void MbDFEM::MbDAssembly::removeFromCategories(App::DocumentObject* child)
             }
         }
     }
+}
+
+void MbDFEM::MbDAssembly::synchronizePartCategories()
+{
+    auto* partsFolder = getPartsFolder();
+    auto* fixedPartsFolder = getFixedPartsFolder();
+
+    auto fixedValues = partObjectsFromFolder(fixedPartsFolder);
+    if (fixedValues.empty() && !fixedparts.getValues().empty()) {
+        fixedValues = partObjectsFromProperty(fixedparts);
+    }
+
+    auto partValues = partObjectsFromFolder(partsFolder);
+    if (partValues.empty() && !parts.getValues().empty()) {
+        partValues = partObjectsFromProperty(parts);
+    }
+
+    for (auto* fixedPart : fixedValues) {
+        partValues.erase(std::remove(partValues.begin(), partValues.end(), fixedPart),
+                         partValues.end());
+    }
+
+    std::vector<App::DocumentObject*> uniqueFixedValues;
+    for (auto* fixedPart : fixedValues) {
+        appendUniqueObject(uniqueFixedValues, fixedPart);
+        addToAssemblyGeoGroup(this, fixedPart);
+    }
+
+    std::vector<App::DocumentObject*> uniquePartValues;
+    for (auto* part : partValues) {
+        appendUniqueObject(uniquePartValues, part);
+        addToAssemblyGeoGroup(this, part);
+    }
+
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> fixedGuard(
+        App::Property::User3,
+        &fixedparts);
+    Base::ObjectStatusLocker<App::Property::Status, App::Property> partsGuard(
+        App::Property::User3,
+        &parts);
+    fixedparts.setValues(uniqueFixedValues);
+    parts.setValues(uniquePartValues);
+    setFolderObjects(fixedPartsFolder, uniqueFixedValues);
+    setFolderObjects(partsFolder, uniquePartValues);
+}
+
+void MbDFEM::MbDAssembly::onChanged(const App::Property* prop)
+{
+    App::Part::onChanged(prop);
+
+    if ((prop == &parts && !parts.testStatus(App::Property::User3))
+        || (prop == &fixedparts && !fixedparts.testStatus(App::Property::User3))) {
+        synchronizePartCategories();
+    }
+}
+
+void MbDFEM::MbDAssembly::onDocumentRestored()
+{
+    App::Part::onDocumentRestored();
+    synchronizePartCategories();
 }
 
 App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensurePartsFolder()

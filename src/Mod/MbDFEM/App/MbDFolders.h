@@ -3,6 +3,7 @@
 #pragma once
 
 #include <iosfwd>
+#include <vector>
 
 #include <App/DocumentObjectGroup.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
@@ -38,9 +39,12 @@ public:
     ~MbDPartsFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    std::vector<App::DocumentObject*> addObject(App::DocumentObject* object) override;
+    std::vector<App::DocumentObject*> removeObject(App::DocumentObject* object) override;
     bool redirectSubName(std::ostringstream& ss,
                          App::DocumentObject* topParent,
                          App::DocumentObject* child) const override;
+    void onChanged(const App::Property* prop) override;
 
     bool allowDuplicateLabel() const override
     {
@@ -57,9 +61,12 @@ public:
     ~MbDFixedPartsFolder() override = default;
 
     bool allowObject(App::DocumentObject* object) override;
+    std::vector<App::DocumentObject*> addObject(App::DocumentObject* object) override;
+    std::vector<App::DocumentObject*> removeObject(App::DocumentObject* object) override;
     bool redirectSubName(std::ostringstream& ss,
                          App::DocumentObject* topParent,
                          App::DocumentObject* child) const override;
+    void onChanged(const App::Property* prop) override;
 
     bool allowDuplicateLabel() const override
     {

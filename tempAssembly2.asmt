@@ -1,0 +1,274 @@
+OndselSolver
+Assembly
+	Notes
+		MbDFEM export for FreeCADMbD
+	Name
+		MbDAssembly
+	Position3D
+		0.116	0.117	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						Ground_CeilingBracket_MbDPart_MbDMarker
+					Position3D
+						0	-0.036	0.192	
+					RotationMatrix
+						0	1	-2.22044604925031e-16	
+						-2.22044604925031e-16	0	1	
+						1	-2.22044604925031e-16	0	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				Pin_MbDPart
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	-0.036	0.192	
+					RotationMatrix
+						0	1	-2.22044604925031e-16	
+						-2.22044604925031e-16	0	1	
+						1	-2.22044604925031e-16	0	
+					Markers
+						Marker
+							Name
+								MbDMarker001
+							Position3D
+								0	-0.036	0.192	
+							RotationMatrix
+								0	1	-2.22044604925031e-16	
+								-2.22044604925031e-16	0	1	
+								1	-2.22044604925031e-16	0	
+				RefPoint
+					Position3D
+						0	0	0.192	
+					RotationMatrix
+						-1	-8.65956056235493e-17	8.65956056235493e-17	
+						8.65956056235493e-17	2.22044604925031e-16	1	
+						-8.65956056235493e-17	1	-2.22044604925031e-16	
+					Markers
+						Marker
+							Name
+								MbDMarker002
+							Position3D
+								0	0	0.192	
+							RotationMatrix
+								-1	-8.65956056235493e-17	8.65956056235493e-17	
+								8.65956056235493e-17	2.22044604925031e-16	1	
+								-8.65956056235493e-17	1	-2.22044604925031e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				LongPendulum_MbDPart
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	9e-19	0.192	
+					RotationMatrix
+						-0.0163656975831654	-0.999866073003088	2.77555756156289e-16	
+						5.55111512312578e-17	1.11022302462516e-16	1	
+						-0.999866073003088	0.0163656975831654	-2.22044604925031e-16	
+					Markers
+						Marker
+							Name
+								MbDMarker003
+							Position3D
+								0	9e-19	0.192	
+							RotationMatrix
+								-0.0163656975831654	-0.999866073003088	2.77555756156289e-16	
+								5.55111512312578e-17	1.11022302462516e-16	1	
+								-0.999866073003088	0.0163656975831654	-2.22044604925031e-16	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					MbDJoint
+				MarkerI
+					/MbDAssembly/Ground_CeilingBracket_MbDPart_MbDMarker
+				MarkerJ
+					/MbDAssembly/Pin_MbDPart/MbDMarker001
+			RevoluteJoint
+				Name
+					MbDJoint001
+				MarkerI
+					/MbDAssembly/Pin_MbDPart/MbDMarker002
+				MarkerJ
+					/MbDAssembly/LongPendulum_MbDPart/MbDMarker003
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	-9.81	
+	SimulationParameters
+		tstart
+			0
+		tend
+			1
+		hmin
+			1e-09
+		hmax
+			0.01
+		hout
+			0.01
+		errorTol
+			1e-06
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			1
+		istart
+			1
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30
+TimeSeries
+Number	Input	1
+Time	Input	0
+AssemblySeries	/MbDAssembly
+X	0
+Y	0
+Z	0
+Bryantx	0
+Bryanty	0
+Bryantz	0
+VX	0
+VY	0
+VZ	0
+OmegaX	0
+OmegaY	0
+OmegaZ	0
+AX	0
+AY	0
+AZ	0
+AlphaX	0
+AlphaY	0
+AlphaZ	0
+PartSeries	/MbDAssembly/LongPendulum_MbDPart
+X	0
+Y	0
+Z	0
+Bryantx	-0
+Bryanty	0
+Bryantz	-0
+VX	0
+VY	0
+VZ	0
+OmegaX	0
+OmegaY	0
+OmegaZ	0
+AX	0
+AY	0
+AZ	0
+AlphaX	0
+AlphaY	0
+AlphaZ	0
+PartSeries	/MbDAssembly/Pin_MbDPart
+X	0
+Y	0
+Z	0
+Bryantx	-0
+Bryanty	0
+Bryantz	-0
+VX	0
+VY	0
+VZ	0
+OmegaX	0
+OmegaY	0
+OmegaZ	0
+AX	0
+AY	0
+AZ	0
+AlphaX	0
+AlphaY	0
+AlphaZ	0
+FixedJointSeries	/MbDAssembly/MbDJoint
+FXonI	0
+FYonI	0
+FZonI	0
+TXonI	0
+TYonI	0
+TZonI	0
+RevoluteJointSeries	/MbDAssembly/MbDJoint001
+FXonI	0
+FYonI	0
+FZonI	0
+TXonI	0
+TYonI	0
+TZonI	0

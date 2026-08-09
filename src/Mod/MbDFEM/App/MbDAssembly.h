@@ -53,6 +53,7 @@ public:
                                       bool transform = true,
                                       int depth = 0) const override;
     PyObject* getPyObject() override;
+    void onChanged(const App::Property* prop) override;
 
     App::DocumentObjectGroup* getAssembliesFolder() const;
     App::DocumentObjectGroup* getPartsFolder() const;
@@ -67,6 +68,7 @@ public:
     std::vector<App::DocumentObject*> getCategoryChildren() const;
     std::vector<App::DocumentObject*> getParameterObjects() const;
     void removeFromCategories(App::DocumentObject* child);
+    void synchronizePartCategories();
     App::DocumentObjectGroup* ensureAssembliesFolder();
     App::DocumentObjectGroup* ensurePartsFolder();
     App::DocumentObjectGroup* ensureFixedPartsFolder();
@@ -81,6 +83,8 @@ public:
     {
         return "MbDFEMGui::ViewProviderMbDAssembly";
     }
+
+    void onDocumentRestored() override;
 
 private:
     App::PropertyLink _assembliesFolder;

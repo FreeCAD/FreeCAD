@@ -2,8 +2,11 @@
 
 #include "MbDFolders.h"
 
+#include <App/Document.h>
+
 #include "MbDAction.h"
 #include "MbDAssembly.h"
+#include "MbDGroupUtils.h"
 #include "MbDJoint.h"
 #include "MbDMarker.h"
 #include "MbDMotion.h"
@@ -27,6 +30,35 @@ bool omitFolderFromSubName(std::ostringstream&,
     return topParent && child;
 }
 
+MbDFEM::MbDAssembly* owningAssembly(App::DocumentObjectGroup* folder)
+{
+    if (!folder) {
+        return nullptr;
+    }
+
+    auto* document = folder->getDocument();
+    if (!document) {
+        return nullptr;
+    }
+
+    for (auto* assembly : document->getObjectsOfType<MbDFEM::MbDAssembly>()) {
+        if (assembly->getPartsFolder() == folder || assembly->getFixedPartsFolder() == folder) {
+            return assembly;
+        }
+    }
+    return nullptr;
+}
+
+void synchronizeOwningAssembly(App::DocumentObjectGroup* folder, const App::Property* prop)
+{
+    if (!folder || prop != &folder->Group || folder->Group.testStatus(App::Property::User3)) {
+        return;
+    }
+    if (auto* assembly = owningAssembly(folder)) {
+        assembly->synchronizePartCategories();
+    }
+}
+
 }  // namespace
 
 bool MbDFEM::MbDAssembliesFolder::allowObject(App::DocumentObject* object)
@@ -43,7 +75,32 @@ bool MbDFEM::MbDAssembliesFolder::redirectSubName(std::ostringstream& ss,
 
 bool MbDFEM::MbDPartsFolder::allowObject(App::DocumentObject* object)
 {
-    return object && object->isDerivedFrom<MbDFEM::MbDPart>();
+    if (!object || !object->isDerivedFrom<MbDFEM::MbDPart>()) {
+        return false;
+    }
+    if (auto* assembly = owningAssembly(this)) {
+        removeAll(assembly->fixedparts, object);
+        appendUnique(assembly->parts, object);
+    }
+    return true;
+}
+
+std::vector<App::DocumentObject*> MbDFEM::MbDPartsFolder::addObject(App::DocumentObject* object)
+{
+    auto added = App::GroupExtension::addObject(object);
+    if (auto* assembly = owningAssembly(this)) {
+        assembly->synchronizePartCategories();
+    }
+    return added;
+}
+
+std::vector<App::DocumentObject*> MbDFEM::MbDPartsFolder::removeObject(App::DocumentObject* object)
+{
+    auto removed = App::GroupExtension::removeObject(object);
+    if (auto* assembly = owningAssembly(this)) {
+        assembly->synchronizePartCategories();
+    }
+    return removed;
 }
 
 bool MbDFEM::MbDPartsFolder::redirectSubName(std::ostringstream& ss,
@@ -53,9 +110,42 @@ bool MbDFEM::MbDPartsFolder::redirectSubName(std::ostringstream& ss,
     return omitFolderFromSubName(ss, topParent, child);
 }
 
+void MbDFEM::MbDPartsFolder::onChanged(const App::Property* prop)
+{
+    App::DocumentObjectGroup::onChanged(prop);
+    synchronizeOwningAssembly(this, prop);
+}
+
 bool MbDFEM::MbDFixedPartsFolder::allowObject(App::DocumentObject* object)
 {
-    return object && object->isDerivedFrom<MbDFEM::MbDPart>();
+    if (!object || !object->isDerivedFrom<MbDFEM::MbDPart>()) {
+        return false;
+    }
+    if (auto* assembly = owningAssembly(this)) {
+        removeAll(assembly->parts, object);
+        appendUnique(assembly->fixedparts, object);
+    }
+    return true;
+}
+
+std::vector<App::DocumentObject*> MbDFEM::MbDFixedPartsFolder::addObject(
+    App::DocumentObject* object)
+{
+    auto added = App::GroupExtension::addObject(object);
+    if (auto* assembly = owningAssembly(this)) {
+        assembly->synchronizePartCategories();
+    }
+    return added;
+}
+
+std::vector<App::DocumentObject*> MbDFEM::MbDFixedPartsFolder::removeObject(
+    App::DocumentObject* object)
+{
+    auto removed = App::GroupExtension::removeObject(object);
+    if (auto* assembly = owningAssembly(this)) {
+        assembly->synchronizePartCategories();
+    }
+    return removed;
 }
 
 bool MbDFEM::MbDFixedPartsFolder::redirectSubName(std::ostringstream& ss,
@@ -63,6 +153,12 @@ bool MbDFEM::MbDFixedPartsFolder::redirectSubName(std::ostringstream& ss,
                                                   App::DocumentObject* child) const
 {
     return omitFolderFromSubName(ss, topParent, child);
+}
+
+void MbDFEM::MbDFixedPartsFolder::onChanged(const App::Property* prop)
+{
+    App::DocumentObjectGroup::onChanged(prop);
+    synchronizeOwningAssembly(this, prop);
 }
 
 bool MbDFEM::MbDMarkersFolder::allowObject(App::DocumentObject* object)

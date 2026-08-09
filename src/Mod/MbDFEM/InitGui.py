@@ -733,6 +733,84 @@ class CreateMbDJointCommand:
 Gui.addCommand("MbDFEM_CreateMbDJoint", CreateMbDJointCommand(CreateMbDJointTaskPanel))
 
 
+class SolveMbDAssemblyCommand:
+    """Command that exports an MbDAssembly and solves it with FreeCADMbD."""
+
+    def GetResources(self):
+        return {
+            "MenuText": "Solve MbDAssembly",
+            "ToolTip": "Export the active MbDAssembly, run FreeCADMbD, and import result frames",
+        }
+
+    def IsActive(self):
+        import FreeCAD as App
+
+        return App.ActiveDocument is not None
+
+    @staticmethod
+    def activeAssembly():
+        import FreeCAD as App
+        import FreeCADGui as Gui
+
+        document = App.ActiveDocument
+        if document is None:
+            return None
+
+        try:
+            selection = Gui.Selection.getSelectionEx(document.Name)
+        except Exception:
+            selection = []
+
+        for selected in selection:
+            try:
+                obj = selected.Object
+                if obj is not None and obj.isDerivedFrom("MbDFEM::MbDAssembly"):
+                    return obj
+            except Exception:
+                pass
+
+        for obj in document.Objects:
+            try:
+                if obj.isDerivedFrom("MbDFEM::MbDAssembly"):
+                    return obj
+            except Exception:
+                pass
+
+        return None
+
+    def Activated(self):
+        import FreeCAD as App
+        import FreeCADGui as Gui
+
+        import FreeCADMbDBackend
+
+        assembly = self.activeAssembly()
+        if assembly is None:
+            App.Console.PrintError("No MbDAssembly is active or selected.\n")
+            return
+
+        document = assembly.Document
+        document.openTransaction("Solve MbDAssembly")
+        try:
+            result = FreeCADMbDBackend.FreeCADMbDProcessBackend().solve(assembly)
+            document.commitTransaction()
+        except Exception as exc:
+            document.abortTransaction()
+            App.Console.PrintError(f"FreeCADMbD solve failed: {exc}\n")
+            raise
+
+        App.Console.PrintMessage(f"Exported FreeCADMbD input: {result.asmt_file}\n")
+        if result.result_file:
+            App.Console.PrintMessage(f"Imported FreeCADMbD results: {result.result_file}\n")
+        else:
+            App.Console.PrintWarning("FreeCADMbD produced no .results.json file to import.\n")
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(assembly)
+
+
+Gui.addCommand("MbDFEM_SolveMbDAssembly", SolveMbDAssemblyCommand())
+
+
 class MbDFEMWorkbench(Gui.Workbench):
     """Minimal MbDFEM workbench."""
 
@@ -745,7 +823,12 @@ class MbDFEMWorkbench(Gui.Workbench):
         import MbDFEM  # noqa: F401
         import MbDFEMGui  # noqa: F401
 
-        commands = ["MbDFEM_CreateMbDAssembly", "MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"]
+        commands = [
+            "MbDFEM_CreateMbDAssembly",
+            "MbDFEM_CreateMbDMarker",
+            "MbDFEM_CreateMbDJoint",
+            "MbDFEM_SolveMbDAssembly",
+        ]
         self.appendToolbar("MbDFEM", commands)
         self.appendMenu("MbDFEM", commands)
 
