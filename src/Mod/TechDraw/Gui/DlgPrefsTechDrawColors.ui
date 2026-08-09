@@ -680,9 +680,9 @@
           </property>
           <property name="color" stdset="0">
            <color>
-            <red>255</red>
-            <green>255</green>
-            <blue>255</blue>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
            </color>
           </property>
           <property name="prefEntry" stdset="0">
