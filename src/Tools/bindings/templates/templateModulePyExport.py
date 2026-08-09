@@ -32,6 +32,7 @@ class TemplateModulePyExport(template.ModelTemplate):
         encoding = sys.getfilesystemencoding()
         exportName = self.export.Name
         outputDir = Path(self.outputDir)
+        hasDeprecatedApi = any(method.Deprecated for method in self.export.Method)
 
         def escapeString(s, indent=4):
             if not s:
@@ -41,6 +42,9 @@ class TemplateModulePyExport(template.ModelTemplate):
             s = s.replace('"', '\\"')
             s = s.replace("\n", f'\\n"\n{" " * indent}"')
             return s
+
+        def cppString(s, indent=4):
+            return f'"{escapeString(s, indent)}"' if s else "nullptr"
 
         def docString(doc, indent=4):
             if not doc or not doc.UserDocu:
@@ -146,6 +150,9 @@ public:
 -
 
 + if self.export.Runtime != "ExtensionModule":
++ if (hasDeprecatedApi):
+#include <Base/Interpreter.h>
+-
 #include <Base/Exception.h>
 #include <Base/PyObjectBase.h>
 -
@@ -227,6 +234,20 @@ PyObject* @self.export.Name@ModulePy::staticCallback_@i.Name@(@("PyObject* self,
 {
     (void)self;
 
++ if (i.Deprecated is not None):
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "@self.export.Name@.@i.Name@",
+            Base::PythonApiDeprecation{
+                .deprecatedIn = "@i.Deprecated.DeprecatedIn@",
+                .removedIn = "@i.Deprecated.RemovedIn@",
+                .replacement = @cppString(i.Deprecated.Replacement, indent=16)@,
+                .details = @cppString(i.Deprecated.Details, indent=16)@,
+            }
+        )) {
+        return nullptr;
+    }
+-
     try {
         return @self.export.Name@ModulePy::@i.Name@@("(args, kwd)" if i.Keyword else "()" if i.NoArgs else "(args)")@;
     }  // Please sync the following catch implementation with PY_CATCH

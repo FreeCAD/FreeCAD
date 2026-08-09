@@ -28,13 +28,14 @@
 
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/GeoFeature.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
 #include "Body.h"
 #include "FeatureBase.h"
 #include "FeaturePy.h"
 
 namespace PartDesign
 {
-
 
 PROPERTY_SOURCE(PartDesign::FeatureBase, PartDesign::Feature)
 
@@ -80,18 +81,20 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
         );
     }
 
-    if (!BaseFeature.getValue()->isDerivedFrom<Part::Feature>()) {
-        return new App::DocumentObjectExecReturn(
-            QT_TRANSLATE_NOOP("Exception", "BaseFeature must be a Part::Feature")
-        );
-    }
-
     auto* base = BaseFeature.getValue();
     if (UseLegacyBaseFeaturePlacement.getValue()) {
         auto shape = Part::Feature::getTopoShape(
             base,
             Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
         );
+        if (shape.isNull()) {
+            auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+                App::GeoFeature::getPropertyOfGeometry(base)
+            );
+            if (shapeProperty) {
+                shape = shapeProperty->getShape();
+            }
+        }
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape")
@@ -109,6 +112,14 @@ App::DocumentObjectExecReturn* FeatureBase::execute()
     auto shape = isBodyLocalFeature
         ? static_cast<Part::Feature*>(base)->Shape.getShape()
         : Part::Feature::getTopoShape(base, Part::ShapeOption::ResolveLink);
+    if (shape.isNull()) {
+        auto* shapeProperty = freecad_cast<const Part::PropertyPartShape*>(
+            App::GeoFeature::getPropertyOfGeometry(base)
+        );
+        if (shapeProperty) {
+            shape = shapeProperty->getShape();
+        }
+    }
     if (shape.isNull()) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "BaseFeature has an empty shape")

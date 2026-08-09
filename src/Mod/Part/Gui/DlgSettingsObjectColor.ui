@@ -298,7 +298,7 @@
            <string notr="true"> px</string>
           </property>
           <property name="maximum">
-           <number>9</number>
+           <number>64</number>
           </property>
           <property name="value">
            <number>2</number>
@@ -366,7 +366,7 @@
            <string notr="true"> px</string>
           </property>
           <property name="maximum">
-           <number>9</number>
+           <number>64</number>
           </property>
           <property name="value">
            <number>2</number>
