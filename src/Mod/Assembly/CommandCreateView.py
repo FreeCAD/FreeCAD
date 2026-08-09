@@ -386,6 +386,31 @@ def movementEditMode(move):
     return "Distance"
 
 
+def movementLabel(move):
+    """Return a translated label describing a newly created move."""
+    if move.MoveType == "Radial":
+        return QtWidgets.QApplication.translate("Assembly", "Radial Translation")
+
+    transform = move.MovementTransform
+    if isPureRotationMovement(transform):
+        movement = QtWidgets.QApplication.translate("Assembly", "Rotation")
+        vector = App.Vector(transform.Rotation.Axis)
+    else:
+        movement = QtWidgets.QApplication.translate("Assembly", "Translation")
+        vector = App.Vector(transform.Base)
+
+    tolerance = max(
+        Precision.confusion(),
+        4 * SINGLE_PRECISION_EPSILON * vector.Length,
+    )
+    axes = "".join(
+        axis
+        for axis, component in zip("XYZ", (vector.x, vector.y, vector.z))
+        if abs(component) > tolerance
+    )
+    return movement + axes
+
+
 def isPureRotationMovement(transform):
     """Return True when a placement is a rotation without translation along its axis."""
     rotation = transform.Rotation
@@ -934,7 +959,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 )
             )
 
-            label = QtWidgets.QLabel(move.Name, row)
+            label = QtWidgets.QLabel(move.Label, row)
             layout.addWidget(label)
             layout.addStretch()
 
@@ -1278,6 +1303,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 App.Rotation(),
             )
 
+        self.currentStep.Label = movementLabel(self.currentStep)
         if movementEditMode(self.currentStep) != previousEditorMode:
             self.rebuildStepList()
         self.updateMoveSpinbox(self.currentStep)
