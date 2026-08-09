@@ -1102,7 +1102,7 @@ bool QGIView::isViewSelected() const
     const auto selection =
         Gui::Selection().getSelectionEx(viewObj->getDocument()->getName());
     for (const auto& selObj : selection) {
-        if (selObj.getObject() == viewObj && selObj.getSubNames().empty()) {
+        if (selObj.getObject() == viewObj) {
             return true;
         }
     }
@@ -1115,7 +1115,7 @@ bool QGIView::shouldShowFrame() const
         return false;
     }
 
-    if (isSelected()) {
+    if (isViewSelected()) {
         return true;
     }
 
