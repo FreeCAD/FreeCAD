@@ -307,9 +307,7 @@ void LinearGizmo::draggingContinued()
         value = snapToStep(value, baseStep * getCoarseLinearSnapMultiplier());
     }
 
-    // TODO: Need to change the lower limit to sudoThis->property->minimum() once the
-    // two direction extrude work gets merged
-    value = std::clamp(value, dragger->translationIncrement.getValue(), property->maximum());
+    value = std::clamp(value, property->minimum(), property->maximum());
 
     property->setValue(value);
     setDragLength(value);
