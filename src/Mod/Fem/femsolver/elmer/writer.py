@@ -259,8 +259,8 @@ class Writer:
 
     def _handleDeformation(self):
         DEFW = DEF_writer.DeformationWriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerDeformation"):
                 if not self._haveMaterialSolid():
                     raise WriteError(
@@ -275,20 +275,20 @@ class Writer:
                     if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         DEFW.handleDeformationEquation(activeIn, equation)
-        if activeIn:
-            DEFW.handleDeformationConstants()
-            DEFW.handleDeformationBndConditions()
-            DEFW.handleDeformationInitial(activeIn)
-            DEFW.handleDeformationBodyForces(activeIn)
-            DEFW.handleDeformationMaterial(activeIn)
+                if activeIn:
+                    DEFW.handleDeformationConstants()
+                    DEFW.handleDeformationBndConditions()
+                    DEFW.handleDeformationInitial(activeIn)
+                    DEFW.handleDeformationBodyForces(activeIn)
+                    DEFW.handleDeformationMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Elasticity
 
     def _handleElasticity(self):
         ELW = EL_writer.ElasticityWriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerElasticity"):
                 if not self._haveMaterialSolid():
                     raise WriteError(
@@ -299,24 +299,27 @@ class Writer:
                 else:
                     activeIn = self.getAllBodies()
                 solverSection = ELW.getElasticitySolver(equation)
+                solverEigenSection = ELW.getEigenSolver(equation)
                 for body in activeIn:
                     if not self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         ELW.handleElasticityEquation(activeIn, equation)
-        if activeIn:
-            ELW.handleElasticityConstants()
-            ELW.handleElasticityBndConditions()
-            ELW.handleElasticityInitial(activeIn)
-            ELW.handleElasticityBodyForces(activeIn)
-            ELW.handleElasticityMaterial(activeIn)
+                        if solverEigenSection is not None:
+                            self._addSolver(body, solverEigenSection)
+                if activeIn:
+                    ELW.handleElasticityConstants()
+                    ELW.handleElasticityBndConditions()
+                    ELW.handleElasticityInitial(activeIn)
+                    ELW.handleElasticityBodyForces(activeIn)
+                    ELW.handleElasticityMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Electrostatic
 
     def _handleElectrostatic(self):
         ESW = ES_writer.ESwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerElectrostatic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -325,19 +328,19 @@ class Writer:
                 solverSection = ESW.getElectrostaticSolver(equation)
                 for body in activeIn:
                     self._addSolver(body, solverSection)
-        if activeIn:
-            ESW.handleElectrostaticConstants()
-            ESW.handleElectrostaticBndConditions()
-            ESW.handleElectrostaticBodyForces()
-            ESW.handleElectrostaticMaterial(activeIn)
+                if activeIn:
+                    ESW.handleElectrostaticConstants()
+                    ESW.handleElectrostaticBndConditions()
+                    ESW.handleElectrostaticBodyForces()
+                    ESW.handleElectrostaticMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Electricforce
 
     def _handleElectricforce(self):
         EFW = EF_writer.EFwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerElectricforce"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -352,8 +355,8 @@ class Writer:
 
     def _handleFlow(self):
         FlowW = flow_writer.Flowwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerFlow"):
                 if not self._haveMaterialFluid():
                     raise WriteError(
@@ -368,20 +371,20 @@ class Writer:
                     if self.isBodyMaterialFluid(body):
                         self._addSolver(body, solverSection)
                         FlowW.handleFlowEquation(activeIn, equation)
-        if activeIn:
-            FlowW.handleFlowConstants()
-            FlowW.handleFlowBndConditions()
-            FlowW.handleFlowInitialPressure(activeIn)
-            FlowW.handleFlowInitialVelocity(activeIn)
-            FlowW.handleFlowMaterial(activeIn)
+                if activeIn:
+                    FlowW.handleFlowConstants()
+                    FlowW.handleFlowBndConditions()
+                    FlowW.handleFlowInitialPressure(activeIn)
+                    FlowW.handleFlowInitialVelocity(activeIn)
+                    FlowW.handleFlowMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Flux
 
     def _handleFlux(self):
         FluxW = flux_writer.Fluxwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerFlux"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -396,8 +399,8 @@ class Writer:
 
     def _handleHeat(self):
         HeatW = heat_writer.Heatwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerHeat"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -407,20 +410,20 @@ class Writer:
                 for body in activeIn:
                     self._addSolver(body, solverSection)
                 HeatW.handleHeatEquation(activeIn, equation)
-        if activeIn:
-            HeatW.handleHeatConstants()
-            HeatW.handleHeatBndConditions()
-            HeatW.handleHeatInitial(activeIn)
-            HeatW.handleHeatBodyForces(activeIn)
-            HeatW.handleHeatMaterial(activeIn)
+                if activeIn:
+                    HeatW.handleHeatConstants()
+                    HeatW.handleHeatBndConditions()
+                    HeatW.handleHeatInitial(activeIn)
+                    HeatW.handleHeatBodyForces(activeIn)
+                    HeatW.handleHeatMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Magnetodynamic
 
     def _handleMagnetodynamic(self):
         MgDyn = MgDyn_writer.MgDynwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerMagnetodynamic"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -432,19 +435,19 @@ class Writer:
                 for body in activeIn:
                     self._addSolver(body, solverSection)
                     self._addSolver(body, solverPostSection)
-        if activeIn:
-            MgDyn.handleMagnetodynamicConstants()
-            MgDyn.handleMagnetodynamicBndConditions(equation)
-            MgDyn.handleMagnetodynamicBodyForces(activeIn, equation)
-            MgDyn.handleMagnetodynamicMaterial(activeIn)
+                if activeIn:
+                    MgDyn.handleMagnetodynamicConstants()
+                    MgDyn.handleMagnetodynamicBndConditions(equation)
+                    MgDyn.handleMagnetodynamicBodyForces(activeIn, equation)
+                    MgDyn.handleMagnetodynamicMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Magnetodynamic2D
 
     def _handleMagnetodynamic2D(self):
         MgDyn2D = MgDyn2D_writer.MgDyn2Dwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerMagnetodynamic2D"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -466,19 +469,19 @@ class Writer:
                     self._addSolver(body, solverSection)
                     self._addSolver(body, solverPostSection)
                     MgDyn2D.handleMagnetodynamic2DEquation(activeIn, equation)
-        if activeIn:
-            MgDyn2D.handleMagnetodynamic2DConstants()
-            MgDyn2D.handleMagnetodynamic2DBndConditions(equation)
-            MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn, equation)
-            MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
+                if activeIn:
+                    MgDyn2D.handleMagnetodynamic2DConstants()
+                    MgDyn2D.handleMagnetodynamic2DBndConditions(equation)
+                    MgDyn2D.handleMagnetodynamic2DBodyForces(activeIn, equation)
+                    MgDyn2D.handleMagnetodynamic2DMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # StaticCurrent
 
     def _handleStaticCurrent(self):
         SCW = SC_writer.SCwriter(self, self.solver)
-        activeIn = []
         for equation in self.solver.Group:
+            activeIn = []
             if femutils.is_of_type(equation, "Fem::EquationElmerStaticCurrent"):
                 if equation.References:
                     activeIn = equation.References[0][1]
@@ -489,10 +492,10 @@ class Writer:
                     self._addSolver(body, solverSection)
                 SCW.handleStaticCurrentBodyForces(activeIn, equation)
 
-        if activeIn:
-            SCW.handleStaticCurrentConstants()
-            SCW.handleStaticCurrentBndConditions()
-            SCW.handleStaticCurrentMaterial(activeIn)
+                if activeIn:
+                    SCW.handleStaticCurrentConstants()
+                    SCW.handleStaticCurrentBndConditions()
+                    SCW.handleStaticCurrentMaterial(activeIn)
 
     # -------------------------------------------------------------------------------------------
     # Solver handling
@@ -616,8 +619,6 @@ class Writer:
 
     def getDensity(self, m):
         density = self.convert(m["Density"], "M/L^3")
-        if self.getMeshDimension() == 2:
-            density *= 1e3
         return density
 
     def _hasExpression(self, equation):
@@ -665,6 +666,20 @@ class Writer:
 
     def getMesh(self):
         return membertools.get_mesh_to_solve(self.analysis)
+
+    def getCoordSystemDimension(self):
+        dim = 0
+        match self.solver.CoordinateSystem:
+            case "Cartesian":
+                # defined by the mesh
+                dim = self.getMeshDimension()
+            case "Cartesian 1D":
+                dim = 1
+            case "Cartesian 2D" | "Polar 2D" | "Cylindric Symmetric" | "Axi Symmetric":
+                dim = 2
+            case "Cartesian 3D" | "Polar 3D" | "Cylindric":
+                dim = 3
+        return dim
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)

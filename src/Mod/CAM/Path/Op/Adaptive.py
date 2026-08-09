@@ -69,6 +69,8 @@ else:
 
 translate = FreeCAD.Qt.translate
 
+ADAPTIVE_GENERATOR_VERSION = "1.0.2"
+
 
 def convertTo2d(pathArray):
     output = []
@@ -419,7 +421,7 @@ def Execute(op, obj):
             "keepToolDownRatio": keepToolDownRatio,
             "stockToLeave": float(obj.StockToLeave),
             "modelAwareExperiment": obj.ModelAwareExperiment,
-            "adaptiveGeneratorVersion": "1.0.1",
+            "adaptiveGeneratorVersion": ADAPTIVE_GENERATOR_VERSION,
         }
 
         inputStateChanged = False
@@ -631,6 +633,7 @@ def ExecuteModelAware(op, obj):
             "stockToLeave": obj.StockToLeave.Value,
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
+            "adaptiveGeneratorVersion": ADAPTIVE_GENERATOR_VERSION,
         }
 
         insideInputStateObject = {
@@ -654,7 +657,7 @@ def ExecuteModelAware(op, obj):
             "zStockToLeave": obj.ZStockToLeave.Value,
             "orderCutsByRegion": obj.OrderCutsByRegion,
             "modelAwareExperiment": obj.ModelAwareExperiment,
-            "adaptiveGeneratorVersion": "1.0.1",
+            "adaptiveGeneratorVersion": ADAPTIVE_GENERATOR_VERSION,
         }
 
         inputStateObject = [outsideInputStateObject, insideInputStateObject]
@@ -1594,7 +1597,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave in the XY plane (eg for finishing operation)",
+                "Set how much stock to leave on the walls for the operation.",
             ),
         )
         obj.addProperty(
@@ -1603,7 +1606,7 @@ class PathAdaptive(PathOp.ObjectOp):
             "Adaptive",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.",
+                "Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.",
             ),
         )
         obj.addProperty(
@@ -1860,7 +1863,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "Adaptive",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "How much stock to leave along the Z axis (eg for finishing operation)",
+                    "Set how much stock to leave on the floor for the operation.",
                 ),
             )
 

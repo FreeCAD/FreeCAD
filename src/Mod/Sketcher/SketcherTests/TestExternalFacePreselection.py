@@ -227,6 +227,9 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
             width, height = view.getSize()
             if width <= 0 or height <= 0:
                 return False
+            # Re-fit each probe: offscreen the viewport size/aspect may not be
+            # settled when fitAll() first runs, so fit until it frames the face.
+            view.fitAll()
             screen_x, screen_y = view.getPointOnScreen(face_center_3d)
             margin_x = width * 0.1
             margin_y = height * 0.1

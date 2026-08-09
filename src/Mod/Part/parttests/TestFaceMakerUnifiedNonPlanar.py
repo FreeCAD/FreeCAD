@@ -139,14 +139,14 @@ class TestFreeformSurfaces(unittest.TestCase):
         self.assertGreater(faces[0].Area, 0)
 
     def test_two_separate_freeform(self):
-        """Two independent non-planar wires → 2 filled faces."""
+        """Two independent non-planar wires -> 2 filled faces."""
         w1 = make_polygon((0, 0, 0), (10, 0, 0), (10, 10, 5), (0, 10, 0))
         w2 = make_polygon((20, 0, 0), (30, 0, 3), (30, 10, 0), (20, 10, 4))
         faces = unified([w1, w2])
         self.assertEqual(len(faces), 2)
 
     def test_mixed_planar_and_freeform(self):
-        """Planar circle + freeform quad in one call → 2 faces."""
+        """Planar circle + freeform quad in one call -> 2 faces."""
         planar = Part.Wire(Part.makeCircle(5, Vec(0, 0, 0)))
         freeform = make_polygon((20, 0, 0), (30, 0, 0), (30, 10, 5), (20, 10, 0))
         faces = unified([planar, freeform])
@@ -167,7 +167,7 @@ class TestEdgeCases(unittest.TestCase):
         self.assertAlmostEqual(faces[0].Area, 1.0, places=3)
 
     def test_near_planar(self):
-        """Z offset below tolerance → treated as planar."""
+        """Z offset below tolerance -> treated as planar."""
         w = make_polygon((0, 0, 0), (10, 0, 0), (10, 10, 1e-8), (0, 10, 0))
         faces = unified(w)
         self.assertEqual(len(faces), 1)

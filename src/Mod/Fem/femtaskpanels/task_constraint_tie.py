@@ -48,39 +48,60 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         super().__init__(obj)
 
         # parameter widget
-        self.parameterWidget = FreeCADGui.PySideUic.loadUi(
+        self.parameter_widget = FreeCADGui.PySideUic.loadUi(
             FreeCAD.getHomePath() + "Mod/Fem/Resources/ui/ConstraintTie.ui"
         )
         QtCore.QObject.connect(
-            self.parameterWidget.spb_tolerance,
+            self.parameter_widget.spb_tolerance,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.tolerance_changed,
         )
         QtCore.QObject.connect(
-            self.parameterWidget.ckb_adjust, QtCore.SIGNAL("toggled(bool)"), self.adjust_changed
+            self.parameter_widget.ckb_adjust, QtCore.SIGNAL("toggled(bool)"), self.adjust_changed
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_rev_master,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.reversed_master_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_rev_slave,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.reversed_slave_changed,
         )
         self.init_parameter_widget()
-
+        # split references, last is master
+        references = [(feat, (sub,)) for feat, sub_list in obj.References for sub in sub_list]
         # geometry selection widget
-        self.selectionWidget = selection_widgets.GeometryElementsSelection(
-            obj.References, ["Edge", "Face"], False, False
+        self.sel_master = selection_widgets.GeometryElementsSelection(
+            references[-1:], ["Edge", "Face"], False, False
         )
+        self.sel_master.setWindowTitle(self.sel_master.tr("Master Geometry Reference Selector"))
+        self.sel_master.setMaximumHeight(200)
+        self.sel_slave = selection_widgets.GeometryElementsSelection(
+            references[:-1], ["Edge", "Face"], False, False
+        )
+        self.sel_slave.setWindowTitle(self.sel_slave.tr("Slave Geometry Reference Selector"))
+        self.sel_slave.setMaximumHeight(200)
 
         # form made from param and selection widget
-        self.form = [self.selectionWidget, self.parameterWidget]
+        self.form = [self.sel_master, self.sel_slave, self.parameter_widget]
 
     def accept(self):
         # check values
-        items = len(self.selectionWidget.references)
+        items = len(self.sel_master.references) + len(self.sel_slave.references)
         FreeCAD.Console.PrintMessage(
-            f"Task panel: found references: {items}\n{self.selectionWidget.references}\n"
+            f"Task panel: found master references: {items}\n{self.sel_master.references}\n"
+        )
+        FreeCAD.Console.PrintMessage(
+            f"Task panel: found slave references: {items}\n{self.sel_slave.references}\n"
         )
 
         if items != 2:
             msgBox = QtGui.QMessageBox()
             msgBox.setIcon(QtGui.QMessageBox.Question)
             msgBox.setText(
-                f"Constraint Tie requires exactly two faces\n\nfound references: {items}"
+                f"Constraint Tie requires exactly one master and one slave references\n\nfound references: {items}"
             )
             msgBox.setWindowTitle("FreeCAD FEM Constraint Tie")
             retryButton = msgBox.addButton(QtGui.QMessageBox.Retry)
@@ -93,23 +114,43 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
                 pass
         self.obj.Tolerance = self.tolerance
         self.obj.Adjust = self.adjust
-        self.obj.References = self.selectionWidget.references
-        self.selectionWidget.finish_selection()
+        self.obj.References = self.sel_slave.references + self.sel_master.references
+        self.obj.ReversedMaster = self.reversed_master
+        self.obj.ReversedSlave = self.reversed_slave
+        self.sel_master.finish_selection()
+        self.sel_slave.finish_selection()
         return super().accept()
 
     def reject(self):
-        self.selectionWidget.finish_selection()
+        self.sel_master.finish_selection()
+        self.sel_slave.finish_selection()
         return super().reject()
 
     def init_parameter_widget(self):
         self.tolerance = self.obj.Tolerance
         self.adjust = self.obj.Adjust
-        FreeCADGui.ExpressionBinding(self.parameterWidget.spb_tolerance).bind(self.obj, "Tolerance")
-        self.parameterWidget.spb_tolerance.setProperty("value", self.tolerance)
-        self.parameterWidget.ckb_adjust.setChecked(self.adjust)
+        self.reversed_master = self.obj.ReversedMaster
+        self.reversed_slave = self.obj.ReversedSlave
+        FreeCADGui.ExpressionBinding(self.parameter_widget.spb_tolerance).bind(
+            self.obj, "Tolerance"
+        )
+        self.parameter_widget.spb_tolerance.setProperty("value", self.tolerance)
+        self.parameter_widget.ckb_adjust.setChecked(self.adjust)
+        self.parameter_widget.ckb_rev_master.setChecked(
+            False if not self.reversed_master else self.reversed_master[0]
+        )
+        self.parameter_widget.ckb_rev_slave.setChecked(
+            False if not self.reversed_slave else self.reversed_slave[0]
+        )
 
     def tolerance_changed(self, base_quantity_value):
         self.tolerance = base_quantity_value
 
     def adjust_changed(self, bool_value):
         self.adjust = bool_value
+
+    def reversed_master_changed(self, bool_value):
+        self.reversed_master = [bool_value]
+
+    def reversed_slave_changed(self, bool_value):
+        self.reversed_slave = [bool_value]

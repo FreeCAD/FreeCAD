@@ -74,7 +74,9 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/ccx_cavity_radiation.py
     femexamples/ccx_disc_cyclic_symm_centrif.py
+    femexamples/ccx_radiation_benchmark.py
     femexamples/ccx_rigid_body.py
     femexamples/ccx_pipe_pressure_2D.py
     femexamples/ccx_plane_stress_plate.py
@@ -101,6 +103,7 @@ SET(FemExamples_SRCS
     femexamples/equation_magnetostatics_2D_elmer.py
     femexamples/equation_staticcurrent_elmer.py
     femexamples/frequency_beamsimple.py
+    femexamples/inductive_heating_axisymmetric.py
     femexamples/magnetic_shielding_2D.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py

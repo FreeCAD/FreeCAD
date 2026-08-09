@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <cmath>
+
 #include <QApplication>
 
 #include <Gui/BitmapFactory.h>
@@ -499,6 +501,15 @@ private:
             firstCurve = getHighestCurveIndex() + 1;
 
             createShape(false);
+            if (ShapeGeometry.empty()) {
+                THROWM(
+                    Base::ValueError,
+                    QT_TRANSLATE_NOOP(
+                        "Notifications",
+                        "Cannot create a rectangle with zero length or width"
+                    ) "\n"
+                );
+            }
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch box"));
 
@@ -824,8 +835,7 @@ private:
 
     bool canGoToNextMode() override
     {
-        if (state() == SelectMode::SeekSecond
-            && (length < Precision::Confusion() || width < Precision::Confusion())) {
+        if (state() == SelectMode::SeekSecond && !updateRectangleMetrics()) {
             return false;
         }
 
@@ -900,11 +910,7 @@ private:
 
         Base::Vector2d vecL = corner2 - corner1;
         Base::Vector2d vecW = corner4 - corner1;
-        length = vecL.Length();
-        width = vecW.Length();
-        angle = vecL.Angle();
-        if (length < Precision::Confusion() || width < Precision::Confusion()
-            || fmod(fabs(angle123), std::numbers::pi) < Precision::Confusion()) {
+        if (!updateRectangleMetrics()) {
             return;
         }
 
@@ -935,6 +941,29 @@ private:
                 finishRectangleCreation(thicknessNotZero);
             }
         }
+    }
+
+    bool updateRectangleMetrics()
+    {
+        Base::Vector2d vecL = corner2 - corner1;
+        Base::Vector2d vecW = corner4 - corner1;
+
+        length = vecL.Length();
+        width = vecW.Length();
+        angle = vecL.Angle();
+
+        auto isFinite = [](const Base::Vector2d& point) {
+            return std::isfinite(point.x) && std::isfinite(point.y);
+        };
+        auto hasNonDegenerateAngle = [](double angle) {
+            return std::isfinite(angle)
+                && fmod(fabs(angle), std::numbers::pi) >= Precision::Confusion();
+        };
+
+        return isFinite(corner1) && isFinite(corner2) && isFinite(corner3) && isFinite(corner4)
+            && std::isfinite(length) && std::isfinite(width) && std::isfinite(angle)
+            && length >= Precision::Confusion() && width >= Precision::Confusion()
+            && hasNonDegenerateAngle(angle123) && hasNonDegenerateAngle(angle412);
     }
 
     void createFirstRectangleGeometries(Base::Vector2d vecL, Base::Vector2d vecW, double L1, double L2)
@@ -2831,6 +2860,10 @@ void DSHRectangleController::computeNextDrawSketchHandlerMode()
         case SelectMode::SeekSecond: {
             if (onViewParameters[OnViewParameter::Third]->hasFinishedEditing
                 && onViewParameters[OnViewParameter::Fourth]->hasFinishedEditing) {
+
+                if (!handler->canGoToNextMode()) {
+                    return;
+                }
 
                 if (handler->roundCorners || handler->makeFrame
                     || handler->constructionMethod() == ConstructionMethod::ThreePoints

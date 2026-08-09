@@ -44,7 +44,7 @@
 
 #include "AssemblyObject.h"
 #include "AssemblyUtils.h"
-#include "JointGroup.h"
+#include "Groups.h"
 
 #include "AssemblyLink.h"
 #include "AssemblyLinkPy.h"
@@ -100,6 +100,14 @@ void AssemblyLink::onChanged(const App::Property* prop)
     if (App::GetApplication().isRestoring()) {
         App::Part::onChanged(prop);
         return;
+    }
+
+    if (prop == &Group) {
+        for (auto* obj : getInList()) {
+            if (auto* assemblyLink = freecad_cast<AssemblyLink*>(obj)) {
+                assemblyLink->updateContents();
+            }
+        }
     }
 
     if (prop == &Rigid) {
@@ -224,6 +232,12 @@ void AssemblyLink::onChanged(const App::Property* prop)
         return;
     }
     App::Part::onChanged(prop);
+}
+
+void AssemblyLink::onDocumentRestored()
+{
+    App::Part::onDocumentRestored();
+    updateContents();
 }
 
 void AssemblyLink::updateParentJoints()

@@ -25,8 +25,8 @@
 import FreeCAD
 import Path
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
 import math
+import time
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -571,7 +571,154 @@ def getClearedAreas(currentOp, bbox):
         tool = baseOp.ToolController.Tool
         diameter = tool.Diameter.getValueAs("mm")
         # for drills, dz translates to the full width part of the tool
-        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)
+        dz = 0 if not hasattr(tool, "TipAngle") else -drillTipLength(tool)
         opPath = _stripRotaryAxes(op.Path) if rotated else op.Path
         clearedAreas.append(opPath.getClearedArea(diameter, z + dz, bbox))
     return clearedAreas
+
+
+def getOpSide(obj, default="Outside"):
+    """getOpSide(obj) ...  offer side for op base"""
+
+    def getVerticalFaces(edges, shape):
+        """Returns vertical faces (wall around) that contains given edges
+        Excludes faces which is longer than common edges"""
+        vFaces = []
+        for f in shape.Faces:
+            if len(vFaces) == len(edges):
+                break
+            if isHorizontal(f):
+                continue
+            for hEdge in edges:
+                hsh = hEdge.hashCode()
+                if any(hsh == e.hashCode() for e in f.Edges) and all(
+                    e.Length < hEdge.Length or isRoughly(hEdge.Length, e.Length)
+                    for e in f.Edges
+                    if isHorizontal(e)
+                ):
+                    vFaces.append(f)
+                    edges.remove(hEdge)
+                    break
+        return vFaces
+
+    if not obj.Base:
+        return default
+    isRoughly = Path.Geom.isRoughly
+    isHorizontal = Path.Geom.isHorizontal
+    base, subNames = obj.Base[0]
+    if "Face" in subNames[0]:
+        faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
+        vFaces = []
+        hFaces = []
+        for face in faces:
+            if isHorizontal(face):
+                hFaces.append(face)
+            else:
+                vFaces.append(face)
+        if vFaces:
+            volume = Part.Compound(vFaces).Volume
+            if volume > 0 or isRoughly(volume, 0):
+                return "Outside"
+            # check if vertical faces creates a closed area
+            fzMin = min(e.BoundBox.ZMin for f in vFaces for e in f.Edges)
+            bEdges = [e for f in vFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
+            wire = Part.Wire(Part.__sortEdges__(bEdges))
+            if not wire.isClosed():  # for open area always offer 'Outside'
+                return "Outside"
+            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+                return "Inside"
+        if hFaces:
+            vFaces = getVerticalFaces(hFaces[0].OuterWire.Edges, base.Shape)
+            volume = Part.Compound(vFaces).Volume
+            if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+                return "Inside"
+            else:
+                return "Outside"
+    elif "Edge" in subNames[0]:
+        edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
+        cluster = Part.getSortedClusters(edges)[0]
+        wire = Part.Wire(Part.__sortEdges__(cluster))
+        if not wire.isClosed():  # for open wire always offer 'Outside'
+            return "Outside"
+        vFaces = getVerticalFaces(edges, base.Shape)
+        volume = Part.Compound(vFaces).Volume
+        if volume < 0 and not isRoughly(volume, 0):  # negative volume forms inner area
+            return "Inside"
+        else:
+            return "Outside"
+
+    return default
+
+
+def getCycleTimeEstimate(obj, formatted=True):
+    """getCycleTimeEstimate(obj, formated=True) ... Returns operation cycle time estimation
+    If formatted=True returns string which describes time in format 'hh:mm:ss'
+    If formatted=False returns seconds as a float value"""
+    baseOp = PathDressup.baseOp(obj)
+    tc = baseOp.ToolController
+
+    if tc is None or tc.ToolNumber == 0:
+        Path.Log.error(translate("CAM", "No Tool Controller selected."))
+        return translate("CAM", "Tool Error")
+
+    hFeedrate = tc.HorizFeed.Value
+    vFeedrate = tc.VertFeed.Value
+    hRapidrate = tc.HorizRapid.Value
+    vRapidrate = tc.VertRapid.Value
+
+    if hFeedrate == 0 or vFeedrate == 0:
+        if not Path.Preferences.suppressAllSpeedsWarning():
+            Path.Log.warning(
+                translate(
+                    "CAM",
+                    "Tool Controller feedrates required to calculate the cycle time.",
+                )
+            )
+        return translate("CAM", "Tool Feedrate Error")
+
+    if (hRapidrate == 0 or vRapidrate == 0) and not Path.Preferences.suppressRapidSpeedsWarning():
+        Path.Log.warning(
+            translate(
+                "CAM",
+                "Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.",
+            )
+        )
+
+    # Get the cycle time in seconds
+    seconds = obj.Path.getCycleTime(hFeedrate, vFeedrate, hRapidrate, vRapidrate)
+
+    if math.isnan(seconds):
+        return translate("CAM", "Cycletime Error")
+
+    if formatted:  # Convert the cycle time to a HH:MM:SS format
+        return time.strftime("%H:%M:%S", time.gmtime(seconds))
+    else:
+        return seconds
+
+
+def drillTipLength(tool):
+    """returns the length of the drillbit tip."""
+
+    if not hasattr(tool, "TipAngle"):
+        Path.Log.error(translate("Path", "Selected tool is not a drill"))
+        return 0.0
+
+    angle = tool.TipAngle
+
+    if angle <= 0 or angle >= 180:
+        Path.Log.error(
+            translate("Path", "Invalid Cutting Edge Angle %.2f, must be >0° and <=180°") % angle
+        )
+        return 0.0
+
+    theta = math.radians(angle)
+    length = (float(tool.Diameter) / 2) / math.tan(theta / 2)
+
+    if length < 0:
+        Path.Log.error(
+            translate("Path", "Cutting Edge Angle (%.2f) results in negative tool tip length")
+            % angle
+        )
+        return 0.0
+
+    return length

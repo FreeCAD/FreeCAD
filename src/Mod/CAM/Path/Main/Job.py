@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from Path.Op.Util import getCycleTimeEstimate
 from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -747,34 +748,15 @@ class ObjectJob:
 
     def getCycleTime(self):
         seconds = 0
-
-        if len(self.obj.Operations.Group):
-            for op in self.obj.Operations.Group:
-
-                # Skip inactive operations
-                if PathUtil.opProperty(op, "Active") is False:
-                    continue
-
-                # Skip operations that don't have a cycletime attribute
-                if PathUtil.opProperty(op, "CycleTime") is None:
-                    continue
-
-                formattedCycleTime = PathUtil.opProperty(op, "CycleTime")
-                opCycleTime = 0
-                try:
-                    # Convert the formatted time from HH:MM:SS to just seconds
-                    opCycleTime = sum(
-                        x * int(t)
-                        for x, t in zip([1, 60, 3600], reversed(formattedCycleTime.split(":")))
-                    )
-                except Exception:
-                    continue
-
-                if opCycleTime > 0:
-                    seconds = seconds + opCycleTime
-
-        cycleTimeString = time.strftime("%H:%M:%S", time.gmtime(seconds))
-        self.obj.CycleTime = cycleTimeString
+        errorStr = ""
+        for op in self.obj.Operations.Group:
+            result = getCycleTimeEstimate(op, formatted=False)
+            if isinstance(result, (int, float)):
+                seconds += result
+            else:
+                errorStr = f" ({op.Label}: {result})"
+        timeStr = time.strftime("%H:%M:%S", time.gmtime(seconds))
+        self.obj.CycleTime = f"{timeStr}{errorStr}"
 
     def addOperation(self, op, before=None, removeBefore=False):
         group = self.obj.Operations.Group

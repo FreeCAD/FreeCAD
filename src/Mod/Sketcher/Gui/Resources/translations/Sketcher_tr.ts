@@ -4,12 +4,12 @@
   <context>
     <name>CmdSketcherClone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1629"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1634"/>
       <source>Clone</source>
       <translation>Klon</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1631"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1636"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriye ait bir klon oluşturur</translation>
     </message>
@@ -17,27 +17,27 @@
   <context>
     <name>CmdSketcherCompConstrainRadDia</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9420"/>
+      <location filename="../../CommandConstraints.cpp" line="9461"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Yarıçap/Çap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9421"/>
+      <location filename="../../CommandConstraints.cpp" line="9462"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
       <translation>Bir yayın veya çemberin yarıçapını ya da çapını kısıtlar</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9531"/>
+      <location filename="../../CommandConstraints.cpp" line="9572"/>
       <source>Constrain radius</source>
       <translation>Yarıçapı sınırla</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9537"/>
+      <location filename="../../CommandConstraints.cpp" line="9578"/>
       <source>Constrain diameter</source>
       <translation>Çapı kısıtla</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9543"/>
+      <location filename="../../CommandConstraints.cpp" line="9584"/>
       <source>Constrain auto radius/diameter</source>
       <translation>Yarı çapı/çapı otomatik kısıtla</translation>
     </message>
@@ -45,12 +45,12 @@
   <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1711"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1716"/>
       <source>Clone</source>
       <translation>Klon</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1713"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1718"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriye ait bir klon oluşturur</translation>
     </message>
@@ -94,12 +94,12 @@
   <context>
     <name>CmdSketcherCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1578"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1583"/>
       <source>Copy</source>
       <translation>Kopyala</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1579"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1584"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometrinin basit bir kopyasını oluşturur</translation>
     </message>
@@ -159,17 +159,17 @@
   <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="651"/>
+      <location filename="../../Command.cpp" line="653"/>
       <source>Attach Sketch</source>
       <translation>Eskizi İliştir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="652"/>
+      <location filename="../../Command.cpp" line="654"/>
       <source>Attaches a sketch to the selected geometry element</source>
       <translation>Bir eskizi seçilen geometri öğesine iliştirir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="743"/>
+      <location filename="../../Command.cpp" line="745"/>
       <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed.</source>
       <translation>Seçilen nesnelerden bazıları eşleştirilecek taslağa bağlı. Dairesel bağımlılıklara izin verilmiyor.</translation>
     </message>
@@ -177,45 +177,45 @@
   <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-      <location filename="../../Command.cpp" line="1160"/>
+      <location filename="../../Command.cpp" line="1162"/>
       <source>Skipping external geometry #%1
 </source>
       <translation>Harici geometri atlanıyor #%1</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1203"/>
+      <location filename="../../Command.cpp" line="1205"/>
       <source>External geometry '%1' is out of scope:
 </source>
       <translation>Harici geometri '%1' kapsam dışındadır:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1254"/>
+      <location filename="../../Command.cpp" line="1256"/>
       <source>Merge Sketches</source>
       <translation>Eskizleri Birleştir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1257"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
       <translation>En az 2 seçili eskizi birleştirerek yeni bir eskiz oluşturur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1270"/>
+      <location filename="../../Command.cpp" line="1272"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1271"/>
+      <location filename="../../Command.cpp" line="1273"/>
       <source>Select at least 2 sketches</source>
       <translation>En az 2 eskiz seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1362"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
       <translation>'%3'ten '%2' kısıtlamanın '%1'i kopyalandı. Bazıları atlandı.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1376"/>
+      <location filename="../../Command.cpp" line="1378"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
       <translation>'%2'nin '%1'inci kısıtlaması atlanıyor: birleştirilmemiş geometriye referans veriyor.</translation>
@@ -224,12 +224,12 @@
   <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="949"/>
       <source>Mirror Sketch</source>
       <translation>Eskizi Aynala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="950"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
@@ -238,12 +238,12 @@ aynalamaya referans olarak X veya Y eksenlerini ya da orijin noktasını
 kullanır</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../Command.cpp" line="968"/>
       <source>Select at least 1 sketch</source>
       <translation>En az 1 eskiz seçin</translation>
     </message>
@@ -251,12 +251,12 @@ kullanır</translation>
   <context>
     <name>CmdSketcherMove</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1677"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1682"/>
       <source>Move</source>
       <translation>Taşı</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1678"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1683"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriyi hareket ettirir</translation>
     </message>
@@ -264,12 +264,12 @@ kullanır</translation>
   <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2020"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2025"/>
       <source>Rectangular Array</source>
       <translation>Dikdörtgen Dizilim</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2021"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2026"/>
       <source>Creates a rectangular array pattern of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriye dikdörtgen şeklinde bir desen oluşturur</translation>
     </message>
@@ -290,24 +290,24 @@ kullanır</translation>
   <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="907"/>
+      <location filename="../../Command.cpp" line="909"/>
       <source>Validate Sketch</source>
       <translation>Eskizi Doğrula</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="908"/>
+      <location filename="../../Command.cpp" line="910"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
       <translation>Eksik çakışmalar,
 geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskizi doğrular</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="924"/>
+      <location filename="../../Command.cpp" line="926"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="925"/>
+      <location filename="../../Command.cpp" line="927"/>
       <source>Select only 1 sketch.</source>
       <translation>Yalnızca 1 eskiz seçin.</translation>
     </message>
@@ -315,365 +315,365 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4243"/>
+      <location filename="../../CommandConstraints.cpp" line="4277"/>
       <source>Add 'Lock' constraint</source>
       <translation>'Kilitleme' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4297"/>
+      <location filename="../../CommandConstraints.cpp" line="4331"/>
       <source>Add relative 'Lock' constraint</source>
       <translation>Bağıl 'Kilitleme' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4363"/>
+      <location filename="../../CommandConstraints.cpp" line="4397"/>
       <source>Add fixed constraint</source>
       <translation>Sabitleme kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4582"/>
+      <location filename="../../CommandConstraints.cpp" line="4616"/>
       <source>Add block constraint</source>
       <translation>Blok kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4922"/>
-      <location filename="../../CommandConstraints.cpp" line="5105"/>
+      <location filename="../../CommandConstraints.cpp" line="4956"/>
+      <location filename="../../CommandConstraints.cpp" line="5139"/>
       <source>Add coincident constraint</source>
       <translation>Çakışıklık kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5341"/>
-      <location filename="../../CommandConstraints.cpp" line="5664"/>
+      <location filename="../../CommandConstraints.cpp" line="5375"/>
+      <location filename="../../CommandConstraints.cpp" line="5698"/>
       <source>Add distance from horizontal axis constraint</source>
       <translation>Yatay eksenden mesafe kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5353"/>
-      <location filename="../../CommandConstraints.cpp" line="5678"/>
+      <location filename="../../CommandConstraints.cpp" line="5387"/>
+      <location filename="../../CommandConstraints.cpp" line="5712"/>
       <source>Add distance from vertical axis constraint</source>
       <translation>Dikey eksenden mesafe kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5365"/>
-      <location filename="../../CommandConstraints.cpp" line="5691"/>
+      <location filename="../../CommandConstraints.cpp" line="5399"/>
+      <location filename="../../CommandConstraints.cpp" line="5725"/>
       <source>Add point to point distance constraint</source>
       <translation>'Noktadan noktaya mesafe' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2719"/>
+      <location filename="../../CommandConstraints.cpp" line="2753"/>
       <source>Add point to line Distance constraint</source>
       <translation>'Noktadan çizgiye mesafe' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5489"/>
-      <location filename="../../CommandConstraints.cpp" line="5840"/>
+      <location filename="../../CommandConstraints.cpp" line="5523"/>
+      <location filename="../../CommandConstraints.cpp" line="5874"/>
       <source>Add circle to circle distance constraint</source>
       <translation>Daireden daireye kısıtlama ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5532"/>
+      <location filename="../../CommandConstraints.cpp" line="5566"/>
       <source>Add circle to line distance constraint</source>
       <translation>Daireden çizgiye kısıtlama ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2817"/>
-      <location filename="../../CommandConstraints.cpp" line="2840"/>
-      <location filename="../../CommandConstraints.cpp" line="2908"/>
-      <location filename="../../CommandConstraints.cpp" line="2992"/>
-      <location filename="../../CommandConstraints.cpp" line="5580"/>
-      <location filename="../../CommandConstraints.cpp" line="5607"/>
-      <location filename="../../CommandConstraints.cpp" line="5735"/>
+      <location filename="../../CommandConstraints.cpp" line="2851"/>
+      <location filename="../../CommandConstraints.cpp" line="2874"/>
+      <location filename="../../CommandConstraints.cpp" line="2942"/>
+      <location filename="../../CommandConstraints.cpp" line="3026"/>
+      <location filename="../../CommandConstraints.cpp" line="5614"/>
+      <location filename="../../CommandConstraints.cpp" line="5641"/>
+      <location filename="../../CommandConstraints.cpp" line="5769"/>
       <source>Add length constraint</source>
       <translation>Uzunluk kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2054"/>
-      <location filename="../../CommandConstraints.cpp" line="2232"/>
-      <location filename="../../CommandConstraints.cpp" line="3633"/>
+      <location filename="../../CommandConstraints.cpp" line="2071"/>
+      <location filename="../../CommandConstraints.cpp" line="2249"/>
+      <location filename="../../CommandConstraints.cpp" line="3667"/>
       <source>Dimension</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2688"/>
+      <location filename="../../CommandConstraints.cpp" line="2722"/>
       <source>Add lock constraint</source>
       <translation>Kilit kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2684"/>
+      <location filename="../../CommandConstraints.cpp" line="2718"/>
       <source>Add 'Distance to origin' constraint</source>
       <translation>'Başlangıç ​​noktasına uzaklık' kısıtlamasını ekleyin</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2700"/>
-      <location filename="../../CommandConstraints.cpp" line="3314"/>
-      <location filename="../../CommandConstraints.cpp" line="3551"/>
+      <location filename="../../CommandConstraints.cpp" line="2734"/>
+      <location filename="../../CommandConstraints.cpp" line="3348"/>
+      <location filename="../../CommandConstraints.cpp" line="3585"/>
       <source>Add Distance constraint</source>
       <translation>Mesafe kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2705"/>
-      <location filename="../../CommandConstraints.cpp" line="2734"/>
+      <location filename="../../CommandConstraints.cpp" line="2739"/>
       <location filename="../../CommandConstraints.cpp" line="2768"/>
+      <location filename="../../CommandConstraints.cpp" line="2802"/>
       <source>Add 'Horizontal' constraints</source>
       <translation>'Yatay' kısıtlamalar ekleyin</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2709"/>
-      <location filename="../../CommandConstraints.cpp" line="2741"/>
+      <location filename="../../CommandConstraints.cpp" line="2743"/>
       <location filename="../../CommandConstraints.cpp" line="2775"/>
+      <location filename="../../CommandConstraints.cpp" line="2809"/>
       <source>Add 'Vertical' constraints</source>
       <translation>'Dikey' kısıtlamalar ekleyin</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2724"/>
-      <location filename="../../CommandConstraints.cpp" line="2787"/>
+      <location filename="../../CommandConstraints.cpp" line="2758"/>
+      <location filename="../../CommandConstraints.cpp" line="2821"/>
       <source>Add Symmetry constraint</source>
       <translation>Simetrik kısıtlama ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2747"/>
-      <location filename="../../CommandConstraints.cpp" line="2919"/>
+      <location filename="../../CommandConstraints.cpp" line="2781"/>
+      <location filename="../../CommandConstraints.cpp" line="2953"/>
       <source>Add Symmetry constraints</source>
       <translation>Simetrik kısıtlamalar ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2792"/>
-      <location filename="../../CommandConstraints.cpp" line="2804"/>
+      <location filename="../../CommandConstraints.cpp" line="2826"/>
+      <location filename="../../CommandConstraints.cpp" line="2838"/>
       <source>Add Distance constraints</source>
       <translation>Mesafe kısıtlamaları ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2850"/>
+      <location filename="../../CommandConstraints.cpp" line="2884"/>
       <source>Add Horizontal constraint</source>
       <translation>Yatay kısıtlama ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2855"/>
+      <location filename="../../CommandConstraints.cpp" line="2889"/>
       <source>Add Vertical constraint</source>
       <translation>Dikey kısıtlama ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2859"/>
-      <location filename="../../CommandConstraints.cpp" line="4534"/>
+      <location filename="../../CommandConstraints.cpp" line="2893"/>
+      <location filename="../../CommandConstraints.cpp" line="4568"/>
       <source>Add Block constraint</source>
       <translation>Kilit kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2874"/>
+      <location filename="../../CommandConstraints.cpp" line="2908"/>
       <source>Add Angle constraint</source>
       <translation>Açı kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2884"/>
-      <location filename="../../CommandConstraints.cpp" line="3007"/>
-      <location filename="../../CommandConstraints.cpp" line="3017"/>
-      <location filename="../../CommandConstraints.cpp" line="3055"/>
+      <location filename="../../CommandConstraints.cpp" line="2918"/>
+      <location filename="../../CommandConstraints.cpp" line="3041"/>
+      <location filename="../../CommandConstraints.cpp" line="3051"/>
+      <location filename="../../CommandConstraints.cpp" line="3089"/>
       <source>Add Equality constraint</source>
       <translation>Eşitlik kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2895"/>
+      <location filename="../../CommandConstraints.cpp" line="2929"/>
       <source>Add Equality constraints</source>
       <translation>Eşitlik kısıtları ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11044"/>
+      <location filename="../../CommandConstraints.cpp" line="11085"/>
       <source>Add Group constraint</source>
       <translation>Grup kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11468"/>
+      <location filename="../../CommandConstraints.cpp" line="11509"/>
       <source>Activate/Deactivate constraints</source>
       <translation>Kısıtlamaları Etkinleştir/Devre Dışı Bırak</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2943"/>
-      <location filename="../../CommandConstraints.cpp" line="2976"/>
+      <location filename="../../CommandConstraints.cpp" line="2977"/>
+      <location filename="../../CommandConstraints.cpp" line="3010"/>
       <source>Add arc angle constraint</source>
       <translation>Yay açısı kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2997"/>
+      <location filename="../../CommandConstraints.cpp" line="3031"/>
       <source>Add concentric and length constraint</source>
       <translation>Eşmerkezlilik ve uzunluk kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3531"/>
+      <location filename="../../CommandConstraints.cpp" line="3565"/>
       <source>Add DistanceX constraint</source>
       <translation>X eksenine uzaklık kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3541"/>
+      <location filename="../../CommandConstraints.cpp" line="3575"/>
       <source>Add DistanceY constraint</source>
       <translation>Y eksenine uzaklık kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4842"/>
-      <location filename="../../CommandConstraints.cpp" line="5021"/>
+      <location filename="../../CommandConstraints.cpp" line="4876"/>
+      <location filename="../../CommandConstraints.cpp" line="5055"/>
       <source>Add point on object constraint</source>
       <translation>'Nesne üzerindeki bir nokta' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2948"/>
-      <location filename="../../CommandConstraints.cpp" line="2980"/>
+      <location filename="../../CommandConstraints.cpp" line="2982"/>
+      <location filename="../../CommandConstraints.cpp" line="3014"/>
       <source>Add arc length constraint</source>
       <translation>Yay uzunluğu kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5408"/>
-      <location filename="../../CommandConstraints.cpp" line="5785"/>
+      <location filename="../../CommandConstraints.cpp" line="5442"/>
+      <location filename="../../CommandConstraints.cpp" line="5819"/>
       <source>Add point to line distance constraint</source>
       <translation>Noktadan doğruya mesafe kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5438"/>
+      <location filename="../../CommandConstraints.cpp" line="5472"/>
       <source>Add point to circle distance constraint</source>
       <translation>Noktadan çembere mesafe kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6026"/>
-      <location filename="../../CommandConstraints.cpp" line="6152"/>
+      <location filename="../../CommandConstraints.cpp" line="6060"/>
+      <location filename="../../CommandConstraints.cpp" line="6186"/>
       <source>Add point to point horizontal distance constraint</source>
       <translation>'Noktadan noktaya yatay mesafe' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6067"/>
+      <location filename="../../CommandConstraints.cpp" line="6101"/>
       <source>Add fixed x-coordinate constraint</source>
       <translation>Sabit x koordinatı kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6326"/>
-      <location filename="../../CommandConstraints.cpp" line="6448"/>
+      <location filename="../../CommandConstraints.cpp" line="6360"/>
+      <location filename="../../CommandConstraints.cpp" line="6482"/>
       <source>Add point to point vertical distance constraint</source>
       <translation>'Noktadan noktaya dikey mesafe' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6364"/>
+      <location filename="../../CommandConstraints.cpp" line="6398"/>
       <source>Add fixed y-coordinate constraint</source>
       <translation>Sabit y koordinatı kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6596"/>
-      <location filename="../../CommandConstraints.cpp" line="6640"/>
+      <location filename="../../CommandConstraints.cpp" line="6630"/>
+      <location filename="../../CommandConstraints.cpp" line="6674"/>
       <source>Add parallel constraint</source>
       <translation>Paralellik kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6761"/>
-      <location filename="../../CommandConstraints.cpp" line="6799"/>
-      <location filename="../../CommandConstraints.cpp" line="6900"/>
-      <location filename="../../CommandConstraints.cpp" line="7064"/>
-      <location filename="../../CommandConstraints.cpp" line="7114"/>
-      <location filename="../../CommandConstraints.cpp" line="7263"/>
-      <location filename="../../CommandConstraints.cpp" line="7312"/>
-      <location filename="../../CommandConstraints.cpp" line="7368"/>
+      <location filename="../../CommandConstraints.cpp" line="6795"/>
+      <location filename="../../CommandConstraints.cpp" line="6833"/>
+      <location filename="../../CommandConstraints.cpp" line="6934"/>
+      <location filename="../../CommandConstraints.cpp" line="7098"/>
+      <location filename="../../CommandConstraints.cpp" line="7148"/>
+      <location filename="../../CommandConstraints.cpp" line="7297"/>
+      <location filename="../../CommandConstraints.cpp" line="7346"/>
+      <location filename="../../CommandConstraints.cpp" line="7402"/>
       <source>Add perpendicular constraint</source>
       <translation>Diklik kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6939"/>
+      <location filename="../../CommandConstraints.cpp" line="6973"/>
       <source>Add perpendicularity constraint</source>
       <translation>Diklik kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7504"/>
+      <location filename="../../CommandConstraints.cpp" line="7538"/>
       <source>Swap coincident+tangency with ptp tangency</source>
       <translation>Çakışıklık+teğetliği noktadan noktaya teğetlik ile değiştir</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7634"/>
-      <location filename="../../CommandConstraints.cpp" line="7735"/>
-      <location filename="../../CommandConstraints.cpp" line="7784"/>
-      <location filename="../../CommandConstraints.cpp" line="7993"/>
-      <location filename="../../CommandConstraints.cpp" line="8179"/>
-      <location filename="../../CommandConstraints.cpp" line="8249"/>
-      <location filename="../../CommandConstraints.cpp" line="8282"/>
+      <location filename="../../CommandConstraints.cpp" line="7668"/>
+      <location filename="../../CommandConstraints.cpp" line="7769"/>
+      <location filename="../../CommandConstraints.cpp" line="7818"/>
+      <location filename="../../CommandConstraints.cpp" line="8027"/>
+      <location filename="../../CommandConstraints.cpp" line="8220"/>
+      <location filename="../../CommandConstraints.cpp" line="8290"/>
+      <location filename="../../CommandConstraints.cpp" line="8323"/>
       <source>Add tangent constraint</source>
       <translation>Teğetlik kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7830"/>
-      <location filename="../../CommandConstraints.cpp" line="7844"/>
-      <location filename="../../CommandConstraints.cpp" line="7858"/>
-      <location filename="../../CommandConstraints.cpp" line="7885"/>
-      <location filename="../../CommandConstraints.cpp" line="7900"/>
-      <location filename="../../CommandConstraints.cpp" line="7927"/>
-      <location filename="../../CommandConstraints.cpp" line="7942"/>
-      <location filename="../../CommandConstraints.cpp" line="7970"/>
-      <location filename="../../CommandConstraints.cpp" line="8066"/>
-      <location filename="../../CommandConstraints.cpp" line="8080"/>
-      <location filename="../../CommandConstraints.cpp" line="8095"/>
-      <location filename="../../CommandConstraints.cpp" line="8122"/>
-      <location filename="../../CommandConstraints.cpp" line="8137"/>
-      <location filename="../../CommandConstraints.cpp" line="8164"/>
+      <location filename="../../CommandConstraints.cpp" line="7864"/>
+      <location filename="../../CommandConstraints.cpp" line="7878"/>
+      <location filename="../../CommandConstraints.cpp" line="7892"/>
+      <location filename="../../CommandConstraints.cpp" line="7919"/>
+      <location filename="../../CommandConstraints.cpp" line="7934"/>
+      <location filename="../../CommandConstraints.cpp" line="7961"/>
+      <location filename="../../CommandConstraints.cpp" line="7976"/>
+      <location filename="../../CommandConstraints.cpp" line="8004"/>
+      <location filename="../../CommandConstraints.cpp" line="8107"/>
+      <location filename="../../CommandConstraints.cpp" line="8121"/>
+      <location filename="../../CommandConstraints.cpp" line="8136"/>
+      <location filename="../../CommandConstraints.cpp" line="8163"/>
+      <location filename="../../CommandConstraints.cpp" line="8178"/>
+      <location filename="../../CommandConstraints.cpp" line="8205"/>
       <source>Add tangent constraint point</source>
       <translation>Teğetlik kısıt noktası ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="2952"/>
-      <location filename="../../CommandConstraints.cpp" line="2956"/>
-      <location filename="../../CommandConstraints.cpp" line="2963"/>
-      <location filename="../../CommandConstraints.cpp" line="2968"/>
-      <location filename="../../CommandConstraints.cpp" line="8501"/>
-      <location filename="../../CommandConstraints.cpp" line="8545"/>
-      <location filename="../../CommandConstraints.cpp" line="8574"/>
-      <location filename="../../CommandConstraints.cpp" line="8651"/>
+      <location filename="../../CommandConstraints.cpp" line="2986"/>
+      <location filename="../../CommandConstraints.cpp" line="2990"/>
+      <location filename="../../CommandConstraints.cpp" line="2997"/>
+      <location filename="../../CommandConstraints.cpp" line="3002"/>
+      <location filename="../../CommandConstraints.cpp" line="8542"/>
+      <location filename="../../CommandConstraints.cpp" line="8586"/>
+      <location filename="../../CommandConstraints.cpp" line="8615"/>
+      <location filename="../../CommandConstraints.cpp" line="8692"/>
       <source>Add radius constraint</source>
       <translation>Yarıçap kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8852"/>
-      <location filename="../../CommandConstraints.cpp" line="8884"/>
-      <location filename="../../CommandConstraints.cpp" line="8905"/>
-      <location filename="../../CommandConstraints.cpp" line="8981"/>
+      <location filename="../../CommandConstraints.cpp" line="8893"/>
+      <location filename="../../CommandConstraints.cpp" line="8925"/>
+      <location filename="../../CommandConstraints.cpp" line="8946"/>
+      <location filename="../../CommandConstraints.cpp" line="9022"/>
       <source>Add diameter constraint</source>
       <translation>Çap kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9177"/>
-      <location filename="../../CommandConstraints.cpp" line="9225"/>
-      <location filename="../../CommandConstraints.cpp" line="9260"/>
-      <location filename="../../CommandConstraints.cpp" line="9349"/>
+      <location filename="../../CommandConstraints.cpp" line="9218"/>
+      <location filename="../../CommandConstraints.cpp" line="9266"/>
+      <location filename="../../CommandConstraints.cpp" line="9301"/>
+      <location filename="../../CommandConstraints.cpp" line="9390"/>
       <source>Add radiam constraint</source>
       <translation>Yarıçap kısıtlaması ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="542"/>
-      <location filename="../../CommandConstraints.cpp" line="9684"/>
-      <location filename="../../CommandConstraints.cpp" line="9800"/>
-      <location filename="../../CommandConstraints.cpp" line="9826"/>
-      <location filename="../../CommandConstraints.cpp" line="9915"/>
-      <location filename="../../CommandConstraints.cpp" line="9954"/>
+      <location filename="../../CommandConstraints.cpp" line="543"/>
+      <location filename="../../CommandConstraints.cpp" line="9725"/>
+      <location filename="../../CommandConstraints.cpp" line="9841"/>
+      <location filename="../../CommandConstraints.cpp" line="9867"/>
+      <location filename="../../CommandConstraints.cpp" line="9956"/>
+      <location filename="../../CommandConstraints.cpp" line="9995"/>
       <source>Add angle constraint</source>
       <translation>Açı kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7527"/>
+      <location filename="../../CommandConstraints.cpp" line="7561"/>
       <source>Swap point on object and tangency with point to curve tangency</source>
       <translation>Nesne üzerindeki nokta/teğetliği, nokta-eğri teğetliği ile değiştir</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10216"/>
-      <location filename="../../CommandConstraints.cpp" line="10271"/>
+      <location filename="../../CommandConstraints.cpp" line="10257"/>
+      <location filename="../../CommandConstraints.cpp" line="10312"/>
       <source>Add equality constraint</source>
       <translation>Eşitlik kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10440"/>
-      <location filename="../../CommandConstraints.cpp" line="10499"/>
-      <location filename="../../CommandConstraints.cpp" line="10520"/>
-      <location filename="../../CommandConstraints.cpp" line="10636"/>
+      <location filename="../../CommandConstraints.cpp" line="10481"/>
+      <location filename="../../CommandConstraints.cpp" line="10540"/>
+      <location filename="../../CommandConstraints.cpp" line="10561"/>
       <location filename="../../CommandConstraints.cpp" line="10677"/>
-      <location filename="../../CommandConstraints.cpp" line="10751"/>
+      <location filename="../../CommandConstraints.cpp" line="10718"/>
+      <location filename="../../CommandConstraints.cpp" line="10792"/>
       <source>Add symmetric constraint</source>
       <translation>Simetriklik kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10913"/>
+      <location filename="../../CommandConstraints.cpp" line="10954"/>
       <source>Add Snell's law constraint</source>
       <translation>'Snell kanunu' kısıtı ekle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11381"/>
+      <location filename="../../CommandConstraints.cpp" line="11422"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Kısıtlamayı sevk/referans olarak değiştir</translation>
     </message>
@@ -683,103 +683,103 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <translation>Yüzeyde yeni bir eskiz oluşturun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="290"/>
+      <location filename="../../Command.cpp" line="291"/>
       <source>Create a new sketch</source>
       <translation>Yeni bir taslak oluştur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="626"/>
       <source>Reorient sketch</source>
       <translation>Eskizi yeniden yönlendir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="835"/>
       <source>Attach sketch</source>
       <translation>Eskiz ekleyin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="842"/>
+      <location filename="../../Command.cpp" line="844"/>
       <source>Detach sketch</source>
       <translation>Eskizi ayır</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="983"/>
       <source>Create a mirrored sketch for each selected sketch</source>
       <translation>Seçilen her eskiz için aynalanmış bir eskiz oluşturun</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1280"/>
+      <location filename="../../Command.cpp" line="1282"/>
       <source>Merge sketches</source>
       <translation>Eskizleri birleştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="138"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="135"/>
       <source>Add sketch line</source>
       <translation>Eskiz çizgisi ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="506"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="514"/>
       <source>Add sketch box</source>
       <translation>Eskiz kutusu ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="285"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="281"/>
       <source>Add sketch arc</source>
       <translation>Eskiz yayı ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="214"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="211"/>
       <source>Add sketch circle</source>
       <translation>Eskiz çemberi ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="213"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="210"/>
       <source>Add sketch ellipse</source>
       <translation>Eskiz elipsi ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="214"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="211"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Eskiz elips yayı ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="213"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="210"/>
       <source>Add sketch arc of hyperbola</source>
       <translation>Eskiz hiperbol yayı ekleyin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="98"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="95"/>
       <source>Add sketch point</source>
       <translation>Eskiz noktası ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="212"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="270"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="209"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="267"/>
       <source>Create fillet</source>
       <translation>Fileto oluştur</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="182"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
       <source>Trim edge</source>
       <translation>Kenar düzeltin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="293"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="290"/>
       <source>Extend edge</source>
       <translation>Kenarı uzat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="160"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="156"/>
       <source>Split edge</source>
       <translation>Kenarı böl</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="184"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="181"/>
       <source>Add external geometry</source>
       <translation>Harici geometri ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="179"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="175"/>
       <source>Add slot</source>
       <translation>Yuva ekle</translation>
     </message>
@@ -819,43 +819,43 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <translation>Eğrileri Birleştir</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="368"/>
+      <location filename="../../CommandSketcherTools.cpp" line="373"/>
       <source>Cut in Sketcher</source>
       <translation>Eskizleyicide Kes</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="413"/>
+      <location filename="../../CommandSketcherTools.cpp" line="418"/>
       <source>Paste in Sketcher</source>
       <translation>Eskizleyicide Yapıştır</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1160"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1165"/>
       <source>Exposing Internal Geometry</source>
       <translation>Dahili Geometriyi Açığa Çıkart</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1363"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1368"/>
       <source>Copy/clone/move geometry</source>
       <translation>Geometriyi kopyala/klonla/taşı</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1948"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1953"/>
       <source>Create copy of geometry</source>
       <translation>Geometrinin kopyasını oluştur</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2198"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2203"/>
       <source>Delete all geometry</source>
       <translation>Tüm geometriyi sil</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2262"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1232"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2267"/>
       <source>Delete all constraints</source>
       <translation>Tüm Kısıtlamaları Sil</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2396"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2401"/>
       <source>Remove Axes Alignment</source>
       <translation>Eksen Hizalamayı Kaldır</translation>
     </message>
@@ -865,7 +865,7 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <translation>Kısıtlamaları diğer sanal alanla değiştirin</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1720"/>
       <source>Update constraint's virtual space</source>
       <translation>Kısıtlamanın sanal alanını güncelleyin</translation>
     </message>
@@ -880,113 +880,118 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <translation type="unfinished">Delete constraints</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1382"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
       <source>Rename sketch constraint</source>
       <translation>Eskiz kısıtlamasını yeniden adlandır</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
       <source>Drag Point</source>
       <translation>Noktayı Sürükle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2107"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2207"/>
       <source>Drag Curve</source>
       <translation>Eğriyi Sürükle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="2108"/>
+      <location filename="../../ViewProviderSketch.cpp" line="2208"/>
       <source>Drag geometries</source>
       <translation>Geometrileri Sürükle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1349"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1410"/>
       <source>Drag Constraint</source>
       <translation>Kısıtlamayı Sürükle</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="11287"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1337"/>
-      <location filename="../../ViewProviderSketch.cpp" line="1598"/>
-      <location filename="../../CommandConstraints.cpp" line="11246"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1659"/>
       <source>Modify sketch constraints</source>
       <translation>Eskiz kısıtlamalarını değiştirin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="182"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="179"/>
       <source>Create a carbon copy</source>
       <translation>Bir kopya oluştur</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="431"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="428"/>
       <source>Offset</source>
       <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="111"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="108"/>
       <source>Add polygon</source>
       <translation>Çokgen ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="206"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="203"/>
       <source>Add sketch arc slot</source>
       <translation>Eskize yay biçimli yuva ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="149"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>Geometrileri Döndür</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="131"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="128"/>
       <source>Scale geometries</source>
       <translation>Geometrileri Ölçeklendir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="122"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="127"/>
       <source>Translate geometries</source>
       <translation>Geometrileri Ötele</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="140"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="137"/>
       <source>Symmetry geometries</source>
       <translation>Geometrileri Simetrikle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="467"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="464"/>
       <source>Add line to sketch polyline</source>
       <translation>Eskiz çokluçizgisine doğru ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="497"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="494"/>
       <source>Add arc to sketch polyline</source>
       <translation>Eskiz çokluçizgisine yay ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="943"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1268"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
       <source>Add sketch polyline</source>
       <translation type="unfinished">Add sketch polyline</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="183"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="249"/>
       <source>Toggle construction geometry</source>
       <translation>Yapı geometrisini aç/kapat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1099"/>
-      <location filename="../../DrawSketchDefaultHandler.h" line="943"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>Otomatik Kısıtlar Ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="99"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="636"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="783"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="96"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="633"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="780"/>
       <source>Add Sketch B-Spline</source>
       <translation>Eskize B-Spline Ekle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="131"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
+      <source>Add sketch arc of parabola</source>
+      <translation type="unfinished">Add sketch arc of parabola</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="130"/>
       <source>Add sketch Text</source>
       <translation>Çizim metni ekle</translation>
     </message>
@@ -994,11 +999,6 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <location filename="../../EditTextDialog.cpp" line="114"/>
       <source>Modify sketch text constraint</source>
       <translation>Çizim metni kısıtlamasını değiştirin</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="173"/>
-      <source>Add sketch arc of parabola</source>
-      <translation type="unfinished">Add sketch arc of parabola</translation>
     </message>
   </context>
   <context>
@@ -1012,54 +1012,54 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2815"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Düğüm çokluğunda herhangi bir değişiklik istemiyorsunuz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2807"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2985"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>B-spline Geometri İndeksi (GeoID) sınırların dışında.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2824"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3001"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Verilen Geometri İndeksi (GeoId) bir B-spline değil.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2836"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Düğüm endeksi sınırların dışındadır. OCC gösterimine göre, ilk düğümün indeks 1'i olduğunu ve sıfır olmadığını unutmayın.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2852"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Çeşitlilik, B-spline'nın derecesinin ötesinde artırılamaz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2863"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Çokluk sıfırdan aşağıya düşürülemez.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2879"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC, maksimum tolerans dahilinde çokluğu azaltamıyor.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2992"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Düğümün çokluğu sıfır olamaz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3014"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Düğüm çokluğu, B-spline derecesinden büyük olamaz.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3024"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Düğüm, B-spline parametre aralığı dışında eklenemez.</translation>
     </message>
@@ -1179,28 +1179,152 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
-      <location filename="../../Command.cpp" line="772"/>
+      <location filename="../../Command.cpp" line="774"/>
       <source>Do not attach</source>
       <translation>İliştirme</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="176"/>
-      <location filename="../../CommandSketcherTools.cpp" line="463"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1107"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1436"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1446"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1508"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2040"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2050"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2114"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2324"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2334"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2381"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2446"/>
+      <location filename="../../CommandConstraints.cpp" line="453"/>
+      <location filename="../../CommandConstraints.cpp" line="460"/>
+      <location filename="../../CommandConstraints.cpp" line="3327"/>
+      <location filename="../../CommandConstraints.cpp" line="3486"/>
+      <location filename="../../CommandConstraints.cpp" line="3502"/>
+      <location filename="../../CommandConstraints.cpp" line="3815"/>
+      <location filename="../../CommandConstraints.cpp" line="4222"/>
+      <location filename="../../CommandConstraints.cpp" line="4249"/>
+      <location filename="../../CommandConstraints.cpp" line="4254"/>
+      <location filename="../../CommandConstraints.cpp" line="4508"/>
+      <location filename="../../CommandConstraints.cpp" line="4541"/>
+      <location filename="../../CommandConstraints.cpp" line="4546"/>
+      <location filename="../../CommandConstraints.cpp" line="4840"/>
+      <location filename="../../CommandConstraints.cpp" line="4870"/>
+      <location filename="../../CommandConstraints.cpp" line="4893"/>
+      <location filename="../../CommandConstraints.cpp" line="4923"/>
+      <location filename="../../CommandConstraints.cpp" line="4940"/>
+      <location filename="../../CommandConstraints.cpp" line="5070"/>
+      <location filename="../../CommandConstraints.cpp" line="5092"/>
+      <location filename="../../CommandConstraints.cpp" line="5121"/>
+      <location filename="../../CommandConstraints.cpp" line="5332"/>
+      <location filename="../../CommandConstraints.cpp" line="5344"/>
+      <location filename="../../CommandConstraints.cpp" line="5593"/>
+      <location filename="../../CommandConstraints.cpp" line="5601"/>
+      <location filename="../../CommandConstraints.cpp" line="5667"/>
+      <location filename="../../CommandConstraints.cpp" line="5793"/>
+      <location filename="../../CommandConstraints.cpp" line="5898"/>
+      <location filename="../../CommandConstraints.cpp" line="5983"/>
+      <location filename="../../CommandConstraints.cpp" line="5996"/>
+      <location filename="../../CommandConstraints.cpp" line="6029"/>
+      <location filename="../../CommandConstraints.cpp" line="6091"/>
+      <location filename="../../CommandConstraints.cpp" line="6127"/>
+      <location filename="../../CommandConstraints.cpp" line="6162"/>
+      <location filename="../../CommandConstraints.cpp" line="6284"/>
+      <location filename="../../CommandConstraints.cpp" line="6297"/>
+      <location filename="../../CommandConstraints.cpp" line="6328"/>
+      <location filename="../../CommandConstraints.cpp" line="6390"/>
+      <location filename="../../CommandConstraints.cpp" line="6424"/>
+      <location filename="../../CommandConstraints.cpp" line="6458"/>
+      <location filename="../../CommandConstraints.cpp" line="6580"/>
+      <location filename="../../CommandConstraints.cpp" line="6615"/>
+      <location filename="../../CommandConstraints.cpp" line="6624"/>
+      <location filename="../../CommandConstraints.cpp" line="6663"/>
+      <location filename="../../CommandConstraints.cpp" line="6762"/>
+      <location filename="../../CommandConstraints.cpp" line="6774"/>
+      <location filename="../../CommandConstraints.cpp" line="6828"/>
+      <location filename="../../CommandConstraints.cpp" line="6906"/>
+      <location filename="../../CommandConstraints.cpp" line="6916"/>
+      <location filename="../../CommandConstraints.cpp" line="6957"/>
+      <location filename="../../CommandConstraints.cpp" line="6968"/>
+      <location filename="../../CommandConstraints.cpp" line="6998"/>
+      <location filename="../../CommandConstraints.cpp" line="7019"/>
+      <location filename="../../CommandConstraints.cpp" line="7197"/>
+      <location filename="../../CommandConstraints.cpp" line="7218"/>
+      <location filename="../../CommandConstraints.cpp" line="7397"/>
+      <location filename="../../CommandConstraints.cpp" line="7617"/>
+      <location filename="../../CommandConstraints.cpp" line="7629"/>
+      <location filename="../../CommandConstraints.cpp" line="7663"/>
+      <location filename="../../CommandConstraints.cpp" line="7734"/>
+      <location filename="../../CommandConstraints.cpp" line="7754"/>
+      <location filename="../../CommandConstraints.cpp" line="7763"/>
+      <location filename="../../CommandConstraints.cpp" line="7792"/>
+      <location filename="../../CommandConstraints.cpp" line="7801"/>
+      <location filename="../../CommandConstraints.cpp" line="7812"/>
+      <location filename="../../CommandConstraints.cpp" line="7840"/>
+      <location filename="../../CommandConstraints.cpp" line="8021"/>
+      <location filename="../../CommandConstraints.cpp" line="8064"/>
+      <location filename="../../CommandConstraints.cpp" line="8081"/>
+      <location filename="../../CommandConstraints.cpp" line="8273"/>
+      <location filename="../../CommandConstraints.cpp" line="8318"/>
+      <location filename="../../CommandConstraints.cpp" line="8443"/>
+      <location filename="../../CommandConstraints.cpp" line="8456"/>
+      <location filename="../../CommandConstraints.cpp" line="8522"/>
+      <location filename="../../CommandConstraints.cpp" line="8530"/>
+      <location filename="../../CommandConstraints.cpp" line="8686"/>
+      <location filename="../../CommandConstraints.cpp" line="8806"/>
+      <location filename="../../CommandConstraints.cpp" line="8819"/>
+      <location filename="../../CommandConstraints.cpp" line="8864"/>
+      <location filename="../../CommandConstraints.cpp" line="8882"/>
+      <location filename="../../CommandConstraints.cpp" line="9008"/>
+      <location filename="../../CommandConstraints.cpp" line="9016"/>
+      <location filename="../../CommandConstraints.cpp" line="9124"/>
+      <location filename="../../CommandConstraints.cpp" line="9137"/>
+      <location filename="../../CommandConstraints.cpp" line="9198"/>
+      <location filename="../../CommandConstraints.cpp" line="9206"/>
+      <location filename="../../CommandConstraints.cpp" line="9384"/>
+      <location filename="../../CommandConstraints.cpp" line="9669"/>
+      <location filename="../../CommandConstraints.cpp" line="9682"/>
+      <location filename="../../CommandConstraints.cpp" line="9718"/>
+      <location filename="../../CommandConstraints.cpp" line="9816"/>
+      <location filename="../../CommandConstraints.cpp" line="9829"/>
+      <location filename="../../CommandConstraints.cpp" line="9894"/>
+      <location filename="../../CommandConstraints.cpp" line="9988"/>
+      <location filename="../../CommandConstraints.cpp" line="10142"/>
+      <location filename="../../CommandConstraints.cpp" line="10156"/>
+      <location filename="../../CommandConstraints.cpp" line="10174"/>
+      <location filename="../../CommandConstraints.cpp" line="10181"/>
+      <location filename="../../CommandConstraints.cpp" line="10202"/>
+      <location filename="../../CommandConstraints.cpp" line="10235"/>
+      <location filename="../../CommandConstraints.cpp" line="10251"/>
+      <location filename="../../CommandConstraints.cpp" line="10306"/>
+      <location filename="../../CommandConstraints.cpp" line="10402"/>
+      <location filename="../../CommandConstraints.cpp" line="10417"/>
+      <location filename="../../CommandConstraints.cpp" line="10450"/>
+      <location filename="../../CommandConstraints.cpp" line="10461"/>
+      <location filename="../../CommandConstraints.cpp" line="10474"/>
+      <location filename="../../CommandConstraints.cpp" line="10502"/>
+      <location filename="../../CommandConstraints.cpp" line="10533"/>
+      <location filename="../../CommandConstraints.cpp" line="10583"/>
+      <location filename="../../CommandConstraints.cpp" line="10614"/>
+      <location filename="../../CommandConstraints.cpp" line="10629"/>
+      <location filename="../../CommandConstraints.cpp" line="10670"/>
+      <location filename="../../CommandConstraints.cpp" line="10694"/>
+      <location filename="../../CommandConstraints.cpp" line="10759"/>
+      <location filename="../../CommandConstraints.cpp" line="10769"/>
+      <location filename="../../CommandConstraints.cpp" line="10779"/>
+      <location filename="../../CommandConstraints.cpp" line="10855"/>
+      <location filename="../../CommandConstraints.cpp" line="10865"/>
+      <location filename="../../CommandConstraints.cpp" line="10890"/>
+      <location filename="../../CommandConstraints.cpp" line="10900"/>
+      <location filename="../../CommandConstraints.cpp" line="10918"/>
+      <location filename="../../CommandConstraints.cpp" line="11046"/>
+      <location filename="../../CommandConstraints.cpp" line="11056"/>
+      <location filename="../../CommandConstraints.cpp" line="11292"/>
+      <location filename="../../CommandConstraints.cpp" line="11368"/>
+      <location filename="../../CommandConstraints.cpp" line="11380"/>
+      <location filename="../../CommandConstraints.cpp" line="11416"/>
+      <location filename="../../CommandConstraints.cpp" line="11491"/>
+      <location filename="../../CommandConstraints.cpp" line="11503"/>
+      <location filename="../../CommandSketcherTools.cpp" line="468"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1112"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1441"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1451"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1513"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2045"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2055"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2119"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2329"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2339"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2386"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2451"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="171"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="329"/>
@@ -1210,140 +1334,17 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <location filename="../../CommandSketcherBSpline.cpp" line="634"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1023"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1144"/>
-      <location filename="../../CommandConstraints.cpp" line="452"/>
-      <location filename="../../CommandConstraints.cpp" line="459"/>
-      <location filename="../../CommandConstraints.cpp" line="3293"/>
-      <location filename="../../CommandConstraints.cpp" line="3452"/>
-      <location filename="../../CommandConstraints.cpp" line="3468"/>
-      <location filename="../../CommandConstraints.cpp" line="3781"/>
-      <location filename="../../CommandConstraints.cpp" line="4188"/>
-      <location filename="../../CommandConstraints.cpp" line="4215"/>
-      <location filename="../../CommandConstraints.cpp" line="4220"/>
-      <location filename="../../CommandConstraints.cpp" line="4474"/>
-      <location filename="../../CommandConstraints.cpp" line="4507"/>
-      <location filename="../../CommandConstraints.cpp" line="4512"/>
-      <location filename="../../CommandConstraints.cpp" line="4806"/>
-      <location filename="../../CommandConstraints.cpp" line="4836"/>
-      <location filename="../../CommandConstraints.cpp" line="4859"/>
-      <location filename="../../CommandConstraints.cpp" line="4889"/>
-      <location filename="../../CommandConstraints.cpp" line="4906"/>
-      <location filename="../../CommandConstraints.cpp" line="5036"/>
-      <location filename="../../CommandConstraints.cpp" line="5058"/>
-      <location filename="../../CommandConstraints.cpp" line="5087"/>
-      <location filename="../../CommandConstraints.cpp" line="5298"/>
-      <location filename="../../CommandConstraints.cpp" line="5310"/>
-      <location filename="../../CommandConstraints.cpp" line="5559"/>
-      <location filename="../../CommandConstraints.cpp" line="5567"/>
-      <location filename="../../CommandConstraints.cpp" line="5633"/>
-      <location filename="../../CommandConstraints.cpp" line="5759"/>
-      <location filename="../../CommandConstraints.cpp" line="5864"/>
-      <location filename="../../CommandConstraints.cpp" line="5949"/>
-      <location filename="../../CommandConstraints.cpp" line="5962"/>
-      <location filename="../../CommandConstraints.cpp" line="5995"/>
-      <location filename="../../CommandConstraints.cpp" line="6057"/>
-      <location filename="../../CommandConstraints.cpp" line="6093"/>
-      <location filename="../../CommandConstraints.cpp" line="6128"/>
-      <location filename="../../CommandConstraints.cpp" line="6250"/>
-      <location filename="../../CommandConstraints.cpp" line="6263"/>
-      <location filename="../../CommandConstraints.cpp" line="6294"/>
-      <location filename="../../CommandConstraints.cpp" line="6356"/>
-      <location filename="../../CommandConstraints.cpp" line="6390"/>
-      <location filename="../../CommandConstraints.cpp" line="6424"/>
-      <location filename="../../CommandConstraints.cpp" line="6546"/>
-      <location filename="../../CommandConstraints.cpp" line="6581"/>
-      <location filename="../../CommandConstraints.cpp" line="6590"/>
-      <location filename="../../CommandConstraints.cpp" line="6629"/>
-      <location filename="../../CommandConstraints.cpp" line="6728"/>
-      <location filename="../../CommandConstraints.cpp" line="6740"/>
-      <location filename="../../CommandConstraints.cpp" line="6794"/>
-      <location filename="../../CommandConstraints.cpp" line="6872"/>
-      <location filename="../../CommandConstraints.cpp" line="6882"/>
-      <location filename="../../CommandConstraints.cpp" line="6923"/>
-      <location filename="../../CommandConstraints.cpp" line="6934"/>
-      <location filename="../../CommandConstraints.cpp" line="6964"/>
-      <location filename="../../CommandConstraints.cpp" line="6985"/>
-      <location filename="../../CommandConstraints.cpp" line="7163"/>
-      <location filename="../../CommandConstraints.cpp" line="7184"/>
-      <location filename="../../CommandConstraints.cpp" line="7363"/>
-      <location filename="../../CommandConstraints.cpp" line="7583"/>
-      <location filename="../../CommandConstraints.cpp" line="7595"/>
-      <location filename="../../CommandConstraints.cpp" line="7629"/>
-      <location filename="../../CommandConstraints.cpp" line="7700"/>
-      <location filename="../../CommandConstraints.cpp" line="7720"/>
-      <location filename="../../CommandConstraints.cpp" line="7729"/>
-      <location filename="../../CommandConstraints.cpp" line="7758"/>
-      <location filename="../../CommandConstraints.cpp" line="7767"/>
-      <location filename="../../CommandConstraints.cpp" line="7778"/>
-      <location filename="../../CommandConstraints.cpp" line="7806"/>
-      <location filename="../../CommandConstraints.cpp" line="7987"/>
-      <location filename="../../CommandConstraints.cpp" line="8040"/>
-      <location filename="../../CommandConstraints.cpp" line="8232"/>
-      <location filename="../../CommandConstraints.cpp" line="8277"/>
-      <location filename="../../CommandConstraints.cpp" line="8402"/>
-      <location filename="../../CommandConstraints.cpp" line="8415"/>
-      <location filename="../../CommandConstraints.cpp" line="8481"/>
-      <location filename="../../CommandConstraints.cpp" line="8489"/>
-      <location filename="../../CommandConstraints.cpp" line="8645"/>
-      <location filename="../../CommandConstraints.cpp" line="8765"/>
-      <location filename="../../CommandConstraints.cpp" line="8778"/>
-      <location filename="../../CommandConstraints.cpp" line="8823"/>
-      <location filename="../../CommandConstraints.cpp" line="8841"/>
-      <location filename="../../CommandConstraints.cpp" line="8967"/>
-      <location filename="../../CommandConstraints.cpp" line="8975"/>
-      <location filename="../../CommandConstraints.cpp" line="9083"/>
-      <location filename="../../CommandConstraints.cpp" line="9096"/>
-      <location filename="../../CommandConstraints.cpp" line="9157"/>
-      <location filename="../../CommandConstraints.cpp" line="9165"/>
-      <location filename="../../CommandConstraints.cpp" line="9343"/>
-      <location filename="../../CommandConstraints.cpp" line="9628"/>
-      <location filename="../../CommandConstraints.cpp" line="9641"/>
-      <location filename="../../CommandConstraints.cpp" line="9677"/>
-      <location filename="../../CommandConstraints.cpp" line="9775"/>
-      <location filename="../../CommandConstraints.cpp" line="9788"/>
-      <location filename="../../CommandConstraints.cpp" line="9853"/>
-      <location filename="../../CommandConstraints.cpp" line="9947"/>
-      <location filename="../../CommandConstraints.cpp" line="10101"/>
-      <location filename="../../CommandConstraints.cpp" line="10115"/>
-      <location filename="../../CommandConstraints.cpp" line="10133"/>
-      <location filename="../../CommandConstraints.cpp" line="10140"/>
-      <location filename="../../CommandConstraints.cpp" line="10161"/>
-      <location filename="../../CommandConstraints.cpp" line="10194"/>
-      <location filename="../../CommandConstraints.cpp" line="10210"/>
-      <location filename="../../CommandConstraints.cpp" line="10265"/>
-      <location filename="../../CommandConstraints.cpp" line="10361"/>
-      <location filename="../../CommandConstraints.cpp" line="10376"/>
-      <location filename="../../CommandConstraints.cpp" line="10409"/>
-      <location filename="../../CommandConstraints.cpp" line="10420"/>
-      <location filename="../../CommandConstraints.cpp" line="10433"/>
-      <location filename="../../CommandConstraints.cpp" line="10461"/>
-      <location filename="../../CommandConstraints.cpp" line="10492"/>
-      <location filename="../../CommandConstraints.cpp" line="10542"/>
-      <location filename="../../CommandConstraints.cpp" line="10573"/>
-      <location filename="../../CommandConstraints.cpp" line="10588"/>
-      <location filename="../../CommandConstraints.cpp" line="10629"/>
-      <location filename="../../CommandConstraints.cpp" line="10653"/>
-      <location filename="../../CommandConstraints.cpp" line="10718"/>
-      <location filename="../../CommandConstraints.cpp" line="10728"/>
-      <location filename="../../CommandConstraints.cpp" line="10738"/>
-      <location filename="../../CommandConstraints.cpp" line="10814"/>
-      <location filename="../../CommandConstraints.cpp" line="10824"/>
-      <location filename="../../CommandConstraints.cpp" line="10849"/>
-      <location filename="../../CommandConstraints.cpp" line="10859"/>
-      <location filename="../../CommandConstraints.cpp" line="10877"/>
-      <location filename="../../CommandConstraints.cpp" line="11005"/>
-      <location filename="../../CommandConstraints.cpp" line="11015"/>
-      <location filename="../../CommandConstraints.cpp" line="11251"/>
-      <location filename="../../CommandConstraints.cpp" line="11327"/>
-      <location filename="../../CommandConstraints.cpp" line="11339"/>
-      <location filename="../../CommandConstraints.cpp" line="11375"/>
-      <location filename="../../CommandConstraints.cpp" line="11450"/>
-      <location filename="../../CommandConstraints.cpp" line="11462"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="116"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="127"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="231"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="242"/>
       <source>Wrong selection</source>
       <translation>Yanlış seçim</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="166"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="177"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="232"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="243"/>
       <source>Select edges from the sketch</source>
       <translation>Eskizden kenarları seçin</translation>
     </message>
@@ -1358,322 +1359,322 @@ geçersiz kısıtlar ve dejenere geometri olup olmadığını denetleyerek eskiz
       <translation>Boyutsal kısıtlama</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="453"/>
+      <location filename="../../CommandConstraints.cpp" line="454"/>
       <source>Cannot add a constraint between two external geometries.</source>
       <translation>İki harici geometri arasına bir kısıt eklenemez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="460"/>
+      <location filename="../../CommandConstraints.cpp" line="461"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
       <translation>İki sabit geometri arasına kısıtlama eklenemez. Sabit geometriler arasında dış geometri, bloke geometri ve B-spline düğüm noktaları gibi özel noktalar bulunur.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1016"/>
+      <location filename="../../CommandConstraints.cpp" line="1033"/>
       <source>Sketcher Constraint Substitution</source>
       <translation>Sketcher Kısıtlaması Değişimi</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1128"/>
+      <location filename="../../CommandConstraints.cpp" line="1145"/>
       <source>One of the selected has to be on the sketch.</source>
       <translation>Seçilenlerden biri eskiz üzerinde olmalı.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3782"/>
+      <location filename="../../CommandConstraints.cpp" line="3816"/>
       <source>Select an edge from the sketch.</source>
       <translation>Taslaktan bir kenar seç</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3746"/>
-      <location filename="../../CommandConstraints.cpp" line="3755"/>
-      <location filename="../../CommandConstraints.cpp" line="3807"/>
-      <location filename="../../CommandConstraints.cpp" line="3831"/>
-      <location filename="../../CommandConstraints.cpp" line="3885"/>
+      <location filename="../../CommandConstraints.cpp" line="3780"/>
+      <location filename="../../CommandConstraints.cpp" line="3789"/>
+      <location filename="../../CommandConstraints.cpp" line="3841"/>
+      <location filename="../../CommandConstraints.cpp" line="3865"/>
       <location filename="../../CommandConstraints.cpp" line="3919"/>
+      <location filename="../../CommandConstraints.cpp" line="3953"/>
       <source>Impossible constraint</source>
       <translation>İmkansız kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3808"/>
-      <location filename="../../CommandConstraints.cpp" line="3920"/>
+      <location filename="../../CommandConstraints.cpp" line="3842"/>
+      <location filename="../../CommandConstraints.cpp" line="3954"/>
       <source>The selected edge is not a line segment.</source>
       <translation>Seçilen kenar bir doğru parçası değil.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3738"/>
-      <location filename="../../CommandConstraints.cpp" line="4524"/>
-      <location filename="../../CommandConstraints.cpp" line="4576"/>
+      <location filename="../../CommandConstraints.cpp" line="3772"/>
+      <location filename="../../CommandConstraints.cpp" line="4558"/>
+      <location filename="../../CommandConstraints.cpp" line="4610"/>
       <source>Double constraint</source>
       <translation>Çift kısıtlama</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3739"/>
+      <location filename="../../CommandConstraints.cpp" line="3773"/>
       <source>The selected edge already has a horizontal constraint!</source>
       <translation>Seçilen kenar zaten yatay bir kısıtlamaya sahip!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3747"/>
+      <location filename="../../CommandConstraints.cpp" line="3781"/>
       <source>The selected edge already has a vertical constraint!</source>
       <translation>Seçilen kenar zaten dikey bir kısıtlamaya sahip!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3886"/>
+      <location filename="../../CommandConstraints.cpp" line="3920"/>
       <source>There are more than one fixed points selected. Select a maximum of one fixed point!</source>
       <translation>Seçilen birden fazla sabit nokta vardır. En fazla bir tane sabit nokta seçin!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4189"/>
-      <location filename="../../CommandConstraints.cpp" line="4475"/>
-      <location filename="../../CommandConstraints.cpp" line="5299"/>
+      <location filename="../../CommandConstraints.cpp" line="4223"/>
+      <location filename="../../CommandConstraints.cpp" line="4509"/>
+      <location filename="../../CommandConstraints.cpp" line="5333"/>
       <source>Select vertices from the sketch.</source>
       <translation>Eskiden krokileri seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4216"/>
+      <location filename="../../CommandConstraints.cpp" line="4250"/>
       <source>Select one vertex from the sketch other than the origin.</source>
       <translation>Köşeden başka bir taslaktan bir köşe seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4221"/>
+      <location filename="../../CommandConstraints.cpp" line="4255"/>
       <source>Select only vertices from the sketch. The last selected vertex may be the origin.</source>
       <translation>Eskiden sadece köşeleri seçin. Son seçilen köşe orijin olabili.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4488"/>
+      <location filename="../../CommandConstraints.cpp" line="4522"/>
       <source>Wrong solver status</source>
       <translation>Yanlış çözücü durumu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4508"/>
+      <location filename="../../CommandConstraints.cpp" line="4542"/>
       <source>Select one edge from the sketch.</source>
       <translation>Eskizden bir kenar seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4513"/>
+      <location filename="../../CommandConstraints.cpp" line="4547"/>
       <source>Select only edges from the sketch.</source>
       <translation>Eskizden sadece kenarları seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4890"/>
+      <location filename="../../CommandConstraints.cpp" line="4924"/>
       <source>None of the selected points were constrained onto the respective curves, because they are part of the same element, they are both external geometry, or the edge is not eligible.</source>
       <translation>Seçilen noktaların hiçbiri ilgili eğrilere kısıtlanmadı; çünkü aynı öğenin parçası olabilirler, ikisi de harici geometri olabilir ya da kenar uygun değil.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7988"/>
+      <location filename="../../CommandConstraints.cpp" line="8022"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
       <translation>B-spline için yalnızca nokta üzerinden teğetlik desteklenir.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8490"/>
-      <location filename="../../CommandConstraints.cpp" line="9166"/>
+      <location filename="../../CommandConstraints.cpp" line="8531"/>
+      <location filename="../../CommandConstraints.cpp" line="9207"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
       <translation>Eskizden ya bir veya daha fazla B-spline kutbu ya da bir veya daha fazla yay/çember seçin; karışık seçim yapmayın.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10362"/>
-      <location filename="../../CommandConstraints.cpp" line="10377"/>
-      <location filename="../../CommandConstraints.cpp" line="10462"/>
-      <location filename="../../CommandConstraints.cpp" line="10543"/>
-      <location filename="../../CommandConstraints.cpp" line="10654"/>
+      <location filename="../../CommandConstraints.cpp" line="10403"/>
+      <location filename="../../CommandConstraints.cpp" line="10418"/>
+      <location filename="../../CommandConstraints.cpp" line="10503"/>
+      <location filename="../../CommandConstraints.cpp" line="10584"/>
+      <location filename="../../CommandConstraints.cpp" line="10695"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
       <translation>Çizim alanında simetrik bir nokta ve bir öğe veya bir simetrik hat ve bir öğe, bir simetrik nokta ve iki nokta yada bir simetrik hat ve iki nokta seç.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10410"/>
-      <location filename="../../CommandConstraints.cpp" line="10589"/>
-      <location filename="../../CommandConstraints.cpp" line="10729"/>
+      <location filename="../../CommandConstraints.cpp" line="10451"/>
+      <location filename="../../CommandConstraints.cpp" line="10630"/>
+      <location filename="../../CommandConstraints.cpp" line="10770"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
       <translation>Seçilen ilk elemanın uç noktası olmadığı için simetri kısıtlaması eklenemiyor. Bunun yerine bir çizgi veya açık bir eğri seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10421"/>
-      <location filename="../../CommandConstraints.cpp" line="10739"/>
+      <location filename="../../CommandConstraints.cpp" line="10462"/>
+      <location filename="../../CommandConstraints.cpp" line="10780"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
       <translation>İkinci seçilen öğe bir çizgi olmadığı için simetri kısıtlaması eklenemiyor. Bunun yerine bir çizgi veya eksen seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10434"/>
-      <location filename="../../CommandConstraints.cpp" line="10574"/>
+      <location filename="../../CommandConstraints.cpp" line="10475"/>
+      <location filename="../../CommandConstraints.cpp" line="10615"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
       <translation>Bir eleman ile uç noktaları arasına simetri kısıtlaması eklenemez!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10719"/>
+      <location filename="../../CommandConstraints.cpp" line="10760"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
       <translation>Bir öğe ile kendisi arasına simetri kısıtlaması eklenemez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10799"/>
+      <location filename="../../CommandConstraints.cpp" line="10840"/>
       <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second to n2, and the value sets the ratio n2/n1.</source>
       <comment>Constraint_SnellsLaw</comment>
       <translation>Işın gibi davranacak doğruların iki uç noktasını ve bir sınırı temsil eden bir kenarı seçin. İlk seçilen nokta n1 indeksine, ikincisi n2'ye karşılık gelir; değer n2/n1 oranını belirler.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10825"/>
+      <location filename="../../CommandConstraints.cpp" line="10866"/>
       <source>Number of selected objects is not 3</source>
       <translation>Seçilen nesne sayısı 3 değil</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="1062"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="623"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1185"/>
-      <location filename="../../CommandConstraints.cpp" line="1045"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4739"/>
+      <location filename="../../CommandConstraints.cpp" line="4773"/>
       <source>Endpoint to endpoint tangency was applied instead.</source>
       <translation>Bunun yerine, uç noktalar arasında teğetsel bir kısıtlama uygulandı.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4907"/>
+      <location filename="../../CommandConstraints.cpp" line="4941"/>
       <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Çakışıklık kısıtı için eskizden iki veya daha fazla köşe seçin; ya da eşmerkezlilik kısıtı için iki veya daha fazla çember, elips, yay veya elips yayı seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5088"/>
+      <location filename="../../CommandConstraints.cpp" line="5122"/>
       <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
       <translation>Çakışıklık kısıtı için eskizden iki köşe seçin; ya da eşmerkezlilik kısıtı için iki çember, elips, yay veya elips yayı seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5311"/>
+      <location filename="../../CommandConstraints.cpp" line="5345"/>
       <source>Select exactly one line or one point and one line or two points from the sketch.</source>
       <translation>Çizimden tam olarak bir çizgi veya bir nokta ve bir çizgi veya iki nokta seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5568"/>
+      <location filename="../../CommandConstraints.cpp" line="5602"/>
       <source>Cannot add a length constraint on an axis!</source>
       <translation>Bir eksende bir uzunluk kısıtı eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5634"/>
-      <location filename="../../CommandConstraints.cpp" line="5865"/>
+      <location filename="../../CommandConstraints.cpp" line="5668"/>
+      <location filename="../../CommandConstraints.cpp" line="5899"/>
       <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
       <translation>Eskizden tam olarak bir doğru; ya da bir nokta ve bir doğru; ya da iki nokta; ya da iki çember seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5760"/>
+      <location filename="../../CommandConstraints.cpp" line="5794"/>
       <source>This constraint does not make sense for non-linear curves.</source>
       <translation>Bu kısıt doğrusal olmayan eğriler için anlamlı değil.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4691"/>
+      <location filename="../../CommandConstraints.cpp" line="4725"/>
       <source>Endpoint to edge tangency was applied instead.</source>
       <translation>Bunun yerine, kenar teğetliğine bitiş noktası uygulandı.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5950"/>
-      <location filename="../../CommandConstraints.cpp" line="6251"/>
-      <location filename="../../CommandConstraints.cpp" line="8403"/>
-      <location filename="../../CommandConstraints.cpp" line="8766"/>
-      <location filename="../../CommandConstraints.cpp" line="9084"/>
-      <location filename="../../CommandConstraints.cpp" line="9629"/>
+      <location filename="../../CommandConstraints.cpp" line="5984"/>
+      <location filename="../../CommandConstraints.cpp" line="6285"/>
+      <location filename="../../CommandConstraints.cpp" line="8444"/>
+      <location filename="../../CommandConstraints.cpp" line="8807"/>
+      <location filename="../../CommandConstraints.cpp" line="9125"/>
+      <location filename="../../CommandConstraints.cpp" line="9670"/>
       <source>Select the right things from the sketch.</source>
       <translation>Eskiden eskizlerden birini seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4860"/>
-      <location filename="../../CommandConstraints.cpp" line="5037"/>
-      <location filename="../../CommandConstraints.cpp" line="6795"/>
-      <location filename="../../CommandConstraints.cpp" line="6935"/>
-      <location filename="../../CommandConstraints.cpp" line="6986"/>
-      <location filename="../../CommandConstraints.cpp" line="7185"/>
-      <location filename="../../CommandConstraints.cpp" line="7364"/>
-      <location filename="../../CommandConstraints.cpp" line="7630"/>
-      <location filename="../../CommandConstraints.cpp" line="7779"/>
-      <location filename="../../CommandConstraints.cpp" line="7807"/>
-      <location filename="../../CommandConstraints.cpp" line="8041"/>
-      <location filename="../../CommandConstraints.cpp" line="8278"/>
-      <location filename="../../CommandConstraints.cpp" line="8824"/>
-      <location filename="../../CommandConstraints.cpp" line="8976"/>
-      <location filename="../../CommandConstraints.cpp" line="9678"/>
-      <location filename="../../CommandConstraints.cpp" line="9776"/>
-      <location filename="../../CommandConstraints.cpp" line="9948"/>
-      <location filename="../../CommandConstraints.cpp" line="10878"/>
+      <location filename="../../CommandConstraints.cpp" line="4894"/>
+      <location filename="../../CommandConstraints.cpp" line="5071"/>
+      <location filename="../../CommandConstraints.cpp" line="6829"/>
+      <location filename="../../CommandConstraints.cpp" line="6969"/>
+      <location filename="../../CommandConstraints.cpp" line="7020"/>
+      <location filename="../../CommandConstraints.cpp" line="7219"/>
+      <location filename="../../CommandConstraints.cpp" line="7398"/>
+      <location filename="../../CommandConstraints.cpp" line="7664"/>
+      <location filename="../../CommandConstraints.cpp" line="7813"/>
+      <location filename="../../CommandConstraints.cpp" line="7841"/>
+      <location filename="../../CommandConstraints.cpp" line="8082"/>
+      <location filename="../../CommandConstraints.cpp" line="8319"/>
+      <location filename="../../CommandConstraints.cpp" line="8865"/>
+      <location filename="../../CommandConstraints.cpp" line="9017"/>
+      <location filename="../../CommandConstraints.cpp" line="9719"/>
+      <location filename="../../CommandConstraints.cpp" line="9817"/>
+      <location filename="../../CommandConstraints.cpp" line="9989"/>
+      <location filename="../../CommandConstraints.cpp" line="10919"/>
       <source>Select an edge that is not a B-spline weight.</source>
       <translation>B-spline ağırlığı olmayan bir kenar seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4781"/>
+      <location filename="../../CommandConstraints.cpp" line="4815"/>
       <source>Select either several points, or several conics for concentricity.</source>
       <translation>Eşmerkezlilik için ya birkaç nokta ya da birkaç konik seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4784"/>
+      <location filename="../../CommandConstraints.cpp" line="4818"/>
       <source>Select either one point and several curves, or one curve and several points</source>
       <translation>Ya bir nokta ve birkaç eğri ya da bir eğri ve birkaç nokta seçin</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4787"/>
+      <location filename="../../CommandConstraints.cpp" line="4821"/>
       <source>Select either one point and several curves or one curve and several points for pointOnObject, or several points for coincidence, or several conics for concentricity.</source>
       <translation>pointOnObject için ya bir nokta ve birkaç eğri ya da bir eğri ve birkaç nokta seçin; çakışıklık için birkaç nokta; eşmerkezlilik için de birkaç konik seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5059"/>
+      <location filename="../../CommandConstraints.cpp" line="5093"/>
       <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
       <translation>Seçilen noktalardan hiçbiri ilgili eğrilere aynı elemanın parçaları olduğu için ya da ikisi de harici geometri olduğu için kısıtlanmış değildi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5560"/>
+      <location filename="../../CommandConstraints.cpp" line="5594"/>
       <source>Cannot add a length constraint on this selection!</source>
       <translation>Bu seçimde uzunluk kısıtı eklenemez!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5963"/>
-      <location filename="../../CommandConstraints.cpp" line="6094"/>
-      <location filename="../../CommandConstraints.cpp" line="6264"/>
-      <location filename="../../CommandConstraints.cpp" line="6391"/>
+      <location filename="../../CommandConstraints.cpp" line="5997"/>
+      <location filename="../../CommandConstraints.cpp" line="6128"/>
+      <location filename="../../CommandConstraints.cpp" line="6298"/>
+      <location filename="../../CommandConstraints.cpp" line="6425"/>
       <source>Select exactly one line or up to two points from the sketch.</source>
       <translation>Çizimden tam olarak bir çizgi veya en fazla iki nokta seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5996"/>
+      <location filename="../../CommandConstraints.cpp" line="6030"/>
       <source>Cannot add a horizontal length constraint on an axis!</source>
       <translation>Bir eksene yatay uzunluk kısıtlaması eklenemez!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6058"/>
+      <location filename="../../CommandConstraints.cpp" line="6092"/>
       <source>Cannot add a fixed x-coordinate constraint on the origin point!</source>
       <translation>Orijin noktasına sabit bir x-koordinat kısıtlaması eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6129"/>
-      <location filename="../../CommandConstraints.cpp" line="6425"/>
+      <location filename="../../CommandConstraints.cpp" line="6163"/>
+      <location filename="../../CommandConstraints.cpp" line="6459"/>
       <source>This constraint only makes sense on a line segment or a pair of points.</source>
       <translation>Bu kısıt yalnızca bir doğru parçasında veya iki noktada anlamlıdır.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6295"/>
+      <location filename="../../CommandConstraints.cpp" line="6329"/>
       <source>Cannot add a vertical length constraint on an axis!</source>
       <translation>Bir eksene dikey uzunluk kısıtı eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6357"/>
+      <location filename="../../CommandConstraints.cpp" line="6391"/>
       <source>Cannot add a fixed y-coordinate constraint on the origin point!</source>
       <translation>Orijin noktasına sabit bir y-koordinat kısıtlaması eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6547"/>
+      <location filename="../../CommandConstraints.cpp" line="6581"/>
       <source>Select two or more lines from the sketch.</source>
       <translation>Eskizden iki veya daha fazla çizgi seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6582"/>
+      <location filename="../../CommandConstraints.cpp" line="6616"/>
       <source>One selected edge is not a valid line.</source>
       <translation>Seçilen kenarlardan biri geçerli bir doğru değil.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6591"/>
-      <location filename="../../CommandConstraints.cpp" line="10116"/>
+      <location filename="../../CommandConstraints.cpp" line="6625"/>
+      <location filename="../../CommandConstraints.cpp" line="10157"/>
       <source>Select at least two lines from the sketch.</source>
       <translation>Çizimden en az iki satır seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6630"/>
+      <location filename="../../CommandConstraints.cpp" line="6664"/>
       <source>The selected edge is not a valid line.</source>
       <translation>Seçilen kenar geçerli bir çizgi değil.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6719"/>
+      <location filename="../../CommandConstraints.cpp" line="6753"/>
       <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1683,35 +1684,35 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokta; iki eğri ve bir nokta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6724"/>
+      <location filename="../../CommandConstraints.cpp" line="6758"/>
       <source>Select some geometry from the sketch.</source>
       <comment>perpendicular constraint</comment>
       <translation>Eskizden bazı geometriyi seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6883"/>
-      <location filename="../../CommandConstraints.cpp" line="6924"/>
+      <location filename="../../CommandConstraints.cpp" line="6917"/>
+      <location filename="../../CommandConstraints.cpp" line="6958"/>
       <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
       <translation>Bağlantısız bir noktaya diklik kısıtı eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6965"/>
-      <location filename="../../CommandConstraints.cpp" line="7164"/>
+      <location filename="../../CommandConstraints.cpp" line="6999"/>
+      <location filename="../../CommandConstraints.cpp" line="7198"/>
       <source>One of the selected edges should be a line.</source>
       <translation>Seçilen kenarlardan bir tanesi bir çizgi olmalıdır.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7515"/>
+      <location filename="../../CommandConstraints.cpp" line="7549"/>
       <source>Endpoint to endpoint tangency was applied. The coincident constraint was deleted.</source>
       <translation>Uç noktalar arasında teğetsel bir kısıtlama uygulandı. Çakışık kısıtlama silindi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7543"/>
+      <location filename="../../CommandConstraints.cpp" line="7577"/>
       <source>Endpoint to edge tangency was applied. The point on object constraint was deleted.</source>
       <translation>Kenar teğetliğine bitiş noktası uygulandı. 'Nesne üzerinde nokta' kısıtlaması silindi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7574"/>
+      <location filename="../../CommandConstraints.cpp" line="7608"/>
       <source>There are a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
@@ -1721,201 +1722,206 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokta; iki eğri ve bir nokta.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7579"/>
+      <location filename="../../CommandConstraints.cpp" line="7613"/>
       <source>Select some geometry from the sketch.</source>
       <comment>tangent constraint</comment>
       <translation>Eskizden bazı geometriyi seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7730"/>
-      <location filename="../../CommandConstraints.cpp" line="7768"/>
-      <location filename="../../CommandConstraints.cpp" line="8233"/>
+      <location filename="../../CommandConstraints.cpp" line="7764"/>
+      <location filename="../../CommandConstraints.cpp" line="7802"/>
+      <location filename="../../CommandConstraints.cpp" line="8274"/>
       <source>Cannot add a tangency constraint at an unconnected point!</source>
       <translation>Bağlantısız bir noktaya bir teğet kısıtı eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7721"/>
-      <location filename="../../CommandConstraints.cpp" line="7759"/>
+      <location filename="../../CommandConstraints.cpp" line="7755"/>
+      <location filename="../../CommandConstraints.cpp" line="7793"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
       <translation>B-spline düğümünde teğetlik kısıtı yalnızca doğrularla desteklenir!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="508"/>
+      <location filename="../../CommandConstraints.cpp" line="509"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
       <translation>İçsel olarak uygulanan son kısıt, nokta-nesne üzeri kısıtını da uyguladığından bir veya iki nokta-nesne üzeri kısıtı silindi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1022"/>
+      <location filename="../../CommandConstraints.cpp" line="1039"/>
       <source>Keep notifying about constraint substitutions</source>
       <translation>Kısıt ikameleri için bildirmeye devam et</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1046"/>
+      <location filename="../../CommandConstraints.cpp" line="1063"/>
       <source>Unexpected error. More information may be available in the report view.</source>
       <translation>Beklenmeyen hata. Daha fazla bilgi rapor görünümünde bulunabilir.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1096"/>
+      <location filename="../../CommandConstraints.cpp" line="1113"/>
       <source>Only the sketch and its support are allowed to be selected</source>
       <translation>Yalnızca eskiz ve desteği seçilebilir</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1107"/>
+      <location filename="../../CommandConstraints.cpp" line="1124"/>
       <source>Only the sketch and its support may be selected</source>
       <translation>Yalnızca eskiz ve desteği seçilebilir</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1119"/>
+      <location filename="../../CommandConstraints.cpp" line="1136"/>
       <source>Only the sketch and its support  may be selected</source>
       <translation>Yalnızca eskiz ve desteği seçilebilir</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3756"/>
-      <location filename="../../CommandConstraints.cpp" line="4525"/>
-      <location filename="../../CommandConstraints.cpp" line="4577"/>
+      <location filename="../../CommandConstraints.cpp" line="3790"/>
+      <location filename="../../CommandConstraints.cpp" line="4559"/>
+      <location filename="../../CommandConstraints.cpp" line="4611"/>
       <source>The selected edge already has a block constraint!</source>
       <translation>Seçilen kenarda zaten bir blok kısıtı var!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3832"/>
+      <location filename="../../CommandConstraints.cpp" line="3866"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
       <translation>Seçilen öğeler yatay ya da dikey olarak kısıtlanamaz!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4489"/>
+      <location filename="../../CommandConstraints.cpp" line="4523"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
       <translation>Eskiz çözümlenmemişse veya fazla/çakışan kısıtlar varsa blok kısıtı eklenemez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4759"/>
+      <location filename="../../CommandConstraints.cpp" line="4793"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
       <translation>Bunun yerine B-spline düğümünden uç noktaya teğetlik uygulandı.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6741"/>
-      <location filename="../../CommandConstraints.cpp" line="7596"/>
+      <location filename="../../CommandConstraints.cpp" line="6775"/>
+      <location filename="../../CommandConstraints.cpp" line="7630"/>
       <source>Wrong number of selected objects!</source>
       <translation>Seçilen nesnelerin sayısı yanlış!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6873"/>
-      <location filename="../../CommandConstraints.cpp" line="7701"/>
+      <location filename="../../CommandConstraints.cpp" line="6907"/>
+      <location filename="../../CommandConstraints.cpp" line="7735"/>
       <source>With 3 objects, there must be 2 curves and 1 point.</source>
       <translation>3 nesneyle 2 eğri ve 1 nokta olmalıdır.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8416"/>
-      <location filename="../../CommandConstraints.cpp" line="8482"/>
-      <location filename="../../CommandConstraints.cpp" line="8779"/>
-      <location filename="../../CommandConstraints.cpp" line="8842"/>
-      <location filename="../../CommandConstraints.cpp" line="9097"/>
-      <location filename="../../CommandConstraints.cpp" line="9158"/>
+      <location filename="../../CommandConstraints.cpp" line="8065"/>
+      <source>Geometry cannot be tangent to itself</source>
+      <translation type="unfinished">Geometry cannot be tangent to itself</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="8457"/>
+      <location filename="../../CommandConstraints.cpp" line="8523"/>
+      <location filename="../../CommandConstraints.cpp" line="8820"/>
+      <location filename="../../CommandConstraints.cpp" line="8883"/>
+      <location filename="../../CommandConstraints.cpp" line="9138"/>
+      <location filename="../../CommandConstraints.cpp" line="9199"/>
       <source>Select one or more arcs or circles from the sketch.</source>
       <translation>Eskizden bir veya daha fazla yay veya daire seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8646"/>
-      <location filename="../../CommandConstraints.cpp" line="8968"/>
-      <location filename="../../CommandConstraints.cpp" line="9344"/>
+      <location filename="../../CommandConstraints.cpp" line="8687"/>
+      <location filename="../../CommandConstraints.cpp" line="9009"/>
+      <location filename="../../CommandConstraints.cpp" line="9385"/>
       <source>Constraint only applies to arcs or circles.</source>
       <translation>Kısıtlama yalnızca yaylar veya daireler için geçerlidir.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9642"/>
-      <location filename="../../CommandConstraints.cpp" line="9854"/>
+      <location filename="../../CommandConstraints.cpp" line="9683"/>
+      <location filename="../../CommandConstraints.cpp" line="9895"/>
       <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
       <translation>Çizimden bir veya iki çizgi seçin. Ya da iki kenar ve bir nokta seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="536"/>
+      <location filename="../../CommandConstraints.cpp" line="537"/>
       <source>Parallel lines</source>
       <translation>Paralel çizgiler</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="537"/>
+      <location filename="../../CommandConstraints.cpp" line="538"/>
       <source>An angle constraint cannot be set for two parallel lines.</source>
       <translation>İki paralel çizgi için açı kısıtı ayarlanamaz.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9789"/>
+      <location filename="../../CommandConstraints.cpp" line="9830"/>
       <source>Cannot add an angle constraint on an axis!</source>
       <translation>Bir eksene açı kısıtı eklenemiyor!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10102"/>
+      <location filename="../../CommandConstraints.cpp" line="10143"/>
       <source>Select two edges from the sketch.</source>
       <translation>Eskizden iki kenar seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10134"/>
+      <location filename="../../CommandConstraints.cpp" line="10175"/>
       <source>Select two or more compatible edges.</source>
       <translation>İki veya daha fazla uyumlu kenar seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10141"/>
+      <location filename="../../CommandConstraints.cpp" line="10182"/>
       <source>Sketch axes cannot be used in equality constraints.</source>
       <translation>Eskiz ekseni eşitlik kısıtlamalarında kullanılamaz.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10162"/>
+      <location filename="../../CommandConstraints.cpp" line="10203"/>
       <source>Equality for B-spline edge currently unsupported.</source>
       <translation>B-spline kenarı için eşitlik şu anda desteklenmiyor.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3294"/>
-      <location filename="../../CommandConstraints.cpp" line="10195"/>
-      <location filename="../../CommandConstraints.cpp" line="10211"/>
-      <location filename="../../CommandConstraints.cpp" line="10266"/>
+      <location filename="../../CommandConstraints.cpp" line="3328"/>
+      <location filename="../../CommandConstraints.cpp" line="10236"/>
+      <location filename="../../CommandConstraints.cpp" line="10252"/>
+      <location filename="../../CommandConstraints.cpp" line="10307"/>
       <source>Select two or more edges of similar type.</source>
       <translation>Benzer tipte iki veya daha fazla kenar seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10630"/>
+      <location filename="../../CommandConstraints.cpp" line="10671"/>
       <source>Cannot add a symmetry constraint between a line and its end points.</source>
       <translation>Bir çizgi ve uç noktaları arasına simetrik kısıtlama eklenemez.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3453"/>
-      <location filename="../../CommandConstraints.cpp" line="3469"/>
-      <location filename="../../CommandConstraints.cpp" line="10493"/>
+      <location filename="../../CommandConstraints.cpp" line="3487"/>
+      <location filename="../../CommandConstraints.cpp" line="3503"/>
+      <location filename="../../CommandConstraints.cpp" line="10534"/>
       <source>Cannot add a symmetry constraint between a line and its end points!</source>
       <translation>Bir çizgi ile bitiş noktaları arasında bir simetri kısıtı eklenemez!</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10808"/>
-      <location filename="../../CommandConstraints.cpp" line="11000"/>
+      <location filename="../../CommandConstraints.cpp" line="10849"/>
+      <location filename="../../CommandConstraints.cpp" line="11041"/>
       <source>Selected objects are not just geometry from one sketch.</source>
       <translation>Seçilen nesneler sadece bir taslaktaki geometri değildir.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10850"/>
+      <location filename="../../CommandConstraints.cpp" line="10891"/>
       <source>Cannot create constraint with external geometry only.</source>
       <translation>Sadece dış geometri ile kısıtlama oluşturulamaz.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10860"/>
+      <location filename="../../CommandConstraints.cpp" line="10901"/>
       <source>Incompatible geometry is selected.</source>
       <translation>Uyumsuz geometri seçildi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11016"/>
+      <location filename="../../CommandConstraints.cpp" line="11057"/>
       <source>No geometries selected</source>
       <translation>Hiçbir geometri seçilmedi.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11252"/>
+      <location filename="../../CommandConstraints.cpp" line="11293"/>
       <source>Select one dimensional constraint from the sketch.</source>
       <translation>Eskizden bir boyutsal kısıt seçin.</translation>
     </message>
     <message>
+      <location filename="../../CommandConstraints.cpp" line="11369"/>
+      <location filename="../../CommandConstraints.cpp" line="11381"/>
+      <location filename="../../CommandConstraints.cpp" line="11417"/>
+      <location filename="../../CommandConstraints.cpp" line="11492"/>
+      <location filename="../../CommandConstraints.cpp" line="11504"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="117"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="128"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="158"/>
-      <location filename="../../CommandConstraints.cpp" line="11328"/>
-      <location filename="../../CommandConstraints.cpp" line="11340"/>
-      <location filename="../../CommandConstraints.cpp" line="11376"/>
-      <location filename="../../CommandConstraints.cpp" line="11451"/>
-      <location filename="../../CommandConstraints.cpp" line="11463"/>
       <source>Select constraints from the sketch.</source>
       <translation>Eskizden kısıtları seçin.</translation>
     </message>
@@ -2003,148 +2009,148 @@ Kabul edilen kombinasyonlar: iki eğri; bir son nokta ve bir eğri; iki uç nokt
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="141"/>
-      <location filename="../../CommandSketcherTools.cpp" line="464"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1108"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1437"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1447"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2041"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2051"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2325"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2335"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2447"/>
+      <location filename="../../CommandSketcherTools.cpp" line="469"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1113"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1442"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1452"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2046"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2056"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2330"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2340"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2452"/>
       <source>Select elements from a single sketch.</source>
       <translation>Tek bir eskizden elemanlar seçin.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="972"/>
+      <location filename="../../CommandSketcherTools.cpp" line="977"/>
       <source>No constraint selected</source>
       <translation>Kısıtlama seçilmedi</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="973"/>
+      <location filename="../../CommandSketcherTools.cpp" line="978"/>
       <source>At least one constraint must be selected</source>
       <translation>En az bir kısıtlama seçilmelidir</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1509"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2115"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1514"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2120"/>
       <source>A copy requires at least one selected non-external geometric element</source>
       <translation>Bir kopya, seçilen en az bir dış dış geometrik eleman gerektirir</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2188"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2193"/>
       <source>Delete All Geometry</source>
       <translation>Tüm Geometriyi Sil</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2252"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2257"/>
       <source>Delete All Constraints</source>
       <translation>Tüm Kısıtlamaları Sil</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2189"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2194"/>
       <source>Delete all geometry and constraints?</source>
       <translation>Tüm geometri ve kısıtlar silinsin mi?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2253"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2258"/>
       <source>Delete all the constraints in the sketch?</source>
       <translation>Eskizdeki tüm kısıtlar silinsin mi?</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2382"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2387"/>
       <source>Removal of axes alignment requires at least one selected non-external geometric element</source>
       <translation>Eksenleri hizalamayı kaldırma için en az bir seçili iç geometrik eleman gerekir</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="666"/>
-      <location filename="../../TaskSketcherElements.cpp" line="716"/>
+      <location filename="../../TaskSketcherElements.cpp" line="674"/>
+      <location filename="../../TaskSketcherElements.cpp" line="724"/>
       <source>Unsupported visual layer operation</source>
       <translation>Desteklenmeyen görsel katman işlemi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="667"/>
-      <location filename="../../TaskSketcherElements.cpp" line="717"/>
+      <location filename="../../TaskSketcherElements.cpp" line="675"/>
+      <location filename="../../TaskSketcherElements.cpp" line="725"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Harici geometriyi başka bir görsel katmana taşımak şu anda desteklenmiyor.
 Harici geometri dışarıda bırakılacak</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="92"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
+      <source>Polyline Parameters</source>
+      <translation type="unfinished">Polyline Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="91"/>
       <source>Text</source>
       <translation>Metin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="245"/>
+      <location filename="../../DrawSketchHandlerText.h" line="244"/>
       <source>Text parameters</source>
       <translation>Metin parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="726"/>
+      <location filename="../../DrawSketchHandlerText.h" line="725"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="736"/>
-      <location filename="../../DrawSketchHandlerText.h" line="744"/>
+      <location filename="../../DrawSketchHandlerText.h" line="735"/>
+      <location filename="../../DrawSketchHandlerText.h" line="743"/>
       <source>%1 pick bottom-left point</source>
       <translation>%1 sol alt noktayı seçin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="740"/>
+      <location filename="../../DrawSketchHandlerText.h" line="739"/>
       <source>%1 pick top-left point</source>
       <translation>%1 sol üst noktayı seçin</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="748"/>
+      <location filename="../../DrawSketchHandlerText.h" line="747"/>
       <source>%1 pick bottom-right point</source>
       <translation>%1 sağ alt noktayı seçin</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1059"/>
-      <source>Polyline Parameters</source>
-      <translation type="unfinished">Polyline Parameters</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::CarbonCopySelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="81"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="78"/>
       <source>Carbon copy would cause a circular dependency.</source>
       <translation>Karbon kopyası dairesel bağımlılığa neden olur.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="86"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="83"/>
       <source>This object is in another document.</source>
       <translation>Bu nesne başka bir belgede.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="89"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="86"/>
       <source>This object belongs to another body. Hold Ctrl to allow cross-references.</source>
       <translation>Bu cisim başka bir vücuda bağlı. İç göndermelere izin vermek için Ctrl tuşuna basılı tut.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="95"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="92"/>
       <source>This object belongs to another body and it contains external geometry. Cross-reference not allowed.</source>
       <translation>Bu obje başka bir vücuda ait ve dış geometrisi var. İç göndermeye izin verilemedi.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="101"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="98"/>
       <source>This object belongs to another part.</source>
       <translation>Bu nesne başka bir parçaya ait.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="104"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="101"/>
       <source>The selected sketch is not parallel to this sketch. Hold Ctrl+Alt to allow non-parallel sketches.</source>
       <translation>Seçili eskiz, bu eskize paralel değil. Paralel olmayan eskizlere izin vermek için Ctrl+Alt tuşlarını basılı tutun.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="110"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="107"/>
       <source>The XY axes of the selected sketch do not have the same direction as this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Seçili eskizin XY eksenleri, bu eskiz ile aynı doğrultuya sahip değil. Göz ardı etmek için Ctrl+Alt tuşlarını basılı tutun.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="116"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="113"/>
       <source>The origin of the selected sketch is not aligned with the origin of this sketch. Hold Ctrl+Alt to disregard it.</source>
       <translation>Seçili eskizin orijin noktası, b eskizin orijin noktası ile hizalı değil. Göz ardı etmek için Ctrl+Alt tuşlarını basılı tutun.</translation>
     </message>
@@ -2539,12 +2545,12 @@ Harici geometri dışarıda bırakılacak</translation>
       <translation>Oran n2/n1:</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10889"/>
+      <location filename="../../CommandConstraints.cpp" line="10930"/>
       <source>Refractive Index Ratio</source>
       <translation>Kırılma İndisi Oranı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10890"/>
+      <location filename="../../CommandConstraints.cpp" line="10931"/>
       <source>Ratio n2/n1:</source>
       <translation>Oran n2/n1:</translation>
     </message>
@@ -2552,72 +2558,72 @@ Harici geometri dışarıda bırakılacak</translation>
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="349"/>
+      <location filename="../../TaskSketcherElements.cpp" line="351"/>
       <source>Normal</source>
       <translation>Olağan</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="350"/>
+      <location filename="../../TaskSketcherElements.cpp" line="352"/>
       <source>Construction</source>
       <translation>İnşa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="351"/>
+      <location filename="../../TaskSketcherElements.cpp" line="353"/>
       <source>Internal</source>
       <translation>Dahili</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="352"/>
+      <location filename="../../TaskSketcherElements.cpp" line="354"/>
       <source>External</source>
       <translation>Dış</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="353"/>
+      <location filename="../../TaskSketcherElements.cpp" line="355"/>
       <source>All types</source>
       <translation>Tüm türler</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="354"/>
+      <location filename="../../TaskSketcherElements.cpp" line="356"/>
       <source>Point</source>
       <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="355"/>
+      <location filename="../../TaskSketcherElements.cpp" line="357"/>
       <source>Line</source>
       <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="356"/>
+      <location filename="../../TaskSketcherElements.cpp" line="358"/>
       <source>Circle</source>
       <translation>Daire</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="357"/>
+      <location filename="../../TaskSketcherElements.cpp" line="359"/>
       <source>Ellipse</source>
       <translation>Elips</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="358"/>
+      <location filename="../../TaskSketcherElements.cpp" line="360"/>
       <source>Arc of circle</source>
       <translation>Çember yayı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="359"/>
+      <location filename="../../TaskSketcherElements.cpp" line="361"/>
       <source>Arc of ellipse</source>
       <translation>Elips yayı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="360"/>
+      <location filename="../../TaskSketcherElements.cpp" line="362"/>
       <source>Arc of hyperbola</source>
       <translation>Hiperbol yayı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="361"/>
+      <location filename="../../TaskSketcherElements.cpp" line="363"/>
       <source>Arc of parabola</source>
       <translation>Parabol yayı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="362"/>
+      <location filename="../../TaskSketcherElements.cpp" line="364"/>
       <source>B-spline</source>
       <translation>B-Şerit</translation>
     </message>
@@ -2625,152 +2631,152 @@ Harici geometri dışarıda bırakılacak</translation>
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="72"/>
+      <location filename="../../TaskSketcherElements.cpp" line="73"/>
       <source>Vertical Constraint</source>
       <translation>Dikey Kısıt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="74"/>
+      <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Horizontal Constraint</source>
       <translation>Yatay Kısıt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="76"/>
+      <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Parallel Constraint</source>
       <translation>Paralellik Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="78"/>
+      <location filename="../../TaskSketcherElements.cpp" line="79"/>
       <source>Perpendicular Constraint</source>
       <translation>Diklik Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="80"/>
+      <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Tangent Constraint</source>
       <translation>Teğet Kısıtlama</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="86"/>
+      <location filename="../../TaskSketcherElements.cpp" line="87"/>
       <source>Block Constraint</source>
       <translation>Blok Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="82"/>
+      <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Equal Constraint</source>
       <translation>Eşitlik Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="68"/>
+      <location filename="../../TaskSketcherElements.cpp" line="69"/>
       <source>Coincident Constraint</source>
       <translation>Çakışıklık Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="70"/>
+      <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Point-On-Object Constraint</source>
       <translation>Nokta-Nesne Üzerinde Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="84"/>
+      <location filename="../../TaskSketcherElements.cpp" line="85"/>
       <source>Symmetric Constraint</source>
       <translation>Simetri Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="90"/>
+      <location filename="../../TaskSketcherElements.cpp" line="91"/>
       <source>Lock Position</source>
       <translation>Konumu Kilitle</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="92"/>
+      <location filename="../../TaskSketcherElements.cpp" line="93"/>
       <source>Horizontal Dimension</source>
       <translation>Yatay Ölçü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="94"/>
+      <location filename="../../TaskSketcherElements.cpp" line="95"/>
       <source>Vertical Dimension</source>
       <translation>Dikey Ölçü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="98"/>
+      <location filename="../../TaskSketcherElements.cpp" line="99"/>
       <source>Radius Dimension</source>
       <translation>Yarıçap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="100"/>
+      <location filename="../../TaskSketcherElements.cpp" line="101"/>
       <source>Diameter Dimension</source>
       <translation>Çap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="96"/>
+      <location filename="../../TaskSketcherElements.cpp" line="97"/>
       <source>Distance Dimension</source>
       <translation>Mesafe Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="88"/>
+      <location filename="../../TaskSketcherElements.cpp" line="89"/>
       <source>Group Constraint</source>
       <translation>Grup Kısıtlaması</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="102"/>
+      <location filename="../../TaskSketcherElements.cpp" line="103"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Yarıçap/Çap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="104"/>
+      <location filename="../../TaskSketcherElements.cpp" line="105"/>
       <source>Angle Dimension</source>
       <translation>Açı Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="106"/>
+      <location filename="../../TaskSketcherElements.cpp" line="107"/>
       <source>Toggle Construction Geometry</source>
       <translation>Yardımcı Geometriyi Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="108"/>
+      <location filename="../../TaskSketcherElements.cpp" line="109"/>
       <source>Select Constraints</source>
       <translation>Kısıtlamaları Seçin</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="110"/>
+      <location filename="../../TaskSketcherElements.cpp" line="111"/>
       <source>Select Origin</source>
       <translation>Orijini Seç</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="112"/>
+      <location filename="../../TaskSketcherElements.cpp" line="113"/>
       <source>Select Horizontal Axis</source>
       <translation>Yatay Ekseni Seçin</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="114"/>
+      <location filename="../../TaskSketcherElements.cpp" line="115"/>
       <source>Select Vertical Axis</source>
       <translation>Dikey Ekseni Seç</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="755"/>
+      <location filename="../../TaskSketcherElements.cpp" line="763"/>
       <source>Convert to geometries</source>
       <translation>Geometrilere dönüştür</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="880"/>
+      <location filename="../../TaskSketcherElements.cpp" line="888"/>
       <source>Layer</source>
       <translation>Katman</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="890"/>
+      <location filename="../../TaskSketcherElements.cpp" line="898"/>
       <source>Layer 0</source>
       <translation>Katman 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="891"/>
+      <location filename="../../TaskSketcherElements.cpp" line="899"/>
       <source>Layer 1</source>
       <translation>Katman 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="892"/>
+      <location filename="../../TaskSketcherElements.cpp" line="900"/>
       <source>Hidden</source>
       <translation>Gizli</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="897"/>
+      <location filename="../../TaskSketcherElements.cpp" line="905"/>
       <source>Delete</source>
       <translation>Sil</translation>
     </message>
@@ -2778,22 +2784,22 @@ Harici geometri dışarıda bırakılacak</translation>
   <context>
     <name>SketcherGui::ExternalSelection</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="72"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="69"/>
       <source>Linking this will cause circular dependency.</source>
       <translation>Bağlamak dairesel bağımlılığa neden olacaktır.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="75"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="72"/>
       <source>This object is in another document.</source>
       <translation>Bu nesne başka bir belgede.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="78"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="75"/>
       <source>This object belongs to another body, can't link.</source>
       <translation>Bu nesne başka bir cisme aittir, bağlanamaz.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="83"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="80"/>
       <source>This object belongs to another part, can't link.</source>
       <translation>Bu nesne başkasına ait kısmı, bağlanamaz.</translation>
     </message>
@@ -3280,34 +3286,34 @@ Bu ayar yalnızca araç çubuğu içindir. Hangisini seçerseniz seçin, tüm ar
       <translation>Ölçek oranını görüntüle</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="417"/>
       <source>Base length units will not be displayed in constraints or cursor coordinates.
 Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Temel uzunluk birimleri kısıtlarda veya imleç koordinatlarında gösterilmez.
 'ABD geleneksel' ve 'ABD/Avrupa bina' dışında tüm birim sistemlerini destekler.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="331"/>
       <source>Segments per geometry</source>
       <translation>Geometri başına segmentler</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="287"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="363"/>
       <source>Ask for value after creating a dimensional constraint</source>
       <translation>Boyutsal bir kısıtlama oluşturduktan sonra değer isteyin</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="306"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="382"/>
       <source>Geometry creation "Continue Mode"</source>
       <translation>Geometri oluşturma "Devam Kipi"</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="325"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="401"/>
       <source>Constraint creation "Continue Mode"</source>
       <translation>"Devam Etme" modunu kısıtla</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="345"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="421"/>
       <source>Hide base length units for supported unit systems</source>
       <translation>Desteklenen birim sistemleri için temel uzunluk birimleri gizle</translation>
     </message>
@@ -3327,22 +3333,22 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Bu katsayıya göre 3B görünümü ölçeklendirir</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="265"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="341"/>
       <source>The number of polygons used for geometry approximation</source>
       <translation>Geometri yaklaşıklaştırması için kullanılan çokgen sayısı</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="396"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="472"/>
       <source>Show dimensional constraint name with format</source>
       <translation>Boyutlu kısıtlama adını düzeniyle göster</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="422"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="498"/>
       <source>%N = %V</source>
       <translation>%N = %V</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="303"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="379"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
       <translation>Geometri oluşturduktan sonra mevcut Eskizleyici aracını etkin tutar</translation>
     </message>
@@ -3352,12 +3358,12 @@ Supports all unit systems except 'US customary' and 'Building US/Euro'.</source>
       <translation>Etiketler ve kısıtlar için kullanılan yazı tipi boyutu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="322"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="398"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
       <translation>Geometri oluşturduktan sonra mevcut Eskizleyici kısıt aracını etkin tutar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="284"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="360"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
       <translation>Yeni boyutsal kısıtlar oluşturulduktan sonra bir değer girmek için iletişim kutusu açar</translation>
     </message>
@@ -3394,64 +3400,94 @@ the characters listed here will be drawn using a substitute font.</source>
 the characters listed here will be drawn using a substitute font.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="377"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="255"/>
+      <source>Axis transparency</source>
+      <translation type="unfinished">Axis transparency</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="265"/>
+      <source>Transparency of visible axes.</source>
+      <translation type="unfinished">Transparency of visible axes.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="293"/>
+      <source>Occluded axis transparency</source>
+      <translation type="unfinished">Occluded axis transparency</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="303"/>
+      <source>Transparency of occluded axes.</source>
+      <translation type="unfinished">Transparency of occluded axes.</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="453"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
       <translation>İmleç koordinatları kısa biçim yerine sistemin ondalık ayarını kullanır</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="465"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="511"/>
+      <source>Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</source>
+      <translation type="unfinished">Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="514"/>
+      <source>Show directional autoconstraint helpers</source>
+      <translation type="unfinished">Show directional autoconstraint helpers</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsDisplay.ui" line="560"/>
       <source>Visibility Automation</source>
       <translation>Görünürlük Otomasyonu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="471"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="566"/>
       <source>Hides all object features that depend on the opened sketch</source>
       <translation>Açık eskize bağlı tüm nesne özelliklerini gizler</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="490"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="585"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
       <translation>Açık eskizde harici geometri için kullanılan kaynak nesneleri gösterir</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="509"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="604"/>
       <source>Shows objects the opened sketch is attached to</source>
       <translation>Açık eskizin iliştirildiği nesneleri gösterir</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="528"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="623"/>
       <source>Restores the camera position after closing the sketch</source>
       <translation>Eskiz kapatıldıktan sonra kamera konumunu geri yükler</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="547"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="642"/>
       <source>Forces the camera to an orthographic view when editing a sketch.
 Works only when "Restore camera position after editing" is enabled.</source>
       <translation>Bir eskizi düzenlerken kamerayı ortografik görünüme zorlar.
 Yalnızca "Düzenlemeden sonra kamera konumunu geri yükle" etkinse çalışır.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="567"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="662"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
       <translation>Bir eskizi kesit görünümü modunda açar; yalnızca eskiz düzleminin arkasındaki nesneleri gösterir</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="570"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="665"/>
       <source>Open sketch in section view mode</source>
       <translation>Eskizi kesit görünümü modunda aç</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="611"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="706"/>
       <source>Applies current visibility automation settings to all sketches in the open documents</source>
       <translation>Açık belgelerdeki tüm eskizlere geçerli görünürlük otomasyonu ayarlarını uygular</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="614"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="709"/>
       <source>Apply to Existing Sketches</source>
       <translation>Mevcut Eskizlere Uygula</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="412"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="488"/>
       <source>The format of the dimensional constraint string presentation.
 Defaults to: %N = %V
 
@@ -3469,67 +3505,67 @@ Varsayılan: %N = %V
       <translation>Kısıt simgesi boyutu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="393"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="469"/>
       <source>Shows names of dimensional constraints, if they exist</source>
       <translation>Varsa, boyutsal kısıtların adlarını gösterir</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="358"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="434"/>
       <source>Shows cursor position coordinates next to the cursor while editing a sketch</source>
       <translation>Bir eskizi düzenlerken imlecin yanında imleç konumu koordinatlarını gösterir</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="437"/>
       <source>Show coordinates next to the cursor while editing</source>
       <translation>Düzenlerken imlecin yanında koordinatları göster</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="380"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="456"/>
       <source>Use system decimals setting for cursor coordinates</source>
       <translation>İmleç koordinatları için sistem ondalık ayarını kullan</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="474"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="569"/>
       <source>Hide all objects that depend on the sketch</source>
       <translation>Eskize bağlı tüm nesneleri gizle</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="493"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="588"/>
       <source>Show objects used for external geometry</source>
       <translation>Dış geometri için kullanılan nesneleri göster</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="512"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="607"/>
       <source>Show objects that the sketch is attached to</source>
       <translation>Eskizin eklendiği nesneleri göster</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="531"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="626"/>
       <source>Restore camera position after editing</source>
       <translation>Düzenledikten sonra kamera konumunu geri yükle</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="551"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="646"/>
       <source>Force orthographic camera when entering edit</source>
       <translation>Düzenlemeye başlandığında dikey kamerayı zorla</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsDisplay.ui" line="592"/>
+      <location filename="../../SketcherSettingsDisplay.ui" line="687"/>
       <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on the View tab.</source>
       <translation>Not: bu ayarlar, yeni taslaklara uygulanan varsayılanlardır. Bu davranış, Görünüm sekmesinde özellikler olarak her bir taslak için ayrı ayrı hatırlanır.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="578"/>
+      <location filename="../../SketcherSettings.cpp" line="584"/>
       <source>Unexpected C++ exception</source>
       <translation>Beklenmedik C ++ özel durumu</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="581"/>
+      <location filename="../../SketcherSettings.cpp" line="587"/>
       <source>Sketcher</source>
       <translation>Taslakçı</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="605"/>
+      <location filename="../../SketcherSettings.cpp" line="611"/>
       <source>Glyphs not present:</source>
       <translation type="unfinished">Glyphs not present:</translation>
     </message>
@@ -3731,18 +3767,18 @@ Ancak uç noktalara bağlanan herhangi bir kısıt bulunamadı.</translation>
       <translation>Dahili hizalamayı gizle (pencere öğesinde)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1744"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1732"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Görünürlük izleme güncellenemedi:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1773"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1761"/>
       <source>Impossible to update visibility:</source>
       <translation>Görünürlük güncellenemedi:</translation>
     </message>
@@ -3770,114 +3806,114 @@ Ancak uç noktalara bağlanan herhangi bir kısıt bulunamadı.</translation>
       <translation>Ayarlar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2086"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2094"/>
       <source>Construction</source>
       <translation>İnşa</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1325"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1333"/>
       <source>Elements</source>
       <translation>Elementler</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2038"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2181"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2182"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2190"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2191"/>
       <source>Point</source>
       <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2089"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2097"/>
       <source>Internal</source>
       <translation>Dahili</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2184"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2185"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2062"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2193"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2194"/>
       <source>Line</source>
       <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2046"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2054"/>
       <source>Group</source>
       <translation>Grup</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2049"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2057"/>
       <source>Text</source>
       <translation>Metin</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2187"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2188"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2066"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2196"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
       <source>Arc</source>
       <translation>Yay</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2061"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2190"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2191"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2069"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2199"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2200"/>
       <source>Circle</source>
       <translation>Daire</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2064"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2193"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2194"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2072"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2202"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2203"/>
       <source>Ellipse</source>
       <translation>Elips</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2067"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2197"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
       <source>Elliptical Arc</source>
       <translation>Eliptik Ark</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2198"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2207"/>
       <source>Elliptical arc</source>
       <translation>Eliptik yay</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2070"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2201"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
       <source>Hyperbolic Arc</source>
       <translation>Hiperbolik yay</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2202"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2211"/>
       <source>Hyperbolic arc</source>
       <translation>Hiperbolik yay</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2205"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2214"/>
       <source>Parabolic Arc</source>
       <translation>Parabolik Ark</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2073"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2206"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2215"/>
       <source>Parabolic arc</source>
       <translation>Parabolik yay</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2076"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2208"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2209"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2217"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2218"/>
       <source>B-spline</source>
       <translation>B-Şerit</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2079"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2210"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2211"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2219"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2220"/>
       <source>Other</source>
       <translation>Diğer</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2253"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2262"/>
       <source>Extended information</source>
       <translation>Detaylı bilgi</translation>
     </message>
@@ -4088,112 +4124,112 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3925"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Araç çubuğunda bir pencere zaten açık</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3949"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4176"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Eskiz geçersizdir ve düzenlenemez.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4145"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Aşağıdaki kısıtlama kısmen gereksizdir:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4146"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Aşağıdaki kısıtlamalar kısmen gereksizdir:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3898"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4125"/>
       <source>Edit Sketch</source>
       <translation>Eskizi Düzenle</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3926"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
       <source>Close this dialog?</source>
       <translation>Bu iletişim kutusu kapatılsın mı?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3947"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4174"/>
       <source>Invalid Sketch</source>
       <translation>Geçersiz Eskiz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3948"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4175"/>
       <source>Open the sketch validation tool?</source>
       <translation>Eskiz doğrulama aracı açılsın mı?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4131"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
       <source>Remove the following constraint:</source>
       <translation>Aşağıdaki kısıtı kaldır:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4132"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Aşağıdaki kısıtlardan en az birini kaldır:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4138"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Aşağıdaki gereksiz kısıtı kaldır:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4139"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Aşağıdaki gereksiz kısıtları kaldır:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4152"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Aşağıdaki bozuk kısıtı kaldır:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4153"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Aşağıdaki bozuk kısıtları kaldır:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4212"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
       <source>Empty sketch</source>
       <translation>Boş eskiz</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4217"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
       <source>Over-constrained:</source>
       <translation>Aşırı kısıtlı:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4223"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
       <source>Malformed constraints:</source>
       <translation>Bozuk kısıtlar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4231"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Redundant constraints:</source>
       <translation>Gereksiz kısıtlamalar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4237"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
       <source>Partially redundant:</source>
       <translation>Kısmen gereksiz:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4244"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
       <source>Solver failed to converge</source>
       <translation>Çözücü yakınsamadı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4250"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
       <source>Under-constrained:</source>
       <translation>Yetersiz kısıtlı:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4252"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Serbestlik Derecesi</numerusform>
@@ -4201,7 +4237,7 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4256"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
       <source>Fully constrained</source>
       <translation>Tam kısıtlı</translation>
     </message>
@@ -4227,8 +4263,8 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>Sketcher_Clone</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1786"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1789"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1791"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1794"/>
       <source>Creates a clone of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriye ait bir klon oluşturur</translation>
     </message>
@@ -4236,17 +4272,17 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>Sketcher_CompCopy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1785"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1790"/>
       <source>Clone</source>
       <translation>Klon</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1793"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1798"/>
       <source>Copy</source>
       <translation>Kopyala</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1806"/>
       <source>Move</source>
       <translation>Taşı</translation>
     </message>
@@ -4254,8 +4290,8 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>Sketcher_ConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9538"/>
-      <location filename="../../CommandConstraints.cpp" line="9540"/>
+      <location filename="../../CommandConstraints.cpp" line="9579"/>
+      <location filename="../../CommandConstraints.cpp" line="9581"/>
       <source>Fix the diameter of a circle or an arc</source>
       <translation>Bir çemberin veya bir yayın yarıçapını düzelt</translation>
     </message>
@@ -4263,8 +4299,8 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>Sketcher_Copy</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1794"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1797"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1799"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1802"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometrinin basit bir kopyasını oluşturur</translation>
     </message>
@@ -4272,12 +4308,12 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="418"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="415"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="419"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="416"/>
       <source>3 rim points</source>
       <translation>3 kenar noktası</translation>
     </message>
@@ -4285,74 +4321,74 @@ Bu, eskiz geometrileri ve kısıtları analiz edilerek yapılır.</translation>
   <context>
     <name>Sketcher_MapSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="697"/>
+      <location filename="../../Command.cpp" line="699"/>
       <source>No sketch found</source>
       <translation>Eskiz bulunamadı</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="699"/>
+      <location filename="../../Command.cpp" line="701"/>
       <source>Cannot attach sketch to itself!</source>
       <translation>Eskiz kendisine bağlanamaz!</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="700"/>
+      <location filename="../../Command.cpp" line="702"/>
       <source>The document does not contain a sketch</source>
       <translation>Belgede bir eskiz yok</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="718"/>
       <source>Select Sketch</source>
       <translation>Eskiz Seç</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="718"/>
+      <location filename="../../Command.cpp" line="720"/>
       <source>Select a sketch (some sketches not shown to prevent a circular dependency)</source>
       <translation>Bir eskiz seçin (döngüsel bağımlılığı önlemek için bazı eskizler gösterilmez)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="720"/>
+      <location filename="../../Command.cpp" line="722"/>
       <source>Select a sketch from the list</source>
       <translation>Listeden bir eskiz seçin</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="785"/>
+      <location filename="../../Command.cpp" line="787"/>
       <source> (incompatible with selection)</source>
       <translation> (seçimle uyuşmaz)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="786"/>
+      <location filename="../../Command.cpp" line="788"/>
       <source> (current)</source>
       <translation> (Mevcut)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="796"/>
       <source> (suggested)</source>
       <translation> (Önerilen)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="801"/>
+      <location filename="../../Command.cpp" line="803"/>
       <source>Sketch Attachment</source>
       <translation>Eskiz Bağlama</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="803"/>
+      <location filename="../../Command.cpp" line="805"/>
       <source>Current attachment mode is incompatible with the new selection.
 Select the method to attach this sketch to selected objects.</source>
       <translation>Geçerli ekleme kipi yeni seçimle uyumlu değil.
 Bu taslağı seçilen nesnelere ekleme yöntemini seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="807"/>
+      <location filename="../../Command.cpp" line="809"/>
       <source>Select the method to attach this sketch to selected objects.</source>
       <translation>Bu eskizi seçilen nesnelere eklemek için yöntemi seçin.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="853"/>
+      <location filename="../../Command.cpp" line="855"/>
       <source>Map sketch</source>
       <translation>Harita çizimi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="854"/>
+      <location filename="../../Command.cpp" line="856"/>
       <source>Can't map a sketch to support:
 %1</source>
       <translation>Desteklemek için bir eskiz eşleyemiyor:
@@ -4362,8 +4398,8 @@ Bu taslağı seçilen nesnelere ekleme yöntemini seçin.</translation>
   <context>
     <name>Sketcher_Move</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1802"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1804"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1807"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1809"/>
       <source>Moves the geometry taking as reference the last selected point</source>
       <translation>Son seçilen noktayı referans alarak geometriyi hareket ettirir</translation>
     </message>
@@ -4384,12 +4420,12 @@ Bu taslağı seçilen nesnelere ekleme yöntemini seçin.</translation>
   <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="529"/>
+      <location filename="../../Command.cpp" line="531"/>
       <source>Sketch Has Support</source>
       <translation>Eskizde Destek Var</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="530"/>
+      <location filename="../../Command.cpp" line="532"/>
       <source>Sketch with a support face cannot be reoriented.
 Detach it from the support?</source>
       <translation>Destek yüzeyi olan bir eskiz yeniden yönlendirilemez.
@@ -4692,7 +4728,7 @@ Eigen Sparse QR algoritması seyrek matrisler için optimize edilmiştir; genell
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4195"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
       <source>and %1 more</source>
       <translation>ve %1 tane daha</translation>
     </message>
@@ -4907,70 +4943,70 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
       <translation>"%1" kısmen gereksiz kısıtlamalara sahiptir.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1058"/>
-      <location filename="../../../App/SketchObject.cpp" line="1102"/>
+      <location filename="../../../App/SketchObject.cpp" line="1088"/>
+      <location filename="../../../App/SketchObject.cpp" line="1132"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Kısıt özelliğindeki yönetilmeyen değişiklik, geçersiz kısıt indislerine yol açar</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1597"/>
+      <location filename="../../../App/SketchObject.cpp" line="1636"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolalar taşındı. Taşınan dosyalar FreeCAD'in önceki sürümlerinde açılmaz!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
-      <location filename="../../DrawSketchHandlerText.h" line="182"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="232"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="515"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="153"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="175"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="147"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1385"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1966"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2403"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="393"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="688"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="765"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="228"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="135"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="215"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="190"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="229"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="482"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="514"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1381"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="223"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="148"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="157"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="188"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="112"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="479"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1384"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="185"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="390"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="685"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="762"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="170"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="225"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="523"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1390"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1971"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2408"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="226"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="144"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="154"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerText.h" line="181"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
       <translation>Hata</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2204"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2209"/>
       <source>Failed to delete all geometry</source>
       <translation>Tüm geometri silinemedi</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2269"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2274"/>
       <source>Failed to delete all constraints</source>
       <translation>Tüm kısıtlar silinemedi</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2489"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2494"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
       <translation>Seçimde geçerli geometri yok. B-spline'lar ve noktalar henüz desteklenmiyor.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="194"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2488"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2493"/>
       <source>Invalid selection</source>
       <translation>Geçersiz seçim</translation>
     </message>
@@ -4985,204 +5021,214 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
       <translation>Kısıt geçersiz indis bilgisine sahip ve bozuk.</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1171"/>
+      <location filename="../../CommandConstraints.cpp" line="730"/>
+      <location filename="../../CommandConstraints.cpp" line="807"/>
+      <location filename="../../CommandConstraints.cpp" line="899"/>
+      <location filename="../../CommandConstraints.cpp" line="983"/>
+      <location filename="../../CommandConstraints.cpp" line="7133"/>
+      <location filename="../../CommandConstraints.cpp" line="7335"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1176"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="519"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="662"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="910"/>
-      <location filename="../../CommandConstraints.cpp" line="713"/>
-      <location filename="../../CommandConstraints.cpp" line="790"/>
-      <location filename="../../CommandConstraints.cpp" line="882"/>
-      <location filename="../../CommandConstraints.cpp" line="966"/>
-      <location filename="../../CommandConstraints.cpp" line="7099"/>
-      <location filename="../../CommandConstraints.cpp" line="7301"/>
       <source>Invalid Constraint</source>
       <translation>Geçersiz Kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1036"/>
+      <location filename="../../CommandConstraints.cpp" line="1053"/>
       <source>Invalid constraint</source>
       <translation>Geçersiz kısıt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="515"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="512"/>
       <source>Failed to add arc</source>
       <translation>Yay eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="230"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="227"/>
       <source>Failed to add arc of ellipse</source>
       <translation>Elips yayı eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="394"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="391"/>
       <source>Error creating B-spline</source>
       <translation>B-spline oluşturulurken hata</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="689"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1382"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1385"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="686"/>
       <source>Error deleting last pole/knot</source>
       <translation>Son kontrol noktası/düğüm silinirken hata</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="766"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="763"/>
       <source>Error adding B-spline pole/knot</source>
       <translation>B-spline kontrol noktası/düğüm eklenirken hata</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="204"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="201"/>
       <source>Failed to add carbon copy</source>
       <translation>Karbon kopya eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="224"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
       <source>Failed to add circle</source>
       <translation>Daire eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="345"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="342"/>
       <source>Failed to extend edge</source>
       <translation>Kenar uzatılamadı</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="213"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="210"/>
       <source>Failed to add external geometry</source>
       <translation>Dış geometri eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="233"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="230"/>
       <source>Failed to create fillet</source>
       <translation>Yuvarlama oluşturma hatası</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="148"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="483"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="480"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="145"/>
       <source>Failed to add line</source>
       <translation>Çizgi eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="239"/>
-      <location filename="../../DrawSketchHandlerArc.h" line="299"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="522"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="162"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="182"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="154"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="235"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="142"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="222"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="197"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="236"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="230"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="164"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="195"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="186"/>
+      <source>Failed to add arc of parabola</source>
+      <translation type="unfinished">Failed to add arc of parabola</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="192"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="227"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="232"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="530"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="151"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="161"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="236"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
       <translation>Araç çalıştırması iptal edildi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="113"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
       <source>Failed to add point</source>
       <translation>Nokta eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="136"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <source>Failed to add polygon</source>
       <translation>Çokgen eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="516"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="507"/>
+      <source>Cannot create a rectangle with zero length or width</source>
+      <translation type="unfinished">Cannot create a rectangle with zero length or width</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="524"/>
       <source>Failed to add box</source>
       <translation>Dikdörtgen eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="191"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="187"/>
       <source>Failed to add slot</source>
       <translation>Yuva eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="175"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="171"/>
       <source>Failed to add edge</source>
       <translation>Kenar eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="197"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
       <source>Failed to trim edge</source>
       <translation>Kenar kırpılamadı</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1392"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1380"/>
       <location filename="../../EditDatumDialog.cpp" line="66"/>
-      <location filename="../../EditDatumDialog.cpp" line="342"/>
+      <location filename="../../EditDatumDialog.cpp" line="339"/>
       <source>Value Error</source>
       <translation>Değer Hatası</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1005"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Otomatik kısıtlar gereksizliğe neden oluyor. Kaldırılıyor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1025"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="761"/>
       <source>Redundant constraint is not an autoconstraint. No autoconstraints or additional constraints were added. Please report!</source>
       <translation>Gereksiz kısıt bir otomatik kısıt değil. Hiç otomatik kısıt veya ek kısıt eklenmedi. Lütfen bildirin!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="1076"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="791"/>
       <source>Unexpected Redundancy/Conflicting constraint. Check the constraints and autoconstraints of this operation.</source>
       <translation>Beklenmeyen gereksizlik/çakışan kısıt. Bu işlemin kısıtlarını ve otomatik kısıtlarını kontrol edin.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="425"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="422"/>
       <source>Offset Error</source>
       <translation>Ofset Hatası</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="426"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="423"/>
       <source>Offset could not be created.</source>
       <translation>Ofset oluşturulamadı.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1242"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1239"/>
       <source>Invalid Value</source>
       <translation>Geçersiz Değer</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1243"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1240"/>
       <source>Offset value can't be 0.</source>
       <translation>Ofset değeri 0 olamaz.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="216"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
       <source>Failed to add arc slot</source>
       <translation>Yay yuvası eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="233"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="230"/>
       <source>Failed to add ellipse</source>
       <translation>Elips eklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="176"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation>Döndürülemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="123"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="120"/>
       <source>Invalid scale factor. Scale factor must be a positive number.</source>
       <translation>Geçersiz ölçek katsayısı. Ölçek katsayısı pozitif bir sayı olmalıdır.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="154"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
       <source>Failed to scale</source>
       <translation>Ölçeklenemedi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="149"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="155"/>
       <source>Failed to translate</source>
       <translation>Öteleme başarısız</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="155"/>
       <source>Failed to create symmetry</source>
       <translation>Simetri oluşturulamadı</translation>
     </message>
@@ -5192,30 +5238,25 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
       <translation>Geçersiz kısıt adı (yalnızca harf/rakam ve alt çizgi içermeli, ayrıca rakamla başlamamalı)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="183"/>
-      <source>Failed to add text</source>
-      <translation>Metin ekleme başarısız oldu.</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="229"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="226"/>
       <source>Failed to add arc of hyperbola</source>
       <translation type="unfinished">Failed to add arc of hyperbola</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="189"/>
-      <source>Failed to add arc of parabola</source>
-      <translation type="unfinished">Failed to add arc of parabola</translation>
+      <location filename="../../DrawSketchHandlerText.h" line="182"/>
+      <source>Failed to add text</source>
+      <translation>Metin ekleme başarısız oldu.</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherDimension</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3648"/>
+      <location filename="../../CommandConstraints.cpp" line="3682"/>
       <source>Dimension</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3649"/>
+      <location filename="../../CommandConstraints.cpp" line="3683"/>
       <source>Constrains contextually based on the selection. The type can be changed with the M key.</source>
       <translation>Seçime göre bağlamsal olarak kısıtlar. Tür, M tuşu ile değiştirilebilir.</translation>
     </message>
@@ -5223,12 +5264,12 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
   <context>
     <name>CmdSketcherCompDimensionTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1842"/>
+      <location filename="../../CommandConstraints.cpp" line="1859"/>
       <source>Dimension</source>
       <translation>Boyut</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1843"/>
+      <location filename="../../CommandConstraints.cpp" line="1860"/>
       <source>Dimension tools</source>
       <translation>Ölçülendirme araçları</translation>
     </message>
@@ -5355,22 +5396,22 @@ Izgara aralığı, belirtilen piksel boyutundan küçük hale gelirse değişir.
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1197"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1194"/>
       <source>Delete original geometries (U)</source>
       <translation>Orijinal geometrileri sil (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1205"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1202"/>
       <source>Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</source>
       <translation>Orijinal geometriyi siler. Tek bir kopya oluşturulursa, bu işlem aslında bir 'Taşıma' işlemi gerçekleştirir.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="481"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation>Eşitlik kısıtlarını uygula</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="486"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Bu seçenek seçilirse boyutsal kısıtlar işlemden hariç tutulur.
@@ -5380,12 +5421,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1201"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1198"/>
       <source>Add offset constraint (J)</source>
       <translation>Ofset kısıtı ekle (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1213"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1210"/>
       <source>Adds a distance constraint with additional construction geometries that allows the distance to modify the entire offset geometry</source>
       <translation>Mesafe kısıtlaması ekleyerek, mesafenin tüm ofset geometrisini değiştirmesine olanak tanıyan ek yapı geometrileri ekler.</translation>
     </message>
@@ -5393,32 +5434,32 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2084"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2110"/>
       <source>Corner, width, height</source>
       <translation>Köşe, genişlik, yükseklik</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2085"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2111"/>
       <source>Center, width, height</source>
       <translation>Merkez, genişlik, yükseklik</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2086"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2112"/>
       <source>3 corners</source>
       <translation>3 köşe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2087"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2113"/>
       <source>Center, 2 corners</source>
       <translation>Merkez, 2 köşe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2093"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2119"/>
       <source>Rounded corners (U)</source>
       <translation>Yuvarlatılmış köşeler (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2097"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2123"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Yuvarlatılmış köşeli bir dikdörtgen oluşturur.</translation>
     </message>
@@ -5426,12 +5467,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2106"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2132"/>
       <source>Frame (J)</source>
       <translation>Çerçeve (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2110"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2136"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Sabit bir ofsetle iki dikdörtgen oluşturur.</translation>
     </message>
@@ -5614,62 +5655,92 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
       <translation>Geçersiz eskiz</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="703"/>
+      <source>Information layer</source>
+      <translation type="unfinished">Information layer</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="716"/>
+      <source>Color of arc and line helpers and also bspline polygon, comb...</source>
+      <translation type="unfinished">Color of arc and line helpers and also bspline polygon, comb...</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="736"/>
+      <source>Line pattern of information edges</source>
+      <translation type="unfinished">Line pattern of information edges</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="746"/>
+      <source>Width of information edges</source>
+      <translation type="unfinished">Width of information edges</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
+      <source>Grid and inactive helpers</source>
+      <translation type="unfinished">Grid and inactive helpers</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="790"/>
+      <source>Color of sketch grid lines and inactive helper lines</source>
+      <translation type="unfinished">Color of sketch grid lines and inactive helper lines</translation>
+    </message>
+    <message>
+      <location filename="../../SketcherSettingsAppearance.ui" line="813"/>
       <source>Constraint Colors</source>
       <translation>Kısıt Renkleri</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="747"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="854"/>
       <source>Dimensional constraints</source>
       <translation>Boyutsal kısıtlar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="754"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="861"/>
       <source>Color of dimensional driving constraints in edit mode</source>
       <translation>Düzenleme modunda boyutsal sürücü kısıtların rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="881"/>
       <source>Reference constraints</source>
       <translation>Referans kısıtlar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="828"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="935"/>
       <source>Deactivated constraints</source>
       <translation>Devre dışı kısıtlar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="980"/>
       <source>Colors Outside Sketcher</source>
       <translation>Sketcher Dışındaki Renkler</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="986"/>
       <source>Vertex</source>
       <translation>Köşe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="886"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="993"/>
       <source>Color of vertices outside edit mode</source>
       <translation>Düzenleme modu dışında tepe noktalarının rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="925"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1032"/>
       <source>Edge</source>
       <translation>Kenar</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="932"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1039"/>
       <source>Color of edges outside edit mode</source>
       <translation>Düzenleme modu dışında kenarların rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="952"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1059"/>
       <source>Face</source>
       <translation>Yüz</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="965"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="1072"/>
       <source>Color of internal faces formed by intersecting geometry or closed loops in the sketch</source>
       <translation>Eskizde kesişen geometri veya kapalı döngülerden oluşan iç yüzlerin rengi</translation>
     </message>
@@ -5699,61 +5770,40 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
       <translation>Geçersiz bir eskizi gösteren geometri rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="720"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="827"/>
       <source>Constraint symbols</source>
       <translation>Kısıtlama simgeleri</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="727"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="834"/>
       <source>Color of driving constraints in edit mode</source>
       <translation>Düzenleme modunda sürüş kısıtlamalarının rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="781"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="888"/>
       <source>Color of reference constraints in edit mode</source>
       <translation>Kaynak kısıtların düzenleme kipindeki rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="801"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="908"/>
       <source>Expression dependent constraint</source>
       <translation>İfadeye bağımlı kısıtlama</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="808"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="915"/>
       <source>Color of expression dependent constraints in edit mode</source>
       <translation>Düzenleme kipinde ifade bağımlılık kısıtlarının rengi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettingsAppearance.ui" line="835"/>
+      <location filename="../../SketcherSettingsAppearance.ui" line="942"/>
       <source>Color of deactivated constraints in edit mode</source>
       <translation>Devre dışı kısıtların düzenleme kipindeki rengi</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_p4_rotate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="510"/>
-      <source>Copies (+'U'/ -'J')</source>
-      <translation>Kopyalar (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="330"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation>Kenar sayısı (+'U'/ -'J')</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="997"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation>Derece (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="673"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="670"/>
       <source>Keep original geometries (U)</source>
       <translation>Orijinal geometrileri koru (U)</translation>
     </message>
@@ -5761,41 +5811,25 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>CmdSketcherCompConstrainTools</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1915"/>
+      <location filename="../../CommandConstraints.cpp" line="1932"/>
       <source>Constrain</source>
       <translation>Kısıtla</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1916"/>
+      <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>Kısıtlama araçları</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_p3_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="569"/>
-      <source>Copies (+'U'/-'J')</source>
-      <translation>Kopyalar (+'U'/-'J')</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="573"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation>Satırlar (+'R'/-'F')</translation>
-    </message>
-  </context>
-  <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="576"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="572"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="577"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="573"/>
       <source>3 rim points</source>
       <translation>3 kenar noktası</translation>
     </message>
@@ -5803,12 +5837,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="613"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="610"/>
       <source>Arc ends</source>
       <translation>Yay uçları</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="614"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="611"/>
       <source>Flat ends</source>
       <translation>Düz uçlar</translation>
     </message>
@@ -5816,12 +5850,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>Sketcher_CreateEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="501"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="498"/>
       <source>Center</source>
       <translation>Ortala</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="502"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="499"/>
       <source>Axis endpoints</source>
       <translation>Eksen uç noktaları</translation>
     </message>
@@ -5829,12 +5863,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="474"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="471"/>
       <source>Preserve corner (U)</source>
       <translation>Köşeyi koru (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="478"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="475"/>
       <source>Preserves intersection point and most constraints</source>
       <translation>Kesişim noktasını ve kısıtların çoğunu korur</translation>
     </message>
@@ -5842,17 +5876,17 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="359"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="365"/>
       <source>Point, length, angle</source>
       <translation>Nokta, uzunluk, açı</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="360"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="366"/>
       <source>Point, width, height</source>
       <translation>Nokta, genişlik, yükseklik</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="361"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="367"/>
       <source>2 points</source>
       <translation>2 nokta</translation>
     </message>
@@ -5860,12 +5894,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1179"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1176"/>
       <source>Arc</source>
       <translation>Yay</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1180"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1177"/>
       <source>Intersection</source>
       <translation>Kesişim</translation>
     </message>
@@ -5873,12 +5907,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c1_symmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="283"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="280"/>
       <source>Delete original geometries (U)</source>
       <translation>Orijinal geometrileri sil (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="287"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="284"/>
       <source>Removes the original geometry and keeps only the mirrored result.</source>
       <translation>Orijinal geometriyi kaldırır ve yalnızca aynalanmış sonucu saklar.</translation>
     </message>
@@ -5886,12 +5920,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="954"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="951"/>
       <source>Periodic (F)</source>
       <translation type="unfinished">Periodic (F)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="958"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="955"/>
       <source>Create a periodic B-spline.</source>
       <translation>Periyodik bir B-spline oluşturur.</translation>
     </message>
@@ -5899,8 +5933,8 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>Sketcher_ConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9532"/>
-      <location filename="../../CommandConstraints.cpp" line="9534"/>
+      <location filename="../../CommandConstraints.cpp" line="9573"/>
+      <location filename="../../CommandConstraints.cpp" line="9575"/>
       <source>Fix the radius of an arc or a circle</source>
       <translation>Bir yay veya çemberin yarıçapını sabitle</translation>
     </message>
@@ -5908,8 +5942,8 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>Sketcher_ConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9545"/>
-      <location filename="../../CommandConstraints.cpp" line="9547"/>
+      <location filename="../../CommandConstraints.cpp" line="9586"/>
+      <location filename="../../CommandConstraints.cpp" line="9588"/>
       <source>Fix the radius/diameter of an arc or a circle</source>
       <translation>Bir yay veya çemberin yarıçapını/çapını sabitle</translation>
     </message>
@@ -5917,12 +5951,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="533"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation>Eşitlik kısıtlarını uygula</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="537"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Bu seçenek seçilirse boyutsal kısıtlar işlemden hariç tutulur.
@@ -5945,12 +5979,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
+      <location filename="../../Command.cpp" line="340"/>
       <source>Edit Sketch</source>
       <translation>Eskizi Düzenle</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="341"/>
       <source>Opens the selected sketch for editing</source>
       <translation>Seçili eskizi düzenlemek için açar</translation>
     </message>
@@ -5958,12 +5992,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="369"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Leave Sketch</source>
       <translation>Eskizden Çık</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="370"/>
+      <location filename="../../Command.cpp" line="372"/>
       <source>Finishes editing the active sketch. Press Escape to exit.</source>
       <translation type="unfinished">Finishes editing the active sketch. Press Escape to exit.</translation>
     </message>
@@ -5971,12 +6005,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>CmdSketcherStopOperation</name>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
+      <location filename="../../Command.cpp" line="479"/>
       <source>Stop Operation</source>
       <translation>İşlemi Durdur</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="478"/>
+      <location filename="../../Command.cpp" line="480"/>
       <source>Stops the active operation while in edit mode</source>
       <translation>Düzenleme modundayken etkin işlemi durdurur</translation>
     </message>
@@ -5984,12 +6018,12 @@ Bunun yerine, özgün nesneler ile kopyaları arasına eşitlik kısıtları uyg
   <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="513"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Reorient Sketch</source>
       <translation>Eskizi Yeniden Yönlendir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="514"/>
+      <location filename="../../Command.cpp" line="516"/>
       <source>Places the selected sketch on one of the global coordinate planes.
 This will clear the AttachmentSupport property.</source>
       <translation>Seçili eskizi küresel koordinat düzlemlerinden birine yerleştirir.
@@ -5999,12 +6033,12 @@ Bu işlem AttachmentSupport özelliğini temizler.</translation>
   <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="875"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Align View to Sketch</source>
       <translation>Görünümü Eskize Hizala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="878"/>
       <source>Aligns the camera orientation perpendicular to the active sketch plane</source>
       <translation>Kamera yönelimini etkin eskiz düzlemine dik olacak şekilde hizalar</translation>
     </message>
@@ -6012,12 +6046,12 @@ Bu işlem AttachmentSupport özelliğini temizler.</translation>
   <context>
     <name>CmdSketcherViewSection</name>
     <message>
-      <location filename="../../Command.cpp" line="1421"/>
+      <location filename="../../Command.cpp" line="1423"/>
       <source>Toggle Section View</source>
       <translation>Kesit Görünümünü Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1422"/>
+      <location filename="../../Command.cpp" line="1424"/>
       <source>Toggles between section view and full view</source>
       <translation>Kesit görünümü ile tam görünüm arasında geçiş yapar</translation>
     </message>
@@ -6025,42 +6059,42 @@ Bu işlem AttachmentSupport özelliğini temizler.</translation>
   <context>
     <name>SketcherGui::GridSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1501"/>
       <source>Display grid</source>
       <translation>Izgarayı göster</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1497"/>
+      <location filename="../../Command.cpp" line="1502"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
       <translation>Etkin eskizde ızgaranın görünürlüğünü aç/kapatır</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1500"/>
+      <location filename="../../Command.cpp" line="1505"/>
       <source>Grid auto-spacing</source>
       <translation>Izgara otomatik aralığı</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1501"/>
+      <location filename="../../Command.cpp" line="1506"/>
       <source>Automatically adjusts the grid spacing based on the zoom level</source>
       <translation>Yakınlaştırma düzeyine göre ızgara aralığını otomatik ayarlar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1504"/>
+      <location filename="../../Command.cpp" line="1509"/>
       <source>Spacing</source>
       <translation>Aralık</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1505"/>
+      <location filename="../../Command.cpp" line="1510"/>
       <source>Distance between two subsequent grid lines</source>
       <translation>Sonraki iki ızgara çizgisi arası mesafe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1507"/>
+      <location filename="../../Command.cpp" line="1512"/>
       <source>Snap to grid</source>
       <translation>Izgaraya yakala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1509"/>
+      <location filename="../../Command.cpp" line="1514"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
       <translation>Yeni noktalar en yakın ızgara çizgisine yakalanır.
@@ -6070,12 +6104,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherGrid</name>
     <message>
-      <location filename="../../Command.cpp" line="1634"/>
+      <location filename="../../Command.cpp" line="1639"/>
       <source>Toggle Grid</source>
       <translation>Izgarayı Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../Command.cpp" line="1641"/>
       <source>Toggles the grid display in the active sketch</source>
       <translation>Etkin eskizde ızgara gösterimini aç/kapatır</translation>
     </message>
@@ -6083,22 +6117,22 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::SnapSpaceAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1741"/>
+      <location filename="../../Command.cpp" line="1746"/>
       <source>Snap to objects</source>
       <translation>Nesnelere yakala</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1742"/>
+      <location filename="../../Command.cpp" line="1747"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
       <translation>Yeni noktalar, şu anda önceden seçili olan nesneye yakalanır. Ayrıca çizgi ve yayların orta noktasına da yakalanır.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1751"/>
       <source>Snap angle</source>
       <translation>Yakalama açısı</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1748"/>
+      <location filename="../../Command.cpp" line="1753"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
       <translation>‘Açıya yakala’ kullanan araçlar için açısal adım. Ctrl tuşunu basılı tutarak 'Açıya yakala'yı aç/kapatabilirsiniz. Açı, eskizin pozitif X ekseninden başlar.</translation>
     </message>
@@ -6106,12 +6140,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSnap</name>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1839"/>
       <source>Toggle Snap</source>
       <translation>Yakalamayı Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1836"/>
+      <location filename="../../Command.cpp" line="1841"/>
       <source>Toggles snapping</source>
       <translation>Yakalamayı aç/kapatır</translation>
     </message>
@@ -6119,27 +6153,27 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::RenderingOrderAction</name>
     <message>
-      <location filename="../../Command.cpp" line="1943"/>
+      <location filename="../../Command.cpp" line="1948"/>
       <source>Normal geometry</source>
       <translation>Normal geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1945"/>
+      <location filename="../../Command.cpp" line="1950"/>
       <source>Construction geometry</source>
       <translation>Yapı geometrisi</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1947"/>
+      <location filename="../../Command.cpp" line="1952"/>
       <source>External geometry</source>
       <translation>Harici geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1950"/>
+      <location filename="../../Command.cpp" line="1955"/>
       <source>Unknown geometry</source>
       <translation>Bilinmeyen geometri</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1991"/>
+      <location filename="../../Command.cpp" line="1996"/>
       <source>Rendering order</source>
       <translation>Çizdirme sırası</translation>
     </message>
@@ -6147,12 +6181,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdRenderingOrder</name>
     <message>
-      <location filename="../../Command.cpp" line="2076"/>
+      <location filename="../../Command.cpp" line="2081"/>
       <source>Rendering Order</source>
       <translation>Çizdirme Sırası</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2077"/>
+      <location filename="../../Command.cpp" line="2082"/>
       <source>Reorders items in the rendering order</source>
       <translation>Öğeleri çizdirme sırasına göre yeniden sıralar</translation>
     </message>
@@ -6160,12 +6194,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="69"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="103"/>
       <source>Toggle Construction Geometry</source>
       <translation>Yardımcı Geometriyi Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="70"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="104"/>
       <source>Toggles between defining geometry and construction geometry modes</source>
       <translation>Tanımlayıcı geometri ile yardımcı geometri modları arasında geçiş yapar</translation>
     </message>
@@ -6173,12 +6207,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompToggleConstraints</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1946"/>
+      <location filename="../../CommandConstraints.cpp" line="1963"/>
       <source>Toggle Constraints</source>
       <translation>Kısıtları Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="1947"/>
+      <location filename="../../CommandConstraints.cpp" line="1964"/>
       <source>Toggle constrain tools</source>
       <translation>Kısıtlama araçlarını aç/kapat</translation>
     </message>
@@ -6186,12 +6220,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompHorizontalVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3702"/>
+      <location filename="../../CommandConstraints.cpp" line="3736"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Yatay/Dikey Kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="3703"/>
+      <location filename="../../CommandConstraints.cpp" line="3737"/>
       <source>Constrains the selected elements either horizontally or vertically</source>
       <translation>Seçili öğeleri yatay ya da dikey olacak şekilde kısıtlar</translation>
     </message>
@@ -6199,12 +6233,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainHorVer</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4020"/>
+      <location filename="../../CommandConstraints.cpp" line="4054"/>
       <source>Horizontal/Vertical Constraint</source>
       <translation>Yatay/Dikey Kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4021"/>
+      <location filename="../../CommandConstraints.cpp" line="4055"/>
       <source>Constrains the selected elements either horizontally or vertically, based on their closest alignment</source>
       <translation>Seçili öğeleri, en yakın hizalamalarına göre yatay veya dikey olarak kısıtlar</translation>
     </message>
@@ -6212,12 +6246,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4066"/>
+      <location filename="../../CommandConstraints.cpp" line="4100"/>
       <source>Horizontal Constraint</source>
       <translation>Yatay Kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4067"/>
+      <location filename="../../CommandConstraints.cpp" line="4101"/>
       <source>Constrains the selected elements horizontally</source>
       <translation>Seçili öğeleri yatay olarak kısıtlar</translation>
     </message>
@@ -6225,12 +6259,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4111"/>
+      <location filename="../../CommandConstraints.cpp" line="4145"/>
       <source>Vertical Constraint</source>
       <translation>Dikey Kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4112"/>
+      <location filename="../../CommandConstraints.cpp" line="4146"/>
       <source>Constrains the selected elements vertically</source>
       <translation>Seçili öğeleri dikey olarak kısıtlar</translation>
     </message>
@@ -6238,12 +6272,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4157"/>
+      <location filename="../../CommandConstraints.cpp" line="4191"/>
       <source>Lock Position</source>
       <translation>Konumu Kilitle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4158"/>
+      <location filename="../../CommandConstraints.cpp" line="4192"/>
       <source>Constrains the selected vertices by adding horizontal and vertical distance constraints</source>
       <translation>Seçili tepe noktalarına yatay ve dikey mesafe kısıtları ekleyerek kısıtlar</translation>
     </message>
@@ -6251,12 +6285,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainBlock</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4443"/>
+      <location filename="../../CommandConstraints.cpp" line="4477"/>
       <source>Block Constraint</source>
       <translation>Blok Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4444"/>
+      <location filename="../../CommandConstraints.cpp" line="4478"/>
       <source>Constrains the selected edges as fixed</source>
       <translation>Seçili kenarları sabit olacak şekilde kısıtlar</translation>
     </message>
@@ -6264,12 +6298,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainCoincidentUnified</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4644"/>
+      <location filename="../../CommandConstraints.cpp" line="4678"/>
       <source>Coincident Constraint</source>
       <translation>Çakışıklık Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="4645"/>
+      <location filename="../../CommandConstraints.cpp" line="4679"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Seçili öğeleri çakışık olacak şekilde kısıtlar</translation>
     </message>
@@ -6277,12 +6311,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5159"/>
+      <location filename="../../CommandConstraints.cpp" line="5193"/>
       <source>Coincident Constraint</source>
       <translation>Çakışıklık Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5160"/>
+      <location filename="../../CommandConstraints.cpp" line="5194"/>
       <source>Constrains the selected elements to be coincident</source>
       <translation>Seçili öğeleri çakışık olacak şekilde kısıtlar</translation>
     </message>
@@ -6290,12 +6324,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5209"/>
+      <location filename="../../CommandConstraints.cpp" line="5243"/>
       <source>Point-On-Object Constraint</source>
       <translation>Nokta-Nesne Üzerinde Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5210"/>
+      <location filename="../../CommandConstraints.cpp" line="5244"/>
       <source>Constrains the selected point onto the selected object</source>
       <translation>Seçili noktayı seçili nesnenin üzerine kısıtlar</translation>
     </message>
@@ -6303,12 +6337,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5261"/>
+      <location filename="../../CommandConstraints.cpp" line="5295"/>
       <source>Distance Dimension</source>
       <translation>Mesafe Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5262"/>
+      <location filename="../../CommandConstraints.cpp" line="5296"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if one is selected</source>
       <translation>İki nokta arasındaki dikey mesafeyi kısıtlar; yalnızca bir nokta seçiliyse, o noktayı orijine göre kısıtlar</translation>
     </message>
@@ -6316,12 +6350,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5915"/>
+      <location filename="../../CommandConstraints.cpp" line="5949"/>
       <source>Horizontal Dimension</source>
       <translation>Yatay Ölçü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="5916"/>
+      <location filename="../../CommandConstraints.cpp" line="5950"/>
       <source>Constrains the horizontal distance between two points, or from a point to the origin if only one is selected</source>
       <translation>İki nokta arasındaki yatay mesafeyi kısıtlar; yalnızca bir nokta seçiliyse, o noktayı orijine göre kısıtlar</translation>
     </message>
@@ -6329,12 +6363,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6216"/>
+      <location filename="../../CommandConstraints.cpp" line="6250"/>
       <source>Vertical Dimension</source>
       <translation>Dikey Ölçü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6217"/>
+      <location filename="../../CommandConstraints.cpp" line="6251"/>
       <source>Constrains the vertical distance between two points, or from a point to the origin if only one is selected</source>
       <translation>İki nokta arasındaki dikey mesafeyi veya yalnızca bir nokta seçilmişse, o noktadan orijine olan mesafeyi sınırlandırır.</translation>
     </message>
@@ -6342,12 +6376,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6511"/>
+      <location filename="../../CommandConstraints.cpp" line="6545"/>
       <source>Parallel Constraint</source>
       <translation>Paralellik Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6512"/>
+      <location filename="../../CommandConstraints.cpp" line="6546"/>
       <source>Constrains the selected lines to be parallel</source>
       <translation>Seçili çizgileri paralel olacak şekilde kısıtlar</translation>
     </message>
@@ -6355,12 +6389,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6674"/>
+      <location filename="../../CommandConstraints.cpp" line="6708"/>
       <source>Perpendicular Constraint</source>
       <translation>Diklik Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="6675"/>
+      <location filename="../../CommandConstraints.cpp" line="6709"/>
       <source>Constrains the selected lines to be perpendicular</source>
       <translation>Seçili çizgileri dik olacak şekilde kısıtlar</translation>
     </message>
@@ -6368,12 +6402,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7458"/>
+      <location filename="../../CommandConstraints.cpp" line="7492"/>
       <source>Tangent/Collinear Constraint</source>
       <translation>Teğet/Eşdoğrusal Kısıt</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="7459"/>
+      <location filename="../../CommandConstraints.cpp" line="7493"/>
       <source>Constrains the selected elements to be tangent or collinear</source>
       <translation>Seçili öğeleri teğet veya eşdoğrusal olacak şekilde kısıtlar</translation>
     </message>
@@ -6381,12 +6415,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8371"/>
+      <location filename="../../CommandConstraints.cpp" line="8412"/>
       <source>Radius Dimension</source>
       <translation>Yarıçap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8372"/>
+      <location filename="../../CommandConstraints.cpp" line="8413"/>
       <source>Constrains the radius of the selected circle or arc</source>
       <translation>Seçili çemberin veya yayın yarıçapını kısıtlar</translation>
     </message>
@@ -6394,12 +6428,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainDiameter</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8734"/>
+      <location filename="../../CommandConstraints.cpp" line="8775"/>
       <source>Diameter Dimension</source>
       <translation>Çap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="8735"/>
+      <location filename="../../CommandConstraints.cpp" line="8776"/>
       <source>Constrains the diameter of the selected circle or arc</source>
       <translation>Seçili çemberin veya yayın çapını kısıtlar</translation>
     </message>
@@ -6407,12 +6441,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainRadiam</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9052"/>
+      <location filename="../../CommandConstraints.cpp" line="9093"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Yarıçap/Çap Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9053"/>
+      <location filename="../../CommandConstraints.cpp" line="9094"/>
       <source>Constrains the radius of the selected arc or the diameter of the selected circle</source>
       <translation>Seçili yayın yarıçapını veya seçili çemberin çapını kısıtlar</translation>
     </message>
@@ -6420,12 +6454,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9580"/>
+      <location filename="../../CommandConstraints.cpp" line="9621"/>
       <source>Angle Dimension</source>
       <translation>Açı Ölçüsü</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9581"/>
+      <location filename="../../CommandConstraints.cpp" line="9622"/>
       <source>Constrains the angle between two straight lines or between one line and the X-axis of the sketch if only one is selected</source>
       <translation>İki doğru arasındaki açıyı; yalnızca bir doğru seçiliyse, o doğru ile eskizin X ekseni arasındaki açıyı kısıtlar</translation>
     </message>
@@ -6433,12 +6467,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10068"/>
+      <location filename="../../CommandConstraints.cpp" line="10109"/>
       <source>Equal Constraint</source>
       <translation>Eşitlik Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10070"/>
+      <location filename="../../CommandConstraints.cpp" line="10111"/>
       <source>Constrains the selected edges or circles to be equal</source>
       <translation>Seçili kenarları veya çemberleri eşit olacak şekilde kısıtlar</translation>
     </message>
@@ -6446,12 +6480,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10318"/>
+      <location filename="../../CommandConstraints.cpp" line="10359"/>
       <source>Symmetric Constraint</source>
       <translation>Simetri Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10319"/>
+      <location filename="../../CommandConstraints.cpp" line="10360"/>
       <source>Constrains the selected elements to be symmetric</source>
       <translation>Seçili öğeleri simetrik olacak şekilde kısıtlar</translation>
     </message>
@@ -6459,12 +6493,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10780"/>
+      <location filename="../../CommandConstraints.cpp" line="10821"/>
       <source>Refraction Constraint</source>
       <translation>Kırılma Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="10781"/>
+      <location filename="../../CommandConstraints.cpp" line="10822"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
       <translation>Seçili öğeleri kırılma yasasına (Snell Yasası) göre kısıtlar</translation>
     </message>
@@ -6472,12 +6506,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherChangeDimensionConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11216"/>
+      <location filename="../../CommandConstraints.cpp" line="11257"/>
       <source>Edit Value</source>
       <translation>Değeri Düzenle</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11217"/>
+      <location filename="../../CommandConstraints.cpp" line="11258"/>
       <source>Edits the value of a dimensional constraint</source>
       <translation>Boyutsal bir kısıtın değerini düzenler</translation>
     </message>
@@ -6485,12 +6519,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11270"/>
+      <location filename="../../CommandConstraints.cpp" line="11311"/>
       <source>Toggle Driving/Reference Constraints</source>
       <translation>Sürücü/Referans Kısıtlarına Geç</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11271"/>
+      <location filename="../../CommandConstraints.cpp" line="11312"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
       <translation>Seçili kısıt ve komutların sürücü ve referans modları arasında geçiş yapar</translation>
     </message>
@@ -6498,12 +6532,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11425"/>
+      <location filename="../../CommandConstraints.cpp" line="11466"/>
       <source>Toggle Constraints</source>
       <translation>Kısıtları Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="11426"/>
+      <location filename="../../CommandConstraints.cpp" line="11467"/>
       <source>Toggles the state of the selected constraints</source>
       <translation>Seçili kısıtların durumunu değiştirir</translation>
     </message>
@@ -6511,12 +6545,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="114"/>
+      <location filename="../../CommandCreateGeo.cpp" line="109"/>
       <source>Point</source>
       <translation>Nokta</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="115"/>
+      <location filename="../../CommandCreateGeo.cpp" line="110"/>
       <source>Creates a point</source>
       <translation>Bir nokta oluşturur</translation>
     </message>
@@ -6524,12 +6558,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="145"/>
+      <location filename="../../CommandCreateGeo.cpp" line="140"/>
       <source>Polyline</source>
       <translation>Poliçizgi</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="146"/>
+      <location filename="../../CommandCreateGeo.cpp" line="141"/>
       <source>Creates a continuous polyline</source>
       <translation>Sürekli bir kırık çizgi oluşturur</translation>
     </message>
@@ -6537,12 +6571,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="201"/>
+      <location filename="../../CommandCreateGeo.cpp" line="196"/>
       <source>Line</source>
       <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="202"/>
+      <location filename="../../CommandCreateGeo.cpp" line="197"/>
       <source>Creates a line</source>
       <translation>Bir çizgi oluşturur</translation>
     </message>
@@ -6550,12 +6584,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="263"/>
+      <location filename="../../CommandCreateGeo.cpp" line="258"/>
       <source>Polyline</source>
       <translation>Poliçizgi</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="264"/>
+      <location filename="../../CommandCreateGeo.cpp" line="259"/>
       <source>Creates a polyline in the sketch. M key cycles through segment modes.</source>
       <translation type="unfinished">Creates a polyline in the sketch. M key cycles through segment modes.</translation>
     </message>
@@ -6563,12 +6597,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="296"/>
+      <location filename="../../CommandCreateGeo.cpp" line="291"/>
       <source>Arc</source>
       <translation>Yay</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="297"/>
+      <location filename="../../CommandCreateGeo.cpp" line="292"/>
       <source>Creates an arc</source>
       <translation>Bir yay oluşturur</translation>
     </message>
@@ -6576,12 +6610,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="366"/>
+      <location filename="../../CommandCreateGeo.cpp" line="361"/>
       <source>Arc From Center</source>
       <translation>Merkezden Yay</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="367"/>
+      <location filename="../../CommandCreateGeo.cpp" line="362"/>
       <source>Creates an arc defined by a center point and an end point</source>
       <translation>Bir merkez noktası ve bir uç noktayla tanımlanan bir yay oluşturur</translation>
     </message>
@@ -6589,12 +6623,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="398"/>
+      <location filename="../../CommandCreateGeo.cpp" line="393"/>
       <source>Arc From 3 Points</source>
       <translation>3 Noktadan Yay</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="399"/>
+      <location filename="../../CommandCreateGeo.cpp" line="394"/>
       <source>Creates an arc defined by 2 end points and 1 point on the arc</source>
       <translation>2 uç nokta ve yay üzerinde 1 noktayla tanımlanan bir yay oluşturur</translation>
     </message>
@@ -6602,12 +6636,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="434"/>
+      <location filename="../../CommandCreateGeo.cpp" line="429"/>
       <source>Elliptical Arc</source>
       <translation>Eliptik Ark</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="435"/>
+      <location filename="../../CommandCreateGeo.cpp" line="430"/>
       <source>Creates an elliptical arc</source>
       <translation>Eliptik bir yay oluşturur</translation>
     </message>
@@ -6615,12 +6649,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateArcOfHyperbola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="465"/>
+      <location filename="../../CommandCreateGeo.cpp" line="460"/>
       <source>Hyperbolic Arc</source>
       <translation>Hiperbolik yay</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="466"/>
+      <location filename="../../CommandCreateGeo.cpp" line="461"/>
       <source>Creates a hyperbolic arc</source>
       <translation>Hiperbolik bir yay oluşturur</translation>
     </message>
@@ -6628,12 +6662,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateArcOfParabola</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="495"/>
+      <location filename="../../CommandCreateGeo.cpp" line="490"/>
       <source>Parabolic Arc</source>
       <translation>Parabolik Ark</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="496"/>
+      <location filename="../../CommandCreateGeo.cpp" line="491"/>
       <source>Creates a parabolic arc</source>
       <translation>Parabolik bir yay oluşturur</translation>
     </message>
@@ -6641,12 +6675,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="527"/>
+      <location filename="../../CommandCreateGeo.cpp" line="522"/>
       <source>Conic</source>
       <translation>Konik</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="528"/>
+      <location filename="../../CommandCreateGeo.cpp" line="523"/>
       <source>Creates a conic</source>
       <translation>Bir konik oluşturur</translation>
     </message>
@@ -6654,12 +6688,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="594"/>
+      <location filename="../../CommandCreateGeo.cpp" line="589"/>
       <source>Circle From Center</source>
       <translation>Merkezden Çember</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="595"/>
+      <location filename="../../CommandCreateGeo.cpp" line="590"/>
       <source>Creates a circle from a center and rim point</source>
       <translation>Bir merkez ve çevre noktasıyla bir çember oluşturur</translation>
     </message>
@@ -6667,12 +6701,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="625"/>
+      <location filename="../../CommandCreateGeo.cpp" line="620"/>
       <source>Circle From 3 Points</source>
       <translation>3 Noktadan Çember</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="626"/>
+      <location filename="../../CommandCreateGeo.cpp" line="621"/>
       <source>Creates a circle from 3 perimeter points</source>
       <translation>Çevresi üzerinde 3 noktadan bir çember oluşturur</translation>
     </message>
@@ -6680,12 +6714,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="665"/>
+      <location filename="../../CommandCreateGeo.cpp" line="660"/>
       <source>Ellipse From Center</source>
       <translation>Merkezden Elips</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="666"/>
+      <location filename="../../CommandCreateGeo.cpp" line="661"/>
       <source>Creates an ellipse from a center and rim point</source>
       <translation>Bir merkez ve çevre noktasıyla bir elips oluşturur</translation>
     </message>
@@ -6693,12 +6727,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="700"/>
+      <location filename="../../CommandCreateGeo.cpp" line="695"/>
       <source>Ellipse From 3 Points</source>
       <translation>3 Noktadan Elips</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="701"/>
+      <location filename="../../CommandCreateGeo.cpp" line="696"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
       <translation>Çevresi üzerinde 3 noktadan bir elips oluşturur</translation>
     </message>
@@ -6706,12 +6740,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCreateRectangles</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="738"/>
+      <location filename="../../CommandCreateGeo.cpp" line="733"/>
       <source>Rectangle</source>
       <translation>Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="739"/>
+      <location filename="../../CommandCreateGeo.cpp" line="734"/>
       <source>Creates a rectangle</source>
       <translation>Bir dikdörtgen oluşturur</translation>
     </message>
@@ -6719,12 +6753,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="798"/>
+      <location filename="../../CommandCreateGeo.cpp" line="793"/>
       <source>Rectangle</source>
       <translation>Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="799"/>
+      <location filename="../../CommandCreateGeo.cpp" line="794"/>
       <source>Creates a rectangle from 2 corner points</source>
       <translation>İki köşe noktasından bir dikdörtgen oluşturur</translation>
     </message>
@@ -6732,12 +6766,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateRectangleCenter</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="834"/>
+      <location filename="../../CommandCreateGeo.cpp" line="829"/>
       <source>Centered Rectangle</source>
       <translation>Merkezli Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="835"/>
+      <location filename="../../CommandCreateGeo.cpp" line="830"/>
       <source>Creates a centered rectangle from a center and a corner point</source>
       <translation>Bir merkez ve bir köşe noktasından merkezli bir dikdörtgen oluşturur</translation>
     </message>
@@ -6745,12 +6779,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateOblong</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="871"/>
+      <location filename="../../CommandCreateGeo.cpp" line="866"/>
       <source>Rounded Rectangle</source>
       <translation>Yuvarlatılmış Dikdörtgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="872"/>
+      <location filename="../../CommandCreateGeo.cpp" line="867"/>
       <source>Creates a rounded rectangle from 2 corner points</source>
       <translation>İki köşe noktasından yuvarlatılmış bir dikdörtgen oluşturur</translation>
     </message>
@@ -6758,12 +6792,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="910"/>
+      <location filename="../../CommandCreateGeo.cpp" line="905"/>
       <source>Polygon</source>
       <translation>Çokgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="911"/>
+      <location filename="../../CommandCreateGeo.cpp" line="906"/>
       <source>Creates a regular polygon from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından düzgün bir çokgen oluşturur</translation>
     </message>
@@ -6771,12 +6805,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="982"/>
+      <location filename="../../CommandCreateGeo.cpp" line="977"/>
       <source>Triangle</source>
       <translation>Üçgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="983"/>
+      <location filename="../../CommandCreateGeo.cpp" line="978"/>
       <source>Creates an equilateral triangle from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından eşkenar bir üçgen oluşturur</translation>
     </message>
@@ -6784,12 +6818,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1013"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1008"/>
       <source>Square</source>
       <translation>Kare</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1014"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1009"/>
       <source>Creates a square from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından bir kare oluşturur</translation>
     </message>
@@ -6797,12 +6831,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1044"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1039"/>
       <source>Pentagon</source>
       <translation>Beşgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1045"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1040"/>
       <source>Creates a pentagon from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından bir beşgen oluşturur</translation>
     </message>
@@ -6810,12 +6844,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1075"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1070"/>
       <source>Hexagon</source>
       <translation>Altıgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1076"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1071"/>
       <source>Creates a hexagon from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından bir altıgen oluşturur</translation>
     </message>
@@ -6823,12 +6857,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1106"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1101"/>
       <source>Heptagon</source>
       <translation>Yedigen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1107"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1102"/>
       <source>Creates a heptagon from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından bir yedigen oluşturur</translation>
     </message>
@@ -6836,12 +6870,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1137"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1132"/>
       <source>Octagon</source>
       <translation>Sekizgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1138"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1133"/>
       <source>Creates an octagon from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından bir sekizgen oluşturur</translation>
     </message>
@@ -6849,12 +6883,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateRegularPolygon</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1168"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1163"/>
       <source>Polygon</source>
       <translation>Çokgen</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1169"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1164"/>
       <source>Creates a regular polygon from a center and corner point</source>
       <translation>Bir merkez ve köşe noktasından düzgün bir çokgen oluşturur</translation>
     </message>
@@ -6862,12 +6896,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1206"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1201"/>
       <source>Slot</source>
       <translation>Yuva</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1207"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1202"/>
       <source>Slot tools</source>
       <translation>Yuva araçları</translation>
     </message>
@@ -6875,12 +6909,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1262"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1257"/>
       <source>Slot</source>
       <translation>Yuva</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1263"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1258"/>
       <source>Creates a slot</source>
       <translation>Bir yuva oluşturur</translation>
     </message>
@@ -6888,12 +6922,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateArcSlot</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1293"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1288"/>
       <source>Arc Slot</source>
       <translation>Yay Yuvası</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1294"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1289"/>
       <source>Creates an arc slot</source>
       <translation>Bir yay yuvası oluşturur</translation>
     </message>
@@ -6901,12 +6935,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1326"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1321"/>
       <source>B-Spline</source>
       <translation>B-Şerit</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1327"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1322"/>
       <source>Creates a B-spline curve defined by control points</source>
       <translation>Kontrol noktalarıyla tanımlı bir B-spline eğrisi oluşturur</translation>
     </message>
@@ -6914,12 +6948,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1435"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1430"/>
       <source>B-Spline</source>
       <translation>B-Şerit</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1436"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1431"/>
       <source>Creates a B-spline curve defined by control points</source>
       <translation>Kontrol noktalarıyla tanımlı bir B-spline eğrisi oluşturur</translation>
     </message>
@@ -6927,12 +6961,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreatePeriodicBSpline</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1475"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1470"/>
       <source>Periodic B-Spline</source>
       <translation>Periyodik B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1476"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1471"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
       <translation>Kontrol noktalarıyla tanımlı periyodik bir B-spline eğrisi oluşturur</translation>
     </message>
@@ -6940,12 +6974,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1514"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1509"/>
       <source>B-Spline From Knots</source>
       <translation>Düğümlerden B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1515"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1510"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
       <translation>Düğümlerden, yani enterpolasyonla bir B-spline oluşturur</translation>
     </message>
@@ -6953,12 +6987,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreatePeriodicBSplineByInterpolation</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1551"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1546"/>
       <source>Periodic B-Spline From Knots</source>
       <translation>Düğümlerden Periyodik B-Spline</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1552"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1547"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
       <translation>Enterpolasyon kullanarak düğümlerle tanımlı periyodik bir B-spline oluşturur</translation>
     </message>
@@ -6966,12 +7000,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCreateFillets</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1594"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1589"/>
       <source>Fillet/Chamfer</source>
       <translation>Yuvarlatma/Pah</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1595"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1590"/>
       <source>Creates a fillet or chamfer between 2 lines</source>
       <translation>İki çizgi arasında bir yuvarlatma veya pah oluşturur</translation>
     </message>
@@ -6979,12 +7013,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1628"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1623"/>
       <source>Fillet</source>
       <translation>Yuvarla</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1629"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1624"/>
       <source>Creates a fillet between 2 selected lines or at coincident points</source>
       <translation>Seçili iki çizgi arasında veya çakışık noktalarda bir köşe yuvarlatması oluşturur.</translation>
     </message>
@@ -6992,12 +7026,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateChamfer</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1660"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1655"/>
       <source>Chamfer</source>
       <translation>Pah kır</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1661"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1656"/>
       <source>Creates a chamfer between 2 selected lines or at coincident points</source>
       <translation>Seçili iki çizgi arasında veya çakışık noktalarda bir pah oluşturur.</translation>
     </message>
@@ -7005,12 +7039,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompCurveEdition</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1694"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1689"/>
       <source>Edit Edges</source>
       <translation>Kenarları Düzenle</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1695"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1690"/>
       <source>Edge editing tools</source>
       <translation>Kenar Düzenleme Araçları</translation>
     </message>
@@ -7018,12 +7052,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherTrimming</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1728"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1723"/>
       <source>Trim Edge</source>
       <translation>Kenar Kırp</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1729"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1724"/>
       <source>Trims an edge with respect to the selected position</source>
       <translation>Seçilen konuma göre bir kenarı kırpar.</translation>
     </message>
@@ -7031,12 +7065,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherExtend</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1758"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1753"/>
       <source>Extend Edge</source>
       <translation>Kenar Uzat</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1759"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1754"/>
       <source>Extends an edge with respect to the selected position</source>
       <translation>Seçilen konuma göre bir kenarı uzatır.</translation>
     </message>
@@ -7044,12 +7078,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSplit</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1788"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1783"/>
       <source>Split Edge</source>
       <translation>Kenarı Böl</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1789"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1784"/>
       <source>Splits an edge into 2 segments while preserving constraints</source>
       <translation>Kısıtları koruyarak bir kenarı iki segmente böler.</translation>
     </message>
@@ -7057,12 +7091,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCompExternal</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1819"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1814"/>
       <source>External Geometry</source>
       <translation>Harici Geometri</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1820"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1815"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
       <translation>Eskiz dışında tanımlı geometriye bağlı eskiz elemanları oluşturur.</translation>
     </message>
@@ -7070,12 +7104,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherProjection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1877"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1872"/>
       <source>External Projection</source>
       <translation>Harici İzdüşüm</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1878"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1873"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
       <translation>Harici geometrinin eskiz düzlemine izdüşümünü oluşturur.</translation>
     </message>
@@ -7083,12 +7117,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherIntersection</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1914"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1909"/>
       <source>External Intersection</source>
       <translation>Harici Kesişim</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1915"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1910"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
       <translation>Harici geometrinin eskiz düzlemiyle kesişimini oluşturur.</translation>
     </message>
@@ -7096,12 +7130,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCarbonCopy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1952"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1947"/>
       <source>Carbon Copy</source>
       <translation>Karbon Kopya</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1953"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1948"/>
       <source>Copies the geometry of another sketch</source>
       <translation>Başka bir eskizin geometrisini kopyalar.</translation>
     </message>
@@ -7296,12 +7330,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCopyClipboard</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="319"/>
+      <location filename="../../CommandSketcherTools.cpp" line="324"/>
       <source>C&amp;opy Elements</source>
       <translation>Elemanları K&amp;opyala</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="320"/>
+      <location filename="../../CommandSketcherTools.cpp" line="325"/>
       <source>Copies the selected geometries and constraints to the clipboard</source>
       <translation>Seçili geometrileri ve kısıtları panoya kopyalar.</translation>
     </message>
@@ -7309,12 +7343,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCut</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="350"/>
+      <location filename="../../CommandSketcherTools.cpp" line="355"/>
       <source>C&amp;ut Elements</source>
       <translation>Elemanları &amp;Kes</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="351"/>
+      <location filename="../../CommandSketcherTools.cpp" line="356"/>
       <source>Cuts the selected geometries and constraints to the clipboard</source>
       <translation>Seçili geometrileri ve kısıtları panoya keser.</translation>
     </message>
@@ -7322,12 +7356,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherPaste</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="390"/>
+      <location filename="../../CommandSketcherTools.cpp" line="395"/>
       <source>P&amp;aste Elements</source>
       <translation>Elemanları &amp;Yapıştır</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="391"/>
+      <location filename="../../CommandSketcherTools.cpp" line="396"/>
       <source>Pastes the geometries and constraints from the clipboard into the sketch</source>
       <translation>Panodaki geometrileri ve kısıtları eskize yapıştırır.</translation>
     </message>
@@ -7335,12 +7369,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="438"/>
+      <location filename="../../CommandSketcherTools.cpp" line="443"/>
       <source>Select Associated Constraints</source>
       <translation>İlişkili Kısıtları Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="440"/>
+      <location filename="../../CommandSketcherTools.cpp" line="445"/>
       <source>Selects the constraints associated with the selected geometrical elements</source>
       <translation>Seçili geometrik elemanlarla ilişkili kısıtları seçer.</translation>
     </message>
@@ -7348,12 +7382,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="522"/>
+      <location filename="../../CommandSketcherTools.cpp" line="527"/>
       <source>Select Origin</source>
       <translation>Orijini Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="523"/>
+      <location filename="../../CommandSketcherTools.cpp" line="528"/>
       <source>Selects the local origin point of the sketch</source>
       <translation>Eskizin yerel orijin noktasını seçer.</translation>
     </message>
@@ -7361,12 +7395,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="566"/>
+      <location filename="../../CommandSketcherTools.cpp" line="571"/>
       <source>Select Vertical Axis</source>
       <translation>Dikey Ekseni Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="567"/>
+      <location filename="../../CommandSketcherTools.cpp" line="572"/>
       <source>Selects the local vertical axis of the sketch</source>
       <translation>Eskizin yerel dikey eksenini seçer.</translation>
     </message>
@@ -7374,12 +7408,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="607"/>
+      <location filename="../../CommandSketcherTools.cpp" line="612"/>
       <source>Select Horizontal Axis</source>
       <translation>Yatay Ekseni Seçin</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="608"/>
+      <location filename="../../CommandSketcherTools.cpp" line="613"/>
       <source>Selects the local horizontal axis of the sketch</source>
       <translation>Eskizin yerel yatay eksenini seçer.</translation>
     </message>
@@ -7387,12 +7421,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="647"/>
+      <location filename="../../CommandSketcherTools.cpp" line="652"/>
       <source>Select Redundant Constraints</source>
       <translation>Gereksiz Kısıtları Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="648"/>
+      <location filename="../../CommandSketcherTools.cpp" line="653"/>
       <source>Selects all redundant constraints</source>
       <translation>Tüm gereksiz kısıtları seçer.</translation>
     </message>
@@ -7400,12 +7434,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectMalformedConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="705"/>
+      <location filename="../../CommandSketcherTools.cpp" line="710"/>
       <source>Select Malformed Constraints</source>
       <translation>Bozuk Kısıtları Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="706"/>
+      <location filename="../../CommandSketcherTools.cpp" line="711"/>
       <source>Selects all malformed constraints</source>
       <translation>Tüm bozuk kısıtları seçer.</translation>
     </message>
@@ -7413,12 +7447,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectPartiallyRedundantConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="760"/>
+      <location filename="../../CommandSketcherTools.cpp" line="765"/>
       <source>Select Partially Redundant Constraints</source>
       <translation>Kısmen Gereksiz Kısıtları Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="761"/>
+      <location filename="../../CommandSketcherTools.cpp" line="766"/>
       <source>Selects all partially redundant constraints</source>
       <translation>Tüm kısmen gereksiz kısıtları seçer.</translation>
     </message>
@@ -7426,12 +7460,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="816"/>
+      <location filename="../../CommandSketcherTools.cpp" line="821"/>
       <source>Select Conflicting Constraints</source>
       <translation>Çelişen Kısıtları Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="817"/>
+      <location filename="../../CommandSketcherTools.cpp" line="822"/>
       <source>Selects all conflicting constraints</source>
       <translation>Tüm çelişen kısıtları seçer.</translation>
     </message>
@@ -7439,12 +7473,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="874"/>
+      <location filename="../../CommandSketcherTools.cpp" line="879"/>
       <source>Select Associated Geometry</source>
       <translation>İlişkili Geometriyi Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="876"/>
+      <location filename="../../CommandSketcherTools.cpp" line="881"/>
       <source>Selects the geometrical elements associated with the selected constraints</source>
       <translation>Seçili kısıtlarla ilişkili geometrik elemanları seçer.</translation>
     </message>
@@ -7452,12 +7486,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSelectElementsWithDoFs</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="994"/>
+      <location filename="../../CommandSketcherTools.cpp" line="999"/>
       <source>Select Under-Constrained Elements</source>
       <translation>Yetersiz Kısıtlı Elemanları Seç</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="995"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1000"/>
       <source>Selects geometrical elements where the solver still detects unconstrained degrees of freedom</source>
       <translation>Çözücünün hâlâ kısıtsız serbestlik dereceleri algıladığı geometrik elemanları seçer.</translation>
     </message>
@@ -7465,12 +7499,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1083"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1088"/>
       <source>Toggle Internal Geometry</source>
       <translation>Dahili Geometriyi Aç/Kapat</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1084"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1089"/>
       <source>Toggles the visibility of all internal geometry</source>
       <translation>Tüm dahili geometrinin görünürlüğünü aç/kapatır.</translation>
     </message>
@@ -7478,12 +7512,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1198"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1203"/>
       <source>Mirror</source>
       <translation>Ayna</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1200"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1205"/>
       <source>Creates a mirrored copy of the selected geometry</source>
       <translation>Seçili geometrinin aynalanmış bir kopyasını oluşturur.</translation>
     </message>
@@ -7491,12 +7525,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherDeleteAllGeometry</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2172"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2177"/>
       <source>Delete All Geometry</source>
       <translation>Tüm Geometriyi Sil</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2173"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2178"/>
       <source>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</source>
       <translation>Harici geometri hariç, mevcut eskizdeki tüm geometrileri ve bunların kısıtlarını siler.</translation>
     </message>
@@ -7504,12 +7538,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherDeleteAllConstraints</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2237"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2242"/>
       <source>Delete All Constraints</source>
       <translation>Tüm Kısıtlamaları Sil</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2238"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <source>Deletes all constraints in the sketch</source>
       <translation>Eskizdeki tüm kısıtları siler.</translation>
     </message>
@@ -7517,12 +7551,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherRemoveAxesAlignment</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2304"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2309"/>
       <source>Remove Axes Alignment</source>
       <translation>Eksen Hizalamayı Kaldır</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2305"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2310"/>
       <source>Modifies the constraints to remove axes alignment while trying to preserve the constraint relationship of the selection</source>
       <translation>Seçimin kısıt ilişkilerini mümkün olduğunca koruyarak, eksen hizalamalarını kaldıracak şekilde kısıtları değiştirir.</translation>
     </message>
@@ -7530,12 +7564,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherOffset</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2424"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2429"/>
       <source>Offset</source>
       <translation>Uzaklaşma</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2425"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2430"/>
       <source>Adds an equidistant closed contour around selected geometry: positive values offset outward, negative values inward</source>
       <translation>Seçili geometri etrafına eşit uzaklıklı kapalı bir kontur ekler: pozitif değerler dışa, negatif değerler içe ofsetler.</translation>
     </message>
@@ -7543,25 +7577,25 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherRotate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2507"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2512"/>
       <source>Rotate / Polar Transform</source>
       <translation>Döndür / Kutupsal Dönüşüm</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2508"/>
-      <source>Rotates the selected geometry by creating 'n' copies, enabling circular pattern creation</source>
-      <translation>Seçili geometriyi 'n' kopya oluşturarak döndürür; dairesel desen oluşturmayı sağlar.</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2513"/>
+      <source>Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</source>
+      <translation type="unfinished">Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherScale</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2541"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2546"/>
       <source>Scale</source>
       <translation>Ölçek</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2542"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2547"/>
       <source>Scales the selected geometries</source>
       <translation>Seçili geometrileri ölçekler.</translation>
     </message>
@@ -7569,55 +7603,55 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherTranslate</name>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2575"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2580"/>
       <source>Move / Array Transform</source>
       <translation>Taşı / Dizi Dönüşümü</translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="2576"/>
-      <source>Translates the selected geometries and enables the creation of 'i' * 'j' copies</source>
-      <translation>Seçili geometrileri taşır ve 'i' * 'j' adet kopya oluşturmayı sağlar.</translation>
+      <location filename="../../CommandSketcherTools.cpp" line="2581"/>
+      <source>Translates the selected geometries and enables the creation of 'i' * 'j' total elements</source>
+      <translation type="unfinished">Translates the selected geometries and enables the creation of 'i' * 'j' total elements</translation>
     </message>
   </context>
   <context>
     <name>SketcherGui::DrawSketchHandlerArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="100"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="97"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="109"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="106"/>
       <source>%1 pick arc center</source>
       <translation>%1 yay merkezini seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="115"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="112"/>
       <source>%1 pick arc start point</source>
       <translation>%1 yay başlangıç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="121"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="118"/>
       <source>%1 pick arc end point</source>
       <translation>%1 yay bitiş noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="129"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="126"/>
       <source>%1 pick first arc point</source>
       <translation>%1 birinci yay noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="135"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="132"/>
       <source>%1 pick second arc point</source>
       <translation>%1 ikinci yay noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="141"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="138"/>
       <source>%1 pick third arc point</source>
       <translation>%1 üçüncü yay noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="439"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="435"/>
       <source>Arc Parameters</source>
       <translation>Yay Parametreleri</translation>
     </message>
@@ -7625,22 +7659,22 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="104"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="101"/>
       <source>%1 pick ellipse center point</source>
       <translation type="unfinished">%1 pick ellipse center point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="109"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="106"/>
       <source>%1 pick axis point</source>
       <translation>%1 eksen noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="114"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="111"/>
       <source>%1 pick arc start point</source>
       <translation>%1 yay başlangıç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="119"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="116"/>
       <source>%1 pick arc end point</source>
       <translation>%1 yay bitiş noktasını seç</translation>
     </message>
@@ -7648,22 +7682,22 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfHyperbola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="108"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="105"/>
       <source>%1 pick center point</source>
       <translation>%1 merkez noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="113"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="110"/>
       <source>%1 pick axis point</source>
       <translation>%1 eksen noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="118"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="115"/>
       <source>%1 pick arc start point</source>
       <translation>%1 yay başlangıç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="123"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="120"/>
       <source>%1 pick arc end point</source>
       <translation>%1 yay bitiş noktasını seç</translation>
     </message>
@@ -7671,22 +7705,22 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfParabola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="102"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="99"/>
       <source>%1 pick focus point</source>
       <translation>%1 odak noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="107"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="104"/>
       <source>%1 pick axis point</source>
       <translation>%1 eksen noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="112"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="109"/>
       <source>%1 pick starting point</source>
       <translation>%1 başlangıç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="117"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="114"/>
       <source>%1 pick end point</source>
       <translation>%1 bitiş noktasını seç</translation>
     </message>
@@ -7694,32 +7728,32 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="104"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="101"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="111"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="108"/>
       <source>%1 pick slot center</source>
       <translation>%1 kanal merkezini seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="117"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="114"/>
       <source>%1 pick slot radius</source>
       <translation>%1 kanal yarıçapını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="123"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="120"/>
       <source>%1 pick slot angle</source>
       <translation>%1 kanal açısını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="129"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="126"/>
       <source>%1 pick slot width</source>
       <translation>%1 kanal genişliğini seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="307"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="304"/>
       <source>Arc Slot Parameters</source>
       <translation>Yay Kanalı Parametreleri</translation>
     </message>
@@ -7727,54 +7761,54 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="431"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="428"/>
       <source>%1 switch to knots</source>
       <translation type="unfinished">%1 switch to knots</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="429"/>
       <source>%1 switch to control points</source>
       <translation type="unfinished">%1 switch to control points</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="436"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
       <source>%1 undo last point</source>
       <translation type="unfinished">%1 undo last point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="437"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="434"/>
       <source>%1/%2 increase/decrease degree</source>
       <translation type="unfinished">%1/%2 increase/decrease degree</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="446"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
       <source>%1 pick first control point</source>
       <translation>%1 birinci kontrol noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="454"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="473"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="451"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="470"/>
       <source>%1 pick next point</source>
       <translation>%1 sonraki noktayı seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="455"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="474"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="452"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="471"/>
       <source>%1 finish</source>
       <translation>%1 bitir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="466"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="463"/>
       <source>%1 pick first knot</source>
       <translation>%1 birinci düğümü seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="435"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
       <source>%1 toggle periodic</source>
       <translation>%1 periyodikliği aç/kapat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="524"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="521"/>
       <source>B-Spline Parameters</source>
       <translation>B-Spline Parametreleri</translation>
     </message>
@@ -7782,7 +7816,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerCarbonCopy</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="244"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="241"/>
       <source>%1 pick sketch to copy</source>
       <comment>Sketcher CarbonCopy: hint</comment>
       <translation>%1 kopyalanacak eskizi seç</translation>
@@ -7791,37 +7825,37 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="90"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="87"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="99"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="96"/>
       <source>%1 pick circle center</source>
       <translation>%1 çember merkezini seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="105"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="102"/>
       <source>%1 pick rim point</source>
       <translation>%1 çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="113"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="110"/>
       <source>%1 pick first rim point</source>
       <translation>%1 birinci çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="119"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="116"/>
       <source>%1 pick second rim point</source>
       <translation>%1 ikinci çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="125"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="122"/>
       <source>%1 pick third rim point</source>
       <translation>%1 üçüncü çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="329"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="326"/>
       <source>Circle Parameters</source>
       <translation>Çember Parametreleri</translation>
     </message>
@@ -7829,42 +7863,42 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="96"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="93"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="105"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="102"/>
       <source>%1 pick ellipse center</source>
       <translation>%1 elips merkezini seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="111"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="108"/>
       <source>%1 pick axis endpoint</source>
       <translation>%1 eksen uç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="117"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="114"/>
       <source>%1 pick minor axis endpoint</source>
       <translation>%1 küçük eksen uç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="125"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="122"/>
       <source>%1 pick first rim point</source>
       <translation>%1 birinci çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="131"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="128"/>
       <source>%1 pick second rim point</source>
       <translation>%1 ikinci çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="137"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="134"/>
       <source>%1 pick third rim point</source>
       <translation>%1 üçüncü çevre noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="343"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="340"/>
       <source>Ellipse Parameters</source>
       <translation>Elips Parametreleri</translation>
     </message>
@@ -7872,13 +7906,13 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerExtend</name>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="394"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="391"/>
       <source>%1 pick edge to extend</source>
       <comment>Sketcher Extend: hint</comment>
       <translation>%1 uzatılacak kenarı seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="399"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="396"/>
       <source>%1 set extension length</source>
       <comment>Sketcher Extend: hint</comment>
       <translation>%1 uzatma uzunluğunu ayarla</translation>
@@ -7887,7 +7921,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="262"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="259"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 harici geometriyi seç</translation>
@@ -7896,42 +7930,42 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerFillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="291"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="288"/>
       <source>CAD Kernel Error</source>
       <translation>CAD Çekirdek Hatası</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="299"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="296"/>
       <source>Value Error</source>
       <translation>Değer Hatası</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="360"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="357"/>
       <source>Fillet/Chamfer Parameters</source>
       <translation>Yuvarlatma/Pah Parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="430"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="427"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="432"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
       <source>%1 toggle preserve corner</source>
       <translation>%1 köşeyi korumayı aç/kapat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="441"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="438"/>
       <source>%1 pick first edge or point</source>
       <translation>%1 birinci kenarı veya noktayı seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="446"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="443"/>
       <source>%1 pick second edge</source>
       <translation>%1 ikinci kenarı seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="448"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="445"/>
       <source>%1 create fillet</source>
       <translation>%1 yuvarlatma oluştur</translation>
     </message>
@@ -7939,26 +7973,26 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="229"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="226"/>
       <source>Line Parameters</source>
       <translation>Çizgi Parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="287"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="293"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="296"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="310"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="324"/>
-      <source>%1 pick first point</source>
-      <translation>%1 birinci noktayı seç</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="302"/>
       <location filename="../../DrawSketchHandlerLine.h" line="316"/>
       <location filename="../../DrawSketchHandlerLine.h" line="330"/>
+      <source>%1 pick first point</source>
+      <translation>%1 birinci noktayı seç</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLine.h" line="308"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="322"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="336"/>
       <source>%1 pick second point</source>
       <translation>%1 ikinci noktayı seç</translation>
     </message>
@@ -7966,22 +8000,22 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
       <source>%1 pick first point</source>
       <translation>%1 birinci noktayı seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="813"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
       <source>%1 pick next point</source>
       <translation>%1 sonraki noktayı seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="814"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="811"/>
       <source>%1 finish</source>
       <translation>%1 bitir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="815"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="812"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
@@ -7989,12 +8023,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="192"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="189"/>
       <source>Offset Parameters</source>
       <translation>Ofset Parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="210"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="207"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
       <translation>%1 ofset yönünü ve mesafesini ayarla</translation>
@@ -8003,7 +8037,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerPoint</name>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="74"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="71"/>
       <source>%1 place a point</source>
       <comment>Sketcher Point: hint</comment>
       <translation>%1 bir nokta yerleştir</translation>
@@ -8012,28 +8046,28 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="206"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
       <source>Polygon Parameters</source>
       <translation>Çokgen Parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="277"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
       <source>%1 pick polygon center</source>
       <translation>%1 çokgen merkezini seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="278"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="285"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
       <source>%1/%2 increase/decrease number of sides</source>
       <translation type="unfinished">%1/%2 increase/decrease number of sides</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="283"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
       <source>%1 pick rotation and size</source>
       <translation>%1 döndürme ve boyutu seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="284"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
       <source>%1 confirm</source>
       <translation>%1 onayla</translation>
     </message>
@@ -8041,70 +8075,70 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerRectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="125"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="124"/>
       <source>%1 switch mode</source>
       <translation>%1 mod değiştir</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="127"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
       <source>%1 toggle rounded corners</source>
       <translation>%1 yuvarlatılmış köşeleri aç/kapat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="130"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
       <source>%1 toggle frame</source>
       <translation>%1 çerçeveyi aç/kapat</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="139"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="207"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="249"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="138"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="206"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="248"/>
       <source>%1 pick first corner</source>
       <translation>%1 birinci köşeyi seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="147"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="146"/>
       <source>%1 pick opposite corner</source>
       <translation>%1 karşı köşeyi seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="155"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="189"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="231"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="265"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="154"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="188"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="264"/>
       <source>%1 set corner radius or frame thickness</source>
       <translation>%1 köşe yarıçapını veya çerçeve kalınlığını ayarla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="163"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="197"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="162"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="196"/>
       <source>%1 set frame thickness</source>
       <translation>%1 çerçeve kalınlığını ayarla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="173"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="241"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="172"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="240"/>
       <source>%1 pick center</source>
       <translation>%1 merkezi seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="181"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="180"/>
       <source>%1 pick corner</source>
       <translation>%1 köşeyi seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="215"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="257"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="214"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="256"/>
       <source>%1 pick second corner</source>
       <translation>%1 ikinci köşeyi seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="223"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="222"/>
       <source>%1 pick third corner</source>
       <translation>%1 üçüncü köşeyi seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="796"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="804"/>
       <source>Rectangle Parameters</source>
       <translation>Dikdörtgen Parametreleri</translation>
     </message>
@@ -8112,25 +8146,31 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="101"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 merkez noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="106"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 başlangıç açısını ayarla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="111"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 döndürme açısını ayarla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="223"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation>Döndürme Parametreleri</translation>
     </message>
@@ -8138,17 +8178,17 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="179"/>
       <source>%1 pick reference point</source>
       <translation>%1 referans noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="187"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="184"/>
       <source>%1 set scale factor</source>
       <translation>%1 ölçek katsayısını ayarla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="250"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="247"/>
       <source>Scale Parameters</source>
       <translation>Ölçek Parametreleri</translation>
     </message>
@@ -8156,17 +8196,17 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="97"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="93"/>
       <source>%1 pick slot start point</source>
       <translation>%1 kanal başlangıç noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="102"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="98"/>
       <source>%1 pick slot end point</source>
       <translation>%1 kanal bitiş noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="107"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="103"/>
       <source>%1 pick slot width</source>
       <translation>%1 kanal genişliğini seç</translation>
     </message>
@@ -8174,7 +8214,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerSplitting</name>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="213"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="209"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
       <translation>%1 bölmek için kenar üzerindeki konumu seç</translation>
@@ -8183,12 +8223,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerSymmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="205"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="202"/>
       <source>Symmetry Parameters</source>
       <translation>Simetri Parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="235"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="232"/>
       <source>%1 pick axis, edge, or point</source>
       <comment>Sketcher Symmetry: hint</comment>
       <translation>%1 ekseni, kenarı veya noktayı seç</translation>
@@ -8197,24 +8237,36 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="196"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="202"/>
       <source>Translate Parameters</source>
       <translation>Taşıma Parametreleri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="464"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of rows</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 referans noktasını seç</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="466"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 taşıma vektörünü ayarla</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="469"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 ikinci taşıma vektörünü ayarla</translation>
@@ -8223,7 +8275,7 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="226"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation>%1 kırpılacak kenarı seç</translation>
@@ -8240,12 +8292,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="947"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="944"/>
       <source>From control points</source>
       <translation>Kontrol noktalarından</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="948"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
       <source>From knots</source>
       <translation>Düğümlerden</translation>
     </message>
@@ -8253,12 +8305,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>TaskSketcherTool_c2_symmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="295"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="292"/>
       <source>Create symmetry constraints (J)</source>
       <translation>Simetri kısıtları oluştur (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="299"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="296"/>
       <source>Create symmetry constraints between the original and mirrored geometries</source>
       <translation>Orijinal ve aynalanmış geometriler arasında simetri kısıtlamaları oluşturun.</translation>
     </message>
@@ -8300,40 +8352,203 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_c1_text</name>
+    <name>SketcherGui::DrawSketchHandlerPolyLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="362"/>
-      <source>Width</source>
-      <translation>Genişlik</translation>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
+      <source>%1 switch to arc</source>
+      <translation type="unfinished">%1 switch to arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="363"/>
-      <source>Height</source>
-      <translation>Yükseklik</translation>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1013"/>
+      <source>%1 switch to line</source>
+      <translation type="unfinished">%1 switch to line</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
+      <source>%1 toggle fillet</source>
+      <translation type="unfinished">%1 toggle fillet</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1017"/>
+      <source>%1 undo last point</source>
+      <translation type="unfinished">%1 undo last point</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1025"/>
+      <source>%1 pick first point</source>
+      <translation>%1 birinci noktayı seç</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1030"/>
+      <source>%1 pick next point</source>
+      <translation>%1 sonraki noktayı seç</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1031"/>
+      <source>%1 finish</source>
+      <translation>%1 bitir</translation>
     </message>
   </context>
   <context>
-    <name>TaskSketcherTool_Text</name>
+    <name>Sketcher_CreatePolyline</name>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="369"/>
-      <source>Text</source>
-      <translation>Metin</translation>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1729"/>
+      <source>Line</source>
+      <translation>Çizgi</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerText.h" line="375"/>
-      <source>Font</source>
-      <translation>Yazı tipi</translation>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1730"/>
+      <source>Arc</source>
+      <translation>Yay</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_PolyLine</name>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1736"/>
+      <source>Fillet (F)</source>
+      <translation type="unfinished">Fillet (F)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="1740"/>
+      <source>Adds a fillet between the current and previous line</source>
+      <translation type="unfinished">Adds a fillet between the current and previous line</translation>
+    </message>
+  </context>
+  <context>
+    <name>SketcherGui::DrawSketchHandlerDimension</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2343"/>
+      <location filename="../../CommandConstraints.cpp" line="2348"/>
+      <location filename="../../CommandConstraints.cpp" line="2354"/>
+      <location filename="../../CommandConstraints.cpp" line="2369"/>
+      <location filename="../../CommandConstraints.cpp" line="2392"/>
+      <location filename="../../CommandConstraints.cpp" line="2411"/>
+      <source>%1 switch to distance</source>
+      <translation type="unfinished">%1 switch to distance</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2344"/>
+      <source>%1 switch to lock</source>
+      <translation type="unfinished">%1 switch to lock</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2349"/>
+      <location filename="../../CommandConstraints.cpp" line="2359"/>
+      <location filename="../../CommandConstraints.cpp" line="2376"/>
+      <location filename="../../CommandConstraints.cpp" line="2492"/>
+      <source>%1 switch to horizontal</source>
+      <translation type="unfinished">%1 switch to horizontal</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2350"/>
+      <location filename="../../CommandConstraints.cpp" line="2360"/>
+      <location filename="../../CommandConstraints.cpp" line="2377"/>
+      <location filename="../../CommandConstraints.cpp" line="2493"/>
+      <source>%1 switch to vertical</source>
+      <translation type="unfinished">%1 switch to vertical</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2355"/>
+      <location filename="../../CommandConstraints.cpp" line="2361"/>
+      <location filename="../../CommandConstraints.cpp" line="2368"/>
+      <source>%1 switch to symmetry</source>
+      <translation type="unfinished">%1 switch to symmetry</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2375"/>
+      <source>%1 switch to length</source>
+      <translation type="unfinished">%1 switch to length</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2378"/>
+      <source>%1 switch to block</source>
+      <translation type="unfinished">%1 switch to block</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2383"/>
+      <source>%1 switch to equal length</source>
+      <translation type="unfinished">%1 switch to equal length</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2394"/>
+      <location filename="../../CommandConstraints.cpp" line="2428"/>
+      <source>%1 switch to equal radius</source>
+      <translation type="unfinished">%1 switch to equal radius</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2414"/>
+      <source>%1 switch to angle</source>
+      <translation type="unfinished">%1 switch to angle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2431"/>
+      <source>%1 switch to concentric distance</source>
+      <translation type="unfinished">%1 switch to concentric distance</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2443"/>
+      <location filename="../../CommandConstraints.cpp" line="2453"/>
+      <source>%1 switch to arc angle</source>
+      <translation type="unfinished">%1 switch to arc angle</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2444"/>
+      <location filename="../../CommandConstraints.cpp" line="2454"/>
+      <source>%1 switch to arc length</source>
+      <translation type="unfinished">%1 switch to arc length</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2471"/>
+      <source>%1 switch to weight</source>
+      <translation type="unfinished">%1 switch to weight</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2484"/>
+      <source>%1 switch to radius</source>
+      <translation type="unfinished">%1 switch to radius</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="2487"/>
+      <source>%1 switch to diameter</source>
+      <translation type="unfinished">%1 switch to diameter</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdSketcherConstrainGroup</name>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="11018"/>
+      <source>Group Constraint</source>
+      <translation>Grup Kısıtlaması</translation>
+    </message>
+    <message>
+      <location filename="../../CommandConstraints.cpp" line="11019"/>
+      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
+      <translation>Seçilen geometrileri tek bir varlık olarak bir araya getirir. Gruplandırılmış geometrilerin konumu ve boyutu, oluşturulan yardımcı çizgiyi kısıtlayarak tanımlanabilir. Grup kısıtlaması mevcut olduğu sürece, gruplandırılmış kenarlara uygulanan kısıtlamalar göz ardı edilir.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>Derece</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>Kenarlar</translation>
     </message>
   </context>
   <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="411"/>
       <source>Cancel Editing</source>
       <translation>Düzenlemeyi İptal Et</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="412"/>
       <source>Leaves 'edit' mode and reverts any changes</source>
       <translation type="unfinished">Leaves 'edit' mode and reverts any changes</translation>
     </message>
@@ -8341,25 +8556,101 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherLeaveGroup</name>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="456"/>
       <source>Leave</source>
       <translation>Vazgeçmek</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Leaves the sketch editing mode</source>
       <translation type="unfinished">Leaves the sketch editing mode</translation>
     </message>
   </context>
   <context>
+    <name>TaskSketcherTool_c2_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
+      <source>Symmetric</source>
+      <translation>Simetrik</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p3_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>Elementler</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>Satırlar</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="361"/>
+      <source>Width</source>
+      <translation>Genişlik</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="362"/>
+      <source>Height</source>
+      <translation>Yükseklik</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_Text</name>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="368"/>
+      <source>Text</source>
+      <translation>Metin</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerText.h" line="374"/>
+      <source>Font</source>
+      <translation>Yazı tipi</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c2_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
+      <source>Symmetric</source>
+      <translation>Simetrik</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
+      <source>Distribute the elements symmetrically around the original position.</source>
+      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p4_rotate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>Elementler</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCreatePolylineLegacy</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="232"/>
+      <location filename="../../CommandCreateGeo.cpp" line="227"/>
       <source>Polyline</source>
       <translation>Poliçizgi</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="233"/>
+      <location filename="../../CommandCreateGeo.cpp" line="228"/>
       <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
       <translation>Sürekli bir kırık çizgi oluşturur. Parça modlarını değiştirmek için 'M' tuşuna basın</translation>
     </message>
@@ -8367,12 +8658,12 @@ Yakalama için noktalar, bir ızgara çizgisine ızgara aralığının beşte bi
   <context>
     <name>CmdSketcherCreateText</name>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1398"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1393"/>
       <source>Text</source>
       <translation>Metin</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateGeo.cpp" line="1399"/>
+      <location filename="../../CommandCreateGeo.cpp" line="1394"/>
       <source>Creates text geometries controlled by a Text constraint.
 To Edit: Double-click the Text constraint to change the text content and font.
 To Position/Size: Apply constraints to the group's construction line.
@@ -8398,181 +8689,6 @@ Not: Metin kısıtlaması etkinken, metin geometrilerine doğrudan uygulanan tü
       <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
       <translation>Sisteminizde orijinal '%1' yazı tipi bulunamadı. Varsayılan bir yazı tipi seçildi.</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::DrawSketchHandlerPolyLine</name>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1015"/>
-      <source>%1 switch to arc</source>
-      <translation type="unfinished">%1 switch to arc</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
-      <source>%1 switch to line</source>
-      <translation type="unfinished">%1 switch to line</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1019"/>
-      <source>%1 toggle fillet</source>
-      <translation type="unfinished">%1 toggle fillet</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1020"/>
-      <source>%1 undo last point</source>
-      <translation type="unfinished">%1 undo last point</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1028"/>
-      <source>%1 pick first point</source>
-      <translation>%1 birinci noktayı seç</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1033"/>
-      <source>%1 pick next point</source>
-      <translation>%1 sonraki noktayı seç</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1034"/>
-      <source>%1 finish</source>
-      <translation>%1 bitir</translation>
-    </message>
-  </context>
-  <context>
-    <name>Sketcher_CreatePolyline</name>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1721"/>
-      <source>Line</source>
-      <translation>Çizgi</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1722"/>
-      <source>Arc</source>
-      <translation>Yay</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_c1_PolyLine</name>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1728"/>
-      <source>Fillet (F)</source>
-      <translation type="unfinished">Fillet (F)</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="1732"/>
-      <source>Adds a fillet between the current and previous line</source>
-      <translation type="unfinished">Adds a fillet between the current and previous line</translation>
-    </message>
-  </context>
-  <context>
-    <name>SketcherGui::DrawSketchHandlerDimension</name>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2326"/>
-      <location filename="../../CommandConstraints.cpp" line="2331"/>
-      <location filename="../../CommandConstraints.cpp" line="2337"/>
-      <location filename="../../CommandConstraints.cpp" line="2352"/>
-      <location filename="../../CommandConstraints.cpp" line="2375"/>
-      <location filename="../../CommandConstraints.cpp" line="2394"/>
-      <source>%1 switch to distance</source>
-      <translation type="unfinished">%1 switch to distance</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2327"/>
-      <source>%1 switch to lock</source>
-      <translation type="unfinished">%1 switch to lock</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2332"/>
-      <location filename="../../CommandConstraints.cpp" line="2342"/>
-      <location filename="../../CommandConstraints.cpp" line="2359"/>
-      <location filename="../../CommandConstraints.cpp" line="2458"/>
-      <source>%1 switch to horizontal</source>
-      <translation type="unfinished">%1 switch to horizontal</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2333"/>
-      <location filename="../../CommandConstraints.cpp" line="2343"/>
-      <location filename="../../CommandConstraints.cpp" line="2360"/>
-      <location filename="../../CommandConstraints.cpp" line="2459"/>
-      <source>%1 switch to vertical</source>
-      <translation type="unfinished">%1 switch to vertical</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2338"/>
-      <location filename="../../CommandConstraints.cpp" line="2344"/>
-      <location filename="../../CommandConstraints.cpp" line="2351"/>
-      <source>%1 switch to symmetry</source>
-      <translation type="unfinished">%1 switch to symmetry</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2358"/>
-      <source>%1 switch to length</source>
-      <translation type="unfinished">%1 switch to length</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2361"/>
-      <source>%1 switch to block</source>
-      <translation type="unfinished">%1 switch to block</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2366"/>
-      <source>%1 switch to equal length</source>
-      <translation type="unfinished">%1 switch to equal length</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2376"/>
-      <source>%1 switch to concentric distance</source>
-      <translation type="unfinished">%1 switch to concentric distance</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2377"/>
-      <source>%1 switch to equal radius</source>
-      <translation type="unfinished">%1 switch to equal radius</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2397"/>
-      <source>%1 switch to angle</source>
-      <translation type="unfinished">%1 switch to angle</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2409"/>
-      <location filename="../../CommandConstraints.cpp" line="2419"/>
-      <source>%1 switch to arc angle</source>
-      <translation type="unfinished">%1 switch to arc angle</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2410"/>
-      <location filename="../../CommandConstraints.cpp" line="2420"/>
-      <source>%1 switch to arc length</source>
-      <translation type="unfinished">%1 switch to arc length</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2437"/>
-      <source>%1 switch to weight</source>
-      <translation type="unfinished">%1 switch to weight</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2450"/>
-      <source>%1 switch to radius</source>
-      <translation type="unfinished">%1 switch to radius</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="2453"/>
-      <source>%1 switch to diameter</source>
-      <translation type="unfinished">%1 switch to diameter</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdSketcherConstrainGroup</name>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10977"/>
-      <source>Group Constraint</source>
-      <translation>Grup Kısıtlaması</translation>
-    </message>
-    <message>
-      <location filename="../../CommandConstraints.cpp" line="10978"/>
-      <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
-      <translation>Seçilen geometrileri tek bir varlık olarak bir araya getirir. Gruplandırılmış geometrilerin konumu ve boyutu, oluşturulan yardımcı çizgiyi kısıtlayarak tanımlanabilir. Grup kısıtlaması mevcut olduğu sürece, gruplandırılmış kenarlara uygulanan kısıtlamalar göz ardı edilir.</translation>
     </message>
   </context>
 </TS>

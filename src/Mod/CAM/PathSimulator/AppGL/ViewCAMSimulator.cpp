@@ -72,9 +72,6 @@ ViewCAMSimulator::ViewCAMSimulator(Gui::Document* pcDocument, QWidget* parent, Q
 
     mDlg->connectTo(*mGui, *mDummyViewer);
 
-    connect(mDlg, &DlgCAMSimulator::documentChanged, this, [this](Gui::Document* doc) {
-        setDocument(doc);
-    });
     connect(mDlg, &DlgCAMSimulator::simulationStarted, this, &ViewCAMSimulator::onSimulationStarted);
 
     // call apply settings only after mDummyViewer and mDlg have been initialized
@@ -237,7 +234,7 @@ void ViewCAMSimulator::onSimulationStarted()
 
     // window title and activate
 
-    App::Document* doc = App::GetApplication().getActiveDocument();
+    App::Document* doc = getAppDocument();
     setWindowTitle(tr("%1 - New CAM Simulator").arg(QString::fromUtf8(doc->getName())));
 
     Gui::getMainWindow()->setActiveWindow(this);
@@ -286,7 +283,12 @@ void ViewCAMSimulator::applySettings()
 
 ViewCAMSimulator* ViewCAMSimulator::clone()
 {
-    auto viewCam = new ViewCAMSimulator(_pcDocument, nullptr);
+    return clone(nullptr);
+}
+
+ViewCAMSimulator* ViewCAMSimulator::clone(Gui::Document* doc)
+{
+    auto viewCam = new ViewCAMSimulator(doc ? doc : getGuiDocument(), nullptr);
 
     viewCam->cloneFrom(*this);
     viewCam->mDlg->cloneFrom(*mDlg);
@@ -300,11 +302,42 @@ ViewCAMSimulator* ViewCAMSimulator::clone()
     return viewCam;
 }
 
-ViewCAMSimulator& ViewCAMSimulator::instance()
+ViewCAMSimulator& ViewCAMSimulator::instance(Gui::Document* doc)
 {
+    // The first call comes from CAMSim::resetSimulation giving us the correct document. All
+    // subsequent calls don't provide a document and just use the one from resetSimulation.
+
     if (!viewCAMSimulator) {
-        viewCAMSimulator = new ViewCAMSimulator(nullptr, nullptr);
+        // No simulator exists so we create a new one. We need to make sure that we provide a valid
+        // document to the constructor. Otherwise the newly created MDIView will be considered
+        // "passive" and will not be able to receive messages from e.g. the view menu.
+
+        if (!doc) {
+            throw std::invalid_argument("trying to create a ViewCAMSimulator without a document");
+        }
+
+        viewCAMSimulator = new ViewCAMSimulator(doc, nullptr);
         getMainWindow()->addWindow(viewCAMSimulator);
+    }
+    else if (doc && doc != viewCAMSimulator->getGuiDocument()) {
+        // If a document is provided, we make sure that the returned instance belongs to that
+        // document. Looking at the constructor of MDIView, it seems the document of a view should
+        // not be changed after creating the view (even though there is a setDocument function in
+        // BaseView, the constructor of MDIView sets some variables, e.g. ActiveObjects that don't
+        // seem to be updated when calling setDocument in BaseView). If the document is different,
+        // we clone the simulator with the new document. Cloning the simulator is reasonably fast
+        // and should not be noticeable to the user.
+
+        // There was a previous attempt where the simulator was initialized without a document and
+        // therefore becoming a "passive" view. Messages where then also delivered to passive views
+        // but that caused some issues in the Assembly workbench. See issue #29901.
+
+        auto old = viewCAMSimulator.get();
+
+        viewCAMSimulator = old->clone(doc);
+        getMainWindow()->addWindow(viewCAMSimulator);
+
+        old->deleteSelf();
     }
 
     return *viewCAMSimulator;

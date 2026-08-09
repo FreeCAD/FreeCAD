@@ -692,7 +692,7 @@ class ObjectDressup:
         else:
             stepLength = self.tolerance * 10
             stepAngle = stepLength / radius
-        stepAngle = angle / math.ceil(round(angle / stepAngle, 6))
+        stepAngle = angle / Path.Geom.ceil(angle / stepAngle)
 
         return stepAngle
 
@@ -1743,7 +1743,8 @@ class CommandPathDressup:
         # everything ok!
         App.ActiveDocument.openTransaction("Create LeadInOut Dressup")
         FreeCADGui.addModule("Path.Dressup.Gui.LeadInOut")
-        FreeCADGui.doCommand("Path.Dressup.Gui.LeadInOut.Create(App.ActiveDocument.%s)" % op.Name)
+        FreeCADGui.doCommand(f"base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
+        FreeCADGui.doCommand("Path.Dressup.Gui.LeadInOut.Create(base)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         App.ActiveDocument.recompute()
 

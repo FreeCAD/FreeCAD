@@ -42,6 +42,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QMessageBox>
+#include <QStandardPaths>
 
 // FreeCAD header
 #include <App/Application.h>
@@ -103,6 +104,19 @@ static bool inGuiMode()
     return App::Application::Config()["RunMode"] == "Gui"
         || App::Application::Config()["RunMode"] == "Internal";
 }
+
+#if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
+static bool desktopFileIsAvailable(const QString& desktopFileName)
+{
+    const QString desktopFile = desktopFileName + QStringLiteral(".desktop");
+    return !QStandardPaths::locate(QStandardPaths::ApplicationsLocation, desktopFile).isEmpty();
+}
+#else
+static bool desktopFileIsAvailable(const QString&)
+{
+    return true;
+}
+#endif
 
 static void displayInfo(const std::string& msg, bool preformatted = true)
 {
@@ -230,10 +244,14 @@ int main(int argc, char** argv)
 #else
         App::Application::init(argc, argv);
 #endif
-        // to set window icon on wayland, the desktop file has to be available to the compositor
-        QGuiApplication::setDesktopFileName(
-            QString::fromStdString(App::Application::Config()["DesktopFileName"])
+        // To set the window icon on Wayland, the desktop file has to be available to the
+        // compositor. Qt also uses the desktop file name to register with the portal registry.
+        const QString desktopFileName = QString::fromStdString(
+            App::Application::Config()["DesktopFileName"]
         );
+        if (desktopFileIsAvailable(desktopFileName)) {
+            QGuiApplication::setDesktopFileName(desktopFileName);
+        }
 
 #if defined(_MSC_VER)
         // create a dump file when the application crashes
@@ -269,16 +287,7 @@ int main(int argc, char** argv)
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc, argv);
         if (std::strcmp(e.what(), App::ProgramInformation::verboseVersionEmitMessage) == 0) {
-            std::stringstream str;
-            const std::map<std::string, std::string> config = App::Application::Config();
-
-            App::ProgramInformation::getVerboseCommonInfo(str, config);
-            Gui::ProgramInformation::getStyleInformation(str);
-            Gui::ProgramInformation::getNavigationStyleInformation(str);
-            Gui::ProgramInformation::getDpiInformation(str);
-            App::ProgramInformation::getVerboseAddOnsInfo(str, config);
-
-            displayInfo(str.str());
+            displayInfo(Gui::ProgramInformation::collect());
         }
         else {
             displayInfo(e.what());

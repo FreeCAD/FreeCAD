@@ -33,6 +33,7 @@ import Path.Preferences
 import Path.Main.Job as PathJob
 from Path.Post.Processor import PostProcessor, PostProcessorFactory, _HeaderBuilder
 import Path.Post.Command as PathCommand
+from Path.Post.CAMErrors import CAMValueError
 from Path.Post.PostList import Postable
 from Machine.models.machine import Machine
 
@@ -732,9 +733,18 @@ class TestConfigurationBundle(unittest.TestCase):
         self.assertEqual(result, {})
 
     def test330_read_job_overrides_invalid_json(self):
-        """Invalid JSON returns empty dict without raising."""
+        """Invalid JSON raises"""
         pp = self._make_postprocessor()
         pp._job.PostProcessorPropertyOverrides = "not valid json {"
+        with self.assertRaisesRegex(
+            CAMValueError, "Invalid PostProcessorPropertyOverrides JSON"
+        ) as e:
+            pp._read_job_overrides()
+
+    def test335_read_job_overrides_invalid_json(self):
+        """Valid JSON, but not dict, returns empty dict without raising."""
+        pp = self._make_postprocessor()
+        pp._job.PostProcessorPropertyOverrides = "[1,2,3]"
         result = pp._read_job_overrides()
         self.assertEqual(result, {})
 

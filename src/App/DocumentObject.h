@@ -510,7 +510,7 @@ public:
      * The dependency edge registers both the object and the property (if
      * applicable) this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @return the vector of dependency edges.
      *
@@ -524,7 +524,7 @@ public:
      * The dependency edge registers both the object and the property (if
      * applicable) this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      * @param[in,out] res The vector to fill with the objects this object depends on.
      *
      * @see OutListOption for available options.
@@ -537,7 +537,7 @@ public:
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @return A vector of objects this object links to.
      *
@@ -548,7 +548,7 @@ public:
     /**
      * @brief Get a list of objects this object links to.
      *
-     * @param[in] option Options for computing the OutList.
+     * @param[in] options Options for computing the OutList.
      *
      * @param[in,out] res The vector to fill with the objects this object depends on.
      *
@@ -1157,6 +1157,20 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
+    /**
+     * @brief Move the dynamic property to a document object.
+     *
+     * @param[in] prop The property to move.
+     * @param[in] targetObj The object to which the property is moved.
+     *
+     * @return a pointer to the moved property if successful; `nullptr` if the
+     * target object is the same as the current one.
+     * @throw Base::NameError If the property already exists in the object.
+     * @throw Base::RuntimeError On various runtime errors, such as when the
+     *   property is locked or the target object is invalid.
+     */
+    virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetObj);
+
     App::Property* addDynamicProperty(
         std::string_view type,
         const char* name = nullptr,
@@ -1471,6 +1485,11 @@ protected:
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
 private:
+    void moveExpressionTargetingProp(Property* prop, Property* newProp,
+                                     DocumentObject* targetObj);
+    void arrangeMoveProperty(Property* toBeMovedProp,
+                             Property* newProp,
+                             DocumentObject* targetObj);
     void printInvalidLinks() const;
     void setTouched(const char* propName);
 
