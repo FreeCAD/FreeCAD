@@ -1509,14 +1509,17 @@ std::vector<SelectionObject> getDeleteSelection()
     std::vector<std::pair<App::DocumentObject*, std::vector<std::string>>> redirected;
 
     auto redirect = [&redirected](App::DocumentObject* root, const char* selectedSubName) {
-        auto* obj = findDeleteTarget(root, selectedSubName);
+        App::ElementNamePair elementName;
+        auto* obj = root;
         std::string subName;
-        if (!obj) {
-            obj = root;
-            if (selectedSubName && selectedSubName[0]) {
-                App::ElementNamePair elementName;
-                obj = App::GeoFeature::resolveElement(root, selectedSubName, elementName);
-                subName = elementName.oldName;
+        if (selectedSubName && selectedSubName[0]) {
+            obj = App::GeoFeature::resolveElement(root, selectedSubName, elementName);
+            subName = elementName.oldName;
+        }
+        if (!subName.empty()) {
+            if (auto* target = findDeleteTarget(root, selectedSubName)) {
+                obj = target;
+                subName.clear();
             }
         }
         if (!obj) {
