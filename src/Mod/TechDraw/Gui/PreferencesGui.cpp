@@ -99,7 +99,7 @@ QColor PreferencesGui::sectionLineQColor()
 Base::Color PreferencesGui::breaklineColor()
 {
     Base::Color fcColor;
-    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreakLineColor", 0xFF0000FF));
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Decorations")->GetUnsigned("BreakLineColor", 0x000000FF));
     return fcColor;
 }
 
