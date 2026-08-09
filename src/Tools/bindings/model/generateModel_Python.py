@@ -6,9 +6,11 @@ from dataclasses import dataclass
 from enum import Enum
 import ast
 import re
+import textwrap
 from typing import List
 from model.typedModel import (
     GenerateModel,
+    DeprecationLifecycle,
     PythonExport,
     PythonModuleExport,
     Method,
@@ -24,6 +26,76 @@ SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
 SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
 CTOR_SELF_CLS_ARG = re.compile(r"^__init__\(\$?(?:self|cls)(?:,\s*)?")
 CTOR_NAME = re.compile(r"^__init__\(")
+DEPRECATION_FIELDS = {"deprecated_in", "removed_in", "replacement", "details"}
+RELEASE_RE = re.compile(r"^\d+\.\d+(?:\.\d+)?$")
+
+
+def _release_key(value: str) -> tuple[int, int, int]:
+    parts = [int(part) for part in value.split(".")]
+    normalized = [*parts, *([0] * (3 - len(parts)))]
+    return normalized[0], normalized[1], normalized[2]
+
+
+def _literal_decorator_kwargs(decorator: ast.Call) -> dict[str, object]:
+    values: dict[str, object] = {}
+    for keyword in decorator.keywords:
+        if keyword.arg is None:
+            raise ValueError("deprecation metadata does not support keyword unpacking")
+        try:
+            values[keyword.arg] = ast.literal_eval(keyword.value)
+        except (ValueError, SyntaxError) as error:
+            raise ValueError(
+                f"deprecation metadata '{keyword.arg}' must be a literal value"
+            ) from error
+    return values
+
+
+def _deprecation_lifecycle(values: dict[str, object]) -> DeprecationLifecycle:
+    unknown = values.keys() - DEPRECATION_FIELDS
+    if unknown:
+        raise ValueError(f"deprecated() got unknown keyword '{sorted(unknown)[0]}'")
+
+    deprecated_in = values.get("deprecated_in")
+    removed_in = values.get("removed_in")
+    if not isinstance(deprecated_in, str) or not deprecated_in:
+        raise ValueError("deprecated() requires a non-empty deprecated_in string")
+    if not isinstance(removed_in, str) or not removed_in:
+        raise ValueError("deprecated() requires a non-empty removed_in string")
+    for field, value in (("deprecated_in", deprecated_in), ("removed_in", removed_in)):
+        if not RELEASE_RE.fullmatch(value):
+            raise ValueError(f"deprecated() {field} must be a release such as '26.3'")
+    if _release_key(removed_in) <= _release_key(deprecated_in):
+        raise ValueError("deprecated() removed_in must be later than deprecated_in")
+
+    replacement = values.get("replacement")
+    if replacement is not None and not isinstance(replacement, str):
+        raise ValueError("deprecated() replacement must be a string or None")
+    details = values.get("details")
+    if details is not None and not isinstance(details, str):
+        raise ValueError("deprecated() details must be a string or None")
+    return DeprecationLifecycle(
+        DeprecatedIn=deprecated_in,
+        RemovedIn=removed_in,
+        Replacement=replacement or None,
+        Details=details.rstrip() if details else None,
+    )
+
+
+def _deprecation_lifecycle_from_decorator(decorator: ast.Call) -> DeprecationLifecycle:
+    if decorator.args:
+        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
+    return _deprecation_lifecycle(_literal_decorator_kwargs(decorator))
+
+
+def _extract_deprecation_from_decorator(
+    decorator: ast.expr,
+) -> DeprecationLifecycle | None:
+    if _decorator_name(decorator) != "deprecated":
+        return None
+
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with structured lifecycle metadata")
+    return _deprecation_lifecycle_from_decorator(decorator)
 
 
 class ArgumentKind(Enum):
@@ -58,6 +130,7 @@ class FunctionSignature:
     noargs_flag: bool = False
     is_overload: bool = False
     callback: str | None = None
+    deprecation: DeprecationLifecycle | None = None
 
     def __init__(self, func: ast.FunctionDef):
         self.args = []
@@ -177,6 +250,8 @@ class FunctionSignature:
                         raise ValueError("callback decorator requires a string callback symbol")
                     callback = _extract_single_string_argument(deco, "callback")
                     self.callback = callback
+                case "deprecated":
+                    self.deprecation = _extract_deprecation_from_decorator(deco)
 
 
 class Function:
@@ -267,6 +342,13 @@ class Function:
     @property
     def bootstrap_export_flag(self) -> bool:
         return any(sig.bootstrap_export_flag for sig in self.public_signatures)
+
+    @property
+    def deprecation(self) -> DeprecationLifecycle | None:
+        signature = self.signature
+        if signature is None:
+            return None
+        return signature.deprecation
 
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
@@ -458,8 +540,6 @@ def _parse_docstring_for_documentation(docstring: str) -> Documentation:
     if not docstring:
         return Documentation()
 
-    import textwrap
-
     # Remove common indentation
     dedented_docstring = textwrap.dedent(docstring).strip()
     lines = dedented_docstring.split("\n")
@@ -616,6 +696,7 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
                 Parameter=param,
                 Name=name,
                 ReadOnly=readonly,
+                Deprecated=None,
             )
             attributes.append(attr)
 
@@ -675,6 +756,8 @@ def _parse_methods(
         if signature is None:
             continue
 
+        deprecation = func.deprecation
+
         # Process positional parameters (skipping self/cls)
         for arg_i, arg in enumerate(signature.args):
             param_name = arg.name
@@ -694,6 +777,7 @@ def _parse_methods(
             Keyword=func.has_keywords,
             NoArgs=func.noargs_flag,
             Bootstrap=func.bootstrap_export_flag if not allow_bound_decorators else False,
+            Deprecated=deprecation,
         )
 
         methods.append(method)
@@ -835,6 +919,28 @@ def _extract_base_class_name(base: ast.expr) -> str:
     return base_str
 
 
+def _apply_deprecated_attributes(
+    class_attributes: list[Attribute], deprecated_attributes: dict[str, object], class_name: str
+) -> None:
+    if not deprecated_attributes:
+        return
+
+    attributes_by_name = {attribute.Name: attribute for attribute in class_attributes}
+    unknown_attributes = sorted(
+        name for name in deprecated_attributes.keys() if name not in attributes_by_name
+    )
+    if unknown_attributes:
+        joined = ", ".join(unknown_attributes)
+        raise Exception(f"Unknown deprecated attribute metadata for class '{class_name}': {joined}")
+
+    for name, metadata in deprecated_attributes.items():
+        if not isinstance(metadata, dict) or not all(isinstance(key, str) for key in metadata):
+            raise ValueError(
+                f"deprecated attribute '{class_name}.{name}' metadata must be a structured mapping"
+            )
+        attributes_by_name[name].Deprecated = _deprecation_lifecycle(metadata)
+
+
 def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict) -> PythonExport:
     base_class_name = None
     for base in class_node.bases:
@@ -848,6 +954,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
     forward_declarations_text = ""
     class_declarations_text = ""
     sequence_protocol_kwargs = None
+    deprecated_attributes_kwargs = {}
 
     for decorator in class_node.decorator_list:
         match decorator:
@@ -869,6 +976,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
                             class_declarations_text = val
             case ast.Call(func=ast.Name(id="sequence_protocol"), keywords=_, args=_):
                 sequence_protocol_kwargs = _extract_decorator_kwargs(decorator)
+            case ast.Call(func=ast.Name(id="deprecated_attributes"), keywords=_, args=_):
+                deprecated_attributes_kwargs = _literal_decorator_kwargs(decorator)
             case _:
                 pass
 
@@ -885,6 +994,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         if constructor.signature is None and constructor.docstring.strip():
             _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
     class_attributes = _parse_class_attributes(class_node, source_code)
+    _apply_deprecated_attributes(class_attributes, deprecated_attributes_kwargs, class_node.name)
     class_methods = _parse_methods(
         functions,
         skip_bound_argument=True,

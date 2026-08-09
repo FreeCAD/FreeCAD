@@ -1173,7 +1173,7 @@ class ViewProviderBuildingPart:
 
         actionWriteCamera = QtGui.QAction(
             QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
-            translate("Arch", "Write Camera Position"),
+            translate("Arch", "Save Camera View"),
             menu,
         )
         QtCore.QObject.connect(actionWriteCamera, QtCore.SIGNAL("triggered()"), self.writeCamera)
