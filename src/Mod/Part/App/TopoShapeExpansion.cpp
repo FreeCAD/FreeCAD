@@ -4521,6 +4521,8 @@ TopoShape& TopoShape::makeElementLoft(
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator(isSolid == IsSolid::solid, isRuled == IsRuled::ruled);
     aGenerator.SetMaxDegree(maxDegree);
+    // https://dev.opencascade.org/doc/occt-7.8.0/refman/html/classBRepOffsetAPI__ThruSections.html
+    aGenerator.SetSmoothing(isSmoothing == IsSmoothing::smoothing);
 
     auto profiles = prepareProfiles(shapes);
     if (shapes.size() < 2) {

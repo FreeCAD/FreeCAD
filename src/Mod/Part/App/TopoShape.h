@@ -161,6 +161,12 @@ enum class IsRuled
     ruled
 };
 
+enum class IsSmoothing
+{
+    noSmoothing,
+    smoothing
+};
+
 enum class IsClosed
 {
     notClosed,
@@ -1822,6 +1828,7 @@ public:
      * @param isClosed: If isClosed, then the first section is duplicated to close
      *                  the loft as the last section
      * @param maxDegree: define the maximal U degree of the result surface
+     * @param isSmoothing: whether to use variational smoothing algorithm
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      *
