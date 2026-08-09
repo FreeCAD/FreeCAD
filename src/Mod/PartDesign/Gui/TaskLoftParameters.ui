@@ -15,24 +15,40 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <widget class="QCheckBox" name="checkBoxRuled">
-     <property name="text">
-      <string>Ruled surface</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBoxSmoothing">
+    <widget class="QComboBox" name="comboBoxMode">
      <property name="toolTip">
-      <string>Use variational smoothing algorithm</string>
+      <string>
+          Select the type of surface loft to generate.
+
+          - Standard B-Spline: The default loft generation method is used to form the loft surface.
+          - Ruled Surface: A ruled surface is formed by joining the profiles along a straight line.
+          - Smoothed B-Spline: An alternative loft generation method is used to form the loft surface.
+            This method can be more robust than the standard B-Spline method for some geometries,
+          but may create slightly different loft surfaces.
+      </string>
      </property>
-     <property name="text">
-      <string>Variational smoothing</string>
-     </property>
+     <item>
+      <property name="text">
+       <string>Standard B-Spline</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Ruled Surface</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Smoothed B-Spline</string>
+      </property>
+     </item>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxClosed">
+     <property name="toolTip">
+       <string>Attempt to close the loft surface by joining the start and end profiles</string>
+     </property>
      <property name="text">
       <string>Closed</string>
      </property>
@@ -137,8 +153,7 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>checkBoxRuled</tabstop>
-  <tabstop>checkBoxSmoothing</tabstop>
+  <tabstop>comboBoxMode</tabstop>
   <tabstop>checkBoxClosed</tabstop>
   <tabstop>buttonProfileBase</tabstop>
   <tabstop>profileBaseEdit</tabstop>

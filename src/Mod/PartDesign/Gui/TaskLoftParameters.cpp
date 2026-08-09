@@ -24,6 +24,7 @@
 
 
 #include <QAction>
+#include <QComboBox>
 
 
 #include <App/Application.h>
@@ -82,12 +83,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onRefButtonAdd);
     connect(ui->buttonRefRemove, &QToolButton::toggled,
             this, &TaskLoftParameters::onRefButtonRemove);
-    connect(ui->checkBoxRuled, &QCheckBox::toggled,
-            this, &TaskLoftParameters::onRuled);
-    connect(ui->checkBoxRuled, &QCheckBox::toggled,
-            ui->checkBoxSmoothing, &QWidget::setDisabled);
-    connect(ui->checkBoxSmoothing, &QCheckBox::toggled,
-            this, &TaskLoftParameters::onSmoothing);
+    connect(ui->comboBoxMode, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftParameters::onModeChanged);
     connect(ui->checkBoxClosed, &QCheckBox::toggled,
             this, &TaskLoftParameters::onClosed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
@@ -142,9 +139,14 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     }
 
     // get options
-    ui->checkBoxRuled->setChecked(loft->Ruled.getValue());
-    ui->checkBoxSmoothing->setChecked(loft->Smoothing.getValue());
-    ui->checkBoxSmoothing->setEnabled(!loft->Ruled.getValue());
+    int mode = 0;
+    if (loft->Ruled.getValue()) {
+        mode = 1;
+    }
+    else if (loft->Smoothing.getValue()) {
+        mode = 2;
+    }
+    ui->comboBoxMode->setCurrentIndex(mode);
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
     // activate and de-activate dialog elements as appropriate
@@ -357,18 +359,11 @@ void TaskLoftParameters::onClosed(bool val)
     }
 }
 
-void TaskLoftParameters::onRuled(bool val)
+void TaskLoftParameters::onModeChanged(int index)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
-        loft->Ruled.setValue(val);
-        recomputeFeature();
-    }
-}
-
-void TaskLoftParameters::onSmoothing(bool val)
-{
-    if (auto loft = getObject<PartDesign::Loft>()) {
-        loft->Smoothing.setValue(val);
+        loft->Ruled.setValue(index == 1);
+        loft->Smoothing.setValue(index == 2);
         recomputeFeature();
     }
 }
