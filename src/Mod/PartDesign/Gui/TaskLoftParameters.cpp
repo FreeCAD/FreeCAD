@@ -25,6 +25,7 @@
 
 #include <QAction>
 #include <QComboBox>
+#include <QSpinBox>
 
 
 #include <App/Application.h>
@@ -85,6 +86,14 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onRefButtonRemove);
     connect(ui->comboBoxMode, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskLoftParameters::onModeChanged);
+    connect(ui->spinBoxMaxDegree, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskLoftParameters::onMaxDegreeChanged);
+    connect(ui->comboBoxParametrization, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftParameters::onParametrizationChanged);
+    connect(ui->comboBoxContinuity, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftParameters::onContinuityChanged);
+    connect(ui->checkBoxCompatibility, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onCheckCompatibility);
     connect(ui->checkBoxClosed, &QCheckBox::toggled,
             this, &TaskLoftParameters::onClosed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
@@ -147,6 +156,17 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
         mode = 2;
     }
     ui->comboBoxMode->setCurrentIndex(mode);
+    const auto* degreeConstraints = loft->MaxDegree.getConstraints();
+    ui->spinBoxMaxDegree->setRange(
+        degreeConstraints->LowerBound,
+        degreeConstraints->UpperBound
+    );
+    ui->spinBoxMaxDegree->setSingleStep(degreeConstraints->StepSize);
+    ui->spinBoxMaxDegree->setValue(loft->MaxDegree.getValue());
+    ui->comboBoxParametrization->setCurrentIndex(loft->Parametrization.getValue());
+    ui->comboBoxContinuity->setCurrentIndex(loft->Continuity.getValue());
+    ui->checkBoxCompatibility->setChecked(loft->CheckCompatibility.getValue());
+    updateAlgorithmOptions(mode);
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
     // activate and de-activate dialog elements as appropriate
@@ -168,6 +188,18 @@ void TaskLoftParameters::updateUI()
         auto view = getViewObject();
         view->makeTemporaryVisible(!loft->Sections.getValues().empty());
     }
+}
+
+void TaskLoftParameters::updateAlgorithmOptions(int mode)
+{
+    const bool usesApproximation = mode != 1;
+    const bool usesParametrization = mode == 0;
+    ui->spinBoxMaxDegree->setEnabled(usesApproximation);
+    ui->labelMaxDegree->setEnabled(usesApproximation);
+    ui->comboBoxContinuity->setEnabled(usesApproximation);
+    ui->labelContinuity->setEnabled(usesApproximation);
+    ui->comboBoxParametrization->setEnabled(usesParametrization);
+    ui->labelParametrization->setEnabled(usesParametrization);
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -364,6 +396,39 @@ void TaskLoftParameters::onModeChanged(int index)
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Ruled.setValue(index == 1);
         loft->Smoothing.setValue(index == 2);
+        updateAlgorithmOptions(index);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onMaxDegreeChanged(int value)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->MaxDegree.setValue(value);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onParametrizationChanged(int index)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Parametrization.setValue(index);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onContinuityChanged(int index)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Continuity.setValue(index);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onCheckCompatibility(bool enabled)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->CheckCompatibility.setValue(enabled);
         recomputeFeature();
     }
 }

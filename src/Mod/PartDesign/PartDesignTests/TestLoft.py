@@ -54,9 +54,21 @@ class TestLoft(unittest.TestCase):
         self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         self.Body.addObject(self.AdditiveLoft)
         self.assertFalse(self.AdditiveLoft.Smoothing)
+        self.assertEqual(self.AdditiveLoft.MaxDegree, 5)
+        self.assertEqual(self.AdditiveLoft.Parametrization, "Chord length")
+        self.assertEqual(self.AdditiveLoft.Continuity, "C2")
+        self.assertTrue(self.AdditiveLoft.CheckCompatibility)
+        self.AdditiveLoft.MaxDegree = 3
+        self.AdditiveLoft.Parametrization = "Uniform"
+        self.AdditiveLoft.Continuity = "C1"
+        self.AdditiveLoft.CheckCompatibility = False
         self.AdditiveLoft.Profile = self.ProfileSketch
         self.AdditiveLoft.Sections = [self.LoftSketch]
         self.Doc.recompute()
+        self.assertEqual(self.AdditiveLoft.MaxDegree, 3)
+        self.assertEqual(self.AdditiveLoft.Parametrization, "Uniform")
+        self.assertEqual(self.AdditiveLoft.Continuity, "C1")
+        self.assertFalse(self.AdditiveLoft.CheckCompatibility)
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
     def testSimpleSubtractiveLoftCase(self):

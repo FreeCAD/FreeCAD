@@ -4464,11 +4464,13 @@ TopoShape& TopoShape::makeElementShape(
 TopoShape& TopoShape::makeElementLoft(
     const std::vector<TopoShape>& shapes,
     IsSolid isSolid,
-    IsRuled isRuled,
+    Smoothing smoothing,
     IsClosed isClosed,
     Standard_Integer maxDegree,
     const char* op,
-    IsSmoothing isSmoothing
+    LoftParametrization parametrization,
+    LoftContinuity continuity,
+    bool checkCompatibility
 )
 {
     auto checkProfiles = [](const TopoShape& sh1, const TopoShape& sh2) {
@@ -4519,11 +4521,35 @@ TopoShape& TopoShape::makeElementLoft(
     }
 
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
-    BRepOffsetAPI_ThruSections aGenerator(isSolid == IsSolid::solid, isRuled == IsRuled::ruled);
+    BRepOffsetAPI_ThruSections aGenerator(
+        isSolid == IsSolid::solid,
+        smoothing == Smoothing::ruled
+    );
     aGenerator.SetMaxDegree(maxDegree);
-    // https://dev.opencascade.org/doc/occt-7.8.0/refman/html/classBRepOffsetAPI__ThruSections.html
-    aGenerator.SetSmoothing(isSmoothing == IsSmoothing::smoothing);
-
+    aGenerator.SetSmoothing(smoothing == Smoothing::variational);
+    switch (parametrization) {
+        case LoftParametrization::chordLength:
+            aGenerator.SetParType(Approx_ChordLength);
+            break;
+        case LoftParametrization::centripetal:
+            aGenerator.SetParType(Approx_Centripetal);
+            break;
+        case LoftParametrization::uniform:
+            aGenerator.SetParType(Approx_IsoParametric);
+            break;
+    }
+    switch (continuity) {
+        case LoftContinuity::C0:
+            aGenerator.SetContinuity(GeomAbs_C0);
+            break;
+        case LoftContinuity::C1:
+            aGenerator.SetContinuity(GeomAbs_C1);
+            break;
+        case LoftContinuity::C2:
+            aGenerator.SetContinuity(GeomAbs_C2);
+            break;
+    }
+    aGenerator.CheckCompatibility(checkCompatibility);
     auto profiles = prepareProfiles(shapes);
     if (shapes.size() < 2) {
         FC_THROWM(Base::CADKernelError, "Need at least two vertices, edges or wires to create loft face");
@@ -4572,10 +4598,6 @@ TopoShape& TopoShape::makeElementLoft(
             }
         }
     }
-
-    Standard_Boolean anIsCheck = Standard_True;
-    aGenerator.CheckCompatibility(anIsCheck);  // use BRepFill_CompatibleWires on profiles. force
-                                               // #edges, orientation, "origin" to match.
 
 #if OCC_VERSION_HEX >= 0x070600
     aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());

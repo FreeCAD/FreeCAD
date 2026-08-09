@@ -2228,7 +2228,7 @@ private:
             TopoShape().makeElementLoft(
                 getPyShapes(pcObj),
                 anIsSolid ? Part::IsSolid::solid : Part::IsSolid::notSolid,
-                anIsRuled ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
+                anIsRuled ? Part::Smoothing::ruled : Part::Smoothing::bspline,
                 anIsClosed ? Part::IsClosed::closed : Part::IsClosed::notClosed,
                 degMax,
                 op

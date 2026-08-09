@@ -1787,13 +1787,22 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
                                     // resulting name.
     std::vector<TopoShape> shapes = {wire1ts, wire2ts};
     // Act
-    auto& topoShape = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
-    auto& topoShape2 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
-    auto& topoShape3 = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
-    auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
-    auto& topoShape5
-        = (new TopoShape())
-              ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled, IsClosed::closed);
+    auto& topoShape = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::bspline);
+    auto& topoShape2 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, Smoothing::bspline);
+    auto& topoShape3 = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::ruled);
+    auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, Smoothing::ruled);
+    auto& topoShape5 = (new TopoShape())->makeElementLoft(
+        shapes,
+        IsSolid::notSolid,
+        Smoothing::variational
+    );
+    auto& topoShape6 = (new TopoShape())
+                          ->makeElementLoft(
+                              shapes,
+                              IsSolid::notSolid,
+                              Smoothing::bspline,
+                              IsClosed::closed
+                          );
     auto elements = elementMap((topoShape));
     // Assert that we haven't broken the basic Loft functionality
     EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
@@ -1802,7 +1811,8 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     EXPECT_DOUBLE_EQ(getVolume(topoShape2.getShape()), 250);
     EXPECT_NEAR(getVolume(topoShape3.getShape()), 166.66667, 1e-5);
     EXPECT_DOUBLE_EQ(getVolume(topoShape4.getShape()), 250);
-    EXPECT_NEAR(getVolume(topoShape5.getShape()), 0, 1e-07);
+    EXPECT_FALSE(topoShape5.isNull());
+    EXPECT_NEAR(getVolume(topoShape6.getShape()), 0, 1e-07);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 24);
@@ -1842,7 +1852,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCent
 
     // Act: the previous code raised Base::CADKernelError here because the centers of gravity match.
     auto* loft = new TopoShape();
-    ASSERT_NO_THROW(loft->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled));  // NOLINT
+    ASSERT_NO_THROW(loft->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::ruled));  // NOLINT
 
     // Assert: the result is the flat frame between the 5x5 and the 10x10 square.
     EXPECT_FALSE(loft->isNull());
@@ -1864,7 +1874,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftRejectsCoincidentProfiles)  // NOL
 
     // Act / Assert
     EXPECT_THROW(  // NOLINT
-        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled),
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::bspline),
         Base::CADKernelError
     );
 }

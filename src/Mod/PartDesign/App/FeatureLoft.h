@@ -41,6 +41,10 @@ public:
     App::PropertyBool Ruled;
     App::PropertyBool Smoothing;
     App::PropertyBool Closed;
+    App::PropertyIntegerConstraint MaxDegree;
+    App::PropertyEnumeration Parametrization;
+    App::PropertyEnumeration Continuity;
+    App::PropertyBool CheckCompatibility;
 
     /** @name methods override feature */
     //@{
@@ -69,6 +73,10 @@ protected:
     ) override;
 
 private:
+    static App::PropertyIntegerConstraint::Constraints Degrees;
+    static const char* ParametrizationEnums[];
+    static const char* ContinuityEnums[];
+
     // static const char* TypeEnums[];
     // static const char* SideEnums[];
 };

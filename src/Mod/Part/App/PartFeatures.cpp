@@ -234,11 +234,11 @@ App::DocumentObjectExecReturn* Loft::execute()
             }
         }
         IsSolid isSolid = Solid.getValue() ? IsSolid::solid : IsSolid::notSolid;
-        IsRuled isRuled = Ruled.getValue() ? IsRuled::ruled : IsRuled::notRuled;
+        Smoothing smoothing = Ruled.getValue() ? Smoothing::ruled : Smoothing::bspline;
         IsClosed isClosed = Closed.getValue() ? IsClosed::closed : IsClosed::notClosed;
         int degMax = MaxDegree.getValue();
         TopoShape result(0, getDocument()->getStringHasher());
-        result.makeElementLoft(shapes, isSolid, isRuled, isClosed, degMax);
+        result.makeElementLoft(shapes, isSolid, smoothing, isClosed, degMax);
         if (Linearize.getValue()) {
             result.linearize(LinearizeFace::linearizeFaces, LinearizeEdge::noEdges);
         }

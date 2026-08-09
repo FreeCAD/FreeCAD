@@ -24,6 +24,7 @@
 
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 
@@ -42,6 +43,14 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 
+App::PropertyIntegerConstraint::Constraints Loft::Degrees = {
+    2,
+    Geom_BSplineSurface::MaxDegree(),
+    1
+};
+const char* Loft::ParametrizationEnums[] = {"Chord length", "Centripetal", "Uniform", nullptr};
+const char* Loft::ContinuityEnums[] = {"C0", "C1", "C2", nullptr};
+
 Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
@@ -49,6 +58,25 @@ Loft::Loft()
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Create ruled surface");
     ADD_PROPERTY_TYPE(Smoothing, (false), "Loft", App::Prop_None, "Use variational smoothing");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
+    ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum B-Spline degree");
+    ADD_PROPERTY_TYPE(
+        Parametrization,
+        (long(0)),
+        "Loft",
+        App::Prop_None,
+        "B-Spline parametrization type"
+    );
+    ADD_PROPERTY_TYPE(Continuity, (long(2)), "Loft", App::Prop_None, "B-Spline continuity");
+    ADD_PROPERTY_TYPE(
+        CheckCompatibility,
+        (true),
+        "Loft",
+        App::Prop_None,
+        "Align profile origins, orientations, and edge counts"
+    );
+    MaxDegree.setConstraints(&Degrees);
+    Parametrization.setEnums(ParametrizationEnums);
+    Continuity.setEnums(ContinuityEnums);
 }
 
 short Loft::mustExecute() const
@@ -63,6 +91,18 @@ short Loft::mustExecute() const
         return 1;
     }
     if (Closed.isTouched()) {
+        return 1;
+    }
+    if (MaxDegree.isTouched()) {
+        return 1;
+    }
+    if (Parametrization.isTouched()) {
+        return 1;
+    }
+    if (Continuity.isTouched()) {
+        return 1;
+    }
+    if (CheckCompatibility.isTouched()) {
         return 1;
     }
 
@@ -227,14 +267,23 @@ App::DocumentObjectExecReturn* Loft::execute()
             for (auto& wire : sectionWires) {
                 wire.move(invObjLoc);
             }
+            Part::Smoothing smoothing = Part::Smoothing::bspline;
+            if (Ruled.getValue()) {
+                smoothing = Part::Smoothing::ruled;
+            }
+            else if (Smoothing.getValue()) {
+                smoothing = Part::Smoothing::variational;
+            }
             shells.push_back(TopoShape(0, hasher).makeElementLoft(
                 sectionWires,
                 Part::IsSolid::notSolid,
-                Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
+                smoothing,
                 closed ? Part::IsClosed::closed : Part::IsClosed::notClosed,
-                5, // maxdegree Note: maybe add this as an option in the data tab at some point?
+                MaxDegree.getValue(),
                 nullptr,
-                Smoothing.getValue() ? Part::IsSmoothing::smoothing : Part::IsSmoothing::noSmoothing
+                static_cast<Part::LoftParametrization>(Parametrization.getValue()),
+                static_cast<Part::LoftContinuity>(Continuity.getValue()),
+                CheckCompatibility.getValue()
             ));
         }
 
