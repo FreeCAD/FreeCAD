@@ -114,6 +114,7 @@ enum eMapMode
 
     mmParallelPlane,
     mmMidpoint,
+    mmMidPlane,
 
     mmDummy_NumberOfModes  // a value useful to check the validity of mode value
 };  // see also eMapModeStrings[] definition in .cpp
