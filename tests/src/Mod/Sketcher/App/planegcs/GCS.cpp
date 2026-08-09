@@ -119,8 +119,14 @@ TEST_F(GCSTest, diagnoseAccumulatesRedundantTagsAcrossUnrelatedComponents)  // N
 {
     // Arrange
     std::vector<double> values = {
-        0.0, 0.0, 5.0, 5.0,  // pair 1: x1, y1, x2, y2
-        1.0, 1.0, 6.0, 6.0,  // pair 2: x3, y3, x4, y4
+        0.0,
+        0.0,
+        5.0,
+        5.0,  // pair 1: x1, y1, x2, y2
+        1.0,
+        1.0,
+        6.0,
+        6.0,  // pair 2: x3, y3, x4, y4
     };
     GCS::VEC_pD params;
     for (auto& v : values) {
@@ -179,8 +185,10 @@ TEST_F(GCSTest, diagnoseReportsFreeParamsOfUnconstrainedComponent)  // NOLINT
     // Arrange
     double fixedX = 0.0, fixedY = 0.0;
     std::vector<double> values = {
-        0.0, 0.0,  // p1
-        1.0, 1.0,  // p2
+        0.0,
+        0.0,  // p1
+        1.0,
+        1.0,  // p2
     };
     GCS::VEC_pD params;
     for (auto& v : values) {
@@ -264,9 +272,12 @@ TEST_F(GCSTest, diagnoseAccumulatesAcrossMixedConstrainedComponents)  // NOLINT
     // Arrange
     double constX1 = 0.0, constX2 = 5.0, constY = 0.0, zero = 0.0;
     std::vector<double> values = {
-        0.0, 0.0,  // p1
-        1.0, 1.0,  // p2
-        2.0, 1.0,  // p3
+        0.0,
+        0.0,  // p1
+        1.0,
+        1.0,  // p2
+        2.0,
+        1.0,  // p3
     };
     GCS::VEC_pD params;
     for (auto& v : values) {
