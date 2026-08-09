@@ -51,6 +51,18 @@ from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
+def _get_global_shape(obj, subname=""):
+    """Return an object's shape transformed through its container chain."""
+    import Part
+
+    shape = Part.getShape(obj, subname, needSubElement=bool(subname), noElementMap=True)
+    if not shape or not hasattr(obj, "Placement") or not hasattr(obj, "getGlobalPlacement"):
+        return shape
+    container_placement = obj.getGlobalPlacement().multiply(obj.Placement.inverse())
+    shape.Placement = container_placement.multiply(shape.Placement)
+    return shape
+
+
 class Trimex(gui_base_original.Modifier):
     """Gui Command for the Trimex tool.
 
@@ -125,12 +137,13 @@ class Trimex(gui_base_original.Modifier):
         self.ui.trimUi(title=translate("draft", self.featureName))
         self.linetrack = trackers.lineTracker()
         if hasattr(self.obj, "Placement"):
-            self.placement = self.obj.Placement
-        if self.obj.Shape.Wires:
-            self.edges = self.obj.Shape.Wires[0].Edges
+            self.placement = self.obj.getGlobalPlacement()
+        shape = _get_global_shape(self.obj)
+        if shape.Wires:
+            self.edges = shape.Wires[0].Edges
             self.edges = Part.__sortEdges__(self.edges)
         else:
-            self.edges = self.obj.Shape.Edges
+            self.edges = shape.Edges
         for edge in self.edges:
             if isinstance(edge.Curve, (Part.BSplineCurve, Part.BezierCurve)):
                 self.obj = None
@@ -381,7 +394,7 @@ class Trimex(gui_base_original.Modifier):
             else:
                 parent = self.doc.getObject(snapped["Object"])
                 subname = snapped["Component"]
-            shape = Part.getShape(parent, subname, needSubElement=True, noElementMap=True)
+            shape = _get_global_shape(parent, subname)
             if shape.Edges:
                 pts = []
                 for e in shape.Edges:
