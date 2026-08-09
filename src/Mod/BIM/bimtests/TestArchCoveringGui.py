@@ -346,7 +346,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
             # Find FlatRoot inside the Switch
             switch = covering.ViewObject.SwitchNode
             if switch:
-                flat_root = gui_utils.find_coin_node_by_name(root, "FlatRoot")
+                flat_root = gui_utils.find_coin_node_by_name(switch, "FlatRoot")
             else:
                 flat_root = None
 
