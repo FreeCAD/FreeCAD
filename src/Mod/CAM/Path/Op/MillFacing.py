@@ -461,7 +461,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                     # Now append the base commands, skipping the generator's initial positioning move
                     for i, cmd in enumerate(base_commands):
                         # Skip the first move if it only positions at the start point
-                        if i == first_move_idx:
+                        if i <= first_move_idx:
                             # If this first move has only XY(Z) to the start point, skip it because we preambled it
                             pass
                         else:

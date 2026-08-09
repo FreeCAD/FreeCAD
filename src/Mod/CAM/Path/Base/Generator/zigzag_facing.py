@@ -30,7 +30,7 @@ across the polygon in alternating directions, creating a continuous zigzag patte
 
 import FreeCAD
 import Path
-from . import facing_common
+import math
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -58,7 +58,6 @@ def _create_link(
     Returns:
         List of Path.Command objects for the link
     """
-    import math
 
     P = prev_seg["end"]
     Q = next_seg["start"]
@@ -205,11 +204,10 @@ def zigzag(
     link_mode="arc",
     link_radius=None,
 ):
+    from . import facing_common
 
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5
-
-    import math
 
     theta = float(angle_degrees) if angle_degrees is not None else 0.0
     primary_vec, step_vec = facing_common.unit_vectors_from_angle(theta)

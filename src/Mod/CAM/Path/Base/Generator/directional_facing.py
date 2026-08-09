@@ -37,6 +37,7 @@ This strategy always maintains either climb or conventional milling direction.
 
 import FreeCAD
 import Path
+import math
 from . import facing_common
 
 if False:
@@ -56,11 +57,6 @@ def directional(
     reverse=False,
     angle_degrees=None,
 ):
-
-    import math
-    import Path
-    import FreeCAD
-    from . import facing_common
 
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5
@@ -167,8 +163,8 @@ def directional(
             if not intervals:
                 continue
             s0, s1 = intervals[0]
-            start_s = max(s0 - pass_extension, min_s - s_margin)
-            end_s = min(s1 + pass_extension, max_s + s_margin)
+            start_s = max(s0 - pass_extension, min_s - total_extension)
+            end_s = min(s1 + pass_extension, max_s + total_extension)
             if end_s <= start_s:
                 continue
             if milling_direction == "climb":
@@ -192,8 +188,8 @@ def directional(
             # Minimal preamble
             if retract_height is not None:
                 commands.append(Path.Command("G0", {"Z": retract_height}))
-                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y}))
-                commands.append(Path.Command("G0", {"Z": z}))
+                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y, "Z": retract_height}))
+                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y, "Z": z}))
             else:
                 commands.append(Path.Command("G1", {"X": sp.x, "Y": sp.y, "Z": z}))
             commands.append(Path.Command("G1", {"X": ep.x, "Y": ep.y, "Z": z}))

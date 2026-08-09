@@ -30,7 +30,6 @@ including support for angled rectangles and proper tool engagement.
 
 import FreeCAD
 import Path
-from . import facing_common
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -187,8 +186,6 @@ def spiral(
     in the limiting direction. This eliminates any uncleared areas in the center regardless of stepover% value.
     First engagement is preserved exactly at the requested percentage.
     """
-    import Path
-    import FreeCAD
     from . import facing_common
 
     theta = float(angle_degrees) if angle_degrees is not None else 0.0
