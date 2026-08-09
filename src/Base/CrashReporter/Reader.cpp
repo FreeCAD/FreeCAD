@@ -39,6 +39,7 @@
 
 #ifdef FC_HAVE_CPPTRACE
 # include <cpptrace/cpptrace.hpp>
+# include <filesystem>     // Only needed for the cpptrace branch to strip the source root
 # include <unordered_map>  // Only needed for the cpptrace branch for moduleName lookup table
 #endif
 
@@ -70,6 +71,39 @@ std::string_view extractStringFromTable(std::span<const char> stringTable, std::
 
     return {stringTable.data() + offset + sizeof(std::uint16_t), length};
 }
+
+#ifdef FC_HAVE_CPPTRACE
+/**
+ * Reduce a source path recorded in the debug info to something safe to put in a crash report.
+ *
+ * Symbolication only runs when the running build matches the build that crashed, which in
+ * practice means a build compiled from source on this machine, so the DWARF compilation
+ * directory is the developer's home directory. Strip the source root to leave a path relative
+ * to it (for example "src/Base/CrashReporter/Writer.cpp"), which is what triage actually wants,
+ * and fall back to the bare filename for anything outside the source tree such as third-party
+ * or system libraries.
+ */
+std::string stripSourceRoot(const std::string& path)
+{
+    if (path.empty()) {
+        return {};
+    }
+
+    // cpptrace hands back the path exactly as the compiler recorded it, which routinely
+    // contains ".." segments, so normalize before comparing against the source root.
+    const std::string normalized = std::filesystem::path(path).lexically_normal().generic_string();
+
+    static const std::string sourceRoot
+        = std::filesystem::path(FC_SOURCE_DIR).lexically_normal().generic_string();
+
+    if (!sourceRoot.empty() && normalized.size() > sourceRoot.size()
+        && normalized.starts_with(sourceRoot) && normalized[sourceRoot.size()] == '/') {
+        return normalized.substr(sourceRoot.size() + 1);
+    }
+
+    return Base::FileInfo(normalized).fileName();
+}
+#endif
 }  // namespace
 
 ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportFile)
@@ -196,7 +230,7 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
             parsedFrame.modulePath = FileInfo(modulePathMap[frame.raw_address]).fileName();
 
             parsedFrame.symbol = frame.symbol;
-            parsedFrame.file = frame.filename;
+            parsedFrame.file = stripSourceRoot(frame.filename);  // Avoid PII!
             parsedFrame.line = frame.line.has_value() ? std::optional(frame.line.value())
                                                       : std::nullopt;
             parsedFrame.isInline = frame.is_inline;

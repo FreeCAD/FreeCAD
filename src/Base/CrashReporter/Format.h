@@ -78,12 +78,16 @@ namespace Base::CrashReporter
     return (flags & flag) != Flags::None;
 }
 
+// Only values the Writer can actually produce are meaningful here. BSD has a slot reserved
+// because appending is free while inserting later would be a format version bump, but the
+// Writer is not installed on BSD yet (see the guard on Writer::install).
 enum class OS : std::uint8_t
 {
     None,
     Linux,
     macOS,
-    Windows
+    Windows,
+    BSD
 };
 
 enum class Architecture : std::uint8_t

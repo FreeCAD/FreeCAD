@@ -36,7 +36,7 @@
 
 // FreeCAD Base header
 #include <Base/Console.h>
-#include <Base/CrashReporter/WindowsMiniDump.h>
+#include <Base/CrashReporter/WindowsCrashReporter.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 

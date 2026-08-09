@@ -22,8 +22,15 @@
 
 #pragma once
 
+#include <FCConfig.h>
 #include <FCGlobal.h>
 #include <string>
+
+#ifdef _MSC_VER
+// Declared by <windows.h>, forward-declared here so this header stays self-contained
+// without pulling the Windows headers into every consumer.
+struct _EXCEPTION_POINTERS;
+#endif
 
 namespace Base::CrashReporter
 {
@@ -31,8 +38,8 @@ class BaseExport Writer
 {
 public:
     /**
-     * Perform cpptrace init that isn't safe to do in the signal handler. If cpptrace is not install
-     * this is a no-op.
+     * Perform cpptrace init that isn't safe to do in the signal handler. If cpptrace is not
+     * installed this is a no-op.
      */
     static void prewarm();
 
@@ -48,7 +55,7 @@ public:
      */
     static std::string crashReportFilePath();
 
-#ifdef FC_OS_WIN32
+#ifdef _MSC_VER
     static void handleException(_EXCEPTION_POINTERS* exceptionInfo);
 
     /**
@@ -57,6 +64,6 @@ public:
      * @param path The path to the minidump file
      */
     static void setMinidumpPath(const std::string& path);
-#endif
+#endif  // _MSC_VER
 };
 }  // namespace Base::CrashReporter

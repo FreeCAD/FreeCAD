@@ -91,6 +91,10 @@ list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 if(cpptrace_FOUND)
     list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
     target_compile_definitions(FreeCADBase PRIVATE FC_HAVE_CPPTRACE)
+    # The CrashReporter Reader uses this to reduce the absolute source paths recorded in the
+    # debug info to paths relative to the source root, so a crash report cannot leak the
+    # build machine's directory layout.
+    target_compile_definitions(FreeCADBase PRIVATE FC_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
 endif()
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
@@ -358,8 +362,8 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
-        CrashReporter/WindowsMiniDump.cpp
-        CrashReporter/WindowsMiniDump.h
+        CrashReporter/WindowsCrashReporter.cpp
+        CrashReporter/WindowsCrashReporter.h
     )
 
 ENDIF(MSVC)

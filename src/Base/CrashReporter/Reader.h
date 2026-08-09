@@ -39,22 +39,25 @@ struct ParsedFrame
     // Raw Data
     std::uint64_t rawAddress = 0;
     std::uint64_t moduleOffset = 0;
-    std::string modulePath;  // NOTE: Avoid PII here! Strip to only filename.
+    // NOTE: Nothing that leaves the Reader may contain PII. Both modulePath and file arrive as
+    // absolute paths from the machine that did the build, which for a self-built FreeCAD means
+    // the developer's home directory, so both are reduced before they are stored here.
+    std::string modulePath {};  // Filename only
 
     // Symbolicated frame
-    std::string symbol;
-    std::string file;
-    std::optional<std::uint32_t> line;
+    std::string symbol {};
+    std::string file {};  // Relative to the source root where that can be determined
+    std::optional<std::uint32_t> line {};
     bool isInline {false};
 };
 
 struct ParsedCrashReport
 {
-    std::string pathToRawReportFile;
+    std::string pathToRawReportFile {};
 
     std::uint64_t faultAddress = 0;
     std::uint64_t threadID = 0;
-    std::chrono::system_clock::time_point timestamp;
+    std::chrono::system_clock::time_point timestamp {};
 
     std::uint32_t processID = 0;
     std::uint32_t code = 0;  // Signal number or SEH ExceptionCode
@@ -62,21 +65,21 @@ struct ParsedCrashReport
     bool partialWrite {false};
     bool captureWasSignalSafe {false};
 
-    std::string buildID;
-    std::string minidumpPath;
-    std::string exceptionMessage;
+    std::string buildID {};
+    std::string minidumpPath {};
+    std::string exceptionMessage {};
 
     OS osID = OS::None;
-    std::string osVersion;
+    std::string osVersion {};
     Architecture architectureID = Architecture::None;
 
     std::uint8_t freecadVersionMajor = 0;
     std::uint8_t freecadVersionMinor = 0;
     std::uint8_t freecadVersionPatch = 0;
-    std::string freecadVersionSuffix;
+    std::string freecadVersionSuffix {};
 
     bool symbolicated = false;
-    std::vector<ParsedFrame> stackFrames;
+    std::vector<ParsedFrame> stackFrames {};
 };
 
 /**

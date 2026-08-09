@@ -17,7 +17,7 @@
 #ifdef _MSC_VER
 # include <windows.h>
 # include <cstdlib>  // IWYU pragma: keep
-# include <Base/CrashReporter/WindowsMiniDump.h>
+# include <Base/CrashReporter/WindowsCrashReporter.h>
 #endif
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)

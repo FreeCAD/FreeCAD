@@ -23,7 +23,7 @@
 // This entire file is purely Windows-only
 #if defined(_MSC_VER)
 
-# include "WindowsMiniDump.h"
+# include "WindowsCrashReporter.h"
 
 # include <FCConfig.h>
 

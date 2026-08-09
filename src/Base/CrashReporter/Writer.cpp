@@ -164,7 +164,16 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
     header.faultAddress = reinterpret_cast<std::uint64_t>(info->si_addr);
     header.code = static_cast<uint32_t>(sig);
     header.timestamp = std::time(nullptr);
+    // pthread_t is an integer on Linux but an opaque pointer on macOS, so it is not portably
+    // castable. Record the OS thread ID instead, which is both portable and the number a
+    // debugger or an OS crash log will show.
+# if defined(FC_OS_MACOSX)
+    std::uint64_t threadID {0};
+    pthread_threadid_np(nullptr, &threadID);  // Reads the thread's own record, no syscall
+    header.threadID = threadID;
+# else
     header.threadID = static_cast<std::uint64_t>(pthread_self());
+# endif
 
     // Now the call stack, if we have cpptrace:
     std::uint32_t frameCount = 0;
@@ -196,7 +205,7 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
     std::raise(sig);
 }
 }  // extern "C"
-#elif defined(FC_OS_WIN32)
+#elif defined(_MSC_VER)  // Must match the guard on Writer::handleException in Writer.h
 namespace
 {
 void writeRawBufferWindows(std::uint32_t fileSize)
@@ -313,6 +322,8 @@ void Writer::install(const std::string& crashReportDirectory)
     header.osID = OS::Windows;
 #elif defined(FC_OS_LINUX)
     header.osID = OS::Linux;
+#elif defined(FC_OS_BSD)
+    header.osID = OS::BSD;
 #endif
 
 #if defined(__x86_64__) || defined(__amd64__) || defined(_M_X64)
