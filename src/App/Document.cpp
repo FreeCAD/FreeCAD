@@ -897,8 +897,8 @@ void Document::onChanged(const Property* prop)
     else if (prop == &UseHasher) {
         recomputeSubObjects = true;
     }
-    else if (prop == &ToponamingVersion) {
-        selectedHistoryAlgorithm = App::getHistoryAlgorithm(ToponamingVersion.getValueAsString());
+    else if (prop == &HistoryAlgorithm) {
+        selectedHistoryAlgorithm = App::getHistoryAlgorithm(HistoryAlgorithm.getValueAsString());
         recomputeSubObjects = true;
     }
 
@@ -1025,13 +1025,13 @@ Document::Document(const char* documentName)
                       PropertyType(Prop_Hidden),
                       "Whether to use hasher on topological naming");
     
-    ToponamingVersion.setEnums({"V1", "V2"});
-    ADD_PROPERTY_TYPE(ToponamingVersion,
+    HistoryAlgorithm.setEnums({"V1", "V2"});
+    ADD_PROPERTY_TYPE(HistoryAlgorithm,
                       (App::getHistoryAlgorithm(App::getDefaultHistoryAlgorithm())),
                       0,
                       PropertyType(Prop_Hidden),
                       "The Topological Naming Version to use for this document.");
-    selectedHistoryAlgorithm = App::getHistoryAlgorithm(ToponamingVersion.getValueAsString());
+    selectedHistoryAlgorithm = App::getHistoryAlgorithm(HistoryAlgorithm.getValueAsString());
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,

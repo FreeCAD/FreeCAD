@@ -583,7 +583,7 @@ public:
      */
     void traceElement(const MappedName& name, TraceCallback cb) const
     {
-        _elementMap->traceElement(name, Tag, std::move(cb)); // this will crash, check if _elementMap is nullptr.
+        _elementMap->traceElement(name, Tag, std::move(cb));
     }
 
     /// Flush internal buffers for element mapping.
@@ -646,6 +646,10 @@ public:
 
     void setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm) {
         selectedHistoryAlgorithm = newAlgorithm;
+
+        if (_elementMap) {
+            _elementMap->setHistoryAlgorithm(newAlgorithm);
+        }
     };
 
 protected:

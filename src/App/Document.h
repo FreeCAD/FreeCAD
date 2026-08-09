@@ -193,7 +193,7 @@ public:
     /// Whether to use hasher on topological naming.
     PropertyBool UseHasher;
     /// The Topological Naming Version to use for this document.
-    PropertyEnumeration ToponamingVersion;
+    PropertyEnumeration HistoryAlgorithm;
     /// @}
 
     /** @name Signals of the document

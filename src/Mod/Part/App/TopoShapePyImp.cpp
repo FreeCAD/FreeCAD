@@ -2923,7 +2923,7 @@ Py::Float TopoShapePy::getVolume() const
     return Py::Float(props.Mass());
 }
 
-Py::String TopoShapePy::getToponamingAlgorithm() const
+Py::String TopoShapePy::getHistoryAlgorithm() const
 {
     const App::HistoryAlgorithm& selectedHistoryVersion = getTopoShapePtr()->getHistoryAlgorithm();
 

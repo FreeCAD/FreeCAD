@@ -16,7 +16,6 @@ enum class HistoryAlgorithm {
     V2
 };
 
-AppExport const HistoryAlgorithm& getSelectedHistoryAlgorithm();
 AppExport const HistoryAlgorithm& getDefaultHistoryAlgorithm();
 AppExport HistoryAlgorithm getHistoryAlgorithm(int fromUnderlyingInteger);
 AppExport HistoryAlgorithm getHistoryAlgorithm(std::string fromString);

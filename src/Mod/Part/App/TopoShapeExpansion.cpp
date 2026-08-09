@@ -2945,7 +2945,7 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     return shapeMap.getTopoShape(*this, idx);
 }
 
-static const std::string& _getElementMapVersion()
+static const std::string& _getElementMapVersion(const App::HistoryAlgorithm& historyAlgorithm)
 {
     static std::string _ver;
     if (_ver.empty()) {
@@ -2956,7 +2956,7 @@ static const std::string& _getElementMapVersion()
         // removed here).
         unsigned occ_ver {0x070200};
         ss << OpCodes::Version << '.' << std::hex << occ_ver << '.'
-           << App::getSelectedUnderlyingHistoryAlgorithm() << ".";
+           << App::getHistoryAlgorithm(historyAlgorithm) << ".";
         _ver = ss.str();
     }
     return _ver;
@@ -2964,7 +2964,7 @@ static const std::string& _getElementMapVersion()
 
 std::string TopoShape::getElementMapVersion() const
 {
-    return _getElementMapVersion() + Data::ComplexGeoData::getElementMapVersion();
+    return _getElementMapVersion(getHistoryAlgorithm()) + Data::ComplexGeoData::getElementMapVersion();
 }
 
 TopoShape& TopoShape::makeElementEvolve(

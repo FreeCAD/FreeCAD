@@ -6,12 +6,6 @@
 #include <Base/Parameter.h>
 #include "Application.h"
 
-const App::HistoryAlgorithm& App::getSelectedHistoryAlgorithm() {
-    static App::HistoryAlgorithm selectedHistoryAlgorithm = App::getHistoryAlgorithm(App::getSelectedUnderlyingHistoryAlgorithm());
-
-    return selectedHistoryAlgorithm;
-}
-
 const App::HistoryAlgorithm& App::getDefaultHistoryAlgorithm() {
     static App::HistoryAlgorithm defaultAlgorithm = App::HistoryAlgorithm::V2;
     
