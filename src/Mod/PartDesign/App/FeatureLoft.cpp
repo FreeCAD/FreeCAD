@@ -47,6 +47,7 @@ Loft::Loft()
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setValue(nullptr);
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Create ruled surface");
+    ADD_PROPERTY_TYPE(Smoothing, (false), "Loft", App::Prop_None, "Use variational smoothing");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
 }
 
@@ -56,6 +57,9 @@ short Loft::mustExecute() const
         return 1;
     }
     if (Ruled.isTouched()) {
+        return 1;
+    }
+    if (Smoothing.isTouched()) {
         return 1;
     }
     if (Closed.isTouched()) {
@@ -227,7 +231,10 @@ App::DocumentObjectExecReturn* Loft::execute()
                 sectionWires,
                 Part::IsSolid::notSolid,
                 Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
-                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
+                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed,
+                5, // maxdegree Note: maybe add this as an option in the data tab at some point?
+                nullptr,
+                Smoothing.getValue() ? Part::IsSmoothing::smoothing : Part::IsSmoothing::noSmoothing
             ));
         }
 

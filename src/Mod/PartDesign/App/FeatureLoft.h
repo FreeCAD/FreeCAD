@@ -39,6 +39,7 @@ public:
 
     App::PropertyLinkSubList Sections;
     App::PropertyBool Ruled;
+    App::PropertyBool Smoothing;
     App::PropertyBool Closed;
 
     /** @name methods override feature */
