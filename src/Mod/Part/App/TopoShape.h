@@ -1836,7 +1836,8 @@ public:
         IsRuled isRuled,
         IsClosed isClosed = IsClosed::notClosed,
         Standard_Integer maxDegree = 5,
-        const char* op = nullptr
+        const char* op = nullptr,
+        IsSmoothing isSmoothing = IsSmoothing::noSmoothing
     );
 
     /** Make a ruled surface

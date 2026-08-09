@@ -4467,7 +4467,8 @@ TopoShape& TopoShape::makeElementLoft(
     IsRuled isRuled,
     IsClosed isClosed,
     Standard_Integer maxDegree,
-    const char* op
+    const char* op,
+    IsSmoothing isSmoothing
 )
 {
     auto checkProfiles = [](const TopoShape& sh1, const TopoShape& sh2) {
