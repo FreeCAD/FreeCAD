@@ -1383,6 +1383,7 @@ void TaskExtrudeParameters::changeEvent(QEvent* e)
         translateFaceName(ui->lineFaceName);
         translateFaceName(ui->lineFaceName2);
         updateStartReferenceName();
+        updateStartUI();
     }
 }
 
