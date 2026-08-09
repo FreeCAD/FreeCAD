@@ -68,6 +68,7 @@ public:
         ProjectOnPlane3D,
         Radius3D,
         Symmetric3D,
+        Tangent3D,
         NumConstraintTypes
     };
 
@@ -115,6 +116,7 @@ private:
         "ProjectOnPlane3D",
         "Radius3D",
         "Symmetric3D",
+        "Tangent3D",
     }};
 
     std::vector<GeoElementId3D> elements;

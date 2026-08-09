@@ -445,6 +445,18 @@ int GeometryMapper3D::addConstraint(const Constraint3D& constraint, int tagId, S
             solver.addConstraintSymmetric(tagId, a, b, plane, rootPointId);
             return tagId;
         }
+        case Constraint3D::Tangent3D: {
+            if (elements.size() != 2) {
+                return -1;
+            }
+            const GeoDef* a = geoDefAt(elements[0].GeoId);
+            const GeoDef* b = geoDefAt(elements[1].GeoId);
+            if (!a || !b || a->index < 0 || b->index < 0) {
+                return -1;
+            }
+            solver.addConstraintTangent(tagId, a->index, a->type, b->index, b->type, rootPointId);
+            return tagId;
+        }
         default:
             return -1;
     }

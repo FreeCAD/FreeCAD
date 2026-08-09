@@ -4010,4 +4010,115 @@ double ConstraintCurveValue3D::maxStep(MAP_pD_D& /*dir*/, double lim)
     return lim;
 }
 
+// --------------------------------------------------------
+// TangentCircumf3D
+ConstraintTangentCircumf3D::ConstraintTangentCircumf3D(
+    Point3D& p1,
+    Point3D& p2,
+    double* rd1,
+    double* rd2,
+    bool internal_
+)
+    : internal(internal_)
+{
+    pvec.push_back(p1.x);
+    pvec.push_back(p1.y);
+    pvec.push_back(p1.z);
+    pvec.push_back(p2.x);
+    pvec.push_back(p2.y);
+    pvec.push_back(p2.z);
+    pvec.push_back(rd1);
+    pvec.push_back(rd2);
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintType ConstraintTangentCircumf3D::getTypeId()
+{
+    return TangentCircumf3D;
+}
+
+double ConstraintTangentCircumf3D::error()
+{
+    double dx = (*c1x() - *c2x());
+    double dy = (*c1y() - *c2y());
+    double dz = (*c1z() - *c2z());
+    double d_sq = dx * dx + dy * dy + dz * dz;
+
+    // Handle the singularity for near-concentric circles.
+    // When concentric, tangency is equivalent to equal radii.
+    // We switch to the robust 'r1 - r2 = 0' formulation, which has a
+    // constant non-zero gradient, avoiding the singularity.
+    if (d_sq < 1e-14) {
+        return scale * (*r1() - *r2());
+    }
+
+    if (internal) {
+        return scale * (d_sq - (*r1() - *r2()) * (*r1() - *r2()));
+    }
+
+    return scale * (d_sq - (*r1() + *r2()) * (*r1() + *r2()));
+}
+
+double ConstraintTangentCircumf3D::grad(double* param)
+{
+    double deriv = 0.;
+    if (param == c1x() || param == c1y() || param == c1z() || param == c2x() || param == c2y()
+        || param == c2z() || param == r1() || param == r2()) {
+        double dx = (*c1x() - *c2x());
+        double dy = (*c1y() - *c2y());
+        double dz = (*c1z() - *c2z());
+        double d_sq = dx * dx + dy * dy + dz * dz;
+
+        // Provide the gradient corresponding to the robust 'r1 - r2 = 0' error function.
+        // This gradient is constant and non-zero, preventing the false redundancy report.
+        if (d_sq < 1e-14) {
+            if (param == r1()) {
+                deriv = 1.0;
+            }
+            else if (param == r2()) {
+                deriv = -1.0;
+            }
+            // The gradient is 0 for all other parameters (center coordinates).
+            return scale * deriv;
+        }
+
+        if (param == c1x()) {
+            deriv += 2 * dx;
+        }
+        if (param == c1y()) {
+            deriv += 2 * dy;
+        }
+        if (param == c1z()) {
+            deriv += 2 * dz;
+        }
+        if (param == c2x()) {
+            deriv += 2 * -dx;
+        }
+        if (param == c2y()) {
+            deriv += 2 * -dy;
+        }
+        if (param == c2z()) {
+            deriv += 2 * -dz;
+        }
+        if (internal) {
+            if (param == r1()) {
+                deriv += 2 * (*r2() - *r1());
+            }
+            if (param == r2()) {
+                deriv += 2 * (*r1() - *r2());
+            }
+        }
+        else {
+            if (param == r1()) {
+                deriv += -2 * (*r1() + *r2());
+            }
+            if (param == r2()) {
+                deriv += -2 * (*r1() + *r2());
+            }
+        }
+    }
+    return scale * deriv;
+}
+
 }  // namespace GCS

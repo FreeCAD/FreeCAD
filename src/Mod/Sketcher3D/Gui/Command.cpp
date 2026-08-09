@@ -1138,22 +1138,22 @@ bool CmdSketcher3DConstrainPointAtLineMidpoint::isActive()
     return isSketch3DInEdit();
 }
 
-DEF_STD_CMD_A(CmdSketcher3DConstrainCollinear)
+DEF_STD_CMD_A(CmdSketcher3DConstrainTangent)
 
-CmdSketcher3DConstrainCollinear::CmdSketcher3DConstrainCollinear()
-    : Command("Sketcher3D_ConstrainCollinear")
+CmdSketcher3DConstrainTangent::CmdSketcher3DConstrainTangent()
+    : Command("Sketcher3D_ConstrainTangent")
 {
     sAppModule = "Sketcher3D";
     sGroup = QT_TR_NOOP("Sketcher3D");
-    sMenuText = QT_TR_NOOP("Constrain collinear");
-    sToolTipText = QT_TR_NOOP("Force two 3D lines to be collinear");
-    sWhatsThis = "Sketcher3D_ConstrainCollinear";
+    sMenuText = QT_TR_NOOP("Constrain tangent/collinear");
+    sToolTipText = QT_TR_NOOP("Constrains the selected elements to be tangent or collinear");
+    sWhatsThis = "Sketcher3D_ConstrainTangent";
     sStatusTip = sToolTipText;
     sPixmap = "Constraint_Tangent";
     eType = ForEdit;
 }
 
-void CmdSketcher3DConstrainCollinear::activated(int iMsg)
+void CmdSketcher3DConstrainTangent::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
@@ -1162,22 +1162,35 @@ void CmdSketcher3DConstrainCollinear::activated(int iMsg)
         return;
     }
 
-    auto refs = collectSelectedLineRefs(sketch);
+    auto sel = collectSketch3DSelection(sketch, false, true);
+    std::vector<Sketcher3D::GeoElementId3D> refs;
+    refs.insert(refs.end(), sel.lines.begin(), sel.lines.end());
+    refs.insert(refs.end(), sel.arcs.begin(), sel.arcs.end());
+    refs.insert(refs.end(), sel.circles.begin(), sel.circles.end());
+
     if (refs.size() != 2) {
-        Base::Console().warning("Sketcher3D: select exactly two 3D sketch lines for Collinear.\n");
+        Base::Console().warning(
+            "Sketcher3D: select exactly two lines, arcs, or circles for Tangent/Collinear.\n"
+        );
         return;
     }
-    if (refs[0] == refs[1]) {
-        Base::Console().warning("Sketcher3D: Collinear needs two distinct lines.\n");
+    if (refs[0].GeoId == refs[1].GeoId) {
+        Base::Console().warning("Sketcher3D: Tangent/Collinear needs two distinct geometries.\n");
         return;
     }
 
-    refs[0].Pos = Sketcher3D::PointPos::none;
-    refs[1].Pos = Sketcher3D::PointPos::none;
+    bool twoLines = refs[0].Kind == Sketcher3D::GeoKind::Line
+        && refs[1].Kind == Sketcher3D::GeoKind::Line;
 
-    openCommand(QT_TRANSLATE_NOOP("Command", "Constrain collinear"));
+    if (twoLines) {
+        openCommand(QT_TRANSLATE_NOOP("Command", "Constrain collinear"));
+    }
+    else {
+        openCommand(QT_TRANSLATE_NOOP("Command", "Constrain tangent"));
+    }
+
     Sketcher3D::Constraint3D c;
-    c.Type = Sketcher3D::Constraint3D::Collinear3D;
+    c.Type = twoLines ? Sketcher3D::Constraint3D::Collinear3D : Sketcher3D::Constraint3D::Tangent3D;
     c.setElements(refs);
     sketch->addConstraint(c);
     sketch->recomputeFeature();
@@ -1185,7 +1198,7 @@ void CmdSketcher3DConstrainCollinear::activated(int iMsg)
     Gui::Selection().clearSelection();
 }
 
-bool CmdSketcher3DConstrainCollinear::isActive()
+bool CmdSketcher3DConstrainTangent::isActive()
 {
     return isSketch3DInEdit();
 }
@@ -1679,7 +1692,7 @@ void CreateSketcher3DCommands()
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainEqualLength());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointOnCurve());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainPointAtLineMidpoint());
-    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainCollinear());
+    rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainTangent());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainProjectOnPlane());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DConstrainSymmetric());
     rcCmdMgr.addCommand(new Sketcher3DGui::CmdSketcher3DCompDimensionTools());

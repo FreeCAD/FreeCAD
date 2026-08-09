@@ -92,6 +92,7 @@ enum ConstraintType
     ProjectOnPlane3D = 41,
     P2LDistance3D = 42,
     CurveValue3D = 43,
+    TangentCircumf3D = 44,
 };
 
 enum InternalAlignmentType
@@ -1759,6 +1760,61 @@ public:
     ~ConstraintCurveValue3D() override;
     ConstraintType getTypeId() override;
     double maxStep(MAP_pD_D& dir, double lim = 1.) override;
+};
+
+// TangentCircumf3D
+class ConstraintTangentCircumf3D: public Constraint
+{
+private:
+    double* c1x()
+    {
+        return pvec[0];
+    }
+    double* c1y()
+    {
+        return pvec[1];
+    }
+    double* c1z()
+    {
+        return pvec[2];
+    }
+    double* c2x()
+    {
+        return pvec[3];
+    }
+    double* c2y()
+    {
+        return pvec[4];
+    }
+    double* c2z()
+    {
+        return pvec[5];
+    }
+    double* r1()
+    {
+        return pvec[6];
+    }
+    double* r2()
+    {
+        return pvec[7];
+    }
+    bool internal;
+
+public:
+    ConstraintTangentCircumf3D(Point3D& p1, Point3D& p2, double* rd1, double* rd2, bool internal_ = false);
+#ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+    ConstraintTangentCircumf3D(bool internal_)
+    {
+        internal = internal_;
+    }
+#endif
+    bool getInternal()
+    {
+        return internal;
+    }
+    ConstraintType getTypeId() override;
+    double error() override;
+    double grad(double*) override;
 };
 
 }  // namespace GCS

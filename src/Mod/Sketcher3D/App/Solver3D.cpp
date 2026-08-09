@@ -163,6 +163,42 @@ void Solver3D::addConstraintArcRules(int tagId, int arcHandle)
     GCSsys.addConstraintArcRules3D(arcs[arcHandle], tagId, true);
 }
 
+void Solver3D::addConstraintTangent(
+    int tagId,
+    int handleA,
+    GeoKind kindA,
+    int handleB,
+    GeoKind kindB,
+    int originHandle
+)
+{
+    if (kindB == GeoKind::Line && (kindA == GeoKind::Circle || kindA == GeoKind::Arc)) {
+        std::swap(handleA, handleB);
+        std::swap(kindA, kindB);
+    }
+
+    if (kindA == GeoKind::Line && (kindB == GeoKind::Circle || kindB == GeoKind::Arc)) {
+        GCSsys.addConstraintTangent3D(
+            lines[handleA],
+            (kindB == GeoKind::Arc) ? arcs[handleB] : circles[handleB],
+            tagId
+        );
+        return;
+    }
+
+    if ((kindA == GeoKind::Circle || kindA == GeoKind::Arc)
+        && (kindB == GeoKind::Circle || kindB == GeoKind::Arc)) {
+        GCS::Circle3D& c1 = (kindA == GeoKind::Arc) ? arcs[handleA] : circles[handleA];
+        GCS::Circle3D& c2 = (kindB == GeoKind::Arc) ? arcs[handleB] : circles[handleB];
+        double dx = *c2.center.x - *c1.center.x;
+        double dy = *c2.center.y - *c1.center.y;
+        double dz = *c2.center.z - *c1.center.z;
+        double d = std::sqrt(dx * dx + dy * dy + dz * dz);
+        bool internal = (d < *c1.rad || d < *c2.rad);
+        GCSsys.addConstraintTangentCircumf3D(c1, c2, internal, points[originHandle], tagId);
+    }
+}
+
 void Solver3D::addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB)
 {
     GCSsys.addConstraintP2PCoincident3D(points[pointHandleA], points[pointHandleB], tagId);

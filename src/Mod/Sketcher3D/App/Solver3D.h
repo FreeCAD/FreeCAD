@@ -93,6 +93,16 @@ public:
     /// Tie the start/end points of an arc to its parametric circle.
     void addConstraintArcRules(int tagId, int arcHandle);
 
+    /// line,circle and arc tangency
+    void addConstraintTangent(
+        int tagId,
+        int handleA,
+        GeoKind kindA,
+        int handleB,
+        GeoKind kindB,
+        int originHandle
+    );
+
     /// Coincident constraint between two points.
     void addConstraintCoincident(int tagId, int pointHandleA, int pointHandleB);
 

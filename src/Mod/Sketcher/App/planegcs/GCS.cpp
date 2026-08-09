@@ -1200,6 +1200,30 @@ int System::addConstraintCircleRadius3D(Circle3D& c, double* radius, int tagId, 
     return addConstraintEqual(c.rad, radius, tagId, driving);
 }
 
+int System::addConstraintTangent3D(Line3D& l, Circle3D& c, int tagId, bool driving)
+{
+    addConstraintP2LDistance3D(c.center, l, c.rad, tagId, driving);
+    addConstraintProjectOnPlane3D(l.p1, c.center, c.normal, tagId, driving);
+    return addConstraintProjectOnPlane3D(l.p2, c.center, c.normal, tagId, driving);
+}
+
+int System::addConstraintTangentCircumf3D(
+    Circle3D& c1,
+    Circle3D& c2,
+    bool internal,
+    Point3D& origin,
+    int tagId,
+    bool driving
+)
+{
+    Constraint* constr = new ConstraintTangentCircumf3D(c1.center, c2.center, c1.rad, c2.rad, internal);
+    constr->setTag(tagId);
+    constr->setDriving(driving);
+    addConstraint(constr);
+    addConstraintParallel3D(origin, c1.normal, origin, c2.normal, tagId, driving);
+    return addConstraintProjectOnPlane3D(c2.center, c1.center, c1.normal, tagId, driving);
+}
+
 int System::addConstraintArcRules(Arc& a, int tagId, bool driving)
 {
     addConstraintCurveValue(a.start, a, a.startAngle, tagId, driving);

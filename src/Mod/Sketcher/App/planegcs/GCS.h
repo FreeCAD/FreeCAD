@@ -605,6 +605,19 @@ public:
 
     int addConstraintCircleRadius3D(Circle3D& c, double* radius, int tagId = 0, bool driving = true);
 
+    /// line tangent to circle/arc
+    int addConstraintTangent3D(Line3D& l, Circle3D& c, int tagId = 0, bool driving = true);
+
+    // circles/arcs tangent
+    int addConstraintTangentCircumf3D(
+        Circle3D& c1,
+        Circle3D& c2,
+        bool internal,
+        Point3D& origin,
+        int tagId = 0,
+        bool driving = true
+    );
+
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
         Ellipse& e,
