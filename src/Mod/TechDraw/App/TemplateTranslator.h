@@ -1,4 +1,4 @@
-/* SPDX - License - Identifier: LGPL - 2.1 - or -later
+// SPDX - License - Identifier: LGPL - 2.1 - or -later
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 Pierre-Louis Boyer                                  *
@@ -49,7 +49,7 @@ public:
 private:
     void initializeTranslations();
     QMap<QString, QMap<QString, QString>> m_translations;
-    // Example: m_translations["%%TECHDRAW_SCALE%%"]["fr"] = "Échelle";
+    // Example: m_translations["%%TECHDRAW_SCALE%%"]["fr"] = "Echelle";
 };
 
 }  // namespace TechDraw
