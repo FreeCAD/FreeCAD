@@ -1,4 +1,4 @@
-/* SPDX - License - Identifier: LGPL - 2.1 - or -later
+// SPDX - License - Identifier: LGPL - 2.1 - or -later
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2025 Pierre-Louis Boyer                                  *
@@ -741,8 +741,8 @@ void TaskHatchFace::updateHatchObjectPreview()
 
 bool TaskHatchFace::applyToDocumentObject(App::DocumentObject* obj, const PatternEntry& entry)
 {
-    if (!obj || !m_dvp && !m_isEditMode) {  // For new hatch, dvp is essential. For edit, obj might
-                                            // be orphaned.
+    // For new hatch, dvp is essential. For edit, obj might be orphaned.
+    if (!obj || (!m_dvp && !m_isEditMode)) {
         if (!m_dvp && !m_isEditMode) {
             Base::Console().error("TaskHatchFace: DVP is null for new hatch.\n");
         }
