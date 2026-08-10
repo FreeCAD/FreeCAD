@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <array>
+
+#include <BRepCheck_Analyzer.hxx>
 #include <TColgp_Array2OfPnt.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
 #include <Mod/Part/App/TopoShape.h>
@@ -1850,7 +1855,11 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftReportsMismatchedTopology)
         FAIL() << "Expected mismatched loft topology to fail";
     }
     catch (const Base::CADKernelError& error) {
-        EXPECT_STREQ(error.what(), "Loft profiles must be either all open or all closed");
+        EXPECT_STREQ(
+            error.what(),
+            "Loft profiles 1 and 2 have different topology; profiles must be either all open or all "
+            "closed"
+        );
     }
 }
 
@@ -1878,9 +1887,216 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftReportsPunctualMiddleProfile)
     catch (const Base::CADKernelError& error) {
         EXPECT_STREQ(
             error.what(),
-            "Punctual loft profiles are only supported as the first or last profile"
+            "Loft profile 2 is punctual; punctual profiles are only supported as the first or last "
+            "profile"
         );
     }
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftReportsEdgeWithout3dCurve)
+{
+    auto [face, validWire, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    boost::ignore_unused(face, edge1, edge2, edge3, edge4);
+    BRep_Builder builder;
+    TopoDS_Edge edgeWithoutCurve;
+    builder.MakeEdge(edgeWithoutCurve);
+    TopoDS_Wire invalidWire;
+    builder.MakeWire(invalidWire);
+    builder.Add(invalidWire, edgeWithoutCurve);
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {TopoShape(validWire), TopoShape(invalidWire)},
+            IsSolid::notSolid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected an edge without a 3D curve to fail loft preflight";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(error.what(), "Loft profile 2, edge 1 has no 3D curve");
+    }
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
+{
+    // Reduced construction of profiles A-D-E from lever2.FCStd. Each adjacent pair lofts, but
+    // OCCT cannot construct a standard B-spline loft through all three profiles.
+    auto makeProfile = [](const std::array<gp_Pnt, 4>& corners,
+                          const gp_Pnt& curvePole,
+                          double curvePoleWeight,
+                          double planePosition) {
+        TColgp_Array1OfPnt poles(1, 3);
+        poles.SetValue(1, corners[0]);
+        poles.SetValue(2, curvePole);
+        poles.SetValue(3, corners[1]);
+        TColStd_Array1OfReal weights(1, 3);
+        weights.SetValue(1, 1.0);
+        weights.SetValue(2, curvePoleWeight);
+        weights.SetValue(3, 1.0);
+        TColStd_Array1OfReal knots(1, 2);
+        knots.SetValue(1, 0.0);
+        knots.SetValue(2, 1.0);
+        TColStd_Array1OfInteger multiplicities(1, 2);
+        multiplicities.SetValue(1, 3);
+        multiplicities.SetValue(2, 3);
+        Handle(Geom_BSplineCurve) curve = new Geom_BSplineCurve(
+            poles,
+            weights,
+            knots,
+            multiplicities,
+            2,
+            false
+        );
+
+        BRepBuilderAPI_MakeWire wire;
+        wire.Add(BRepBuilderAPI_MakeEdge(curve).Edge());
+        wire.Add(BRepBuilderAPI_MakeEdge(corners[1], corners[2]).Edge());
+        wire.Add(BRepBuilderAPI_MakeEdge(corners[2], corners[3]).Edge());
+        wire.Add(BRepBuilderAPI_MakeEdge(corners[3], corners[0]).Edge());
+        gp_Trsf location;
+        location.SetValues(
+            0, 0, -1, planePosition,
+            -1, 0, 0, 0,
+            0, 1, 0, 0
+        );
+        return TopoShape(BRepBuilderAPI_Transform(wire.Wire(), location, true).Shape());
+    };
+
+    auto profileA = makeProfile(
+        {gp_Pnt(0, -1.57, 0),
+         gp_Pnt(2.13, -3.559, 0),
+         gp_Pnt(2.13, -8.929, 0),
+         gp_Pnt(0, -8.96, 0)},
+        gp_Pnt(2.13, -1.57, 0),
+        1.0,
+        50.0
+    );
+    auto profileD = makeProfile(
+        {gp_Pnt(0, 5.25, 0),
+         gp_Pnt(6.07, 2.79, 0),
+         gp_Pnt(6.07, 0.79, 0),
+         gp_Pnt(0, 1.1, 0)},
+        gp_Pnt(6.07, 5.25, 0),
+        0.88560975361611738,
+        13.0
+    );
+    auto profileE = makeProfile(
+        {gp_Pnt(9.65, 3.76, 0),
+         gp_Pnt(0, 6.87, 0),
+         gp_Pnt(0, 1.2, 0),
+         gp_Pnt(9.65, 1.2, 0)},
+        gp_Pnt(9.65, 6.87, 0),
+        1.75,
+        6.0
+    );
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {profileA, profileD, profileE},
+            IsSolid::solid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected the complete A-D-E profile sequence to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "OCCT failed to construct the loft; the failure requires the complete sequence of 3 "
+            "profiles; try Centripetal parameterization, which succeeds for these profiles "
+            "(adjacent profile spacing ratio 5.1)"
+        );
+    }
+
+    TopoShape suggestedResult;
+    EXPECT_NO_THROW(suggestedResult.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::centripetal
+    ));
+    EXPECT_FALSE(suggestedResult.isNull());
+
+    // This sequence fails with every standard B-spline parameterization, but the variational
+    // solver constructs a valid solid.
+    std::vector<TopoShape> variationalProfiles {
+        makeProfile(
+            {gp_Pnt(0, 17.732158388647292, 0),
+             gp_Pnt(5.91256580453193, 10.368825818265051, 0),
+             gp_Pnt(5.91256580453193, 7.444724193179219, 0),
+             gp_Pnt(0, 7.444724193179219, 0)},
+            gp_Pnt(5.91256580453193, 17.732158388647292, 0),
+            3.3653696498054475,
+            60.0
+        ),
+        makeProfile(
+            {gp_Pnt(0, 1.2206759746700233, 0),
+             gp_Pnt(5.857175555046922, 0.9311818112458989, 0),
+             gp_Pnt(5.857175555046922, -1.9530022125581752, 0),
+             gp_Pnt(0, -1.9530022125581752, 0)},
+            gp_Pnt(5.857175555046922, 1.2206759746700233, 0),
+            3.7549019607843137,
+            45.23052567330434
+        ),
+        makeProfile(
+            {gp_Pnt(0, -4.107042038605325, 0),
+             gp_Pnt(5.688258182650492, 2.993713282978562, 0),
+             gp_Pnt(5.688258182650492, -5.818417639429312, 0),
+             gp_Pnt(0, -5.818417639429312, 0)},
+            gp_Pnt(5.688258182650492, -4.107042038605325, 0),
+            1.5047455558098726,
+            28.108873121232932
+        ),
+        makeProfile(
+            {gp_Pnt(0, 5.5303120469977864, 0),
+             gp_Pnt(8.89219501029984, 0.5561760891126877, 0),
+             gp_Pnt(8.89219501029984, -3.7218280308232243, 0),
+             gp_Pnt(0, -3.7218280308232243, 0)},
+            gp_Pnt(8.89219501029984, 5.5303120469977864, 0),
+            1.4196612497138934,
+            13.731555657282371
+        ),
+        makeProfile(
+            {gp_Pnt(0, 13.663736934462502, 0),
+             gp_Pnt(15.439688715953308, 13.618875410086213, 0),
+             gp_Pnt(15.439688715953308, 3.8289463645380337, 0),
+             gp_Pnt(0, 3.8289463645380337, 0)},
+            gp_Pnt(15.439688715953308, 13.663736934462502, 0),
+            0.36678873884184027,
+            -8.186007476920725
+        ),
+    };
+
+    try {
+        TopoShape standardResult;
+        standardResult.makeElementLoft(
+            variationalProfiles,
+            IsSolid::solid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected all standard B-spline parameterizations to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "OCCT failed to construct the loft; the failure requires the complete sequence of 5 "
+            "profiles; standard B-spline lofting failed with all parameterizations; try Smoothed "
+            "B-Spline, whose variational solver succeeds for these profiles"
+        );
+    }
+
+    TopoShape variationalResult;
+    EXPECT_NO_THROW(variationalResult.makeElementLoft(
+        variationalProfiles,
+        IsSolid::solid,
+        Smoothing::variational
+    ));
+    EXPECT_FALSE(variationalResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(variationalResult.getShape()).IsValid());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT
