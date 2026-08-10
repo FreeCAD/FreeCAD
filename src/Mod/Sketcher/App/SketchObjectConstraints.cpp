@@ -1571,25 +1571,29 @@ bool SketchObject::deriveConstraintsForPieces(
             // TODO: Actually check that there was perpendicularity earlier
             for (size_t i = 0; i < newIds.size(); ++i) {
                 // by coincident or point on object constraint
-                bool found = false;
-                for (const auto* constraint : this->Constraints.getValues()) {
-                    if (constraint->Type == Coincident && constraint->involvesGeoId(newIds[i])
-                        && constraint->involvesGeoId(conId)) {
-                        found = true;
-                        break;
-                    }
-                }
+                const auto& constraints = this->Constraints.getValues();
+
+                const bool coincidentConstrFound = std::find_if(
+                                                       constraints.begin(),
+                                                       constraints.end(),
+                                                       [&](const auto* constraint) {
+                                                           return constraint->Type == Coincident
+                                                               && constraint->involvesGeoId(newIds[i])
+                                                               && constraint->involvesGeoId(conId);
+                                                       }
+                                                   )
+                    != constraints.end();
 
                 // by curve intersection
                 bool intersects = false;
-                if (!found) {
+                if (!coincidentConstrFound) {
                     std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
                     intersects
                         = static_cast<const Part::GeomCurve*>(newGeos[i])
                               ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
                 }
 
-                if (found || intersects) {
+                if (coincidentConstrFound || intersects) {
                     Constraint* trans = con->copy();
                     trans->substituteIndex(oldId, newIds[i]);
                     newConstraints.push_back(trans);
@@ -1879,7 +1883,7 @@ int SketchObject::getSingleScaleDefiningConstraint() const
 
 const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups()
 {
-    // this function is different from that in getDirectlyCoincidentPoints in that:
+    // this function is different from getDirectlyCoincidentPoints in that:
     // - getDirectlyCoincidentPoints only considers direct coincidence (the points that are linked via a
     // single coincidence)
     // - this function provides an array of maps of points, each map containing the points that are
