@@ -41,6 +41,7 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepFill.hxx>
+#include <BRepFill_ThruSectionErrorStatus.hxx>
 #include <BRepFill_Generator.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
@@ -4460,6 +4461,45 @@ TopoShape& TopoShape::makeElementShape(
     return *this;
 }
 
+namespace
+{
+[[noreturn]] void throwThruSectionsError(BRepFill_ThruSectionErrorStatus status)
+{
+    switch (status) {
+        case BRepFill_ThruSectionErrorStatus_Done:
+            FC_THROWM(
+                Base::CADKernelError,
+                "Loft generation did not complete although OCCT reported success"
+            );
+        case BRepFill_ThruSectionErrorStatus_NotDone:
+            FC_THROWM(Base::CADKernelError, "OCCT did not complete the loft operation");
+        case BRepFill_ThruSectionErrorStatus_NotSameTopology:
+            FC_THROWM(
+                Base::CADKernelError,
+                "Loft profiles must be either all open or all closed"
+            );
+        case BRepFill_ThruSectionErrorStatus_ProfilesInconsistent:
+            FC_THROWM(
+                Base::CADKernelError,
+                "OCCT could not establish consistent edge correspondence between the loft profiles"
+            );
+        case BRepFill_ThruSectionErrorStatus_WrongUsage:
+            FC_THROWM(
+                Base::CADKernelError,
+                "Punctual loft profiles are only supported as the first or last profile"
+            );
+        case BRepFill_ThruSectionErrorStatus_Null3DCurve:
+            FC_THROWM(
+                Base::CADKernelError,
+                "A loft profile contains an edge without a 3D curve"
+            );
+        case BRepFill_ThruSectionErrorStatus_Failed:
+            FC_THROWM(Base::CADKernelError, "OCCT failed to construct the loft");
+    }
+    FC_THROWM(Base::CADKernelError, "OCCT returned an unknown loft error status");
+}
+}  // namespace
+
 
 TopoShape& TopoShape::makeElementLoft(
     const std::vector<TopoShape>& shapes,
@@ -4599,11 +4639,23 @@ TopoShape& TopoShape::makeElementLoft(
         }
     }
 
+    try {
 #if OCC_VERSION_HEX >= 0x070600
-    aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
+        aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
 #else
-    aGenerator.Build();
+        aGenerator.Build();
 #endif
+    }
+    catch (const Standard_Failure&) {
+        if (aGenerator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
+            throwThruSectionsError(aGenerator.GetStatus());
+        }
+        throw;
+    }
+    if (!aGenerator.IsDone()
+        || aGenerator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
+        throwThruSectionsError(aGenerator.GetStatus());
+    }
     return makeShapeWithElementMap(
         aGenerator.Shape(),
         MapperThruSections(aGenerator, profiles),

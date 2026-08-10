@@ -1831,6 +1831,58 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     ));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementLoftReportsMismatchedTopology)
+{
+    auto [face, closedWire, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    boost::ignore_unused(face, edge1, edge2, edge3, edge4);
+    BRepBuilderAPI_MakePolygon openPolygon;
+    openPolygon.Add(gp_Pnt(0, 0, 10));
+    openPolygon.Add(gp_Pnt(5, 0, 10));
+    openPolygon.Add(gp_Pnt(5, 5, 10));
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {TopoShape(closedWire), TopoShape(openPolygon.Wire())},
+            IsSolid::notSolid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected mismatched loft topology to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(error.what(), "Loft profiles must be either all open or all closed");
+    }
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftReportsPunctualMiddleProfile)
+{
+    auto [face, firstWire, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    boost::ignore_unused(face, edge1, edge2, edge3, edge4);
+    auto transform {gp_Trsf()};
+    transform.SetTranslation(gp_Vec(0, 0, 10));
+    auto lastWire = TopoDS::Wire(firstWire.Moved(TopLoc_Location(transform)));
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {
+                TopoShape(firstWire),
+                TopoShape(BRepBuilderAPI_MakeVertex(gp_Pnt(2.5, 2.5, 5)).Vertex()),
+                TopoShape(lastWire),
+            },
+            IsSolid::notSolid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected a punctual middle loft profile to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "Punctual loft profiles are only supported as the first or last profile"
+        );
+    }
+}
+
 TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT
 {
     // Regression test for PR #29982 / forum thread t=88234.  The fix for issue #5855 rejected any
