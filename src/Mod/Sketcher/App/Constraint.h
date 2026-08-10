@@ -161,6 +161,10 @@ public:
     /// utility function to check if (`geoId`, `posId`) is one of the points/curves
     bool involvesGeoIdAndPosId(int geoId, PointPos posId) const;
 
+    std::string toString() const;
+
+    std::string elementsToString() const;
+
     std::string typeToString() const
     {
         return typeToString(Type);
