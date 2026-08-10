@@ -66,13 +66,28 @@ ViewProviderPoints::ViewProviderPoints()
     ADD_PROPERTY_TYPE(PointSize, (2.0F), osgroup, App::Prop_None, "Set point size");
     PointSize.setConstraints(&floatRange);
 
-    ADD_PROPERTY_TYPE(SliceLength, (0.0), osgroup, App::Prop_None,
-                      "Point cloud slice thickness, when Section View is enabled. Set to 0 to disable");
+    ADD_PROPERTY_TYPE(
+        SliceLength,
+        (0.0),
+        osgroup,
+        App::Prop_None,
+        "Point cloud slice thickness, when Section View is enabled. Set to 0 to disable"
+    );
 
-    ADD_PROPERTY_TYPE(SectionPlacement, (Base::Placement()), "Section View", App::Prop_Hidden,
-                      "Stored section view placement for slice calculation");
-    ADD_PROPERTY_TYPE(PointCloudSliceActive, (false), "Section View", App::Prop_Hidden,
-                      "Whether point cloud slice clipping is active");
+    ADD_PROPERTY_TYPE(
+        SectionPlacement,
+        (Base::Placement()),
+        "Section View",
+        App::Prop_Hidden,
+        "Stored section view placement for slice calculation"
+    );
+    ADD_PROPERTY_TYPE(
+        PointCloudSliceActive,
+        (false),
+        "Section View",
+        App::Prop_Hidden,
+        "Whether point cloud slice clipping is active"
+    );
 
     // Create the selection node
     pcHighlight = Gui::ViewProviderBuilder::createSelection();
@@ -142,7 +157,8 @@ void ViewProviderPoints::updateSliceClipPlaneFromProperties()
     auto sliceLen = SliceLength.getValue();
     Base::Vector3d backBase = pla.getPosition() - dir * sliceLen;
     pcSliceClipPlane->plane.setValue(
-        SbPlane(SbVec3f(dir.x, dir.y, dir.z), SbVec3f(backBase.x, backBase.y, backBase.z)));
+        SbPlane(SbVec3f(dir.x, dir.y, dir.z), SbVec3f(backBase.x, backBase.y, backBase.z))
+    );
     pcSliceClipPlane->on.setValue(true);
 }
 

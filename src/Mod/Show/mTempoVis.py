@@ -536,7 +536,7 @@ class TempoVis(object):
 
         sv_active = sketch.ViewObject.SectionView
         for obj in doc.Objects:
-            if not hasattr(obj.ViewObject, 'SliceLength'):
+            if not hasattr(obj.ViewObject, "SliceLength"):
                 continue
             try:
                 self.modify(PointCloudSliceDetail(obj, sv_active, pla))
