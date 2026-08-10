@@ -2590,8 +2590,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
     QMenu* objectMenu = nullptr;
     QList<QAction*> objectActions;
-    App::DocumentObject* preselectedObject
-        = Gui::Selection().getPreselection().Object.getObject();
+    App::DocumentObject* preselectedObject = Gui::Selection().getPreselection().Object.getObject();
 
     if (preselectedObject) {
         auto* preselectedViewProvider
@@ -2601,8 +2600,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
 
         if (preselectedViewProvider) {
             objectMenu = new QMenu(contextMenu);
-            auto receiver =
-                new NavigationStyleContextMenuReceiver(preselectedViewProvider, objectMenu);
+            auto receiver = new NavigationStyleContextMenuReceiver(preselectedViewProvider, objectMenu);
             preselectedViewProvider->setupContextMenu(objectMenu, receiver, SLOT(startEditing()));
             objectActions = objectMenu->actions();
             if (!objectActions.empty()) {
