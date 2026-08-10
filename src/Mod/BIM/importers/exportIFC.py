@@ -2429,7 +2429,9 @@ def getRepresentation(
                                         continue
                                     verts = [v.Point for v in wire.OrderedVertexes]
                                     if len(verts) > 1:
-                                        pts = [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
+                                        pts = [
+                                            ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts
+                                        ]
                                         loop = ifcbin.createIfcPolyLoop(pts)
                                         bound = ifcfile.createIfcFaceBound(loop, True)
                                         loops.append(bound)
