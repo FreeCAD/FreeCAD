@@ -507,6 +507,26 @@ bool Constraint::hasElement(int index) const
     return index >= 0 && static_cast<decltype(elements)::size_type>(index) < elements.size();
 }
 
+
+size_t Constraint::getElementIndexForGeoId(int geoId) const
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    for (size_t i = 0; i < this->elements.size(); ++i) {
+        if (getElement(i).GeoId == geoId) {
+            return i;
+        }
+    }
+#else
+    for (size_t i = 0; i < elements.size(); ++i) {
+        if (elements[i].GeoId == geoId) {
+            return i;
+        }
+    }
+#endif
+
+    return -1;
+}
+
 void Constraint::setGeoId(int index, int geoId)
 {
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS

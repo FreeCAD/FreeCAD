@@ -256,6 +256,7 @@ public:
     void setPosId(int index, int pos);
     void swapElements(int index1, int index2);
     bool ensureElementExists(int index);
+    size_t getElementIndexForGeoId(int geoId) const;
 
     std::string getText() const;
     void setText(const std::string& text);
