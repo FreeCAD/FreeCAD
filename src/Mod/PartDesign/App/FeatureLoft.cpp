@@ -32,6 +32,7 @@
 #include <boost/core/ignore_unused.hpp>
 
 #include <App/Document.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
@@ -416,6 +417,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 ));
             }
             Shape.setValue(getSolid(result));
+            Base::Console().message("%s: Loft created successfully.\n", getNameInDocument());
             return App::DocumentObject::StdReturn;
         }
 
@@ -461,6 +463,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         }
         boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
+        Base::Console().message("%s: Loft created successfully.\n", getNameInDocument());
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {
