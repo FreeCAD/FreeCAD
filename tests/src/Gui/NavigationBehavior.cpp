@@ -176,6 +176,11 @@ public:
         return this->centerTime.getValue();
     }
 
+    void setMode(const NavigationStyle::ViewerMode mode)
+    {
+        this->setViewingMode(mode);
+    }
+
     bool popupOpened = false;
 
 protected:
@@ -1024,6 +1029,24 @@ TEST_F(NavigationStyleTest, siemensNXMiddleClickRecenters)
         style,
         {{EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
          {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true, 1.1}}
+    );
+}
+
+TEST_F(NavigationStyleTest, siemensNXRecoversAfterInterruptedSpinning)
+{
+    Gui::View3DInventorViewer viewer(nullptr);
+    viewer.resize(640, 480);
+    StyleProbe<Gui::SiemensNXNavigationStyle> style;
+    configureStyle(style, viewer);
+    style.setMode(NavigationStyle::SPINNING);
+
+    runSequence(
+        style,
+        {{EventType::MousePress, MouseButton::Right, 0, NavigationStyle::SPINNING, true},
+         {EventType::MouseRelease, MouseButton::Right, 0, NavigationStyle::IDLE, false},
+         {EventType::MousePress, MouseButton::Middle, 0, NavigationStyle::DRAGGING, true},
+         {EventType::PointerMotion, MouseButton::None, 0, NavigationStyle::DRAGGING, true},
+         {EventType::MouseRelease, MouseButton::Middle, 0, NavigationStyle::IDLE, true}}
     );
 }
 

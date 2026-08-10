@@ -166,7 +166,9 @@ bool NS::handleIdle(const NavigationEventView& event)
 
 bool NS::handleAwaitingRelease(const NavigationEventView& event)
 {
-    (void)event;
+    if (event.isMouseButton() && noMouseButtons(event.input())) {
+        transitionTo(State::Idle, event.event());
+    }
     return false;
 }
 
