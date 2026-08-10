@@ -23,6 +23,11 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+#include <cmath>
+#include <functional>
+#include <unordered_set>
+
 #include <QFileInfo>
 #include <QPointer>
 #include <QString>
@@ -2484,25 +2489,12 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     auto sel = Gui::Selection().getSelectionEx();
     for (auto& selObj : sel) {
         auto* obj = selObj.getObject();
-        if (obj && Part::SectionAnalysis::isEffectivelyVisible(obj)) {
+        if (Part::SectionAnalysis::canBeSectioned(obj)) {
             sources.push_back(obj);
         }
     }
     if (sources.empty()) {
-        auto* doc = App::GetApplication().getActiveDocument();
-        for (auto* obj : doc->getObjects()) {
-            if (obj->isDerivedFrom(Part::Feature::getClassTypeId())
-                || obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
-                // Skip objects claimed inside a Bodies or Parts. Their container is
-                // the candidate, not the internal feature.
-                if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
-                    continue;
-                }
-                if (Part::SectionAnalysis::isEffectivelyVisible(obj)) {
-                    sources.push_back(obj);
-                }
-            }
-        }
+        sources = Part::SectionAnalysis::defaultSources(App::GetApplication().getActiveDocument());
     }
 
     if (sources.empty()) {
@@ -2510,16 +2502,17 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     }
 
     std::string docName = getDocument()->getName();
+
+    // Build safely a list for all python foo
     std::string sourceList;
     for (auto* obj : sources) {
         if (!sourceList.empty()) {
             sourceList += ", ";
         }
-        sourceList += "App.getDocument('" + docName + "').getObject('" + obj->getNameInDocument()
-            + "')";
+        sourceList += Gui::Command::getObjectCmd(obj);
     }
 
-    // Snap initial cutting plane to the nearest principal axis based on camera direction
+    // Snap initial cutting plane to the nearest principal axis/plane based on camera direction
     SbVec3f viewDir(0, 0, -1);
     auto* mdiView = qobject_cast<Gui::View3DInventor*>(Gui::Application::Instance->activeView());
     if (mdiView) {
@@ -2528,7 +2521,8 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     float vx, vy, vz;
     viewDir.getValue(vx, vy, vz);
 
-    // Find which axis the camera is most aligned with and snap to it
+    // Find which axis plane the camera is most aligned with and snap to it
+    // Surely this should be a utility function at some point
     float ax = std::abs(vx), ay = std::abs(vy), az = std::abs(vz);
     float nx = 0, ny = 0, nz = 0;
     if (ax >= ay && ax >= az) {
@@ -2541,12 +2535,48 @@ void CmdPartSectionAnalysis::activated(int iMsg)
         nz = (vz < 0) ? 1.0f : -1.0f;
     }
 
+    // Standard command plumbing
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Section Analysis"));
+
+    // A section is analysis output, not something the user goes on to build
+    // from, so it gets its own folder instead of sitting among the bodies at
+    // the document root. Made before the section itself: addObject leaves what
+    // it created as the active object, and the lines below reach the section
+    // through ActiveObject.
+    const char* const sectionGroupName = "Sections";
+    std::string groupName;
+    if (auto* existing
+        = dynamic_cast<App::DocumentObjectGroup*>(getDocument()->getObject(sectionGroupName))) {
+        groupName = existing->getNameInDocument();
+    }
+    else {
+        doCommand(
+            Doc,
+            "App.getDocument('%s').addObject('App::DocumentObjectGroup', '%s')",
+            docName.c_str(),
+            sectionGroupName
+        );
+        // The document renames on a clash, so the folder's own name is the one
+        // to address it by, not the one that was asked for.
+        if (auto* created = getDocument()->getActiveObject()) {
+            groupName = created->getNameInDocument();
+        }
+    }
+
     doCommand(
         Doc,
         "App.getDocument('%s').addObject('Part::SectionAnalysis', 'SectionAnalysis')",
         docName.c_str()
     );
+    if (!groupName.empty()) {
+        doCommand(
+            Doc,
+            "App.getDocument('%s').getObject('%s').addObject(App.getDocument('%s').ActiveObject)",
+            docName.c_str(),
+            groupName.c_str(),
+            docName.c_str()
+        );
+    }
     doCommand(
         Doc,
         "App.getDocument('%s').ActiveObject.Source = [%s]",
@@ -2557,7 +2587,16 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     // Set the plane normal to the snapped axis
     doCommand(
         Doc,
-        "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
+        "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%.12g, %.12g, %.12g)",
+        docName.c_str(),
+        nx,
+        ny,
+        nz
+    );
+
+    doCommand(
+        Doc,
+        "App.getDocument('%s').ActiveObject.AngleBase = FreeCAD.Vector(%.12g, %.12g, %.12g)",
         docName.c_str(),
         nx,
         ny,
@@ -2587,10 +2626,18 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 Gui::Application::Instance->getViewProvider(saObj)
             );
             if (vp) {
+                // Count will always be 1 or greater, we just added one !
                 size_t count = appDoc->getObjectsOfType(Part::SectionAnalysis::getClassTypeId()).size();
                 vp->ShapeAppearance.setValues(
-                    {PartGui::ViewProviderSectionAnalysis::paletteColor(count > 0 ? count - 1 : 0)}
+                    {PartGui::ViewProviderSectionAnalysis::paletteColor(count - 1)}
                 );
+
+                // If the sources come from multiple parts, enable per-solid colors
+                const bool severalParts
+                    = Part::SectionAnalysis::distinctSourceParts(sources, saObj).size() > 1;
+                if (severalParts) {
+                    vp->setPerSolidColors(true);
+                }
             }
         }
     }
