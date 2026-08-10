@@ -235,14 +235,34 @@ void TaskLoftParameters::updateUI()
 
 void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
 {
-    const bool usesApproximation = mode != 2;
-    const bool usesParametrization = mode <= 1;
+    // Auto chooses the solver and its parameters, so exposing editable values would imply that
+    // they constrain the automatic fallback sequence.  Explicit methods expose only the options
+    // that OCCT uses for that method (mode 1 is Standard B-Spline; mode 2 is Ruled Surface).
+    const bool automatic = mode == 0;
+    const bool usesApproximation = !automatic && mode != 2;
+    const bool usesParametrization = mode == 1;
     ui->spinBoxMaxDegree->setEnabled(usesApproximation);
     ui->labelMaxDegree->setEnabled(usesApproximation);
     ui->comboBoxContinuity->setEnabled(usesApproximation);
     ui->labelContinuity->setEnabled(usesApproximation);
     ui->comboBoxParametrization->setEnabled(usesParametrization);
     ui->labelParametrization->setEnabled(usesParametrization);
+    ui->checkBoxCompatibility->setEnabled(!automatic);
+
+    // Remember whether Auto performed the collapse.  This lets an explicit method restore the
+    // panel without overriding a collapse the user performed manually.
+    if (automatic) {
+        if (isGroupVisible()) {
+            hideGroupBox();
+            collapsedForAuto = true;
+        }
+    }
+    else {
+        if (collapsedForAuto && !isGroupVisible()) {
+            showHide();
+        }
+        collapsedForAuto = false;
+    }
 }
 
 void TaskLoftAdvancedParameters::setUpdateView(bool enabled)

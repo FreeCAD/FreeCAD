@@ -125,6 +125,8 @@ private:
 
     QWidget* proxy;
     std::unique_ptr<Ui_TaskLoftAdvancedParameters> ui;
+    // Distinguishes an Auto-initiated collapse from the user's task-panel preference.
+    bool collapsedForAuto = false;
 };
 
 /// simulation dialog for the TaskView
