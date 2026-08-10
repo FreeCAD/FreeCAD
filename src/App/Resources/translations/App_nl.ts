@@ -4,7 +4,7 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="621"/>
+      <location filename="../../Application.cpp" line="607"/>
       <source>Unnamed</source>
       <translation>Naamloos</translation>
     </message>

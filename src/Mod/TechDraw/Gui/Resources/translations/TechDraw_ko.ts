@@ -6784,7 +6784,7 @@ Do you want to continue?</source>
       <location filename="../../TaskComplexSection.ui" line="187"/>
       <location filename="../../TaskComplexSection.ui" line="194"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="199"/>
@@ -7641,7 +7641,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
       <source>Offset X</source>
-      <translation>오프셋 X</translation>
+      <translation>편위 X</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="117"/>
@@ -7666,7 +7666,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="223"/>
       <source>Offset Y</source>
-      <translation>오프셋 Y</translation>
+      <translation>편위 Y</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="201"/>
@@ -7719,7 +7719,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="114"/>
       <source>Offset X</source>
-      <translation>오프셋 X</translation>
+      <translation>편위 X</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="133"/>
@@ -7744,7 +7744,7 @@ by negative value of &apos;Overtolerance&apos;.</source>
     <message>
       <location filename="../../TaskHatch.ui" line="173"/>
       <source>Offset Y</source>
-      <translation>오프셋 Y</translation>
+      <translation>편위 Y</translation>
     </message>
   </context>
   <context>
@@ -9567,7 +9567,7 @@ there is an open task dialog.</source>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="81"/>
       <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="47"/>
       <source>Offset Vertex</source>
-      <translation>오프셋 꼭짓점</translation>
+      <translation>꼭짓점 편위</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="84"/>

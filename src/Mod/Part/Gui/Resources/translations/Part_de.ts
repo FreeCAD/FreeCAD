@@ -1349,7 +1349,7 @@
     <message>
       <location filename="../../Command.cpp" line="391"/>
       <source>Intersection</source>
-      <translation>Schnitt</translation>
+      <translation>Schnittpunkt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="392"/>
@@ -1897,7 +1897,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../Command.cpp" line="1552"/>
       <source>Revolve</source>
-      <translation>Drehen</translation>
+      <translation>Umdrehung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1553"/>
@@ -2452,7 +2452,7 @@ Hinweis: Die Positionierung wird im lokalen Raum des befestigten Objekts dargest
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="49"/>
       <source>Intersection</source>
-      <translation>Schnitt</translation>
+      <translation>Schnittpunkt</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
@@ -4159,7 +4159,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="20"/>
       <source>Revolve</source>
-      <translation>Drehen</translation>
+      <translation>Umdrehung</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="42"/>
@@ -4518,34 +4518,54 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <translation>Grobes Einrasten beim Ziehen aktivieren</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation>Ermöglicht größere Einrastschritte beim Bearbeiten von Ziehelementen (Draggers)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation>Fein-Rast-Modifikator</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation>Legt die Modifikatortaste fest, die während des Ziehens für das Fein-Rasten verwendet wird</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation>Standardverhalten beim groben Ziehen</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>Legt fest, ob das Ziehen ohne gedrückte Modifikatortaste grob oder fein erfolgt</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation>Multiplikator für Grobbewegung</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation>Vervielfacht die Schrittweite der Basisbewegung, wenn grobes Einrasten aktiv ist</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>Grober Drehschritt (Grad)</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation>Legt die Schrittweite der Drehung in Grad fest, die angewendet wird, wenn grobes Einrasten aktiv ist</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
       <source>Automatically switch to the task panel when the Part Design workbench is activated</source>
-      <translation>Beim Aktivieren des Arbeitsbereichs Part Design automatisch zum Aufgaben-Fenster wechseln</translation>
+      <translation>Wechselt automatisch zum Aufgaben-Fenster, wenn der Arbeitsbereich Part Design aktiviert wird</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="280"/>
@@ -4555,7 +4575,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="105"/>
       <source>Allow multiple solids in Part Design bodies by default</source>
-      <translation>Mehrere Festkörper in einem Part-Design-Körper standardmäßig erlauben</translation>
+      <translation>Standardmäßig mehrteilige Festkörper in einem Part-Design-Körper zulassen</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.cpp" line="53"/>
