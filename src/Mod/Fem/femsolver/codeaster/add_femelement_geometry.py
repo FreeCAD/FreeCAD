@@ -31,6 +31,22 @@ __url__ = "https://www.freecad.org"
 import FreeCAD
 
 
+def angle_correcter(anglistIP):
+    """
+    Function to take a list of angles outside of Code Aster's allowables and
+    convert to equivalent in range angle
+    """
+    anglistOP = []
+    for ang in anglistIP:
+        while not (-90 <= ang <= 90):
+            if ang < -90:
+                ang += 180
+            if ang > 90:
+                ang -= 180
+        anglistOP.append(ang)
+    return anglistOP
+
+
 def add_femelement_geometry(commtxt, ele_name, ca_writer):
     """Function to add elements to Code Aster input file, currently only supports shell elements"""
     mat_objs = ca_writer.mat_objs
@@ -120,14 +136,15 @@ def add_shell_laminate(commtxt, mat_objs, ele_name, ca_writer):
         assert len(thicknesses) == len(
             orientations
         ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
+        orientations = angle_correcter(orientations)
 
         if len(shelllam_obj.Windall["elements"]) == 0:
-            commtxt, layup = apply_con_layup(commtxt, shelllam_obj, ele_name,
-                                             mat_objs, LU_id, ca_writer)
+            commtxt, layup = apply_con_layup(
+                commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer
+            )
             layups.append(layup)
         else:
-            commtxt, layups = apply_vari_layup(commtxt, shelllam_obj, ele_name,
-                                               mat_objs, ca_writer)
+            commtxt, layups = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer)
         LU_id += 1
     return commtxt, layups
 
@@ -159,7 +176,6 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
 
     shelllam_obj.Materials = matnames
     geoms = make_geom_list(shelllam_obj, ca_writer)
-    print("GEOMS", geoms)
     matname = "LAYUP" + str(LU_id)
     layup = {
         "name": matname,
@@ -168,8 +184,6 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
         "thicknesses": thicknesses,
         "orientations": orientations,
     }
-    print("***********LAYUP**********")
-    print(layup)
     commtxt += add_layup(layup)
     ori_vec = shelllam_obj.Orientation
     commtxt += add_laminate([layup], ele_name, ori_vec)
@@ -184,7 +198,6 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
     matnames = make_mat_list(mat_objs)
     commtxt += "# WindAll object detected\n"
     geoms = make_geom_list(shelllam_obj, ca_writer)
-    print("GEOMS", geoms)
     baselayup = {
         "name": "base",
         "group": str(geoms)[1:-1],
@@ -193,8 +206,6 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
         "orientations": [orientations[0]],
     }
     layups = [baselayup]
-    print("***********LAYUP**********")
-    print(layups)
     ori_vec = shelllam_obj.Orientation
     commtxt += add_layup(baselayup)
     for e, t, o in zip(
@@ -202,6 +213,7 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
         shelllam_obj.Windall["thicknesslists"],
         shelllam_obj.Windall["orientationlists"],
     ):
+        o = angle_correcter(o)
         mn = [matnames[0]]
         for i in range(1, len(t)):
             mn.append(matnames[1])
@@ -214,8 +226,6 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
             "orientations": o,
         }
         layups.append(layup)
-        print("***********LAYUP**********")
-        print(layups)
         commtxt += add_layup(layup)
     commtxt += add_grps(layups)
     commtxt += add_laminate(layups, ele_name, ori_vec)
