@@ -2584,8 +2584,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     MenuManager::getInstance()->setupContextMenu(&view, *contextMenu);
     contextMenu->setAttribute(Qt::WA_DeleteOnClose);
 
-    // Add Clarify Selection option if there are objects under cursor
-    bool separator = false;
     auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
 
     QMenu* objectMenu = nullptr;
