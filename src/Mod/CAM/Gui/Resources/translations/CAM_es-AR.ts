@@ -1526,7 +1526,7 @@ Esta última opción permite refrentar toda el área de material para garantizar
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
       <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
+      <translation>Patrón de corte</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
@@ -12476,7 +12476,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="352"/>
       <source>(no tool)</source>
-      <translation type="unfinished">(no tool)</translation>
+      <translation>(sin herramienta)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="353"/>
@@ -12508,7 +12508,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="377"/>
       <source>Apply preset:</source>
-      <translation type="unfinished">Apply preset:</translation>
+      <translation>Aplicar preconfiguración:</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="381"/>
@@ -12603,7 +12603,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="483"/>
       <source>Add preset</source>
-      <translation type="unfinished">Add preset</translation>
+      <translation>Añadir preconfiguración</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="487"/>
@@ -12618,7 +12618,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="508"/>
       <source>(any material)</source>
-      <translation type="unfinished">(any material)</translation>
+      <translation>(cualquier material)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="521"/>

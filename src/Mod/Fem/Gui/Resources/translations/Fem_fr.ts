@@ -1806,6 +1806,16 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez le solveur de Cho
       <translation>Supprimer</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Une seule face dans l'objet ! Déplacé vers la face principale</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Sélectionner une géométrie esclave de type :</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1829,26 +1839,16 @@ Vous devrez peut-être augmenter cette valeur si vous utilisez le solveur de Cho
       <translation>Erreur de sélection</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Une seule face dans l'objet ! Déplacé vers la face principale</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Sélectionner une géométrie esclave de type :</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Face</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>Cliquer sur Ajouter ou Supprimer</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Arête, face</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5024,13 +5024,13 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Sélectionner une géométrie maîtresse de type : face. Cliquer sur Ajouter ou Supprimer</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Sélectionner la géométrie maître de type : arête, face. Cliquer sur Ajouter ou Supprimer.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Sélectionner une géométrie esclave de type : face. Cliquer sur Ajouter ou Supprimer</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Sélectionner la géométrie esclave de type : arête, face. Cliquer sur Ajouter ou Supprimer.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5875,7 +5875,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
       <source>VeryCoarse</source>
-      <translation>Très grossier</translation>
+      <translation>Très important</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="87"/>
