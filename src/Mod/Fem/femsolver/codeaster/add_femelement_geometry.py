@@ -122,12 +122,12 @@ def add_shell_laminate(commtxt, mat_objs, ele_name, ca_writer):
         ), f"{len(thicknesses)} ply thicknesses given, {len(orientations)} orientation angles given, these should match (i.e provide one thickness and one angle for every ply"
 
         if len(shelllam_obj.Windall["elements"]) == 0:
-            commtxt, layup = apply_con_layup(
-                commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer
-            )
+            commtxt, layup = apply_con_layup(commtxt, shelllam_obj, ele_name,
+                                             mat_objs, LU_id, ca_writer)
             layups.append(layup)
         else:
-            commtxt, layups = apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer)
+            commtxt, layups = apply_vari_layup(commtxt, shelllam_obj, ele_name,
+                                               mat_objs, ca_writer)
         LU_id += 1
     return commtxt, layups
 
@@ -206,7 +206,6 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
         for i in range(1, len(t)):
             mn.append(matnames[1])
         gname = "LU" + str(e)
-        # TODO: WORK OUT WHY IT'S NOT PUTTING IN THE EXTRA PLIES!
         layup = {
             "name": gname,
             "group": f"'{gname}'",
@@ -228,10 +227,10 @@ def add_grps(layups):
     commtxt += "grps = DEFI_GROUP(MAILLAGE=mesh, CREA_GROUP_MA = (\n"
     for layup in layups[1:]:
         commtxt += f"                                                  _F(GROUP_MA = ({layups[0]['group']},),\n"
-        commtxt += f"                                                     NUME_INIT = {layup['group'][2:]},\n"
-        commtxt += f"                                                     NUME_FIN = {layup['group'][2:]},\n"
+        commtxt += f"                                                     NUME_INIT = {layup['name'][2:]},\n"
+        commtxt += f"                                                     NUME_FIN = {layup['name'][2:]},\n"
         commtxt += (
-            f"                                                     NOM = '{layup['group']}'),\n"
+            f"                                                     NOM = {layup['group']}),\n"
         )
     commtxt += "                                                     ))\n\n"
     return commtxt
@@ -263,7 +262,7 @@ def add_laminate(layups, ele_name, ori_vec):
         thicktot = sum(thicknesses)
         commtxt += f"                                _F(COQUE_NCOU = {len(thicknesses)},\n"
         commtxt += f"                                   EPAIS={thicktot},\n"
-        commtxt += f"                                   GROUP_MA=({group} ),\n"
+        commtxt += f"                                   GROUP_MA=({group}),\n"
         commtxt += f"                                   VECTEUR={ori_vec_str}),\n"
     commtxt += "                          ),\n"
     commtxt += "                          MODELE=model)\n\n"
