@@ -2047,7 +2047,7 @@ void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& G
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
-int SketchObject::getDirectlyCoincidentPoints(
+void SketchObject::getDirectlyCoincidentPoints(
     const int GeoId1,
     const int GeoId2,
     std::vector<int>& GeoIds3,
@@ -2075,8 +2075,6 @@ int SketchObject::getDirectlyCoincidentPoints(
             }
         }
     }
-
-    return GeoIds3.size();
 }
 
 bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
