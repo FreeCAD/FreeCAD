@@ -151,8 +151,19 @@ bool DrawSketchHandlerPolyline3D::pressButton(const Base::Vector3d& pos)
 bool DrawSketchHandlerPolyline3D::keyPressed(int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
-        // end the polyline.
-        sugConstr1.clear();
+        if (state == State::PickNext) {
+            reset();
+            return true;
+        }
     }
     return DrawSketchHandler3D::keyPressed(key);
+}
+
+void DrawSketchHandlerPolyline3D::reset()
+{
+    state = State::PickFirst;
+    prevSegGeoId = -1;
+    lastPos = Base::Vector3d();
+    sugConstr1.clear();
+    setRubberBandVisible(false);
 }

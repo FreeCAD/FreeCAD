@@ -56,6 +56,8 @@ private:
         PickNext,
     };
 
+    void reset();
+
     State state {State::PickFirst};
     Base::Vector3d lastPos {0.0, 0.0, 0.0};
 

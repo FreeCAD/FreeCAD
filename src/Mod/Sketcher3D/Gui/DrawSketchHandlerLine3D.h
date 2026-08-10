@@ -57,7 +57,7 @@ private:
         PickSecond,
     };
 
-    void resetToPickFirst();
+    void reset();
 
     State state {State::PickFirst};
     Base::Vector3d startPos {0.0, 0.0, 0.0};

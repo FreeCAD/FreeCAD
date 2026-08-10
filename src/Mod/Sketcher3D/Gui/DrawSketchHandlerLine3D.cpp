@@ -119,7 +119,7 @@ bool DrawSketchHandlerLine3D::pressButton(const Base::Vector3d& pos)
         vp->setPlaneBase(pos);
     }
 
-    resetToPickFirst();
+    reset();
     return true;
 }
 
@@ -127,14 +127,14 @@ bool DrawSketchHandlerLine3D::keyPressed(int key)
 {
     if (key == SoKeyboardEvent::ESCAPE) {
         if (state == State::PickSecond) {
-            resetToPickFirst();
+            reset();
             return true;
         }
     }
     return DrawSketchHandler3D::keyPressed(key);
 }
 
-void DrawSketchHandlerLine3D::resetToPickFirst()
+void DrawSketchHandlerLine3D::reset()
 {
     state = State::PickFirst;
     sugConstr1.clear();
