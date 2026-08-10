@@ -1087,9 +1087,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         oldPlacements = {
             name: App.Placement(placement) for name, placement in self.initialPlcs.items()
         }
-        newPlacements = {
-            name: App.Placement(placement) for name, placement in self.initialPlcs.items()
-        }
+        newPlacements = oldPlacements.copy()
 
         for i, move in enumerate(moves):
             objs, _refs = moveObjectsAndReferences(move)
