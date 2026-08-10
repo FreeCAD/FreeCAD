@@ -495,31 +495,26 @@ def getToolShapeName(tool):
 
 def findToolController(obj, proxy, name=None):
     """returns a tool controller with a given name.
-    If no name is specified, returns the first controller.
+    If no name is specified, returns the last controller.
     if no controller is found, returns None"""
 
     Path.Log.track("name: {}".format(name))
-    c = None
-    if UserInput:
-        c = UserInput.selectedToolController()
-    if c is not None:
-        return c
+    tc = None
+    if name is None and UserInput and (tc := UserInput.selectedToolController()):
+        return tc  # tool controller selected in tree view
 
-    controllers = getToolControllers(obj, proxy)
-
-    if len(controllers) == 0:
+    if not (controllers := getToolControllers(obj, proxy)):
         raise PathNoTCExistsException()
 
     # If there's only one in the job, use it.
-    if len(controllers) == 1:
-        if name is None or name == controllers[0].Label:
-            tc = controllers[0]
-        else:
-            tc = None
-    elif name is not None:
-        tc = [i for i in controllers if i.Label == name][0]
-    elif UserInput:  # More than one, make the user choose.
+    if len(controllers) == 1 and (name is None or name == controllers[0].Label):
+        tc = controllers[0]
+    elif name is not None and (tcs := [i for i in controllers if i.Label == name]):
+        tc = tcs[0]
+    elif UserInput:  # open dialog to choose controller in Gui mode
         tc = UserInput.chooseToolController(controllers)
+    else:  # use last tool controller in console mode
+        tc = controllers[-1]
     return tc
 
 
