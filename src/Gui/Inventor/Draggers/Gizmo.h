@@ -115,6 +115,13 @@ public:
     GizmoPlacement getDraggerPlacement() override;
     void setDraggerPlacement(const SbVec3f& pos, const SbVec3f& dir) override;
     void reverseDir();
+
+    /// Place the base so the handle lands on `tip`. The value the gizmo carries
+    /// already translates the handle away from the base, so passing the tip to
+    /// setDraggerPlacement counts it twice.
+    void setDraggerTip(const SbVec3f& tip, const SbVec3f& dir);
+    void setDraggerTip(const Base::Vector3d& tip, const Base::Vector3d& dir);
+
     // Returns the drag distance from the base of the feature
     double getDragLength();
     void setDragLength(double dragLength);
