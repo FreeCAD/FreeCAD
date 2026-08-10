@@ -2001,7 +2001,7 @@ If zero, it is equal to Radius2</source>
       <location filename="../../TaskHelixParameters.ui" line="78"/>
       <location filename="../../TaskHelixParameters.cpp" line="228"/>
       <source>Select reference…</source>
-      <translation>Επιλέξτε αναφορά…</translation>
+      <translation>Επιλογή αναφοράς…</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="90"/>
@@ -2922,7 +2922,7 @@ measured along the specified direction</source>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
       <source>Select reference…</source>
-      <translation>Επιλέξτε αναφορά…</translation>
+      <translation>Επιλογή αναφοράς…</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
@@ -2935,7 +2935,7 @@ measured along the specified direction</source>
       <location filename="../../TaskRevolutionParameters.cpp" line="149"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="459"/>
       <source>Face</source>
-      <translation>Επιφάνεια</translation>
+      <translation>Όψη</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="192"/>
@@ -2960,7 +2960,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
       <source>Up to face</source>
-      <translation>Μέχρι την επιφάνεια</translation>
+      <translation>Μέχρι την όψη</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="184"/>
@@ -2970,7 +2970,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskRevolutionParameters.cpp" line="447"/>
       <source>No face selected</source>
-      <translation>Δεν επιλέχθηκε καμία επιφάνεια</translation>
+      <translation>Δεν επιλέχθηκε καμία όψη</translation>
     </message>
   </context>
   <context>
@@ -3019,7 +3019,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskSketchBasedParameters.cpp" line="210"/>
       <source>Face</source>
-      <translation>Επιφάνεια</translation>
+      <translation>Όψη</translation>
     </message>
   </context>
   <context>
@@ -3157,7 +3157,7 @@ measured along the specified direction</source>
       <location filename="../../TaskTransformedParameters.cpp" line="424"/>
       <location filename="../../TaskTransformedParameters.cpp" line="460"/>
       <source>Select reference…</source>
-      <translation>Επιλέξτε αναφορά…</translation>
+      <translation>Επιλογή αναφοράς…</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="35"/>
@@ -3182,7 +3182,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskTransformedParameters.ui" line="116"/>
       <source>Recompute on change</source>
-      <translation>Αυτόματη ανανέωση κατά την αλλαγή</translation>
+      <translation>Επανυπολογισμός κατά την αλλαγή</translation>
     </message>
   </context>
   <context>
@@ -3203,7 +3203,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../CommandBody.cpp" line="1098"/>
       <source>Move Feature After…</source>
-      <translation>Μετακίνηση Λειτουργίας Μετά Από…</translation>
+      <translation>Μετακίνηση Στοιχείου Μετά από…</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="1099"/>

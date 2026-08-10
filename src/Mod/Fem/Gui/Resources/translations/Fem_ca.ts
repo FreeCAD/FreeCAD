@@ -1816,6 +1816,16 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <translation>Elimina</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Només hi ha una cara a l'objecte! - mogut a la cara mestra</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Seleccioneu geometria esclava del tipus: </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1839,26 +1849,16 @@ que "MAXGS" s'ha d'augmentar.</translation>
       <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Només hi ha una cara a l'objecte! - mogut a la cara mestra</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Seleccioneu geometria esclava del tipus: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Cara</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>feu clic a Afegir o Suprimir</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Aresta, Cara</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5023,13 +5023,13 @@ Per a les possibles variables, vegeu la caixa de descripció de continuació.</t
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Seleccioneu geometria mestra del tipus: Cara; feu clic a Afegir o Suprimir</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Seleccioneu geometria esclava del tipus: Cara; feu clic a Afegir o Suprimir</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>

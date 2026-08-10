@@ -1798,6 +1798,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>删除</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>对象中只有一个面！- 已移至主面</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>选择从属几何类型：</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1821,26 +1831,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>选区错误</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>对象中只有一个面！- 已移至主面</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>选择从属几何类型：</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>面</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>点击添加或移除</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>边、面</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -2875,7 +2875,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="77"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>反转从属面/边</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
@@ -5000,13 +5000,13 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>选择类型为面的主几何；点击添加或移除</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>选择主几何体类型：边、面；点击“添加”或“移除”</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>选择类型为面的从几何；点击添加或移除</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>选择从属几何体类型：边、面；点击“添加”或“移除”</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5046,7 +5046,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="262"/>
       <source>Reverse slave</source>
-      <translation type="unfinished">Reverse slave</translation>
+      <translation>反转从属面/边</translation>
     </message>
   </context>
   <context>
@@ -8721,7 +8721,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
       <source>Master Geometry Reference Selector</source>
-      <translation type="unfinished">Master Geometry Reference Selector</translation>
+      <translation>主几何体参考选择器</translation>
     </message>
   </context>
   <context>
@@ -8729,7 +8729,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
       <source>Slave Geometry Reference Selector</source>
-      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+      <translation>从属几何体参考选择器</translation>
     </message>
   </context>
   <context>

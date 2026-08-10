@@ -936,7 +936,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation type="unfinished">Add sketch arc slot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="202"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>Biratu geometriak</translation>
     </message>
@@ -977,7 +977,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Txandakatu eraikuntza-geometria</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1565"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation type="unfinished">Add Auto-Constraints</translation>
@@ -4978,7 +4978,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="229"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
@@ -5109,7 +5109,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
@@ -5158,7 +5158,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Balio-errorea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1494"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation type="unfinished">Autoconstraints cause redundancy. Removing them</translation>
     </message>
@@ -5203,7 +5203,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation type="unfinished">Failed to add ellipse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation type="unfinished">Failed to rotate</translation>
     </message>
@@ -5401,12 +5401,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation type="unfinished">Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="552"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation type="unfinished">Apply equal constraints</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="557"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation type="unfinished">If this option is selected dimensional constraints are excluded from the operation.
@@ -5796,19 +5796,6 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation type="unfinished">Sides (+'U'/ -'J')</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation type="unfinished">Degree (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="670"/>
@@ -5827,14 +5814,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation type="unfinished">Constrain tools</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="635"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation type="unfinished">Rows (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -5967,12 +5946,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="584"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation type="unfinished">Apply equal constraints</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="588"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation type="unfinished">If this option is selected dimensional constraints are excluded from the operation.
@@ -8162,25 +8141,31 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="103"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 pick center point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 set start angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="113"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation type="unfinished">%1 set rotation angle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="277"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation type="unfinished">Rotate Parameters</translation>
     </message>
@@ -8252,19 +8237,31 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
       <translation type="unfinished">Translate Parameters</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="515"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation type="unfinished">%1/%2 increase/decrease number of rows</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 pick reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 set translation vector</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation type="unfinished">%1 set second translation vector</translation>
@@ -8526,6 +8523,19 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
     </message>
   </context>
   <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>Gradua</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>Aldeak</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
       <location filename="../../Command.cpp" line="411"/>
@@ -8554,12 +8564,12 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>TaskSketcherTool_c2_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="598"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
       <source>Symmetric</source>
       <translation>Simetrikoa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="602"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
     </message>
@@ -8567,9 +8577,17 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="631"/>
-      <source>Elements (+'U'/-'J')</source>
-      <translation type="unfinished">Elements (+'U'/-'J')</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>Elementuak</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>Errenkadak</translation>
     </message>
   </context>
   <context>
@@ -8601,12 +8619,12 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>TaskSketcherTool_c2_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="568"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
       <source>Symmetric</source>
       <translation>Simetrikoa</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="572"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
     </message>
@@ -8614,9 +8632,9 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="592"/>
-      <source>Elements (+'U'/ -'J')</source>
-      <translation type="unfinished">Elements (+'U'/ -'J')</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>Elementuak</translation>
     </message>
   </context>
   <context>

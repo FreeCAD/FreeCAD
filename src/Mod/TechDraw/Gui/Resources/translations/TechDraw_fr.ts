@@ -6713,7 +6713,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskComplexSection.ui" line="36"/>
       <source>Object Selection</source>
-      <translation>Sélection d'objets</translation>
+      <translation>Sélection des objets</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="44"/>

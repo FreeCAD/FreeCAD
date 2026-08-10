@@ -1795,6 +1795,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>ລົບ</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>ມີໜ້າພຽງດຽວໃນວັດຖຸ! - ຖືກຍ້າຍໄປເປັນໜ້າຫຼັກ (Master face)</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>ເລືອກເລຂາຄະນິດລູກ (Slave) ປະເພດ: </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1818,26 +1828,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>ການເລືອກຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>ມີໜ້າພຽງດຽວໃນວັດຖຸ! - ຖືກຍ້າຍໄປເປັນໜ້າຫຼັກ (Master face)</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>ເລືອກເລຂາຄະນິດລູກ (Slave) ປະເພດ: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>ໜ້າພຽງ</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>ຄລິກ ເພີ່ມ ຫຼື ລຶບອອກ</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>ເສັ້ນຂອບ, ໜ້າພຽງ</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5003,13 +5003,13 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>ເລືອກເລຂາຄະນິດຫຼັກປະເພດ: ໜ້າພຽງ; ຄລິກ ເພີ່ມ ຫຼື ລຶບອອກ</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>ເລືອກເລຂາຄະນິດແມ່ ປະເພດ: ຂອບ, ໜ້າ; ຄລິກ ເພີ່ມ ຫຼື ເອົາອອກ</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>ເລືອກເລຂາຄະນິດຮອງປະເພດ: ໜ້າພຽງ; ຄລິກ ເພີ່ມ ຫຼື ລຶບອອກ</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>ເລືອກເລຂາຄະນິດລູກ ປະເພດ: ຂອບ, ໜ້າ; ຄລິກ ເພີ່ມ ຫຼື ເອົາອອກ</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
