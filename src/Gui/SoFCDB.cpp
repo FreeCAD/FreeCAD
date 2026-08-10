@@ -58,6 +58,7 @@
 #include "Inventor/Draggers/Gizmo.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/MappedNavigationStyle.h"
+#include "Navigation/MayaGestureNavigationStyle.h"
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"

@@ -27,7 +27,7 @@
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoGroup.h>
 
-#include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Navigation/MayaGestureNavigationStyle.h>
 #include <Gui/Navigation/NavigationInputState.h>
 #include <Gui/SoTouchEvents.h>
 #include <Gui/View3DInventorViewer.h>
