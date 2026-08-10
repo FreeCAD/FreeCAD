@@ -1568,38 +1568,26 @@ bool SketchObject::deriveConstraintsForPieces(
             // For now: just transfer to the first intersection
             // TODO: Actually check that there was perpendicularity earlier
             for (size_t i = 0; i < newIds.size(); ++i) {
-                std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
-                bool intersects
-                    = static_cast<const Part::GeomCurve*>(newGeos[i])
-                          ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
-
+                // by coincident or point on object constraint
                 bool found = false;
-                const auto& constraints = this->Constraints.getValues();
-                for (const auto* constraint : constraints) {
+                for (const auto* constraint : this->Constraints.getValues()) {
                     if ((constraint->Type == Coincident || constraint->Type == PointOnObject)
                         && constraint->involvesGeoId(newIds[i]) && constraint->involvesGeoId(conId)) {
                         found = true;
+                        break;
                     }
                 }
 
-                if (found) {
-                    /*if(newGeos[i]->is<Part::GeomLineSegment>() &&
-                       conGeo->is<Part::GeomLineSegment>()) { const Base::Vector3d p11 =
-                       static_cast<const Part::GeomLineSegment*>(newGeos[i])->getStartPoint(); const
-                       Base::Vector3d p12 = static_cast<const
-                       Part::GeomLineSegment*>(newGeos[i])->getEndPoint(); const Base::Vector3d p21
-                       = static_cast<const Part::GeomLineSegment*>(conGeo)->getStartPoint(); const
-                       Base::Vector3d p22 = static_cast<const
-                       Part::GeomLineSegment*>(conGeo)->getEndPoint();
-
-                        if(p11 == p21 || p11 == p22 || p12 == p21 || p12 == p22) {*/
-                    Constraint* trans = con->copy();
-                    trans->substituteIndex(oldId, newIds[i]);
-                    newConstraints.push_back(trans);
-                    return true;
-                    //}
+                // by curve intersection
+                bool intersects = false;
+                if (!found) {
+                    std::vector<std::pair<Base::Vector3d, Base::Vector3d>> intersections;
+                    intersects
+                        = static_cast<const Part::GeomCurve*>(newGeos[i])
+                              ->intersect(static_cast<const Part::GeomCurve*>(conGeo), intersections);
                 }
-                else if (intersects) {
+
+                if (found || intersects) {
                     Constraint* trans = con->copy();
                     trans->substituteIndex(oldId, newIds[i]);
                     newConstraints.push_back(trans);
