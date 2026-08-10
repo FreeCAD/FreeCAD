@@ -20,6 +20,7 @@ public:
     App::PropertyBool ShowArrow;
 
     void attach(App::DocumentObject* object) override;
+    void finishRestoring() override;
     void updateData(const App::Property* prop) override;
 
 protected:

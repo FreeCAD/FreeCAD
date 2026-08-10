@@ -5,6 +5,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/OriginGroupExtension.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
 #include <Mod/Part/App/PartFeature.h>
 
@@ -22,6 +23,24 @@ public:
     ~MbDPart() override = default;
 
     App::PropertyLinkList markers;
+    App::PropertyFloatList xs;
+    App::PropertyFloatList ys;
+    App::PropertyFloatList zs;
+    App::PropertyFloatList bryxs;
+    App::PropertyFloatList bryys;
+    App::PropertyFloatList bryzs;
+    App::PropertyFloatList vxs;
+    App::PropertyFloatList vys;
+    App::PropertyFloatList vzs;
+    App::PropertyFloatList omexs;
+    App::PropertyFloatList omeys;
+    App::PropertyFloatList omezs;
+    App::PropertyFloatList axs;
+    App::PropertyFloatList ays;
+    App::PropertyFloatList azs;
+    App::PropertyFloatList alpxs;
+    App::PropertyFloatList alpys;
+    App::PropertyFloatList alpzs;
 
     void addMarker(MbDMarker* marker);
     void removeMarker(MbDMarker* marker);

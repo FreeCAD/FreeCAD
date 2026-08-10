@@ -26,7 +26,16 @@ MbDFEM::MbDSimulationParameters::MbDSimulationParameters()
 {
     ADD_PROPERTY_TYPE(startTime, (0.0), "MbDFEM", App::Prop_None, "Simulation start time");
     ADD_PROPERTY_TYPE(endTime, (1.0), "MbDFEM", App::Prop_None, "Simulation end time");
-    ADD_PROPERTY_TYPE(stepSize, (0.001), "MbDFEM", App::Prop_None, "Simulation integration step size");
+    ADD_PROPERTY_TYPE(maxStepSize,
+                      (1.0),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Maximum simulation integration step size");
+    ADD_PROPERTY_TYPE(minStepSize,
+                      (1.0e-09),
+                      "MbDFEM",
+                      App::Prop_None,
+                      "Minimum simulation integration step size");
     ADD_PROPERTY_TYPE(solverType, ((long)0), "MbDFEM", App::Prop_None, "Simulation solver type");
     solverType.setEnums(SolverTypeEnums);
     ADD_PROPERTY_TYPE(significantDigits,

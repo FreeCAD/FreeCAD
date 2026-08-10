@@ -5,8 +5,18 @@ import FreeCADGui as Gui
 import FreeCAD
 import PartGui  # noqa: F401
 import MbDFEMGui  # noqa: F401
+import FreeCADMbDAnimationPanel
 
 FreeCAD.__unit_test__ += ["TestMbDFEMGui"]
+
+try:
+    Gui.Selection.removeObserver(_animation_parameters_selection_observer)
+except Exception:
+    pass
+_animation_parameters_selection_observer = (
+    FreeCADMbDAnimationPanel.AnimationParametersSelectionObserver()
+)
+Gui.Selection.addObserver(_animation_parameters_selection_observer)
 
 def _normalize(vector):
     import FreeCAD as App
@@ -739,7 +749,7 @@ class SolveMbDAssemblyCommand:
     def GetResources(self):
         return {
             "MenuText": "Solve MbDAssembly",
-            "ToolTip": "Export the active MbDAssembly, run FreeCADMbD, and import result frames",
+            "ToolTip": "Export the active MbDAssembly and run FreeCADMbD",
         }
 
     def IsActive(self):
@@ -801,9 +811,9 @@ class SolveMbDAssemblyCommand:
 
         App.Console.PrintMessage(f"Exported FreeCADMbD input: {result.asmt_file}\n")
         if result.result_file:
-            App.Console.PrintMessage(f"Imported FreeCADMbD results: {result.result_file}\n")
+            App.Console.PrintMessage(f"Wrote FreeCADMbD solved assembly: {result.result_file}\n")
         else:
-            App.Console.PrintWarning("FreeCADMbD produced no .results.json file to import.\n")
+            App.Console.PrintWarning("FreeCADMbD produced no solved assembly file.\n")
         Gui.Selection.clearSelection()
         Gui.Selection.addSelection(assembly)
 

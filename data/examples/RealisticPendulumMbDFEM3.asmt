@@ -1,0 +1,200 @@
+FreeCADMbD
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray new))
+	Name
+		MbDAssembly
+	Position3D
+		0	0	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						Ground_CeilingBracket_MbDPart_MbDMarker
+					Position3D
+						0	-0.036	0.192	
+					RotationMatrix
+						0	1	0	
+						0	0	1	
+						1	0	0	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				Pin_MbDPart
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								MbDMarker001
+							Position3D
+								0	-0.036	0.192	
+							RotationMatrix
+								0	1	0	
+								0	0	1	
+								1	0	0	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								MbDMarker002
+							Position3D
+								0	0	0.192	
+							RotationMatrix
+								-1	0	0	
+								0	0	1	
+								0	1	0	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				LongPendulum_MbDPart
+			Position3D
+				0.191998809702418	0	0.192676071634172	
+			RotationMatrix
+				0	0	-1	
+				0	1	0	
+				1	0	0	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								MbDMarker003
+							Position3D
+								0	0	0.192	
+							RotationMatrix
+								-0.0163656975831654	-0.999866073003088	0	
+								0	0	1	
+								-0.999866073003088	0.0163656975831654	0	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					MbDJoint
+				MarkerI
+					/MbDAssembly/Ground_CeilingBracket_MbDPart_MbDMarker
+				MarkerJ
+					/MbDAssembly/Pin_MbDPart/MbDMarker001
+			RevoluteJoint
+				Name
+					MbDJoint001
+				MarkerI
+					/MbDAssembly/Pin_MbDPart/MbDMarker002
+				MarkerJ
+					/MbDAssembly/LongPendulum_MbDPart/MbDMarker003
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	-9.81	
+	SimulationParameters
+		tstart
+			0
+		tend
+			1
+		hmin
+			1e-09
+		hmax
+			1
+		hout
+			0.01
+		errorTol
+			1e-10
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			1
+		istart
+			1
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30

@@ -20,6 +20,12 @@ public:
     App::PropertyEnumeration jointType;
     App::PropertyFloat gearRatio;
     App::PropertyFloat pitchRadius;
+    App::PropertyFloatList fxs;
+    App::PropertyFloatList fys;
+    App::PropertyFloatList fzs;
+    App::PropertyFloatList txs;
+    App::PropertyFloatList tys;
+    App::PropertyFloatList tzs;
 
     void onChanged(const App::Property* prop) override;
 

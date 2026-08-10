@@ -6,6 +6,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
 #include <vector>
 
@@ -34,6 +35,28 @@ public:
     App::PropertyLinkList joints;
     App::PropertyLinkList motions;
     App::PropertyLinkList actions;
+    App::PropertyLink gravity;
+    App::PropertyLink simulationParameters;
+    App::PropertyLink animationParameters;
+    App::PropertyFloatList times;
+    App::PropertyFloatList xs;
+    App::PropertyFloatList ys;
+    App::PropertyFloatList zs;
+    App::PropertyFloatList bryxs;
+    App::PropertyFloatList bryys;
+    App::PropertyFloatList bryzs;
+    App::PropertyFloatList vxs;
+    App::PropertyFloatList vys;
+    App::PropertyFloatList vzs;
+    App::PropertyFloatList omexs;
+    App::PropertyFloatList omeys;
+    App::PropertyFloatList omezs;
+    App::PropertyFloatList axs;
+    App::PropertyFloatList ays;
+    App::PropertyFloatList azs;
+    App::PropertyFloatList alpxs;
+    App::PropertyFloatList alpys;
+    App::PropertyFloatList alpzs;
 
     void addAssembly(MbDAssembly* assembly);
     void addPart(MbDPart* part);

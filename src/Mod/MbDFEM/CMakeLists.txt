@@ -6,10 +6,12 @@ if(BUILD_GUI)
 endif()
 
 set(MbDFEM_Scripts
+    FreeCADMbDAnimation.py
+    FreeCADMbDAnimationPanel.py
     FreeCADMbDBackend.py
     FreeCADMbDExporter.py
+    FreeCADMbDResults.py
     Init.py
-    MbDFEMResults.py
     TestMbDFEMApp.py
 )
 

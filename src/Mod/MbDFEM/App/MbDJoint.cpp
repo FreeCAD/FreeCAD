@@ -69,6 +69,12 @@ MbDFEM::MbDJoint::MbDJoint()
                       "MbDFEM",
                       App::Prop_None,
                       "Rack-pinion pitch radius");
+    ADD_PROPERTY_TYPE(fxs, (), "MbDFEM Results", App::Prop_None, "Solved force X on marker I");
+    ADD_PROPERTY_TYPE(fys, (), "MbDFEM Results", App::Prop_None, "Solved force Y on marker I");
+    ADD_PROPERTY_TYPE(fzs, (), "MbDFEM Results", App::Prop_None, "Solved force Z on marker I");
+    ADD_PROPERTY_TYPE(txs, (), "MbDFEM Results", App::Prop_None, "Solved torque X on marker I");
+    ADD_PROPERTY_TYPE(tys, (), "MbDFEM Results", App::Prop_None, "Solved torque Y on marker I");
+    ADD_PROPERTY_TYPE(tzs, (), "MbDFEM Results", App::Prop_None, "Solved torque Z on marker I");
 }
 
 void MbDFEM::MbDJoint::onChanged(const App::Property* prop)

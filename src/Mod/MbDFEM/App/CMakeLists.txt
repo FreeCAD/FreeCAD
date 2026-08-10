@@ -12,6 +12,8 @@ generate_from_py(MbDPart)
 set(MbDFEM_SRCS
     ../MbDFEMGlobal.h
     AppMbDFEM.cpp
+    AsmtIO.cpp
+    AsmtIO.h
     MbDAction.cpp
     MbDAction.h
     MbDAssembly.cpp

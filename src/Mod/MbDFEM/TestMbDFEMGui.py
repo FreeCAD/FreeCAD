@@ -88,6 +88,48 @@ class MbDFEMGuiViewProviderTest(unittest.TestCase):
         self.assertNotIn("_active_mbdfem_assembly", InitGui.SolveMbDAssemblyCommand.Activated.__code__.co_names)
         self.assertNotIn("_active_mbd_assembly", InitGui.SolveMbDAssemblyCommand.Activated.__code__.co_names)
 
+    def test_animation_parameters_selection_opens_task_panel(self):
+        import FreeCADMbDAnimationPanel
+
+        assembly = self.document.addObject("MbDFEM::MbDAssembly", "Assembly")
+        animation_parameters = assembly.ensureAnimationParameters()
+        self.document.recompute()
+        self.Gui.updateGui()
+
+        self.assertEqual(
+            animation_parameters.ViewObject.TypeId,
+            "MbDFEMGui::ViewProviderMbDAnimationParameters",
+        )
+        self.assertIs(
+            FreeCADMbDAnimationPanel.owning_assembly(animation_parameters),
+            assembly,
+        )
+
+        self.assertTrue(animation_parameters.ViewObject.doubleClicked())
+        dialog = self.Gui.Control.activeDialog()
+
+        try:
+            self.assertIsInstance(dialog, FreeCADMbDAnimationPanel.AnimationTaskPanel)
+            self.assertIs(dialog.animation_parameters, animation_parameters)
+            self.assertIs(dialog.assembly, assembly)
+        finally:
+            if dialog is not None:
+                self.Gui.Control.closeDialog()
+
+        observer = FreeCADMbDAnimationPanel.AnimationParametersSelectionObserver()
+        observer.addSelection(
+            self.document.Name,
+            assembly.Name,
+            f"{animation_parameters.Name}.",
+            None,
+        )
+        dialog = self.Gui.Control.activeDialog()
+        try:
+            self.assertIsInstance(dialog, FreeCADMbDAnimationPanel.AnimationTaskPanel)
+        finally:
+            if dialog is not None:
+                self.Gui.Control.closeDialog()
+
 
 if __name__ == "__main__":
     sys.exit(unittest.main())

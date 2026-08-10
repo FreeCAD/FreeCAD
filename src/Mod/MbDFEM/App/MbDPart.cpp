@@ -82,6 +82,24 @@ MbDFEM::MbDPart::MbDPart()
                       App::Prop_Hidden,
                       "Tree folder containing this part's markers");
     _markersFolder.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(xs, (), "MbDFEM Results", App::Prop_None, "Solved X position values");
+    ADD_PROPERTY_TYPE(ys, (), "MbDFEM Results", App::Prop_None, "Solved Y position values");
+    ADD_PROPERTY_TYPE(zs, (), "MbDFEM Results", App::Prop_None, "Solved Z position values");
+    ADD_PROPERTY_TYPE(bryxs, (), "MbDFEM Results", App::Prop_None, "Solved Bryant X angle values");
+    ADD_PROPERTY_TYPE(bryys, (), "MbDFEM Results", App::Prop_None, "Solved Bryant Y angle values");
+    ADD_PROPERTY_TYPE(bryzs, (), "MbDFEM Results", App::Prop_None, "Solved Bryant Z angle values");
+    ADD_PROPERTY_TYPE(vxs, (), "MbDFEM Results", App::Prop_None, "Solved X velocity values");
+    ADD_PROPERTY_TYPE(vys, (), "MbDFEM Results", App::Prop_None, "Solved Y velocity values");
+    ADD_PROPERTY_TYPE(vzs, (), "MbDFEM Results", App::Prop_None, "Solved Z velocity values");
+    ADD_PROPERTY_TYPE(omexs, (), "MbDFEM Results", App::Prop_None, "Solved X angular velocity values");
+    ADD_PROPERTY_TYPE(omeys, (), "MbDFEM Results", App::Prop_None, "Solved Y angular velocity values");
+    ADD_PROPERTY_TYPE(omezs, (), "MbDFEM Results", App::Prop_None, "Solved Z angular velocity values");
+    ADD_PROPERTY_TYPE(axs, (), "MbDFEM Results", App::Prop_None, "Solved X acceleration values");
+    ADD_PROPERTY_TYPE(ays, (), "MbDFEM Results", App::Prop_None, "Solved Y acceleration values");
+    ADD_PROPERTY_TYPE(azs, (), "MbDFEM Results", App::Prop_None, "Solved Z acceleration values");
+    ADD_PROPERTY_TYPE(alpxs, (), "MbDFEM Results", App::Prop_None, "Solved X angular acceleration values");
+    ADD_PROPERTY_TYPE(alpys, (), "MbDFEM Results", App::Prop_None, "Solved Y angular acceleration values");
+    ADD_PROPERTY_TYPE(alpzs, (), "MbDFEM Results", App::Prop_None, "Solved Z angular acceleration values");
 
     App::OriginGroupExtension::initExtension(this);
 }

@@ -1,16 +1,18 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import os
-import json
+import sys
 import tempfile
 import unittest
+import zipfile
 from pathlib import Path
 
 import FreeCAD as App
 import MbDFEM  # noqa: F401
+import FreeCADMbDAnimation
 import FreeCADMbDBackend
 import FreeCADMbDExporter
-import MbDFEMResults
+import FreeCADMbDResults
 import Part
 
 
@@ -154,7 +156,10 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 animation_parameters = assembly.ensureAnimationParameters()
                 gravity.gravity = App.Vector(0, -9.81, 0)
                 simulation_parameters.endTime = 2.5
-                simulation_parameters.stepSize = 0.002
+                self.assertEqual(simulation_parameters.maxStepSize, 1.0)
+                self.assertEqual(simulation_parameters.minStepSize, 1.0e-09)
+                simulation_parameters.maxStepSize = 0.002
+                simulation_parameters.minStepSize = 1.0e-10
                 simulation_parameters.solverType = "DASSL"
                 simulation_parameters.significantDigits = 8
                 simulation_parameters.maxIterations = 250
@@ -171,7 +176,7 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertEqual(joint.Label, "Gear MbDJoint")
                 self.assertEqual(gravity.TypeId, "MbDFEM::MbDGravity")
                 gravity_objects = [
-                    obj for obj in reopened.Objects if obj.TypeId == "MbDFEM::MbDGravity"
+                    obj for obj in document.Objects if obj.TypeId == "MbDFEM::MbDGravity"
                 ]
                 self.assertEqual(gravity_objects, [gravity])
                 self.assertEqual(simulation_parameters.TypeId, "MbDFEM::MbDSimulationParameters")
@@ -243,6 +248,21 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                     part.addMarker(part)
 
                 document.saveAs(filename)
+                with zipfile.ZipFile(filename) as saved:
+                    document_xml = saved.read("Document.xml").decode("utf-8")
+
+                self.assertNotIn('name="_gravity"', document_xml)
+                self.assertNotIn('name="_simulationParameters"', document_xml)
+                self.assertNotIn('name="_animationParameters"', document_xml)
+                self.assertIn('name="gravity" type="App::PropertyLink"', document_xml)
+                self.assertIn(
+                    'name="simulationParameters" type="App::PropertyLink"',
+                    document_xml,
+                )
+                self.assertIn(
+                    'name="animationParameters" type="App::PropertyLink"',
+                    document_xml,
+                )
             finally:
                 App.closeDocument(document.Name)
 
@@ -281,7 +301,8 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertEqual(animation_parameters.Label, "AnimationParameters")
                 self.assertEqual(gravity.gravity, App.Vector(0, -9.81, 0))
                 self.assertEqual(simulation_parameters.endTime, 2.5)
-                self.assertEqual(simulation_parameters.stepSize, 0.002)
+                self.assertEqual(simulation_parameters.maxStepSize, 0.002)
+                self.assertEqual(simulation_parameters.minStepSize, 1.0e-10)
                 self.assertEqual(simulation_parameters.solverType, "DASSL")
                 self.assertEqual(simulation_parameters.significantDigits, 8)
                 self.assertEqual(simulation_parameters.maxIterations, 250)
@@ -691,9 +712,6 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertIn("\t\t\t\t\t0.01\t0.011\t0.012\t\n", exported)
                 stripped_lines = [line.strip() for line in exported.splitlines()]
 
-                def vector_text(values):
-                    return "\t".join(FreeCADMbDExporter._number(value) for value in values)
-
                 def find_sequence(sequence, start=0):
                     for index in range(start, len(stripped_lines) - len(sequence) + 1):
                         if stripped_lines[index : index + len(sequence)] == sequence:
@@ -718,15 +736,12 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 marker_position_index = stripped_lines.index("Position3D", marker_index)
                 self.assertEqual(
                     stripped_lines[marker_position_index + 1],
-                    vector_text([0.007, 0.008, 0.009]),
+                    "0.007\t0.008\t0.009",
                 )
                 marker_rotation_index = stripped_lines.index("RotationMatrix", marker_position_index)
                 self.assertEqual(
                     stripped_lines[marker_rotation_index + 1 : marker_rotation_index + 4],
-                    [
-                        vector_text(row)
-                        for row in FreeCADMbDExporter._rotation_rows(marker_i.Placement)
-                    ],
+                    ["0\t-1\t0", "1\t0\t0", "0\t0\t1"],
                 )
                 self.assertLess(
                     exported.index("\t\t\tFeatureOrder\n"),
@@ -741,6 +756,72 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertIn("/Assembly/Ground_FixedPart_MarkerJ", exported)
                 self.assertNotIn("/Assembly/FixedPart/MarkerJ", exported)
                 self.assertIn("\tConstantGravity\n\t\t0\t0\t-9.81", exported)
+            finally:
+                App.closeDocument(document.Name)
+
+    def test_freecadmbd_exporter_writes_coordinates_relative_to_assembly(self):
+        with tempfile.TemporaryDirectory() as directory:
+            document = App.newDocument("MbDFEMExportAssemblyFrameTest")
+
+            try:
+                assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+                part = document.addObject("MbDFEM::MbDPart", "Part")
+                marker = document.addObject("MbDFEM::MbDMarker", "Marker")
+
+                assembly.Placement = App.Placement(
+                    App.Vector(100, 200, 300),
+                    App.Rotation(App.Vector(0, 0, 1), 90),
+                )
+                part.Placement = App.Placement(
+                    App.Vector(1, 2, 3),
+                    App.Rotation(App.Vector(0, 0, 1), 90),
+                )
+                marker.Placement = App.Placement(
+                    App.Vector(7, 8, 9),
+                    App.Rotation(App.Vector(0, 0, 1), 180),
+                )
+
+                assembly.addPart(part)
+                part.addMarker(marker)
+
+                filename = os.path.join(directory, "assembly.asmt")
+                FreeCADMbDExporter.export_assembly(assembly, filename)
+                with open(filename, encoding="utf-8") as file:
+                    exported = file.read()
+
+                stripped_lines = [line.strip() for line in exported.splitlines()]
+
+                def find_sequence(sequence, start=0):
+                    for index in range(start, len(stripped_lines) - len(sequence) + 1):
+                        if stripped_lines[index : index + len(sequence)] == sequence:
+                            return index
+                    self.fail(f"Could not find ASMT sequence: {sequence!r}")
+
+                assembly_position_index = stripped_lines.index("Position3D")
+                self.assertEqual(stripped_lines[assembly_position_index + 1], "0\t0\t0")
+                assembly_rotation_index = stripped_lines.index("RotationMatrix")
+                self.assertEqual(
+                    stripped_lines[assembly_rotation_index + 1 : assembly_rotation_index + 4],
+                    ["1\t0\t0", "0\t1\t0", "0\t0\t1"],
+                )
+
+                part_index = find_sequence(["Part", "Name", "Part"])
+                part_position_index = stripped_lines.index("Position3D", part_index)
+                self.assertEqual(stripped_lines[part_position_index + 1], "0.001\t0.002\t0.003")
+                part_rotation_index = stripped_lines.index("RotationMatrix", part_position_index)
+                self.assertEqual(
+                    stripped_lines[part_rotation_index + 1 : part_rotation_index + 4],
+                    ["0\t-1\t0", "1\t0\t0", "0\t0\t1"],
+                )
+
+                marker_index = find_sequence(["Name", "Marker"], part_index)
+                marker_position_index = stripped_lines.index("Position3D", marker_index)
+                self.assertEqual(stripped_lines[marker_position_index + 1], "0.007\t0.008\t0.009")
+                marker_rotation_index = stripped_lines.index("RotationMatrix", marker_position_index)
+                self.assertEqual(
+                    stripped_lines[marker_rotation_index + 1 : marker_rotation_index + 4],
+                    ["0\t-1\t0", "1\t0\t0", "0\t0\t1"],
+                )
             finally:
                 App.closeDocument(document.Name)
 
@@ -795,51 +876,151 @@ class MbDFEMAssemblyTest(unittest.TestCase):
             finally:
                 App.closeDocument(document.Name)
 
-    def test_freecadmbd_result_import_creates_frame_data_and_applies_last_frame(self):
+    def test_freecadmbd_result_import_fills_solved_asmt_series(self):
         with tempfile.TemporaryDirectory() as directory:
-            document = App.newDocument("MbDFEMResultImportTest")
+            document = App.newDocument("MbDFEMSolvedSeriesImportTest")
 
             try:
                 assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
                 part = document.addObject("MbDFEM::MbDPart", "Part")
+                joint = document.addObject("MbDFEM::MbDJoint", "Joint")
                 assembly.addPart(part)
+                assembly.addJoint(joint)
 
-                result_file = os.path.join(directory, "assembly.results.json")
+                result_file = os.path.join(directory, "assembly.solved.asmt")
                 with open(result_file, "w", encoding="utf-8") as file:
-                    json.dump(
-                        {
-                            "frames": [
-                                {
-                                    "time": 0.0,
-                                    "placements": {
-                                        "Part": {
-                                            "base": [1.0, 2.0, 3.0],
-                                            "rotation": [0.0, 0.0, 0.0, 1.0],
-                                        }
-                                    },
-                                },
-                                {
-                                    "time": 0.1,
-                                    "placements": {
-                                        "Part": {
-                                            "base": [4.0, 5.0, 6.0],
-                                            "rotation": [0.0, 0.0, 0.0, 1.0],
-                                        }
-                                    },
-                                },
+                    file.write(
+                        "\n".join(
+                            [
+                                "FreeCADMbD",
+                                "TimeSeries",
+                                "Time\tInput\t0\t0.1\t0.2",
+                                "AssemblySeries\t/Assembly",
+                                "X\t0\t1\t2\t3",
+                                "Y\t0\t4\t5\t6",
+                                "AlphaZ\t0\t7\t8\t9",
+                                "PartSeries\t/Assembly/Part",
+                                "X\t0\t10\t11\t12",
+                                "Z\t0\t13\t14\t15",
+                                "OmegaY\t0\t16\t17\t18",
+                                "RevoluteJointSeries\t/Assembly/Joint",
+                                "FXonI\t0\t20\t21\t22",
+                                "FYonI\t0\t23\t24\t25",
+                                "FZonI\t0\t26\t27\t28",
+                                "TXonI\t0\t29\t30\t31",
+                                "TYonI\t0\t32\t33\t34",
+                                "TZonI\t0\t35\t36\t37",
+                                "",
                             ]
-                        },
-                        file,
+                        )
                     )
 
-                result = MbDFEMResults.import_results(assembly, result_file)
+                imported = FreeCADMbDResults.import_results(assembly, result_file)
 
-                self.assertEqual(result.Assembly, assembly)
-                self.assertEqual(result.PartNames, ["Part"])
-                self.assertEqual(result.Times, [0.0, 0.1])
-                self.assertEqual(len(result.Placements), 2)
-                self.assertEqual(result.CurrentFrame, 1)
-                self.assertEqual(part.Placement.Base, App.Vector(4.0, 5.0, 6.0))
+                self.assertEqual(imported, [assembly, part, joint])
+                self.assertEqual(assembly.times, [-sys.float_info.max, 0.0, 0.1, 0.2])
+                self.assertEqual(assembly.xs, [0.0, 1.0, 2.0, 3.0])
+                self.assertEqual(assembly.ys, [0.0, 4.0, 5.0, 6.0])
+                self.assertEqual(assembly.alpzs, [0.0, 7.0, 8.0, 9.0])
+                self.assertEqual(part.xs, [0.0, 10.0, 11.0, 12.0])
+                self.assertEqual(part.zs, [0.0, 13.0, 14.0, 15.0])
+                self.assertEqual(part.omeys, [0.0, 16.0, 17.0, 18.0])
+                self.assertEqual(joint.fxs, [0.0, 20.0, 21.0, 22.0])
+                self.assertEqual(joint.fys, [0.0, 23.0, 24.0, 25.0])
+                self.assertEqual(joint.fzs, [0.0, 26.0, 27.0, 28.0])
+                self.assertEqual(joint.txs, [0.0, 29.0, 30.0, 31.0])
+                self.assertEqual(joint.tys, [0.0, 32.0, 33.0, 34.0])
+                self.assertEqual(joint.tzs, [0.0, 35.0, 36.0, 37.0])
+            finally:
+                App.closeDocument(document.Name)
+
+    def test_freecadmbd_animation_controller_scrubs_part_results(self):
+        document = App.newDocument("MbDFEMAnimationScrubTest")
+
+        try:
+            assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            assembly.addPart(part)
+            assembly.times = [99.0, 0.0, 0.5, 1.0]
+            part.xs = [99.0, 0.0, 0.5, 1.0]
+            part.ys = [99.0, 1.0, 1.5, 2.0]
+            part.zs = [99.0, 2.0, 2.5, 3.0]
+
+            controller = FreeCADMbDAnimation.AnimationController(assembly)
+
+            self.assertEqual(controller.times, [0.0, 0.5, 1.0])
+            self.assertEqual(controller.frame_count, 3)
+
+            controller.setTime(0.25)
+
+            self.assertAlmostEqual(part.Placement.Base.x, 250.0)
+            self.assertAlmostEqual(part.Placement.Base.y, 1250.0)
+            self.assertAlmostEqual(part.Placement.Base.z, 2250.0)
+            self.assertEqual(controller.current_frame, 0)
+
+            controller.stepForward()
+
+            self.assertEqual(controller.current_frame, 1)
+            self.assertAlmostEqual(controller.current_time, 0.5)
+            self.assertAlmostEqual(part.Placement.Base.x, 500.0)
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_freecadmbd_animation_controller_uses_animation_parameters_for_tick(self):
+        document = App.newDocument("MbDFEMAnimationTickTest")
+
+        try:
+            assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            assembly.addPart(part)
+            parameters = assembly.ensureAnimationParameters()
+            parameters.frameRate = 10
+            parameters.playbackSpeed = 2.0
+            parameters.loop = True
+            assembly.times = [99.0, 0.0, 1.0]
+            part.xs = [99.0, 0.0, 1.0]
+            part.ys = [99.0, 0.0, 0.0]
+            part.zs = [99.0, 0.0, 0.0]
+
+            controller = FreeCADMbDAnimation.AnimationController(assembly)
+
+            self.assertEqual(controller.frame_rate, 10.0)
+            self.assertEqual(controller.playback_speed, 2.0)
+            controller.tick(0.25)
+            self.assertAlmostEqual(controller.current_time, 0.5)
+            self.assertAlmostEqual(part.Placement.Base.x, 500.0)
+
+            controller.tick(0.5)
+
+            self.assertAlmostEqual(controller.current_time, 0.5)
+            self.assertAlmostEqual(part.Placement.Base.x, 500.0)
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_freecadmbd_result_import_rejects_mismatched_series_lengths(self):
+        with tempfile.TemporaryDirectory() as directory:
+            document = App.newDocument("MbDFEMSeriesLengthTest")
+
+            try:
+                assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+
+                result_file = os.path.join(directory, "assembly.solved.asmt")
+                with open(result_file, "w", encoding="utf-8") as file:
+                    file.write(
+                        "\n".join(
+                            [
+                                "FreeCADMbD",
+                                "TimeSeries",
+                                "Time\tInput\t0\t0.1",
+                                "AssemblySeries\t/Assembly",
+                                "X\t1\t2",
+                                "",
+                            ]
+                        )
+                    )
+
+                with self.assertRaisesRegex(ValueError, "Assembly.xs has 2 values; expected 3"):
+                    FreeCADMbDResults.import_results(assembly, result_file)
             finally:
                 App.closeDocument(document.Name)
 

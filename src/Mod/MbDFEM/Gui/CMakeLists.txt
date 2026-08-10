@@ -14,6 +14,8 @@ set(MbDFEMGui_SRCS
     ViewProviderUtils.h
     ViewProviderMbDAction.cpp
     ViewProviderMbDAction.h
+    ViewProviderMbDAnimationParameters.cpp
+    ViewProviderMbDAnimationParameters.h
     ViewProviderMbDAssembly.cpp
     ViewProviderMbDAssembly.h
     ViewProviderMbDItemIJ.cpp

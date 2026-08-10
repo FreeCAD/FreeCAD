@@ -36,7 +36,8 @@ public:
 
     App::PropertyFloat startTime;
     App::PropertyFloat endTime;
-    App::PropertyFloat stepSize;
+    App::PropertyFloat maxStepSize;
+    App::PropertyFloat minStepSize;
     App::PropertyEnumeration solverType;
     App::PropertyInteger significantDigits;
     App::PropertyInteger maxIterations;
@@ -68,7 +69,7 @@ public:
 
     const char* getViewProviderName() const override
     {
-        return "Gui::ViewProviderDocumentObject";
+        return "MbDFEMGui::ViewProviderMbDAnimationParameters";
     }
 };
 

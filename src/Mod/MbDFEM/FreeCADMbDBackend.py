@@ -11,7 +11,7 @@ from pathlib import Path
 import FreeCAD as App
 
 import FreeCADMbDExporter
-import MbDFEMResults
+import FreeCADMbDResults
 
 
 PREF_GROUP = "User parameter:BaseApp/Preferences/Mod/MbDFEM"
@@ -25,7 +25,6 @@ class SolveResult:
     return_code: int
     stdout: str
     stderr: str
-    result_object: object | None = None
 
 
 class FreeCADMbDProcessBackend:
@@ -51,7 +50,6 @@ class FreeCADMbDProcessBackend:
         FreeCADMbDExporter.export_assembly(assembly, asmt_path)
 
         solved_asmt_path = asmt_path.with_suffix(".solved.asmt")
-        json_result_path = asmt_path.with_suffix(".results.json")
         command = [str(executable), str(asmt_path), str(solved_asmt_path)]
         completed = subprocess.run(
             command,
@@ -61,10 +59,6 @@ class FreeCADMbDProcessBackend:
             timeout=self.timeout,
             check=False,
         )
-
-        result_object = None
-        if json_result_path.exists():
-            result_object = MbDFEMResults.import_results(assembly, json_result_path)
 
         if completed.returncode != 0:
             raise RuntimeError(
@@ -77,13 +71,15 @@ class FreeCADMbDProcessBackend:
                 f"stderr:\n{completed.stderr.strip()}"
             )
 
+        if solved_asmt_path.exists():
+            FreeCADMbDResults.import_results(assembly, solved_asmt_path)
+
         return SolveResult(
             asmt_file=str(asmt_path),
             result_file=str(solved_asmt_path) if solved_asmt_path.exists() else None,
             return_code=completed.returncode,
             stdout=completed.stdout,
             stderr=completed.stderr,
-            result_object=result_object,
         )
 
 

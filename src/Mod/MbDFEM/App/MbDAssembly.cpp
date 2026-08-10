@@ -286,6 +286,25 @@ MbDFEM::MbDAssembly::MbDAssembly()
                       App::Prop_None,
                       "Actions belonging to this assembly");
     actions.setScope(App::LinkScope::Child);
+    ADD_PROPERTY_TYPE(times, (), "MbDFEM Results", App::Prop_None, "Solved time values");
+    ADD_PROPERTY_TYPE(xs, (), "MbDFEM Results", App::Prop_None, "Solved X position values");
+    ADD_PROPERTY_TYPE(ys, (), "MbDFEM Results", App::Prop_None, "Solved Y position values");
+    ADD_PROPERTY_TYPE(zs, (), "MbDFEM Results", App::Prop_None, "Solved Z position values");
+    ADD_PROPERTY_TYPE(bryxs, (), "MbDFEM Results", App::Prop_None, "Solved Bryant X angle values");
+    ADD_PROPERTY_TYPE(bryys, (), "MbDFEM Results", App::Prop_None, "Solved Bryant Y angle values");
+    ADD_PROPERTY_TYPE(bryzs, (), "MbDFEM Results", App::Prop_None, "Solved Bryant Z angle values");
+    ADD_PROPERTY_TYPE(vxs, (), "MbDFEM Results", App::Prop_None, "Solved X velocity values");
+    ADD_PROPERTY_TYPE(vys, (), "MbDFEM Results", App::Prop_None, "Solved Y velocity values");
+    ADD_PROPERTY_TYPE(vzs, (), "MbDFEM Results", App::Prop_None, "Solved Z velocity values");
+    ADD_PROPERTY_TYPE(omexs, (), "MbDFEM Results", App::Prop_None, "Solved X angular velocity values");
+    ADD_PROPERTY_TYPE(omeys, (), "MbDFEM Results", App::Prop_None, "Solved Y angular velocity values");
+    ADD_PROPERTY_TYPE(omezs, (), "MbDFEM Results", App::Prop_None, "Solved Z angular velocity values");
+    ADD_PROPERTY_TYPE(axs, (), "MbDFEM Results", App::Prop_None, "Solved X acceleration values");
+    ADD_PROPERTY_TYPE(ays, (), "MbDFEM Results", App::Prop_None, "Solved Y acceleration values");
+    ADD_PROPERTY_TYPE(azs, (), "MbDFEM Results", App::Prop_None, "Solved Z acceleration values");
+    ADD_PROPERTY_TYPE(alpxs, (), "MbDFEM Results", App::Prop_None, "Solved X angular acceleration values");
+    ADD_PROPERTY_TYPE(alpys, (), "MbDFEM Results", App::Prop_None, "Solved Y angular acceleration values");
+    ADD_PROPERTY_TYPE(alpzs, (), "MbDFEM Results", App::Prop_None, "Solved Z angular acceleration values");
     ADD_PROPERTY_TYPE(_assembliesFolder,
                       (nullptr),
                       "MbDFEM",
@@ -322,23 +341,41 @@ MbDFEM::MbDAssembly::MbDAssembly()
                       App::Prop_Hidden,
                       "Tree folder containing this assembly's actions");
     _actionsFolder.setScope(App::LinkScope::Hidden);
-    ADD_PROPERTY_TYPE(_gravity,
+    ADD_PROPERTY_TYPE(gravity,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
                       "Gravity object owned by this assembly");
-    _gravity.setScope(App::LinkScope::Hidden);
-    ADD_PROPERTY_TYPE(_simulationParameters,
+    gravity.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(simulationParameters,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
                       "Simulation parameters owned by this assembly");
-    _simulationParameters.setScope(App::LinkScope::Hidden);
-    ADD_PROPERTY_TYPE(_animationParameters,
+    simulationParameters.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(animationParameters,
                       (nullptr),
                       "MbDFEM",
                       App::Prop_Hidden,
                       "Animation parameters owned by this assembly");
+    animationParameters.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(_gravity,
+                      (nullptr),
+                      "MbDFEM",
+                      static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_NoPersist),
+                      "Legacy gravity link for documents saved before the property was renamed");
+    _gravity.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(_simulationParameters,
+                      (nullptr),
+                      "MbDFEM",
+                      static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_NoPersist),
+                      "Legacy simulation parameters link for documents saved before the property was renamed");
+    _simulationParameters.setScope(App::LinkScope::Hidden);
+    ADD_PROPERTY_TYPE(_animationParameters,
+                      (nullptr),
+                      "MbDFEM",
+                      static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_NoPersist),
+                      "Legacy animation parameters link for documents saved before the property was renamed");
     _animationParameters.setScope(App::LinkScope::Hidden);
 }
 
@@ -518,17 +555,17 @@ App::DocumentObjectGroup* MbDFEM::MbDAssembly::getActionsFolder() const
 
 MbDFEM::MbDSimulationParameters* MbDFEM::MbDAssembly::getSimulationParameters() const
 {
-    return dynamic_cast<MbDFEM::MbDSimulationParameters*>(_simulationParameters.getValue());
+    return dynamic_cast<MbDFEM::MbDSimulationParameters*>(simulationParameters.getValue());
 }
 
 MbDFEM::MbDAnimationParameters* MbDFEM::MbDAssembly::getAnimationParameters() const
 {
-    return dynamic_cast<MbDFEM::MbDAnimationParameters*>(_animationParameters.getValue());
+    return dynamic_cast<MbDFEM::MbDAnimationParameters*>(animationParameters.getValue());
 }
 
 MbDFEM::MbDGravity* MbDFEM::MbDAssembly::getGravity() const
 {
-    return dynamic_cast<MbDFEM::MbDGravity*>(_gravity.getValue());
+    return dynamic_cast<MbDFEM::MbDGravity*>(gravity.getValue());
 }
 
 std::vector<App::DocumentObjectGroup*> MbDFEM::MbDAssembly::getCategoryFolders() const
@@ -642,6 +679,15 @@ void MbDFEM::MbDAssembly::onChanged(const App::Property* prop)
 void MbDFEM::MbDAssembly::onDocumentRestored()
 {
     App::Part::onDocumentRestored();
+    if (!gravity.getValue() && _gravity.getValue()) {
+        gravity.setValue(_gravity.getValue());
+    }
+    if (!simulationParameters.getValue() && _simulationParameters.getValue()) {
+        simulationParameters.setValue(_simulationParameters.getValue());
+    }
+    if (!animationParameters.getValue() && _animationParameters.getValue()) {
+        animationParameters.setValue(_animationParameters.getValue());
+    }
     synchronizePartCategories();
 }
 
@@ -754,7 +800,7 @@ MbDFEM::MbDGravity* MbDFEM::MbDAssembly::ensureGravity()
     }
 
     if (auto* existingGravity = findExistingGravity(this)) {
-        _gravity.setValue(existingGravity);
+        gravity.setValue(existingGravity);
         return existingGravity;
     }
 
@@ -766,7 +812,7 @@ MbDFEM::MbDGravity* MbDFEM::MbDAssembly::ensureGravity()
     auto* gravityObject = static_cast<MbDFEM::MbDGravity*>(
         getDocument()->addObject("MbDFEM::MbDGravity", name.c_str()));
     gravityObject->Label.setValue("Gravity");
-    _gravity.setValue(gravityObject);
+    gravity.setValue(gravityObject);
     return gravityObject;
 }
 
@@ -783,7 +829,7 @@ MbDFEM::MbDSimulationParameters* MbDFEM::MbDAssembly::ensureSimulationParameters
     auto* parameters = static_cast<MbDFEM::MbDSimulationParameters*>(
         getDocument()->addObject("MbDFEM::MbDSimulationParameters", name.c_str()));
     parameters->Label.setValue("SimulationParameters");
-    _simulationParameters.setValue(parameters);
+    simulationParameters.setValue(parameters);
     return parameters;
 }
 
@@ -800,7 +846,7 @@ MbDFEM::MbDAnimationParameters* MbDFEM::MbDAssembly::ensureAnimationParameters()
     auto* parameters = static_cast<MbDFEM::MbDAnimationParameters*>(
         getDocument()->addObject("MbDFEM::MbDAnimationParameters", name.c_str()));
     parameters->Label.setValue("AnimationParameters");
-    _animationParameters.setValue(parameters);
+    animationParameters.setValue(parameters);
     return parameters;
 }
 

@@ -6,6 +6,7 @@
 #include <Gui/Application.h>
 
 #include "ViewProviderMbDAction.h"
+#include "ViewProviderMbDAnimationParameters.h"
 #include "ViewProviderMbDAssembly.h"
 #include "ViewProviderMbDItemIJ.h"
 #include "ViewProviderMbDJoint.h"
@@ -57,6 +58,7 @@ PyMOD_INIT_FUNC(MbDFEMGui)
     MbDFEMGui::ViewProviderMbDJoint::init();
     MbDFEMGui::ViewProviderMbDMotion::init();
     MbDFEMGui::ViewProviderMbDAction::init();
+    MbDFEMGui::ViewProviderMbDAnimationParameters::init();
     MbDFEMGui::ViewProviderMbDGravity::init();
 
     PyObject* module = MbDFEMGui::initModule();

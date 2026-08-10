@@ -97,6 +97,23 @@ void updateGravityIndicatorByName(const std::string& documentName, const std::st
     );
 }
 
+void scheduleGravityIndicatorUpdates(App::DocumentObject* object)
+{
+    const std::string documentName = object && object->getDocument()
+        ? object->getDocument()->getName()
+        : "";
+    const std::string objectName = object ? object->getNameInDocument() : "";
+    QTimer::singleShot(0, [documentName, objectName]() {
+        updateGravityIndicatorByName(documentName, objectName);
+    });
+    QTimer::singleShot(100, [documentName, objectName]() {
+        updateGravityIndicatorByName(documentName, objectName);
+    });
+    QTimer::singleShot(500, [documentName, objectName]() {
+        updateGravityIndicatorByName(documentName, objectName);
+    });
+}
+
 }  // namespace
 
 ViewProviderMbDGravity::ViewProviderMbDGravity()
@@ -122,16 +139,14 @@ void ViewProviderMbDGravity::attach(App::DocumentObject* object)
 
     // MbDAssembly::ensureGravity() assigns the hidden owner link after addObject()
     // returns, so this view provider can attach before owningAssembly() succeeds.
-    const std::string documentName = object && object->getDocument()
-        ? object->getDocument()->getName()
-        : "";
-    const std::string objectName = object ? object->getNameInDocument() : "";
-    QTimer::singleShot(0, [documentName, objectName]() {
-        updateGravityIndicatorByName(documentName, objectName);
-    });
-    QTimer::singleShot(100, [documentName, objectName]() {
-        updateGravityIndicatorByName(documentName, objectName);
-    });
+    scheduleGravityIndicatorUpdates(object);
+}
+
+void ViewProviderMbDGravity::finishRestoring()
+{
+    Gui::ViewProviderDocumentObject::finishRestoring();
+    updateCornerGravityIndicator();
+    scheduleGravityIndicatorUpdates(getObject());
 }
 
 void ViewProviderMbDGravity::updateData(const App::Property* prop)
