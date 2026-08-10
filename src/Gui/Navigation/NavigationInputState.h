@@ -29,7 +29,7 @@ struct NavigationInputState
 {
     enum InputFlag : unsigned int
     {
-        // Keep these values compatible with NavigationStateChart::Event's public masks.
+        // Keep these values stable because they are used in persisted navigation chords.
         LeftDown = 0x00000100,
         RightDown = 0x00000001,
         MiddleDown = 0x00000010,
