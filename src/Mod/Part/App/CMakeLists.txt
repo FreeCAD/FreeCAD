@@ -191,6 +191,8 @@ SET(Features_SRCS
     FeaturePartPolygon.h
     FeaturePartSection.cpp
     FeaturePartSection.h
+    FeatureSectionAnalysis.cpp
+    FeatureSectionAnalysis.h
     FeaturePartSpline.cpp
     FeaturePartSpline.h
     FeatureProjectOnSurface.cpp
