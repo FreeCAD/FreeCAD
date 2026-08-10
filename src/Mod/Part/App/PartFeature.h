@@ -136,14 +136,14 @@ public:
     App::Material getMaterialAppearance() const override;
     void setMaterialAppearance(const App::Material& material) override;
 
-    static bool doNamesMatch(const Data::MappedName& name1, const Data::MappedName& name2);
+    static bool doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, bool logMatchedElements = false);
 
     // This method searches through the element map to find a set of similar names for the input
     // (`searchName`) by utilizing the above doNamesMatch() function.
-    std::vector<Data::MappedElement> findSimilarNames(const Data::MappedName& searchName) const override;
+    std::vector<Data::MappedElement> findSimilarNames(Data::MappedName& searchName) override;
 
     static std::vector<Data::MappedElement> findSimilarNames(
-        const Data::MappedName& searchName,
+        Data::MappedName& searchName,
         const TopoShape& searchShape
     );
 

@@ -646,10 +646,6 @@ public:
 
     void setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm) {
         selectedHistoryAlgorithm = newAlgorithm;
-
-        if (_elementMap) {
-            _elementMap->setHistoryAlgorithm(newAlgorithm);
-        }
     };
 
 protected:

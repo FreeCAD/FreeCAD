@@ -352,7 +352,7 @@ void Part::FaceMaker::postBuild()
                 linkedNameEntry.second.first = fixedNameVector;
             }
             else {
-                linkedNameEntry.second.second = false;
+            linkedNameEntry.second.second = false;
             }
         }
 
@@ -372,7 +372,7 @@ void Part::FaceMaker::postBuild()
                 this->myTopoShape.setElementName(
                     linkedNameEntry.first,
                     Data::MappedName(
-                        Data::MappedName::makeSection(
+                        Data::MappedName::makeDecodedSection(
                             {},
                             linkedNameEntry.second.first,
                             this->myTopoShape.Tag,

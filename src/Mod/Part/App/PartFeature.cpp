@@ -181,7 +181,7 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
-bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName& name2)
+bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, bool logMatchedElements)
 {
     if (!name1 || !name2) {
         return false;
@@ -240,13 +240,17 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
 
                     for (const std::string& name1LinkedName : mainCheckSection.linkedNames) {
                         Data::MappedName name1LinkedMappedName {name1LinkedName};
+                        Data::MappedName name2LinkedMappedName;
 
                         for (const std::string& name2LinkedName : loopCheckSection.linkedNames) {
+                            name2LinkedMappedName = name2LinkedName;
+
                             if ((name1LinkedName == name2LinkedName)
-                                || (name1LinkedName != "_" && name2LinkedName != "_"
+                                || (name1LinkedName != Data::EMPTY_VALUE
+                                    && name2LinkedName != Data::EMPTY_VALUE
                                     && doNamesMatch(
                                         name1LinkedMappedName,
-                                        Data::MappedName(name2LinkedName)
+                                        name2LinkedMappedName
                                     ))) {
                                 linkedNameInterference++;
                             }
@@ -255,15 +259,19 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
 
                     for (const std::string& name1ConnectedName : mainCheckSection.connectedElements) {
                         Data::MappedName name1ConnectedMappedName {name1ConnectedName};
+                        Data::MappedName name2ConnectedMappedName;
 
                         for (const std::string& name2ConnectedName :
-                             loopCheckSection.connectedElements) {
+                             loopCheckSection.connectedElements)
+                        {    
+                            name2ConnectedMappedName = name2ConnectedName;
+
                             if ((name1ConnectedName == name2ConnectedName)
                                 || (name1ConnectedName != Data::EMPTY_VALUE
                                     && name2ConnectedName != Data::EMPTY_VALUE
                                     && doNamesMatch(
                                         name1ConnectedMappedName,
-                                        Data::MappedName(name2ConnectedName)
+                                        name2ConnectedMappedName
                                     ))) {
                                 connectedNameInterference++;
                             }
@@ -333,12 +341,20 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
         return false;
     }
 
+    if (logMatchedElements) {
+        Base::Console().log(
+            "Name match resolved name %s as equivelent to %s\n",
+            name1.toString(),
+            name2.toString()
+        );
+    }
+
     return true;
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
 std::vector<Data::MappedElement> Feature::findSimilarNames(
-    const Data::MappedName& searchName,
+    Data::MappedName& searchName,
     const TopoShape& searchShape
 )
 {
@@ -346,17 +362,12 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     std::vector<Data::MappedElement> ret {};
 
     if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-        for (const Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
+        for (Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
             if (loopNamePair.name == searchName) {
                 ret.push_back(loopNamePair);
             }
-            else if (Feature::doNamesMatch(searchName, loopNamePair.name)) {
+            else if (Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
                 ret.push_back(loopNamePair);
-                Base::Console().log(
-                    "Name match resolved name %s as equivelent to %s\n",
-                    searchName.toString(),
-                    loopNamePair.name.toString()
-                );
             }
         }
     }
@@ -364,7 +375,7 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     return ret;
 }
 
-std::vector<Data::MappedElement> Feature::findSimilarNames(const Data::MappedName& searchName) const
+std::vector<Data::MappedElement> Feature::findSimilarNames(Data::MappedName& searchName)
 {
     return findSimilarNames(searchName, Shape.getShape());
 }

@@ -140,7 +140,7 @@ public:
      *
      * @return Return a vector of `Data::MappedName` which contains matching names to `searchName`.
      */
-    virtual std::vector<Data::MappedElement> findSimilarNames(const Data::MappedName &searchName) const
+    virtual std::vector<Data::MappedElement> findSimilarNames(Data::MappedName &searchName)
     {
         (void)searchName;
         return { };

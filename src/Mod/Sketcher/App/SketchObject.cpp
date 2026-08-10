@@ -284,7 +284,7 @@ void SketchObject::buildShape()
             builtName = name;
         }
         else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-            builtName = Data::MappedName::makeSection(
+            builtName = Data::MappedName::makeDecodedSection(
                 {name},
                 {},
                 tag,
@@ -1912,7 +1912,7 @@ const char *SketchObject::convertInternalName(const char *name)
     return nullptr;
 }
 
-std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::MappedName &searchName) const
+std::vector<Data::MappedElement> SketchObject::findSimilarNames(Data::MappedName &searchName)
 {
     std::vector<Data::MappedElement> ret;
 
@@ -1922,8 +1922,8 @@ std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::Mapp
         const Part::TopoShape &internalShape = InternalShape.getShape();
 
         if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            for (const Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
-                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
+            for (Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
+                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
                     std::string loopNameIndexString = internalPrefix();
                     loopNameIndexString += loopNamePair.index.toString();
 
@@ -1932,7 +1932,6 @@ std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::Mapp
                     );
 
                     ret.emplace_back(loopNamePair.name, loopNameIndex);
-                    Base::Console().log("Name match resolved name %s as equivelent to %s\n", searchName.toString(), loopNamePair.name.toString());
                 }
             }
         }

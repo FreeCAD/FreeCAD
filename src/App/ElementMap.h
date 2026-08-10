@@ -308,11 +308,15 @@ public:
     void traceElement(const MappedName& name, long masterTag, TraceCallback cb) const;
 
     const App::HistoryAlgorithm& getHistoryAlgorithm() const {
-        return selectedHistoryAlgorithm;
+        if (historyAlgorithmRef == nullptr) {
+            return App::getDefaultHistoryAlgorithm();
+        } else {
+            return *historyAlgorithmRef;
+        }
     }
 
-    void setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm) {
-        selectedHistoryAlgorithm = newAlgorithm;
+    void syncHistoryAlgorithm(const App::HistoryAlgorithm* geoDataHistoryAlgorithmRef) {
+        historyAlgorithmRef = geoDataHistoryAlgorithmRef;
     }
 
 private:
@@ -409,7 +413,7 @@ private:
 
     std::map<MappedName, IndexedName, std::less<>> mappedNames;
 
-    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
+    const App::HistoryAlgorithm* historyAlgorithmRef = nullptr;
 
 
     struct ChildMapInfo

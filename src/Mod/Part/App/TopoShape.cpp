@@ -276,7 +276,11 @@ std::string ShapeSegment::getName() const
 TYPESYSTEM_SOURCE(Part::TopoShape, Data::ComplexGeoData)
 
 
-TopoShape::~TopoShape() = default;
+TopoShape::~TopoShape() {
+    if (elementMap(false)) {
+        elementMap(false)->syncHistoryAlgorithm(nullptr);
+    }
+}
 
 TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& shape, const App::HistoryAlgorithm& historyAlgorithm)
     : _Shape(*this, shape)

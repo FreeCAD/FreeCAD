@@ -2417,7 +2417,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames
                                 = getElementMappedNames(element);
                             std::vector<Data::MappedName> newConnectedElementNames;
-                            Data::MappedName newName = Data::MappedName(incomingShapeMappedName.first);
+                            Data::MappedName newName {incomingShapeMappedName.first};
 
                             if (connectedElementMap.find(modifiedShape) != connectedElementMap.end()) {
                                 newConnectedElementNames = connectedElementMap[modifiedShape];
@@ -2432,20 +2432,19 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     emptyConnectedElementsIndex++;
                                 }
 
-                                std::string sectionToAppend {Data::NAME_SECTION_DELIMINATOR};
-                                sectionToAppend += Data::MappedName::makeSection(
-                                    {},
-                                    {},
-                                    masterTag,
-                                    op,
-                                    index,
-                                    (*info->shapetype),
-                                    0,
-                                    {Data::MAPPER_FLAG_MODIFIED},
-                                    newConnectedElementNames
+                                newName.append(
+                                    Data::MappedName::makeDecodedSection(
+                                        {},
+                                        {},
+                                        masterTag,
+                                        op,
+                                        index,
+                                        (*info->shapetype),
+                                        0,
+                                        {Data::MAPPER_FLAG_MODIFIED},
+                                        newConnectedElementNames
+                                    )
                                 );
-
-                                newName.append(sectionToAppend.c_str());
                             }
 
                             bool skipMap = false;
@@ -2569,7 +2568,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 if (generatedShapes == 1) {
                     ensureElementMap()->setElementName(
                         generatedShapeEntry.first[0].newElementName,
-                        Data::MappedName(Data::MappedName::makeSection(newNameSection)),
+                        Data::MappedName(newNameSection),
                         masterTag
                     );
                 }
@@ -2604,7 +2603,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         auto it = namedGeneratedShapes.find(shapeHasher(foundSubshape));
 
                         if (it != namedGeneratedShapes.end()) {
-                            std::string encodedMappedSection = Data::MappedName::makeSection(
+                            std::string encodedMappedSection = Data::MappedName::makeEncodedSection(
                                 it->second
                             );
 
@@ -2649,7 +2648,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 ensureElementMap()->setElementName(
                     elementIndexName,
-                    Data::MappedName(Data::MappedName::makeSection(elementMappedSection)),
+                    Data::MappedName(elementMappedSection),
                     masterTag
                 );
             }
@@ -2701,7 +2700,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                             if (incomingShapeMapName) {
                                 Data::MappedName newName = Data::MappedName(
-                                    Data::MappedName::makeSection(
+                                    Data::MappedName::makeDecodedSection(
                                         {},
                                         {incomingShapeMapName},
                                         masterTag,
@@ -2711,7 +2710,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         0,
                                         {Data::MAPPER_FLAG_PARTNER}
                                     )
-                                        .c_str()
                                 );
 
                                 usedPartnerNames.insert(incomingShapeMapName);
@@ -2745,7 +2743,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     if (linkedUpperNames.size()) {
                         Data::MappedName newName = Data::MappedName(
-                            Data::MappedName::makeSection(
+                            Data::MappedName::makeDecodedSection(
                                 {},
                                 linkedUpperNames,
                                 masterTag,
@@ -2755,7 +2753,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 0,
                                 {Data::MAPPER_FLAG_UPPER}
                             )
-                                .c_str()
                         );
 
                         usedUpperNames.insert(linkedUpperNames);
@@ -2818,7 +2815,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         if (linkedLowerNames.size()) {
                             Data::MappedName newName = Data::MappedName(
-                                Data::MappedName::makeSection(
+                                Data::MappedName::makeDecodedSection(
                                     {},
                                     linkedLowerNames,
                                     masterTag,
@@ -2828,7 +2825,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     0,
                                     {Data::MAPPER_FLAG_LOWER}
                                 )
-                                    .c_str()
                             );
 
                             usedLowerNames.insert(linkedLowerNames);
@@ -7141,7 +7137,7 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
     return Tag == other.Tag && Hasher == other.Hasher && _Shape.IsEqual(other._Shape);
 }
 
-long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
+long TopoShape::isElementGenerated(Data::MappedName& _name, int depth) const
 {
     const App::HistoryAlgorithm& historyAlgo = getHistoryAlgorithm();
 
@@ -7214,8 +7210,8 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
 
             if (decodedName.size() && (decodedName.back().iterationTag == "0" || force)) {
                 decodedName.back().iterationTag = std::to_string(tag);
-
-                mappedElement.name = Data::MappedName::fromDecodedMappedName(decodedName);
+                
+                mappedElement.name = decodedName;
             }
         }
 

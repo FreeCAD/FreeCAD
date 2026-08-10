@@ -1761,7 +1761,7 @@ public:
         bool force = true  // force retag a section if the tag is not 0
     ) override;
 
-    long isElementGenerated(const Data::MappedName& name, int depth = 1) const;
+    long isElementGenerated(Data::MappedName& name, int depth = 1) const;
 
     /** @name sub shape cached functions
      *
