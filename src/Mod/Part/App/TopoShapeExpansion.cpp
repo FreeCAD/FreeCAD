@@ -4949,8 +4949,8 @@ LoftFailure diagnoseLoftFailure(
         }
     }
     else if (failure.suggestVariational) {
-        message << "; standard B-spline lofting failed with all parameterizations; try Smoothed "
-                   "B-Spline, whose variational solver succeeds for these profiles";
+        message << "; standard B-spline lofting failed with all parameterizations; try "
+                   "Variational B-Spline, whose variational solver succeeds for these profiles";
     }
     if (message.tellp() == 0) {
         message << "OCCT returned an unknown loft error status";
@@ -5019,9 +5019,11 @@ TopoShape& TopoShape::makeElementLoft(
         op = Part::OpCodes::Loft;
     }
 
+    const bool automatic = smoothing == Smoothing::automatic;
+    const Smoothing initialSmoothing = automatic ? Smoothing::bspline : smoothing;
     const LoftOptions options {
         isSolid,
-        smoothing,
+        initialSmoothing,
         isClosed,
         maxDegree,
         parametrization,
@@ -5037,9 +5039,12 @@ TopoShape& TopoShape::makeElementLoft(
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator(
         isSolid == IsSolid::solid,
-        smoothing == Smoothing::ruled
+        initialSmoothing == Smoothing::ruled
     );
     configureThruSections(aGenerator, options);
+    if (automatic) {
+        aGenerator.SetMutableInput(false);
+    }
 
     int i = 0;
     for (auto& sh : profiles) {
@@ -5085,6 +5090,39 @@ TopoShape& TopoShape::makeElementLoft(
         }
     }
 
+    auto recoverAutomaticLoft = [&](BRepFill_ThruSectionErrorStatus status) -> TopoShape& {
+        const auto failure = diagnoseLoftFailure(status, profiles, options);
+        if (automatic) {
+            if (failure.suggestedParametrization) {
+                return makeElementLoft(
+                    shapes,
+                    isSolid,
+                    Smoothing::bspline,
+                    isClosed,
+                    maxDegree,
+                    op,
+                    *failure.suggestedParametrization,
+                    continuity,
+                    checkCompatibility
+                );
+            }
+            if (failure.suggestVariational) {
+                return makeElementLoft(
+                    shapes,
+                    isSolid,
+                    Smoothing::variational,
+                    isClosed,
+                    maxDegree,
+                    op,
+                    parametrization,
+                    continuity,
+                    checkCompatibility
+                );
+            }
+        }
+        throwThruSectionsError(failure);
+    };
+
     try {
 #if OCC_VERSION_HEX >= 0x070600
         aGenerator.Build(std::make_unique<Part::ProgressIndicator>()->Start());
@@ -5093,11 +5131,22 @@ TopoShape& TopoShape::makeElementLoft(
 #endif
     }
     catch (const Standard_Failure&) {
-        throwThruSectionsError(diagnoseLoftFailure(aGenerator.GetStatus(), profiles, options));
+        return recoverAutomaticLoft(aGenerator.GetStatus());
     }
     if (!aGenerator.IsDone()
         || aGenerator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
-        throwThruSectionsError(diagnoseLoftFailure(aGenerator.GetStatus(), profiles, options));
+        return recoverAutomaticLoft(aGenerator.GetStatus());
+    }
+    if (automatic) {
+        try {
+            const auto& result = aGenerator.Shape();
+            if (result.IsNull() || !BRepCheck_Analyzer(result).IsValid()) {
+                return recoverAutomaticLoft(BRepFill_ThruSectionErrorStatus_Failed);
+            }
+        }
+        catch (const Standard_Failure&) {
+            return recoverAutomaticLoft(BRepFill_ThruSectionErrorStatus_Failed);
+        }
     }
     return makeShapeWithElementMap(
         aGenerator.Shape(),

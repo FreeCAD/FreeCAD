@@ -1801,6 +1801,11 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
         IsSolid::notSolid,
         Smoothing::variational
     );
+    auto& automaticShape = (new TopoShape())->makeElementLoft(
+        shapes,
+        IsSolid::notSolid,
+        Smoothing::automatic
+    );
     auto& topoShape6 = (new TopoShape())
                           ->makeElementLoft(
                               shapes,
@@ -1817,6 +1822,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     EXPECT_NEAR(getVolume(topoShape3.getShape()), 166.66667, 1e-5);
     EXPECT_DOUBLE_EQ(getVolume(topoShape4.getShape()), 250);
     EXPECT_FALSE(topoShape5.isNull());
+    EXPECT_FALSE(automaticShape.isNull());
     EXPECT_NEAR(getVolume(topoShape6.getShape()), 0, 1e-07);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
@@ -2021,6 +2027,15 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     ));
     EXPECT_FALSE(suggestedResult.isNull());
 
+    TopoShape automaticParametrizationResult;
+    EXPECT_NO_THROW(automaticParametrizationResult.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::automatic
+    ));
+    EXPECT_FALSE(automaticParametrizationResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(automaticParametrizationResult.getShape()).IsValid());
+
     // This sequence fails with every standard B-spline parameterization, but the variational
     // solver constructs a valid solid.
     std::vector<TopoShape> variationalProfiles {
@@ -2084,8 +2099,8 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         EXPECT_STREQ(
             error.what(),
             "OCCT failed to construct the loft; the failure requires the complete sequence of 5 "
-            "profiles; standard B-spline lofting failed with all parameterizations; try Smoothed "
-            "B-Spline, whose variational solver succeeds for these profiles"
+            "profiles; standard B-spline lofting failed with all parameterizations; try "
+            "Variational B-Spline, whose variational solver succeeds for these profiles"
         );
     }
 
@@ -2097,6 +2112,129 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     ));
     EXPECT_FALSE(variationalResult.isNull());
     EXPECT_TRUE(BRepCheck_Analyzer(variationalResult.getShape()).IsValid());
+
+    TopoShape automaticVariationalResult;
+    EXPECT_NO_THROW(automaticVariationalResult.makeElementLoft(
+        variationalProfiles,
+        IsSolid::solid,
+        Smoothing::automatic
+    ));
+    EXPECT_FALSE(automaticVariationalResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(automaticVariationalResult.getShape()).IsValid());
+
+    TopoShape automaticVariationalShell;
+    EXPECT_NO_THROW(automaticVariationalShell.makeElementLoft(
+        variationalProfiles,
+        IsSolid::notSolid,
+        Smoothing::automatic
+    ));
+    EXPECT_FALSE(automaticVariationalShell.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(automaticVariationalShell.getShape()).IsValid());
+
+    auto makeIssueCurve = [](const std::array<gp_Pnt, 3>& curvePoles,
+                             const std::array<double, 3>& curveWeights,
+                             bool reversed = false) {
+        TColgp_Array1OfPnt poles(1, 3);
+        TColStd_Array1OfReal weights(1, 3);
+        TColStd_Array1OfReal knots(1, 2);
+        TColStd_Array1OfInteger multiplicities(1, 2);
+        for (int i = 0; i < 3; ++i) {
+            poles.SetValue(i + 1, curvePoles[i]);
+            weights.SetValue(i + 1, curveWeights[i]);
+        }
+        knots.SetValue(1, 0.0);
+        knots.SetValue(2, 1.0);
+        multiplicities.SetValue(1, 3);
+        multiplicities.SetValue(2, 3);
+        Handle(Geom_BSplineCurve) curve = new Geom_BSplineCurve(
+            poles,
+            weights,
+            knots,
+            multiplicities,
+            2,
+            false
+        );
+        auto edge = BRepBuilderAPI_MakeEdge(curve).Edge();
+        return reversed ? TopoDS::Edge(edge.Reversed()) : edge;
+    };
+    auto makeIssueWire = [](const std::vector<TopoDS_Edge>& edges) {
+        BRepBuilderAPI_MakeWire wire;
+        for (const auto& edge : edges) {
+            wire.Add(edge);
+        }
+        return TopoShape(wire.Wire());
+    };
+    auto line = [](const gp_Pnt& first, const gp_Pnt& second) {
+        return BRepBuilderAPI_MakeEdge(first, second).Edge();
+    };
+
+    const std::vector<TopoShape> issueProfiles {
+        makeIssueWire(
+            {line(gp_Pnt(50, 0, -8.96), gp_Pnt(50, 0, -1.57)),
+             makeIssueCurve(
+                 {gp_Pnt(50, 0, -1.57),
+                  gp_Pnt(50, -2.13, -1.57),
+                  gp_Pnt(50, -2.13, -3.559)},
+                 {1, 1, 1}
+             ),
+             line(gp_Pnt(50, -2.13, -3.559), gp_Pnt(50, -2.13, -8.929)),
+             line(gp_Pnt(50, -2.13, -8.929), gp_Pnt(50, 0, -8.96))}
+        ),
+        makeIssueWire(
+            {line(gp_Pnt(43, 0, -6.75), gp_Pnt(43, 0, -1.38)),
+             makeIssueCurve(
+                 {gp_Pnt(43, 0, -1.38),
+                  gp_Pnt(43, -2.43, -1.38),
+                  gp_Pnt(43, -2.43, -3.38)},
+                 {1, 1, 1}
+             ),
+             line(gp_Pnt(43, -2.43, -3.38), gp_Pnt(43, -2.43, -6.75)),
+             line(gp_Pnt(43, -2.43, -6.75), gp_Pnt(43, 0, -6.75))}
+        ),
+        makeIssueWire(
+            {line(gp_Pnt(24, 0, -0.75), gp_Pnt(24, -3.43, -0.75)),
+             line(gp_Pnt(24, -3.43, -0.75), gp_Pnt(24, -3.43, 0.6)),
+             makeIssueCurve(
+                 {gp_Pnt(24, 0, 2.5),
+                  gp_Pnt(24, -3.43, 2.5),
+                  gp_Pnt(24, -3.43, 0.6)},
+                 {1, 1.1376407018914187, 1},
+                 true
+             ),
+             line(gp_Pnt(24, 0, 2.5), gp_Pnt(24, 0, -0.75))}
+        ),
+        makeIssueWire(
+            {makeIssueCurve(
+                 {gp_Pnt(13, 0, 5.25),
+                  gp_Pnt(13, -6.07, 5.25),
+                  gp_Pnt(13, -6.07, 2.79)},
+                 {1, 0.8856097536161174, 1}
+             ),
+             line(gp_Pnt(13, -6.07, 2.79), gp_Pnt(13, -6.07, 0.79)),
+             line(gp_Pnt(13, -6.07, 0.79), gp_Pnt(13, 0, 1.1)),
+             line(gp_Pnt(13, 0, 1.1), gp_Pnt(13, 0, 5.25))}
+        ),
+        makeIssueWire(
+            {makeIssueCurve(
+                 {gp_Pnt(6, -9.65, 3.76),
+                  gp_Pnt(6, -9.65, 6.87),
+                  gp_Pnt(6, 0, 6.87)},
+                 {1, 1.75, 1}
+             ),
+             line(gp_Pnt(6, 0, 6.87), gp_Pnt(6, 0, 1.2)),
+             line(gp_Pnt(6, 0, 1.2), gp_Pnt(6, -9.65, 1.2)),
+             line(gp_Pnt(6, -9.65, 1.2), gp_Pnt(6, -9.65, 3.76))}
+        ),
+    };
+
+    TopoShape automaticIssueShell;
+    EXPECT_NO_THROW(automaticIssueShell.makeElementLoft(
+        issueProfiles,
+        IsSolid::notSolid,
+        Smoothing::automatic
+    ));
+    EXPECT_FALSE(automaticIssueShell.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(automaticIssueShell.getShape()).IsValid());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT

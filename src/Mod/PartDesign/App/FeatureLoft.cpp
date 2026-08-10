@@ -43,10 +43,36 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 
+namespace
+{
+Part::Smoothing loftSmoothing(long loftType)
+{
+    switch (loftType) {
+        case 0:
+            return Part::Smoothing::automatic;
+        case 1:
+            return Part::Smoothing::bspline;
+        case 2:
+            return Part::Smoothing::ruled;
+        case 3:
+            return Part::Smoothing::variational;
+        default:
+            return Part::Smoothing::automatic;
+    }
+}
+}  // namespace
+
 App::PropertyIntegerConstraint::Constraints Loft::Degrees = {
     2,
     Geom_BSplineSurface::MaxDegree(),
     1
+};
+const char* Loft::LoftTypeEnums[] = {
+    "Auto",
+    "Standard B-Spline",
+    "Ruled Surface",
+    "Variational B-Spline",
+    nullptr
 };
 const char* Loft::ParametrizationEnums[] = {"Chord length", "Centripetal", "Uniform", nullptr};
 const char* Loft::ContinuityEnums[] = {"C0", "C1", "C2", nullptr};
@@ -55,8 +81,13 @@ Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setValue(nullptr);
-    ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Create ruled surface");
-    ADD_PROPERTY_TYPE(Smoothing, (false), "Loft", App::Prop_None, "Use variational smoothing");
+    ADD_PROPERTY_TYPE(
+        LoftType,
+        (long(0)),
+        "Loft",
+        App::Prop_None,
+        "Loft surface generation algorithm"
+    );
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum B-Spline degree");
     ADD_PROPERTY_TYPE(
@@ -75,6 +106,7 @@ Loft::Loft()
         "Align profile origins, orientations, and edge counts"
     );
     MaxDegree.setConstraints(&Degrees);
+    LoftType.setEnums(LoftTypeEnums);
     Parametrization.setEnums(ParametrizationEnums);
     Continuity.setEnums(ContinuityEnums);
 }
@@ -84,10 +116,7 @@ short Loft::mustExecute() const
     if (Sections.isTouched()) {
         return 1;
     }
-    if (Ruled.isTouched()) {
-        return 1;
-    }
-    if (Smoothing.isTouched()) {
+    if (LoftType.isTouched()) {
         return 1;
     }
     if (Closed.isTouched()) {
@@ -267,13 +296,7 @@ App::DocumentObjectExecReturn* Loft::execute()
             for (auto& wire : sectionWires) {
                 wire.move(invObjLoc);
             }
-            Part::Smoothing smoothing = Part::Smoothing::bspline;
-            if (Ruled.getValue()) {
-                smoothing = Part::Smoothing::ruled;
-            }
-            else if (Smoothing.getValue()) {
-                smoothing = Part::Smoothing::variational;
-            }
+            const auto smoothing = loftSmoothing(LoftType.getValue());
             shells.push_back(TopoShape(0, hasher).makeElementLoft(
                 sectionWires,
                 Part::IsSolid::notSolid,

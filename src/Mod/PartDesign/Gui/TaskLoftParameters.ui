@@ -20,13 +20,20 @@
       <string>
           Select the type of surface loft to generate.
 
-          - Standard B-Spline: The default loft generation method is used to form the loft surface.
+          - Auto: Starts with the standard method and retries other parameterizations or the
+            variational solver if necessary.
+          - Standard B-Spline: The standard loft generation method is used to form the loft surface.
           - Ruled Surface: A ruled surface is formed by joining the profiles along a straight line.
-          - Smoothed B-Spline: An alternative loft generation method is used to form the loft surface.
+          - Variational B-Spline: An alternative loft generation method is used to form the loft surface.
             This method can be more robust than the standard B-Spline method for some geometries,
-          but may create slightly different loft surfaces.
+            but may create slightly different loft surfaces.
       </string>
      </property>
+     <item>
+      <property name="text">
+       <string>Auto</string>
+      </property>
+     </item>
      <item>
       <property name="text">
        <string>Standard B-Spline</string>
@@ -39,7 +46,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Smoothed B-Spline</string>
+       <string>Variational B-Spline</string>
       </property>
      </item>
     </widget>

@@ -148,13 +148,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     }
 
     // get options
-    int mode = 0;
-    if (loft->Ruled.getValue()) {
-        mode = 1;
-    }
-    else if (loft->Smoothing.getValue()) {
-        mode = 2;
-    }
+    const int mode = loft->LoftType.getValue();
     ui->comboBoxMode->setCurrentIndex(mode);
     const auto* degreeConstraints = loft->MaxDegree.getConstraints();
     ui->spinBoxMaxDegree->setRange(
@@ -192,8 +186,8 @@ void TaskLoftParameters::updateUI()
 
 void TaskLoftParameters::updateAlgorithmOptions(int mode)
 {
-    const bool usesApproximation = mode != 1;
-    const bool usesParametrization = mode == 0;
+    const bool usesApproximation = mode != 2;
+    const bool usesParametrization = mode <= 1;
     ui->spinBoxMaxDegree->setEnabled(usesApproximation);
     ui->labelMaxDegree->setEnabled(usesApproximation);
     ui->comboBoxContinuity->setEnabled(usesApproximation);
@@ -394,8 +388,7 @@ void TaskLoftParameters::onClosed(bool val)
 void TaskLoftParameters::onModeChanged(int index)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
-        loft->Ruled.setValue(index == 1);
-        loft->Smoothing.setValue(index == 2);
+        loft->LoftType.setValue(index);
         updateAlgorithmOptions(index);
         recomputeFeature();
     }

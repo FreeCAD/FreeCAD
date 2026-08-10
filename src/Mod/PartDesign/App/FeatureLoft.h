@@ -38,8 +38,7 @@ public:
     Loft();
 
     App::PropertyLinkSubList Sections;
-    App::PropertyBool Ruled;
-    App::PropertyBool Smoothing;
+    App::PropertyEnumeration LoftType;
     App::PropertyBool Closed;
     App::PropertyIntegerConstraint MaxDegree;
     App::PropertyEnumeration Parametrization;
@@ -74,6 +73,7 @@ protected:
 
 private:
     static App::PropertyIntegerConstraint::Constraints Degrees;
+    static const char* LoftTypeEnums[];
     static const char* ParametrizationEnums[];
     static const char* ContinuityEnums[];
 

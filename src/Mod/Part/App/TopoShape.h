@@ -157,8 +157,9 @@ enum class IsSolid
 
 enum class Smoothing
 {
-    ruled,
+    automatic,
     bspline,
+    ruled,
     variational
 };
 
