@@ -68,7 +68,7 @@ App::PropertyIntegerConstraint::Constraints Loft::Degrees = {
     1
 };
 const char* Loft::LoftTypeEnums[] = {
-    "Auto",
+    "Automatic",
     "Standard B-Spline",
     "Ruled Surface",
     "Variational B-Spline",

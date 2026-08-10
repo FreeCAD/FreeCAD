@@ -53,7 +53,7 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         self.Body.addObject(self.AdditiveLoft)
-        self.assertEqual(self.AdditiveLoft.LoftType, "Auto")
+        self.assertEqual(self.AdditiveLoft.LoftType, "Automatic")
         self.assertEqual(self.AdditiveLoft.MaxDegree, 5)
         self.assertEqual(self.AdditiveLoft.Parametrization, "Chord length")
         self.assertEqual(self.AdditiveLoft.Continuity, "C2")
