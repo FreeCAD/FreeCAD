@@ -11081,7 +11081,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="60"/>
       <source>Thread pitch</source>
-      <translation>Шаг резьбы/витков</translation>
+      <translation>Шаг витков</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="68"/>

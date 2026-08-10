@@ -1891,7 +1891,7 @@ projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Refine Shape</source>
-      <translation>Affiner une forme</translation>
+      <translation>Affiner la forme</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="388"/>
@@ -2233,7 +2233,7 @@ projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="405"/>
       <source>Refine shape</source>
-      <translation>Affiner une forme</translation>
+      <translation>Affiner la forme</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="475"/>
@@ -4553,29 +4553,49 @@ fonction en cours d'édition par le glisser-déposer.</translation>
       <translation>Activer l'aimantation par pas importants lors de glissements</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation>Permet d'utiliser des incréments d'aimantation plus importants lors de l'utilisation des manipulateurs.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation>Modificateur d'aimantation par pas fins</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation>Définit la touche de modification utilisée pour l'alignement précis lors de glissements.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation>Comportement par défaut du glissement du manipulateur</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>Spécifie si le glissement est par pas importants ou fins sans maintenir la touche de modification enfoncée.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation>Multiplicateur de mouvement</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation>Multiplie l'incrément de mouvement de base lorsque l'aimantation par pas importants est activée.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>Pas de rotation (degrés)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation>Définit l'incrément de rotation en degrés appliqué lorsque l'aimantation par pas importants est activée.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -5992,7 +6012,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="82"/>
       <source>Refine shape</source>
-      <translation>Affiner une forme</translation>
+      <translation>Affiner la forme</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="92"/>

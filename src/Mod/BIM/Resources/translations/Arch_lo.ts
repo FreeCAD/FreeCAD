@@ -3761,18 +3761,18 @@ The default template is located at:
     <name>Arch</name>
     <message>
       <location filename="../../ArchStructure.py" line="449"/>
-      <location filename="../../Arch.py" line="2565"/>
+      <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>ຄານ</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="450"/>
-      <location filename="../../Arch.py" line="2569"/>
+      <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>ເສົາ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2618"/>
+      <location filename="../../Arch.py" line="2629"/>
       <source>StructuralSystem</source>
       <translation>ລະບົບໂຄງສ້າງ</translation>
     </message>
@@ -4440,7 +4440,7 @@ The default template is located at:
       <translation>ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="387"/>
+      <location filename="../../Arch.py" line="397"/>
       <source>Equipment</source>
       <translation>ອຸປະກອນ</translation>
     </message>
@@ -4455,7 +4455,7 @@ The default template is located at:
       <translation>ສ້າງອຸປະກອນ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="172"/>
+      <location filename="../../Arch.py" line="173"/>
       <source>BuildingPart</source>
       <translation>ສ່ວນຂອງອາຄານ</translation>
     </message>
@@ -4487,7 +4487,7 @@ The default template is located at:
       <translation>ໂປຣໄຟລ໌</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1270"/>
+      <location filename="../../Arch.py" line="1281"/>
       <source>Site</source>
       <translation>ສະຖານທີ່</translation>
     </message>
@@ -4497,14 +4497,14 @@ The default template is located at:
       <translation>ສ້າງສະຖານທີ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="64"/>
-      <location filename="../../bimcommands/BimRoof.py" line="80"/>
+      <location filename="../../bimcommands/BimRoof.py" line="65"/>
+      <location filename="../../bimcommands/BimRoof.py" line="81"/>
       <source>Create Roof</source>
       <translation>ສ້າງຫຼັງຄາ</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimRoof.py" line="92"/>
       <source>Unable to create a roof</source>
       <translation>ບໍ່ສາມາດສ້າງຫຼັງຄາໄດ້</translation>
     </message>
@@ -4544,7 +4544,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ສ່ວນທີ່ຍື່ນອອກ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1144"/>
+      <location filename="../../Arch.py" line="1155"/>
       <location filename="../../ArchRoof.py" line="1072"/>
       <source>Roof</source>
       <translation>ຫຼັງຄາ</translation>
@@ -4616,7 +4616,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ດ້ານໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1075"/>
+      <location filename="../../Arch.py" line="1086"/>
       <location filename="../../ArchReference.py" line="909"/>
       <source>External Reference</source>
       <translation>ການອ້າງອີງພາຍນອກ</translation>
@@ -4718,7 +4718,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ສ້າງການອ້າງອີງພາຍນອກ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="462"/>
+      <location filename="../../Arch.py" line="472"/>
       <source>Frame</source>
       <translation>ໂຄງຮ່າງ</translation>
     </message>
@@ -4778,7 +4778,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ໄລບຣາຣີ shapefile ສາມາດດາວໂຫຼດໄດ້ຈາກ URL ຕໍ່ໄປນີ້ ແລະ ຕິດຕັ້ງໃນໂຟນເດີ macros ຂອງທ່ານ:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2089"/>
+      <location filename="../../Arch.py" line="2100"/>
       <source>Window</source>
       <translation>ໜ້າຕ່າງ</translation>
     </message>
@@ -4914,11 +4914,11 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ດຶງຂໍ້ມູນຂອບທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1782"/>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
       <location filename="../../ArchWindow.py" line="1706"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxis.py" line="985"/>
-      <location filename="../../ArchComponent.py" line="2462"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <source>Remove</source>
       <translation>ລຶບອອກ</translation>
@@ -4927,14 +4927,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1707"/>
       <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchAxis.py" line="986"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>ເພີ່ມ</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchSectionPlane.py" line="1549"/>
+      <location filename="../../ArchSectionPlane.py" line="1593"/>
       <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
@@ -4961,7 +4961,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1714"/>
-      <location filename="../../ArchComponent.py" line="2470"/>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <source>Components</source>
       <translation>ອົງປະກອບ</translation>
     </message>
@@ -4975,7 +4975,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchComponent.py" line="2538"/>
+      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>ປະເພດ</translation>
@@ -5019,7 +5019,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ດຶງຂໍ້ມູນຂອບທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="141"/>
+      <location filename="../../Arch.py" line="142"/>
       <source>Axis System</source>
       <translation>ລະບົບແກນ</translation>
     </message>
@@ -5039,9 +5039,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ເລືອກຢ່າງໜ້ອຍໜຶ່ງແກນ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="101"/>
+      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchAxis.py" line="984"/>
-      <location filename="../../ArchComponent.py" line="2469"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>ແກນ</translation>
@@ -5055,12 +5055,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>ບັນທຶກສຳເລັດແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1652"/>
+      <location filename="../../Arch.py" line="1663"/>
       <source>Truss</source>
       <translation>ໂຄງຫຼັງຄາ (Truss)</translation>
     </message>
@@ -5100,47 +5100,47 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ແບບແຕ້ມ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="426"/>
+      <location filename="../../Arch.py" line="436"/>
       <source>Fence</source>
       <translation>ຮົ້ວ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="592"/>
+      <location filename="../../Arch.py" line="602"/>
       <source>Materials</source>
       <translation>ວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="686"/>
+      <location filename="../../Arch.py" line="696"/>
       <source>View of {panel.Label}</source>
       <translation>ມຸມມອງຂອງ {panel.Label}</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="915"/>
+      <location filename="../../Arch.py" line="926"/>
       <source>Project</source>
       <translation>ໂຄງການ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1474"/>
+      <location filename="../../Arch.py" line="1485"/>
       <source>Stairs</source>
       <translation>ຂັ້ນໄດ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1598"/>
+      <location filename="../../Arch.py" line="1609"/>
       <source>Railing</source>
       <translation>ຮາວ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2425"/>
+      <location filename="../../Arch.py" line="2436"/>
       <source>Report</source>
       <translation>ລາຍງານ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2503"/>
+      <location filename="../../Arch.py" line="2514"/>
       <source>Structure</source>
       <translation>ໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2722"/>
+      <location filename="../../Arch.py" line="2733"/>
       <source>Covering</source>
       <translation>ວັດຖຸປົກຄຸມ</translation>
     </message>
@@ -5160,14 +5160,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ສ້າງວັດສະດຸປະສົມ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="530"/>
+      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>ວັດສະດຸ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="565"/>
+      <location filename="../../Arch.py" line="575"/>
       <source>MultiMaterial</source>
       <translation>ວັດສະດຸປະສົມ (MultiMaterial)</translation>
     </message>
@@ -5258,7 +5258,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ລຶບຊ່ວງ (Span) ອອກ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="494"/>
+      <location filename="../../Arch.py" line="504"/>
       <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>ຕາຕະລາງ</translation>
@@ -5404,7 +5404,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ຄວາມອຽງ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="204"/>
+      <location filename="../../Arch.py" line="205"/>
       <location filename="../../ArchPrecast.py" line="1723"/>
       <source>Level</source>
       <translation>ລະດັບ</translation>
@@ -5416,12 +5416,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ການໝູນ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="648"/>
+      <location filename="../../Arch.py" line="658"/>
       <source>Panel</source>
       <translation>ແຜ່ນ (Panel)</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="714"/>
+      <location filename="../../Arch.py" line="724"/>
       <source>PanelSheet</source>
       <translation>ແຜ່ນງານ (PanelSheet)</translation>
     </message>
@@ -5503,7 +5503,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ວັດຖຸນີ້ບໍ່ມີໜ້າ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="352"/>
+      <location filename="../../Arch.py" line="362"/>
       <source>Curtain Wall</source>
       <translation>ຝາແກ້ວ (Curtain Wall)</translation>
     </message>
@@ -5521,7 +5521,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="436"/>
-      <location filename="../../Arch.py" line="2438"/>
+      <location filename="../../Arch.py" line="2449"/>
       <source>New Statement</source>
       <translation>ໃບລາຍງານໃໝ່</translation>
     </message>
@@ -5533,7 +5533,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="894"/>
-      <location filename="../../Arch.py" line="749"/>
+      <location filename="../../Arch.py" line="759"/>
       <source>Pipe</source>
       <translation>ທໍ່ (Pipe)</translation>
     </message>
@@ -6056,7 +6056,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ໃບລວມຄຳສັ່ງ BIM SQL</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="796"/>
+      <location filename="../../Arch.py" line="806"/>
       <source>Connector</source>
       <translation>ຕົວເຊື່ອມຕໍ່</translation>
     </message>
@@ -6204,7 +6204,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
       <location filename="../../ArchCommands.py" line="1731"/>
-      <location filename="../../ArchComponent.py" line="2539"/>
+      <location filename="../../ArchComponent.py" line="2540"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>ຄ່າ (Value)</translation>
@@ -6217,7 +6217,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ຫົວໜ່ວຍ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1195"/>
+      <location filename="../../Arch.py" line="1206"/>
       <source>Schedule</source>
       <translation>ຕາຕະລາງກຳນົດເວລາ (Schedule)</translation>
     </message>
@@ -6327,17 +6327,17 @@ Floor creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2464"/>
+      <location filename="../../ArchComponent.py" line="2465"/>
       <source>Components of This Object</source>
       <translation>ສ່ວນປະກອບຂອງວັດຖຸນີ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2474"/>
+      <location filename="../../ArchComponent.py" line="2475"/>
       <source>Edit IFC Properties</source>
       <translation>ແກ້ໄຂຄຸນສົມບັດ IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2475"/>
+      <location filename="../../ArchComponent.py" line="2476"/>
       <source>Edit Standard Code</source>
       <translation>ແກ້ໄຂລະຫັດມາດຕະຖານ</translation>
     </message>
@@ -6508,7 +6508,7 @@ The ladybug or pysolar Python module is required.</source>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="315"/>
-      <location filename="../../ArchComponent.py" line="2461"/>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Component</source>
       <translation>ສ່ວນປະກອບ (Component)</translation>
     </message>
@@ -6542,91 +6542,91 @@ The ladybug or pysolar Python module is required.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimSpace.py" line="70"/>
-      <location filename="../../bimcommands/BimRoof.py" line="93"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
       <source>Select a base object</source>
       <translation>ເລືອກວັດຖຸພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2465"/>
+      <location filename="../../ArchComponent.py" line="2466"/>
       <source>Base component</source>
       <translation>ສ່ວນປະກອບພື້ນຖານ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <source>Additions</source>
       <translation>ສ່ວນເພີ່ມເຕີມ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2467"/>
+      <location filename="../../ArchComponent.py" line="2468"/>
       <source>Subtractions</source>
       <translation>ສ່ວນທີ່ລົບອອກ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2468"/>
+      <location filename="../../ArchComponent.py" line="2469"/>
       <source>Objects</source>
       <translation>ວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2471"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>Fixtures</source>
       <translation>ອຸປະກອນຕິດຕັ້ງ (Fixtures)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2472"/>
+      <location filename="../../ArchComponent.py" line="2473"/>
       <source>Group</source>
       <translation>ກຸ່ມ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2473"/>
+      <location filename="../../ArchComponent.py" line="2474"/>
       <source>Hosts</source>
       <translation>ຕົວຮອງຮັບ (Hosts)</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2537"/>
+      <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>ຄຸນລັກສະນະ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2545"/>
+      <location filename="../../ArchComponent.py" line="2546"/>
       <source>Add property</source>
       <translation>ເພີ່ມຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2549"/>
+      <location filename="../../ArchComponent.py" line="2550"/>
       <source>Add property set</source>
       <translation>ເພີ່ມຊຸດຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2550"/>
+      <location filename="../../ArchComponent.py" line="2551"/>
       <source>New…</source>
       <translation>ໃໝ່...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2816"/>
+      <location filename="../../ArchComponent.py" line="2817"/>
       <source>Options</source>
       <translation>ທາງເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2957"/>
+      <location filename="../../ArchComponent.py" line="2958"/>
       <source>Error saving property</source>
       <translation>ເກີດຂໍ້ຜິດພາດໃນການບັນທຶກຄຸນສົມບັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2699"/>
+      <location filename="../../ArchComponent.py" line="2700"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>ຄຸນສົມບັດໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2736"/>
+      <location filename="../../ArchComponent.py" line="2737"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>ຊຸດຄຸນສົມບັດໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1002"/>
+      <location filename="../../Arch.py" line="1013"/>
       <source>Rebar</source>
       <translation>ເຫຼັກເສີມ (Rebar)</translation>
     </message>
@@ -6642,7 +6642,7 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ເລືອກໜ້າພື້ນຖານເທິງວັດຖຸໂຄງສ້າງ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1229"/>
+      <location filename="../../Arch.py" line="1240"/>
       <source>Section</source>
       <translation>ໜ້າຕັດ</translation>
     </message>
@@ -6652,97 +6652,97 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ສ້າງລະນາບໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1775"/>
+      <location filename="../../ArchSectionPlane.py" line="1799"/>
       <source>Scope</source>
       <translation>ຂອບເຂດ (Scope)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1802"/>
       <source>Placement and Visuals</source>
       <translation>ການວາງຕຳແໜ່ງ ແລະ ການສະແດງຜົນ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1781"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <source>Objects seen by this section plane</source>
       <translation>ວັດຖຸທີ່ເຫັນໂດຍລະນາບໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1787"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>ລົບວັດຖຸທີ່ເນັ້ນອອກຈາກລາຍການດ້ານເທິງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1788"/>
+      <location filename="../../ArchSectionPlane.py" line="1812"/>
       <source>Add Selected</source>
       <translation>ເພີ່ມອັນທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1793"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>ເພີ່ມວັດຖຸທີ່ເລືອກເຂົ້າໃນຂອບເຂດຂອງລະນາບໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1794"/>
+      <location filename="../../ArchSectionPlane.py" line="1818"/>
       <source>Cut View</source>
       <translation>ມຸມມອງໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1801"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>ສ້າງໜ້າຕັດສົດໃນມຸມມອງ 3 ມິຕິ, ເຊື່ອງເລຂາຄະນິດດ້ານໃດດ້ານໜຶ່ງຂອງລະນາບເພື່ອເບິ່ງພາຍໃນໂມເດວຂອງທ່ານ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate by 90°</source>
       <translation>ໝູນ 90 ອົງສາ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>ໝູນລະນາບອ້ອມແກນ X ຂອງມັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1810"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>ໝູນລະນາບອ້ອມແກນ Y ຂອງມັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1814"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>ໝູນລະນາບອ້ອມແກນ Z ຂອງມັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1815"/>
+      <location filename="../../ArchSectionPlane.py" line="1839"/>
       <source>Resize to Fit</source>
       <translation>ປັບຂະໜາດໃຫ້ພໍດີ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1821"/>
+      <location filename="../../ArchSectionPlane.py" line="1845"/>
       <source>Recenter Plane</source>
       <translation>ຈັດລະນາບໄວ້ກາງໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1803"/>
+      <location filename="../../ArchSectionPlane.py" line="1827"/>
       <source>Rotate X</source>
       <translation>ໝູນແກນ X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1554"/>
+      <location filename="../../ArchSectionPlane.py" line="1598"/>
       <source>Toggle Cut View</source>
       <translation>ສະຫຼັບມຸມມອງໜ້າຕັດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1807"/>
+      <location filename="../../ArchSectionPlane.py" line="1831"/>
       <source>Rotate Y</source>
       <translation>ໝູນແກນ Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1835"/>
       <source>Rotate Z</source>
       <translation>ໝູນແກນ Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1820"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>ປັບຂະໜາດລະນາບໃຫ້ພໍດີກັບວັດຖຸໃນລາຍການດ້ານເທິງ</translation>
     </message>
@@ -6754,12 +6754,12 @@ The ladybug or pysolar Python module is required.</source>
       <translation>ກາງ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1850"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>ຈັດລະນາບໄວ້ກາງວັດຖຸໃນລາຍການດ້ານເທິງ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="231"/>
+      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>ອາຄານ (Building)</translation>
@@ -6797,7 +6797,7 @@ Building creation aborted.</source>
       <translation>ສ້າງອາຄານ</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1332"/>
+      <location filename="../../Arch.py" line="1343"/>
       <source>Space</source>
       <translation>ພື້ນທີ່ (Space)</translation>
     </message>
@@ -6805,6 +6805,12 @@ Building creation aborted.</source>
       <location filename="../../bimcommands/BimSpace.py" line="59"/>
       <source>Create Space</source>
       <translation>ສ້າງພື້ນທີ່</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="97"/>
+      <source>%1 select a base object</source>
+      <translation>%1 ເລືອກວັດຖຸພື້ນຖານ</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -6847,12 +6853,12 @@ Building creation aborted.</source>
       <translation>ຂອບເຂດພື້ນທີ່</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1720"/>
+      <location filename="../../Arch.py" line="1731"/>
       <source>Wall</source>
       <translation>ຝາ (Wall)</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1731"/>
+      <location filename="../../Arch.py" line="1742"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>ຝາສາມາດສ້າງຂຶ້ນຈາກວັດຖຸ Part ຫຼື Mesh ເທົ່ານັ້ນ</translation>
     </message>
@@ -7159,8 +7165,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
-      <source>Write Camera Position</source>
-      <translation>ບັນທຶກຕຳແໜ່ງກ້ອງ</translation>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7317,6 +7323,11 @@ Building creation aborted.</source>
       <location filename="../../ArchTruss.py" line="421"/>
       <source>Rod Type</source>
       <translation>ປະເພດຂອງແກນ</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <source>Create Sketch</source>
+      <translation type="unfinished">Create Sketch</translation>
     </message>
   </context>
   <context>
@@ -7518,8 +7529,8 @@ Building creation aborted.</source>
       <translation>ກຳລັງໄຟຟ້າທີ່ອຸປະກອນນີ້ຕ້ອງການ ເປັນວັດ (Watts)</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="234"/>
-      <location filename="../../Arch.py" line="307"/>
+      <location filename="../../Arch.py" line="235"/>
+      <location filename="../../Arch.py" line="317"/>
       <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>ປະເພດຂອງສິ່ງປຸກສ້າງນີ້</translation>
@@ -7560,7 +7571,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="282"/>
-      <location filename="../../ArchSectionPlane.py" line="1005"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <source>The shape of this object</source>
       <translation>ຮູບຮ່າງຂອງວັດຖຸນີ້</translation>
     </message>
@@ -7581,7 +7592,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="547"/>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1221"/>
       <source>The line width of this object</source>
       <translation>ຄວາມກວ້າງຂອງເສັ້ນຂອງວັດຖຸນີ້</translation>
     </message>
@@ -8023,17 +8034,17 @@ Building creation aborted.</source>
       <translation>ສະແດງປ້າຍຂໍ້ຄວາມສຳລັບຊົ່ວໂມງທີ່ສຳຄັນເທິງເສັ້ນທາງດວງອາທິດ</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2357"/>
+      <location filename="../../ArchSite.py" line="2359"/>
       <source>The altitude of the sun above the horizon</source>
       <translation>ລະດັບຄວາມສູງຂອງດວງອາທິດເໜືອຂອບຟ້າ</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2367"/>
+      <location filename="../../ArchSite.py" line="2369"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation>ທິດທາງເຂັມທິດຂອງດວງອາທິດ (0° ແມ່ນທິດເໜືອ)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2375"/>
+      <location filename="../../ArchSite.py" line="2377"/>
       <source>The date and time for this sun position</source>
       <translation>ວັນທີ ແລະ ເວລາສຳລັບຕຳແໜ່ງດວງອາທິດນີ້</translation>
     </message>
@@ -9135,7 +9146,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="997"/>
+      <location filename="../../ArchSectionPlane.py" line="1041"/>
       <source>The placement of this object</source>
       <translation>ການວາງຕຳແໜ່ງຂອງວັດຖຸນີ້</translation>
     </message>
@@ -9356,79 +9367,79 @@ Building creation aborted.</source>
       <translation>ຮູບຮ່າງຂອງເຫຼັກເສີມ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1016"/>
+      <location filename="../../ArchSectionPlane.py" line="1060"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>ວັດຖຸທີ່ຈະຖືກພິຈາລະນາໂດຍໜ້າຕັດ (section plane) ນີ້. ຖ້າຫວ່າງໄວ້ ໝາຍເຖິງເອກະສານທັງໝົດ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1027"/>
+      <location filename="../../ArchSectionPlane.py" line="1071"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>ຖ້າເປັນເທັດ (False), ວັດຖຸທີ່ບໍ່ແມ່ນຂອງແຂງ (non-solids) ຈະຖືກຕັດຄືກັນ, ເຊິ່ງອາດຈະເຮັດໃຫ້ຜົນໄດ້ຮັບຜິດພາດ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1039"/>
+      <location filename="../../ArchSectionPlane.py" line="1083"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>ຖ້າເປັນຈິງ (True), ມຸມມອງທີ່ໄດ້ຮັບຈະຖືກຕັດ (clip) ໃຫ້ພໍດີກັບເນື້ອທີ່ຂອງໜ້າຕັດ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1050"/>
+      <location filename="../../ArchSectionPlane.py" line="1094"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>ຖ້າເປັນຈິງ, ສີຂອງວັດສະດຸວັດຖຸຈະຖືກນຳໃຊ້ເພື່ອຕື່ມໃສ່ເນື້ອທີ່ສ່ວນທີ່ຖືກຕັດ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1062"/>
+      <location filename="../../ArchSectionPlane.py" line="1106"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>ເລຂາຄະນິດທີ່ຢູ່ໄກກວ່າຄ່ານີ້ຈະຖືກຕັດອອກ. ໃສ່ສູນສຳລັບແບບບໍ່ຈຳກັດ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The display length of this section plane</source>
       <translation>ຄວາມຍາວການສະແດງຜົນຂອງໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1147"/>
+      <location filename="../../ArchSectionPlane.py" line="1191"/>
       <source>The display height of this section plane</source>
       <translation>ຄວາມສູງການສະແດງຜົນຂອງໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1159"/>
+      <location filename="../../ArchSectionPlane.py" line="1203"/>
       <source>The size of the arrows of this section plane</source>
       <translation>ຂະໜາດຂອງລູກສອນຂອງໜ້າຕັດນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1168"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The transparency of this object</source>
       <translation>ຄວາມໂປ່ງໃສຂອງວັດຖຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
+      <location filename="../../ArchSectionPlane.py" line="1247"/>
       <source>Show the cut in the 3D view</source>
       <translation>ສະແດງສ່ວນຕັດໃນມຸມມອງ 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1238"/>
       <source>The color of this object</source>
       <translation>ສີຂອງວັດຖຸນີ້</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1214"/>
+      <location filename="../../ArchSectionPlane.py" line="1258"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>ໄລຍະຫ່າງລະຫວ່າງໜ້າຕັດ ແລະ ສ່ວນຕັດມຸມມອງຕົວຈິງ (ຄວນຮັກສາໃຫ້ເປັນຄ່າທີ່ນ້ອຍຫຼາຍແຕ່ບໍ່ແມ່ນສູນ)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1223"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>Show the label in the 3D view</source>
       <translation>ສະແດງປ້າຍຊື່ໃນມຸມມອງ 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1231"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>ຊື່ຂອງຟອນ</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1240"/>
+      <location filename="../../ArchSectionPlane.py" line="1284"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>ຂະໜາດຂອງຟອນຂໍ້ຄວາມ</translation>
@@ -11214,7 +11225,7 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ລົບສິ່ງທີ່ບໍ່ໄດ້ໃຊ້</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="95"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Rename</source>
       <translation>ປ່ຽນຊື່</translation>
@@ -11230,7 +11241,7 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ຮວມໄປທີ່...</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
       <source>Delete</source>
       <translation>ລົບ</translation>
@@ -11569,7 +11580,12 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ເລືອກວັດຖຸໃນລະນັບ (planar)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="75"/>
+      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <source>%1 select a planar object</source>
+      <translation>%1 ເລືອກວັດຖຸລະນາບ</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSlab.py" line="81"/>
       <source>Slab</source>
       <translation>ແຜ່ນພື້ນ (Slab)</translation>
     </message>
@@ -11619,89 +11635,106 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ເລືອກພຽງແຕ່ວັດຖຸດຽວເທົ່ານັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="93"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
       <source>Isolate</source>
       <translation>ແຍກດ່ຽວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="124"/>
+      <location filename="../../bimcommands/BimViews.py" line="137"/>
       <source>Creates a new working plane proxy</source>
       <translation>ສ້າງຕົວແທນລະນັບການເຮັດວຽກ (working plane proxy) ໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="125"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Deletes the selected item</source>
       <translation>ລົບລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>ໃຊ້ງານຢູ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
-      <source>New Level Above</source>
-      <translation>ສ້າງລະດັບໃໝ່ໄວ້ຂ້າງເທິງ</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>New Working Plane Proxy</source>
       <translation>ສ້າງຕົວແທນລະນັບການເຮັດວຽກໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Toggle Visibility</source>
       <translation>ສະຫຼັບການເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="94"/>
-      <source>Save View Position</source>
-      <translation>ບັນທຶກຕຳແໜ່ງມຸມມອງ</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="121"/>
-      <source>Creates a new level above the highest existing one</source>
-      <translation>ສ້າງລະດັບໃໝ່ໄວ້ຂ້າງເທິງລະດັບທີ່ສູງທີ່ສຸດທີ່ມີຢູ່</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="128"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Toggles the visibility of selected items</source>
       <translation>ສະຫຼັບການເບິ່ງເຫັນຂອງລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="131"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Turns all items off except the selected ones</source>
       <translation>ປິດທຸກລາຍການ ຍົກເວັ້ນແຕ່ລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
-      <source>Saves the current camera position to the selected items</source>
-      <translation>ບັນທຶກຕຳແໜ່ງກ້ອງປັດຈຸບັນໄວ້ໃນລາຍການທີ່ເລືອກ</translation>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <source>New Level Above</source>
+      <translation>ສ້າງລະດັບໃໝ່ໄວ້ຂ້າງເທິງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="135"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <source>Save Visibility of Objects</source>
+      <translation type="unfinished">Save Visibility of Objects</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <source>Creates a new level above the highest existing one</source>
+      <translation>ສ້າງລະດັບໃໝ່ໄວ້ຂ້າງເທິງລະດັບທີ່ສູງທີ່ສຸດທີ່ມີຢູ່</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <source>Saves the current camera view to the selected items</source>
+      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="148"/>
       <source>Renames the selected item</source>
       <translation>ປ່ຽນຊື່ລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="136"/>
+      <location filename="../../bimcommands/BimViews.py" line="149"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>ເປີດໃຊ້ງານລາຍການທີ່ເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="162"/>
+      <location filename="../../bimcommands/BimViews.py" line="176"/>
       <source>BIM Views Manager</source>
       <translation>ຕົວຈັດການມຸມມອງ BIM</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="310"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>ມຸມມອງ 2D</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="323"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>ແຜ່ນງານ</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
+      <source>Set Working Plane</source>
+      <translation>ກຳນົດລະນາບເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
+      <source>Sets the selected item as the current working plane</source>
+      <translation type="unfinished">Sets the selected item as the current working plane</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -11819,12 +11852,12 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ມີຄຸນສົມບັດນີ້ຢູ່ແລ້ວ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
       <source>Viewed lines</source>
       <translation>ເສັ້ນທີ່ເບິ່ງເຫັນ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="84"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
       <source>Cut lines</source>
       <translation>ເສັ້ນຕັດ</translation>
     </message>
@@ -11864,7 +11897,7 @@ Alt+PgUp ເພື່ອຢືດການດຶງຍືດ Alt+PgDown ເພ�
       <translation>ບໍ່ພົບອົງປະກອບທີ່ມີ id '{id}' ແລະ ປະເພດ '{sh_type}'</translation>
     </message>
     <message>
-      <location filename="../../importers/importSH3DHelper.py" line="3263"/>
+      <location filename="../../importers/importSH3DHelper.py" line="3255"/>
       <source>Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</source>
       <translation>ປະເພດຂອງ &lt;{elm.tag}&gt; #{i} ບໍ່ຖືກຮອງຮັບ: '{attribute}'. ກຳລັງຂ້າມໄປ!</translation>
     </message>
@@ -12480,12 +12513,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="37"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>New Sketch</source>
       <translation>ຮູບຮ່າງໃໝ່</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="40"/>
+      <location filename="../../bimcommands/BimSketch.py" line="41"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>ສ້າງແບບຮ່າງ (sketch) ໃໝ່ໃນລະນັບການເຮັດວຽກປັດຈຸບັນ</translation>
     </message>
@@ -12571,12 +12604,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="44"/>
+      <location filename="../../bimcommands/BimViews.py" line="55"/>
       <source>Views Manager</source>
       <translation>ຕົວຈັດການມຸມເບິ່ງ</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="56"/>
       <source>Shows or hides the views manager</source>
       <translation>ສະແດງ ຫຼື ຊ່ອນຕົວຈັດການມຸມເບິ່ງ</translation>
     </message>

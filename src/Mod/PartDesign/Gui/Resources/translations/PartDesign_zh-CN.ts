@@ -1437,92 +1437,92 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="98"/>
       <source>Subtractive Box Parameters</source>
-      <translation type="unfinished">Subtractive Box Parameters</translation>
+      <translation>减材长方体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="99"/>
       <source>Additive Box Parameters</source>
-      <translation type="unfinished">Additive Box Parameters</translation>
+      <translation>增材长方体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="101"/>
       <source>Subtractive Cylinder Parameters</source>
-      <translation type="unfinished">Subtractive Cylinder Parameters</translation>
+      <translation>减材圆柱体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="102"/>
       <source>Additive Cylinder Parameters</source>
-      <translation type="unfinished">Additive Cylinder Parameters</translation>
+      <translation>增材圆柱体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="104"/>
       <source>Subtractive Sphere Parameters</source>
-      <translation type="unfinished">Subtractive Sphere Parameters</translation>
+      <translation>减材球体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="105"/>
       <source>Additive Sphere Parameters</source>
-      <translation type="unfinished">Additive Sphere Parameters</translation>
+      <translation>增材球体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="107"/>
       <source>Subtractive Cone Parameters</source>
-      <translation type="unfinished">Subtractive Cone Parameters</translation>
+      <translation>减材圆锥体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="108"/>
       <source>Additive Cone Parameters</source>
-      <translation type="unfinished">Additive Cone Parameters</translation>
+      <translation>增材圆锥体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="110"/>
       <source>Subtractive Ellipsoid Parameters</source>
-      <translation type="unfinished">Subtractive Ellipsoid Parameters</translation>
+      <translation>减材椭球体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="111"/>
       <source>Additive Ellipsoid Parameters</source>
-      <translation type="unfinished">Additive Ellipsoid Parameters</translation>
+      <translation>增材椭球体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="113"/>
       <source>Subtractive Torus Parameters</source>
-      <translation type="unfinished">Subtractive Torus Parameters</translation>
+      <translation>减材圆环体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="114"/>
       <source>Additive Torus Parameters</source>
-      <translation type="unfinished">Additive Torus Parameters</translation>
+      <translation>增材圆环体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="116"/>
       <source>Subtractive Prism Parameters</source>
-      <translation type="unfinished">Subtractive Prism Parameters</translation>
+      <translation>减材棱柱体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="117"/>
       <source>Additive Prism Parameters</source>
-      <translation type="unfinished">Additive Prism Parameters</translation>
+      <translation>增材棱柱体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="119"/>
       <source>Subtractive Wedge Parameters</source>
-      <translation type="unfinished">Subtractive Wedge Parameters</translation>
+      <translation>减材楔形体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="120"/>
       <source>Additive Wedge Parameters</source>
-      <translation type="unfinished">Additive Wedge Parameters</translation>
+      <translation>增材楔形体参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="123"/>
       <source>Subtractive Primitive Parameters</source>
-      <translation type="unfinished">Subtractive Primitive Parameters</translation>
+      <translation>减材图元参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="124"/>
       <source>Additive Primitive Parameters</source>
-      <translation type="unfinished">Additive Primitive Parameters</translation>
+      <translation>增材图元参数</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1024"/>
@@ -2075,12 +2075,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="71"/>
       <source>Subtractive Helix Parameters</source>
-      <translation type="unfinished">Subtractive Helix Parameters</translation>
+      <translation>减材螺旋体参数</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="72"/>
       <source>Additive Helix Parameters</source>
-      <translation type="unfinished">Additive Helix Parameters</translation>
+      <translation>增材螺旋体参数</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="247"/>
@@ -2280,12 +2280,12 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="64"/>
       <source>Subtractive Loft Parameters</source>
-      <translation type="unfinished">Subtractive Loft Parameters</translation>
+      <translation>减材放样参数</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="65"/>
       <source>Additive Loft Parameters</source>
-      <translation type="unfinished">Additive Loft Parameters</translation>
+      <translation>增材放样参数</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="94"/>
@@ -2671,12 +2671,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="83"/>
       <source>Subtractive Pipe Section Orientation</source>
-      <translation type="unfinished">Subtractive Pipe Section Orientation</translation>
+      <translation>减材扫掠截面方向</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Additive Pipe Section Orientation</source>
-      <translation type="unfinished">Additive Pipe Section Orientation</translation>
+      <translation>增材扫掠截面方向</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="658"/>
@@ -2735,12 +2735,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="77"/>
       <source>Subtractive Pipe Parameters</source>
-      <translation type="unfinished">Subtractive Pipe Parameters</translation>
+      <translation>减材扫掠参数</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="78"/>
       <source>Additive Pipe Parameters</source>
-      <translation type="unfinished">Additive Pipe Parameters</translation>
+      <translation>增材扫掠参数</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="112"/>
@@ -2799,12 +2799,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="89"/>
       <source>Subtractive Pipe Section Transformation</source>
-      <translation type="unfinished">Subtractive Pipe Section Transformation</translation>
+      <translation>减材扫掠截面变换</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="90"/>
       <source>Additive Pipe Section Transformation</source>
-      <translation type="unfinished">Additive Pipe Section Transformation</translation>
+      <translation>增材扫掠截面变换</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="948"/>

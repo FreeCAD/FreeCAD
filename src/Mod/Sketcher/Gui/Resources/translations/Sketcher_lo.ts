@@ -763,7 +763,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>ສ້າງການລົບມຸມມົນ (Fillet)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="199"/>
       <source>Trim edge</source>
       <translation>ຕັດຂອບ (Trim)</translation>
     </message>
@@ -936,7 +936,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>ເພີ່ມຮ່ອງສ່ວນໂຄ້ງສະເກັດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="202"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>ໝູນເລຂາຄະນິດ</translation>
     </message>
@@ -977,7 +977,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>ສະຫຼັບເລຂາຄະນິດສຳລັບການສ້າງ (Construction)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1565"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>ເພີ່ມຂໍ້ກຳນົດແບບອັດຕະໂນມັດ</translation>
@@ -1016,54 +1016,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ເຈົ້າກຳລັງຮ້ອງຂໍໃຫ້ບໍ່ມີການປ່ຽນແປງໃນຄວາມຖີ່ຂອງຈຸດຕໍ່.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>ດັດຊະນີເລຂາຄະນິດ B-spline (GeoID) ຢູ່ນອກຂອບເຂດ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>ດັດຊະນີເລຂາຄະນິດ (GeoId) ທີ່ລະບຸບໍ່ແມ່ນ B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ດັດຊະນີຈຸດຕໍ່ຢູ່ນອກຂອບເຂດ. ໝາຍເຫດ: ຕາມຮູບແບບ OCC, ຈຸດຕໍ່ທຳອິດແມ່ນດັດຊະນີ 1 ບໍ່ແມ່ນສູນ.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>ຄວາມຖີ່ບໍ່ສາມາດເພີ່ມຂຶ້ນເກີນອົງສາຂອງ B-spline ໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>ຄວາມຖີ່ບໍ່ສາມາດຫຼຸດລົງຕໍ່າກວ່າສູນໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ບໍ່ສາມາດຫຼຸດຄວາມຖີ່ລົງພາຍໃນຄ່າຄວາມຄາດເຄື່ອນສູງສຸດໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>ຈຸດຕໍ່ບໍ່ສາມາດມີຄວາມຖີ່ເປັນສູນໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>ຄວາມຖີ່ຂອງຈຸດຕໍ່ບໍ່ສາມາດສູງກວ່າອົງສາຂອງ B-spline ໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>ຈຸດຕໍ່ບໍ່ສາມາດແຊກຢູ່ນອກຂອບເຂດພາລາມິເຕີຂອງ B-spline ໄດ້.</translation>
     </message>
@@ -3195,62 +3195,62 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'ລັດສະໝີ': ຈະໃຊ້ລັດສະໝີກັບທັງສອງ.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Single tool</source>
       <translation>ເຄື່ອງມືດຽວ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Separated tools</source>
       <translation>ເຄື່ອງມືແຍກ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Both</source>
       <translation>ທັງສອງ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Auto</source>
       <translation>ອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Diameter</source>
       <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="251"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Radius</source>
       <translation>ລັດສະໝີ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="261"/>
       <source>Always</source>
       <translation>ສະເໝີ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Never</source>
       <translation>ບໍ່ຕ້ອງເລີຍ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="264"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>When no scale feature is visible</source>
       <translation>ເມື່ອບໍ່ມີວັດຖຸປາກົດໃຫ້ເຫັນ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="271"/>
       <source>None</source>
       <translation>ບໍ່ມີ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>Dimensions only</source>
       <translation>ສະເພາະດ້ານຂະໜາດ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="274"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Position and dimensions</source>
       <translation>ຕຳແໜ່ງ ແລະ ຂະໜາດ</translation>
     </message>
@@ -3545,17 +3545,17 @@ Defaults to: %N = %V
       <translation>ໝາຍເຫດ: ການຕັ້ງຄ່າເຫຼົ່ານີ້ແມ່ນຄ່າເລີ່ມຕົ້ນສຳລັບແຜນຮ່າງໃໝ່.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="584"/>
+      <location filename="../../SketcherSettings.cpp" line="583"/>
       <source>Unexpected C++ exception</source>
       <translation>ຂໍ້ຜິດພາດ C++ ທີ່ບໍ່ໄດ້ຄາດຄິດ</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="587"/>
+      <location filename="../../SketcherSettings.cpp" line="586"/>
       <source>Sketcher</source>
       <translation>ຊ່າງສະເກັດ (Sketcher)</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="611"/>
+      <location filename="../../SketcherSettings.cpp" line="610"/>
       <source>Glyphs not present:</source>
       <translation>ບໍ່ມີຕົວອັກສອນ:</translation>
     </message>
@@ -4122,12 +4122,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <translation>ສະເກັດບໍ່ຖືກຕ້ອງ ແລະ ບໍ່ສາມາດແກ້ໄຂໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>The following constraint is partially redundant:</source>
       <translation>ຂໍ້ຈຳກັດຕໍ່ໄປນີ້ມີຄວາມຊໍ້າຊ້ອນບາງສ່ວນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
       <source>The following constraints are partially redundant:</source>
       <translation>ຂໍ້ຈຳກັດຕໍ່ໄປນີ້ມີຄວາມຊໍ້າຊ້ອນບາງສ່ວນ:</translation>
     </message>
@@ -4152,79 +4152,79 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <translation>ເປີດເຄື່ອງມືກວດສອບສະເກັດບໍ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following constraint:</source>
       <translation>ລຶບຂໍ້ຈຳກັດຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>ລຶບຂໍ້ຈຳກັດຕໍ່ໄປນີ້ອອກຢ່າງໜ້ອຍໜຶ່ງອັນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>Remove the following redundant constraint:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຊໍ້າຊ້ອນຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
       <source>Remove the following redundant constraints:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຊໍ້າຊ້ອນຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following malformed constraint:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຜິດຮູບແບບຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following malformed constraints:</source>
       <translation>ລຶບຂໍ້ຈຳກັດທີ່ຜິດຮູບແບບຕໍ່ໄປນີ້ອອກ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4447"/>
       <source>Empty sketch</source>
       <translation>ສະເກັດຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>Over-constrained:</source>
       <translation>ຂໍ້ຈຳກັດຫຼາຍເກີນໄປ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Malformed constraints:</source>
       <translation>ຂໍ້ຈຳກັດທີ່ຜິດຮູບແບບ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4466"/>
       <source>Redundant constraints:</source>
       <translation>ຂໍ້ຈຳກັດທີ່ຊໍ້າຊ້ອນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Partially redundant:</source>
       <translation>ຊໍ້າຊ້ອນບາງສ່ວນ:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Solver failed to converge</source>
       <translation>ຕົວແກ້ໄຂບໍ່ສາມາດຄິດໄລ່ໃຫ້ລົງຕົວໄດ້</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4485"/>
       <source>Under-constrained:</source>
       <translation>ຂໍ້ຈຳກັດບໍ່ພຽງພໍ:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ອົງສາອິດສະຫຼະ</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4491"/>
       <source>Fully constrained</source>
       <translation>ຂໍ້ຈຳກັດຄົບຖ້ວນແລ້ວ</translation>
     </message>
@@ -4715,7 +4715,7 @@ Eigen Sparse QR ແມ່ນອັລກໍຣິທຶມທີ່ປັບມ�
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4430"/>
       <source>and %1 more</source>
       <translation>ແລະ ອີກ %1 ອັນ</translation>
     </message>
@@ -4936,7 +4936,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ການປ່ຽນແປງຄຸນສົມບັດຂໍ້ຈຳກັດທີ່ບໍ່ໄດ້ຄວບຄຸມ ເຮັດໃຫ້ດັດສະນີຂໍ້ຈຳກັດບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1636"/>
+      <location filename="../../../App/SketchObject.cpp" line="1644"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>ພາຣາໂບລາ (Parabolas) ຖືກຍ້າຍລະບົບແລ້ວ. ໄຟລ໌ທີ່ຍ້າຍແລ້ວຈະບໍ່ສາມາດເປີດໃນ FreeCAD ເວີຊັນກ່ອນໜ້ານີ້ໄດ້!!
@@ -4969,8 +4969,8 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="229"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
@@ -5101,7 +5101,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
@@ -5138,7 +5138,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ບໍ່ສາມາດເພີ່ມຂອບໄດ້</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="215"/>
       <source>Failed to trim edge</source>
       <translation>ບໍ່ສາມາດຕັດແຕ່ງ (Trim) ຂອບໄດ້</translation>
     </message>
@@ -5150,7 +5150,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ຄ່າຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1494"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>ການກຳນົດຂໍ້ຈຳກັດອັດຕະໂນມັດເຮັດໃຫ້ເກີດຄວາມຊໍ້າຊ້ອນ. ກຳລັງລຶບພວກມັນອອກ</translation>
     </message>
@@ -5195,7 +5195,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ບໍ່ສາມາດເພີ່ມຮູບວົງລີໄດ້</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation>ບໍ່ສາມາດໝູນໄດ້</translation>
     </message>
@@ -5393,12 +5393,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>ລຶບເລຂາຄະນິດເດີມອອກ. ຖ້າສ້າງສຳເນົາອັນດຽວ, ນີ້ຈະກາຍເປັນການເຮັດວຽກແບບ 'ຍ້າຍ' ແທນ.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="552"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation>ໃຊ້ຂໍ້ຈຳກັດແບບເທົ່າກັນ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="557"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>ຖ້າເລືອກຕົວເລືອກນີ້, ຂໍ້ຈຳກັດດ້ານຂະໜາດຈະຖືກຍົກເວັ້ນຈາກການເຮັດວຽກ.
@@ -5788,19 +5788,6 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation>ດ້ານ (+'U'/ -'J')</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation>ລະດັບ Degree (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="670"/>
@@ -5819,14 +5806,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>ເຄື່ອງມືກຳນົດຂໍ້ຈຳກັດ</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="635"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation>ແຖວ (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -5959,12 +5938,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="584"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation>ໃຊ້ຂໍ້ຈຳກັດແບບເທົ່າກັນ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="588"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>ຖ້າເລືອກຕົວເລືອກນີ້, ຂໍ້ຈຳກັດດ້ານຂະໜາດຈະຖືກຍົກເວັ້ນຈາກການເຮັດວຽກ.
@@ -8154,25 +8133,31 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="103"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation>%1/%2 ເພີ່ມ/ຫຼຸດ ຈຳນວນອົງປະກອບ</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 ເລືອກຈຸດໃຈກາງ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 ກຳນົດມຸມເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="113"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 ກຳນົດມຸມໝຸນ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="277"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation>ພາລາມິເຕີການໝຸນ</translation>
     </message>
@@ -8244,19 +8229,31 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>ພາລາມິເຕີການຍ້າຍຂະໜານ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="515"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1/%2 ເພີ່ມ/ຫຼຸດ ຈຳນວນອົງປະກອບ</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1/%2 ເພີ່ມ/ຫຼຸດ ຈຳນວນແຖວ</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 ເລືອກຈຸດອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 ກຳນົດເວກເຕີການຍ້າຍຂະໜານ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 ກຳນົດເວກເຕີການຍ້າຍຂະໜານທີສອງ</translation>
@@ -8265,10 +8262,20 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
+      <source>Trimming Parameters</source>
+      <translation type="unfinished">Trimming Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation>%1 ເລືອກຂອບເພື່ອຕັດແຕ່ງ (Trim)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
+      <source>%1 toggle include axes as trim boundaries</source>
+      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8518,6 +8525,19 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>ລະດັບຂັ້ນ (Degree)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>ດ້ານ</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
       <location filename="../../Command.cpp" line="411"/>
@@ -8546,12 +8566,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_c2_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="598"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
       <source>Symmetric</source>
       <translation>ສົມມາດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="602"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation>ກະຈາຍອົງປະກອບແບບສົມມາດອ້ອມຮອບຕຳແໜ່ງຕົ້ນສະບັບ.</translation>
     </message>
@@ -8559,9 +8579,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="631"/>
-      <source>Elements (+'U'/-'J')</source>
-      <translation>ອົງປະກອບ (+'U'/ -'J')</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>ອົງປະກອບ</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>ແຖວ</translation>
     </message>
   </context>
   <context>
@@ -8591,14 +8619,27 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
+    </message>
+  </context>
+  <context>
     <name>TaskSketcherTool_c2_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="568"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
       <source>Symmetric</source>
       <translation>ສົມມາດ</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="572"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation>ກະຈາຍອົງປະກອບແບບສົມມາດອ້ອມຮອບຕຳແໜ່ງຕົ້ນສະບັບ.</translation>
     </message>
@@ -8606,9 +8647,9 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="592"/>
-      <source>Elements (+'U'/ -'J')</source>
-      <translation>ອົງປະກອບ (+'U'/ -'J')</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>ອົງປະກອບ</translation>
     </message>
   </context>
   <context>

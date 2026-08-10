@@ -111,6 +111,7 @@ public:
     {
         None,
         SelectFace,
+        SelectStartReference,
         SelectShape,
         SelectShapeFaces,
         SelectReferenceAxis
@@ -193,9 +194,12 @@ private:
     void onModeChanged_Side1(int index);
     void onModeChanged_Side2(int index);
     void onLengthChanged(double len, Side side);
+    void onStartModeChanged(int type);
+    void onStartOffsetChanged(double len);
     void onOffsetChanged(double len, Side side);
     void onTaperChanged(double angle, Side side);
     void onSelectFaceToggle(bool checked, Side side);
+    void onSelectStartReferenceToggle(bool checked);
 
     void onFaceName(const QString& text, Side side);
     void onAllFacesToggled(bool checked, Side side);
@@ -245,6 +249,7 @@ private:
 
     void selectedReferenceAxis(const Gui::SelectionChanges& msg);
     void selectedFace(const Gui::SelectionChanges& msg, SideController& side);
+    void selectedStartReference(const Gui::SelectionChanges& msg);
     void selectedShape(const Gui::SelectionChanges& msg, SideController& side);
     void selectedShapeFace(const Gui::SelectionChanges& msg, SideController& side);
 
@@ -262,6 +267,8 @@ private:
     void changeFaceName(QLineEdit* lineEdit, const QString& text);
 
     void createSideControllers();
+    void updateStartUI();
+    void updateStartReferenceName();
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* lengthGizmo1 = nullptr;

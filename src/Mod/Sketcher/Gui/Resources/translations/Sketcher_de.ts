@@ -936,7 +936,7 @@ ungültigen Randbedingungen und degenerierter Geometrie</translation>
       <translation>Bogennut hinzufügen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="202"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>Geometrien gedreht</translation>
     </message>
@@ -977,7 +977,7 @@ ungültigen Randbedingungen und degenerierter Geometrie</translation>
       <translation>Hilfsgeometrie umschalten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1565"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>Automatische Randbedingungen hinzufügen</translation>
@@ -3424,12 +3424,12 @@ werden die hier aufgeführten Zeichen mit einer Ersatzschriftart dargestellt.</t
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="511"/>
       <source>Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</source>
-      <translation>Zeigt Hilfslinien für Richtungsrandbedingungen wie parallel, senkrecht und tangential an</translation>
+      <translation>Zeigt Hilfslinien für ausrichtende automatische Randbedingungen an, wie die zum parallelen, senkrechten und tangentialen Ausrichten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="514"/>
       <source>Show directional autoconstraint helpers</source>
-      <translation>Gerichtete Randbedingungshelfer anzeigen</translation>
+      <translation>Hilfselemente für ausrichtende Randbedingungen anzeigen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="560"/>
@@ -4980,7 +4980,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="229"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
@@ -5111,7 +5111,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
@@ -5160,7 +5160,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Wertfehler</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1494"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>Automatische Randbedingungen verursachen Redundanz. Sie werden gelöscht</translation>
     </message>
@@ -5205,7 +5205,7 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Ellipse hinzufügen ist fehlgeschlagen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation>Drehen fehlgeschlagen</translation>
     </message>
@@ -5403,12 +5403,12 @@ Die Rasterweite ändert sich, wenn er kleiner als diese Anzahl von Pixeln wird.<
       <translation>Löscht die ursprüngliche Geometrie. Wird nur eine einzige Kopie erstellt, entspricht dies einem Vorgang zum 'Verschieben' der Geometrie.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="552"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation>Gleichheit(en) übernehmen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="557"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Wenn diese Option ausgewählt ist, werden maßliche Randbedingungen vom Vorgang ausgenommen.
@@ -5659,22 +5659,22 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="716"/>
       <source>Color of arc and line helpers and also bspline polygon, comb...</source>
-      <translation>Farbe der Bogen- und Linienhilfslinien sowie der B-Spline-Polygone, Kämme...</translation>
+      <translation>Farbe der Bogen- und Linienhilfselemente sowie der B-Spline-Polygone, Kämme...</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="736"/>
       <source>Line pattern of information edges</source>
-      <translation>Linienmuster von Informationskanten</translation>
+      <translation>Linienart der Informationskanten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="746"/>
       <source>Width of information edges</source>
-      <translation>Breite der Informationskanten</translation>
+      <translation>Linienbreite der Informationskanten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Grid and inactive helpers</source>
-      <translation>Raster und inaktive Helfer</translation>
+      <translation>Raster und inaktive Hilfselemente</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="790"/>
@@ -5798,19 +5798,6 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
     </message>
   </context>
   <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation>Anzahl der Seiten (+ 'U' / - 'J')</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation>Grad (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="670"/>
@@ -5829,14 +5816,6 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
       <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>Beschränkungs-Werkzeuge</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="635"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation>Reihen (+'R' / -'F')</translation>
     </message>
   </context>
   <context>
@@ -5969,12 +5948,12 @@ Stattdessen werden Gleichheits-Randbedingungen zwischen den Originalobjekten und
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="584"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation>Gleichheit(en) übernehmen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="588"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Wenn diese Option ausgewählt ist, werden maßliche Randbedingungen vom Vorgang ausgenommen.
@@ -8164,25 +8143,31 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="103"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation>%1 erhöht, %2 verringert die Anzahl der Elemente</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 Mittelpunkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 Startwinkel setzen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="113"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 Drehwinkel setzen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="277"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation>Parameter der bogenförmigen Anordnung</translation>
     </message>
@@ -8229,7 +8214,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
       <location filename="../../DrawSketchHandlerSplitting.h" line="209"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
-      <translation>%1 Stelle am Rand zum Teilen auswählen</translation>
+      <translation>%1 Position auf der zu teilenden Kante auswählen</translation>
     </message>
   </context>
   <context>
@@ -8254,22 +8239,34 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
       <translation>Parameter der linearen Anordnung</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="515"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1 erhöht, %2 verringert die Anzahl der Elemente</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1 erhöht, %2 verringert die Anzahl der Reihen</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 Referenzpunkt auswählen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation>%1 Translations-Vektor setzen</translation>
+      <translation>%1 Verschiebevektor setzen</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation>%1 den zweiten Translations-Vektor setzen</translation>
+      <translation>%1 den zweiten Verschiebevektor setzen</translation>
     </message>
   </context>
   <context>
@@ -8501,17 +8498,17 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandConstraints.cpp" line="2471"/>
       <source>%1 switch to weight</source>
-      <translation>%1 zu Gewicht wechseln</translation>
+      <translation>%1 wechselt zum Gewicht</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2484"/>
       <source>%1 switch to radius</source>
-      <translation>%1 zu Radius wechseln</translation>
+      <translation>%1 wechselt zum Radius</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2487"/>
       <source>%1 switch to diameter</source>
-      <translation>%1 zu Durchmesser wechseln</translation>
+      <translation>%1 wechselt zum Durchmesser</translation>
     </message>
   </context>
   <context>
@@ -8525,6 +8522,19 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
       <location filename="../../CommandConstraints.cpp" line="11019"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
       <translation>Fässt die ausgewählten Geometrien als eine einzelne Einheit zusammen. Die Position und die Größe der gruppierten Geometrien können bestimmt werden, indem die Hilfslinie, die erstellt wurde, mit Randbedingungen festgelegt wird. Randbedingungen, die gruppierten Kanten zugeordnet sind, werden ignoriert, solange diese Randbedingung Gruppe festlegen existiert.</translation>
+    </message>
+  </context>
+  <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>Grad</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>Seiten</translation>
     </message>
   </context>
   <context>
@@ -8556,22 +8566,30 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
   <context>
     <name>TaskSketcherTool_c2_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="598"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
       <source>Symmetric</source>
       <translation>Symmetrisch</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="602"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
-      <translation>Verteilt die Elemente symmetrisch um die ursprüngliche Position herum.</translation>
+      <translation>Verteilt die Elemente symmetrisch zur ursprünglichen Position.</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="631"/>
-      <source>Elements (+'U'/-'J')</source>
-      <translation>Elemente (+'U'/-'J')</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>Elemente</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>Reihen</translation>
     </message>
   </context>
   <context>
@@ -8603,22 +8621,22 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
   <context>
     <name>TaskSketcherTool_c2_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="568"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
       <source>Symmetric</source>
       <translation>Symmetrisch</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="572"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
       <source>Distribute the elements symmetrically around the original position.</source>
-      <translation>Verteilt die Elemente symmetrisch um die ursprüngliche Position herum.</translation>
+      <translation>Verteilt die Elemente symmetrisch zur ursprünglichen Position.</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="592"/>
-      <source>Elements (+'U'/ -'J')</source>
-      <translation>Elemente (+'U'/ -'J')</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>Elemente</translation>
     </message>
   </context>
   <context>

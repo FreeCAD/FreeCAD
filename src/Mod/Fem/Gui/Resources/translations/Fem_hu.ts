@@ -1811,6 +1811,16 @@ hibaüzenet megjelenik, lehetséges, hogy ezt az
       <translation>Törlés</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Csak egy felület az objektumon! - a fő felületre költözött</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Válassza ki a következő típusok függő geometriáját </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1834,26 +1844,16 @@ hibaüzenet megjelenik, lehetséges, hogy ezt az
       <translation type="unfinished">Selection Error</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Csak egy felület az objektumon! - a fő felületre költözött</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Válassza ki a következő típusok függő geometriáját </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Felület</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Él, felület</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -3674,7 +3674,7 @@ egyenletek esetén használatos</translation>
       <location filename="../ui/MeshAdvanced.ui" line="134"/>
       <location filename="../ui/MeshAdvanced.ui" line="695"/>
       <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation>Az anizotróp hálófinomítások kizárólag a BAMG (2D) és az MMG3D (3D) algoritmusokkal működnek</translation>
+      <translation>Les densifications de maillages anisotropes ne fonctionnent qu'avec les algorithmes BAMG (2D) et MMG3D (3D).</translation>
     </message>
     <message>
       <location filename="../ui/MeshAdvanced.ui" line="179"/>
@@ -5020,13 +5020,13 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Válasszon alap geometria típust: felület; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Válasszon alap geometria típust: él, lap; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Válasszon alárendelt geometria típust: felület; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Válasszon alárendelt geometria típust: él, lap; kattintson a Hozzáadás vagy Eltávolítás gombra</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
