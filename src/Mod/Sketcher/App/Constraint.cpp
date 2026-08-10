@@ -34,6 +34,7 @@
 #include "nlohmann/json.hpp"
 
 #include <fmt/ranges.h>
+#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -360,45 +361,28 @@ void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int to
 
 std::string Constraint::toString() const
 {
-    std::string result;
-
-    result += this->typeToString();
-    result += "(";
-    result += this->internalAlignmentTypeToString();
-    result += ") ";
-    result += this->elementsToString();
-
-    return result;
+    return fmt::format(
+        "Type={}, IntAlignType={}, Elements={}",
+        this->typeToString(),
+        this->internalAlignmentTypeToString(),
+        this->elementsToString()
+    );
 }
 
 std::string Constraint::elementsToString() const
 {
-    std::string result;
-
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    auto elementsView = std::views::iota(size_t {0}, this->elements.size())
+    auto elements = std::views::iota(size_t {0}, this->elements.size())
         | std::views::transform([&](size_t i) { return getElement(i); });
-
-    for (const auto& element : elementsView) {
-        if (!result.empty()) {
-            result += ", ";
-        }
-        result += "(";
-        result += element.toString();
-        result += ")";
-    }
-#else
-    for (const auto& element : this->elements) {
-        if (!result.empty()) {
-            result += ", ";
-        }
-        result += element.toString();
-    }
 #endif
 
-    result = "[" + result + "]";
-
-    return result;
+    return fmt::format(
+        "[{}]",
+        fmt::join(
+            elements | std::views::transform([](const auto& element) { return element.toString(); }),
+            ", "
+        )
+    );
 }
 
 std::string Constraint::typeToString(ConstraintType type)

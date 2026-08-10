@@ -26,6 +26,7 @@
 
 #include <functional>
 #include <string>
+#include <array>
 
 #include <FCConfig.h>
 
@@ -86,10 +87,11 @@ enum GeoEnum
  */
 enum class PointPos : int
 {
-    none = 0,   // Edge of a geometry
-    start = 1,  // Starting point of a geometry
-    end = 2,    // End point of a geometry
-    mid = 3     // Mid point of a geometry
+    none = 0,    // Edge of a geometry
+    start = 1,   // Starting point of a geometry
+    end = 2,     // End point of a geometry
+    mid = 3,     // Mid point of a geometry
+    NumPointPos  // must be the last item
 };
 
 /** @brief      Struct for storing a {GeoId, PointPos} pair.
@@ -138,6 +140,10 @@ public:
         return pointPosToString(Pos);
     }
     static std::string pointPosToString(PointPos Pos);
+
+    constexpr static std::array<const char*, static_cast<size_t>(PointPos::NumPointPos)> pointPos2str {
+        {"none", "start", "end", "mid"}
+    };
 
     /** @brief GeoElementId of the Root Point
      */
