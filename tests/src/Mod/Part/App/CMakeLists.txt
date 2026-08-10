@@ -17,6 +17,7 @@ add_executable(Part_tests_run
         FeaturePartCut.cpp
         FeaturePartFuse.cpp
         FeatureRevolution.cpp
+        FeatureSectionAnalysis.cpp
         FuzzyBoolean.cpp
         Geometry.cpp
         PartFeature.cpp
