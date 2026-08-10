@@ -891,9 +891,19 @@ double FeatureExtrude::getStartReferenceOffset(
     }
 
     TopoShape referenceShape;
+    const auto& subValues = reference.getSubValues();
     if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        referenceShape
-            = getTopoShapeVerifiedFace(false, false, reference.getValue(), reference.getSubValues());
+        if (!subValues.empty()) {
+            referenceShape = Part::Feature::getTopoShape(
+                reference.getValue(),
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                    | Part::ShapeOption::Transform,
+                subValues.front().c_str()
+            );
+        }
+        if (!referenceShape.hasSubShape(TopAbs_FACE)) {
+            referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+        }
     }
     else {
         getUpToFaceFromLinkSub(referenceShape, reference);
