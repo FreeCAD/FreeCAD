@@ -83,53 +83,11 @@ def bidirectional(
     # Use the proven generate_t_values (with coverage fix) for full coverage
     # ------------------------------------------------------------------
     step_positions = facing_common.generate_t_values(
-        polygon, step_vec, tool_diameter, stepover_percent, origin
+        polygon, step_vec, tool_diameter, stepover_percent, origin, end_at_center=True
     )
 
     tool_radius = tool_diameter / 2.0
-    stepover_distance = tool_diameter * stepover_percent / 100.0
-
-    # Coverage guarantee at ≥100% stepover (exact same fix as zigzag/directional)
-    if stepover_percent >= 99.9 and step_positions:
-        min_covered = min(step_positions) - tool_radius
-        max_covered = max(step_positions) + tool_radius
-
-        added = False
-        if max_covered < max_t - 1e-4:
-            step_positions.append(step_positions[-1] + stepover_distance)
-            added = True
-        if min_covered > min_t + 1e-4:
-            step_positions.insert(0, step_positions[0] - stepover_distance)
-            added = True
-        if added:
-            Path.Log.info(
-                "Bidirectional facing: Added extra pass(es) for full coverage at ≥100% stepover"
-            )
-
     center = (min_t + max_t) / 2.0
-
-    # Split into bottom (≤ center) and top (> center)
-    bottom_positions = [t for t in step_positions if t <= center]  # ascending = outer → inner
-    top_positions = [t for t in step_positions if t > center][::-1]  # descending = outer → inner
-
-    # Interleave, starting with top if reverse=True
-    all_passes = []
-    max_passes = max(len(bottom_positions), len(top_positions))
-    for i in range(max_passes):
-        if reverse:
-            if i < len(top_positions):
-                all_passes.append(("top", top_positions[i]))
-            if i < len(bottom_positions):
-                all_passes.append(("bottom", bottom_positions[i]))
-        else:
-            if i < len(bottom_positions):
-                all_passes.append(("bottom", bottom_positions[i]))
-            if i < len(top_positions):
-                all_passes.append(("top", top_positions[i]))
-
-    Path.Log.debug(
-        f"Bidirectional: {len(all_passes)} passes ({len(bottom_positions)} bottom, {len(top_positions)} top)"
-    )
 
     commands = []
     tool_radius = tool_diameter / 2.0
@@ -139,19 +97,23 @@ def bidirectional(
     start_s = min_s - total_extension
     end_s = max_s + total_extension
 
-    for side, t in all_passes:
-        # Same direction for all passes on the same side → short outside rapids
-        if side == "bottom":
-            if milling_direction == "climb":
-                p_start, p_end = end_s, start_s  # right → left
-            else:
-                p_start, p_end = start_s, end_s  # left → right
-        else:  # top
+    swap = reverse
+    while step_positions:
+        if swap:
+            index = -1
             if milling_direction == "climb":
                 p_start, p_end = start_s, end_s  # left → right
             else:
                 p_start, p_end = end_s, start_s  # right → left
+        else:
+            index = 0
+            if milling_direction == "climb":
+                p_start, p_end = end_s, start_s  # right → left
+            else:
+                p_start, p_end = start_s, end_s  # left → right
 
+        swap = not swap
+        t = step_positions.pop(index)
         start_point = origin + primary_vec * p_start + step_vec * t
         end_point = origin + primary_vec * p_end + step_vec * t
         start_point.z = z

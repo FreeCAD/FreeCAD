@@ -405,7 +405,7 @@ def project_bounds(wire, vec, origin):
     return (min(ts), max(ts))
 
 
-def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin):
+def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin, end_at_center=False):
     """Generate step positions along step_vec with engagement offset and stepover.
 
     The first pass engages (100 - stepover_percent)% of the tool diameter.
@@ -424,16 +424,33 @@ def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin):
     # Start position: tool center positioned so engagement_amount reaches polygon edge
     # Tool center at: min_t - tool_radius + engagement_amount
     # This positions the engaged portion at the polygon edge
-    t = min_t - tool_radius + engagement_amount
     t_end = max_t + tool_radius - engagement_amount
 
-    values = []
     # Guard against zero/negative stepover
     if stepover <= 0:
-        return [t]
-    while t <= t_end + 1e-9:
-        values.append(t)
-        t += stepover
+        raise ValueError("Zero/negative stepover")
+
+    if end_at_center:
+        t = t_end
+        values = [-t, +t]
+        while t - tool_radius > -t + tool_radius and not Path.Geom.isRoughly(
+            t - tool_radius, -t + tool_radius
+        ):
+            t -= stepover
+            values.append(-t)
+            values.append(+t)
+        if (
+            values[0] + tool_radius > max_t or Path.Geom.isRoughly(values[0] + tool_radius, max_t)
+        ) or (values[-2] + tool_radius > values[-1] - tool_radius + stepover):
+            del values[-1]
+        values.sort()
+    else:
+        t = min_t - tool_radius + engagement_amount
+        values = [t]
+        while t + tool_radius < max_t and not Path.Geom.isRoughly(t + tool_radius, max_t):
+            t += stepover
+            values.append(t)
+
     return values
 
 

@@ -81,21 +81,6 @@ def directional(
     )
 
     tool_radius = tool_diameter / 2.0
-    stepover_distance = tool_diameter * (stepover_percent / 100.0)
-
-    if stepover_percent >= 99.9 and step_positions:
-        min_covered = min(step_positions) - tool_radius
-        max_covered = max(step_positions) + tool_radius
-
-        added = False
-        if max_covered < max_t - 1e-4:
-            step_positions.append(step_positions[-1] + stepover_distance)
-            added = True
-        if min_covered > min_t + 1e-4:
-            step_positions.insert(0, step_positions[0] - stepover_distance)
-            added = True
-        if added:
-            Path.Log.info("Directional: Added extra pass(es) for full coverage at high stepover")
 
     # Reverse = mirror positions around center (exactly like bidirectional) to preserve engagement offset on the starting side
     if reverse:
@@ -151,47 +136,5 @@ def directional(
         kept_segments += 1
 
     Path.Log.debug(f"Directional: generated {kept_segments} segments")
-    # Fallback: if nothing kept due to numeric guards, emit a single mid-line pass across bbox
-    if kept_segments == 0:
-        t_candidates = []
-        # mid, min, max t positions
-        t_candidates.append(0.5 * (min_t + max_t))
-        t_candidates.append(min_t)
-        t_candidates.append(max_t)
-        for t in t_candidates:
-            intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
-            if not intervals:
-                continue
-            s0, s1 = intervals[0]
-            start_s = max(s0 - pass_extension, min_s - total_extension)
-            end_s = min(s1 + pass_extension, max_s + total_extension)
-            if end_s <= start_s:
-                continue
-            if milling_direction == "climb":
-                p_start, p_end = start_s, end_s
-            else:
-                p_start, p_end = end_s, start_s
-            if reverse:
-                p_start, p_end = p_end, p_start
-            sp = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            ep = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            sp.z = z
-            ep.z = z
-            # Minimal preamble
-            if retract_height is not None:
-                commands.append(Path.Command("G0", {"Z": retract_height}))
-                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y, "Z": retract_height}))
-                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y, "Z": z}))
-            else:
-                commands.append(Path.Command("G1", {"X": sp.x, "Y": sp.y, "Z": z}))
-            commands.append(Path.Command("G1", {"X": ep.x, "Y": ep.y, "Z": z}))
-            break
+
     return commands

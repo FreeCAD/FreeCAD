@@ -237,21 +237,6 @@ def zigzag(
     tool_radius = tool_diameter / 2.0
     stepover_distance = tool_diameter * (stepover_percent / 100.0)
 
-    # Guarantee full coverage at high stepover – identical to bidirectional/directional
-    if stepover_percent >= 99.9 and step_positions:
-        min_covered = min(step_positions) - tool_radius
-        max_covered = max(step_positions) + tool_radius
-
-        added = False
-        if max_covered < max_t - 1e-4:
-            step_positions.append(step_positions[-1] + stepover_distance)
-            added = True
-        if min_covered > min_t + 1e-4:
-            step_positions.insert(0, step_positions[0] - stepover_distance)
-            added = True
-        if added:
-            Path.Log.info("Zigzag: Added extra pass(es) for full coverage at ≥100% stepover")
-
     # Reverse only reverses traversal order (same positions set as reverse=False, identical coverage)
     if reverse:
         step_positions = step_positions[::-1]
