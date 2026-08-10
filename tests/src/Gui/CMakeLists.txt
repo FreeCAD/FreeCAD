@@ -31,6 +31,7 @@ target_link_libraries(Gui_tests_run PRIVATE
 add_executable(Gui_navigation_tests
         NavigationBehavior.cpp
         GestureNavigationBehavior.cpp
+        MayaGestureNavigationBehavior.cpp
         NavigationTestSupport.cpp
 )
 
