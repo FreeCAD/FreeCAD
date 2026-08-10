@@ -29,6 +29,7 @@
 
 
 class Ui_TaskLoftParameters;
+class Ui_TaskLoftAdvancedParameters;
 class QListWidget;
 
 namespace App
@@ -57,16 +58,16 @@ public:
     );
     ~TaskLoftParameters() override;
 
+Q_SIGNALS:
+    void algorithmChanged(int);
+    void updateViewChanged(bool);
+
 private Q_SLOTS:
     void onProfileButton(bool);
     void onRefButtonAdd(bool);
     void onRefButtonRemove(bool);
     void onClosed(bool);
     void onModeChanged(int);
-    void onMaxDegreeChanged(int);
-    void onParametrizationChanged(int);
-    void onContinuityChanged(int);
-    void onCheckCompatibility(bool);
     void onDeleteSection();
     void indexesMoved();
 
@@ -84,7 +85,6 @@ protected:
 private:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateUI();
-    void updateAlgorithmOptions(int mode);
     bool referenceSelected(const Gui::SelectionChanges& msg) const;
     void removeFromListWidget(QListWidget* w, QString name);
     void clearButtons(const selectionModes notThis = none);
@@ -96,6 +96,35 @@ private:
     std::unique_ptr<Ui_TaskLoftParameters> ui;
 
     selectionModes selectionMode = none;
+};
+
+class TaskLoftAdvancedParameters: public TaskSketchBasedParameters
+{
+    Q_OBJECT
+
+public:
+    explicit TaskLoftAdvancedParameters(
+        ViewProviderLoft* LoftView,
+        bool newObj = false,
+        QWidget* parent = nullptr
+    );
+    ~TaskLoftAdvancedParameters() override;
+
+public Q_SLOTS:
+    void updateAlgorithmOptions(int mode);
+    void setUpdateView(bool enabled);
+
+private Q_SLOTS:
+    void onMaxDegreeChanged(int);
+    void onParametrizationChanged(int);
+    void onContinuityChanged(int);
+    void onCheckCompatibility(bool);
+
+private:
+    void onSelectionChanged(const Gui::SelectionChanges&) override;
+
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskLoftAdvancedParameters> ui;
 };
 
 /// simulation dialog for the TaskView
@@ -112,6 +141,7 @@ public:
 
 protected:
     TaskLoftParameters* parameter;
+    TaskLoftAdvancedParameters* advanced;
 };
 
 }  // namespace PartDesignGui

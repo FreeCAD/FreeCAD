@@ -38,6 +38,7 @@
 #include <Mod/PartDesign/App/FeatureLoft.h>
 
 #include "ui_TaskLoftParameters.h"
+#include "ui_TaskLoftAdvancedParameters.h"
 #include "TaskLoftParameters.h"
 #include "TaskSketchBasedParameters.h"
 
@@ -66,6 +67,13 @@ QString loftTaskTitle(ViewProviderLoft* view)
     return isSubtractiveLoft(view) ? TaskLoftParameters::tr("Subtractive Loft Parameters")
                                    : TaskLoftParameters::tr("Additive Loft Parameters");
 }
+
+QString loftAdvancedTaskTitle(ViewProviderLoft* view)
+{
+    return isSubtractiveLoft(view)
+        ? TaskLoftAdvancedParameters::tr("Subtractive Loft Advanced Parameters")
+        : TaskLoftAdvancedParameters::tr("Additive Loft Advanced Parameters");
+}
 }  // namespace
 
 TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj*/, QWidget* parent)
@@ -86,18 +94,12 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onRefButtonRemove);
     connect(ui->comboBoxMode, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskLoftParameters::onModeChanged);
-    connect(ui->spinBoxMaxDegree, qOverload<int>(&QSpinBox::valueChanged),
-            this, &TaskLoftParameters::onMaxDegreeChanged);
-    connect(ui->comboBoxParametrization, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &TaskLoftParameters::onParametrizationChanged);
-    connect(ui->comboBoxContinuity, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &TaskLoftParameters::onContinuityChanged);
-    connect(ui->checkBoxCompatibility, &QCheckBox::toggled,
-            this, &TaskLoftParameters::onCheckCompatibility);
     connect(ui->checkBoxClosed, &QCheckBox::toggled,
             this, &TaskLoftParameters::onClosed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
             this, &TaskLoftParameters::onUpdateView);
+    connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
+            this, &TaskLoftParameters::updateViewChanged);
     // clang-format on
 
     // Create context menu
@@ -150,17 +152,6 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     // get options
     const int mode = loft->LoftType.getValue();
     ui->comboBoxMode->setCurrentIndex(mode);
-    const auto* degreeConstraints = loft->MaxDegree.getConstraints();
-    ui->spinBoxMaxDegree->setRange(
-        degreeConstraints->LowerBound,
-        degreeConstraints->UpperBound
-    );
-    ui->spinBoxMaxDegree->setSingleStep(degreeConstraints->StepSize);
-    ui->spinBoxMaxDegree->setValue(loft->MaxDegree.getValue());
-    ui->comboBoxParametrization->setCurrentIndex(loft->Parametrization.getValue());
-    ui->comboBoxContinuity->setCurrentIndex(loft->Continuity.getValue());
-    ui->checkBoxCompatibility->setChecked(loft->CheckCompatibility.getValue());
-    updateAlgorithmOptions(mode);
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
 
     // activate and de-activate dialog elements as appropriate
@@ -173,6 +164,64 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
 
 TaskLoftParameters::~TaskLoftParameters() = default;
 
+TaskLoftAdvancedParameters::TaskLoftAdvancedParameters(
+    ViewProviderLoft* LoftView,
+    bool /*newObj*/,
+    QWidget* parent
+)
+    : TaskSketchBasedParameters(
+        LoftView,
+        parent,
+        loftTaskIconName(LoftView),
+        loftAdvancedTaskTitle(LoftView)
+    )
+    , ui(new Ui_TaskLoftAdvancedParameters)
+{
+    proxy = new QWidget(this);
+    ui->setupUi(proxy);
+    QMetaObject::connectSlotsByName(this);
+
+    // clang-format off
+    connect(ui->spinBoxMaxDegree, qOverload<int>(&QSpinBox::valueChanged),
+            this, &TaskLoftAdvancedParameters::onMaxDegreeChanged);
+    connect(ui->comboBoxParametrization, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftAdvancedParameters::onParametrizationChanged);
+    connect(ui->comboBoxContinuity, qOverload<int>(&QComboBox::currentIndexChanged),
+            this, &TaskLoftAdvancedParameters::onContinuityChanged);
+    connect(ui->checkBoxCompatibility, &QCheckBox::toggled,
+            this, &TaskLoftAdvancedParameters::onCheckCompatibility);
+    // clang-format on
+
+    groupLayout()->addWidget(proxy);
+
+    const auto children = proxy->findChildren<QWidget*>();
+    for (QWidget* child : children) {
+        child->blockSignals(true);
+    }
+
+    auto* loft = LoftView->getObject<PartDesign::Loft>();
+    const auto* degreeConstraints = loft->MaxDegree.getConstraints();
+    ui->spinBoxMaxDegree->setRange(
+        degreeConstraints->LowerBound,
+        degreeConstraints->UpperBound
+    );
+    ui->spinBoxMaxDegree->setSingleStep(degreeConstraints->StepSize);
+    ui->spinBoxMaxDegree->setValue(loft->MaxDegree.getValue());
+    ui->comboBoxParametrization->setCurrentIndex(loft->Parametrization.getValue());
+    ui->comboBoxContinuity->setCurrentIndex(loft->Continuity.getValue());
+    ui->checkBoxCompatibility->setChecked(loft->CheckCompatibility.getValue());
+    updateAlgorithmOptions(loft->LoftType.getValue());
+
+    for (QWidget* child : children) {
+        child->blockSignals(false);
+    }
+}
+
+TaskLoftAdvancedParameters::~TaskLoftAdvancedParameters() = default;
+
+void TaskLoftAdvancedParameters::onSelectionChanged(const Gui::SelectionChanges&)
+{}
+
 void TaskLoftParameters::updateUI()
 {
     // we must assure the changed loft is kept visible on section changes,
@@ -184,7 +233,7 @@ void TaskLoftParameters::updateUI()
     }
 }
 
-void TaskLoftParameters::updateAlgorithmOptions(int mode)
+void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
 {
     const bool usesApproximation = mode != 2;
     const bool usesParametrization = mode <= 1;
@@ -194,6 +243,11 @@ void TaskLoftParameters::updateAlgorithmOptions(int mode)
     ui->labelContinuity->setEnabled(usesApproximation);
     ui->comboBoxParametrization->setEnabled(usesParametrization);
     ui->labelParametrization->setEnabled(usesParametrization);
+}
+
+void TaskLoftAdvancedParameters::setUpdateView(bool enabled)
+{
+    onUpdateView(enabled);
 }
 
 void TaskLoftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -389,12 +443,12 @@ void TaskLoftParameters::onModeChanged(int index)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->LoftType.setValue(index);
-        updateAlgorithmOptions(index);
+        Q_EMIT algorithmChanged(index);
         recomputeFeature();
     }
 }
 
-void TaskLoftParameters::onMaxDegreeChanged(int value)
+void TaskLoftAdvancedParameters::onMaxDegreeChanged(int value)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->MaxDegree.setValue(value);
@@ -402,7 +456,7 @@ void TaskLoftParameters::onMaxDegreeChanged(int value)
     }
 }
 
-void TaskLoftParameters::onParametrizationChanged(int index)
+void TaskLoftAdvancedParameters::onParametrizationChanged(int index)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Parametrization.setValue(index);
@@ -410,7 +464,7 @@ void TaskLoftParameters::onParametrizationChanged(int index)
     }
 }
 
-void TaskLoftParameters::onContinuityChanged(int index)
+void TaskLoftAdvancedParameters::onContinuityChanged(int index)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Continuity.setValue(index);
@@ -418,7 +472,7 @@ void TaskLoftParameters::onContinuityChanged(int index)
     }
 }
 
-void TaskLoftParameters::onCheckCompatibility(bool enabled)
+void TaskLoftAdvancedParameters::onCheckCompatibility(bool enabled)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->CheckCompatibility.setValue(enabled);
@@ -469,8 +523,23 @@ TaskDlgLoftParameters::TaskDlgLoftParameters(ViewProviderLoft* LoftView, bool ne
 {
     assert(LoftView);
     parameter = new TaskLoftParameters(LoftView, newObj);
+    advanced = new TaskLoftAdvancedParameters(LoftView, newObj);
+
+    connect(
+        parameter,
+        &TaskLoftParameters::algorithmChanged,
+        advanced,
+        &TaskLoftAdvancedParameters::updateAlgorithmOptions
+    );
+    connect(
+        parameter,
+        &TaskLoftParameters::updateViewChanged,
+        advanced,
+        &TaskLoftAdvancedParameters::setUpdateView
+    );
 
     Content.push_back(parameter);
+    Content.push_back(advanced);
     Content.push_back(preview);
 }
 

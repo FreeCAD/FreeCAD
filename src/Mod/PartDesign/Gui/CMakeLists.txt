@@ -49,6 +49,7 @@ set(PartDesignGui_UIC_SRCS
     TaskPipeOrientation.ui
     TaskPipeScaling.ui
     TaskLoftParameters.ui
+    TaskLoftAdvancedParameters.ui
     DlgReference.ui
     DlgActiveBody.ui
     TaskHelixParameters.ui
@@ -192,6 +193,7 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskPipeParameters.h
     TaskPipeParameters.cpp
     TaskLoftParameters.ui
+    TaskLoftAdvancedParameters.ui
     TaskLoftParameters.h
     TaskLoftParameters.cpp
     TaskHelixParameters.ui
