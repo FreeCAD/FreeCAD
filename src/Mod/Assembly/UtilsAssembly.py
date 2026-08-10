@@ -917,17 +917,10 @@ def openEditingPlacementDialog(obj, propName, onChanged=None):
     task_placement.setIgnoreTransactions(True)
 
     if onChanged is not None:
-        buttonBox = dialog.findChild(QtWidgets.QDialogButtonBox)
-        if buttonBox is not None:
-            applyButton = buttonBox.button(QtWidgets.QDialogButtonBox.Apply)
-            if applyButton is not None:
-                applyButton.clicked.connect(lambda: QtCore.QTimer.singleShot(0, onChanged))
+        dialog.accepted.connect(onChanged)
 
     dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
     dialog.exec_()
-
-    if onChanged is not None:
-        onChanged()
 
 
 def setPickableState(obj, state: bool):
