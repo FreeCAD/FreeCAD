@@ -235,9 +235,8 @@ void TaskLoftParameters::updateUI()
 
 void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
 {
-    // Auto chooses the solver and its parameters, so exposing editable values would imply that
-    // they constrain the automatic fallback sequence.  Explicit methods expose only the options
-    // that OCCT uses for that method (mode 1 is Standard B-Spline; mode 2 is Ruled Surface).
+    // Auto chooses the solver and its parameters starting with the default and progressively
+    // falling back to the next available option if the current one fails.
     const bool automatic = mode == 0;
     const bool usesApproximation = !automatic && mode != 2;
     const bool usesParametrization = mode == 1;
