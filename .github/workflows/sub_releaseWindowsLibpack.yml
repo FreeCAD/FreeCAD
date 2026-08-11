@@ -119,16 +119,35 @@ jobs:
         run: |
           cmake --install "${{ env.builddir }}" --prefix "${{ env.stagingdir }}" --config Release
 
+      # The dotnet/sign tool only runs on Windows x64 (see its docs/signing-tool-spec.md), so the
+      # x64 SDK is requested on every runner and the signer runs under x64 emulation on ARM64.
+      # Authenticode does not care about the host architecture: an x64 signer signs ARM64 binaries.
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@26b0ec14cb23fa6904739307f278c14f94c95bf1 # v5.4.0
         with:
           dotnet-version: '10.0.103'
+          architecture: 'x64'
 
       - name: Install sign tool
         run: |
+          # When the requested architecture is not the runner's native one, setup-dotnet installs
+          # into an architecture subdirectory but still points DOTNET_ROOT and PATH at the base
+          # directory, so on ARM64 the x64 host has to be selected here.
+          $dotnetRoot = $env:DOTNET_ROOT
+          if (Test-Path "$dotnetRoot\x64\dotnet.exe") {
+            $dotnetRoot = "$dotnetRoot\x64"
+            # GITHUB_ENV and GITHUB_PATH only take effect in later steps, so the running step needs
+            # the same values set directly for the tool install and the version check below.
+            $env:DOTNET_ROOT = $dotnetRoot
+            $env:PATH = "$dotnetRoot;$env:PATH"
+            "DOTNET_ROOT=$dotnetRoot" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+            $dotnetRoot | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          }
           # NOTE: The sign tool is ONLY available as a prerelease package, they never issue real releases.
-          dotnet tool install --global --prerelease sign
+          & "$dotnetRoot\dotnet.exe" tool install --global --prerelease sign
           echo "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          & "$dotnetRoot\dotnet.exe" --info
+          & "$env:USERPROFILE\.dotnet\tools\sign.exe" --version
 
       # The NSIS installer script uses advanced logging (LogSet), which requires a log-enabled NSIS
       # build. The stock choco/preinstalled NSIS lacks it, so use the same conda-forge log build the
@@ -172,6 +191,7 @@ jobs:
           LIBPACK_DIR: ${{ env.libpackdir }}
           MAKE_INSTALLER: ${{ inputs.makeInstaller }}
           UPLOAD_RELEASE: "true"
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           WINDOWS_AZURE_ENDPOINT: ${{ vars.AZURE_TRUSTED_SIGNING_ENDPOINT }}
           WINDOWS_AZURE_CERTIFICATE_PROFILE: ${{ vars.AZURE_TRUSTED_SIGNING_CERTIFICATE_PROFILE }}
           WINDOWS_AZURE_SIGNING_ACCOUNT: ${{ vars.AZURE_TRUSTED_SIGNING_ACCOUNT }}
@@ -181,5 +201,12 @@ jobs:
             export WINDOWS_SIGN_RELEASE=1
           else
             export WINDOWS_SIGN_RELEASE=0
+          fi
+          # Where signing credentials exist the bundle must be signed or not published at all.
+          # Without them (a fork with no secrets) an unsigned bundle is still worth having.
+          if [[ -n "${AZURE_CLIENT_ID}" ]]; then
+            export WINDOWS_SIGNING_REQUIRED=1
+          else
+            export WINDOWS_SIGNING_REQUIRED=0
           fi
           bash package/libpack-windows/create_bundle.sh

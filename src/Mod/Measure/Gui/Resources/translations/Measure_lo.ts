@@ -338,6 +338,11 @@
       <translation>ເນື້ອທີ່</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>ເສັ້ນຜ່ານສູນກາງ</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>ລັດສະໝີ</translation>

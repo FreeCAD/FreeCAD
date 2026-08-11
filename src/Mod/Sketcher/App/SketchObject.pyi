@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from Base.Metadata import export, constmethod, no_args
+from Base.Metadata import deprecated, export, constmethod, no_args
 from Base.Quantity import Quantity
 from Base.Vector import Vector
 from Base.Axis import Axis
@@ -745,12 +745,22 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="exposeInternalGeometry",
+    )
     def ExposeInternalGeometry(self) -> None:
         """
         Deprecated -- use exposeInternalGeometry
         """
         ...
 
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="deleteUnusedInternalGeometry",
+    )
     def DeleteUnusedInternalGeometry(self) -> None:
         """
         Deprecated -- use deleteUnusedInternalGeometry

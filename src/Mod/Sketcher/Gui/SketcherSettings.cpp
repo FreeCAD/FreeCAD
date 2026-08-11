@@ -39,7 +39,6 @@
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
 
-
 using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::SketcherSettings */
@@ -688,7 +687,7 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
     ui->InformationPattern->setIconSize(LineIconSize);
     ui->InformationPattern->setItemDelegate(lineStyleDelegate);
-    const QBrush brush = palette().windowText();
+
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
         ui->ConstructionPattern->addItem(QString(), QVariant(style.pattern));
@@ -712,7 +711,14 @@ bool SketcherSettingsAppearance::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+
+        // Resolve color from qss source - see src/Gui/Application.cpp (2869)
+        QLabel dummyLabel;
+        dummyLabel.show();
+
+        QColor textColor = dummyLabel.palette().color(QPalette::Text);
+        QBrush brush = QBrush(textColor);
+
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->EdgePattern->setItemIcon(i, icon);
