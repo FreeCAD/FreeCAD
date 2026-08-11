@@ -232,12 +232,20 @@ def innerEdgesFromFace(obj, face):
     return edges
 
 
-def horizontalFacesAtHeight(obj, z, tol=0.01):
-    """horizontalCoplanarFaces(obj, z) ... returns a list of face names with requested height."""
+def facesAtHeight(obj, z, face=None, tol=0.01):
+    """facesAtHeight(obj, z) ... returns a list of face names with requested height.
+    Given face uses to define orientation and filters result"""
+    if face and Path.Geom.isHorizontal(face):  # accept only horizontal faces
+        filter_func = Path.Geom.isHorizontal
+    elif face and Path.Geom.isVertical(face):  # accept only vertical faces
+        filter_func = Path.Geom.isVertical
+    else:  # accept faces with any orientatiotn
+        filter_func = lambda _: True
+
     names = [
         f"Face{i}"
         for i, f in enumerate(obj.Shape.Faces, 1)
-        if Path.Geom.isHorizontal(f) and Path.Geom.isRoughly(f.CenterOfMass.z, z, tol)
+        if filter_func(f) and Path.Geom.isRoughly(f.CenterOfMass.z, z, tol)
     ]
     if len(names) > 1:
         return names

@@ -26,7 +26,7 @@ import Part
 import Path
 
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide.QtCore import Qt
@@ -55,7 +55,8 @@ class _CommandSelectLoop:
                 "Completes the selection of edges or faces that forms a loop."
                 "\nWorks in described sequence, but can be forced by modifier key."
                 "\n\nFace selection:"
-                "\n    Vertical face: searching loops faces which forms the walls."
+                "\n    Vertical face: searching loops faces which forms the walls"
+                "\n        or vertical faces with same center height (SHIFT)."
                 "\n    Horizontal face: searching inner edges of the face (CTRL),"
                 "\n        outer edges of the face (CTRL + ALT)"
                 "\n        or horizontal faces at the same height (SHIFT)."
@@ -107,13 +108,11 @@ class _CommandSelectLoop:
                 # face(s) selected
                 if kmods == ["CTRL"]:
                     edges = [e for f in subs for e in PathUtils.innerEdgesFromFace(obj, f)]
-                elif set(kmods) == set(("ALT", "CTRL")):
+                elif set(kmods) == {"ALT", "CTRL"}:
                     edges = [e for sub in subs for e in sub.OuterWire.Edges]
                 elif kmods == ["SHIFT"]:
                     names = [
-                        e
-                        for f in subs
-                        for e in PathUtils.horizontalFacesAtHeight(obj, f.CenterOfMass.z)
+                        n for f in subs for n in PathUtils.facesAtHeight(obj, f.CenterOfMass.z, f)
                     ]
                 elif kmods == ["ALT"]:
                     edges = [e for sub in subs for e in sub.Edges]
@@ -123,7 +122,7 @@ class _CommandSelectLoop:
                         if all(Path.Geom.isVertical(face) for face in subs):
                             names = PathUtils.horizontalFaceLoops(obj, subs)
                         elif Path.Geom.isHorizontal(subs[0]):
-                            names = PathUtils.horizontalFacesAtHeight(obj, subs[0].CenterOfMass.z)
+                            names = PathUtils.facesAtHeight(obj, subs[0].CenterOfMass.z, subs[0])
                         if not names:
                             edges = [e for sub in subs for e in sub.Edges]
 
