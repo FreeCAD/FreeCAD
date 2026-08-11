@@ -40,6 +40,7 @@ public:
     // https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html#aefa57318229ddb92b2240eb5f85d9c18
     App::PropertyLinkSubList Sections;
     App::PropertyEnumeration LoftType;
+    App::PropertyBool Ruled;
     App::PropertyBool Closed;
     App::PropertyIntegerConstraint MaxDegree;
     App::PropertyEnumeration Parametrization;
@@ -67,6 +68,9 @@ public:
     );
 
 protected:
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
+
     // handle changed property
     void handleChangedPropertyType(
         Base::XMLReader& reader,
@@ -79,6 +83,7 @@ private:
     static const char* LoftTypeEnums[];
     static const char* ParametrizationEnums[];
     static const char* ContinuityEnums[];
+    bool synchronizingLoftType = true;
 
     // static const char* TypeEnums[];
     // static const char* SideEnums[];

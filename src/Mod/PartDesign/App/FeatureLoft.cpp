@@ -31,6 +31,7 @@
 
 #include <boost/core/ignore_unused.hpp>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -84,10 +85,17 @@ Loft::Loft()
     Sections.setValue(nullptr);
     ADD_PROPERTY_TYPE(
         LoftType,
-        (long(0)),
+        (App::GetApplication().isRestoring() ? long(1) : long(0)),
         "Loft",
         App::Prop_None,
         "Loft surface generation algorithm"
+    );
+    ADD_PROPERTY_TYPE(
+        Ruled,
+        (false),
+        "Compatibility",
+        App::Prop_Hidden,
+        "Deprecated: use LoftType instead"
     );
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum B-Spline degree");
@@ -110,6 +118,43 @@ Loft::Loft()
     LoftType.setEnums(LoftTypeEnums);
     Parametrization.setEnums(ParametrizationEnums);
     Continuity.setEnums(ContinuityEnums);
+    synchronizingLoftType = false;
+}
+
+void Loft::onChanged(const App::Property* prop)
+{
+    if (!isRestoring() && !synchronizingLoftType) {
+        if (prop == &Ruled) {
+            Base::Console().warning(
+                "The 'Ruled' property of PartDesign lofts is deprecated; use "
+                "LoftType = 'Ruled Surface' or 'Standard B-Spline' instead.\n"
+            );
+            synchronizingLoftType = true;
+            LoftType.setValue(Ruled.getValue() ? 2 : 1);
+            synchronizingLoftType = false;
+        }
+        else if (prop == &LoftType) {
+            synchronizingLoftType = true;
+            Ruled.setValue(LoftType.getValue() == 2);
+            synchronizingLoftType = false;
+        }
+    }
+
+    ProfileBased::onChanged(prop);
+}
+
+void Loft::onDocumentRestored()
+{
+    // LoftType defaults to Standard B-Spline while restoring old documents that do not contain
+    // the new property. Preserve the old Ruled=true setting when present.
+    synchronizingLoftType = true;
+    if (Ruled.getValue()) {
+        LoftType.setValue(2);
+    }
+    Ruled.setValue(LoftType.getValue() == 2);
+    synchronizingLoftType = false;
+
+    ProfileBased::onDocumentRestored();
 }
 
 short Loft::mustExecute() const
