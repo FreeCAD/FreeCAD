@@ -246,7 +246,6 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/file.py
     Path/Tool/toolbit/ui/panel.py
     Path/Tool/toolbit/ui/presets_tab.py
-    Path/Tool/toolbit/ui/selector.py
     Path/Tool/toolbit/ui/tablecell.py
     Path/Tool/toolbit/ui/toollist.py
     Path/Tool/toolbit/ui/util.py
