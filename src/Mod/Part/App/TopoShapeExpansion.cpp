@@ -23,8 +23,6 @@
  ***************************************************************************/
 
 #include <array>
-#include <cmath>
-#include <iomanip>
 #include <limits>
 #include <optional>
 #include <sstream>
@@ -4485,7 +4483,6 @@ struct LoftFailure
     std::size_t secondProfile {0};
     std::optional<LoftParametrization> suggestedParametrization;
     bool suggestVariational {false};
-    std::optional<double> spacingRatio;
 };
 
 struct LoftOptions
@@ -4633,66 +4630,6 @@ std::optional<BRepFill_ThruSectionErrorStatus> probeProfileCompatibility(
     }
 }
 
-std::optional<double> profileSpacingRatio(
-    const std::vector<TopoShape>& profiles,
-    IsClosed isClosed
-)
-{
-    NCollection_Sequence<TopoDS_Shape> sections;
-    for (const auto& profile : profiles) {
-        if (profile.getShape().ShapeType() != TopAbs_WIRE
-            || isPunctualProfile(profile.getShape())) {
-            return std::nullopt;
-        }
-        sections.Append(profile.getShape());
-    }
-
-    try {
-        BRepFill_CompatibleWires compatibility(sections);
-        compatibility.Perform();
-        if (!compatibility.IsDone()) {
-            return std::nullopt;
-        }
-
-        constexpr int sampleCount = 21;
-        double minimumSpacing = std::numeric_limits<double>::max();
-        double maximumSpacing = 0.0;
-        const auto& compatibleProfiles = compatibility.Shape();
-        const int pairCount = compatibleProfiles.Length() - 1
-            + (isClosed == IsClosed::closed ? 1 : 0);
-        for (int pairIndex = 1; pairIndex <= pairCount; ++pairIndex) {
-            const int nextIndex = pairIndex == compatibleProfiles.Length() ? 1 : pairIndex + 1;
-            BRepAdaptor_CompCurve first(
-                TopoDS::Wire(compatibleProfiles.Value(pairIndex)),
-                true
-            );
-            BRepAdaptor_CompCurve second(
-                TopoDS::Wire(compatibleProfiles.Value(nextIndex)),
-                true
-            );
-            double sumSquaredDistances = 0.0;
-            for (int sample = 0; sample < sampleCount; ++sample) {
-                const double fraction = static_cast<double>(sample) / (sampleCount - 1);
-                const double firstParameter = first.FirstParameter()
-                    + fraction * (first.LastParameter() - first.FirstParameter());
-                const double secondParameter = second.FirstParameter()
-                    + fraction * (second.LastParameter() - second.FirstParameter());
-                sumSquaredDistances += first.Value(firstParameter)
-                                           .SquareDistance(second.Value(secondParameter));
-            }
-            const double spacing = std::sqrt(sumSquaredDistances / sampleCount);
-            if (spacing <= Precision::Confusion()) {
-                return std::nullopt;
-            }
-            minimumSpacing = std::min(minimumSpacing, spacing);
-            maximumSpacing = std::max(maximumSpacing, spacing);
-        }
-        return maximumSpacing / minimumSpacing;
-    }
-    catch (const Standard_Failure&) {
-        return std::nullopt;
-    }
-}
 
 BRepFill_ThruSectionErrorStatus probeLoftRange(
     const std::vector<TopoShape>& profiles,
@@ -4758,26 +4695,11 @@ void suggestLoftAlternative(
         return;
     }
 
-    failure.spacingRatio = profileSpacingRatio(profiles, options.isClosed);
-    std::array<LoftParametrization, 3> candidates {
-        LoftParametrization::centripetal,
+    constexpr std::array candidates {
         LoftParametrization::chordLength,
+        LoftParametrization::centripetal,
         LoftParametrization::uniform,
     };
-    if (failure.spacingRatio && *failure.spacingRatio >= 4.0) {
-        candidates = {
-            LoftParametrization::centripetal,
-            LoftParametrization::uniform,
-            LoftParametrization::chordLength,
-        };
-    }
-    else if (failure.spacingRatio && *failure.spacingRatio <= 1.5) {
-        candidates = {
-            LoftParametrization::chordLength,
-            LoftParametrization::centripetal,
-            LoftParametrization::uniform,
-        };
-    }
 
     for (const auto candidate : candidates) {
         if (candidate == options.parametrization) {
@@ -4943,10 +4865,6 @@ LoftFailure diagnoseLoftFailure(
     if (failure.suggestedParametrization) {
         message << "; try " << loftParametrizationName(*failure.suggestedParametrization)
                 << " parameterization, which succeeds for these profiles";
-        if (failure.spacingRatio) {
-            message << " (adjacent profile spacing ratio " << std::fixed << std::setprecision(1)
-                    << *failure.spacingRatio << ')';
-        }
     }
     else if (failure.suggestVariational) {
         message << "; standard B-spline lofting failed with all parameterizations; try "
@@ -5021,12 +4939,15 @@ TopoShape& TopoShape::makeElementLoft(
 
     const bool automatic = smoothing == Smoothing::automatic;
     const Smoothing initialSmoothing = automatic ? Smoothing::bspline : smoothing;
+    const LoftParametrization initialParametrization = automatic
+        ? LoftParametrization::chordLength
+        : parametrization;
     const LoftOptions options {
         isSolid,
         initialSmoothing,
         isClosed,
         maxDegree,
-        parametrization,
+        initialParametrization,
         continuity,
         checkCompatibility,
     };
@@ -5114,7 +5035,7 @@ TopoShape& TopoShape::makeElementLoft(
                     isClosed,
                     maxDegree,
                     op,
-                    parametrization,
+                    initialParametrization,
                     continuity,
                     checkCompatibility
                 );

@@ -235,10 +235,11 @@ void TaskLoftParameters::updateUI()
 
 void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
 {
-    // Auto chooses the solver and its parameters starting with the default and progressively
-    // falling back to the next available option if the current one fails.
+    // Show advanced parameters if the user chooses an option other than "automatic"
     const bool automatic = mode == 0;
     const bool usesApproximation = !automatic && mode != 2;
+    // some methods allow a paramaterization to be set (e.g., standard b-spline)
+    // other do not (e.g., variational solver), so these fields should not be editable
     const bool usesParametrization = mode == 1;
     ui->spinBoxMaxDegree->setEnabled(usesApproximation);
     ui->labelMaxDegree->setEnabled(usesApproximation);
@@ -248,8 +249,7 @@ void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
     ui->labelParametrization->setEnabled(usesParametrization);
     ui->checkBoxCompatibility->setEnabled(!automatic);
 
-    // Remember whether Auto performed the collapse.  This lets an explicit method restore the
-    // panel without overriding a collapse the user performed manually.
+    // If the user opens the advanced parameters, then keep it open until they close it manually
     if (automatic) {
         if (isGroupVisible()) {
             hideGroupBox();

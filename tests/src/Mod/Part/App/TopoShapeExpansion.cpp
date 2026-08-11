@@ -2010,8 +2010,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         EXPECT_STREQ(
             error.what(),
             "OCCT failed to construct the loft; the failure requires the complete sequence of 3 "
-            "profiles; try Centripetal parameterization, which succeeds for these profiles "
-            "(adjacent profile spacing ratio 5.1)"
+            "profiles; try Centripetal parameterization, which succeeds for these profiles"
         );
     }
 
