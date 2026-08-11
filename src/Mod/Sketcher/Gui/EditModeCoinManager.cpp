@@ -2232,6 +2232,7 @@ void EditModeCoinManager::updateInventorNodeSizes()
         * drawingParameters.pixelScalingFactor;
 
     editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->linePattern = drawingParameters.AxisLinePattern;
 
     editModeScenegraphNodes.OriginPointDrawStyleOccluded->pointSize = 8
         * drawingParameters.pixelScalingFactor;
@@ -2276,6 +2277,7 @@ void EditModeCoinManager::updateInventorPatterns()
         = drawingParameters.ExternalDefiningPattern;
     editModeScenegraphNodes.InformationDrawStyle->linePattern = drawingParameters.InformationPattern;
     editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->linePattern = drawingParameters.AxisLinePattern;
 }
 
 void EditModeCoinManager::updateInventorColors()
