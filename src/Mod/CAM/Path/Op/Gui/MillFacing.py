@@ -57,6 +57,18 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
                 self.form.stockExtension, obj, "StockExtension"
             )
 
+    def getToolTipList(self):
+        """getToolTipList() ... Collect list of tuples (widget_name: str, property_name: str)"""
+        tuples = []
+        tuples.append(("cutMode", "CutMode"))
+        tuples.append(("clearingPattern", "ClearingPattern"))
+        tuples.append(("reverse", "Reverse"))
+        tuples.append(("angle", "Angle"))
+        tuples.append(("stepOver", "StepOver"))
+        tuples.append(("passExtension", "PassExtension"))
+        tuples.append(("stockExtension", "StockExtension"))
+        return tuples
+
     def getForm(self):
         Path.Log.track()
         """getForm() ... return UI"""
@@ -151,12 +163,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         return signals
 
     def updateVisibility(self):
-        if self.obj.ClearingPattern == "Spiral":
-            self.form.passExtension.hide()
-            self.form.passExtension_label.hide()
+        if "Spiral" in self.obj.ClearingPattern:
+            self.form.passExtension.setEnabled(False)
         else:
-            self.form.passExtension.show()
-            self.form.passExtension_label.show()
+            self.form.passExtension.setEnabled(True)
 
     def registerSignalHandlers(self, obj):
         self.form.clearingPattern.currentIndexChanged.connect(self.updateVisibility)
