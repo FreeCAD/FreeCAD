@@ -18,12 +18,15 @@
 #                                                                              #
 ################################################################################
 
+import Constants
 import FreeCAD
 import FreeCADGui
+import Part
 import Path
 import PathScripts.PathUtils as PathUtils
-import Path.Base.Generator.plunge_milling as plunge_milling
+import Path.Base.Generator.drill as drill
 import Path.Dressup.Utils as PathDressup
+from Path.Base.MachineState import MachineState
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """Plunge Milling Dressup object"""
@@ -41,16 +44,57 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "The base path"),
         )
         obj.addProperty(
-            "App::PropertyPercent",
+            "App::PropertyLength",
             "StepOver",
             "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Distance between passes"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseDrillingCycle",
+            "Drill",
             QT_TRANSLATE_NOOP(
-                "App::Property", "Percent of cutter diameter to step over on each pass"
+                "App::Property",
+                "Use drilling cycles instead of G1 moves",
             ),
         )
-        obj.StepOver = 20
+        obj.addProperty(
+            "App::PropertyBool",
+            "ChipBreak",
+            "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Use chipbreaking\nCan be used only if Peck Depth not a zero"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLength",
+            "PeckDepth",
+            "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Incremental Drill depth before retracting to clear chips"
+                "\nSet 0 to disable pecking",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyFloat",
+            "DwellTime",
+            "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The time to dwell between peck cycles"
+                "\nSet 0 to disable dwell"
+                "\nCan be used only if Peck Depth is zero",
+            ),
+        )
         obj.Proxy = self
         obj.Base = base
+
+        baseOp = PathDressup.baseOp(obj.Base)
+        expr = f"0.2 * {baseOp.Name}.ToolController.Tool.Diameter.Value"
+        obj.setExpression("StepOver", expr)
+
+        self.opUpdateEditorModes(obj)
 
     def dumps(self):
         return
@@ -59,11 +103,24 @@ class ObjectDressup:
         return
 
     def onDocumentRestored(self, obj):
-        pass
+        self.opUpdateEditorModes(obj)
 
     def onChanged(self, obj, prop):
+        if prop in ("UseDrillingCycle", "PeckDepth"):
+            self.opUpdateEditorModes(obj)
+
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+    def opUpdateEditorModes(self, obj):
+        chipBreakMode = 0 if obj.UseDrillingCycle and obj.PeckDepth else 2
+        obj.setEditorMode("ChipBreak", chipBreakMode)
+
+        dwellMode = 0 if obj.UseDrillingCycle and not obj.PeckDepth else 2
+        obj.setEditorMode("DwellTime", dwellMode)
+
+        drillMode = 0 if obj.UseDrillingCycle else 2
+        obj.setEditorMode("PeckDepth", drillMode)
 
     def execute(self, obj):
         if not obj.Base:
@@ -89,20 +146,66 @@ class ObjectDressup:
             )
             return
 
-        if obj.StepOver < 1:
-            obj.StepOver = 1
+        if obj.StepOver.Value < 0 or Path.Geom.isRoughly(obj.StepOver.Value, 0):
+            obj.Path = Path.Path()
+            Path.Log.warning(translate("PlungeMillingDressup", "Negative or zero stepover"))
+            return
 
         baseOp = PathDressup.baseOp(obj)
         toolController = baseOp.ToolController
-        step = toolController.Tool.Diameter.Value * obj.StepOver / 100
 
-        obj.Path = plunge_milling.get_path(
-            path=PathUtils.getPathWithPlacement(obj.Base),
-            step=step,
-            step_min=step / 2,
-            retract_height=baseOp.SafeHeight.Value,
-            vert_feed=toolController.VertFeed.Value,
-        )
+        retract_height = baseOp.SafeHeight.Value
+        start_depth = baseOp.StartDepth.Value
+        final_depth = baseOp.FinalDepth.Value
+        step = obj.StepOver.Value
+        step_min = step / 2
+        vert_feed = toolController.VertFeed.Value
+        machine = MachineState()
+
+        commands = []
+        last = None
+        for i, cmd in enumerate(PathUtils.getPathWithPlacement(obj.Base).Commands):
+            if cmd.Name not in Constants.GCODE_MOVE_MILL:
+                commands.append(cmd)
+
+            else:
+                position = machine.getPosition()
+                edge = Path.Geom.edgeForCmd(cmd, position)
+                if not edge:
+                    continue
+
+                if Path.Geom.isVertical(edge):
+                    machine.addCommand(cmd)
+                    continue
+
+                number = Path.Geom.ceil(edge.Length / step) + 1
+                points = edge.discretize(Number=number) if number >= 2 else edge.Vertexes
+                for p in points:
+                    if last and Path.Geom.pointsCoincide(p, last, step_min):
+                        # skip too close point
+                        continue
+                    commands.append(Path.Command("G0", {"X": p.x, "Y": p.y}))
+                    if obj.UseDrillingCycle:
+                        v1 = FreeCAD.Vector(p.x, p.y, start_depth)
+                        v2 = FreeCAD.Vector(p.x, p.y, final_depth)
+                        drillCmds = drill.generate(
+                            edge=Part.makeLine(v1, v2),
+                            dwelltime=obj.DwellTime,
+                            peckdepth=obj.PeckDepth.Value,
+                            repeat=1,
+                            retractheight=start_depth,
+                            chipBreak=obj.ChipBreak,
+                            feedRetract=False,
+                        )
+                        commands.extend(drillCmds)
+                    else:
+                        commands.append(Path.Command("G1", {"Z": p.z, "F": vert_feed}))
+                        commands.append(Path.Command("G0", {"Z": retract_height}))
+                    last = p
+
+            machine.addCommand(cmd)
+
+        obj.Path = Path.Path(commands)
 
 
 class ViewProviderDressup:
