@@ -1808,7 +1808,7 @@ of that project, no matter if they are expanded or not.</source>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc.)</source>
-      <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc.)</translation>
+      <translation>Показать доступные альтернативные форматы файлов для элементов библиотеки (STEP, IFC и т. д.)</translation>
     </message>
     <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
@@ -3748,18 +3748,18 @@ The default template is located at:
     <name>Arch</name>
     <message>
       <location filename="../../ArchStructure.py" line="449"/>
-      <location filename="../../Arch.py" line="2574"/>
+      <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>Балка</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="450"/>
-      <location filename="../../Arch.py" line="2578"/>
+      <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>Колонна</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2627"/>
+      <location filename="../../Arch.py" line="2629"/>
       <source>StructuralSystem</source>
       <translation>Структурная система</translation>
     </message>
@@ -3900,7 +3900,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchCoveringGui.py" line="725"/>
       <source>%1 objects selected</source>
-      <translation type="unfinished">%1 objects selected</translation>
+      <translation>%1 Объектов выбрано</translation>
     </message>
     <message>
       <location filename="../../ArchCoveringGui.py" line="748"/>
@@ -4427,7 +4427,7 @@ The default template is located at:
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="396"/>
+      <location filename="../../Arch.py" line="397"/>
       <source>Equipment</source>
       <translation>Оборудование</translation>
     </message>
@@ -4442,7 +4442,7 @@ The default template is located at:
       <translation>Создать оборудование</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="172"/>
+      <location filename="../../Arch.py" line="173"/>
       <source>BuildingPart</source>
       <translation>Строительная деталь</translation>
     </message>
@@ -4474,7 +4474,7 @@ The default template is located at:
       <translation>Профиль</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1279"/>
+      <location filename="../../Arch.py" line="1281"/>
       <source>Site</source>
       <translation>Местность</translation>
     </message>
@@ -4531,7 +4531,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Свес крыши</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1153"/>
+      <location filename="../../Arch.py" line="1155"/>
       <location filename="../../ArchRoof.py" line="1072"/>
       <source>Roof</source>
       <translation>Крыша</translation>
@@ -4603,7 +4603,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Спереди</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1084"/>
+      <location filename="../../Arch.py" line="1086"/>
       <location filename="../../ArchReference.py" line="909"/>
       <source>External Reference</source>
       <translation>Внешняя ссылка</translation>
@@ -4705,7 +4705,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Создать внешнюю ссылку</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="471"/>
+      <location filename="../../Arch.py" line="472"/>
       <source>Frame</source>
       <translation>Каркас</translation>
     </message>
@@ -4765,7 +4765,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Shapefile библиотека может быть загружена и установлена в папку макросов по следующему адресу:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2098"/>
+      <location filename="../../Arch.py" line="2100"/>
       <source>Window</source>
       <translation>Окно</translation>
     </message>
@@ -4901,7 +4901,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Retrieves the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1782"/>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
       <location filename="../../ArchWindow.py" line="1706"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxis.py" line="985"/>
@@ -4921,7 +4921,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchSectionPlane.py" line="1549"/>
+      <location filename="../../ArchSectionPlane.py" line="1593"/>
       <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
@@ -5006,7 +5006,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Получить выбранный край</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="141"/>
+      <location filename="../../Arch.py" line="142"/>
       <source>Axis System</source>
       <translation>Система Осей</translation>
     </message>
@@ -5026,7 +5026,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Выберите хотя бы одну ось</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="101"/>
+      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchAxis.py" line="984"/>
       <location filename="../../ArchComponent.py" line="2470"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
@@ -5042,12 +5042,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>Успешно записано</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1661"/>
+      <location filename="../../Arch.py" line="1663"/>
       <source>Truss</source>
       <translation>Ферма</translation>
     </message>
@@ -5082,52 +5082,52 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Ошибка: ваша версия IfcOpenShell устарела</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="261"/>
+      <location filename="../../Arch.py" line="262"/>
       <source>Drawing</source>
       <translation>Чертёж</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="435"/>
+      <location filename="../../Arch.py" line="436"/>
       <source>Fence</source>
       <translation>Ограда</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="601"/>
+      <location filename="../../Arch.py" line="602"/>
       <source>Materials</source>
       <translation>Материалы</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="695"/>
+      <location filename="../../Arch.py" line="696"/>
       <source>View of {panel.Label}</source>
       <translation>Вид {panel.Label}</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="924"/>
+      <location filename="../../Arch.py" line="926"/>
       <source>Project</source>
       <translation>Проект</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1483"/>
+      <location filename="../../Arch.py" line="1485"/>
       <source>Stairs</source>
       <translation>Лестница</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1607"/>
+      <location filename="../../Arch.py" line="1609"/>
       <source>Railing</source>
       <translation>Перила</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2434"/>
+      <location filename="../../Arch.py" line="2436"/>
       <source>Report</source>
       <translation>Отчет</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2512"/>
+      <location filename="../../Arch.py" line="2514"/>
       <source>Structure</source>
       <translation>Структура</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2731"/>
+      <location filename="../../Arch.py" line="2733"/>
       <source>Covering</source>
       <translation type="unfinished">Covering</translation>
     </message>
@@ -5147,14 +5147,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Создать многослойный материал</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="539"/>
+      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>Материал</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="574"/>
+      <location filename="../../Arch.py" line="575"/>
       <source>MultiMaterial</source>
       <translation>МультиМатериал</translation>
     </message>
@@ -5245,7 +5245,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Удалить промежуток</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="503"/>
+      <location filename="../../Arch.py" line="504"/>
       <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>Сетка</translation>
@@ -5391,7 +5391,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Уклон</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="204"/>
+      <location filename="../../Arch.py" line="205"/>
       <location filename="../../ArchPrecast.py" line="1723"/>
       <source>Level</source>
       <translation>Уровень</translation>
@@ -5403,12 +5403,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Вращение</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="657"/>
+      <location filename="../../Arch.py" line="658"/>
       <source>Panel</source>
       <translation>Панель</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="723"/>
+      <location filename="../../Arch.py" line="724"/>
       <source>PanelSheet</source>
       <translation>Лист панели</translation>
     </message>
@@ -5490,7 +5490,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Объект не имеет грани</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="361"/>
+      <location filename="../../Arch.py" line="362"/>
       <source>Curtain Wall</source>
       <translation>Фасад</translation>
     </message>
@@ -5508,7 +5508,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="436"/>
-      <location filename="../../Arch.py" line="2447"/>
+      <location filename="../../Arch.py" line="2449"/>
       <source>New Statement</source>
       <translation type="unfinished">New Statement</translation>
     </message>
@@ -5520,7 +5520,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="894"/>
-      <location filename="../../Arch.py" line="758"/>
+      <location filename="../../Arch.py" line="759"/>
       <source>Pipe</source>
       <translation>Труба</translation>
     </message>
@@ -6043,7 +6043,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">BIM SQL Cheatsheet</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="805"/>
+      <location filename="../../Arch.py" line="806"/>
       <source>Connector</source>
       <translation>Соединитель</translation>
     </message>
@@ -6204,7 +6204,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Единица измерения</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1204"/>
+      <location filename="../../Arch.py" line="1206"/>
       <source>Schedule</source>
       <translation>Опись</translation>
     </message>
@@ -6613,7 +6613,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Новый набор свойств</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1011"/>
+      <location filename="../../Arch.py" line="1013"/>
       <source>Rebar</source>
       <translation>Арматура</translation>
     </message>
@@ -6629,7 +6629,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Выберите базовую грань на структурном объекте</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1238"/>
+      <location filename="../../Arch.py" line="1240"/>
       <source>Section</source>
       <translation>Сечение</translation>
     </message>
@@ -6639,97 +6639,97 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Создайте секущую плоскость</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1775"/>
+      <location filename="../../ArchSectionPlane.py" line="1799"/>
       <source>Scope</source>
       <translation>Область применения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1802"/>
       <source>Placement and Visuals</source>
       <translation>Размещение и визуализация</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1781"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <source>Objects seen by this section plane</source>
       <translation>Объекты, видимые этой плоскостью раздела</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1787"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Удаляет выделенные объекты из приведенного выше списка</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1788"/>
+      <location filename="../../ArchSectionPlane.py" line="1812"/>
       <source>Add Selected</source>
       <translation>Добавить выбранное</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1793"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Добавляет выбранные объекты в область этой плоскости сечения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1794"/>
+      <location filename="../../ArchSectionPlane.py" line="1818"/>
       <source>Cut View</source>
       <translation>Вид в разрезе</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1801"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Создает живой разрез в 3D-виде, скрывая геометрию с одной стороны плоскости, чтобы можно было видеть внутреннюю часть модели</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate by 90°</source>
       <translation>Повернуть на 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Поворачивает плоскость вокруг своей локальной оси X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1810"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Поворачивает плоскость вокруг своей локальной оси Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1814"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Поворачивает плоскость вокруг своей локальной оси Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1815"/>
+      <location filename="../../ArchSectionPlane.py" line="1839"/>
       <source>Resize to Fit</source>
       <translation>Изменить размер для подгонки</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1821"/>
+      <location filename="../../ArchSectionPlane.py" line="1845"/>
       <source>Recenter Plane</source>
       <translation>Перецентровать плоскость</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1803"/>
+      <location filename="../../ArchSectionPlane.py" line="1827"/>
       <source>Rotate X</source>
       <translation>Повернуть по X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1554"/>
+      <location filename="../../ArchSectionPlane.py" line="1598"/>
       <source>Toggle Cut View</source>
       <translation type="unfinished">Toggle Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1807"/>
+      <location filename="../../ArchSectionPlane.py" line="1831"/>
       <source>Rotate Y</source>
       <translation>Повернуть по Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1835"/>
       <source>Rotate Z</source>
       <translation>Повернуть по Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1820"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Изменяет плоскость по размеру объектов в списке</translation>
     </message>
@@ -6741,12 +6741,12 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Центр</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1850"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Центровать плоскость по объектам в списке</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="231"/>
+      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>Здание</translation>
@@ -6784,7 +6784,7 @@ Building creation aborted.</source>
       <translation>Создать Здание</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1341"/>
+      <location filename="../../Arch.py" line="1343"/>
       <source>Space</source>
       <translation>Пространство</translation>
     </message>
@@ -6840,12 +6840,12 @@ Building creation aborted.</source>
       <translation>Границы зоны</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1729"/>
+      <location filename="../../Arch.py" line="1731"/>
       <source>Wall</source>
       <translation>Стена</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1740"/>
+      <location filename="../../Arch.py" line="1742"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>Стены могут основываться только на объектах Part или Mesh</translation>
     </message>
@@ -7152,8 +7152,8 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
-      <source>Write Camera Position</source>
-      <translation>Записать позицию камеры</translation>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7310,6 +7310,11 @@ Building creation aborted.</source>
       <location filename="../../ArchTruss.py" line="421"/>
       <source>Rod Type</source>
       <translation type="unfinished">Rod Type</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <source>Create Sketch</source>
+      <translation type="unfinished">Create Sketch</translation>
     </message>
   </context>
   <context>
@@ -7511,8 +7516,8 @@ Building creation aborted.</source>
       <translation>Электрическая мощность в ваттах, необходимая оборудованию</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="234"/>
-      <location filename="../../Arch.py" line="316"/>
+      <location filename="../../Arch.py" line="235"/>
+      <location filename="../../Arch.py" line="317"/>
       <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Тип здания</translation>
@@ -7553,7 +7558,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="282"/>
-      <location filename="../../ArchSectionPlane.py" line="1005"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <source>The shape of this object</source>
       <translation>Форма этого объекта</translation>
     </message>
@@ -7574,7 +7579,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="547"/>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1221"/>
       <source>The line width of this object</source>
       <translation>Ширина линий этого объекта</translation>
     </message>
@@ -8016,17 +8021,17 @@ Building creation aborted.</source>
       <translation>Показывать текстовые метки для часов на пути солнца</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2357"/>
+      <location filename="../../ArchSite.py" line="2359"/>
       <source>The altitude of the sun above the horizon</source>
       <translation>Высота солнца над горизонтом</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2367"/>
+      <location filename="../../ArchSite.py" line="2369"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation>Направление компаса на солнце (0° - северный)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2375"/>
+      <location filename="../../ArchSite.py" line="2377"/>
       <source>The date and time for this sun position</source>
       <translation>Дата и время положения Солнца</translation>
     </message>
@@ -9128,7 +9133,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="997"/>
+      <location filename="../../ArchSectionPlane.py" line="1041"/>
       <source>The placement of this object</source>
       <translation>Размещение объекта</translation>
     </message>
@@ -9349,79 +9354,79 @@ Building creation aborted.</source>
       <translation>Форма арматуры</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1016"/>
+      <location filename="../../ArchSectionPlane.py" line="1060"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Объекты, которые должны быть видны на этой плоскости сечения. Пустой означает весь документ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1027"/>
+      <location filename="../../ArchSectionPlane.py" line="1071"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Если ложь, также будет сделано сечение нетвердотельных объектов. Возможно, с некорректным результатом.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1039"/>
+      <location filename="../../ArchSectionPlane.py" line="1083"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Если True, то отображенные виды будут вырезаны в плоскость секции.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1050"/>
+      <location filename="../../ArchSectionPlane.py" line="1094"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Если значение "true", то цвет материала объекта будет использоваться для заполнения разрезанных областей.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1062"/>
+      <location filename="../../ArchSectionPlane.py" line="1106"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Геометрия больше этого значения будет обрезана. Значение ноль снимает ограничение.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The display length of this section plane</source>
       <translation>Размер отображения этой плоскости сечения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1147"/>
+      <location filename="../../ArchSectionPlane.py" line="1191"/>
       <source>The display height of this section plane</source>
       <translation>Отображение высоты плоскости сечения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1159"/>
+      <location filename="../../ArchSectionPlane.py" line="1203"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Размер углов плоскости сечения</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1168"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The transparency of this object</source>
       <translation>Прозрачность объекта</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
+      <location filename="../../ArchSectionPlane.py" line="1247"/>
       <source>Show the cut in the 3D view</source>
       <translation>Показать сечение в окне 3D-просмотра</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1238"/>
       <source>The color of this object</source>
       <translation>Цвет объекта</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1214"/>
+      <location filename="../../ArchSectionPlane.py" line="1258"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Расстояние между секущей плоскостью и сечением текущего вида(устанавливайте очень маленькое, но не нулевое значение)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1223"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>Show the label in the 3D view</source>
       <translation>Отображение метки в представлении 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1231"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Название шрифта</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1240"/>
+      <location filename="../../ArchSectionPlane.py" line="1284"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Размер шрифта текста</translation>
@@ -11207,7 +11212,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Удалить неиспользуемое</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="95"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Rename</source>
       <translation>Переименовать</translation>
@@ -11223,7 +11228,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Объединить с…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
       <source>Delete</source>
       <translation>Удалить</translation>
@@ -11617,89 +11622,106 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Выберите ровно один объект</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="93"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
       <source>Isolate</source>
       <translation>‎Изолировать‎</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="124"/>
+      <location filename="../../bimcommands/BimViews.py" line="137"/>
       <source>Creates a new working plane proxy</source>
       <translation>Создает новый прокси рабочей плоскости</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="125"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Deletes the selected item</source>
       <translation>Удалить выбранные элементы</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>Активный</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
-      <source>New Level Above</source>
-      <translation type="unfinished">New Level Above</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>New Working Plane Proxy</source>
       <translation>Новый прокси рабочей плоскости</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Toggle Visibility</source>
       <translation>Переключить видимость</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="94"/>
-      <source>Save View Position</source>
-      <translation>Сохранить позицию просмотра</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="121"/>
-      <source>Creates a new level above the highest existing one</source>
-      <translation type="unfinished">Creates a new level above the highest existing one</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="128"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Переключение видимости выбранных элементов</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="131"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Выключает все элементы, кроме выбранных</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
-      <source>Saves the current camera position to the selected items</source>
-      <translation>Сохранить текущее положение камеры в выбранных элементах</translation>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <source>New Level Above</source>
+      <translation type="unfinished">New Level Above</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="135"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <source>Save Visibility of Objects</source>
+      <translation type="unfinished">Save Visibility of Objects</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <source>Creates a new level above the highest existing one</source>
+      <translation type="unfinished">Creates a new level above the highest existing one</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <source>Saves the current camera view to the selected items</source>
+      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="148"/>
       <source>Renames the selected item</source>
       <translation>Переименовать выбранный элемент</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="136"/>
+      <location filename="../../bimcommands/BimViews.py" line="149"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>Активирует выбранный элемент</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="162"/>
+      <location filename="../../bimcommands/BimViews.py" line="176"/>
       <source>BIM Views Manager</source>
       <translation type="unfinished">BIM Views Manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="310"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>2D-виды</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="323"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>"Листы"</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
+      <source>Set Working Plane</source>
+      <translation>Установить рабочую плоскость</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
+      <source>Sets the selected item as the current working plane</source>
+      <translation type="unfinished">Sets the selected item as the current working plane</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -11862,7 +11884,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Элемент с идентификатором '{id}' и '{sh_type} ' не найден</translation>
     </message>
     <message>
-      <location filename="../../importers/importSH3DHelper.py" line="3263"/>
+      <location filename="../../importers/importSH3DHelper.py" line="3255"/>
       <source>Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</source>
       <translation>Тип &lt;{elm.tag}&gt; #{i} не поддерживается: '{attribute}'. Пропускается!</translation>
     </message>
@@ -12478,12 +12500,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="37"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>New Sketch</source>
       <translation>Создать эскиз</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="40"/>
+      <location filename="../../bimcommands/BimSketch.py" line="41"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>Создать новый эскиз в текущей рабочей плоскости</translation>
     </message>
@@ -12569,12 +12591,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="44"/>
+      <location filename="../../bimcommands/BimViews.py" line="55"/>
       <source>Views Manager</source>
       <translation>Менеджер видов</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="56"/>
       <source>Shows or hides the views manager</source>
       <translation>Показать или скрыть менеджер видов</translation>
     </message>

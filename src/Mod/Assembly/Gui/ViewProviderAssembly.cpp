@@ -116,6 +116,7 @@ ViewProviderAssembly::ViewProviderAssembly()
     , moveOnlyPreselected(false)
     , moveInCommand(true)
     , ctrlPressed(false)
+    , forceSolveOnMoveForRigid(false)
     , lastClickTime(0)
     , jointVisibilitiesBackup({})
     , docsToMove({})
@@ -608,8 +609,14 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
             "User parameter:BaseApp/Preferences/Mod/Assembly"
         );
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
-        if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
-            assemblyPart->doDragStep();
+        // HACK: Re-solve assembly to update rigid groups while dragging.
+        if (solveOnMove && (dragMode != DragMode::TranslationNoSolve || forceSolveOnMoveForRigid)) {
+            if (forceSolveOnMoveForRigid) {
+                assemblyPart->solve();
+            }
+            else {
+                assemblyPart->doDragStep();
+            }
         }
         else {
             assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
@@ -1096,17 +1103,19 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
-    if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
+    std::vector<App::DocumentObject*> dragParts;
+    for (auto& movingObj : docsToMove) {
+        dragParts.push_back(movingObj.obj);
+    }
+    forceSolveOnMoveForRigid = assemblyPart->requiresRigidSolveForMove(dragParts);
+
+    if (solveOnMove && (dragMode != DragMode::TranslationNoSolve || forceSolveOnMoveForRigid)) {
         objectMasses.clear();
         for (auto& movingObj : docsToMove) {
             objectMasses.push_back({movingObj.obj, 10.0});
         }
 
         assemblyPart->setObjMasses(objectMasses);
-        std::vector<App::DocumentObject*> dragParts;
-        for (auto& movingObj : docsToMove) {
-            dragParts.push_back(movingObj.obj);
-        }
         assemblyPart->preDrag(dragParts);
     }
     else {
@@ -1119,6 +1128,7 @@ void ViewProviderAssembly::endMove()
     docsToMove.clear();
     partMoving = false;
     canStartDragging = false;
+    forceSolveOnMoveForRigid = false;
 
     auto* assemblyPart = getObject<AssemblyObject>();
     auto joints = assemblyPart->getJoints();

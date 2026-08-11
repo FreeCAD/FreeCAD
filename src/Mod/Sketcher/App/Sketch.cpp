@@ -64,6 +64,71 @@ using namespace Sketcher;
 using namespace Base;
 using namespace Part;
 
+namespace
+{
+
+/**
+ * @brief Distance from a point to a line, signed by the side the point is on.
+ *
+ * @param[in] line The line, read in its current solver state. Its direction runs from @c p1
+ *                 to @c p2.
+ * @param[in] pointX The x coordinate of the point.
+ * @param[in] pointY The y coordinate of the point.
+ * @return A positive value when the point lies counter-clockwise from the line direction, a
+ *         negative value when it lies clockwise, and zero for a degenerate line.
+ */
+double signedDistanceToLine(const GCS::Line& line, double pointX, double pointY)
+{
+    const double startX = *line.p1.x;
+    const double startY = *line.p1.y;
+    const double deltaX = *line.p2.x - startX;
+    const double deltaY = *line.p2.y - startY;
+    const double length = std::hypot(deltaX, deltaY);
+
+    if (length < Precision::Confusion()) {
+        return 0.0;
+    }
+
+    return (deltaX * (pointY - startY) - deltaY * (pointX - startX)) / length;
+}
+
+/**
+ * @brief Whether a constraint records which side of a line its subject sits on.
+ *
+ * Constraints restored from documents written before signed constraints existed carry
+ * ConstraintOrientations::None, and so do constraints whose migration could not resolve the
+ * geometry they reference. Reading that as Clockwise would silently mirror the sketch, so
+ * callers must derive the side from the geometry itself instead.
+ *
+ * @param[in] orientation The orientation flags of the constraint.
+ * @return @c true if the flags name a side, @c false if the side is unknown.
+ */
+bool hasKnownSide(ConstraintOrientation orientation)
+{
+    return orientation.testFlag(ConstraintOrientations::CounterClockwise)
+        || orientation.testFlag(ConstraintOrientations::Clockwise);
+}
+
+/**
+ * @brief The side of a line a tangent circle has to stay on.
+ *
+ * @param[in] orientation The orientation flags of the tangency constraint.
+ * @param[in] line The line, read in its current solver state.
+ * @param[in] circle The circle or arc, read in its current solver state.
+ * @return @c true to keep the circle counter-clockwise from the line direction, taken from
+ *         @p orientation when it names a side and from the current geometry otherwise.
+ */
+bool tangentSide(ConstraintOrientation orientation, const GCS::Line& line, const GCS::Circle& circle)
+{
+    if (hasKnownSide(orientation)) {
+        return orientation.testFlag(ConstraintOrientations::CounterClockwise);
+    }
+
+    return signedDistanceToLine(line, *circle.center.x, *circle.center.y) > 0.0;
+}
+
+}  // namespace
+
 TYPESYSTEM_SOURCE(Sketcher::Sketch, Base::Persistence)
 
 Sketch::Sketch()
@@ -3059,23 +3124,13 @@ int Sketch::addTangentConstraint(int geoId1, int geoId2, ConstraintOrientation o
         if (Geoms[geoId2].type == Arc) {
             GCS::Arc& a = Arcs[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(
-                l,
-                a,
-                orientation.testFlag(ConstraintOrientations::CounterClockwise),
-                tag
-            );
+            GCSsys.addConstraintTangent(l, a, tangentSide(orientation, l, a), tag);
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Circle) {
             GCS::Circle& c = Circles[Geoms[geoId2].index];
             int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintTangent(
-                l,
-                c,
-                orientation.testFlag(ConstraintOrientations::CounterClockwise),
-                tag
-            );
+            GCSsys.addConstraintTangent(l, c, tangentSide(orientation, l, c), tag);
             return ConstraintsCounter;
         }
         else if (Geoms[geoId2].type == Ellipse) {
@@ -3583,15 +3638,12 @@ int Sketch::addDistanceConstraint(
     if (Geoms[geoId2].type == Line) {
         GCS::Line& l2 = Lines[Geoms[geoId2].index];
 
+        const bool counterClockwise = hasKnownSide(orientation)
+            ? orientation.testFlag(ConstraintOrientations::CounterClockwise)
+            : signedDistanceToLine(l2, *p1.x, *p1.y) > 0.0;
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2LDistance(
-            p1,
-            l2,
-            value,
-            orientation.testFlag(ConstraintOrientations::CounterClockwise),
-            tag,
-            driving
-        );
+        GCSsys.addConstraintP2LDistance(p1, l2, value, counterClockwise, tag, driving);
         return ConstraintsCounter;
     }
     else {
@@ -3664,16 +3716,17 @@ int Sketch::addDistanceConstraint(
         }
 
         GCS::Line* l = &Lines[Geoms[geoId2].index];
+
+        bool counterClockwise = orientation.testFlag(ConstraintOrientations::CounterClockwise);
+        bool internal = orientation.testFlag(ConstraintOrientations::Internal);
+        if (!hasKnownSide(orientation)) {
+            const double signedDistance = signedDistanceToLine(*l, *c1->center.x, *c1->center.y);
+            counterClockwise = signedDistance > 0.0;
+            internal = std::abs(signedDistance) < *c1->rad;
+        }
+
         int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintC2LDistance(
-            *c1,
-            *l,
-            value,
-            orientation.testFlag(ConstraintOrientations::CounterClockwise),
-            orientation.testFlag(ConstraintOrientations::Internal),
-            tag,
-            driving
-        );
+        GCSsys.addConstraintC2LDistance(*c1, *l, value, counterClockwise, internal, tag, driving);
         return ConstraintsCounter;
     }
     else {
@@ -4661,6 +4714,11 @@ bool Sketch::updateGeometry()
         }
         catch (Base::Exception& e) {
             Base::Console().error("Updating geometry: Error build geometry(%d): %s\n", i, e.what());
+            return false;
+        }
+        catch (const Standard_Failure& e) {
+            Base::Console()
+                .error("Updating geometry: Error build geometry(%d): %s\n", i, e.GetMessageString());
             return false;
         }
     }

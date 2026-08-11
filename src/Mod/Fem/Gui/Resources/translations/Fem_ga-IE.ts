@@ -1813,6 +1813,16 @@ go gcaithfear "MAXGS" a mhéadú.</translation>
       <translation>Scrios</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Aghaidh amháin sa réad! - bogtha go dtí an máistir-aghaidh</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Roghnaigh geoiméadracht sclábhaí den chineál seo: </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1836,26 +1846,16 @@ go gcaithfear "MAXGS" a mhéadú.</translation>
       <translation>Earráid Roghnúcháin</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Aghaidh amháin sa réad! - bogtha go dtí an máistir-aghaidh</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Roghnaigh geoiméadracht sclábhaí den chineál seo: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Aghaidh</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>cliceáil Cuir leis nó Bain</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Imeall, Aghaidh</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5019,13 +5019,13 @@ Le haghaidh athróga féideartha, féach an bosca cur síos thíos.</translation
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Roghnaigh máistir-gheoiméadracht an chineáil: Aghaidh; cliceáil Cuir leis nó Bain</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Roghnaigh máistir-gheoiméadracht an chineáil: Imeall, Aghaidh; cliceáil Cuir leis nó Bain</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Roghnaigh geoiméadracht sclábhaí den chineál: Aghaidh; cliceáil Cuir leis nó Bain</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Roghnaigh geoiméadracht sclábhaí den chineál: Imeall, Aghaidh; cliceáil Cuir leis nó Bain</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>

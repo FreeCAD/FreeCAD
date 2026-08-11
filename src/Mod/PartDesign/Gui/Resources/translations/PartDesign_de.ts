@@ -1439,92 +1439,92 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="98"/>
       <source>Subtractive Box Parameters</source>
-      <translation>Subtraktive Box-Parameter</translation>
+      <translation>Parameter des abziehenden Quaders</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="99"/>
       <source>Additive Box Parameters</source>
-      <translation>Additive Box-Parameter</translation>
+      <translation>Parameter des hinzufügenden Quaders</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="101"/>
       <source>Subtractive Cylinder Parameters</source>
-      <translation>Subtraktive Zylinder-Parameter</translation>
+      <translation>Parameter des abziehenden Zylinders</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="102"/>
       <source>Additive Cylinder Parameters</source>
-      <translation>Additive Zylinder-Parameter</translation>
+      <translation>Parameter des hinzufügenden Zylinders</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="104"/>
       <source>Subtractive Sphere Parameters</source>
-      <translation>Subtraktive Sphäre-Parameter</translation>
+      <translation>Parameter der abziehenden Kugel</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="105"/>
       <source>Additive Sphere Parameters</source>
-      <translation>Additive Sphäre-Parameter</translation>
+      <translation>Parameter der hinzufügenden Kugel</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="107"/>
       <source>Subtractive Cone Parameters</source>
-      <translation>Subtraktive Kegelparameter</translation>
+      <translation>Parameter des abziehenden Kegels</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="108"/>
       <source>Additive Cone Parameters</source>
-      <translation>Additive Kegelparameter</translation>
+      <translation>Parameter des hinzufügenden Kegels</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="110"/>
       <source>Subtractive Ellipsoid Parameters</source>
-      <translation>Subtraktive Ellipsoid-Parameter</translation>
+      <translation>Parameter des abziehenden Ellipsoids</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="111"/>
       <source>Additive Ellipsoid Parameters</source>
-      <translation>Additive Ellipsoid-Parameter</translation>
+      <translation>Parameter des hinzufügenden Ellipsoids</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="113"/>
       <source>Subtractive Torus Parameters</source>
-      <translation>Subtraktive Torusparameter</translation>
+      <translation>Parameter des abziehenden Torus</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="114"/>
       <source>Additive Torus Parameters</source>
-      <translation>Additive Torusparameter</translation>
+      <translation>Parameter des hinzufügenden Torus</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="116"/>
       <source>Subtractive Prism Parameters</source>
-      <translation>Subtraktive Prismenparameter</translation>
+      <translation>Parameter des abziehenden Prismas</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="117"/>
       <source>Additive Prism Parameters</source>
-      <translation>Additive Prismenparameter</translation>
+      <translation>Parameter des hinzufügenden Prismas</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="119"/>
       <source>Subtractive Wedge Parameters</source>
-      <translation>Subtraktive Keilparameter</translation>
+      <translation>Parameter des abziehenden Keils</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="120"/>
       <source>Additive Wedge Parameters</source>
-      <translation>Additive Keilparameter</translation>
+      <translation>Parameter des hinzufügenden Keils</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="123"/>
       <source>Subtractive Primitive Parameters</source>
-      <translation>Subtraktive Grundkörperparameter</translation>
+      <translation>Parameter des abziehenden Grundkörpers</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="124"/>
       <source>Additive Primitive Parameters</source>
-      <translation>Additive Grundkörperparameter</translation>
+      <translation>Parameter des hinzufügenden Grundkörpers</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.cpp" line="1024"/>
@@ -2077,12 +2077,12 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="71"/>
       <source>Subtractive Helix Parameters</source>
-      <translation>Subtraktive Wendelparameter</translation>
+      <translation>Parameter der abziehenden Wendel</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="72"/>
       <source>Additive Helix Parameters</source>
-      <translation>Additive Wendelparameter</translation>
+      <translation>Parameter der hinzufügenden Wendel</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="247"/>
@@ -2282,12 +2282,12 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="64"/>
       <source>Subtractive Loft Parameters</source>
-      <translation>Subtraktive Ausformungsparameter</translation>
+      <translation>Parameter der abziehenden Ausformung</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="65"/>
       <source>Additive Loft Parameters</source>
-      <translation>Additive Ausformungsparameter</translation>
+      <translation>Parameter der hinzufügenden Ausformung</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="94"/>
@@ -2674,12 +2674,12 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="83"/>
       <source>Subtractive Pipe Section Orientation</source>
-      <translation>Subtraktive Rohrabschnittsausrichtung</translation>
+      <translation>Querschnittausrichtung des abziehenden Rohrs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="84"/>
       <source>Additive Pipe Section Orientation</source>
-      <translation>Additive Rohrabschnittsausrichtung</translation>
+      <translation>Querschnittausrichtung des hinzufügenden Rohrs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="658"/>
@@ -2738,12 +2738,12 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="77"/>
       <source>Subtractive Pipe Parameters</source>
-      <translation>Subtraktive Rohrparameter</translation>
+      <translation>Parameter des abziehenden Rohrs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="78"/>
       <source>Additive Pipe Parameters</source>
-      <translation>Additive Rohrparameter</translation>
+      <translation>Parameter des hinzufügenden Rohrs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="112"/>
@@ -2802,12 +2802,12 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="89"/>
       <source>Subtractive Pipe Section Transformation</source>
-      <translation>Subtraktive Rohrabschnittstransformation</translation>
+      <translation>Querschnittänderung des abziehenden Rohrs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="90"/>
       <source>Additive Pipe Section Transformation</source>
-      <translation>Additive Rohrabschnittstransformation</translation>
+      <translation>Querschnittänderung des hinzufügenden Rohrs</translation>
     </message>
     <message>
       <location filename="../../TaskPipeParameters.cpp" line="948"/>

@@ -1428,11 +1428,30 @@ std::optional<gp_Circ> getCircle(const Part::Geometry* geo)
     }
     return std::nullopt;
 }
+const Part::Geometry* SketchObject::getGeometryOrWarn(int geoId) const
+{
+    if (geoId == GeoEnum::GeoUndef) {
+        return nullptr;
+    }
+
+    const Part::Geometry* geo = getGeometry(geoId);
+    if (!geo) {
+        // Without the referenced geometry, the side a signed constraint has to be solved on can't
+        // be determined, and the constraint keeps ConstraintOrientations::None. Don't let this be
+        // invisible (which will look like everything worked, when it didn't). This is useful when
+        // debugging old files that didn't reload correctly.
+        FC_WARN("Cannot determine constraint orientation, geometry "
+                << geoId << " is unavailable in " << getFullName());
+    }
+    return geo;
+}
+
 void SketchObject::setOrientationDistance(Constraint* constr)
 {
     // Try to find the orientation of point-line distance
     if (constr->FirstPos != PointPos::none && constr->Second != GeoEnum::GeoUndef) {
-        auto* geo1AsLine = freecad_cast<const Part::GeomLineSegment*>(getGeometry(constr->Second));
+        auto* geo1AsLine =
+            freecad_cast<const Part::GeomLineSegment*>(getGeometryOrWarn(constr->Second));
         if (geo1AsLine) {
             constr->Orientation = ccw2d(geo1AsLine->getStartPoint(), geo1AsLine->getEndPoint(), getPoint(constr->First, constr->FirstPos));
         }
@@ -1441,8 +1460,8 @@ void SketchObject::setOrientationDistance(Constraint* constr)
 
     // Try to find the orientation of circle-circle distance or circle-line
     if (constr->FirstPos == PointPos::none && constr->SecondPos == PointPos::none && constr->Second != GeoEnum::GeoUndef) {
-        const Part::Geometry* firGeo = getGeometry(constr->First);
-        const Part::Geometry* secGeo = getGeometry(constr->Second);
+        const Part::Geometry* firGeo = getGeometryOrWarn(constr->First);
+        const Part::Geometry* secGeo = getGeometryOrWarn(constr->Second);
         auto geo1AsCirc = getCircle(firGeo);
         auto geo2AsCirc = getCircle(secGeo);
 
@@ -1476,8 +1495,8 @@ void SketchObject::setOrientationDistance(Constraint* constr)
 }
 void SketchObject::setOrientationTangent(Constraint* constr)
 {
-    const Part::Geometry* firGeo = getGeometry(constr->First);
-    const Part::Geometry* secGeo = getGeometry(constr->Second);
+    const Part::Geometry* firGeo = getGeometryOrWarn(constr->First);
+    const Part::Geometry* secGeo = getGeometryOrWarn(constr->Second);
 
     auto impl = [&](const Part::Geometry* firGeo, const Part::Geometry* secGeo) -> bool {
         auto geo1AsCirc = getCircle(firGeo);
@@ -1501,6 +1520,44 @@ void SketchObject::setOrientationTangent(Constraint* constr)
         return;
     }
 }
+void SketchObject::reorientConstraintsOnReversedGeometry(const std::set<int>& reversedGeoIds)
+{
+    if (reversedGeoIds.empty()) {
+        return;
+    }
+
+    auto constraints = Constraints.getValues();
+    bool changed = false;
+
+    for (auto& constr : constraints) {
+        if (constr->Type != Distance && constr->Type != Tangent) {
+            continue;
+        }
+
+        bool referencesReversed = false;
+        for (int index = 0; constr->hasElement(index); ++index) {
+            if (reversedGeoIds.count(constr->getElement(index).GeoId) > 0) {
+                referencesReversed = true;
+                break;
+            }
+        }
+
+        if (!referencesReversed) {
+            continue;
+        }
+
+        // The line turned around underneath the constraint, so the side it recorded no longer
+        // describes where the geometry actually is. Read the side back out of the geometry rather
+        // than inverting the flag, so that the sketch stays where the user left it.
+        setOrientation(constr, true);
+        changed = true;
+    }
+
+    if (changed) {
+        Constraints.setValues(std::move(constraints));
+    }
+}
+
 void SketchObject::setOrientation(Constraint* constr, bool reset)
 {
     if (!reset && !constr->Orientation.testFlag(ConstraintOrientations::None)) {

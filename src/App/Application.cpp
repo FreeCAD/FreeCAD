@@ -818,7 +818,7 @@ bool Application::isFineGrainedRecomputeEnabled()
     static const ParameterGrp::handle hGrp = GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/General"
     );
-    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute");
+    bool enableFineGrainedRecompute = hGrp->GetBool("FineGrainedRecompute", true);
     return enableFineGrainedRecompute;
 }
 
@@ -2431,8 +2431,8 @@ void parseProgramOptions(int ac, char ** av, const std::string& exe, boost::prog
     ("log-file", boost::program_options::value<std::string>(), "Unlike --write-log this allows logging to an arbitrary file")
     ("user-cfg,u", boost::program_options::value<std::string>(),"User config file to load/save user settings")
     ("system-cfg,s", boost::program_options::value<std::string>(),"System config file to load/save system settings")
-    ("run-test,t", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.")
-    ("run-open,r", boost::program_options::value<std::string>()->implicit_value(""),"Run a given test case (use 0 (zero) to run all tests). If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
+    ("run-test,t", boost::program_options::value<std::vector<std::string>>()->composing()->implicit_value(std::vector<std::string>{""}, ""),"Run one or more test cases (repeat -t for multiple). Use 0 (zero) to run all tests. If no argument is provided then return list of all available tests.")
+    ("run-open,r", boost::program_options::value<std::vector<std::string>>()->composing()->implicit_value(std::vector<std::string>{""}, ""),"Run one or more test cases (repeat -r for multiple). Use 0 (zero) to run all tests. If no argument is provided then return list of all available tests.  Keeps UI open after test(s) complete.")
     ("module-path,M", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional module paths")
     ("macro-path,E", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional macro paths")
     ("python-path,P", boost::program_options::value< std::vector<std::string> >()->composing(),"Additional python paths")
@@ -2659,15 +2659,32 @@ void processProgramOptions(const boost::program_options::variables_map& vm, std:
     }
 
     if (vm.contains("run-test") || vm.contains("run-open")) {
-        std::string testCase = vm.contains("run-open") ? vm["run-open"].as<std::string>() : vm["run-test"].as<std::string>();
+        std::vector<std::string> testCases;
+        bool runAll = false;
+        bool printAll = false;
+        for (const std::string& key : {"run-open", "run-test"}) {
+            if (vm.contains(key)) {
+                auto v = vm[key].as<std::vector<std::string>>();
+                for (const auto& s : v) {
+                    if (s == "0") {
+                        runAll = true;
+                    }
+                    else if (s.empty()) {
+                        printAll = true;
+                    }
+                }
+                testCases.insert(testCases.end(), v.begin(), v.end());
+            }
+        }
 
-        if ( "0" == testCase) {
-            testCase = "TestApp.All";
+        if (printAll) {
+            testCases = {"TestApp.PrintAll"};
         }
-        else if (testCase.empty()) {
-            testCase = "TestApp.PrintAll";
+        else if (runAll) {
+            testCases = {"TestApp.All"};
         }
-        mConfig["TestCase"] = std::move(testCase);
+
+        mConfig["TestCase"] = boost::join(testCases, ",");
         mConfig["RunMode"] = "Internal";
         mConfig["ScriptFileName"] = "FreeCADTest";
         mConfig["ExitTests"] = vm.contains("run-open") ? "no" : "yes";

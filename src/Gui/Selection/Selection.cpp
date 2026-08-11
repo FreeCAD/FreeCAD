@@ -1414,6 +1414,7 @@ void SelectionSingleton::selStackGoBack(int count)
     }
     if (!_SelList.empty()) {
         selStackPush(false, true);
+        clearCompleteSelection();
     }
     else {
         --count;

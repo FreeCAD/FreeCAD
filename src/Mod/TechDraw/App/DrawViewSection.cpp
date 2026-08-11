@@ -1276,8 +1276,6 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
         }
         return;
     }
-
-    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
 }
 
 // checks that SectionNormal and XDirection are perpendicular and that Direction is the same as

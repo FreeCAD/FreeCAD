@@ -923,6 +923,7 @@ void QGIViewPart::drawCenterLines(bool b)
     if (b) {
         bool horiz = vp->HorizCenterLine.getValue();
         bool vert = vp->VertCenterLine.getValue();
+        const QColor centerColor = PreferencesGui::getAccessibleQColor(PreferencesGui::centerQColor());
 
         QGICenterLine* centerLine;
         double sectionSpan;
@@ -941,7 +942,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
                                   vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-            centerLine->setColor(Qt::green);
+            centerLine->setColor(centerColor);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -958,7 +959,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
                                   vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-            centerLine->setColor(Qt::red);
+            centerLine->setColor(centerColor);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }

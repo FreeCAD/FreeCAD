@@ -5859,42 +5859,42 @@ Konačni kut bit će osnovni kut plus ovaj iznos.</translation>
       <translation>Tekst</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="311"/>
+      <location filename="../../draftobjects/label.py" line="320"/>
       <source>No Target</source>
       <translation>Nema odredišta</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="394"/>
+      <location filename="../../draftobjects/label.py" line="403"/>
       <source>Invalid label type</source>
       <translation>Nevažeća vrsta oznake</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="409"/>
+      <location filename="../../draftobjects/label.py" line="418"/>
       <source>Tag not available for object</source>
       <translation>Oznaka nije dostupna za objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="416"/>
+      <location filename="../../draftobjects/label.py" line="425"/>
       <source>Material not available for object</source>
       <translation>Materijal nije dostupan za objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="425"/>
+      <location filename="../../draftobjects/label.py" line="434"/>
       <source>Position not available for (sub)object</source>
       <translation>Pozicija nije dostupna za objekt</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="441"/>
+      <location filename="../../draftobjects/label.py" line="450"/>
       <source>Length not available for (sub)object</source>
       <translation>Dužina nije dostupna za objekt(e)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="455"/>
+      <location filename="../../draftobjects/label.py" line="464"/>
       <source>Area not available for (sub)object</source>
       <translation>Područje nije dostupno za objekt(e)</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="468"/>
+      <location filename="../../draftobjects/label.py" line="477"/>
       <source>Volume not available for (sub)object</source>
       <translation>Volumen nije dostupan za objekt(e)</translation>
     </message>
@@ -6344,7 +6344,7 @@ Da biste omogućili FreeCAD-u preuzimanje ovih biblioteka, odgovorite s Da.</tra
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="401"/>
-      <location filename="../../draftobjects/label.py" line="317"/>
+      <location filename="../../draftobjects/label.py" line="326"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
@@ -6384,67 +6384,67 @@ Da biste omogućili FreeCAD-u preuzimanje ovih biblioteka, odgovorite s Da.</tra
       <translation>Novi Sloj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="316"/>
+      <location filename="../../draftobjects/label.py" line="325"/>
       <source>Custom</source>
       <translation>Prilagođeno</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="318"/>
+      <location filename="../../draftobjects/label.py" line="327"/>
       <source>Label</source>
       <translation>Oznaka</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="319"/>
+      <location filename="../../draftobjects/label.py" line="328"/>
       <source>Position</source>
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="320"/>
+      <location filename="../../draftobjects/label.py" line="329"/>
       <source>Length</source>
       <translation>Dužina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="321"/>
+      <location filename="../../draftobjects/label.py" line="330"/>
       <source>Area</source>
       <translation>Područje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="322"/>
+      <location filename="../../draftobjects/label.py" line="331"/>
       <source>Volume</source>
       <translation>Obujam</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="323"/>
+      <location filename="../../draftobjects/label.py" line="332"/>
       <source>Tag</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="324"/>
+      <location filename="../../draftobjects/label.py" line="333"/>
       <source>Material</source>
       <translation>Materijal</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="325"/>
+      <location filename="../../draftobjects/label.py" line="334"/>
       <source>Label + Position</source>
       <translation>Oznaka + Položaj</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="326"/>
+      <location filename="../../draftobjects/label.py" line="335"/>
       <source>Label + Length</source>
       <translation>Oznaka + Dužina</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="327"/>
+      <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Area</source>
       <translation>Oznaka + Područje</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="328"/>
+      <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Volume</source>
       <translation>Oznaka + Volumen</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="329"/>
+      <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Material</source>
       <translation>Oznaka + Materijal</translation>
     </message>

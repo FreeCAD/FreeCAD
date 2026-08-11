@@ -832,14 +832,14 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="24"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="134"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="65"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="26"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseLocationEdit.ui" line="29"/>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="139"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="82"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="43"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -882,7 +882,7 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="40"/>
       <source>Transfer the Z value of the selected feature as the start depth for the operation</source>
       <translation>Transfereix el valor Z de la característica seleccionada com a profunditat inicial de l'operació</translation>
     </message>
@@ -894,7 +894,7 @@ Reset deletes all current items from the list and fills the list with all circul
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="61"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>La profunditat de l'operació que correspon al valor més baix en l'eix Z que l'operació ha de processar.</translation>
     </message>
@@ -906,19 +906,19 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
       <location filename="../panels/SetupGlobal.ui" line="68"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="178"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="172"/>
       <source>Step down</source>
       <translation>Pas per sota</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="138"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="185"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="179"/>
       <source>The depth in Z-axis the operation moves downwards between layers. This value depends on the tool being used, the material to be cut, available cooling and many other factors. Consult the tool manufacturers data sheets for the proper value.</source>
       <translation>La profunditat en l'eix Z que l'operació avança cap avall entre capes. Aquest valor depèn de l'eina utilitzada, el material a tallar, la refrigeració disponible i molts altres factors. Consulteu les fitxes tècniques del fabricant de l'eina per obtenir el valor adequat.</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
-      <location filename="../panels/PageHeightsEdit.ui" line="210"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="204"/>
       <source>Finish step down</source>
       <translation>Finalitzar ps per sota</translation>
     </message>
@@ -933,68 +933,68 @@ Reset deletes all current items from the list and fills the list with all circul
       <translation>Diàmetre mínim</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="334"/>
-      <location filename="../panels/PageDiametersEdit.ui" line="57"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="301"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="54"/>
       <source>Max diameter</source>
       <translation>Diàmetre màxim</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="74"/>
       <source>Transfer the Z value of the selected feature as the final depth for the operation.</source>
       <translation>Transfereix el valor Z de la característica seleccionada com a profunditat final de l'operació.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="104"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="101"/>
       <source>The height above which it is safe to move the tool bit with rapid movements. Below this height all lateral and downward movements are performed with feed rate speeds.</source>
       <translation>L'alçada per damunt de la qual és segur moure la punta de l'eina amb moviments ràpids. Per sota d'aquesta alçada, tots els moviments laterals i descendents es fan a velocitat d'avançament.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="132"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="126"/>
       <source>Start</source>
       <translation>Inicia</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="139"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="133"/>
       <source>Start height of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation type="unfinished">Start height of the operation. The highest point in Z-axis the operation needs to process.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="152"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="146"/>
       <source>Transfer the Z value of the selected feature as the start height for the operation</source>
       <translation type="unfinished">Transfer the Z value of the selected feature as the start height for the operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="217"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="211"/>
       <source>Height of the final cut of the operation. Can be used to produce a cleaner finish.</source>
       <translation type="unfinished">Height of the final cut of the operation. Can be used to produce a cleaner finish.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="242"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="236"/>
       <source>Final</source>
       <translation type="unfinished">Final</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="249"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="243"/>
       <source>The height of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation type="unfinished">The height of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="262"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="256"/>
       <source>Transfer the Z value of the selected feature as the final height for the operation</source>
       <translation type="unfinished">Transfer the Z value of the selected feature as the final height for the operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="293"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="287"/>
       <source>Linking</source>
       <translation type="unfinished">Linking</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="299"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="293"/>
       <source>Collision Avoidance Strategy</source>
       <translation type="unfinished">Collision Avoidance Strategy</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="306"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="300"/>
       <source>How collision detection is performed when the tool moves between features.
 
 Retract Height: No collision detection, uses retract height for rapid moves between areas
@@ -1013,12 +1013,12 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
           </translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="320"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="314"/>
       <source>Collision Clearance</source>
       <translation type="unfinished">Collision Clearance</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="327"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="321"/>
       <source>Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</source>
       <translation type="unfinished">Minimum clearance distance between the tool and any solid during linking moves. Applies to all linking modes.</translation>
     </message>
@@ -1028,163 +1028,27 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape
       <translation>L'alçada on el moviment lateral de la punta de l'eina no queda obstaculitzat per cap fixació ni per la peça o el material del brut.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
       <source>Coolant Mode</source>
       <translation>Mode de refrigeració</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="24"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/SetupGlobal.ui" line="180"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="29"/>
       <source>Tool Controller</source>
       <translation>Controlador d'eina</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
-      <source>Tool controller that supplies the cutter geometry, feed and speed for this operation.</source>
-      <translation type="unfinished">Tool controller that supplies the cutter geometry, feed and speed for this operation.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="34"/>
       <location filename="../panels/SetupGlobal.ui" line="249"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <source>Coolant</source>
       <translation>Refrigerant</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="39"/>
-      <source>Coolant mode emitted at the start of the operation.</source>
-      <translation type="unfinished">Coolant mode emitted at the start of the operation.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
-      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
-      <translation type="unfinished">Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="62"/>
-      <source>Cut Pattern</source>
-      <translation type="unfinished">Cut Pattern</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="67"/>
-      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation type="unfinished">Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="72"/>
-      <source>Feed Mode</source>
-      <translation type="unfinished">Feed Mode</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="77"/>
-      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
-      <translation type="unfinished">How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="82"/>
-      <source>Start X</source>
-      <translation type="unfinished">Start X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="87"/>
-      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
-      <translation type="unfinished">Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
-      <source>Stop X</source>
-      <translation type="unfinished">Stop X</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="97"/>
-      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
-      <translation type="unfinished">Axial stop position along the rotary axis (mm). Must be greater than Start X.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="102"/>
-      <source>Start Angle</source>
-      <translation type="unfinished">Start Angle</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="107"/>
-      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
-      <translation type="unfinished">Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="112"/>
-      <source>Stop Angle</source>
-      <translation type="unfinished">Stop Angle</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="117"/>
-      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
-      <translation type="unfinished">Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="122"/>
-      <source>Step Over</source>
-      <translation type="unfinished">Step Over</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
-      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
-      <translation type="unfinished">Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="132"/>
-      <source>Angular Resolution</source>
-      <translation type="unfinished">Angular Resolution</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="137"/>
-      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
-      <translation type="unfinished">Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="142"/>
-      <source>Radial Stock To Leave</source>
-      <translation type="unfinished">Radial Stock To Leave</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="147"/>
-      <source>Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
-      <translation type="unfinished">Radial offset added to the cutter Z so the cutter stays this far above the part surface (mm). Use a small positive value for a finish allowance; 0 cuts directly to the surface.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="152"/>
-      <source>Max Feed</source>
-      <translation type="unfinished">Max Feed</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="157"/>
-      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
-      <translation type="unfinished">Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
-      <source>Restrict to Selected Faces</source>
-      <translation type="unfinished">Restrict to Selected Faces</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="163"/>
-      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
-      <translation type="unfinished">When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="122"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="89"/>
       <source>Type of adaptive operation</source>
       <translation>Tipus d'operació adaptativa</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="78"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="45"/>
       <source>Influences calculation performance vs stability and accuracy.
 
 Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
@@ -1193,212 +1057,184 @@ Larger values (further to the right) will calculate faster; smaller values (furt
 Els valors més grans (més a la dreta) es calcularan més ràpid; els valors més petits (més a l'esquerra) produiran trajectòries d'eina més precises.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="115"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="82"/>
       <source>Cut inside or outside of the selected shapes</source>
       <translation>Talla a l'interior o a l'exterior de les formes seleccionades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="223"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="190"/>
       <source>How much to lift the tool up during the rapid linking moves over cleared regions. If linking path is not clear tool is raised to clearance height.</source>
       <translation>Quant s'ha d'elevar l'eina durant els moviments ràpids d'enllaç sobre regions netejades. Si el camí d'enllaç no és clar, l'eina s'eleva a l'alçada de separació.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="254"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="221"/>
       <source>Max length of keep-tool-down linking path compared to direct distance between points. If exceeded link will be done by raising the tool to clearance height.</source>
       <translation>Longitud màxima del camí d'enllaç amb l'eina avall en comparació amb la distància directa entre punts. Si se supera, l'enllaç es farà elevant l'eina a l'alçada de separació.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="324"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="291"/>
       <source>Angle of the helix entry cone</source>
       <translation>Angle del con d'entrada helicoïdal</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="33"/>
       <source>Tool controller</source>
       <translation>Controlador d'eina</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="59"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="97"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="59"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="57"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="99"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="53"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="57"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="57"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="57"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="79"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="49"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="43"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="59"/>
-      <source>Edit Tool Controller</source>
-      <translation>Edita el controlador d'eina</translation>
+      <location filename="../panels/PageToolControllerEdit.ui" line="54"/>
+      <source>The coolant mode to be used for this operation</source>
+      <translation type="unfinished">The coolant mode to be used for this operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="71"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="38"/>
       <source>Accuracy vs performance</source>
       <translation>Precisió versus rendiment</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="108"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="75"/>
       <source>Force clearing inside-out</source>
       <translation>Força el buidat de dins cap enfora</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="129"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="96"/>
       <source>Finishing profile</source>
       <translation>Perfil d'acabat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="136"/>
-      <source>How much material to leave in the XY-plane (i.e. for finishing operation)</source>
-      <translation>Quant material deixar al pla XY (p. ex., per a una operació d'acabat)</translation>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="103"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="74"/>
+      <source>How much stock to leave on the walls for this operation</source>
+      <translation type="unfinished">How much stock to leave on the walls for this operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="146"/>
-      <source>XY stock to leave</source>
-      <translation>Material a deixar en XY</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="153"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="120"/>
       <source>The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</source>
       <translation type="unfinished">The sideways distance the cutting tool moves between successive passes, as percentage of the tool&apos;s diameter.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="178"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="145"/>
       <source>Step over (percent)</source>
       <translation type="unfinished">Step over (percent)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="185"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="152"/>
       <source>The sideways distance the cutting tool moves between successive passes.</source>
       <translation type="unfinished">The sideways distance the cutting tool moves between successive passes.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="195"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="162"/>
       <source>Step over (distance)</source>
       <translation type="unfinished">Step over (distance)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="276"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="243"/>
       <source>&lt;b&gt;Helix Parameters&lt;/b&gt;</source>
       <translation type="unfinished">&lt;b&gt;Helix Parameters&lt;/b&gt;</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="283"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="250"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="71"/>
       <source>Max pitch</source>
       <translation type="unfinished">Max pitch</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="290"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="131"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="257"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="84"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to zero to disable limitation by pitch.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="300"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="138"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="267"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="91"/>
       <source>Max ramp angle</source>
       <translation type="unfinished">Max ramp angle</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="307"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="274"/>
       <source>The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</source>
       <translation type="unfinished">The maximum allowable angle of the helix ramp entry. Set to zero to disable limitation by ramp angle.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="317"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="284"/>
       <source>Cone angle</source>
       <translation>Angle del con</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="341"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="308"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
       <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="363"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="330"/>
       <source>Min diameter</source>
       <translation type="unfinished">Min diameter</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="370"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
       <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
       <translation type="unfinished">Minimum acceptable entry diameter, as a percentage of the tool diameter.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="202"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
       <source>Use outline</source>
       <translation>Utilitza el contorn</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="216"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="183"/>
       <source>Operation type</source>
       <translation>Tipus d'operació</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="233"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="200"/>
       <source>Keep tool down ratio</source>
       <translation>Proporció de mantenir l'eina avall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="240"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="207"/>
       <source>Lift distance</source>
       <translation>Distància d'alçament</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="247"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="214"/>
       <source>Cut region</source>
       <translation>Regió de tall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="398"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="365"/>
       <source>Stop</source>
       <translation>Atura</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="138"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="89"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="188"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="49"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="42"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="140"/>
       <source>Direction</source>
       <translation>Direcció</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="155"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="59"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="66"/>
       <source>CW</source>
       <translation>Sentit horari</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="160"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="71"/>
       <source>CCW</source>
       <translation>Sentit antihorari</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="289"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="200"/>
       <source>Join</source>
       <translation>Unió</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="296"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="207"/>
       <source>Round joint</source>
       <translation>Unió arrodonida</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="315"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="226"/>
       <source>Miter joint</source>
       <translation>Unió a inglet</translation>
     </message>
@@ -1412,23 +1248,23 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <location filename="../panels/ToolEditor.ui" line="223"/>
       <location filename="../panels/ToolEditor.ui" line="240"/>
       <location filename="../panels/ToolEditor.ui" line="280"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="205"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="232"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="116"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="143"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="202"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="113"/>
       <source>Width of chamfer cut</source>
       <translation>Amplada del tall del xamfrà</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="229"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="140"/>
       <source>Extra depth of tool immersion</source>
       <translation>Profunditat addicional d'immersió de l'eina</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="388"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="299"/>
       <source>TextLabel</source>
       <translation>Etiqueta de text</translation>
     </message>
@@ -1453,54 +1289,54 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <translation>Roscament</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="87"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="59"/>
       <source>Do not retract after every hole</source>
       <translation>No retreure després de cada forat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="90"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="62"/>
       <source>Keep tool down</source>
       <translation>Mantén l'eina avall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="109"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="74"/>
       <source>Peck</source>
       <translation>Picat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="126"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="134"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="91"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="81"/>
       <source>Extend depth</source>
       <translation>Amplia la profunditat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="146"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="111"/>
       <source>Drill tip</source>
       <translation>Punta de la broca</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="151"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="116"/>
       <source>2x drill tip</source>
       <translation>Punta de la broca 2x</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="176"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
       <source>Depth</source>
       <translation>Profunditat</translation>
     </message>
     <message>
-      <location filename="../panels/PageHeightsEdit.ui" line="97"/>
+      <location filename="../panels/PageHeightsEdit.ui" line="94"/>
       <source>Retract</source>
       <translation type="unfinished">Retract</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="183"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="148"/>
       <source>Chip break</source>
       <translation>Trencament d'estelles</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="166"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="101"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="131"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="48"/>
       <source>Dwell</source>
       <translation>Espera</translation>
     </message>
@@ -1510,26 +1346,10 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="119"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="94"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="84"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="41"/>
       <source>Time</source>
       <translation>Temps</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="114"/>
-      <source>Tap tip</source>
-      <translation>Prémer ajuda</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="119"/>
-      <source>2x tap tip</source>
-      <translation>2x punta de rosca</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="51"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="72"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The tool and its settings to be used for this operation.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;L'eina i la seva configuració que s'utilitzaran en aquesta operació.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../panels/PageOpTappingEdit.ui" line="23"/>
@@ -1537,81 +1357,81 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <translation type="unfinished">⚠ DEPRECATED: The Tapping operation is deprecated and will be removed in a future release. Please use the Drilling operation with Strategy set to &apos;Tapping&apos; instead. Existing Tapping operations will continue to work but you cannot create new ones.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpTappingEdit.ui" line="65"/>
-      <source>ToolController</source>
-      <translation>ControladorD'eines</translation>
+      <location filename="../panels/PageOpTappingEdit.ui" line="61"/>
+      <source>Tap tip</source>
+      <translation>Prémer ajuda</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="141"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="109"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="66"/>
+      <source>2x tap tip</source>
+      <translation>2x punta de rosca</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="106"/>
+      <location filename="../panels/PageOpTappingEdit.ui" line="56"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="190"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="155"/>
       <source>Feed retract</source>
       <translation>Retraure avançament</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="193"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="158"/>
       <source>G85: Retract from the hole at the given feedrate instead of rapid move</source>
       <translation>G85: Retreu del forat a la velocitat d'avanç indicada en lloc d'un moviment ràpid</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="70"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="23"/>
       <source>Start from</source>
       <translation>Comença des de</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="77"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="30"/>
       <source>Specify if the helix operation should start at the inside and work its way outwards, or start at the outside and work its way to the center</source>
       <translation>Especifiqueu si l'operació d'hèlix ha de començar a l'interior i avançar cap a fora, o començar a l'exterior i avançar cap al centre</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="81"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="34"/>
       <source>Inside</source>
       <translation>Interior</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="86"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="39"/>
       <source>Outside</source>
       <translation>Fora</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="94"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="47"/>
       <source>Cut mode</source>
       <translation type="unfinished">Cut mode</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="101"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="54"/>
       <source>The direction of the circular cuts</source>
       <translation type="unfinished">The direction of the circular cuts</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="151"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="104"/>
       <source>The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</source>
       <translation type="unfinished">The maximum allowable ramp entry angle. Set to zero to disable limitation by ramp angle.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="165"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="229"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="182"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
       <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="187"/>
-      <source>Stock to leave (outer radial)</source>
-      <translation type="unfinished">Stock to leave (outer radial)</translation>
+      <location filename="../panels/PageOpHelixEdit.ui" line="140"/>
+      <source>Radial stock to leave (outer)</source>
+      <translation type="unfinished">Radial stock to leave (outer)</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="197"/>
-      <source>Extra value to stay away from shape</source>
-      <translation type="unfinished">Extra value to stay away from shape</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="108"/>
-      <source>Extra offset</source>
-      <translation>Desplaçament addicional</translation>
+      <location filename="../panels/PageOpHelixEdit.ui" line="150"/>
+      <source>How much stock to leave on the outer wall for this operation</source>
+      <translation type="unfinished">How much stock to leave on the outer wall for this operation</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="58"/>
@@ -1679,12 +1499,12 @@ Els valors més grans (més a la dreta) es calcularan més ràpid; els valors m�
       <translation>Desactiva</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="70"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="23"/>
       <source>Boundary Shape</source>
       <translation>Forma del límit</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="77"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="30"/>
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.</source>
@@ -1693,719 +1513,798 @@ The latter can be used to face of the entire stock area to ensure uniform height
 Aquesta darrera opció es pot utilitzar per aplanar tota l'àrea del brut per garantir alçades uniformes per a les operacions següents.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="52"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="29"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="49"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="48"/>
       <source>Cut Mode</source>
       <translation>Mode de tall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="105"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="36"/>
+      <source>Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</source>
+      <translation type="unfinished">Climb: rotary advances in the positive direction. Conventional: rotary advances in the negative direction. Affects the sign of A in cutting moves; pick to match how the cutter engages the material on your machine.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="43"/>
+      <source>Cut Pattern</source>
+      <translation type="unfinished">Cut Pattern</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
+      <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
+      <translation type="unfinished">Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
+      <source>Feed Mode</source>
+      <translation type="unfinished">Feed Mode</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="64"/>
+      <source>How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</source>
+      <translation type="unfinished">How the tool controller&apos;s HorizFeed is interpreted. Axial Only: emit F=HorizFeed on every cut move; the controller&apos;s own feed math determines how the rotary keeps up — F values in the G-code are constant. Surface Speed: scale F per move so the cutter contact point holds HorizFeed (mm/min) along the surface — F = HorizFeed × 360 / (2π·r). F varies with radius and is capped by Max Feed.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="71"/>
+      <source>Start X</source>
+      <translation type="unfinished">Start X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="78"/>
+      <source>Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</source>
+      <translation type="unfinished">Axial start position along the rotary axis (mm). Defines the lower end of the surfaced region.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="85"/>
+      <source>Stop X</source>
+      <translation type="unfinished">Stop X</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="92"/>
+      <source>Axial stop position along the rotary axis (mm). Must be greater than Start X.</source>
+      <translation type="unfinished">Axial stop position along the rotary axis (mm). Must be greater than Start X.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="99"/>
+      <source>Start Angle</source>
+      <translation type="unfinished">Start Angle</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="106"/>
+      <source>Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</source>
+      <translation type="unfinished">Angular start position (degrees, unwound). Where the rotary begins; allows partial-revolution surfacing.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="113"/>
+      <source>Stop Angle</source>
+      <translation type="unfinished">Stop Angle</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="120"/>
+      <source>Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</source>
+      <translation type="unfinished">Angular stop position (degrees, unwound). 360 covers a full revolution; warns at execute if it exceeds the machine&apos;s rotary axis limits.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="127"/>
+      <source>Step Over</source>
+      <translation type="unfinished">Step Over</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
+      <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
+      <translation type="unfinished">Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
+      <source>Angular Resolution</source>
+      <translation type="unfinished">Angular Resolution</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="148"/>
+      <source>Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</source>
+      <translation type="unfinished">Angular sample density along the cutting direction (degrees). Smaller = smoother surface but more G-code; 5–15° is typical.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="155"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="113"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="61"/>
+      <source>Radial stock to leave</source>
+      <translation type="unfinished">Radial stock to leave</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="162"/>
+      <source>How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</source>
+      <translation type="unfinished">How much stock to leave on the walls for this operation. Use a small positive value for a finish allowance; 0 cuts directly to the surface.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="169"/>
+      <source>Max Feed</source>
+      <translation type="unfinished">Max Feed</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="176"/>
+      <source>Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</source>
+      <translation type="unfinished">Upper cap on the effective rotary feed rate emitted in cutting moves (mm/min). Prevents the rotary from being asked to spin arbitrarily fast as the cut approaches the centerline. 0 = unset; falls back to max(HorizRapid, VertRapid, 1000). When Feed Mode = Surface Speed, the surface feed is scaled down so the rotary stays at this cap; clamp events are summarized in the log at end of path.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="183"/>
+      <source>Restrict to Selected Faces</source>
+      <translation type="unfinished">Restrict to Selected Faces</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="186"/>
+      <source>When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</source>
+      <translation type="unfinished">When checked, restricts the toolpath to the projected (axial, angular) region of the faces selected on the part. When unchecked, the toolpath covers the full Start X…Stop X / Start Angle…Stop Angle window.</translation>
+    </message>
+    <message>
+      <location filename="../panels/PageOpHelixEdit.ui" line="58"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="59"/>
       <source>Climb</source>
       <translation>Ascendir</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="110"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="63"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="64"/>
       <source>Conventional</source>
       <translation>Convencional</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="119"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="72"/>
       <source>Pattern</source>
       <translation>Patró</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="80"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="40"/>
       <source>The tool and its settings to be used for this operation</source>
       <translation>L'eina i la seva configuració que s'utilitzaran en aquesta operació</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="73"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="52"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpTappingEdit.ui" line="58"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
+      <location filename="../panels/PageToolControllerEdit.ui" line="47"/>
       <source>Coolant mode</source>
       <translation>Mode de refrigeració</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="102"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="55"/>
       <source>The cutting mode assumes that the cut on one side of the tool bit represents the resulting part and the other side is either already milled away or will be removed later on. Climb mode is when the tool bit is moved into the cut on each rotation, whereas in conventional mode the tool bit&apos;s rotation and the tool&apos;s lateral movement are in the same direction</source>
       <translation>El mode de tall suposa que el tall a un costat de la punta de l'eina representa la peça resultant i l'altre costat ja s'ha fresat o s'eliminarà més endavant. El mode d'ascenció és quan la punta de l'eina entra en el tall a cada rotació, mentre que en el mode convencional la rotació de la punta i el moviment lateral de l'eina són en la mateixa direcció</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="126"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="79"/>
       <source>Pattern the tool bit is moved in to clear the material</source>
       <translation>Patró en què es mou la punta de l'eina per retirar el material</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="133"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="86"/>
       <source>ZigZag</source>
       <translation>Ziga-zaga</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="143"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="96"/>
       <source>Spiral</source>
       <translation>Espiral</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="101"/>
       <source>ZigZagOffset</source>
       <translation>Desplaçament ziga-zaga</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="153"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
       <source>Line</source>
       <translation>Línia</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="158"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="111"/>
       <source>Grid</source>
       <translation>Quadrícula</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="163"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="116"/>
       <source>Triangle</source>
       <translation>Triangle</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="278"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="221"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="231"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
       <source>Set picked point as start point</source>
       <translation type="unfinished">Set picked point as start point</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="81"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="35"/>
       <source>Clearing Pattern</source>
       <translation type="unfinished">Clearing Pattern</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="88"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
       <source>Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</source>
       <translation type="unfinished">Pattern for clearing the face: ZigZag, Bidirectional, Directional, or Spiral</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="56"/>
       <source>Climb or Conventional milling direction</source>
       <translation type="unfinished">Climb or Conventional milling direction</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="171"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="63"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="124"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="116"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="70"/>
       <source>Rotation angle for angled facing operations</source>
       <translation type="unfinished">Rotation angle for angled facing operations</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="119"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="73"/>
       <source>°</source>
       <translation type="unfinished">°</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="138"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="92"/>
       <source>Reverse</source>
       <translation>Revers</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="95"/>
       <source>Reverse the cutting direction for the selected pattern</source>
       <translation type="unfinished">Reverse the cutting direction for the selected pattern</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="155"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="192"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="145"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
       <translation type="unfinished">The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="158"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="156"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="353"/>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="382"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="168"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="195"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="232"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="123"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="320"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="349"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="121"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="185"/>
       <source>%</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="180"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="134"/>
       <source>Pass Extension</source>
       <translation>Extensió de la passada</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="187"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="141"/>
       <source>Distance to extend cuts beyond polygon boundary for tool disengagement</source>
       <translation type="unfinished">Distance to extend cuts beyond polygon boundary for tool disengagement</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="203"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="154"/>
       <source>Stock Extension</source>
       <translation type="unfinished">Stock Extension</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="210"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="161"/>
       <source>Extends the boundary in both direction</source>
       <translation type="unfinished">Extends the boundary in both direction</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="226"/>
-      <source>Stock To Leave (axial)</source>
-      <translation type="unfinished">Stock To Leave (axial)</translation>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="174"/>
+      <source>Axial stock to leave</source>
+      <translation type="unfinished">Axial stock to leave</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="233"/>
-      <source>Stock to leave for the operation</source>
-      <translation type="unfinished">Stock to leave for the operation</translation>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="181"/>
+      <source>How much stock to leave on the floor for this operation</source>
+      <translation type="unfinished">How much stock to leave on the floor for this operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="131"/>
       <source>Angle in which the pattern is applied</source>
       <translation>Angle amb què s'aplica el patró</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="214"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="167"/>
       <source>Material allowance</source>
       <translation>Sobrematerial</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="221"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="174"/>
       <source>The amount of material that should be left by this operation in relation to the target shape</source>
       <translation>La quantitat de material que s'ha de deixar amb aquesta operació en relació amb la forma objectiu</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="234"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="187"/>
       <source>If selected the operation uses the outline of the selected base geometry and ignores all holes</source>
       <translation type="unfinished">If selected the operation uses the outline of the selected base geometry and ignores all holes</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="190"/>
       <source>Ignore holes</source>
       <translation type="unfinished">Ignore holes</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="268"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="221"/>
       <source>Specify if this operation uses a starting point</source>
       <translation>Especifiqueu si aquesta operació utilitza un punt d'inici</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="271"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="271"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="214"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="224"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="224"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="167"/>
       <source>Use start point</source>
       <translation>Utilitza el punt d'inici</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="244"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="197"/>
       <source>Clear edges</source>
       <translation>Neteja les vores</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="251"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
       <source>Min travel</source>
       <translation>Desplaçament mínim</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="211"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
       <translation>Marqueu per ometre el mecanitzat de regions que ja s'han netejat amb operacions anteriors</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpAdaptiveEdit.ui" line="209"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
+      <location filename="../panels/PageOpAdaptiveEdit.ui" line="176"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="214"/>
       <source>Use rest machining</source>
       <translation>Utilitza mecanitzat de residus</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="59"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="20"/>
       <source>Probe grid points</source>
       <translation>Punts de quadrícula de la sonda</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="102"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="63"/>
       <source>Probe</source>
       <translation>Sonda</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="108"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="69"/>
       <source>X offset</source>
       <translation>Desplaçament X</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="122"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="83"/>
       <source>Y offset</source>
       <translation>Desplaçament Y</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="145"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="106"/>
       <source>File name</source>
       <translation>Nom del fitxer</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="139"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="100"/>
       <source>Output</source>
       <translation>Sortida</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="152"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="113"/>
       <source>Enter the filename where the probe points should be written</source>
       <translation>Introduïu el nom del fitxer on s'han d'escriure els punts de la sonda</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="155"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="116"/>
       <source>ProbePoints.txt</source>
       <translation>ProbePoints.txt</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="81"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="100"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="34"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="53"/>
       <source>PLACEHOLDER</source>
       <translation>MARCADOR DE POSICIÓ</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="145"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="96"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="56"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="49"/>
       <source>The direction in which the profile is performed, clockwise or counterclockwise</source>
       <translation>La direcció en què s'executa el perfil, en sentit horari o antihorari</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="121"/>
-      <source>The amount of extra material left by this operation in relation to the target shape</source>
-      <translation>La quantitat de material extra que deixa aquesta operació en relació amb la forma objectiu</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="23"/>
       <source>Cut side</source>
       <translation>Costat de tall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="77"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="30"/>
       <source>Specify if the profile should be performed inside or outside the base geometry features. This only matters if &apos;Use compensation&apos; is checked (the default).</source>
       <translation>Especifiqueu si el perfil s'ha de fer a l'interior o a l'exterior de les característiques de la geometria base. Només és rellevant si es marca &apos;Utilitza compensació&apos; (per defecte).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="128"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="81"/>
       <source>Number of passes</source>
       <translation>Nombre de passades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="138"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="91"/>
       <source>The number of passes to do. If more than one, requires a non-zero value for &apos;Pass stepover&apos;.</source>
       <translation>El nombre de passades a fer. Si és més d'una, cal un valor diferent de zero per a &apos;Solapament de passada&apos;.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="145"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="98"/>
       <source>Pass stepover</source>
       <translation>Solapament de passada</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="158"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="111"/>
       <source>If doing multiple passes, the extra offset of each additional pass</source>
       <translation>Si es fan múltiples passades, el desplaçament addicional de cada passada addicional</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="211"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="164"/>
       <source>Check if this operation should use a starting point</source>
       <translation>Marqueu si aquesta operació ha d'utilitzar un punt d'inici</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="171"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="124"/>
       <source>Check if this profile operation should also process holes in the base geometry. Found holes are automatically offset on the opposite cut side and performed in the opposite direction as perimeters. Note that this does not include cylindrical holes, the assumption being that they will get drilled</source>
       <translation>Marqueu si aquesta operació de perfil també ha de processar forats a la geometria base. Els forats trobats es desplacen automàticament al costat de tall oposat i s'executen en direcció oposada com els perímetres. Tingueu en compte que això no inclou els forats cilíndrics, amb l'assumpció que es foradaran.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="174"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="127"/>
       <source>Process holes</source>
       <translation>Processa forats</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="181"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="134"/>
       <source>If checked, the profile operation is offset by the tool radius. The offset direction is determined by &apos;Cut side&apos;.</source>
       <translation>Si està marcat, l'operació de perfil es desplaça pel radi de l'eina. La direcció del desplaçament la determina &apos;Costat de tall&apos;.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="191"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="144"/>
       <source>Check if you want this profile operation to also be applied to cylindrical holes, which normally get drilled. This can be useful if no drill of adequate size is available or the number of holes don&apos;t warrant a tool change. Note that the cut side and direction is reversed in respect to the specified values.</source>
       <translation>Marqueu si voleu que aquesta operació de perfil també s'apliqui a forats cilíndrics, que normalment es foraden. Això pot ser útil si no hi ha disponible una broca de mida adequada o si el nombre de forats no justifica un canvi d'eina. Tingueu en compte que el costat i la direcció de tall s'inverteixen respecte dels valors especificats.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="194"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="147"/>
       <source>Process circles</source>
       <translation>Processa cercles</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="201"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="154"/>
       <source>Check if this profile operation should also process the outside perimeter of the base geometry shapes</source>
       <translation>Marqueu si aquesta operació de perfil també ha de processar el perímetre exterior de les formes de la geometria base</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="184"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="137"/>
       <source>Use Compensation</source>
       <translation>Utilitza compensació</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="204"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="157"/>
       <source>Process Perimeter</source>
       <translation>Processa el perímetre</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="134"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="196"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="88"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="150"/>
       <source>Vertex</source>
       <translation>Vèrtex</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="148"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="102"/>
       <source>End Feature Reference</source>
       <translation>Referència de característica final</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="97"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="51"/>
       <source>Choose what point to use on the first selected feature</source>
       <translation>Trieu quin punt utilitzar a la primera característica seleccionada</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="42"/>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="42"/>
-      <source> The tool and its settings to be used for this operation</source>
-      <translation> L'eina i la seva configuració que s'utilitzaran en aquesta operació</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="78"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="32"/>
       <source>Start feature reference</source>
       <translation>Referència de característica inicial</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="104"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="176"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="58"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="130"/>
       <source>Center of mass</source>
       <translation>Centre de massa</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="109"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="181"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="63"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="135"/>
       <source>Center of bounding box</source>
       <translation>Centre de la capsa delimitadora</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="114"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="186"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="68"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="140"/>
       <source>Lowest point</source>
       <translation>Punt més baix</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="119"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="191"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="73"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="145"/>
       <source>Highest point</source>
       <translation>Punt més alt</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="124"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="78"/>
       <source>Long edge</source>
       <translation>Vora llarga</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="129"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="83"/>
       <source>Short edge</source>
       <translation>Vora curta</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="169"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="123"/>
       <source>Choose what point to use on the second selected feature</source>
       <translation>Trieu quin punt utilitzar a la segona característica seleccionada</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="229"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="183"/>
       <source>No base geometry Selected</source>
       <translation>No s'ha seleccionat cap geometria base</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="235"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="189"/>
       <source>No base geometry selected</source>
       <translation>No s'ha seleccionat cap geometria base</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="248"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="202"/>
       <source>Currently using custom point inputs in the property view of the data tab</source>
       <translation>Actualment s'utilitzen entrades de punts personalitzats a la vista de propietats de la pestanya Dades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="251"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="205"/>
       <source>Currently using custom point inputs available in the property view of the data tab</source>
       <translation>Actualment s'utilitzen les entrades de punts personalitzats disponibles a la vista de propietats de la pestanya Dades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="282"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="236"/>
       <source>Extend path start</source>
       <translation>Amplia l'inici del camí</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="352"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="105"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="306"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="62"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="51"/>
       <source>Layer mode</source>
       <translation>Mode de capes</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="359"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="313"/>
       <source>Set the cut pattern for the operation</source>
       <translation type="unfinished">Set the cut pattern for the operation</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="363"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="317"/>
       <source>Directional</source>
       <translation type="unfinished">Directional</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="368"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="322"/>
       <source>Bidirectional</source>
       <translation type="unfinished">Bidirectional</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="376"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="330"/>
       <source>Path orientation</source>
       <translation>Orientació del camí</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="383"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="337"/>
       <source>Choose the path orientation with regard to the features selected</source>
       <translation>Trieu l'orientació del camí respecte de les característiques seleccionades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="387"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="341"/>
       <source>Start to end</source>
       <translation>D'inici a final</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="298"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="252"/>
       <source>Positive extends the beginning of the path, negative shortens</source>
       <translation>Positiu amplia l'inici del camí; negatiu l'escurça</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="308"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="262"/>
       <source>Extend Path End</source>
       <translation>Amplia el final del camí</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="324"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="278"/>
       <source>Positive extends the end of the path, negative shortens</source>
       <translation>Positiu amplia el final del camí; negatiu l'escurça</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="74"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="58"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth</source>
       <translation>Completa l'operació en una sola passada a profunditat, o en múltiples passades fins a la profunditat final</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="346"/>
       <source>Perpendicular</source>
       <translation>Perpendicular</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="400"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="354"/>
       <source>Enable to reverse the cut direction of the slot path</source>
       <translation>Habilita-ho per invertir la direcció de tall del camí de la ranura</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSlotEdit.ui" line="403"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="357"/>
       <source>Reverse cut direction</source>
       <translation>Inverteix la direcció de tall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="73"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="30"/>
       <source>Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</source>
       <translation type="unfinished">Select the algorithm to use: &apos;OCL Dropcutter*&apos;, &apos;OCL Adaptive*&apos; or &apos;Experimental&apos; (not OCL based).</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="86"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="23"/>
       <source>Bounding box</source>
       <translation>Capsa delimitadora</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="77"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="55"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="30"/>
       <source>Select the overall boundary for the operation</source>
       <translation>Seleccioneu el límit general de l'operació</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="84"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="37"/>
       <source>Scan type</source>
       <translation>Tipus d'escaneig</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="44"/>
       <source>Planar: flat, 3D surface scan. Rotational: 4th-axis rotational scan.</source>
       <translation>Planar: escaneig de superfície plana en 3D. Rotacional: escaneig rotacional del quart eix.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="124"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="81"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="65"/>
       <source>Cut pattern</source>
       <translation>Patró de tall</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="119"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="93"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="72"/>
       <source>Set the geometric clearing pattern to use for the operation</source>
       <translation>Establiu el patró geomètric de buidatge a utilitzar per a l'operació</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="79"/>
       <source>Profile edges</source>
       <translation>Perfila les vores</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="133"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="86"/>
       <source>Profile the edges of the selection</source>
       <translation>Perfila les vores de la selecció</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="93"/>
       <source>Avoid last X faces</source>
       <translation>Evita les últimes X cares</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="147"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="100"/>
       <source>Avoid cutting the last &apos;n&apos; faces in the base geometry list of selected faces</source>
       <translation>Evita tallar les darreres &apos;n&apos; cares a la llista de cares seleccionades de la geometria base</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="154"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="107"/>
       <source>Bounding box extra offset X, Y</source>
       <translation>Desplaçament extra de la capsa delimitadora en X, Y</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="169"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="122"/>
       <source>Additional offset to the selected bounding box along the X axis</source>
       <translation>Desplaçament addicional de la capsa delimitadora seleccionada al llarg de l'eix X</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="179"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="132"/>
       <source>Additional offset to the selected bounding box along the Y axis</source>
       <translation>Desplaçament addicional de la capsa delimitadora seleccionada al llarg de leix Y</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="191"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="144"/>
       <source>Drop cutter direction</source>
       <translation>Direcció de descens de la fresa</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="151"/>
       <source>Dropcutter lines are created parallel to this axis.</source>
       <translation>Les línies dropcutter es creen paral·leles a aquest eix.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="156"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="212"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="113"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="165"/>
       <source>Set the Z-axis depth offset from the target surface</source>
       <translation>Estableix el desplaçament de profunditat de l'eix Z respecte de la superfície objectiu</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="268"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="221"/>
       <source>Set to true if specifying a start point</source>
       <translation>Activeu-ho si especifiqueu un punt d'inici</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="231"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="281"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="188"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="234"/>
       <source>Optimize linear paths</source>
       <translation>Optimitza els camins lineals</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="288"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="241"/>
       <source>If true, the cutter will remain inside the boundaries of the model or selected faces</source>
       <translation>Si està activat, la fresa es mantindrà dins dels límits del model o de les cares seleccionades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="291"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="244"/>
       <source>Boundary enforcement</source>
       <translation>Aplicació del límit</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="304"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
       <source>Optimize stepover transitions</source>
       <translation>Optimitza les transicions de pas per sobre</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="201"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="258"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="158"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="211"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>Establiu la resolució de mostreig. Els valors més petits incrementen ràpidament el temps de processament.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="211"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="168"/>
       <source>Min Sample interval</source>
       <translation type="unfinished">Min Sample interval</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="218"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="175"/>
       <source>Set the minimum sampling resolution. Smaller values quickly increase processing time.</source>
       <translation type="unfinished">Set the minimum sampling resolution. Smaller values quickly increase processing time.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="228"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="278"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="185"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="231"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
       <translation>Habilita l'optimització dels camins lineals (punts colineals). Elimina punts colineals innecessaris de la sortida G-code.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="301"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="254"/>
       <source>Enable separate optimization of transitions between, and breaks within, each step over path.</source>
       <translation>Habilita l'optimització separada de les transicions entre, i els trencaments dins de, cada camí de pas per sobre.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="158"/>
       <source>Depth offset</source>
       <translation>Desplaçament de profunditat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="106"/>
       <source>Boundary adjustment</source>
       <translation>Ajust del límit</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpMillFacingEdit.ui" line="148"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="158"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="185"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="166"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
+      <location filename="../panels/PageOpMillFacingEdit.ui" line="102"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="138"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="123"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="175"/>
       <source>Step over</source>
       <translation>Passa al següent</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="179"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="136"/>
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
@@ -2414,8 +2313,8 @@ A step over of 100% results in no overlap between two different cycles.</source>
 Un pas per sobre del 100% dona com a resultat que no hi haja superposició entre dos cicles diferents.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="251"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="151"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="204"/>
       <source>Sample interval</source>
       <translation>Interval de mostreig</translation>
     </message>
@@ -2544,119 +2443,114 @@ Per defecte: 3 mm</translation>
       <translation>Vertical</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="53"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
       <source>Thread</source>
       <translation>Rosca</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="59"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="26"/>
       <source>Orientation</source>
       <translation>Orientació</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="43"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="73"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="40"/>
       <source>Type</source>
       <translation>Tipus</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="86"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="53"/>
       <source>Fit</source>
       <translation>ajusta</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="106"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="73"/>
       <source>Major diameter</source>
       <translation>Diàmetre major</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="84"/>
       <source>Minor diameter</source>
       <translation>Diàmetre menor</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="198"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="150"/>
       <source>Lead in/out</source>
       <translation>Entrada/Sortida</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="134"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="95"/>
       <source>Pitch</source>
       <translation>Pas</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="36"/>
-      <source>The tool and its settings to be used for this operation.</source>
-      <translation>L'eina i la seva configuració que s'utilitzaran per a aquesta operació.</translation>
-    </message>
-    <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="155"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="110"/>
       <source>TPI</source>
       <translation>TPI</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="24"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="165"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="120"/>
       <source>Operation</source>
       <translation>Operació</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="171"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="126"/>
       <source>Passes</source>
       <translation>Passades</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="25"/>
       <source>Discretization Deflection</source>
       <translation>Deflexió de discretització</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="79"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="32"/>
       <source>This value is used in discretizing arcs into segments. Smaller values will result in larger G-code. Larger values may cause unwanted segments in the medial line path.</source>
       <translation>Aquest valor s'utilitza per discretitzar arcs en segments. Valors més petits produiran un G-code més gran. Valors més grans poden causar segments no desitjats al camí de la línia medial.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="57"/>
       <source>Filter colinear lines</source>
       <translation>Filtra línies colineals</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="111"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="64"/>
       <source>Sets how aggressively colinear segments are filtered from the voronoi diagram. Valid values are 0 - 90 degrees (larger numbers filter more). Default = 10</source>
       <translation>Defineix com d'agressiu es filtren els segments colineals del diagrama de Voronoi. Els valors vàlids són de 0 a 90 graus (els nombres més grans filtren més). Per defecte = 10</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="124"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="77"/>
       <source>Finishing pass Z offset</source>
       <translation>Desplaçament Z de la passada d'acabat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="131"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="84"/>
       <source>Endmill offset for the finishing pass run. Use small value like -0.2 mm to help clean &quot;fuzzy skin&quot; or other artefacts.</source>
       <translation>Desplaçament de la fresa per a l'execució de la passada d'acabat. Utilitzeu un valor petit com -0,2 mm per ajudar a netejar &quot;fuzzy skin&quot; o altres artefactes.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="147"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="100"/>
       <source>After carving, travel again the path to remove artifacts and imperfections</source>
       <translation>Després del gravat, recorre de nou el camí per eliminar artefactes i imperfeccions</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="153"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="106"/>
       <source>Finishing pass</source>
       <translation>Passada d'acabat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="160"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="113"/>
       <source>Optimize path to avoid raising endmill when moving to adjacent edges. May result in sub-millimeter inaccuracies.</source>
       <translation>Optimitza el camí per evitar elevar la fresa en moure's a arestes adjacents. Pot provocar inexactituds submil·limètriques.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="163"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="116"/>
       <source>Optimize movements</source>
       <translation>Optimitza els moviments</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="66"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="23"/>
       <source>Algorithm</source>
       <translation>Algorisme</translation>
     </message>
@@ -2819,37 +2713,37 @@ Si el radi és més gran del que permet la forma de l'etiqueta, la forma resulta
       <translation>Generació d'etiquetes</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="23"/>
       <source>Start at vertex</source>
       <translation>Comença al vèrtex</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="30"/>
       <source>Specify the vertex number of the underlying shape string at which engraving should start</source>
       <translation>Especifiqueu el nombre de vèrtex de la cadena de forma subjacent en què ha de començar el gravat</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="72"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="23"/>
       <source>G-code source</source>
       <translation type="unfinished">G-code source</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="79"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="30"/>
       <source>Select source of the G-code</source>
       <translation type="unfinished">Select source of the G-code</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="83"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="34"/>
       <source>Text</source>
       <translation>Text</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="88"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="39"/>
       <source>File</source>
       <translation>Fitxer</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpCustomEdit.ui" line="118"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="69"/>
       <source>Enter the filename containing the G-code</source>
       <translation type="unfinished">Enter the filename containing the G-code</translation>
     </message>
@@ -4690,37 +4584,37 @@ Per defecte: 3 mm</translation>
   <context>
     <name>PathGeom</name>
     <message>
-      <location filename="../../../Path/Geom.py" line="192"/>
+      <location filename="../../../Path/Geom.py" line="206"/>
       <source>face %s not handled, assuming not vertical</source>
       <translation>La cara %s no es gestiona; s'assumeix que no és vertical</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="207"/>
+      <location filename="../../../Path/Geom.py" line="221"/>
       <source>edge %s not handled, assuming not vertical</source>
       <translation>La vora %s no es gestiona; s'assumeix que no és vertical</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="211"/>
+      <location filename="../../../Path/Geom.py" line="225"/>
       <source>isVertical(%s) not supported</source>
       <translation>isVertical(%s) no és compatible</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="241"/>
+      <location filename="../../../Path/Geom.py" line="255"/>
       <source>isHorizontal(%s) not supported</source>
       <translation>isHorizontal(%s) no és compatible</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="747"/>
+      <location filename="../../../Path/Geom.py" line="761"/>
       <source>%s not supported for flipping</source>
       <translation>%s no admet el capgirament</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="804"/>
+      <location filename="../../../Path/Geom.py" line="818"/>
       <source>Zero working area to process. Check your selection and settings.</source>
       <translation>No hi ha àrea de treball per processar. Comproveu la selecció i la configuració.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Geom.py" line="874"/>
+      <location filename="../../../Path/Geom.py" line="888"/>
       <source>Can not restore order of faces.</source>
       <translation type="unfinished">Can not restore order of faces.</translation>
     </message>
@@ -5318,23 +5212,16 @@ Above this depth ramps are not generated, but motion commands are passed through
       <translation>Longitud màxima de la trajectòria de manteniment de l'eina en comparació amb la distància directa entre punts</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
-      <source>Influences calculation performance vs stability and accuracy.
-
-Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
-      <translation>Influeix en el rendiment del càlcul enfront de l'estabilitat i la precisió.
-
-Els valors més grans (més a la dreta) es calcularan més ràpid; els valors més petits (més a l'esquerra) produiran trajectòries d'eina més precises.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1601"/>
-      <source>How much stock to leave in the XY plane (eg for finishing operation)</source>
-      <translation>Quant material deixar al pla XY (p. ex., per a una operació d'acabat)</translation>
+      <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
+      <location filename="../../../Path/Op/Profile.py" line="145"/>
+      <source>Set how much stock to leave on the walls for the operation.</source>
+      <translation type="unfinished">Set how much stock to leave on the walls for the operation.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1610"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation). This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>Quant de brut cal deixar al llarg de l'eix Z (per exemple, per a l'operació d'acabat). Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
+      <source>Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation type="unfinished">Set how much stock to leave on the floor for the operation. This property is only used if the ModelAwareExperiment is enabled.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1675"/>
@@ -5365,25 +5252,24 @@ Set to zero to disable limitation by pitch</translation>
       <translation type="unfinished">Minimum acceptable helix entry diameter, as a percentage of the tool diameter</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
-      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
-      <translation>Ordena els talls per regió, en contres per la profunditat. Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
-      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
-      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
-      <translation>Habilita la característica de reconeixement del model experimental per respectar la geometria 3D i evitar talls sota els voladissos</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1867"/>
-      <source>How much stock to leave along the Z axis (eg for finishing operation)</source>
-      <translation>Quant material deixar al llarg de l'eix Z (p. ex., per a una operació d'acabat)</translation>
+      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
+      <source>Set how much stock to leave on the floor for the operation.</source>
+      <translation type="unfinished">Set how much stock to leave on the floor for the operation.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1928"/>
       <source>The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</source>
       <translation type="unfinished">The maximum allowable descent in a single revolution of the helix. Set to 0 to disable the pitch limit.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1565"/>
+      <source>Influences calculation performance vs stability and accuracy.
+
+Larger values (further to the right) will calculate faster; smaller values (further to the left) will result in more accurate toolpaths.</source>
+      <translation>Influeix en el rendiment del càlcul enfront de l'estabilitat i la precisió.
+
+Els valors més grans (més a la dreta) es calcularan més ràpid; els valors més petits (més a l'esquerra) produiran trajectòries d'eina més precises.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1619"/>
@@ -5421,6 +5307,17 @@ Set to zero to disable limitation by pitch</translation>
       <location filename="../../../Path/Op/PocketShape.py" line="168"/>
       <source>Uses the outline of the base geometry.</source>
       <translation>Utilitza el contorn de la geometria de base.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1739"/>
+      <source>Orders cuts by region instead of depth. This property is only used if the ModelAwareExperiment is enabled.</source>
+      <translation>Ordena els talls per regió, en contres per la profunditat. Aquesta propietat només s'utilitza si ModelAwareExperiment està habilitat.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Adaptive.py" line="1754"/>
+      <location filename="../../../Path/Op/Adaptive.py" line="1878"/>
+      <source>Enable the experimental model awareness feature to respect 3D geometry and prevent cutting under overhangs</source>
+      <translation>Habilita la característica de reconeixement del model experimental per respectar la geometria 3D i evitar talls sota els voladissos</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1856"/>
@@ -5675,7 +5572,7 @@ Tool Shape: safest - checks clearance using the cross section of the tool shape<
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="170"/>
       <location filename="../../../Path/Op/Drilling.py" line="239"/>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="204"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="201"/>
       <source>Apply G99 retraction: only retract to StartDepth between holes in this operation</source>
       <translation type="unfinished">Apply G99 retraction: only retract to StartDepth between holes in this operation</translation>
     </message>
@@ -5803,18 +5700,18 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="176"/>
-      <source>Offset inner radius
+      <source>Set how much stock to leave on the inner wall for the operation.
 Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
 For External profile - profile radius</source>
-      <translation type="unfinished">Offset inner radius
+      <translation type="unfinished">Set how much stock to leave on the inner wall for the operation.
 Default inner radius for Internal profile is Tool radius, and can not be less than (-ToolRadius)
 For External profile - profile radius</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="185"/>
       <location filename="../../../Path/Op/Helix.py" line="385"/>
-      <source>Extra offset from the profile</source>
-      <translation type="unfinished">Extra offset from the profile</translation>
+      <source>Set how much stock to leave on the outer wall for the operation.</source>
+      <translation type="unfinished">Set how much stock to leave on the outer wall for the operation.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="194"/>
@@ -5892,17 +5789,12 @@ Set to zero to disable limitation by ramp angle</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="372"/>
-      <source>Offset inner radius
+      <source>Set how much stock to leave on the inner wall for the operation.
 Default inner radius is Tool radius and can not be less than (-ToolRadius)
 For External profile - profile radius</source>
-      <translation type="unfinished">Offset inner radius
+      <translation type="unfinished">Set how much stock to leave on the inner wall for the operation.
 Default inner radius is Tool radius and can not be less than (-ToolRadius)
 For External profile - profile radius</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/Profile.py" line="145"/>
-      <source>Extra value to stay away from final profile- good for roughing toolpath</source>
-      <translation>Valor addicional per a mantindre's a distància del perfil final, és bo per a trajectòries de desbast</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/MillFace.py" line="97"/>
@@ -6791,11 +6683,6 @@ If selection without sub elements:
       <translation type="unfinished">Set the stepover percentage of tool diameter.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/MillFacing.py" line="167"/>
-      <source>Set the stock to leave for the operation.</source>
-      <translation type="unfinished">Set the stock to leave for the operation.</translation>
-    </message>
-    <message>
       <location filename="../../../Path/Op/MillFacing.py" line="176"/>
       <source>Distance to extend cuts beyond polygon boundary for tool disengagement.</source>
       <translation type="unfinished">Distance to extend cuts beyond polygon boundary for tool disengagement.</translation>
@@ -6839,11 +6726,6 @@ If selection without sub elements:
       <location filename="../../../Path/Op/RotarySurface.py" line="164"/>
       <source>Angular spacing between sampled toolpath points (degrees).</source>
       <translation type="unfinished">Angular spacing between sampled toolpath points (degrees).</translation>
-    </message>
-    <message>
-      <location filename="../../../Path/Op/RotarySurface.py" line="172"/>
-      <source>Radial finish allowance left on the surface.</source>
-      <translation type="unfinished">Radial finish allowance left on the surface.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="180"/>
@@ -7399,81 +7281,86 @@ If selection without sub elements:
       <translation>Marqueu «fals», per a evitar l'operació de generació de codi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="315"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="316"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="320"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="321"/>
       <source>Set Workplane from Face</source>
       <translation type="unfinished">Set Workplane from Face</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="821"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="829"/>
       <source>Base Geometry</source>
       <translation>Geometria de base</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="941"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="949"/>
       <source>Multiple operations are labeled as</source>
       <translation>Diverses operacions estan etiquetades com</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1015"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1023"/>
       <source>Base Location</source>
       <translation>Ubicació base</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1218"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1226"/>
       <source>Heights</source>
       <translation>Alçàries</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1160"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1168"/>
       <source>FinalDepth cannot be modified for this operation.
 If it is necessary to set the FinalDepth manually please select a different operation.</source>
       <translation>La profunditat final no es pot modificar per a aquesta operació.
 Si cal definir la profunditat final manualment, seleccioneu una operació diferent.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1349"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1361"/>
+      <source>Tool Controller</source>
+      <translation>Controlador d'eina</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1398"/>
       <source>Diameters</source>
       <translation>Diàmetres</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1381"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1430"/>
       <source>AreaOp Operation</source>
       <translation>Operació AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1437"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1492"/>
       <source>Operation</source>
       <translation>Operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1504"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1559"/>
       <source>Uncreate AreaOp Operation</source>
       <translation>Desfer l'operació AreaOp</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1643"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
       <source>Start Point Selection</source>
       <translation>Selecció del punt d'inici</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1644"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1699"/>
       <source>Selects the start point</source>
       <translation>Selecciona el punt d'inici</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1694"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1749"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>No s'ha trobat cap controlador d'eina adequat.
 S'està avortant la creació de l'operació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1698"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1753"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Cap controlador d'eina, s'avorta la creació de l'operació</translation>
     </message>
@@ -7758,12 +7645,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>Crea moviments d'entrada i sortida per a un recorregut seleccionat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1761"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1762"/>
       <source>The selected object is not a path</source>
       <translation>L'objecte seleccionat no és un camí</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1766"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1767"/>
       <source>Select a profile object</source>
       <translation>Seleccioneu un objecte de perfil</translation>
     </message>
@@ -7859,12 +7746,12 @@ Without sub selection all edges of the shape will be selected.</translation>
   <context>
     <name>CAM_DressupDogbone</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="331"/>
+      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="332"/>
       <source>Dogbone</source>
       <translation>Dogbone</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="335"/>
+      <location filename="../../../Path/Dressup/Gui/DogboneII.py" line="336"/>
       <source>Creates a dogbone dress-up object from a selected toolpath</source>
       <translation>Crea un objecte d'acabat de dogbone a partir d'un recorregut d'eina seleccionat</translation>
     </message>
@@ -7942,22 +7829,22 @@ Without sub selection all edges of the shape will be selected.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="327"/>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="114"/>
       <source>All Files (*.*)</source>
       <translation>Tots els arxius (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="105"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="112"/>
       <source>Select Output File</source>
       <translation>Seleccioneu el fitxer de sortida</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="119"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="126"/>
       <source>Probe</source>
       <translation>Sonda</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="120"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="127"/>
       <source>Create a Probing Grid from a job stock</source>
       <translation>Crea una quadrícula de sondatge a partir del material en brut de la tasca</translation>
     </message>
@@ -8659,12 +8546,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>Perfilat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="217"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="215"/>
       <source>Adaptive</source>
       <translation>Adaptatiu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Adaptive.py" line="218"/>
+      <location filename="../../../Path/Op/Gui/Adaptive.py" line="216"/>
       <source>Adaptive clearing and profiling</source>
       <translation>Neteja i perfilat adaptatiu</translation>
     </message>
@@ -8687,17 +8574,22 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>Nebulització</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="647"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="644"/>
       <source>Copy {0}…</source>
       <translation>Copia {0}…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="648"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="645"/>
       <source>New tool controller…</source>
       <translation>Controlador d'eina nou…</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="693"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="696"/>
+      <source>This tool controller is used by 1 other operation.</source>
+      <translation type="unfinished">This tool controller is used by 1 other operation.</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Op/Gui/Base.py" line="699"/>
       <source>This tool controller is used by {0} other operations.</source>
       <translation>Aquest controlador d'eina és utilitzat per {0} altres operacions.</translation>
     </message>
@@ -8797,14 +8689,14 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>%s no és un objecte de model base de la tasca %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="176"/>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="70"/>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="112"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="59"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="78"/>
       <source>No valid toolcontroller</source>
       <translation>Cap controlador d'eina vàlid</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="181"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="132"/>
       <source>This operation requires a tool controller with a v-bit tool</source>
       <translation>Aquesta operació requereix un controlador d'eina amb una eina de broca en V</translation>
     </message>
@@ -8824,12 +8716,12 @@ Without sub selection all edges of the shape will be selected.</translation>
       <translation>Postprocessador genèric</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="75"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="63"/>
       <source>This operation requires a tool controller with a probe tool</source>
       <translation>Aquesta operació requereix un controlador d'eina amb una eina de sonda</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="117"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="82"/>
       <source>This operation requires a tool controller with a threadmilling tool</source>
       <translation>Aquesta operació requereix un controlador d'eina amb una eina de fresat de rosques</translation>
     </message>
@@ -9633,12 +9525,12 @@ Això no suprimirà les broques que conté.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Drilling.py" line="71"/>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="276"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="268"/>
       <source>Drilling</source>
       <translation>Perforació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Drilling.py" line="280"/>
+      <location filename="../../../Path/Op/Gui/Drilling.py" line="272"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
       <translation>Crea un recorregut d'eina de perforació a partir de les característiques d'un objecte base</translation>
     </message>
@@ -9646,12 +9538,12 @@ Això no suprimirà les broques que conté.</translation>
   <context>
     <name>CAM_Helix</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Helix.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Helix.py" line="120"/>
       <source>Helix</source>
       <translation>Hèlix</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Helix.py" line="129"/>
+      <location filename="../../../Path/Op/Gui/Helix.py" line="121"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
       <translation>Crea un recorregut d'eina helicoïdal a partir de les característiques d'un objecte base</translation>
     </message>
@@ -9794,7 +9686,7 @@ Això no suprimirà les broques que conté.</translation>
       <translation>Extensions</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/PocketBase.py" line="206"/>
+      <location filename="../../../Path/Op/Gui/PocketBase.py" line="200"/>
       <source>Set start point: %s, %s</source>
       <translation type="unfinished">Set start point: %s, %s</translation>
     </message>
@@ -9997,12 +9889,12 @@ Això no suprimirà les broques que conté.</translation>
       <translation>El valor de desplaçament actual produeix un radi negatiu.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Slot.py" line="281"/>
+      <location filename="../../../Path/Op/Gui/Slot.py" line="274"/>
       <source>Slot</source>
       <translation>Ranura</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Slot.py" line="291"/>
+      <location filename="../../../Path/Op/Gui/Slot.py" line="284"/>
       <source>Create a single horizontal slot between two points.
 
 Points can be specified through selected geometry or custom points.
@@ -10156,12 +10048,12 @@ Allowed selection only from one model:
       <translation>Rotacional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Surface.py" line="275"/>
+      <location filename="../../../Path/Op/Gui/Surface.py" line="269"/>
       <source>3D Surface</source>
       <translation>Superfície 3D</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Surface.py" line="276"/>
+      <location filename="../../../Path/Op/Gui/Surface.py" line="270"/>
       <source>Create a 3D Surface Operation from a model</source>
       <translation>Crea una operació de superfície 3D a partir d'un model</translation>
     </message>
@@ -10234,12 +10126,12 @@ Allowed selection only from one model:
       <translation>Convencional</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="252"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="258"/>
       <source>Thread Milling</source>
       <translation>Fresat de rosques</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="256"/>
+      <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="262"/>
       <source>Creates a Thread Milling toolpath from features of a base object</source>
       <translation>Crea un recorregut d'eina de fresat de rosques a partir de les característiques d'un objecte base</translation>
     </message>
@@ -10257,12 +10149,12 @@ Allowed selection only from one model:
       <translation>L'angle de l'aresta de tall de la fresa ha de ser &lt; 180 graus.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="221"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="224"/>
       <source>Vcarve</source>
       <translation>Gravat en V</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="222"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="225"/>
       <source>Creates a medial line engraving toolpath</source>
       <translation>Crea un recorregut d'eina de gravat de línia medial</translation>
     </message>
@@ -10314,17 +10206,17 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Custom</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="128"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="122"/>
       <source>Select file containing the gcode</source>
       <translation type="unfinished">Select file containing the gcode</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="143"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="137"/>
       <source>Custom</source>
       <translation>Personalitzat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Custom.py" line="144"/>
+      <location filename="../../../Path/Op/Gui/Custom.py" line="138"/>
       <source>Create custom G-code snippet</source>
       <translation>Crea un fragment de G-code personalitzat</translation>
     </message>
@@ -10332,12 +10224,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Deburr</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Deburr.py" line="142"/>
+      <location filename="../../../Path/Op/Gui/Deburr.py" line="136"/>
       <source>Deburr</source>
       <translation>Desbarvat</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Deburr.py" line="143"/>
+      <location filename="../../../Path/Op/Gui/Deburr.py" line="137"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
       <translation>Crea un recorregut d'eina de desbarvat al llarg de les vores o al voltant de les cares</translation>
     </message>
@@ -10345,12 +10237,12 @@ Allowed selection only from one model:
   <context>
     <name>CAM_Engrave</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="171"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="165"/>
       <source>Engrave</source>
       <translation>Gravar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Engrave.py" line="174"/>
+      <location filename="../../../Path/Op/Gui/Engrave.py" line="168"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
       <translation>Crea un recorregut d'eina de gravat al voltant d'un ShapeString a l'Esbós</translation>
     </message>
@@ -10437,12 +10329,12 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_Waterline</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Waterline.py" line="205"/>
+      <location filename="../../../Path/Op/Gui/Waterline.py" line="199"/>
       <source>Waterline</source>
       <translation>Línia de navegació</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Waterline.py" line="206"/>
+      <location filename="../../../Path/Op/Gui/Waterline.py" line="200"/>
       <source>Create a Waterline toolpath from a model</source>
       <translation>Crea un recorregut d'eina de línia de flotació a partir d'un model</translation>
     </message>
@@ -10622,7 +10514,7 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>Afegeix un controlador d'eina nou a la tasca activa</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="252"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="253"/>
       <source>Feeds and Speeds Wizard</source>
       <translation type="unfinished">Feeds and Speeds Wizard</translation>
     </message>
@@ -10694,17 +10586,17 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_Profile</name>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="186"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="174"/>
       <source>Set start point: %s, %s</source>
       <translation type="unfinished">Set start point: %s, %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="198"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="186"/>
       <source>Profile</source>
       <translation>Perfil</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Profile.py" line="199"/>
+      <location filename="../../../Path/Op/Gui/Profile.py" line="187"/>
       <source>Profile entire model, selected face(s) or selected edge(s)</source>
       <translation>Perfila tot el model, les cares seleccionades o les vores seleccionades</translation>
     </message>
@@ -10758,12 +10650,12 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>Punta de la broca 2x</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Tapping.py" line="180"/>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="172"/>
       <source>Tapping</source>
       <translation>Roscament</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Tapping.py" line="184"/>
+      <location filename="../../../Path/Op/Gui/Tapping.py" line="176"/>
       <source>Creates a Tapping toolpath from the features of a base object</source>
       <translation>Crea un recorregut d'eina de roscament a partir de les característiques d'un objecte base</translation>
     </message>
@@ -11286,57 +11178,57 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>Frame</name>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="26"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="30"/>
       <source>Controller Name / Tool Number</source>
       <translation>Nom del controlador / Número d'eina</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="64"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="68"/>
       <source>Horizontal feed</source>
       <translation>Avançament horitzontal</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="93"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="94"/>
       <source>Vertical feed</source>
       <translation>Avançament vertical</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="122"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="120"/>
       <source>Lead-in feed</source>
       <translation type="unfinished">Lead-in feed</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="151"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="146"/>
       <source>Lead-out feed</source>
       <translation type="unfinished">Lead-out feed</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="180"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="172"/>
       <source>Ramp feed</source>
       <translation type="unfinished">Ramp feed</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="209"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="198"/>
       <source>Horizontal rapid</source>
       <translation>Avançament ràpid horitzontal</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="238"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="224"/>
       <source>Vertical rapid</source>
       <translation>Avançament ràpid vertical</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="270"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="253"/>
       <source>Spindle</source>
       <translation>Fus</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="283"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="266"/>
       <source>Forward</source>
       <translation>Endavant</translation>
     </message>
     <message>
-      <location filename="../panels/ToolControllerEdit.ui" line="288"/>
+      <location filename="../panels/ToolControllerEdit.ui" line="271"/>
       <source>Reverse</source>
       <translation>Revers</translation>
     </message>
@@ -12335,32 +12227,32 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation type="unfinished">Surface speed:</translation>
     </message>
     <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="94"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="91"/>
       <source>Chipload (per tooth):</source>
       <translation type="unfinished">Chipload (per tooth):</translation>
     </message>
     <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="117"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="111"/>
       <source>Vert feed ratio:</source>
       <translation type="unfinished">Vert feed ratio:</translation>
     </message>
     <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="145"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="136"/>
       <source>Direct feed and speed</source>
       <translation type="unfinished">Direct feed and speed</translation>
     </message>
     <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="151"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="142"/>
       <source>Horiz feed:</source>
       <translation type="unfinished">Horiz feed:</translation>
     </message>
     <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="174"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="162"/>
       <source>Spindle speed:</source>
       <translation type="unfinished">Spindle speed:</translation>
     </message>
     <message>
-      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="200"/>
+      <location filename="../panels/FeedsSpeedsPresetEdit.ui" line="185"/>
       <source>Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</source>
       <translation type="unfinished">Tool diameter and/or flute count missing — surface speed and chipload won&apos;t auto-sync with direct feed/speed.</translation>
     </message>
@@ -12500,12 +12392,12 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation>Espiral</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="165"/>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="159"/>
       <source>Mill Facing</source>
       <translation type="unfinished">Mill Facing</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/MillFacing.py" line="168"/>
+      <location filename="../../../Path/Op/Gui/MillFacing.py" line="162"/>
       <source>Create a Mill Facing Operation to machine the top surface of stock</source>
       <translation type="unfinished">Create a Mill Facing Operation to machine the top surface of stock</translation>
     </message>
@@ -12558,12 +12450,12 @@ Several operations can be used with identical tool controller and coolant mode</
       <translation type="unfinished">Axial Only</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="161"/>
+      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="155"/>
       <source>Rotary Surface</source>
       <translation type="unfinished">Rotary Surface</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="165"/>
+      <location filename="../../../Path/Op/Gui/RotarySurface.py" line="159"/>
       <source>Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</source>
       <translation type="unfinished">Continuous 4-axis rotary surfacing on a part mounted on a single rotary.</translation>
     </message>
@@ -12587,89 +12479,89 @@ Several operations can be used with identical tool controller and coolant mode</
   <context>
     <name>CAM_FeedsSpeeds</name>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="329"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="330"/>
       <source>Suggest Feeds &amp; Speeds</source>
       <translation type="unfinished">Suggest Feeds &amp; Speeds</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="340"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="352"/>
       <source>(no tool)</source>
       <translation type="unfinished">(no tool)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="341"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="353"/>
       <source>Tool:</source>
       <translation type="unfinished">Tool:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
       <source>(none — generic resolution)</source>
       <translation type="unfinished">(none — generic resolution)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="345"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
       <source>Material:</source>
       <translation type="unfinished">Material:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="348"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="360"/>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="239"/>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="511"/>
       <source>(any)</source>
       <translation type="unfinished">(any)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="357"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
       <source>Op type:</source>
       <translation type="unfinished">Op type:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="365"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="377"/>
       <source>Apply preset:</source>
       <translation type="unfinished">Apply preset:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="369"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="381"/>
       <source>Suggestion</source>
       <translation type="unfinished">Suggestion</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="373"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="385"/>
       <source>Source:</source>
       <translation type="unfinished">Source:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="379"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="391"/>
       <source>Confidence:</source>
       <translation type="unfinished">Confidence:</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="384"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="396"/>
       <source>Current</source>
       <translation>Actual</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="386"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="398"/>
       <source>Suggested</source>
       <translation type="unfinished">Suggested</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="388"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="400"/>
       <source>Δ</source>
       <translation type="unfinished">Δ</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="424"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="436"/>
       <source>Auto (use resolver)</source>
       <translation type="unfinished">Auto (use resolver)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="518"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="530"/>
       <source>No suggestion available</source>
       <translation type="unfinished">No suggestion available</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="529"/>
+      <location filename="../../../Path/Tool/Gui/FeedsSpeedsDialog.py" line="541"/>
       <source>No matching preset on this tool. Open the tool from the library to add presets.</source>
       <translation type="unfinished">No matching preset on this tool. Open the tool from the library to add presets.</translation>
     </message>

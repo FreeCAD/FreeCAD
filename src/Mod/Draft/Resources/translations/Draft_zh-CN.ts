@@ -5817,42 +5817,42 @@ The final angle will be the base angle plus this amount.</source>
       <translation>文本</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="311"/>
+      <location filename="../../draftobjects/label.py" line="320"/>
       <source>No Target</source>
       <translation>无目标</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="394"/>
+      <location filename="../../draftobjects/label.py" line="403"/>
       <source>Invalid label type</source>
       <translation>标签类型无效</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="409"/>
+      <location filename="../../draftobjects/label.py" line="418"/>
       <source>Tag not available for object</source>
       <translation>对象没有可用的标签</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="416"/>
+      <location filename="../../draftobjects/label.py" line="425"/>
       <source>Material not available for object</source>
       <translation>对象没有可用的材质</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="425"/>
+      <location filename="../../draftobjects/label.py" line="434"/>
       <source>Position not available for (sub)object</source>
       <translation>（子）对象的位置不可用</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="441"/>
+      <location filename="../../draftobjects/label.py" line="450"/>
       <source>Length not available for (sub)object</source>
       <translation>（子）对象的长度不可用</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="455"/>
+      <location filename="../../draftobjects/label.py" line="464"/>
       <source>Area not available for (sub)object</source>
       <translation>（子）对象不可用的区域</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="468"/>
+      <location filename="../../draftobjects/label.py" line="477"/>
       <source>Volume not available for (sub)object</source>
       <translation>（子）对象的体积不可用</translation>
     </message>
@@ -6300,7 +6300,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_layers.py" line="401"/>
-      <location filename="../../draftobjects/label.py" line="317"/>
+      <location filename="../../draftobjects/label.py" line="326"/>
       <source>Name</source>
       <translation>名称</translation>
     </message>
@@ -6340,67 +6340,67 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>新图层</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="316"/>
+      <location filename="../../draftobjects/label.py" line="325"/>
       <source>Custom</source>
       <translation>自定义</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="318"/>
+      <location filename="../../draftobjects/label.py" line="327"/>
       <source>Label</source>
       <translation>标签</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="319"/>
+      <location filename="../../draftobjects/label.py" line="328"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="320"/>
+      <location filename="../../draftobjects/label.py" line="329"/>
       <source>Length</source>
       <translation>长度</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="321"/>
+      <location filename="../../draftobjects/label.py" line="330"/>
       <source>Area</source>
       <translation>区域</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="322"/>
+      <location filename="../../draftobjects/label.py" line="331"/>
       <source>Volume</source>
       <translation>体积</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="323"/>
+      <location filename="../../draftobjects/label.py" line="332"/>
       <source>Tag</source>
       <translation>标记：</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="324"/>
+      <location filename="../../draftobjects/label.py" line="333"/>
       <source>Material</source>
       <translation>材质</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="325"/>
+      <location filename="../../draftobjects/label.py" line="334"/>
       <source>Label + Position</source>
       <translation>标签 + 位置</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="326"/>
+      <location filename="../../draftobjects/label.py" line="335"/>
       <source>Label + Length</source>
       <translation>标签 + 长度</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="327"/>
+      <location filename="../../draftobjects/label.py" line="336"/>
       <source>Label + Area</source>
       <translation>标签 + 面积</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="328"/>
+      <location filename="../../draftobjects/label.py" line="337"/>
       <source>Label + Volume</source>
       <translation>标签 + 体积</translation>
     </message>
     <message>
-      <location filename="../../draftobjects/label.py" line="329"/>
+      <location filename="../../draftobjects/label.py" line="338"/>
       <source>Label + Material</source>
       <translation>标签 + 材质</translation>
     </message>

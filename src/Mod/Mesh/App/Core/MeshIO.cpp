@@ -914,8 +914,13 @@ bool MeshInput::Load3MF(std::istream& input)
     reader.Load();
     std::vector<int> ids = reader.GetMeshIds();
     if (!ids.empty()) {
-        MeshKernel compound = reader.GetMesh(ids[0]);
-        compound.Transform(reader.GetTransform(ids[0]));
+        const int topLevel = ids[0];
+        MeshKernel compound = reader.GetMesh(topLevel);
+        compound.Transform(reader.GetTransform(topLevel));
+        const std::string name = reader.GetName(topLevel);
+        if (!name.empty()) {
+            _objectName = name;
+        }
 
         for (std::size_t index = 1; index < ids.size(); index++) {
             MeshKernel mesh = reader.GetMesh(ids[index]);

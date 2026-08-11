@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="842"/>
+      <location filename="../../AttacherTexts.cpp" line="862"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>임의</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="843"/>
+      <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation>꼭짓점</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="844"/>
+      <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>모서리</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="845"/>
+      <location filename="../../AttacherTexts.cpp" line="865"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="847"/>
+      <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="848"/>
+      <location filename="../../AttacherTexts.cpp" line="868"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>곡선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="849"/>
+      <location filename="../../AttacherTexts.cpp" line="869"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>원</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="850"/>
+      <location filename="../../AttacherTexts.cpp" line="870"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>원뿔 곡선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="851"/>
+      <location filename="../../AttacherTexts.cpp" line="871"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>타원</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="852"/>
+      <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>포물선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="853"/>
+      <location filename="../../AttacherTexts.cpp" line="873"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>쌍곡선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="855"/>
+      <location filename="../../AttacherTexts.cpp" line="875"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="856"/>
+      <location filename="../../AttacherTexts.cpp" line="876"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>구</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="857"/>
+      <location filename="../../AttacherTexts.cpp" line="877"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>회전체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="858"/>
+      <location filename="../../AttacherTexts.cpp" line="878"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="859"/>
+      <location filename="../../AttacherTexts.cpp" line="879"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>원환체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="860"/>
+      <location filename="../../AttacherTexts.cpp" line="880"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>원뿔</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="862"/>
+      <location filename="../../AttacherTexts.cpp" line="882"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>대상체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="863"/>
+      <location filename="../../AttacherTexts.cpp" line="883"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>고체</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="864"/>
+      <location filename="../../AttacherTexts.cpp" line="884"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>철사</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="727"/>
+      <location filename="../../AttacherTexts.cpp" line="747"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>비활성화됨</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="728"/>
+      <location filename="../../AttacherTexts.cpp" line="748"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>부착이 비활성화됨. 점은 배치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="736"/>
+      <location filename="../../AttacherTexts.cpp" line="756"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>대상체의 원점</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="737"/>
+      <location filename="../../AttacherTexts.cpp" line="757"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>점이 객체의 배치 위치에 놓입니다. 배치가 있는 객체와 타원/포물선/쌍곡선 모서리에서 작동합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="746"/>
+      <location filename="../../AttacherTexts.cpp" line="766"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>초점1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="747"/>
+      <location filename="../../AttacherTexts.cpp" line="767"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>타원, 포물선, 쌍곡선의 초점.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="755"/>
+      <location filename="../../AttacherTexts.cpp" line="775"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>초점2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="756"/>
+      <location filename="../../AttacherTexts.cpp" line="776"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>타원과 쌍곡선의 두 번째 초점.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="764"/>
+      <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>모서리 위에</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="765"/>
+      <location filename="../../AttacherTexts.cpp" line="785"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>점이 모서리 위에 놓입니다. 위치는 MapPathParameter가 제어합니다. 또한 투영을 만들기 위해 꼭짓점을 연결할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="774"/>
+      <location filename="../../AttacherTexts.cpp" line="794"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>곡률 중심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="775"/>
+      <location filename="../../AttacherTexts.cpp" line="795"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>모서리의 접촉원의 중심입니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="784"/>
+      <location filename="../../AttacherTexts.cpp" line="804"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>질량중심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="785"/>
+      <location filename="../../AttacherTexts.cpp" line="805"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>모든 참조의 질량 중심(밀도가 같다고 가정).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="793"/>
+      <location filename="../../AttacherTexts.cpp" line="813"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>교차</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="794"/>
+      <location filename="../../AttacherTexts.cpp" line="814"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>구현되지 않음</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="798"/>
+      <location filename="../../AttacherTexts.cpp" line="818"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>꼭짓점</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="799"/>
+      <location filename="../../AttacherTexts.cpp" line="819"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>다른 꼭짓점과 일치하는 기준점을 배치합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="807"/>
+      <location filename="../../AttacherTexts.cpp" line="827"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>근접 지점 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="808"/>
+      <location filename="../../AttacherTexts.cpp" line="828"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>두 번째 참조에 가장 가까운 첫 번째 참조상의 점입니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="816"/>
+      <location filename="../../AttacherTexts.cpp" line="836"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>근접 지점 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="817"/>
+      <location filename="../../AttacherTexts.cpp" line="837"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>첫 번째 참조에 가장 가까운 두 번째 참조상의 점입니다.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="537"/>
+      <location filename="../../AttacherTexts.cpp" line="557"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>비활성화됨</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="538"/>
+      <location filename="../../AttacherTexts.cpp" line="558"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>부착이 비활성화됨. 직선은 배치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="546"/>
+      <location filename="../../AttacherTexts.cpp" line="566"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>대상체의 X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="547"/>
       <location filename="../../AttacherTexts.cpp" line="567"/>
+      <location filename="../../AttacherTexts.cpp" line="587"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선이 객체의 로컬 X축을 따라 정렬됩니다. 배치가 있는 객체와 타원/포물선/쌍곡선 모서리에서 작동합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="556"/>
+      <location filename="../../AttacherTexts.cpp" line="576"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>대상체의 Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="557"/>
+      <location filename="../../AttacherTexts.cpp" line="577"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선이 객체의 로컬 Y축을 따라 정렬됩니다. 배치가 있는 객체와 타원/포물선/쌍곡선 모서리에서 작동합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="566"/>
+      <location filename="../../AttacherTexts.cpp" line="586"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>대상체의 Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="576"/>
+      <location filename="../../AttacherTexts.cpp" line="596"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>곡률축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="577"/>
+      <location filename="../../AttacherTexts.cpp" line="597"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>곡선 모서리의 접촉원 축이 되는 선입니다. 선택적 꼭짓점으로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="586"/>
+      <location filename="../../AttacherTexts.cpp" line="606"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>준선1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="587"/>
+      <location filename="../../AttacherTexts.cpp" line="607"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>타원, 포물선, 쌍곡선의 준선.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="595"/>
+      <location filename="../../AttacherTexts.cpp" line="615"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>준선2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="596"/>
+      <location filename="../../AttacherTexts.cpp" line="616"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>타원과 쌍곡선의 두 번째 준선.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="604"/>
+      <location filename="../../AttacherTexts.cpp" line="624"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>점근선1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="605"/>
+      <location filename="../../AttacherTexts.cpp" line="625"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>쌍곡선의 점근선.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="609"/>
+      <location filename="../../AttacherTexts.cpp" line="629"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>점근선2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="610"/>
+      <location filename="../../AttacherTexts.cpp" line="630"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>쌍곡선의 두 번째 점근선.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="614"/>
+      <location filename="../../AttacherTexts.cpp" line="634"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>접선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="615"/>
+      <location filename="../../AttacherTexts.cpp" line="635"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>모서리에 접하는 선입니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="623"/>
+      <location filename="../../AttacherTexts.cpp" line="643"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>모서리에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="624"/>
+      <location filename="../../AttacherTexts.cpp" line="644"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>곡선 모서리의 Frenet-Serret 좌표계의 N 벡터에 맞춰 정렬합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="633"/>
+      <location filename="../../AttacherTexts.cpp" line="653"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>종법선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="634"/>
+      <location filename="../../AttacherTexts.cpp" line="654"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>곡선 모서리의 Frenet-Serret 좌표계의 B 벡터에 맞춰 정렬합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="643"/>
+      <location filename="../../AttacherTexts.cpp" line="663"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>표면에 접함(U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="644"/>
-      <location filename="../../AttacherTexts.cpp" line="653"/>
+      <location filename="../../AttacherTexts.cpp" line="664"/>
+      <location filename="../../AttacherTexts.cpp" line="673"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>U 매개변수 방향으로 표면에 접합니다. 꼭짓점 링크로 위치를 지정합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="652"/>
+      <location filename="../../AttacherTexts.cpp" line="672"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>표면에 접함(V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="661"/>
+      <location filename="../../AttacherTexts.cpp" line="681"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>두 점을 지남</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="662"/>
+      <location filename="../../AttacherTexts.cpp" line="682"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>두 꼭짓점을 지나는 직선.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="670"/>
+      <location filename="../../AttacherTexts.cpp" line="690"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>교차</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="671"/>
+      <location filename="../../AttacherTexts.cpp" line="691"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>두 면의 교차영역.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="675"/>
+      <location filename="../../AttacherTexts.cpp" line="695"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>근접선</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="676"/>
+      <location filename="../../AttacherTexts.cpp" line="696"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>형상 사이의 최단 거리를 잇는 선입니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="684"/>
+      <location filename="../../AttacherTexts.cpp" line="704"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>첫 번째 주축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="685"/>
+      <location filename="../../AttacherTexts.cpp" line="705"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선은 첫 번째 주 관성축을 따릅니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="693"/>
+      <location filename="../../AttacherTexts.cpp" line="713"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>두 번째 주축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="694"/>
+      <location filename="../../AttacherTexts.cpp" line="714"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선은 두 번째 주 관성축을 따릅니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="702"/>
+      <location filename="../../AttacherTexts.cpp" line="722"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>세 번째 주축</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="703"/>
+      <location filename="../../AttacherTexts.cpp" line="723"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>선은 세 번째 주 관성축을 따릅니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="711"/>
+      <location filename="../../AttacherTexts.cpp" line="731"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>표면에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="712"/>
+      <location filename="../../AttacherTexts.cpp" line="732"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>꼭짓점으로 지정된 지점에서 표면에 직교하는 선입니다.</translation>
@@ -507,207 +507,219 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>비활성화 된</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="297"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>부착이 비활성화됨. 객체는 배치 속성 수정을 통해 이동할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="316"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>원점 이동</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="307"/>
+      <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>원점은 꼭짓점과 일치하도록 정렬됩니다. 방향은 배치 속성으로 제어됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>대상체의 XY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 연결된 대상체의 지역 XY평면에 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>대상체의 XZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 연결된 대상체의 지역 XZ 평면에 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="344"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>대상체의 YZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="345"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 연결된 대상체의 지역 YZ 평면에 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="343"/>
+      <location filename="../../AttacherTexts.cpp" line="353"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>평면과 평행한 XY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="344"/>
+      <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>X' Y' 평면이 해당 평면(객체의 XY)과 평행하고 꼭짓점을 지납니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="353"/>
+      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <source>Midplane between faces</source>
+      <comment>AttachmentPlane mode caption</comment>
+      <translation type="unfinished">Midplane between faces</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="364"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="373"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>평면 면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="354"/>
+      <location filename="../../AttacherTexts.cpp" line="374"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면이 평면 면과 일치하도록 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="362"/>
+      <location filename="../../AttacherTexts.cpp" line="382"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>표면에 접함</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <location filename="../../AttacherTexts.cpp" line="383"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 꼭짓점에서 표면에 접하도록 만들어집니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="371"/>
+      <location filename="../../AttacherTexts.cpp" line="391"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>모서리에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="372"/>
+      <location filename="../../AttacherTexts.cpp" line="392"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면이 모서리에 접하도록 설정됩니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="380"/>
+      <location filename="../../AttacherTexts.cpp" line="400"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>프레네 NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="381"/>
-      <location filename="../../AttacherTexts.cpp" line="391"/>
       <location filename="../../AttacherTexts.cpp" line="401"/>
+      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="421"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>곡선 모서리의 Frenet-Serret 좌표계에 맞춰 정렬합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="390"/>
+      <location filename="../../AttacherTexts.cpp" line="410"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>프레네 TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="400"/>
+      <location filename="../../AttacherTexts.cpp" line="420"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>프레네 TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="410"/>
+      <location filename="../../AttacherTexts.cpp" line="430"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>동심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="431"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>모서리의 접촉원 평면에 맞춰 정렬합니다. 원점은 곡률점에 정렬됩니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="420"/>
+      <location filename="../../AttacherTexts.cpp" line="440"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>회전 단면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="421"/>
+      <location filename="../../AttacherTexts.cpp" line="441"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면이 모서리에 수직이며 Y축이 접촉원의 축과 일치합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="430"/>
+      <location filename="../../AttacherTexts.cpp" line="450"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>3점으로 정의된 평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="431"/>
+      <location filename="../../AttacherTexts.cpp" line="451"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>세 개의 꼭짓점을 지나도록 평면을 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="439"/>
+      <location filename="../../AttacherTexts.cpp" line="459"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>3개 점에 수직</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="440"/>
+      <location filename="../../AttacherTexts.cpp" line="460"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>평면은 처음 두 꼭짓점을 지나며, 세 꼭짓점을 지나는 평면에 직교합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="449"/>
+      <location filename="../../AttacherTexts.cpp" line="469"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>접기</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="450"/>
+      <location filename="../../AttacherTexts.cpp" line="470"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>다면체 접기용 특수 모드입니다. 다음 순서로 모서리 4개를 선택하세요: 접을 모서리, 접는 선, 다른 접는 선, 다른 접을 모서리. 평면은 첫 번째 모서리를 접는 방향으로 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="460"/>
+      <location filename="../../AttacherTexts.cpp" line="480"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>관성 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="461"/>
+      <location filename="../../AttacherTexts.cpp" line="481"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>두 번째와 세 번째 주 관성축으로 구성된 평면입니다(무게중심을 통과).</translation>
@@ -788,269 +800,281 @@
       <translation>X' Y' 평면이 해당 평면(객체의 XY)과 평행하고 꼭짓점을 지납니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>평면 위의 XY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>X' Y' 평면이 평면 면과 일치하도록 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="120"/>
+      <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>표면에 접하는 XY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>X' Y' 평면이 꼭짓점에서 표면에 접하도록 설정됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="129"/>
+      <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>모서리에 접하는 Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Z' 축이 모서리에 접하도록 정렬됩니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>프레네 NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
       <location filename="../../AttacherTexts.cpp" line="150"/>
       <location filename="../../AttacherTexts.cpp" line="160"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>곡선 모서리의 Frenet-Serret 좌표계에 맞춰 정렬합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>프레네 TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
+      <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>프레네 TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>동심</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>회전 단면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Y' 축을 모서리의 접촉원 축과 일치하도록 정렬합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>접기</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>XY 평면을 모서리의 접촉원에 맞춰 정렬합니다. 선택적 꼭짓점 링크로 위치를 지정할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <source>Midplane between faces</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">Midplane between faces</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>3개 점으로 정의한 XY 평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>XY 평면이 세 꼭짓점을 통과하도록 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="198"/>
+      <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>3개 점으로 정의한 XZ 평면</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="199"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>XZ 평면이 3개 점을 통과하도록 정렬합니다. X축은 처음 두 점을 통과합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>다면체 접기용 특수 모드입니다. 다음 순서로 모서리 4개를 선택하세요: 접을 모서리, 접는 선, 다른 접는 선, 다른 접을 모서리. XY 평면은 첫 번째 모서리를 접는 방향으로 정렬됩니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="229"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>관성 좌표계</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="220"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>주 관성축과 무게중심으로 구성된 관성 좌표계입니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Z-X 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. Z' 축과 X' 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Z-Y 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. Z' 축과 Y' 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
-      <location filename="../../AttacherTexts.cpp" line="490"/>
+      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="510"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-X-Y 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. X' 축과 Y' 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-X-Z 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. X' 축과 Z' 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="269"/>
+      <location filename="../../AttacherTexts.cpp" line="279"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Y-Z 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="270"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. Y' 축과 Z' 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
-      <location filename="../../AttacherTexts.cpp" line="520"/>
+      <location filename="../../AttacherTexts.cpp" line="289"/>
+      <location filename="../../AttacherTexts.cpp" line="540"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Y-X 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. Y' 축과 X' 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="470"/>
+      <location filename="../../AttacherTexts.cpp" line="490"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-N-X 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="471"/>
+      <location filename="../../AttacherTexts.cpp" line="491"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. 법선과 수평 평면 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="480"/>
+      <location filename="../../AttacherTexts.cpp" line="500"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-N-Y 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="481"/>
+      <location filename="../../AttacherTexts.cpp" line="501"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. 법선과 수직 평면 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="491"/>
+      <location filename="../../AttacherTexts.cpp" line="511"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. 수평 및 수직 평면 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="500"/>
+      <location filename="../../AttacherTexts.cpp" line="520"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-X-N 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="501"/>
+      <location filename="../../AttacherTexts.cpp" line="521"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. 수평 평면 축과 법선을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="510"/>
+      <location filename="../../AttacherTexts.cpp" line="530"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>O-Y-N 정렬</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="511"/>
+      <location filename="../../AttacherTexts.cpp" line="531"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. 수직 평면 축과 법선을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="521"/>
+      <location filename="../../AttacherTexts.cpp" line="541"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>원점을 첫 번째 꼭짓점에 맞춥니다. 수직 및 수평 평면 축을 꼭짓점 방향/선 방향으로 정렬합니다.</translation>
@@ -1408,7 +1432,7 @@
     <message>
       <location filename="../../Command.cpp" line="1925"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
-      <translation>형상을 오프셋하여 평행 형상을 만드는 도구입니다</translation>
+      <translation>형상 편위 도구(평행 형상을 생성)</translation>
     </message>
   </context>
   <context>
@@ -1747,12 +1771,12 @@
     <message>
       <location filename="../../Command.cpp" line="1791"/>
       <source>3D Offset</source>
-      <translation>3D 오프셋</translation>
+      <translation>3D 편위</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1792"/>
       <source>Offsets shapes in 3D</source>
-      <translation>3D에서 형상을 오프셋합니다</translation>
+      <translation>3D에서 형상을 편위시킵니다</translation>
     </message>
   </context>
   <context>
@@ -1765,12 +1789,12 @@
     <message>
       <location filename="../../Command.cpp" line="1858"/>
       <source>2D Offset</source>
-      <translation>2D 오프셋</translation>
+      <translation>2D 편위</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1859"/>
       <source>Offsets planar shapes in 2D</source>
-      <translation>2D에서 평면 형상을 오프셋합니다</translation>
+      <translation>2차원에서 평면 형상을 편위시킵니다</translation>
     </message>
   </context>
   <context>
@@ -2045,7 +2069,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="2027"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
-      <translation>선택한 면을 제거하고 남은 형상을 바깥쪽으로 오프셋하여 두께를 추가합니다</translation>
+      <translation>선택한 면을 제거하고 남은 형상을 바깥쪽으로 편위시키면서 두께를 만듭니다</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2086"/>
@@ -2151,7 +2175,7 @@ of the projection.</source>
     <message>
       <location filename="../../Command.cpp" line="1817"/>
       <source>Make Offset</source>
-      <translation>오프셋 만들기</translation>
+      <translation>편위 만들기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1885"/>
@@ -2300,7 +2324,7 @@ of the projection.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation>로컬 좌표계에서의 부착 오프셋</translation>
+      <translation>대상체의 지역 좌표계 안에서 부착편위</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
@@ -4516,29 +4540,49 @@ Check one or more edge entities first.</source>
       <translation>드래그 중 거친 스냅 활성화</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation>세밀 스냅 수정자</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation>기본 거친 드래그 동작</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>수정자 키를 누르지 않을 때 드래그가 거친지 세밀한지를 결정합니다</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation>거친 이동 배율</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>거친 회전 간격(도)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -5032,7 +5076,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>편차</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -5334,7 +5378,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation>로컬 좌표계에서의 부착 오프셋</translation>
+      <translation>대상체의 지역 좌표계 안에서 부착편위</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="155"/>
@@ -5342,7 +5386,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskAttacher.ui" line="227"/>
       <source>The offset is expressed in the local coordinate system
 of the object being attached</source>
-      <translation>오프셋은 부착되는 객체의 로컬 좌표계로 표현됩니다</translation>
+      <translation>편위는 부착되는 대체의 지역 좌표계 안에서 표현됩니다</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="136"/>
@@ -5384,7 +5428,7 @@ of the object being attached.</source>
       <location filename="../../TaskAttacher.ui" line="296"/>
       <source>Rotation around the local Y-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation>로컬 Y축 기준 회전입니다. 오프셋은 부착되는 객체의 로컬 좌표계로 표현됩니다.</translation>
+      <translation>지역좌표의 Y축 기준 회전입니다. 편위는 부착되는 대상체의 지역좌표계 안에서 표현됩니다.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="322"/>
@@ -5395,12 +5439,12 @@ of the object being attached.</source>
       <location filename="../../TaskAttacher.ui" line="335"/>
       <source>Rotation around the local Z-axis. The offset is expressed in the local coordinate system
 of the object being attached.</source>
-      <translation>로컬 Z축 기준 회전입니다. 오프셋은 부착되는 객체의 로컬 좌표계로 표현됩니다.</translation>
+      <translation>지역좌표의 Z축 기준 회전입니다. 편위는 부착되는 대상체의 지역좌표계 안에서 표현됩니다.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="358"/>
       <source>Flip side of attachment and offset</source>
-      <translation>부착 방향과 오프셋을 반대쪽으로 뒤집습니다</translation>
+      <translation>부착 방향과 편위 뒤집기</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="361"/>
@@ -5445,12 +5489,12 @@ of the object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="436"/>
       <source>Attachment Offset (in its local coordinate system):</source>
-      <translation>부착 오프셋(로컬 좌표계 기준):</translation>
+      <translation>부착 편위(대상체의 지역 좌표계 내):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="437"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>부착 오프셋(비활성 - 부착되지 않음):</translation>
+      <translation>부착 편위(비활성 - 부착되지 않음):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="937"/>
@@ -5793,8 +5837,8 @@ Individual boolean operation checks:</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
-      <source>2x%1 select and confirm</source>
-      <translation>2회 %1 선택 후 확인</translation>
+      <source>%1 select and confirm</source>
+      <translation type="unfinished">%1 select and confirm</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -5882,7 +5926,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskOffset.ui" line="100"/>
       <source>Fill offset</source>
-      <translation>오프셋 채우기</translation>
+      <translation>편위 채우기</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
@@ -6452,7 +6496,7 @@ Continue?</source>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="568"/>
       <source>Edit offset</source>
-      <translation>오프셋 편집</translation>
+      <translation>편위 수정</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="658"/>
@@ -6869,12 +6913,12 @@ for collision or distance filtering.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation>부착 오프셋(로컬 좌표 기준):</translation>
+      <translation>부착 편위(대상체의 지역 좌표계 내):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
-      <translation>부착 오프셋(비활성 - 부착되지 않음):</translation>
+      <translation>부착 편위(비활성 - 부착되지 않음):</translation>
     </message>
   </context>
   <context>
