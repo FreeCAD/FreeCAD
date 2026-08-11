@@ -95,6 +95,10 @@ def bidirectional(
     start_s = min_s - total_extension
     end_s = max_s + total_extension
 
+    s_mid = (min_s + max_s) / 2
+    if start_s > s_mid or end_s < s_mid:
+        step_positions = []
+
     swap = reverse
     while step_positions:
         if swap:
