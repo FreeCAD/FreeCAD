@@ -1237,7 +1237,6 @@ void SoNaviCube::setOverlayState(SoState* state, bool transparentMaterial, bool 
     SoOverrideElement::setDrawStyleOverride(state, this, FALSE);
 
     SoLazyElement::setColorMaterial(state, FALSE);
-    SoGLShaderProgramElement::enable(state, FALSE);
 
     // Allow Coin to use vertex arrays/VBOs for retained-mode rendering of the overlay geometry.
     SoShapeStyleElement::setVertexArrayRendering(state, TRUE);
@@ -1275,6 +1274,7 @@ void SoNaviCube::beginOverlayPass(SoGLRenderAction* action, const RenderParams& 
     // the overlay geometry if texturing is left enabled/bound).
     SoGLTextureEnabledElement::disableAll(state);
     setOverlayState(state, params.transparentMaterial, params.transparentTexture);
+    SoGLShaderProgramElement::enable(state, FALSE);
 }
 
 void SoNaviCube::beginDrawListOverlayPass(SoIRRenderAction* action, const RenderParams& params)
