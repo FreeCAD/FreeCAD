@@ -48,6 +48,8 @@ DlgSettings3DViewImp::DlgSettings3DViewImp(QWidget* parent)
     , ui(new Ui_DlgSettings3DView)
 {
     ui->setupUi(this);
+    ui->comboRenderPipeline->setItemData(0, QByteArray("LegacyGL"));
+    ui->comboRenderPipeline->setItemData(1, QByteArray("DrawList"));
     addAntiAliasing();
 }
 
