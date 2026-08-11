@@ -1141,6 +1141,11 @@ BSpline::BSpline(const TopoDS_Edge &e)
             Base::Console().warning("Could not create cubic spline in GeometryUtils::asCubic\n");
             GeometryUtils::asLinear(edgeCurve, splineOut);
         }
+    } else {
+        // Geom_BSplineCurve is a Geom_BoundedCurve, but copying from hCurve->BSpline() does
+        // not preserve the bounds, so we apply them here.
+        splineOut->Segment(std::min(hCurve->FirstParameter(), hCurve->LastParameter()),
+                           std::max(hCurve->FirstParameter(), hCurve->LastParameter()));
     }
 
     // spline to bezier segments
