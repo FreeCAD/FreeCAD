@@ -1807,6 +1807,16 @@ dass „MAXGS“ erhöht werden muss.</translation>
       <translation>Löschen</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Nur eine Fläche in Objekt! - In die Hauptfläche verschoben</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Abhängige Geometrie der folgenden Arten auswählen: </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1830,26 +1840,16 @@ dass „MAXGS“ erhöht werden muss.</translation>
       <translation>Auswahlfehler</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Nur eine Fläche in Objekt! - In die Hauptfläche verschoben</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Abhängige Geometrie der folgenden Arten auswählen: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Fläche</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>Hinzufügen oder Entfernen anklicken</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Kante, Fläche</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5015,13 +5015,13 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Hauptgeometrie der folgenden Art auswählen: Fläche; dafür Hinzufügen oder Entfernen anklicken</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Hauptgeometrie der folgenden Art auswählen: Kante, Fläche; dafür Hinzufügen oder Entfernen anklicken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Abhängige Geometrie der folgenden Art auswählen: Fläche; dafür Hinzufügen oder Entfernen anklicken</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Abhängige Geometrie der folgenden Art auswählen: Kante, Fläche; dafür Hinzufügen oder Entfernen anklicken</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>
@@ -5046,7 +5046,7 @@ Siehe das nachfolgende Beschreibungsfeld für mögliche Variablen.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="209"/>
       <source>Friction coefficient</source>
-      <translation>Reibungskoeffizient</translation>
+      <translation>Reibbeiwert</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="232"/>

@@ -338,6 +338,11 @@
       <translation>Εμβαδόν</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Διάμετρος</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Ακτίνα</translation>

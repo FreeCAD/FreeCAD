@@ -5744,7 +5744,7 @@ da face é usado como direção</translation>
       <location filename="../../TaskPostDisplay.ui" line="57"/>
       <location filename="../../TaskPostDisplay.ui" line="108"/>
       <source>Wireframe</source>
-      <translation>Arame</translation>
+      <translation>Estrutura de arame</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="73"/>
@@ -5797,7 +5797,7 @@ da face é usado como direção</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
       <source>Wireframe</source>
-      <translation>Arame</translation>
+      <translation>Estrutura de arame</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
@@ -6363,7 +6363,7 @@ da face é usado como direção</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="300"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="304"/>
       <source>Run</source>
-      <translation>executar</translation>
+      <translation>Executar</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="302"/>

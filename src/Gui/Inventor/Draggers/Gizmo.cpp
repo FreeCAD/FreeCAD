@@ -24,6 +24,7 @@
 #include "Gizmo.h"
 
 #include <cmath>
+#include <utility>
 #include <QApplication>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -147,12 +148,16 @@ SoInteractionKit* LinearGizmo::initDragger()
 
     dragger->labelVisible = false;
 
-    dragger->instantiateBaseGeometry();
+    if (draggerStyle == LinearDraggerStyle::Sphere) {
+        dragger->setPart("arrow", new SoSphereGeometry);
+    }
+    else {
+        dragger->instantiateBaseGeometry();
 
-    // change the dragger dimensions
-    auto arrow = SO_GET_PART(dragger, "arrow", SoArrowGeometry);
-    arrow->cylinderHeight = 3.5;
-    arrow->cylinderRadius = 0.2;
+        auto arrow = SO_GET_PART(dragger, "arrow", SoArrowGeometry);
+        arrow->cylinderHeight = 3.5;
+        arrow->cylinderRadius = 0.2;
+    }
 
     updateColorTheme();
 
@@ -265,6 +270,16 @@ void LinearGizmo::setAddFactor(const double val)
     setDragLength(property->value().getValue());
 }
 
+void LinearGizmo::setDraggerStyle(LinearDraggerStyle style)
+{
+    draggerStyle = style;
+}
+
+void LinearGizmo::setClickCallback(ClickCallback callback)
+{
+    clickCallback = std::move(callback);
+}
+
 void LinearGizmo::setVisibility(bool visible)
 {
     this->visible = visible;
@@ -274,6 +289,7 @@ void LinearGizmo::setVisibility(bool visible)
 void LinearGizmo::draggingStarted()
 {
     initialValue = property->value().getValue();
+    hasDragged = false;
     dragger->translationIncrementCount.setValue(0);
 
     if (isDelayedUpdateEnabled()) {
@@ -288,12 +304,17 @@ void LinearGizmo::draggingFinished()
         property->valueChanged(property->value().getValue());
     }
 
+    if (!hasDragged && clickCallback) {
+        clickCallback();
+    }
+
     property->setFocus();
     property->selectAll();
 }
 
 void LinearGizmo::draggingContinued()
 {
+    hasDragged = true;
     double value = initialValue + getDragLength();
 
     auto fineModifier = GizmoContainer::getFineSnapModifier();
@@ -307,9 +328,7 @@ void LinearGizmo::draggingContinued()
         value = snapToStep(value, baseStep * getCoarseLinearSnapMultiplier());
     }
 
-    // TODO: Need to change the lower limit to sudoThis->property->minimum() once the
-    // two direction extrude work gets merged
-    value = std::clamp(value, dragger->translationIncrement.getValue(), property->maximum());
+    value = std::clamp(value, property->minimum(), property->maximum());
 
     property->setValue(value);
     setDragLength(value);

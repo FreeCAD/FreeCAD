@@ -3765,18 +3765,18 @@ The default template is located at:
     <name>Arch</name>
     <message>
       <location filename="../../ArchStructure.py" line="449"/>
-      <location filename="../../Arch.py" line="2565"/>
+      <location filename="../../Arch.py" line="2574"/>
       <source>Beam</source>
       <translation>Palkki</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="450"/>
-      <location filename="../../Arch.py" line="2569"/>
+      <location filename="../../Arch.py" line="2578"/>
       <source>Column</source>
       <translation>Pilari</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2618"/>
+      <location filename="../../Arch.py" line="2627"/>
       <source>StructuralSystem</source>
       <translation>RakenneJärjestelmä</translation>
     </message>
@@ -4444,7 +4444,7 @@ The default template is located at:
       <translation>Valmis</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="387"/>
+      <location filename="../../Arch.py" line="396"/>
       <source>Equipment</source>
       <translation>Varusteet</translation>
     </message>
@@ -4491,7 +4491,7 @@ The default template is located at:
       <translation>Profiili</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1270"/>
+      <location filename="../../Arch.py" line="1279"/>
       <source>Site</source>
       <translation>Sijainti</translation>
     </message>
@@ -4501,14 +4501,14 @@ The default template is located at:
       <translation type="unfinished">Create Site</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="64"/>
-      <location filename="../../bimcommands/BimRoof.py" line="80"/>
+      <location filename="../../bimcommands/BimRoof.py" line="65"/>
+      <location filename="../../bimcommands/BimRoof.py" line="81"/>
       <source>Create Roof</source>
       <translation>Luo katto</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimRoof.py" line="92"/>
       <source>Unable to create a roof</source>
       <translation type="unfinished">Unable to create a roof</translation>
     </message>
@@ -4548,7 +4548,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Räystäs</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1144"/>
+      <location filename="../../Arch.py" line="1153"/>
       <location filename="../../ArchRoof.py" line="1072"/>
       <source>Roof</source>
       <translation>Katto</translation>
@@ -4620,7 +4620,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Etupuoli</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1075"/>
+      <location filename="../../Arch.py" line="1084"/>
       <location filename="../../ArchReference.py" line="909"/>
       <source>External Reference</source>
       <translation>Ulkoinen viittaus</translation>
@@ -4722,7 +4722,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create external reference</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="462"/>
+      <location filename="../../Arch.py" line="471"/>
       <source>Frame</source>
       <translation type="unfinished">Frame</translation>
     </message>
@@ -4782,7 +4782,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">The shapefile library can be downloaded from the following URL and installed in your macros folder:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2089"/>
+      <location filename="../../Arch.py" line="2098"/>
       <source>Window</source>
       <translation>Ikkuna</translation>
     </message>
@@ -4922,7 +4922,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1706"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxis.py" line="985"/>
-      <location filename="../../ArchComponent.py" line="2462"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <source>Remove</source>
       <translation>Poista</translation>
@@ -4931,7 +4931,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1707"/>
       <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchAxis.py" line="986"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>Lisää</translation>
@@ -4965,7 +4965,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1714"/>
-      <location filename="../../ArchComponent.py" line="2470"/>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <source>Components</source>
       <translation>Osat</translation>
     </message>
@@ -4979,7 +4979,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchComponent.py" line="2538"/>
+      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Tyyppi</translation>
@@ -5045,7 +5045,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="101"/>
       <location filename="../../ArchAxis.py" line="984"/>
-      <location filename="../../ArchComponent.py" line="2469"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation type="unfinished">Axes</translation>
@@ -5064,7 +5064,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Successfully written</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1652"/>
+      <location filename="../../Arch.py" line="1661"/>
       <source>Truss</source>
       <translation type="unfinished">Truss</translation>
     </message>
@@ -5099,52 +5099,52 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="262"/>
+      <location filename="../../Arch.py" line="261"/>
       <source>Drawing</source>
       <translation>Piirros</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="426"/>
+      <location filename="../../Arch.py" line="435"/>
       <source>Fence</source>
       <translation>Aita</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="592"/>
+      <location filename="../../Arch.py" line="601"/>
       <source>Materials</source>
       <translation>Materiaalit</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="686"/>
+      <location filename="../../Arch.py" line="695"/>
       <source>View of {panel.Label}</source>
       <translation type="unfinished">View of {panel.Label}</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="915"/>
+      <location filename="../../Arch.py" line="924"/>
       <source>Project</source>
       <translation>Projekti</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1474"/>
+      <location filename="../../Arch.py" line="1483"/>
       <source>Stairs</source>
       <translation>Portaat</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1598"/>
+      <location filename="../../Arch.py" line="1607"/>
       <source>Railing</source>
       <translation>Kaide</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2425"/>
+      <location filename="../../Arch.py" line="2434"/>
       <source>Report</source>
       <translation type="unfinished">Report</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2503"/>
+      <location filename="../../Arch.py" line="2512"/>
       <source>Structure</source>
       <translation>Rakenne</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2722"/>
+      <location filename="../../Arch.py" line="2731"/>
       <source>Covering</source>
       <translation type="unfinished">Covering</translation>
     </message>
@@ -5164,14 +5164,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Create multi-material</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="530"/>
+      <location filename="../../Arch.py" line="539"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>Materiaali</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="565"/>
+      <location filename="../../Arch.py" line="574"/>
       <source>MultiMaterial</source>
       <translation>Monimateriaali</translation>
     </message>
@@ -5262,7 +5262,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Remove Span</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="494"/>
+      <location filename="../../Arch.py" line="503"/>
       <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>Ruudukko</translation>
@@ -5420,12 +5420,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Kierto</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="648"/>
+      <location filename="../../Arch.py" line="657"/>
       <source>Panel</source>
       <translation type="unfinished">Panel</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="714"/>
+      <location filename="../../Arch.py" line="723"/>
       <source>PanelSheet</source>
       <translation>Paneelilevy</translation>
     </message>
@@ -5507,7 +5507,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">This object has no face</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="352"/>
+      <location filename="../../Arch.py" line="361"/>
       <source>Curtain Wall</source>
       <translation type="unfinished">Curtain Wall</translation>
     </message>
@@ -5525,7 +5525,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="436"/>
-      <location filename="../../Arch.py" line="2438"/>
+      <location filename="../../Arch.py" line="2447"/>
       <source>New Statement</source>
       <translation type="unfinished">New Statement</translation>
     </message>
@@ -5537,7 +5537,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="894"/>
-      <location filename="../../Arch.py" line="749"/>
+      <location filename="../../Arch.py" line="758"/>
       <source>Pipe</source>
       <translation>Putki</translation>
     </message>
@@ -6060,7 +6060,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">BIM SQL Cheatsheet</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="796"/>
+      <location filename="../../Arch.py" line="805"/>
       <source>Connector</source>
       <translation type="unfinished">Connector</translation>
     </message>
@@ -6208,7 +6208,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
       <location filename="../../ArchCommands.py" line="1731"/>
-      <location filename="../../ArchComponent.py" line="2539"/>
+      <location filename="../../ArchComponent.py" line="2540"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>Arvo</translation>
@@ -6221,7 +6221,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Yksikkö</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1195"/>
+      <location filename="../../Arch.py" line="1204"/>
       <source>Schedule</source>
       <translation type="unfinished">Schedule</translation>
     </message>
@@ -6331,17 +6331,17 @@ Floor creation aborted.</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2464"/>
+      <location filename="../../ArchComponent.py" line="2465"/>
       <source>Components of This Object</source>
       <translation type="unfinished">Components of This Object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2474"/>
+      <location filename="../../ArchComponent.py" line="2475"/>
       <source>Edit IFC Properties</source>
       <translation type="unfinished">Edit IFC Properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2475"/>
+      <location filename="../../ArchComponent.py" line="2476"/>
       <source>Edit Standard Code</source>
       <translation type="unfinished">Edit Standard Code</translation>
     </message>
@@ -6512,7 +6512,7 @@ The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="315"/>
-      <location filename="../../ArchComponent.py" line="2461"/>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Component</source>
       <translation type="unfinished">Component</translation>
     </message>
@@ -6546,91 +6546,91 @@ The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimSpace.py" line="70"/>
-      <location filename="../../bimcommands/BimRoof.py" line="93"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
       <source>Select a base object</source>
       <translation type="unfinished">Select a base object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2465"/>
+      <location filename="../../ArchComponent.py" line="2466"/>
       <source>Base component</source>
       <translation type="unfinished">Base component</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <source>Additions</source>
       <translation type="unfinished">Additions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2467"/>
+      <location filename="../../ArchComponent.py" line="2468"/>
       <source>Subtractions</source>
       <translation type="unfinished">Subtractions</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2468"/>
+      <location filename="../../ArchComponent.py" line="2469"/>
       <source>Objects</source>
       <translation>Objektit</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2471"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>Fixtures</source>
       <translation type="unfinished">Fixtures</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2472"/>
+      <location filename="../../ArchComponent.py" line="2473"/>
       <source>Group</source>
       <translation>Ryhmä</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2473"/>
+      <location filename="../../ArchComponent.py" line="2474"/>
       <source>Hosts</source>
       <translation type="unfinished">Hosts</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2537"/>
+      <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>Ominaisuus</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2545"/>
+      <location filename="../../ArchComponent.py" line="2546"/>
       <source>Add property</source>
       <translation>Lisää ominaisuus</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2549"/>
+      <location filename="../../ArchComponent.py" line="2550"/>
       <source>Add property set</source>
       <translation type="unfinished">Add property set</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2550"/>
+      <location filename="../../ArchComponent.py" line="2551"/>
       <source>New…</source>
       <translation type="unfinished">New…</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2816"/>
+      <location filename="../../ArchComponent.py" line="2817"/>
       <source>Options</source>
       <translation>Asetukset</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2957"/>
+      <location filename="../../ArchComponent.py" line="2958"/>
       <source>Error saving property</source>
       <translation type="unfinished">Error saving property</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2699"/>
+      <location filename="../../ArchComponent.py" line="2700"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>Uusi ominaisuus</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2736"/>
+      <location filename="../../ArchComponent.py" line="2737"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation type="unfinished">New property set</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1002"/>
+      <location filename="../../Arch.py" line="1011"/>
       <source>Rebar</source>
       <translation>Raudoitustanko</translation>
     </message>
@@ -6646,7 +6646,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation type="unfinished">Select a base face on a structural object</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1229"/>
+      <location filename="../../Arch.py" line="1238"/>
       <source>Section</source>
       <translation>Leikkaus</translation>
     </message>
@@ -6801,7 +6801,7 @@ Building creation aborted.</translation>
       <translation>Luo rakennus</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1332"/>
+      <location filename="../../Arch.py" line="1341"/>
       <source>Space</source>
       <translation>Tila</translation>
     </message>
@@ -6809,6 +6809,12 @@ Building creation aborted.</translation>
       <location filename="../../bimcommands/BimSpace.py" line="59"/>
       <source>Create Space</source>
       <translation type="unfinished">Create Space</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="97"/>
+      <source>%1 select a base object</source>
+      <translation type="unfinished">%1 select a base object</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -6851,12 +6857,12 @@ Building creation aborted.</translation>
       <translation type="unfinished">Space boundaries</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1720"/>
+      <location filename="../../Arch.py" line="1729"/>
       <source>Wall</source>
       <translation>Seinä</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1731"/>
+      <location filename="../../Arch.py" line="1740"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation type="unfinished">Walls can only be based on Part or Mesh objects</translation>
     </message>
@@ -7523,7 +7529,7 @@ Building creation aborted.</translation>
     </message>
     <message>
       <location filename="../../Arch.py" line="234"/>
-      <location filename="../../Arch.py" line="307"/>
+      <location filename="../../Arch.py" line="316"/>
       <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation type="unfinished">The type of this building</translation>
@@ -11573,7 +11579,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation type="unfinished">Select a planar object</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="75"/>
+      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <source>%1 select a planar object</source>
+      <translation type="unfinished">%1 select a planar object</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSlab.py" line="81"/>
       <source>Slab</source>
       <translation type="unfinished">Slab</translation>
     </message>
@@ -11823,12 +11834,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation type="unfinished">Property already exists</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
       <source>Viewed lines</source>
       <translation type="unfinished">Viewed lines</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="84"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
       <source>Cut lines</source>
       <translation type="unfinished">Cut lines</translation>
     </message>

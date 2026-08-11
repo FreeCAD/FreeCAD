@@ -930,7 +930,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>添加草图弧槽位</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="202"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>旋转图元</translation>
     </message>
@@ -971,7 +971,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>切换辅助线</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1565"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>添加自动约束</translation>
@@ -3420,12 +3420,12 @@ the characters listed here will be drawn using a substitute font.</source>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="511"/>
       <source>Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</source>
-      <translation type="unfinished">Shows helper lines for directional autoconstraints such as parallel, perpendicular, and tangent</translation>
+      <translation>显示平行、垂直和相切等方向性自动约束的辅助线</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="514"/>
       <source>Show directional autoconstraint helpers</source>
-      <translation type="unfinished">Show directional autoconstraint helpers</translation>
+      <translation>显示方向性自动约束辅助线</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="560"/>
@@ -4975,7 +4975,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="229"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
@@ -5106,7 +5106,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
@@ -5155,7 +5155,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>值错误</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1494"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>自动约束导致冗余。正在删除</translation>
     </message>
@@ -5200,7 +5200,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>添加椭圆失败</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation>旋转失败</translation>
     </message>
@@ -5398,12 +5398,12 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>删除原始几何图形。如果只创建一个副本，这实际上就等同于执行了“移动”操作。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="552"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation>应用相等约束</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="557"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>如果选择此选项，则操作将排除尺寸约束。
@@ -5649,32 +5649,32 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="703"/>
       <source>Information layer</source>
-      <translation type="unfinished">Information layer</translation>
+      <translation>信息层</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="716"/>
       <source>Color of arc and line helpers and also bspline polygon, comb...</source>
-      <translation type="unfinished">Color of arc and line helpers and also bspline polygon, comb...</translation>
+      <translation>圆弧和直线辅助线，以及 B 样条多边形、梳状图等的颜色...</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="736"/>
       <source>Line pattern of information edges</source>
-      <translation type="unfinished">Line pattern of information edges</translation>
+      <translation>信息边的线型</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="746"/>
       <source>Width of information edges</source>
-      <translation type="unfinished">Width of information edges</translation>
+      <translation>信息边的线宽</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="774"/>
       <source>Grid and inactive helpers</source>
-      <translation type="unfinished">Grid and inactive helpers</translation>
+      <translation>网格和未激活辅助线</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="790"/>
       <source>Color of sketch grid lines and inactive helper lines</source>
-      <translation type="unfinished">Color of sketch grid lines and inactive helper lines</translation>
+      <translation>草图网格线和未激活辅助线的颜色</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="813"/>
@@ -5793,19 +5793,6 @@ Instead equal constraints are applied between the original objects and their cop
     </message>
   </context>
   <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation>边数（+'U'/ -'J'）</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation>阶数（+'U'/ -'J'）</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="670"/>
@@ -5824,14 +5811,6 @@ Instead equal constraints are applied between the original objects and their cop
       <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>约束工具</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="635"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation>行数（+'R'/-'F'）</translation>
     </message>
   </context>
   <context>
@@ -5964,12 +5943,12 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="584"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation>应用相等约束</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="588"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>如果选择此选项，则操作将排除尺寸约束。
@@ -7597,7 +7576,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2513"/>
       <source>Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</source>
-      <translation type="unfinished">Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</translation>
+      <translation>通过创建共 'n' 个元素来旋转选定的几何体，从而支持创建环形阵列</translation>
     </message>
   </context>
   <context>
@@ -7623,7 +7602,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2581"/>
       <source>Translates the selected geometries and enables the creation of 'i' * 'j' total elements</source>
-      <translation type="unfinished">Translates the selected geometries and enables the creation of 'i' * 'j' total elements</translation>
+      <translation>平移选定的几何体并支持创建共 'i' * 'j' 个元素</translation>
     </message>
   </context>
   <context>
@@ -8159,25 +8138,31 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="103"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation>%1/%2 增加/减少元素数量</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 选择中心点</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 设置起始角度</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="113"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 设置旋转角度</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="277"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation>旋转参数</translation>
     </message>
@@ -8249,19 +8234,31 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>平移参数</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="515"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1/%2 增加/减少元素数量</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1/%2 增加/减少行数</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 选择参考点</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 设置平移向量</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 设置第二个平移向量</translation>
@@ -8525,6 +8522,19 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     </message>
   </context>
   <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>度</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>边</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
       <location filename="../../Command.cpp" line="411"/>
@@ -8553,22 +8563,30 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_c2_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="598"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
       <source>Symmetric</source>
       <translation>对称</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="602"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
-      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+      <translation>围绕原始位置对称分布元素。</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="631"/>
-      <source>Elements (+'U'/-'J')</source>
-      <translation type="unfinished">Elements (+'U'/-'J')</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>元素</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>行</translation>
     </message>
   </context>
   <context>
@@ -8600,22 +8618,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>TaskSketcherTool_c2_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="568"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
       <source>Symmetric</source>
       <translation>对称</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="572"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
       <source>Distribute the elements symmetrically around the original position.</source>
-      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+      <translation>围绕原始位置对称分布元素。</translation>
     </message>
   </context>
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="592"/>
-      <source>Elements (+'U'/ -'J')</source>
-      <translation type="unfinished">Elements (+'U'/ -'J')</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>元素</translation>
     </message>
   </context>
   <context>

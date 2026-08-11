@@ -220,6 +220,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(name, ("osifont"));
     SO_NODE_ADD_FIELD(size, (10.F));
     SO_NODE_ADD_FIELD(lineWidth, (2.F));
+    SO_NODE_ADD_FIELD(linePattern, (0b1111111111111111));
     SO_NODE_ADD_FIELD(sampling, (2.F));
 
     SO_NODE_ADD_FIELD(datumtype, (SoDatumLabel::DISTANCE));
@@ -264,6 +265,7 @@ SoDatumLabel::SoDatumLabel()
     m_Root->addChild(m_GeometryColor);
 
     m_DrawStyle = new SoDrawStyle;
+    m_DrawStyle->linePattern.connectFrom(&this->linePattern);
     m_DrawStyle->lineWidth.connectFrom(&this->lineWidth);
     m_Root->addChild(m_DrawStyle);
 
