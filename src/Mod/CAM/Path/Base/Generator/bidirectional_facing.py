@@ -91,9 +91,7 @@ def bidirectional(
 
     commands = []
     tool_radius = tool_diameter / 2.0
-    engagement_offset = facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
-    total_extension = pass_extension + tool_radius + engagement_offset
-
+    total_extension = pass_extension + tool_radius
     start_s = min_s - total_extension
     end_s = max_s + total_extension
 

@@ -266,15 +266,6 @@ def get_angled_polygon(wire, angle):
     return bounding_wire
 
 
-def calculate_engagement_offset(tool_diameter, stepover_percent):
-    """Calculate the engagement offset for proper tool engagement.
-
-    For 50% stepover, engagement should be 50% of tool diameter.
-    engagement_offset is how much of the tool is NOT engaged.
-    """
-    return tool_diameter * (1.0 - stepover_percent / 100.0)
-
-
 def validate_inputs(
     wire,
     tool_diameter,

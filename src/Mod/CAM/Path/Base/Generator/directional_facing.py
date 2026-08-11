@@ -90,12 +90,7 @@ def directional(
     Path.Log.debug(f"Directional (fixed): {len(step_positions)} passes")
 
     # Use full-length passes exactly like bidirectional (no slice_wire_segments)
-    total_extension = (
-        pass_extension
-        + tool_radius
-        + facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
-    )
-
+    total_extension = pass_extension + tool_radius
     start_s = min_s - total_extension
     end_s = max_s + total_extension
 
