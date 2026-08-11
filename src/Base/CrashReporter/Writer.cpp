@@ -63,7 +63,16 @@
 static std::atomic_flag writing;
 static std::string resolvedCrashFilePath;  // Stored in UTF-8 (so on Windows, convert first)
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+// Cygwin is a POSIX layer, so it uses the signal handlers rather than the Windows path.
+#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(FC_OS_CYGWIN)
+# define FC_CRASHREPORTER_POSIX
+#elif defined(FC_OS_WIN32)
+# define FC_CRASHREPORTER_WINDOWS
+#else
+# error "CrashReporter: no crash capture strategy is implemented for this operating system"
+#endif
+
+#ifdef FC_CRASHREPORTER_POSIX
 # include <fcntl.h>
 # include <pthread.h>
 # include <unistd.h>
@@ -134,14 +143,18 @@ std::uint32_t finishHeader(std::uint32_t frameCount)
 }
 }  // namespace
 
-#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#ifdef FC_CRASHREPORTER_POSIX
 extern "C" {
 
-void writeRawBufferPOSIX(std::uint32_t fileSize)
+static void writeRawBufferPOSIX(std::uint32_t fileSize)
 {
     // Raw syscalls only!!
     int fd = open(crashReportFilePOSIX, O_WRONLY | O_CREAT | O_TRUNC, 0600);
     if (fd != -1) {
+# if defined(FC_OS_LINUX)
+        // Advisory, and a bare syscall wrapper so it is signal-safe.
+        fallocate(fd, 0, 0, fileSize);
+# endif
         ssize_t written = 0;
         while (written < fileSize) {
             ssize_t r = write(fd, fileBuffer + written, fileSize - written);
@@ -156,7 +169,7 @@ void writeRawBufferPOSIX(std::uint32_t fileSize)
 
 // NOTE: *ALL* Calls in crashHandler must be async-signal-safe. Verify before changing anything in
 // this function.
-void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
+static void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
 {
     if (writing.test_and_set()) {
         return;
@@ -164,13 +177,15 @@ void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* ucontext)
     header.faultAddress = reinterpret_cast<std::uint64_t>(info->si_addr);
     header.code = static_cast<uint32_t>(sig);
     header.timestamp = std::time(nullptr);
-    // pthread_t is an integer on Linux but an opaque pointer on macOS, so it is not portably
-    // castable. Record the OS thread ID instead, which is both portable and the number a
-    // debugger or an OS crash log will show.
+    // pthread_t is an integer on Linux but an opaque pointer on macOS, the BSDs, and Cygwin, so it
+    // is not portably castable. macOS has a real thread ID; elsewhere record the handle value,
+    // which is at least unique per thread within the process.
 # if defined(FC_OS_MACOSX)
     std::uint64_t threadID {0};
     pthread_threadid_np(nullptr, &threadID);  // Reads the thread's own record, no syscall
     header.threadID = threadID;
+# elif defined(FC_OS_BSD) || defined(FC_OS_CYGWIN)
+    header.threadID = reinterpret_cast<std::uintptr_t>(pthread_self());
 # else
     header.threadID = static_cast<std::uint64_t>(pthread_self());
 # endif
@@ -269,6 +284,8 @@ void Writer::setMinidumpPath(const std::string& path)
     header.minidumpPathStringOffset = addToStringTable(path);
 }
 
+#else
+// MinGW: no writer, the capture path needs MSVC structured exception handling.
 #endif
 
 
@@ -280,7 +297,7 @@ void Writer::prewarm()
     // any needed dynamic loading mechanism is run (we can't let those loads run during a signal
     // handler).
 
-# ifdef FC_OS_WIN32
+# ifdef FC_CRASHREPORTER_WINDOWS
     [[maybe_unused]] auto trace = cpptrace::generate_object_trace();
 # else
     cpptrace::frame_ptr buffer[MaxFrames];
@@ -310,7 +327,7 @@ void Writer::install(const std::string& crashReportDirectory)
 #else
     header.buildIDStringOffset = addToStringTable(FCRevision);
 #endif
-#ifdef FC_OS_WIN32
+#ifdef FC_CRASHREPORTER_WINDOWS
     header.processID = GetCurrentProcessId();
 #else
     header.processID = getpid();
@@ -324,19 +341,20 @@ void Writer::install(const std::string& crashReportDirectory)
     header.osID = OS::Linux;
 #elif defined(FC_OS_BSD)
     header.osID = OS::BSD;
+#else
+    // Cygwin has no enumerator, so it keeps the initialized OS::None.
 #endif
 
 #if defined(__x86_64__) || defined(__amd64__) || defined(_M_X64)
     header.architectureID = Architecture::x64;
 #elif defined(__aarch64__) || defined(__arm64__) || defined(_M_ARM64)
     header.architectureID = Architecture::aarch64;
+#else
+    // Not an error: 32-bit ARM, riscv64, and ppc64le builds keep the initialized
+    // Architecture::None rather than failing to compile.
 #endif
 
-#ifdef FC_OS_WIN32
-    constexpr char separator = '\\';
-#else
-    constexpr char separator = '/';
-#endif
+    constexpr char separator = PATHSEP;
 
     if (FileInfo info(crashReportDirectory); !info.createDirectories()) {
         Console().warning("CrashReporter: Failed to create %s\n", crashReportDirectory);
@@ -352,7 +370,7 @@ void Writer::install(const std::string& crashReportDirectory)
     }
     resolvedCrashFilePath = fcrash;
 
-#ifdef FC_OS_WIN32
+#ifdef FC_CRASHREPORTER_WINDOWS
     const FileInfo fi(fcrash);
     crashReportFileWindows = fi.toStdWString();
 #else
@@ -363,7 +381,7 @@ void Writer::install(const std::string& crashReportDirectory)
     // On POSIX systems, if a SEGFAULT was triggered because we ran out of space on the stack,
     // it's possible to use an alternate stack for the signal handler. If we don't then, the attempt
     // to process the signal would itself trigger a secondary fault, causing an immediate abort.
-#if defined(FC_OS_LINUX) || defined(FC_OS_MACOSX)
+#ifdef FC_CRASHREPORTER_POSIX
     // https://man7.org/linux/man-pages/man2/sigaltstack.2.html
     stack_t ss {};
     ss.ss_sp = alternateStack;

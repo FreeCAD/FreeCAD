@@ -270,7 +270,7 @@ std::vector<ParsedFrame> Base::CrashReporter::trimLeadingPlumbingFrames(
     // function:
     static constexpr std::array dispatchAnchors {
         std::string_view {"KiUserExceptionDispatcher"},  // Windows
-        std::string_view {"__restore_rt"},               // glibc rt_sigreturn
+        std::string_view {"__restore_rt"},               // glibc and musl rt_sigreturn
         std::string_view {"__kernel_rt_sigreturn"},      // vDSO (ARM and others)
         std::string_view {"__sigtramp"},                 // macOS / BSD
     };
