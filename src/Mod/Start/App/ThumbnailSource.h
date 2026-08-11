@@ -23,7 +23,6 @@
 
 #pragma once
 
-#include <QtClassHelperMacros>
 #include <QObject>
 #include <QRunnable>
 #include <QString>

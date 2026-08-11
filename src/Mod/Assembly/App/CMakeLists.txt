@@ -15,6 +15,7 @@ generate_from_py(BomGroup)
 generate_from_py(JointGroup)
 generate_from_py(ViewGroup)
 generate_from_py(SimulationGroup)
+generate_from_py(SnapshotGroup)
 
 
 SET(Python_SRCS
@@ -32,6 +33,8 @@ SET(Python_SRCS
     ViewGroupPyImp.cpp
     SimulationGroup.pyi
     SimulationGroupPyImp.cpp
+    SnapshotGroup.pyi
+    SnapshotGroupPyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -51,14 +54,8 @@ SET(Assembly_SRCS
     AssemblyUtils.h
     BomObject.cpp
     BomObject.h
-    BomGroup.cpp
-    BomGroup.h
-    JointGroup.cpp
-    JointGroup.h
-    ViewGroup.cpp
-    ViewGroup.h
-    SimulationGroup.cpp
-    SimulationGroup.h
+    Groups.cpp
+    Groups.h
     ${Module_SRCS}
     ${Python_SRCS}
 )

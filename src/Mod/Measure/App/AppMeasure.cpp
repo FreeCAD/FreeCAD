@@ -164,7 +164,7 @@ PyMOD_INIT_FUNC(Measure)
 
     App::MeasureManager::addMeasureType(
         "DIAMETER",
-        "Diameter",
+        QT_TRANSLATE_NOOP("TaskMeasure", "Diameter"),
         "Measure::MeasureDiameter",
         MeasureDiameter::isValidSelection,
         MeasureDiameter::isPrioritizedSelection

@@ -1,4 +1,4 @@
-﻿/*
+/*
 FreeCAD Installer for Windows
 Author: Uwe Stöhr
 Compatible with NSIS 3.x
@@ -44,9 +44,6 @@ ManifestDPIAware true
 !include WinVer.nsh
 !include x64.nsh
 
-# load the nsPprocess plugin
-!include nsProcess.nsh
-
 # Set of various macros and functions
 !include include\utils.nsh
 
@@ -69,4 +66,3 @@ ManifestDPIAware true
 # Output file
 
 Outfile "${SETUP_EXE}"
-

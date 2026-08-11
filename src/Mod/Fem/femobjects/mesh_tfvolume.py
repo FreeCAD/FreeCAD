@@ -47,7 +47,7 @@ class MeshTransfiniteVolume(base_femmeshelement.BaseFemMeshElement):
                 type="App::PropertyBool",
                 name="MixedElements",
                 group="Transfinite",
-                doc="Creates mixt element types when the bounding surfaces mix quads and triangels",
+                doc="Creates mixed element types when the bounding surfaces mix quads and triangles",
                 value=False,
             ),
             _PropHelper(

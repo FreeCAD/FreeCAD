@@ -914,8 +914,13 @@ bool MeshInput::Load3MF(std::istream& input)
     reader.Load();
     std::vector<int> ids = reader.GetMeshIds();
     if (!ids.empty()) {
-        MeshKernel compound = reader.GetMesh(ids[0]);
-        compound.Transform(reader.GetTransform(ids[0]));
+        const int topLevel = ids[0];
+        MeshKernel compound = reader.GetMesh(topLevel);
+        compound.Transform(reader.GetTransform(topLevel));
+        const std::string name = reader.GetName(topLevel);
+        if (!name.empty()) {
+            _objectName = name;
+        }
 
         for (std::size_t index = 1; index < ids.size(); index++) {
             MeshKernel mesh = reader.GetMesh(ids[index]);
@@ -2560,10 +2565,10 @@ bool MeshOutput::SaveX3DOM(std::ostream& out) const
            "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
     out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
         << "  <head>\n"
-        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> "
+        << "    <script type='text/javascript' src='https://www.x3dom.org/download/x3dom.js'> "
            "</script>\n"
         << "    <link rel='stylesheet' type='text/css' "
-           "href='http://www.x3dom.org/download/x3dom.css'></link>\n"
+           "href='https://www.x3dom.org/download/x3dom.css'></link>\n"
         << "  </head>\n";
 
     auto onclick = [&out](const char* text) {

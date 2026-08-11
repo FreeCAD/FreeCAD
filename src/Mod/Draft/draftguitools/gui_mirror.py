@@ -43,12 +43,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-import DraftGeomUtils
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_trackers as trackers
-import draftguitools.gui_tool_utils as gui_tool_utils
-
+from draftgeoutils import geometry as geo_geometry
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
 from draftutils.messages import _msg, _toolmsg
 from draftutils.translate import translate
 
@@ -96,6 +95,8 @@ class Mirror(gui_base_original.Modifier):
         self.call = self.view.addEventCallback("SoEvent", self.action)
         _toolmsg(translate("draft", "Pick start point of mirror line"))
         self.ui.isCopy.hide()
+        self.selection_done = True
+        self.update_hints()
 
     def finish(self, cont=False):
         """Terminate the operation of the tool."""
@@ -149,7 +150,7 @@ class Mirror(gui_base_original.Modifier):
                         nor = self.point.sub(last).cross(self.wp.axis)
                         if nor.Length > tol:
                             nor.normalize()
-                            mtx = DraftGeomUtils.mirror_matrix(App.Matrix(), last, nor)
+                            mtx = geo_geometry.mirror_matrix(App.Matrix(), last, nor)
                             self.ghost.setMatrix(mtx)  # Ignores the position of the matrix.
                             self.ghost.move(App.Vector(mtx.col(3)[:3]))
             if self.extendedCopy:
@@ -166,6 +167,7 @@ class Mirror(gui_base_original.Modifier):
                         if self.ghost:
                             self.ghost.on()
                         _toolmsg(translate("draft", "Pick end point of mirror line"))
+                        self.update_hints()
                         if self.planetrack:
                             self.planetrack.set(self.point)
                     else:
@@ -193,6 +195,7 @@ class Mirror(gui_base_original.Modifier):
             if self.ghost:
                 self.ghost.on()
             _toolmsg(translate("draft", "Pick end point of mirror line"))
+            self.update_hints()
         else:
             last = self.node[-1]
             if self.ui.isCopy.isChecked():
@@ -200,6 +203,18 @@ class Mirror(gui_base_original.Modifier):
             else:
                 self.mirror(last, self.point)
             self.finish()
+
+    def get_action_hints(self):
+        if not self.node:
+            label = translate("draft", "%1 pick start point of mirror line")
+        else:
+            label = translate("draft", "%1 pick end point of mirror line")
+        return (
+            [Gui.InputHint(label, Gui.UserInput.MouseLeft)]
+            + gui_tool_utils._get_hint_xyz_constrain()
+            + gui_tool_utils._get_hint_mod_constrain()
+            + gui_tool_utils._get_hint_mod_snap()
+        )
 
 
 Gui.addCommand("Draft_Mirror", Mirror())

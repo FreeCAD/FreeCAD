@@ -115,7 +115,7 @@ protected:
     void hideEvent(QHideEvent*) override;
 
 private:
-    QString getModule(const char* type) const;
+    QString getModule(std::string_view type) const;
     QString getProperty(App::DocumentObject* obj) const;
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
 
@@ -169,7 +169,6 @@ private:
         const std::vector<PickData>& selections
     );
 
-    App::DocumentObject* getSubObject(const PickData& sel);
     std::string extractElementType(const PickData& sel);
     std::string createObjectKey(const PickData& sel);
     QIcon getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon>& icons);

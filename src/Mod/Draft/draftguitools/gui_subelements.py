@@ -43,7 +43,6 @@ import FreeCADGui as Gui
 from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftutils import utils
-from draftutils import gui_utils
 from draftutils.messages import _msg, _wrn
 from draftutils.translate import translate
 
@@ -88,6 +87,8 @@ class SubelementHighlight(gui_base_original.Modifier):
             return self.finish()
         self.call = self.view.addEventCallback("SoEvent", self.action)
         self.highlight_editable_objects()
+        self.selection_done = True
+        self.update_hints()
 
     def finish(self):
         """Terminate the operation.
@@ -150,9 +151,9 @@ class SubelementHighlight(gui_base_original.Modifier):
             vobj.PointSize = 10
             vobj.PointColor = (1.0, 0.0, 0.0)
             vobj.LineColor = (1.0, 0.0, 0.0)
-            xray = coin.SoAnnotation()
-            switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+            switch = vobj.SwitchNode
             if switch is not None:
+                xray = coin.SoAnnotation()
                 xray.addChild(switch.getChild(0))
                 xray.setName("xray")
                 vobj.RootNode.addChild(xray)
@@ -168,6 +169,15 @@ class SubelementHighlight(gui_base_original.Modifier):
             except Exception:
                 # This can occur if objects have had graph changing operations
                 pass
+
+    def get_action_hints(self):
+        return [
+            Gui.InputHint(
+                translate("draft", "%1 run Move, Rotate or Scale on subelements"),
+                Gui.UserInput.MouseLeft,
+            ),
+            Gui.InputHint(translate("draft", "%1 finish"), Gui.UserInput.KeyEscape),
+        ]
 
 
 Gui.addCommand("Draft_SubelementHighlight", SubelementHighlight())

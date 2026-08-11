@@ -130,6 +130,9 @@ PyObject* PropertyContainerPy::getTypeOfProperty(PyObject* args)
     if (Type & Prop_Output) {
         ret.append(Py::String("Output"));
     }
+    if (Type & Prop_Input) {
+        ret.append(Py::String("Input"));
+    }
     if (Type & Prop_NoRecompute) {
         ret.append(Py::String("NoRecompute"));
     }
@@ -153,7 +156,7 @@ PyObject* PropertyContainerPy::getTypeIdOfProperty(PyObject* args)
         return nullptr;
     }
 
-    Py::String str(prop->getTypeId().getName());
+    Py::String str = Base::toPyString(prop->getTypeId().getName());
     return Py::new_reference_to(str);
 }
 
@@ -222,6 +225,7 @@ static const std::map<std::string, int>& getStatusMap()
         statusMap["MaterialEdit"] = Property::MaterialEdit;
         statusMap["NoMaterialListEdit"] = Property::NoMaterialListEdit;
         statusMap["Output"] = Property::Output;
+        statusMap["Input"] = Property::Input;
         statusMap["LockDynamic"] = Property::LockDynamic;
         statusMap["NoModify"] = Property::NoModify;
         statusMap["PartialTrigger"] = Property::PartialTrigger;

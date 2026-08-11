@@ -49,6 +49,7 @@
 #include <QTimer>
 #include <QToolButton>
 #include <QToolTip>
+#include <QTextDocument>
 #include <QProcess>
 #include <QPushButton>
 #include <QWindow>
@@ -919,7 +920,7 @@ void DlgPreferencesImp::applyChanges()
                     ui->groupWidgetStack->setCurrentIndex(i);
                     pagesStackWidget->setCurrentIndex(j);
 
-                    QMessageBox::warning(this, tr("Wrong parameter"), QString::fromLatin1(e.what()));
+                    QMessageBox::warning(this, tr("Wrong Parameter"), QString::fromLatin1(e.what()));
 
                     this->invalidParameter = true;
 
@@ -958,8 +959,8 @@ void DlgPreferencesImp::applyChanges()
 void DlgPreferencesImp::restartIfRequired()
 {
     if (restartRequired) {
-        QMessageBox restartBox(parentWidget());  // current window likely already closed, cant
-                                                 // parent to it
+        QMessageBox restartBox(parentWidget());  // current window likely already closed,
+                                                 // can't parent to it
 
         restartBox.setIcon(QMessageBox::Warning);
         restartBox.setWindowTitle(tr("Restart Required"));
@@ -1642,21 +1643,21 @@ void PreferencesSearchController::searchWidgetType(
     for (WidgetType* widget : widgets) {
         QString widgetText;
 
-        // Get text based on widget type
+        // Get text based on widget type and strip any rich text formatting
         if constexpr (std::is_same_v<WidgetType, QLabel>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QCheckBox>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QGroupBox>) {
-            widgetText = widget->title();
+            widgetText = toPlainText(widget->title());
         }
         else if constexpr (std::is_same_v<WidgetType, QRadioButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
         else if constexpr (std::is_same_v<WidgetType, QPushButton>) {
-            widgetText = widget->text();
+            widgetText = toPlainText(widget->text());
         }
 
         if (!widgetText.isEmpty()) {
@@ -1677,16 +1678,17 @@ void PreferencesSearchController::searchWidgetType(
             }
         }
 
-        // search tooltip text for all widget types
-        QString tooltip = widget->toolTip();
-        if (!tooltip.isEmpty()) {
+        // normalise text and search tooltip text for all widget types
+        QString plainTooltip = toPlainText(widget->toolTip());
+        if (!plainTooltip.isEmpty()) {
+
             int tooltipScore = 0;
-            if (fuzzyMatch(searchText, tooltip, tooltipScore)) {
+            if (fuzzyMatch(searchText, plainTooltip, tooltipScore)) {
                 SearchResult result {
                     .groupName = groupName,
                     .pageName = pageName,
                     .widget = widget,
-                    .matchText = QStringLiteral("Tooltip: ") + tooltip,
+                    .matchText = QStringLiteral("Tooltip: ") + plainTooltip,
                     .groupBoxName = findGroupBoxForWidget(widget),
                     .tabName = tabName,
                     .pageDisplayName = pageDisplayName,
@@ -1713,7 +1715,7 @@ void PreferencesSearchController::searchWidgetType(
             }
 
             for (int i = 0; i < widget->count(); ++i) {
-                QString itemText = widget->itemText(i);
+                QString itemText = toPlainText(widget->itemText(i));
                 if (!itemText.isEmpty()) {
                     int itemScore = 0;
                     if (fuzzyMatch(searchText, itemText, itemScore)) {
@@ -1907,6 +1909,16 @@ bool PreferencesSearchController::fuzzyMatch(
 
     score = 0;
     return false;
+}
+
+QString PreferencesSearchController::toPlainText(const QString& text)
+{
+    if (Qt::mightBeRichText(text)) {
+        QTextDocument doc;
+        doc.setHtml(text);
+        return doc.toPlainText();
+    }
+    return text;
 }
 
 void PreferencesSearchController::ensureSearchBoxFocus()

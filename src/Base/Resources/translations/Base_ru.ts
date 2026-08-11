@@ -19,7 +19,7 @@
       <translation>Американская традиционная система мер (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="679"/>
+      <location filename="../../UnitsSchemasData.h" line="681"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Английская для гражданского строительства (фут, фунт, миль/ч)</translation>
     </message>

@@ -71,14 +71,9 @@ std::wstring ConvertToWideString(const std::string& string)
 // FileInfo
 
 
-FileInfo::FileInfo(const char* fileName)
+FileInfo::FileInfo(std::string fileName)
 {
-    setFile(fileName);
-}
-
-FileInfo::FileInfo(const std::string& fileName)
-{
-    setFile(fileName.c_str());
+    setFile(std::move(fileName));
 }
 
 const std::string& FileInfo::getTempPath()
@@ -185,14 +180,14 @@ std::string FileInfo::pathToString(const fs::path& path)
 #endif
 }
 
-void FileInfo::setFile(const char* name)
+void FileInfo::setFile(std::string name)
 {
-    if (!name) {
+    if (name.empty()) {
         FileName.clear();
         return;
     }
 
-    FileName = name;
+    FileName = std::move(name);
 
     // keep the UNC paths intact
     if (FileName.substr(0, 2) == std::string("\\\\")) {

@@ -53,11 +53,12 @@ class IndicatorButton(QtGui.QPushButton):
         return super(IndicatorButton, self).changeEvent(event)
 
     def onChange(self, paramGrp, param):
-        if param == "NavigationStyle":
+        if param in ("NavigationStyle", "OrbitStyle", "SameStyleForAllViews"):
             setCurrent()
 
     def mousePressEvent(self, event):
         RePopulateIcons()
+        setCurrent()
         return super(IndicatorButton, self).mousePressEvent(event)
 
 
@@ -668,7 +669,7 @@ indicator.adjustSize()
 indicator.setObjectName("NavigationIndicator")
 text = QtGui.QApplication.translate(
     "NavigationIndicator",
-    "Navigation Indicator",
+    "Navigation Styles",
     "A context menu action used to show or hide the 'Navigation indicator' toolbar widget",
 )
 indicator.setWindowTitle(text)
@@ -780,6 +781,9 @@ a12.setText("Touchpad  ")
 a12.setData("Gui::TouchpadNavigationStyle")
 a12.setObjectName("Indicator_NavigationTouchpad")
 
+for action in gStyle.actions():
+    action.setCheckable(True)
+
 RePopulateIcons()
 
 menu.addMenu(menuSettings)
@@ -862,6 +866,8 @@ def onOrbit():
     elif aRoundedArcball.isChecked():
         pView.SetInt("OrbitStyle", 4)
 
+    onOrbitShow()
+
 
 def onOrbitShow():
     """Set turntable or trackball orbit style."""
@@ -881,9 +887,36 @@ def onOrbitShow():
     gOrbit.blockSignals(False)
 
 
+def getActiveView():
+    """Return the active 3D view, if one is available."""
+
+    doc = getattr(Gui, "ActiveDocument", None)
+    return getattr(doc, "ActiveView", None)
+
+
+def getCurrentNavigationStyle():
+    """Return the navigation style for the current status-bar scope."""
+
+    if not pView.GetBool("SameStyleForAllViews", 1):
+        view = getActiveView()
+        if view and hasattr(view, "getNavigationType"):
+            return view.getNavigationType()
+
+    return pView.GetString("NavigationStyle")
+
+
 def onMenu(action):
     """Set navigation style on selection."""
-    pView.SetString("NavigationStyle", action.data())
+
+    style = action.data()
+    if pView.GetBool("SameStyleForAllViews", 1):
+        pView.SetString("NavigationStyle", style)
+    else:
+        view = getActiveView()
+        if view and hasattr(view, "setNavigationType"):
+            view.setNavigationType(style)
+
+    setCurrent()
 
 
 def setCurrent():
@@ -892,12 +925,13 @@ def setCurrent():
 
     s = False
     actions = gStyle.actions()
-    current = pView.GetString("NavigationStyle")
+    current = getCurrentNavigationStyle()
 
     if current and current != "Undefined":
         for i in actions:
             if i.data() == current:
                 s = True
+                i.setChecked(True)
                 setCompact(i)
                 menu.setDefaultAction(i)
                 indicator.setIcon(i.icon())
@@ -913,12 +947,19 @@ def setCurrent():
     else:
         a0.setVisible(True)
         a0.setEnabled(True)
+        a0.setChecked(True)
         setCompact(a0)
         menu.setDefaultAction(a0)
         indicator.setIcon(a0.icon())
         indicator.setToolTip(a0.toolTip())
 
     gStyle.blockSignals(False)
+
+
+def onActiveWindowChanged(window):
+    """Refresh when the active MDI view changes."""
+
+    setCurrent()
 
 
 if p.GetBool("Compact", 0):
@@ -931,17 +972,27 @@ retranslateUi()
 onCompact()
 onTooltip()
 
-label = statusBar.children()[2]
-statusBar.removeWidget(label)
-statusBar.addPermanentWidget(indicator)
-statusBar.addPermanentWidget(label)
-label.show()
+# MainWindow owns status-bar placement/ordering/persistence/menu; we only register.
+mw.addStatusBarItem(
+    indicator,
+    id="NavigationIndicator",
+    title=text,
+    slot="Right",
+    # Far right of the status bar, after Notifications.
+    order=900,
+)
 
 setCurrent()
+
+mdiAreaClass = getattr(QtGui, "QMdiArea", None)
+mdiArea = mw.findChild(mdiAreaClass) if mdiAreaClass else None
+if mdiArea:
+    mdiArea.subWindowActivated.connect(onActiveWindowChanged)
 
 gStyle.triggered.connect(onMenu)
 gOrbit.triggered.connect(onOrbit)
 aCompact.triggered.connect(onCompact)
 aTooltip.triggered.connect(onTooltip)
+menu.aboutToShow.connect(setCurrent)
 menuOrbit.aboutToShow.connect(onOrbitShow)
 menu.aboutToHide.connect(indicator.clearFocus)

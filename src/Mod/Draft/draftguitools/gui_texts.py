@@ -159,6 +159,7 @@ class Text(gui_base_original.Creator):
                     self.node.append(self.point)
                     self.ui.textUi()
                     self.ui.textValue.setFocus()
+                    self.update_hints()
 
     def numericInput(self, numx, numy, numz):
         """Validate the entry fields in the user interface.
@@ -170,6 +171,14 @@ class Text(gui_base_original.Creator):
         self.node.append(self.point)
         self.ui.textUi()
         self.ui.textValue.setFocus()
+        self.update_hints()
+
+    def get_hints(self):
+        if self.node:
+            return []
+        return [
+            Gui.InputHint(translate("draft", "%1 pick point"), Gui.UserInput.MouseLeft)
+        ] + gui_tool_utils._get_hint_mod_snap()
 
 
 Gui.addCommand("Draft_Text", Text())

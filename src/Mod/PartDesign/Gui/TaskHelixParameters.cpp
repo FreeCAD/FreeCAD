@@ -53,8 +53,28 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskHelixParameters */
 
+namespace
+{
+bool isSubtractiveHelix(PartDesignGui::ViewProviderHelix* view)
+{
+    auto* helix = view->getObject<PartDesign::Helix>();
+    return helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+std::string helixTaskIconName(PartDesignGui::ViewProviderHelix* view)
+{
+    return isSubtractiveHelix(view) ? "PartDesign_SubtractiveHelix" : "PartDesign_AdditiveHelix";
+}
+
+QString helixTaskTitle(PartDesignGui::ViewProviderHelix* view)
+{
+    return isSubtractiveHelix(view) ? TaskHelixParameters::tr("Subtractive Helix Parameters")
+                                    : TaskHelixParameters::tr("Additive Helix Parameters");
+}
+}  // namespace
+
 TaskHelixParameters::TaskHelixParameters(PartDesignGui::ViewProviderHelix* HelixView, QWidget* parent)
-    : TaskSketchBasedParameters(HelixView, parent, "PartDesign_AdditiveHelix", tr("Helix Parameters"))
+    : TaskSketchBasedParameters(HelixView, parent, helixTaskIconName(HelixView), helixTaskTitle(HelixView))
     , ui(new Ui_TaskHelixParameters)
 {
     // we need a separate container widget to add all controls to
@@ -298,6 +318,9 @@ void TaskHelixParameters::updateStatus()
     // if the helix touches itself along a single helical edge we get this error
     else if (status.compare("NCollection_IndexedDataMap::FindFromKey") == 0) {
         translatedStatus = tr("Error: helix touches itself");
+    }
+    else {
+        translatedStatus = QString::fromStdString(status);
     }
     ui->labelMessage->setText(translatedStatus);
 }
@@ -729,6 +752,7 @@ void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
     setGizmoPositions();
 
     ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
+    showDraggerHints();
 }
 
 void TaskHelixParameters::setGizmoPositions()

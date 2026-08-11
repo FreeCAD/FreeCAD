@@ -15,53 +15,6 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
-    <widget class="QFrame" name="frame">
-     <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QLabel" name="toolController_label">
-        <property name="text">
-         <string>Tool controller</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="toolController">
-        <property name="toolTip">
-         <string>The tool and its settings to be used for this operation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="coolantController_label">
-        <property name="text">
-         <string>Coolant Mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="coolantController">
-        <property name="toolTip">
-         <string>The tool and its settings to be used for this operation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="editToolController">
-        <property name="text">
-         <string>Edit Tool Controller</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
     <widget class="QWidget" name="facingWidget">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -71,7 +24,7 @@
         </property>
        </widget>
       </item>
-     <item row="0" column="1">
+      <item row="0" column="1">
        <widget class="QComboBox" name="boundaryShape">
         <property name="toolTip">
          <string>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
@@ -80,10 +33,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
         </property>
        </widget>
       </item>
-      </layout>
+     </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="1" column="0">
     <widget class="QWidget" name="widget">
      <layout class="QFormLayout" name="formLayout">
       <property name="fieldGrowthPolicy">
@@ -180,16 +133,19 @@ The latter can be used to face of the entire stock area to ensure uniform height
        </widget>
       </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="stepOverPercent_label">
+       <widget class="QLabel" name="stepOver_label">
         <property name="text">
-         <string>Step over percent</string>
+         <string>Step over</string>
         </property>
        </widget>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="stepOverPercent">
+       <widget class="QSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter. A step over of 100% results in no overlap between two different cycles</string>
+         <string>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool's diameter).</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -198,10 +154,10 @@ The latter can be used to face of the entire stock area to ensure uniform height
          <number>100</number>
         </property>
         <property name="singleStep">
-         <number>10</number>
+         <number>5</number>
         </property>
         <property name="value">
-         <number>100</number>
+         <number>50</number>
         </property>
        </widget>
       </item>
@@ -222,7 +178,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item row="2" column="0">
     <widget class="QWidget" name="pocketWidget">
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
@@ -287,7 +243,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
      </layout>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="4" column="0">
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

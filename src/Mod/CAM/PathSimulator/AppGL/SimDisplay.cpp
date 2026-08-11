@@ -548,8 +548,8 @@ void SimDisplay::UpdateCameraProjection(const SoCamera& camera)
 
 #else
 
-    float nearDistance;
-    float farDistance;
+    float nearDistance = 0.0;
+    float farDistance = 0.0;
 
 #endif
 

@@ -52,6 +52,8 @@ public:
     bool getFriction() const;
     const std::string getStickSlope() const;
     double getFrictionCoeff() const;
+    const std::vector<bool> getRevMaster() const;
+    const std::vector<bool> getRevSlave() const;
 
 private Q_SLOTS:
     void onReferenceDeletedSlave();

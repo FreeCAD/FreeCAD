@@ -8,6 +8,9 @@
 
 #include "Point.h"
 
+namespace heeks
+{
+
 class CArc
 {
 public:
@@ -35,3 +38,5 @@ public:
     Point MidParam(double param) const;
     void GetSegments(void (*callbackfunc)(const double* p), double pixels_per_mm) const;
 };
+
+}  // namespace heeks

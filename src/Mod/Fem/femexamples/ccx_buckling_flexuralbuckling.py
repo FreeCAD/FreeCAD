@@ -39,7 +39,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Hexa8",
         "constraints": ["fixed", "force"],
-        "solvers": ["ccxtools"],
+        "solvers": ["ccxtools", "elmer"],
         "material": "solid",
         "equations": ["buckling"],
     }
@@ -92,6 +92,15 @@ def setup(doc=None, solvertype="ccxtools"):
     if solvertype == "ccxtools":
         solver_obj = ObjectsFem.makeSolverCalculiXCcxTools(doc, "CalculiXCcxTools")
         solver_obj.WorkingDir = ""
+    elif solvertype == "elmer":
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        eq_obj = ObjectsFem.makeEquationElasticity(doc, solver_obj)
+        eq_obj.EigenAnalysis = True
+        eq_obj.StabilityAnalysis = True
+        eq_obj.CalculateStresses = False
+        eq_obj.CalculatePrincipal = False
+        eq_obj.DisplaceMesh = False
+        eq_obj.EigenSystemValues = 10
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
@@ -113,16 +122,17 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["Name"] = "CalculiX-Steel"
     mat["YoungsModulus"] = "210000 MPa"
     mat["PoissonRatio"] = "0.30"
+    mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
     analysis.addObject(material_obj)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Face5")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(geom_obj, "Face6")]
     con_force.Force = "21 N"
     con_force.Reversed = True
@@ -135,6 +145,8 @@ def setup(doc=None, solvertype="ccxtools"):
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
     femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj
+    femmesh_obj.ElementOrder = "2nd"
+    femmesh_obj.CharacteristicLengthMax = "1 mm"
 
     doc.recompute()
     return doc

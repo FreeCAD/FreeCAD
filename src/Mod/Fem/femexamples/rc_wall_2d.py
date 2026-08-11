@@ -146,12 +146,12 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(material_reinforced)
 
     # constraint fixed
-    con_fixed = ObjectsFem.makeConstraintFixed(doc, "ConstraintFixed")
+    con_fixed = ObjectsFem.makeConstraintFixed(doc, "Fixed")
     con_fixed.References = [(geom_obj, "Edge1"), (geom_obj, "Edge5")]
     analysis.addObject(con_fixed)
 
     # constraint force
-    con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
+    con_force = ObjectsFem.makeConstraintForce(doc, "Force")
     con_force.References = [(geom_obj, "Edge7")]
     con_force.Force = "1000000.0 N"
     con_force.Direction = (geom_obj, ["Edge8"])
@@ -159,7 +159,7 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_force)
 
     # constraint displacement
-    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "ConstraintDisplacementPrescribed")
+    con_disp = ObjectsFem.makeConstraintDisplacement(doc, "Displacement")
     con_disp.References = [(geom_obj, "Face1")]
     con_disp.zFree = False
     con_disp.zDisplacement = 0

@@ -27,12 +27,14 @@
 
 #include <QString>
 
+#include <Inventor/SbVec3f.h>
+#include <Inventor/fields/SoSFFloat.h>
+
 #include <App/Application.h>
 #include <App/PropertyStandard.h>
 #include <Base/Parameter.h>
-#include <Gui/ViewProviderDocumentObject.h>
-#include <Gui/SoTextLabel.h>
 #include <Gui/ViewProviderDocumentObjectGroup.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Mod/Measure/App/MeasureBase.h>
 
@@ -47,6 +49,11 @@ class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTranslate2Dragger;
 // NOLINTEND
+
+namespace Gui
+{
+class SoFrameLabel;
+}
 
 
 namespace MeasureGui
@@ -148,7 +155,7 @@ protected:
     virtual void onLabelMoved() {};
     virtual void onLabelMoveFinish();
     void setLabelValue(const Base::Quantity& value);
-    void setLabelValue(const QString& value);
+    void setLabelValue(const std::string& value);
     void setLabelTranslation(const SbVec3f& position);
     void updateIcon();
 

@@ -275,7 +275,6 @@ PyObject* EditableDatumLabelPy::PyMake(PyTypeObject* type, PyObject* args, PyObj
     auto label = std::make_unique<EditableDatumLabel>(
         asViewer(pyViewer),
         asPlacement(pyPlacement),
-        asColor(pyColor),
         asBool(pyAutoDistance),
         asBool(pyAvoidMouseCursor)
     );

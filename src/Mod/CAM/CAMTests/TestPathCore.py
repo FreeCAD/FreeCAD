@@ -84,6 +84,10 @@ class TestPathCore(PathTestBase):
         c3.setFromGCode("G1X1Y0")
         self.assertEqual(str(c3), "Command G1 [ X:1 Y:0 ]")
 
+        # set from gcode with scientific notation
+        c3.setFromGCode("G1X1Y-1.2345e-06Z10")
+        self.assertEqual(str(c3), "Command G1 [ X:1 Y:-1.2345e-06 Z:10 ]")
+
     def test10(self):
         """Test Path Object core functionality"""
 

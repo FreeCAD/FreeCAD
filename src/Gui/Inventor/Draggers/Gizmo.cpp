@@ -24,6 +24,7 @@
 #include "Gizmo.h"
 
 #include <cmath>
+#include <utility>
 #include <QApplication>
 
 #include <Inventor/nodes/SoOrthographicCamera.h>
@@ -70,22 +71,6 @@ Base::Reference<ParameterGrp> getGizmoParameterGroup()
     return hGrp;
 }
 
-Qt::KeyboardModifiers getFineSnapModifier()
-{
-    auto modifier = static_cast<Qt::KeyboardModifier>(
-        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
-    );
-    if (modifier == Qt::ControlModifier) {
-        return modifier;
-    }
-    return Qt::ShiftModifier;
-}
-
-bool isCoarseSnapEnabled()
-{
-    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
-}
-
 int getCoarseLinearSnapMultiplier()
 {
     int multiplier = static_cast<int>(
@@ -100,15 +85,6 @@ int getCoarseRotationSnapMultiplier()
         getGizmoParameterGroup()->GetInt("CoarseRotationSnapMultiplier", 5)
     );
     return std::max(1, multiplier);
-}
-
-DefaultDragBehavior getDefaultDragBehavior()
-{
-    int behavior = getGizmoParameterGroup()->GetInt(
-        "DefaultCoarseDragBehavior",
-        static_cast<int>(DefaultDragBehavior::Coarse)
-    );
-    return static_cast<DefaultDragBehavior>(behavior);
 }
 
 double snapToStep(double value, double step)
@@ -172,12 +148,16 @@ SoInteractionKit* LinearGizmo::initDragger()
 
     dragger->labelVisible = false;
 
-    dragger->instantiateBaseGeometry();
+    if (draggerStyle == LinearDraggerStyle::Sphere) {
+        dragger->setPart("arrow", new SoSphereGeometry);
+    }
+    else {
+        dragger->instantiateBaseGeometry();
 
-    // change the dragger dimensions
-    auto arrow = SO_GET_PART(dragger, "arrow", SoArrowGeometry);
-    arrow->cylinderHeight = 3.5;
-    arrow->cylinderRadius = 0.2;
+        auto arrow = SO_GET_PART(dragger, "arrow", SoArrowGeometry);
+        arrow->cylinderHeight = 3.5;
+        arrow->cylinderRadius = 0.2;
+    }
 
     updateColorTheme();
 
@@ -290,6 +270,16 @@ void LinearGizmo::setAddFactor(const double val)
     setDragLength(property->value().getValue());
 }
 
+void LinearGizmo::setDraggerStyle(LinearDraggerStyle style)
+{
+    draggerStyle = style;
+}
+
+void LinearGizmo::setClickCallback(ClickCallback callback)
+{
+    clickCallback = std::move(callback);
+}
+
 void LinearGizmo::setVisibility(bool visible)
 {
     this->visible = visible;
@@ -299,6 +289,7 @@ void LinearGizmo::setVisibility(bool visible)
 void LinearGizmo::draggingStarted()
 {
     initialValue = property->value().getValue();
+    hasDragged = false;
     dragger->translationIncrementCount.setValue(0);
 
     if (isDelayedUpdateEnabled()) {
@@ -313,28 +304,31 @@ void LinearGizmo::draggingFinished()
         property->valueChanged(property->value().getValue());
     }
 
+    if (!hasDragged && clickCallback) {
+        clickCallback();
+    }
+
     property->setFocus();
     property->selectAll();
 }
 
 void LinearGizmo::draggingContinued()
 {
+    hasDragged = true;
     double value = initialValue + getDragLength();
 
-    auto fineModifier = getFineSnapModifier();
+    auto fineModifier = GizmoContainer::getFineSnapModifier();
     auto modifiers = QApplication::queryKeyboardModifiers();
-    bool fineModifierPressed = (modifiers & fineModifier) == fineModifier;
-    bool coarseByDefault = getDefaultDragBehavior() == DefaultDragBehavior::Coarse;
+    bool fineModifierPressed = modifiers == fineModifier;
+    bool coarseByDefault = GizmoContainer::isCoarseByDefault();
     bool useCoarseSnap = coarseByDefault != fineModifierPressed;
 
-    if (isCoarseSnapEnabled() && useCoarseSnap) {
+    if (GizmoContainer::isCoarseSnapEnabled() && useCoarseSnap) {
         double baseStep = std::abs(dragger->translationIncrement.getValue() / multFactor);
         value = snapToStep(value, baseStep * getCoarseLinearSnapMultiplier());
     }
 
-    // TODO: Need to change the lower limit to sudoThis->property->minimum() once the
-    // two direction extrude work gets merged
-    value = std::clamp(value, dragger->translationIncrement.getValue(), property->maximum());
+    value = std::clamp(value, property->minimum(), property->maximum());
 
     property->setValue(value);
     setDragLength(value);
@@ -526,13 +520,13 @@ void RotationGizmo::draggingContinued()
 {
     double value = initialValue + getRotAngle();
 
-    auto fineModifier = getFineSnapModifier();
+    auto fineModifier = GizmoContainer::getFineSnapModifier();
     auto modifiers = QApplication::queryKeyboardModifiers();
-    bool fineModifierPressed = (modifiers & fineModifier) == fineModifier;
-    bool coarseByDefault = getDefaultDragBehavior() == DefaultDragBehavior::Coarse;
+    bool fineModifierPressed = modifiers == fineModifier;
+    bool coarseByDefault = GizmoContainer::isCoarseByDefault();
     bool useCoarseSnap = coarseByDefault != fineModifierPressed;
 
-    if (isCoarseSnapEnabled() && useCoarseSnap) {
+    if (GizmoContainer::isCoarseSnapEnabled() && useCoarseSnap) {
         value = snapToStep(value, getCoarseRotationSnapMultiplier());
     }
 
@@ -856,6 +850,39 @@ bool GizmoContainer::isEnabled()
     static auto hGrp = getGizmoParameterGroup();
 
     return hGrp->GetBool("EnableGizmos", true);
+}
+
+bool GizmoContainer::isCoarseSnapEnabled()
+{
+    return getGizmoParameterGroup()->GetBool("EnableCoarseSnap", true);
+}
+
+Qt::KeyboardModifier GizmoContainer::getFineSnapModifier()
+{
+    auto modifier = static_cast<Qt::KeyboardModifier>(
+        getGizmoParameterGroup()->GetInt("FineSnapModifier", static_cast<long>(Qt::ShiftModifier))
+    );
+    if (modifier == Qt::ControlModifier) {
+        return modifier;
+    }
+    return Qt::ShiftModifier;
+}
+
+InputHint::UserInput GizmoContainer::getFineSnapKey()
+{
+    if (getFineSnapModifier() == Qt::ControlModifier) {
+        return InputHint::UserInput::ModifierCtrl;
+    }
+    return InputHint::UserInput::ModifierShift;
+}
+
+bool GizmoContainer::isCoarseByDefault()
+{
+    return getGizmoParameterGroup()->GetInt(
+               "DefaultCoarseDragBehavior",
+               static_cast<int>(DefaultDragBehavior::Coarse)
+           )
+        == static_cast<int>(DefaultDragBehavior::Coarse);
 }
 
 std::unique_ptr<GizmoContainer> GizmoContainer::create(

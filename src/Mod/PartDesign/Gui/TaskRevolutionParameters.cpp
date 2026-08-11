@@ -722,6 +722,7 @@ void TaskRevolutionParameters::setupGizmos(ViewProvider* vp)
     defaultGizmoMultFactor = rotationGizmo->getMultFactor();
 
     setGizmoPositions();
+    showDraggerHints();
 }
 
 void TaskRevolutionParameters::setGizmoPositions()

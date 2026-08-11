@@ -490,7 +490,9 @@ def approximateWire(wire, tolerance=0.01):
 
             if isinstance(edge.Curve, Part.BSplineCurve):
                 # Convert BSpline to arcs
-                curves = edge.Curve.toBiArcs(tolerance)
+                curve = edge.Curve
+                trimmed_curve = curve.trim(*edge.ParameterRange)
+                curves = trimmed_curve.toBiArcs(tolerance)
                 for curve in curves:
                     processed_edges.append(curve.toShape())
             else:

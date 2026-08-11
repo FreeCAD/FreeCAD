@@ -30,6 +30,8 @@
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/ServiceProvider.h>
 
+#include "DepEdge.h"
+#include "DepEdgePy.h"
 #include "DocumentObject.h"
 #include "Document.h"
 #include "ExpressionParser.h"
@@ -172,7 +174,7 @@ PyObject* DocumentObjectPy::supportedProperties(PyObject* args)
         Base::BaseClass* data = static_cast<Base::BaseClass*>(it.createInstance());
         if (data) {
             delete data;
-            res.append(Py::String(it.getName()));
+            res.append(Base::toPyString(it.getName()));
         }
     }
     return Py::new_reference_to(res);
@@ -345,6 +347,21 @@ Py::List DocumentObjectPy::getInListRecursive() const
     return ret;
 }
 
+Py::List DocumentObjectPy::getInListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getInListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
+    }
+
+    return ret;
+}
+
 Py::List DocumentObjectPy::getOutList() const
 {
     Py::List ret;
@@ -370,6 +387,21 @@ Py::List DocumentObjectPy::getOutListRecursive() const
     }
     catch (const Base::Exception& e) {
         throw Py::IndexError(e.what());
+    }
+
+    return ret;
+}
+
+Py::List DocumentObjectPy::getOutListProp() const
+{
+    Py::List ret;
+    std::vector<DepEdge> list = getDocumentObjectPtr()->getOutListProp();
+
+    for (const auto& edge : list) {
+        // copy will be deleted by DepEdgePy
+        auto* copy = new DepEdge(edge);
+        auto* depEdgePy = new DepEdgePy(copy);
+        ret.append(Py::Object(depEdgePy, true));
     }
 
     return ret;
@@ -1060,4 +1092,24 @@ PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
         return new Base::PlacementPy(new Base::Placement(p));
     }
     PY_CATCH
+}
+
+PyObject* DocumentObjectPy::moveProperty(PyObject* args) const
+{
+    char* name {};
+    PyObject* targetObjObj {};
+    if (PyArg_ParseTuple(args, "sO", &name, &targetObjObj) == 0) {
+        return nullptr;
+    }
+
+    try {
+        DocumentObject* targetObj =
+            static_cast<DocumentObjectPy*>(targetObjObj)->getDocumentObjectPtr();
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(name);
+        getDocumentObjectPtr()->moveDynamicProperty(prop, targetObj);
+        Py_Return;
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }

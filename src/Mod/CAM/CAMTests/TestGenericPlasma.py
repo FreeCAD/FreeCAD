@@ -23,9 +23,10 @@
 
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
-import CAMTests.PostTestMocks as PostTestMocks
+from CAMTests import PathTestUtils
+from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
+from Machine.models.machine import Machine
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -80,10 +81,15 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         # reinitialize the postprocessor data structures between tests
         self.post.reinitialize()
 
-        # Create mock machine with postprocessor properties
-        from CAMTests.PostTestMocks import MockMachine
+        # Create machine with postprocessor properties
+        self.post._machine = Machine.create_3axis_config()
+        self.post._machine.name = "Test Generic Plasma"
 
-        self.post._machine = MockMachine()
+    def _set_postprocessor_properties(self, **kwargs):
+        """Have to do this before any method that checks .values"""
+        for k, v in kwargs.items():
+            self.post._machine.postprocessor_properties[k] = v
+        self.post.apply_configuration_bundle()
 
     def tearDown(self):
         """tearDown()...
@@ -167,7 +173,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path(commands)
 
         # Set pierce delay to 2000ms (should become 2.0 seconds in G4)
-        self.post._machine.postprocessor_properties = {"pierce_delay": 2000}
+        self._set_postprocessor_properties(pierce_delay=2000)
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -207,7 +213,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path(commands)
 
         # Set cooling delay to 500ms (should become 0.5 seconds in G4)
-        self.post._machine.postprocessor_properties = {"cooling_delay": 500}
+        self._set_postprocessor_properties(cooling_delay=500)
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -253,7 +259,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path(commands)
 
         # Enable torch Z-axis control
-        self.post._machine.postprocessor_properties = {"torch_zaxis_control": True}
+        self._set_postprocessor_properties(torch_zaxis_control=True)
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -309,7 +315,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         original_cmd_count = len(commands)
 
         # Disable torch Z-axis control
-        self.post._machine.postprocessor_properties = {"torch_zaxis_control": False}
+        self._set_postprocessor_properties(torch_zaxis_control=False)
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -361,7 +367,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path(commands)
 
         # Enable mark entry only mode
-        self.post._machine.postprocessor_properties = {"mark_entry_only": True}
+        self._set_postprocessor_properties(mark_entry_only=True)
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -406,7 +412,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path(commands)
 
         # Enable force rapid feeds
-        self.post._machine.postprocessor_properties = {"force_rapid_feeds": True}
+        self._set_postprocessor_properties(force_rapid_feeds=True)
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -492,7 +498,11 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         original_cmd_count = len(commands)
 
         # Set zero/negative delays
-        self.post._machine.postprocessor_properties = {"pierce_delay": 0, "cooling_delay": -100}
+        self._set_postprocessor_properties(
+            force_rapid_feeds=0,
+            cooling_delay=-100,
+            pierce_delay=0,
+        )
 
         # Build postables and call both injection methods directly
         postables = [("section", [self.profile_op])]
@@ -518,3 +528,12 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         # Should still have M3 and M5
         self.assertIn("M3", cmd_names, "M3 should be present")
         self.assertIn("M5", cmd_names, "M5 should be present")
+
+    def test_actual_machine(self):
+        """Our specific `postprocessor_properties` were seen"""
+        self.post = PostProcessorFactory.get_post_processor(self.job, "generic_plasma")
+        self.post._machine = Machine.create_3axis_config()
+        self.post._machine.name = "Test Generic Plasma"
+        self.post.apply_configuration_bundle()
+
+        self.assertIsNotNone(self.post.values["PIERCE_DELAY"])

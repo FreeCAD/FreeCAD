@@ -69,6 +69,7 @@
 #include "FaceMakerBullseye.h"
 #include "FaceMakerBuildFace.h"
 #include "FaceMakerCheese.h"
+#include "FaceMakerUnified.h"
 #include "WireJoiner.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
@@ -94,6 +95,8 @@
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
+#include "LinearPatternExtension.h"
+#include "PolarPatternExtension.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
 #include "GeometryBoolExtensionPy.h"
@@ -435,6 +438,7 @@ PyMOD_INIT_FUNC(Part)
     Part::FaceMakerBullseye     ::init();
     Part::FaceMakerRing         ::init();
     Part::FaceMakerBuildFace    ::init();
+    Part::FaceMakerUnified      ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
@@ -446,6 +450,8 @@ PyMOD_INIT_FUNC(Part)
     Part::AttachExtensionPython ::init();
     Part::PreviewExtension      ::init();
     Part::PrismExtension        ::init();
+    Part::LinearPatternExtension::init();
+    Part::PolarPatternExtension ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();

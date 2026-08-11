@@ -25,7 +25,7 @@ import PathScripts.PathUtils as PathUtils
 import unittest
 
 
-class depthTestCases(unittest.TestCase):
+class TestDepthCases(unittest.TestCase):
     def test00(self):
         """Stepping down to zero"""
         args = {

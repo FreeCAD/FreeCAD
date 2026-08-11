@@ -100,7 +100,7 @@ void DlgOnlineHelpImp::onLineEditDownloadFileNameSelected(const QString& url)
     if (dir.exists() && dir.isEmpty()) {
         QMessageBox::critical(
             this,
-            tr("Access denied"),
+            tr("Access Denied"),
             tr("Access denied to '%1'\n\n"
                "Specify another directory.")
                 .arg(url)
