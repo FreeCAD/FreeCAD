@@ -758,6 +758,7 @@ def _flipEdge(edge):
         return edge.reversed()
 
     Path.Log.warning(translate("PathGeom", "%s not supported for flipping") % type(edge.Curve))
+    return None
 
 
 def flipEdge(edge):

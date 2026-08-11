@@ -8,7 +8,7 @@ Created for Clipper1 to Clipper2 migration - provides safety net for changes.
 import unittest
 import area
 import math
-from CAMTests.TestArcFitting import areas_equal, curves_equal, make_curve, make_area, format_area
+from CAMTests.TestArcFitting import areas_equal, make_curve, make_area, format_area
 
 
 class TestAreaOperations(unittest.TestCase):
