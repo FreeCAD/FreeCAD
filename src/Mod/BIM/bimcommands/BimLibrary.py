@@ -579,7 +579,15 @@ class BIM_Library_TaskPanel:
         if ext in [".stp", ".step", ".brp", ".brep"]:
             self.place(path)
         elif ext == ".fcstd":
-            FreeCADGui.ActiveDocument.mergeProject(path)
+            # FreeCADGui.ActiveDocument.mergeProject(path)
+            # The mergeProject() method does not update old objects.
+            # https://github.com/FreeCAD/FreeCAD/issues/21180
+            # https://github.com/FreeCAD/FreeCAD/issues/31880
+            # Using this workaround instead:
+            tempDoc = FreeCAD.openDocument(path, hidden=True, temporary=True)
+            FreeCAD.setActiveDocument(self.mainDocName)
+            FreeCAD.ActiveDocument.copyObject(tempDoc.Objects)
+            FreeCAD.closeDocument(tempDoc.Name)
             from draftutils import todo
 
             todo.ToDo.delay(self.reject, None)
