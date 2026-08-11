@@ -122,6 +122,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # Update QuantitySpinBox displays
         self.updateQuantitySpinBoxes()
 
+        self.updateVisibility()
+
     def updateQuantitySpinBoxes(self, index=None):
         """updateQuantitySpinBoxes() ... refresh QuantitySpinBox displays from properties"""
         self.axialStockToLeaveSpinBox.updateWidget()
@@ -149,6 +151,17 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.stepOver.editingFinished)
 
         return signals
+
+    def updateVisibility(self):
+        if self.obj.ClearingPattern == "Spiral":
+            self.form.passExtension.hide()
+            self.form.passExtension_label.hide()
+        else:
+            self.form.passExtension.show()
+            self.form.passExtension_label.show()
+
+    def registerSignalHandlers(self, obj):
+        self.form.clearingPattern.currentIndexChanged.connect(self.updateVisibility)
 
 
 Command = PathOpGui.SetupOperation(
