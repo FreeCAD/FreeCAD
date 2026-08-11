@@ -982,7 +982,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
                         math.degrees(move.MovementTransform.Rotation.Angle),
                     )
                     spinbox.setToolTip(
-                        QtWidgets.QApplication.translate("Assembly", "Angle of this exploded-view move")
+                        QtWidgets.QApplication.translate(
+                            "Assembly", "Angle of this exploded-view move"
+                        )
                     )
                 else:
                     spinbox.setProperty("unit", "mm")
@@ -990,7 +992,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     spinbox.setProperty("maximum", 1.0e9)
                     spinbox.setProperty("rawValue", move.MovementTransform.Base.Length)
                     spinbox.setToolTip(
-                        QtWidgets.QApplication.translate("Assembly", "Distance of this exploded-view move")
+                        QtWidgets.QApplication.translate(
+                            "Assembly", "Distance of this exploded-view move"
+                        )
                     )
                 spinbox.valueChanged.connect(
                     lambda _value, currentMove=move: self.onMoveValueChanged(currentMove)
