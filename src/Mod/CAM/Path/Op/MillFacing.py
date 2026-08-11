@@ -114,8 +114,15 @@ class ObjectMillFacing(PathOp.ObjectOp):
             elif obj.StepOver > 100:
                 obj.StepOver = 100
 
+        if prop == "ClearingPattern":
+            self.opUpdateEditorModes(obj)
+
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+    def opUpdateEditorModes(self, obj):
+        mode = 2 if obj.ClearingPattern == "Spiral" else 0
+        obj.setEditorMode("PassExtension", mode)
 
     def opPropertyDefinitions(self):
         """opPropertyDefinitions(obj) ... Store operation specific properties"""

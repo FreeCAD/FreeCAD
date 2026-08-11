@@ -419,7 +419,8 @@ def generate_t_values(wire, step_vec, tool_diameter, stepover_percent, origin, e
 
     # Guard against zero/negative stepover
     if stepover <= 0:
-        raise ValueError("Zero/negative stepover")
+        Path.Log.warning("Zero/negative stepover")
+        return []
 
     if end_at_center:
         t = t_end
