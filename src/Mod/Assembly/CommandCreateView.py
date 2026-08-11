@@ -982,7 +982,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                         math.degrees(move.MovementTransform.Rotation.Angle),
                     )
                     spinbox.setToolTip(
-                        QT_TRANSLATE_NOOP("Assembly", "Angle of this exploded-view move")
+                        QtWidgets.QApplication.translate("Assembly", "Angle of this exploded-view move")
                     )
                 else:
                     spinbox.setProperty("unit", "mm")
@@ -990,7 +990,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     spinbox.setProperty("maximum", 1.0e9)
                     spinbox.setProperty("rawValue", move.MovementTransform.Base.Length)
                     spinbox.setToolTip(
-                        QT_TRANSLATE_NOOP("Assembly", "Distance of this exploded-view move")
+                        QtWidgets.QApplication.translate("Assembly", "Distance of this exploded-view move")
                     )
                 spinbox.valueChanged.connect(
                     lambda _value, currentMove=move: self.onMoveValueChanged(currentMove)
@@ -1071,7 +1071,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 return
             self.moveDirections[move.Name] = direction
 
-            self.adjustDependentMoves(move, oldTransform)
+        self.adjustDependentMoves(move, oldTransform)
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
         self.viewObj.Proxy.applyMoves(self.viewObj, self.com, self.size)
         self.updateDraggerFromMoveObjects(move)
