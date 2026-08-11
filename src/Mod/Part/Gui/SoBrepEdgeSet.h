@@ -69,7 +69,7 @@ public:
 protected:
     ~SoBrepEdgeSet() override;
     void GLRender(SoGLRenderAction* action) override;
-    void render(::SoIRRenderAction* action) override;
+    void IRRender(::SoIRRenderAction* action) override;
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
     SoDetail* createLineSegmentDetail(

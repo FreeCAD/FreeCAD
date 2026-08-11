@@ -360,7 +360,7 @@ SoBrepEdgeSet::~SoBrepEdgeSet()
     }
 }
 
-void SoBrepEdgeSet::render(SoIRRenderAction* action)
+void SoBrepEdgeSet::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
         return;
@@ -392,7 +392,7 @@ void SoBrepEdgeSet::render(SoIRRenderAction* action)
 
     auto& drawlist = action->getMutableDrawList();
     const int firstCommand = drawlist.getNumCommands();
-    inherited::render(action);
+    inherited::IRRender(action);
 
     const int appendedCount = drawlist.getNumCommands() - firstCommand;
     if (appendedCount <= 0) {

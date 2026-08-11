@@ -191,7 +191,7 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
     state->pop();
 }
 
-void SoFCBoundingBox::render(SoIRRenderAction* action)
+void SoFCBoundingBox::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
         return;

@@ -183,7 +183,7 @@ SoBrepPointSet::~SoBrepPointSet()
     }
 }
 
-void SoBrepPointSet::render(SoIRRenderAction* action)
+void SoBrepPointSet::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
         return;
@@ -197,7 +197,7 @@ void SoBrepPointSet::render(SoIRRenderAction* action)
 
     auto& drawlist = action->getMutableDrawList();
     const int firstCommand = drawlist.getNumCommands();
-    inherited::render(action);
+    inherited::IRRender(action);
 
     const int appendedCount = drawlist.getNumCommands() - firstCommand;
     if (appendedCount <= 0) {

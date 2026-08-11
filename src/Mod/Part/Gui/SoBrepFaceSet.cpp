@@ -399,7 +399,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
-void SoBrepFaceSet::render(SoIRRenderAction* action)
+void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
         return;
@@ -407,7 +407,7 @@ void SoBrepFaceSet::render(SoIRRenderAction* action)
 
     auto& drawlist = action->getMutableDrawList();
     const int firstCommand = drawlist.getNumCommands();
-    inherited::render(action);
+    inherited::IRRender(action);
 
     const int partCount = this->partIndex.getNum();
     const int appendedCount = drawlist.getNumCommands() - firstCommand;

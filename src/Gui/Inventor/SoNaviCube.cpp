@@ -1365,7 +1365,7 @@ void SoNaviCube::GLRender(SoGLRenderAction* action)
     renderCoin(action);
 }
 
-void SoNaviCube::render(SoIRRenderAction* action)
+void SoNaviCube::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
         return;

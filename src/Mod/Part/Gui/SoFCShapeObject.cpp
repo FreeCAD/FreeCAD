@@ -254,7 +254,7 @@ void SoFCControlPoints::GLRender(SoGLRenderAction* action)
     renderRoot->GLRender(action);
 }
 
-void SoFCControlPoints::render(SoIRRenderAction* action)
+void SoFCControlPoints::IRRender(SoIRRenderAction* action)
 {
     if (!action || !renderRoot || !syncRenderGeometry(action->getState())) {
         return;

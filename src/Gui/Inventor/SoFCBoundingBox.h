@@ -73,7 +73,7 @@ public:
 protected:
     ~SoFCBoundingBox() override;
     void GLRender(SoGLRenderAction* action) override;
-    void render(SoIRRenderAction* action) override;
+    void IRRender(SoIRRenderAction* action) override;
     void generatePrimitives(SoAction* action) override;
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 

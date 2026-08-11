@@ -150,7 +150,7 @@ protected:
     ~SoFrameLabel() override = default;
     void notify(SoNotList* list) override;
     void GLRender(SoGLRenderAction* action) override;
-    void render(::SoIRRenderAction* action) override;
+    void IRRender(::SoIRRenderAction* action) override;
 
 private:
     void prepareImage(SoState* state);

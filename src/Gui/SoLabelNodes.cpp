@@ -563,8 +563,8 @@ void SoFrameLabel::GLRender(SoGLRenderAction* action)
     inherited::GLRender(action);
 }
 
-void SoFrameLabel::render(SoIRRenderAction* action)
+void SoFrameLabel::IRRender(SoIRRenderAction* action)
 {
     prepareImage(action ? action->getState() : nullptr);
-    inherited::render(action);
+    inherited::IRRender(action);
 }
