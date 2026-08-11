@@ -574,36 +574,32 @@ std::optional<std::string> FileInfo::safeArchiveEntryPath(const std::string& ent
         return std::nullopt;
     }
 
+    // A backslash is only a separator to fs::path on Windows, but setFile() converts it into a
+    // forward slash on every platform, so the separators must be unified before decomposition.
     std::string normalized = entryName;
     std::ranges::replace(normalized, '\\', '/');
 
-    std::string result;
-    std::size_t start = 0;
-    while (start <= normalized.size()) {
-        std::size_t end = normalized.find('/', start);
-        if (end == std::string::npos) {
-            end = normalized.size();
-        }
-        std::string component = normalized.substr(start, end - start);
-        start = end + 1;
+    // Leading separators are stripped rather than rejected: the FEM code this was written to
+    // address starts *every* path with a slash. They have to go before fs::path sees the
+    // name.
+    normalized.erase(0, normalized.find_first_not_of('/'));
 
+    fs::path result;
+    for (const fs::path& component : fs::path(normalized).relative_path()) {
         if (component == "..") {
             return std::nullopt;
         }
         if (component.empty() || component == ".") {
             continue;
         }
-        if (!result.empty()) {
-            result += '/';
-        }
-        result += component;
+        result /= component;
     }
 
     if (result.empty()) {
         return std::nullopt;
     }
 
-    return result;
+    return result.generic_string();
 }
 
 std::optional<std::string> FileInfo::getSymlinkTarget()

@@ -281,6 +281,15 @@ TEST(FileInfoSafeArchiveEntryPathTest, RejectsParentDirectoryTraversal)
     EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("//..//evil").has_value());
 }
 
+TEST(FileInfoSafeArchiveEntryPathTest, LeadingDoubleSeparatorDoesNotEatAComponent)
+{
+    // On Windows a name starting with two separators parses as a filesystem root name, so naive
+    // decomposition would drop "server" here (and, above, the ".." in "//..//evil"). The result
+    // has to be identical on every platform.
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("//server/share/evil"), "server/share/evil");
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("\\\\server\\share\\evil"), "server/share/evil");
+}
+
 TEST(FileInfoSafeArchiveEntryPathTest, RejectsBackslashTraversal)
 {
     // A backslash is an ordinary filename character on Linux and macOS, so these names look
