@@ -108,9 +108,9 @@ class ObjectMillFacing(PathOp.ObjectOp):
     def onChanged(self, obj, prop):
         """onChanged(obj, prop) ... Called when a property changes"""
         if prop == "StepOver" and hasattr(obj, "StepOver"):
-            # Validate StepOver is between 0 and 100 percent
-            if obj.StepOver < 0:
-                obj.StepOver = 0
+            # Validate StepOver is between 1 and 100 percent
+            if obj.StepOver < 1:
+                obj.StepOver = 1
             elif obj.StepOver > 100:
                 obj.StepOver = 100
 
