@@ -562,6 +562,11 @@ bool QuantitySpinBox::isNormalized()
 {
     Q_D(const QuantitySpinBox);
 
+    // check if the input is exactly the same as the normalized string
+    if (d->validStr.toStdString() == d->quantity.getUserString()) {
+        return true;
+    }
+
     // check if the input is simplified to a solution or if further calculation
     // has to be done
 
@@ -599,6 +604,10 @@ bool QuantitySpinBox::isNormalized()
         }
 
         auto innerOperatorExpr = freecad_cast<OperatorExpression*>(operatorExpr->getLeft());
+        if (!innerOperatorExpr) {
+            return false;
+        }
+
         if (innerOperatorExpr->getOperator() != OperatorExpression::UNIT) {
             return false;
         }
