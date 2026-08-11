@@ -106,7 +106,7 @@ PyObject* TopoShapeCompoundPy::add(PyObject* args)
     std::vector<TopoShape> shapes;
 
     try {
-        if (comp.shapeType() == TopAbs_COMPOUND) {
+        if (comp.shapeType(/*silent = */ true) == TopAbs_COMPOUND) {
             for (const TopoShape& childShape : comp.getSubTopoShapes()) {
                 shapes.push_back(childShape);
             }

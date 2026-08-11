@@ -278,7 +278,22 @@ public:
         , ext(std::move(ext))
     {}
     MeshCore::Writer3MF writer3mf;
+    MeshObject meshObject;
     std::vector<Extension3MFPtr> ext;
+    bool hasMesh = false;
+    void addMesh(const MeshObject& mesh)
+    {
+        auto kernel = mesh.getKernel();
+        kernel.Transform(mesh.getTransform());
+        auto countFacets(meshObject.countFacets());
+        if (countFacets == 0) {
+            meshObject.setKernel(kernel);
+        }
+        else {
+            meshObject.addMesh(kernel);
+        }
+        hasMesh = true;
+    }
 };
 
 Exporter3MF::Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& ext)
@@ -289,6 +304,19 @@ Exporter3MF::Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr
 
 Exporter3MF::~Exporter3MF()
 {
+    if (d->hasMesh) {
+        try {
+            for (const auto& it : d->ext) {
+                d->writer3mf.AddResource(it->addMesh(d->meshObject));
+            }
+        }
+        catch (const Base::Exception& e) {
+            std::cerr << "Adding 3MF resources failed: " << e.what() << std::endl;
+        }
+        catch (...) {
+            std::cerr << "Adding 3MF resources failed" << std::endl;
+        }
+    }
     write();
 }
 
@@ -296,11 +324,8 @@ bool Exporter3MF::addMesh(const char* name, const MeshObject& mesh)
 {
     bool ok = d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform(), name);
     if (ok) {
-        for (const auto& it : d->ext) {
-            d->writer3mf.AddResource(it->addMesh(mesh));
-        }
+        d->addMesh(mesh);
     }
-
     return ok;
 }
 

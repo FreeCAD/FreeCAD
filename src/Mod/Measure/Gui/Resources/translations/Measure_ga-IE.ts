@@ -338,6 +338,11 @@
       <translation>Limistéar</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Trastomhas</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Ga</translation>
@@ -501,6 +506,19 @@
     </message>
   </context>
   <context>
+    <name>StdCmdMassProperties</name>
+    <message>
+      <location filename="../../Command.cpp" line="97"/>
+      <source>Mass Properties</source>
+      <translation>Airíonna Mais</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="98"/>
+      <source>Calculates mass properties of selected objects</source>
+      <translation>Ríomhann sé airíonna maise na réad roghnaithe</translation>
+    </message>
+  </context>
+  <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
       <location filename="../../TaskMassProperties.cpp" line="280"/>
@@ -546,19 +564,6 @@
       <location filename="../../TaskMassProperties.cpp" line="1119"/>
       <source> (Average)</source>
       <translation> (Meán)</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdMassProperties</name>
-    <message>
-      <location filename="../../Command.cpp" line="97"/>
-      <source>Mass Properties</source>
-      <translation>Airíonna Mais</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="98"/>
-      <source>Calculates mass properties of selected objects</source>
-      <translation>Ríomhann sé airíonna maise na réad roghnaithe</translation>
     </message>
   </context>
 </TS>

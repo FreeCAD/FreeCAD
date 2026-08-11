@@ -39,7 +39,6 @@
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
 
-
 using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::SketcherSettings */
@@ -492,6 +491,7 @@ void SketcherSettingsDisplay::saveSettings()
     ui->checkBoxUseSystemDecimals->onSave();
     ui->checkBoxShowDimensionalName->onSave();
     ui->prefDimensionalStringFormat->onSave();
+    ui->checkBoxShowDirectionalAutoConstraintHints->onSave();
     ui->checkBoxTVHideDependent->onSave();
     ui->checkBoxTVShowLinks->onSave();
     ui->checkBoxTVShowSupport->onSave();
@@ -517,6 +517,7 @@ void SketcherSettingsDisplay::loadSettings()
     ui->checkBoxUseSystemDecimals->onRestore();
     ui->checkBoxShowDimensionalName->onRestore();
     ui->prefDimensionalStringFormat->onRestore();
+    ui->checkBoxShowDirectionalAutoConstraintHints->onRestore();
     ui->checkBoxTVHideDependent->onRestore();
     ui->checkBoxTVShowLinks->onRestore();
     ui->checkBoxTVShowSupport->onRestore();
@@ -684,13 +685,19 @@ SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     ui->ExternalPattern->setItemDelegate(lineStyleDelegate);
     ui->ExternalDefiningPattern->setIconSize(LineIconSize);
     ui->ExternalDefiningPattern->setItemDelegate(lineStyleDelegate);
-    const QBrush brush = palette().windowText();
+    ui->InformationPattern->setIconSize(LineIconSize);
+    ui->InformationPattern->setItemDelegate(lineStyleDelegate);
+    ui->DimensionalConstraintLinePattern->setIconSize(LineIconSize);
+    ui->DimensionalConstraintLinePattern->setItemDelegate(lineStyleDelegate);
+
     for (auto style : PenStyles) {
         ui->EdgePattern->addItem(QString(), QVariant(style.pattern));
         ui->ConstructionPattern->addItem(QString(), QVariant(style.pattern));
         ui->InternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalPattern->addItem(QString(), QVariant(style.pattern));
         ui->ExternalDefiningPattern->addItem(QString(), QVariant(style.pattern));
+        ui->InformationPattern->addItem(QString(), QVariant(style.pattern));
+        ui->DimensionalConstraintLinePattern->addItem(QString(), QVariant(style.pattern));
     }
 }
 
@@ -707,7 +714,14 @@ bool SketcherSettingsAppearance::event(QEvent* event)
     if (event->type() == QEvent::StyleChange) {
         PreferencePage::event(event);
         const qreal dpr = devicePixelRatioF();
-        const QBrush brush = palette().windowText();
+
+        // Resolve color from qss source - see src/Gui/Application.cpp (2869)
+        QLabel dummyLabel;
+        dummyLabel.show();
+
+        QColor textColor = dummyLabel.palette().color(QPalette::Text);
+        QBrush brush = QBrush(textColor);
+
         for (size_t i = 0; i < PenStyles.size(); ++i) {
             const QIcon icon = PenStyles[i].toIcon(LineIconSize, dpr, brush);
             ui->EdgePattern->setItemIcon(i, icon);
@@ -715,6 +729,8 @@ bool SketcherSettingsAppearance::event(QEvent* event)
             ui->InternalPattern->setItemIcon(i, icon);
             ui->ExternalPattern->setItemIcon(i, icon);
             ui->ExternalDefiningPattern->setItemIcon(i, icon);
+            ui->InformationPattern->setItemIcon(i, icon);
+            ui->DimensionalConstraintLinePattern->setItemIcon(i, icon);
         }
         return true;
     }
@@ -736,6 +752,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->FullyConstraintElementColor->onSave();
     ui->FullyConstraintConstructionElementColor->onSave();
     ui->FullyConstraintInternalAlignmentColor->onSave();
+    ui->InformationColor->onSave();
+    ui->GridLineColor->onSave();
 
     ui->ConstrainedColor->onSave();
     ui->NonDrivingConstraintColor->onSave();
@@ -752,6 +770,8 @@ void SketcherSettingsAppearance::saveSettings()
     ui->InternalWidth->onSave();
     ui->ExternalWidth->onSave();
     ui->ExternalDefiningWidth->onSave();
+    ui->InformationWidth->onSave();
+    ui->DimensionalConstraintLineWidth->onSave();
 
     ui->InternalFaceColor->onSave();
 
@@ -777,6 +797,16 @@ void SketcherSettingsAppearance::saveSettings()
     data = ui->ExternalDefiningPattern->itemData(ui->ExternalDefiningPattern->currentIndex());
     pattern = data.toInt();
     hGrp->SetInt("ExternalDefiningPattern", pattern);
+
+    data = ui->InformationPattern->itemData(ui->InformationPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("InformationPattern", pattern);
+
+    data = ui->DimensionalConstraintLinePattern->itemData(
+        ui->DimensionalConstraintLinePattern->currentIndex()
+    );
+    pattern = data.toInt();
+    hGrp->SetInt("DimensionalConstraintLinePattern", pattern);
 }
 
 void SketcherSettingsAppearance::loadSettings()
@@ -794,6 +824,8 @@ void SketcherSettingsAppearance::loadSettings()
     ui->FullyConstraintElementColor->onRestore();
     ui->FullyConstraintConstructionElementColor->onRestore();
     ui->FullyConstraintInternalAlignmentColor->onRestore();
+    ui->InformationColor->onRestore();
+    ui->GridLineColor->onRestore();
 
     ui->ConstrainedColor->onRestore();
     ui->NonDrivingConstraintColor->onRestore();
@@ -810,6 +842,8 @@ void SketcherSettingsAppearance::loadSettings()
     ui->InternalWidth->onRestore();
     ui->ExternalWidth->onRestore();
     ui->ExternalDefiningWidth->onRestore();
+    ui->InformationWidth->onRestore();
+    ui->DimensionalConstraintLineWidth->onRestore();
 
     ui->InternalFaceColor->setAllowTransparency(true);
     ui->InternalFaceColor->onRestore();
@@ -851,6 +885,20 @@ void SketcherSettingsAppearance::loadSettings()
         index = 0;
     }
     ui->ExternalDefiningPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("InformationPattern", 0b1111110011111100);
+    index = ui->InformationPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->InformationPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("DimensionalConstraintLinePattern", 0b1111111111111111);
+    index = ui->DimensionalConstraintLinePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->DimensionalConstraintLinePattern->setCurrentIndex(index);
 }
 
 /**

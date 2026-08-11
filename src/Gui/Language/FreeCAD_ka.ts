@@ -58,7 +58,7 @@
       <translation>ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="907"/>
+      <location filename="../Application.cpp" line="869"/>
       <source>Import</source>
       <translation>შემოტანა</translation>
     </message>
@@ -113,12 +113,12 @@
       <translation>სტანდარტული ნაწილის ჩასმა</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="147"/>
+      <location filename="../CommandStructure.cpp" line="146"/>
       <source>Add a group</source>
       <translation>ჯგუფის დამატება</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="216"/>
+      <location filename="../CommandStructure.cpp" line="215"/>
       <source>Add a variable set</source>
       <translation>ცვლადების ნაკრების დამატება</translation>
     </message>
@@ -133,10 +133,10 @@
       <translation>მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="510"/>
-      <location filename="../TaskTransform.cpp" line="153"/>
-      <location filename="../TaskTransform.cpp" line="1070"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../TaskTransform.cpp" line="152"/>
+      <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>
     </message>
@@ -146,7 +146,7 @@
       <translation>მასივის ელემენტების გადართვა</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="260"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>გამოსახულების ჩასწორება</translation>
@@ -172,17 +172,17 @@
       <translation>გადათვლების გამოტოვება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="984"/>
+      <location filename="../CommandView.cpp" line="985"/>
       <source>Toggle Visibility</source>
       <translation>ხილვადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1019"/>
+      <location filename="../CommandView.cpp" line="1020"/>
       <source>Toggle Transparency</source>
       <translation>გამჭვირვალობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1138"/>
+      <location filename="../CommandView.cpp" line="1139"/>
       <source>Toggle Selectability</source>
       <translation>მონიშვნადობის გადართვა</translation>
     </message>
@@ -2238,72 +2238,72 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="786"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="787"/>
       <source>Reset Page '%1'</source>
       <translation>'%1-ე' გვერდის ჩამოყრა</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="789"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="790"/>
       <source>Resets the user settings for the page '%1'</source>
       <translation>ჩამოყრის მომხმარებლის პარამეტრებს გვერდისთვის '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="793"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="794"/>
       <source>Reset Group '%1'</source>
       <translation>ჩამოყრა ჯგუფისთვის '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="801"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="802"/>
       <source>Reset All</source>
       <translation>ყველას ჩამოყრა</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="819"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
       <source>Clear User Settings</source>
       <translation>მომხმარებლის პარამეტრების გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="820"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
       <source>Clear all your user settings?</source>
       <translation>გავასუფთავო ყველა თქვენი მომხმარებლის პარამეტრი?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="821"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="822"/>
       <source>All settings will be cleared.</source>
       <translation>ყველა პარამეტრი გასუფთავდება.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="923"/>
       <source>Wrong Parameter</source>
       <translation>არასწორი პარამეტრი</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="965"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
       <source>Restart Required</source>
       <translation>საჭიროა გადატვირთვა</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="966"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="967"/>
       <source>Restart FreeCAD for changes to take effect.</source>
       <translation>ცვლილებების ძალაში შესასვლელად გადატვირთეთ FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="971"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
       <source>Restart Now</source>
       <translation>ახლავე გადატვირთვა</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="972"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="973"/>
       <source>Restart Later</source>
       <translation>მოგვიანებით გადატვირთვა</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="798"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="799"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation>ჩამოყრის მომხმარებლის პარამეტრებს ჯგუფისთვის '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="803"/>
+      <location filename="../Dialogs/DlgPreferencesImp.cpp" line="804"/>
       <source>Resets the user settings entirely</source>
       <translation>მთლიანად ჩამოყრის მომხმარებლის პარამეტრებს</translation>
     </message>
@@ -3214,197 +3214,187 @@ besides the color bar</source>
       <translation>ზოგადი</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="41"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="152"/>
       <source>The application will create a new document when started</source>
       <translation>დაწყებისას აპლიკაცია შექმნის ახალ დოკუმენტს</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="44"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="155"/>
       <source>Create new document at start up</source>
       <translation>გაშვებისას ახალი დოკუმენტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="188"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
       <translation>დოკუმენტის შეკუმშვის დონე შენახვისას
 (0 = არაფერი, 9 = უმაღლესი, 7 = ნაგულისხმევი)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="196"/>
       <source>Compression level for FCStd files</source>
       <translation>FCStd ფაილებს შეკუმშვის დონე</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="129"/>
-      <source>All changes in documents are stored so that they can be undone/redone</source>
-      <translation>დოკუმენტებში ინახება ინფორმაცია ყველა ცვლილების შესახებ, ასე რომ ისინი შეიძლება დაბრუნდეს/თავიდან მოხდეს</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="201"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="126"/>
       <source>Allow aborting recomputation</source>
       <translation>გადათვლის შეწყვეტის დაშვება</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="236"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="217"/>
       <source>Storage</source>
       <translation>საცავი</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="454"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
       <source>Saving transactions (Auto-save)</source>
       <translation>ტრანზაქციების შენახვა (ავტოშენახვა)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="244"/>
       <source>Discard saved transaction after saving document</source>
       <translation>დოკუმენტის შემდეგ მომხდარი ტრანზაქციების წაშლა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="435"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="416"/>
       <source>Run AutoRecovery at startup</source>
       <translation>გაშვებისას ფაილების ავტომატური აღდგენა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="488"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="469"/>
       <source>How often a recovery file is written</source>
       <translation>რამდენად ხშირად ჩაიწერება აღდგენის ფაილი</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="297"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="278"/>
       <source>A thumbnail will be stored when document is saved</source>
       <translation>მინიატურა შეინახება დოკუმენტის შენახვისას</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="332"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="313"/>
       <source>Size</source>
       <translation>ზომა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="381"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="362"/>
       <source>How many backup files will be kept when saving document</source>
       <translation>რამდენი სარეზერვო ფაილი შეინახება დოკუმენტის შენახვისას</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="247"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="228"/>
       <source>Show format documentation</source>
       <translation>ფორმატის დოკუმენტაციის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="132"/>
-      <source>Using undo/redo in documents</source>
-      <translation>დაბრუნება/გამეორების გამოყენება დოკუმენტებში</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="65"/>
       <source>Maximum undo/redo steps</source>
       <translation>დაბრუნება/გამეორებების ბიჯების მაქს. რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="72"/>
       <source>How many undo/redo steps should be recorded</source>
       <translation>რამდენი დაბრუნება/გამეორების ნაბიჯი უნდა იქნეს ჩაწერილი</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="197"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="103"/>
+      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
+      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="106"/>
+      <source>Enables async document recomputation</source>
+      <translation type="unfinished">Enables async document recomputation</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="122"/>
       <source>Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</source>
       <translation type="unfinished">Allow user aborting document recomputation by pressing Esc.
 This feature may slightly increase recomputation time.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="214"/>
-      <source>This experimental feature allows more responsive GUI while recomputing features.</source>
-      <translation type="unfinished">This experimental feature allows more responsive GUI while recomputing features.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="220"/>
-      <source>Enables async document recomputation</source>
-      <translation type="unfinished">Enables async document recomputation</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="300"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
       <translation>დოკუმენტის შენახვისას პროექტის ფაილისთვის მინიატურის დამატება</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="339"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
       <source>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</source>
       <translation type="unfinished">Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="384"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="365"/>
       <source>Maximum number of backup files to keep when resaving document</source>
       <translation>დოკუმენტის ხელახალი შენახვისას სარეზერვო ფაილების მაქსიმალური რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="431"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="412"/>
       <source>If there is a recovery file available, the application will
 automatically run a file recovery when it is started</source>
       <translation type="unfinished">If there is a recovery file available, the application will
 automatically run a file recovery when it is started</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="467"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="448"/>
       <source>The program icon will be added to the thumbnail</source>
       <translation>მინიატურას დაემატება პროგრამის ლოგო</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="470"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
       <source>Add program icon to the generated thumbnail</source>
       <translation>პროგრამის ხატულას დამატება გენერირებულ მინიატურაზე</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="491"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="472"/>
       <source>Save auto-recovery information every</source>
       <translation>ავტოაღდგენის ინფორმაციის ჩაწერა ყოველ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="548"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="529"/>
       <source>Backup files will get extension '.FCbak' and file names
 get date suffix according to the specified format</source>
       <translation>მარქაფის ფაილები მიიღებენ გაფართოებას '.FCbak';
 ფაილის სახელები მიიღებენ თარიღის სუფიქსს მითითებული ფორმატის მიხედვით</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="552"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="533"/>
       <source>Use date and FCBak extension</source>
       <translation>თარიღის და FCBak გაფართოების გამოყენება</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="568"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="549"/>
       <source>Date format</source>
       <translation>თარიღის ფორმატი</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="571"/>
       <source>Suppresses the version mismatch warning when saving files created with an older FreeCAD version</source>
       <translation type="unfinished">Suppresses the version mismatch warning when saving files created with an older FreeCAD version</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="574"/>
       <source>Suppress older version warning on save</source>
       <translation type="unfinished">Suppress older version warning on save</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="612"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="593"/>
       <source>Document Objects</source>
       <translation>დოკუმენტის ობიექტები</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="618"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="599"/>
       <source>Allow objects to have same label</source>
       <translation>ნების დართვა, ობიექტებს იგივე ჭდე ჰქონდეთ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="621"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="602"/>
       <source>Allow duplicate object labels in one document</source>
       <translation>დოკუმენტში ერთნაირი ჭდეების მქონე ობიექტების დაშვება</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="634"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="615"/>
       <source>Disable partial loading of external linked documents.
 Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
@@ -3417,22 +3407,22 @@ A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="641"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="622"/>
       <source>Disable partial loading of external linked objects</source>
       <translation>გარე მიბმული ობიექტების ნაწილობრივი ჩატვირთვის გათიშვა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="657"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="638"/>
       <source>Authoring and License</source>
       <translation>ავტორი და ლიცენზია</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="644"/>
       <source>Author name</source>
       <translation>ავტორის სახელი</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="651"/>
       <source>All documents that will be created will get the specified author name.
 Keep blank for anonymous.
 You can also use the form: John Doe &lt;john@doe.com&gt;</source>
@@ -3441,32 +3431,32 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
 თქვენ ასევე შეგიძლიათ გამოიყენოთ ფორმა: John Doe &lt;john@doe.com&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="685"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="666"/>
       <source>The field 'Last modified by' will be set to specified author when saving the file</source>
       <translation>ფაილს ჩაწერისას ველი 'Last modified by' დაყენებული იქნება მითითებულ ავტორზე</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="688"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="669"/>
       <source>Set on save</source>
       <translation>დაყენება შენახვისას</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="701"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="682"/>
       <source>Company</source>
       <translation>კომპანია</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="708"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="689"/>
       <source>Default company name to use for new files</source>
       <translation>კომპანიის სახელის ნაგულისხმევი მნიშვნელობა ახალი ფაილებისთვის</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="721"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="702"/>
       <source>Default license</source>
       <translation>ნაგულისხმევი ლიცენზია</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="731"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="712"/>
       <source>Default license for new documents</source>
       <translation>ახალი დოკუმენტების ნაგულისხმევი ლიცენზია</translation>
     </message>
@@ -3536,12 +3526,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>სხვა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="747"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="728"/>
       <source>License URL</source>
       <translation>ლიცენზის URL</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="754"/>
+      <location filename="../PreferencePages/DlgSettingsDocument.ui" line="735"/>
       <source>URL describing more about the license</source>
       <translation>ბმული, სადაც ლიცენზიების შესახებ უფო მეტი რამ წერია</translation>
     </message>
@@ -4823,41 +4813,37 @@ The 'Status' column shows whether the document could be recovered.</source>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="642"/>
-      <location filename="../DocumentRecovery.cpp" line="706"/>
+      <location filename="../DocumentRecovery.cpp" line="651"/>
       <source>Delete</source>
       <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.cpp" line="652"/>
-      <source>Delete the selected transient directories?</source>
-      <translation>წავშალო მონიშნული დროებითი საქაღალდეები?</translation>
+      <source>Delete the selected recovery documents?</source>
+      <translation type="unfinished">Delete the selected recovery documents?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="654"/>
-      <source>When deleting the selected transient directory it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting the selected transient directory it is not possible to recover any files afterwards.</translation>
+      <location filename="../DocumentRecovery.cpp" line="653"/>
+      <location filename="../DocumentRecovery.cpp" line="686"/>
+      <source>Recovery documents cannot be restored after deletion.</source>
+      <translation type="unfinished">Recovery documents cannot be restored after deletion.</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="688"/>
-      <source>Delete all transient directories?</source>
-      <translation>წავშალო ყველა დროებითი საქაღალდე?</translation>
+      <location filename="../DocumentRecovery.cpp" line="685"/>
+      <source>Delete all recovery documents?</source>
+      <translation type="unfinished">Delete all recovery documents?</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="689"/>
-      <source>When deleting all transient directories it is not possible to recover any files afterwards.</source>
-      <translation type="unfinished">When deleting all transient directories it is not possible to recover any files afterwards.</translation>
+      <location filename="../DocumentRecovery.cpp" line="703"/>
+      <source>Recovery documents deleted.</source>
+      <translation type="unfinished">Recovery documents deleted.</translation>
     </message>
     <message>
       <location filename="../DocumentRecovery.ui" line="42"/>
-      <location filename="../DocumentRecovery.cpp" line="651"/>
-      <location filename="../DocumentRecovery.cpp" line="687"/>
+      <location filename="../DocumentRecovery.cpp" line="684"/>
+      <location filename="../DocumentRecovery.cpp" line="703"/>
       <source>Cleanup</source>
       <translation>გასუფთავება</translation>
-    </message>
-    <message>
-      <location filename="../DocumentRecovery.cpp" line="706"/>
-      <source>Transient directories deleted.</source>
-      <translation>დროებითი საქაღალდეები წაშლილია.</translation>
     </message>
   </context>
   <context>
@@ -5943,14 +5929,14 @@ Save all changes?</source>
       <translation>Bitmap</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="517"/>
-      <location filename="../CommandDoc.cpp" line="710"/>
-      <source>Export Graph</source>
+      <location filename="../GraphvizView.cpp" line="609"/>
+      <source>Export graph</source>
       <translation>გრაფიკის გატანა</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="609"/>
-      <source>Export graph</source>
+      <location filename="../CommandDoc.cpp" line="710"/>
+      <location filename="../GraphvizView.cpp" line="517"/>
+      <source>Export Graph</source>
       <translation>გრაფიკის გატანა</translation>
     </message>
   </context>
@@ -6110,7 +6096,7 @@ Save all changes?</source>
     <name>Gui::MainWindow</name>
     <message>
       <location filename="../MainWindow.cpp" line="201"/>
-      <location filename="../MainWindow.cpp" line="2656"/>
+      <location filename="../MainWindow.cpp" line="2659"/>
       <source>Dimension</source>
       <translation>ზომა</translation>
     </message>
@@ -6121,100 +6107,100 @@ Save all changes?</source>
       <translation>ერთეულების სისტემა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="474"/>
+      <location filename="../MainWindow.cpp" line="477"/>
       <source>Preselection</source>
       <extracomment>A context menu action used to show or hide the preselection info in the status bar</extracomment>
       <translation>წინასწარ მონიშნული</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="489"/>
+      <location filename="../MainWindow.cpp" line="492"/>
       <source>Input Hints</source>
       <extracomment>A context menu action used to show or hide the input hints in the status bar</extracomment>
       <translation>შეყვანის მინიშნებები</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="529"/>
+      <location filename="../MainWindow.cpp" line="532"/>
       <source>Quick Measure</source>
       <extracomment>A context menu action used to enable or disable quick measure in the status bar</extracomment>
       <translation>სწრაფი გაზომვა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="544"/>
+      <location filename="../MainWindow.cpp" line="547"/>
       <source>Toggles the bottom dock panels</source>
       <extracomment>Tooltip for the status bar button that toggles bottom dock panels</extracomment>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="554"/>
+      <location filename="../MainWindow.cpp" line="557"/>
       <source>Bottom Panel Toggle</source>
       <extracomment>A context menu action used to show or hide the Toggle Bottom Panels button in the status bar</extracomment>
       <translation>ქვედა პანელის გადართვა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="576"/>
       <source>Notifications</source>
       <extracomment>A context menu action used to show or hide the 'notificationArea' toolbar widget</extracomment>
       <translation type="unfinished">Notifications</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="631"/>
+      <location filename="../MainWindow.cpp" line="634"/>
       <source>Ready</source>
       <translation>მზადაა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1426"/>
+      <location filename="../MainWindow.cpp" line="1429"/>
       <source>Close All</source>
       <translation>ყველას დახურვა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1699"/>
-      <location filename="../MainWindow.cpp" line="1700"/>
-      <location filename="../MainWindow.cpp" line="1701"/>
+      <location filename="../MainWindow.cpp" line="1702"/>
+      <location filename="../MainWindow.cpp" line="1703"/>
+      <location filename="../MainWindow.cpp" line="1704"/>
       <source>Toggles this toolbar</source>
       <translation>ამ ზოლის ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1720"/>
-      <location filename="../MainWindow.cpp" line="1721"/>
-      <location filename="../MainWindow.cpp" line="1722"/>
+      <location filename="../MainWindow.cpp" line="1723"/>
+      <location filename="../MainWindow.cpp" line="1724"/>
+      <location filename="../MainWindow.cpp" line="1725"/>
       <source>Toggles this dockable window</source>
       <translation>მიმაგრებადი ფანჯრის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1925"/>
+      <location filename="../MainWindow.cpp" line="1928"/>
       <source>Safe mode enabled</source>
       <translation>უსაფრთხო რეჟიმი ჩართულია</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1926"/>
+      <location filename="../MainWindow.cpp" line="1929"/>
       <source>FreeCAD is now running in safe mode.</source>
       <translation>FreeCAD ახლა გაშვებულია უსაფრთხო რეჟიმში.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1930"/>
+      <location filename="../MainWindow.cpp" line="1933"/>
       <source>Safe mode temporarily disables your configurations and addons. Restart the application to exit safe mode.</source>
       <translation>უსაფრთხო რეჟიმი დროებით გამორთავს თქვენს კონფიგურაციას და დამატებების. გადატვირთეთ აპლიკაცია უსაფრთხო რეჟიმიდან გასასვლელად.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2378"/>
-      <location filename="../MainWindow.cpp" line="2532"/>
+      <location filename="../MainWindow.cpp" line="2381"/>
+      <location filename="../MainWindow.cpp" line="2535"/>
       <source>Unsaved document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2379"/>
+      <location filename="../MainWindow.cpp" line="2382"/>
       <source>The exported object contains external link. Save the documentat least once before exporting.</source>
       <translation type="unfinished">The exported object contains external link. Save the documentat least once before exporting.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2533"/>
+      <location filename="../MainWindow.cpp" line="2536"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation type="unfinished">To link to external objects, the document must be saved at least once.
 Save the document now?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="3039"/>
+      <location filename="../MainWindow.cpp" line="3046"/>
       <source>Safe Mode</source>
       <translation>უსაფრთხო რეჟიმი</translation>
     </message>
@@ -7368,6 +7354,11 @@ Specify another directory?</translation>
       <translation>ირლანდიური</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="258"/>
+      <source>Lao</source>
+      <translation type="unfinished">Lao</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>დანიური</translation>
@@ -7396,7 +7387,7 @@ Specify another directory?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4241"/>
+      <location filename="../Tree.cpp" line="4251"/>
       <source>Search</source>
       <translation>ძებნა</translation>
     </message>
@@ -7439,153 +7430,153 @@ Specify another directory?</translation>
       <translation>ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3391"/>
-      <location filename="../Tree.cpp" line="3412"/>
+      <location filename="../Tree.cpp" line="3400"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3391"/>
+      <location filename="../Tree.cpp" line="3400"/>
       <source>File does not exist.</source>
       <translation>ფაილი არ არსებობს.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3412"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Failed to open directory.</source>
       <translation>საქაღალდის გახსნა ჩავარდა.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3891"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Labels &amp; Attributes</source>
       <translation>ჭდეები &amp; ატრიბუტები</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3892"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Description</source>
       <translation>აღწერა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3893"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Internal name</source>
       <translation>შიდა სახელი</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>ხის ხედში დამალული ელემენტების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3897"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>აჩვენებს ელემენტებს, რომლებიც ხის ხედში 'დამალულადაა' მონიშნული</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>ხის ხედში ხილვადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Create Group</source>
       <translation>ჯგუფის შექმნა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3906"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Creates a group</source>
       <translation>ქმნის ჯგუფს</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Renames object</source>
       <translation>ობიექტს სახელს გადაარქმევს</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Finish Editing</source>
       <translation>ჩასწორების დასრულება</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Finishes editing object</source>
       <translation>ასრულებს ობიექტის ჩასწორებას</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>დამოკიდებული ობიექტების ჩამატება მონიშნულში</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Close Document</source>
       <translation>დოკუმენტის დახურვა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Closes the document</source>
       <translation>დახურავს დოკუმენტს</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3922"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reveals the current file location in Finder</source>
       <translation>გამოაჩენს მიმდინარე ფაილის მდებარეობას Filnder-ში</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Opens the current file location</source>
       <translation>გახსნის მიმდინარე ფაილის მდებარეობას</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Reload Document</source>
       <translation>დოკუმენტის თავიდან ჩატვირთვა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Reloads a partially loaded document</source>
       <translation>თავიდან ჩატვირთავს ნაწილობრივ ჩატვირთულ დოკუმენტს</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3931"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Skip Recomputes</source>
       <translation>გადათვლების გამოტოვება</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>ჩართავს ან გამორთავს დოკუმენტის გადათვლებს</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3934"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Allow Partial Recomputes</source>
       <translation>ნაწილობრივი გადაანგარიშებების დაშვება</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation type="unfinished">Enables or disables the recomputating editing object when 'skip recomputation' is enabled</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3949"/>
       <source>Mark to Recompute</source>
       <translation>გადასათვლელად მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3940"/>
+      <location filename="../Tree.cpp" line="3950"/>
       <source>Marks this object to be recomputed</source>
       <translation>დანიშნავს ამ ობიექტის გადასათვლელად</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Recompute Object</source>
       <translation>ობიექტის გადათვლა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3954"/>
       <source>Recomputes the selected object</source>
       <translation>თავიდან გამოთვლის მონიშნულ ობიექტს</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3902"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>ხის ხედში მონიშნული ელემენტების ხილვადობის გადართვა</translation>
     </message>
@@ -7605,33 +7596,33 @@ Specify another directory?</translation>
       <translation type="unfinished">Shows a description column for items. An item's description can be set by editing the 'label2' property.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
-      <location filename="../Tree.cpp" line="6586"/>
+      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="6604"/>
       <source>Rename</source>
       <translation>სახელის გადარქმევა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>მონიშნულში ყველა დამოკიდებული ობიექტის ჩამატება</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reveal in Finder</source>
       <translation>საქაღალდეში ჩვენება</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3924"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Open File Location</source>
       <translation>ფაილის მდებარეობის გახსნა</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6554"/>
+      <location filename="../Tree.cpp" line="6572"/>
       <source> (but must be executed)</source>
       <translation> (მაგრამ უნდა შესრულდეს)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6557"/>
+      <location filename="../Tree.cpp" line="6575"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, შიდა სახელი: %2</translation>
     </message>
@@ -7852,47 +7843,47 @@ Specify another directory?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="733"/>
+      <location filename="../MainWindow.cpp" line="736"/>
       <source>Tasks</source>
       <translation>დავალებები</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="750"/>
+      <location filename="../MainWindow.cpp" line="753"/>
       <source>Selection View</source>
       <translation>მონიშნულის ხედი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="768"/>
+      <location filename="../MainWindow.cpp" line="771"/>
       <source>Report View</source>
       <translation>ანგარიშის ხედი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="788"/>
+      <location filename="../MainWindow.cpp" line="791"/>
       <source>Python Console</source>
       <translation>Python-ის კონსოლი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="818"/>
       <source>Tree View</source>
       <translation>ხის ხედი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="845"/>
+      <location filename="../MainWindow.cpp" line="848"/>
       <source>Property View</source>
       <translation>თვისების ხედი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="874"/>
+      <location filename="../MainWindow.cpp" line="877"/>
       <source>Task List</source>
       <translation>ამოცანების სია</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="903"/>
+      <location filename="../MainWindow.cpp" line="906"/>
       <source>Model</source>
       <translation>მოდელი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="933"/>
+      <location filename="../MainWindow.cpp" line="936"/>
       <source>DAG View</source>
       <translation>DAG ხედი</translation>
     </message>
@@ -7938,35 +7929,35 @@ Specify another directory?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="866"/>
-      <location filename="../Application.cpp" line="973"/>
-      <location filename="../Application.cpp" line="1060"/>
+      <location filename="../Application.cpp" line="828"/>
+      <location filename="../Application.cpp" line="935"/>
+      <location filename="../Application.cpp" line="1022"/>
       <source>Unknown filetype</source>
       <translation>ფაილის უცნობი ტიპი</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="867"/>
-      <location filename="../Application.cpp" line="974"/>
+      <location filename="../Application.cpp" line="829"/>
+      <location filename="../Application.cpp" line="936"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>ფაილის უცნობი ტიპი: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1050"/>
+      <location filename="../Application.cpp" line="1012"/>
       <source>Export failed</source>
       <translation>გატანის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1061"/>
+      <location filename="../Application.cpp" line="1023"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>უცნობ ფაილის ტიპში ჩაწერის შეცდომა: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1259"/>
+      <location filename="../Application.cpp" line="1221"/>
       <source>Recomputation required</source>
       <translation>აუცილებელია თავიდან გამოთვლა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1260"/>
+      <location filename="../Application.cpp" line="1222"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7975,24 +7966,24 @@ Recompute now?</source>
 Recompute now?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1286"/>
+      <location filename="../Application.cpp" line="1248"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation type="unfinished">Failed to recompute some documents.
 Check the report view for more details.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1285"/>
+      <location filename="../Application.cpp" line="1247"/>
       <source>Recompute error</source>
       <translation>შეცდომის თავიდან გამოთვლა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2035"/>
+      <location filename="../Application.cpp" line="1997"/>
       <source>Workbench failure</source>
       <translation>სამუშაო მაგიდის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2036"/>
+      <location filename="../Application.cpp" line="1998"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8060,18 +8051,18 @@ Check the report view for more details.</translation>
       <translation>გამონაკლისი</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1299"/>
-      <location filename="../Application.cpp" line="1314"/>
+      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1276"/>
       <source>Error</source>
       <translation>შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1300"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>შეცდომები მონაცემების ჩატვირთვისას. ზოგიერთი მონაცემი შეიძლება შეიცვალა ან არ აღდგენილა. ჩარეული ობიექტების სიის მისაღებად ანგარიშის ველში ჩაიხედეთ.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1315"/>
+      <location filename="../Application.cpp" line="1277"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>სერიოზული შეცდომები ფაილის ჩატვირთვისას. ზოგიერთი მონაცემი შეიძლება იყოს შეცვლილი ან საერთოდ ვერ აღდგეს. პროექტის შენახვა სავარაუდოდ გამოიწვევს მონაცემთა დაკარგვას.</translation>
     </message>
@@ -8101,6 +8092,13 @@ Check the report view for more details.</translation>
       <location filename="../CommandDoc.cpp" line="631"/>
       <source>Merge Document</source>
       <translation>დოკუმენტის შერწყმა</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="621"/>
+      <location filename="../Document.cpp" line="1711"/>
+      <location filename="../Document.cpp" line="1841"/>
+      <source>%1 document</source>
+      <translation>%1 დოკუმენტი</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="632"/>
@@ -8201,77 +8199,77 @@ Check the report view for more details.</translation>
       <translation>უსაფრთხო რეჟიმი დროიებით გათიშავს კონფიგურაციას და დამატებებს.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="347"/>
-      <location filename="../CommandView.cpp" line="625"/>
+      <location filename="../CommandView.cpp" line="348"/>
+      <location filename="../CommandView.cpp" line="626"/>
       <source>&amp;Save Views…</source>
       <translation>&amp;ხედების შენახვა…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="349"/>
-      <location filename="../CommandView.cpp" line="626"/>
+      <location filename="../CommandView.cpp" line="350"/>
+      <location filename="../CommandView.cpp" line="627"/>
       <source>&amp;Load Views…</source>
       <translation>&amp;ხედების ჩატვირთვა…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="352"/>
-      <location filename="../CommandView.cpp" line="627"/>
+      <location filename="../CommandView.cpp" line="353"/>
+      <location filename="../CommandView.cpp" line="628"/>
       <source>F&amp;reeze View</source>
       <translation>&amp;ხედის გაყინვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="355"/>
-      <location filename="../CommandView.cpp" line="628"/>
+      <location filename="../CommandView.cpp" line="356"/>
+      <location filename="../CommandView.cpp" line="629"/>
       <source>&amp;Clear Views</source>
       <translation>&amp;ხედების გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="460"/>
+      <location filename="../CommandView.cpp" line="461"/>
       <source>Save Frozen Views</source>
       <translation>გაყინული ხედების შენახვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="506"/>
-      <location filename="../CommandView.cpp" line="533"/>
+      <location filename="../CommandView.cpp" line="507"/>
+      <location filename="../CommandView.cpp" line="534"/>
       <source>Restore Views</source>
       <translation>ხედების აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="462"/>
-      <location filename="../CommandView.cpp" line="524"/>
+      <location filename="../CommandView.cpp" line="463"/>
+      <location filename="../CommandView.cpp" line="525"/>
       <source>Frozen views</source>
       <translation>დამახსოვრებული ხედები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="507"/>
+      <location filename="../CommandView.cpp" line="508"/>
       <source>Importing the restored views would clear the already stored views.
 Continue?</source>
       <translation type="unfinished">Importing the restored views would clear the already stored views.
 Continue?</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="522"/>
+      <location filename="../CommandView.cpp" line="523"/>
       <source>Restore Frozen Views</source>
       <translation>გაყინული ხედების აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2159"/>
+      <location filename="../CommandView.cpp" line="2160"/>
       <source>Save Image</source>
       <translation>გამოსახულების შენახვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2335"/>
+      <location filename="../CommandView.cpp" line="2334"/>
       <source>Choose an Image File to Open</source>
       <translation>აირჩიეთ გასახსნელი გამოსახულების ფაილი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="534"/>
+      <location filename="../CommandView.cpp" line="535"/>
       <source>Cannot open file '%1'.</source>
       <translation>%1-ის გახსნა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="408"/>
-      <location filename="../CommandView.cpp" line="600"/>
-      <location filename="../CommandView.cpp" line="632"/>
+      <location filename="../CommandView.cpp" line="409"/>
+      <location filename="../CommandView.cpp" line="601"/>
+      <location filename="../CommandView.cpp" line="633"/>
       <source>Restore View &amp;%1</source>
       <translation>&amp;%1 ხედის აღდგენა</translation>
     </message>
@@ -8419,7 +8417,7 @@ Continue?</translation>
       <translation>ძალიან ბევრი გახსნილი არაშემაწუხებელი გაფრთხილება. გაფრთხილებებს გამოვტოვებთ!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1419"/>
+      <location filename="../Document.cpp" line="1415"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8428,44 +8426,44 @@ Continue?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1420"/>
+      <location filename="../Document.cpp" line="1416"/>
       <source>Are you sure you want to continue?</source>
       <translation>დარწმუნებული ბრძანდებით, რომ გნებავთ, გააგრძელოთ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1446"/>
+      <location filename="../Document.cpp" line="1442"/>
       <source>Check report view for more…</source>
       <translation>მეტის გასაგებად გაეცანით ანგარიშს…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1450"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Physical path:</source>
       <translation>ფიზიკური მისამართი:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
-      <location filename="../Document.cpp" line="1458"/>
+      <location filename="../Document.cpp" line="1447"/>
+      <location filename="../Document.cpp" line="1454"/>
       <source>Document:</source>
       <translation>დოკუმენტი:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
-      <location filename="../Document.cpp" line="1459"/>
+      <location filename="../Document.cpp" line="1448"/>
+      <location filename="../Document.cpp" line="1455"/>
       <source>Path:</source>
       <translation>მისამართი:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1470"/>
+      <location filename="../Document.cpp" line="1466"/>
       <source>Identical physical path</source>
       <translation>იგივე ფიზიკური მისამართი</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1478"/>
       <source>Could not save document</source>
       <translation>ფაილის შენახვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
+      <location filename="../Document.cpp" line="1479"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8478,19 +8476,19 @@ Would you like to save the file with a different name?</source>
 გსურთ შეინახოთ ფაილი სხვა სახელით?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1497"/>
-      <location filename="../Document.cpp" line="1754"/>
-      <location filename="../Document.cpp" line="1863"/>
+      <location filename="../Document.cpp" line="1493"/>
+      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1859"/>
       <source>Saving aborted</source>
       <translation>შენახვა შეწყვეტილია</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1548"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>File Created with Older FreeCAD Version</source>
       <translation type="unfinished">File Created with Older FreeCAD Version</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1551"/>
+      <location filename="../Document.cpp" line="1547"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
@@ -8505,122 +8503,115 @@ Use 'Save As…' to preserve the original file.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1560"/>
+      <location filename="../Document.cpp" line="1556"/>
       <source>an unknown older version of FreeCAD</source>
       <translation type="unfinished">an unknown older version of FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1561"/>
+      <location filename="../Document.cpp" line="1557"/>
       <source>FreeCAD version %1</source>
       <translation>FreeCAD-ის ვერსია %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1566"/>
+      <location filename="../Document.cpp" line="1562"/>
       <source>Save</source>
       <translation>შენახვა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1567"/>
+      <location filename="../Document.cpp" line="1563"/>
       <source>Save As…</source>
       <translation>შენახვა როგორც…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1571"/>
+      <location filename="../Document.cpp" line="1567"/>
       <source>Do not show this warning again</source>
       <translation type="unfinished">Do not show this warning again</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1636"/>
+      <location filename="../Document.cpp" line="1632"/>
       <source>Save dependent files</source>
       <translation>დამოკიდებული ფაილების ჩაწერა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1637"/>
+      <location filename="../Document.cpp" line="1633"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>ფაილი შეიცავს გარე დამოკიდებულებებს. გსურთ შეინახოთ დამოკიდებული ფაილებიც?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1683"/>
-      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1679"/>
+      <location filename="../Document.cpp" line="1743"/>
       <source>Saving document failed</source>
       <translation>დკუმენტის შენახვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1698"/>
+      <location filename="../Document.cpp" line="1694"/>
       <source>Save document under new filename…</source>
       <translation>დოკუმენტის ახალი სახელით შენახვა…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1845"/>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <source>%1 document</source>
-      <translation>%1 დოკუმენტი</translation>
-    </message>
-    <message>
-      <location filename="../Document.cpp" line="1831"/>
+      <location filename="../Document.cpp" line="1827"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>დოკუმენტის ასლის ახალი სახელით შენახვა…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1713"/>
-      <location filename="../Document.cpp" line="1843"/>
+      <location filename="../Document.cpp" line="1709"/>
+      <location filename="../Document.cpp" line="1839"/>
       <source>Save %1 Document</source>
       <translation>დოკუმენტ %1-ის შენახვა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1769"/>
-      <location filename="../Document.cpp" line="1819"/>
+      <location filename="../Document.cpp" line="1765"/>
+      <location filename="../Document.cpp" line="1815"/>
       <source>Failed to save document</source>
       <translation>დოკუმენტის შენახვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1770"/>
+      <location filename="../Document.cpp" line="1766"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>დოკუმენტები შეიცავენ წრიულ დამოკიდებულებებს. მაინც გნებავთ მათი შენახვა?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2508"/>
+      <location filename="../Document.cpp" line="2504"/>
       <source>Document not closable</source>
       <translation>დოკუმენტი დახურვადი არაა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2509"/>
+      <location filename="../Document.cpp" line="2505"/>
       <source>The document is not closable for the moment.</source>
       <translation>დოკუმენტი ამ მომენტისთვის დახურვადი არაა.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2549"/>
+      <location filename="../Document.cpp" line="2545"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation type="unfinished">Failed to save document '%1'. Would you like to cancel the closure?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2551"/>
+      <location filename="../Document.cpp" line="2547"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>დოკუმენტის შენახვა ჩავარდა. გნებავთ დახურვის გაუქმება?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2556"/>
+      <location filename="../Document.cpp" line="2552"/>
       <source>Unable to save document</source>
       <translation>დოკუმენტის შენახვა ჩავარდა</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2926"/>
+      <location filename="../Document.cpp" line="2922"/>
       <source>Undo</source>
       <translation>დაბრუნება</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2926"/>
+      <location filename="../Document.cpp" line="2922"/>
       <source>Redo</source>
       <translation>გამეორება</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2929"/>
+      <location filename="../Document.cpp" line="2925"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>შემდეგ დოკუმენტებში არის დაჯგუფებული ტრანზაქციები სხვა წინა ტრანზაქციებთან ერთად</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2934"/>
+      <location filename="../Document.cpp" line="2930"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8634,36 +8625,36 @@ Choose 'Abort' to abort</source>
       <translation>მაკროს შენახვა</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="210"/>
-      <location filename="../MouseSelection.cpp" line="417"/>
+      <location filename="../MouseSelection.cpp" line="211"/>
+      <location filename="../MouseSelection.cpp" line="418"/>
       <source>Finish</source>
       <translation>დასრულება</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="211"/>
-      <location filename="../MouseSelection.cpp" line="418"/>
+      <location filename="../MouseSelection.cpp" line="212"/>
+      <location filename="../MouseSelection.cpp" line="419"/>
       <source>Clear</source>
       <translation>გასუფთავება</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="212"/>
-      <location filename="../MouseSelection.cpp" line="367"/>
-      <location filename="../MouseSelection.cpp" line="419"/>
+      <location filename="../MouseSelection.cpp" line="213"/>
+      <location filename="../MouseSelection.cpp" line="368"/>
+      <location filename="../MouseSelection.cpp" line="420"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="364"/>
+      <location filename="../MouseSelection.cpp" line="365"/>
       <source>Inner</source>
       <translation>შიდა</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="365"/>
+      <location filename="../MouseSelection.cpp" line="366"/>
       <source>Outer</source>
       <translation>გარე</translation>
     </message>
     <message>
-      <location filename="../MouseSelection.cpp" line="366"/>
+      <location filename="../MouseSelection.cpp" line="367"/>
       <source>Split</source>
       <translation>გაყოფა</translation>
     </message>
@@ -8688,12 +8679,12 @@ Choose 'Abort' to abort</source>
       <translation>სისტემური ბრაუზერის გაშვების შეცდომა.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3229"/>
+      <location filename="../View3DInventorViewer.cpp" line="3294"/>
       <source>Out of memory</source>
       <translation>მეხსიერება აღარ არის</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3230"/>
+      <location filename="../View3DInventorViewer.cpp" line="3295"/>
       <source>Not enough memory available to display the data.</source>
       <translation>არ არის საკმარისი მეხსიერება მონაცემთა საჩვენებლად.</translation>
     </message>
@@ -8714,33 +8705,33 @@ Choose 'Abort' to abort</source>
       <translation>მონიშნულის გასუფთავენა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="998"/>
       <location filename="../CommandDoc.cpp" line="1369"/>
+      <location filename="../MainWindow.cpp" line="1001"/>
       <source>Unsaved Document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1002"/>
+      <location filename="../MainWindow.cpp" line="1005"/>
       <source>Save all changes to document '%1' before closing?</source>
       <translation>შევინახო ყველა ცვლილება დოკუმენტში '%1' მის დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1003"/>
+      <location filename="../MainWindow.cpp" line="1006"/>
       <source>Save all changes to document before closing?</source>
       <translation>შევინახო ყველა ცვლილება დოკუმენტში მით დახურვამდე?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1007"/>
+      <location filename="../MainWindow.cpp" line="1010"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>სხვაგვარად ყველა ცვლილება დაიკარგება.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1133"/>
+      <location filename="../MainWindow.cpp" line="1136"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 დოკუმენტი არ იქნა შენახული</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1134"/>
+      <location filename="../MainWindow.cpp" line="1137"/>
       <source>Some documents could not be saved. Cancel closing?</source>
       <translation>ზოგიერთი დოკუმენტის შენახვა შეუძლებელია. გაუქმდეს დახურვა?</translation>
     </message>
@@ -8755,7 +8746,7 @@ Choose 'Abort' to abort</source>
       <translation>სისტემური მაკროების წაშლა აკრძალულია</translation>
     </message>
     <message>
-      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="282"/>
+      <location filename="../Inventor/Draggers/SoLinearDragger.cpp" line="283"/>
       <source>Translation:</source>
       <translation>მოძრაობითი გადატანა:</translation>
     </message>
@@ -8833,13 +8824,13 @@ Choose 'Abort' to abort</source>
       <translation>%1-სთვის თვისების დამატება: %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2767"/>
-      <location filename="../Tree.cpp" line="3164"/>
+      <location filename="../Tree.cpp" line="2776"/>
+      <location filename="../Tree.cpp" line="3173"/>
       <source>Drag &amp; drop failed</source>
       <translation>გადათრევის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1012"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
       <source>Apply to all</source>
       <translation>ყველაზე გადატარება</translation>
@@ -8936,12 +8927,12 @@ the current copy will be lost.
       <translation>%1-ის ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../SoFCColorGradient.cpp" line="101"/>
+      <location filename="../SoFCColorBar.cpp" line="763"/>
       <source>Color Gradient</source>
       <translation>ფერადი გრადიენტი</translation>
     </message>
     <message>
-      <location filename="../SoFCColorLegend.cpp" line="86"/>
+      <location filename="../SoFCColorBar.cpp" line="766"/>
       <source>Color Legend</source>
       <translation>ფერის ლეგენდა</translation>
     </message>
@@ -9083,7 +9074,7 @@ the current copy will be lost.
       <translation>მინიშნების დამალვისთვის დააწექით ღილაკს Esc</translation>
     </message>
     <message>
-      <location filename="../SoFCColorBar.cpp" line="364"/>
+      <location filename="../SoFCColorBar.cpp" line="770"/>
       <source>Options</source>
       <translation>პარამეტრები</translation>
     </message>
@@ -9118,19 +9109,24 @@ the current copy will be lost.
       <translation>მონიშნავს ყველა ობიექტს, რომელიც ამ ჯგუფის შვილია</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="206"/>
-      <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation type="unfinished">The group '%1' contains %2 object(s). Do you want to delete them as well?</translation>
+      <location filename="../ViewProviderGroupExtension.cpp" line="243"/>
+      <source>The group '%1' contains %2 object(s). Delete them as well?</source>
+      <translation type="unfinished">The group '%1' contains %2 object(s). Delete them as well?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="212"/>
+      <location filename="../ViewProviderGroupExtension.cpp" line="249"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
       <translation type="unfinished">The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</translation>
     </message>
     <message>
-      <location filename="../ViewProviderGroupExtension.cpp" line="223"/>
-      <source>Delete group contents recursively?</source>
-      <translation type="unfinished">Delete group contents recursively?</translation>
+      <location filename="../ViewProviderGroupExtension.cpp" line="260"/>
+      <source>Delete Group Contents Recursively?</source>
+      <translation type="unfinished">Delete Group Contents Recursively?</translation>
+    </message>
+    <message>
+      <location filename="../ViewProviderGroupExtension.cpp" line="270"/>
+      <source>Apply to all selected objects (%1) and their children</source>
+      <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
     </message>
     <message>
       <location filename="../ViewProviderImagePlane.cpp" line="171"/>
@@ -9142,16 +9138,21 @@ the current copy will be lost.
       <source>All Files</source>
       <translation>ყველა ფაილი</translation>
     </message>
+    <message>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>ნაწილი</translation>
+    </message>
   </context>
   <context>
     <name>SelectionFilter</name>
     <message>
-      <location filename="../Selection/Selection.cpp" line="984"/>
+      <location filename="../Selection/Selection.cpp" line="965"/>
       <source>Not allowed:</source>
       <translation>არაა დაშვებული:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1369"/>
+      <location filename="../Selection/Selection.cpp" line="1327"/>
       <source>Selection not allowed by filter</source>
       <translation>მონიშვნა უარყოფილია ფილტრის მიერ</translation>
     </message>
@@ -9400,12 +9401,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdFreezeViews</name>
     <message>
-      <location filename="../CommandView.cpp" line="332"/>
+      <location filename="../CommandView.cpp" line="333"/>
       <source>F&amp;reeze Display</source>
       <translation>ჩვენების გაყინ&amp;ვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="333"/>
+      <location filename="../CommandView.cpp" line="334"/>
       <source>Freezes the current view position</source>
       <translation>ხედის მიმდინარე პოზიციის გაყინვა</translation>
     </message>
@@ -9465,7 +9466,7 @@ the current copy will be lost.
   <context>
     <name>StdCmdNew</name>
     <message>
-      <location filename="../MainWindow.cpp" line="2649"/>
+      <location filename="../MainWindow.cpp" line="2652"/>
       <location filename="../DocumentRecovery.cpp" line="412"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
@@ -9689,12 +9690,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="1438"/>
+      <location filename="../CommandView.cpp" line="1439"/>
       <source>Bottom</source>
       <translation>ძირზე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1439"/>
+      <location filename="../CommandView.cpp" line="1440"/>
       <source>Sets the camera to the bottom view</source>
       <translation>დააყენებს კამერას ქვედა ხედზე</translation>
     </message>
@@ -9702,12 +9703,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewDimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1642"/>
+      <location filename="../CommandView.cpp" line="1643"/>
       <source>&amp;Dimetric</source>
       <translation>&amp;დიმეტრიული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1643"/>
+      <location filename="../CommandView.cpp" line="1644"/>
       <source>Sets the camera to the dimetric view</source>
       <translation>დააყენებს კამერას დიმეტრიულ ხედზე</translation>
     </message>
@@ -9741,12 +9742,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewFront</name>
     <message>
-      <location filename="../CommandView.cpp" line="1467"/>
+      <location filename="../CommandView.cpp" line="1468"/>
       <source>Front</source>
       <translation>წინ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1468"/>
+      <location filename="../CommandView.cpp" line="1469"/>
       <source>Sets the camera to the front view</source>
       <translation>დააყენებს კამერას წინა ხედზე</translation>
     </message>
@@ -9754,12 +9755,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewHome</name>
     <message>
-      <location filename="../CommandView.cpp" line="1414"/>
+      <location filename="../CommandView.cpp" line="1415"/>
       <source>&amp;Home</source>
       <translation>&amp;მთავარი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1415"/>
+      <location filename="../CommandView.cpp" line="1416"/>
       <source>Sets the camera to the default home view</source>
       <translation>დააყენებს კამერას ნაგულისხმევ საწყის ხედზე</translation>
     </message>
@@ -9767,12 +9768,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewIsometric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1613"/>
+      <location filename="../CommandView.cpp" line="1614"/>
       <source>&amp;Isometric</source>
       <translation>&amp;იზომეტრიული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1614"/>
+      <location filename="../CommandView.cpp" line="1615"/>
       <source>Sets the camera to the isometric view</source>
       <translation>დააყენებს კამერას იზომეტრიულ ხედზე</translation>
     </message>
@@ -9780,12 +9781,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1496"/>
+      <location filename="../CommandView.cpp" line="1497"/>
       <source>Left</source>
       <translation>მარცხნივ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1497"/>
+      <location filename="../CommandView.cpp" line="1498"/>
       <source>Sets the camera to the left view</source>
       <translation>დააყენებს კამერას მარცხენა ხედზე</translation>
     </message>
@@ -9793,12 +9794,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRear</name>
     <message>
-      <location filename="../CommandView.cpp" line="1525"/>
+      <location filename="../CommandView.cpp" line="1526"/>
       <source>Rear</source>
       <translation>უკან</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1526"/>
+      <location filename="../CommandView.cpp" line="1527"/>
       <source>Sets the camera to the rear view</source>
       <translation>დააყენებს კამერას უკანა ხედზე</translation>
     </message>
@@ -9806,12 +9807,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1554"/>
+      <location filename="../CommandView.cpp" line="1555"/>
       <source>Right</source>
       <translation>მარჯვნივ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1555"/>
+      <location filename="../CommandView.cpp" line="1556"/>
       <source>Sets the camera to the right view</source>
       <translation>დააყენებს კამერას მარჯვენა ხედზე</translation>
     </message>
@@ -9819,12 +9820,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewRotateLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="1698"/>
+      <location filename="../CommandView.cpp" line="1699"/>
       <source>Rotate &amp;Left</source>
       <translation>მარც&amp;ხნივ შებრუნება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1699"/>
+      <location filename="../CommandView.cpp" line="1700"/>
       <source>Rotates the view by 90° counter-clockwise</source>
       <translation>მოაბრუნებს ხედს 90°-ით საათის ისრის საწინააღმდეგო მიმართულებით</translation>
     </message>
@@ -9832,12 +9833,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="1583"/>
+      <location filename="../CommandView.cpp" line="1584"/>
       <source>Top</source>
       <translation>თავზე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1584"/>
+      <location filename="../CommandView.cpp" line="1585"/>
       <source>Sets the camera to the top view</source>
       <translation>დააყენებს კამერას ზედა ხედზე</translation>
     </message>
@@ -9845,12 +9846,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewTrimetric</name>
     <message>
-      <location filename="../CommandView.cpp" line="1670"/>
+      <location filename="../CommandView.cpp" line="1671"/>
       <source>&amp;Trimetric</source>
       <translation>&amp;ტრიმეტრიული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1671"/>
+      <location filename="../CommandView.cpp" line="1672"/>
       <source>Sets the camera to the trimetric view</source>
       <translation>დააყენებს კამერას ტრიმეტრიულ ხედზე</translation>
     </message>
@@ -9897,12 +9898,12 @@ the current copy will be lost.
   <context>
     <name>StdMainFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1908"/>
+      <location filename="../CommandView.cpp" line="1909"/>
       <source>Fullscreen</source>
       <translation>მთელ ეკრანზე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1909"/>
+      <location filename="../CommandView.cpp" line="1910"/>
       <source>Displays the main window in fullscreen mode</source>
       <translation>აჩვენებს მთავარ ფანჯარას სრულენრანიან რეჟიმში</translation>
     </message>
@@ -9910,12 +9911,12 @@ the current copy will be lost.
   <context>
     <name>StdOrthographicCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="146"/>
+      <location filename="../CommandView.cpp" line="147"/>
       <source>Orthographic View</source>
       <translation>ორთოგონალური ხედი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="147"/>
+      <location filename="../CommandView.cpp" line="148"/>
       <source>Switches to orthographic view mode</source>
       <translation>ორთოგრაფიული ხედის რეჟიმზე გადართვა</translation>
     </message>
@@ -9923,12 +9924,12 @@ the current copy will be lost.
   <context>
     <name>StdPerspectiveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="193"/>
+      <location filename="../CommandView.cpp" line="194"/>
       <source>Perspective View</source>
       <translation>პერსპექტიული ხედი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="194"/>
+      <location filename="../CommandView.cpp" line="195"/>
       <source>Switches to perspective view mode</source>
       <translation>პერსპექტივის ხედის რეჟიმზე გადართვა</translation>
     </message>
@@ -9962,12 +9963,12 @@ the current copy will be lost.
   <context>
     <name>StdViewDock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1846"/>
+      <location filename="../CommandView.cpp" line="1847"/>
       <source>&amp;Docked</source>
       <translation>&amp;დამაგრებულია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1847"/>
+      <location filename="../CommandView.cpp" line="1848"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -9975,12 +9976,12 @@ the current copy will be lost.
   <context>
     <name>StdViewFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1943"/>
+      <location filename="../CommandView.cpp" line="1944"/>
       <source>&amp;Fullscreen</source>
       <translation>&amp;Სრულ ეკრანზე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1944"/>
+      <location filename="../CommandView.cpp" line="1945"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -9988,12 +9989,12 @@ the current copy will be lost.
   <context>
     <name>StdViewScreenShot</name>
     <message>
-      <location filename="../CommandView.cpp" line="2114"/>
+      <location filename="../CommandView.cpp" line="2115"/>
       <source>Save &amp;Image…</source>
       <translation>გამოსახულებ&amp;ის შენახვა…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2115"/>
+      <location filename="../CommandView.cpp" line="2116"/>
       <source>Creates a screenshot of the active view</source>
       <translation>მიმდინარე ხედის სურათად ჩაწერა</translation>
     </message>
@@ -10001,12 +10002,12 @@ the current copy will be lost.
   <context>
     <name>StdViewUndock</name>
     <message>
-      <location filename="../CommandView.cpp" line="1877"/>
+      <location filename="../CommandView.cpp" line="1878"/>
       <source>&amp;Undocked</source>
       <translation>&amp;დამაგრება მოხსნილია</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1878"/>
+      <location filename="../CommandView.cpp" line="1879"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -10059,72 +10060,72 @@ Continue?
   <context>
     <name>Std_DrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="843"/>
+      <location filename="../CommandView.cpp" line="844"/>
       <source>Normal mode</source>
       <translation>სტანდარტული რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="842"/>
+      <location filename="../CommandView.cpp" line="843"/>
       <source>As Is</source>
       <translation>როგორც არის</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="845"/>
+      <location filename="../CommandView.cpp" line="846"/>
       <source>Points</source>
       <translation>წერტილები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="846"/>
+      <location filename="../CommandView.cpp" line="847"/>
       <source>Points mode</source>
       <translation>წერტილოვანი რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="848"/>
+      <location filename="../CommandView.cpp" line="849"/>
       <source>Wireframe</source>
       <translation>კარკასი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="849"/>
+      <location filename="../CommandView.cpp" line="850"/>
       <source>Wireframe mode</source>
       <translation>კარკასული რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="851"/>
+      <location filename="../CommandView.cpp" line="852"/>
       <source>Hidden Line</source>
       <translation>დამალული ხაზი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="852"/>
+      <location filename="../CommandView.cpp" line="853"/>
       <source>Hidden line mode</source>
       <translation>დამალული ხაზების რეჟიმი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="854"/>
+      <location filename="../CommandView.cpp" line="855"/>
       <source>No Shading</source>
       <translation>დაჩრდილვის გარეშე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="855"/>
+      <location filename="../CommandView.cpp" line="856"/>
       <source>No shading mode</source>
       <translation>დაჩრდილვის რეჟიმის გარეშე</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="857"/>
+      <location filename="../CommandView.cpp" line="858"/>
       <source>Shaded</source>
       <translation>დაჩრდილული</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="858"/>
+      <location filename="../CommandView.cpp" line="859"/>
       <source>Shaded mode</source>
       <translation>მხოლოდ წიბოების ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="860"/>
+      <location filename="../CommandView.cpp" line="861"/>
       <source>Flat Lines</source>
       <translation>ბრტყელი ხაზები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="861"/>
+      <location filename="../CommandView.cpp" line="862"/>
       <source>Flat lines mode</source>
       <translation>ბრტყელი ხაზების რეჟიმი</translation>
     </message>
@@ -10147,7 +10148,7 @@ Save the document now?</translation>
   <context>
     <name>Std_Group</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="151"/>
+      <location filename="../CommandStructure.cpp" line="150"/>
       <source>Group</source>
       <translation>ჯგუფი</translation>
     </message>
@@ -10339,23 +10340,28 @@ Save the document now?</translation>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;თუ ჩართულია, გაფრთხილებების ადგილი სტატუსის ზოლში გამოჩნდება: ღილაკი მიმდინარე გაფრთხილებების რაოდენობით, რომელიც შეგიძლიათ გააფართოვოთ დეტალური გაფრთხილებების სიამდე. ასევე შეგიძლიათ, მხტუნარა გაფრთხილებაც იქონიოთ.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
+      <source>Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</source>
+      <translation type="unfinished">Enables non-intrusive pop-up notifications above the notification area. Pop-up notifications can be dismissed manually by clicking on them, or automatically after a set duration.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="64"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;მაქსიმალური დრო, რომლის განმავლობაშიც გაფრთხილება ნაჩვენები იქნება (თუ ზედ თაგუნათი უკვე არ დააწკაპუნეთ). ის ასევე მართავს, როდის მოხდება მომხმარებლის გაფრთხილების მოცილება, თუ ჩართულია პარამეტრი &amp;quot;მომხმარებლის გაფრთხილებების ავტომოცილება&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="94"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="67"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="92"/>
       <source> s</source>
       <translation> s</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="91"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="89"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Minimum amount of time the notification will be shown (unless the notification bubble is dismissed by clicking on it).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;დროსი მინიმალური რაოდენობა, როცა გაფრთხილება ნაჩვენები იქნება (თუ გაფრთხილების ბუშტზე მასზე დაწკაპუნებით არ გააქრობთ).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="117"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="115"/>
       <source>Maximum number of notifications that will be simultaneously present on the notification bubble.</source>
       <translation>გაფრთხილებების ბუშტში ერთდროულად გამოჩენილი გაფრთხილებების მაქსიმალური რაოდენობა.</translation>
     </message>
@@ -10365,126 +10371,117 @@ Save the document now?</translation>
       <translation>შეტყობინებების ადგილის ჩართვა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="32"/>
-      <source>Enables non-intrusive pop-up notifications above the status bar notification area. Pop-up notifications can be manually dismissed by clicking on them, and also automatically dismissed by specifying a maximum and minimum duration for them to be displayed.
-
-Additionally, pop-up notifications can be disabled. In this case the user can still use the notification area as a quick-access location to view notifications, without the distracton of an additional pop-up.</source>
-      <translation>ჩართავს არაშემაწუხებელ გაფრთხილებას სტატუსის ზოლის ზემოთ, გაფრთხილებების ადგილთან. მხტუნარა გაფრთხილებები ხელით შეგიძლიათ მოაცილოთ, მათზე დაწკაპუნებით და ავტომატურად მოაცილოთ საჩვენებელი დროის მაქსიმალური და მინიმალური მნიშვნელობის მითითებით.
-
-დამატებით, მხტუნარა გაფრთხილებები, შეგიძლიათ, გამორთოთ. ამ შემთხვევაში მომხმარებელი მაინც დაინახავს გაფრთხილებების ადგილს სწრაფი წვდომის ადგილივით, სადაც გაფრთხილებების ნახვა შეეძლება, დამატებითი მხტუნარებით შეწუხების გარეშე.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="37"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="35"/>
       <source>Enable Pop-Up Notifications</source>
       <translation>მხტუნარა შეტყობინებების ჩართვა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="49"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="47"/>
       <source>Minimum duration</source>
       <translation>მინიმალური ხანგრძლივობა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="59"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="57"/>
       <source>Maximum duration</source>
       <translation>მაქსიმალური ხანგრძლივობა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="110"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="108"/>
       <source>Maximum concurrent notification count</source>
       <translation>შეტყობინებების ერთდროული მაქსიმალური რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="133"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="131"/>
       <source>Notification bubble width</source>
       <translation>შეტყობინების ბუშტის სიგანე</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="138"/>
       <source>Width of the pop-up notification bubble in pixels.</source>
       <translation>მხტუნარა შეტყობინების ბუშტის სიგანე პიქსელებში.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="143"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="141"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="168"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="166"/>
       <source>Any open pop-up notifications will disappear when another window is activated.</source>
       <translation>როცა სხვა ფანჯარა გააქტიურდება, ყველა ღია მხტუნარა შეტყობინება გაქრება.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="187"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="185"/>
       <source>Prevent pop-up notifications from appearing when the FreeCAD window is not the active window.</source>
       <translation>მხტუნარა შეტყობინებების გამოჩენის აკრზალვა, როცა FreeCAD-ის ფანჯარა აქტიური არაა.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="190"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="188"/>
       <source>Do not show when window is inactive</source>
       <translation>ნუ აჩვენებ, როცა ფანჯარა არააქტიურია</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="209"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="207"/>
       <source>Additional notification sources to show in the notification area.</source>
       <translation>დამატებითი შეტყობინების წყაროები შეტყობიბებების ალაგზე საჩვენებლად.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="212"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="210"/>
       <source>Additional Data Sources</source>
       <translation>დამატებითი მონაცემთა წყაროები</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="216"/>
       <source>Errors intended for developers will appear in the notification area.</source>
       <translation>პროგრამისტებისთვის განკუთვნილი შეცდომები გაფრთხილების ადგილზე გამოჩნდება.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="235"/>
       <source>Warnings intended for developers will appear in the notification area.</source>
       <translation>პროგრამისტებისთვის განკუთვნილი გაფრთხილებები გაფრთხილების ადგილზე გამოჩნდება.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="257"/>
       <source>Controls the amount of notifications to show in the list.</source>
       <translation>აკონტროლებს სიაში ნაჩვენები შეტყობინებების რეოდენობას.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="260"/>
       <source>Notifications List</source>
       <translation>შეტყობინების სია</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="287"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="285"/>
       <source>Maximum notification count</source>
       <translation>გაფრთხილებების მაქსიმალური რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="268"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="266"/>
       <source>Limits the number of notifications that will be kept in the list. If 0, there is no limit.</source>
       <translation>ზღუდავს სიაში შენარჩუნებული შეტყობინებების რაოდენობას. თუ უდრის ნულს, ზღვარი არ არსებობს.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="294"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="292"/>
       <source>Removes the user notifications from the notifications list after the maximum duration for pop-up notifications has lapsed.</source>
       <translation>წაშლის მომხმარებლის გაფრთხილებას გაფრთხილებების სიიდან მას შემდეგ, რაც გადაჭარბებული იქნება მხტუნარა შეტყობიბებების მაქსიმალური ხანგრძლივობა.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="297"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="295"/>
       <source>Auto-remove user notifications</source>
       <translation>მომხმარებლის გაფრთხილებების ავტომატური წაშლა</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="221"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="219"/>
       <source>Debug errors</source>
       <translation>გამართვის შეცდომები</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="240"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="238"/>
       <source>Debug warnings</source>
       <translation>გამართვის გაფრთხილებები</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="171"/>
+      <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="169"/>
       <source>Hide when other window is activated</source>
       <translation>დამალვა, როცა სხვა ფანჯარა აქტიურია</translation>
     </message>
@@ -10693,13 +10690,63 @@ after FreeCAD launches</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
+      <source>Snap rotation to line</source>
+      <translation type="unfinished">Snap rotation to line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <source>Rotate the image to align the drawn line to the nearest 45 degree angle</source>
+      <translation type="unfinished">Rotate the image to align the drawn line to the nearest 45 degree angle</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="273"/>
+      <source>Center on midpoint</source>
+      <translation type="unfinished">Center on midpoint</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="276"/>
+      <source>Center the image on the midpoint of the drawn line</source>
+      <translation type="unfinished">Center the image on the midpoint of the drawn line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="288"/>
       <source>Apply</source>
       <translation>დადება</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="267"/>
+      <location filename="../TaskView/TaskImage.ui" line="295"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="215"/>
+      <source>%1 snap angle</source>
+      <translation type="unfinished">%1 snap angle</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="216"/>
+      <source>%1 toggle centering</source>
+      <translation type="unfinished">%1 toggle centering</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="217"/>
+      <source>%1 toggle rotating to line</source>
+      <translation type="unfinished">%1 toggle rotating to line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="218"/>
+      <source>%1 accept distance</source>
+      <translation type="unfinished">%1 accept distance</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="224"/>
+      <source>%1 pick first point</source>
+      <translation>%1 მიუთითეთ პირველი წერტილი</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="226"/>
+      <source>%1 pick second point</source>
+      <translation>%1 მიუთითეთ მეორე წერტილი</translation>
     </message>
   </context>
   <context>
@@ -10850,12 +10897,12 @@ after FreeCAD launches</translation>
   <context>
     <name>StdViewLoadImage</name>
     <message>
-      <location filename="../CommandView.cpp" line="2314"/>
+      <location filename="../CommandView.cpp" line="2313"/>
       <source>&amp;Load Image…</source>
       <translation>&amp;გამოსახულების ჩატვირთვა…</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2315"/>
+      <location filename="../CommandView.cpp" line="2314"/>
       <source>Loads an image</source>
       <translation>ტვირთავს გამოსახულებას</translation>
     </message>
@@ -10863,12 +10910,12 @@ after FreeCAD launches</translation>
   <context>
     <name>NaviCubeDraggableCmd</name>
     <message>
-      <location filename="../NaviCube.cpp" line="1377"/>
+      <location filename="../NaviCube.cpp" line="1382"/>
       <source>Movable Navigation Cube</source>
       <translation>მოძრავი ნავიგაციის კუბი</translation>
     </message>
     <message>
-      <location filename="../NaviCube.cpp" line="1378"/>
+      <location filename="../NaviCube.cpp" line="1383"/>
       <source>Drags and places the NaviCube</source>
       <translation type="unfinished">Drags and places the NaviCube</translation>
     </message>
@@ -12491,52 +12538,52 @@ the region are non-opaque.</source>
       <translation>გარდაქმნა</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="197"/>
+      <location filename="../TaskTransform.cpp" line="196"/>
       <source>Object origin</source>
       <translation>ობიექტის საწყისი</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="203"/>
+      <location filename="../TaskTransform.cpp" line="202"/>
       <source>Center of mass / centroid</source>
       <translation>სიმძიმის ცენტრი / ცენტროიდი</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="209"/>
-      <location filename="../TaskTransform.cpp" line="219"/>
+      <location filename="../TaskTransform.cpp" line="208"/>
+      <location filename="../TaskTransform.cpp" line="218"/>
       <source>Custom</source>
       <translation>მომხმარებლის</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="216"/>
+      <location filename="../TaskTransform.cpp" line="215"/>
       <source>Local</source>
       <translation>ლოკალური</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="217"/>
+      <location filename="../TaskTransform.cpp" line="216"/>
       <source>Global</source>
       <translation>გლობალური</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="442"/>
-      <location filename="../TaskTransform.cpp" line="444"/>
+      <location filename="../TaskTransform.cpp" line="441"/>
+      <location filename="../TaskTransform.cpp" line="443"/>
       <source>Pick Reference</source>
       <translation>მიმართვის არჩევა</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="443"/>
+      <location filename="../TaskTransform.cpp" line="442"/>
       <source>Move to Other Object</source>
       <translation>გადატანა სხვა ობიექტზე</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="451"/>
-      <location filename="../TaskTransform.cpp" line="466"/>
+      <location filename="../TaskTransform.cpp" line="450"/>
+      <location filename="../TaskTransform.cpp" line="465"/>
       <source>Select object, face, edge…</source>
       <translation type="unfinished">Select object, face, edge…</translation>
     </message>
     <message>
-      <location filename="../TaskTransform.cpp" line="452"/>
-      <location filename="../TaskTransform.cpp" line="458"/>
-      <location filename="../TaskTransform.cpp" line="467"/>
+      <location filename="../TaskTransform.cpp" line="451"/>
+      <location filename="../TaskTransform.cpp" line="457"/>
+      <location filename="../TaskTransform.cpp" line="466"/>
       <source>Cancel</source>
       <translation>გაუქმება</translation>
     </message>
@@ -12844,22 +12891,22 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="493"/>
+      <location filename="../Application.cpp" line="477"/>
       <source>Built-in Parameters</source>
       <translation>ჩაშენებული პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="467"/>
+      <location filename="../Application.cpp" line="451"/>
       <source>Theme Parameters</source>
       <translation>თემის პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="502"/>
+      <location filename="../Application.cpp" line="486"/>
       <source>Theme Parameters - Fallback</source>
       <translation>თემის პარამეტრები - გადართვა</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="514"/>
+      <location filename="../Application.cpp" line="498"/>
       <source>User Parameters</source>
       <translation>მომხმარებლის პარამეტრები</translation>
     </message>
@@ -13448,12 +13495,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdGroup</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="132"/>
+      <location filename="../CommandStructure.cpp" line="131"/>
       <source>New Group</source>
       <translation>ახალი ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="133"/>
+      <location filename="../CommandStructure.cpp" line="132"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
       <translation type="unfinished">Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</translation>
     </message>
@@ -13461,12 +13508,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdVarSet</name>
     <message>
-      <location filename="../CommandStructure.cpp" line="204"/>
+      <location filename="../CommandStructure.cpp" line="203"/>
       <source>Variable Set</source>
       <translation>ცვლადის ნაკრები</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="206"/>
+      <location filename="../CommandStructure.cpp" line="205"/>
       <source>Creates a variable set, which is an object that maintains a set of properties to be used as variables</source>
       <translation type="unfinished">Creates a variable set, which is an object that maintains a set of properties to be used as variables</translation>
     </message>
@@ -13474,12 +13521,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewSaveCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="249"/>
+      <location filename="../CommandView.cpp" line="250"/>
       <source>Save Current Camera</source>
       <translation>მიმდინარე კამერის შენახვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="250"/>
+      <location filename="../CommandView.cpp" line="251"/>
       <source>Saves the current camera settings</source>
       <translation>შეინახავს კამერის მიმდინარე პარამეტრებს</translation>
     </message>
@@ -13487,12 +13534,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewRestoreCamera</name>
     <message>
-      <location filename="../CommandView.cpp" line="275"/>
+      <location filename="../CommandView.cpp" line="276"/>
       <source>Restore Saved Camera</source>
       <translation>შენახული კამერის აღდგენა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="276"/>
+      <location filename="../CommandView.cpp" line="277"/>
       <source>Restores the saved camera settings</source>
       <translation>აღადგენს კამერის შენახულ პარამეტრებს</translation>
     </message>
@@ -13500,12 +13547,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleClipPlane</name>
     <message>
-      <location filename="../CommandView.cpp" line="676"/>
+      <location filename="../CommandView.cpp" line="677"/>
       <source>Clippin&amp;g View</source>
       <translation>ამოჭრის &amp;ხედი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="677"/>
+      <location filename="../CommandView.cpp" line="678"/>
       <source>Toggles clipping of the active view</source>
       <translation>გადართავს აქტიური ხედის სიბრტყეს</translation>
     </message>
@@ -13513,12 +13560,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdDrawStyle</name>
     <message>
-      <location filename="../CommandView.cpp" line="762"/>
+      <location filename="../CommandView.cpp" line="763"/>
       <source>&amp;Draw Style</source>
       <translation>&amp;ხაზვის სტილი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="763"/>
+      <location filename="../CommandView.cpp" line="764"/>
       <source>Changes the draw style of the objects</source>
       <translation>ცვლის ობიექტების ხაზვის სტილს</translation>
     </message>
@@ -13526,12 +13573,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleVisibility</name>
     <message>
-      <location filename="../CommandView.cpp" line="969"/>
+      <location filename="../CommandView.cpp" line="970"/>
       <source>Toggle &amp;Visibility</source>
       <translation>ხილ&amp;ვადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="970"/>
+      <location filename="../CommandView.cpp" line="971"/>
       <source>Toggles the visibility of the selection</source>
       <translation>გადართავს მონიშნულის ხილვადობას</translation>
     </message>
@@ -13539,12 +13586,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleTransparency</name>
     <message>
-      <location filename="../CommandView.cpp" line="1003"/>
+      <location filename="../CommandView.cpp" line="1004"/>
       <source>Toggle Transparenc&amp;y</source>
       <translation>გამჭვირვალობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1005"/>
+      <location filename="../CommandView.cpp" line="1006"/>
       <source>Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</source>
       <translation type="unfinished">Toggles the transparency of the selected objects. Transparency can be fine-tuned in the appearance task dialog</translation>
     </message>
@@ -13552,12 +13599,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleSelectability</name>
     <message>
-      <location filename="../CommandView.cpp" line="1116"/>
+      <location filename="../CommandView.cpp" line="1117"/>
       <source>Toggle Se&amp;lectability</source>
       <translation>მონიშვნადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1117"/>
+      <location filename="../CommandView.cpp" line="1118"/>
       <source>Toggles the property of the objects to get selected in the 3D view</source>
       <translation type="unfinished">Toggles the property of the objects to get selected in the 3D view</translation>
     </message>
@@ -13565,12 +13612,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdShowSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1178"/>
+      <location filename="../CommandView.cpp" line="1179"/>
       <source>Sho&amp;w Selection</source>
       <translation>მონიშნუ&amp;ლის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1179"/>
+      <location filename="../CommandView.cpp" line="1180"/>
       <source>Shows all selected objects</source>
       <translation>აჩვენებს ყველა მონიშნულ ობიექტს</translation>
     </message>
@@ -13578,12 +13625,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdHideSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1206"/>
+      <location filename="../CommandView.cpp" line="1207"/>
       <source>&amp;Hide Selection</source>
       <translation>&amp;მონიშნულის დამალვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1207"/>
+      <location filename="../CommandView.cpp" line="1208"/>
       <source>Hides all selected objects</source>
       <translation>დამალავს ყველა მონიშნულ ობიექტს</translation>
     </message>
@@ -13591,12 +13638,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdSelectVisibleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1234"/>
+      <location filename="../CommandView.cpp" line="1235"/>
       <source>&amp;Select Visible Objects</source>
       <translation>&amp;ხილული ობიექტების მონიშვნა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1235"/>
+      <location filename="../CommandView.cpp" line="1236"/>
       <source>Selects all visible objects in the active document</source>
       <translation>მონიშნავს ყველა ხილულ ობიექტს აქტიურ დოკუმენტში</translation>
     </message>
@@ -13604,12 +13651,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1278"/>
+      <location filename="../CommandView.cpp" line="1279"/>
       <source>To&amp;ggle All Objects</source>
       <translation>ყველა ობიექტის &amp;გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1279"/>
+      <location filename="../CommandView.cpp" line="1280"/>
       <source>Toggles the visibility of all objects in the active document</source>
       <translation>აქტიურ დოკუმენტში ყველა ობიექტის ხილვადობის გადართვა</translation>
     </message>
@@ -13617,12 +13664,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdShowObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1330"/>
+      <location filename="../CommandView.cpp" line="1331"/>
       <source>Show &amp;All Objects</source>
       <translation>ყველ&amp;ა ობიექტის ჩვენება</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1331"/>
+      <location filename="../CommandView.cpp" line="1332"/>
       <source>Shows all objects in the document</source>
       <translation>აჩვენებს დოკუმენტის ყველა ობიექტს</translation>
     </message>
@@ -13630,12 +13677,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdHideObjects</name>
     <message>
-      <location filename="../CommandView.cpp" line="1372"/>
+      <location filename="../CommandView.cpp" line="1373"/>
       <source>Hide All &amp;Objects</source>
       <translation>ყველა &amp;ობიექტის დამალვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1373"/>
+      <location filename="../CommandView.cpp" line="1374"/>
       <source>Hides all objects in the document</source>
       <translation>დამალავს დოკუმენტის ყველა ობიექტს</translation>
     </message>
@@ -13643,12 +13690,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewRotateRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="1723"/>
+      <location filename="../CommandView.cpp" line="1724"/>
       <source>Rotates &amp;Right</source>
       <translation>შეაბრუნებს მა&amp;რჯვნივ</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1724"/>
+      <location filename="../CommandView.cpp" line="1725"/>
       <source>Rotates the view by 90° clockwise</source>
       <translation>შეაბრუნებს ხედს საათის მიმართულებით 90°-ით</translation>
     </message>
@@ -13656,12 +13703,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewFitAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="1748"/>
+      <location filename="../CommandView.cpp" line="1749"/>
       <source>&amp;Fit All</source>
       <translation>&amp;ყველას ჩატევა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1749"/>
+      <location filename="../CommandView.cpp" line="1750"/>
       <source>Fits all content into the 3D view</source>
       <translation>ჩაატევს სრულ შემცველობას 3D ხედში</translation>
     </message>
@@ -13669,12 +13716,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewFitSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="1777"/>
+      <location filename="../CommandView.cpp" line="1778"/>
       <source>Fit &amp;Selection</source>
       <translation>მონიშნული&amp;ს ჩატევა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1778"/>
+      <location filename="../CommandView.cpp" line="1779"/>
       <source>Fits the selected content into the 3D view</source>
       <translation>ჩაატევს მონიშნულ შემცველობას 3D ხედში</translation>
     </message>
@@ -13682,12 +13729,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewGroup</name>
     <message>
-      <location filename="../CommandView.cpp" line="1807"/>
+      <location filename="../CommandView.cpp" line="1808"/>
       <source>Standard &amp;Views</source>
       <translation>ს&amp;ტანდარტული ხედები</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1808"/>
+      <location filename="../CommandView.cpp" line="1809"/>
       <source>Changes to a standard view</source>
       <translation>გადართავს სტანდარტულ ხედზე</translation>
     </message>
@@ -13695,12 +13742,12 @@ Proceed?</translation>
   <context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
-      <location filename="../CommandView.cpp" line="1975"/>
+      <location filename="../CommandView.cpp" line="1976"/>
       <source>D&amp;ocument Window</source>
       <translation>დ&amp;ოკუმენტის ფანჯარა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="1976"/>
+      <location filename="../CommandView.cpp" line="1977"/>
       <source>Displays the active view either in fullscreen, undocked, or docked mode</source>
       <translation type="unfinished">Displays the active view either in fullscreen, undocked, or docked mode</translation>
     </message>
@@ -13708,12 +13755,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewVR</name>
     <message>
-      <location filename="../CommandView.cpp" line="2086"/>
+      <location filename="../CommandView.cpp" line="2087"/>
       <source>FreeCAD VR</source>
       <translation>FreeCAD VR</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2087"/>
+      <location filename="../CommandView.cpp" line="2088"/>
       <source>Extends the FreeCAD 3D Window to a VR device</source>
       <translation>გააფართოებს FreeCAD-ის 3D ფანჯრებს VR მოწყობილობამდე</translation>
     </message>
@@ -13721,12 +13768,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdViewCreate</name>
     <message>
-      <location filename="../CommandView.cpp" line="2361"/>
+      <location filename="../CommandView.cpp" line="2360"/>
       <source>New 3D View</source>
       <translation>ახალი 3D ხედი</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2362"/>
+      <location filename="../CommandView.cpp" line="2361"/>
       <source>Opens a new 3D view window for the active document</source>
       <translation>გახსნის ახალ 3D ხედის ფანჯარას აქტიური დოკუმენტისთვის</translation>
     </message>
@@ -13734,12 +13781,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdToggleNavigation</name>
     <message>
-      <location filename="../CommandView.cpp" line="2390"/>
+      <location filename="../CommandView.cpp" line="2389"/>
       <source>Toggle Navigation/&amp;Edit Mode</source>
       <translation>ნავიგაციის / ჩასწორ&amp;ების რეჟიმის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2391"/>
+      <location filename="../CommandView.cpp" line="2390"/>
       <source>Toggles between navigation and edit mode</source>
       <translation>გადართავს ნავიგაციისა და ჩასწორების რეჟიმებს შორის</translation>
     </message>
@@ -13747,12 +13794,12 @@ Proceed?</translation>
   <context>
     <name>StdCmdAxisCross</name>
     <message>
-      <location filename="../CommandView.cpp" line="2438"/>
+      <location filename="../CommandView.cpp" line="2437"/>
       <source>Toggle A&amp;xis Cross</source>
       <translation>კოორდინატების ღერძების &amp;ხილვადობის გადართვა</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2439"/>
+      <location filename="../CommandView.cpp" line="2438"/>
       <source>Toggles the axis cross at the origin</source>
       <translation>გადართავს საწყისთან ღერძის კვეთას</translation>
     </message>
@@ -14271,7 +14318,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1082"/>
+      <location filename="../ExpressionCompleter.cpp" line="1108"/>
       <source>Exact Match</source>
       <translation>ზუსტი დამთხვევა</translation>
     </message>
@@ -14279,7 +14326,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1271"/>
+      <location filename="../ExpressionCompleter.cpp" line="1297"/>
       <source>Exact Match</source>
       <translation>ზუსტი დამთხვევა</translation>
     </message>
@@ -14325,7 +14372,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4313"/>
+      <location filename="../Tree.cpp" line="4323"/>
       <source>Tree View</source>
       <translation>ხის ხედი</translation>
     </message>
@@ -14333,48 +14380,48 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::Dialog::DlgExpressionInput</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="77"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="79"/>
       <source>Revert to last calculated value (as constant)</source>
       <translation>ბოლოს გამოთვლილ მნიშვნელობაზე დაბრუნება (როგორც კონსტანტასთან)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="402"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="404"/>
       <source> (Warning: unit discarded)</source>
       <translation> (გაფრთხილება: ერთეული მოცილებულია)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="508"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
       <source>Invalid property name: %1</source>
       <translation>არასწორი თვისების სახელი: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="512"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="514"/>
       <source>Unknown object</source>
       <translation>უცნობი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="518"/>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="967"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="925"/>
       <source>the name cannot be empty</source>
       <translation>სახელი ცარიელი ვერ იქნება</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="528"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="530"/>
       <source>%1 is a unit</source>
       <translation>%1 საზომი ერთეულია</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="533"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="535"/>
       <source>%1 is a constant</source>
       <translation>%1 მუდმივაა</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="539"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="541"/>
       <source>%1 already exists</source>
       <translation>%1 უკვე არსებობს</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="963"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="921"/>
       <source>Invalid group name: %1</source>
       <translation>არასწორი ჯგუფის სახელი: %1</translation>
     </message>
@@ -14491,17 +14538,17 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="304"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="306"/>
       <source>Value out of range (%1 out of [%2, %3])</source>
       <translation>მნიშვნელობა დიაპაზონს გარეთაა (%1 [%2, %3]-დან)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="387"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="389"/>
       <source>Not a Number</source>
       <translation type="unfinished">Not a Number</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgExpressionInput.cpp" line="395"/>
+      <location filename="../Dialogs/DlgExpressionInput.cpp" line="397"/>
       <source>Unit mismatch between result and required unit</source>
       <translation>შედეგი და მოთხოვნილი ერთეული ერთმანეთს არ ემთხვევა</translation>
     </message>
@@ -14622,7 +14669,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>FileFormat</name>
     <message>
-      <location filename="../FreeCADGuiInit.py" line="470"/>
+      <location filename="../FreeCADGuiInit.py" line="463"/>
       <source>Portable Document Format</source>
       <translation>PDF</translation>
     </message>
@@ -14730,6 +14777,46 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation type="unfinished">Toggle Suppressed</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyMapEditor</name>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Key</source>
+      <translation>გასაღები</translation>
+    </message>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Value</source>
+      <translation>მნიშვნელობა</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>შენახვა როგორც</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>გახსნა</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdAnnotationLabel</name>
     <message>
       <location filename="../CommandStd.cpp" line="983"/>
@@ -14758,46 +14845,6 @@ treated as shortcut key sequence 'F, F'.</source>
       <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
-    </message>
-  </context>
-  <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>შენახვა როგორც</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>გახსნა</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleSuppress</name>
-    <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation type="unfinished">Toggle Suppressed</translation>
-    </message>
-    <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
-    </message>
-  </context>
-  <context>
-    <name>Gui::PropertyMapEditor</name>
-    <message>
-      <location filename="../Widgets.cpp" line="1905"/>
-      <source>Key</source>
-      <translation>გასაღები</translation>
-    </message>
-    <message>
-      <location filename="../Widgets.cpp" line="1905"/>
-      <source>Value</source>
-      <translation>მნიშვნელობა</translation>
     </message>
   </context>
   <context>

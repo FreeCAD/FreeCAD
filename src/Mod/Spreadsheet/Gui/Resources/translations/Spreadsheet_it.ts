@@ -382,6 +382,11 @@
       <translation>Cancella colore di sfondo</translation>
     </message>
     <message>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Ricalcolo celle</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Inserisci righe</translation>
@@ -392,35 +397,20 @@
       <translation>Rimuovi righe</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="340"/>
-      <source>Insert Columns</source>
-      <translation>Inserisci colonne</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Ricalcolo celle</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="367"/>
       <source>Remove Columns</source>
       <translation>Rimuovi colonne</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SheetTableView.cpp" line="340"/>
+      <source>Insert Columns</source>
+      <translation>Inserisci colonne</translation>
+    </message>
+    <message>
       <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="582"/>
       <source>Clear Cells</source>
       <translation>Cancella celle</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="228"/>
-      <source>Setup conf table</source>
-      <translation>Imposta tabella conf</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="391"/>
-      <source>Unsetup conf table</source>
-      <translation>Annulla la tabella di configurazione</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>Scollega le celle</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>Imposta tabella conf</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>Annulla la tabella di configurazione</translation>
     </message>
   </context>
   <context>

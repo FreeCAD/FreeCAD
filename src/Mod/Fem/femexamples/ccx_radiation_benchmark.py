@@ -37,9 +37,9 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Tet10",
         "constraints": ["temperature", "heat flux"],
-        "solvers": ["calculix"],
+        "solvers": ["calculix", "elmer"],
         "material": "solid",
-        "equations": ["mechanical"],
+        "equations": ["heat"],
     }
 
 
@@ -87,6 +87,10 @@ def setup(doc=None, solvertype="calculix"):
         solver_obj = ObjectsFem.makeSolverCalculiX(doc, "SolverCalculiX")
         solver_obj.AnalysisType = "thermomech"
         solver_obj.ThermoMechType = "pure heat transfer"
+    elif solvertype == "elmer":
+        solver_obj = ObjectsFem.makeSolverElmer(doc, "SolverElmer")
+        eq_heat = ObjectsFem.makeEquationHeat(doc, solver_obj)
+        eq_heat.NonlinearIterations = 5
     else:
         FreeCAD.Console.PrintWarning(
             "Unknown or unsupported solver type: {}. "
