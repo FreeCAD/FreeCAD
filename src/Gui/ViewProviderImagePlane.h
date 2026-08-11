@@ -29,6 +29,7 @@ class SoCoordinate3;
 class SoDrawStyle;
 class SoShapeHints;
 class SoTexture2;
+class SoTextureCoordinate2;
 class QImage;
 
 namespace Gui
@@ -71,6 +72,7 @@ private:
     SoCoordinate3* pcCoords;
     SoTexture2* texture;
     SoShapeHints* shapeHints;
+    SoTextureCoordinate2* textCoord;
     static const char* LightingEnums[];
 };
 

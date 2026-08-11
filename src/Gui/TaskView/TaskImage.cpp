@@ -36,6 +36,7 @@
 #include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -65,6 +66,12 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
 {
     ui->setupUi(this);
     ui->groupBoxCalibration->hide();
+
+    int decimals = Base::UnitsApi::getDecimals();
+    ui->spinBoxCropLeft->setDecimals(decimals);
+    ui->spinBoxCropRight->setDecimals(decimals);
+    ui->spinBoxCropTop->setDecimals(decimals);
+    ui->spinBoxCropBottom->setDecimals(decimals);
 
     initialiseTransparency();
 
@@ -118,6 +125,14 @@ void TaskImage::connectSignals()
         this, &TaskImage::acceptScale);
     connect(ui->pushButtonCancel, &QPushButton::clicked,
         this, &TaskImage::rejectScale);
+    connect(ui->spinBoxCropLeft, qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this, &TaskImage::changeCropLeft);
+    connect(ui->spinBoxCropRight, qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this, &TaskImage::changeCropRight);
+    connect(ui->spinBoxCropTop, qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this, &TaskImage::changeCropTop);
+    connect(ui->spinBoxCropBottom, qOverload<double>(&QDoubleSpinBox::valueChanged),
+        this, &TaskImage::changeCropBottom);
     // clang-format on
 }
 
@@ -177,6 +192,38 @@ void TaskImage::changeHeight()
             QSignalBlocker block(ui->spinBoxWidth);
             ui->spinBoxWidth->setValue(val * aspectRatio);
         }
+    }
+}
+
+void TaskImage::changeCropLeft()
+{
+    if (!feature.expired()) {
+        feature->CropLeft.setValue(ui->spinBoxCropLeft->value());
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropRight()
+{
+    if (!feature.expired()) {
+        feature->CropRight.setValue(ui->spinBoxCropRight->value());
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropTop()
+{
+    if (!feature.expired()) {
+        feature->CropTop.setValue(ui->spinBoxCropTop->value());
+        updateCropLimits();
+    }
+}
+
+void TaskImage::changeCropBottom()
+{
+    if (!feature.expired()) {
+        feature->CropBottom.setValue(ui->spinBoxCropBottom->value());
+        updateCropLimits();
     }
 }
 
@@ -459,6 +506,17 @@ void TaskImage::restore(const Base::Placement& plm)
     QSignalBlocker blockH(ui->spinBoxHeight);
     ui->spinBoxWidth->setValue(feature->XSize.getValue());
     ui->spinBoxHeight->setValue(feature->YSize.getValue());
+
+    QSignalBlocker blockCL(ui->spinBoxCropLeft);
+    QSignalBlocker blockCR(ui->spinBoxCropRight);
+    QSignalBlocker blockCT(ui->spinBoxCropTop);
+    QSignalBlocker blockCB(ui->spinBoxCropBottom);
+    ui->spinBoxCropLeft->setValue(feature->CropLeft.getValue());
+    ui->spinBoxCropRight->setValue(feature->CropRight.getValue());
+    ui->spinBoxCropTop->setValue(feature->CropTop.getValue());
+    ui->spinBoxCropBottom->setValue(feature->CropBottom.getValue());
+
+    updateCropLimits();
 
     Base::Rotation rot = plm.getRotation();  // NOLINT
     Base::Vector3d pos = plm.getPosition();
@@ -877,6 +935,30 @@ bool TaskImageDialog::reject()
 {
     widget->reject();
     return true;
+}
+
+void TaskImage::updateCropLimits()
+{
+    if (feature.expired()) {
+        return;
+    }
+
+    double left = feature->CropLeft.getValue();
+    double right = feature->CropRight.getValue();
+    double top = feature->CropTop.getValue();
+    double bottom = feature->CropBottom.getValue();
+
+    QSignalBlocker blockCL(ui->spinBoxCropLeft);
+    QSignalBlocker blockCR(ui->spinBoxCropRight);
+    QSignalBlocker blockCT(ui->spinBoxCropTop);
+    QSignalBlocker blockCB(ui->spinBoxCropBottom);
+
+    // Each spin box already clamps itself to [0, 100]; here we additionally cap it so
+    // that it can't push the opposite edge's crop past the far side of the image.
+    ui->spinBoxCropLeft->setMaximum(std::max(0.0, 100.0 - right));
+    ui->spinBoxCropRight->setMaximum(std::max(0.0, 100.0 - left));
+    ui->spinBoxCropTop->setMaximum(std::max(0.0, 100.0 - bottom));
+    ui->spinBoxCropBottom->setMaximum(std::max(0.0, 100.0 - top));
 }
 
 #include "moc_TaskImage.cpp"

@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <algorithm>
 #include <sstream>
 #include <QAction>
 #include <QFileInfo>
@@ -66,6 +67,9 @@ ViewProviderImagePlane::ViewProviderImagePlane()
     pcCoords = new SoCoordinate3();
     pcCoords->ref();
 
+    textCoord = new SoTextureCoordinate2;
+    textCoord->ref();
+
     shapeHints = new SoShapeHints;
     shapeHints->shapeType = SoShapeHints::UNKNOWN_SHAPE_TYPE;
     shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
@@ -79,6 +83,7 @@ ViewProviderImagePlane::ViewProviderImagePlane()
 ViewProviderImagePlane::~ViewProviderImagePlane()
 {
     pcCoords->unref();
+    textCoord->unref();
     texture->unref();
     shapeHints->unref();
 }
@@ -93,7 +98,6 @@ void ViewProviderImagePlane::attach(App::DocumentObject* pcObj)
     SoSeparator* shading = new SoSeparator;
     shading->addChild(pcCoords);
 
-    SoTextureCoordinate2* textCoord = new SoTextureCoordinate2;
     textCoord->point.set1Value(0, 0, 0);
     textCoord->point.set1Value(1, 1, 0);
     textCoord->point.set1Value(2, 1, 1);
@@ -190,10 +194,48 @@ void ViewProviderImagePlane::manipulateImage()
 
 void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
 {
-    pcCoords->point.set1Value(0, -(xsize / 2), -(ysize / 2), 0.0);
-    pcCoords->point.set1Value(1, +(xsize / 2), -(ysize / 2), 0.0);
-    pcCoords->point.set1Value(2, +(xsize / 2), +(ysize / 2), 0.0);
-    pcCoords->point.set1Value(3, -(xsize / 2), +(ysize / 2), 0.0);
+    Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
+    // Crop is stored as a percentage of the image itself, not of the plane's physical
+    // XSize/YSize, so it stays correct no matter how the plane is later scaled or calibrated.
+    // PropertyFloatConstraint's constraint range only guides the property editor's widget, so
+    // values set from Python or a hand-edited document are clamped defensively here as well.
+    float left = std::clamp(float(pcPlaneObj->CropLeft.getValue()) / 100.0f, 0.0f, 1.0f);
+    float right = std::clamp(float(pcPlaneObj->CropRight.getValue()) / 100.0f, 0.0f, 1.0f);
+    float top = std::clamp(float(pcPlaneObj->CropTop.getValue()) / 100.0f, 0.0f, 1.0f);
+    float bottom = std::clamp(float(pcPlaneObj->CropBottom.getValue()) / 100.0f, 0.0f, 1.0f);
+
+    // Opposite edges can still sum past 100%, so squeeze them proportionally to leave a
+    // sliver of the image visible.
+    if (left + right >= 1.0f) {
+        float total = left + right;
+        left = (left / total) * (1.0f - 0.001f);
+        right = (right / total) * (1.0f - 0.001f);
+    }
+    if (top + bottom >= 1.0f) {
+        float total = top + bottom;
+        top = (top / total) * (1.0f - 0.001f);
+        bottom = (bottom / total) * (1.0f - 0.001f);
+    }
+
+    float leftMM = left * xsize;
+    float rightMM = right * xsize;
+    float topMM = top * ysize;
+    float bottomMM = bottom * ysize;
+
+    pcCoords->point.set1Value(0, -(xsize / 2) + leftMM, -(ysize / 2) + bottomMM, 0.0);
+    pcCoords->point.set1Value(1, +(xsize / 2) - rightMM, -(ysize / 2) + bottomMM, 0.0);
+    pcCoords->point.set1Value(2, +(xsize / 2) - rightMM, +(ysize / 2) - topMM, 0.0);
+    pcCoords->point.set1Value(3, -(xsize / 2) + leftMM, +(ysize / 2) - topMM, 0.0);
+
+    float u0 = left;
+    float u1 = 1.0f - right;
+    float v0 = bottom;
+    float v1 = 1.0f - top;
+
+    textCoord->point.set1Value(0, u0, v0);
+    textCoord->point.set1Value(1, u1, v0);
+    textCoord->point.set1Value(2, u1, v1);
+    textCoord->point.set1Value(3, u0, v1);
 }
 
 void ViewProviderImagePlane::loadImage()
@@ -328,7 +370,9 @@ void ViewProviderImagePlane::convertToSFImage(const QImage& img)
 void ViewProviderImagePlane::updateData(const App::Property* prop)
 {
     Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
-    if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize) {
+    if (prop == &pcPlaneObj->XSize || prop == &pcPlaneObj->YSize || prop == &pcPlaneObj->CropLeft
+        || prop == &pcPlaneObj->CropRight || prop == &pcPlaneObj->CropTop
+        || prop == &pcPlaneObj->CropBottom) {
         float xsize = pcPlaneObj->XSize.getValue();
         float ysize = pcPlaneObj->YSize.getValue();
 
