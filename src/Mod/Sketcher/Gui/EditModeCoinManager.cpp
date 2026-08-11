@@ -881,6 +881,7 @@ constexpr std::array subscribedParameterGroupPaths = {
     "User parameter:BaseApp/Preferences/View",
     "User parameter:BaseApp/Preferences/Mod/Sketcher/General",
     "User parameter:BaseApp/Preferences/Mod/Sketcher",
+    "User parameter:BaseApp/Preferences/Mod/Sketcher/View",
     "User parameter:BaseApp/Preferences/Units",
 };
 }  // namespace
