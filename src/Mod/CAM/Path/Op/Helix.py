@@ -309,6 +309,9 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
 
         super().opOnChanged(obj, prop)
 
+    def initAfterBase(self, obj):
+        obj.Side = Path.Op.Util.getOpSide(obj, default="Inside")
+
     def opSetEditorModes(self, obj):
         obj.setEditorMode("Direction", ("ReadOnly", "Hidden"))
         obj.setPropertyStatus("Direction", ("ReadOnly", "Output"))
@@ -751,7 +754,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                         cmd = Path.Command("G0", {"X": hole["x"], "Y": hole["y"]})
                         self.commandlist.append(cmd)
                     drillStep = obj.HelixMaxPitch.Value or obj.StepDown.Value
-                    drillSteps = math.ceil(round((centerTop.z - centerBottom.z) / drillStep, 6))
+                    drillSteps = Path.Geom.ceil((centerTop.z - centerBottom.z) / drillStep)
                     for iDrill in range(1, drillSteps + 1):
                         # drilling in peck mode
                         zDrill = centerTop.z - drillStep * iDrill
