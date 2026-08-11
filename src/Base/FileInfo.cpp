@@ -568,6 +568,44 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
     return list;
 }
 
+std::optional<std::string> FileInfo::safeArchiveEntryPath(const std::string& entryName)
+{
+    if (entryName.find(':') != std::string::npos) {
+        return std::nullopt;
+    }
+
+    std::string normalized = entryName;
+    std::ranges::replace(normalized, '\\', '/');
+
+    std::string result;
+    std::size_t start = 0;
+    while (start <= normalized.size()) {
+        std::size_t end = normalized.find('/', start);
+        if (end == std::string::npos) {
+            end = normalized.size();
+        }
+        std::string component = normalized.substr(start, end - start);
+        start = end + 1;
+
+        if (component == "..") {
+            return std::nullopt;
+        }
+        if (component.empty() || component == ".") {
+            continue;
+        }
+        if (!result.empty()) {
+            result += '/';
+        }
+        result += component;
+    }
+
+    if (result.empty()) {
+        return std::nullopt;
+    }
+
+    return result;
+}
+
 std::optional<std::string> FileInfo::getSymlinkTarget()
 {
     fs::path path = stringToPath(FileName);
