@@ -306,11 +306,7 @@ TEST_F(FeatureSectionAnalysisTest, testObliquePlaneCutsALargerArea)
 
     // Assert - the cap is the 1 wide slice stretched by 1/cos(45)
     ASSERT_EQ(faces(_section).size(), 1);
-    EXPECT_NEAR(
-        getArea(_section->Shape.getShape().getShape()),
-        2.0 * std::sqrt(2.0),
-        1e-6
-    );
+    EXPECT_NEAR(getArea(_section->Shape.getShape().getShape()), 2.0 * std::sqrt(2.0), 1e-6);
 }
 
 // --- source list edge cases ----------------------------------------------
@@ -391,7 +387,7 @@ TEST_F(FeatureSectionAnalysisTest, testRepeatedExecuteIsIdempotent)
 
 TEST_F(FeatureSectionAnalysisTest, testMissingPlaneClearsThePreviousMapping)
 {
-    //a section that had geometry
+    // a section that had geometry
     _section->execute();
     ASSERT_FALSE(_section->FaceSourceIndex.getValues().empty());
 
@@ -411,9 +407,7 @@ TEST_F(FeatureSectionAnalysisTest, testCapStaysOnThePlaneItClaimsToCut)
     // Whatever that placement is, the cap has to end up on the plane cutPlane()
     // reports, or the rendered section sits somewhere the material is not cut.
     _doc->recompute();
-    _section->Placement.setValue(
-        Base::Placement(Base::Vector3d(0, 0, 20), Base::Rotation())
-    );
+    _section->Placement.setValue(Base::Placement(Base::Vector3d(0, 0, 20), Base::Rotation()));
     _section->PlaneOffset.setValue(1.75);  // force a real recompute through mustExecute()
     _doc->recompute();
     EXPECT_TRUE(_section->Placement.getValue().isIdentity())
@@ -588,9 +582,7 @@ TEST_F(FeatureSectionAnalysisTest, testNotANumberNormalIsRejected)
 {
     // Arrange - NaN fails every comparison, so a "< tolerance" guard lets it
     // straight through into the plane construction
-    _section->PlaneNormal.setValue(
-        Base::Vector3d(std::numeric_limits<double>::quiet_NaN(), 0, 1)
-    );
+    _section->PlaneNormal.setValue(Base::Vector3d(std::numeric_limits<double>::quiet_NaN(), 0, 1));
 
     // Act
     Base::Vector3d n;
@@ -603,9 +595,7 @@ TEST_F(FeatureSectionAnalysisTest, testNotANumberNormalIsRejected)
 TEST_F(FeatureSectionAnalysisTest, testInfiniteNormalIsRejected)
 {
     // Arrange
-    _section->PlaneNormal.setValue(
-        Base::Vector3d(std::numeric_limits<double>::infinity(), 0, 1)
-    );
+    _section->PlaneNormal.setValue(Base::Vector3d(std::numeric_limits<double>::infinity(), 0, 1));
 
     // Act
     Base::Vector3d n;
@@ -738,9 +728,7 @@ TEST_F(FeatureSectionAnalysisTest, testHollowSolidSectionsAsOneFaceWithAHole)
     tool->Length.setValue(0.5);
     tool->Width.setValue(0.5);
     tool->Height.setValue(5);
-    tool->Placement.setValue(
-        Base::Placement(Base::Vector3d(0.25, 0.75, -1), Base::Rotation())
-    );
+    tool->Placement.setValue(Base::Placement(Base::Vector3d(0.25, 0.75, -1), Base::Rotation()));
     auto* hollow = _doc->addObject<Part::Cut>();
     hollow->Base.setValue(_boxes[0]);
     hollow->Tool.setValue(tool);
@@ -753,11 +741,7 @@ TEST_F(FeatureSectionAnalysisTest, testHollowSolidSectionsAsOneFaceWithAHole)
 
     // Assert - one face, its area reduced by the hole
     ASSERT_EQ(faces(_section).size(), 1);
-    EXPECT_NEAR(
-        getArea(_section->Shape.getShape().getShape()),
-        2.0 - 0.25,
-        Base::Precision::Confusion()
-    );
+    EXPECT_NEAR(getArea(_section->Shape.getShape().getShape()), 2.0 - 0.25, Base::Precision::Confusion());
 }
 
 TEST_F(FeatureSectionAnalysisTest, testNonSolidSourceProducesNothing)
@@ -795,9 +779,7 @@ TEST_F(FeatureSectionAnalysisTest, testSourcePlacementIsComposedIntoTheCut)
 TEST_F(FeatureSectionAnalysisTest, testManySourcesAllMapCorrectly)
 {
     // Arrange - every box the fixture provides, overlapping and not
-    _section->Source.setValues(
-        {_boxes[0], _boxes[1], _boxes[2], _boxes[3], _boxes[4], _boxes[5]}
-    );
+    _section->Source.setValues({_boxes[0], _boxes[1], _boxes[2], _boxes[3], _boxes[4], _boxes[5]});
 
     // Act
     _section->execute();
@@ -821,9 +803,7 @@ TEST_F(FeatureSectionAnalysisTest, testDragWithNoInputLeavesThePlaneAlone)
     // Act
     Base::Vector3d n;
     double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(
-        Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(), 0.0, n, d
-    );
+    Part::SectionAnalysis::planeAfterDrag(Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(), 0.0, n, d);
 
     // Assert
     EXPECT_NEAR(n.z, 1.0, 1e-9);
@@ -835,9 +815,7 @@ TEST_F(FeatureSectionAnalysisTest, testDragTranslationSlidesAlongTheNormal)
     // Act
     Base::Vector3d n;
     double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(
-        Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(), 2.5, n, d
-    );
+    Part::SectionAnalysis::planeAfterDrag(Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(), 2.5, n, d);
 
     // Assert
     EXPECT_NEAR(n.z, 1.0, 1e-9);
@@ -885,7 +863,12 @@ TEST_F(FeatureSectionAnalysisTest, testDragRotationKeepsTheNormalUnitLength)
     Base::Vector3d n;
     double d = 0.0;
     Part::SectionAnalysis::planeAfterDrag(
-        Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(Base::Vector3d(1, 1, 0), 0.7), 0.0, n, d
+        Base::Vector3d(0, 0, 1),
+        10.0,
+        Base::Rotation(Base::Vector3d(1, 1, 0), 0.7),
+        0.0,
+        n,
+        d
     );
 
     // Assert
