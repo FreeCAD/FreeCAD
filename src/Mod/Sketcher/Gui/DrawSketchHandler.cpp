@@ -130,11 +130,7 @@ bool angleIsInArcRange(double angle, double startAngle, double endAngle)
     return angle <= endAngle;
 }
 
-bool getCircleOrArcCenterAndRadius(
-    const Part::Geometry* geometry,
-    Base::Vector2d& center,
-    double& radius
-)
+bool getCircleOrArcCenterAndRadius(const Part::Geometry* geometry, Base::Vector2d& center, double& radius)
 {
     if (const auto* circle = freecad_cast<const Part::GeomCircle*>(geometry)) {
         center = toVector2d(circle->getCenter());
@@ -929,56 +925,54 @@ bool DrawSketchHandler::updateTangentAutoConstraintHint(const Base::Vector2d* cu
     double bestDistance = maxDistance;
     TangentAutoConstraintHint bestHint;
 
-    auto evaluateCircle = [&](int geoId,
-                              const Base::Vector2d& center,
-                              double radius,
-                              const Part::GeomArcOfCircle* arc) {
-        const Base::Vector2d centerVector = center - startPoint;
-        const double centerDistanceSquared = centerVector.Sqr();
-        const double radiusSquared = radius * radius;
-        if (centerDistanceSquared <= radiusSquared + Precision::SquareConfusion()) {
-            return;
-        }
-
-        const double centerDistance = std::sqrt(centerDistanceSquared);
-        const double baseAngle = std::atan2(centerVector.y, centerVector.x);
-        const double tangentAngleOffset = std::asin(radius / centerDistance);
-        const double tangentLength = std::sqrt(centerDistanceSquared - radiusSquared);
-
-        for (double angle : {baseAngle + tangentAngleOffset, baseAngle - tangentAngleOffset}) {
-            Base::Vector2d direction(std::cos(angle), std::sin(angle));
-            const double projection = cursorDirection * direction;
-            if (projection <= Precision::Confusion()) {
-                continue;
+    auto evaluateCircle =
+        [&](int geoId, const Base::Vector2d& center, double radius, const Part::GeomArcOfCircle* arc) {
+            const Base::Vector2d centerVector = center - startPoint;
+            const double centerDistanceSquared = centerVector.Sqr();
+            const double radiusSquared = radius * radius;
+            if (centerDistanceSquared <= radiusSquared + Precision::SquareConfusion()) {
+                return;
             }
 
-            const Base::Vector2d tangentPoint = startPoint + tangentLength * direction;
-            if (arc) {
-                double startAngle = 0.0;
-                double endAngle = 0.0;
-                arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
-                const Base::Vector2d radial = tangentPoint - center;
-                if (!angleIsInArcRange(std::atan2(radial.y, radial.x), startAngle, endAngle)) {
+            const double centerDistance = std::sqrt(centerDistanceSquared);
+            const double baseAngle = std::atan2(centerVector.y, centerVector.x);
+            const double tangentAngleOffset = std::asin(radius / centerDistance);
+            const double tangentLength = std::sqrt(centerDistanceSquared - radiusSquared);
+
+            for (double angle : {baseAngle + tangentAngleOffset, baseAngle - tangentAngleOffset}) {
+                Base::Vector2d direction(std::cos(angle), std::sin(angle));
+                const double projection = cursorDirection * direction;
+                if (projection <= Precision::Confusion()) {
                     continue;
                 }
-            }
 
-            const double distance = std::abs(cross(cursorDirection, direction));
-            if (distance >= bestDistance) {
-                continue;
-            }
+                const Base::Vector2d tangentPoint = startPoint + tangentLength * direction;
+                if (arc) {
+                    double startAngle = 0.0;
+                    double endAngle = 0.0;
+                    arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
+                    const Base::Vector2d radial = tangentPoint - center;
+                    if (!angleIsInArcRange(std::atan2(radial.y, radial.x), startAngle, endAngle)) {
+                        continue;
+                    }
+                }
 
-            bestDistance = distance;
-            bestHint.isValid = true;
-            bestHint.geoId = geoId;
-            bestHint.posId = Sketcher::PointPos::none;
-            bestHint.start = startPoint;
-            bestHint.direction = direction;
-            bestHint.center = center;
-            bestHint.radius = radius;
-            bestHint.isActive = distance <= searchDistance;
-        }
-    };
+                const double distance = std::abs(cross(cursorDirection, direction));
+                if (distance >= bestDistance) {
+                    continue;
+                }
+
+                bestDistance = distance;
+                bestHint.isValid = true;
+                bestHint.geoId = geoId;
+                bestHint.posId = Sketcher::PointPos::none;
+                bestHint.start = startPoint;
+                bestHint.direction = direction;
+                bestHint.center = center;
+                bestHint.radius = radius;
+                bestHint.isActive = distance <= searchDistance;
+            }
+        };
 
     const std::vector<Part::Geometry*> geometry = obj->getCompleteGeometry();
     for (size_t index = 0; index < geometry.size(); ++index) {
@@ -1277,8 +1271,8 @@ bool DrawSketchHandler::seekEqualLengthAutoConstraint(
         return false;
     }
 
-    const double tolerance =
-        std::max(getPredictiveAutoConstraintSearchDistance(), candidateLength * 0.12);
+    const double tolerance
+        = std::max(getPredictiveAutoConstraintSearchDistance(), candidateLength * 0.12);
     double bestDeviation = tolerance;
     int bestGeoId = GeoEnum::GeoUndef;
 
@@ -1337,8 +1331,8 @@ bool DrawSketchHandler::seekEqualRadiusAutoConstraint(
         return false;
     }
 
-    const double tolerance =
-        std::max(getPredictiveAutoConstraintSearchDistance(), candidateRadius * 0.12);
+    const double tolerance
+        = std::max(getPredictiveAutoConstraintSearchDistance(), candidateRadius * 0.12);
     double bestDeviation = tolerance;
     int bestGeoId = GeoEnum::GeoUndef;
 
@@ -1477,8 +1471,8 @@ bool DrawSketchHandler::snapToEqualLengthAutoConstraint(Base::Vector2d& point)
     }
     direction.Normalize();
 
-    const double tolerance =
-        std::max(getPredictiveAutoConstraintSearchDistance(), candidateLength * 0.12);
+    const double tolerance
+        = std::max(getPredictiveAutoConstraintSearchDistance(), candidateLength * 0.12);
     double bestDeviation = tolerance;
     double bestLength = 0.0;
 
@@ -1533,8 +1527,8 @@ bool DrawSketchHandler::snapToEqualRadiusAutoConstraint(
     }
     direction.Normalize();
 
-    const double tolerance =
-        std::max(getPredictiveAutoConstraintSearchDistance(), candidateRadius * 0.12);
+    const double tolerance
+        = std::max(getPredictiveAutoConstraintSearchDistance(), candidateRadius * 0.12);
     double bestDeviation = tolerance;
     double bestRadius = 0.0;
 
@@ -2638,9 +2632,7 @@ bool DrawSketchHandler::updateParallelPerpendicularPointHint(const Base::Vector2
     return true;
 }
 
-bool DrawSketchHandler::getParallelPerpendicularHintAnchorPoint(
-    Base::Vector2d& anchorPoint
-) const
+bool DrawSketchHandler::getParallelPerpendicularHintAnchorPoint(Base::Vector2d& anchorPoint) const
 {
     if (parallelPerpendicularHasAnchorPoint) {
         anchorPoint = parallelPerpendicularAnchorPoint;
@@ -2710,8 +2702,10 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
         else if ((lineEnd - startPoint).Length() <= searchDistance) {
             anchorPoint = lineEnd;
         }
-        else if (!projectPointOnSegment(startPoint, lineStart, lineEnd, anchorPoint)
-                 || (anchorPoint - startPoint).Length() > searchDistance) {
+        else if (
+            !projectPointOnSegment(startPoint, lineStart, lineEnd, anchorPoint)
+            || (anchorPoint - startPoint).Length() > searchDistance
+        ) {
             return;
         }
 
@@ -2738,13 +2732,13 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
             Base::Vector2d projection;
             projection.ProjectToLine(cursorDir, snapDir);
 
-            candidates.push_back({
-                std::abs(cross(cursorDir, snapDir)),
-                geoId,
-                directionIndex,
-                anchorPoint,
-                anchorPoint + projection
-            });
+            candidates.push_back(
+                {std::abs(cross(cursorDir, snapDir)),
+                 geoId,
+                 directionIndex,
+                 anchorPoint,
+                 anchorPoint + projection}
+            );
         }
     };
 
@@ -2776,12 +2770,9 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
             continue;
         }
 
-        parallelPerpendicularActiveHints.push_back({
-            candidate.start,
-            candidate.end,
-            candidate.geoId,
-            candidate.directionIndex
-        });
+        parallelPerpendicularActiveHints.push_back(
+            {candidate.start, candidate.end, candidate.geoId, candidate.directionIndex}
+        );
 
         if (parallelPerpendicularActiveHints.size() >= 2) {
             break;
