@@ -3762,18 +3762,18 @@ The default template is located at:
     <name>Arch</name>
     <message>
       <location filename="../../ArchStructure.py" line="449"/>
-      <location filename="../../Arch.py" line="2565"/>
+      <location filename="../../Arch.py" line="2574"/>
       <source>Beam</source>
       <translation>ზურგი</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="450"/>
-      <location filename="../../Arch.py" line="2569"/>
+      <location filename="../../Arch.py" line="2578"/>
       <source>Column</source>
       <translation>სვეტი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2618"/>
+      <location filename="../../Arch.py" line="2627"/>
       <source>StructuralSystem</source>
       <translation>სტრუქუტურული სისტემა</translation>
     </message>
@@ -4441,7 +4441,7 @@ The default template is located at:
       <translation>დასრულებულია</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="387"/>
+      <location filename="../../Arch.py" line="396"/>
       <source>Equipment</source>
       <translation>აპარატურა</translation>
     </message>
@@ -4488,7 +4488,7 @@ The default template is located at:
       <translation>პროფილი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1270"/>
+      <location filename="../../Arch.py" line="1279"/>
       <source>Site</source>
       <translation>საიტი</translation>
     </message>
@@ -4498,14 +4498,14 @@ The default template is located at:
       <translation>ადგილის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="64"/>
-      <location filename="../../bimcommands/BimRoof.py" line="80"/>
+      <location filename="../../bimcommands/BimRoof.py" line="65"/>
+      <location filename="../../bimcommands/BimRoof.py" line="81"/>
       <source>Create Roof</source>
       <translation>სახურავის შექმნა</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="829"/>
-      <location filename="../../bimcommands/BimRoof.py" line="91"/>
+      <location filename="../../bimcommands/BimRoof.py" line="92"/>
       <source>Unable to create a roof</source>
       <translation>სახურავის შექმნა შეუძლებელია</translation>
     </message>
@@ -4545,7 +4545,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>განაკიდი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1144"/>
+      <location filename="../../Arch.py" line="1153"/>
       <location filename="../../ArchRoof.py" line="1072"/>
       <source>Roof</source>
       <translation>სახურავი</translation>
@@ -4617,7 +4617,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>წინა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1075"/>
+      <location filename="../../Arch.py" line="1084"/>
       <location filename="../../ArchReference.py" line="909"/>
       <source>External Reference</source>
       <translation>გარე მიმართვა</translation>
@@ -4719,7 +4719,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ობიექტის ფაილიდან ჩასმა მასზე ბმის გამოყენებით</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="462"/>
+      <location filename="../../Arch.py" line="471"/>
       <source>Frame</source>
       <translation>ჩარჩო</translation>
     </message>
@@ -4779,7 +4779,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Shapefile ბიბლიოთეკის ჩამოტვირთვა შესაძლებელია შემდეგი URL-დან. დაინსტალირდება თქვენს მაკროების საქაღალდეში:</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2089"/>
+      <location filename="../../Arch.py" line="2098"/>
       <source>Window</source>
       <translation>ფანჯარა</translation>
     </message>
@@ -4919,7 +4919,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1706"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxis.py" line="985"/>
-      <location filename="../../ArchComponent.py" line="2462"/>
+      <location filename="../../ArchComponent.py" line="2463"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <source>Remove</source>
       <translation>წაშლა</translation>
@@ -4928,7 +4928,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1707"/>
       <location filename="../../ArchSpace.py" line="949"/>
       <location filename="../../ArchAxis.py" line="986"/>
-      <location filename="../../ArchComponent.py" line="2463"/>
+      <location filename="../../ArchComponent.py" line="2464"/>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <source>Add</source>
       <translation>დამატება</translation>
@@ -4962,7 +4962,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1714"/>
-      <location filename="../../ArchComponent.py" line="2470"/>
+      <location filename="../../ArchComponent.py" line="2471"/>
       <source>Components</source>
       <translation>კომპონენტები</translation>
     </message>
@@ -4976,7 +4976,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1717"/>
       <location filename="../../ArchCommands.py" line="1730"/>
-      <location filename="../../ArchComponent.py" line="2538"/>
+      <location filename="../../ArchComponent.py" line="2539"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>ტიპი</translation>
@@ -5042,7 +5042,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="101"/>
       <location filename="../../ArchAxis.py" line="984"/>
-      <location filename="../../ArchComponent.py" line="2469"/>
+      <location filename="../../ArchComponent.py" line="2470"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
       <source>Axes</source>
       <translation>ღერძები</translation>
@@ -5061,7 +5061,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>წარმატებით ჩაიწერა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1652"/>
+      <location filename="../../Arch.py" line="1661"/>
       <source>Truss</source>
       <translation>ფერმა</translation>
     </message>
@@ -5096,52 +5096,52 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>შეცდომა: თქვენი IfcOpenShell ვერსია ძალიან ძველია</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="262"/>
+      <location filename="../../Arch.py" line="261"/>
       <source>Drawing</source>
       <translation>ხაზვა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="426"/>
+      <location filename="../../Arch.py" line="435"/>
       <source>Fence</source>
       <translation>ზღუდე</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="592"/>
+      <location filename="../../Arch.py" line="601"/>
       <source>Materials</source>
       <translation>მასალები</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="686"/>
+      <location filename="../../Arch.py" line="695"/>
       <source>View of {panel.Label}</source>
       <translation>{panel.Label}-ის ხედი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="915"/>
+      <location filename="../../Arch.py" line="924"/>
       <source>Project</source>
       <translation>პროექტი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1474"/>
+      <location filename="../../Arch.py" line="1483"/>
       <source>Stairs</source>
       <translation>კიბეები</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1598"/>
+      <location filename="../../Arch.py" line="1607"/>
       <source>Railing</source>
       <translation>მოაჯირი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2425"/>
+      <location filename="../../Arch.py" line="2434"/>
       <source>Report</source>
       <translation>ანგარიში</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2503"/>
+      <location filename="../../Arch.py" line="2512"/>
       <source>Structure</source>
       <translation>სტრუქტურა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2722"/>
+      <location filename="../../Arch.py" line="2731"/>
       <source>Covering</source>
       <translation>საფარი</translation>
     </message>
@@ -5161,14 +5161,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>მრავალკომპონენტიანი მასალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="530"/>
+      <location filename="../../Arch.py" line="539"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>მასალა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="565"/>
+      <location filename="../../Arch.py" line="574"/>
       <source>MultiMaterial</source>
       <translation>მულტიმასალა</translation>
     </message>
@@ -5259,7 +5259,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>მალის მოცილება</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="494"/>
+      <location filename="../../Arch.py" line="503"/>
       <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>ბადე</translation>
@@ -5417,12 +5417,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>შემობრუნება</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="648"/>
+      <location filename="../../Arch.py" line="657"/>
       <source>Panel</source>
       <translation>ზოლი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="714"/>
+      <location filename="../../Arch.py" line="723"/>
       <source>PanelSheet</source>
       <translation>პანელის ფურცელი</translation>
     </message>
@@ -5504,7 +5504,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ამ ობიექტს ზედაპირი არ გააჩნია</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="352"/>
+      <location filename="../../Arch.py" line="361"/>
       <source>Curtain Wall</source>
       <translation>გამჭვირვალე ფასადი</translation>
     </message>
@@ -5522,7 +5522,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="436"/>
-      <location filename="../../Arch.py" line="2438"/>
+      <location filename="../../Arch.py" line="2447"/>
       <source>New Statement</source>
       <translation>ახალი ამონაწერი</translation>
     </message>
@@ -5534,7 +5534,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchReport.py" line="894"/>
-      <location filename="../../Arch.py" line="749"/>
+      <location filename="../../Arch.py" line="758"/>
       <source>Pipe</source>
       <translation>ფაიფი</translation>
     </message>
@@ -6057,7 +6057,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>BIM SQL-ის შპარგალკა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="796"/>
+      <location filename="../../Arch.py" line="805"/>
       <source>Connector</source>
       <translation>დამკავშირებელი</translation>
     </message>
@@ -6205,7 +6205,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSchedule.py" line="988"/>
       <location filename="../../ArchSchedule.py" line="1013"/>
       <location filename="../../ArchCommands.py" line="1731"/>
-      <location filename="../../ArchComponent.py" line="2539"/>
+      <location filename="../../ArchComponent.py" line="2540"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>მნიშვნელობა</translation>
@@ -6218,7 +6218,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>საზომი ერთეულები</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1195"/>
+      <location filename="../../Arch.py" line="1204"/>
       <source>Schedule</source>
       <translation>დაგეგმვა</translation>
     </message>
@@ -6328,17 +6328,17 @@ Floor creation aborted.</source>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2464"/>
+      <location filename="../../ArchComponent.py" line="2465"/>
       <source>Components of This Object</source>
       <translation>ამ ობიექტის კომპონენტები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2474"/>
+      <location filename="../../ArchComponent.py" line="2475"/>
       <source>Edit IFC Properties</source>
       <translation>IFC თვისებების ჩასწორება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2475"/>
+      <location filename="../../ArchComponent.py" line="2476"/>
       <source>Edit Standard Code</source>
       <translation>სტანდარტული კოდის ჩასწორება</translation>
     </message>
@@ -6509,7 +6509,7 @@ The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="315"/>
-      <location filename="../../ArchComponent.py" line="2461"/>
+      <location filename="../../ArchComponent.py" line="2462"/>
       <source>Component</source>
       <translation>კომპონენტი</translation>
     </message>
@@ -6543,91 +6543,91 @@ The ladybug or pysolar Python module is required.</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2132"/>
-      <location filename="../../bimcommands/BimSpace.py" line="70"/>
-      <location filename="../../bimcommands/BimRoof.py" line="93"/>
+      <location filename="../../bimcommands/BimSpace.py" line="71"/>
+      <location filename="../../bimcommands/BimRoof.py" line="94"/>
       <source>Select a base object</source>
       <translation>აირჩიეთ ძირითადი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2465"/>
+      <location filename="../../ArchComponent.py" line="2466"/>
       <source>Base component</source>
       <translation>საბაზისო კომპონენტი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2466"/>
+      <location filename="../../ArchComponent.py" line="2467"/>
       <source>Additions</source>
       <translation>დამატებები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2467"/>
+      <location filename="../../ArchComponent.py" line="2468"/>
       <source>Subtractions</source>
       <translation>გამოკლებები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2468"/>
+      <location filename="../../ArchComponent.py" line="2469"/>
       <source>Objects</source>
       <translation>ობიექტები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2471"/>
+      <location filename="../../ArchComponent.py" line="2472"/>
       <source>Fixtures</source>
       <translation>არმატურები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2472"/>
+      <location filename="../../ArchComponent.py" line="2473"/>
       <source>Group</source>
       <translation>ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2473"/>
+      <location filename="../../ArchComponent.py" line="2474"/>
       <source>Hosts</source>
       <translation>ჰოსტები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2537"/>
+      <location filename="../../ArchComponent.py" line="2538"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>პარამეტრი</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2545"/>
+      <location filename="../../ArchComponent.py" line="2546"/>
       <source>Add property</source>
       <translation>თვისების დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2549"/>
+      <location filename="../../ArchComponent.py" line="2550"/>
       <source>Add property set</source>
       <translation>თვისებების სეტის დამატება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2550"/>
+      <location filename="../../ArchComponent.py" line="2551"/>
       <source>New…</source>
       <translation>ახალი…</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2816"/>
+      <location filename="../../ArchComponent.py" line="2817"/>
       <source>Options</source>
       <translation>პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2957"/>
+      <location filename="../../ArchComponent.py" line="2958"/>
       <source>Error saving property</source>
       <translation>თვისების შენახვის შეცდომა</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2699"/>
+      <location filename="../../ArchComponent.py" line="2700"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>ახალი თვისება</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2736"/>
+      <location filename="../../ArchComponent.py" line="2737"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>ახალი თვისებების ჯგუფი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1002"/>
+      <location filename="../../Arch.py" line="1011"/>
       <source>Rebar</source>
       <translation>არმატურა</translation>
     </message>
@@ -6643,7 +6643,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>მონიშნეთ საბაზისო ზედაპირი ან სტრუქტურული ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1229"/>
+      <location filename="../../Arch.py" line="1238"/>
       <source>Section</source>
       <translation>სექცია</translation>
     </message>
@@ -6798,7 +6798,7 @@ Building creation aborted.</source>
       <translation>შენობის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1332"/>
+      <location filename="../../Arch.py" line="1341"/>
       <source>Space</source>
       <translation>გამოტოვება</translation>
     </message>
@@ -6806,6 +6806,12 @@ Building creation aborted.</source>
       <location filename="../../bimcommands/BimSpace.py" line="59"/>
       <source>Create Space</source>
       <translation>სივრცის შექმნა</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSpace.py" line="74"/>
+      <location filename="../../bimcommands/BimRoof.py" line="97"/>
+      <source>%1 select a base object</source>
+      <translation type="unfinished">%1 select a base object</translation>
     </message>
     <message>
       <location filename="../../ArchSpace.py" line="920"/>
@@ -6848,12 +6854,12 @@ Building creation aborted.</source>
       <translation>სივრცის საზღვრები</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1720"/>
+      <location filename="../../Arch.py" line="1729"/>
       <source>Wall</source>
       <translation>კედელი</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1731"/>
+      <location filename="../../Arch.py" line="1740"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>კედლები შეიძლება დაფუძნებული იყოს ნაწილის ან ბადის ობიექტებზე</translation>
     </message>
@@ -7520,7 +7526,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../Arch.py" line="234"/>
-      <location filename="../../Arch.py" line="307"/>
+      <location filename="../../Arch.py" line="316"/>
       <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>შენობის ტიპი</translation>
@@ -11576,7 +11582,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>აირჩიეთ ბრტყელი ობიექტი</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSlab.py" line="75"/>
+      <location filename="../../bimcommands/BimSlab.py" line="65"/>
+      <source>%1 select a planar object</source>
+      <translation type="unfinished">%1 select a planar object</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSlab.py" line="81"/>
       <source>Slab</source>
       <translation>ფილა</translation>
     </message>
@@ -11826,12 +11837,12 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>თვისება უკვე არსებობს</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="78"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="81"/>
       <source>Viewed lines</source>
       <translation>ნანახი ხაზები</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimDrawingView.py" line="84"/>
+      <location filename="../../bimcommands/BimDrawingView.py" line="85"/>
       <source>Cut lines</source>
       <translation>გაჭრის ხაზები</translation>
     </message>

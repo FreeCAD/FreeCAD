@@ -58,7 +58,7 @@
       <translation>Upravit</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="910"/>
+      <location filename="../Application.cpp" line="869"/>
       <source>Import</source>
       <translation>Import</translation>
     </message>
@@ -105,7 +105,7 @@
     <message>
       <location filename="../CommandStd.cpp" line="1030"/>
       <source>Create Annotation Label</source>
-      <translation type="unfinished">Create Annotation Label</translation>
+      <translation>Vytvořit poznámku</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="64"/>
@@ -146,7 +146,7 @@
       <translation>Přepnout prvky pole</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="260"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Upravit obrázek</translation>
@@ -189,7 +189,7 @@
     <message>
       <location filename="../TaskElementColors.cpp" line="202"/>
       <source>Set colors</source>
-      <translation type="unfinished">Set colors</translation>
+      <translation>Nastavit barvu</translation>
     </message>
   </context>
   <context>
@@ -1099,7 +1099,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="183"/>
       <source>Export Configuration</source>
-      <translation type="unfinished">Export Configuration</translation>
+      <translation>Nastavit export</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCreateNewPreferencePackImp.cpp" line="194"/>
@@ -1195,7 +1195,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="212"/>
       <source>Macro Not Found</source>
-      <translation type="unfinished">Macro Not Found</translation>
+      <translation>Makro nenalezeno</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgActionsImp.cpp" line="239"/>
@@ -1855,7 +1855,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMacroRecordImp.cpp" line="191"/>
       <source>Choose Macro Directory</source>
-      <translation type="unfinished">Choose Macro Directory</translation>
+      <translation>Vyber adresář maker</translation>
     </message>
   </context>
   <context>
@@ -1868,7 +1868,7 @@ Možná je chyba v přístupových právech k souboru?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="179"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Určuje, kolik světla prochází objektem, takže jím částečně nebo zcela prochází</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="192"/>
@@ -5066,7 +5066,7 @@ Sloupec "Status" ukazuje zda je možné dokument obnovit.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="610"/>
       <source>Export Parameter to File</source>
-      <translation type="unfinished">Export Parameter to File</translation>
+      <translation>Exportovat parametr do souboru</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="628"/>
@@ -7387,7 +7387,7 @@ Zadat jiný adresář?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4245"/>
+      <location filename="../Tree.cpp" line="4251"/>
       <source>Search</source>
       <translation>Hledat</translation>
     </message>
@@ -7430,153 +7430,153 @@ Zadat jiný adresář?</translation>
       <translation>Skupina</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3400"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
+      <location filename="../Tree.cpp" line="3400"/>
       <source>File does not exist.</source>
       <translation>Soubor neexistuje.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Failed to open directory.</source>
       <translation>Otevření adresáře selhalo.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3894"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Labels &amp; Attributes</source>
       <translation>Štítky &amp; atributy</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Description</source>
       <translation>Popis</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3896"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Internal name</source>
       <translation>Interní název</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3898"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Zobrazit skryté položky ve stromovém zobrazení</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Zobrazí položky, které jsou označeny jako 'skryté' ve stromovém zobrazení</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Přepnout viditelnost ve stromovém zobrazení</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Create Group</source>
       <translation>Vytvořit skupinu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Creates a group</source>
       <translation>Vytvoří skupinu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Renames object</source>
       <translation>Přejmenuje objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Finish Editing</source>
       <translation>Dokončit úpravy</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Finishes editing object</source>
       <translation>Dokončí úpravu objektu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Přidat závislé objekty k výběru</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Close Document</source>
       <translation>Zavřít dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Closes the document</source>
       <translation>Uzavře dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Zobrazí umístění aktuálního souboru ve Finderu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Opens the current file location</source>
       <translation>Otevře aktuální umístění souboru</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Reload Document</source>
       <translation>Znovu načíst dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3933"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Reloads a partially loaded document</source>
       <translation>Znovu načte částečně načtený dokument</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Skip Recomputes</source>
       <translation>Přeskočit přepočítání</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3936"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Povolí nebo zakáže přepočítání dokumentu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Allow Partial Recomputes</source>
       <translation>Povolit částečné přepočítání</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Povolí nebo zakáže přepočítávací editaci objektu, když je zapnuto 'přeskočit přepočítávání'</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3949"/>
       <source>Mark to Recompute</source>
       <translation>Označit k přepočítání</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3950"/>
       <source>Marks this object to be recomputed</source>
       <translation>Označí tento objekt k přepočítání</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Recompute Object</source>
       <translation>Přepočítat objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3948"/>
+      <location filename="../Tree.cpp" line="3954"/>
       <source>Recomputes the selected object</source>
       <translation>Přepočítá vybraný objekt</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Přepíná viditelnost vybraných položek ve stromovém zobrazení</translation>
     </message>
@@ -7596,33 +7596,33 @@ Zadat jiný adresář?</translation>
       <translation>Zobrazí sloupec popisu položek. Popis položky může být nastaven úpravou vlastnosti 'label2'.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
-      <location filename="../Tree.cpp" line="6590"/>
+      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="6604"/>
       <source>Rename</source>
       <translation>Přejmenovat</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Přidá do výběru všechny závislé objekty</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reveal in Finder</source>
       <translation>Zobrazit ve Finderu</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Open File Location</source>
       <translation>Otevřít umístění souboru</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6558"/>
+      <location filename="../Tree.cpp" line="6572"/>
       <source> (but must be executed)</source>
       <translation> (ale musí být provedeno)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6561"/>
+      <location filename="../Tree.cpp" line="6575"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, interní název: %2</translation>
     </message>
@@ -7929,35 +7929,35 @@ Zadat jiný adresář?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
-      <location filename="../Application.cpp" line="976"/>
-      <location filename="../Application.cpp" line="1063"/>
+      <location filename="../Application.cpp" line="828"/>
+      <location filename="../Application.cpp" line="935"/>
+      <location filename="../Application.cpp" line="1022"/>
       <source>Unknown filetype</source>
       <translation>Neznámý typ souboru</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="870"/>
-      <location filename="../Application.cpp" line="977"/>
+      <location filename="../Application.cpp" line="829"/>
+      <location filename="../Application.cpp" line="936"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Nelze otevřít neznámý typ souboru: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1053"/>
+      <location filename="../Application.cpp" line="1012"/>
       <source>Export failed</source>
       <translation>Export selhal</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1064"/>
+      <location filename="../Application.cpp" line="1023"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Nelze uložit neznámý typ souboru: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1221"/>
       <source>Recomputation required</source>
       <translation>Vyžadováno přepočítání</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1263"/>
+      <location filename="../Application.cpp" line="1222"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7966,24 +7966,24 @@ Recompute now?</source>
 Přepočítat nyní?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1289"/>
+      <location filename="../Application.cpp" line="1248"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Přepočítání některých dokumentů se nezdařilo.
 Zkontrolujte zobrazení reportu pro více podrobností.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1288"/>
+      <location filename="../Application.cpp" line="1247"/>
       <source>Recompute error</source>
       <translation>Chyba přepočítání</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2038"/>
+      <location filename="../Application.cpp" line="1997"/>
       <source>Workbench failure</source>
       <translation>Selhání v pracovním prostředí</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2039"/>
+      <location filename="../Application.cpp" line="1998"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8053,18 +8053,18 @@ Zkontrolujte zobrazení reportu pro více podrobností.</translation>
       <translation>Výjimka</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1302"/>
-      <location filename="../Application.cpp" line="1317"/>
+      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1276"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1303"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Při načítání souboru se objevily chyby. Některé data mohla být modifikována nebo nebyla vůbec obnovena. Podívejte se do Zobrazení reportu pro konkrétnější informaci o zúčastněných objektech.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1318"/>
+      <location filename="../Application.cpp" line="1277"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>Při načítání souboru došlo k vážným chybám. Některá data mohla být změněna nebo vůbec neobnovena. Uložení projektu s největší pravděpodobností povede ke ztrátě dat.</translation>
     </message>
@@ -8681,12 +8681,12 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Nelze otevřít systémový prohlížeč.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3231"/>
+      <location filename="../View3DInventorViewer.cpp" line="3294"/>
       <source>Out of memory</source>
       <translation>Nedostatek paměti</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3232"/>
+      <location filename="../View3DInventorViewer.cpp" line="3295"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Není dostatek paměti pro zobrazení dat.</translation>
     </message>
@@ -8826,8 +8826,8 @@ Zvolte 'Přerušit' pro zrušení</translation>
       <translation>Selhalo přidání vlastnosti do '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2770"/>
-      <location filename="../Tree.cpp" line="3167"/>
+      <location filename="../Tree.cpp" line="2776"/>
+      <location filename="../Tree.cpp" line="3173"/>
       <source>Drag &amp; drop failed</source>
       <translation>Přetažení se nezdařilo</translation>
     </message>
@@ -9718,12 +9718,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2487"/>
+      <location filename="../CommandView.cpp" line="2488"/>
       <source>Inventor Example #1</source>
       <translation>Příklad Inventoru #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2488"/>
+      <location filename="../CommandView.cpp" line="2489"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>Zobrazí 3D textury a manipulátor</translation>
     </message>
@@ -9731,12 +9731,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2515"/>
+      <location filename="../CommandView.cpp" line="2516"/>
       <source>Inventor Example #2</source>
       <translation>Příklad Inventoru #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2516"/>
+      <location filename="../CommandView.cpp" line="2517"/>
       <source>Shows spheres and drag-lights</source>
       <translation>Ukazuje koule a světla</translation>
     </message>
@@ -9939,12 +9939,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3343"/>
+      <location filename="../CommandView.cpp" line="3344"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>S&amp;balit/Rozbalit</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3344"/>
+      <location filename="../CommandView.cpp" line="3345"/>
       <source>Expands the active document and collapses all others</source>
       <translation>Rozbalí aktivní dokument a sbalí všechny ostatní</translation>
     </message>
@@ -9952,12 +9952,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3445"/>
+      <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselection</source>
       <translation type="unfinished">Preselection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3446"/>
+      <location filename="../CommandView.cpp" line="3447"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>Vybere objekt ve 3D zobrazení při zastavení kurzoru nad položkou stromu</translation>
     </message>
@@ -10017,12 +10017,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2630"/>
+      <location filename="../CommandView.cpp" line="2631"/>
       <source>Zoom &amp;In</source>
       <translation>&amp;Přiblížit</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2631"/>
+      <location filename="../CommandView.cpp" line="2632"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>Zvyšuje faktor přiblížení o pevnou hodnotu</translation>
     </message>
@@ -10030,12 +10030,12 @@ na aktuální kopii budou ztraceny.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2659"/>
+      <location filename="../CommandView.cpp" line="2660"/>
       <source>Zoom &amp;Out</source>
       <translation>&amp;Oddálit</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2660"/>
+      <location filename="../CommandView.cpp" line="2661"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>Sníží faktor přiblížení o pevnou hodnotu</translation>
     </message>
@@ -10692,13 +10692,63 @@ po spuštění FreeCADu</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
+      <source>Snap rotation to line</source>
+      <translation type="unfinished">Snap rotation to line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <source>Rotate the image to align the drawn line to the nearest 45 degree angle</source>
+      <translation type="unfinished">Rotate the image to align the drawn line to the nearest 45 degree angle</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="273"/>
+      <source>Center on midpoint</source>
+      <translation type="unfinished">Center on midpoint</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="276"/>
+      <source>Center the image on the midpoint of the drawn line</source>
+      <translation>Vycentrovat obrázek na střed nakreslené osy</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="288"/>
       <source>Apply</source>
       <translation>Použít</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="267"/>
+      <location filename="../TaskView/TaskImage.ui" line="295"/>
       <source>Cancel</source>
       <translation>Zrušit</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="215"/>
+      <source>%1 snap angle</source>
+      <translation type="unfinished">%1 snap angle</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="216"/>
+      <source>%1 toggle centering</source>
+      <translation type="unfinished">%1 toggle centering</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="217"/>
+      <source>%1 toggle rotating to line</source>
+      <translation type="unfinished">%1 toggle rotating to line</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="218"/>
+      <source>%1 accept distance</source>
+      <translation type="unfinished">%1 accept distance</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="224"/>
+      <source>%1 pick first point</source>
+      <translation type="unfinished">%1 pick first point</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="226"/>
+      <source>%1 pick second point</source>
+      <translation type="unfinished">%1 pick second point</translation>
     </message>
   </context>
   <context>
@@ -12851,22 +12901,22 @@ Nastavte na 0 pro vyplnění celého prostoru.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="496"/>
+      <location filename="../Application.cpp" line="477"/>
       <source>Built-in Parameters</source>
       <translation>Vestavěné parametry</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="470"/>
+      <location filename="../Application.cpp" line="451"/>
       <source>Theme Parameters</source>
       <translation>Parametry motivu</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="505"/>
+      <location filename="../Application.cpp" line="486"/>
       <source>Theme Parameters - Fallback</source>
       <translation>Parametry motivu - nouzové</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="517"/>
+      <location filename="../Application.cpp" line="498"/>
       <source>User Parameters</source>
       <translation>Uživatelské parametry</translation>
     </message>
@@ -13767,12 +13817,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2543"/>
+      <location filename="../CommandView.cpp" line="2544"/>
       <source>Inventor Example #3</source>
       <translation>Příklad inventáře #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2544"/>
+      <location filename="../CommandView.cpp" line="2545"/>
       <source>Shows an animated texture</source>
       <translation>Zobrazí animovanou texturu</translation>
     </message>
@@ -13780,12 +13830,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2572"/>
+      <location filename="../CommandView.cpp" line="2573"/>
       <source>Issue Camera &amp;Position</source>
       <translation>&amp;Poznamenat pozici kamery</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2573"/>
+      <location filename="../CommandView.cpp" line="2574"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Poznamená pozici kamery do konzole a do makra pro snadné obnovení pozice</translation>
     </message>
@@ -13793,12 +13843,12 @@ Pokračovat?</translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2825"/>
+      <location filename="../CommandView.cpp" line="2826"/>
       <source>&amp;Box Zoom</source>
       <translation>Přiblížení &amp;výběrem</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2826"/>
+      <location filename="../CommandView.cpp" line="2827"/>
       <source>Activates the box zoom tool</source>
       <translation>Aktivuje nástroj pro přiblížení obdélníkovým výběrem</translation>
     </message>
@@ -13806,12 +13856,12 @@ Pokračovat?</translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2859"/>
+      <location filename="../CommandView.cpp" line="2860"/>
       <source>&amp;Box Selection</source>
       <translation>Výběr o&amp;bdélníkem</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2860"/>
+      <location filename="../CommandView.cpp" line="2861"/>
       <source>Activates the box selection tool</source>
       <translation>Aktivuje nástroj pro výběr obdélníkem</translation>
     </message>
@@ -13819,12 +13869,12 @@ Pokračovat?</translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2926"/>
+      <location filename="../CommandView.cpp" line="2927"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>Výběr prv&amp;ku obdélníkem</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2927"/>
+      <location filename="../CommandView.cpp" line="2928"/>
       <source>Activates box element selection</source>
       <translation>Aktivuje výběr prvku obdélníkem</translation>
     </message>
@@ -13832,12 +13882,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2982"/>
+      <location filename="../CommandView.cpp" line="2983"/>
       <source>&amp;Go to Selection</source>
       <translation>Pře&amp;jít na výběr</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2983"/>
+      <location filename="../CommandView.cpp" line="2984"/>
       <source>Scrolls to the first selected item</source>
       <translation>Přejde na první vybranou položku</translation>
     </message>
@@ -13845,12 +13895,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3007"/>
+      <location filename="../CommandView.cpp" line="3008"/>
       <source>Collapse Selected Items</source>
       <translation>Sbalit vybrané položky</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3008"/>
+      <location filename="../CommandView.cpp" line="3009"/>
       <source>Collapses the currently selected tree items</source>
       <translation>Sbalí aktuálně vybrané položky stromu</translation>
     </message>
@@ -13858,12 +13908,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3033"/>
+      <location filename="../CommandView.cpp" line="3034"/>
       <source>Expand Selected Items</source>
       <translation>Rozbalit vybrané položky</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3034"/>
+      <location filename="../CommandView.cpp" line="3035"/>
       <source>Expands the currently selected tree items</source>
       <translation>Rozbalí aktuálně vybrané položky stromu</translation>
     </message>
@@ -13871,12 +13921,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3059"/>
+      <location filename="../CommandView.cpp" line="3060"/>
       <source>Select All Instances</source>
       <translation>Vybrat všechny instance</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3060"/>
+      <location filename="../CommandView.cpp" line="3061"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>Vybere všechny instance aktuálně vybraného objektu</translation>
     </message>
@@ -13884,12 +13934,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3127"/>
+      <location filename="../CommandView.cpp" line="3128"/>
       <source>Scene I&amp;nspector</source>
       <translation>I&amp;nspektor scény</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3128"/>
+      <location filename="../CommandView.cpp" line="3129"/>
       <source>Opens the scene inspector</source>
       <translation>Otevře Inspektor scény</translation>
     </message>
@@ -13897,12 +13947,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3162"/>
       <source>Text&amp;ure Mapping</source>
       <translation>&amp;Mapování textur</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3162"/>
+      <location filename="../CommandView.cpp" line="3163"/>
       <source>Maps textures to shapes</source>
       <translation>Mapuje textury na tvary</translation>
     </message>
@@ -13910,12 +13960,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3187"/>
+      <location filename="../CommandView.cpp" line="3188"/>
       <source>View &amp;Turntable</source>
       <translation>Zobrazit otočný stůl</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3188"/>
+      <location filename="../CommandView.cpp" line="3189"/>
       <source>Opens a turntable view</source>
       <translation>Otevře otočný pohled</translation>
     </message>
@@ -13923,12 +13973,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3217"/>
+      <location filename="../CommandView.cpp" line="3218"/>
       <source>Selection &amp;Back</source>
       <translation>Výběr &amp;zpět</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3219"/>
+      <location filename="../CommandView.cpp" line="3220"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Obnoví předchozí výběr ze stromového zobrazení. Funguje pouze v případě, že je zapnutý režim Nahrát výběr ve stromovém zobrazení.</translation>
     </message>
@@ -13936,12 +13986,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3251"/>
+      <location filename="../CommandView.cpp" line="3252"/>
       <source>Selection &amp;Forward</source>
       <translation>Výběr &amp;dopředu</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3253"/>
+      <location filename="../CommandView.cpp" line="3254"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Obnoví následující výběr ze stromového zobrazení. Funguje pouze v případě, že je zapnutý režim Nahrát výběr ve stromovém zobrazení.</translation>
     </message>
@@ -13949,12 +13999,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3309"/>
+      <location filename="../CommandView.cpp" line="3310"/>
       <source>&amp;Single Document</source>
       <translation>&amp;Jediný dokument</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3310"/>
+      <location filename="../CommandView.cpp" line="3311"/>
       <source>Displays only the active document in the tree view</source>
       <translation>Ve stromovém zobrazení zobrazí pouze aktivní dokument</translation>
     </message>
@@ -13962,12 +14012,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3326"/>
+      <location filename="../CommandView.cpp" line="3327"/>
       <source>&amp;Multi Document</source>
       <translation>&amp;Vícenásobný dokument</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3327"/>
+      <location filename="../CommandView.cpp" line="3328"/>
       <source>Displays all documents in the tree view</source>
       <translation>Ve stromovém zobrazení zobrazí všechny dokumenty</translation>
     </message>
@@ -13975,12 +14025,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3386"/>
+      <location filename="../CommandView.cpp" line="3387"/>
       <source>Sync View</source>
       <translation type="unfinished">Sync View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3387"/>
+      <location filename="../CommandView.cpp" line="3388"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>Přepne na 3D zobrazení obsahující vybranou položku ze stromového zobrazení</translation>
     </message>
@@ -13988,12 +14038,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3407"/>
       <source>Sync Selection</source>
       <translation type="unfinished">Sync Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3407"/>
+      <location filename="../CommandView.cpp" line="3408"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>Rozbalí položku stromu, když je vybrán odpovídající objekt ve 3D zobrazení</translation>
     </message>
@@ -14001,12 +14051,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3426"/>
+      <location filename="../CommandView.cpp" line="3427"/>
       <source>Sync Placement</source>
       <translation type="unfinished">Sync Placement</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3428"/>
+      <location filename="../CommandView.cpp" line="3429"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>Přizpůsobí umístění objektů při přetažení mezi souřadnicovými systémy (např. v kontejnerech dílů)</translation>
     </message>
@@ -14014,12 +14064,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3465"/>
+      <location filename="../CommandView.cpp" line="3466"/>
       <source>Record Selection</source>
       <translation type="unfinished">Record Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3467"/>
+      <location filename="../CommandView.cpp" line="3468"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>Nahraje výběr ve stromovém zobrazení pro návrat zpět/vpřed pomocí navigačních tlačítek</translation>
     </message>
@@ -14027,12 +14077,12 @@ Pokračovat?</translation>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3484"/>
+      <location filename="../CommandView.cpp" line="3485"/>
       <source>Initiate &amp;Dragging</source>
       <translation>Zahájit &amp;přetažení</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3485"/>
+      <location filename="../CommandView.cpp" line="3486"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>Zahájí přetažení aktuálně vybraných položek stromu</translation>
     </message>
@@ -14040,12 +14090,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3517"/>
+      <location filename="../CommandView.cpp" line="3518"/>
       <source>Tree View Actions</source>
       <translation>Akce stromového zobrazení</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3518"/>
+      <location filename="../CommandView.cpp" line="3519"/>
       <source>Tree view behavior options and actions</source>
       <translation>Možnosti a akce chování stromového zobrazení</translation>
     </message>
@@ -14053,12 +14103,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3562"/>
+      <location filename="../CommandView.cpp" line="3563"/>
       <source>&amp;Bounding Box</source>
       <translation>Ohraničující &amp;kvádr</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3563"/>
+      <location filename="../CommandView.cpp" line="3564"/>
       <source>Shows selection bounding box</source>
       <translation>Zobrazí ohraničující kvádr výběru</translation>
     </message>
@@ -14066,12 +14116,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3609"/>
+      <location filename="../CommandView.cpp" line="3610"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>Přepnout překryv pro &amp;všechny panely</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3610"/>
+      <location filename="../CommandView.cpp" line="3611"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
     </message>
@@ -14079,12 +14129,12 @@ Pokračovat?</translation>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3632"/>
+      <location filename="../CommandView.cpp" line="3633"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>Přepnout &amp;průhlednost panelů</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3633"/>
+      <location filename="../CommandView.cpp" line="3634"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>Přepne režim průhlednosti pro všechny ukotvené překryvné panely.
@@ -14094,12 +14144,12 @@ Díky tomu zůstanou ukotvené panely vždy průhledné.</translation>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3658"/>
+      <location filename="../CommandView.cpp" line="3659"/>
       <source>Toggle &amp;Overlay</source>
       <translation>Přepnout pře&amp;krytí</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3659"/>
+      <location filename="../CommandView.cpp" line="3660"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>Přepne režim překrytí pro ukotvené okno pod kurzorem</translation>
     </message>
@@ -14107,12 +14157,12 @@ Díky tomu zůstanou ukotvené panely vždy průhledné.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3681"/>
+      <location filename="../CommandView.cpp" line="3682"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>Přepnout režim prů&amp;hlednosti</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3682"/>
+      <location filename="../CommandView.cpp" line="3683"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>Přepne režim průhlednosti pro ukotvený panel pod kurzorem.
@@ -14122,12 +14172,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3707"/>
+      <location filename="../CommandView.cpp" line="3708"/>
       <source>Toggle &amp;Left</source>
       <translation type="unfinished">Toggle &amp;Left</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3708"/>
+      <location filename="../CommandView.cpp" line="3709"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the left overlay panel</translation>
     </message>
@@ -14135,12 +14185,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3732"/>
+      <location filename="../CommandView.cpp" line="3733"/>
       <source>Toggle &amp;Right</source>
       <translation type="unfinished">Toggle &amp;Right</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3733"/>
+      <location filename="../CommandView.cpp" line="3734"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the right overlay panel</translation>
     </message>
@@ -14148,12 +14198,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3757"/>
+      <location filename="../CommandView.cpp" line="3758"/>
       <source>Toggle &amp;Top</source>
       <translation type="unfinished">Toggle &amp;Top</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3758"/>
+      <location filename="../CommandView.cpp" line="3759"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the top overlay panel</translation>
     </message>
@@ -14161,12 +14211,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3782"/>
+      <location filename="../CommandView.cpp" line="3783"/>
       <source>Toggle &amp;Bottom</source>
       <translation type="unfinished">Toggle &amp;Bottom</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3783"/>
+      <location filename="../CommandView.cpp" line="3784"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation type="unfinished">Toggles the visibility of the bottom overlay panel</translation>
     </message>
@@ -14174,12 +14224,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3807"/>
+      <location filename="../CommandView.cpp" line="3808"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation type="unfinished">Bypass &amp;Mouse Events in Overlay Panels</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3808"/>
+      <location filename="../CommandView.cpp" line="3809"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation type="unfinished">Bypasses all mouse events in docked overlay panels</translation>
     </message>
@@ -14187,12 +14237,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="3853"/>
+      <location filename="../CommandView.cpp" line="3854"/>
       <source>Overlay Docked Panel</source>
       <translation type="unfinished">Overlay Docked Panel</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3854"/>
+      <location filename="../CommandView.cpp" line="3855"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation type="unfinished">Sets the docked panel in overlay mode</translation>
     </message>
@@ -14200,12 +14250,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3987"/>
+      <location filename="../CommandView.cpp" line="3988"/>
       <source>St&amp;ore Working View</source>
       <translation type="unfinished">St&amp;ore Working View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3988"/>
+      <location filename="../CommandView.cpp" line="3989"/>
       <source>Stores a temporary working view for the current document</source>
       <translation type="unfinished">Stores a temporary working view for the current document</translation>
     </message>
@@ -14213,12 +14263,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4015"/>
+      <location filename="../CommandView.cpp" line="4016"/>
       <source>R&amp;ecall Working View</source>
       <translation type="unfinished">R&amp;ecall Working View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4016"/>
+      <location filename="../CommandView.cpp" line="4017"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation type="unfinished">Recalls a previously stored temporary working view</translation>
     </message>
@@ -14226,12 +14276,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4043"/>
+      <location filename="../CommandView.cpp" line="4044"/>
       <source>&amp;Align to Selection</source>
       <translation type="unfinished">&amp;Align to Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4044"/>
+      <location filename="../CommandView.cpp" line="4045"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation type="unfinished">Aligns the camera view to the selected elements in the 3D view</translation>
     </message>
@@ -14278,7 +14328,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1082"/>
+      <location filename="../ExpressionCompleter.cpp" line="1108"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14286,7 +14336,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1271"/>
+      <location filename="../ExpressionCompleter.cpp" line="1297"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14332,7 +14382,7 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4317"/>
+      <location filename="../Tree.cpp" line="4323"/>
       <source>Tree View</source>
       <translation>Zobrazení stromu</translation>
     </message>
@@ -14516,12 +14566,12 @@ Díky tomu zůstane ukotvený panel vždy průhledný.</translation>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4071"/>
+      <location filename="../CommandView.cpp" line="4072"/>
       <source>Clarify Selection</source>
       <translation>Upřesnit výběr</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4072"/>
+      <location filename="../CommandView.cpp" line="4073"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation type="unfinished">Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
@@ -14797,12 +14847,12 @@ prodleva, bude považováno za sekvenci klávesové zkratky 'F, F'.</translation
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="3889"/>
+      <location filename="../CommandView.cpp" line="3890"/>
       <source>Toggle Bottom Panels</source>
       <translation type="unfinished">Toggle Bottom Panels</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3890"/>
+      <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
       <translation type="unfinished">Toggles the bottom dock panels</translation>
     </message>

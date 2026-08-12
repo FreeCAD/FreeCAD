@@ -1808,6 +1808,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>Выдаліць</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Толькі адна грань у аб'екце! - перанесена на галоўную грань</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Абраць залежная геаметрыю тыпу: </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1831,26 +1841,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>Памылка выбару</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Толькі адна грань у аб'екце! - перанесена на галоўную грань</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Абраць залежная геаметрыю тыпу: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Грань</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>пстрыкнуць 'Дадаць' ці 'Выдаліць'</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Рабро, грань</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5025,13 +5025,15 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Абраць асноўную геаметрыю тыпу: грань, пстрыкніце 'Дадаць' ці 'Выдаліць'</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Абраць асноўную геаметрыю тыпу: рабро, грань;
+пстрыкніце 'Дадаць' ці 'Выдаліць'</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Абраць залежную геаметрыю тыпу: грань, пстрыкніце 'Дадаць' ці 'Выдаліць'</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Абраць залежную геаметрыю тыпу: рабро, грань;
+пстрыкніце 'Дадаць' ці 'Выдаліць'</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>

@@ -58,7 +58,7 @@
       <translation>编辑</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="910"/>
+      <location filename="../Application.cpp" line="869"/>
       <source>Import</source>
       <translation>导入</translation>
     </message>
@@ -146,7 +146,7 @@
       <translation>切换阵列元素</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="260"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>编辑图像</translation>
@@ -7376,7 +7376,7 @@ Specify another directory?</source>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4245"/>
+      <location filename="../Tree.cpp" line="4251"/>
       <source>Search</source>
       <translation>搜索</translation>
     </message>
@@ -7419,153 +7419,153 @@ Specify another directory?</source>
       <translation>组</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3400"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
+      <location filename="../Tree.cpp" line="3400"/>
       <source>File does not exist.</source>
       <translation>文件不存在。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Failed to open directory.</source>
       <translation>无法打开目录。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3894"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Labels &amp; Attributes</source>
       <translation>标签与属性</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Description</source>
       <translation>说明</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3896"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Internal name</source>
       <translation>内部名称</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3898"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>显示树视图中隐藏的项</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>显示在树视图中标记为“隐藏”的项</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>切换树视图中的可见性</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Create Group</source>
       <translation>创建组</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Creates a group</source>
       <translation>创建一个组</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Renames object</source>
       <translation>重命名对象</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Finish Editing</source>
       <translation>完成编辑</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Finishes editing object</source>
       <translation>完成对象编辑</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>将依赖对象添加到选择</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Close Document</source>
       <translation>关闭文档</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Closes the document</source>
       <translation>关闭文档</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reveals the current file location in Finder</source>
       <translation>在 Finder 中显示当前文件位置</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Opens the current file location</source>
       <translation>打开当前文件位置</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Reload Document</source>
       <translation>重新加载文档</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3933"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Reloads a partially loaded document</source>
       <translation>重新加载部分加载的文档</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Skip Recomputes</source>
       <translation>跳过重新计算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3936"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>启用或禁用文档的重新计算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Allow Partial Recomputes</source>
       <translation>允许部分重新计算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>当启用“跳过重新计算”时，启用或禁用重新计算编辑对象</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3949"/>
       <source>Mark to Recompute</source>
       <translation>标记为重新计算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3950"/>
       <source>Marks this object to be recomputed</source>
       <translation>标记此对象需要重新计算</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Recompute Object</source>
       <translation>重新计算对象</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3948"/>
+      <location filename="../Tree.cpp" line="3954"/>
       <source>Recomputes the selected object</source>
       <translation>重新计算选定的对象</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>在树状视图中切换选中项目的可见性</translation>
     </message>
@@ -7585,33 +7585,33 @@ Specify another directory?</source>
       <translation>为项显示描述列。可以通过编辑 'label2' 属性来设置项的描述。</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
-      <location filename="../Tree.cpp" line="6590"/>
+      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="6604"/>
       <source>Rename</source>
       <translation>重命名</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>将所有依赖对象添加到所选对象</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reveal in Finder</source>
       <translation>在查找器中显示</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Open File Location</source>
       <translation>打开文件所在位置</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6558"/>
+      <location filename="../Tree.cpp" line="6572"/>
       <source> (but must be executed)</source>
       <translation> (但是必须执行)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6561"/>
+      <location filename="../Tree.cpp" line="6575"/>
       <source>%1, Internal name: %2</source>
       <translation>%1、内部名: %2</translation>
     </message>
@@ -7918,35 +7918,35 @@ Specify another directory?</source>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
-      <location filename="../Application.cpp" line="976"/>
-      <location filename="../Application.cpp" line="1063"/>
+      <location filename="../Application.cpp" line="828"/>
+      <location filename="../Application.cpp" line="935"/>
+      <location filename="../Application.cpp" line="1022"/>
       <source>Unknown filetype</source>
       <translation>未知文件类型</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="870"/>
-      <location filename="../Application.cpp" line="977"/>
+      <location filename="../Application.cpp" line="829"/>
+      <location filename="../Application.cpp" line="936"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>无法打开未知文件类型: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1053"/>
+      <location filename="../Application.cpp" line="1012"/>
       <source>Export failed</source>
       <translation>导出失败</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1064"/>
+      <location filename="../Application.cpp" line="1023"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>无法保存为未知的文件类型: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1221"/>
       <source>Recomputation required</source>
       <translation>需要重新计算</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1263"/>
+      <location filename="../Application.cpp" line="1222"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7955,24 +7955,24 @@ Recompute now?</source>
 是否立即重新计算？</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1289"/>
+      <location filename="../Application.cpp" line="1248"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>重新计算某些文档失败。
 请检查报告视图以获取更多详情。</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1288"/>
+      <location filename="../Application.cpp" line="1247"/>
       <source>Recompute error</source>
       <translation>重新计算错误</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2038"/>
+      <location filename="../Application.cpp" line="1997"/>
       <source>Workbench failure</source>
       <translation>工作台故障</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2039"/>
+      <location filename="../Application.cpp" line="1998"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8039,18 +8039,18 @@ Check the report view for more details.</source>
       <translation>异常</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1302"/>
-      <location filename="../Application.cpp" line="1317"/>
+      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1276"/>
       <source>Error</source>
       <translation>错误</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1303"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>加载文件时出错。有些数据可能已经修改或未全部恢复。在报告视图中查看有关对象的更多信息。</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1318"/>
+      <location filename="../Application.cpp" line="1277"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>加载文件时出现严重错误。有些数据可能已被修改或根本没有恢复。 保存项目很可能导致数据丢失。</translation>
     </message>
@@ -8666,12 +8666,12 @@ Choose 'Abort' to abort</source>
       <translation>无法打开您的系统浏览器.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3231"/>
+      <location filename="../View3DInventorViewer.cpp" line="3294"/>
       <source>Out of memory</source>
       <translation>内存不足</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3232"/>
+      <location filename="../View3DInventorViewer.cpp" line="3295"/>
       <source>Not enough memory available to display the data.</source>
       <translation>没有足够的可用内存来显示数据.</translation>
     </message>
@@ -8811,8 +8811,8 @@ Choose 'Abort' to abort</source>
       <translation>加入屬性至 '%1':%2 失敗</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2770"/>
-      <location filename="../Tree.cpp" line="3167"/>
+      <location filename="../Tree.cpp" line="2776"/>
+      <location filename="../Tree.cpp" line="3173"/>
       <source>Drag &amp; drop failed</source>
       <translation>拖放失败</translation>
     </message>
@@ -9702,12 +9702,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2487"/>
+      <location filename="../CommandView.cpp" line="2488"/>
       <source>Inventor Example #1</source>
       <translation>Inventor 示例 #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2488"/>
+      <location filename="../CommandView.cpp" line="2489"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>自动控制显示三维纹理</translation>
     </message>
@@ -9715,12 +9715,12 @@ the current copy will be lost.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2515"/>
+      <location filename="../CommandView.cpp" line="2516"/>
       <source>Inventor Example #2</source>
       <translation>Inventor 示例 #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2516"/>
+      <location filename="../CommandView.cpp" line="2517"/>
       <source>Shows spheres and drag-lights</source>
       <translation>显示操控球和拖放指示</translation>
     </message>
@@ -9923,12 +9923,12 @@ the current copy will be lost.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3343"/>
+      <location filename="../CommandView.cpp" line="3344"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>折叠/展开(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3344"/>
+      <location filename="../CommandView.cpp" line="3345"/>
       <source>Expands the active document and collapses all others</source>
       <translation>展开活动文档并折叠所有其他文档</translation>
     </message>
@@ -9936,12 +9936,12 @@ the current copy will be lost.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3445"/>
+      <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselection</source>
       <translation>预选</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3446"/>
+      <location filename="../CommandView.cpp" line="3447"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>当光标悬停在树状图项目上时，在 3D 视图中预选对象</translation>
     </message>
@@ -10001,12 +10001,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2630"/>
+      <location filename="../CommandView.cpp" line="2631"/>
       <source>Zoom &amp;In</source>
       <translation>放大(&amp;I)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2631"/>
+      <location filename="../CommandView.cpp" line="2632"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>按固定量增加缩放因子</translation>
     </message>
@@ -10014,12 +10014,12 @@ the current copy will be lost.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2659"/>
+      <location filename="../CommandView.cpp" line="2660"/>
       <source>Zoom &amp;Out</source>
       <translation>缩小(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2660"/>
+      <location filename="../CommandView.cpp" line="2661"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>按固定量减小缩放因子</translation>
     </message>
@@ -10675,13 +10675,63 @@ after FreeCAD launches</source>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
+      <source>Snap rotation to line</source>
+      <translation>旋转捕捉至直线</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <source>Rotate the image to align the drawn line to the nearest 45 degree angle</source>
+      <translation>旋转图像以将绘制的直线对齐到最接近的 45 度角</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="273"/>
+      <source>Center on midpoint</source>
+      <translation>居中于中点</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="276"/>
+      <source>Center the image on the midpoint of the drawn line</source>
+      <translation>将图像居中于所绘制线段的中点</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="288"/>
       <source>Apply</source>
       <translation>应用</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="267"/>
+      <location filename="../TaskView/TaskImage.ui" line="295"/>
       <source>Cancel</source>
       <translation>取消</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="215"/>
+      <source>%1 snap angle</source>
+      <translation>%1 捕捉角度</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="216"/>
+      <source>%1 toggle centering</source>
+      <translation>%1 切换居中模式</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="217"/>
+      <source>%1 toggle rotating to line</source>
+      <translation>%1 切换旋转至直线</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="218"/>
+      <source>%1 accept distance</source>
+      <translation>%1 应用距离</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="224"/>
+      <source>%1 pick first point</source>
+      <translation>%1 选择第一个点</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="226"/>
+      <source>%1 pick second point</source>
+      <translation>%1 选择第二个点</translation>
     </message>
   </context>
   <context>
@@ -12822,22 +12872,22 @@ the region are non-opaque.</source>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="496"/>
+      <location filename="../Application.cpp" line="477"/>
       <source>Built-in Parameters</source>
       <translation>内置参数</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="470"/>
+      <location filename="../Application.cpp" line="451"/>
       <source>Theme Parameters</source>
       <translation>主题参数</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="505"/>
+      <location filename="../Application.cpp" line="486"/>
       <source>Theme Parameters - Fallback</source>
       <translation>主题参数 - 回退</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="517"/>
+      <location filename="../Application.cpp" line="498"/>
       <source>User Parameters</source>
       <translation>用户参数</translation>
     </message>
@@ -13738,12 +13788,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2543"/>
+      <location filename="../CommandView.cpp" line="2544"/>
       <source>Inventor Example #3</source>
       <translation>Inventor 示例 #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2544"/>
+      <location filename="../CommandView.cpp" line="2545"/>
       <source>Shows an animated texture</source>
       <translation>显示动画纹理</translation>
     </message>
@@ -13751,12 +13801,12 @@ Proceed?</source>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2572"/>
+      <location filename="../CommandView.cpp" line="2573"/>
       <source>Issue Camera &amp;Position</source>
       <translation>发布相机位置(&amp;P)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2573"/>
+      <location filename="../CommandView.cpp" line="2574"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>将相机位置发送到控制台和宏，以便轻松调用此位置</translation>
     </message>
@@ -13764,12 +13814,12 @@ Proceed?</source>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2825"/>
+      <location filename="../CommandView.cpp" line="2826"/>
       <source>&amp;Box Zoom</source>
       <translation>框缩放(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2826"/>
+      <location filename="../CommandView.cpp" line="2827"/>
       <source>Activates the box zoom tool</source>
       <translation>激活框选缩放工具</translation>
     </message>
@@ -13777,12 +13827,12 @@ Proceed?</source>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2859"/>
+      <location filename="../CommandView.cpp" line="2860"/>
       <source>&amp;Box Selection</source>
       <translation>框选(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2860"/>
+      <location filename="../CommandView.cpp" line="2861"/>
       <source>Activates the box selection tool</source>
       <translation>激活框选工具</translation>
     </message>
@@ -13790,12 +13840,12 @@ Proceed?</source>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2926"/>
+      <location filename="../CommandView.cpp" line="2927"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>框元素选择(&amp;X)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2927"/>
+      <location filename="../CommandView.cpp" line="2928"/>
       <source>Activates box element selection</source>
       <translation>激活框选元素</translation>
     </message>
@@ -13803,12 +13853,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2982"/>
+      <location filename="../CommandView.cpp" line="2983"/>
       <source>&amp;Go to Selection</source>
       <translation>转到所选(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2983"/>
+      <location filename="../CommandView.cpp" line="2984"/>
       <source>Scrolls to the first selected item</source>
       <translation>滚动到第一个选定的项目</translation>
     </message>
@@ -13816,12 +13866,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3007"/>
+      <location filename="../CommandView.cpp" line="3008"/>
       <source>Collapse Selected Items</source>
       <translation>折叠选定项目</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3008"/>
+      <location filename="../CommandView.cpp" line="3009"/>
       <source>Collapses the currently selected tree items</source>
       <translation>折叠当前选定的树项目</translation>
     </message>
@@ -13829,12 +13879,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3033"/>
+      <location filename="../CommandView.cpp" line="3034"/>
       <source>Expand Selected Items</source>
       <translation>展开选定项目</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3034"/>
+      <location filename="../CommandView.cpp" line="3035"/>
       <source>Expands the currently selected tree items</source>
       <translation>展开当前选定的树项目</translation>
     </message>
@@ -13842,12 +13892,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3059"/>
+      <location filename="../CommandView.cpp" line="3060"/>
       <source>Select All Instances</source>
       <translation>选择所有实例</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3060"/>
+      <location filename="../CommandView.cpp" line="3061"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>选择当前选定对象的所有实例</translation>
     </message>
@@ -13855,12 +13905,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3127"/>
+      <location filename="../CommandView.cpp" line="3128"/>
       <source>Scene I&amp;nspector</source>
       <translation>场景检查器(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3128"/>
+      <location filename="../CommandView.cpp" line="3129"/>
       <source>Opens the scene inspector</source>
       <translation>打开场景检查器</translation>
     </message>
@@ -13868,12 +13918,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3162"/>
       <source>Text&amp;ure Mapping</source>
       <translation>纹理映射(&amp;U)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3162"/>
+      <location filename="../CommandView.cpp" line="3163"/>
       <source>Maps textures to shapes</source>
       <translation>将纹理映射到形状</translation>
     </message>
@@ -13881,12 +13931,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3187"/>
+      <location filename="../CommandView.cpp" line="3188"/>
       <source>View &amp;Turntable</source>
       <translation>视图转盘(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3188"/>
+      <location filename="../CommandView.cpp" line="3189"/>
       <source>Opens a turntable view</source>
       <translation>打开转盘视图</translation>
     </message>
@@ -13894,12 +13944,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3217"/>
+      <location filename="../CommandView.cpp" line="3218"/>
       <source>Selection &amp;Back</source>
       <translation>向后选择(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3219"/>
+      <location filename="../CommandView.cpp" line="3220"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>恢复先前的树视图选择。仅在树记录选择模式开启时有效。</translation>
     </message>
@@ -13907,12 +13957,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3251"/>
+      <location filename="../CommandView.cpp" line="3252"/>
       <source>Selection &amp;Forward</source>
       <translation>向前选择(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3253"/>
+      <location filename="../CommandView.cpp" line="3254"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>恢复下一个树视图选择。仅在树记录选择模式开启时有效。</translation>
     </message>
@@ -13920,12 +13970,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3309"/>
+      <location filename="../CommandView.cpp" line="3310"/>
       <source>&amp;Single Document</source>
       <translation>单文档(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3310"/>
+      <location filename="../CommandView.cpp" line="3311"/>
       <source>Displays only the active document in the tree view</source>
       <translation>在树视图中仅显示活动文档</translation>
     </message>
@@ -13933,12 +13983,12 @@ Proceed?</source>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3326"/>
+      <location filename="../CommandView.cpp" line="3327"/>
       <source>&amp;Multi Document</source>
       <translation>多文档(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3327"/>
+      <location filename="../CommandView.cpp" line="3328"/>
       <source>Displays all documents in the tree view</source>
       <translation>在树视图中显示所有文档</translation>
     </message>
@@ -13946,12 +13996,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3386"/>
+      <location filename="../CommandView.cpp" line="3387"/>
       <source>Sync View</source>
       <translation>同步视图</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3387"/>
+      <location filename="../CommandView.cpp" line="3388"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>切换到包含树视图中选定项目的 3D 视图</translation>
     </message>
@@ -13959,12 +14009,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3407"/>
       <source>Sync Selection</source>
       <translation>同步选择</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3407"/>
+      <location filename="../CommandView.cpp" line="3408"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>当在 3D 视图中选择相应对象时展开树项目</translation>
     </message>
@@ -13972,12 +14022,12 @@ Proceed?</source>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3426"/>
+      <location filename="../CommandView.cpp" line="3427"/>
       <source>Sync Placement</source>
       <translation>同步放置</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3428"/>
+      <location filename="../CommandView.cpp" line="3429"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>在跨坐标系（例如在零件容器中）拖放对象时调整放置位置</translation>
     </message>
@@ -13985,12 +14035,12 @@ Proceed?</source>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3465"/>
+      <location filename="../CommandView.cpp" line="3466"/>
       <source>Record Selection</source>
       <translation>录制选择</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3467"/>
+      <location filename="../CommandView.cpp" line="3468"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>记录树视图中的选择，以便使用导航按钮前进/后退</translation>
     </message>
@@ -13998,12 +14048,12 @@ Proceed?</source>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3484"/>
+      <location filename="../CommandView.cpp" line="3485"/>
       <source>Initiate &amp;Dragging</source>
       <translation>启动拖动(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3485"/>
+      <location filename="../CommandView.cpp" line="3486"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>开始拖拽当前选定的树项目</translation>
     </message>
@@ -14011,12 +14061,12 @@ Proceed?</source>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3517"/>
+      <location filename="../CommandView.cpp" line="3518"/>
       <source>Tree View Actions</source>
       <translation>树视图操作</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3518"/>
+      <location filename="../CommandView.cpp" line="3519"/>
       <source>Tree view behavior options and actions</source>
       <translation>树视图行为选项和操作</translation>
     </message>
@@ -14024,12 +14074,12 @@ Proceed?</source>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3562"/>
+      <location filename="../CommandView.cpp" line="3563"/>
       <source>&amp;Bounding Box</source>
       <translation>边界框(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3563"/>
+      <location filename="../CommandView.cpp" line="3564"/>
       <source>Shows selection bounding box</source>
       <translation>显示选择边界框</translation>
     </message>
@@ -14037,12 +14087,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3609"/>
+      <location filename="../CommandView.cpp" line="3610"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>切换所有面板的叠加层(&amp;A)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3610"/>
+      <location filename="../CommandView.cpp" line="3611"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation>切换所有停靠面板的叠加模式</translation>
     </message>
@@ -14050,12 +14100,12 @@ Proceed?</source>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3632"/>
+      <location filename="../CommandView.cpp" line="3633"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>切换透明面板(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3633"/>
+      <location filename="../CommandView.cpp" line="3634"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>切换所有停靠覆盖面板的透明模式。
@@ -14065,12 +14115,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3658"/>
+      <location filename="../CommandView.cpp" line="3659"/>
       <source>Toggle &amp;Overlay</source>
       <translation>切换叠加层(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3659"/>
+      <location filename="../CommandView.cpp" line="3660"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>切换光标下停靠窗口的覆盖模式</translation>
     </message>
@@ -14078,12 +14128,12 @@ This makes the docked panels stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3681"/>
+      <location filename="../CommandView.cpp" line="3682"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>切换透明模式(&amp;S)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3682"/>
+      <location filename="../CommandView.cpp" line="3683"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>切换光标下停靠面板的透明模式。
@@ -14093,12 +14143,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3707"/>
+      <location filename="../CommandView.cpp" line="3708"/>
       <source>Toggle &amp;Left</source>
       <translation>切换左(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3708"/>
+      <location filename="../CommandView.cpp" line="3709"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>切换左侧覆盖面板的可见性</translation>
     </message>
@@ -14106,12 +14156,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3732"/>
+      <location filename="../CommandView.cpp" line="3733"/>
       <source>Toggle &amp;Right</source>
       <translation>切换右(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3733"/>
+      <location filename="../CommandView.cpp" line="3734"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>切换右侧覆盖面板的可见性</translation>
     </message>
@@ -14119,12 +14169,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3757"/>
+      <location filename="../CommandView.cpp" line="3758"/>
       <source>Toggle &amp;Top</source>
       <translation>切换顶部(&amp;T)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3758"/>
+      <location filename="../CommandView.cpp" line="3759"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>切换顶部覆盖面板的可见性</translation>
     </message>
@@ -14132,12 +14182,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3782"/>
+      <location filename="../CommandView.cpp" line="3783"/>
       <source>Toggle &amp;Bottom</source>
       <translation>切换底部(&amp;B)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3783"/>
+      <location filename="../CommandView.cpp" line="3784"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>切换底部覆盖面板的可见性</translation>
     </message>
@@ -14145,12 +14195,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3807"/>
+      <location filename="../CommandView.cpp" line="3808"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>绕过叠加层面板中的鼠标事件(&amp;M)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3808"/>
+      <location filename="../CommandView.cpp" line="3809"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>绕过停靠覆盖面板中的所有鼠标事件</translation>
     </message>
@@ -14158,12 +14208,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="3853"/>
+      <location filename="../CommandView.cpp" line="3854"/>
       <source>Overlay Docked Panel</source>
       <translation>覆盖停靠面板</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3854"/>
+      <location filename="../CommandView.cpp" line="3855"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>将停靠面板设置为覆盖模式</translation>
     </message>
@@ -14171,12 +14221,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3987"/>
+      <location filename="../CommandView.cpp" line="3988"/>
       <source>St&amp;ore Working View</source>
       <translation>保存工作视图(&amp;O)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3988"/>
+      <location filename="../CommandView.cpp" line="3989"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>为当前文档存储临时工作视图</translation>
     </message>
@@ -14184,12 +14234,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4015"/>
+      <location filename="../CommandView.cpp" line="4016"/>
       <source>R&amp;ecall Working View</source>
       <translation>调用工作视图(&amp;E)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4016"/>
+      <location filename="../CommandView.cpp" line="4017"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>恢复之前存储的临时工作视图</translation>
     </message>
@@ -14197,12 +14247,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4043"/>
+      <location filename="../CommandView.cpp" line="4044"/>
       <source>&amp;Align to Selection</source>
       <translation>与所选对齐(&amp;C)</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4044"/>
+      <location filename="../CommandView.cpp" line="4045"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>将相机视图对齐到3D视图中的选定元素</translation>
     </message>
@@ -14249,7 +14299,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1082"/>
+      <location filename="../ExpressionCompleter.cpp" line="1108"/>
       <source>Exact Match</source>
       <translation>精确匹配</translation>
     </message>
@@ -14257,7 +14307,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1271"/>
+      <location filename="../ExpressionCompleter.cpp" line="1297"/>
       <source>Exact Match</source>
       <translation>精确匹配</translation>
     </message>
@@ -14303,7 +14353,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4317"/>
+      <location filename="../Tree.cpp" line="4323"/>
       <source>Tree View</source>
       <translation>树状图</translation>
     </message>
@@ -14487,12 +14537,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4071"/>
+      <location filename="../CommandView.cpp" line="4072"/>
       <source>Clarify Selection</source>
       <translation>澄清选择</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4072"/>
+      <location filename="../CommandView.cpp" line="4073"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>在鼠标光标处显示上下文菜单，以选择3D视图中重叠或被遮挡的几何体。</translation>
@@ -14766,12 +14816,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="3889"/>
+      <location filename="../CommandView.cpp" line="3890"/>
       <source>Toggle Bottom Panels</source>
       <translation>显示/隐藏底部面板</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3890"/>
+      <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
       <translation>显示/隐藏底部停靠面板</translation>
     </message>

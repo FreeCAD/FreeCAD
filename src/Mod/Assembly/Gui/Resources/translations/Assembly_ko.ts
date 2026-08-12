@@ -784,7 +784,7 @@ SLOPE는 시간 T1과 T2를 기준으로 0에서 H1, 그리고 H2에서 0으로�
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="127"/>
       <source>Offset</source>
-      <translation>오프셋</translation>
+      <translation>편위</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
@@ -794,17 +794,17 @@ SLOPE는 시간 T1과 T2를 기준으로 0에서 H1, 그리고 H2에서 0으로�
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
       <source>Offset1</source>
-      <translation>오프셋1</translation>
+      <translation>편위1</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="196"/>
       <source>Offset2</source>
-      <translation>오프셋2</translation>
+      <translation>편위2</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
-      <translation>고급 오프셋 표시</translation>
+      <translation>고급 편위 보기</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
@@ -824,12 +824,12 @@ SLOPE는 시간 T1과 T2를 기준으로 0에서 H1, 그리고 H2에서 0으로�
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="182"/>
       <source>Sets the attachment offset of the joint’s first marker (coordinate system)</source>
-      <translation>연결부의 첫 번째 마커(좌표계)의 부착 오프셋을 지정합니다</translation>
+      <translation>연결부의 첫 번째 표식(좌표계)의 부착 편위를 설정합니다</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="203"/>
       <source>Sets the attachment offset of the second marker (coordinate system) of the joint</source>
-      <translation>연결부의 두 번째 마커(좌표계)의 부착 오프셋을 지정합니다</translation>
+      <translation>연결부의 두 번째 표식(좌표계)의 부착 편위를 지정합니다</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="237"/>

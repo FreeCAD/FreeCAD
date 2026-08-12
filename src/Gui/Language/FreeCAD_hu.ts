@@ -58,7 +58,7 @@
       <translation>Szerkesztés</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="910"/>
+      <location filename="../Application.cpp" line="869"/>
       <source>Import</source>
       <translation>Importálás</translation>
     </message>
@@ -146,7 +146,7 @@
       <translation>Tömbelemek váltása</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="260"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Kép szerkesztése</translation>
@@ -2567,7 +2567,7 @@ Adjon meg egy másik könyvtárat.</translation>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Szövegcimke</translation>
+      <translation>Szövegfelirat</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgRunExternal.ui" line="58"/>
@@ -3545,7 +3545,7 @@ Használhatja az űrlapot is: Gipsz Jakab &lt;gipsz@jakab.hu&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="62"/>
       <source>Show format documentation</source>
-      <translation>Mutassa a formátum dokumentációját</translation>
+      <translation>A formátum dokumentációjának megjelenítése</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocumentImp.cpp" line="119"/>
@@ -7381,7 +7381,7 @@ Szeretne megadni egy másik könyvtárat?</translation>
   <context>
     <name>Gui::TreePanel</name>
     <message>
-      <location filename="../Tree.cpp" line="4245"/>
+      <location filename="../Tree.cpp" line="4251"/>
       <source>Search</source>
       <translation>Keresés</translation>
     </message>
@@ -7424,153 +7424,153 @@ Szeretne megadni egy másik könyvtárat?</translation>
       <translation>Csoport</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3400"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3394"/>
+      <location filename="../Tree.cpp" line="3400"/>
       <source>File does not exist.</source>
       <translation>A fájl nem létezik.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3415"/>
+      <location filename="../Tree.cpp" line="3421"/>
       <source>Failed to open directory.</source>
       <translation>Nem sikerült megnyitni a könyvtárat.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3894"/>
+      <location filename="../Tree.cpp" line="3900"/>
       <source>Labels &amp; Attributes</source>
       <translation>Cimkék &amp; Tulajdonságok</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3895"/>
+      <location filename="../Tree.cpp" line="3901"/>
       <source>Description</source>
       <translation>Leírás</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3896"/>
+      <location filename="../Tree.cpp" line="3902"/>
       <source>Internal name</source>
       <translation>Belső név</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3898"/>
+      <location filename="../Tree.cpp" line="3904"/>
       <source>Show Items Hidden in Tree View</source>
       <translation>Rejtett objektumok megjelenítése a fa nézetben</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3900"/>
+      <location filename="../Tree.cpp" line="3906"/>
       <source>Shows items that are marked as 'hidden' in the tree view</source>
       <translation>Mutassa a 'rejtettként' megjelölt objektumokat a fastruktúrában</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3903"/>
+      <location filename="../Tree.cpp" line="3909"/>
       <source>Toggle Visibility in Tree View</source>
       <translation>Láthatóság váltása a fa nézetben</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3908"/>
+      <location filename="../Tree.cpp" line="3914"/>
       <source>Create Group</source>
       <translation>Csoport létrehozása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3909"/>
+      <location filename="../Tree.cpp" line="3915"/>
       <source>Creates a group</source>
       <translation>Hozz létre egy csoportot</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3912"/>
+      <location filename="../Tree.cpp" line="3918"/>
       <source>Renames object</source>
       <translation>Nevezze át az objektumot</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3914"/>
+      <location filename="../Tree.cpp" line="3920"/>
       <source>Finish Editing</source>
       <translation>Szerkesztés befejezése</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3915"/>
+      <location filename="../Tree.cpp" line="3921"/>
       <source>Finishes editing object</source>
       <translation>Objektumszerkesztés befejezése</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="3923"/>
       <source>Add Dependent Objects to Selection</source>
       <translation>Függőben lévő objektum hozzáadása a kijelöléshez</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3920"/>
+      <location filename="../Tree.cpp" line="3926"/>
       <source>Close Document</source>
       <translation>Zárja be a dokumentumot</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3921"/>
+      <location filename="../Tree.cpp" line="3927"/>
       <source>Closes the document</source>
       <translation>A dokumentum bezárása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3926"/>
+      <location filename="../Tree.cpp" line="3932"/>
       <source>Reveals the current file location in Finder</source>
       <translation>Megjeleníti a fájl aktuális helyét a Finderben</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3929"/>
+      <location filename="../Tree.cpp" line="3935"/>
       <source>Opens the current file location</source>
       <translation>Megnyitja a jelenlegi fájl elérési útját</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3932"/>
+      <location filename="../Tree.cpp" line="3938"/>
       <source>Reload Document</source>
       <translation>Dokumentum újratöltése</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3933"/>
+      <location filename="../Tree.cpp" line="3939"/>
       <source>Reloads a partially loaded document</source>
       <translation>Részlegesen betöltött dokumentum újratöltése</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3935"/>
+      <location filename="../Tree.cpp" line="3941"/>
       <source>Skip Recomputes</source>
       <translation>Újraszámítás átugrása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3936"/>
+      <location filename="../Tree.cpp" line="3942"/>
       <source>Enables or disables the recomputations of document</source>
       <translation>Dokumentum újraszámításának engedélyezése vagy letiltása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3938"/>
+      <location filename="../Tree.cpp" line="3944"/>
       <source>Allow Partial Recomputes</source>
       <translation>Részleges újraszámítás engedélyezése</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3939"/>
+      <location filename="../Tree.cpp" line="3945"/>
       <source>Enables or disables the recomputating editing object when 'skip recomputation' is enabled</source>
       <translation>Szerkesztett objektum újraszámításának engedélyezése vagy letiltása, ha az 'újraszámítás kihagyása' engedélyezve van</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3943"/>
+      <location filename="../Tree.cpp" line="3949"/>
       <source>Mark to Recompute</source>
       <translation>Újraszámításhoz jelölje ki</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3944"/>
+      <location filename="../Tree.cpp" line="3950"/>
       <source>Marks this object to be recomputed</source>
       <translation>Jelölje meg ezt az objektumot újraszámításhoz</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3947"/>
+      <location filename="../Tree.cpp" line="3953"/>
       <source>Recompute Object</source>
       <translation>Objektum újraszámítás</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3948"/>
+      <location filename="../Tree.cpp" line="3954"/>
       <source>Recomputes the selected object</source>
       <translation>Kijelölt objektum újraszámítása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3905"/>
+      <location filename="../Tree.cpp" line="3911"/>
       <source>Toggles the visibility of selected items in the tree view</source>
       <translation>Fa nézetben a kiválasztott elemek láthatóságának váltása</translation>
     </message>
@@ -7590,33 +7590,33 @@ Szeretne megadni egy másik könyvtárat?</translation>
       <translation>Jelenítsen meg egy leírásos oszlopot az elemekhez. Egy elem leírása a „label2” tulajdonság módosításával állítható be.</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3911"/>
-      <location filename="../Tree.cpp" line="6590"/>
+      <location filename="../Tree.cpp" line="3917"/>
+      <location filename="../Tree.cpp" line="6604"/>
       <source>Rename</source>
       <translation>Átnevezés</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3918"/>
+      <location filename="../Tree.cpp" line="3924"/>
       <source>Adds all dependent objects to the selection</source>
       <translation>Összes függőben lévő objektum hozzáadása a kijelöléshez</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3925"/>
+      <location filename="../Tree.cpp" line="3931"/>
       <source>Reveal in Finder</source>
       <translation>Megjelenítés a Finderben</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="3928"/>
+      <location filename="../Tree.cpp" line="3934"/>
       <source>Open File Location</source>
       <translation>Fájl helyének megnyitása</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6558"/>
+      <location filename="../Tree.cpp" line="6572"/>
       <source> (but must be executed)</source>
       <translation> (de végre kell hajtanom)</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="6561"/>
+      <location filename="../Tree.cpp" line="6575"/>
       <source>%1, Internal name: %2</source>
       <translation>%1, Belső név: %2</translation>
     </message>
@@ -7923,35 +7923,35 @@ Szeretne megadni egy másik könyvtárat?</translation>
       <translation>Python</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
-      <location filename="../Application.cpp" line="976"/>
-      <location filename="../Application.cpp" line="1063"/>
+      <location filename="../Application.cpp" line="828"/>
+      <location filename="../Application.cpp" line="935"/>
+      <location filename="../Application.cpp" line="1022"/>
       <source>Unknown filetype</source>
       <translation>Ismeretlen filetípus</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="870"/>
-      <location filename="../Application.cpp" line="977"/>
+      <location filename="../Application.cpp" line="829"/>
+      <location filename="../Application.cpp" line="936"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>Nem megnyitható fájltípus: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1053"/>
+      <location filename="../Application.cpp" line="1012"/>
       <source>Export failed</source>
       <translation>Exportálás sikertelen</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1064"/>
+      <location filename="../Application.cpp" line="1023"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>Nem menthető fájltípus: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1221"/>
       <source>Recomputation required</source>
       <translation>Újraszámítás szükséges</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1263"/>
+      <location filename="../Application.cpp" line="1222"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7960,24 +7960,24 @@ Recompute now?</source>
 Szükséges most újraszámítani?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1289"/>
+      <location filename="../Application.cpp" line="1248"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>Néhány dokumentum újraszámítása sikertelen.
 További részletekért kérjük, nézze meg a jelentés nézetet.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1288"/>
+      <location filename="../Application.cpp" line="1247"/>
       <source>Recompute error</source>
       <translation>Újraszámítási hiba</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2038"/>
+      <location filename="../Application.cpp" line="1997"/>
       <source>Workbench failure</source>
       <translation>Munkafelület hiba</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="2039"/>
+      <location filename="../Application.cpp" line="1998"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8045,18 +8045,18 @@ További részletekért kérjük, nézze meg a jelentés nézetet.</translation>
       <translation>Kivétel</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1302"/>
-      <location filename="../Application.cpp" line="1317"/>
+      <location filename="../Application.cpp" line="1261"/>
+      <location filename="../Application.cpp" line="1276"/>
       <source>Error</source>
       <translation>Hiba</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1303"/>
+      <location filename="../Application.cpp" line="1262"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>Hiba történt a fájl betöltésekor. Néhány adat lehet, hogy módosított vagy nem egyáltalán nem viszaállított. Nézze meg a jelentés nézetet részletesebb információért az érintett objektumokhoz.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1318"/>
+      <location filename="../Application.cpp" line="1277"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>A fájl betöltése közben súlyos hibák történtek. Előfordulhat, hogy néhány adat módosult, vagy egyáltalán nem állt helyre. A terv mentése valószínűleg adatvesztést eredményez.</translation>
     </message>
@@ -8320,7 +8320,7 @@ Folytassa?</translation>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="905"/>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="930"/>
       <source>New Unsigned Item</source>
-      <translation>Új, aláíratlan objektum</translation>
+      <translation>Új, aláíratlan tétel</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="950"/>
@@ -8365,7 +8365,7 @@ Folytassa?</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1297"/>
       <source>Change Value</source>
-      <translation>Érték módosítása</translation>
+      <translation>Érték Módosítása</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="454"/>
@@ -8673,12 +8673,12 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Nem lehet megnyitni a rendszer böngészőt.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3231"/>
+      <location filename="../View3DInventorViewer.cpp" line="3294"/>
       <source>Out of memory</source>
       <translation>Kevés a memória</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="3232"/>
+      <location filename="../View3DInventorViewer.cpp" line="3295"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nincs elég memória az adatok megjelenítéséhez.</translation>
     </message>
@@ -8818,8 +8818,8 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Nem sikerült tulajdonságot hozzáadni a következőhöz: '%1': %2</translation>
     </message>
     <message>
-      <location filename="../Tree.cpp" line="2770"/>
-      <location filename="../Tree.cpp" line="3167"/>
+      <location filename="../Tree.cpp" line="2776"/>
+      <location filename="../Tree.cpp" line="3173"/>
       <source>Drag &amp; drop failed</source>
       <translation>A fogd &amp; vidd sikertelen</translation>
     </message>
@@ -9710,12 +9710,12 @@ bármilyen változás elveszik.
   <context>
     <name>StdCmdViewExample1</name>
     <message>
-      <location filename="../CommandView.cpp" line="2487"/>
+      <location filename="../CommandView.cpp" line="2488"/>
       <source>Inventor Example #1</source>
       <translation>Inventor példa #1</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2488"/>
+      <location filename="../CommandView.cpp" line="2489"/>
       <source>Shows a 3D texture with manipulator</source>
       <translation>A kezelővel jeleníti meg a 3D textúrát</translation>
     </message>
@@ -9723,12 +9723,12 @@ bármilyen változás elveszik.
   <context>
     <name>StdCmdViewExample2</name>
     <message>
-      <location filename="../CommandView.cpp" line="2515"/>
+      <location filename="../CommandView.cpp" line="2516"/>
       <source>Inventor Example #2</source>
       <translation>Inventor példa #2</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2516"/>
+      <location filename="../CommandView.cpp" line="2517"/>
       <source>Shows spheres and drag-lights</source>
       <translation>Gömb felület és mozgó fényforrás mutatása</translation>
     </message>
@@ -9931,12 +9931,12 @@ bármilyen változás elveszik.
   <context>
     <name>StdTreeCollapseDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3343"/>
+      <location filename="../CommandView.cpp" line="3344"/>
       <source>Collapse/E&amp;xpand</source>
       <translation>Összecsukás/kibontás</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3344"/>
+      <location filename="../CommandView.cpp" line="3345"/>
       <source>Expands the active document and collapses all others</source>
       <translation>Aktív dokumentum kibontása és az összes többi összecsukása</translation>
     </message>
@@ -9944,12 +9944,12 @@ bármilyen változás elveszik.
   <context>
     <name>StdTreePreSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3445"/>
+      <location filename="../CommandView.cpp" line="3446"/>
       <source>Preselection</source>
       <translation type="unfinished">Preselection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3446"/>
+      <location filename="../CommandView.cpp" line="3447"/>
       <source>Preselects the object in 3D view when hovering the cursor over the tree item</source>
       <translation>Az adott objektum előválogatása a 3D nézetben, amikor a kurzort a faelem fölé helyezi</translation>
     </message>
@@ -10009,12 +10009,12 @@ bármilyen változás elveszik.
   <context>
     <name>StdViewZoomIn</name>
     <message>
-      <location filename="../CommandView.cpp" line="2630"/>
+      <location filename="../CommandView.cpp" line="2631"/>
       <source>Zoom &amp;In</source>
       <translation>Nagyítás</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2631"/>
+      <location filename="../CommandView.cpp" line="2632"/>
       <source>Increases the zoom factor by a fixed amount</source>
       <translation>Növeli a nagyítási léptéket egy állandó értékkel</translation>
     </message>
@@ -10022,12 +10022,12 @@ bármilyen változás elveszik.
   <context>
     <name>StdViewZoomOut</name>
     <message>
-      <location filename="../CommandView.cpp" line="2659"/>
+      <location filename="../CommandView.cpp" line="2660"/>
       <source>Zoom &amp;Out</source>
       <translation>Kicsinyítés</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2660"/>
+      <location filename="../CommandView.cpp" line="2661"/>
       <source>Decreases the zoom factor by a fixed amount</source>
       <translation>Csökkenti a nagyítási léptéket egy állandó értékkel</translation>
     </message>
@@ -10682,13 +10682,63 @@ after FreeCAD launches</source>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="260"/>
+      <source>Snap rotation to line</source>
+      <translation>Forgatás vonalra illesztése</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="263"/>
+      <source>Rotate the image to align the drawn line to the nearest 45 degree angle</source>
+      <translation>Forgasd el a képet úgy, hogy a megrajzolt vonal a legközelebbi 45 fokos szögbe kerüljön</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="273"/>
+      <source>Center on midpoint</source>
+      <translation>Középpontra igazítás</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="276"/>
+      <source>Center the image on the midpoint of the drawn line</source>
+      <translation>A képet a megrajzolt vonal középpontjára igazítja</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.ui" line="288"/>
       <source>Apply</source>
       <translation>Alkalmaz</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.ui" line="267"/>
+      <location filename="../TaskView/TaskImage.ui" line="295"/>
       <source>Cancel</source>
       <translation>Mégse</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="215"/>
+      <source>%1 snap angle</source>
+      <translation>%1 szög illesztés</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="216"/>
+      <source>%1 toggle centering</source>
+      <translation>%1 középpont kapcsolása</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="217"/>
+      <source>%1 toggle rotating to line</source>
+      <translation>%1 váltás forgatásról vonalra</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="218"/>
+      <source>%1 accept distance</source>
+      <translation>%1 távolság elfogadása</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="224"/>
+      <source>%1 pick first point</source>
+      <translation>%1 első pont kiválasztása</translation>
+    </message>
+    <message>
+      <location filename="../TaskView/TaskImage.cpp" line="226"/>
+      <source>%1 pick second point</source>
+      <translation>%1 második pont kiválasztása</translation>
     </message>
   </context>
   <context>
@@ -12839,22 +12889,22 @@ A teljes hely kitöltéséhez állítsa 0-ra.</translation>
   <context>
     <name>Gui::Application</name>
     <message>
-      <location filename="../Application.cpp" line="496"/>
+      <location filename="../Application.cpp" line="477"/>
       <source>Built-in Parameters</source>
       <translation>Beépített paraméterek</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="470"/>
+      <location filename="../Application.cpp" line="451"/>
       <source>Theme Parameters</source>
       <translation>Téma paraméterek</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="505"/>
+      <location filename="../Application.cpp" line="486"/>
       <source>Theme Parameters - Fallback</source>
       <translation>A téma paraméterei – alapértelmezett érték</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="517"/>
+      <location filename="../Application.cpp" line="498"/>
       <source>User Parameters</source>
       <translation>Felhasználói paraméterek</translation>
     </message>
@@ -13755,12 +13805,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdViewExample3</name>
     <message>
-      <location filename="../CommandView.cpp" line="2543"/>
+      <location filename="../CommandView.cpp" line="2544"/>
       <source>Inventor Example #3</source>
       <translation>Inventor példa #3</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2544"/>
+      <location filename="../CommandView.cpp" line="2545"/>
       <source>Shows an animated texture</source>
       <translation>Animált anyagminta megjelenítése</translation>
     </message>
@@ -13768,12 +13818,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdViewIvIssueCamPos</name>
     <message>
-      <location filename="../CommandView.cpp" line="2572"/>
+      <location filename="../CommandView.cpp" line="2573"/>
       <source>Issue Camera &amp;Position</source>
       <translation>A kamera pozíciójának továbbítása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2573"/>
+      <location filename="../CommandView.cpp" line="2574"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
       <translation>Küldd az aktuális nézet pozícióadatokat a konzolra és a makróba, hogy könnyen előhívhasd ezt a pozíciót</translation>
     </message>
@@ -13781,12 +13831,12 @@ Folytatja?</translation>
   <context>
     <name>StdViewBoxZoom</name>
     <message>
-      <location filename="../CommandView.cpp" line="2825"/>
+      <location filename="../CommandView.cpp" line="2826"/>
       <source>&amp;Box Zoom</source>
       <translation>Mező nagyítása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2826"/>
+      <location filename="../CommandView.cpp" line="2827"/>
       <source>Activates the box zoom tool</source>
       <translation>Aktiválja a mező nagyító eszközt</translation>
     </message>
@@ -13794,12 +13844,12 @@ Folytatja?</translation>
   <context>
     <name>StdBoxSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2859"/>
+      <location filename="../CommandView.cpp" line="2860"/>
       <source>&amp;Box Selection</source>
       <translation>Mező kiválasztás</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2860"/>
+      <location filename="../CommandView.cpp" line="2861"/>
       <source>Activates the box selection tool</source>
       <translation>Aktiválja a mező kiválasztó eszközt</translation>
     </message>
@@ -13807,12 +13857,12 @@ Folytatja?</translation>
   <context>
     <name>StdBoxElementSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2926"/>
+      <location filename="../CommandView.cpp" line="2927"/>
       <source>Bo&amp;x Element Selection</source>
       <translation>Mező elem kiválasztás</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2927"/>
+      <location filename="../CommandView.cpp" line="2928"/>
       <source>Activates box element selection</source>
       <translation>Mező elem kiválasztásának aktiválása</translation>
     </message>
@@ -13820,12 +13870,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="2982"/>
+      <location filename="../CommandView.cpp" line="2983"/>
       <source>&amp;Go to Selection</source>
       <translation>Kijelöltre ugrás</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="2983"/>
+      <location filename="../CommandView.cpp" line="2984"/>
       <source>Scrolls to the first selected item</source>
       <translation>Lapozzon az első kijelölt elemre</translation>
     </message>
@@ -13833,12 +13883,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdTreeCollapse</name>
     <message>
-      <location filename="../CommandView.cpp" line="3007"/>
+      <location filename="../CommandView.cpp" line="3008"/>
       <source>Collapse Selected Items</source>
       <translation>Kijelölt elem összecsukása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3008"/>
+      <location filename="../CommandView.cpp" line="3009"/>
       <source>Collapses the currently selected tree items</source>
       <translation>Jelenleg kijelölt faelemek összecsukása</translation>
     </message>
@@ -13846,12 +13896,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdTreeExpand</name>
     <message>
-      <location filename="../CommandView.cpp" line="3033"/>
+      <location filename="../CommandView.cpp" line="3034"/>
       <source>Expand Selected Items</source>
       <translation>Kijelölt elemek kibontása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3034"/>
+      <location filename="../CommandView.cpp" line="3035"/>
       <source>Expands the currently selected tree items</source>
       <translation>Jelenleg kijelölt faelemek kibontása</translation>
     </message>
@@ -13859,12 +13909,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdTreeSelectAllInstances</name>
     <message>
-      <location filename="../CommandView.cpp" line="3059"/>
+      <location filename="../CommandView.cpp" line="3060"/>
       <source>Select All Instances</source>
       <translation>Összes példány kijelölése</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3060"/>
+      <location filename="../CommandView.cpp" line="3061"/>
       <source>Selects all instances of the currently selected object</source>
       <translation>Az aktuális kijelölt objektum összes példányának kijelölése</translation>
     </message>
@@ -13872,12 +13922,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdSceneInspector</name>
     <message>
-      <location filename="../CommandView.cpp" line="3127"/>
+      <location filename="../CommandView.cpp" line="3128"/>
       <source>Scene I&amp;nspector</source>
       <translation>Jelenet felügyelő</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3128"/>
+      <location filename="../CommandView.cpp" line="3129"/>
       <source>Opens the scene inspector</source>
       <translation>Jelenetfelügyelő megnyitása</translation>
     </message>
@@ -13885,12 +13935,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdTextureMapping</name>
     <message>
-      <location filename="../CommandView.cpp" line="3161"/>
+      <location filename="../CommandView.cpp" line="3162"/>
       <source>Text&amp;ure Mapping</source>
       <translation>Minta leképzés</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3162"/>
+      <location filename="../CommandView.cpp" line="3163"/>
       <source>Maps textures to shapes</source>
       <translation>Textúrákat képez formákra</translation>
     </message>
@@ -13898,12 +13948,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdDemoMode</name>
     <message>
-      <location filename="../CommandView.cpp" line="3187"/>
+      <location filename="../CommandView.cpp" line="3188"/>
       <source>View &amp;Turntable</source>
       <translation>Forgatható nézet</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3188"/>
+      <location filename="../CommandView.cpp" line="3189"/>
       <source>Opens a turntable view</source>
       <translation>Megnyitja a forgatható nézetet</translation>
     </message>
@@ -13911,12 +13961,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdSelBack</name>
     <message>
-      <location filename="../CommandView.cpp" line="3217"/>
+      <location filename="../CommandView.cpp" line="3218"/>
       <source>Selection &amp;Back</source>
       <translation>Kiválasztás vissza</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3219"/>
+      <location filename="../CommandView.cpp" line="3220"/>
       <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>Az előző faválasztás visszaállítása. Csak akkor működik, ha a Fa Rekordválasztás mód bekapcsolt.</translation>
     </message>
@@ -13924,12 +13974,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdSelForward</name>
     <message>
-      <location filename="../CommandView.cpp" line="3251"/>
+      <location filename="../CommandView.cpp" line="3252"/>
       <source>Selection &amp;Forward</source>
       <translation>Kiválasztás előre</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3253"/>
+      <location filename="../CommandView.cpp" line="3254"/>
       <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
       <translation>A következő fa nézet kiválasztásának visszaállítása. Csak akkor működik, ha a Fa RekordKiválasztás mód bekapcsolt.</translation>
     </message>
@@ -13937,12 +13987,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeSingleDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3309"/>
+      <location filename="../CommandView.cpp" line="3310"/>
       <source>&amp;Single Document</source>
       <translation>&amp;Egyetlen dokumentum</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3310"/>
+      <location filename="../CommandView.cpp" line="3311"/>
       <source>Displays only the active document in the tree view</source>
       <translation>Fa nézetben csak az aktív dokumentumot jelenítse meg</translation>
     </message>
@@ -13950,12 +14000,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeMultiDocument</name>
     <message>
-      <location filename="../CommandView.cpp" line="3326"/>
+      <location filename="../CommandView.cpp" line="3327"/>
       <source>&amp;Multi Document</source>
       <translation>&amp;Több dokumentum</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3327"/>
+      <location filename="../CommandView.cpp" line="3328"/>
       <source>Displays all documents in the tree view</source>
       <translation>Összes dokumentum megjelenítése fa nézetben</translation>
     </message>
@@ -13963,12 +14013,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeSyncView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3386"/>
+      <location filename="../CommandView.cpp" line="3387"/>
       <source>Sync View</source>
       <translation type="unfinished">Sync View</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3387"/>
+      <location filename="../CommandView.cpp" line="3388"/>
       <source>Switches to the 3D view containing the selected item from the tree view</source>
       <translation>Váltson a 3D nézetre, amely tartalmazza a Fa nézetben kiválasztott objektumot</translation>
     </message>
@@ -13976,12 +14026,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeSyncSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3406"/>
+      <location filename="../CommandView.cpp" line="3407"/>
       <source>Sync Selection</source>
       <translation type="unfinished">Sync Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3407"/>
+      <location filename="../CommandView.cpp" line="3408"/>
       <source>Expands the tree item when the corresponding object is selected in the 3D view</source>
       <translation>A fa automatikus kibontása, ha a társított objektum 3D nézetben kijelölt</translation>
     </message>
@@ -13989,12 +14039,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeSyncPlacement</name>
     <message>
-      <location filename="../CommandView.cpp" line="3426"/>
+      <location filename="../CommandView.cpp" line="3427"/>
       <source>Sync Placement</source>
       <translation type="unfinished">Sync Placement</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3428"/>
+      <location filename="../CommandView.cpp" line="3429"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
       <translation>Beállítja az elhelyezést az objektumok koordináta-rendszerek közötti húzásakor és ejtésekor (például alkatrész tárolókban)</translation>
     </message>
@@ -14002,12 +14052,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeRecordSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="3465"/>
+      <location filename="../CommandView.cpp" line="3466"/>
       <source>Record Selection</source>
       <translation type="unfinished">Record Selection</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3467"/>
+      <location filename="../CommandView.cpp" line="3468"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
       <translation>Kijelölés rögzítése a fa nézetben. Előre/hátra a navigációs gombokkal</translation>
     </message>
@@ -14015,12 +14065,12 @@ Folytatja?</translation>
   <context>
     <name>StdTreeDrag</name>
     <message>
-      <location filename="../CommandView.cpp" line="3484"/>
+      <location filename="../CommandView.cpp" line="3485"/>
       <source>Initiate &amp;Dragging</source>
       <translation>Húzás kezdeményezése</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3485"/>
+      <location filename="../CommandView.cpp" line="3486"/>
       <source>Initiates dragging of the currently selected tree items</source>
       <translation>Az aktuálisan kijelölt faelemek húzásának kezdeményezése</translation>
     </message>
@@ -14028,12 +14078,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdTreeViewActions</name>
     <message>
-      <location filename="../CommandView.cpp" line="3517"/>
+      <location filename="../CommandView.cpp" line="3518"/>
       <source>Tree View Actions</source>
       <translation>Fanézet műveletei</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3518"/>
+      <location filename="../CommandView.cpp" line="3519"/>
       <source>Tree view behavior options and actions</source>
       <translation>Fanézet viselkedés beállításai és műveletei</translation>
     </message>
@@ -14041,12 +14091,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdSelBoundingBox</name>
     <message>
-      <location filename="../CommandView.cpp" line="3562"/>
+      <location filename="../CommandView.cpp" line="3563"/>
       <source>&amp;Bounding Box</source>
       <translation>Határolókeret</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3563"/>
+      <location filename="../CommandView.cpp" line="3564"/>
       <source>Shows selection bounding box</source>
       <translation>Kijelölési határolókeret megjelenése</translation>
     </message>
@@ -14054,12 +14104,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdDockOverlayAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3609"/>
+      <location filename="../CommandView.cpp" line="3610"/>
       <source>Toggle Overl&amp;ay for All Panels</source>
       <translation>Átfedés átkapcsolása az összes panelre</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3610"/>
+      <location filename="../CommandView.cpp" line="3611"/>
       <source>Toggles overlay mode for all docked panels</source>
       <translation type="unfinished">Toggles overlay mode for all docked panels</translation>
     </message>
@@ -14067,12 +14117,12 @@ Folytatja?</translation>
   <context>
     <name>StdCmdDockOverlayTransparentAll</name>
     <message>
-      <location filename="../CommandView.cpp" line="3632"/>
+      <location filename="../CommandView.cpp" line="3633"/>
       <source>Toggle Tra&amp;nsparent Panels</source>
       <translation>Átlátszó panelek cseréje</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3633"/>
+      <location filename="../CommandView.cpp" line="3634"/>
       <source>Toggles transparent mode for all docked overlay panels.
 This makes the docked panels stay transparent at all times.</source>
       <translation>Átlátszó mód bekapcsolása minden dokkolt átfedő ablaknál.
@@ -14082,12 +14132,12 @@ Ezáltal a dokkolt panelek mindig átlátszóak maradnak.</translation>
   <context>
     <name>StdCmdDockOverlayToggle</name>
     <message>
-      <location filename="../CommandView.cpp" line="3658"/>
+      <location filename="../CommandView.cpp" line="3659"/>
       <source>Toggle &amp;Overlay</source>
       <translation>Átfedés kapcsolása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3659"/>
+      <location filename="../CommandView.cpp" line="3660"/>
       <source>Toggles overlay mode for the docked window under the cursor</source>
       <translation>A kurzor alatti dokkolt ablak átfedési módjának kapcsolása</translation>
     </message>
@@ -14095,12 +14145,12 @@ Ezáltal a dokkolt panelek mindig átlátszóak maradnak.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3681"/>
+      <location filename="../CommandView.cpp" line="3682"/>
       <source>Toggle Tran&amp;sparent Mode</source>
       <translation>Átlátszóság mód kapcsolása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3682"/>
+      <location filename="../CommandView.cpp" line="3683"/>
       <source>Toggles transparent mode for the docked panel under cursor.
 This makes the docked panel stay transparent at all times.</source>
       <translation>A kurzor alatt lévő dokkolt ablak átlátszó módjának átkapcsolása.
@@ -14110,12 +14160,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdDockOverlayToggleLeft</name>
     <message>
-      <location filename="../CommandView.cpp" line="3707"/>
+      <location filename="../CommandView.cpp" line="3708"/>
       <source>Toggle &amp;Left</source>
       <translation>Kapcsolás balra</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3708"/>
+      <location filename="../CommandView.cpp" line="3709"/>
       <source>Toggles the visibility of the left overlay panel</source>
       <translation>Kapcsolja a bal oldali átfedő panel láthatóságát</translation>
     </message>
@@ -14123,12 +14173,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdDockOverlayToggleRight</name>
     <message>
-      <location filename="../CommandView.cpp" line="3732"/>
+      <location filename="../CommandView.cpp" line="3733"/>
       <source>Toggle &amp;Right</source>
       <translation>Kapcsolás jobbra</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3733"/>
+      <location filename="../CommandView.cpp" line="3734"/>
       <source>Toggles the visibility of the right overlay panel</source>
       <translation>Kapcsolja a jobb oldali átfedő panel láthatóságát</translation>
     </message>
@@ -14136,12 +14186,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdDockOverlayToggleTop</name>
     <message>
-      <location filename="../CommandView.cpp" line="3757"/>
+      <location filename="../CommandView.cpp" line="3758"/>
       <source>Toggle &amp;Top</source>
       <translation>Kapcsolás fentre</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3758"/>
+      <location filename="../CommandView.cpp" line="3759"/>
       <source>Toggles the visibility of the top overlay panel</source>
       <translation>Kapcsolja a felső oldali átfedő panel láthatóságát</translation>
     </message>
@@ -14149,12 +14199,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdDockOverlayToggleBottom</name>
     <message>
-      <location filename="../CommandView.cpp" line="3782"/>
+      <location filename="../CommandView.cpp" line="3783"/>
       <source>Toggle &amp;Bottom</source>
       <translation>Kapcsolás lentre</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3783"/>
+      <location filename="../CommandView.cpp" line="3784"/>
       <source>Toggles the visibility of the bottom overlay panel</source>
       <translation>Kapcsolja az alsó oldali átfedő panel láthatóságát</translation>
     </message>
@@ -14162,12 +14212,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdDockOverlayMouseTransparent</name>
     <message>
-      <location filename="../CommandView.cpp" line="3807"/>
+      <location filename="../CommandView.cpp" line="3808"/>
       <source>Bypass &amp;Mouse Events in Overlay Panels</source>
       <translation>A figyelmen kívül hagyja az egeres eseményeket a réteg paneljeiben</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3808"/>
+      <location filename="../CommandView.cpp" line="3809"/>
       <source>Bypasses all mouse events in docked overlay panels</source>
       <translation>Minden egér eseményt figyelmen kívül hagy az átfedésben lévő rögzített paneleken</translation>
     </message>
@@ -14175,12 +14225,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdDockOverlay</name>
     <message>
-      <location filename="../CommandView.cpp" line="3853"/>
+      <location filename="../CommandView.cpp" line="3854"/>
       <source>Overlay Docked Panel</source>
       <translation>Rögzített átfedő panel</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3854"/>
+      <location filename="../CommandView.cpp" line="3855"/>
       <source>Sets the docked panel in overlay mode</source>
       <translation>Vigye a rögzített panelt átfedéses módba</translation>
     </message>
@@ -14188,12 +14238,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdStoreWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="3987"/>
+      <location filename="../CommandView.cpp" line="3988"/>
       <source>St&amp;ore Working View</source>
       <translation>Munkanézet mentése</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3988"/>
+      <location filename="../CommandView.cpp" line="3989"/>
       <source>Stores a temporary working view for the current document</source>
       <translation>Ideiglenes munkanézetet ment a jelenlegi dokumentumhoz</translation>
     </message>
@@ -14201,12 +14251,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdRecallWorkingView</name>
     <message>
-      <location filename="../CommandView.cpp" line="4015"/>
+      <location filename="../CommandView.cpp" line="4016"/>
       <source>R&amp;ecall Working View</source>
       <translation>Munkanézet visszahívása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4016"/>
+      <location filename="../CommandView.cpp" line="4017"/>
       <source>Recalls a previously stored temporary working view</source>
       <translation>Korábban tárolt ideiglenes munkanézet visszahívása</translation>
     </message>
@@ -14214,12 +14264,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdAlignToSelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4043"/>
+      <location filename="../CommandView.cpp" line="4044"/>
       <source>&amp;Align to Selection</source>
       <translation>Kijelöléshez igazítás</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4044"/>
+      <location filename="../CommandView.cpp" line="4045"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
       <translation>Igazítsa a kamera nézetét a kiválasztott elemekhez a 3D nézetben</translation>
     </message>
@@ -14266,7 +14316,7 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1082"/>
+      <location filename="../ExpressionCompleter.cpp" line="1108"/>
       <source>Exact Match</source>
       <translation>Pontos egyezés</translation>
     </message>
@@ -14274,7 +14324,7 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1271"/>
+      <location filename="../ExpressionCompleter.cpp" line="1297"/>
       <source>Exact Match</source>
       <translation>Pontos egyezés</translation>
     </message>
@@ -14320,7 +14370,7 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>Gui::TreeDockWidget</name>
     <message>
-      <location filename="../Tree.cpp" line="4317"/>
+      <location filename="../Tree.cpp" line="4323"/>
       <source>Tree View</source>
       <translation>Fa nézet</translation>
     </message>
@@ -14504,12 +14554,12 @@ Ezáltal a dokkolt panel mindig átlátszó marad.</translation>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4071"/>
+      <location filename="../CommandView.cpp" line="4072"/>
       <source>Clarify Selection</source>
       <translation>Kijelölés pontosítása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4072"/>
+      <location filename="../CommandView.cpp" line="4073"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>A 3D nézetben az egérkurzornál egy helyi menüt jelenít meg a fedésben lévő vagy takart geometriák kiválasztásához.
@@ -14785,12 +14835,12 @@ az 'F, F' gyorsbillentyűsorozatként kezeli.</translation>
   <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
-      <location filename="../CommandView.cpp" line="3889"/>
+      <location filename="../CommandView.cpp" line="3890"/>
       <source>Toggle Bottom Panels</source>
       <translation>Alsó panelek átkapcsolása</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="3890"/>
+      <location filename="../CommandView.cpp" line="3891"/>
       <source>Toggles the bottom dock panels</source>
       <translation>Megváltoztatja az alsó dokkolópanelek láthatóságát</translation>
     </message>

@@ -1501,8 +1501,18 @@ void TaskExtrudeParameters::setupGizmos()
         return;
     }
 
+    const auto toggleReversed = [this] {
+        if (ui->checkBoxReversed->isEnabled()) {
+            ui->checkBoxReversed->setChecked(!ui->checkBoxReversed->isChecked());
+        }
+    };
+
     lengthGizmo1 = new Gui::LinearGizmo(ui->lengthEdit);
+    lengthGizmo1->setClickCallback(toggleReversed);
     lengthGizmo2 = new Gui::LinearGizmo(ui->lengthEdit2);
+    lengthGizmo2->setClickCallback(toggleReversed);
+    startOffsetGizmo = new Gui::LinearGizmo(ui->startOffsetEdit);
+    startOffsetGizmo->setDraggerStyle(Gui::LinearDraggerStyle::Sphere);
     taperAngleGizmo1 = new Gui::RotationGizmo(ui->taperEdit);
     taperAngleGizmo2 = new Gui::RotationGizmo(ui->taperEdit2);
 
@@ -1511,7 +1521,7 @@ void TaskExtrudeParameters::setupGizmos()
     });
 
     gizmoContainer = GizmoContainer::create(
-        {lengthGizmo1, lengthGizmo2, taperAngleGizmo1, taperAngleGizmo2},
+        {lengthGizmo1, lengthGizmo2, startOffsetGizmo, taperAngleGizmo1, taperAngleGizmo2},
         vp
     );
 
@@ -1542,13 +1552,23 @@ void TaskExtrudeParameters::setGizmoPositions()
     Base::Vector3d direction = extrude->Direction.getValue() * dir;
     Base::Vector3d center1 = center;
     Base::Vector3d center2 = center;
+    const bool hasStartOffset = std::strcmp(extrude->StartType.getValueAsString(), "Profile plane")
+        != 0;
     try {
-        const Base::Vector3d start = direction.Normalized() * extrude->getStartOffset();
+        const Base::Vector3d startDirection = direction.Normalized();
+        const double effectiveStartOffset = extrude->getStartOffset();
+        const Base::Vector3d start = startDirection * effectiveStartOffset;
         center1 += start;
         center2 += start;
+        startOffsetGizmo->Gizmo::setDraggerPlacement(
+            center + startDirection * (effectiveStartOffset - extrude->StartOffset.getValue()),
+            direction
+        );
     }
     catch (const Base::Exception&) {
     }
+
+    startOffsetGizmo->setVisibility(hasStartOffset);
 
     lengthGizmo1->Gizmo::setDraggerPlacement(center1, direction);
     lengthGizmo1->setVisibility(extrudeType == "Length");

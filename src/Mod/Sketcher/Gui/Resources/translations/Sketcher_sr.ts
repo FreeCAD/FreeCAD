@@ -763,7 +763,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Направи заобљење</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="199"/>
       <source>Trim edge</source>
       <translation>Опсеци ивице</translation>
     </message>
@@ -1016,54 +1016,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Не захтевате промену у многострукости чворова.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Индекс Б-Сплајн геометрије (GeoID) је ван граница.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Наведени Геометријски индеx (GeoId) није Б-сплајн крива.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Индекс чворова је ван граница. Имајте на уму да у складу са ОЦЦ напоменом, први чвор има индекс 1, а не нула.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Многострукост се не може повећати изнад степена Б-сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Многострукост не може бити мања од нуле.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC није у стању да смањи многострукост унутар максималне толеранције.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Чвор не може имати нулту многострукост.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Многострукост чворова не може бити већа од степена Б-Сплајн криве.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Чвор се не може уметнути изван опсега параметара Б-Сплајна.</translation>
     </message>
@@ -3199,62 +3199,62 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Полупречник': Алатка ће котирати полупречник лукова и кругова.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Single tool</source>
       <translation>Само заједничка алатка за котирање</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Separated tools</source>
       <translation>Само појединачне алатке за котирање</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Both</source>
       <translation>Обе врсте алатки</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Auto</source>
       <translation>Аутоматски</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Diameter</source>
       <translation>Пречник</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="251"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Radius</source>
       <translation>Полупречник</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="261"/>
       <source>Always</source>
       <translation>Увек</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Never</source>
       <translation>Никада</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="264"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>When no scale feature is visible</source>
       <translation>Када није видљив ниједан елемент</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="271"/>
       <source>None</source>
       <translation>Ниједан</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>Dimensions only</source>
       <translation>Параметри величине</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="274"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Position and dimensions</source>
       <translation>Параметри положаја и величине</translation>
     </message>
@@ -3552,17 +3552,17 @@ Defaults to: %N = %V
       <translation>Напомена: ова подешавања су подразумевана за нове скице. Подешавања се памте за сваку скицу појединачно као особине на картици Приказ.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="584"/>
+      <location filename="../../SketcherSettings.cpp" line="583"/>
       <source>Unexpected C++ exception</source>
       <translation>Неочекивани Ц++ изузетак</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="587"/>
+      <location filename="../../SketcherSettings.cpp" line="586"/>
       <source>Sketcher</source>
       <translation>Скице</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="611"/>
+      <location filename="../../SketcherSettings.cpp" line="610"/>
       <source>Glyphs not present:</source>
       <translation type="unfinished">Glyphs not present:</translation>
     </message>
@@ -4132,12 +4132,12 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <translation>Скица садржи грешке и не може бити мењана.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Следеће ограничење је сувишно:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Следећа ограничења су сувишна:</translation>
     </message>
@@ -4162,72 +4162,72 @@ This is done by analyzing the sketch geometries and constraints.</source>
       <translation>Да ли желиш да отвориш алатку за проверу скице?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following constraint:</source>
       <translation>Уклони следеће ограничење:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Уклони бар једно од следећих ограничења:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Уклони следеће сувишно ограничење:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Уклони следећа сувишна ограничења:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Уклони следеће оштећено ограничење:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Уклони следећа оштећена ограничења:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4447"/>
       <source>Empty sketch</source>
       <translation>Празна скица</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>Over-constrained:</source>
       <translation>Превише ограничена скица:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Malformed constraints:</source>
       <translation>Оштећена ограничења:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4466"/>
       <source>Redundant constraints:</source>
       <translation>Сувише ограничена скица:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Partially redundant:</source>
       <translation>Делимично сувише ограничена скица:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Solver failed to converge</source>
       <translation>Солвер није успео да се приближи</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4485"/>
       <source>Under-constrained:</source>
       <translation>Недовољно ограничена скица:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Степени слободе</numerusform>
@@ -4236,7 +4236,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4491"/>
       <source>Fully constrained</source>
       <translation>Потпуно ограничена скица</translation>
     </message>
@@ -4727,7 +4727,7 @@ Eigen редак QR алгоритам је оптимизован за ретк
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4430"/>
       <source>and %1 more</source>
       <translation>и %1 више</translation>
     </message>
@@ -4948,7 +4948,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Неуправљана промена својстава ограничења доводи до неисправних ограничења</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1636"/>
+      <location filename="../../../App/SketchObject.cpp" line="1644"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Параболе су мигрирале. Мигриране датотеке неће бити могуће отварати у претходним верзијама FreeCAD-а!!
@@ -4981,7 +4981,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
@@ -5150,7 +5150,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Додавање ивице није успело</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="215"/>
       <source>Failed to trim edge</source>
       <translation>Опсецање ивице није успело</translation>
     </message>
@@ -8274,10 +8274,20 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
+      <source>Trimming Parameters</source>
+      <translation type="unfinished">Trimming Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation>%1 изабери ивицу коју ћеш опсећи</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
+      <source>%1 toggle include axes as trim boundaries</source>
+      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8618,6 +8628,19 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <location filename="../../DrawSketchHandlerText.h" line="374"/>
       <source>Font</source>
       <translation>Фонт</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
     </message>
   </context>
   <context>

@@ -338,6 +338,11 @@
       <translation>Limistéar</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Trastomhas</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Ga</translation>

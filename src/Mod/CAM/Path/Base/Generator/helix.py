@@ -59,12 +59,19 @@ def generate(
 
     generate(edge, outer_radius, pitch)  # generate helix commands
         edge: vertical line in the center of helix
+              if cone helix, direction of edge define direction of helix
         outer_radius: radius of the outer helix Path
         pitch: vertical step for one turn of helix
         step: distance between helicies, by default create only one helix
         tool_diameter: non zero value using for create retract from wall
         inner_radius: radius of the inner helix Path
         retract_height: height to move between helicies
+        direction: CW or CCW
+        startAt: Inside or Outside
+        finish_circle: add final cirle to the bottom
+        cone_angle_rad: inclination of the helix
+        dir_angle_rad: move start point around the center
+        ramp_angle_rad: the maximum allowable ramp entry angle
 
     import Path.Base.Generator.helix as helix
     helixCommands = helix.generate(**args)
@@ -77,18 +84,24 @@ def generate(
 
     if not isinstance(edge, Part.Edge):
         raise TypeError("Invalid type for edge")
-    topCenterPoint = edge.Vertexes[0].Point
-    bottomCenterPoint = edge.Vertexes[1].Point
-    helixHeight = topCenterPoint.z - bottomCenterPoint.z
 
     if not isinstance(edge.Curve, Part.Line):
         raise TypeError("Invalid type for edge curve")
 
+    p0 = edge.Vertexes[0].Point
+    p1 = edge.Vertexes[1].Point
+    if p0.z > p1.z:
+        start_from_bottom = False
+        topCenterPoint = p0
+        bottomCenterPoint = p1
+    else:
+        start_from_bottom = True
+        topCenterPoint = p1
+        bottomCenterPoint = p0
+    helixHeight = topCenterPoint.z - bottomCenterPoint.z
+
     if not Path.Geom.isVertical(edge):
         raise ValueError("edge is not aligned with Z axis")
-
-    if topCenterPoint.z < bottomCenterPoint.z:
-        raise ValueError("start point is below end point")
 
     if not isinstance(outer_radius, (float, int)):
         raise TypeError("Invalid type for outer radius")
@@ -273,36 +286,41 @@ def generate(
         which forms cone helix inclined by angle
         Each full turn is three 120 degrees arcs"""
 
+        center = bottomCenterPoint if start_from_bottom else topCenterPoint
         topRadius = bottomRadius + math.tan(cone_angle_rad) * helixHeight
-        dx = topRadius * math.cos(dir_angle_rad)
-        dy = topRadius * math.sin(dir_angle_rad)
+        startRadius, endRadius = topRadius, bottomRadius
+        if start_from_bottom:
+            startRadius, endRadius = endRadius, startRadius
+        dx = startRadius * math.cos(dir_angle_rad)
+        dy = startRadius * math.sin(dir_angle_rad)
 
         commandlist = []
         arcCmdName = "G2" if direction == "CW" else "G3"
-        commandlist.append(
-            Path.Command("G0", {"X": topCenterPoint.x + dx, "Y": topCenterPoint.y + dy})
-        )
-        commandlist.append(Path.Command("G1", {"Z": topCenterPoint.z}))
+        commandlist.append(Path.Command("G0", {"X": center.x + dx, "Y": center.y + dy}))
+        commandlist.append(Path.Command("G1", {"Z": center.z}))
 
-        lengthOneTurn = math.tau * bottomRadius
+        lengthOneTurn = math.tau * startRadius
         depthPerOneCircle = min(lengthOneTurn * math.tan(ramp_angle_rad), pitch)
         turncount = Path.Geom.ceil(helixHeight / depthPerOneCircle)
         stepsPerRev = 6
         stepRotate = math.tau / stepsPerRev  # step angle for rotate
         stepRotate = -stepRotate if direction == "CCW" else stepRotate
         iters = turncount * stepsPerRev
-        stepRadius = (topRadius - bottomRadius) / iters  # step size for spiral radius
+        stepRadius = (startRadius - endRadius) / iters  # step size for spiral radius
         stepZ = helixHeight / iters
+        if start_from_bottom:
+            stepZ = -stepZ
         count = 0
         angle = math.pi / 2 - dir_angle_rad
-        arcR = topRadius
-        arcZ = topCenterPoint.z
+        arcR = startRadius
+        arcZ = center.z
         arcPoints = []
         while count <= iters:
-            arcX = topCenterPoint.x + arcR * math.sin(angle)
-            arcY = topCenterPoint.y + arcR * math.cos(angle)
+            arcX = center.x + arcR * math.sin(angle)
+            arcY = center.y + arcR * math.cos(angle)
             arcPoints.append(FreeCAD.Vector(arcX, arcY, arcZ))  # Get all points of arcs
             if count == iters:
+                arcR = endRadius
                 break
             angle += stepRotate
             arcR -= stepRadius
@@ -327,9 +345,9 @@ def generate(
         if finish_circle:
             dx = arcR * math.cos(dir_angle_rad)
             dy = arcR * math.sin(dir_angle_rad)
-            p1 = FreeCAD.Vector(topCenterPoint.x - dx, topCenterPoint.y - dy, 0)
+            p1 = FreeCAD.Vector(center.x - dx, center.y - dy, 0)
             commandlist.append(Path.Command(arcCmdName, {"X": p1.x, "Y": p1.y, "I": -dx, "J": -dy}))
-            p2 = FreeCAD.Vector(topCenterPoint.x + dx, topCenterPoint.y + dy, 0)
+            p2 = FreeCAD.Vector(center.x + dx, center.y + dy, 0)
             commandlist.append(Path.Command(arcCmdName, {"X": p2.x, "Y": p2.y, "I": dx, "J": dy}))
 
         return commandlist

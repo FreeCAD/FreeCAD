@@ -763,7 +763,7 @@ vincoli non validi e geometrie degeneri</translation>
       <translation>Crea raccordo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="199"/>
       <source>Trim edge</source>
       <translation>Rifila</translation>
     </message>
@@ -936,7 +936,7 @@ vincoli non validi e geometrie degeneri</translation>
       <translation>Aggiungi schizzo asola ad arco</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="202"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="210"/>
       <source>Rotate geometries</source>
       <translation>Ruota geometrie</translation>
     </message>
@@ -977,7 +977,7 @@ vincoli non validi e geometrie degeneri</translation>
       <translation>Geometria di costruzione</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1565"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1596"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
       <translation>Aggiungi vincoli automatici</translation>
@@ -1016,54 +1016,54 @@ vincoli non validi e geometrie degeneri</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Non stai richiedendo modifiche nella molteplicità dei nodi.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'indice di geometria B-spline (GeoID) è fuori dai limiti.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>L'indice di geometria (GeoId) fornito non è una B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L'indice del nodo è fuori dai limiti. Notare che, in conformità alla numerazione OCC, il primo nodo ha indice 1 e non zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La molteplicità non può essere aumentata oltre il grado della B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La molteplicità non può essere diminuita al di là di zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC non è in grado di diminuire la molteplicità entro la tolleranza massima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Il nodo non può avere una molteplicità zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>La molteplicità del nodo non può essere superiore al grado della Bspline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Il nodo non può essere inserito al di fuori dell'intervallo di parametri B-spline.</translation>
     </message>
@@ -3198,62 +3198,62 @@ Questa impostazione è solo per la barra degli strumenti. Qualunque sia la scelt
 'Raggio': Lo strumento applicherà il raggio sia agli archi sia ai cerchi.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Single tool</source>
       <translation>Strumento singolo</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Separated tools</source>
       <translation>Strumenti separati</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Both</source>
       <translation>Entrambe</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Diameter</source>
       <translation>Diametro</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="251"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Radius</source>
       <translation>Raggio</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="261"/>
       <source>Always</source>
       <translation>Sempre</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Never</source>
       <translation>Mai</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="264"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>When no scale feature is visible</source>
       <translation>Quando non è visibile alcuna funzione di scala</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="271"/>
       <source>None</source>
       <translation>Nessuno</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>Dimensions only</source>
       <translation>Solo dimensioni</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="274"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Position and dimensions</source>
       <translation>Posizione e dimensioni</translation>
     </message>
@@ -3551,17 +3551,17 @@ Predefinito a: %N = %V
       <translation>Nota: queste impostazioni predefinite sono applicate a nuovi schizzi. Il comportamento viene ricordato individualmente per ogni schizzo come proprietà nella scheda Visualizza.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="584"/>
+      <location filename="../../SketcherSettings.cpp" line="583"/>
       <source>Unexpected C++ exception</source>
       <translation>Eccezione imprevista di C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="587"/>
+      <location filename="../../SketcherSettings.cpp" line="586"/>
       <source>Sketcher</source>
       <translation>Sketcher</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="611"/>
+      <location filename="../../SketcherSettings.cpp" line="610"/>
       <source>Glyphs not present:</source>
       <translation>Glifi non presenti:</translation>
     </message>
@@ -4130,12 +4130,12 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       <translation>Lo schizzo non è valido e non può essere modificato.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Il seguente vincolo è parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
       <source>The following constraints are partially redundant:</source>
       <translation>I seguenti vincoli sono parzialmente ridondanti:</translation>
     </message>
@@ -4160,72 +4160,72 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       <translation>Aprire lo strumento di convalida dello schizzo?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following constraint:</source>
       <translation>Rimuovere il seguente vincolo:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Rimuovere almeno uno dei seguenti vincoli:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Rimuovere il seguente vincolo ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Rimuovere i seguenti vincoli ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Rimuovere il seguente vincolo malformato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Rimuovere i seguenti vincoli malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4447"/>
       <source>Empty sketch</source>
       <translation>Schizzo vuoto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>Over-constrained:</source>
       <translation>Sovravincolato:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Malformed constraints:</source>
       <translation>Vincoli malformati:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4466"/>
       <source>Redundant constraints:</source>
       <translation>Vincoli ridondanti:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Partially redundant:</source>
       <translation>Parzialmente ridondante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Solver failed to converge</source>
       <translation>Risolutore impossibilitato a convergere</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4485"/>
       <source>Under-constrained:</source>
       <translation>Sottovincolato:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grado di libertà</numerusform>
@@ -4233,7 +4233,7 @@ Questo viene fatto analizzando le geometrie e i vincoli dello schizzo.</translat
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4491"/>
       <source>Fully constrained</source>
       <translation>Completamente vincolato</translation>
     </message>
@@ -4722,7 +4722,7 @@ L'algoritmo di Eigen Sparse QR è ottimizzato per matrici sparsi; solitamente pi
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4430"/>
       <source>and %1 more</source>
       <translation>e %1 in più</translation>
     </message>
@@ -4943,7 +4943,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <translation>La modifica non gestita della proprietà di un vincolo comporta indici di vincolo non validi</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1636"/>
+      <location filename="../../../App/SketchObject.cpp" line="1644"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Le parabole sono state convertite. I file convertiti non si apriranno nelle versioni precedenti di FreeCAD!!
@@ -4976,8 +4976,8 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="229"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
       <source>Error</source>
@@ -5108,7 +5108,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <location filename="../../DrawSketchHandlerArcSlot.h" line="219"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="161"/>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="236"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="244"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <source>Tool execution aborted</source>
@@ -5145,7 +5145,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <translation>Impossibile aggiungere il bordo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="215"/>
       <source>Failed to trim edge</source>
       <translation>Impossibile tagliare il bordo</translation>
     </message>
@@ -5157,7 +5157,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <translation>Errore di valore</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandler.cpp" line="1494"/>
+      <location filename="../../DrawSketchHandler.cpp" line="1525"/>
       <source>Autoconstraints cause redundancy. Removing them</source>
       <translation>I vincoli automatici causano ridondanza. Rimuoverli</translation>
     </message>
@@ -5202,7 +5202,7 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <translation>Impossibile aggiungere ellisse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="230"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="238"/>
       <source>Failed to rotate</source>
       <translation>Impossibile ruotare</translation>
     </message>
@@ -5400,12 +5400,12 @@ La spaziatura della griglia cambia se diventa più piccola della dimensione in p
       <translation>Elimina la geometria originale. Se si crea una singola copia, esegue di fatto un'operazione 'Sposta'.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="552"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
       <source>Apply equal constraints</source>
       <translation>Applica vincoli uguali</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="557"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="565"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Se questa opzione è selezionata, i vincoli dimensionali sono esclusi dall'operazione.
@@ -5795,19 +5795,6 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
     </message>
   </context>
   <context>
-    <name>ToolWidgetManager_p4</name>
-    <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
-      <source>Sides (+'U'/ -'J')</source>
-      <translation>Numero di pagine (+ 'U' / - 'J')</translation>
-    </message>
-    <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
-      <source>Degree (+'U'/ -'J')</source>
-      <translation>Grado (+'U'/ -'J')</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="670"/>
@@ -5826,14 +5813,6 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
       <location filename="../../CommandConstraints.cpp" line="1933"/>
       <source>Constrain tools</source>
       <translation>Strumenti vincolo</translation>
-    </message>
-  </context>
-  <context>
-    <name>TaskSketcherTool_p5_translate</name>
-    <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="635"/>
-      <source>Rows (+'R'/-'F')</source>
-      <translation>Righe (+'R'/-'F')</translation>
     </message>
   </context>
   <context>
@@ -5966,12 +5945,12 @@ Invece vengono applicati vincoli uguali tra gli oggetti originali e le loro copi
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="584"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="607"/>
       <source>Apply equal constraints</source>
       <translation>Applica vincoli uguali</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="588"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="611"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Se questa opzione è selezionata, i vincoli dimensionali sono esclusi dall'operazione.
@@ -8161,25 +8140,31 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="103"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Rotate: hint</comment>
+      <translation>%1/%2 aumenta/diminuisce numero di elementi</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 selezionare il punto del centro</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 impostare l'angolo iniziale</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="113"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 impostare l'angolo di rotazione</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="277"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
       <translation>Parametri rotazione</translation>
     </message>
@@ -8251,19 +8236,31 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
       <translation>Parametri traslazione</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="515"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
+      <source>%1/%2 increase/decrease number of elements</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1/%2 aumenta/diminuisce numero di elementi</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <source>%1/%2 increase/decrease number of rows</source>
+      <comment>Sketcher Translate: hint</comment>
+      <translation>%1/%2 aumenta/diminuisce numero di righe</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 selezionare il punto di riferimento</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 impostare il vettore di traslazione</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="520"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 impostare il secondo vettore di traslazione</translation>
@@ -8272,10 +8269,20 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
+      <source>Trimming Parameters</source>
+      <translation type="unfinished">Trimming Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation>%1 selezionare la linea da rifilare</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
+      <source>%1 toggle include axes as trim boundaries</source>
+      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8525,6 +8532,19 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     </message>
   </context>
   <context>
+    <name>ToolWidgetManager_p4</name>
+    <message>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="994"/>
+      <source>Degree</source>
+      <translation>Grado</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <source>Sides</source>
+      <translation>Lati</translation>
+    </message>
+  </context>
+  <context>
     <name>CmdSketcherCancelSketch</name>
     <message>
       <location filename="../../Command.cpp" line="411"/>
@@ -8553,12 +8573,12 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>TaskSketcherTool_c2_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="598"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="621"/>
       <source>Symmetric</source>
       <translation>Simmetrica</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="602"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation>Distribuire gli elementi simmetricamente intorno alla posizione originale.</translation>
     </message>
@@ -8566,9 +8586,17 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="631"/>
-      <source>Elements (+'U'/-'J')</source>
-      <translation>Elementi (+'U'/-'J')</translation>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="654"/>
+      <source>Elements</source>
+      <translation>Elementi</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_p5_translate</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="658"/>
+      <source>Rows</source>
+      <translation>Righe</translation>
     </message>
   </context>
   <context>
@@ -8598,14 +8626,27 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
     </message>
   </context>
   <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
+    </message>
+  </context>
+  <context>
     <name>TaskSketcherTool_c2_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="568"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="576"/>
       <source>Symmetric</source>
       <translation>Simmetrica</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="572"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
       <source>Distribute the elements symmetrically around the original position.</source>
       <translation>Distribuire gli elementi simmetricamente intorno alla posizione originale.</translation>
     </message>
@@ -8613,9 +8654,9 @@ I punti devono essere impostati più vicino di un quinto della spaziatura della 
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="592"/>
-      <source>Elements (+'U'/ -'J')</source>
-      <translation>Elementi (+'U'/-'J')</translation>
+      <location filename="../../DrawSketchHandlerRotate.h" line="600"/>
+      <source>Elements</source>
+      <translation>Elementi</translation>
     </message>
   </context>
   <context>
