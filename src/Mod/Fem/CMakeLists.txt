@@ -321,6 +321,7 @@ SET(FemSolverCodeAster_SRCS
     femsolver/codeaster/add_mesh.py
     femsolver/codeaster/codeastertools.py
     femsolver/codeaster/writer.py
+    femsolver/codeaster/codeasterutils.py
 )
 
 SET(FemSolverCodeAsterEquations_SRCS

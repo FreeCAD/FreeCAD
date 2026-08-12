@@ -29,22 +29,7 @@ __url__ = "https://www.freecad.org"
 #  @{
 
 import FreeCAD
-
-
-def angle_correcter(anglistIP):
-    """
-    Function to take a list of angles outside of Code Aster's allowables and
-    convert to equivalent in range angle
-    """
-    anglistOP = []
-    for ang in anglistIP:
-        while not (-90 <= ang <= 90):
-            if ang < -90:
-                ang += 180
-            if ang > 90:
-                ang -= 180
-        anglistOP.append(ang)
-    return anglistOP
+from .codeasterutils import Layup
 
 
 def add_femelement_geometry(commtxt, ele_name, ca_writer):
@@ -91,25 +76,26 @@ def add_shell2D(commtxt, mat_objs, ele_name, ca_writer):
         if "YoungsModulusX" in mat_objs[0].Material.keys():
             LUname = cardname + "LAYUP" + str(i)
             i += 1
-            layup = {
-                "name": LUname,
-                "group": str(geoms)[1:-1],
-                "matnames": [cardname],
-                "thicknesses": [thickness],
-                "orientations": [0],
-            }
+            # TODO: update these layups to use the new object
+            layup = Layup(
+                name=LUname,
+                groups=[str(geoms)[1:-1]],
+                matnames=[cardname],
+                thicknesses=[thickness],
+                orientations=[0],
+            )
             layups.append(layup)
             commtxt += add_layup(layup)
 
         else:
             layups = [
-                {
-                    "name": cardname,
-                    "group": str(geoms)[1:-1],
-                    "matnames": [cardname],
-                    "thicknesses": [thickness],
-                    "orientations": [0],
-                }
+                Layup(
+                    name=cardname,
+                    groups=[str(geoms)[1:-1]],
+                    matnames=[cardname],
+                    thicknesses=[thickness],
+                    orientations=[0],
+                )
             ]
 
         commtxt += f"# Shell elements detected, thickness {thickness}mm on item {geoms}\n"
@@ -177,13 +163,13 @@ def apply_con_layup(commtxt, shelllam_obj, ele_name, mat_objs, LU_id, ca_writer)
     shelllam_obj.Materials = matnames
     geoms = make_geom_list(shelllam_obj, ca_writer)
     matname = "LAYUP" + str(LU_id)
-    layup = {
-        "name": matname,
-        "group": str(geoms)[1:-1],
-        "matnames": matnames,
-        "thicknesses": thicknesses,
-        "orientations": orientations,
-    }
+    layup = Layup(
+        name=matname,
+        groups=geoms,
+        matnames=matnames,
+        thicknesses=thicknesses,
+        orientations=orientations,
+    )
     commtxt += add_layup(layup)
     ori_vec = shelllam_obj.Orientation
     commtxt += add_laminate([layup], ele_name, ori_vec)
@@ -197,14 +183,15 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
     orientations = shelllam_obj.Orientations
     matnames = make_mat_list(mat_objs)
     commtxt += "# WindAll object detected\n"
-    geoms = make_geom_list(shelllam_obj, ca_writer)
-    baselayup = {
-        "name": "base",
-        "group": str(geoms)[1:-1],
-        "matnames": [matnames[0]],
-        "thicknesses": [thicknesses[0]],
-        "orientations": [orientations[0]],
-    }
+    geoms, faces = make_geom_list(shelllam_obj, ca_writer, True)
+    baselayup = Layup(
+        name="base",
+        groups=geoms,
+        matnames=[matnames[0]],
+        thicknesses=[thicknesses[0]],
+        orientations=[orientations[0]],
+    )
+
     layups = [baselayup]
     ori_vec = shelllam_obj.Orientation
     commtxt += add_layup(baselayup)
@@ -217,14 +204,29 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
         mn = [matnames[0]]
         for i in range(1, len(t)):
             mn.append(matnames[1])
-        gname = "LU" + str(e)
-        layup = {
-            "name": gname,
-            "group": f"'{gname}'",
-            "matnames": mn,
-            "thicknesses": t,
-            "orientations": o,
-        }
+        fi = None
+        for i in range(len(faces)):
+            if e in faces[i]:
+                fi = i
+        if fi is None:
+            FreeCAD.Console.PrintWarning(f"Element number {e} not in any group\n")
+        # Corrects eid to Code Aster numbering
+        eid_CA = e - faces[fi][0] + 1
+        luname = f"L{fi}U{eid_CA}"
+        if len(str(fi)) > 1:
+            FreeCAD.Console.PrintWarning(
+                "Number of groups in double digits, group assignment maybe unreliable\n"
+            )
+        layup = Layup(
+            name=luname,
+            groups=[luname],
+            ninit=eid_CA,
+            nfin=eid_CA,
+            parentgroup=geoms[fi],
+            matnames=mn,
+            thicknesses=t,
+            orientations=o,
+        )
         layups.append(layup)
         commtxt += add_layup(layup)
     commtxt += add_grps(layups)
@@ -232,32 +234,33 @@ def apply_vari_layup(commtxt, shelllam_obj, ele_name, mat_objs, ca_writer):
     return commtxt, layups
 
 
-def add_grps(layups):
+def add_grps(layups, group=0):
+    """
+    Add groups for the different layups, assume using first groupname
+    """
+
     commtxt = "# Adding WindAll groups\n"
     commtxt += "grps = DEFI_GROUP(MAILLAGE=mesh, CREA_GROUP_MA = (\n"
     for layup in layups[1:]:
-        commtxt += f"                                                  _F(GROUP_MA = ({layups[0]['group']},),\n"
-        commtxt += f"                                                     NUME_INIT = {layup['name'][2:]},\n"
-        commtxt += f"                                                     NUME_FIN = {layup['name'][2:]},\n"
+        commtxt += f"                                                  _F(GROUP_MA = ('{layup.parentgroup}',),\n"
         commtxt += (
-            f"                                                     NOM = {layup['group']}),\n"
+            f"                                                     NUME_INIT = {layup.ninit},\n"
         )
+        commtxt += (
+            f"                                                     NUME_FIN = {layup.nfin},\n"
+        )
+        commtxt += f"                                                     NOM = '{layup.name}'),\n"
     commtxt += "                                                     ))\n\n"
     return commtxt
 
 
 def add_layup(layup):
-    thicknesses, orientations, matnames = (
-        layup["thicknesses"],
-        layup["orientations"],
-        layup["matnames"],
-    )
     commtxt = "# Composite layup detected, added to shell\n"
-    name = layup["name"]
+    name = layup.name
     commtxt += f"{name} = DEFI_COMPOSITE(COUCHE=(\n"
-    for th, o, mn in zip(thicknesses, orientations, matnames):
+    for th, o, m in zip(layup.thicknesses, layup.orientations, layup.matnames):
         commtxt += f"                               _F(EPAIS={th},\n"
-        commtxt += f"                                MATER={mn},\n"
+        commtxt += f"                                MATER={m},\n"
         commtxt += f"                                ORIENTATION = {o}),\n"
     commtxt += "                                ))\n\n"
     return commtxt
@@ -268,29 +271,43 @@ def add_laminate(layups, ele_name, ori_vec):
     commtxt = "# Shell elements detected, applying composite laminate definition\n"
     commtxt += f"{ele_name} = AFFE_CARA_ELEM(COQUE=(\n"
     for layup in layups:
-        thicknesses, group = layup["thicknesses"], layup["group"]
+        thicknesses, groups = layup.thicknesses, layup.groups
+        if len(groups) == 1:
+            group = groups[0]
+        else:
+            group = str(groups)[2:-2]
         thicktot = sum(thicknesses)
         commtxt += f"                                _F(COQUE_NCOU = {len(thicknesses)},\n"
         commtxt += f"                                   EPAIS={thicktot},\n"
-        commtxt += f"                                   GROUP_MA=({group}),\n"
+        commtxt += f"                                   GROUP_MA=('{group}'),\n"
         commtxt += f"                                   VECTEUR={ori_vec_str}),\n"
     commtxt += "                          ),\n"
     commtxt += "                          MODELE=model)\n\n"
     return commtxt
 
 
-def make_geom_list(shelllam_obj, ca_writer):
+def make_geom_list(shelllam_obj, ca_writer, getFaces=False):
     geoms = []
+    faces = []
+    femmesh = ca_writer.mesh_object.FemMesh
     if len(shelllam_obj.References) == 0:
-        femmesh = ca_writer.mesh_object.FemMesh
         for g in femmesh.Groups:
             if femmesh.getGroupElementType(g) == "Face":
                 geoms.append(femmesh.getGroupName(g))
+                if getFaces:
+                    faces.append(femmesh.getGroupElements(g))
     else:
         for ref in shelllam_obj.References:
             for geom in ref[1]:
                 geoms.append(geom)
-    return geoms
+        if getFaces:
+            for g in femmesh.Groups:
+                if femmesh.getGroupElementType(g) == "Face":
+                    faces.append(femmesh.getGroupElements(g))
+    if getFaces:
+        return geoms, faces
+    else:
+        return geoms
 
 
 def make_mat_list(mat_objs, matnames=[], check=False):
@@ -315,6 +332,22 @@ def make_mat_list(mat_objs, matnames=[], check=False):
         matnames = mat_obj_names
 
     return matnames
+
+
+def angle_correcter(anglistIP):
+    """
+    Function to take a list of angles outside of Code Aster's allowables and
+    convert to equivalent in range angle
+    """
+    anglistOP = []
+    for ang in anglistIP:
+        while not (-90 <= ang <= 90):
+            if ang < -90:
+                ang += 180
+            if ang > 90:
+                ang -= 180
+        anglistOP.append(ang)
+    return anglistOP
 
 
 ##  @}
