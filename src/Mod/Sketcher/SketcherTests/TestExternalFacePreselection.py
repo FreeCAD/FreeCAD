@@ -126,8 +126,7 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
         for point in points:
             screen_x, screen_y = view.getPointOnScreen(point)
             if not (
-                margin_x < screen_x < width - margin_x
-                and margin_y < screen_y < height - margin_y
+                margin_x < screen_x < width - margin_x and margin_y < screen_y < height - margin_y
             ):
                 return False
 

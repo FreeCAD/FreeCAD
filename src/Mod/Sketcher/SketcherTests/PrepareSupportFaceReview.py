@@ -7,7 +7,6 @@ import tempfile
 
 import FreeCAD as App
 
-
 DEFAULT_BOX_LENGTH = 40.0
 DEFAULT_BOX_WIDTH = 40.0
 DEFAULT_BOX_HEIGHT = 20.0
@@ -40,15 +39,11 @@ def create_review_document(
 
     if len(sketch.ExternalGeometry) != 1:
         raise RuntimeError(
-            "Expected one automatic support reference, got {}".format(
-                len(sketch.ExternalGeometry)
-            )
+            "Expected one automatic support reference, got {}".format(len(sketch.ExternalGeometry))
         )
 
     if len(sketch.ExternalGeo) <= 2:
-        raise RuntimeError(
-            "Expected automatic support edges to be exposed in ExternalGeo"
-        )
+        raise RuntimeError("Expected automatic support edges to be exposed in ExternalGeo")
 
     return doc, box, sketch
 

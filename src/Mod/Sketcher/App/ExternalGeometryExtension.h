@@ -74,13 +74,13 @@ public:
     // <realthunder.dev@gmail.com>
     enum Flag
     {
-        Defining = 0,  // allow an external geometry to build shape
-        Frozen = 1,    // freeze an external geometry
-        Detached = 2,  // signal the intentions of detaching the geometry from external reference
-        Missing = 3,   // geometry with missing external reference
-        Sync = 4,      // signal the intention to synchronize a frozen geometry
+        Defining = 0,     // allow an external geometry to build shape
+        Frozen = 1,       // freeze an external geometry
+        Detached = 2,     // signal the intentions of detaching the geometry from external reference
+        Missing = 3,      // geometry with missing external reference
+        Sync = 4,         // signal the intention to synchronize a frozen geometry
         AutoSupport = 5,  // geometry auto-generated from the active attachment support face
-        NumFlags       // Must be the last type
+        NumFlags          // Must be the last type
     };
     // END_CREDIT_BLOCK: Credit under LGPL for this block to Zheng, Lei (realthunder)
     // <realthunder.dev@gmail.com>
