@@ -27,6 +27,7 @@
 #include <App/Document.h>
 #include <App/MeasureManager.h>
 #include <Base/Tools.h>
+#include <Base/Converter.h>
 #include <Base/Precision.h>
 #include <BRepAdaptor_Surface.hxx>
 #include <GeomAPI_ProjectPointOnCurve.hxx>
@@ -579,13 +580,13 @@ App::DocumentObjectExecReturn* MeasureAngle::executeAxisCase(
 
         // Swap the normal for the line's in-plane projection so the arc closes on
         // the plane rather than on its normal.
-        Base::Vector3d projected(lineDir.X(), lineDir.Y(), lineDir.Z());
+        Base::Vector3d projected = Base::convertTo<Base::Vector3d>(lineDir);
         projected.ProjectToPlane(
             Base::Vector3d(0, 0, 0),
-            Base::Vector3d(planeNormal.X(), planeNormal.Y(), planeNormal.Z())
+            Base::convertTo<Base::Vector3d>(planeNormal)
         );
         if (projected.Length() >= Precision::Confusion()) {
-            gp_Vec inPlane(projected.x, projected.y, projected.z);
+            gp_Vec inPlane = Base::convertTo<gp_Vec>(projected);
             inPlane.Normalize();
             (s1Line ? direction2 : direction1) = inPlane;
         }
