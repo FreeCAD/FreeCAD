@@ -39,7 +39,8 @@ constexpr const char* manifestFileName = "manifest.txt";
 constexpr const char* masterFileName = "master.fcstd";
 constexpr const char* lightweightProxyBoundsMinPropertyName = "LightweightProxyBoundsMin";
 constexpr const char* lightweightProxyBoundsMaxPropertyName = "LightweightProxyBoundsMax";
-constexpr const char* lightweightWorkspaceManifestPathPropertyName = "LightweightWorkspaceManifestPath";
+constexpr const char* lightweightWorkspaceManifestPathPropertyName
+    = "LightweightWorkspaceManifestPath";
 constexpr const char* lightweightWorkspaceShardLinkPropertyName = "LightweightWorkspaceShardLink";
 constexpr const char* lightweightWorkspaceShardDocumentPathPropertyName
     = "LightweightWorkspaceShardDocumentPath";
@@ -109,8 +110,8 @@ std::uint64_t minBytesFromMiB(int minFileSizeMB)
 
 void analyzeLabelTree(
     TDF_Label label,
-    const Handle(XCAFDoc_ShapeTool)& shapeTool,
-    const Handle(XCAFDoc_ColorTool)& colorTool,
+    const Handle(XCAFDoc_ShapeTool) & shapeTool,
+    const Handle(XCAFDoc_ColorTool) & colorTool,
     bool importHidden,
     StepLightweightWorkspaceAnalysis& analysis,
     std::size_t maxShapeNodeCount
@@ -134,14 +135,7 @@ void analyzeLabelTree(
     }
 
     for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-        analyzeLabelTree(
-            it.Value(),
-            shapeTool,
-            colorTool,
-            importHidden,
-            analysis,
-            maxShapeNodeCount
-        );
+        analyzeLabelTree(it.Value(), shapeTool, colorTool, importHidden, analysis, maxShapeNodeCount);
         if (maxShapeNodeCount > 0 && analysis.shapeNodeCount >= maxShapeNodeCount) {
             return;
         }
@@ -168,11 +162,7 @@ Base::BoundBox3d proxyBoundsForShape(const TopoDS_Shape& shape)
     return Part::TopoShape(shape).getBoundBox();
 }
 
-App::PropertyVector* ensureVectorProperty(
-    App::DocumentObject& object,
-    const char* name,
-    const char* doc
-)
+App::PropertyVector* ensureVectorProperty(App::DocumentObject& object, const char* name, const char* doc)
 {
     auto* property = dynamic_cast<App::PropertyVector*>(object.getPropertyByName(name));
     if (!property) {
@@ -190,11 +180,7 @@ App::PropertyVector* ensureVectorProperty(
     return property;
 }
 
-App::PropertyString* ensureStringProperty(
-    App::DocumentObject& object,
-    const char* name,
-    const char* doc
-)
+App::PropertyString* ensureStringProperty(App::DocumentObject& object, const char* name, const char* doc)
 {
     auto* property = dynamic_cast<App::PropertyString*>(object.getPropertyByName(name));
     if (!property) {
@@ -212,23 +198,11 @@ App::PropertyString* ensureStringProperty(
     return property;
 }
 
-App::PropertyBool* ensureBoolProperty(
-    App::DocumentObject& object,
-    const char* name,
-    const char* doc
-)
+App::PropertyBool* ensureBoolProperty(App::DocumentObject& object, const char* name, const char* doc)
 {
     auto* property = dynamic_cast<App::PropertyBool*>(object.getPropertyByName(name));
     if (!property) {
-        object.addDynamicProperty(
-            "App::PropertyBool",
-            name,
-            "Lightweight",
-            doc,
-            App::Prop_None,
-            false,
-            true
-        );
+        object.addDynamicProperty("App::PropertyBool", name, "Lightweight", doc, App::Prop_None, false, true);
         property = dynamic_cast<App::PropertyBool*>(object.getPropertyByName(name));
     }
     return property;
@@ -330,14 +304,7 @@ StepLightweightWorkspaceAnalysis StepLightweightWorkspaceBuilder::analyze(
         }
 
         ++analysis.rootCount;
-        analyzeLabelTree(
-            label,
-            shapeTool,
-            colorTool,
-            importHidden,
-            analysis,
-            maxShapeNodeCount
-        );
+        analyzeLabelTree(label, shapeTool, colorTool, importHidden, analysis, maxShapeNodeCount);
         if (maxShapeNodeCount > 0 && analysis.shapeNodeCount >= maxShapeNodeCount) {
             break;
         }
@@ -479,8 +446,8 @@ std::vector<TDF_Label> StepLightweightWorkspaceBuilder::collectRootLabels() cons
         }
 
         TDF_LabelSequence components;
-        if (shapeTool->IsAssembly(referredLabel) && shapeTool->GetComponents(referredLabel, components)
-            && components.Length() > 1) {
+        if (shapeTool->IsAssembly(referredLabel)
+            && shapeTool->GetComponents(referredLabel, components) && components.Length() > 1) {
             std::vector<TDF_Label> componentLabels;
             componentLabels.reserve(components.Length());
             for (Standard_Integer index = 1; index <= components.Length(); ++index) {
@@ -505,10 +472,7 @@ App::Document* StepLightweightWorkspaceBuilder::createDocument(const std::string
     return App::GetApplication().newDocument(objectName.c_str(), objectName.c_str(), initFlags);
 }
 
-void StepLightweightWorkspaceBuilder::saveDocumentAs(
-    App::Document& doc,
-    const std::string& filePath
-) const
+void StepLightweightWorkspaceBuilder::saveDocumentAs(App::Document& doc, const std::string& filePath) const
 {
     Base::FileInfo fileInfo(filePath);
     if (fileInfo.exists()) {
@@ -631,10 +595,7 @@ StepLightweightWorkspaceResult StepLightweightWorkspaceBuilder::build()
 
     Base::FileInfo shardDir(shardDirectory());
     if (!shardDir.createDirectories()) {
-        throw Base::FileException(
-            "Cannot create lightweight shard directory",
-            shardDir.filePath()
-        );
+        throw Base::FileException("Cannot create lightweight shard directory", shardDir.filePath());
     }
 
     auto rootLabels = collectRootLabels();

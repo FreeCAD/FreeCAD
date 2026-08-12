@@ -79,8 +79,8 @@ bool StepLightweightManifest::save(const std::string& manifestPath) const
     stream << "master_object " << std::quoted(masterObjectName) << '\n';
     for (const auto& shard : shards) {
         stream << "shard " << std::quoted(shard.documentPath) << ' '
-               << std::quoted(shard.assemblyObjectName) << ' '
-               << std::quoted(shard.linkObjectName) << ' ' << std::quoted(shard.label) << '\n';
+               << std::quoted(shard.assemblyObjectName) << ' ' << std::quoted(shard.linkObjectName)
+               << ' ' << std::quoted(shard.label) << '\n';
     }
 
     return stream.good();

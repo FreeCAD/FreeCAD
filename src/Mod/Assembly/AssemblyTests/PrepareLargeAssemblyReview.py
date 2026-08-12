@@ -8,7 +8,6 @@ import tempfile
 
 import FreeCAD as App
 
-
 THIS_DIR = os.path.dirname(__file__)
 ASSEMBLY_DIR = os.path.dirname(THIS_DIR)
 if ASSEMBLY_DIR not in sys.path:

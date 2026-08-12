@@ -18,7 +18,7 @@ namespace App
 {
 class Document;
 class DocumentObject;
-}
+}  // namespace App
 
 namespace Import
 {
@@ -66,10 +66,7 @@ public:
         const ImportOCAFOptions& options
     );
 
-    static bool restoreFromCache(
-        const Base::FileInfo& stepFile,
-        StepLightweightWorkspaceResult& result
-    );
+    static bool restoreFromCache(const Base::FileInfo& stepFile, StepLightweightWorkspaceResult& result);
     static bool restoreFromCache(
         const StepLightweightWorkspaceCacheStatus& status,
         StepLightweightWorkspaceResult& result

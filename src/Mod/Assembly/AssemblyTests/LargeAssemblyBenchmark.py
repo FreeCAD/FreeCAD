@@ -123,9 +123,7 @@ def build_arg_parser():
 
 
 def format_results(results):
-    header = (
-        "components | links | mode        | threshold | seconds   | partial | joint-group"
-    )
+    header = "components | links | mode        | threshold | seconds   | partial | joint-group"
     rows = [header, "-" * len(header)]
     for result in results:
         rows.append(

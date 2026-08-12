@@ -61,11 +61,7 @@ constexpr int defaultLargeAssemblyThreshold = 200;
 const char* assemblyLinkLoadModeEnums[] = {"Normal", "Auto", "Lightweight", nullptr};
 constexpr const char* lightweightWorkspaceShardLinkPropertyName = "LightweightWorkspaceShardLink";
 
-void syncSubAssemblyLinkProperties(
-    AssemblyLink* source,
-    AssemblyLink* target,
-    bool forceLightweightMode
-)
+void syncSubAssemblyLinkProperties(AssemblyLink* source, AssemblyLink* target, bool forceLightweightMode)
 {
     if (!source || !target) {
         return;
@@ -78,9 +74,8 @@ void syncSubAssemblyLinkProperties(
         target->Rigid.setValue(source->Rigid.getValue());
     }
 
-    int targetLoadMode = forceLightweightMode
-        ? static_cast<int>(AssemblyLink::LoadModeLightweight)
-        : source->LoadMode.getValue();
+    int targetLoadMode = forceLightweightMode ? static_cast<int>(AssemblyLink::LoadModeLightweight)
+                                              : source->LoadMode.getValue();
     if (target->LoadMode.getValue() != targetLoadMode) {
         target->LoadMode.setValue(targetLoadMode);
     }

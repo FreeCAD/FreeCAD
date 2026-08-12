@@ -48,7 +48,8 @@ constexpr const char* initialLoadSourceName = "initial";
 constexpr const char* manualLoadSourceName = "manual";
 constexpr const char* prefetchLoadSourceName = "prefetch";
 constexpr const char* pinnedShardsFilename = "pinned_shards.txt";
-constexpr const char* lightweightWorkspaceManifestPathPropertyName = "LightweightWorkspaceManifestPath";
+constexpr const char* lightweightWorkspaceManifestPathPropertyName
+    = "LightweightWorkspaceManifestPath";
 constexpr const char* lightweightWorkspaceShardLinkPropertyName = "LightweightWorkspaceShardLink";
 constexpr const char* lightweightWorkspaceShardDocumentPathPropertyName
     = "LightweightWorkspaceShardDocumentPath";
@@ -115,9 +116,7 @@ struct WorkspaceSpatialIndex
 {
     std::vector<WorkspaceSpatialShardEntry> shards;
     std::unordered_map<std::string, std::size_t> shardIndicesByPath;
-    std::unordered_map<WorkspaceSpatialCellCoord,
-                       std::vector<std::size_t>,
-                       WorkspaceSpatialCellCoordHash>
+    std::unordered_map<WorkspaceSpatialCellCoord, std::vector<std::size_t>, WorkspaceSpatialCellCoordHash>
         shardIndicesByCell;
     std::vector<std::size_t> shardIndicesWithoutSpatialCenter;
     Base::BoundBox3d spatialCenterBounds;
@@ -170,10 +169,7 @@ WorkspaceSpatialIndex* ensureWorkspaceSpatialIndex(
     const StepLightweightManifest& manifest,
     App::Document& masterDoc
 );
-void refreshWorkspaceSpatialIndex(
-    const StepLightweightManifest& manifest,
-    App::Document& masterDoc
-);
+void refreshWorkspaceSpatialIndex(const StepLightweightManifest& manifest, App::Document& masterDoc);
 void clearLinkedShardProxyContents(App::DocumentObject& object);
 bool refreshLinkedShardAfterLoad(App::DocumentObject& object);
 std::vector<std::string> captureLoadedWorkspaceShardPaths(const StepLightweightManifest& manifest);
@@ -191,16 +187,24 @@ void purgeWorkspaceTouchState(const App::Document& workspaceDoc);
 std::size_t pendingInitialRestoreCountForDocument(const App::Document& doc);
 void setPendingInitialRestoreCountForDocument(const App::Document& doc, std::size_t pendingCount);
 void consumePendingInitialRestoreCountForDocument(const App::Document& doc, std::size_t consumedCount);
-bool shouldDeferInitialRestore(const App::Document& workspaceDoc, const StepLightweightManifest& manifest);
+bool shouldDeferInitialRestore(
+    const App::Document& workspaceDoc,
+    const StepLightweightManifest& manifest
+);
 std::size_t restoreDeferredInitialShardsNearPointImpl(
     const App::Document& workspaceDoc,
     const Base::Vector3d& focusPoint,
     int maxRestoreCount
 );
 void clearLoadedShardPathCache(const StepLightweightManifest& manifest);
-std::unordered_set<std::string>& ensureLoadedShardPathsForManifest(const StepLightweightManifest& manifest);
+std::unordered_set<std::string>& ensureLoadedShardPathsForManifest(
+    const StepLightweightManifest& manifest
+);
 void markShardLoadedForManifest(const StepLightweightManifest& manifest, const std::string& documentPath);
-void markShardUnloadedForManifest(const StepLightweightManifest& manifest, const std::string& documentPath);
+void markShardUnloadedForManifest(
+    const StepLightweightManifest& manifest,
+    const std::string& documentPath
+);
 WorkspaceSpatialCellCoord spatialCellCoordForPoint(
     const WorkspaceSpatialIndex& spatialIndex,
     const Base::Vector3d& point
@@ -251,18 +255,16 @@ std::string absolutePathFromOwner(const App::Document& ownerDoc, const std::stri
 
     std::filesystem::path fsPath = Base::FileInfo::stringToPath(path);
     if (fsPath.is_relative()) {
-        std::filesystem::path ownerDir
-            = Base::FileInfo::stringToPath(Base::FileInfo(ownerDoc.FileName.getValue()).dirPath());
+        std::filesystem::path ownerDir = Base::FileInfo::stringToPath(
+            Base::FileInfo(ownerDoc.FileName.getValue()).dirPath()
+        );
         fsPath = ownerDir / fsPath;
     }
 
     return Base::FileInfo::pathToString(fsPath.lexically_normal());
 }
 
-std::string shardReferenceKey(
-    const std::string& normalizedDocumentPath,
-    const std::string& objectName
-)
+std::string shardReferenceKey(const std::string& normalizedDocumentPath, const std::string& objectName)
 {
     return normalizedDocumentPath + '\x1f' + objectName;
 }
@@ -395,7 +397,9 @@ void pruneLoadedShardPathsForManifest(const StepLightweightManifest& manifest)
     }
 }
 
-std::unordered_set<std::string>& ensureLoadedShardPathsForManifest(const StepLightweightManifest& manifest)
+std::unordered_set<std::string>& ensureLoadedShardPathsForManifest(
+    const StepLightweightManifest& manifest
+)
 {
     const std::string normalizedWorkspacePath = normalizedMasterPath(manifest);
     auto& loadedPaths = loadedShardPathsForManifest(manifest);
@@ -457,10 +461,7 @@ void setPendingInitialRestoreCountForDocument(const App::Document& doc, std::siz
     workspacePendingInitialRestoreCounts[normalizedDocumentPath] = pendingCount;
 }
 
-void consumePendingInitialRestoreCountForDocument(
-    const App::Document& doc,
-    std::size_t consumedCount
-)
+void consumePendingInitialRestoreCountForDocument(const App::Document& doc, std::size_t consumedCount)
 {
     if (consumedCount == 0) {
         return;
@@ -631,17 +632,13 @@ void savePersistedPinnedShardsForManifest(const StepLightweightManifest& manifes
         it->second.begin(),
         it->second.end()
     );
-    std::sort(
-        pinnedShards.begin(),
-        pinnedShards.end(),
-        [](const auto& left, const auto& right) {
-            if (left.second != right.second) {
-                return left.second > right.second;
-            }
-
-            return left.first < right.first;
+    std::sort(pinnedShards.begin(), pinnedShards.end(), [](const auto& left, const auto& right) {
+        if (left.second != right.second) {
+            return left.second > right.second;
         }
-    );
+
+        return left.first < right.first;
+    });
 
     for (const auto& [documentPath, priority] : pinnedShards) {
         stream << "pinned " << std::quoted(documentPath) << ' ' << priority << '\n';
@@ -820,10 +817,7 @@ void rebuildDocumentManifestShardIndex(DocumentManifestCacheEntry& cacheEntry)
     }
 }
 
-bool buildDocumentManifestCacheEntry(
-    const App::Document& doc,
-    DocumentManifestCacheEntry& cacheEntry
-)
+bool buildDocumentManifestCacheEntry(const App::Document& doc, DocumentManifestCacheEntry& cacheEntry)
 {
     cacheEntry = DocumentManifestCacheEntry();
     cacheEntry.normalizedDocumentPath = normalizePath(doc.FileName.getValue());
@@ -858,9 +852,8 @@ bool buildDocumentManifestCacheEntry(
         return false;
     }
 
-    cacheEntry.role = filename == "master.fcstd"
-        ? WorkspaceDocumentRole::Root
-        : WorkspaceDocumentRole::Shard;
+    cacheEntry.role = filename == "master.fcstd" ? WorkspaceDocumentRole::Root
+                                                 : WorkspaceDocumentRole::Shard;
     rebuildDocumentManifestShardIndex(cacheEntry);
     return true;
 }
@@ -946,10 +939,7 @@ App::Document* workspaceRootDocument(
     );
 }
 
-bool shouldDeferInitialRestore(
-    const App::Document& workspaceDoc,
-    const StepLightweightManifest& manifest
-)
+bool shouldDeferInitialRestore(const App::Document& workspaceDoc, const StepLightweightManifest& manifest)
 {
     const std::string normalizedDocumentPath = normalizePath(workspaceDoc.FileName.getValue());
     const std::string normalizedManifestMasterPath = normalizedMasterPath(manifest);
@@ -1230,18 +1220,23 @@ bool rebuildWorkspaceSpatialIndex(
             }
         }
 
-        spatialIndex.shardIndicesByPath[entry.normalizedDocumentPath]
-            = spatialIndex.shards.size();
+        spatialIndex.shardIndicesByPath[entry.normalizedDocumentPath] = spatialIndex.shards.size();
         spatialIndex.shards.push_back(std::move(entry));
     }
 
     if (spatialCenterCount != 0 && spatialIndex.spatialCenterBounds.IsValid()) {
-        const double extentX
-            = std::max(0.0, spatialIndex.spatialCenterBounds.MaxX - spatialIndex.spatialCenterBounds.MinX);
-        const double extentY
-            = std::max(0.0, spatialIndex.spatialCenterBounds.MaxY - spatialIndex.spatialCenterBounds.MinY);
-        const double extentZ
-            = std::max(0.0, spatialIndex.spatialCenterBounds.MaxZ - spatialIndex.spatialCenterBounds.MinZ);
+        const double extentX = std::max(
+            0.0,
+            spatialIndex.spatialCenterBounds.MaxX - spatialIndex.spatialCenterBounds.MinX
+        );
+        const double extentY = std::max(
+            0.0,
+            spatialIndex.spatialCenterBounds.MaxY - spatialIndex.spatialCenterBounds.MinY
+        );
+        const double extentZ = std::max(
+            0.0,
+            spatialIndex.spatialCenterBounds.MaxZ - spatialIndex.spatialCenterBounds.MinZ
+        );
         const double maxExtent = std::max({extentX, extentY, extentZ, 1.0});
         const double preferredCellsPerAxis
             = std::max(1.0, std::cbrt(static_cast<double>(spatialCenterCount)));
@@ -1256,7 +1251,9 @@ bool rebuildWorkspaceSpatialIndex(
             continue;
         }
 
-        spatialIndex.shardIndicesByCell[spatialCellCoordForPoint(spatialIndex, entry.center)].push_back(index);
+        spatialIndex.shardIndicesByCell[spatialCellCoordForPoint(spatialIndex, entry.center)].push_back(
+            index
+        );
     }
 
     return !spatialIndex.shards.empty();
@@ -1284,10 +1281,7 @@ WorkspaceSpatialIndex* ensureWorkspaceSpatialIndex(
     return &spatialIndex;
 }
 
-void refreshWorkspaceSpatialIndex(
-    const StepLightweightManifest& manifest,
-    App::Document& masterDoc
-)
+void refreshWorkspaceSpatialIndex(const StepLightweightManifest& manifest, App::Document& masterDoc)
 {
     const std::string normalizedWorkspacePath = normalizedMasterPath(manifest);
     if (normalizedWorkspacePath.empty()) {
@@ -1310,12 +1304,15 @@ WorkspaceSpatialCellCoord spatialCellCoordForPoint(
     }
 
     return {
-        static_cast<int>(std::floor((point.x - spatialIndex.spatialCenterBounds.MinX)
-                                    / spatialIndex.cellSize)),
-        static_cast<int>(std::floor((point.y - spatialIndex.spatialCenterBounds.MinY)
-                                    / spatialIndex.cellSize)),
-        static_cast<int>(std::floor((point.z - spatialIndex.spatialCenterBounds.MinZ)
-                                    / spatialIndex.cellSize)),
+        static_cast<int>(
+            std::floor((point.x - spatialIndex.spatialCenterBounds.MinX) / spatialIndex.cellSize)
+        ),
+        static_cast<int>(
+            std::floor((point.y - spatialIndex.spatialCenterBounds.MinY) / spatialIndex.cellSize)
+        ),
+        static_cast<int>(
+            std::floor((point.z - spatialIndex.spatialCenterBounds.MinZ) / spatialIndex.cellSize)
+        ),
     };
 }
 
@@ -1334,7 +1331,7 @@ std::vector<std::size_t> collectSpatialManifestIndicesNearPoint(
         std::vector<std::size_t> manifestIndices;
         manifestIndices.reserve(
             std::min(desiredCount, spatialIndex.shards.size())
-                + spatialIndex.shardIndicesWithoutSpatialCenter.size()
+            + spatialIndex.shardIndicesWithoutSpatialCenter.size()
         );
         for (const auto& shard : spatialIndex.shards) {
             if (seenManifestIndices.insert(shard.manifestIndex).second) {
@@ -1356,7 +1353,7 @@ std::vector<std::size_t> collectSpatialManifestIndicesNearPoint(
     std::vector<std::size_t> manifestIndices;
     manifestIndices.reserve(
         std::min(desiredCount, spatialIndex.shards.size())
-            + spatialIndex.shardIndicesWithoutSpatialCenter.size()
+        + spatialIndex.shardIndicesWithoutSpatialCenter.size()
     );
     const WorkspaceSpatialCellCoord focusCell = spatialCellCoordForPoint(spatialIndex, focusPoint);
     const int maxShell = 6;
@@ -1379,8 +1376,10 @@ std::vector<std::size_t> collectSpatialManifestIndicesNearPoint(
                     }
 
                     for (const auto index : cellIt->second) {
-                        if (index < spatialIndex.shards.size()
-                            && seenManifestIndices.insert(spatialIndex.shards[index].manifestIndex).second) {
+                        if (
+                            index < spatialIndex.shards.size()
+                            && seenManifestIndices.insert(spatialIndex.shards[index].manifestIndex).second
+                        ) {
                             manifestIndices.push_back(spatialIndex.shards[index].manifestIndex);
                         }
                     }
@@ -1438,11 +1437,8 @@ void prepareWorkspaceDocumentForLazySave(
 )
 {
     for (const auto& documentPath : loadedShardPaths) {
-        if (auto* linkObject = workspaceShardLinkObjectForDocumentPath(
-                workspaceDoc,
-                manifest,
-                documentPath
-            )) {
+        if (auto* linkObject
+            = workspaceShardLinkObjectForDocumentPath(workspaceDoc, manifest, documentPath)) {
             clearLinkedShardProxyContents(*linkObject);
             clearLinkedShardTarget(*linkObject);
             linkObject->purgeTouched();
@@ -1468,11 +1464,8 @@ void restoreWorkspaceDocumentAfterLazySave(
             continue;
         }
 
-        if (auto* linkObject = workspaceShardLinkObjectForDocumentPath(
-                workspaceDoc,
-                manifest,
-                documentPath
-            )) {
+        if (auto* linkObject
+            = workspaceShardLinkObjectForDocumentPath(workspaceDoc, manifest, documentPath)) {
             refreshLinkedShardAfterLoad(*linkObject);
             linkObject->purgeTouched();
         }
@@ -1523,7 +1516,8 @@ bool isLightweightProxyObject(const App::DocumentObject& object)
     }
 
     return label.rfind(lightweightProxyLabel, 0) == 0
-        && (dynamic_cast<const App::Link*>(&object) || dynamic_cast<const PartApp::Feature*>(&object));
+        && (dynamic_cast<const App::Link*>(&object)
+            || dynamic_cast<const PartApp::Feature*>(&object));
 }
 
 bool hasLightweightProxyChildren(const App::DocumentObject& object)
@@ -1576,10 +1570,7 @@ bool hasLightweightProxy(const App::DocumentObject& object)
     return !openDoc || openDoc->testStatus(App::Document::PartialDoc);
 }
 
-void updateShardOpenState(
-    StepLightweightWorkspaceShardState& shardState,
-    const std::string& documentPath
-)
+void updateShardOpenState(StepLightweightWorkspaceShardState& shardState, const std::string& documentPath)
 {
     App::Document* openDoc = App::GetApplication().getDocumentByPath(
         documentPath.c_str(),
@@ -1641,7 +1632,8 @@ void clearProxyContentsForShardInWorkspaceDocument(
     const std::string& documentPath
 )
 {
-    if (auto* linkObject = workspaceShardLinkObjectForDocumentPath(workspaceDoc, manifest, documentPath)) {
+    if (auto* linkObject
+        = workspaceShardLinkObjectForDocumentPath(workspaceDoc, manifest, documentPath)) {
         clearLinkedShardProxyContents(*linkObject);
         clearLinkedShardTarget(*linkObject);
         return;
@@ -1761,13 +1753,11 @@ std::size_t trimLoadedShardsImpl(
         if (!doc || doc->testStatus(App::Document::PartialDoc)) {
             continue;
         }
-        fullyLoadedDocs.push_back(
-            {
-                documentPath,
-                doc,
-                isPinnedShardForManifest(manifest, documentPath),
-            }
-        );
+        fullyLoadedDocs.push_back({
+            documentPath,
+            doc,
+            isPinnedShardForManifest(manifest, documentPath),
+        });
     }
 
     if (maxLoadedShards < 0 || static_cast<int>(fullyLoadedDocs.size()) <= maxLoadedShards) {
@@ -1778,7 +1768,8 @@ std::size_t trimLoadedShardsImpl(
     const auto lowerPriorityCandidate = [&](const LoadedShardCandidate& left,
                                             const LoadedShardCandidate& right) {
         const bool keepLeft = !normalizedKeepPath.empty() && left.documentPath == normalizedKeepPath;
-        const bool keepRight = !normalizedKeepPath.empty() && right.documentPath == normalizedKeepPath;
+        const bool keepRight = !normalizedKeepPath.empty()
+            && right.documentPath == normalizedKeepPath;
         if (keepLeft != keepRight) {
             return !keepLeft && keepRight;
         }
@@ -1798,10 +1789,8 @@ std::size_t trimLoadedShardsImpl(
         return left.documentPath < right.documentPath;
     };
     int loadedDocCount = static_cast<int>(fullyLoadedDocs.size());
-    auto candidateQueue = makeCandidatePriorityQueue(
-        std::move(fullyLoadedDocs),
-        lowerPriorityCandidate
-    );
+    auto candidateQueue
+        = makeCandidatePriorityQueue(std::move(fullyLoadedDocs), lowerPriorityCandidate);
 
     std::size_t closed = 0;
     while (loadedDocCount > maxLoadedShards && !candidateQueue.empty()) {
@@ -1814,12 +1803,9 @@ std::size_t trimLoadedShardsImpl(
             break;
         }
 
-        if (closeLoadedShardInWorkspaceDocument(
-                rootDoc,
-                manifest,
-                candidate.documentPath,
-                candidate.doc
-            )) {
+        if (
+            closeLoadedShardInWorkspaceDocument(rootDoc, manifest, candidate.documentPath, candidate.doc)
+        ) {
             ++closed;
             --loadedDocCount;
         }
@@ -1878,13 +1864,11 @@ std::size_t trimLoadedShardsOutsideRetainedPathsImpl(
             continue;
         }
 
-        candidates.push_back(
-            {
-                documentPath,
-                doc,
-                effectiveShardPriorityForManifest(manifest, documentPath),
-            }
-        );
+        candidates.push_back({
+            documentPath,
+            doc,
+            effectiveShardPriorityForManifest(manifest, documentPath),
+        });
     }
 
     const auto lowerPriorityCandidate = [](const LoadedShardCandidate& left,
@@ -1894,10 +1878,7 @@ std::size_t trimLoadedShardsOutsideRetainedPathsImpl(
         }
         return left.documentPath < right.documentPath;
     };
-    auto candidateQueue = makeCandidatePriorityQueue(
-        std::move(candidates),
-        lowerPriorityCandidate
-    );
+    auto candidateQueue = makeCandidatePriorityQueue(std::move(candidates), lowerPriorityCandidate);
 
     std::size_t closed = 0;
     while (!candidateQueue.empty()) {
@@ -1908,7 +1889,9 @@ std::size_t trimLoadedShardsOutsideRetainedPathsImpl(
         const auto candidate = candidateQueue.top();
         candidateQueue.pop();
 
-        if (closeLoadedShardInWorkspaceDocument(rootDoc, manifest, candidate.documentPath, candidate.doc)) {
+        if (
+            closeLoadedShardInWorkspaceDocument(rootDoc, manifest, candidate.documentPath, candidate.doc)
+        ) {
             ++closed;
         }
     }
@@ -1948,8 +1931,8 @@ std::size_t prefetchAdjacentShardLinks(
         return 0;
     }
 
-    std::size_t availableSlots
-        = static_cast<std::size_t>(maxLoadedShards) - workspaceState.fullyLoadedShardCount;
+    std::size_t availableSlots = static_cast<std::size_t>(maxLoadedShards)
+        - workspaceState.fullyLoadedShardCount;
     std::size_t prefetched = 0;
 
     auto* spatialIndex = ensureWorkspaceSpatialIndex(manifest, *workspaceDoc);
@@ -1959,8 +1942,7 @@ std::size_t prefetchAdjacentShardLinks(
                                                       : Base::Vector3d();
     bool hasSelectedCenter = hasSelectedBounds;
     const std::size_t normalizedCurrentIndex = static_cast<std::size_t>(currentIndex);
-    if (!hasSelectedCenter && spatialIndex
-        && normalizedCurrentIndex < spatialIndex->shards.size()
+    if (!hasSelectedCenter && spatialIndex && normalizedCurrentIndex < spatialIndex->shards.size()
         && spatialIndex->shards[normalizedCurrentIndex].hasSpatialCenter) {
         selectedCenter = spatialIndex->shards[normalizedCurrentIndex].center;
         hasSelectedCenter = true;
@@ -1975,10 +1957,8 @@ std::size_t prefetchAdjacentShardLinks(
     };
 
     std::vector<PrefetchCandidate> candidates;
-    const std::size_t desiredCandidateCount
-        = std::max<std::size_t>(32, availableSlots * 12);
-    const std::vector<std::size_t> candidateIndices
-        = hasSelectedCenter && spatialIndex
+    const std::size_t desiredCandidateCount = std::max<std::size_t>(32, availableSlots * 12);
+    const std::vector<std::size_t> candidateIndices = hasSelectedCenter && spatialIndex
         ? collectSpatialManifestIndicesNearPoint(*spatialIndex, selectedCenter, desiredCandidateCount)
         : std::vector<std::size_t> {};
     const bool useSpatialSubset = !candidateIndices.empty();
@@ -2012,7 +1992,9 @@ std::size_t prefetchAdjacentShardLinks(
             else if (auto* candidateLink = workspaceDoc->getObject(candidate.linkObjectName.c_str())) {
                 Base::BoundBox3d candidateBounds;
                 if (lightweightProxyBounds(*candidateLink, candidateBounds)) {
-                    const Base::Vector3d candidateCenter = lightweightProxyBoundsCenter(candidateBounds);
+                    const Base::Vector3d candidateCenter = lightweightProxyBoundsCenter(
+                        candidateBounds
+                    );
                     const double dx = candidateCenter.x - selectedCenter.x;
                     const double dy = candidateCenter.y - selectedCenter.y;
                     const double dz = candidateCenter.z - selectedCenter.z;
@@ -2041,8 +2023,7 @@ std::size_t prefetchAdjacentShardLinks(
         if (left.hasSpatialDistance != right.hasSpatialDistance) {
             return left.hasSpatialDistance && !right.hasSpatialDistance;
         }
-        if (left.hasSpatialDistance
-            && left.spatialDistanceSquared != right.spatialDistanceSquared) {
+        if (left.hasSpatialDistance && left.spatialDistanceSquared != right.spatialDistanceSquared) {
             return left.spatialDistanceSquared < right.spatialDistanceSquared;
         }
         if (left.manifestOffset != right.manifestOffset) {
@@ -2050,10 +2031,7 @@ std::size_t prefetchAdjacentShardLinks(
         }
         return left.index < right.index;
     };
-    auto candidateQueue = makeCandidatePriorityQueue(
-        std::move(candidates),
-        betterPrefetchCandidate
-    );
+    auto candidateQueue = makeCandidatePriorityQueue(std::move(candidates), betterPrefetchCandidate);
 
     auto tryPrefetch = [&](std::size_t candidateIndex) {
         if (availableSlots == 0 || candidateIndex >= manifest.shards.size()) {
@@ -2133,7 +2111,8 @@ std::size_t prefetchShardsNearPointImpl(
     }
 
     std::size_t availableSlots = static_cast<std::size_t>(maxLoadedShards)
-        - std::min(fullyLoadedShardCountForManifest(manifest), static_cast<std::size_t>(maxLoadedShards));
+        - std::min(fullyLoadedShardCountForManifest(manifest),
+                   static_cast<std::size_t>(maxLoadedShards));
     if (availableSlots == 0) {
         return 0;
     }
@@ -2154,8 +2133,7 @@ std::size_t prefetchShardsNearPointImpl(
     };
 
     std::vector<PrefetchCandidate> candidates;
-    const std::size_t desiredCandidateCount
-        = std::max<std::size_t>(64, availableSlots * 16);
+    const std::size_t desiredCandidateCount = std::max<std::size_t>(64, availableSlots * 16);
     const std::vector<std::size_t> candidateIndices = spatialIndex
         ? collectSpatialManifestIndicesNearPoint(*spatialIndex, focusPoint, desiredCandidateCount)
         : std::vector<std::size_t> {};
@@ -2221,16 +2199,12 @@ std::size_t prefetchShardsNearPointImpl(
         if (left.hasSpatialDistance != right.hasSpatialDistance) {
             return left.hasSpatialDistance && !right.hasSpatialDistance;
         }
-        if (left.hasSpatialDistance
-            && left.spatialDistanceSquared != right.spatialDistanceSquared) {
+        if (left.hasSpatialDistance && left.spatialDistanceSquared != right.spatialDistanceSquared) {
             return left.spatialDistanceSquared < right.spatialDistanceSquared;
         }
         return left.manifestIndex < right.manifestIndex;
     };
-    auto candidateQueue = makeCandidatePriorityQueue(
-        std::move(candidates),
-        betterPrefetchCandidate
-    );
+    auto candidateQueue = makeCandidatePriorityQueue(std::move(candidates), betterPrefetchCandidate);
 
     std::size_t prefetched = 0;
     while (!candidateQueue.empty()) {
@@ -2306,7 +2280,8 @@ std::size_t restoreDeferredInitialShardsNearPointImpl(
     }
 
     std::size_t availableSlots = static_cast<std::size_t>(maxLoadedShards)
-        - std::min(fullyLoadedShardCountForManifest(manifest), static_cast<std::size_t>(maxLoadedShards));
+        - std::min(fullyLoadedShardCountForManifest(manifest),
+                   static_cast<std::size_t>(maxLoadedShards));
     if (availableSlots == 0) {
         setPendingInitialRestoreCountForDocument(*masterDoc, 0);
         return 0;
@@ -2314,10 +2289,7 @@ std::size_t restoreDeferredInitialShardsNearPointImpl(
 
     pendingRestoreCount = std::min(pendingRestoreCount, availableSlots);
     if (maxRestoreCount >= 0) {
-        pendingRestoreCount = std::min(
-            pendingRestoreCount,
-            static_cast<std::size_t>(maxRestoreCount)
-        );
+        pendingRestoreCount = std::min(pendingRestoreCount, static_cast<std::size_t>(maxRestoreCount));
     }
     if (pendingRestoreCount == 0) {
         setPendingInitialRestoreCountForDocument(*masterDoc, 0);
@@ -2336,8 +2308,7 @@ std::size_t restoreDeferredInitialShardsNearPointImpl(
     };
 
     std::vector<RestoreCandidate> candidates;
-    const std::size_t desiredCandidateCount
-        = std::max<std::size_t>(64, pendingRestoreCount * 16);
+    const std::size_t desiredCandidateCount = std::max<std::size_t>(64, pendingRestoreCount * 16);
     const std::vector<std::size_t> candidateIndices = spatialIndex
         ? collectSpatialManifestIndicesNearPoint(*spatialIndex, focusPoint, desiredCandidateCount)
         : std::vector<std::size_t> {};
@@ -2403,16 +2374,12 @@ std::size_t restoreDeferredInitialShardsNearPointImpl(
         if (left.hasSpatialDistance != right.hasSpatialDistance) {
             return left.hasSpatialDistance && !right.hasSpatialDistance;
         }
-        if (left.hasSpatialDistance
-            && left.spatialDistanceSquared != right.spatialDistanceSquared) {
+        if (left.hasSpatialDistance && left.spatialDistanceSquared != right.spatialDistanceSquared) {
             return left.spatialDistanceSquared < right.spatialDistanceSquared;
         }
         return left.manifestIndex < right.manifestIndex;
     };
-    auto candidateQueue = makeCandidatePriorityQueue(
-        std::move(candidates),
-        betterRestoreCandidate
-    );
+    auto candidateQueue = makeCandidatePriorityQueue(std::move(candidates), betterRestoreCandidate);
 
     std::size_t restored = 0;
     while (!candidateQueue.empty()) {
@@ -2480,10 +2447,8 @@ std::size_t rebalanceShardsNearPointImpl(
         return 0;
     }
 
-    std::size_t changed
-        = prefetchShardsNearPointImpl(workspaceDoc, focusPoint, maxReplacementCount);
-    if (maxReplacementCount > 0
-        && changed >= static_cast<std::size_t>(maxReplacementCount)) {
+    std::size_t changed = prefetchShardsNearPointImpl(workspaceDoc, focusPoint, maxReplacementCount);
+    if (maxReplacementCount > 0 && changed >= static_cast<std::size_t>(maxReplacementCount)) {
         return changed;
     }
 
@@ -2496,14 +2461,9 @@ std::size_t rebalanceShardsNearPointImpl(
 
     auto* spatialIndex = ensureWorkspaceSpatialIndex(manifest, *masterDoc);
     const auto& loadedPaths = ensureLoadedShardPathsForManifest(manifest);
-    const std::size_t desiredUnloadedCandidateCount
-        = std::max<std::size_t>(64, remainingChanges * 16);
+    const std::size_t desiredUnloadedCandidateCount = std::max<std::size_t>(64, remainingChanges * 16);
     const std::vector<std::size_t> unloadedCandidateIndices = spatialIndex
-        ? collectSpatialManifestIndicesNearPoint(
-              *spatialIndex,
-              focusPoint,
-              desiredUnloadedCandidateCount
-          )
+        ? collectSpatialManifestIndicesNearPoint(*spatialIndex, focusPoint, desiredUnloadedCandidateCount)
         : std::vector<std::size_t> {};
 
     struct SpatialShardCandidate
@@ -2522,7 +2482,8 @@ std::size_t rebalanceShardsNearPointImpl(
 
         loadedCandidates.reserve(loadedPaths.size());
         unloadedCandidates.reserve(
-            unloadedCandidateIndices.empty() ? manifest.shards.size() : unloadedCandidateIndices.size()
+            unloadedCandidateIndices.empty() ? manifest.shards.size()
+                                             : unloadedCandidateIndices.size()
         );
 
         auto buildCandidate = [&](std::size_t index, bool onlyIfLoaded) {
@@ -2561,7 +2522,8 @@ std::size_t rebalanceShardsNearPointImpl(
                 shard.documentPath.c_str(),
                 App::Application::PathMatchMode::MatchCanonicalWarning
             );
-            const bool isFullyLoaded = candidate.doc && !candidate.doc->testStatus(App::Document::PartialDoc);
+            const bool isFullyLoaded = candidate.doc
+                && !candidate.doc->testStatus(App::Document::PartialDoc);
             if (isFullyLoaded) {
                 if (!onlyIfLoaded) {
                     markShardLoadedForManifest(manifest, shard.documentPath);
@@ -2577,11 +2539,8 @@ std::size_t rebalanceShardsNearPointImpl(
         };
 
         for (const auto& documentPath : loadedPaths) {
-            const std::ptrdiff_t manifestIndex = manifestShardIndexForDocumentPath(
-                manifest,
-                spatialIndex,
-                documentPath
-            );
+            const std::ptrdiff_t manifestIndex
+                = manifestShardIndexForDocumentPath(manifest, spatialIndex, documentPath);
             if (manifestIndex >= 0) {
                 buildCandidate(static_cast<std::size_t>(manifestIndex), true);
             }
@@ -2606,8 +2565,7 @@ std::size_t rebalanceShardsNearPointImpl(
         if (left.hasSpatialDistance != right.hasSpatialDistance) {
             return left.hasSpatialDistance && !right.hasSpatialDistance;
         }
-        if (left.hasSpatialDistance
-            && left.spatialDistanceSquared != right.spatialDistanceSquared) {
+        if (left.hasSpatialDistance && left.spatialDistanceSquared != right.spatialDistanceSquared) {
             return left.spatialDistanceSquared < right.spatialDistanceSquared;
         }
         return left.manifestIndex < right.manifestIndex;
@@ -2617,8 +2575,7 @@ std::size_t rebalanceShardsNearPointImpl(
         if (left.hasSpatialDistance != right.hasSpatialDistance) {
             return left.hasSpatialDistance && !right.hasSpatialDistance;
         }
-        if (left.hasSpatialDistance
-            && left.spatialDistanceSquared != right.spatialDistanceSquared) {
+        if (left.hasSpatialDistance && left.spatialDistanceSquared != right.spatialDistanceSquared) {
             return left.spatialDistanceSquared > right.spatialDistanceSquared;
         }
         return left.manifestIndex < right.manifestIndex;
@@ -2630,14 +2587,10 @@ std::size_t rebalanceShardsNearPointImpl(
             break;
         }
 
-        auto loadedQueue = makeCandidatePriorityQueue(
-            std::move(loadedCandidates),
-            betterLoadedCandidate
-        );
-        auto unloadedQueue = makeCandidatePriorityQueue(
-            std::move(unloadedCandidates),
-            betterUnloadedCandidate
-        );
+        auto loadedQueue
+            = makeCandidatePriorityQueue(std::move(loadedCandidates), betterLoadedCandidate);
+        auto unloadedQueue
+            = makeCandidatePriorityQueue(std::move(unloadedCandidates), betterUnloadedCandidate);
 
         const auto farthestLoaded = loadedQueue.top();
         const auto nearestUnloaded = unloadedQueue.top();
@@ -2655,7 +2608,9 @@ std::size_t rebalanceShardsNearPointImpl(
             break;
         }
 
-        App::Document* shardDoc = App::GetApplication().openDocument(nearestUnloaded.documentPath.c_str());
+        App::Document* shardDoc = App::GetApplication().openDocument(
+            nearestUnloaded.documentPath.c_str()
+        );
         if (!shardDoc) {
             break;
         }
@@ -2751,8 +2706,10 @@ void StepLightweightWorkspaceRuntime::init()
                 if (cacheEntry && cacheEntry->role == WorkspaceDocumentRole::Root) {
                     StepLightweightWorkspaceRuntime::initializeDocument(*doc);
                 }
-                else if (cacheEntry && cacheEntry->role == WorkspaceDocumentRole::Shard
-                         && !doc->testStatus(App::Document::PartialDoc)) {
+                else if (
+                    cacheEntry && cacheEntry->role == WorkspaceDocumentRole::Shard
+                    && !doc->testStatus(App::Document::PartialDoc)
+                ) {
                     markShardLoadedForManifest(cacheEntry->manifest, doc->FileName.getValue());
                 }
             }
@@ -2796,7 +2753,8 @@ void StepLightweightWorkspaceRuntime::init()
             workspaceSaveStates.erase(it);
 
             const auto* cacheEntry = documentManifestCacheEntryForDocument(doc);
-            const WorkspaceDocumentRole role = cacheEntry ? cacheEntry->role : WorkspaceDocumentRole::None;
+            const WorkspaceDocumentRole role = cacheEntry ? cacheEntry->role
+                                                          : WorkspaceDocumentRole::None;
             App::Document* workspaceDoc = workspaceRootDocument(doc, manifest, role);
             if (!workspaceDoc) {
                 return;
@@ -2844,7 +2802,8 @@ void StepLightweightWorkspaceRuntime::initializeDocument(App::Document& workspac
     }
     const auto& manifest = cacheEntry->manifest;
     if (initializedWorkspaceDocuments.find(&workspaceDoc) != initializedWorkspaceDocuments.end()
-        || initializingWorkspaceDocuments.find(&workspaceDoc) != initializingWorkspaceDocuments.end()) {
+        || initializingWorkspaceDocuments.find(&workspaceDoc)
+            != initializingWorkspaceDocuments.end()) {
         return;
     }
 
@@ -2857,7 +2816,7 @@ void StepLightweightWorkspaceRuntime::initializeDocument(App::Document& workspac
             if (maxLoadedShards > 0) {
                 const std::size_t loadedShardCount = fullyLoadedShardCountForManifest(manifest);
                 const std::size_t pendingRestoreCount = loadedShardCount
-                    >= static_cast<std::size_t>(maxLoadedShards)
+                        >= static_cast<std::size_t>(maxLoadedShards)
                     ? 0
                     : static_cast<std::size_t>(maxLoadedShards) - loadedShardCount;
                 setPendingInitialRestoreCountForDocument(workspaceDoc, pendingRestoreCount);
@@ -2911,7 +2870,8 @@ void StepLightweightWorkspaceRuntime::synchronizeLinkedShardProxies(const App::D
             clearLinkedShardTarget(*linkObject);
         }
 
-        removedLegacyProxyObjects = removeLightweightProxyObjects(*linkObject) || removedLegacyProxyObjects;
+        removedLegacyProxyObjects = removeLightweightProxyObjects(*linkObject)
+            || removedLegacyProxyObjects;
     }
 
     if (removedLegacyProxyObjects) {
@@ -3311,11 +3271,8 @@ std::size_t StepLightweightWorkspaceRuntime::trimShardsOutsideRetainedPaths(
     int maxTrimCount
 )
 {
-    const std::size_t trimmed = trimLoadedShardsOutsideRetainedPathsImpl(
-        workspaceDoc,
-        retainedDocumentPaths,
-        maxTrimCount
-    );
+    const std::size_t trimmed
+        = trimLoadedShardsOutsideRetainedPathsImpl(workspaceDoc, retainedDocumentPaths, maxTrimCount);
     if (trimmed > 0) {
         purgeWorkspaceTouchState(workspaceDoc);
     }

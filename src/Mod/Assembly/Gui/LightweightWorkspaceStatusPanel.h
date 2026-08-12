@@ -10,7 +10,7 @@ namespace App
 {
 class Document;
 class DocumentObject;
-}
+}  // namespace App
 
 class QHideEvent;
 class QLabel;

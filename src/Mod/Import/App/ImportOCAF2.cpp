@@ -76,8 +76,8 @@ struct SubshapeColorUsage
 };
 
 SubshapeColorUsage collectSubshapeColorUsage(
-    const Handle(XCAFDoc_ShapeTool)& shapeTool,
-    const Handle(XCAFDoc_ColorTool)& colorTool,
+    const Handle(XCAFDoc_ShapeTool) & shapeTool,
+    const Handle(XCAFDoc_ColorTool) & colorTool,
     const TDF_LabelSequence& seq
 )
 {
@@ -458,8 +458,8 @@ bool ImportOCAF2::createObject(
 
 App::Document* ImportOCAF2::getDocument(App::Document* doc, TDF_Label label)
 {
-    if (filePath.empty() || options.mode == SingleDoc
-        || options.mode == LightweightWorkspace || options.merge) {
+    if (filePath.empty() || options.mode == SingleDoc || options.mode == LightweightWorkspace
+        || options.merge) {
         return doc;
     }
 

@@ -98,7 +98,9 @@ class AssemblyTestBase(unittest.TestCase):
         self.doc.recompute()
         return subassembly
 
-    def create_assembly_link(self, linked_object, name="SubAssemblyLink", rigid=False, load_mode=None):
+    def create_assembly_link(
+        self, linked_object, name="SubAssemblyLink", rigid=False, load_mode=None
+    ):
         assembly_link = self.assembly.newObject("Assembly::AssemblyLink", name)
         assembly_link.LinkedObject = linked_object
         assembly_link.Rigid = rigid
@@ -109,7 +111,9 @@ class AssemblyTestBase(unittest.TestCase):
 
     @staticmethod
     def has_joint_group(assembly_link):
-        return any(getattr(obj, "TypeId", "") == "Assembly::JointGroup" for obj in assembly_link.Group)
+        return any(
+            getattr(obj, "TypeId", "") == "Assembly::JointGroup" for obj in assembly_link.Group
+        )
 
 
 class TestCore(AssemblyTestBase):

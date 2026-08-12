@@ -38,10 +38,7 @@ using namespace Import;
 namespace
 {
 
-void configureReaderModes(
-    STEPCAFControl_Reader& reader,
-    bool lightweightWorkspaceReadMode
-)
+void configureReaderModes(STEPCAFControl_Reader& reader, bool lightweightWorkspaceReadMode)
 {
     reader.SetColorMode(true);
     reader.SetNameMode(true);

@@ -116,7 +116,7 @@ std::size_t prefetchWorkspaceShardNeighbors(AssemblyLink* link)
 
     return Import::StepLightweightWorkspaceRuntime::prefetchLinkedShardNeighbors(*link);
 }
-}
+}  // namespace
 
 PROPERTY_SOURCE(AssemblyGui::ViewProviderAssemblyLink, Gui::ViewProviderPart)
 
@@ -174,16 +174,12 @@ void ViewProviderAssemblyLink::attach(App::DocumentObject* object)
         lightweightPlaceholderRoot->renderCaching = SoSeparator::ON;
 
         Base::Color color;
-        color.setPackedValue(
-            static_cast<uint32_t>(Gui::ViewParams::instance()->getDefaultLinkColor())
-        );
+        color.setPackedValue(static_cast<uint32_t>(Gui::ViewParams::instance()->getDefaultLinkColor()));
         lightweightPlaceholderColor->rgb.setValue(color.r, color.g, color.b);
 
         lightweightPlaceholderStyle->style.setValue(SoDrawStyle::LINES);
-        lightweightPlaceholderStyle->lineWidth = std::max(
-            1L,
-            Gui::ViewParams::instance()->getDefaultShapeLineWidth()
-        );
+        lightweightPlaceholderStyle->lineWidth
+            = std::max(1L, Gui::ViewParams::instance()->getDefaultShapeLineWidth());
 
         lightweightPlaceholderBox->coordsOn = false;
         lightweightPlaceholderBox->dimensionsOn = false;
@@ -397,17 +393,21 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
     if (assemblyLink->useLightweightMode()) {
         if (assemblyLink->Rigid.getValue()) {
             act = menu->addAction(QObject::tr("Prefer flexible when fully loaded"));
-            act->setToolTip(QObject::tr(
-                "Lightweight mode behaves rigidly. This changes the sub-assembly back to "
-                "flexible once it is fully loaded."
-            ));
+            act->setToolTip(
+                QObject::tr(
+                    "Lightweight mode behaves rigidly. This changes the sub-assembly back to "
+                    "flexible once it is fully loaded."
+                )
+            );
         }
         else {
             act = menu->addAction(QObject::tr("Prefer rigid when fully loaded"));
-            act->setToolTip(QObject::tr(
-                "Lightweight mode behaves rigidly. This changes the sub-assembly to remain "
-                "rigid once it is fully loaded."
-            ));
+            act->setToolTip(
+                QObject::tr(
+                    "Lightweight mode behaves rigidly. This changes the sub-assembly to remain "
+                    "rigid once it is fully loaded."
+                )
+            );
         }
     }
     else if (assemblyLink->isRigid()) {
@@ -439,20 +439,21 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
     QMenu* loadModeMenu = menu->addMenu(QObject::tr("Load mode"));
     auto* loadModeActionGroup = new QActionGroup(loadModeMenu);
     loadModeActionGroup->setExclusive(true);
-    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Assembly");
-    const int largeAssemblyThreshold =
-        hGrp->GetInt("LargeAssemblyThreshold", defaultLargeAssemblyThreshold);
-    const QString autoLoadModeToolTip =
-        largeAssemblyThreshold > 0
-            ? QObject::tr(
-                  "Use lightweight mode automatically once the linked assembly exceeds %1 "
-                  "components."
-              )
-                  .arg(largeAssemblyThreshold)
-            : QObject::tr(
-                  "Automatic lightweight switching is currently disabled because the large "
-                  "assembly threshold is set to 0."
-              );
+    auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    const int largeAssemblyThreshold
+        = hGrp->GetInt("LargeAssemblyThreshold", defaultLargeAssemblyThreshold);
+    const QString autoLoadModeToolTip = largeAssemblyThreshold > 0
+        ? QObject::tr(
+              "Use lightweight mode automatically once the linked assembly exceeds %1 "
+              "components."
+          )
+              .arg(largeAssemblyThreshold)
+        : QObject::tr(
+              "Automatic lightweight switching is currently disabled because the large "
+              "assembly threshold is set to 0."
+          );
     auto addLoadModeAction =
         [&](const char* value, const QString& text, const QString& toolTip, bool checked) {
             QAction* loadModeAction = loadModeMenu->addAction(text);
@@ -494,16 +495,20 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
 
     const auto shardState = inspectWorkspaceShard(assemblyLink);
     if (shardState.isWorkspaceShard) {
-        const auto workspaceState
-            = Import::StepLightweightWorkspaceRuntime::inspect(*assemblyLink->getDocument());
+        const auto workspaceState = Import::StepLightweightWorkspaceRuntime::inspect(
+            *assemblyLink->getDocument()
+        );
         const int maxLoadedShards
             = Import::StepLightweightWorkspaceRuntime::configuredMaxLoadedShards();
 
         QAction* metricsAction = menu->addAction(QObject::tr("Show lightweight workspace metrics"));
-        metricsAction->setToolTip(QObject::tr(
-            "Open a live summary of lightweight shard loads, proxies, trims, and prefetches for "
-            "this workspace."
-        ));
+        metricsAction->setToolTip(
+            QObject::tr(
+                "Open a live summary of lightweight shard loads, proxies, trims, and prefetches "
+                "for "
+                "this workspace."
+            )
+        );
         func->trigger(metricsAction, [this]() {
             auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
             if (!assemblyLink) {
@@ -514,18 +519,12 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
         });
 
         QAction* pinAction = menu->addAction(
-            shardState.isPinned
-                ? QObject::tr("Unpin linked shard")
-                : QObject::tr("Pin linked shard")
+            shardState.isPinned ? QObject::tr("Unpin linked shard") : QObject::tr("Pin linked shard")
         );
         pinAction->setToolTip(
             shardState.isPinned
-                ? QObject::tr(
-                      "Allow this shard to be unloaded again by automatic trim passes and remove its persisted pin."
-                  )
-                : QObject::tr(
-                      "Protect this shard from automatic trim passes and persist that choice in the lightweight cache."
-                  )
+                ? QObject::tr("Allow this shard to be unloaded again by automatic trim passes and remove its persisted pin.")
+                : QObject::tr("Protect this shard from automatic trim passes and persist that choice in the lightweight cache.")
         );
         func->trigger(pinAction, [this]() {
             auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
@@ -544,13 +543,14 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
         });
 
         QAction* prefetchAction = menu->addAction(QObject::tr("Prefetch nearby shards"));
-        prefetchAction->setToolTip(QObject::tr(
-            "Preload spatially nearby shards around this workspace link without forcing this "
-            "shard to load first."
-        ));
+        prefetchAction->setToolTip(
+            QObject::tr(
+                "Preload spatially nearby shards around this workspace link without forcing this "
+                "shard to load first."
+            )
+        );
         prefetchAction->setEnabled(
-            workspaceState.shards.size() > 1
-            && maxLoadedShards > 0
+            workspaceState.shards.size() > 1 && maxLoadedShards > 0
             && workspaceState.fullyLoadedShardCount < static_cast<std::size_t>(maxLoadedShards)
         );
         func->trigger(prefetchAction, [this]() {
@@ -565,10 +565,13 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
 
         if (!shardState.isOpen || shardState.isPartial) {
             QAction* loadAction = menu->addAction(QObject::tr("Load linked shard"));
-            loadAction->setToolTip(QObject::tr(
-                "Fully load the cached lightweight STEP shard so the linked sub-assembly can be "
-                "expanded and edited."
-            ));
+            loadAction->setToolTip(
+                QObject::tr(
+                    "Fully load the cached lightweight STEP shard so the linked sub-assembly can "
+                    "be "
+                    "expanded and edited."
+                )
+            );
             func->trigger(loadAction, [this]() {
                 auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
                 if (!assemblyLink) {
@@ -582,10 +585,12 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
         }
         else if (shardState.isFullyLoaded) {
             QAction* unloadAction = menu->addAction(QObject::tr("Unload linked shard"));
-            unloadAction->setToolTip(QObject::tr(
-                "Close the cached shard document again to recover memory while keeping the "
-                "master workspace open."
-            ));
+            unloadAction->setToolTip(
+                QObject::tr(
+                    "Close the cached shard document again to recover memory while keeping the "
+                    "master workspace open."
+                )
+            );
             func->trigger(unloadAction, [this]() {
                 auto* assemblyLink = dynamic_cast<Assembly::AssemblyLink*>(getObject());
                 if (!assemblyLink) {

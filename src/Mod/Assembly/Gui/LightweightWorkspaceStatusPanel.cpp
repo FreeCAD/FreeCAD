@@ -1,7 +1,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <string>
+# include <string>
 #endif
 
 #include "LightweightWorkspaceStatusPanel.h"
@@ -50,9 +50,7 @@ std::string normalizePathForCompare(const std::string& path)
 QString shardStateText(const Import::StepLightweightWorkspaceShardState& state)
 {
     if (state.isOpen) {
-        return state.isFullyLoaded
-            ? QObject::tr("Loaded")
-            : QObject::tr("Partial");
+        return state.isFullyLoaded ? QObject::tr("Loaded") : QObject::tr("Partial");
     }
 
     return QObject::tr("Unloaded");
@@ -62,7 +60,7 @@ QString boolText(bool value)
 {
     return value ? QObject::tr("Yes") : QObject::tr("No");
 }
-}
+}  // namespace
 
 LightweightWorkspaceStatusPanel* LightweightWorkspaceStatusPanel::findPanel()
 {
@@ -77,14 +75,10 @@ LightweightWorkspaceStatusPanel* LightweightWorkspaceStatusPanel::showPanel(App:
 
     if (!panel) {
         panel = new LightweightWorkspaceStatusPanel();
-        QDockWidget* dock = dockMgr->addDockWindow(
-            lightweightWorkspaceDockName,
-            panel,
-            Qt::RightDockWidgetArea
-        );
+        QDockWidget* dock
+            = dockMgr->addDockWindow(lightweightWorkspaceDockName, panel, Qt::RightDockWidgetArea);
         dock->setFeatures(
-            QDockWidget::DockWidgetClosable
-            | QDockWidget::DockWidgetMovable
+            QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetMovable
             | QDockWidget::DockWidgetFloatable
         );
         dock->setWindowTitle(QObject::tr("Lightweight workspace"));
@@ -146,14 +140,16 @@ LightweightWorkspaceStatusPanel::LightweightWorkspaceStatusPanel(QWidget* parent
     shardTable->setSelectionMode(QAbstractItemView::SingleSelection);
     shardTable->setUniformRowHeights(true);
     shardTable->setColumnCount(6);
-    shardTable->setHeaderLabels(QStringList {
-        QObject::tr("Link"),
-        QObject::tr("State"),
-        QObject::tr("Pinned"),
-        QObject::tr("Load source"),
-        QObject::tr("Proxy"),
-        QObject::tr("Shard file"),
-    });
+    shardTable->setHeaderLabels(
+        QStringList {
+            QObject::tr("Link"),
+            QObject::tr("State"),
+            QObject::tr("Pinned"),
+            QObject::tr("Load source"),
+            QObject::tr("Proxy"),
+            QObject::tr("Shard file"),
+        }
+    );
     auto* header = shardTable->header();
     header->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     header->setSectionResizeMode(1, QHeaderView::ResizeToContents);
@@ -162,32 +158,41 @@ LightweightWorkspaceStatusPanel::LightweightWorkspaceStatusPanel(QWidget* parent
     header->setSectionResizeMode(4, QHeaderView::ResizeToContents);
     header->setSectionResizeMode(5, QHeaderView::Stretch);
 
-    pinButton->setToolTip(QObject::tr(
-        "Protect the selected shard from automatic trim passes and persist that choice in the lightweight cache."
-    ));
-    unpinButton->setToolTip(QObject::tr(
-        "Allow the selected shard to be unloaded again by automatic trim passes and remove its persisted pin."
-    ));
-    loadButton->setToolTip(QObject::tr("Load the selected shard into memory for expansion and editing."));
-    prefetchButton->setToolTip(QObject::tr(
-        "Preload spatially nearby shards around the selected link when the current shard budget "
-        "still has free capacity."
-    ));
-    budgetSpinBox->setToolTip(QObject::tr(
-        "Maximum number of fully loaded shard documents to keep resident for lightweight STEP "
-        "workspaces."
-    ));
-    applyBudgetButton->setToolTip(QObject::tr(
-        "Apply the new loaded-shard budget immediately and trim this workspace if it currently "
-        "exceeds the requested limit."
-    ));
+    pinButton->setToolTip(
+        QObject::tr("Protect the selected shard from automatic trim passes and persist that choice in the lightweight cache.")
+    );
+    unpinButton->setToolTip(
+        QObject::tr("Allow the selected shard to be unloaded again by automatic trim passes and remove its persisted pin.")
+    );
+    loadButton->setToolTip(
+        QObject::tr("Load the selected shard into memory for expansion and editing.")
+    );
+    prefetchButton->setToolTip(
+        QObject::tr(
+            "Preload spatially nearby shards around the selected link when the current shard "
+            "budget "
+            "still has free capacity."
+        )
+    );
+    budgetSpinBox->setToolTip(
+        QObject::tr(
+            "Maximum number of fully loaded shard documents to keep resident for lightweight STEP "
+            "workspaces."
+        )
+    );
+    applyBudgetButton->setToolTip(
+        QObject::tr(
+            "Apply the new loaded-shard budget immediately and trim this workspace if it currently "
+            "exceeds the requested limit."
+        )
+    );
     unloadButton->setToolTip(QObject::tr("Unload the selected shard again and keep only its proxy."));
-    trimButton->setToolTip(QObject::tr(
-        "Unload least-recently-used unpinned shards until the current loaded-shard budget is respected."
-    ));
-    unloadAllButton->setToolTip(QObject::tr(
-        "Unload every fully loaded unpinned shard from this workspace and keep only lightweight proxies."
-    ));
+    trimButton->setToolTip(
+        QObject::tr("Unload least-recently-used unpinned shards until the current loaded-shard budget is respected.")
+    );
+    unloadAllButton->setToolTip(
+        QObject::tr("Unload every fully loaded unpinned shard from this workspace and keep only lightweight proxies.")
+    );
     refreshButton->setToolTip(QObject::tr("Refresh the workspace metrics immediately."));
 
     auto* budgetLayout = new QHBoxLayout();
@@ -221,7 +226,12 @@ LightweightWorkspaceStatusPanel::LightweightWorkspaceStatusPanel(QWidget* parent
 
     connect(refreshTimer, &QTimer::timeout, this, &LightweightWorkspaceStatusPanel::refreshNow);
     connect(refreshButton, &QPushButton::clicked, this, &LightweightWorkspaceStatusPanel::refreshNow);
-    connect(applyBudgetButton, &QPushButton::clicked, this, &LightweightWorkspaceStatusPanel::applyShardBudget);
+    connect(
+        applyBudgetButton,
+        &QPushButton::clicked,
+        this,
+        &LightweightWorkspaceStatusPanel::applyShardBudget
+    );
     connect(budgetSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, [this](int value) {
         Q_UNUSED(value)
         updateActionState();
@@ -235,7 +245,12 @@ LightweightWorkspaceStatusPanel::LightweightWorkspaceStatusPanel(QWidget* parent
         this,
         &LightweightWorkspaceStatusPanel::prefetchSelectedShardNeighbors
     );
-    connect(unloadButton, &QPushButton::clicked, this, &LightweightWorkspaceStatusPanel::unloadSelectedShard);
+    connect(
+        unloadButton,
+        &QPushButton::clicked,
+        this,
+        &LightweightWorkspaceStatusPanel::unloadSelectedShard
+    );
     connect(trimButton, &QPushButton::clicked, this, &LightweightWorkspaceStatusPanel::trimToBudget);
     connect(unloadAllButton, &QPushButton::clicked, this, &LightweightWorkspaceStatusPanel::unloadAllShards);
     connect(
@@ -328,8 +343,7 @@ App::DocumentObject* LightweightWorkspaceStatusPanel::resolveSelectedShardLink()
         }
 
         const auto state = Import::StepLightweightWorkspaceRuntime::inspectLinkedShard(*object);
-        if (state.isWorkspaceShard
-            && normalizePathForCompare(state.documentPath) == targetPath) {
+        if (state.isWorkspaceShard && normalizePathForCompare(state.documentPath) == targetPath) {
             return object;
         }
     }
@@ -363,8 +377,9 @@ void LightweightWorkspaceStatusPanel::applyShardBudget()
         return;
     }
 
-    const int appliedBudget
-        = Import::StepLightweightWorkspaceRuntime::setConfiguredMaxLoadedShards(budgetSpinBox->value());
+    const int appliedBudget = Import::StepLightweightWorkspaceRuntime::setConfiguredMaxLoadedShards(
+        budgetSpinBox->value()
+    );
     {
         QSignalBlocker blocker(budgetSpinBox);
         budgetSpinBox->setValue(appliedBudget);
@@ -458,9 +473,7 @@ void LightweightWorkspaceStatusPanel::updateSummary(App::Document& workspaceDoc)
 
     workspaceLabel->setText(QObject::tr("Workspace: %1").arg(workspacePath));
     shardSummaryLabel->setText(
-        QObject::tr(
-            "Open shards: %1  •  Fully loaded: %2  •  Unloaded: %3  •  Proxy links: %4  •  Pinned: %5  •  Budget: %6"
-        )
+        QObject::tr("Open shards: %1  •  Fully loaded: %2  •  Unloaded: %3  •  Proxy links: %4  •  Pinned: %5  •  Budget: %6")
             .arg(static_cast<qulonglong>(state.openShardCount))
             .arg(static_cast<qulonglong>(state.fullyLoadedShardCount))
             .arg(static_cast<qulonglong>(state.unloadedShardCount))
@@ -469,9 +482,7 @@ void LightweightWorkspaceStatusPanel::updateSummary(App::Document& workspaceDoc)
             .arg(budget)
     );
     activitySummaryLabel->setText(
-        QObject::tr(
-            "Initial loads: %1  •  Manual loads: %2 (%3 events)  •  Manual unloads: %4  •  Prefetched: %5 (%6 events)  •  Trims: %7"
-        )
+        QObject::tr("Initial loads: %1  •  Manual loads: %2 (%3 events)  •  Manual unloads: %4  •  Prefetched: %5 (%6 events)  •  Trims: %7")
             .arg(static_cast<qulonglong>(state.initialLoadedShardCount))
             .arg(static_cast<qulonglong>(state.manualLoadedShardCount))
             .arg(static_cast<qulonglong>(state.manualLoadEventCount))
@@ -542,9 +553,8 @@ void LightweightWorkspaceStatusPanel::updateActionState()
     auto* workspaceDoc = resolveWorkspaceDocument();
     const bool hasWorkspace = workspaceDoc
         && Import::StepLightweightWorkspaceRuntime::inspect(*workspaceDoc).isWorkspaceDocument;
-    const auto state = hasWorkspace
-        ? Import::StepLightweightWorkspaceRuntime::inspect(*workspaceDoc)
-        : Import::StepLightweightWorkspaceState();
+    const auto state = hasWorkspace ? Import::StepLightweightWorkspaceRuntime::inspect(*workspaceDoc)
+                                    : Import::StepLightweightWorkspaceState();
     auto* item = selectedShardItem();
     const bool isPinned = item && item->data(0, pinnedRole).toBool();
     const bool canLoad = item && !item->data(0, fullyLoadedRole).toBool();
@@ -553,11 +563,10 @@ void LightweightWorkspaceStatusPanel::updateActionState()
     const bool canApplyBudget = hasWorkspace && budgetSpinBox->value() != maxLoadedShards;
     const bool canPrefetch = hasWorkspace && item && state.shards.size() > 1 && maxLoadedShards > 0
         && state.fullyLoadedShardCount < static_cast<std::size_t>(maxLoadedShards);
-    const auto trimmableLoadedShardCount = std::count_if(
-        state.shards.begin(),
-        state.shards.end(),
-        [](const auto& shard) { return shard.isFullyLoaded && !shard.isPinned; }
-    );
+    const auto trimmableLoadedShardCount
+        = std::count_if(state.shards.begin(), state.shards.end(), [](const auto& shard) {
+              return shard.isFullyLoaded && !shard.isPinned;
+          });
 
     budgetSpinBox->setEnabled(hasWorkspace);
     applyBudgetButton->setEnabled(canApplyBudget);

@@ -13,7 +13,7 @@ namespace App
 {
 class Document;
 class DocumentObject;
-}
+}  // namespace App
 
 namespace Import
 {

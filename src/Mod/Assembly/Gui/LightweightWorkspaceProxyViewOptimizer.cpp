@@ -164,11 +164,7 @@ std::string normalizePathForCompare(const std::string& path)
     return Base::FileInfo::pathToString(Base::FileInfo::stringToPath(path).lexically_normal());
 }
 
-bool focalPointMovedEnough(
-    const Base::Vector3d& left,
-    const Base::Vector3d& right,
-    double movementTolerance
-)
+bool focalPointMovedEnough(const Base::Vector3d& left, const Base::Vector3d& right, double movementTolerance)
 {
     const double dx = left.x - right.x;
     const double dy = left.y - right.y;
@@ -196,11 +192,7 @@ void clearPendingWorkspaceLoadActions()
     activeViewPrefetchState.pendingWarmPrefetchNearFocus = false;
 }
 
-bool observeFocusPoint(
-    const App::Document& doc,
-    const Base::Vector3d& focalPoint,
-    double movementTolerance
-)
+bool observeFocusPoint(const App::Document& doc, const Base::Vector3d& focalPoint, double movementTolerance)
 {
     const std::string normalizedDocumentPath = normalizePathForCompare(doc.FileName.getValue());
     if (activeViewPrefetchState.workspaceDocumentPath != normalizedDocumentPath
@@ -222,11 +214,9 @@ bool observeFocusPoint(
         return true;
     }
 
-    if (focalPointMovedEnough(
-            activeViewPrefetchState.observedFocalPoint,
-            focalPoint,
-            movementTolerance
-        )) {
+    if (
+        focalPointMovedEnough(activeViewPrefetchState.observedFocalPoint, focalPoint, movementTolerance)
+    ) {
         activeViewPrefetchState.observedFocalPoint = focalPoint;
         activeViewPrefetchState.lastMovementMs = activeViewPrefetchClock.elapsed();
         clearCachedRetainedDocumentPaths();
@@ -256,11 +246,7 @@ bool shouldRetryFocusPoint(
         return false;
     }
 
-    if (focalPointMovedEnough(
-            activeViewPrefetchState.attemptFocalPoint,
-            focalPoint,
-            movementTolerance
-        )) {
+    if (focalPointMovedEnough(activeViewPrefetchState.attemptFocalPoint, focalPoint, movementTolerance)) {
         return true;
     }
 
@@ -277,8 +263,7 @@ void noteFocusPointAttempt(
         activeViewPrefetchClock.start();
     }
 
-    activeViewPrefetchState.workspaceDocumentPath
-        = normalizePathForCompare(doc.FileName.getValue());
+    activeViewPrefetchState.workspaceDocumentPath = normalizePathForCompare(doc.FileName.getValue());
     activeViewPrefetchState.observedFocalPoint = focalPoint;
     activeViewPrefetchState.hasObservedFocalPoint = true;
     activeViewPrefetchState.attemptFocalPoint = focalPoint;
@@ -384,10 +369,7 @@ bool isWorkspaceViewIndexRelevantProperty(const App::Property& property)
             || std::strcmp(propertyName, lightweightWorkspaceShardObjectNamePropertyName) == 0);
 }
 
-bool buildWorkspaceViewShardEntry(
-    const App::DocumentObject& object,
-    WorkspaceViewShardEntry& entry
-)
+bool buildWorkspaceViewShardEntry(const App::DocumentObject& object, WorkspaceViewShardEntry& entry)
 {
     const auto shardState = Import::StepLightweightWorkspaceRuntime::inspectLinkedShard(object);
     if (!shardState.isWorkspaceShard || shardState.documentPath.empty()) {
@@ -514,8 +496,7 @@ void indexWorkspaceViewShardEntry(WorkspaceViewIndex& viewIndex, std::size_t ind
     const int yCount = std::max(1, maxCell.y - minCell.y + 1);
     const int zCount = std::max(1, maxCell.z - minCell.z + 1);
     if (xCount > maxIndexedCellsPerAxis || yCount > maxIndexedCellsPerAxis
-        || zCount > maxIndexedCellsPerAxis
-        || (xCount * yCount * zCount) > maxIndexedCellsTotal) {
+        || zCount > maxIndexedCellsPerAxis || (xCount * yCount * zCount) > maxIndexedCellsTotal) {
         shardEntry.alwaysInclude = true;
         viewIndex.shardIndicesAlwaysInclude.push_back(index);
         return;
@@ -672,7 +653,10 @@ bool retainedPathCacheCameraState(
     return true;
 }
 
-bool retainedPathCacheCameraOrientationMatches(const std::array<double, 4>& left, const std::array<double, 4>& right)
+bool retainedPathCacheCameraOrientationMatches(
+    const std::array<double, 4>& left,
+    const std::array<double, 4>& right
+)
 {
     constexpr double orientationTolerance = 1e-6;
     for (std::size_t index = 0; index < left.size(); ++index) {
@@ -1070,10 +1054,7 @@ void scheduleProxyVisibilityForRetainedPaths(
     workspacePendingProxyPathsToHide[&doc] = std::move(pendingHidePaths);
 }
 
-bool processPendingProxyVisibilityUpdates(
-    const App::Document& doc,
-    const WorkspaceViewIndex& viewIndex
-)
+bool processPendingProxyVisibilityUpdates(const App::Document& doc, const WorkspaceViewIndex& viewIndex)
 {
     auto pendingShowIt = workspacePendingProxyPathsToShow.find(&doc);
     auto pendingHideIt = workspacePendingProxyPathsToHide.find(&doc);
@@ -1105,8 +1086,7 @@ bool processPendingProxyVisibilityUpdates(
 
     if (pendingHideIt != workspacePendingProxyPathsToHide.end()) {
         auto& pendingHidePaths = pendingHideIt->second;
-        while (!pendingHidePaths.empty()
-               && updatedPathCount < maxProxyVisibilityPathUpdatesPerCycle) {
+        while (!pendingHidePaths.empty() && updatedPathCount < maxProxyVisibilityPathUpdatesPerCycle) {
             std::string documentPath = std::move(pendingHidePaths.back());
             pendingHidePaths.pop_back();
             if (visiblePaths.erase(documentPath) == 0) {
@@ -1120,8 +1100,7 @@ bool processPendingProxyVisibilityUpdates(
 
     if (pendingShowIt != workspacePendingProxyPathsToShow.end()) {
         auto& pendingShowPaths = pendingShowIt->second;
-        while (!pendingShowPaths.empty()
-               && updatedPathCount < maxProxyVisibilityPathUpdatesPerCycle) {
+        while (!pendingShowPaths.empty() && updatedPathCount < maxProxyVisibilityPathUpdatesPerCycle) {
             std::string documentPath = std::move(pendingShowPaths.back());
             pendingShowPaths.pop_back();
             if (!visiblePaths.insert(documentPath).second) {
@@ -1171,18 +1150,15 @@ bool collectRetainedDocumentPathsForView(
     retainedDocumentPaths.clear();
     std::unordered_set<std::size_t> candidateIndexSet;
     std::vector<std::size_t> candidateIndices;
-    candidateIndices.reserve(viewIndex.shards.size() / 8 + viewIndex.shardIndicesAlwaysInclude.size() + 8);
+    candidateIndices.reserve(
+        viewIndex.shards.size() / 8 + viewIndex.shardIndicesAlwaysInclude.size() + 8
+    );
     for (const auto index : viewIndex.shardIndicesAlwaysInclude) {
         if (candidateIndexSet.insert(index).second) {
             candidateIndices.push_back(index);
         }
     }
-    appendWorkspaceViewShardCandidatesForBounds(
-        viewIndex,
-        focusBounds,
-        candidateIndexSet,
-        candidateIndices
-    );
+    appendWorkspaceViewShardCandidatesForBounds(viewIndex, focusBounds, candidateIndexSet, candidateIndices);
     if (viewVolumeBounds(viewVolume, frustumBounds)) {
         appendWorkspaceViewShardCandidatesForBounds(
             viewIndex,
@@ -1261,13 +1237,9 @@ bool collectRetainedDocumentPathsForViewCached(
         return true;
     }
 
-    if (!collectRetainedDocumentPathsForView(
-            viewIndex,
-            viewer,
-            focusPoint,
-            retainRadius,
-            retainedDocumentPaths
-        )) {
+    if (
+        !collectRetainedDocumentPathsForView(viewIndex, viewer, focusPoint, retainRadius, retainedDocumentPaths)
+    ) {
         clearCachedRetainedDocumentPaths();
         return false;
     }
@@ -1326,8 +1298,7 @@ void appendRecentlyRetainedDocumentPaths(std::vector<std::string>& retainedDocum
 
 bool shouldAttemptWarmPrefetch(const App::Document& doc)
 {
-    if (!activeViewPrefetchClock.isValid()
-        || !activeViewPrefetchState.hasObservedFocalPoint) {
+    if (!activeViewPrefetchClock.isValid() || !activeViewPrefetchState.hasObservedFocalPoint) {
         return false;
     }
 
@@ -1386,11 +1357,9 @@ bool shouldAttemptRebalance(
         return true;
     }
 
-    if (focalPointMovedEnough(
-            activeViewPrefetchState.lastRebalanceFocalPoint,
-            focalPoint,
-            movementTolerance
-        )) {
+    if (
+        focalPointMovedEnough(activeViewPrefetchState.lastRebalanceFocalPoint, focalPoint, movementTolerance)
+    ) {
         return true;
     }
 
@@ -1424,7 +1393,8 @@ bool processPendingWorkspaceLoadActions(
                     doc,
                     focalPoint,
                     1
-                ) != 0) {
+                )
+                != 0) {
                 ++processedLoadActions;
                 continue;
             }
@@ -1433,11 +1403,8 @@ bool processPendingWorkspaceLoadActions(
         if (activeViewPrefetchState.pendingRebalanceNearFocus) {
             activeViewPrefetchState.pendingRebalanceNearFocus = false;
             noteRebalanceAttempt(focalPoint);
-            if (Import::StepLightweightWorkspaceRuntime::rebalanceShardsNearPoint(
-                    doc,
-                    focalPoint,
-                    1
-                ) != 0) {
+            if (Import::StepLightweightWorkspaceRuntime::rebalanceShardsNearPoint(doc, focalPoint, 1)
+                != 0) {
                 ++processedLoadActions;
                 continue;
             }
@@ -1447,10 +1414,10 @@ bool processPendingWorkspaceLoadActions(
             activeViewPrefetchState.pendingTrimOutsideRetainedPaths = false;
             if (!retainedDocumentPaths.empty()
                 && Import::StepLightweightWorkspaceRuntime::trimShardsOutsideRetainedPaths(
-                        doc,
-                        retainedDocumentPaths,
-                        maxViewTrimCountPerCycle
-                    ) != 0) {
+                       doc,
+                       retainedDocumentPaths,
+                       maxViewTrimCountPerCycle
+                   ) != 0) {
                 ++processedLoadActions;
                 continue;
             }
@@ -1463,7 +1430,8 @@ bool processPendingWorkspaceLoadActions(
                     doc,
                     focalPoint,
                     maxWarmPrefetchCountPerCycle
-                ) != 0) {
+                )
+                != 0) {
                 ++processedLoadActions;
                 continue;
             }
@@ -1495,7 +1463,9 @@ void LightweightWorkspaceProxyViewOptimizer::init()
     activateViewConnection = Gui::Application::Instance->signalActivateView.connect(
         [](const Gui::MDIView*) {
             resetFocusPointAttempt();
-            QTimer::singleShot(0, []() { LightweightWorkspaceProxyViewOptimizer::optimizeActiveView(); });
+            QTimer::singleShot(0, []() {
+                LightweightWorkspaceProxyViewOptimizer::optimizeActiveView();
+            });
         }
     );
     newObjectConnection = App::GetApplication().signalNewObject.connect(
@@ -1542,11 +1512,9 @@ void LightweightWorkspaceProxyViewOptimizer::init()
     activeViewPrefetchClock.start();
     navigationPrefetchTimer = new QTimer();
     navigationPrefetchTimer->setInterval(navigationPrefetchIntervalMs);
-    QObject::connect(
-        navigationPrefetchTimer,
-        &QTimer::timeout,
-        []() { LightweightWorkspaceProxyViewOptimizer::optimizeActiveView(); }
-    );
+    QObject::connect(navigationPrefetchTimer, &QTimer::timeout, []() {
+        LightweightWorkspaceProxyViewOptimizer::optimizeActiveView();
+    });
     navigationPrefetchTimer->start();
 
     QTimer::singleShot(0, []() { LightweightWorkspaceProxyViewOptimizer::refreshAllOpenDocuments(); });
@@ -1612,7 +1580,8 @@ void LightweightWorkspaceProxyViewOptimizer::optimizeActiveView()
 
     const SbVec3f focalPoint = viewer->getFocalPoint();
     const Base::Vector3d focusPoint(focalPoint[0], focalPoint[1], focalPoint[2]);
-    const double movementTolerance = std::max(1.0, static_cast<double>(viewer->getMaxDimension()) * 0.05);
+    const double movementTolerance
+        = std::max(1.0, static_cast<double>(viewer->getMaxDimension()) * 0.05);
     const bool documentChanged = observeFocusPoint(*doc, focusPoint, movementTolerance);
     std::vector<std::string> retainedDocumentPaths;
     bool hasRetainedDocumentPaths = false;
@@ -1677,12 +1646,7 @@ void LightweightWorkspaceProxyViewOptimizer::optimizeActiveView()
         activeViewPrefetchState.pendingWarmPrefetchNearFocus = true;
     }
 
-    if (processPendingWorkspaceLoadActions(
-            *doc,
-            focusPoint,
-            movementTolerance,
-            retainedDocumentPaths
-        )) {
+    if (processPendingWorkspaceLoadActions(*doc, focusPoint, movementTolerance, retainedDocumentPaths)) {
         return;
     }
 }
