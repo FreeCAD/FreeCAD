@@ -201,7 +201,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
 
         stack = zlevel_hybrid_stack(
             shape=self.test_model,
-            categorizedSteps=steps,
+            categorized_steps=steps,
             border_face=self.border_face,
             trim_face=self.trim_face,
             fill_holes_masks=self.fill_holes_masks,
@@ -276,6 +276,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             is_adaptive=False,
             adaptive_params={},
             bb_face=self.border_face,
+            enforce_geofence=True,
         )
 
         self.assertGreater(len(cmds), 0, "G-code generation produced no commands")
@@ -448,10 +449,10 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
             wpc=wpc,
             fill_holes_masks=fill_holes_masks,
             fill_mask_idx=0,
-            currentSilhouette=silhouette,
+            current_silhouette=silhouette,
             status="Pure",
             floor_geo=None,
-            allPrevComp=None,
+            all_prev_comp=None,
             z_target=10.0,
             loose_tol=1e-4,
         )
@@ -502,7 +503,7 @@ class TestSurfaceZLevel(PathTestUtils.PathTestBase):
 
         stack = zlevel_hybrid_stack(
             shape=model,
-            categorizedSteps=steps,
+            categorized_steps=steps,
             border_face=self.border_face,
             trim_face=self.trim_face,
             fill_holes_masks=fill_holes_masks,
