@@ -370,32 +370,6 @@ void SoBrepFaceSet::doAction(SoAction* action)
         }
         return;
     }
-    else if (action->getTypeId() == Gui::SoVRMLAction::getClassTypeId()) {
-        // Keep materialIndex in sync when using PER_PART binding with one color per part.
-        SoState* state = action->getState();
-        Binding mbind = this->findMaterialBinding(state);
-        if (mbind == PER_PART) {
-            const SoLazyElement* mat = SoLazyElement::getInstance(state);
-            const int numParts = partIndex.getNum();
-            if (mat && mat->getNumDiffuse() == numParts) {
-                int count = 0;
-                const int32_t* indices = this->partIndex.getValues(0);
-                for (int i = 0; i < numParts; i++) {
-                    count += indices[i];
-                }
-                this->materialIndex.setNum(count);
-                int32_t* matind = this->materialIndex.startEditing();
-                int32_t k = 0;
-                for (int i = 0; i < numParts; i++) {
-                    for (int j = 0; j < indices[i]; j++) {
-                        matind[k++] = i;
-                    }
-                }
-                this->materialIndex.finishEditing();
-            }
-        }
-    }
-
     inherited::doAction(action);
 }
 
@@ -883,7 +857,84 @@ void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction* action)
 
 void SoBrepFaceSet::generatePrimitives(SoAction* action)
 {
+    if (!action || !action->isOfType(SoIRRenderAction::getClassTypeId())) {
+        inherited::generatePrimitives(action);
+        return;
+    }
+
+    auto* irAction = static_cast<SoIRRenderAction*>(action);
+    auto* downstream = irAction->getActivePrimitiveCollector();
+    const auto binding = SoMaterialBindingElement::get(action->getState());
+    const auto* partCounts = partIndex.getValues(0);
+    const int partCount = partIndex.getNum();
+    const auto* material = SoLazyElement::getInstance(action->getState());
+
+    // Coin's IndexedFaceSet assigns material indices to generated faces.
+    // A BRep part can contain multiple generated triangles, so assign each
+    // triangle the material index of its containing part before Coin builds
+    // the retained geometry. Keeping this translation here preserves the
+    // per-part colors without changing the generic face-set behavior.
+    if (!downstream || binding != SoMaterialBindingElement::PER_PART || !partCounts
+        || partCount <= 0 || !material || material->getNumDiffuse() < partCount) {
+        inherited::generatePrimitives(action);
+        return;
+    }
+
+    std::vector<int> triangleMaterialIndices;
+    for (int part = 0; part < partCount; ++part) {
+        const int count = std::max(partCounts[part], 0);
+        triangleMaterialIndices.insert(triangleMaterialIndices.end(), count, part);
+    }
+
+    class MaterialIndexCollector final: public SoIRRenderAction::PrimitiveCollector
+    {
+    public:
+        MaterialIndexCollector(
+            SoIRRenderAction::PrimitiveCollector* downstream,
+            const std::vector<int>& materialIndices
+        )
+            : downstream(downstream)
+            , materialIndices(materialIndices)
+        {}
+
+        void onTriangle(
+            const SoPrimitiveVertex* v1,
+            const SoPrimitiveVertex* v2,
+            const SoPrimitiveVertex* v3
+        ) override
+        {
+            SoPrimitiveVertex adjusted1(*v1);
+            SoPrimitiveVertex adjusted2(*v2);
+            SoPrimitiveVertex adjusted3(*v3);
+            if (triangleIndex < materialIndices.size()) {
+                const int materialIndex = materialIndices[triangleIndex];
+                adjusted1.setMaterialIndex(materialIndex);
+                adjusted2.setMaterialIndex(materialIndex);
+                adjusted3.setMaterialIndex(materialIndex);
+            }
+            downstream->onTriangle(&adjusted1, &adjusted2, &adjusted3);
+            ++triangleIndex;
+        }
+
+        void onLine(const SoPrimitiveVertex* v1, const SoPrimitiveVertex* v2) override
+        {
+            downstream->onLine(v1, v2);
+        }
+
+        void onPoint(const SoPrimitiveVertex* v) override
+        {
+            downstream->onPoint(v);
+        }
+
+    private:
+        SoIRRenderAction::PrimitiveCollector* downstream;
+        const std::vector<int>& materialIndices;
+        size_t triangleIndex {0};
+    } collector(downstream, triangleMaterialIndices);
+
+    irAction->pushPrimitiveCollector(&collector);
     inherited::generatePrimitives(action);
+    irAction->popPrimitiveCollector(&collector);
 }
 
 void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction* action)
