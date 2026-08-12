@@ -411,34 +411,38 @@ void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
         return;
     }
 
-    if (appendedCount != 1) {
-        static bool warned = false;
-        if (!warned) {
-            warned = true;
-            SoDebugError::postWarning(
-                "SoBrepFaceSet::render",
-                "Draw-list traversal emitted %d commands for one SoBrepFaceSet; "
-                "per-face selection metadata expects exactly one triangle command",
-                appendedCount
-            );
-        }
-        return;
-    }
-
     SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(action, this, selContext);
-    auto& cmd = drawlist.getCommand(firstCommand);
-    if (cmd.geometry.topology != SO_TOPOLOGY_TRIANGLES) {
-        return;
-    }
-
-    cmd.pick.elementRanges = std::move(elementRanges);
     auto containsPart = [partCount](int idx) {
         return idx >= 0 && idx < partCount;
     };
+    const auto rootSelection = SelectionIR::getRootSelection(action);
 
-    SelectionIR::applyPrimary(cmd, ctx, SelectionIR::getRootSelection(action), containsPart);
-    SelectionIR::applySelectionOverlay(cmd, selectionPartIndex, selectionColor.getValue(), containsPart);
-    SelectionIR::applyHighlightOverlay(cmd, highlightPartIndex, highlightColor.getValue(), containsPart);
+    int commandVertexStart = 0;
+    for (int commandIndex = firstCommand; commandIndex < firstCommand + appendedCount;
+         ++commandIndex) {
+        auto& cmd = drawlist.getCommand(commandIndex);
+        const int commandVertexEnd = commandVertexStart + static_cast<int>(cmd.geometry.vertexCount);
+        if (cmd.geometry.topology != SO_TOPOLOGY_TRIANGLES) {
+            commandVertexStart = commandVertexEnd;
+            continue;
+        }
+
+        for (const auto& partRange : elementRanges) {
+            const int rangeStart = std::max(commandVertexStart, partRange.drawStart);
+            const int rangeEnd = std::min(commandVertexEnd, partRange.drawStart + partRange.drawCount);
+            if (rangeStart < rangeEnd) {
+                SoRenderElementRange range = partRange;
+                range.drawStart = rangeStart - commandVertexStart;
+                range.drawCount = rangeEnd - rangeStart;
+                cmd.pick.elementRanges.push_back(range);
+            }
+        }
+
+        SelectionIR::applyPrimary(cmd, ctx, rootSelection, containsPart);
+        SelectionIR::applySelectionOverlay(cmd, selectionPartIndex, selectionColor.getValue(), containsPart);
+        SelectionIR::applyHighlightOverlay(cmd, highlightPartIndex, highlightColor.getValue(), containsPart);
+        commandVertexStart = commandVertexEnd;
+    }
 }
 
 void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
