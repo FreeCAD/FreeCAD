@@ -4496,10 +4496,19 @@ struct LoftOptions
     bool checkCompatibility;
 };
 
+// Configure the BRepOffsetAPI_ThruSections generator based on the loft options.
+// BRepOffsetAPI_ThruSections API: https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html
 void configureThruSections(BRepOffsetAPI_ThruSections& generator, const LoftOptions& options)
 {
+    // Max order of interpolation that OCCT will be allowed to use
     generator.SetMaxDegree(options.maxDegree);
+
+    // Set smoothing (solver) type: bspline (default), variational, or ruled
     generator.SetSmoothing(options.smoothing == Smoothing::variational);
+
+    // Set parametrization type: chord length, centripetal, or uniform
+    // This is a function of the profiles and the relative spacing between them
+    // Chord length is the default, centripedal when a high ratio of different spacings is present
     switch (options.parametrization) {
         case LoftParametrization::chordLength:
             generator.SetParType(Approx_ChordLength);
@@ -4522,9 +4531,14 @@ void configureThruSections(BRepOffsetAPI_ThruSections& generator, const LoftOpti
             generator.SetContinuity(GeomAbs_C2);
             break;
     }
+    // Sets/unsets the option to compute origin and orientation on wires
+    // to avoid twisted results and update wires to have same number of
+    // edges
     generator.CheckCompatibility(options.checkCompatibility);
 }
 
+// Test whether a shape is a punctual profile, i.e. it is a vertex or has no edges.
+// Punctual profiles can be used at the start or end of a loft.
 bool isPunctualProfile(const TopoDS_Shape& profile)
 {
     if (profile.ShapeType() == TopAbs_VERTEX) {
@@ -4542,17 +4556,15 @@ bool isPunctualProfile(const TopoDS_Shape& profile)
 
 bool isClosedProfile(const TopoDS_Wire& wire)
 {
-    if (wire.Closed()) {
-        return true;
-    }
-    TopoDS_Vertex first;
-    TopoDS_Vertex last;
-    TopExp::Vertices(wire, first, last);
-    return !first.IsNull() && first.IsSame(last);
+    return BRep_Tool::IsClosed(wire);
 }
 
+// Check the profiles for compatibility with the loft operation
+// and provide (actionable) user feedback if any issues are found
 void preflightLoftProfiles(const std::vector<TopoShape>& profiles, bool checkCompatibility)
 {
+    // Check punctual profiles, ensure they appear as first or last profile
+    // provide user feedback
     std::optional<std::pair<std::size_t, bool>> firstTopology;
     for (std::size_t profileIndex = 0; profileIndex < profiles.size(); ++profileIndex) {
         const auto& profile = profiles[profileIndex].getShape();
@@ -4565,6 +4577,7 @@ void preflightLoftProfiles(const std::vector<TopoShape>& profiles, bool checkCom
             FC_THROWM(Base::CADKernelError, message.str().c_str());
         }
 
+        // validate profile curves
         std::size_t edgeIndex = 0;
         for (TopExp_Explorer explorer(profile, TopAbs_EDGE); explorer.More(); explorer.Next()) {
             ++edgeIndex;
@@ -4582,15 +4595,18 @@ void preflightLoftProfiles(const std::vector<TopoShape>& profiles, bool checkCom
             }
         }
 
+        // ensure profile is a valid brep
         if (!BRepCheck_Analyzer(profile).IsValid()) {
             std::ostringstream message;
             message << "Loft profile " << profileIndex + 1 << " is not a valid BRep shape";
             FC_THROWM(Base::CADKernelError, message.str().c_str());
         }
 
+        // punctual profiles can be the first profile
         if (!checkCompatibility || punctual) {
             continue;
         }
+
         const bool closed = isClosedProfile(TopoDS::Wire(profile));
         if (!firstTopology) {
             firstTopology = std::pair {profileIndex, closed};
@@ -4631,6 +4647,7 @@ std::optional<BRepFill_ThruSectionErrorStatus> probeProfileCompatibility(
 }
 
 
+// Probe immutable profile copies so diagnosis cannot alter the requested loft inputs.
 BRepFill_ThruSectionErrorStatus probeLoftRange(
     const std::vector<TopoShape>& profiles,
     std::size_t profileCount,
@@ -4695,6 +4712,7 @@ void suggestLoftAlternative(
         return;
     }
 
+    // Test each standard parametrization in a stable order, then try the variational solver.
     constexpr std::array candidates {
         LoftParametrization::chordLength,
         LoftParametrization::centripetal,
@@ -4735,6 +4753,7 @@ const char* loftParametrizationName(LoftParametrization parametrization)
     return "Unknown";
 }
 
+// Probe pairs and prefixes to report the smallest profile range that reproduces the failure.
 LoftFailure diagnoseLoftFailure(
     BRepFill_ThruSectionErrorStatus status,
     const std::vector<TopoShape>& profiles,
@@ -4937,17 +4956,12 @@ TopoShape& TopoShape::makeElementLoft(
         op = Part::OpCodes::Loft;
     }
 
-    const bool automatic = smoothing == Smoothing::automatic;
-    const Smoothing initialSmoothing = automatic ? Smoothing::bspline : smoothing;
-    const LoftParametrization initialParametrization = automatic
-        ? LoftParametrization::chordLength
-        : parametrization;
     const LoftOptions options {
         isSolid,
-        initialSmoothing,
+        smoothing,
         isClosed,
         maxDegree,
-        initialParametrization,
+        parametrization,
         continuity,
         checkCompatibility,
     };
@@ -4960,12 +4974,9 @@ TopoShape& TopoShape::makeElementLoft(
     // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
     BRepOffsetAPI_ThruSections aGenerator(
         isSolid == IsSolid::solid,
-        initialSmoothing == Smoothing::ruled
+        smoothing == Smoothing::ruled
     );
     configureThruSections(aGenerator, options);
-    if (automatic) {
-        aGenerator.SetMutableInput(false);
-    }
 
     int i = 0;
     for (auto& sh : profiles) {
@@ -5011,37 +5022,9 @@ TopoShape& TopoShape::makeElementLoft(
         }
     }
 
-    auto recoverAutomaticLoft = [&](BRepFill_ThruSectionErrorStatus status) -> TopoShape& {
-        const auto failure = diagnoseLoftFailure(status, profiles, options);
-        if (automatic) {
-            if (failure.suggestedParametrization) {
-                return makeElementLoft(
-                    shapes,
-                    isSolid,
-                    Smoothing::bspline,
-                    isClosed,
-                    maxDegree,
-                    op,
-                    *failure.suggestedParametrization,
-                    continuity,
-                    checkCompatibility
-                );
-            }
-            if (failure.suggestVariational) {
-                return makeElementLoft(
-                    shapes,
-                    isSolid,
-                    Smoothing::variational,
-                    isClosed,
-                    maxDegree,
-                    op,
-                    initialParametrization,
-                    continuity,
-                    checkCompatibility
-                );
-            }
-        }
-        throwThruSectionsError(failure);
+    // Diagnostics may suggest a valid alternative, but never replace the requested algorithm.
+    auto reportLoftFailure = [&](BRepFill_ThruSectionErrorStatus status) -> void {
+        throwThruSectionsError(diagnoseLoftFailure(status, profiles, options));
     };
 
     try {
@@ -5052,22 +5035,20 @@ TopoShape& TopoShape::makeElementLoft(
 #endif
     }
     catch (const Standard_Failure&) {
-        return recoverAutomaticLoft(aGenerator.GetStatus());
+        reportLoftFailure(aGenerator.GetStatus());
     }
     if (!aGenerator.IsDone()
         || aGenerator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
-        return recoverAutomaticLoft(aGenerator.GetStatus());
+        reportLoftFailure(aGenerator.GetStatus());
     }
-    if (automatic) {
-        try {
-            const auto& result = aGenerator.Shape();
-            if (result.IsNull() || !BRepCheck_Analyzer(result).IsValid()) {
-                return recoverAutomaticLoft(BRepFill_ThruSectionErrorStatus_Failed);
-            }
+    try {
+        const auto& result = aGenerator.Shape();
+        if (result.IsNull() || !BRepCheck_Analyzer(result).IsValid()) {
+            reportLoftFailure(BRepFill_ThruSectionErrorStatus_Failed);
         }
-        catch (const Standard_Failure&) {
-            return recoverAutomaticLoft(BRepFill_ThruSectionErrorStatus_Failed);
-        }
+    }
+    catch (const Standard_Failure&) {
+        reportLoftFailure(BRepFill_ThruSectionErrorStatus_Failed);
     }
     return makeShapeWithElementMap(
         aGenerator.Shape(),

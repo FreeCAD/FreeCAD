@@ -36,8 +36,7 @@ class PartDesignExport Loft: public ProfileBased
 
 public:
     Loft();
-    // corresponds to OCCT BRepOffsetAPI_ThruSections API
-    // https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html#aefa57318229ddb92b2240eb5f85d9c18
+    // Loft controls mirror the corresponding BRepOffsetAPI_ThruSections configuration.
     App::PropertyLinkSubList Sections;
     App::PropertyEnumeration LoftType;
     App::PropertyBool Ruled;
@@ -46,8 +45,6 @@ public:
     App::PropertyEnumeration Parametrization;
     App::PropertyEnumeration Continuity;
     App::PropertyBool CheckCompatibility;
-    // Note: Add properties for variational solver (e.g., solver weights) for completeness
-
 
     /** @name methods override feature */
     //@{

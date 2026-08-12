@@ -31,7 +31,6 @@
 
 #include <boost/core/ignore_unused.hpp>
 
-#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -51,15 +50,13 @@ Part::Smoothing loftSmoothing(long loftType)
 {
     switch (loftType) {
         case 0:
-            return Part::Smoothing::automatic;
-        case 1:
             return Part::Smoothing::bspline;
-        case 2:
+        case 1:
             return Part::Smoothing::ruled;
-        case 3:
+        case 2:
             return Part::Smoothing::variational;
         default:
-            return Part::Smoothing::automatic;
+            return Part::Smoothing::bspline;
     }
 }
 }  // namespace
@@ -70,7 +67,6 @@ App::PropertyIntegerConstraint::Constraints Loft::Degrees = {
     1
 };
 const char* Loft::LoftTypeEnums[] = {
-    "Automatic",
     "Standard B-Spline",
     "Ruled Surface",
     "Variational B-Spline",
@@ -85,7 +81,7 @@ Loft::Loft()
     Sections.setValue(nullptr);
     ADD_PROPERTY_TYPE(
         LoftType,
-        (App::GetApplication().isRestoring() ? long(1) : long(0)),
+        (long(0)),
         "Loft",
         App::Prop_None,
         "Loft surface generation algorithm"
@@ -130,12 +126,12 @@ void Loft::onChanged(const App::Property* prop)
                 "LoftType = 'Ruled Surface' or 'Standard B-Spline' instead.\n"
             );
             synchronizingLoftType = true;
-            LoftType.setValue(Ruled.getValue() ? 2 : 1);
+            LoftType.setValue(Ruled.getValue() ? 1 : 0);
             synchronizingLoftType = false;
         }
         else if (prop == &LoftType) {
             synchronizingLoftType = true;
-            Ruled.setValue(LoftType.getValue() == 2);
+            Ruled.setValue(LoftType.getValue() == 1);
             synchronizingLoftType = false;
         }
     }
@@ -145,13 +141,13 @@ void Loft::onChanged(const App::Property* prop)
 
 void Loft::onDocumentRestored()
 {
-    // LoftType defaults to Standard B-Spline while restoring old documents that do not contain
-    // the new property. Preserve the old Ruled=true setting when present.
+    // Saved documents store only Ruled true/false
+    // This provides backwards compatability
     synchronizingLoftType = true;
     if (Ruled.getValue()) {
-        LoftType.setValue(2);
+        LoftType.setValue(1);
     }
-    Ruled.setValue(LoftType.getValue() == 2);
+    Ruled.setValue(LoftType.getValue() == 1);
     synchronizingLoftType = false;
 
     ProfileBased::onDocumentRestored();

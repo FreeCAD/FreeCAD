@@ -17,22 +17,11 @@
    <item>
     <widget class="QComboBox" name="comboBoxMode">
      <property name="toolTip">
-      <string>
-          Select the type of surface loft to generate:
-          - Automatic: Starts with the standard method and retries other parameterizations or the
-            variational solver if necessary.
-          - Standard B-Spline: The standard loft generation method is used to form the loft surface.
-          - Ruled Surface: A ruled surface is formed by joining the profiles along a straight line.
-          - Variational B-Spline: An alternative loft generation method is used to form the loft surface.
-            This method can be more robust than the standard B-Spline method for some geometries,
-            but may create slightly different loft surfaces.
-      </string>
+      <string>Select the loft surface algorithm:
+- Standard B-Spline approximates a smooth surface through the profiles.
+- Ruled Surface joins adjacent profiles with straight-line surfaces.
+- Variational B-Spline uses an alternative solver that can succeed for some profiles.</string>
      </property>
-     <item>
-      <property name="text">
-       <string>Automatic</string>
-      </property>
-     </item>
      <item>
       <property name="text">
        <string>Standard B-Spline</string>

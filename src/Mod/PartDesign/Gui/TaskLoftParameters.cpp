@@ -235,33 +235,16 @@ void TaskLoftParameters::updateUI()
 
 void TaskLoftAdvancedParameters::updateAlgorithmOptions(int mode)
 {
-    // Show advanced parameters if the user chooses an option other than "automatic"
-    const bool automatic = mode == 0;
-    const bool usesApproximation = !automatic && mode != 2;
-    // some methods allow a paramaterization to be set (e.g., standard b-spline)
-    // other do not (e.g., variational solver), so these fields should not be editable
-    const bool usesParametrization = mode == 1;
+    // Ruled lofts bypass approximation; only the standard solver accepts parametrization.
+    const bool usesApproximation = mode != 1;
+    const bool usesParametrization = mode == 0;
     ui->spinBoxMaxDegree->setEnabled(usesApproximation);
     ui->labelMaxDegree->setEnabled(usesApproximation);
     ui->comboBoxContinuity->setEnabled(usesApproximation);
     ui->labelContinuity->setEnabled(usesApproximation);
     ui->comboBoxParametrization->setEnabled(usesParametrization);
     ui->labelParametrization->setEnabled(usesParametrization);
-    ui->checkBoxCompatibility->setEnabled(!automatic);
-
-    // If the user opens the advanced parameters, then keep it open until they close it manually
-    if (automatic) {
-        if (isGroupVisible()) {
-            hideGroupBox();
-            collapsedForAuto = true;
-        }
-    }
-    else {
-        if (collapsedForAuto && !isGroupVisible()) {
-            showHide();
-        }
-        collapsedForAuto = false;
-    }
+    ui->checkBoxCompatibility->setEnabled(true);
 }
 
 void TaskLoftAdvancedParameters::setUpdateView(bool enabled)

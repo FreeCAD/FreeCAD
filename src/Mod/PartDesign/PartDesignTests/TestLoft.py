@@ -53,7 +53,7 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         self.Body.addObject(self.AdditiveLoft)
-        self.assertEqual(self.AdditiveLoft.LoftType, "Automatic")
+        self.assertEqual(self.AdditiveLoft.LoftType, "Standard B-Spline")
         self.assertFalse(self.AdditiveLoft.Ruled)
         self.AdditiveLoft.Ruled = True
         self.assertEqual(self.AdditiveLoft.LoftType, "Ruled Surface")
@@ -61,8 +61,9 @@ class TestLoft(unittest.TestCase):
         self.assertEqual(self.AdditiveLoft.LoftType, "Standard B-Spline")
         self.AdditiveLoft.LoftType = "Ruled Surface"
         self.assertTrue(self.AdditiveLoft.Ruled)
-        self.AdditiveLoft.LoftType = "Automatic"
+        self.AdditiveLoft.LoftType = "Variational B-Spline"
         self.assertFalse(self.AdditiveLoft.Ruled)
+        self.AdditiveLoft.LoftType = "Standard B-Spline"
         self.assertEqual(self.AdditiveLoft.MaxDegree, 5)
         self.assertEqual(self.AdditiveLoft.Parametrization, "Chord length")
         self.assertEqual(self.AdditiveLoft.Continuity, "C2")

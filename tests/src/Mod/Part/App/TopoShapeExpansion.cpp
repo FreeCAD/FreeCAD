@@ -1801,11 +1801,6 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
         IsSolid::notSolid,
         Smoothing::variational
     );
-    auto& automaticShape = (new TopoShape())->makeElementLoft(
-        shapes,
-        IsSolid::notSolid,
-        Smoothing::automatic
-    );
     auto& topoShape6 = (new TopoShape())
                           ->makeElementLoft(
                               shapes,
@@ -1822,7 +1817,6 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     EXPECT_NEAR(getVolume(topoShape3.getShape()), 166.66667, 1e-5);
     EXPECT_DOUBLE_EQ(getVolume(topoShape4.getShape()), 250);
     EXPECT_FALSE(topoShape5.isNull());
-    EXPECT_FALSE(automaticShape.isNull());
     EXPECT_NEAR(getVolume(topoShape6.getShape()), 0, 1e-07);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
@@ -2026,15 +2020,6 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     ));
     EXPECT_FALSE(suggestedResult.isNull());
 
-    TopoShape automaticParametrizationResult;
-    EXPECT_NO_THROW(automaticParametrizationResult.makeElementLoft(
-        {profileA, profileD, profileE},
-        IsSolid::solid,
-        Smoothing::automatic
-    ));
-    EXPECT_FALSE(automaticParametrizationResult.isNull());
-    EXPECT_TRUE(BRepCheck_Analyzer(automaticParametrizationResult.getShape()).IsValid());
-
     // This sequence fails with every standard B-spline parameterization, but the variational
     // solver constructs a valid solid.
     std::vector<TopoShape> variationalProfiles {
@@ -2111,24 +2096,6 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     ));
     EXPECT_FALSE(variationalResult.isNull());
     EXPECT_TRUE(BRepCheck_Analyzer(variationalResult.getShape()).IsValid());
-
-    TopoShape automaticVariationalResult;
-    EXPECT_NO_THROW(automaticVariationalResult.makeElementLoft(
-        variationalProfiles,
-        IsSolid::solid,
-        Smoothing::automatic
-    ));
-    EXPECT_FALSE(automaticVariationalResult.isNull());
-    EXPECT_TRUE(BRepCheck_Analyzer(automaticVariationalResult.getShape()).IsValid());
-
-    TopoShape automaticVariationalShell;
-    EXPECT_NO_THROW(automaticVariationalShell.makeElementLoft(
-        variationalProfiles,
-        IsSolid::notSolid,
-        Smoothing::automatic
-    ));
-    EXPECT_FALSE(automaticVariationalShell.isNull());
-    EXPECT_TRUE(BRepCheck_Analyzer(automaticVariationalShell.getShape()).IsValid());
 
     auto makeIssueCurve = [](const std::array<gp_Pnt, 3>& curvePoles,
                              const std::array<double, 3>& curveWeights,
@@ -2226,14 +2193,14 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         ),
     };
 
-    TopoShape automaticIssueShell;
-    EXPECT_NO_THROW(automaticIssueShell.makeElementLoft(
+    TopoShape variationalIssueShell;
+    EXPECT_NO_THROW(variationalIssueShell.makeElementLoft(
         issueProfiles,
         IsSolid::notSolid,
-        Smoothing::automatic
+        Smoothing::variational
     ));
-    EXPECT_FALSE(automaticIssueShell.isNull());
-    EXPECT_TRUE(BRepCheck_Analyzer(automaticIssueShell.getShape()).IsValid());
+    EXPECT_FALSE(variationalIssueShell.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(variationalIssueShell.getShape()).IsValid());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT
