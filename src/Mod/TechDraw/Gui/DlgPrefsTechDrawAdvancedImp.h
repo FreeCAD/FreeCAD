@@ -61,7 +61,7 @@ protected:
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAdvancedImp> ui;
 
-    bool lastIdentifyVoids;
+    bool lastIdentifyVoids { false };
 };
 
 } // namespace TechDrawGui

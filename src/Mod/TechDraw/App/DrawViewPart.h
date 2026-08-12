@@ -77,7 +77,6 @@ class GeomFormat;
 namespace TechDraw
 {
 class DrawViewSection;
-enum class FaceFinderVersion;
 
 
 enum class ProjDirection {
@@ -208,7 +207,6 @@ public:
 
     // switches
     bool handleFaces();
-    FaceFinderVersion faceFinderVersion();
     bool identifyVoids();
     bool isUnsetting() { return nowUnsetting; }
 
@@ -268,7 +266,7 @@ protected:
     virtual void addPoints(void);
 
     void extractFaces();
-    void findFacesV1_2(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
+    void findFacesV26_3(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
     void findFacesV0_21(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
     void findFacesV0_17(const std::vector<TechDraw::BaseGeomPtr>& goEdges);
 

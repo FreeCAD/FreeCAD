@@ -306,7 +306,7 @@ can be a performance penalty in complex models.</string>
           </item>
           <item>
            <property name="text">
-            <string>FreeCAD v1.2</string>
+            <string>FreeCAD v26.3</string>
            </property>
           </item>
          </widget>

@@ -804,7 +804,7 @@ TopoDS_Compound DrawViewSection::alignSectionFaces(const TopoDS_Shape& faceInter
         BRepTools::Write(scaledSection, "DVSScaledSectionFaces.brep");
     }
 
-    if (faceFinderVersion() == FaceFinderVersion::v1_2 && identifyVoids()) {
+    if (Preferences::faceFinderVersion() == FaceFinderVersion::v26_3 && identifyVoids()) {
         // Face Finder v1.2 with voids identification active constructs projected section faces once all drawing faces
         // are extracted, thus here we will only store the 3D section faces for later use and return an empty compound
         unprojectedSectionFaces = TopoDS::Compound(scaledSection);

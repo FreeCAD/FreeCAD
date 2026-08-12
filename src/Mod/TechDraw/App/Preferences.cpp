@@ -753,6 +753,10 @@ FaceFinderVersion Preferences::faceFinderVersion()
         return getPreferenceGroup("General")->GetBool("NewFaceFinder", false)
                ? FaceFinderVersion::v0_21 : FaceFinderVersion::v0_17;
     }
+    else if (faceFinderVer > static_cast<int>(FaceFinderVersion::v26_3)) {
+        // Return the newest supported Face Finder algorithm
+        return FaceFinderVersion::v26_3;
+    }
 
     return static_cast<FaceFinderVersion>(faceFinderVer);
 }

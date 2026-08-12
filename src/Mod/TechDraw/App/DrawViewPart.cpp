@@ -515,35 +515,35 @@ void DrawViewPart::extractFaces()
         return;
     }
 
-    switch (faceFinderVersion()) {
+    switch (Preferences::faceFinderVersion()) {
         case FaceFinderVersion::v0_17:
             findFacesV0_17(goEdges);
             break;
         case FaceFinderVersion::v0_21:
             findFacesV0_21(goEdges);
             break;
-        case FaceFinderVersion::v1_2:
-            findFacesV1_2(goEdges);
+        case FaceFinderVersion::v26_3:
+            findFacesV26_3(goEdges);
             break;
         default:
             Base::Console().warning("DVP::extractFaces - Unsupported algorithm id %d\n",
-                                    static_cast<int>(faceFinderVersion()));
+                                    static_cast<int>(Preferences::faceFinderVersion()));
             return;
     }
 }
 
-void DrawViewPart::findFacesV1_2(const std::vector<BaseGeomPtr> &goEdges)
+void DrawViewPart::findFacesV26_3(const std::vector<BaseGeomPtr> &goEdges)
 {
     geometryObject->clearFaceGeom();
 
     // Run the General Fuse algorithm on unbounded planar face and use our edges to split it into smaller faces
     BOPAlgo_Builder builder;
     builder.SetFuzzyValue(FUZZYADJUST*EWTOLERANCE);
-    builder.SetNonDestructive(Standard_False); // Allow in-place modifications
-    builder.SetGlue(BOPAlgo_GlueOff);          // No gluing needed as all intersections are real
-    builder.SetCheckInverted(Standard_False);  // No solids in the input list
-    builder.SetUseOBB(Standard_True);          // Use oriented bound boxes
-    builder.SetRunParallel(Standard_True);     // Speed up the process, if possible
+    builder.SetNonDestructive(Standard_True); // Do not modify any edges passed as arguments
+    builder.SetGlue(BOPAlgo_GlueOff);         // No gluing needed as all intersections are real
+    builder.SetCheckInverted(Standard_False); // No solids in the input list
+    builder.SetUseOBB(Standard_True);         // Use oriented bound boxes
+    builder.SetRunParallel(Standard_True);    // Speed up the process, if possible
 
     builder.AddArgument(BRepBuilderAPI_MakeFace(gp_Pln()));
     for (auto edge : goEdges) {
@@ -1361,15 +1361,6 @@ bool DrawViewPart::handleFaces()
 {
     return Preferences::getPreferenceGroup("General")->GetBool("HandleFaces", true);
 }
-
-FaceFinderVersion DrawViewPart::faceFinderVersion()
-{
-    if (!handleFaces()) {
-        return FaceFinderVersion::Off;
-    }
-
-    return Preferences::faceFinderVersion();
- }
 
 bool DrawViewPart::identifyVoids()
 {

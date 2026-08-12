@@ -71,7 +71,7 @@ void DlgPrefsTechDrawAdvancedImp::saveSettings()
 
     ui->cbSwitchWB->onSave();
 
-    Preferences::setFaceFinderVersion(static_cast<FaceFinderVersion>(ui->cbFaceFinderVer->currentIndex() + 1));
+    ui->cbFaceFinderVer->onSave();
     if (ui->cbIdentifyVoids->isEnabled()) {
         ui->cbIdentifyVoids->onSave();
     }
@@ -133,7 +133,6 @@ void DlgPrefsTechDrawAdvancedImp::loadSettings()
     ui->cbIdentifyVoids->onRestore();
     lastIdentifyVoids = ui->cbIdentifyVoids->isChecked();
     ui->cbFaceFinderVer->onRestore();
-    ui->cbFaceFinderVer->setCurrentIndex(static_cast<int>(Preferences::faceFinderVersion()) - 1);
 }
 
 void DlgPrefsTechDrawAdvancedImp::loadBalloonOverride()

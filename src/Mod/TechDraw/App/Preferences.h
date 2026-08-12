@@ -43,10 +43,9 @@ namespace TechDraw
 enum class ArrowType : int;
 
 enum class FaceFinderVersion {
-    Off   = 0,
-    v0_17 = 1,
-    v0_21 = 2,
-    v1_2  = 3
+    v0_17 = 0,
+    v0_21 = 1,
+    v26_3 = 2
 };
 
 //getters for parameters used in multiple places.
