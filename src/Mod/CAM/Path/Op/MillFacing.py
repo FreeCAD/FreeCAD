@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
 # SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
 # SPDX-FileNotice: Part of the FreeCAD project.
@@ -28,18 +27,23 @@ __doc__ = "Class and implementation of Mill Facing operation."
 __contributors__ = ""
 
 import FreeCAD
-from PySide import QtCore
 import Path
 import Path.Op.Base as PathOp
 
-import Path.Base.Generator.spiral_facing as spiral_facing
-import Path.Base.Generator.facing_common as facing_common
-import Path.Base.Generator.zigzag_facing as zigzag_facing
-import Path.Base.Generator.directional_facing as directional_facing
-import Path.Base.Generator.bidirectional_facing as bidirectional_facing
-import Path.Base.Generator.linking as linking
-import PathScripts.PathUtils as PathUtils
-import Path.Base.FeedRate as FeedRate
+from Path.Base import FeedRate
+from Path.Base.Generator import (
+    bidirectional_facing,
+    directional_facing,
+    facing_common,
+    linking,
+    spiral_facing,
+    zigzag_facing,
+)
+
+from PathScripts import PathUtils
+from PySide import QtCore
+
+import math
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -84,7 +88,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
     def initOpProperties(self, obj, warn=False):
         """initOpProperties(obj) ... create operation specific properties"""
         Path.Log.track()
-        self.addNewProps = list()
+        self.addNewProps = []
 
         for prtyp, nm, grp, tt in self.opPropertyDefinitions():
             if not hasattr(obj, nm):
@@ -230,7 +234,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
