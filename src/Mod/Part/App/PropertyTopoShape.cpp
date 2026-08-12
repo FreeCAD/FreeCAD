@@ -69,6 +69,8 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     _Shape = sh;
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if (obj) {
+        const App::HistoryAlgorithm& historyAlgorithm = _Shape.getHistoryAlgorithm();
+
         if (_Shape.getElementMap().size() != sh.getElementMap().size()) {
             TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape(), _Shape.getHistoryAlgorithm());
             res.mapSubElement(_Shape);
@@ -76,17 +78,17 @@ void PropertyPartShape::setValue(const TopoShape& sh)
         }
 
         auto tag = obj->getID();
-        if (_Shape.Tag && tag != _Shape.Tag) {
+        if (_Shape.Tag && tag != _Shape.Tag && historyAlgorithm == App::HistoryAlgorithm::V1) {
             auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
 
-            _Shape.reTagElementMap(tag, hasher, nullptr, false);
+            _Shape.reTagElementMap(tag, hasher, nullptr);
         }
         else {
-            _Shape.Tag = obj->getID();
-
-            if (_Shape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-                _Shape.reTagElementMap(_Shape.Tag, nullptr, nullptr, false);
+            if (!_Shape.Tag && historyAlgorithm == App::HistoryAlgorithm::V2) {
+                _Shape.reTagElementMap(obj->getID(), nullptr, nullptr);
             }
+
+            _Shape.Tag = obj->getID();
         }
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
             _Shape.Hasher = obj->getDocument()->getStringHasher();

@@ -1144,9 +1144,14 @@ public:
     }
 
     // we use a static here for caching reasons.
-    static DecodedMappedName getDecodedMappedName(const std::string& mappedNameString);
+    static DecodedMappedName& getDecodedMappedName(const std::string& mappedNameString);
 
-    DecodedMappedName getDecodedMappedName(); // non-const, it may touch nameData.
+    DecodedMappedName& getDecodedMappedName(); // non-const, as it may touch nameData.
+
+    /// Checks if `nameData` is up to date.
+    bool hasValidNameData() const {
+        return !nameDataTouched;
+    };
     
     static MappedName fromDecodedMappedName(const DecodedMappedName& name);
 

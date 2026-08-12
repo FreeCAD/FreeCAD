@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include "IndexedName.h"
+#include "MappedName.h"
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
@@ -1606,6 +1608,42 @@ void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallb
             return;
         }
         masterTag = encodedTag;
+    }
+}
+
+void ElementMap::retagElementMap(long newTag) {
+    if (historyAlgorithmRef == nullptr
+        || *historyAlgorithmRef != App::HistoryAlgorithm::V2
+        || newTag == 0)
+    {
+        return;
+    }
+
+    for (auto& indexedNameEntry : indexedNames) {
+        for (MappedNameRef& foundNameRef : indexedNameEntry.second.names) {
+            DecodedMappedName& decodedName = foundNameRef.name.getDecodedMappedName();
+
+            if (decodedName.size()) {
+                DecodedMappedSection& backSection = decodedName.back();
+
+                if (backSection.iterationTag == "0") {
+                    backSection.iterationTag = std::to_string(newTag);
+
+                    auto it = mappedNames.find(foundNameRef.name);
+                    foundNameRef.name = decodedName;
+                    
+                    if (it != mappedNames.end()) {
+                        auto extractedNode = mappedNames.extract(it);
+
+                        if (extractedNode.key()) {
+                            extractedNode.key() = foundNameRef.name;
+
+                            mappedNames.insert(std::move(extractedNode));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

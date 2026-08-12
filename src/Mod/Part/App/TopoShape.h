@@ -1757,8 +1757,7 @@ public:
     void reTagElementMap(
         long tag,  // NOLINT google-default-arguments
         App::StringHasherRef hasher,
-        const char* postfix = nullptr,
-        bool force = true  // force retag a section if the tag is not 0
+        const char* postfix = nullptr
     ) override;
 
     long isElementGenerated(Data::MappedName& name, int depth = 1) const;

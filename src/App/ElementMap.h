@@ -319,6 +319,9 @@ public:
         historyAlgorithmRef = geoDataHistoryAlgorithmRef;
     }
 
+    /// Retag method, only used with V2 element maps.
+    void retagElementMap(long newTag);
+
 private:
     /** Serialize this map
      * @param stream: serialized stream

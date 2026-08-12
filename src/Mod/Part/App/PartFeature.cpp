@@ -183,6 +183,8 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
 // This is the name matching algorithms used for the V2 algorithm.
 bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, bool logMatchedElements)
 {
+    ZoneScoped;
+
     if (!name1 || !name2) {
         return false;
     }
@@ -209,7 +211,8 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                 if ((name1Section.iterationTag != Data::EMPTY_VALUE
                      && name2Section.iterationTag == name1Section.iterationTag)
                     && (name1Section.opCode != Data::EMPTY_VALUE
-                        && name2Section.opCode == name1Section.opCode)) {
+                        && name2Section.opCode == name1Section.opCode))
+                {
                     entry.push_back(name2Section);
                 }
             }

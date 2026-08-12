@@ -105,8 +105,8 @@ void Part::FaceMaker::useTopoCompound(const TopoShape& comp)
 
 void Part::FaceMaker::setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm)
 {
-    selectedHistoryAlgorithm = newAlgorithm;
-    selectedHistoryAlgorithmUpdated = true;
+    MyHistoryAlgorithm = newAlgorithm;
+    MyHistoryAlgorithmUpdated = true;
 };
 
 const TopoDS_Face& Part::FaceMaker::Face()
@@ -217,18 +217,19 @@ struct ElementName
 
 void Part::FaceMaker::postBuild()
 {
-    if (!selectedHistoryAlgorithmUpdated) {
+    if (!MyHistoryAlgorithmUpdated) {
         setHistoryAlgorithm(this->mySourceShapes.front().getHistoryAlgorithm());
     }
 
     this->myTopoShape.setShape(this->myShape);
-    this->myTopoShape.setHistoryAlgorithm(this->selectedHistoryAlgorithm);
+    this->myTopoShape.setHistoryAlgorithm(this->MyHistoryAlgorithm);
     if (this->MyElementMapPolicy == ElementMapPolicy::Drop) {
         this->myTopoShape.dropElementNaming();
         this->Done();
         return;
     }
 
+    this->myTopoShape.Tag = MyTag;
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
 
@@ -240,7 +241,7 @@ void Part::FaceMaker::postBuild()
     if (!myPreSplitHistory.IsNull()) {
         MapperHistory mapper(myPreSplitHistory);
         TopoShape preSplitShape(myTopoShape.Tag);
-        preSplitShape.setHistoryAlgorithm(selectedHistoryAlgorithm);
+        preSplitShape.setHistoryAlgorithm(MyHistoryAlgorithm);
 
         preSplitShape.makeShapeWithElementMap(myPreSplitCompound, mapper, mySourceShapes);
         preSplitSources.push_back(std::move(preSplitShape));
@@ -253,7 +254,7 @@ void Part::FaceMaker::postBuild()
     if (mySplitter.IsDone()) {
         MapperMaker mapper(mySplitter);
         TopoShape splitInputShape(myTopoShape.Tag);
-        splitInputShape.setHistoryAlgorithm(selectedHistoryAlgorithm);
+        splitInputShape.setHistoryAlgorithm(MyHistoryAlgorithm);
 
         splitInputShape.makeShapeWithElementMap(mySplitter.Shape(), mapper, splitterSources);
         myTopoShape.mapSubElement(splitInputShape);
@@ -266,7 +267,7 @@ void Part::FaceMaker::postBuild()
     const std::vector<TopoShape>& faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
 
     // name the face using the edges of its outer wire
-    if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V1) {
+    if (MyHistoryAlgorithm == App::HistoryAlgorithm::V1) {
         int index = 0;
         std::set<Data::MappedName> namesUsed;
 
@@ -314,7 +315,7 @@ void Part::FaceMaker::postBuild()
             );
         }
     }
-    else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
+    else if (MyHistoryAlgorithm == App::HistoryAlgorithm::V2) {
         std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> allLinkedNames;
         std::unordered_map<Data::IndexedName, std::pair<std::vector<Data::MappedName>, bool>, Data::IndexedNameHasher>
             linkedNameMap;

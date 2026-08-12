@@ -109,6 +109,7 @@ public:
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
+    long MyTag = 0;
     const char* MyOp = 0;
     App::StringHasherRef MyHasher;
     ElementMapPolicy MyElementMapPolicy = ElementMapPolicy::Propagate;
@@ -122,10 +123,10 @@ protected:
     std::vector<TopoDS_Shape> myInputFaces;
     BRepAlgoAPI_BuilderAlgo mySplitter;
     Handle(BRepTools_History) myPreSplitHistory;
-    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
     TopoDS_Compound myPreSplitCompound;
     TopoShape myTopoShape;
-    bool selectedHistoryAlgorithmUpdated = false;
+    App::HistoryAlgorithm MyHistoryAlgorithm = App::HistoryAlgorithm::V2;
+    bool MyHistoryAlgorithmUpdated = false;
     int minElementNames = 1;
 
     /**

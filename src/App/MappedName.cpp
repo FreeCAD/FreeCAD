@@ -175,7 +175,7 @@ void MappedName::compact() const
     }
 }
 
-DecodedMappedName MappedName::getDecodedMappedName(const std::string& mappedNameString) {
+DecodedMappedName& MappedName::getDecodedMappedName(const std::string& mappedNameString) {
     ZoneScoped;
 
     auto it = decodedMappedNameCache.find(mappedNameString);
@@ -284,15 +284,15 @@ DecodedMappedName MappedName::getDecodedMappedName(const std::string& mappedName
             stringBuffer += currentChar;
         }
 
-        decodedMappedNameCache[mappedNameString] = name;
+        auto emplacedCacheIterator = decodedMappedNameCache.try_emplace(mappedNameString, name);
 
-        return name;
+        return emplacedCacheIterator.first->second;
     } else {
         return it->second;
     }
 }
 
-DecodedMappedName MappedName::getDecodedMappedName() {
+DecodedMappedName& MappedName::getDecodedMappedName() {
     ZoneScoped;
     std::string str = toString();
 
@@ -367,6 +367,7 @@ DecodedMappedSection MappedName::makeDecodedSection(
     const std::vector<std::string>& connectedElements
 )
 {
+    ZoneScoped;
     Data::DecodedMappedSection section;
 
     section.referenceIDs = referenceIDs;
@@ -400,6 +401,8 @@ DecodedMappedSection MappedName::makeDecodedSection(
     const std::vector<MappedName>& connectedElements
 )
 {
+    ZoneScoped;
+
     std::vector<std::string> formattedLinkedNames { };
     std::vector<std::string> formattedConnectedElements { };
 
@@ -547,7 +550,7 @@ std::string MappedName::makeEncodedSection(
     }
 
     sectionString += (
-        Data::SECTION_SUB_DELIMINATOR
+          Data::SECTION_SUB_DELIMINATOR
         + iterationTag
         + Data::SECTION_SUB_DELIMINATOR
         + opCodeString
@@ -621,9 +624,9 @@ MappedName MappedName::makeUnmappedName(
             {},
             std::to_string(iterationTag),
             opCode,
-            0,
+            "0",
             elementType,
-            0,
+            "0",
             {Data::MAPPER_FLAG_INDEX, Data::MAPPER_FLAG_SOURCE},
             {}
         )
