@@ -31,6 +31,7 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/rendering/SoRenderIR.h>
 #include <Inventor/misc/SoState.h>
 
 #include "SoFCScreenSpaceGroup.h"
@@ -203,6 +204,7 @@ void SoFCScreenSpaceGroup::applyScreenSpaceGeometryState(SoState* state)
 
     // Screen-space overlays define their own coordinate system and should not
     // inherit the current 3D camera transform.
+    SoRenderIR::setCommandMatricesOverride(state, TRUE);
     SoModelMatrixElement::set(state, this, SbMatrix::identity());
     SoViewingMatrixElement::set(state, this, SbMatrix::identity());
 
