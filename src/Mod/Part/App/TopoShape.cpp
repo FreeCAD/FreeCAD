@@ -827,25 +827,31 @@ void TopoShape::importBrep(std::istream& str, int indicator)
 
 void TopoShape::importBinary(std::istream& str)
 {
-    BinTools_ShapeSet theShapeSet;
-    theShapeSet.Read(str);
-    Standard_Integer shapeId = 0, locId = 0, orient = 0;
-    BinTools::GetInteger(str, shapeId);
-    if (shapeId <= 0 || shapeId > theShapeSet.NbShapes()) {
-        return;
-    }
-
-    BinTools::GetInteger(str, locId);
-    BinTools::GetInteger(str, orient);
-    TopAbs_Orientation anOrient = static_cast<TopAbs_Orientation>(orient);
-
     try {
+        BinTools_ShapeSet theShapeSet;
+        theShapeSet.Read(str);
+        Standard_Integer shapeId = 0, locId = 0, orient = 0;
+        BinTools::GetInteger(str, shapeId);
+        if (shapeId <= 0 || shapeId > theShapeSet.NbShapes()) {
+            return;
+        }
+
+        BinTools::GetInteger(str, locId);
+        BinTools::GetInteger(str, orient);
+        TopAbs_Orientation anOrient = static_cast<TopAbs_Orientation>(orient);
+
         this->_Shape = theShapeSet.Shape(shapeId);
         this->_Shape.Location(theShapeSet.Locations().Location(locId));
         this->_Shape.Orientation(anOrient);
     }
-    catch (Standard_Failure&) {
-        throw Base::RuntimeError("Failed to read shape from binary stream");
+    catch (Standard_Failure& e) {
+        throw Base::RuntimeError(e.GetMessageString());
+    }
+    catch (const std::exception& e) {
+        throw Base::RuntimeError(e.what());
+    }
+    catch (...) {
+        throw Base::RuntimeError("Unknown exception when reading shape from binary stream");
     }
 }
 

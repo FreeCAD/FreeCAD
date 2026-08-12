@@ -658,26 +658,37 @@ void PropertyPartShape::loadFromFile(Base::Reader& reader)
     // If it's still empty after reading the (non-empty) file there must occurred an error.
     TopoDS_Shape shape;
     if (ulSize > 0) {
-        if (!BRepTools::Read(shape, static_cast<Standard_CString>(fi.filePath().c_str()), builder)) {
-            // Note: Do NOT throw an exception here because if the tmp. created file could
-            // not be read it's NOT an indication for an invalid input stream 'reader'.
-            // We only print an error message but continue reading the next files from the
-            // stream...
-            App::PropertyContainer* father = this->getContainer();
-            if (father && father->isDerivedFrom<App::DocumentObject>()) {
-                App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
-                Base::Console().error(
-                    "BRep file '%s' with shape of '%s' seems to be empty\n",
-                    fi.filePath().c_str(),
-                    obj->Label.getValue()
-                );
+        try {
+            if (!BRepTools::Read(shape, static_cast<Standard_CString>(fi.filePath().c_str()), builder)) {
+                // Note: Do NOT throw an exception here because if the tmp. created file could
+                // not be read it's NOT an indication for an invalid input stream 'reader'.
+                // We only print an error message but continue reading the next files from the
+                // stream...
+                App::PropertyContainer* father = this->getContainer();
+                if (father && father->isDerivedFrom<App::DocumentObject>()) {
+                    App::DocumentObject* obj = static_cast<App::DocumentObject*>(father);
+                    Base::Console().error(
+                        "BRep file '%s' with shape of '%s' seems to be empty\n",
+                        fi.filePath().c_str(),
+                        obj->Label.getValue()
+                    );
+                }
+                else {
+                    Base::Console().warning(
+                        "Loaded BRep file '%s' seems to be empty\n",
+                        fi.filePath().c_str()
+                    );
+                }
             }
-            else {
-                Base::Console().warning(
-                    "Loaded BRep file '%s' seems to be empty\n",
-                    fi.filePath().c_str()
-                );
-            }
+        }
+        catch (Standard_Failure& e) {
+            Base::Console().error("Exception when reading BRep file '%s': %s\n", fi.filePath().c_str(), e.GetMessageString());
+        }
+        catch (const std::exception& e) {
+            Base::Console().error("Exception when reading BRep file '%s': %s\n", fi.filePath().c_str(), e.what());
+        }
+        catch (...) {
+            Base::Console().error("Unknown exception when reading BRep file '%s'\n", fi.filePath().c_str());
         }
     }
 
@@ -701,10 +712,22 @@ void PropertyPartShape::loadFromStream(Base::Reader& reader)
         BRepTools::Read(shape, reader, builder);
         setValue(shape);
     }
-    catch (const std::exception&) {
+    catch (Standard_Failure& e) {
         reader.imbue(savedLocale);
         if (!reader.eof()) {
-            Base::Console().warning("Failed to load BRep file %s\n", reader.getFileName().c_str());
+            Base::Console().warning("Failed to load BRep file %s: %s\n", reader.getFileName().c_str(), e.GetMessageString());
+        }
+    }
+    catch (const std::exception& e) {
+        reader.imbue(savedLocale);
+        if (!reader.eof()) {
+            Base::Console().warning("Failed to load BRep file %s: %s\n", reader.getFileName().c_str(), e.what());
+        }
+    }
+    catch (...) {
+        reader.imbue(savedLocale);
+        if (!reader.eof()) {
+            Base::Console().warning("Unknown exception when loading BRep file %s\n", reader.getFileName().c_str());
         }
     }
 }
