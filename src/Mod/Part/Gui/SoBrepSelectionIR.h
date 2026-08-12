@@ -30,7 +30,9 @@ inline SbVec4f toVec4(const SbColor& color, float alpha = 1.0f)
     return {color[0], color[1], color[2], alpha};
 }
 
-constexpr float DEFAULT_HIGHLIGHT_ALPHA = 0.6f;
+// BRep's legacy highlight overlay is rendered as an opaque material. Keep
+// retained selection output visually identical across both pipelines.
+constexpr float DEFAULT_HIGHLIGHT_ALPHA = 1.0f;
 
 inline void reset(SoRenderCommand& cmd)
 {
