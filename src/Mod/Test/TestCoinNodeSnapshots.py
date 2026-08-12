@@ -149,12 +149,6 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
 
                     _render_png(harness, coin, root, actual_path, renderer_name, frame_camera=False)
                     self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
-                    if renderer_name == "draw_list":
-                        self.assertEqual(
-                            faces.materialIndex.getNum(),
-                            0,
-                            "retained BRep rendering must not rewrite materialIndex",
-                        )
                     self.assertGreater(
                         _non_background_pixel_count(actual_path),
                         50,
@@ -411,6 +405,12 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
 
                     _render_png(harness, coin, root, actual_path, renderer_name, frame_camera=False)
                     self.assertTrue(actual_path.exists(), f"missing snapshot: {actual_path}")
+                    if renderer_name == "draw_list":
+                        self.assertEqual(
+                            faces.materialIndex.getNum(),
+                            0,
+                            "retained BRep rendering must not rewrite materialIndex",
+                        )
                     self.assertGreater(
                         _non_background_pixel_count(actual_path),
                         1000,
