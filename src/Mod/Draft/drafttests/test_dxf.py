@@ -125,8 +125,12 @@ class DraftDXF(test_base.DraftTestCaseDoc):
         _msg("  Test '{}' (issue #31836)".format(operation))
 
         Draft.make_wire(
-            [App.Vector(0, 0, 0), App.Vector(100, 0, 0),
-             App.Vector(100, 60, 0), App.Vector(0, 60, 0)],
+            [
+                App.Vector(0, 0, 0),
+                App.Vector(100, 0, 0),
+                App.Vector(100, 60, 0),
+                App.Vector(0, 60, 0),
+            ],
             closed=True,
         )
         self.doc.recompute()
@@ -144,15 +148,18 @@ class DraftDXF(test_base.DraftTestCaseDoc):
             for nospline, tag in ((False, "r14"), (True, "r12")):
                 out_file = os.path.join(tmp_dir, "issue31836_{}.dxf".format(tag))
                 importDXF.export(self.doc.Objects, out_file, nospline=nospline)
-                self.assertTrue(os.path.exists(out_file),
-                                "'{}' produced no {} file".format(operation, tag))
+                self.assertTrue(
+                    os.path.exists(out_file), "'{}' produced no {} file".format(operation, tag)
+                )
                 with open(out_file, encoding="utf-8", errors="replace") as fp:
                     content = fp.read()
                 if "$CMLSTYLE" in content:
                     self.assertIn(
-                        "MLINESTYLE", content,
+                        "MLINESTYLE",
+                        content,
                         "{} DXF sets $CMLSTYLE but defines no ACAD_MLINESTYLE "
-                        "(dangling reference, issue #31836)".format(tag))
+                        "(dangling reference, issue #31836)".format(tag),
+                    )
         finally:
             hGrp.SetBool("dxfUseLegacyExporter", was_legacy)
             shutil.rmtree(tmp_dir, ignore_errors=True)
