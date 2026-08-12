@@ -762,7 +762,7 @@ def _build_indexed_face_set_scene(coin, type_name: str, *, width=None, height=No
     ])
     # fmt: on
     normal_bind = coin.SoNormalBinding()
-    normal_bind.value = coin.SoNormalBinding.PER_FACE
+    normal_bind.value = coin.SoNormalBinding.PER_VERTEX_INDEXED
     root.addChild(normals)
     root.addChild(normal_bind)
 
@@ -806,6 +806,20 @@ def _build_indexed_face_set_scene(coin, type_name: str, *, width=None, height=No
             3, 7, 4, -1,  3, 4, 0, -1,  # -X
         ])
         # fmt: on
+
+    # The normal stream has one entry per triangle. Repeat that entry for
+    # each corner so both the legacy immediate path and retained primitive
+    # generation consume the same explicit indexed binding.
+    normal_indices = []
+    normal_index = 0
+    for coord_index in faces.coordIndex.getValues(0):
+        if coord_index < 0:
+            normal_indices.append(-1)
+            normal_index += 1
+        else:
+            normal_indices.append(normal_index)
+    faces.normalIndex.setValues(0, len(normal_indices), normal_indices)
+
     material = coin.SoMaterial()
     if type_name == "SoFCIndexedFaceSetPerFaceColor":
         # 12 faces (triangles).
@@ -912,7 +926,7 @@ def _build_lighting_equivalence_scene(coin):
     root.addChild(normals)
 
     normal_binding = coin.SoNormalBinding()
-    normal_binding.value = coin.SoNormalBinding.PER_FACE
+    normal_binding.value = coin.SoNormalBinding.PER_VERTEX_INDEXED
     root.addChild(normal_binding)
 
     material = coin.SoMaterial()
@@ -930,6 +944,15 @@ def _build_lighting_equivalence_scene(coin):
         3, 7, 4, -1,  3, 4, 0, -1,
     ])
     # fmt: on
+    normal_indices = []
+    normal_index = 0
+    for coord_index in faces.coordIndex.getValues(0):
+        if coord_index < 0:
+            normal_indices.append(-1)
+            normal_index += 1
+        else:
+            normal_indices.append(normal_index)
+    faces.normalIndex.setValues(0, len(normal_indices), normal_indices)
     root.addChild(faces)
     return root, light
 
