@@ -16,6 +16,9 @@
   <layout class="QGridLayout" name="gridLayoutApproximation">
    <item row="0" column="0">
     <widget class="QLabel" name="labelMaxDegree">
+     <property name="toolTip">
+      <string>Maximum polynomial degree of the generated B-Spline surface</string>
+     </property>
      <property name="text">
       <string>Maximum degree</string>
      </property>
@@ -33,6 +36,9 @@
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="labelParametrization">
+     <property name="toolTip">
+      <string>Distribution of parameters between loft profiles</string>
+     </property>
      <property name="text">
       <string>Parametrization</string>
      </property>
@@ -44,7 +50,11 @@
    <item row="1" column="1">
     <widget class="QComboBox" name="comboBoxParametrization">
      <property name="toolTip">
-      <string>Distribution of parameters between loft profiles</string>
+      <string>Select a parametrization for the loft surface:
+            Chord Length: parameters of points proportionate to distances between them
+            Centripetal: parameters of points proportionate to square roots of distances between them
+            Uniform: parameters of points distributed uniformly
+      </string>
      </property>
      <item>
       <property name="text">
@@ -65,6 +75,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QLabel" name="labelContinuity">
+     <property name="toolTip">
+      <string>Requested continuity of the generated B-Spline surface</string>
+     </property>
      <property name="text">
       <string>Continuity</string>
      </property>

@@ -31,6 +31,7 @@
 
 #include <boost/core/ignore_unused.hpp>
 
+#include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -110,6 +111,13 @@ Loft::Loft()
         App::Prop_None,
         "Align profile origins, orientations, and edge counts"
     );
+    ADD_PROPERTY_TYPE(
+        Adaptive,
+        (App::GetApplication().isRestoring() ? false : true),
+        "Loft",
+        App::Prop_None,
+        "Retry failed selected settings with deterministic loft alternatives"
+    );
     MaxDegree.setConstraints(&Degrees);
     LoftType.setEnums(LoftTypeEnums);
     Parametrization.setEnums(ParametrizationEnums);
@@ -122,8 +130,8 @@ void Loft::onChanged(const App::Property* prop)
     if (!isRestoring() && !synchronizingLoftType) {
         if (prop == &Ruled) {
             Base::Console().warning(
-                "The 'Ruled' property of PartDesign lofts is deprecated; use "
-                "LoftType = 'Ruled Surface' or 'Standard B-Spline' instead.\n"
+                "The 'Ruled' property of PartDesign lofts is deprecated; use LoftType = "
+                "'Standard B-Spline', 'Ruled Surface', or 'Variational B-Spline' instead.\n"
             );
             synchronizingLoftType = true;
             LoftType.setValue(Ruled.getValue() ? 1 : 0);
@@ -174,6 +182,9 @@ short Loft::mustExecute() const
         return 1;
     }
     if (CheckCompatibility.isTouched()) {
+        return 1;
+    }
+    if (Adaptive.isTouched()) {
         return 1;
     }
 
@@ -348,7 +359,8 @@ App::DocumentObjectExecReturn* Loft::execute()
                 nullptr,
                 static_cast<Part::LoftParametrization>(Parametrization.getValue()),
                 static_cast<Part::LoftContinuity>(Continuity.getValue()),
-                CheckCompatibility.getValue()
+                CheckCompatibility.getValue(),
+                Adaptive.getValue()
             ));
         }
 

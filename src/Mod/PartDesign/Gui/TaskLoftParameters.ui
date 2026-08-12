@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>262</width>
-    <height>293</height>
+    <height>320</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,10 +42,20 @@
    <item>
     <widget class="QCheckBox" name="checkBoxClosed">
      <property name="toolTip">
-       <string>Attempt to close the loft surface by joining the start and end profiles.</string>
+      <string>Attempt to close the loft surface by joining the start and end profiles</string>
      </property>
      <property name="text">
       <string>Closed</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxAdaptive">
+     <property name="toolTip">
+      <string>Allow FreeCAD to try different settings to build the loft if the selected settings fail.</string>
+     </property>
+     <property name="text">
+      <string>Adaptive</string>
      </property>
     </widget>
    </item>
@@ -150,6 +160,7 @@
  <tabstops>
   <tabstop>comboBoxMode</tabstop>
   <tabstop>checkBoxClosed</tabstop>
+  <tabstop>checkBoxAdaptive</tabstop>
   <tabstop>buttonProfileBase</tabstop>
   <tabstop>profileBaseEdit</tabstop>
   <tabstop>buttonRefAdd</tabstop>

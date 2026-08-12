@@ -68,10 +68,12 @@ class TestLoft(unittest.TestCase):
         self.assertEqual(self.AdditiveLoft.Parametrization, "Chord length")
         self.assertEqual(self.AdditiveLoft.Continuity, "C2")
         self.assertTrue(self.AdditiveLoft.CheckCompatibility)
+        self.assertTrue(self.AdditiveLoft.Adaptive)
         self.AdditiveLoft.MaxDegree = 3
         self.AdditiveLoft.Parametrization = "Uniform"
         self.AdditiveLoft.Continuity = "C1"
         self.AdditiveLoft.CheckCompatibility = False
+        self.AdditiveLoft.Adaptive = False
         self.AdditiveLoft.Profile = self.ProfileSketch
         self.AdditiveLoft.Sections = [self.LoftSketch]
         self.Doc.recompute()
@@ -79,6 +81,7 @@ class TestLoft(unittest.TestCase):
         self.assertEqual(self.AdditiveLoft.Parametrization, "Uniform")
         self.assertEqual(self.AdditiveLoft.Continuity, "C1")
         self.assertFalse(self.AdditiveLoft.CheckCompatibility)
+        self.assertFalse(self.AdditiveLoft.Adaptive)
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
     def testSimpleSubtractiveLoftCase(self):

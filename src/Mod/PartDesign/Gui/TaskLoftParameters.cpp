@@ -96,6 +96,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
             this, &TaskLoftParameters::onModeChanged);
     connect(ui->checkBoxClosed, &QCheckBox::toggled,
             this, &TaskLoftParameters::onClosed);
+    connect(ui->checkBoxAdaptive, &QCheckBox::toggled,
+            this, &TaskLoftParameters::onAdaptive);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
             this, &TaskLoftParameters::onUpdateView);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
@@ -153,6 +155,7 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft* LoftView, bool /*newObj
     const int mode = loft->LoftType.getValue();
     ui->comboBoxMode->setCurrentIndex(mode);
     ui->checkBoxClosed->setChecked(loft->Closed.getValue());
+    ui->checkBoxAdaptive->setChecked(loft->Adaptive.getValue());
 
     // activate and de-activate dialog elements as appropriate
     for (QWidget* child : childs) {
@@ -215,6 +218,10 @@ TaskLoftAdvancedParameters::TaskLoftAdvancedParameters(
     for (QWidget* child : children) {
         child->blockSignals(false);
     }
+
+    // if (!isSubtractiveLoft(LoftView)) {
+    hideGroupBox();
+     // }
 }
 
 TaskLoftAdvancedParameters::~TaskLoftAdvancedParameters() = default;
@@ -437,6 +444,14 @@ void TaskLoftParameters::onClosed(bool val)
 {
     if (auto loft = getObject<PartDesign::Loft>()) {
         loft->Closed.setValue(val);
+        recomputeFeature();
+    }
+}
+
+void TaskLoftParameters::onAdaptive(bool enabled)
+{
+    if (auto loft = getObject<PartDesign::Loft>()) {
+        loft->Adaptive.setValue(enabled);
         recomputeFeature();
     }
 }

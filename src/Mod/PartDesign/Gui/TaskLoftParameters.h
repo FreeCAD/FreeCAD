@@ -67,6 +67,7 @@ private Q_SLOTS:
     void onRefButtonAdd(bool);
     void onRefButtonRemove(bool);
     void onClosed(bool);
+    void onAdaptive(bool);
     void onModeChanged(int);
     void onDeleteSection();
     void indexesMoved();

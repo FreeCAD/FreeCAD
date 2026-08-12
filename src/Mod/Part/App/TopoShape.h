@@ -1840,6 +1840,7 @@ public:
      * @param parametrization: parametrization used by standard B-Spline approximation
      * @param continuity: requested B-Spline continuity (C0, C1, C2)
      * @param checkCompatibility: whether to align profile origins, orientation, and edges
+     * @param adaptive: retry failed selected settings with deterministic alternatives
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
@@ -1855,7 +1856,8 @@ public:
         const char* op = nullptr,
         LoftParametrization parametrization = LoftParametrization::chordLength,
         LoftContinuity continuity = LoftContinuity::C2,
-        bool checkCompatibility = true
+        bool checkCompatibility = true,
+        bool adaptive = false
     );
 
     /** Make a ruled surface

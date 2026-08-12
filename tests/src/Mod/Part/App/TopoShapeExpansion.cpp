@@ -1996,15 +1996,23 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         result.makeElementLoft(
             {profileA, profileD, profileE},
             IsSolid::solid,
-            Smoothing::bspline
+            Smoothing::bspline,
+            IsClosed::notClosed,
+            5,
+            nullptr,
+            LoftParametrization::chordLength,
+            LoftContinuity::C2,
+            true,
+            false
         );
         FAIL() << "Expected the complete A-D-E profile sequence to fail";
     }
     catch (const Base::CADKernelError& error) {
         EXPECT_STREQ(
             error.what(),
-            "OCCT failed to construct the loft; the failure requires the complete sequence of 3 "
-            "profiles; try Centripetal parameterization, which succeeds for these profiles"
+            "OCCT failed to construct the loft; the failure occurs when trying the complete "
+            "sequence of 3 profiles (may succeed for subsets of profiles); try Centripetal "
+            "parameterization, which succeeds for these profiles"
         );
     }
 
@@ -2019,6 +2027,38 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         LoftParametrization::centripetal
     ));
     EXPECT_FALSE(suggestedResult.isNull());
+
+    TopoShape adaptiveParametrizationResult;
+    EXPECT_NO_THROW(adaptiveParametrizationResult.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::chordLength,
+        LoftContinuity::C2,
+        true,
+        true
+    ));
+    EXPECT_FALSE(adaptiveParametrizationResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(adaptiveParametrizationResult.getShape()).IsValid());
+
+    TopoShape adaptiveFromSelectedUniform;
+    EXPECT_NO_THROW(adaptiveFromSelectedUniform.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::uniform,
+        LoftContinuity::C2,
+        true,
+        true
+    ));
+    EXPECT_FALSE(adaptiveFromSelectedUniform.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(adaptiveFromSelectedUniform.getShape()).IsValid());
 
     // This sequence fails with every standard B-spline parameterization, but the variational
     // solver constructs a valid solid.
@@ -2075,16 +2115,24 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         standardResult.makeElementLoft(
             variationalProfiles,
             IsSolid::solid,
-            Smoothing::bspline
+            Smoothing::bspline,
+            IsClosed::notClosed,
+            5,
+            nullptr,
+            LoftParametrization::chordLength,
+            LoftContinuity::C2,
+            true,
+            false
         );
         FAIL() << "Expected all standard B-spline parameterizations to fail";
     }
     catch (const Base::CADKernelError& error) {
         EXPECT_STREQ(
             error.what(),
-            "OCCT failed to construct the loft; the failure requires the complete sequence of 5 "
-            "profiles; standard B-spline lofting failed with all parameterizations; try "
-            "Variational B-Spline, whose variational solver succeeds for these profiles"
+            "OCCT failed to construct the loft; the failure occurs when trying the complete "
+            "sequence of 5 profiles (may succeed for subsets of profiles); standard B-spline "
+            "lofting failed with all available parameterizations; try Variational B-Spline, whose "
+            "variational solver succeeds for these profiles"
         );
     }
 
@@ -2096,6 +2144,22 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     ));
     EXPECT_FALSE(variationalResult.isNull());
     EXPECT_TRUE(BRepCheck_Analyzer(variationalResult.getShape()).IsValid());
+
+    TopoShape adaptiveVariationalResult;
+    EXPECT_NO_THROW(adaptiveVariationalResult.makeElementLoft(
+        variationalProfiles,
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::chordLength,
+        LoftContinuity::C2,
+        true,
+        true
+    ));
+    EXPECT_FALSE(adaptiveVariationalResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(adaptiveVariationalResult.getShape()).IsValid());
 
     auto makeIssueCurve = [](const std::array<gp_Pnt, 3>& curvePoles,
                              const std::array<double, 3>& curveWeights,
