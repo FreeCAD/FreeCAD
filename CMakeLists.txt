@@ -160,6 +160,9 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
         find_python_runtime_dep(av av av_VERSION "Assembly simulation video export will not work properly.")
         find_python_runtime_dep(pillow PIL pillow_VERSION "Assembly simulation video export will not work properly.")
     endif()
+    if(BUILD_SHEETMETAL)
+        find_python_runtime_dep(networkx networkx networkx_VERSION "SheetMetal unfolding will not work properly.")
+    endif()
 endif()
 
 if(BUILD_VR)

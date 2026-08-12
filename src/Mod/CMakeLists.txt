@@ -18,6 +18,10 @@ if(BUILD_DRAFT)
   add_subdirectory(Draft)
 endif(BUILD_DRAFT)
 
+if(BUILD_SHEETMETAL)
+  add_subdirectory(SheetMetal)
+endif(BUILD_SHEETMETAL)
+
 if(BUILD_FEM)
     add_subdirectory(Fem)
 endif(BUILD_FEM)
