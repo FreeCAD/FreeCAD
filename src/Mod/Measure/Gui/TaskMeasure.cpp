@@ -27,6 +27,7 @@
 
 
 #include "TaskMeasure.h"
+#include "MeasureSnapManager.h"
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
@@ -260,6 +261,8 @@ TaskMeasure::TaskMeasure()
         mTargetDoc = doc;
         mTargetDoc->openCommand("Add Measurement");
     }
+
+    mSnapManager = std::make_unique<MeasureSnapManager>();
 
     setAutoCloseOnDeletedDocument(true);
     // Call invoke method delayed, otherwise the dialog might not be fully initialized
@@ -652,6 +655,11 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         && msg.Type != Gui::SelectionChanges::SetSelection
         && msg.Type != Gui::SelectionChanges::ClrSelection) {
 
+        if (mSnapManager
+            && (msg.Type == Gui::SelectionChanges::RmvPreselect
+                || msg.Type == Gui::SelectionChanges::SetPreselect)) {
+            mSnapManager->onPreselect(msg);
+        }
         return;
     }
 
