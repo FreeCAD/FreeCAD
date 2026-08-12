@@ -26,6 +26,7 @@
 #include <QString>
 
 #include <App/Application.h>
+#include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
 #include <Base/Stream.h>
@@ -37,6 +38,33 @@
 
 
 using namespace Materials;
+
+namespace
+{
+QString findBuiltInModelPath(const QString& resourcePath, const QString& sourcePath)
+{
+    QDir resourceRoot(QString::fromStdString(App::Application::getResourceDir()));
+    QString resolvedPath = resourceRoot.filePath(resourcePath);
+    if (QDir(resolvedPath).exists()) {
+        return resolvedPath;
+    }
+
+    QDir searchRoot(QString::fromStdString(App::Application::getHomePath()));
+    for (;;) {
+        QString candidate = searchRoot.filePath(sourcePath);
+        if (QDir(candidate).exists()) {
+            Base::Console().log("Falling back to source tree material models '%s'\n",
+                                candidate.toStdString().c_str());
+            return candidate;
+        }
+        if (!searchRoot.cdUp()) {
+            break;
+        }
+    }
+
+    return resolvedPath;
+}
+}
 
 ModelEntry::ModelEntry(const std::shared_ptr<ModelLibraryLocal>& library,
                        const QString& baseName,
@@ -368,8 +396,9 @@ void ModelLoader::getModelLibraries()
     bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
     if (useBuiltInMaterials) {
-        QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
-                                                     + "/Mod/Material/Resources/Models");
+        QString resourceDir = findBuiltInModelPath(
+            QStringLiteral("Mod/Material/Resources/Models"),
+            QStringLiteral("src/Mod/Material/Resources/Models"));
         auto libData = std::make_shared<ModelLibraryLocal>(QStringLiteral("System"),
                                                       resourceDir,
                                                       QStringLiteral(":/icons/freecad.svg"));

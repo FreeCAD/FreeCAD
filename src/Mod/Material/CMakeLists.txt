@@ -425,6 +425,23 @@ fc_target_copy_resource(MaterialModelLib
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material/
     ${MaterialModel_Files})
 
+if(TARGET Materials)
+    add_dependencies(Materials
+        MaterialsAPILib
+        MaterialScripts
+        MaterialToolsLib
+        MaterialLib
+        FluidMaterialLib
+        AppearanceLib
+        PatternLib
+        MachiningLib
+        MaterialTest
+        MaterialTestLib
+        MaterialPythonTestData
+        MaterialModelLib
+    )
+endif()
+
 INSTALL(
     FILES ${MaterialTest_Files}
     DESTINATION Mod/Material/materialtests

@@ -29,6 +29,7 @@
 
 #include <App/Application.h>
 #include <App/Material.h>
+#include <Base/Console.h>
 
 #include "Exceptions.h"
 #include "MaterialConfigLoader.h"
@@ -41,6 +42,33 @@
 
 
 using namespace Materials;
+
+namespace
+{
+QString findBuiltInMaterialPath(const QString& resourcePath, const QString& sourcePath)
+{
+    QDir resourceRoot(QString::fromStdString(App::Application::getResourceDir()));
+    QString resolvedPath = resourceRoot.filePath(resourcePath);
+    if (QDir(resolvedPath).exists()) {
+        return resolvedPath;
+    }
+
+    QDir searchRoot(QString::fromStdString(App::Application::getHomePath()));
+    for (;;) {
+        QString candidate = searchRoot.filePath(sourcePath);
+        if (QDir(candidate).exists()) {
+            Base::Console().log("Falling back to source tree material resources '%s'\n",
+                                candidate.toStdString().c_str());
+            return candidate;
+        }
+        if (!searchRoot.cdUp()) {
+            break;
+        }
+    }
+
+    return resolvedPath;
+}
+}
 
 /* TRANSLATOR Material::Materials */
 
@@ -527,8 +555,9 @@ MaterialManagerLocal::getConfiguredLibraries()
     bool useMatFromCustomDir = param->GetBool("UseMaterialsFromCustomDir", true);
 
     if (useBuiltInMaterials) {
-        QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
-                                                     + "/Mod/Material/Resources/Materials");
+        QString resourceDir = findBuiltInMaterialPath(
+            QStringLiteral("Mod/Material/Resources/Materials"),
+            QStringLiteral("src/Mod/Material/Resources/Materials"));
         auto libData =
             std::make_shared<MaterialLibraryLocal>(QStringLiteral("System"),
                                                    resourceDir,
