@@ -4620,6 +4620,7 @@ void preflightLoftProfiles(const std::vector<TopoShape>& profiles, bool checkCom
     }
 }
 
+
 std::optional<BRepFill_ThruSectionErrorStatus> probeProfileCompatibility(
     const std::vector<TopoShape>& profiles,
     std::size_t profileCount,
@@ -4840,6 +4841,7 @@ LoftFailure diagnoseLoftFailure(
 
 [[noreturn]] void throwThruSectionsError(const LoftFailure& failure)
 {
+    // these are all of the possible OCCT BRepFill_ThruSectionErrorStatus values
     std::ostringstream message;
     switch (failure.status) {
         case BRepFill_ThruSectionErrorStatus_Done:
@@ -4865,6 +4867,8 @@ LoftFailure diagnoseLoftFailure(
             message << "OCCT failed to construct the loft";
             break;
     }
+    // the failure scope indicates which profiles were involved in the failure
+    // and attempts to provide a human-readable description of what went wrong
     switch (failure.scope) {
         case LoftFailureScope::none:
             break;
@@ -4877,16 +4881,20 @@ LoftFailure diagnoseLoftFailure(
                     << failure.secondProfile + 1;
             break;
         case LoftFailureScope::completeSequence:
-            message << "; the failure requires the complete sequence of "
-                    << failure.secondProfile + 1 << " profiles";
+            message << "; the failure occurs when trying the complete sequence of "
+                    << failure.secondProfile + 1 << " profiles (may succeed for subsets of profiles)";
             break;
     }
+    // a failure triggers "dry-runs" of the lofting algorithm
+    // with different parameterizations and the variational solver
+    // to determine if there is a combination that succeeds
+    // if so, that is communicated to the user
     if (failure.suggestedParametrization) {
         message << "; try " << loftParametrizationName(*failure.suggestedParametrization)
                 << " parameterization, which succeeds for these profiles";
     }
     else if (failure.suggestVariational) {
-        message << "; standard B-spline lofting failed with all parameterizations; try "
+        message << "; standard B-spline lofting failed with all available parameterizations; try "
                    "Variational B-Spline, whose variational solver succeeds for these profiles";
     }
     if (message.tellp() == 0) {
@@ -4909,6 +4917,7 @@ TopoShape& TopoShape::makeElementLoft(
     bool checkCompatibility
 )
 {
+    // Note: checkProfiles basically checks for coincident profiles, which are not allowed.
     auto checkProfiles = [](const TopoShape& sh1, const TopoShape& sh2) {
         // The same TShape is used but the locations might be different
         // even if they result into the same transformation matrix.
@@ -4965,13 +4974,17 @@ TopoShape& TopoShape::makeElementLoft(
         continuity,
         checkCompatibility,
     };
+
+    // ensure we have at least two profiles to loft
     auto profiles = prepareProfiles(shapes);
     if (shapes.size() < 2) {
         FC_THROWM(Base::CADKernelError, "Need at least two vertices, edges or wires to create loft face");
     }
+
+    // check that the profiles are compatible/valid
     preflightLoftProfiles(profiles, checkCompatibility);
 
-    // http://opencascade.blogspot.com/2010/01/surface-modeling-part5.html
+    // configure the loft generator
     BRepOffsetAPI_ThruSections aGenerator(
         isSolid == IsSolid::solid,
         smoothing == Smoothing::ruled
@@ -5022,7 +5035,7 @@ TopoShape& TopoShape::makeElementLoft(
         }
     }
 
-    // Diagnostics may suggest a valid alternative, but never replace the requested algorithm.
+    // Report loft failure and provide diagnostic information to the user
     auto reportLoftFailure = [&](BRepFill_ThruSectionErrorStatus status) -> void {
         throwThruSectionsError(diagnoseLoftFailure(status, profiles, options));
     };
