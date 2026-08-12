@@ -581,10 +581,7 @@ App::DocumentObjectExecReturn* MeasureAngle::executeAxisCase(
         // Swap the normal for the line's in-plane projection so the arc closes on
         // the plane rather than on its normal.
         Base::Vector3d projected = Base::convertTo<Base::Vector3d>(lineDir);
-        projected.ProjectToPlane(
-            Base::Vector3d(0, 0, 0),
-            Base::convertTo<Base::Vector3d>(planeNormal)
-        );
+        projected.ProjectToPlane(Base::Vector3d(0, 0, 0), Base::convertTo<Base::Vector3d>(planeNormal));
         if (projected.Length() >= Precision::Confusion()) {
             gp_Vec inPlane = Base::convertTo<gp_Vec>(projected);
             inPlane.Normalize();
