@@ -1292,13 +1292,6 @@ void SketchObject::onAttachmentSupportChanged()
     if (isRestoring()) {
         return;
     }
-
-    // if support face has changed then clear the external geometry
-    delConstraintsToExternal();
-    for (int i=0; i < getExternalGeometryCount(); i++) {
-        delExternal(0);
-    }
-    rebuildExternalGeometry();
 }
 
 void SketchObject::onUpdateElementReference(const App::Property *prop)

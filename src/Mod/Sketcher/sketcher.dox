@@ -1,4 +1,13 @@
 /** \defgroup SKETCHER Sketcher
  *  \ingroup CWORKBENCHES
  *  \brief Constrained 2D objects
+ *
+ *  When a sketch is mapped to a support face, the support-face border can be
+ *  exposed automatically while drawing so the user can snap directly to the
+ *  available face limits without first importing the border manually as
+ *  external geometry.
+ *
+ *  For manual regression review, `SketcherTests/PrepareSupportFaceReview.py`
+ *  creates a minimal `.FCStd` scenario with a mapped sketch whose support-face
+ *  edges are already exposed and ready for snap validation in the GUI.
  */

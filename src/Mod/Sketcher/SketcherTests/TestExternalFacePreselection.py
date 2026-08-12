@@ -114,6 +114,25 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
 
         return FreeCADGui.Selection.getPreselection()
 
+    def points_are_framed(self, view, *points):
+        width, height = view.getSize()
+        if width <= 0 or height <= 0:
+            return False
+
+        view.fitAll()
+        margin_x = width * 0.1
+        margin_y = height * 0.1
+
+        for point in points:
+            screen_x, screen_y = view.getPointOnScreen(point)
+            if not (
+                margin_x < screen_x < width - margin_x
+                and margin_y < screen_y < height - margin_y
+            ):
+                return False
+
+        return True
+
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
     def testNoDepthBufferInEditRoot(self):
         """SoDepthBuffer nodes must not be direct children of
@@ -263,4 +282,74 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
         self.assertTrue(
             any("Face" in s for s in sub_names),
             f"Expected a Face preselection but got " f"SubElementNames={sub_names}.",
+        )
+
+    @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
+    def testSupportEdgeSnapsDuringLineCreationWithoutManualProjection(self):
+        """Support-face borders must be immediately usable while drawing,
+        without requiring a manual External Geometry projection step."""
+
+        FreeCADGui.ActiveDocument.setEdit(self.testSketch.Name)
+        self.pump(300)
+
+        self.assertEqual(
+            len(self.testSketch.ExternalGeometry),
+            1,
+            "Expected support face auto-import to expose one support reference before drawing.",
+        )
+
+        view = FreeCADGui.ActiveDocument.ActiveView
+        view.viewTop()
+        view.fitAll()
+        self.pump(300)
+
+        support_vertex_3d = FreeCAD.Vector(20, -20, 20)
+        inner_point_3d = FreeCAD.Vector(5, -5, 20)
+
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.points_are_framed(view, support_vertex_3d, inner_point_3d),
+                timeout_ms=5000,
+                step_ms=100,
+            ),
+            "Camera never framed the support edge points needed for the line-creation test.",
+        )
+
+        viewport = view.graphicsView().viewport()
+        support_vertex = self.viewport_to_qpoint(
+            view, viewport, view.getPointOnScreen(support_vertex_3d)
+        )
+        inner_point = self.viewport_to_qpoint(view, viewport, view.getPointOnScreen(inner_point_3d))
+
+        snapped_start = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(support_vertex.x() + 3, support_vertex.y() + 3),
+        )
+        snapped_end = self.clamp_to_widget(viewport, inner_point)
+
+        FreeCADGui.runCommand("Sketcher_CreateLine", 0)
+        self.pump(300)
+
+        self.move(viewport, snapped_start)
+        self.click(viewport, snapped_start)
+        self.move(viewport, snapped_end)
+        self.click(viewport, snapped_end)
+
+        self.assertTrue(
+            self.wait_until(lambda: self.testSketch.GeometryCount == 1, timeout_ms=1500),
+            "Expected the line tool to create a segment while snapping to the support border.",
+        )
+
+        line = self.testSketch.Geometry[0]
+        self.assertAlmostEqual(
+            line.StartPoint.x,
+            20.0,
+            places=6,
+            msg="Expected the first line point to snap onto the support-face corner X coordinate.",
+        )
+        self.assertAlmostEqual(
+            line.StartPoint.y,
+            -20.0,
+            places=6,
+            msg="Expected the first line point to snap onto the support-face corner Y coordinate.",
         )

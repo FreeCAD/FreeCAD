@@ -962,6 +962,103 @@ class TestSketcherSolver(unittest.TestCase):
             self.assertEqual(len(hole.Shape.Edges), 17)
             self.assertEqual(len(sketch2.ExternalGeometry), 0)
 
+    def testSupportFaceAutoExternalGeometry(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face6",))
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        self.assertEqual(len(sketch.ExternalGeometry), 1)
+        self.assertEqual(sketch.ExternalGeometry[0][0], box)
+        self.assertEqual(tuple(sketch.ExternalGeometry[0][1]), ("Face6",))
+        self.assertGreater(len(sketch.ExternalGeo), 2)
+
+    def testDetachedFaceSupportDoesNotAutoExternalGeometry(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face6",))
+        sketch.MapMode = "Deactivated"
+        self.Doc.recompute()
+
+        self.assertEqual(len(sketch.ExternalGeometry), 0)
+        self.assertEqual(len(sketch.ExternalGeo), 2)
+
+    def testSupportFaceAutoExternalGeometryTracksSupportChanges(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face6",))
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face5",))
+        self.Doc.recompute()
+
+        self.assertEqual(len(sketch.ExternalGeometry), 1)
+        self.assertEqual(sketch.ExternalGeometry[0][0], box)
+        self.assertEqual(tuple(sketch.ExternalGeometry[0][1]), ("Face5",))
+        self.assertGreater(len(sketch.ExternalGeo), 2)
+
+    def testSupportFaceAutoExternalGeometryClearsWhenMapModeDisabled(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face6",))
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        sketch.MapMode = "Deactivated"
+        self.Doc.recompute()
+
+        self.assertEqual(len(sketch.ExternalGeometry), 0)
+        self.assertEqual(len(sketch.ExternalGeo), 2)
+        self.assertEqual(tuple(sketch.AttachmentSupport[0][1]), ("Face6",))
+
+    def testSupportFaceAutoExternalGeometryClearsWhenSupportObjectDeleted(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face6",))
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        self.Doc.removeObject("Box")
+        self.Doc.recompute()
+
+        self.assertEqual(len(sketch.ExternalGeometry), 0)
+        self.assertEqual(len(sketch.ExternalGeo), 2)
+        self.assertEqual(sketch.AttachmentSupport, [])
+
+    def testSaveLoadWithAutoSupportExternalGeometry(self):
+        box = self.Doc.addObject("Part::Box", "Box")
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        self.Doc.recompute()
+
+        sketch.AttachmentSupport = (box, ("Face6",))
+        sketch.MapMode = "FlatFace"
+        self.Doc.recompute()
+
+        filename = tempfile.gettempdir() + os.sep + self.Doc.Name + "_autosupport.FCStd"
+        self.Doc.saveAs(filename)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(filename)
+        box = self.Doc.getObject("Box")
+        sketch = self.Doc.getObject("Sketch")
+        self.Doc.recompute()
+
+        self.assertEqual(len(sketch.ExternalGeometry), 1)
+        self.assertEqual(sketch.ExternalGeometry[0][0], box)
+        self.assertEqual(tuple(sketch.ExternalGeometry[0][1]), ("Face6",))
+        self.assertGreater(len(sketch.ExternalGeo), 2)
+
     def testSaveLoadWithExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             # Arrange
@@ -1125,6 +1222,9 @@ class TestSketcherSolver(unittest.TestCase):
             # first and only subobject name in second part of that first tuple and see that it moved
             # from the Face6 we set above.
             self.assertEqual(sketch1.AttachmentSupport[0][1][0], "Face9")
+            self.assertEqual(len(sketch1.ExternalGeometry), 1)
+            self.assertEqual(sketch1.ExternalGeometry[0][0], pad)
+            self.assertEqual(tuple(sketch1.ExternalGeometry[0][1]), ("Face9",))
             self.assertIn("Face6", pad.Shape.ElementReverseMap)  # different Face6 exists
 
     # TODO other tests:
@@ -1155,5 +1255,9 @@ class TestSketcherSolver(unittest.TestCase):
 
     def tearDown(self):
         # closing doc
-        FreeCAD.closeDocument("SketchSolverTest")
+        doc_name = getattr(getattr(self, "Doc", None), "Name", "SketchSolverTest")
+        if doc_name in FreeCAD.listDocuments():
+            FreeCAD.closeDocument(doc_name)
+        elif "SketchSolverTest" in FreeCAD.listDocuments():
+            FreeCAD.closeDocument("SketchSolverTest")
         # print ("omit closing document for debugging")

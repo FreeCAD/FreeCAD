@@ -98,6 +98,39 @@
 using namespace Sketcher;
 using namespace Base;
 
+namespace
+{
+bool getAutoSupportFaceReference(const SketchObject& sketch,
+                                 App::DocumentObject*& object,
+                                 std::string& subName)
+{
+    const char* mapMode = sketch.MapMode.getValueAsString();
+    if (!mapMode || strcmp(mapMode, "FlatFace") != 0) {
+        return false;
+    }
+
+    const auto& refs = sketch.AttachmentSupport.getValues();
+    const auto& subs = sketch.AttachmentSupport.getSubValues();
+    if (refs.size() != 1 || subs.size() != 1) {
+        return false;
+    }
+
+    object = refs.front();
+    subName = subs.front();
+    return object && !subName.empty() && boost::starts_with(subName, "Face");
+}
+
+std::string makeExternalReferenceKey(const App::DocumentObject& object, const std::string& subName)
+{
+    std::string key = object.getNameInDocument();
+    key += '.';
+    if (!object.isDerivedFrom<Part::Datum>()) {
+        key += Data::newElementName(subName.c_str());
+    }
+    return key;
+}
+}
+
 FC_LOG_LEVEL_INIT("Sketch", true, true)
 
 void SketchObject::initExternalGeo() {
@@ -2311,18 +2344,54 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         }
     }
 
+    App::DocumentObject* supportObject = nullptr;
+    std::string supportSubName;
+    const bool hasAutoSupport = getAutoSupportFaceReference(*this, supportObject, supportSubName);
+    const std::string autoSupportRef =
+        hasAutoSupport ? makeExternalReferenceKey(*supportObject, supportSubName) : std::string();
+
+    std::set<long> staleAutoSupportIds;
+    for (const auto& geo : ExternalGeo.getValues()) {
+        auto egf = ExternalGeometryFacade::getFacade(geo);
+        if (!egf->testFlag(ExternalGeometryExtension::AutoSupport) || egf->getRef().empty()) {
+            continue;
+        }
+        if (hasAutoSupport && egf->getRef() == autoSupportRef) {
+            continue;
+        }
+        auto refs = externalGeoRefMap.find(egf->getRef());
+        if (refs != externalGeoRefMap.end()) {
+            staleAutoSupportIds.insert(refs->second.begin(), refs->second.end());
+        }
+        else {
+            staleAutoSupportIds.insert(egf->getId());
+        }
+    }
+    if (!staleAutoSupportIds.empty()) {
+        delExternalPrivate(staleAutoSupportIds, true);
+        fixMissingAxisInExternalGeo();
+    }
+
     // Analyze the state of existing external geometries to infer the desired state for new ones.
     // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
     std::map<std::string, bool> linkIsDefiningMap;
+    std::map<std::string, bool> linkIsAutoSupportMap;
     for (const auto& geo : ExternalGeo.getValues()) {
         auto egf = ExternalGeometryFacade::getFacade(geo);
         if (!egf->getRef().empty()) {
             bool isDefining = egf->testFlag(ExternalGeometryExtension::Defining);
+            bool isAutoSupport = egf->testFlag(ExternalGeometryExtension::AutoSupport);
             if (linkIsDefiningMap.find(egf->getRef()) == linkIsDefiningMap.end()) {
                 linkIsDefiningMap[egf->getRef()] = isDefining;
             }
             else {
                 linkIsDefiningMap[egf->getRef()] = linkIsDefiningMap[egf->getRef()] && isDefining;
+            }
+            if (linkIsAutoSupportMap.find(egf->getRef()) == linkIsAutoSupportMap.end()) {
+                linkIsAutoSupportMap[egf->getRef()] = isAutoSupport;
+            }
+            else {
+                linkIsAutoSupportMap[egf->getRef()] = linkIsAutoSupportMap[egf->getRef()] && isAutoSupport;
             }
         }
     }
@@ -2335,6 +2404,22 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         throw Base::RuntimeError("Inconsistency with external geometries");
     }
     auto keys = externalGeoRef;
+
+    if (hasAutoSupport) {
+        bool alreadyLinked = false;
+        for (size_t i = 0; i < Objects.size(); ++i) {
+            if (Objects[i] == supportObject && SubElements[i] == supportSubName) {
+                alreadyLinked = true;
+                break;
+            }
+        }
+        if (!alreadyLinked) {
+            Objects.push_back(supportObject);
+            SubElements.push_back(supportSubName);
+            keys.push_back(autoSupportRef);
+            linkIsAutoSupportMap[autoSupportRef] = true;
+        }
+    }
 
     // re-check for any missing geometry element. The code here has a side
     // effect that the linked external geometry will continue to work even if
@@ -2675,6 +2760,9 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         auto itKey = linkIsDefiningMap.find(key);
         bool hasLinkState = itKey != linkIsDefiningMap.end();
         bool isLinkDefining = hasLinkState ? itKey->second : false;
+        auto itAutoSupport = linkIsAutoSupportMap.find(key);
+        bool hasAutoSupportState = itAutoSupport != linkIsAutoSupportMap.end();
+        bool isAutoSupportLink = hasAutoSupportState ? itAutoSupport->second : false;
 
         for(auto &geo : geos) {
             auto it = externalGeoMap.find(GeometryFacade::getId(geo.get()));
@@ -2683,6 +2771,9 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 // Set its defining state based on the inferred state of its parent link.
                 if (hasLinkState) {
                     ExternalGeometryFacade::getFacade(geo.get())->setFlag(ExternalGeometryExtension::Defining, isLinkDefining);
+                }
+                if (hasAutoSupportState) {
+                    ExternalGeometryFacade::getFacade(geo.get())->setFlag(ExternalGeometryExtension::AutoSupport, isAutoSupportLink);
                 }
                 geoms.push_back(geo.release());
                 continue;

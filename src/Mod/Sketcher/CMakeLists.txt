@@ -14,6 +14,7 @@ set(Sketcher_Scripts
 
 set(Sketcher_TestScripts
     SketcherTests/__init__.py
+    SketcherTests/PrepareSupportFaceReview.py
     SketcherTests/TestSketchFillet.py
     SketcherTests/TestSketcherSolver.py
     SketcherTests/TestSketchExpression.py
