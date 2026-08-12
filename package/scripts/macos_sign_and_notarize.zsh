@@ -121,17 +121,19 @@ IFS=$' \t\n' # The default
 typeset -U signed_files
 signed_files=("${dylibs[@]}" "${shared_objects[@]}" "${bundles[@]}" "${executables[@]}")
 
+# Not caught by the searches above:
+run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/packages.txt"
+
+MAIN_EXECUTABLE="${CONTAINING_FOLDER}/${APP_NAME}/Contents/MacOS/${APP_NAME:r}"
+
 # This list of files is generated from:
 # file `find . -type f -perm +111 -print` | grep "Mach-O 64-bit executable" | sed 's/:.*//g'
 for exe in ${signed_files}; do
     # Skip .appex executables as they will be signed separately with their bundles
-    if [[ "$exe" != */Contents/PlugIns/*.appex/* ]]; then
+    if [[ "$exe" != */Contents/PlugIns/*.appex/* && "$exe" != "$MAIN_EXECUTABLE" ]]; then
         run_codesign "${exe}"
     fi
 done
-
-# Two additional files that must be signed that aren't caught by the above searches:
-run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/packages.txt"
 
 # Sign legacy QuickLook generator if present (not built for macOS 15.0+)
 if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
