@@ -809,7 +809,9 @@ def show(item, column=None):
                 vparam.SetBool("Simple", True)
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
-        elif Draft.getType(obj) in ("BuildingPart", "IfcBuilding", "IfcBuildingStorey"):
+        elif Draft.getType(obj) in ("BuildingPart", "IfcBuilding", "IfcBuildingStorey") and getattr(
+            obj.ViewObject, "DoubleClickActivates", True
+        ):
             BIM_Views.activate()
         else:
             # WP Proxy
