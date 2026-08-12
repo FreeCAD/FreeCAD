@@ -620,6 +620,8 @@ void TaskSectionView::setUiEdit()
 
     ui->sbScale->setValue(m_section->getScale());
     ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
+    ui->cbSectionCutOnly->setChecked(
+        m_section->SectionCutOnly.getValue());
     //Allow or prevent scale changing initially
     if (m_section->ScaleType.isValue("Custom")) {
         ui->sbScale->setEnabled(true);
@@ -684,6 +686,8 @@ void TaskSectionView::setUiCommon(const QPointF& center)
     connect(ui->cmbScaleType, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskSectionView::scaleTypeChanged);
 
     connect(ui->cbLiveUpdate, &QToolButton::clicked, this, &TaskSectionView::liveUpdateClicked);
+    connect(ui->cbSectionCutOnly, &QCheckBox::clicked,
+            this, [this]() { apply(); });
     connect(ui->cbShowManualControls, &QCheckBox::toggled, this,
             &TaskSectionView::onShowManualControlsToggled);
     connect(ui->cbCustomComplexSection, &QCheckBox::clicked,
@@ -2880,6 +2884,7 @@ void TaskSectionView::saveSectionState()
         m_saveSymbol = m_section->SectionSymbol.getValue();
         m_saveScale = m_section->getScale();
         m_saveScaleType = m_section->getScaleType();
+        m_saveSectionCutOnly = m_section->SectionCutOnly.getValue();
         m_saveNormal = m_section->SectionNormal.getValue();
         m_normal = m_saveNormal;
         m_saveDirection = m_section->Direction.getValue();
@@ -2907,6 +2912,7 @@ void TaskSectionView::restoreSectionState()
     m_section->SectionSymbol.setValue(m_saveSymbol);
     m_section->Scale.setValue(m_saveScale);
     m_section->ScaleType.setValue(m_saveScaleType);
+    m_section->SectionCutOnly.setValue(m_saveSectionCutOnly);
     m_section->SectionNormal.setValue(m_saveNormal);
     m_section->Direction.setValue(m_saveDirection);
     m_section->SectionOrigin.setValue(m_saveOrigin);
@@ -3085,6 +3091,7 @@ void TaskSectionView::enableAll(bool enable)
     ui->sbCenterX->setEnabled(enable);
     ui->sbCenterY->setEnabled(enable);
     ui->cmbScaleType->setEnabled(enable);
+    ui->cbSectionCutOnly->setEnabled(enable);
     ui->gbOrientation->setEnabled(enable);
     ui->gbPlane->setEnabled(enable);
     ui->cbCustomComplexSection->setEnabled(
@@ -3298,6 +3305,10 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
                            m_sectionName.c_str(), scaleType);
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());
+        Command::doCommand(Command::Doc,
+                           "App.ActiveDocument.%s.SectionCutOnly = %s",
+                           m_sectionName.c_str(),
+                           ui->cbSectionCutOnly->isChecked() ? "True" : "False");
 
         App::DocumentObject* newObj = m_base->getDocument()->getObject(m_sectionName.c_str());
         m_section = dynamic_cast<TechDraw::DrawViewSection*>(newObj);
@@ -3694,6 +3705,10 @@ void TaskSectionView::updateSectionView()
         }
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
                            m_sectionName.c_str(), m_dirName.c_str());
+        Command::doCommand(Command::Doc,
+                           "App.ActiveDocument.%s.SectionCutOnly = %s",
+                           m_sectionName.c_str(),
+                           ui->cbSectionCutOnly->isChecked() ? "True" : "False");
         if (!hasComplexPath()) {
             const Base::Vector3d origin =
                 viewPointToSectionOrigin(centerFromUi());

@@ -105,6 +105,7 @@ public:
     App::PropertyBool FuseBeforeCut;
     App::PropertyBool TrimAfterCut;//new v021
     App::PropertyBool UsePreviousCut;   // new v022
+    App::PropertyBool SectionCutOnly;
 
     App::PropertyFloatConstraint SectionLineStretch;  // new v022
 //NOLINTEND

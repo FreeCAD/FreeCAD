@@ -261,6 +261,7 @@ private:
     Base::Vector3d m_saveOrigin;
     double m_saveScale;
     int m_saveScaleType;
+    bool m_saveSectionCutOnly{false};
 
     std::string m_dirName;
     std::string m_sectionName;

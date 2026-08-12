@@ -199,6 +199,11 @@ DrawViewSection::DrawViewSection()
                       ggroup,
                       App::Prop_None,
                       "Use the cut shape from the base view instead of the original object");
+    ADD_PROPERTY_TYPE(SectionCutOnly,
+                      (false),
+                      sgroup,
+                      App::Prop_None,
+                      "Show only the geometry intersected by the section plane");
 
     // properties related to the display of the cut surface
     CutSurfaceDisplay.setEnums(CutSurfaceEnums);    //NOLINT
@@ -313,6 +318,11 @@ void DrawViewSection::onChanged(const App::Property* prop)
         if (CutSurfaceDisplay.isValue("PatHatch")) {
             makeLineSets();
         }
+        requestPaint();
+        return;
+    }
+
+    if (prop == &SectionCutOnly) {
         requestPaint();
         return;
     }

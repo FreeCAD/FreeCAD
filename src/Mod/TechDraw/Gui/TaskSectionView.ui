@@ -413,6 +413,16 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="cbSectionCutOnly">
+     <property name="toolTip">
+      <string>Shows only the geometry intersected by the section plane</string>
+     </property>
+     <property name="text">
+      <string>Section cut only</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="cbLiveUpdate">
      <property name="toolTip">
       <string>Updates the display after every property change</string>
