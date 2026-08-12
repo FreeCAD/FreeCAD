@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   id="svg2869"
+   version="1.1"
+   viewBox="0 0 64 64"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2871">
+    <linearGradient
+       id="linearGradient3815">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1"
+         offset="0"
+         id="stop3817" />
+      <stop
+         style="stop-color:#729fcf;stop-opacity:1"
+         offset="1"
+         id="stop3819" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient2">
+      <stop
+         style="stop-color:#73d216;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#8ae234;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3815"
+       id="linearGradient63"
+       gradientUnits="userSpaceOnUse"
+       x1="88.001953"
+       y1="56.792969"
+       x2="112.7168"
+       y2="44.523438" />
+    <linearGradient
+       xlink:href="#linearGradient3815"
+       id="linearGradient63-4"
+       gradientUnits="userSpaceOnUse"
+       x1="88.001953"
+       y1="56.792969"
+       x2="112.7168"
+       y2="44.523438" />
+    <linearGradient
+       xlink:href="#linearGradient3815"
+       id="linearGradient64"
+       gradientUnits="userSpaceOnUse"
+       x1="136.10742"
+       y1="47.535156"
+       x2="112.7168"
+       y2="42.523438" />
+  </defs>
+  <metadata
+     id="metadata2874">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[maxwxyz]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_CreateArc.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>2023-12-19</dc:date>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g63"
+     transform="translate(-80.716797,-12.523438)">
+    <path
+       d="M 114.72656,72.222656 V 41.363281 L 88.001953,25.933594 v 30.859375 z"
+       style="fill:#3465a4;fill-rule:evenodd;stroke:#0c1522;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path58" />
+    <path
+       d="m 136.10742,29.019531 -21.38086,12.34375 v 30.859375 l 21.38086,-24.6875 z"
+       style="fill:#729fcf;fill-rule:evenodd;stroke:#0c1522;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path59" />
+    <path
+       d="m 120.07227,19.761719 -32.070317,6.171875 26.724607,15.429687 21.38086,-12.34375 z m -0.72266,3.285156 9.46289,5.462891 -14.9668,8.640625 -16.945309,-9.783204 z"
+       style="fill:#729fcf;fill-rule:evenodd;stroke:#0c1522;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path60" />
+    <path
+       d="m 119.34961,23.046875 -22.449219,4.320312 16.945309,9.783204 5.50391,-3.177735 z"
+       style="fill:#8ae234;fill-rule:evenodd;stroke:#17220b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path61" />
+    <path
+       d="m 119.34961,23.046875 v 10.925781 l 9.46289,-5.46289 z"
+       style="fill:#73d216;fill-rule:evenodd;stroke:#17220b;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path62" />
+    <path
+       d="m 90.011719,29.414062 v 26.21875 L 112.7168,68.742187 v -26.21875 z"
+       style="fill:url(#linearGradient63);fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       id="path63" />
+    <path
+       d="M 134.09766,32.5 116.73633,42.523437 V 66.832031 L 134.09766,46.785156 Z"
+       style="fill:url(#linearGradient64);fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       id="path64" />
+  </g>
+</svg>

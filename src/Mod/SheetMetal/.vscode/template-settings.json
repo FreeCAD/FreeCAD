@@ -1,0 +1,17 @@
+{
+    "python.analysis.extraPaths": [
+        "<FreeCAD-Path>/bin",
+        "<FreeCAD-Path>/Mod",
+        "<FreeCAD-Path>/Mod/Draft",
+        "<FreeCAD-Path>/Mod/PartDesign",
+        "<FreeCAD-Path>/Mod/Part",
+        "<FreeCAD-Path>/Mod/Material",
+        "<FreeCAD-Path>/Mod/CAM",
+        "<FreeCAD-Path>/bin/Lib",
+        "<FreeCAD-Path>/bin/Lib/site-packages",
+        "<FreeCAD-Path>/Ext",
+    ],
+    "python.analysis.fixAll": [
+
+    ],
+}

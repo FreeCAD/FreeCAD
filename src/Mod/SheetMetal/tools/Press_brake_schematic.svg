@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.0"
+   width="550"
+   height="675"
+   id="svg2"
+   inkscape:version="0.47pre3 "
+   sodipodi:docname="Gesenkbiegen_ungebogen.svg">
+  <metadata
+     id="metadata31">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1033"
+     id="namedview29"
+     showgrid="false"
+     inkscape:zoom="1.157037"
+     inkscape:cx="243.88604"
+     inkscape:cy="337.5"
+     inkscape:window-x="-4"
+     inkscape:window-y="-4"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs4">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 320.75 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="521.79999 : 320.75 : 1"
+       inkscape:persp3d-origin="260.89999 : 213.83333 : 1"
+       id="perspective33" />
+    <marker
+       refX="0"
+       refY="0"
+       orient="auto"
+       style="overflow:visible"
+       id="Arrow2Mend">
+      <path
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(-0.6,-0.6)"
+         style="font-size:12px;fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         id="path15920" />
+    </marker>
+    <linearGradient
+       id="linearGradient8955">
+      <stop
+         style="stop-color:#646464;stop-opacity:1"
+         offset="0"
+         id="stop8957" />
+      <stop
+         style="stop-color:#c8c8c8;stop-opacity:1"
+         offset="1"
+         id="stop9938" />
+    </linearGradient>
+    <linearGradient
+       x1="320"
+       y1="511.86218"
+       x2="320"
+       y2="732.86218"
+       id="linearGradient8967"
+       xlink:href="#linearGradient8955"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(21.5,-15.499991)" />
+    <linearGradient
+       x1="320"
+       y1="452.86218"
+       x2="320"
+       y2="91.862183"
+       id="linearGradient10967"
+       xlink:href="#linearGradient8955"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(22,-16)" />
+    <linearGradient
+       x1="459.5"
+       y1="502.36218"
+       x2="600.5"
+       y2="502.36218"
+       id="linearGradient12913"
+       xlink:href="#linearGradient8955"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(22,-16)" />
+  </defs>
+  <g
+     transform="translate(-139.5,-58.362183)"
+     id="layer1">
+    <path
+       d="m 262,76.362183 0,199.999997 80,160 80,-160 0,-199.999997 -160,0 z"
+       style="fill:url(#linearGradient10967);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path2162" />
+    <path
+       d="m 241.5,496.86218 0,220 200,0 0,-220 -40,0 -60,100 c 0,0 -60,-100 -60,-100 l -40,0 z"
+       style="fill:url(#linearGradient8967);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path2164" />
+    <path
+       d="m 162,476.375 0,20 360,0 0,-20 -360,0 z"
+       style="fill:#ffd300;fill-opacity:1;stroke:#000000;stroke-opacity:1"
+       id="rect2166" />
+    <path
+       d="m 482,496.36218 0,20 140,0 0,-60 -100,0 0,40 -40,0 z"
+       style="fill:url(#linearGradient12913);fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="path3139" />
+    <path
+       d="m 666.7,225.66218 -105.39247,0 -134.84338,41.66479"
+       style="fill:none;stroke:#000000;stroke-width:2.5999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-mid:none;marker-end:url(#Arrow2Mend)"
+       id="path14919"
+       sodipodi:nodetypes="ccc" />
+    <path
+       d="m 666,576.36218 -52,0 -168,42"
+       style="fill:none;stroke:#000000;stroke-width:2.5999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-mid:none;marker-end:url(#Arrow2Mend)"
+       id="path16100"
+       sodipodi:nodetypes="ccc" />
+    <path
+       d="m 666,414.36218 -189.5,0 60,38"
+       style="fill:none;stroke:#000000;stroke-width:2.5999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-mid:none;marker-end:url(#Arrow2Mend)"
+       id="path16132"
+       sodipodi:nodetypes="ccc" />
+    <path
+       d="m 664.7,337.66218 -176.7,0 -78,136.7"
+       style="fill:none;stroke:#000000;stroke-width:2.5999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:2.5;stroke-opacity:1;stroke-dasharray:none;marker-start:none;marker-mid:none;marker-end:url(#Arrow2Mend)"
+       id="path16142"
+       sodipodi:nodetypes="ccc" />
+    <text
+       x="563.99194"
+       y="219.26321"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       id="text2237"
+       xml:space="preserve"><tspan
+         x="563.99194"
+         y="219.26321"
+         style="font-size:28px"
+         id="tspan2239">PUNCH</tspan></text>
+    <text
+       x="491.66772"
+       y="331.36218"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       id="text2241"
+       xml:space="preserve"><tspan
+         x="491.66772"
+         y="331.36218"
+         style="font-size:28px"
+         id="tspan2243">WORKPIECE</tspan></text>
+    <text
+       x="477.61304"
+       y="407.26321"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       id="text2245"
+       xml:space="preserve"><tspan
+         x="477.61304"
+         y="407.26321"
+         style="font-size:28px"
+         id="tspan2247">BACK GAUGE</tspan></text>
+    <text
+       x="616.19116"
+       y="567.26318"
+       style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+       id="text2249"
+       xml:space="preserve"><tspan
+         x="616.19116"
+         y="567.26318"
+         style="font-size:28px"
+         id="tspan2251">DIE</tspan></text>
+  </g>
+</svg>

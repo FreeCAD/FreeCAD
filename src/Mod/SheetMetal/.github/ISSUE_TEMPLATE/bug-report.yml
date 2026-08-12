@@ -1,0 +1,54 @@
+name: Bug Report
+description: Report a bug
+labels: ["bug"]
+assignees: ["shaise"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the sections below to help everyone identify and fix the bug
+        IMPORTANT: If possible, add a freecad file that demonstrates the bug
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe your issue
+      placeholder: |
+        When I use the <X> command <this> happens
+        Here are the steps to reproduce it:
+        1 ..
+        2 ..
+      description: Describe the problem and how it impacts user experience, workflow, maintainability or speed of the code. If the problem appears to be a bug with the current functionality, provide as test case or recipe that reproduces the error. Ideally record a macro and attach it.
+    validations:
+      required: true
+  - type: textarea
+    id: full_version
+    attributes:
+      label: FreeCAD version info + SheetMetal WB version
+      placeholder: |
+        OS: <Windows/Linux/MacOS>
+        Architecture: x86_64
+        Version: <FreeCad version>
+        Build type: Release
+        Python 3.11.10, Qt 5.15.15, Coin 4.0.3, Vtk 9.3.0, OCC 7.8.1
+        Locale: English/United States (en_US)
+        Stylesheet/Theme/QtStyle: OpenLight.qss/OpenLight/Fusion
+        Installed mods: 
+          * sheetmetal 0.5.5
+          * ...
+      description: |
+        Please use the About FreeCAD dialog to copy your full version information and paste it here, include the SheetMetal WB version on it.
+        (At the bottom left of the about dialog there is a `Copy to clipboard` button)
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Put here any screenshots or videos (optional)
+      description: |
+        Add links, references, screenshots or anything that will give us more context about the issue you are encountering!
+        If there is a discussion about the problem on the forum, provide link(s) here.
+
+        Tip: You can attach images or log files by clicking this area to highlight it and then dragging files in. To attach a FCStd file, ZIP it first (GitHub won't recognize the extension otherwise).
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting this issue! We will get back to you as soon as possible.

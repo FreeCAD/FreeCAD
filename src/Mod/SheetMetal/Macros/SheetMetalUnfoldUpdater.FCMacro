@@ -1,0 +1,255 @@
+__author__ = "ceremcem"
+"""
+URL   : https://github.com/shaise/FreeCAD_SheetMetal/blob/master/Macros/SheetMetalUnfoldUpdater.FCMacro
+URL2 : https://github.com/ceremcem/FreeCAD_SheetMetal/blob/master/Macros/SheetMetalUnfoldUpdater.FCMacro
+
+Description:
+-----------------------------------------------------------------------------------
+This macro automatically updates all unfold operations as well as their related 
+TechDraw views. 
+
+Dependencies: 
+-----------------------------------------------------------------------------------
+It depends on LinkStage3 toponaming feature for storing "unfold face" information 
+within the project file.
+
+Usage: 
+-----------------------------------------------------------------------------------
+
+1. Store the "unfold face" information within the project:
+    1. Put your processed (final) object into an assembly container. 
+    2. Create an "Element" for the unfold face
+    3. Rename the element to "foo_unfold_face"
+2. Run this macro. 
+3. See "foo_unfold" and "foo_unfold_solid" is created properly. 
+4. Create TechDraw views by using those two objects 
+5. (Re-)run this script. If everything (unfold, TechDraw source updates) went successfully, 
+    then those two objects should be marked as invisible. 
+
+Verification: 
+------------------------
+If everything went successful, you SHOULD NOT see any visible objects in the drawing area 
+or any `_TMP` postfixed objects in the treeview. 
+
+KNOWN ISSUE: 
+--------------------
+Problem: Following error might be received:
+
+      No graphical interface
+      discretizing Sketch
+      Running the Python command 'SMUnfoldUnattended' failed:
+      Traceback (most recent call last):
+        File "/home/aea/.FreeCAD/Mod/sheetmetal/SheetMetalUnfolder.py", line 3102, in Activated
+          taskd.accept()
+        File "/home/aea/.FreeCAD/Mod/sheetmetal/SheetMetalUnfolder.py", line 2968, in accept
+         docG.getObject(a.Name).Transparency = genObjTransparency
+
+Workaround: Please double click the documents that contains the bent parts at least one time.
+
+
+
+"""
+
+import FreeCAD
+import re
+
+echo = FreeCAD.Console.PrintMessage
+warn = FreeCAD.Console.PrintWarning
+error = FreeCAD.Console.PrintError
+
+prev_workbench = Gui.activeWorkbench().name()
+# TODO: Actually there is no need to switch to SMWorkbench after the first one.
+Gui.activateWorkbench("SMWorkbench")
+if prev_workbench:
+    Gui.activateWorkbench(prev_workbench)
+
+unfold_sketch_regex = re.compile('.+_unfold_face')
+
+""" For debugging purposes, see https://github.com/realthunder/FreeCAD_assembly3/issues/236#issuecomment-651583969
+doc_name="driver_base"
+elem_label="wall_unfold_face"
+# ------------------------------------------------------------
+Gui.ActiveDocument=Gui.getDocument(doc_name)
+App.ActiveDocument=App.getDocument(doc_name)
+App.setActiveDocument(App.ActiveDocument.Name) # Interesting. Why do we need to assign this manually?
+doc=App.ActiveDocument
+element = doc.getObjectsByLabel(elem_label)[0].Proxy
+partGroup = element.getAssembly().getPartGroup()
+subname = element.getElementSubname(True)
+Gui.Selection.addSelection(partGroup, subname)
+"""
+
+echo("\n\n\n")
+echo("--------------------- Updating All Unfold Operations ------------------------------\n")
+
+
+def get_related_views(doc, labels):
+    related_views = {}
+    for x in doc.Objects:
+        if x.TypeId == 'TechDraw::DrawPage':
+            for view in x.Views:
+                try:
+                    _src = view.Source[0]
+                except Exception as e:
+                    continue
+                #print "source of ", view.Label, ' in ', x.Label, " is: ", _src.Label
+                if _src.Label in labels:
+                    # This view uses our unfolded output, update this view at the end
+                    echo("* Found related TechDraw ProjGroup: %s\n" % view.Label)
+                    related_views[_src.Label] = view
+    return related_views
+
+
+originals = [App.ActiveDocument, Gui.ActiveDocument]
+try:
+    for doc_name, doc in App.listDocuments().items():
+        unfold_objects = list(map(lambda x: x.Label, filter(
+            lambda x: re.match('Unfold.*$', x.Label), doc.Objects)))
+        if unfold_objects:
+            error("Document '%s' contains objects with Unfold* prefix, please rename them: %s\n" %
+                  (doc_name, ', '.join(unfold_objects)))
+            raise Exception("INFO: Stopping before a possible conflict.")
+
+    for doc_name, doc in App.listDocuments().items():
+        Gui.ActiveDocument = Gui.getDocument(doc_name)
+        App.ActiveDocument = App.getDocument(doc_name)
+        # Interesting. Why do we need to assign this manually?
+        App.setActiveDocument(App.ActiveDocument.Name)
+
+        for o in doc.Objects:
+            try:
+                _o = o.TypeId
+            except:
+                # probably we deleted this object before updating the existing unfold sketch.
+                continue
+
+            # find any Asm3 Element that matches with our magic postfix
+            if o.TypeId == 'Part::FeaturePython':
+                match = unfold_sketch_regex.match(o.Label)
+                if match:
+                    output_name = o.Label[:-5]  # remove the "_face" postfix
+                    output_name_solid = output_name + '_solid'
+                    echo("+++ In: %s, Unfold job: %s \n" %
+                         (doc_name, output_name))
+
+                    related_views = get_related_views(
+                        doc, [output_name, output_name_solid])
+                    related_view_count = len(related_views.keys())
+                    if related_view_count > 0:
+                        echo(
+                            "* Found %d TechDraw views containing that object.\n" % related_view_count)
+                    else:
+                        warn(
+                            "* No TechDraw views found related to %s, this isn't supposed to happen.\n" % (output_name))
+
+                    # backup current unfolded outputs
+                    tmp_postfix = "_TMP"
+                    old = None
+                    old_solid = None
+                    need_recomputation = False
+                    try:
+                        old = doc.getObjectsByLabel(output_name)[0]
+                        old.Label += tmp_postfix
+                        need_recomputation = True
+                    except:
+                        pass
+                    try:
+                        old_solid = doc.getObjectsByLabel(output_name_solid)[0]
+                        old_solid.Label += tmp_postfix
+                        need_recomputation = True
+                    except:
+                        pass
+
+                    if need_recomputation:
+                        doc.recompute()
+
+                    # Unfold the part
+                    Gui.Selection.clearSelection()
+
+                    # Get the unfold face id
+                    face_elem_label = output_name + '_face'
+                    face_elem = doc.getObjectsByLabel(face_elem_label)[0].Proxy
+                    partGroup = face_elem.getAssembly().getPartGroup()
+                    subname = face_elem.getElementSubname(True)
+                    Gui.Selection.addSelection(partGroup, subname)
+
+                    # Unfold
+                    Gui.runCommand('SMUnfoldUnattended')
+
+                    try:
+                        # Check if unfold operation is successful
+                        unfold_objects = list(map(lambda x: x.Label, filter(
+                            lambda x: re.match('Unfold.*$', x.Label), doc.Objects)))
+                        if not unfold_objects:
+                            raise Exception(
+                                "Can't unfold the sheetmetal object. Can you unfold manually?")
+                        else:
+                            Gui.Selection.clearSelection()
+
+                        # Get the newest object's names
+                        new_solid_name = list(map(lambda x: x.Label, filter(
+                            lambda x: re.match('Unfold[0-9]*$', x.Label), doc.Objects)))
+                        new_solid_name.sort(reverse=True)
+                        new_solid_name = new_solid_name[0]
+
+                        new_sketch_name = list(map(lambda x: x.Label, filter(
+                            lambda x: re.match('Unfold_Sketch[0-9]*$', x.Label), doc.Objects)))
+                        new_sketch_name.sort(reverse=True)
+                        new_sketch_name = new_sketch_name[0]
+
+                        # Solid object is useful for laser cut operations
+                        solid = doc.getObjectsByLabel(new_solid_name)[0]
+                        solid.Label = output_name_solid
+
+                        sketch = doc.getObjectsByLabel(new_sketch_name)[0]
+                        sketch.Label = output_name
+
+                        # Update the source of related views
+                        for name, view in related_views.items():
+                            if name == sketch.Label:
+                                obj = sketch
+                            elif name == solid.Label:
+                                obj = solid
+                            echo("* %s is used to update %s\n" %
+                                 (obj.Label, view.Label))
+                            view.Source = [obj]
+                            # set visibility to false if a related view is found and updated.
+                            obj.Visibility = False
+
+                        # remove the temporary object
+                        needs_recomputation = False
+                        for o in [old, old_solid]:
+                            if o is not None:
+                                #echo("removing the old object: %s\n" % o.Name)
+                                doc.removeObject(o.Name)
+                                needs_recomputation = True
+                        if needs_recomputation:
+                            doc.recompute()
+
+                    except Exception as e:
+                        error("* %s (in %s): Something went wrong, restoring the previous sketches...\n" %
+                              (output_name, doc.Name))
+                        # For debugging purposes:
+                        error('Error on line %s: %s, %s.\n' %
+                              (sys.exc_info()[-1].tb_lineno, type(e).__name__, e))
+
+                        #raise Exception("Breaking the script execution before CLEANUP for debugging purposes\n")
+
+                        needs_recomputation = False
+                        for o in [old, old_solid]:
+                            if o is not None:
+                                orig_label = o.Label[:-(len(tmp_postfix))]
+                                warn(
+                                    "!! %s: Restoring the previous object.\n" % orig_label)
+                                o.Label = orig_label
+                                o.Visibility = True
+                                needs_recomputation = True
+                        if needs_recomputation:
+                            doc.recompute()
+
+except Exception as e:
+    warn("Script isn't terminated normally: %s\n" % e)
+finally:
+    doc.recompute()
+    App.ActiveDocument, Gui.ActiveDocument = originals
+    App.setActiveDocument(App.ActiveDocument.Name)
