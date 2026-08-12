@@ -45,8 +45,12 @@
 
 #include <fastsignals/connection.h>
 
+#include <memory>
+
 namespace MeasureGui
 {
+
+class MeasureSnapManager;
 
 class TaskMeasure: public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
 {
@@ -122,6 +126,8 @@ private:
     bool mAutoSave = false;
     bool mGreedySelection = false;
     Gui::Document* mTargetDoc;
+
+    std::unique_ptr<MeasureSnapManager> mSnapManager;
 };
 
 }  // namespace MeasureGui
