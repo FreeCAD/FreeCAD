@@ -292,5 +292,45 @@ ImportExportSettings::ImportMode ImportExportSettings::getImportMode() const
     return static_cast<ImportExportSettings::ImportMode>(pGroup->GetInt("ImportMode", 0));
 }
 
+void ImportExportSettings::setAutoLightweightWorkspace(bool on)
+{
+    pGroup->SetBool("AutoLightweightWorkspace", on);
+}
+
+bool ImportExportSettings::getAutoLightweightWorkspace() const
+{
+    return pGroup->GetBool("AutoLightweightWorkspace", false);
+}
+
+void ImportExportSettings::setAutoLightweightMinFileSizeMB(int value)
+{
+    pGroup->SetInt("AutoLightweightMinFileSizeMB", value < 0 ? 0 : value);
+}
+
+int ImportExportSettings::getAutoLightweightMinFileSizeMB() const
+{
+    return pGroup->GetInt("AutoLightweightMinFileSizeMB", 512);
+}
+
+void ImportExportSettings::setAutoLightweightMinNodeCount(int value)
+{
+    pGroup->SetInt("AutoLightweightMinNodeCount", value < 0 ? 0 : value);
+}
+
+int ImportExportSettings::getAutoLightweightMinNodeCount() const
+{
+    return pGroup->GetInt("AutoLightweightMinNodeCount", 200);
+}
+
+void ImportExportSettings::setLightweightWorkspaceMaxLoadedShards(int value)
+{
+    pGroup->SetInt("LightweightWorkspaceMaxLoadedShards", value < 0 ? 0 : value);
+}
+
+int ImportExportSettings::getLightweightWorkspaceMaxLoadedShards() const
+{
+    return pGroup->GetInt("LightweightWorkspaceMaxLoadedShards", 2);
+}
+
 }  // namespace OCAF
 }  // namespace Part

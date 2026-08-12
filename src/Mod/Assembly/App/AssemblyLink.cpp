@@ -22,22 +22,20 @@
  ***************************************************************************/
 
 #include <cmath>
+#include <cstring>
 #include <vector>
-
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/Link.h>
+#include <App/PropertyStandard.h>
 #include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
-#include <Base/Placement.h>
-#include <Base/Rotation.h>
 #include <Base/Tools.h>
 #include <Base/Interpreter.h>
 
-#include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -57,6 +55,57 @@ using namespace Assembly;
 
 PROPERTY_SOURCE(Assembly::AssemblyLink, App::Part)
 
+namespace
+{
+constexpr int defaultLargeAssemblyThreshold = 200;
+const char* assemblyLinkLoadModeEnums[] = {"Normal", "Auto", "Lightweight", nullptr};
+constexpr const char* lightweightWorkspaceShardLinkPropertyName = "LightweightWorkspaceShardLink";
+
+void syncSubAssemblyLinkProperties(
+    AssemblyLink* source,
+    AssemblyLink* target,
+    bool forceLightweightMode
+)
+{
+    if (!source || !target) {
+        return;
+    }
+
+    if (target->LinkedObject.getValue() != source) {
+        target->LinkedObject.setValue(source);
+    }
+    if (target->Rigid.getValue() != source->Rigid.getValue()) {
+        target->Rigid.setValue(source->Rigid.getValue());
+    }
+
+    int targetLoadMode = forceLightweightMode
+        ? static_cast<int>(AssemblyLink::LoadModeLightweight)
+        : source->LoadMode.getValue();
+    if (target->LoadMode.getValue() != targetLoadMode) {
+        target->LoadMode.setValue(targetLoadMode);
+    }
+    if (target->Label.getValue() != source->Label.getValue()) {
+        target->Label.setValue(source->Label.getValue());
+    }
+}
+
+bool isLightweightWorkspaceShardLink(const AssemblyLink& link)
+{
+    const auto* property = dynamic_cast<const App::PropertyBool*>(
+        link.getPropertyByName(lightweightWorkspaceShardLinkPropertyName)
+    );
+    return property && property->getValue();
+}
+
+void restoreWorkspaceShardLinkTarget(AssemblyLink& link)
+{
+    if (!isLightweightWorkspaceShardLink(link)) {
+        return;
+    }
+    link.LinkedObject.setAllowPartial(true);
+}
+}  // namespace
+
 AssemblyLink::AssemblyLink()
 {
     ADD_PROPERTY_TYPE(
@@ -75,6 +124,20 @@ AssemblyLink::AssemblyLink()
         (App::PropertyType)(App::Prop_None),
         "The linked assembly."
     );
+
+    ADD_PROPERTY_TYPE(
+        LoadMode,
+        ((long)LoadModeNormal),
+        "General",
+        (App::PropertyType)(App::Prop_None),
+        "Controls how the linked assembly is expanded.\n"
+        "Normal: fully load and solve the linked assembly.\n"
+        "Auto: switch to lightweight mode once the linked assembly exceeds the large assembly "
+        "threshold. A threshold of 0 disables the automatic switch.\n"
+        "Lightweight: keep the linked document partial and suppress internal joint expansion."
+    );
+    LoadMode.setEnums(assemblyLinkLoadModeEnums);
+    LoadMode.setStatus(App::Property::PartialTrigger, true);
 }
 
 AssemblyLink::~AssemblyLink() = default;
@@ -90,6 +153,7 @@ PyObject* AssemblyLink::getPyObject()
 
 App::DocumentObjectExecReturn* AssemblyLink::execute()
 {
+    checkPropertyStatus();
     updateContents();
 
     return App::Part::execute();
@@ -110,29 +174,31 @@ void AssemblyLink::onChanged(const App::Property* prop)
         }
     }
 
+    if (prop == &LinkedObject) {
+        checkPropertyStatus();
+        updateContents();
+        App::Part::onChanged(prop);
+        return;
+    }
+
+    if (prop == &LoadMode) {
+        checkPropertyStatus();
+        cleanupGroundedJoints(isRigidLike());
+        updateContents();
+        updateParentJoints();
+        App::Part::onChanged(prop);
+        return;
+    }
+
     if (prop == &Rigid) {
-        Base::Placement movePlc;
-
-        // A flexible sub-assembly cannot be grounded.
-        // If a rigid sub-assembly has an object that is grounded, we also remove it.
-        auto groundedJoints = getParentAssembly()->getGroundedJoints();
-        for (auto* joint : groundedJoints) {
-            auto* propObj = dynamic_cast<App::PropertyLink*>(
-                joint->getPropertyByName("ObjectToGround")
-            );
-            if (!propObj) {
-                continue;
-            }
-            auto* groundedObj = propObj->getValue();
-            if (auto* linkElt = dynamic_cast<App::LinkElement*>(groundedObj)) {
-                // hasObject does not handle link groups so we must handle it manually.
-                groundedObj = linkElt->getLinkGroup();
-            }
-
-            if (Rigid.getValue() ? hasObject(groundedObj) : groundedObj == this) {
-                getDocument()->removeObject(joint->getNameInDocument());
-            }
+        if (useLightweightMode()) {
+            updateContents();
+            App::Part::onChanged(prop);
+            return;
         }
+
+        Base::Placement movePlc;
+        cleanupGroundedJoints(isRigidLike());
 
         if (Rigid.getValue()) {
             // movePlc needs to be computed before updateContents.
@@ -237,6 +303,8 @@ void AssemblyLink::onChanged(const App::Property* prop)
 void AssemblyLink::onDocumentRestored()
 {
     App::Part::onDocumentRestored();
+    checkPropertyStatus();
+    restoreWorkspaceShardLinkTarget(*this);
     updateContents();
 }
 
@@ -247,7 +315,7 @@ void AssemblyLink::updateParentJoints()
         return;
     }
 
-    bool rigid = Rigid.getValue();
+    bool rigid = isRigidLike();
     // Iterate joints in the immediate parent assembly only (recursive=false)
     for (auto* joint : parent->getJoints(false, false)) {
         for (const char* refName : {"Reference1", "Reference2"}) {
@@ -315,9 +383,32 @@ void AssemblyLink::updateParentJoints()
 
 void AssemblyLink::updateContents()
 {
+    checkPropertyStatus();
+
+    if (!getLinkedAssembly()) {
+        objLinkMap.clear();
+        auto* doc = getDocument();
+        if (doc) {
+            std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
+            for (auto* obj : assemblyLinkGroup) {
+                if (!obj) {
+                    continue;
+                }
+                if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
+                    && !obj->isDerivedFrom<App::Link>()) {
+                    continue;
+                }
+                doc->removeObject(obj->getNameInDocument());
+            }
+        }
+        ensureNoJointGroup();
+        purgeTouched();
+        return;
+    }
+
     synchronizeComponents();
 
-    if (isRigid()) {
+    if (isRigidLike()) {
         ensureNoJointGroup();
     }
     else {
@@ -336,6 +427,8 @@ void AssemblyLink::synchronizeComponents()
     }
 
     objLinkMap.clear();
+    const bool rigidLike = isRigidLike();
+    const bool lightweightMode = useLightweightMode();
 
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
@@ -430,6 +523,13 @@ void AssemblyLink::synchronizeComponents()
             if (linkedObj == obj) {
                 found = true;
                 link = obj2;
+                if (subAsmLink) {
+                    syncSubAssemblyLinkProperties(
+                        static_cast<AssemblyLink*>(obj),
+                        subAsmLink,
+                        lightweightMode
+                    );
+                }
                 break;
             }
         }
@@ -441,10 +541,8 @@ void AssemblyLink::synchronizeComponents()
                 App::DocumentObject* newObj
                     = doc->addObject("Assembly::AssemblyLink", obj->getNameInDocument());
                 auto* subAsmLink = static_cast<AssemblyLink*>(newObj);
-                subAsmLink->LinkedObject.setValue(obj);
-                subAsmLink->Rigid.setValue(asmLink->Rigid.getValue());
-                subAsmLink->Label.setValue(obj->Label.getValue());
                 addObject(subAsmLink);
+                syncSubAssemblyLinkProperties(asmLink, subAsmLink, lightweightMode);
                 link = subAsmLink;
             }
             else if (obj->isDerivedFrom<App::Link>() && obj->isLinkGroup()) {
@@ -486,7 +584,7 @@ void AssemblyLink::synchronizeComponents()
     }
 
     // If the assemblyLink is rigid, then we keep all placements synchronized.
-    if (isRigid()) {
+    if (rigidLike) {
         for (const auto& [sourceObj, linkObj] : objLinkMap) {
             syncPlacements(sourceObj, linkObj);
         }
@@ -745,6 +843,10 @@ AssemblyObject* AssemblyLink::getParentAssembly() const
         if (assembly) {
             return assembly;
         }
+        auto* assemblyLink = freecad_cast<AssemblyLink*>(obj);
+        if (assemblyLink) {
+            return assemblyLink->getParentAssembly();
+        }
     }
 
     return nullptr;
@@ -757,6 +859,39 @@ bool AssemblyLink::isRigid() const
         return true;
     }
     return prop->getValue();
+}
+
+bool AssemblyLink::isRigidLike() const
+{
+    return isRigid() || useLightweightMode();
+}
+
+bool AssemblyLink::isAutoLoadMode() const
+{
+    return LoadMode.getValue() == LoadModeAuto;
+}
+
+bool AssemblyLink::isLightweightRequested() const
+{
+    return LoadMode.getValue() == LoadModeLightweight;
+}
+
+bool AssemblyLink::useLightweightMode() const
+{
+    if (isLightweightRequested()) {
+        return true;
+    }
+    if (!isAutoLoadMode()) {
+        return false;
+    }
+
+    auto* assembly = getLinkedAssembly();
+    if (!assembly) {
+        return false;
+    }
+
+    int threshold = getLargeAssemblyThreshold();
+    return threshold > 0 && assembly->numberOfComponents() >= threshold;
 }
 
 std::vector<App::DocumentObject*> AssemblyLink::getJoints()
@@ -776,10 +911,53 @@ bool AssemblyLink::allowDuplicateLabel() const
 
 int AssemblyLink::numberOfComponents() const
 {
-    return isRigid() ? 1 : getLinkedAssembly()->numberOfComponents();
+    auto* assembly = getLinkedAssembly();
+    if (!assembly) {
+        return 0;
+    }
+    return isRigidLike() ? 1 : assembly->numberOfComponents();
 }
 
 bool AssemblyLink::isEmpty() const
 {
     return numberOfComponents() == 0;
+}
+
+void AssemblyLink::checkPropertyStatus()
+{
+    LinkedObject.setAllowPartial(isLightweightWorkspaceShardLink(*this) || useLightweightMode());
+}
+
+void AssemblyLink::cleanupGroundedJoints(bool rigidLike)
+{
+    auto* parentAssembly = getParentAssembly();
+    if (!parentAssembly) {
+        return;
+    }
+
+    // A flexible sub-assembly cannot be grounded.
+    // If a rigid-like sub-assembly has an object that is grounded, we also remove it.
+    auto groundedJoints = parentAssembly->getGroundedJoints();
+    for (auto* joint : groundedJoints) {
+        auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("ObjectToGround"));
+        if (!propObj) {
+            continue;
+        }
+        auto* groundedObj = propObj->getValue();
+        if (auto* linkElt = dynamic_cast<App::LinkElement*>(groundedObj)) {
+            groundedObj = linkElt->getLinkGroup();
+        }
+
+        if (rigidLike ? hasObject(groundedObj) : groundedObj == this) {
+            getDocument()->removeObject(joint->getNameInDocument());
+        }
+    }
+}
+
+int AssemblyLink::getLargeAssemblyThreshold() const
+{
+    static const auto hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly"
+    );
+    return hGrp->GetInt("LargeAssemblyThreshold", defaultLargeAssemblyThreshold);
 }

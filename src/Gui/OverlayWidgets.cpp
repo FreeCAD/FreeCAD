@@ -476,6 +476,19 @@ OverlayTabWidget::OverlayTabWidget(QWidget* parent, Qt::DockWidgetArea pos)
     connect(_animator, &QAbstractAnimation::stateChanged, this, &OverlayTabWidget::onAnimationStateChanged);
 }
 
+OverlayTabWidget::~OverlayTabWidget()
+{
+    timer.stop();
+    repaintTimer.stop();
+
+    if (_animator) {
+        _animator->disconnect(this);
+        _animator->stop();
+        delete _animator;
+        _animator = nullptr;
+    }
+}
+
 void OverlayTabWidget::refreshIcons()
 {
     auto curStyleSheet = App::GetApplication()

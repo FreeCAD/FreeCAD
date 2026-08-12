@@ -1273,7 +1273,9 @@ def getComponentReference(assembly, root_obj, sub_string):
             continue
         if obj.isDerivedFrom("Assembly::AssemblyLink"):
             if hasattr(obj, "Rigid") and not obj.Rigid:
-                continue
+                statuses = obj.getPropertyStatus("LinkedObject")
+                if "AllowPartial" not in statuses:
+                    continue
         if isLinkGroup(obj):
             continue
 

@@ -25,6 +25,12 @@ SET(Import_SRCS
     ReaderIges.h
     ReaderStep.cpp
     ReaderStep.h
+    StepLightweightManifest.cpp
+    StepLightweightManifest.h
+    StepLightweightWorkspaceBuilder.cpp
+    StepLightweightWorkspaceBuilder.h
+    StepLightweightWorkspaceRuntime.cpp
+    StepLightweightWorkspaceRuntime.h
     StepShape.pyi
     StepShape.h
     StepShape.cpp

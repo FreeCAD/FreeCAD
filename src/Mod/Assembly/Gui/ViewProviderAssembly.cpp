@@ -705,7 +705,7 @@ bool ViewProviderAssembly::canDragObjectIn3d(App::DocumentObject* obj) const
     }
 
     if (auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(obj)) {
-        if (!asmLink->isRigid()) {
+        if (!asmLink->isRigidLike()) {
             return false;
         }
     }
@@ -852,7 +852,7 @@ void ViewProviderAssembly::collectMovableObjects(
 
     // Handling of special case: flexible AssemblyLink
     auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(currentObject);
-    if (asmLink && !asmLink->isRigid()) {
+    if (asmLink && !asmLink->isRigidLike()) {
         std::vector<App::DocumentObject*> children = asmLink->Group.getValues();
         for (auto* child : children) {
             // Recurse on children, appending the child's name to the subName prefix
@@ -1320,7 +1320,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                 if (subAsmLink || link) {
                     if (std::ranges::find(objs, obj) == objs.end()) {
                         objs.push_back(obj);
-                        if (subAsmLink && !asmLink->isRigid()) {
+                        if (subAsmLink && !asmLink->isRigidLike()) {
                             addSubComponents(subAsmLink, objs);
                         }
                     }
@@ -1329,7 +1329,7 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
         };
 
         auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(objBeingDeleted);
-        if (asmLink && !asmLink->isRigid()) {
+        if (asmLink && !asmLink->isRigidLike()) {
             addSubComponents(asmLink, objsBeingDeleted);
         }
 

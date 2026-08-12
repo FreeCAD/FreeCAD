@@ -3,6 +3,7 @@
 
 set(AssemblyGui_LIBS
     Assembly
+    Import
     PartDesign
     PartGui
     Spreadsheet
@@ -45,8 +46,12 @@ SET(AssemblyGui_SRCS_Module
     PreCompiled.h
     Commands.cpp
     Commands.h
+    LightweightWorkspaceProxyViewOptimizer.cpp
+    LightweightWorkspaceProxyViewOptimizer.h
     TaskAssemblyMessages.cpp
     TaskAssemblyMessages.h
+    LightweightWorkspaceStatusPanel.cpp
+    LightweightWorkspaceStatusPanel.h
     ViewProviderAssembly.cpp
     ViewProviderAssembly.h
     ViewProviderAssemblyLink.cpp

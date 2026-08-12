@@ -27,6 +27,7 @@ import unittest
 
 import UtilsAssembly
 import JointObject
+import Preferences
 
 
 def _msg(text, end="\n"):
@@ -71,6 +72,10 @@ class AssemblyTestBase(unittest.TestCase):
             App.newDocument(doc_name)
         App.setActiveDocument(doc_name)
         self.doc = App.ActiveDocument
+        self.pref = Preferences.preferences()
+        self.old_large_assembly_threshold = self.pref.GetInt(
+            "LargeAssemblyThreshold", Preferences.DEFAULT_LARGE_ASSEMBLY_THRESHOLD
+        )
 
         self.assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")
         if self.assembly:
@@ -83,7 +88,28 @@ class AssemblyTestBase(unittest.TestCase):
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
+        self.pref.SetInt("LargeAssemblyThreshold", self.old_large_assembly_threshold)
         App.closeDocument(self.doc.Name)
+
+    def create_subassembly(self, name="SubAssembly", component_count=2):
+        subassembly = self.doc.addObject("Assembly::AssemblyObject", name)
+        for index in range(component_count):
+            subassembly.newObject("App::Part", f"Part{index}")
+        self.doc.recompute()
+        return subassembly
+
+    def create_assembly_link(self, linked_object, name="SubAssemblyLink", rigid=False, load_mode=None):
+        assembly_link = self.assembly.newObject("Assembly::AssemblyLink", name)
+        assembly_link.LinkedObject = linked_object
+        assembly_link.Rigid = rigid
+        if load_mode is not None:
+            assembly_link.LoadMode = load_mode
+        self.doc.recompute()
+        return assembly_link
+
+    @staticmethod
+    def has_joint_group(assembly_link):
+        return any(getattr(obj, "TypeId", "") == "Assembly::JointGroup" for obj in assembly_link.Group)
 
 
 class TestCore(AssemblyTestBase):
@@ -251,3 +277,93 @@ class TestCore(AssemblyTestBase):
         joint.Proxy.setJointConnectors(joint, refs)
 
         self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))
+
+    def test_assembly_link_lightweight_mode_enables_partial_loading(self):
+        operation = "AssemblyLink Lightweight Mode"
+        _msg("  Test '{}'".format(operation))
+
+        subassembly = self.create_subassembly(component_count=2)
+        assembly_link = self.create_assembly_link(subassembly, rigid=False)
+
+        self.assertNotIn(
+            "AllowPartial",
+            assembly_link.getPropertyStatus("LinkedObject"),
+            "'{}' failed: LinkedObject unexpectedly allows partial loading in normal mode".format(
+                operation
+            ),
+        )
+        self.assertTrue(
+            self.has_joint_group(assembly_link),
+            "'{}' failed: flexible sub-assembly did not create a joint group in normal mode".format(
+                operation
+            ),
+        )
+
+        assembly_link.LoadMode = "Lightweight"
+        self.doc.recompute()
+
+        self.assertIn(
+            "AllowPartial",
+            assembly_link.getPropertyStatus("LinkedObject"),
+            "'{}' failed: LinkedObject did not allow partial loading in lightweight mode".format(
+                operation
+            ),
+        )
+        self.assertFalse(
+            self.has_joint_group(assembly_link),
+            "'{}' failed: lightweight mode did not suppress joint expansion".format(operation),
+        )
+
+    def test_assembly_link_auto_mode_uses_large_assembly_threshold(self):
+        operation = "AssemblyLink Auto Load Mode"
+        _msg("  Test '{}'".format(operation))
+
+        subassembly = self.create_subassembly(component_count=2)
+        assembly_link = self.create_assembly_link(subassembly, rigid=False, load_mode="Auto")
+
+        self.assertNotIn(
+            "AllowPartial",
+            assembly_link.getPropertyStatus("LinkedObject"),
+            "'{}' failed: auto mode triggered below threshold".format(operation),
+        )
+        self.assertTrue(
+            self.has_joint_group(assembly_link),
+            "'{}' failed: auto mode suppressed joints below threshold".format(operation),
+        )
+
+        self.pref.SetInt("LargeAssemblyThreshold", 1)
+        assembly_link.LoadMode = "Normal"
+        assembly_link.LoadMode = "Auto"
+        self.doc.recompute()
+
+        self.assertIn(
+            "AllowPartial",
+            assembly_link.getPropertyStatus("LinkedObject"),
+            "'{}' failed: auto mode did not enable partial loading above threshold".format(
+                operation
+            ),
+        )
+        self.assertFalse(
+            self.has_joint_group(assembly_link),
+            "'{}' failed: auto mode did not suppress joints above threshold".format(operation),
+        )
+
+    def test_assembly_link_auto_mode_threshold_zero_disables_switch(self):
+        operation = "AssemblyLink Auto Threshold Zero"
+        _msg("  Test '{}'".format(operation))
+
+        self.pref.SetInt("LargeAssemblyThreshold", 0)
+        subassembly = self.create_subassembly(component_count=25)
+        assembly_link = self.create_assembly_link(subassembly, rigid=False, load_mode="Auto")
+
+        self.assertNotIn(
+            "AllowPartial",
+            assembly_link.getPropertyStatus("LinkedObject"),
+            "'{}' failed: threshold 0 should disable automatic partial loading".format(operation),
+        )
+        self.assertTrue(
+            self.has_joint_group(assembly_link),
+            "'{}' failed: threshold 0 should keep flexible joint expansion enabled".format(
+                operation
+            ),
+        )

@@ -38,6 +38,10 @@ class ImportExport ReaderStep
 {
 public:
     explicit ReaderStep(const Base::FileInfo& file);
+    void setLightweightWorkspaceReadMode(bool enable = true)
+    {
+        lightweightWorkspaceReadMode = enable;
+    }
     void setCodePage(Resource_FormatType cp)
     {
         codePage = cp;
@@ -50,6 +54,7 @@ public:
 private:
     Base::FileInfo file;
     Resource_FormatType codePage {};
+    bool lightweightWorkspaceReadMode {false};
 };
 
 }  // namespace Import

@@ -66,6 +66,42 @@ FC_LOG_LEVEL_INIT("Import", true, true)
 
 using namespace Import;
 
+namespace
+{
+
+struct SubshapeColorUsage
+{
+    bool hasFaceOverrides = false;
+    bool hasEdgeOverrides = false;
+};
+
+SubshapeColorUsage collectSubshapeColorUsage(
+    const Handle(XCAFDoc_ShapeTool)& shapeTool,
+    const Handle(XCAFDoc_ColorTool)& colorTool,
+    const TDF_LabelSequence& seq
+)
+{
+    SubshapeColorUsage usage;
+    Quantity_ColorRGBA color;
+    for (int i = 1; i <= seq.Length() && (!usage.hasFaceOverrides || !usage.hasEdgeOverrides); ++i) {
+        TDF_Label subLabel = seq.Value(i);
+        if (shapeTool->GetShape(subLabel).IsNull()) {
+            continue;
+        }
+        if (!usage.hasFaceOverrides
+            && (colorTool->GetColor(subLabel, XCAFDoc_ColorSurf, color)
+                || colorTool->GetColor(subLabel, XCAFDoc_ColorGen, color))) {
+            usage.hasFaceOverrides = true;
+        }
+        if (!usage.hasEdgeOverrides && colorTool->GetColor(subLabel, XCAFDoc_ColorCurv, color)) {
+            usage.hasEdgeOverrides = true;
+        }
+    }
+    return usage;
+}
+
+}  // namespace
+
 ImportOCAFOptions::ImportOCAFOptions()
 {
     defaultFaceColor.setPackedValue(0xCCCCCC00);
@@ -144,7 +180,8 @@ void ImportOCAF2::setMode(int m)
         options.mode = m;
     }
 
-    if (options.mode != SingleDoc) {
+    if (options.mode == GroupPerDoc || options.mode == GroupPerDir || options.mode == ObjectPerDoc
+        || options.mode == ObjectPerDir) {
         if (pDocument->isSaved()) {
             Base::FileInfo fi(pDocument->FileName.getValue());
             filePath = fi.dirPath();
@@ -153,6 +190,19 @@ void ImportOCAF2::setMode(int m)
             FC_WARN("Disable multi-document mode because the input document is not saved.");
         }
     }
+}
+
+App::DocumentObject* ImportOCAF2::loadLabel(TDF_Label label)
+{
+    myShapes.clear();
+    myNames.clear();
+    myCollapsedObjects.clear();
+
+    auto* obj = loadShape(pDocument, label, aShapeTool->GetShape(label), false, false);
+    if (obj) {
+        obj->recomputeFeature(true);
+    }
+    return obj;
 }
 
 static void setPlacement(App::PropertyPlacement* prop, const TopoDS_Shape& shape)
@@ -301,67 +351,74 @@ bool ImportOCAF2::createObject(
     std::vector<Base::Color> edgeColors;
 
     TDF_LabelSequence seq;
-    if (!label.IsNull() && aShapeTool->GetSubShapes(label, seq)) {
+    if (!label.IsNull() && aShapeTool->GetSubShapes(label, seq) && seq.Length()) {
+        auto usage = collectSubshapeColorUsage(aShapeTool, aColorTool, seq);
+        if (usage.hasFaceOverrides || usage.hasEdgeOverrides) {
+            TopTools_IndexedMapOfShape faceMap, edgeMap;
+            if (usage.hasFaceOverrides) {
+                TopExp::MapShapes(tshape.getShape(), TopAbs_FACE, faceMap);
+                faceColors.assign(faceMap.Extent(), info.faceColor);
+            }
+            if (usage.hasEdgeOverrides) {
+                TopExp::MapShapes(tshape.getShape(), TopAbs_EDGE, edgeMap);
+                edgeColors.assign(edgeMap.Extent(), info.edgeColor);
+            }
 
-        TopTools_IndexedMapOfShape faceMap, edgeMap;
-        TopExp::MapShapes(tshape.getShape(), TopAbs_FACE, faceMap);
-        TopExp::MapShapes(tshape.getShape(), TopAbs_EDGE, edgeMap);
-
-        faceColors.assign(faceMap.Extent(), info.faceColor);
-        edgeColors.assign(edgeMap.Extent(), info.edgeColor);
-        // Two passes to get sub shape colors. First pass, look for solid, and
-        // second pass look for face and edges. This allows lower level
-        // subshape to override color of higher level ones.
-        for (int j = 0; j < 2; ++j) {
-            for (int i = 1; i <= seq.Length(); ++i) {
-                TDF_Label l = seq.Value(i);
-                TopoDS_Shape subShape = aShapeTool->GetShape(l);
-                if (subShape.IsNull()) {
-                    continue;
-                }
-                if (subShape.ShapeType() == TopAbs_FACE || subShape.ShapeType() == TopAbs_EDGE) {
-                    if (j == 0) {
+            // Two passes to get sub shape colors. First pass, look for solid, and
+            // second pass look for face and edges. This allows lower level
+            // subshape to override color of higher level ones.
+            for (int j = 0; j < 2; ++j) {
+                for (int i = 1; i <= seq.Length(); ++i) {
+                    TDF_Label l = seq.Value(i);
+                    TopoDS_Shape subShape = aShapeTool->GetShape(l);
+                    if (subShape.IsNull()) {
                         continue;
                     }
-                }
-                else if (j != 0) {
-                    continue;
-                }
-
-                bool foundFaceColor = false, foundEdgeColor = false;
-                Base::Color faceColor, edgeColor;
-                Quantity_ColorRGBA aColor;
-                if (aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor)
-                    || aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor)) {
-                    faceColor = Tools::convertColor(aColor);
-                    foundFaceColor = true;
-                }
-                if (aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
-                    edgeColor = Tools::convertColor(aColor);
-                    foundEdgeColor = true;
-                    if (j == 0 && foundFaceColor && !faceColors.empty() && edgeColor == faceColor) {
-                        // Do not set edge the same color as face
-                        foundEdgeColor = false;
-                    }
-                }
-
-                if (foundFaceColor) {
-                    for (TopExp_Explorer exp(subShape, TopAbs_FACE); exp.More(); exp.Next()) {
-                        int idx = faceMap.FindIndex(exp.Current()) - 1;
-                        if (idx >= 0 && idx < (int)faceColors.size()) {
-                            faceColors[idx] = faceColor;
-                            hasFaceColors = true;
-                            info.hasFaceColor = true;
+                    if (subShape.ShapeType() == TopAbs_FACE || subShape.ShapeType() == TopAbs_EDGE) {
+                        if (j == 0) {
+                            continue;
                         }
                     }
-                }
-                if (foundEdgeColor) {
-                    for (TopExp_Explorer exp(subShape, TopAbs_EDGE); exp.More(); exp.Next()) {
-                        int idx = edgeMap.FindIndex(exp.Current()) - 1;
-                        if (idx >= 0 && idx < (int)edgeColors.size()) {
-                            edgeColors[idx] = edgeColor;
-                            hasEdgeColors = true;
-                            info.hasEdgeColor = true;
+                    else if (j != 0) {
+                        continue;
+                    }
+
+                    bool foundFaceColor = false, foundEdgeColor = false;
+                    Base::Color faceColor, edgeColor;
+                    Quantity_ColorRGBA aColor;
+                    if (usage.hasFaceOverrides
+                        && (aColorTool->GetColor(l, XCAFDoc_ColorSurf, aColor)
+                            || aColorTool->GetColor(l, XCAFDoc_ColorGen, aColor))) {
+                        faceColor = Tools::convertColor(aColor);
+                        foundFaceColor = true;
+                    }
+                    if (usage.hasEdgeOverrides && aColorTool->GetColor(l, XCAFDoc_ColorCurv, aColor)) {
+                        edgeColor = Tools::convertColor(aColor);
+                        foundEdgeColor = true;
+                        if (j == 0 && foundFaceColor && edgeColor == faceColor) {
+                            // Do not set edge the same color as face
+                            foundEdgeColor = false;
+                        }
+                    }
+
+                    if (foundFaceColor) {
+                        for (TopExp_Explorer exp(subShape, TopAbs_FACE); exp.More(); exp.Next()) {
+                            int idx = faceMap.FindIndex(exp.Current()) - 1;
+                            if (idx >= 0 && idx < (int)faceColors.size()) {
+                                faceColors[idx] = faceColor;
+                                hasFaceColors = true;
+                                info.hasFaceColor = true;
+                            }
+                        }
+                    }
+                    if (foundEdgeColor) {
+                        for (TopExp_Explorer exp(subShape, TopAbs_EDGE); exp.More(); exp.Next()) {
+                            int idx = edgeMap.FindIndex(exp.Current()) - 1;
+                            if (idx >= 0 && idx < (int)edgeColors.size()) {
+                                edgeColors[idx] = edgeColor;
+                                hasEdgeColors = true;
+                                info.hasEdgeColor = true;
+                            }
                         }
                     }
                 }
@@ -401,7 +458,8 @@ bool ImportOCAF2::createObject(
 
 App::Document* ImportOCAF2::getDocument(App::Document* doc, TDF_Label label)
 {
-    if (filePath.empty() || options.mode == SingleDoc || options.merge) {
+    if (filePath.empty() || options.mode == SingleDoc
+        || options.mode == LightweightWorkspace || options.merge) {
         return doc;
     }
 

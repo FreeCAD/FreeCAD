@@ -61,6 +61,7 @@ public:
         GroupPerDirectory = 2,
         ObjectPerDocument = 3,
         ObjectPerDirectory = 4,
+        LightweightWorkspace = 5,
     };
     struct CodePage
     {
@@ -105,6 +106,18 @@ public:
 
     void setImportMode(ImportMode);
     ImportMode getImportMode() const;
+
+    void setAutoLightweightWorkspace(bool);
+    bool getAutoLightweightWorkspace() const;
+
+    void setAutoLightweightMinFileSizeMB(int);
+    int getAutoLightweightMinFileSizeMB() const;
+
+    void setAutoLightweightMinNodeCount(int);
+    int getAutoLightweightMinNodeCount() const;
+
+    void setLightweightWorkspaceMaxLoadedShards(int);
+    int getLightweightWorkspaceMaxLoadedShards() const;
 
     void setImportCodePage(int);
     Resource_FormatType getImportCodePage() const;

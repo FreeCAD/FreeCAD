@@ -55,6 +55,8 @@ SET(AssemblyScripts_SRCS
 
 SET(AssemblyTests_SRCS
     AssemblyTests/__init__.py
+    AssemblyTests/LargeAssemblyBenchmark.py
+    AssemblyTests/PrepareLargeAssemblyReview.py
     AssemblyTests/TestCore.py
     AssemblyTests/TestCommandInsertLink.py
     AssemblyTests/TestSimulationExport.py
@@ -91,6 +93,12 @@ fc_copy_sources(AssemblyTests "${CMAKE_BINARY_DIR}/Mod/Assembly" ${Assembly_Scri
 # Ensure AssemblyScripts finishes its directory creation and copying before
 # AssemblyTests begins.
 add_dependencies(AssemblyTests AssemblyScripts)
+if(TARGET Assembly)
+    add_dependencies(Assembly AssemblyScripts)
+endif()
+if(TARGET AssemblyGui)
+    add_dependencies(AssemblyGui AssemblyScripts)
+endif()
 
 INSTALL(
     FILES

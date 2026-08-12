@@ -1,4 +1,56 @@
 /** \defgroup ASSEMBLY Assembly
  *  \ingroup PYTHONWORKBENCHES
  *  \brief Tools to build assemblies
+ *
+ *  Assembly links can be expanded in three load modes:
+ *  - Normal: fully load the linked assembly and solve all internal joints.
+ *  - Auto: switch to lightweight behavior once the linked assembly reaches the
+ *    user-configured large assembly threshold.
+ *  - Lightweight: keep the linked document partially loaded and suppress
+ *    internal joint expansion for faster navigation in large projects.
+ *
+ *  The large assembly threshold is configured in the Assembly preferences.
+ *  Setting the threshold to 0 disables the automatic switch used by Auto mode.
+ *
+ *  When an `AssemblyLink` comes from a lightweight STEP workspace, double-click
+ *  now reloads the cached shard document automatically when needed. The same
+ *  links expose context-menu actions to load or unload the shard explicitly,
+ *  can open a live metrics dock for the workspace, and unloaded shards keep a
+ *  lightweight bounding-box proxy in the master assembly for navigation and
+ *  selection context. With a shard budget of 0, the master workspace starts
+ *  with every shard unloaded and only reloads geometry on demand. With spare
+ *  shard budget, loading one workspace link can also prefetch spatially
+ *  nearby shard links automatically to reduce follow-up load latency while
+ *  browsing large assemblies. The view-aware optimizer waits for a short idle
+ *  window after camera motion before rebalancing shard loads so viewport
+ *  navigation does not stutter because of synchronous shard open/close work.
+ *  It also culls far lightweight proxy placeholders continuously from the
+ *  active view while navigating, retains shards based on current frustum
+ *  intersection and focus
+ *  distance, applies a short hysteresis window before trimming edge-of-view
+ *  shards, and can warm-prefetch one extra nearby shard once the camera stays
+ *  stable long enough. The same idle loop also restores the deferred initial
+ *  shard budget for user-saved lightweight `.FCStd` workspaces near the
+ *  current camera focus, avoiding a synchronous shard reopen burst during
+ *  document restore.
+ *  Import runtime status can be used to inspect how many links are
+ *  still proxies and which shard loads were manual, prefetched, or trimmed
+ *  during the current session, and the metrics dock surfaces the same counters
+ *  live in the GUI while also allowing direct load, unload, explicit nearby
+ *  prefetch, live budget tuning, and trim actions on workspace shards.
+ *  Individual shards can also be pinned for the current workspace and the
+ *  pinning state is persisted in the lightweight cache so automatic trim
+ *  passes keep key sub-assemblies loaded across reopen. Reopen and live budget
+ *  changes still honor the configured shard budget, automatically restoring
+ *  pinned shards when possible and prioritizing the most recent pinned shards
+ *  first when the budget cannot accommodate them all.
+ *
+ *  For tuning and regression checks on large synthetic models, use
+ *  `AssemblyTests/LargeAssemblyBenchmark.py`. It can be run with FreeCADCmd to
+ *  compare recompute cost and lightweight behavior across different component
+ *  counts, thresholds, and load modes.
+ *
+ *  For manual GUI review, `AssemblyTests/PrepareLargeAssemblyReview.py`
+ *  creates below-threshold and above-threshold `AssemblyLink` scenarios that
+ *  make it easier to inspect `Normal`, `Auto`, and `Lightweight` behavior.
  */

@@ -24,6 +24,7 @@
 
 #include <Base/Interpreter.h>
 
+#include "LightweightWorkspaceProxyViewOptimizer.h"
 
 namespace AssemblyGui
 {
@@ -33,7 +34,19 @@ public:
     Module()
         : Py::ExtensionModule<Module>("AssemblyGui")
     {
+        add_noargs_method(
+            "optimizeLightweightWorkspaceActiveView",
+            &Module::optimizeLightweightWorkspaceActiveView,
+            "optimizeLightweightWorkspaceActiveView() -- Run the lightweight workspace "
+            "view-aware optimizer immediately for the current active 3D view."
+        );
         initialize("This module is the Assembly module.");  // register with Python
+    }
+
+    Py::Object optimizeLightweightWorkspaceActiveView()
+    {
+        LightweightWorkspaceProxyViewOptimizer::optimizeActiveView();
+        return Py::None();
     }
 };
 

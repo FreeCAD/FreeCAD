@@ -81,9 +81,14 @@ public:
     ImportOCAF2(Handle(TDocStd_Document) h, App::Document* d, const std::string& name);
     virtual ~ImportOCAF2();
     App::DocumentObject* loadShapes();
+    App::DocumentObject* loadLabel(TDF_Label label);
 
     static ImportOCAFOptions customImportOptions();
     void setImportOptions(ImportOCAFOptions opts);
+    ImportOCAFOptions getImportOptions() const
+    {
+        return options;
+    }
     void setMerge(bool enable)
     {
         options.merge = enable;
@@ -121,6 +126,7 @@ public:
         GroupPerDir = 2,
         ObjectPerDoc = 3,
         ObjectPerDir = 4,
+        LightweightWorkspace = 5,
         ModeMax,
     };
     void setMode(int m);

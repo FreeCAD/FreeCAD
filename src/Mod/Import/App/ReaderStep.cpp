@@ -35,6 +35,30 @@
 
 using namespace Import;
 
+namespace
+{
+
+void configureReaderModes(
+    STEPCAFControl_Reader& reader,
+    bool lightweightWorkspaceReadMode
+)
+{
+    reader.SetColorMode(true);
+    reader.SetNameMode(true);
+    reader.SetSHUOMode(true);
+    reader.SetLayerMode(!lightweightWorkspaceReadMode);
+    if (!lightweightWorkspaceReadMode) {
+        return;
+    }
+
+    reader.SetPropsMode(false);
+    reader.SetMetaMode(false);
+    reader.SetProductMetaMode(false);
+    reader.SetGDTMode(false);
+}
+
+}  // namespace
+
 ReaderStep::ReaderStep(const Base::FileInfo& file)  // NOLINT
     : file {file}
 {
@@ -48,10 +72,7 @@ void ReaderStep::read(Handle(TDocStd_Document) hDoc, const Message_ProgressRange
     std::string utf8Name = file.filePath();
     std::string name8bit = Part::encodeFilename(utf8Name);
     STEPCAFControl_Reader aReader;
-    aReader.SetColorMode(true);
-    aReader.SetNameMode(true);
-    aReader.SetLayerMode(true);
-    aReader.SetSHUOMode(true);
+    configureReaderModes(aReader, lightweightWorkspaceReadMode);
 #if OCC_VERSION_HEX < 0x070800
     if (aReader.ReadFile(name8bit.c_str()) != IFSelect_RetDone) {
 #else

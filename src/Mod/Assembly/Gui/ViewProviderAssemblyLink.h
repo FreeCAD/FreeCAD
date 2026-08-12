@@ -25,10 +25,20 @@
 
 #include <QCoreApplication>
 
+#include <Base/BoundBox.h>
 #include <Mod/Assembly/AssemblyGlobal.h>
 
 #include <Gui/ViewProviderPart.h>
 
+class SoBaseColor;
+class SoDrawStyle;
+class SoSeparator;
+class SoSwitch;
+
+namespace Gui
+{
+class SoFCBoundingBox;
+}
 
 namespace AssemblyGui
 {
@@ -41,6 +51,8 @@ class AssemblyGuiExport ViewProviderAssemblyLink: public Gui::ViewProviderPart
 public:
     ViewProviderAssemblyLink();
     ~ViewProviderAssemblyLink() override;
+
+    void attach(App::DocumentObject*) override;
 
     /// deliver the icon shown in the tree view. Override from ViewProvider.h
     QIcon getIcon() const override;
@@ -72,7 +84,24 @@ public:
         return false;
     };
 
+    void updateData(const App::Property*) override;
+    void finishRestoring() override;
     void setupContextMenu(QMenu*, QObject*, const char*) override;
+    void setLightweightPlaceholderVisible(bool visible);
+
+private:
+    void updateLightweightPlaceholder();
+    void syncLightweightPlaceholderVisibility();
+    static bool lightweightProxyBounds(const App::DocumentObject&, Base::BoundBox3d&);
+
+private:
+    SoSwitch* lightweightPlaceholderSwitch {nullptr};
+    SoSeparator* lightweightPlaceholderRoot {nullptr};
+    SoBaseColor* lightweightPlaceholderColor {nullptr};
+    SoDrawStyle* lightweightPlaceholderStyle {nullptr};
+    Gui::SoFCBoundingBox* lightweightPlaceholderBox {nullptr};
+    bool lightweightPlaceholderVisible {true};
+    bool lightweightPlaceholderRenderable {false};
 };
 
 }  // namespace AssemblyGui

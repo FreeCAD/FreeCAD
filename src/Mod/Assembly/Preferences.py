@@ -22,13 +22,20 @@
 # **************************************************************************/
 
 import FreeCAD
-import FreeCADGui
+
+if FreeCAD.GuiUp:
+    import FreeCADGui
+else:
+    FreeCADGui = None
 
 translate = FreeCAD.Qt.translate
 
 
 def preferences():
     return FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Assembly")
+
+
+DEFAULT_LARGE_ASSEMBLY_THRESHOLD = 200
 
 
 class PreferencesPage:
@@ -40,6 +47,7 @@ class PreferencesPage:
         pref.SetBool("LeaveEditWithEscape", self.form.checkBoxEnableEscape.isChecked())
         pref.SetBool("LogSolverDebug", self.form.checkBoxSolverDebug.isChecked())
         pref.SetInt("GroundFirstPart", self.form.groundFirstPart.currentIndex())
+        pref.SetInt("LargeAssemblyThreshold", self.form.largeAssemblyThreshold.value())
 
     def loadSettings(self):
         pref = preferences()
@@ -50,3 +58,6 @@ class PreferencesPage:
         self.form.groundFirstPart.addItem(translate("Assembly", "Always"))
         self.form.groundFirstPart.addItem(translate("Assembly", "Never"))
         self.form.groundFirstPart.setCurrentIndex(pref.GetInt("GroundFirstPart", 0))
+        self.form.largeAssemblyThreshold.setValue(
+            pref.GetInt("LargeAssemblyThreshold", DEFAULT_LARGE_ASSEMBLY_THRESHOLD)
+        )

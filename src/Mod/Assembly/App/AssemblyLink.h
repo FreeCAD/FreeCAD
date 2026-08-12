@@ -31,6 +31,7 @@
 #include <App/FeaturePython.h>
 #include <App/Part.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyStandard.h>
 
 
 namespace Assembly
@@ -43,6 +44,13 @@ class AssemblyExport AssemblyLink: public App::Part
     PROPERTY_HEADER_WITH_OVERRIDE(Assembly::AssemblyLink);
 
 public:
+    enum LoadModeOption
+    {
+        LoadModeNormal = 0,
+        LoadModeAuto,
+        LoadModeLightweight,
+    };
+
     AssemblyLink();
     ~AssemblyLink() override;
 
@@ -55,6 +63,10 @@ public:
     }
 
     App::DocumentObjectExecReturn* execute() override;
+    int canLoadPartial() const override
+    {
+        return useLightweightMode() ? 1 : 0;
+    }
 
     // The linked assembly is the AssemblyObject that this AssemblyLink pseudo-links to recursively.
     AssemblyObject* getLinkedAssembly() const;
@@ -66,6 +78,10 @@ public:
     App::DocumentObject* getLinkedObject2(bool recurse = true) const;
 
     bool isRigid() const;
+    bool isRigidLike() const;
+    bool isAutoLoadMode() const;
+    bool isLightweightRequested() const;
+    bool useLightweightMode() const;
 
     /**
      * Update all of the components and joints from the Assembly
@@ -91,6 +107,7 @@ public:
 
     App::PropertyXLink LinkedObject;
     App::PropertyBool Rigid;
+    App::PropertyEnumeration LoadMode;
 
     std::unordered_map<App::DocumentObject*, App::DocumentObject*> objLinkMap;
 
@@ -98,6 +115,11 @@ protected:
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop) override;
     void onDocumentRestored() override;
+
+private:
+    void checkPropertyStatus();
+    void cleanupGroundedJoints(bool rigidLike);
+    int getLargeAssemblyThreshold() const;
 };
 
 

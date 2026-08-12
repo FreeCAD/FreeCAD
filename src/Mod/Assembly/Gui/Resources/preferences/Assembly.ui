@@ -84,6 +84,54 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     </spacer>
    </item>
    <item row="3" column="0">
+   <widget class="QLabel" name="largeAssemblyThresholdLabel">
+     <property name="toolTip">
+      <string>Controls when AssemblyLink objects in Auto load mode start behaving as lightweight links.</string>
+     </property>
+     <property name="text">
+      <string>Large assembly threshold</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="Gui::PrefSpinBox" name="largeAssemblyThreshold">
+     <property name="toolTip">
+      <string>AssemblyLink objects in Auto load mode switch to lightweight behavior once the linked assembly reaches this number of components. Set to 0 to disable the automatic switch.</string>
+     </property>
+     <property name="specialValueText">
+      <string>Disabled</string>
+     </property>
+     <property name="minimum">
+      <number>0</number>
+     </property>
+     <property name="maximum">
+      <number>100000</number>
+     </property>
+     <property name="value">
+      <number>200</number>
+     </property>
+     <property name="prefEntry" stdset="0">
+      <cstring>LargeAssemblyThreshold</cstring>
+     </property>
+     <property name="prefPath" stdset="0">
+      <cstring>Mod/Assembly</cstring>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <spacer name="horSpacerLargeAssembly">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -102,6 +150,11 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

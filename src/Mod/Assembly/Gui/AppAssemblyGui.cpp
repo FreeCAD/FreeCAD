@@ -27,6 +27,7 @@
 #include <Base/PyObjectBase.h>
 
 #include "Commands.h"
+#include "LightweightWorkspaceProxyViewOptimizer.h"
 #include "ViewProviderAssembly.h"
 #include "ViewProviderAssemblyLink.h"
 #include "ViewProviderBom.h"
@@ -53,6 +54,7 @@ PyMOD_INIT_FUNC(AssemblyGui)
     Base::Console().log("Loading AssemblyGui module... done\n");
 
     AssemblyGui::CreateAssemblyCommands();
+    AssemblyGui::LightweightWorkspaceProxyViewOptimizer::init();
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
