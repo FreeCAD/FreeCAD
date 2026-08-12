@@ -43,8 +43,6 @@ from Path.Base.Generator import (
 from PathScripts import PathUtils
 from PySide import QtCore
 
-import math
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
