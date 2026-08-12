@@ -1796,18 +1796,11 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     auto& topoShape2 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, Smoothing::bspline);
     auto& topoShape3 = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::ruled);
     auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, Smoothing::ruled);
-    auto& topoShape5 = (new TopoShape())->makeElementLoft(
-        shapes,
-        IsSolid::notSolid,
-        Smoothing::variational
-    );
-    auto& topoShape6 = (new TopoShape())
-                          ->makeElementLoft(
-                              shapes,
-                              IsSolid::notSolid,
-                              Smoothing::bspline,
-                              IsClosed::closed
-                          );
+    auto& topoShape5
+        = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::variational);
+    auto& topoShape6
+        = (new TopoShape())
+              ->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::bspline, IsClosed::closed);
     auto elements = elementMap((topoShape));
     // Assert that we haven't broken the basic Loft functionality
     EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
@@ -1857,7 +1850,8 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftReportsMismatchedTopology)
     catch (const Base::CADKernelError& error) {
         EXPECT_STREQ(
             error.what(),
-            "Loft profiles 1 and 2 have different topology; profiles must be either all open or all "
+            "Loft profiles 1 and 2 have different topology; profiles must be either all open or "
+            "all "
             "closed"
         );
     }
@@ -1940,14 +1934,8 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         TColStd_Array1OfInteger multiplicities(1, 2);
         multiplicities.SetValue(1, 3);
         multiplicities.SetValue(2, 3);
-        Handle(Geom_BSplineCurve) curve = new Geom_BSplineCurve(
-            poles,
-            weights,
-            knots,
-            multiplicities,
-            2,
-            false
-        );
+        Handle(Geom_BSplineCurve)
+            curve = new Geom_BSplineCurve(poles, weights, knots, multiplicities, 2, false);
 
         BRepBuilderAPI_MakeWire wire;
         wire.Add(BRepBuilderAPI_MakeEdge(curve).Edge());
@@ -1955,37 +1943,24 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         wire.Add(BRepBuilderAPI_MakeEdge(corners[2], corners[3]).Edge());
         wire.Add(BRepBuilderAPI_MakeEdge(corners[3], corners[0]).Edge());
         gp_Trsf location;
-        location.SetValues(
-            0, 0, -1, planePosition,
-            -1, 0, 0, 0,
-            0, 1, 0, 0
-        );
+        location.SetValues(0, 0, -1, planePosition, -1, 0, 0, 0, 0, 1, 0, 0);
         return TopoShape(BRepBuilderAPI_Transform(wire.Wire(), location, true).Shape());
     };
 
     auto profileA = makeProfile(
-        {gp_Pnt(0, -1.57, 0),
-         gp_Pnt(2.13, -3.559, 0),
-         gp_Pnt(2.13, -8.929, 0),
-         gp_Pnt(0, -8.96, 0)},
+        {gp_Pnt(0, -1.57, 0), gp_Pnt(2.13, -3.559, 0), gp_Pnt(2.13, -8.929, 0), gp_Pnt(0, -8.96, 0)},
         gp_Pnt(2.13, -1.57, 0),
         1.0,
         50.0
     );
     auto profileD = makeProfile(
-        {gp_Pnt(0, 5.25, 0),
-         gp_Pnt(6.07, 2.79, 0),
-         gp_Pnt(6.07, 0.79, 0),
-         gp_Pnt(0, 1.1, 0)},
+        {gp_Pnt(0, 5.25, 0), gp_Pnt(6.07, 2.79, 0), gp_Pnt(6.07, 0.79, 0), gp_Pnt(0, 1.1, 0)},
         gp_Pnt(6.07, 5.25, 0),
         0.88560975361611738,
         13.0
     );
     auto profileE = makeProfile(
-        {gp_Pnt(9.65, 3.76, 0),
-         gp_Pnt(0, 6.87, 0),
-         gp_Pnt(0, 1.2, 0),
-         gp_Pnt(9.65, 1.2, 0)},
+        {gp_Pnt(9.65, 3.76, 0), gp_Pnt(0, 6.87, 0), gp_Pnt(0, 1.2, 0), gp_Pnt(9.65, 1.2, 0)},
         gp_Pnt(9.65, 6.87, 0),
         1.75,
         6.0
@@ -2137,11 +2112,9 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     }
 
     TopoShape variationalResult;
-    EXPECT_NO_THROW(variationalResult.makeElementLoft(
-        variationalProfiles,
-        IsSolid::solid,
-        Smoothing::variational
-    ));
+    EXPECT_NO_THROW(
+        variationalResult.makeElementLoft(variationalProfiles, IsSolid::solid, Smoothing::variational)
+    );
     EXPECT_FALSE(variationalResult.isNull());
     EXPECT_TRUE(BRepCheck_Analyzer(variationalResult.getShape()).IsValid());
 
@@ -2176,14 +2149,8 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         knots.SetValue(2, 1.0);
         multiplicities.SetValue(1, 3);
         multiplicities.SetValue(2, 3);
-        Handle(Geom_BSplineCurve) curve = new Geom_BSplineCurve(
-            poles,
-            weights,
-            knots,
-            multiplicities,
-            2,
-            false
-        );
+        Handle(Geom_BSplineCurve)
+            curve = new Geom_BSplineCurve(poles, weights, knots, multiplicities, 2, false);
         auto edge = BRepBuilderAPI_MakeEdge(curve).Edge();
         return reversed ? TopoDS::Edge(edge.Reversed()) : edge;
     };
@@ -2202,9 +2169,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         makeIssueWire(
             {line(gp_Pnt(50, 0, -8.96), gp_Pnt(50, 0, -1.57)),
              makeIssueCurve(
-                 {gp_Pnt(50, 0, -1.57),
-                  gp_Pnt(50, -2.13, -1.57),
-                  gp_Pnt(50, -2.13, -3.559)},
+                 {gp_Pnt(50, 0, -1.57), gp_Pnt(50, -2.13, -1.57), gp_Pnt(50, -2.13, -3.559)},
                  {1, 1, 1}
              ),
              line(gp_Pnt(50, -2.13, -3.559), gp_Pnt(50, -2.13, -8.929)),
@@ -2213,9 +2178,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         makeIssueWire(
             {line(gp_Pnt(43, 0, -6.75), gp_Pnt(43, 0, -1.38)),
              makeIssueCurve(
-                 {gp_Pnt(43, 0, -1.38),
-                  gp_Pnt(43, -2.43, -1.38),
-                  gp_Pnt(43, -2.43, -3.38)},
+                 {gp_Pnt(43, 0, -1.38), gp_Pnt(43, -2.43, -1.38), gp_Pnt(43, -2.43, -3.38)},
                  {1, 1, 1}
              ),
              line(gp_Pnt(43, -2.43, -3.38), gp_Pnt(43, -2.43, -6.75)),
@@ -2225,9 +2188,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
             {line(gp_Pnt(24, 0, -0.75), gp_Pnt(24, -3.43, -0.75)),
              line(gp_Pnt(24, -3.43, -0.75), gp_Pnt(24, -3.43, 0.6)),
              makeIssueCurve(
-                 {gp_Pnt(24, 0, 2.5),
-                  gp_Pnt(24, -3.43, 2.5),
-                  gp_Pnt(24, -3.43, 0.6)},
+                 {gp_Pnt(24, 0, 2.5), gp_Pnt(24, -3.43, 2.5), gp_Pnt(24, -3.43, 0.6)},
                  {1, 1.1376407018914187, 1},
                  true
              ),
@@ -2235,9 +2196,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         ),
         makeIssueWire(
             {makeIssueCurve(
-                 {gp_Pnt(13, 0, 5.25),
-                  gp_Pnt(13, -6.07, 5.25),
-                  gp_Pnt(13, -6.07, 2.79)},
+                 {gp_Pnt(13, 0, 5.25), gp_Pnt(13, -6.07, 5.25), gp_Pnt(13, -6.07, 2.79)},
                  {1, 0.8856097536161174, 1}
              ),
              line(gp_Pnt(13, -6.07, 2.79), gp_Pnt(13, -6.07, 0.79)),
@@ -2246,9 +2205,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
         ),
         makeIssueWire(
             {makeIssueCurve(
-                 {gp_Pnt(6, -9.65, 3.76),
-                  gp_Pnt(6, -9.65, 6.87),
-                  gp_Pnt(6, 0, 6.87)},
+                 {gp_Pnt(6, -9.65, 3.76), gp_Pnt(6, -9.65, 6.87), gp_Pnt(6, 0, 6.87)},
                  {1, 1.75, 1}
              ),
              line(gp_Pnt(6, 0, 6.87), gp_Pnt(6, 0, 1.2)),
@@ -2258,11 +2215,9 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
     };
 
     TopoShape variationalIssueShell;
-    EXPECT_NO_THROW(variationalIssueShell.makeElementLoft(
-        issueProfiles,
-        IsSolid::notSolid,
-        Smoothing::variational
-    ));
+    EXPECT_NO_THROW(
+        variationalIssueShell.makeElementLoft(issueProfiles, IsSolid::notSolid, Smoothing::variational)
+    );
     EXPECT_FALSE(variationalIssueShell.isNull());
     EXPECT_TRUE(BRepCheck_Analyzer(variationalIssueShell.getShape()).IsValid());
 }

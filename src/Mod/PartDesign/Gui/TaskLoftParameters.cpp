@@ -173,11 +173,11 @@ TaskLoftAdvancedParameters::TaskLoftAdvancedParameters(
     QWidget* parent
 )
     : TaskSketchBasedParameters(
-        LoftView,
-        parent,
-        loftTaskIconName(LoftView),
-        loftAdvancedTaskTitle(LoftView)
-    )
+          LoftView,
+          parent,
+          loftTaskIconName(LoftView),
+          loftAdvancedTaskTitle(LoftView)
+      )
     , ui(new Ui_TaskLoftAdvancedParameters)
 {
     proxy = new QWidget(this);
@@ -204,10 +204,7 @@ TaskLoftAdvancedParameters::TaskLoftAdvancedParameters(
 
     auto* loft = LoftView->getObject<PartDesign::Loft>();
     const auto* degreeConstraints = loft->MaxDegree.getConstraints();
-    ui->spinBoxMaxDegree->setRange(
-        degreeConstraints->LowerBound,
-        degreeConstraints->UpperBound
-    );
+    ui->spinBoxMaxDegree->setRange(degreeConstraints->LowerBound, degreeConstraints->UpperBound);
     ui->spinBoxMaxDegree->setSingleStep(degreeConstraints->StepSize);
     ui->spinBoxMaxDegree->setValue(loft->MaxDegree.getValue());
     ui->comboBoxParametrization->setCurrentIndex(loft->Parametrization.getValue());
@@ -221,7 +218,7 @@ TaskLoftAdvancedParameters::TaskLoftAdvancedParameters(
 
     // if (!isSubtractiveLoft(LoftView)) {
     hideGroupBox();
-     // }
+    // }
 }
 
 TaskLoftAdvancedParameters::~TaskLoftAdvancedParameters() = default;

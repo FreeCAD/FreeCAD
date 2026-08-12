@@ -62,17 +62,9 @@ Part::Smoothing loftSmoothing(long loftType)
 }
 }  // namespace
 
-App::PropertyIntegerConstraint::Constraints Loft::Degrees = {
-    2,
-    Geom_BSplineSurface::MaxDegree(),
-    1
-};
-const char* Loft::LoftTypeEnums[] = {
-    "Standard B-Spline",
-    "Ruled Surface",
-    "Variational B-Spline",
-    nullptr
-};
+App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2, Geom_BSplineSurface::MaxDegree(), 1};
+const char* Loft::LoftTypeEnums[]
+    = {"Standard B-Spline", "Ruled Surface", "Variational B-Spline", nullptr};
 const char* Loft::ParametrizationEnums[] = {"Chord length", "Centripetal", "Uniform", nullptr};
 const char* Loft::ContinuityEnums[] = {"C0", "C1", "C2", nullptr};
 
@@ -80,29 +72,11 @@ Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setValue(nullptr);
-    ADD_PROPERTY_TYPE(
-        LoftType,
-        (long(0)),
-        "Loft",
-        App::Prop_None,
-        "Loft surface generation algorithm"
-    );
-    ADD_PROPERTY_TYPE(
-        Ruled,
-        (false),
-        "Compatibility",
-        App::Prop_Hidden,
-        "Deprecated: use LoftType instead"
-    );
+    ADD_PROPERTY_TYPE(LoftType, (long(0)), "Loft", App::Prop_None, "Loft surface generation algorithm");
+    ADD_PROPERTY_TYPE(Ruled, (false), "Compatibility", App::Prop_Hidden, "Deprecated: use LoftType instead");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
     ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum B-Spline degree");
-    ADD_PROPERTY_TYPE(
-        Parametrization,
-        (long(0)),
-        "Loft",
-        App::Prop_None,
-        "B-Spline parametrization type"
-    );
+    ADD_PROPERTY_TYPE(Parametrization, (long(0)), "Loft", App::Prop_None, "B-Spline parametrization type");
     ADD_PROPERTY_TYPE(Continuity, (long(2)), "Loft", App::Prop_None, "B-Spline continuity");
     ADD_PROPERTY_TYPE(
         CheckCompatibility,

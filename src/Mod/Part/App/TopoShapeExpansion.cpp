@@ -4473,7 +4473,8 @@ enum class LoftFailureScope
     none,              // The failing profile range could not be determined.
     profilePair,       // Two profiles fail when lofted together.
     profilePrefix,     // Where the failure first appears.
-    completeSequence,  // Only the complete profile sequence causes the failure (subsections may succeed).
+    completeSequence,  // Only the complete profile sequence causes the failure (subsections may
+                       // succeed).
 };
 
 // Captures an OCCT loft failure, its profile range, and any verified recovery suggestion.
@@ -4500,7 +4501,8 @@ struct LoftOptions
 };
 
 // Configure the BRepOffsetAPI_ThruSections generator based on the loft options.
-// BRepOffsetAPI_ThruSections API: https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html
+// BRepOffsetAPI_ThruSections API:
+// https://dev.opencascade.org/doc/refman/html/class_b_rep_offset_a_p_i___thru_sections.html
 void configureThruSections(BRepOffsetAPI_ThruSections& generator, const LoftOptions& options)
 {
     // Max order of interpolation that OCCT will be allowed to use
@@ -4692,8 +4694,7 @@ BRepFill_ThruSectionErrorStatus probeLoftRange(
     }
     try {
         generator.Build();
-        if (!generator.IsDone()
-            || generator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
+        if (!generator.IsDone() || generator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
             return generator.GetStatus() == BRepFill_ThruSectionErrorStatus_Done
                 ? BRepFill_ThruSectionErrorStatus_NotDone
                 : generator.GetStatus();
@@ -4777,8 +4778,7 @@ LoftFailure diagnoseLoftFailure(
         return failure;
     }
 
-    if (status == BRepFill_ThruSectionErrorStatus_ProfilesInconsistent
-        && options.checkCompatibility) {
+    if (status == BRepFill_ThruSectionErrorStatus_ProfilesInconsistent && options.checkCompatibility) {
         for (std::size_t i = 0; i + 1 < profiles.size(); ++i) {
             const auto pairStatus = probeProfileCompatibility(profiles, 2, i);
             if (pairStatus && *pairStatus != BRepFill_ThruSectionErrorStatus_Done) {
@@ -4816,8 +4816,7 @@ LoftFailure diagnoseLoftFailure(
         || status == BRepFill_ThruSectionErrorStatus_Failed) {
         suggestLoftAlternative(failure, profiles, options);
         for (std::size_t i = 0; i + 1 < profiles.size(); ++i) {
-            if (probeLoftRange(profiles, 2, options, i)
-                != BRepFill_ThruSectionErrorStatus_Done) {
+            if (probeLoftRange(profiles, 2, options, i) != BRepFill_ThruSectionErrorStatus_Done) {
                 failure.scope = LoftFailureScope::profilePair;
                 failure.firstProfile = i;
                 failure.secondProfile = i + 1;
@@ -4835,8 +4834,7 @@ LoftFailure diagnoseLoftFailure(
         }
         if (options.isClosed == IsClosed::notClosed) {
             for (std::size_t count = 2; count < profiles.size(); ++count) {
-                if (probeLoftRange(profiles, count, options)
-                    != BRepFill_ThruSectionErrorStatus_Done) {
+                if (probeLoftRange(profiles, count, options) != BRepFill_ThruSectionErrorStatus_Done) {
                     failure.scope = LoftFailureScope::profilePrefix;
                     failure.secondProfile = count - 1;
                     return failure;
@@ -4892,7 +4890,8 @@ LoftFailure diagnoseLoftFailure(
             break;
         case LoftFailureScope::completeSequence:
             message << "; the failure occurs when trying the complete sequence of "
-                    << failure.secondProfile + 1 << " profiles (may succeed for subsets of profiles)";
+                    << failure.secondProfile + 1
+                    << " profiles (may succeed for subsets of profiles)";
             break;
     }
     // a failure triggers "dry-runs" of the lofting algorithm
@@ -5003,8 +5002,7 @@ TopoShape& TopoShape::makeElementLoft(
 
     // For closed lofts, we can't create the closure with a vertex as the last profile
     bool closeProfileSequence = isClosed == IsClosed::closed;
-    if (closeProfileSequence
-        && profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
+    if (closeProfileSequence && profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
         Base::Console().message(
             "TopoShape::makeLoft: can't close Loft with Vertex as last "
             "profile. 'Closed' ignored.\n"
@@ -5054,8 +5052,7 @@ TopoShape& TopoShape::makeElementLoft(
 #else
             generator.Build();
 #endif
-            if (!generator.IsDone()
-                || generator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
+            if (!generator.IsDone() || generator.GetStatus() != BRepFill_ThruSectionErrorStatus_Done) {
                 return generator.GetStatus() == BRepFill_ThruSectionErrorStatus_Done
                     ? BRepFill_ThruSectionErrorStatus_NotDone
                     : generator.GetStatus();
