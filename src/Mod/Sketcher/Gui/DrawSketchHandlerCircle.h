@@ -150,6 +150,9 @@ private:
                 if (constructionMethod() == ConstructionMethod::ThreeRim) {
                     centerPoint = (onSketchPos - firstPoint) / 2 + firstPoint;
                 }
+                else {
+                    snapToEqualRadiusAutoConstraint(centerPoint, onSketchPos);
+                }
                 secondPoint = onSketchPos;
 
                 radius = (onSketchPos - centerPoint).Length();

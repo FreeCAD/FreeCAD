@@ -303,6 +303,8 @@ protected:
     void resetParallelPerpendicularHint();
     void clearParallelPerpendicularHintDrawing() const;
     bool updateParallelPerpendicularEndpointHint();
+    bool updateParallelPerpendicularPointHint(const Base::Vector2d& point);
+    bool getParallelPerpendicularHintAnchorPoint(Base::Vector2d& anchorPoint) const;
     bool snapToParallelPerpendicularHint(Base::Vector2d& point);
     void startHoverTimer();
     void stopHoverTimer();
@@ -383,9 +385,18 @@ protected:
         double radius = 0.0;
     };
 
+    struct ParallelPerpendicularActiveHint
+    {
+        Base::Vector2d start;
+        Base::Vector2d end;
+        int refGeoId = Sketcher::GeoEnum::GeoUndef;
+        int directionIndex = -1;
+    };
+
     PreselectionData getPreselectionData() const;
 
     double getAutoConstraintSearchDistance() const;
+    double getPredictiveAutoConstraintSearchDistance() const;
 
     void seekPreselectionAutoConstraint(
         std::vector<AutoConstraint>& constraints,
@@ -410,7 +421,7 @@ protected:
     bool getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& point) const;
 
     void resetTangentAutoConstraintHint();
-    bool updateTangentAutoConstraintHint();
+    bool updateTangentAutoConstraintHint(const Base::Vector2d* cursorPos = nullptr);
     void renderDirectionalAutoConstraintHints() const;
     bool isDirectionCloseToTangentHint(const Base::Vector2d& direction) const;
     bool snapToTangentHint(Base::Vector2d& point);
@@ -419,11 +430,40 @@ protected:
 
     bool seekAlignmentAutoConstraint(std::vector<AutoConstraint>& constraints, const Base::Vector2d& Dir);
 
+    bool seekConcentricAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        AutoConstraint::TargetType type
+    );
+
+    bool seekLineMidpointAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        AutoConstraint::TargetType type
+    );
+
+    bool seekEqualLengthAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Dir,
+        AutoConstraint::TargetType type
+    );
+
+    bool seekEqualRadiusAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Dir,
+        AutoConstraint::TargetType type
+    );
+
     bool seekTangentAutoConstraint(
         std::vector<AutoConstraint>& constraints,
         const Base::Vector2d& Pos,
         const Base::Vector2d& Dir
     );
+
+    bool snapToConcentricAutoConstraint(Base::Vector2d& point);
+    bool snapToLineMidpointAutoConstraint(Base::Vector2d& point);
+    bool snapToEqualLengthAutoConstraint(Base::Vector2d& point);
+    bool snapToEqualRadiusAutoConstraint(const Base::Vector2d& center, Base::Vector2d& point);
 
     void openCommand(const std::string& name);
     void commitCommand();
@@ -446,6 +486,9 @@ private:
     int parallelPerpendicularRefGeoId {Sketcher::GeoEnum::GeoUndef};
     int parallelPerpendicularActiveHintLine {-1};
     bool parallelPerpendicularRefFromEndpoint {false};
+    Base::Vector2d parallelPerpendicularAnchorPoint;
+    bool parallelPerpendicularHasAnchorPoint {false};
+    std::vector<ParallelPerpendicularActiveHint> parallelPerpendicularActiveHints;
     int lastHoveredGeoId {Sketcher::GeoEnum::GeoUndef};
     QTimer* hoverTimer {nullptr};
 };
