@@ -623,6 +623,7 @@ QuarterWidget::setSceneGraph(SoNode * node)
   SoCamera * camera = nullptr;
   SoSeparator * superscene = nullptr;
   bool viewall = false;
+  bool cameraInSceneGraph = false;
 
   if (node) {
     PRIVATE(this)->scene = node;
@@ -637,6 +638,7 @@ QuarterWidget::setSceneGraph(SoNode * node)
       superscene->addChild(camera);
       viewall = true;
     }
+    cameraInSceneGraph = camera != nullptr;
 
     superscene->addChild(node);
   }
@@ -645,6 +647,7 @@ QuarterWidget::setSceneGraph(SoNode * node)
   PRIVATE(this)->sorendermanager->setCamera(camera);
   PRIVATE(this)->soeventmanager->setSceneGraph(superscene);
   PRIVATE(this)->sorendermanager->setSceneGraph(superscene);
+  PRIVATE(this)->sorendermanager->setCameraInSceneGraph(cameraInSceneGraph);
 
   if (viewall) { this->viewAll(); }
   if (superscene) { superscene->touch(); }
@@ -673,9 +676,11 @@ QuarterWidget::setSoRenderManager(SoRenderManager * manager)
   SoNode * scene = nullptr;
   SoCamera * camera = nullptr;
   SbViewportRegion vp;
+  SbBool cameraInSceneGraph = FALSE;
   if (PRIVATE(this)->sorendermanager && manager) {
     scene = PRIVATE(this)->sorendermanager->getSceneGraph();
     camera = PRIVATE(this)->sorendermanager->getCamera();
+    cameraInSceneGraph = PRIVATE(this)->sorendermanager->isCameraInSceneGraph();
     vp = PRIVATE(this)->sorendermanager->getViewportRegion(); // clazy:exclude=rule-of-two-soft
     carrydata = true;
   }
@@ -700,6 +705,7 @@ QuarterWidget::setSoRenderManager(SoRenderManager * manager)
   if (carrydata) {
     PRIVATE(this)->sorendermanager->setSceneGraph(scene);
     PRIVATE(this)->sorendermanager->setCamera(camera);
+    PRIVATE(this)->sorendermanager->setCameraInSceneGraph(cameraInSceneGraph);
     PRIVATE(this)->sorendermanager->setViewportRegion(vp);
   }
 
