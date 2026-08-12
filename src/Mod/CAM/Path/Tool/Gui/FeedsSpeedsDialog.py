@@ -315,6 +315,7 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
 
     def __init__(self, tc, parent=None):
         super().__init__(parent)
+        self._centered = False
         self.tc = tc
         ensure_tc_properties(tc)
         self.toolbit = _toolbit_from_tc(tc)
@@ -329,6 +330,17 @@ class FeedsSpeedsDialog(QtWidgets.QDialog):
         self.setWindowTitle(translate("CAM_FeedsSpeeds", "Suggest Feeds & Speeds"))
         self._build_ui()
         self._refresh()
+
+    def showEvent(self, event) -> None:
+        super().showEvent(event)
+        if not self._centered:
+            self._centered = True
+            screen = QtWidgets.QApplication.primaryScreen()
+            if screen is not None:
+                geo = screen.availableGeometry()
+                frame = self.frameGeometry()
+                frame.moveCenter(geo.center())
+                self.move(frame.topLeft())
 
     def _build_ui(self) -> None:
         outer = QtWidgets.QVBoxLayout(self)

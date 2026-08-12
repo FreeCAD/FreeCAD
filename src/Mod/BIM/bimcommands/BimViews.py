@@ -36,6 +36,17 @@ UPDATEINTERVAL = 2000  # number of milliseconds between BIM Views Manager update
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
+if FreeCAD.GuiUp:
+    from PySide import QtCore, QtGui
+
+    class _HeightEditDelegate(QtGui.QStyledItemDelegate):
+        """Allow editing the Height column only for objects that provide it."""
+
+        def createEditor(self, parent, option, index):
+            if index.data(QtCore.Qt.UserRole):
+                return QtGui.QStyledItemDelegate.createEditor(self, parent, option, index)
+
+
 class BIM_Views:
 
     def GetResources(self):
@@ -81,6 +92,7 @@ class BIM_Views:
 
             # set context menu
             self.dialog.tree.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.dialog.tree.setItemDelegateForColumn(2, _HeightEditDelegate(self.dialog.tree))
 
             # set button
             self.dialog.menu = QtGui.QMenu()
@@ -91,7 +103,8 @@ class BIM_Views:
                 ("Delete", translate("BIM", "Delete")),
                 ("Toggle", translate("BIM", "Toggle Visibility")),
                 ("Isolate", translate("BIM", "Isolate")),
-                ("SaveView", translate("BIM", "Save View Position")),
+                ("SaveView", translate("BIM", "Save Camera View")),
+                ("SaveVisibility", translate("BIM", "Save Visibility of Objects")),
                 ("Rename", translate("BIM", "Rename")),
             ]:
                 action = QtGui.QAction(button[1])
@@ -130,7 +143,7 @@ class BIM_Views:
                 translate("BIM", "Turns all items off except the selected ones")
             )
             self.dialog.buttonSaveView.setToolTip(
-                translate("BIM", "Saves the current camera position to the selected items")
+                translate("BIM", "Saves the current camera view to the selected items")
             )
             self.dialog.buttonRename.setToolTip(translate("BIM", "Renames the selected item"))
             self.dialog.buttonActive.setToolTip(translate("BIM", "Activates the selected item"))
@@ -142,8 +155,9 @@ class BIM_Views:
             self.dialog.buttonToggle.triggered.connect(self.toggle)
             self.dialog.buttonIsolate.triggered.connect(self.isolate)
             self.dialog.buttonSaveView.triggered.connect(self.saveView)
+            self.dialog.buttonSaveVisibility.triggered.connect(self.saveVisibility)
             self.dialog.buttonRename.triggered.connect(self.rename)
-            self.dialog.buttonActive.triggered.connect(lambda: BIM_Views.activate(self.dialog))
+            self.dialog.buttonActive.triggered.connect(self.activateContextItem)
             self.dialog.tree.itemClicked.connect(self.select)
             self.dialog.tree.itemDoubleClicked.connect(show)
             self.dialog.viewtree.itemDoubleClicked.connect(show)
@@ -431,23 +445,16 @@ class BIM_Views:
 
         top_elevation = 0.0
         if siblings:
-
-            def _elev(o):
-                z = o.Placement.Base.z
-                if z == 0 and hasattr(o, "Elevation"):
-                    z = o.Elevation.Value
-                return z
-
-            highest = max(siblings, key=_elev)
+            highest = max(siblings, key=getObjectElevation)
             h = getattr(highest, "Height", None)
             # Use the explicit height of the level below when set, otherwise a
             # default spacing, so the new level does not overlap the one below.
             spacing = h.Value if (h is not None and h.Value) else DEFAULT_SPACING
-            top_elevation = _elev(highest) + spacing
+            top_elevation = getObjectElevation(highest) + spacing
 
         FreeCAD.ActiveDocument.openTransaction("Create Level")
         obj = Arch.makeFloor()
-        obj.Placement.Base.z = top_elevation
+        setObjectElevation(obj, top_elevation)
         if parent is not None and hasattr(parent, "addObject"):
             parent.addObject(obj)
         FreeCAD.ActiveDocument.commitTransaction()
@@ -526,6 +533,21 @@ class BIM_Views:
                     _toggle_active_container(obj, dialog=dialog)
                     FreeCADGui.Selection.clearSelection()
 
+    def activateContextItem(self):
+        """Activate the item under the context menu."""
+
+        import Draft
+
+        if not self.contextObject:
+            return
+        if Draft.getType(self.contextObject) == "WorkingPlaneProxy":
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.Selection.addSelection(self.contextObject)
+            FreeCADGui.runCommand("Draft_SelectPlane")
+        elif hasattr(self.contextObject.ViewObject, "DoubleClickActivates"):
+            _toggle_active_container(self.contextObject, dialog=self.dialog)
+            FreeCADGui.Selection.clearSelection()
+
     def editObject(self, item, column):
         "renames or edits the elevation or height of the actual object"
 
@@ -539,11 +561,7 @@ class BIM_Views:
                 obj.Label = text
             elif column == 1:
                 if text:
-                    q = FreeCAD.Units.parseQuantity(text)
-                    if hasattr(obj, "Elevation") and obj.Placement.Base.z == 0:
-                        obj.Elevation = q
-                    else:
-                        obj.Placement.Base.z = q
+                    setObjectElevation(obj, FreeCAD.Units.parseQuantity(text))
             elif column == 2:
                 if text and hasattr(obj, "Height"):
                     obj.Height = FreeCAD.Units.parseQuantity(text)
@@ -631,6 +649,17 @@ class BIM_Views:
                         obj.ViewObject.Proxy.writeCamera()
         FreeCAD.ActiveDocument.recompute()
 
+    def saveVisibility(self):
+        "save the current visibility state to the selected item"
+
+        vm = findWidget()
+        if vm:
+            for item in vm.tree.selectedItems():
+                obj = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+                if obj and hasattr(obj.ViewObject.Proxy, "writeState"):
+                    obj.ViewObject.Proxy.writeState()
+        FreeCAD.ActiveDocument.recompute()
+
     def onDockLocationChanged(self, area):
         """Saves dock widget size and location"""
         if hasattr(area, "value"):  # To support Qt5.15
@@ -665,15 +694,32 @@ class BIM_Views:
         import Draft
 
         self.dialog.buttonAddProxy.setEnabled(True)
-        selobj = self.dialog.tree.currentItem()
-        if selobj:
-            selobj = FreeCAD.ActiveDocument.getObject(selobj.toolTip(0))
-            if selobj:
-                if Draft.getType(selobj).startswith("Ifc"):
+        self.contextObject = None
+        self.dialog.buttonActive.setText(translate("BIM", "Active"))
+        self.dialog.buttonActive.setCheckable(True)
+        self.dialog.buttonActive.setChecked(False)
+        self.dialog.buttonActive.setToolTip(translate("BIM", "Activates the selected item"))
+        item = self.dialog.tree.itemAt(pos)
+        if item:
+            self.contextObject = FreeCAD.ActiveDocument.getObject(item.toolTip(0))
+            if self.contextObject:
+                if Draft.getType(self.contextObject).startswith("Ifc"):
                     self.dialog.buttonAddProxy.setEnabled(False)
-                if FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") == selobj:
+                if Draft.getType(self.contextObject) == "WorkingPlaneProxy":
+                    self.dialog.buttonActive.setText(translate("BIM", "Set Working Plane"))
+                    self.dialog.buttonActive.setCheckable(False)
+                    self.dialog.buttonActive.setToolTip(
+                        translate("BIM", "Sets the selected item as the current working plane")
+                    )
+                elif (
+                    FreeCADGui.ActiveDocument.ActiveView.getActiveObject("NativeIFC")
+                    == self.contextObject
+                ):
                     self.dialog.buttonActive.setChecked(True)
-                elif FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch") == selobj:
+                elif (
+                    FreeCADGui.ActiveDocument.ActiveView.getActiveObject("Arch")
+                    == self.contextObject
+                ):
                     self.dialog.buttonActive.setChecked(True)
                 else:
                     self.dialog.buttonActive.setChecked(False)
@@ -763,7 +809,9 @@ def show(item, column=None):
                 vparam.SetBool("Simple", True)
                 vparam.SetBool("Gradient", False)
                 vparam.SetBool("RadialGradient", False)
-        elif Draft.getType(obj) in ("BuildingPart", "IfcBuilding", "IfcBuildingStorey"):
+        elif Draft.getType(obj) in ("BuildingPart", "IfcBuilding", "IfcBuildingStorey") and getattr(
+            obj.ViewObject, "DoubleClickActivates", True
+        ):
             BIM_Views.activate()
         else:
             # WP Proxy
@@ -800,18 +848,16 @@ def getTreeViewItem(obj):
     """
     Build a QTreeWidgetItem for obj with three columns: label, elevation, height.
 
-    Elevation comes from Placement.Base.z, falling back to the IFC Elevation
-    property when the placement is at the origin. Height comes from the
+    Elevation is always read from Placement.Base.z, which is the source of
+    truth for a level's position. The IFC Elevation attribute is derived from
+    this placement and must never be used as a fallback. Height comes from the
     BuildingPart Height property when present. Returns the item together with
     the elevation as a number, used to sort levels vertically.
     """
     from PySide import QtCore, QtGui
 
-    z = obj.Placement.Base.z
+    z = getObjectElevation(obj)
     elevStr = FreeCAD.Units.Quantity(z, FreeCAD.Units.Length).UserString
-    if z == 0 and hasattr(obj, "Elevation"):
-        z = obj.Elevation.Value
-        elevStr = obj.Elevation.UserString
 
     heightStr = ""
     if hasattr(obj, "Height") and hasattr(obj.Height, "UserString"):
@@ -819,11 +865,28 @@ def getTreeViewItem(obj):
 
     it = QtGui.QTreeWidgetItem([obj.Label, elevStr, heightStr])
     it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable)
+    it.setData(2, QtCore.Qt.UserRole, hasattr(obj, "Height"))
     it.setToolTip(0, obj.Name)
     if obj.ViewObject:
         if hasattr(obj.ViewObject, "Icon"):
             it.setIcon(0, obj.ViewObject.Icon)
     return (it, z)
+
+
+def getObjectElevation(obj):
+    """Return the elevation represented by an object's placement."""
+
+    return obj.Placement.Base.z
+
+
+def setObjectElevation(obj, elevation):
+    """Set an object's elevation through its Placement property.
+
+    Placement is the source of truth; IFC Elevation is derived from it.
+    Assign the complete placement to notify dependent objects.
+    """
+
+    obj.Placement.Base.z = elevation
 
 
 def getAllItemsInTree(tree_widget):

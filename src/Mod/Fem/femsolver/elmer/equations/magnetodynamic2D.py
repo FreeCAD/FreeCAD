@@ -28,6 +28,10 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+import math
+
+from FreeCAD import Base
+
 from femtools import femutils
 from . import nonlinear
 from ... import equationbase
@@ -53,13 +57,13 @@ class Proxy(nonlinear.Proxy, equationbase.Magnetodynamic2DProxy):
         )
         obj.addProperty(
             "App::PropertyFrequency",
-            "AngularFrequency",
+            "Frequency",
             "Magnetodynamic2D",
             "Frequency of the driving current",
             locked=True,
         )
         obj.IsHarmonic = False
-        obj.AngularFrequency = 0
+        obj.Frequency = 0
         obj.Priority = 10
 
         # the post processor options
@@ -109,6 +113,18 @@ class Proxy(nonlinear.Proxy, equationbase.Magnetodynamic2DProxy):
         obj.CalculateNodalFields = True
         obj.CalculateNodalForces = False
         obj.CalculateNodalHeating = False
+
+    def onDocumentRestored(self, obj):
+        try:
+            # change AngularFrequency to Frequency
+            freq = obj.getPropertyByName("AngularFrequency")
+            obj.setPropertyStatus("AngularFrequency", "-LockDynamic")
+            obj.renameProperty("AngularFrequency", "Frequency")
+            obj.setPropertyStatus("Frequency", "LockDynamic")
+            obj.Frequency = freq / (2 * math.pi)
+        except Base.PropertyError:
+            # do nothing
+            pass
 
 
 class ViewProxy(nonlinear.ViewProxy, equationbase.Magnetodynamic2DViewProxy):

@@ -152,6 +152,7 @@ void Gui::SoFCDB::init()
     SoTransformDragger ::initClass();
     SoLinearGeometryKit ::initClass();
     SoArrowGeometry ::initClass();
+    SoSphereGeometry ::initClass();
     SoLinearGeometryBaseKit ::initClass();
     SoArrowBase ::initClass();
     SoRotatorGeometryKit ::initClass();

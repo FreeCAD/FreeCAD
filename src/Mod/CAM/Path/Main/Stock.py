@@ -212,12 +212,34 @@ class StockFromBase(Stock):
             self.origin = FreeCAD.Vector(-obj.ExtXneg.Value, -obj.ExtYneg.Value, -obj.ExtZneg.Value)
 
             self.length = bb.XLength + obj.ExtXneg.Value + obj.ExtXpos.Value
-            self.width = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
+            if self.length <= 0:
+                self.length = self.MinExtent
+                Path.Log.warning(
+                    translate(
+                        "PathStock", "Stock length can not be zero or negative. Used length %s mm"
+                    )
+                    % self.MinExtent
+                )
 
-            if bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value <= 0:
-                Path.Log.error("Stock height can not be zero or negative\nSet ExtZneg = 1 mm")
-                obj.ExtZneg.Value = self.MinExtent
+            self.width = bb.YLength + obj.ExtYneg.Value + obj.ExtYpos.Value
+            if self.width <= 0:
+                self.width = self.MinExtent
+                Path.Log.warning(
+                    translate(
+                        "PathStock", "Stock width can not be zero or negative. Used width %s mm"
+                    )
+                    % self.MinExtent
+                )
+
             self.height = bb.ZLength + obj.ExtZneg.Value + obj.ExtZpos.Value
+            if self.height <= 0:
+                self.height = self.MinExtent
+                Path.Log.warning(
+                    translate(
+                        "PathStock", "Stock height can not be zero or negative. Used height %s mm"
+                    )
+                    % self.MinExtent
+                )
 
             shape = Part.makeBox(self.length, self.width, self.height, self.origin)
             shape.Placement = obj.Placement

@@ -41,7 +41,7 @@ This system is designed to be fully compatible and backwards-compatible with the
 The binding system is built around a few core components:
 
 * **Metadata Decorators:**
-    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
+    A set of decorators (e.g., `@export`, `@constmethod`, `@sequence_protocol`, `@deprecated_attributes`) to annotate classes and methods with necessary metadata for the binding process. These decorators help bridge the gap between the C++ definitions and the Python interface.
 
 * **C++ Python Stub Generation:**
     The system generates C++ Python stubs that act as a direct mapping to the corresponding C++ classes. These stubs include method signatures, attributes, and detailed docstrings and uses the same code
@@ -99,6 +99,33 @@ The module name defaults to the `.module.pyi` filename, and the C++ namespace de
 to that same value. Use `Base.Metadata.module(...)` only when you need to override those
 defaults.
 
+Generated module bindings use separate source ownership:
+
+- the generator owns `<Name>ModulePy.h` and `<Name>ModulePy.cpp` in the build tree
+- handwritten implementations, when needed, live in source-owned `<Name>ModulePyImp.cpp`
+- callback-backed and `Runtime="ExtensionModule"` modules usually do not need a
+  `ModulePyImp.cpp`
+
+Register module bindings with `generate_module_from_py(...)` and append the returned
+generated sources to the target that owns the module:
+
+```cmake
+generate_module_from_py(
+    FreeCAD.Console
+    Console_MODULE_GENERATED_SRCS
+)
+
+set(FreeCADBase_CPP_SRCS
+    Console.cpp
+    ${Console_MODULE_GENERATED_SRCS}
+)
+```
+
+If a generated method is not callback-backed, the generated wrapper calls a
+`<Name>ModulePy::<method>(...)` implementer. Add the source-owned
+`<Name>ModulePyImp.cpp` to the same target in that case. Missing implementers should
+fail at link time rather than being silently replaced with generated skeletons.
+
 **Example:**
 
 ```python
@@ -149,6 +176,53 @@ provide Python type hinting for type checkers like mypy. Overload-only construct
 exception: when the overload set carries constructor documentation, that documentation is
 folded into the exported class documentation, because constructor bindings are generated
 through `Constructor=True` rather than a normal method stub.
+
+### Deprecation
+
+Deprecated methods and classes should use the keyword-only `deprecated` metadata
+decorator. It records the lifecycle explicitly while generated public stubs expose
+the standard PEP 702 decorator so type checkers can flag call sites:
+
+```python
+from Metadata import deprecated
+
+class ShapePy(PyObjectBase):
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="fuse()",
+    )
+    def multiFuse(self, tools) -> object:
+        """
+        Deprecated: use fuse() instead.
+        """
+        ...
+```
+
+The binding generator formats the lifecycle metadata into a deprecation message and
+emits a runtime `DeprecationWarning` from the generated wrapper. Binding specs accept
+only structured keyword-only metadata.
+
+Deprecated attributes should use structured `@deprecated_attributes(...)` metadata on
+the enclosing class:
+
+```python
+from Metadata import deprecated_attributes
+
+@deprecated_attributes(
+    Wire={
+        "deprecated_in": "26.3",
+        "removed_in": "27.2",
+        "replacement": "OuterWire",
+    },
+)
+class TopoShapeFace(TopoShape):
+    Wire: object = ...
+    """Legacy alias for the outer wire of this face. Use OuterWire instead."""
+```
+
+String values and docstring markers like `Deprecated:` or `deprecated --` are
+documentation only. Attribute deprecations require structured metadata.
 
 ### Attributes and Read-Only Properties
 

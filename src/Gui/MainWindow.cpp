@@ -460,8 +460,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // sequence regardless of the order they register at runtime. The menu uses the
     // same order. Workbenches use the 550-699 band so they land just left of the
     // Bottom Panel Toggle; see also Draft/BIM/Tux and ToolBarManager::setupStatusBar.
-    //   Left : Preselection(0), Progress(50), Input Hints(100)
-    //   Right: Quick Measure(400), ToolBarArea(500), [workbench 550-699],
+    //   Left : Preselection(0), Progress(50)
+    //   Right: Input Hints(100), Quick Measure(400), ToolBarArea(500), [workbench 550-699],
     //          Bottom Panel Toggle(700), Notifications(800), Navigation Styles(900),
     //          Unit System(1000, rightmost)
     d->actionLabel = new StatusBarLabel(statusBar());
@@ -490,7 +490,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
         {.id = "hintLabel",
          //: A context menu action used to show or hide the input hints in the status bar
          .title = tr("Input Hints"),
-         .slot = StatusBarSlot::Left,
+         .slot = StatusBarSlot::Right,
          .order = 100,
          .persistentVisibility = true}
     );

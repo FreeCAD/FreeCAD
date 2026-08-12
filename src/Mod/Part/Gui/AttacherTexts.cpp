@@ -106,6 +106,16 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                         "Attachment3D mode tooltip"
                     )
                 );
+            case mmMidPlane:
+                return TwoStrings(
+                    qApp->translate("Attacher3D", "Midplane between faces", "Attachment3D mode caption"),
+                    qApp->translate(
+                        "Attacher3D",
+                        "Plane origin is midway between the centers of two planar faces and its "
+                        "orientation equally bisects their angle.",
+                        "Attachment3D mode tooltip"
+                    )
+                );
             case mmFlatFace:
                 return TwoStrings(
                     qApp->translate("Attacher3D", "XY on plane", "Attachment3D mode caption"),
@@ -345,6 +355,16 @@ TextSet getUIStrings(Base::Type attacherType, eMapMode mmode)
                         "Attacher2D",
                         "X' Y' plane is parallel to the plane (object's XY) and passes through the "
                         "vertex",
+                        "AttachmentPlane mode tooltip"
+                    )
+                );
+            case mmMidPlane:
+                return TwoStrings(
+                    qApp->translate("Attacher2D", "Midplane between faces", "AttachmentPlane mode caption"),
+                    qApp->translate(
+                        "Attacher2D",
+                        "Plane origin is midway between the centers of two planar faces and its "
+                        "orientation equally bisects their angle.",
                         "AttachmentPlane mode tooltip"
                     )
                 );
