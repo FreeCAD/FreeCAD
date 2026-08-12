@@ -327,9 +327,9 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementMapVersion(self, property_name: str, /) -> str:
+    def getCorrectElementMapVersion(self, /) -> str:
         """
-        return element map version of a given geometry property
+        return correct element map version of the document.
         """
         ...
 

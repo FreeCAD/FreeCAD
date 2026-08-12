@@ -387,11 +387,8 @@ void PropertyPartShape::Save(Base::Writer& writer) const
     auto const version_valid = _Ver.size() && (_Ver != "?");
     if (owner) {
         if (!owner->isExporting()) {
-            version = version_valid ? _Ver : owner->getElementMapVersion(this);
+            version = version_valid ? _Ver : owner->getCorrectElementMapVersion();
         }
-    }
-    else {
-        version = version_valid ? _Ver : _Shape.getElementMapVersion();
     }
     writer.Stream() << " ElementMap=\"" << version << '"';
 
@@ -431,14 +428,6 @@ void PropertyPartShape::Save(Base::Writer& writer) const
         }
         _Shape.Save(writer);
     }
-}
-
-std::string PropertyPartShape::getElementMapVersion(bool restored) const
-{
-    if (restored) {
-        return _Ver;
-    }
-    return PropertyComplexGeoData::getElementMapVersion(false);
 }
 
 void PropertyPartShape::Restore(Base::XMLReader& reader)
@@ -502,13 +491,16 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
         }
         else {
             _Shape.Restore(reader);
-            std::string correctVersion = _Shape.getElementMapVersion();
+            std::string correctVersion;
+
+            if (owner) {
+                correctVersion = owner->getCorrectElementMapVersion();
+            } else {
+                correctVersion = "?";
+            }
 
             if (_Ver != correctVersion) {
-                if (!owner || !owner->getNameInDocument()) {
-                    _Ver = correctVersion;
-                }
-                else {
+                if (owner && owner->getNameInDocument()) {
                     // version mismatch, signal for regenerating.
                     static const char* warnedDoc = 0;
                     if (warnedDoc != owner->getDocument()->getName()) {

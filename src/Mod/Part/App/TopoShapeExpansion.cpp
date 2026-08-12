@@ -2942,28 +2942,6 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
     return shapeMap.getTopoShape(*this, idx);
 }
 
-static const std::string& _getElementMapVersion(const App::HistoryAlgorithm& historyAlgorithm)
-{
-    static std::string _ver;
-    if (_ver.empty()) {
-        std::ostringstream ss;
-        // Stabilize the reported OCCT version: report 7.2.0 as the version so that we aren't
-        // constantly inadvertently reporting differing versions. This is retained for
-        // cross-compatibility with LinkStage3 (which retains supporting code for OCCT 6.x,
-        // removed here).
-        unsigned occ_ver {0x070200};
-        ss << OpCodes::Version << '.' << std::hex << occ_ver << '.'
-           << App::getHistoryAlgorithm(historyAlgorithm) << ".";
-        _ver = ss.str();
-    }
-    return _ver;
-}
-
-std::string TopoShape::getElementMapVersion() const
-{
-    return _getElementMapVersion(getHistoryAlgorithm()) + Data::ComplexGeoData::getElementMapVersion();
-}
-
 TopoShape& TopoShape::makeElementEvolve(
     const TopoShape& spine,
     const TopoShape& profile,
@@ -4475,15 +4453,9 @@ struct MapperThruSections: MapperMaker
 {
     TopoShape firstProfile;
     TopoShape lastProfile;
-    const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap;
 
-    MapperThruSections(
-        BRepOffsetAPI_ThruSections& tmaker,
-        const std::vector<TopoShape>& profiles,
-        const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap
-    )
+    MapperThruSections(BRepOffsetAPI_ThruSections& tmaker, const std::vector<TopoShape>& profiles)
         : MapperMaker(tmaker)
-        , compatibleWiresMap(compatibleWiresMap)
     {
         if (!tmaker.FirstShape().IsNull()) {
             firstProfile = profiles.front();
@@ -4509,29 +4481,6 @@ struct MapperThruSections: MapperMaker
             }
             else if (lastProfile.getShape().IsSame(s) || lastProfile.findShape(s)) {
                 _res.push_back(tmaker.LastShape());
-            }
-        }
-        catch (const Standard_Failure& e) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
-            }
-        }
-        return _res;
-    }
-    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override
-    {
-        _res.clear();
-
-        try {
-            const TopTools_ListOfShape& modifiedList = compatibleWiresMap.Find(s);
-
-            if (modifiedList.Size()) {
-                TopTools_ListIteratorOfListOfShape shapeListIterator;
-
-                for (shapeListIterator.Init(modifiedList); shapeListIterator.More();
-                     shapeListIterator.Next()) {
-                    _res.push_back(shapeListIterator.Value());
-                }
             }
         }
         catch (const Standard_Failure& e) {

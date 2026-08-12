@@ -209,16 +209,6 @@ const std::string& ComplexGeoData::elementMapPrefix()
     return prefix;
 }
 
-std::string ComplexGeoData::getElementMapVersion() const
-{
-    return "5";
-}
-
-bool ComplexGeoData::checkElementMapVersion(const char* ver) const
-{
-    return !boost::ends_with(ver, "5");
-}
-
 size_t ComplexGeoData::getElementMapSize(bool flush) const
 {
     if (flush) {

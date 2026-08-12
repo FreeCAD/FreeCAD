@@ -1822,8 +1822,6 @@ public:
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
 
-    std::string getElementMapVersion() const override;
-
     void flushElementMap() const override;
 
     Data::ElementMapPtr resetElementMap(Data::ElementMapPtr elementMap = Data::ElementMapPtr()) override;

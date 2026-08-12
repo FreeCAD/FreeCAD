@@ -798,31 +798,11 @@ public:
     ///@}
 
     /**
-     * @brief Get the element map version of the geometry data stored in the given property.
+     * @brief Get the correct element map version of the document.
      *
-     * @param[in] prop: the geometry property to query for element map version
-     * @param[in] restored: whether to query for the restored element map version.
-     *                      In case of version upgrade, the restored version may
-     *                      be different from the current version.
-     *
-     * @return Return the element map version string.
+     * @return Return the correct element map version string.
      */
-    virtual std::string getElementMapVersion(const App::Property* prop,
-                                             bool restored = false) const;
-
-    /** @brief Check the element map version of the property.
-     *
-     * This function checks whether the element map version of the given
-     * property matches the given version string.  If the function returns
-     * true, the geometry element names need to be recomputed.
-     *
-     * @param[in] prop: the geometry property to query for element map version
-     * @param[in] ver: the version string to compare with
-     *
-     * @return true if the element map version differs and the geometry element
-     * names need to be recomputed.
-     */
-    virtual bool checkElementMapVersion(const App::Property* prop, const char* ver) const;
+    virtual std::string getCorrectElementMapVersion() const;
 
     /** @brief Check the history algorithm used by the object.
      *

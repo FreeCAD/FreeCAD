@@ -647,14 +647,17 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             constexpr int DUPLICATE_COUNT_REVERSE_INDEX = Data::SECTION_SIZE - Data::SECTION_DUPLICATE_COUNT_INDEX;
             int currentSectionIndex = 0;
 
-            for (size_t i = beforeDuplicateCount->size(); i-- > 0;) {
+            for (size_t i = beforeDuplicateCount->size(); i-- > 1;) {
                 const char& currentCharacter = (*beforeDuplicateCount)[i];
 
                 if (currentSectionIndex < (DUPLICATE_COUNT_REVERSE_INDEX - 1)) {
                     afterDuplicateCount->insert(0, 1, currentCharacter);
                 }
 
-                if (currentCharacter == (*Data::SECTION_SUB_DELIMINATOR) && ++currentSectionIndex == DUPLICATE_COUNT_REVERSE_INDEX) {
+                if (currentCharacter == Data::SECTION_SUB_DELIMINATOR[0]
+                    && (*beforeDuplicateCount)[i - 1] != Data::SUB_SECTION_ESCAPE_CHAR[0]
+                    && ++currentSectionIndex == DUPLICATE_COUNT_REVERSE_INDEX)
+                {
                     break;
                 }
 

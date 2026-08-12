@@ -557,12 +557,6 @@ public:
      */
     virtual std::vector<IndexedName> getHigherElements(const char* name, bool silent = false) const;
 
-    /// Get the current element map version.
-    virtual std::string getElementMapVersion() const;
-
-    /// Check the element map version.
-    virtual bool checkElementMapVersion(const char* ver) const;
-
     /// Check if the given sub-name only contains an element name.
     static bool isElementName(const char* subName)
     {

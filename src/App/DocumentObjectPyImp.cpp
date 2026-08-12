@@ -919,20 +919,10 @@ PyObject* DocumentObjectPy::getPathsByOutList(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
+PyObject* DocumentObjectPy::getCorrectElementMapVersion(PyObject* args) const
 {
-    const char* name;
-    PyObject* restored = Py_False;
-    if (!PyArg_ParseTuple(args, "s|O", &name, &restored)) {
-        return NULL;
-    }
-
-    Property* prop = getDocumentObjectPtr()->getPropertyByName(name);
-    if (!prop) {
-        throw Py::ValueError("property not found");
-    }
     return Py::new_reference_to(
-        Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
+        Py::String(getDocumentObjectPtr()->getCorrectElementMapVersion()));
 }
 
 PyObject* DocumentObjectPy::getCustomAttributes(const char* attr) const

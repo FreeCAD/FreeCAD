@@ -60,6 +60,18 @@ namespace Data
  * @{
  */
 
+/** Element name encoding scheme version number
+    *
+    * Increase this version if there is major change in encoding scheme.
+    * Opening a document containing a mismatched version number will cause the
+    * element map to be regenerated after recompute
+    */
+
+constexpr const int   ELEMENT_NAME_ENCODING_VERSION     = 15;
+
+/// The Element Map Version
+constexpr const int   ELEMENT_MAP_VERSION               = 5;
+
 /// Special prefix to mark the beginning of a mapped sub-element name
 constexpr const char* ELEMENT_MAP_PREFIX                = ";";
 /// The size of the element map prefix

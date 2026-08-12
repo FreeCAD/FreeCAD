@@ -1300,6 +1300,8 @@ public:
         return selectedHistoryAlgorithm;
     };
 
+    const std::string& getCorrectElementMapVersion();
+
     friend class Application;
     // because of transaction handling
     friend class TransactionalObject;
@@ -1487,6 +1489,7 @@ private:
     std::map<int, Transaction*> mRedoMap;
 
     App::HistoryAlgorithm selectedHistoryAlgorithm;
+    std::string elementMapVersion;
 
     struct DocumentP* d;
 
