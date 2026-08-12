@@ -682,13 +682,24 @@ void PropertyPartShape::loadFromFile(Base::Reader& reader)
             }
         }
         catch (Standard_Failure& e) {
-            Base::Console().error("Exception when reading BRep file '%s': %s\n", fi.filePath().c_str(), e.GetMessageString());
+            Base::Console().error(
+                "Exception when reading BRep file '%s': %s\n",
+                fi.filePath().c_str(),
+                e.GetMessageString()
+            );
         }
         catch (const std::exception& e) {
-            Base::Console().error("Exception when reading BRep file '%s': %s\n", fi.filePath().c_str(), e.what());
+            Base::Console().error(
+                "Exception when reading BRep file '%s': %s\n",
+                fi.filePath().c_str(),
+                e.what()
+            );
         }
         catch (...) {
-            Base::Console().error("Unknown exception when reading BRep file '%s'\n", fi.filePath().c_str());
+            Base::Console().error(
+                "Unknown exception when reading BRep file '%s'\n",
+                fi.filePath().c_str()
+            );
         }
     }
 
@@ -715,19 +726,30 @@ void PropertyPartShape::loadFromStream(Base::Reader& reader)
     catch (Standard_Failure& e) {
         reader.imbue(savedLocale);
         if (!reader.eof()) {
-            Base::Console().warning("Failed to load BRep file %s: %s\n", reader.getFileName().c_str(), e.GetMessageString());
+            Base::Console().warning(
+                "Failed to load BRep file %s: %s\n",
+                reader.getFileName().c_str(),
+                e.GetMessageString()
+            );
         }
     }
     catch (const std::exception& e) {
         reader.imbue(savedLocale);
         if (!reader.eof()) {
-            Base::Console().warning("Failed to load BRep file %s: %s\n", reader.getFileName().c_str(), e.what());
+            Base::Console().warning(
+                "Failed to load BRep file %s: %s\n",
+                reader.getFileName().c_str(),
+                e.what()
+            );
         }
     }
     catch (...) {
         reader.imbue(savedLocale);
         if (!reader.eof()) {
-            Base::Console().warning("Unknown exception when loading BRep file %s\n", reader.getFileName().c_str());
+            Base::Console().warning(
+                "Unknown exception when loading BRep file %s\n",
+                reader.getFileName().c_str()
+            );
         }
     }
 }
