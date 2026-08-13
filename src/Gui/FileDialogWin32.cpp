@@ -337,7 +337,7 @@ QStringList FileDialogInternal::nativeFileDialog(
 
     // Preselect file name, if any
     const QFileInfo startPathInfo(startPath);
-        if (!startPathInfo.isDir()) {
+    if (!startPathInfo.isDir()) {
         const auto startFileName = qStringToWCharArray(startPathInfo.fileName());
         fileDialog->SetFileName(startFileName.get());
     }
