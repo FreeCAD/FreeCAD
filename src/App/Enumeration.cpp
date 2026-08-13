@@ -133,6 +133,9 @@ void Enumeration::setEnums(const char** plEnums)
     }
     if (preserve) {
         setValue(oldValue);
+                if (!isValue(oldValue.c_str()) && oldIndex < countItems()) {
+            _index = oldIndex;
+        }
     }
 }
 
@@ -144,6 +147,8 @@ void Enumeration::setEnums(const std::vector<std::string>& values)
     }
 
     std::string oldValue;
+        int oldIndex = _index;
+        int oldIndex = _index;
     bool preserve = isValid();
     if (preserve) {
         const char* str = getCStr();
@@ -163,6 +168,9 @@ void Enumeration::setEnums(const std::vector<std::string>& values)
     }
     if (preserve) {
         setValue(oldValue);
+                if (!isValue(oldValue.c_str()) && oldIndex < countItems()) {
+            _index = oldIndex;
+        }
     }
 }
 
