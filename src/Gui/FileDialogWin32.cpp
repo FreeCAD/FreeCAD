@@ -337,16 +337,19 @@ QStringList FileDialogInternal::nativeFileDialog(
 
     // Preselect file name, if any
     const QFileInfo startPathInfo(startPath);
-    const auto startFileName = qStringToWCharArray(startPathInfo.fileName());
-    fileDialog->SetFileName(startFileName.get());
+        if (!startPathInfo.isDir()) {
+        const auto startFileName = qStringToWCharArray(startPathInfo.fileName());
+        fileDialog->SetFileName(startFileName.get());
+    }
 
     // Select starting directory, if any
     if (startPathInfo.isAbsolute()) {
-        const auto startFolder = qStringToWCharArray(
-            QDir::toNativeSeparators(startPathInfo.absoluteDir().path())
-        );
-        ComPointer<IShellItem> shellStartFolder;
-        if (SUCCEEDED(SHCreateItemFromParsingName(
+                const QString startDirectory = startPathInfo.isDir() ? startPathInfo.absoluteFilePath()
+                                                             : startPathInfo.absolutePath();
+        const auto startFolder = qStringToWCharArray(QDir::toNativeSeparators(startDirectory));
+
+                ComPointer<IShellItem> shellStartFolder;
+if (SUCCEEDED(SHCreateItemFromParsingName(
                 startFolder.get(),
                 nullptr,
                 IID_IShellItem,
