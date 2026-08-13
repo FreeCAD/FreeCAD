@@ -40,6 +40,7 @@ import Draft
 from FreeCAD import Vector
 from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils import utils
 from draftutils.messages import _msg
 
 
@@ -99,7 +100,20 @@ class DraftModification(test_base.DraftTestCaseDoc):
         self.doc.recompute()
         self.assertTrue(obj.Start.isEqual(c, 1e-6), "'{}' failed".format(operation))
 
-    def test_offset_open(self):
+        def test_subelement_modifiers_skip_objects_without_points(self):
+        """Only point-editable objects are passed to subelement modifiers."""
+        wire = Draft.make_wire([Vector(0, 0, 0), Vector(1, 0, 0)])
+        unsupported = self.doc.addObject("Part::Feature", "Unsupported")
+        data_list = [
+            (wire, 0, -1, App.Placement()),
+            (unsupported, 0, -1, App.Placement()),
+        ]
+
+        filtered = utils._modifiers_filter_subselection(data_list)
+
+        self.assertEqual(filtered, [data_list[0]])
+
+def test_offset_open(self):
         """Create an open wire, then produce an offset copy."""
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
