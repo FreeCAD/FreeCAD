@@ -118,9 +118,6 @@
            <property name="toolTip">
             <string>Move Right</string>
            </property>
-           <property name="whatsThis">
-            <string>&lt;b&gt;Moves the selected item one level down.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -143,9 +140,6 @@
            </property>
            <property name="toolTip">
             <string>Move Left</string>
-           </property>
-           <property name="whatsThis">
-            <string>&lt;b&gt;Moves the selected item one level up.&lt;/b&gt;&lt;p&gt;This will also change the level of the parent item.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
@@ -176,9 +170,6 @@
            <property name="toolTip">
             <string>Move Up</string>
            </property>
-           <property name="whatsThis">
-            <string>&lt;b&gt;Moves the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
-           </property>
            <property name="text">
             <string/>
            </property>
@@ -201,9 +192,6 @@
            </property>
            <property name="toolTip">
             <string>Move Down</string>
-           </property>
-           <property name="whatsThis">
-            <string>&lt;b&gt;Moves the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</string>
            </property>
            <property name="text">
             <string/>
