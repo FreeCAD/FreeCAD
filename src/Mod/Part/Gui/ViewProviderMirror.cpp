@@ -42,6 +42,7 @@
 #include <Gui/Application.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Part/App/FeatureChamfer.h>
 #include <Mod/Part/App/FeatureFillet.h>
 #include <Mod/Part/App/FeatureMirroring.h>
@@ -56,6 +57,34 @@
 
 
 using namespace PartGui;
+
+namespace
+{
+class TaskMirrorPlane: public Gui::TaskView::TaskDialog
+{
+public:
+    explicit TaskMirrorPlane(ViewProviderMirror* viewProvider)
+        : viewProvider(viewProvider)
+    {}
+
+    QDialogButtonBox::StandardButtons getStandardButtons() const override
+    {
+        return QDialogButtonBox::Close;
+    }
+
+    bool reject() override
+    {
+        if (auto document = viewProvider->getDocument()) {
+            document->resetEdit();
+        }
+
+        return Gui::TaskView::TaskDialog::reject();
+    }
+
+private:
+    ViewProviderMirror* viewProvider;
+};
+}  // namespace
 
 PROPERTY_SOURCE(PartGui::ViewProviderMirror, PartGui::ViewProviderPart)
 
@@ -92,6 +121,10 @@ void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const 
 bool ViewProviderMirror::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
+        if (Gui::Control().activeDialog(getDocument()->getDocument())) {
+            return false;
+        }
+
         // get the properties from the mirror feature
         Part::Mirroring* mf = getObject<Part::Mirroring>();
         Part::Feature* ref = static_cast<Part::Feature*>(mf->MirrorPlane.getValue());
@@ -147,6 +180,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
             dragger->addMotionCallback(dragMotionCallback, this);
         }
         pcRoot->addChild(pcEditNode);
+        Gui::Control().showDialog(new TaskMirrorPlane(this), getDocument()->getDocument());
     }
     else {
         ViewProviderPart::setEdit(ModNum);
@@ -180,6 +214,7 @@ void ViewProviderMirror::unsetEdit(int ModNum)
 
         pcRoot->removeChild(pcEditNode);
         Gui::coinRemoveAllChildren(pcEditNode);
+        Gui::Control().closeDialog(getDocument()->getDocument());
     }
     else {
         ViewProviderPart::unsetEdit(ModNum);
