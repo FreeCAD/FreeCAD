@@ -401,6 +401,9 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     ])
                     # fmt: on
                     faces.partIndex.setValues(0, 2, [2, 2])
+                    # An empty materialIndex is the input that exposed the
+                    # retained renderer's accidental mutation of this field.
+                    faces.materialIndex.setNum(0)
                     root.addChild(faces)
 
                     _render_png(harness, coin, root, actual_path, renderer_name, frame_camera=False)
@@ -409,7 +412,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                         self.assertEqual(
                             faces.materialIndex.getNum(),
                             0,
-                            "retained BRep rendering must not rewrite materialIndex",
+                            "retained BRep rendering must not populate materialIndex",
                         )
                     self.assertGreater(
                         _non_background_pixel_count(actual_path),
