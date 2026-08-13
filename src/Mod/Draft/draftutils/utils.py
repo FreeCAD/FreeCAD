@@ -885,6 +885,30 @@ def _modifiers_process_subselection(sels, copy):
     return data_list, sel_info
 
 
+def _modifiers_filter_subselection(data_list):
+    """Keep only objects whose points can be modified by Draft tools."""
+    supported = []
+    unsupported = set()
+    for data in data_list:
+        obj = data[0]
+        if hasattr(obj, "Points"):
+            supported.append(data)
+        else:
+            unsupported.add(obj.Label)
+
+    if unsupported:
+        labels = ", ".join(sorted(unsupported))
+        _wrn(
+            translate(
+                "draft",
+                "Cannot modify subelements of {}. Uncheck 'Modify subelements' to modify "
+                "the whole object.",
+            ).format(labels)
+        )
+
+    return supported
+
+
 def _modifiers_process_selection(sels, copy, scale=False, add_movable_children=False):
     # Only when creating ghosts and if copy is False, should add_movable_children be True.
     objects = []
