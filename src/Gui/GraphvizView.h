@@ -65,11 +65,11 @@ Q_SIGNALS:
     void convertStart();
 
 private:
-    void updateSvgItem(const App::Document& doc);
+    void updateSvgItem();
     void disconnectSignals();
 
     const App::Document& doc;
-    std::string graphCode;
+    QByteArray graphCode;
     QGraphicsScene* scene;
     QGraphicsView* view;
     GraphicsViewZoom* zoomer;
