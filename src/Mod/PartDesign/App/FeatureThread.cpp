@@ -33,10 +33,15 @@ PROPERTY_SOURCE(PartDesign::Thread, PartDesign::DressUp)
 
 Thread::Thread()
 {
+    threadUtils.executeReadThreadDefinitions();
+
     addThreadType();
 
     ADD_PROPERTY_TYPE(ThreadType, (0L), "Thread", App::Prop_None, "Thread type");
-    ThreadType.setEnums(ThreadUtils::ThreadTypeEnums);
+    ThreadType.setEnums(threadUtils.getThreadTypeEnums());
+
+    ADD_PROPERTY_TYPE(ThreadTypeName, (0L), "Thread", App::Prop_None, "Thread type name");
+    ThreadTypeName.setEnums(threadUtils.getThreadTypeNameEnums());
 
     ADD_PROPERTY_TYPE(ThreadDiameter, (0.0), "Thread", App::Prop_None, "Thread major diameter");
 
@@ -81,6 +86,16 @@ Thread::Thread()
 
 App::DocumentObjectExecReturn* Thread::execute()
 {
+    // Base::Console().message("Executando thread definitions\n");
+    const auto& definitions = threadUtils.getThreadDefinitions();
+
+    for (const auto& definition : definitions) {
+        Base::Console().message(
+            "Thread: %s\n",
+            definition.name.c_str()
+        );
+    }
+
     Part::TopoShape TopShape;
     try {
         TopShape = getBaseTopoShape();

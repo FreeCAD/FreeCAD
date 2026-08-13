@@ -36,8 +36,10 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Wire.hxx>
 
+#include <App/VarSet.h>
 #include <App/PropertyLinks.h>
 #include <App/DocumentObject.h>
+#include "App/Document.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <Base/Console.h>
 #include <QObject>
@@ -360,8 +362,8 @@ const char* ThreadUtils::DepthTypeEnums[]
     = {"Dimension", "ThroughAll", "UpToGeometry", /*, "UpToFirst", */ nullptr};
 
 const char* ThreadUtils::ThreadTypeEnums[] = {
-    "None",
-    "ISOMetricProfile",
+    "None", //0
+    "ISOMetricProfile", //1
     "ISOMetricFineProfile",
     "UNC",
     "UNF",
@@ -374,11 +376,110 @@ const char* ThreadUtils::ThreadTypeEnums[] = {
     nullptr
 };
 
+const char* ThreadUtils::ThreadTypeNameEnums[] = {
+    "None",
+    "ISO metric regular",
+    "ISO metric fine",
+    "UTS coarse",
+    "UTS fine",
+    "UTS extra fine",
+    "ANSI pipes",
+    "ISO/BSP pipes",
+    "BSW whitworth",
+    "BSF whitworth fine",
+    "ISO tyre valves",
+    nullptr
+};
+
+const char* ThreadTypeName2Enums[] = {
+    "ISO metric regular",
+    "None",
+    "ISO metric fine",
+    "UTS coarse",
+    "UTS fine",
+    "UTS extra fine",
+    "ANSI pipes",
+    "ISO/BSP pipes",
+    "BSW whitworth",
+    "BSF whitworth fine",
+    "ISO tyre valves",
+    nullptr
+};
+
+//TODO: maybe change to lib for finding name in array
+int threadTypeFromString(const std::string& type)
+{
+    for (int i = 0; ThreadUtils::ThreadTypeNameEnums[i] != nullptr; ++i) {
+        if (type == ThreadUtils::ThreadTypeNameEnums[i]) {
+            return i;
+        }
+    }
+
+    return 0; // None, if it is not in the enum
+}
+
+//TODO: it should be efficient
+std::vector<std::string> ThreadUtils::getThreadTypeEnums()
+{
+    std::vector<std::string> result;
+
+    // for (int i = 0; ThreadUtils::ThreadTypeEnums[i] != nullptr; ++i) {
+        // result.push_back(std::string(ThreadUtils::ThreadTypeEnums[i]));
+    // }
+
+    const auto& definitions = getThreadDefinitions();
+
+    for (const auto& definition : definitions) {
+        result.push_back(definition.id);
+    }
+
+    return result;
+}
+
+std::vector<std::string> ThreadUtils::getThreadTypeNameEnums()
+{
+    std::vector<std::string> result;
+
+    // for (int i = 0; ThreadUtils::ThreadTypeNameEnums[i] != nullptr; ++i) {
+    //     result.push_back(std::string(ThreadUtils::ThreadTypeNameEnums[i]));
+    // }
+
+    const auto& definitions = getThreadDefinitions();
+
+    for (const auto& definition : definitions) {
+        result.push_back(definition.name);
+    }
+
+    return result;
+}
+
+std::vector<std::string> ThreadUtils::getThreadTypeName2Enums()
+{
+    std::vector<std::string> result;
+
+    for (int i = 0; ThreadTypeName2Enums[i] != nullptr; ++i) {
+        result.push_back(std::string(ThreadTypeName2Enums[i]));
+    }
+
+    // const auto& definitions = getThreadDefinitions();
+
+    // for (const auto& definition : definitions) {
+    //     result.push_back(definition.name);
+    // }
+
+    return result;
+}
+
 std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
 {
+    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeName2Enums();
+    std::string currentThread = currentThreads[threadType];
+    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+    Base::Console().message("real int: %d\n", currentThreadTypeIndex);
+
     std::set<double> uniqueDiameters;
 
-    for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+    for (const auto& thread : ThreadUtils::threadDescription[currentThreadTypeIndex]) {
         uniqueDiameters.insert(thread.diameter);
     }
 
@@ -396,6 +497,10 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
 
 std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, const int threadDiameter)
 {
+    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeName2Enums();
+    std::string currentThread = currentThreads[threadType];
+    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+
     std::vector<std::string> pitches;
 
     std::vector<std::string> diameters = getThreadDiameters(threadType);
@@ -403,7 +508,7 @@ std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, con
     double targeDiameterDouble = std::stod(targetDiameter);
 
     // get all pitches from a selected diameter
-    for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+    for (const auto& thread : ThreadUtils::threadDescription[currentThreadTypeIndex]) {
         if (std::abs(thread.diameter - targeDiameterDouble) < 0.001) {
             std::ostringstream oss;
             oss << std::noshowpoint << thread.pitch << " mm";
@@ -420,6 +525,11 @@ std::string ThreadUtils::getThreadDesignations(
     const int threadPitch
 )
 {
+    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeName2Enums();
+    std::string currentThread = currentThreads[threadType];
+    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+
+
     std::vector<std::string> diameters = getThreadDiameters(threadType);
     std::string targetDiameter = diameters[threadDiameter];
     double targeDiameterDouble = std::stod(targetDiameter);
@@ -429,7 +539,7 @@ std::string ThreadUtils::getThreadDesignations(
 
     double targetPitchDouble = std::stod(targetPitch);
 
-    for (const auto& thread : ThreadUtils::threadDescription[threadType]) {
+    for (const auto& thread : ThreadUtils::threadDescription[currentThreadTypeIndex]) {
         if (std::abs(thread.diameter - targeDiameterDouble) < 0.001) {
             if (std::abs(thread.pitch - targetPitchDouble) < 0.001) {
                 return thread.designation;
@@ -593,4 +703,252 @@ double ThreadUtils::getThroughAllLength() const
 {
     /* TODO */
     return 2.02;
+}
+
+ThreadUtils::ThreadLibrary::ThreadLibrary()
+{
+
+}
+
+void ThreadUtils::ThreadLibrary::readThreadDefinitions()
+{
+    std::vector<std::string> dirs {
+        App::Application::getResourceDir() + "Mod/PartDesign/Resources/Thread",
+        App::Application::getUserAppDataDir() + "PartDesign/Thread"
+    };
+
+    Base::Console().message("Dirs[0]: %s\n", dirs[0]);
+    Base::Console().message("Dirs[1]: %s\n", dirs[1]);
+
+    std::clog << "Looking for thread definitions in: ";
+    for (const auto& dir : dirs) {
+        std::clog << dir << " ";
+    }
+    std::clog << '\n';
+
+    definitions.clear();
+
+    for (const auto& dir : dirs) {
+        std::vector<Base::FileInfo> files {
+            Base::FileInfo(dir).getDirectoryContent()
+        };
+
+        Base::FileInfo fi(dir);
+        Base::Console().message("dir exists: %d\n", fi.exists());
+        Base::Console().message("dir is dir: %d\n", fi.isDir());
+
+        for (const auto& file : files) {
+            if (file.extension() == "FCStd") {
+                try {
+                    Base::Console().message("Filename: %s\n", file.fileName());
+                    // readThreadDefinition(file);
+                    auto definition = readThreadDefinition(file);
+
+                    if (!definition) {
+                        Base::Console().error(
+                            "Failed to read thread definition: %s\n",
+                            file.filePath().c_str()
+                        );
+                        continue;
+                    }
+
+                    definitions.push_back(std::move(*definition));
+                }
+                catch (const Base::Exception& e) {
+                    std::cerr << "Failed reading '" << file.filePath()
+                              << "': " << e.what() << '\n';
+                }
+                catch (const std::exception& e) {
+                    std::cerr << "Failed reading '" << file.filePath()
+                              << "': " << e.what() << '\n';
+                }
+            }
+        }
+    }
+}
+
+std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDefinition(const Base::FileInfo& file)
+{
+    auto* oldDoc =
+    App::GetApplication().getActiveDocument();
+
+    Base::Console().message(
+        "Before: %s\n",
+        oldDoc ? oldDoc->getName() : "<none>"
+    );
+
+    Base::Console().message("Reading a thread file!\n");
+    auto* doc = App::GetApplication().openDocument(
+        file.filePath().c_str(),
+        {false, true} 
+    );
+
+    if (!doc) {
+        throw Base::RuntimeError("Unable to open thread definition.");
+    }
+
+    auto* currentDoc =
+    App::GetApplication().getActiveDocument();
+
+    Base::Console().message(
+        "After open: %s\n",
+        currentDoc ? currentDoc->getName() : "<none>"
+    );
+
+    try {
+        auto definition = readThreadDocument(doc);
+
+        Base::Console().message("Closing a thread file!\n");
+        App::GetApplication().closeDocument(doc->getName());
+
+        if (oldDoc) {
+            App::GetApplication().setActiveDocument(
+                oldDoc->getName()
+            );
+        }
+
+        if (!definition) {
+            return std::nullopt;
+        }
+
+        definition->file = file.filePath();
+
+        return definition;
+    }
+    catch (...) {
+        Base::Console().message("Closing a thread file 2!\n");
+        App::GetApplication().closeDocument(doc->getName());
+
+        if (oldDoc) {
+            App::GetApplication().setActiveDocument(
+                oldDoc->getName()
+            );
+        }
+
+        throw;
+    }
+}
+
+std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDocument(App::Document* doc)
+{
+    Base::Console().message("Handling data!\n");
+    if (!doc) {
+        return std::nullopt;
+    }
+    
+    auto metadata = ThreadUtils::findMetadata(doc);
+
+     if (!metadata) {
+        return std::nullopt;
+    }
+
+    ThreadDefinition definition = *metadata;
+
+    // localizar sketches
+
+    // localizar spreadsheets
+    
+    // registrar ThreadDefinition
+    
+    return definition;
+}
+
+
+std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Document* doc)
+{
+    Base::Console().message("Reading Metadata!\n");
+
+    ThreadUtils::ThreadDefinition definition;
+
+    if (!doc) {
+        Base::Console().error("Document is null.\n");
+        return std::nullopt;
+    }
+
+    auto* obj = doc->getObject("VarSet");
+    if (!obj) {
+        Base::Console().error("Object 'VarSet' was not found.\n");
+        return std::nullopt;
+    }
+
+    auto* varset = dynamic_cast<App::VarSet*>(obj);
+    if (!varset) {
+        Base::Console().error("Object 'VarSet' has invalid type.\n");
+        return std::nullopt;
+    }
+
+    // id
+    auto* propId = varset->getPropertyByName("id");
+    if (!propId) {
+        Base::Console().error(
+            "Property 'id' was not found in VarSet.\n"
+        );
+        return std::nullopt;
+    }
+
+    auto* idProp = dynamic_cast<App::PropertyString*>(propId);
+    if (!idProp) {
+        Base::Console().error(
+            "Property 'id' is not string.\n"
+        );
+        return std::nullopt;
+    }
+
+    definition.id = idProp->getValue();
+
+    if (definition.id.empty()) {
+        Base::Console().error(
+            "Thread resource property 'id' is empty.\n"
+        );
+        return std::nullopt;
+    }
+
+    // name
+    auto* propName = varset->getPropertyByName("name");
+    if (!propName) {
+        Base::Console().error(
+            "Property 'name' was not found in VarSet.\n"
+        );
+        return std::nullopt;
+    }
+
+    auto* nameProp = dynamic_cast<App::PropertyString*>(propName);
+    if (!nameProp) {
+        Base::Console().error(
+            "Property 'name' is not string.\n"
+        );
+        return std::nullopt;
+    }
+
+    definition.name = nameProp->getValue();
+
+    if (definition.name.empty()) {
+        Base::Console().error(
+            "Thread resource property 'name' is empty.\n"
+        );
+        return std::nullopt;
+    }
+
+    // depth
+    auto* propDepth = varset->getPropertyByName("Depth");
+    if (!propDepth) {
+        Base::Console().error(
+            "Property 'Depth' was not found in VarSet.\n"
+        );
+        return std::nullopt;
+    }
+
+    auto* depthProp = dynamic_cast<App::PropertyInteger*>(propDepth);
+    if (!depthProp) {
+        Base::Console().error(
+            "Property 'Depth' is not integer.\n"
+        );
+        return std::nullopt;
+    }
+
+    definition.depthType = depthProp->getValue();
+
+    Base::Console().message("Returning Metadata!\n");
+
+    return definition;
 }

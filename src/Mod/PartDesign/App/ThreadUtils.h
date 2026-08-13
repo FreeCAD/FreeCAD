@@ -53,7 +53,6 @@ public:
     };
     static const std::vector<ThreadUtils::ThreadDescription> threadDescription[];
 
-    std::vector<std::string> getThreadTypeEnums();
     std::vector<std::string> getDepthTypeEnums();
     std::vector<std::string> getThreadClass_None_Enums();
     std::vector<std::string> getThreadClass_ISOmetric_Enums();
@@ -74,6 +73,7 @@ public:
 
     double getThroughAllLength() const;
     static const char* ThreadTypeEnums[];
+    static const char* ThreadTypeNameEnums[];
     static const char* DepthTypeEnums[];
     static const char* ThreadDirectionEnums[];
 
@@ -108,8 +108,70 @@ public:
 
     static const double ThreadRunout[ThreadRunout_size_utils][2];
 
+    void executeReadThreadDefinitions(){
+        library.readThreadDefinitions();
+    }
+
+    struct ThreadDefinition 
+    {
+        std::string id;
+        std::string name;
+        std::string description;
+        std::string threadType;
+        std::filesystem::path file;
+        int depthType;
+        std::vector<std::string> sketches;
+        std::vector<std::string> spreadsheets;
+
+        // Construtor padrão
+        ThreadDefinition() : depthType(0) {}
+
+        // Construtor com parâmetros
+        ThreadDefinition(const std::string& n, const std::string& desc)
+            : name(n), description(desc), depthType(0) {}
+
+        // Construtor com todos os parâmetros (opcional)
+        ThreadDefinition(
+            const std::string& n, 
+            const std::string& desc, 
+            const std::string& type,
+            int depth = 0
+        ) : name(n), description(desc), threadType(type), depthType(depth) {}
+    };
+
+    static std::optional<ThreadDefinition> findMetadata(App::Document* doc);
+
+    std::vector<std::string> getThreadTypeEnums();
+    std::vector<std::string> getThreadTypeNameEnums();
+
+    const std::vector<ThreadDefinition>& getThreadDefinitions() const
+    {
+        return library.getDefinitions();
+    }
+    std::vector<std::string> getThreadTypeName2Enums();
 private:
     static const char* ThreadDepthTypeEnums[];
+
+    //TODO: ThreadLibrary should be static member or singleton to improve performance
+    class ThreadLibrary
+    {
+        public:
+            ThreadLibrary();
+            void readThreadDefinitions();
+            
+            const std::vector<ThreadDefinition>& getDefinitions() const
+            {
+                return definitions;
+            }
+            
+            
+        private:
+            std::vector<ThreadDefinition> definitions;
+            std::optional<ThreadDefinition> readThreadDefinition(const Base::FileInfo& file);
+            std::optional<ThreadDefinition> readThreadDocument(App::Document* doc);
+    };
+
+    ThreadLibrary library;
 };
 
 }  // namespace PartDesign
