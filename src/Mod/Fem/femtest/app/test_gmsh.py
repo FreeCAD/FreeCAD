@@ -92,7 +92,7 @@ class TestGMSHBase(unittest.TestCase):
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.fitAll()
 
     def load_and_run_example_file(self, name):
         # opens and runs example file to process for testing
