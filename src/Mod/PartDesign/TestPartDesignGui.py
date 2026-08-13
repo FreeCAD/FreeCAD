@@ -172,7 +172,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BodySource.addObject(self.Pad)
 
         self.Doc.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
+        Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
         self.BodyTarget = self.Doc.addObject("PartDesign::Body", "Body")
 
@@ -240,7 +240,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Offset = 0.000000
 
         self.Doc.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
+        Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
         self.BodyTarget = self.Doc.addObject("PartDesign::Body", "Body")
 
