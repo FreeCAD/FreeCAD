@@ -52,99 +52,6 @@ namespace sp = std::placeholders;
 
 namespace Gui
 {
-
-/**
- * @brief The GraphvizWorker class
- *
- * Implements a QThread class that does the actual conversion from dot to
- * svg. All critical communication is done using queued signals.
- *
- */
-
-class GraphvizWorker: public QThread
-{
-    Q_OBJECT
-public:
-    explicit GraphvizWorker(QObject* parent = nullptr)
-        : QThread(parent)
-    {}
-
-    ~GraphvizWorker() override
-    {
-        dotProc.moveToThread(this);
-        unflattenProc.moveToThread(this);
-    }
-
-    void setData(const QByteArray& data)
-    {
-        str = data;
-    }
-
-    void startThread()
-    {
-        // This doesn't actually run a thread but calls the function
-        // directly in the main thread.
-        // This is needed because embedding a QProcess into a QThread
-        // causes some problems with Qt5.
-        run();
-        // Can't use the finished() signal of QThread
-        Q_EMIT emitFinished();
-    }
-
-    void run() override
-    {
-        QByteArray preprocessed = str;
-
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/DependencyGraph"
-        );
-        if (hGrp->GetBool("Unflatten", true)) {
-            // Write data to unflatten process
-            unflattenProc.write(str);
-            unflattenProc.closeWriteChannel();
-            // no error handling: unflatten is optional
-            unflattenProc.waitForFinished();
-            QByteArray unflatPreproc = unflattenProc.readAll();
-            if (!unflatPreproc.isEmpty()) {
-                preprocessed = unflatPreproc;
-            }
-        }
-        else {
-            unflattenProc.closeWriteChannel();
-            unflattenProc.waitForFinished();
-        }
-
-        dotProc.write(preprocessed);
-        dotProc.closeWriteChannel();
-        if (!dotProc.waitForFinished()) {
-            Q_EMIT error();
-            quit();
-        }
-
-        // Emit result; it will get queued for processing in the main thread
-        Q_EMIT svgFileRead(dotProc.readAll());
-    }
-
-    QProcess* dotProcess()
-    {
-        return &dotProc;
-    }
-
-    QProcess* unflattenProcess()
-    {
-        return &unflattenProc;
-    }
-
-Q_SIGNALS:
-    void svgFileRead(const QByteArray& data);
-    void error();
-    void emitFinished();
-
-private:
-    QProcess dotProc, unflattenProc;
-    QByteArray str, flatStr;
-};
-
 // Simple wrapper around QGraphicsView to make panning possible
 class GraphvizGraphicsView final: public QGraphicsView
 {
@@ -257,12 +164,9 @@ GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
     // Set central widget to view
     setCentralWidget(view);
 
-    // Create worker thread
-    thread = new GraphvizWorker(this);
-    connect(thread, &GraphvizWorker::emitFinished, this, &GraphvizView::done);
-    connect(thread, &GraphvizWorker::finished, this, &GraphvizView::done);
-    connect(thread, &GraphvizWorker::error, this, &GraphvizView::error);
-    connect(thread, &GraphvizWorker::svgFileRead, this, &GraphvizView::svgFileRead);
+    dotProc = new QProcess(this);
+    unflattenProc = new QProcess(this);
+    connect(this, &GraphvizView::convertStart, this, [this] { updateSvgItem(doc); });
 
     // NOLINTBEGIN
     //  Connect signal from document
@@ -294,8 +198,6 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Paths"
     );
-    QProcess* dotProc = thread->dotProcess();
-    QProcess* flatProc = thread->unflattenProcess();
     QStringList args, flatArgs;
     // TODO: Make -Granksep flag value variable depending on number of edges,
     // the downside is that the value affects all subgraphs
@@ -315,10 +217,10 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
         unflatten = dir.filePath(QStringLiteral("unflatten"));
     }
     dotProc->setEnvironment(QProcess::systemEnvironment());
-    flatProc->setEnvironment(QProcess::systemEnvironment());
+    unflattenProc->setEnvironment(QProcess::systemEnvironment());
     do {
-        flatProc->start(unflatten, flatArgs);
-        bool value = flatProc->waitForStarted();
+        unflattenProc->start(unflatten, flatArgs);
+        bool value = unflattenProc->waitForStarted();
         Q_UNUSED(value);  // quieten code analyzer
         dotProc->start(dot, args);
         if (!dotProc->waitForStarted()) {
@@ -371,13 +273,37 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
     graphCode = stream.str();
 
     // Update worker thread, and start it
-    thread->setData(QByteArray(graphCode.c_str(), graphCode.size()));
-    thread->startThread();
-}
+    QByteArray str = QByteArray(graphCode.c_str(), graphCode.size());
+    QByteArray preprocessed = str;
 
-void GraphvizView::svgFileRead(const QByteArray& data)
-{
-    // Update renderer with new SVG file, and give message if something went wrong
+    ParameterGrp::handle depGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/DependencyGraph"
+    );
+    if (depGrp->GetBool("Unflatten", true)) {
+        // Write data to unflatten process
+        unflattenProc->write(str);
+        unflattenProc->closeWriteChannel();
+        // no error handling: unflatten is optional
+        unflattenProc->waitForFinished();
+        QByteArray unflatPreproc = unflattenProc->readAll();
+        if (!unflatPreproc.isEmpty()) {
+            preprocessed = unflatPreproc;
+        }
+    }
+    else {
+        unflattenProc->closeWriteChannel();
+        unflattenProc->waitForFinished();
+    }
+
+    dotProc->write(preprocessed);
+    dotProc->closeWriteChannel();
+    if (!dotProc->waitForFinished()) {
+        // If the worker fails for some reason, stop giving it more data later
+        disconnectSignals();
+        return;
+    }
+
+    QByteArray data = dotProc->readAll();
     if (!data.isEmpty() && renderer->load(data)) {
         svgItem->setSharedRenderer(renderer);
     }
@@ -389,21 +315,11 @@ void GraphvizView::svgFileRead(const QByteArray& data)
         );
         disconnectSignals();
     }
-}
 
-void GraphvizView::error()
-{
-    // If the worker fails for some reason, stop giving it more data later
-    disconnectSignals();
-}
-
-void GraphvizView::done()
-{
     nPending--;
     if (nPending > 0) {
         nPending = 0;
-        updateSvgItem(doc);
-        thread->startThread();
+        Q_EMIT convertStart();
     }
 }
 
@@ -633,6 +549,3 @@ void GraphvizView::printPreview()
     connect(&dlg, &QPrintPreviewDialog::paintRequested, this, qOverload<QPrinter*>(&GraphvizView::print));
     dlg.exec();
 }
-
-#include "moc_GraphvizView.cpp"
-#include "moc_GraphvizView-internal.cpp"
