@@ -28,8 +28,11 @@ Sketch_EditRoot to render constraint icons on top of geometry. This
 leaked depth-buffer state into the highlight render pass and prevented
 face highlights on external geometry from rendering.
 
-The fix replaces SoDepthBuffer with SoAnnotation, which renders its
-children on top without affecting depth state for other nodes.
+The fix scopes the constraint depth override under a state-preserving
+SoSeparator. Constraint icons inherit disabled depth testing, while
+SoDatumLabel locally enables depth testing for dimensional geometry.
+The separator prevents the constraint depth state from leaking into
+other Sketch_EditRoot children.
 """
 
 import unittest
@@ -151,16 +154,16 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
             len(bad_nodes),
             0,
             f"Found {len(bad_nodes)} SoDepthBuffer node(s) as direct "
-            f"children of Sketch_EditRoot. Use SoAnnotation instead "
-            f"to render constraint icons on top without leaking depth "
-            f"state (#28639).",
+            f"children of Sketch_EditRoot. Constraint depth state must "
+            f"be scoped under a state-preserving separator so it cannot "
+            f"leak into sibling nodes (#28639).",
         )
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")
-    def testConstraintGroupInsideAnnotation(self):
-        """The ConstraintGroup node must be inside an SoAnnotation so
-        constraint icons render on top of geometry without affecting
-        depth state for other scene graph nodes (#28639)."""
+    def testConstraintGroupDepthStateIsScoped(self):
+        """Constraint icon depth state must be isolated from Sketch_EditRoot
+        while allowing datum-label geometry to opt back into depth testing
+        (#28639, #31917)."""
 
         from pivy import coin
 
@@ -180,20 +183,51 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
 
         self.assertIsNotNone(path, "Could not find 'ConstraintGroup' node in scene graph")
 
-        # Walk up the path looking for an SoAnnotation ancestor
-        found_annotation = False
+        # ConstraintGroup must no longer be rendered under SoAnnotation.
+        # SoAnnotation disables normal z-buffer handling for its delayed
+        # rendering pass, which is inappropriate for dimensional helper
+        # geometry that intentionally uses zConstr.
         for i in range(path.getLength()):
             node = path.getNode(i)
-            if node.isOfType(coin.SoAnnotation.getClassTypeId()):
-                found_annotation = True
-                break
+            self.assertFalse(
+                node.isOfType(coin.SoAnnotation.getClassTypeId()),
+                "ConstraintGroup must not be inside an SoAnnotation; "
+                "dimensional geometry needs normal depth testing.",
+            )
 
+        # Its immediate parent must instead isolate the depth-state override.
+        overlay = path.getNodeFromTail(1)
         self.assertTrue(
-            found_annotation,
-            "ConstraintGroup is not inside an SoAnnotation. Without "
-            "SoAnnotation, constraint icon rendering can interfere "
-            "with face highlight rendering for external geometry "
-            "preselection (#28639).",
+            overlay.isOfType(coin.SoSeparator.getClassTypeId()),
+            "ConstraintGroup parent must preserve traversal state.",
+        )
+
+        depth_index = None
+        group_index = None
+        depth_node = None
+
+        for i in range(overlay.getNumChildren()):
+            child = overlay.getChild(i)
+            if child.isOfType(coin.SoDepthBuffer.getClassTypeId()):
+                depth_index = i
+                depth_node = child
+            if child.getName().getString() == "ConstraintGroup":
+                group_index = i
+
+        self.assertIsNotNone(depth_node, "Constraint overlay has no SoDepthBuffer")
+        self.assertIsNotNone(group_index, "Constraint overlay has no ConstraintGroup")
+        self.assertLess(
+            depth_index,
+            group_index,
+            "Constraint depth state must be established before ConstraintGroup",
+        )
+        self.assertFalse(
+            depth_node.test.getValue(),
+            "Constraint icons should render without depth testing",
+        )
+        self.assertFalse(
+            depth_node.getField("write").getValue(),
+            "Constraint icons should not write to the depth buffer",
         )
 
     @unittest.skipIf(not GUI_AVAILABLE, "GUI not available")

@@ -37,7 +37,7 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
-#include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoImage.h>
@@ -1455,6 +1455,7 @@ Restart:
                     asciiText->param4 = endLineLength1;
                     asciiText->param5 = endLineLength2;
 
+                    // Keep angle helper geometry at the constraint rendering depth.
                     p0[2] = zConstrH;
 
                     asciiText->pnts.setNum(2);
@@ -3062,16 +3063,24 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
     setConstraintSelectability();  // Ensure default value;
 
-    // Render constraint icons ON TOP of geometry lines without
-    // affecting depth state for other nodes (#28639).
-    // See also issues #25840 and #11603.
-    auto* constrAnnotation = new SoAnnotation();
+    // Render constraint icons on top of geometry without leaking depth
+    // state into the rest of Sketch_EditRoot (#28639).
+    //
+    // SoDatumLabel overrides this locally for its dimensional geometry,
+    // enabling depth testing so dimension and helper lines keep their
+    // zConstr ordering relative to sketch geometry (#11603, #31917).
+    auto* constrOverlay = new SoSeparator();
+
+    auto* constrDepthOff = new SoDepthBuffer();
+    constrDepthOff->test.setValue(false);
+    constrDepthOff->write.setValue(false);
+    constrOverlay->addChild(constrDepthOff);
 
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
-    constrAnnotation->addChild(editModeScenegraphNodes.constrGroup);
+    constrOverlay->addChild(editModeScenegraphNodes.constrGroup);
 
-    editModeScenegraphNodes.EditRoot->addChild(constrAnnotation);
+    editModeScenegraphNodes.EditRoot->addChild(constrOverlay);
 
     auto* ps = new SoPickStyle();  // used to following nodes aren't impacted
     ps->style.setValue(SoPickStyle::SHAPE);
