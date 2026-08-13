@@ -9,6 +9,7 @@ add_executable(Base_tests_run
         CoordinateSystem.cpp
         DualNumber.cpp
         DualQuaternion.cpp
+        Exception.cpp
         FileLock.cpp
         FileInfo.cpp
         InputSource.cpp
