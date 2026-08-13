@@ -41,6 +41,7 @@ class QMdiSubWindow;
 class QScrollArea;
 class QStackedWidget;
 class QPushButton;
+class QTimer;
 
 namespace Gui
 {
@@ -58,6 +59,7 @@ class StartGuiExport StartView: public Gui::MDIView
 
 public:
     StartView(QWidget* parent);
+    ~StartView() override;
 
     const char* getName() const override
     {
@@ -106,6 +108,8 @@ private Q_SLOTS:
 private:
     void retranslateUi();
     void setListViewUpdatesEnabled(bool enabled);
+    void connectRecentFilesListModified(QListView* recentFilesListWidget);
+    void cancelPendingRecentFilesConnect();
 
     QStackedWidget* _contents = nullptr;
     Start::RecentFilesModel _recentFilesModel;
@@ -117,6 +121,7 @@ private:
     QLabel* _customFolderLabel;
     QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
+    QTimer* _recentFilesConnectTimer = nullptr;
 
     bool isInitialized = false;
 

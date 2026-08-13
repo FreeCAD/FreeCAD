@@ -30,6 +30,7 @@
 #include <QListView>
 #include <QMdiSubWindow>
 #include <QMessageBox>
+#include <QPointer>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QTimer>
@@ -191,19 +192,65 @@ StartView::StartView(QWidget* parent)
     }
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
-    QTimer::singleShot(2000, [this, recentFilesListWidget]() {
-        auto updateFun = [this, recentFilesListWidget]() {
-            configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
-        };
-        auto recentFiles = Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>();
-        if (recentFiles != nullptr) {
-            connect(recentFiles, &Gui::RecentFilesAction::recentFilesListModified, this, updateFun);
+    // RecentFilesAction is created asynchronously after StartView. A context-less
+    // QTimer::singleShot keeps running after this view is closed, and
+    // QObject::connect() then SIGSEGVs on the dangling context (issue #31927).
+    // Guard with QPointer and cancel the timer in the destructor instead of
+    // increasing the delay.
+    _recentFilesConnectTimer = gsl::owner<QTimer*>(new QTimer(this));
+    _recentFilesConnectTimer->setSingleShot(true);
+    QPointer<StartView> view(this);
+    QPointer<FileCardView> recentFilesView(recentFilesListWidget);
+    connect(_recentFilesConnectTimer, &QTimer::timeout, this, [view, recentFilesView]() {
+        if (!view || !recentFilesView) {
+            return;
         }
+        view->connectRecentFilesListModified(recentFilesView);
     });
+    _recentFilesConnectTimer->start(2000);
 
     isInitialized = true;
 
     retranslateUi();
+}
+
+StartView::~StartView()
+{
+    cancelPendingRecentFilesConnect();
+}
+
+void StartView::cancelPendingRecentFilesConnect()
+{
+    if (!_recentFilesConnectTimer) {
+        return;
+    }
+    _recentFilesConnectTimer->stop();
+    _recentFilesConnectTimer->disconnect();
+    _recentFilesConnectTimer = nullptr;
+}
+
+void StartView::connectRecentFilesListModified(QListView* recentFilesListWidget)
+{
+    QPointer<StartView> view(this);
+    QPointer<QListView> recentFilesView(recentFilesListWidget);
+    if (!view || !recentFilesView) {
+        return;
+    }
+
+    auto updateFun = [view, recentFilesView]() {
+        if (!view || !recentFilesView) {
+            return;
+        }
+        view->configureRecentFilesListWidget(recentFilesView, view->_recentFilesLabel);
+    };
+    auto* recentFiles = Gui::getMainWindow()->findChild<Gui::RecentFilesAction*>();
+    if (recentFiles != nullptr) {
+        StartView* context = view;
+        if (!context) {
+            return;
+        }
+        connect(recentFiles, &Gui::RecentFilesAction::recentFilesListModified, context, updateFun);
+    }
 }
 
 void StartView::configureNewFileButtons(QLayout* layout) const

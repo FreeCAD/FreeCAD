@@ -54,6 +54,7 @@
 #include <QMessageBox>
 #include <QModelIndex>
 #include <QPainter>
+#include <QPointer>
 #include <QPushButton>
 #include <QResizeEvent>
 #include <QScrollArea>
