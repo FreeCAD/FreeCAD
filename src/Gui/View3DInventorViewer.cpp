@@ -136,6 +136,7 @@
 #include "Multisample.h"
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/MappedNavigationStyle.h"
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "Selection.h"

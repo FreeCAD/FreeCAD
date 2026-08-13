@@ -57,7 +57,7 @@ set(TestExecutables
 # module.
 
 if(BUILD_GUI)
-    list (APPEND TestExecutables Gui_tests_run)
+    list (APPEND TestExecutables Gui_tests_run Gui_navigation_tests)
 endif()
 if(BUILD_ASSEMBLY)
     list (APPEND TestExecutables Assembly_tests_run)
@@ -138,10 +138,21 @@ foreach (exe ${TestExecutables})
         # because third-party DLLs are not on PATH during CMake script execution. Register each
         # test executable as a single ctest entry instead.
         add_test(NAME ${exe} COMMAND ${exe})
-        set_tests_properties(${exe} PROPERTIES
-            ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+        if(exe STREQUAL "Gui_navigation_tests")
+            set_tests_properties(${exe} PROPERTIES
+                ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+                ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+        else()
+            set_tests_properties(${exe} PROPERTIES
+                ENVIRONMENT_MODIFICATION "${_test_env_mod}")
+        endif()
     else()
         set_target_properties(${exe} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
-        gtest_discover_tests(${exe})
+        if(exe STREQUAL "Gui_navigation_tests")
+            gtest_discover_tests(${exe}
+                PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+        else()
+            gtest_discover_tests(${exe})
+        endif()
     endif()
 endforeach()

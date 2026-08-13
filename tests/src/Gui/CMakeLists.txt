@@ -14,6 +14,8 @@ add_executable(Gui_tests_run
         StyleParameters/ParameterManagerTest.cpp
         StyleParameters/YamlParameterSourceTest.cpp
         InputHintTest.cpp
+        NavigationInputState.cpp
+        NavigationResolver.cpp
         SelectionTest.cpp
 )
 
@@ -21,6 +23,19 @@ add_executable(Gui_tests_run
 setup_qt_test(QuantitySpinBox)
 
 target_link_libraries(Gui_tests_run PRIVATE
+    GTest::gmock_main
+    FreeCADApp
+    FreeCADGui
+)
+
+add_executable(Gui_navigation_tests
+        NavigationBehavior.cpp
+        GestureNavigationBehavior.cpp
+        MayaGestureNavigationBehavior.cpp
+        NavigationTestSupport.cpp
+)
+
+target_link_libraries(Gui_navigation_tests PRIVATE
     GTest::gmock_main
     FreeCADApp
     FreeCADGui

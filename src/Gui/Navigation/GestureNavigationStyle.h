@@ -24,9 +24,12 @@
 #pragma once
 
 #include "Navigation/NavigationStyle.h"
+#include "Navigation/NavigationEventView.h"
+
+#include <Inventor/events/SoMouseButtonEvent.h>
 
 #include <queue>
-#include <memory>
+#include <variant>
 
 namespace Gui
 {
@@ -55,31 +58,52 @@ public:
     /// calls processSoEvent of NavigationStyle.
     SbBool processSoEvent_bypass(const SoEvent* const ev);
 
-protected:  // state machine classes
-    /// State machine event, a wrapper around SoEvent
-    class Event;
+protected:
+    enum class State
+    {
+        Idle,
+        AwaitingRelease,
+        AwaitingMove,
+        Rotate,
+        Pan,
+        StickyPan,
+        Tilt,
+        Gesture,
+        Interact,
+    };
 
-    class NaviMachine;
+    struct AwaitingMoveData
+    {
+        SbVec2s pressPosition;
+        SbTime pressedAt;
+        int holdTimeout = 0;
+    };
 
-    class IdleState;
-    /// when operating a dragger, for example
-    class InteractState;
-    /// button was pressed, but the cursor hasn't moved yet
-    class AwaitingMoveState;
-    /// when in a two-finger touchscreen gestures
-    class GestureState;
-    /// rotating the viewed model with mouse drag
-    class RotateState;
-    /// panning with mouse drag
-    class PanState;
-    /// panning triggered by tap-and-hold. It won't switch to Tilt and Rotate upon
-    /// pressing/releasing mouse buttons
-    class StickyPanState;
-    /// tilting with mouse drag
-    class TiltState;
-    /// this state discards all mouse input (except detecting button roll gestures), until all
-    /// buttons are released.
-    class AwaitingReleaseState;
+    struct MotionData
+    {
+        SbVec2s previousPosition;
+        float viewportAspect = 1.0F;
+        bool enableTilt = false;
+    };
+
+    using StateData = std::variant<std::monostate, AwaitingMoveData, MotionData>;
+
+    NavigationEventOutcome dispatchEvent(const SoEvent* event);
+    NavigationEventOutcome handleIdle(const NavigationEventView& event);
+    NavigationEventOutcome handleAwaitingRelease(const NavigationEventView& event);
+    NavigationEventOutcome handleAwaitingMove(const NavigationEventView& event);
+    NavigationEventOutcome handleRotate(const NavigationEventView& event);
+    NavigationEventOutcome handlePan(const NavigationEventView& event);
+    NavigationEventOutcome handleStickyPan(const NavigationEventView& event);
+    NavigationEventOutcome handleTilt(const NavigationEventView& event);
+    NavigationEventOutcome handleGesture(const NavigationEventView& event);
+    NavigationEventOutcome handleInteract(const NavigationEventView& event);
+
+    static const char* stateName(State state);
+    void transitionTo(State state, const SoEvent* event);
+    void leaveState();
+    void enterPan(const SoEvent* event);
+    bool updatePan(const NavigationEventView& event);
 
     class EventQueue: public std::queue<SoMouseButtonEvent>
     {
@@ -88,7 +112,7 @@ protected:  // state machine classes
             : ns(ns)
         {}
 
-        void post(const Event& ev);
+        void post(const SoMouseButtonEvent& event);
         void discardAll();
         void forwardAll();
 
@@ -98,15 +122,14 @@ protected:  // state machine classes
 
 
 protected:  // members variables
-    std::unique_ptr<NaviMachine> naviMachine;
+    State state = State::Idle;
+    StateData stateData;
     EventQueue postponedEvents;
 
     // settings:
-    /// if false, tilting with touchscreen gestures will be disabled
-    bool enableGestureTilt = false;
     /// distance in px to treat as a definite drag (noise gate)
     int mouseMoveThreshold = 5;
-    /// used by roll gesture detection logic, in AwaitingMoveState and AwaitingReleaseState.
+    /// Used by roll gesture detection logic while awaiting a gesture decision or release.
     int rollDir = 0;
     bool logging = false;
 
@@ -115,7 +138,7 @@ public:
 
 public:  // gesture reactions
     /// Roll gesture is like: press LMB, press RMB, release LMB, release RMB.
-    ///  This function is called by state machine whenever it picks up roll gesture.
+    ///  This function is called by the explicit gesture state machine when it detects a roll gesture.
     void onRollGesture(int direction);
 };
 

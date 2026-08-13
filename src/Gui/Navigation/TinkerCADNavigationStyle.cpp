@@ -21,261 +21,107 @@
  *                                                                         *
  ***************************************************************************/
 
-
-#include <Inventor/nodes/SoCamera.h>
-#include <QApplication>
-
-
-#include "Navigation/NavigationStyle.h"
+#include "Navigation/MappedNavigationStyle.h"
 #include "View3DInventorViewer.h"
 
+#include <QCoreApplication>
 
 using namespace Gui;
 
-// ----------------------------------------------------------------------------------
+namespace
+{
+
+constexpr auto LMB = NavigationInputState::LeftDown;
+constexpr auto MMB = NavigationInputState::MiddleDown;
+constexpr auto RMB = NavigationInputState::RightDown;
+constexpr auto CTRL = NavigationInputState::CtrlDown;
+
+using Mode = NavigationStyle::ViewerMode;
+constexpr auto Select = Mode::SELECTION;
+constexpr auto Pan = Mode::PANNING;
+constexpr auto Rotate = Mode::DRAGGING;
+
+constexpr NavigationRule tinkerCADRules[] {
+    // Primary bindings.
+    bind(LMB, Select),
+    bind(CTRL | LMB, Select),
+    bind(MMB, Pan, ownedBy(MMB)),
+    bind(RMB, Rotate, ownedBy(RMB)),
+};
+
+constexpr NavigationProfile tinkerCADProfile {
+    .rules = tinkerCADRules,
+    .selectionDescription = QT_TR_NOOP("Press left mouse button"),
+    .panDescription = QT_TR_NOOP("Press middle mouse button"),
+    .rotateDescription = QT_TR_NOOP("Press right mouse button"),
+    .zoomDescription = QT_TR_NOOP("Scroll mouse wheel"),
+    .forceRotationOnAddedButton = false,
+    .recenterOnMiddleClick = false,
+};
+
+}  // namespace
 
 /* TRANSLATOR Gui::TinkerCADNavigationStyle */
 
-TYPESYSTEM_SOURCE(Gui::TinkerCADNavigationStyle, Gui::UserNavigationStyle)
+TYPESYSTEM_SOURCE(Gui::TinkerCADNavigationStyle, Gui::MappedNavigationStyle)
 
 TinkerCADNavigationStyle::TinkerCADNavigationStyle() = default;
 
 TinkerCADNavigationStyle::~TinkerCADNavigationStyle() = default;
 
-const char* TinkerCADNavigationStyle::mouseButtons(ViewerMode mode)
+const NavigationProfile& TinkerCADNavigationStyle::profile() const
 {
-    switch (mode) {
-        case NavigationStyle::SELECTION:
-            return QT_TR_NOOP("Press left mouse button");
-        case NavigationStyle::PANNING:
-            return QT_TR_NOOP("Press middle mouse button");
-        case NavigationStyle::DRAGGING:
-            return QT_TR_NOOP("Press right mouse button");
-        case NavigationStyle::ZOOMING:
-            return QT_TR_NOOP("Scroll mouse wheel");
-        default:
-            return "No description";
-    }
+    return tinkerCADProfile;
 }
 
-SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent* const ev)
+void TinkerCADNavigationStyle::processStyleButtonEvent(EventContext& context)
 {
-    // Events when in "ready-to-seek" mode are ignored, except those
-    // which influence the seek mode itself -- these are handled further
-    // up the inheritance hierarchy.
-    if (this->isSeekMode()) {
-        return inherited::processSoEvent(ev);
-    }
-    // Switch off viewing mode
-    if (!this->isSeekMode() && !this->isAnimating() && this->isViewing()) {
-        this->setViewing(false);  // by default disable viewing mode to render the scene
-    }
+    const auto* const event = static_cast<const SoMouseButtonEvent*>(context.event);
+    const bool press = event->getState() == SoButtonEvent::DOWN;
 
-    const SoType type(ev->getTypeId());
-
-    const SbViewportRegion& vp = viewer->getSoRenderManager()->getViewportRegion();
-    const SbVec2s pos(ev->getPosition());
-    const SbVec2f posn = normalizePixelPos(pos);
-
-    const SbVec2f prevnormalized = this->lastmouseposition;
-    this->lastmouseposition = posn;
-
-    // Set to true if any event processing happened. Note that it is not
-    // necessary to restrict ourselves to only do one "action" for an
-    // event, we only need this flag to see if any processing happened
-    // at all.
-    SbBool processed = false;
-    bool triedSelectionDrag = false;
-
-    const ViewerMode curmode = this->currentmode;
-    ViewerMode newmode = curmode;
-
-    // Mismatches in state of the modifier keys happens if the user
-    // presses or releases them outside the viewer window.
-    syncModifierKeys(ev);
-
-    // give the nodes in the foreground root the chance to handle events (e.g color bar)
-    if (!viewer->isEditing()) {
-        processed = handleEventInForeground(ev);
-        if (processed) {
-            return true;
+    if (press
+        && (event->getButton() == SoMouseButtonEvent::BUTTON1
+            || event->getButton() == SoMouseButtonEvent::BUTTON2)
+        && (context.initialMode == NavigationStyle::PANNING
+            || context.initialMode == NavigationStyle::ZOOMING)) {
+        // TinkerCAD keeps the current pan/zoom mode when another button is added.
+        context.resolvedMode = context.initialMode;
+        if (event->getButton() == SoMouseButtonEvent::BUTTON1) {
+            context.processed = processClickEvent(event);
         }
-    }
-
-    // Keyboard handling
-    if (type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const auto event = static_cast<const SoKeyboardEvent*>(ev);
-        processed = processKeyboardEvent(event);
-    }
-
-    // Mouse Button / Spaceball Button handling
-    if (type.isDerivedFrom(SoMouseButtonEvent::getClassTypeId())) {
-        const auto event = (const SoMouseButtonEvent*)ev;
-        const int button = event->getButton();
-        const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-
-        switch (button) {
-            case SoMouseButtonEvent::BUTTON1:
-                this->button1down = press;
-                updateSelectionStartPosition(press, pos);
-                if (press && (curmode == NavigationStyle::SEEK_WAIT_MODE)) {
-                    newmode = NavigationStyle::SEEK_MODE;
-                    this->seekToPoint(pos);  // implicitly calls interactiveCountInc()
-                    processed = true;
-                }
-                else if (viewer->isEditing() && (curmode == NavigationStyle::SPINNING)) {
-                    processed = true;
-                }
-                else {
-                    processed = processClickEvent(event);
-                }
-                break;
-            case SoMouseButtonEvent::BUTTON2:
-                // If we are in edit mode then simply ignore the RMB events
-                // to pass the event to the base class.
-                this->button2down = press;
-
-                // About to start rotating
-                if (!viewer->isEditing() && press && (curmode == NavigationStyle::IDLE)) {
-                    // Use this variable to spot move events
-                    saveCursorPosition(ev);
-                    this->centerTime = ev->getTime();
-                    processed = true;
-                }
-                // Don't show the context menu after dragging, panning or zooming
-                else if (!press && (hasDragged || hasPanned || hasZoomed)) {
-                    processed = true;
-                }
-                else if (!press) {
-                    newmode = NavigationStyle::IDLE;
-                    if (!viewer->isEditing()) {
-                        if (this->currentmode != NavigationStyle::ZOOMING
-                            && this->currentmode != NavigationStyle::PANNING) {
-                            if (this->isPopupMenuEnabled()) {
-                                this->openPopupMenu(event->getPosition());
-                            }
-                        }
-                        processed = true;
-                    }
-                }
-                break;
-            case SoMouseButtonEvent::BUTTON3:
-                this->button3down = press;
-                if (press) {
-                    this->centerTime = ev->getTime();
-                    setupPanningPlane(getCamera());
-                }
-                else if (curmode == NavigationStyle::PANNING) {
-                    newmode = NavigationStyle::IDLE;
-                    processed = true;
-                }
-                break;
-            default:
-                break;
+        else {
+            context.processed = false;
         }
+        return;
     }
 
-    // Mouse Movement handling
-    if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
-        const auto event = (const SoLocation2Event*)ev;
-        if (curmode == NavigationStyle::SELECTION && this->button1down) {
-            triedSelectionDrag = true;
-            processed = handleSelectionDragMotion(event, newmode, this->ctrldown);
+    if (event->getButton() == SoMouseButtonEvent::BUTTON3 && !press
+        && context.initialMode == NavigationStyle::PANNING) {
+        context.processed = true;
+        return;
+    }
+
+    if (event->getButton() != SoMouseButtonEvent::BUTTON2) {
+        return;
+    }
+
+    if (press) {
+        if (context.initialMode == NavigationStyle::IDLE) {
+            context.processed = true;
         }
-        else if (curmode == NavigationStyle::PANNING) {
-            float ratio = vp.getViewportAspectRatio();
-            panCamera(
-                viewer->getSoRenderManager()->getCamera(),
-                ratio,
-                this->panningplane,
-                posn,
-                prevnormalized
-            );
-            processed = true;
-        }
-        else if (curmode == NavigationStyle::DRAGGING) {
-            this->addToLog(event->getPosition(), event->getTime());
-            this->spin(posn);
-            moveCursorPosition();
-            processed = true;
-        }
+        return;
     }
 
-    // Spaceball & Joystick handling
-    if (type.isDerivedFrom(SoMotion3Event::getClassTypeId())) {
-        const auto event = static_cast<const SoMotion3Event*>(ev);
-        if (event) {
-            this->processMotionEvent(event);
-        }
-        processed = true;
+    if (viewer->isEditing()) {
+        return;
     }
 
-    enum
-    {
-        BUTTON1DOWN = 1 << 0,
-        BUTTON3DOWN = 1 << 1,
-        CTRLDOWN = 1 << 2,
-        SHIFTDOWN = 1 << 3,
-        BUTTON2DOWN = 1 << 4
-    };
-    unsigned int combo = (this->button1down ? BUTTON1DOWN : 0)
-        | (this->button2down ? BUTTON2DOWN : 0) | (this->button3down ? BUTTON3DOWN : 0)
-        | (this->ctrldown ? CTRLDOWN : 0) | (this->shiftdown ? SHIFTDOWN : 0);
-
-    switch (combo) {
-        case 0:
-            if (curmode == NavigationStyle::SPINNING) {
-                break;
-            }
-            newmode = NavigationStyle::IDLE;
-            break;
-        case BUTTON1DOWN:
-        case CTRLDOWN | BUTTON1DOWN:
-            if (newmode != NavigationStyle::INTERACT) {
-                newmode = NavigationStyle::SELECTION;
-            }
-            break;
-        case BUTTON2DOWN:
-            if (newmode != NavigationStyle::DRAGGING) {
-                saveCursorPosition(ev);
-            }
-            newmode = NavigationStyle::DRAGGING;
-            break;
-        case BUTTON3DOWN:
-            newmode = NavigationStyle::PANNING;
-            break;
-        default:
-            break;
+    // TinkerCAD keeps the context menu on a simple right click, while a right-button
+    // drag suppresses it after the shared gesture flags have been set.
+    if (context.initialMode != NavigationStyle::PANNING
+        && context.initialMode != NavigationStyle::ZOOMING && !hasDragged && !hasPanned
+        && !hasZoomed && isPopupMenuEnabled()) {
+        openPopupMenu(event->getPosition());
     }
-
-    // Process when selection button is pressed together with other buttons that could trigger
-    // different actions.
-    if (this->button1down && (this->button2down || this->button3down)) {
-        processed = true;
-    }
-
-    // Prevent interrupting rubber-band selection in sketcher
-    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION
-        && newmode != NavigationStyle::IDLE) {
-        newmode = NavigationStyle::SELECTION;
-        processed = false;
-    }
-
-    // Reset flags when newmode is IDLE and the buttons are released
-    if (newmode == IDLE && !button1down && !button2down && !button3down) {
-        hasPanned = false;
-        hasDragged = false;
-        hasZoomed = false;
-    }
-
-    if (newmode != curmode) {
-        this->setViewingMode(newmode);
-    }
-
-    // If not handled in this class, pass on upwards in the inheritance
-    // hierarchy.
-    if (!processed && !triedSelectionDrag) {
-        processed = inherited::processSoEvent(ev);
-    }
-    return processed;
+    context.processed = true;
 }

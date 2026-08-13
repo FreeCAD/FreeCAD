@@ -939,7 +939,8 @@ SET(View3D_SRCS
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
 SET(Navigation_CPP_SRCS
-    Navigation/NavigationStateChart.cpp
+    Navigation/MappedNavigationStyle.cpp
+    Navigation/NavigationResolver.cpp
     Navigation/NavigationStyle.cpp
     Navigation/NavigationStylePyImp.cpp
     Navigation/InventorNavigationStyle.cpp
@@ -959,9 +960,14 @@ SET(Navigation_CPP_SRCS
 )
 SET(Navigation_SRCS
     ${Navigation_CPP_SRCS}
-    Navigation/NavigationStateChart.h
+    Navigation/MappedNavigationStyle.h
+    Navigation/NavigationEventView.h
+    Navigation/NavigationInputState.h
+    Navigation/NavigationProfile.h
+    Navigation/NavigationResolver.h
     Navigation/NavigationStyle.h
     Navigation/NavigationStyle.pyi
+    Navigation/MayaGestureNavigationStyle.h
     Navigation/GestureNavigationStyle.h
     Navigation/NavigationAnimator.h
     Navigation/NavigationAnimation.h

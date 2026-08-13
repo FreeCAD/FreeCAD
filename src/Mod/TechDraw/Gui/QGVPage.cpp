@@ -39,6 +39,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/Navigation/NavigationStyle.h>
+#include <Gui/Navigation/MappedNavigationStyle.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
