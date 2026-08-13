@@ -36,6 +36,7 @@ _BASELINE_REL = Path("tests") / "visual" / "baselines" / "coin-nodes"
 _FONT_REL = Path("tests") / "visual" / "fonts"
 _DEFAULT_FONT_FAMILY = "Noto Sans"
 _DEFAULT_FONT_FILES = ("NotoSans-Regular.ttf",)
+_VISUAL_SNAPSHOT_ANTIALIASING = 0
 
 
 def _env_truthy(name: str, default: str = "") -> bool:
@@ -305,6 +306,11 @@ def _require_gui():
             raise unittest.SkipTest(
                 "No display available (run under xvfb-run or set QT_QPA_PLATFORM=offscreen)"
             )
+        if not has_display and qpa in {"offscreen", "minimal"}:
+            raise unittest.SkipTest(
+                "QOpenGLWidget visual tests require a window-system GL surface; "
+                "use the Coin surfaceless-EGL tests for X11-free coverage"
+            )
 
     try:
         import FreeCADGui  # type: ignore
@@ -428,6 +434,12 @@ class _ViewerSnapshotHarness:
         self.view = None
         self.viewer = None
         self._closed = False
+        self._view_preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        self._previous_antialiasing = self._view_preferences.GetInt("AntiAliasing", 0)
+        # Snapshot baselines describe the renderer, not the user's interactive view settings.
+        # Set this before creating the document: View3DInventor chooses the OpenGL surface's
+        # sample count while constructing the viewer, so changing it afterward is too late.
+        self._view_preferences.SetInt("AntiAliasing", _VISUAL_SNAPSHOT_ANTIALIASING)
         active_document = getattr(FreeCAD, "ActiveDocument", None)
         self._previous_document_name = getattr(active_document, "Name", None)
 
@@ -503,11 +515,14 @@ class _ViewerSnapshotHarness:
             if self._previous_document_name:
                 self.FreeCADGui.setActiveDocument(self._previous_document_name)
         finally:
-            self.viewer = None
-            self.view = None
-            self.gui_doc = None
-            self.doc = None
-            _pump_gui_events(self.FreeCADGui, cycles=6)
+            try:
+                self._view_preferences.SetInt("AntiAliasing", self._previous_antialiasing)
+            finally:
+                self.viewer = None
+                self.view = None
+                self.gui_doc = None
+                self.doc = None
+                _pump_gui_events(self.FreeCADGui, cycles=6)
 
     def _graphics_view(self):
         last_exc = None
