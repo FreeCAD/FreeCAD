@@ -187,6 +187,7 @@ SET(bimcommands_SRCS
     bimcommands/BimTDView.py
     bimcommands/BimText.py
     bimcommands/BimTrash.py
+    bimcommands/BimTrimex.py
     bimcommands/BimTruss.py
     bimcommands/BimTutorial.py
     bimcommands/BimUnclone.py
