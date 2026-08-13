@@ -175,6 +175,7 @@ def move(selection, vector, copy=False, subelements=False):
 
 def _move_subelements(selection, vector, copy):
     data_list, sel_info = utils._modifiers_process_subselection(selection, copy)
+        data_list = utils._modifiers_filter_subselection(data_list)
     newobjs = []
     if copy:
         for obj, vert_idx, edge_idx, global_place in data_list:
