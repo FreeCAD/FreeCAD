@@ -302,7 +302,7 @@ void Command::initAction()
 void Command::addTo(QWidget* pcWidget)
 {
     initAction();
-        // A workbench may register the icon resource after this action was first created.
+    // A workbench may register the icon resource after this action was first created.
     // Resolve it again when the command is added to a newly initialized toolbar.
     if (const char* pixmap = getPixmap(); pixmap && *pixmap) {
         _pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(pixmap));
