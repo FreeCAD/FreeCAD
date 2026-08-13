@@ -350,7 +350,7 @@ QStringList FileDialogInternal::nativeFileDialog(
         ComPointer<IShellItem> shellStartFolder;
         if (SUCCEEDED(SHCreateItemFromParsingName(
 
-                startFolder.get(),
+            startFolder.get(),
                 nullptr,
                 IID_IShellItem,
                 shellStartFolder.ppvObject()
