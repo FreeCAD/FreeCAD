@@ -28,14 +28,13 @@
 
 class QGraphicsScene;
 class QGraphicsView;
+class QProcess;
 class QSvgRenderer;
 class QGraphicsSvgItem;
 class GraphicsViewZoom;
 
 namespace Gui
 {
-
-class GraphvizWorker;
 
 class GuiExport GraphvizView: public MDIView
 {
@@ -63,10 +62,8 @@ public:
     void printPreview() override;
     //@}
 
-private Q_SLOTS:
-    void svgFileRead(const QByteArray& data);
-    void error();
-    void done();
+Q_SIGNALS:
+    void convertStart();
 
 private:
     void updateSvgItem(const App::Document& doc);
@@ -79,7 +76,8 @@ private:
     GraphicsViewZoom* zoomer;
     QGraphicsSvgItem* svgItem;
     QSvgRenderer* renderer;
-    GraphvizWorker* thread;
+    QProcess* dotProc;
+    QProcess* unflattenProc;
     int nPending;
 
     using Connection = fastsignals::scoped_connection;

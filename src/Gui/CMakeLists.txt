@@ -432,18 +432,6 @@ if(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
     )
 endif(FREECAD_USE_3DCONNEXION_NAVLIB AND (MSVC OR APPLE))
 
-set_property(SOURCE GraphvizView.h GraphvizView.cpp PROPERTY SKIP_AUTOMOC ON)
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
-    COMMAND ${QtCore_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
-
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp
-    COMMAND ${QtCore_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.h)
-
-set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
-set_property(SOURCE GraphvizView.h APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView.cpp)
-
 set (FreeCAD_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Language/FreeCAD_translation.qrc)
 qt_find_and_add_translation(QM_SRCS "Language/FreeCAD_*.ts"
     ${CMAKE_CURRENT_BINARY_DIR}/Language)
