@@ -29,6 +29,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
+#include <Inventor/rendering/SoRenderIR.h>
 #include <FCGlobal.h>
 #include <vector>
 
@@ -56,10 +57,12 @@ protected:
     {
         SoRefPtr<SoPath> path;
         int priority;
+        SoIRRenderContext context;
 
-        PriorityPath(SoPath* p, int pr = 0)
+        PriorityPath(SoPath* p, int pr, const SoIRRenderContext& capturedContext)
             : path(p)
             , priority(pr)
+            , context(capturedContext)
         {}
     };
 

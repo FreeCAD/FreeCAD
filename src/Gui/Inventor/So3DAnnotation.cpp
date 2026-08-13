@@ -95,8 +95,9 @@ SoDelayedAnnotationsElement* SoDelayedAnnotationsElement::getElement(SoState* st
 
 void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path, int priority)
 {
-    // add to unified storage with specified priority (default = 0)
-    getElement(state)->paths.emplace_back(path, priority);
+    SoIRRenderContext context;
+    context.captureFromState(state);
+    getElement(state)->paths.emplace_back(path, priority, context);
 }
 
 bool SoDelayedAnnotationsElement::hasDelayedPaths(SoState* state)
@@ -183,7 +184,10 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
     DelayedPathsProcessingScope processingScope(state);
     SoIRRenderStageScope stageScope(*action, SoRenderStage::AfterMain);
     for (const auto& priorityPath : elt->paths) {
-        action->switchToPathTraversal(priorityPath.path.get());
+        // Annotation paths commonly depend on coordinates, normals, and
+        // bindings established by their ancestors. Replay the full path so
+        // those state elements are reconstructed before the delayed tail.
+        action->traverseAdditionalPath(priorityPath.path.get(), priorityPath.context);
     }
 
     elt->paths.clear();
