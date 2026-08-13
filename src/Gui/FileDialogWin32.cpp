@@ -256,7 +256,7 @@ QStringList FileDialogInternal::nativeFileDialog(
     const QString& startPath,
     const FileDialog::FilterList& filters,
     qsizetype& selectedFilterIndex,
-                    nullptr,FileDialog::Options options
+    FileDialog::Options options
 )
 {
     ComRuntime com;
