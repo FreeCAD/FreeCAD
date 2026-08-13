@@ -256,7 +256,7 @@ QStringList FileDialogInternal::nativeFileDialog(
     const QString& startPath,
     const FileDialog::FilterList& filters,
     qsizetype& selectedFilterIndex,
-FileDialog::Options options
+    FileDialog::Options options
 )
 {
     ComRuntime com;
@@ -344,12 +344,12 @@ FileDialog::Options options
 
     // Select starting directory, if any
     if (startPathInfo.isAbsolute()) {
-                const QString startDirectory = startPathInfo.isDir() ? startPathInfo.absoluteFilePath()
+        const QString startDirectory = startPathInfo.isDir() ? startPathInfo.absoluteFilePath()
                                                              : startPathInfo.absolutePath();
         const auto startFolder = qStringToWCharArray(QDir::toNativeSeparators(startDirectory));
+        ComPointer<IShellItem> shellStartFolder;
+        if (SUCCEEDED(SHCreateItemFromParsingName(
 
-                ComPointer<IShellItem> shellStartFolder;
-if (SUCCEEDED(SHCreateItemFromParsingName(
                 startFolder.get(),
                 nullptr,
                 IID_IShellItem,
