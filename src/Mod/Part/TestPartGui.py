@@ -175,6 +175,30 @@ class PartMirrorGuiTestCases(unittest.TestCase):
         label = "a\nb\nc"
         self.assertEqual(f"{label} (Mirror #1)", self.mirrorBoxWithLabel(label))
 
+    def testMirrorPlaneEditHasCloseDialog(self):
+        if not FreeCAD.GuiUp:
+            self.skipTest("This test requires a graphical user interface (GUI).")
+
+        box = self.Doc.addObject("Part::Box", "Box")
+        mirror = self.Doc.addObject("Part::Mirroring", "Mirror")
+        mirror.Source = box
+        self.Doc.recompute()
+
+        gui_document = FreeCADGui.getDocument(self.Doc.Name)
+        gui_document.setEdit(mirror.Name)
+
+        task_dialog = FreeCADGui.Control.activeTaskDialog()
+        self.assertIsNotNone(task_dialog, "Mirror plane task dialog did not open.")
+        self.assertEqual(
+            task_dialog.getStandardButtons(),
+            int(QtWidgets.QDialogButtonBox.Close),
+        )
+
+        task_dialog.reject()
+        QtWidgets.QApplication.processEvents()
+        self.assertIsNone(gui_document.getInEdit())
+        self.assertFalse(FreeCADGui.Control.activeDialog(gui_document))
+
 
 class SectionCutTestCases(unittest.TestCase):
     def setUp(self):
