@@ -113,7 +113,7 @@ class DraftModification(test_base.DraftTestCaseDoc):
 
         self.assertEqual(filtered, [data_list[0]])
 
-def test_offset_open(self):
+    def test_offset_open(self):
         """Create an open wire, then produce an offset copy."""
         operation = "Draft Offset"
         _msg("  Test '{}'".format(operation))
