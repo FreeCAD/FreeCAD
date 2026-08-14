@@ -101,8 +101,19 @@ DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
 
 void DlgCustomizeImp::onButtonHelpClicked()
 {
-    // Ideally the button would consider the active tab and launch to the specific help doc.
-    Gui::getMainWindow()->showDocumentation(QStringLiteral("Interface_Customization"));
+    // Fallback articleID
+    QString articleID = QStringLiteral("Interface_Customization");
+
+    // Collect the whatsThis articleID from the current tab
+    QWidget* activePage = tabWidget->currentWidget();
+    if (activePage) {
+        QString whatsThis = activePage->whatsThis();
+        if (whatsThis.length() > 0) {
+            articleID = whatsThis;
+        }
+    }
+
+    Gui::getMainWindow()->showDocumentation(articleID);
 }
 
 /**

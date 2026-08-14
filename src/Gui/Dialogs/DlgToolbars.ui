@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Toolbars</string>
   </property>
+  <property name="whatsThis">
+   <string>Customize_Toolbars</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
     <widget class="QSplitter" name="splitter">
