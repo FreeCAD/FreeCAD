@@ -509,6 +509,7 @@ void DSHArcOfHyperbolaController::doEnforceControlParameters(Base::Vector2d& onS
 
             if (secondRadiusParam->isSet) {
                 minorRadius = secondRadiusParam->getValue();
+                handler->minorRadius = minorRadius;
                 handler->minorRadiusSet = true;
                 if (minorRadius < Precision::Confusion() && secondRadiusParam->hasFinishedEditing) {
                     handler->minorRadiusSet = false;

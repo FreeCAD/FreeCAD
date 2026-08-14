@@ -991,7 +991,7 @@ void DSHBSplineController::configureToolWidget()
 
         toolWidget->setParameterLabel(
             WParameter::First,
-            QApplication::translate("ToolWidgetManager_p4", "Degree (+'U'/ -'J')")
+            QApplication::translate("ToolWidgetManager_p4", "Degree")
         );
         toolWidget->configureParameterUnit(WParameter::First, Base::Unit());
         toolWidget->configureParameterMin(WParameter::First, 1.0);  // NOLINT

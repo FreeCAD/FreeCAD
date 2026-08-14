@@ -175,6 +175,9 @@ public:
     virtual const char* what() const noexcept;
     virtual void reportException() const;  // once only
 
+    /// Message looked up in the "Exceptions" context when it is marked translatable
+    virtual std::string getTranslatedMessage() const;
+
     inline void setMessage(const std::string& message);
     // what may differ from the message given by the user in
     // derived classes
@@ -257,6 +260,7 @@ public:
 
     const char* what() const noexcept override;
     void reportException() const override;
+    std::string getTranslatedMessage() const override;
     std::string getFileName() const;
     PyObject* getPyObject() override;
 
@@ -270,6 +274,55 @@ private:
     // can not be of a temporary object to be destroyed at end of what()
     std::string _sErrMsgAndFileName;
     void setFileName(const std::string& fileName);
+};
+
+class BaseExport FileNotFoundException: public FileException
+{
+public:
+    explicit FileNotFoundException(const std::string& fileName);
+    explicit FileNotFoundException(const FileInfo& file);
+};
+
+class BaseExport FileReadPermissionException: public FileException
+{
+public:
+    explicit FileReadPermissionException(const std::string& fileName);
+    explicit FileReadPermissionException(const FileInfo& file);
+};
+
+class BaseExport FileWritePermissionException: public FileException
+{
+public:
+    explicit FileWritePermissionException(const std::string& fileName);
+    explicit FileWritePermissionException(const FileInfo& file);
+};
+
+class BaseExport FileFormatException: public FileException
+{
+public:
+    explicit FileFormatException(const std::string& fileName = "");
+    explicit FileFormatException(const FileInfo& file);
+};
+
+class BaseExport FileReadException: public FileException
+{
+public:
+    explicit FileReadException(const std::string& fileName);
+    explicit FileReadException(const FileInfo& file);
+};
+
+class BaseExport FileWriteException: public FileException
+{
+public:
+    explicit FileWriteException(const std::string& fileName);
+    explicit FileWriteException(const FileInfo& file);
+};
+
+class BaseExport DirectoryNotFoundException: public FileException
+{
+public:
+    explicit DirectoryNotFoundException(const std::string& dirName);
+    explicit DirectoryNotFoundException(const FileInfo& directory);
 };
 
 class BaseExport FileSystemError: public Exception
