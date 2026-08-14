@@ -61,7 +61,9 @@ GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 GCODE_CYCLE_CANCEL = ["G80"]
 
 # Additional drilling cycles
+EXPANDABLE_DRILL_CYCLES = ["G81", "G82", "G83", "G73"]
 GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
+GCODE_DRILL_COMMANDS = EXPANDABLE_DRILL_CYCLES + ["G73", "G85", "G86", "G87", "G88", "G89"]
 
 # Probing
 GCODE_PROBE = ["G38.2"]
@@ -195,6 +197,13 @@ GCODE_NON_CONFORMING = (
     + GCODE_CYCLE_CANCEL
 )
 
+
+# =============================================================================
+# Parameter (axis)
+# =============================================================================
+
+# Supported, and preferred order
+PARAMETER_ORDER = "XYZABCUVWFSIJKTQRPDHSLT"
 
 # =============================================================================
 # Annotations

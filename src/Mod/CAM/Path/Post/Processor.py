@@ -44,7 +44,7 @@ from Path.Post import PostList
 import Path.Post.Utils as PostUtils
 from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
-from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError
+from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits
 
@@ -348,11 +348,11 @@ class PostProcessor:
                 "name": "drill_cycles_to_translate",
                 "type": "text",
                 "label": translate("CAM", "Drill Cycles to Translate"),
-                "default": "\n".join(Constants.GCODE_MOVE_DRILL),
+                "default": "\n".join(Constants.EXPANDABLE_DRILL_CYCLES),
                 "help": translate(
                     "CAM",
                     "List of drill cycle commands to translate to G0/G1 moves (one per line). "
-                    f"Standard drill cycles: {', '.join(Constants.GCODE_MOVE_DRILL)}. "
+                    f"Standard drill cycles: {', '.join(Constants.EXPANDABLE_DRILL_CYCLES)}. "
                     "Leave empty if postprocessor supports drill cycles natively.",
                 ),
             },
@@ -474,7 +474,7 @@ class PostProcessor:
                 "name": "parameter_order",
                 "type": "text",  # one line
                 "label": translate("CAM", "Generated Parameter Order for GCode"),
-                "default": "XYZABCFSIJTQRPH",  # FIXME: only list `supported`
+                "default": Constants.PARAMETER_ORDER,
                 "help": translate("CAM", "Generated Parameter Order for GCode for output"),
             },
             {
@@ -610,6 +610,10 @@ class PostProcessor:
         self._bcnc_postamble_commands = None
         self._operation = None
 
+        # Reset this to None when not in-use (e.g. _convert_job_sections)
+        # Use `with self.use_machine_state():`
+        self.machine_state = None
+
         # Handle job: can be single job or list of jobs
         if isinstance(job, list):
             self._jobs = job
@@ -660,19 +664,6 @@ class PostProcessor:
         else:
             # Job doesn't have Machine attribute yet (e.g., MockJob or legacy job)
             self._machine = None
-        self._modal_state = {
-            "X": None,
-            "Y": None,
-            "Z": None,
-            "A": None,
-            "B": None,
-            "C": None,
-            "U": None,
-            "V": None,
-            "W": None,
-            "F": None,
-            "S": None,
-        }
         self.reinitialize()
 
         self._operations = []
@@ -1084,7 +1075,7 @@ class PostProcessor:
                                 gcodeheader.add_tool(tool_key, item.label)
                     elif item.item_type == "fixture":
                         if list_fixtures:
-                            if item.path and item.path.Commands:
+                            if item.path:
                                 fixture_name = item.path.Commands[0].Name
                                 if fixture_name not in seen_fixtures:
                                     seen_fixtures.add(fixture_name)
@@ -1106,20 +1097,9 @@ class PostProcessor:
             for item in sublist:
                 has_drill_cycles = False
                 if item.path:
-                    drill_commands = [
-                        "G73",
-                        "G74",
-                        "G81",
-                        "G82",
-                        "G83",
-                        "G84",
-                        "G85",
-                        "G86",
-                        "G87",
-                        "G88",
-                        "G89",
-                    ]
-                    has_drill_cycles = any(cmd.Name in drill_commands for cmd in item.path.Commands)
+                    has_drill_cycles = any(
+                        cmd.Name in Constants.GCODE_DRILL_COMMANDS for cmd in item.path.Commands
+                    )
 
                 if has_drill_cycles:
                     item.path = PostUtils.cannedCycleTerminator(item.path)
@@ -1149,7 +1129,7 @@ class PostProcessor:
         Subclasses can override to customize spindle wait behavior.
         """
 
-        spindle = self._machine.get_spindle_by_index(0)  # FIXME: should be an annotation
+        spindle = self._machine.get_spindle_by_index(0)
         if not (spindle and spindle.spindle_wait > 0):
             return
 
@@ -1224,8 +1204,8 @@ class PostProcessor:
             Path.Log.debug("Drill cycle translation disabled")
             return
 
-        with self.use_machine_state():
-            for section_name, sublist in postables:
+        for section_name, sublist in postables:
+            with self.use_machine_state():
                 for item in sublist:
                     Path.Log.track(f"Processing item: {item.label}")
                     if item.path:
@@ -1237,7 +1217,10 @@ class PostProcessor:
                             Path.Log.debug(f"Translating drill cycles for {item.label}")
                             expander = DrillCycleExpander(self.machine_state)
                             item.path = expander.expand_path(item.path)
+                            # DrillCycleExpander tracks it's commands: machine_state.addCommands(...)
+
                         else:
+                            # track a normal command
                             self.machine_state.addCommands(item.path.Commands)
 
     @contextmanager
@@ -1489,7 +1472,10 @@ class PostProcessor:
             return Path.Command("G20")
         else:
             raise CAMAttributeError(
-                f"Must have _machine.output.units (in {self._machine.name}) as one of [{OutputUnits.METRIC},{OutputUnits.IMPERIAL}], someone replaced the default with: {self.values['OUTPUT_UNITS'].__class__.__name__} {self.values['OUTPUT_UNITS']}"
+                f"Must have _machine.output.units (in {self._machine.name}) as one of [{OutputUnits.METRIC},{OutputUnits.IMPERIAL}], someone replaced the default with: {self.values['OUTPUT_UNITS'].__class__.__name__} {self.values['OUTPUT_UNITS']}",
+                job=self._job,
+                operation=self._operation,
+                pp=self.values["MACHINE_NAME"],
             )
 
     def _expand_pre_job(self, postables):
@@ -1634,10 +1620,13 @@ class PostProcessor:
 
         if item.item_type == "str":
             # append the output & done
-            str_lines = item.data["str"].rstrip("\n").split("\n")
+            str_lines = [line for line in item.data["str"].split("\n") if line != ""]
             # no empty
             if str_lines:
                 gcode_lines.extend(str_lines)
+
+            # could be "gcode" in the block, so MachineState is now invalid
+            self.machine_state.setState(None)
             return
 
         if not item.path:
@@ -1648,7 +1637,17 @@ class PostProcessor:
             )
 
         for cmd in item.path.Commands:
+            # Update the MachineState before the PP converts it
+            # So, `machine_state` reflects where we end up.
+            # And, so `machine_state` reflects the intended location for the next command
+            # (we can't update on the result of the PP's convert).
+            # `.previous` is where we were before the cmd (often useful)
+            # If the MachineState won't be right after the PP's convert,
+            # then the PP must fix MachineState.
+            self.machine_state.addCommand(cmd)
+
             try:
+
                 gcode = self.convert_command_to_gcode(cmd)
 
                 if gcode is not None and gcode.strip():
@@ -1976,49 +1975,40 @@ class PostProcessor:
         """Convert each section to output-code"""
 
         job_sections = []
+
         for section_name, sublist in postables:
-            gcode_lines = []
-            self._optimize_start = None
 
-            self._operation = None
-            self._convert_start_section(section_name, sublist)
+            # MachineState per file (section)
+            with self.use_machine_state():
+                gcode_lines = []
 
-            for item in sublist:
-                # for error context
-                if item.item_type == "operation":
-                    self._operation = item.source
+                # For _optimize_gcode, FIXME: do annotations on Postables instead
+                self._optimize_start = None
 
-                self._convert_item_commands(item, gcode_lines)
+                self._convert_start_section(section_name, sublist)
 
-                self._operation = None  # operation `item` is over
+                for item in sublist:
+                    # for error context
+                    if item.item_type == "operation":
+                        self._operation = item.source
 
-            # ===== STAGE 4: G-CODE OPTIMIZATION =====
-            gcode_string = self._optimize_gcode(gcode_lines)
+                    self._convert_item_commands(item, gcode_lines)
 
-            if gcode_string:
-                # one place for end-of-line_chars
-                gcode_string = "\n".join(gcode_string)
-                line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
-                if line_ending != "\n":
-                    gcode_string = gcode_string.replace("\n", line_ending)
+                    self._operation = None  # operation `item` is over
 
-                job_sections.append((section_name, gcode_string))
+                # ===== STAGE 4: G-CODE OPTIMIZATION =====
+                gcode_string = self._optimize_gcode(gcode_lines)
+
+                if gcode_string:
+                    # one place for end-of-line_chars
+                    gcode_string = "\n".join(gcode_string)
+                    line_ending = self.values.get("END_OF_LINE_CHARS", "\n")
+                    if line_ending != "\n":
+                        gcode_string = gcode_string.replace("\n", line_ending)
+
+                    job_sections.append((section_name, gcode_string))
 
         return job_sections
-
-    def dump_sections(self, msg, sections):
-        """Print the sections
-        for development/debugging
-        """
-        print(f"## proc DUMP {msg}")
-        for si, (sn, postables) in enumerate(sections):
-            print(f"Section[{si}] '{sn}'")
-            for pi, p in enumerate(postables):
-                print(f"  Postable[{pi}] {p.item_type}:'{p.Name}'")
-                print(f"    {p}")
-                if p.Path:
-                    for i, c in enumerate(p.Path.Commands):
-                        print(f"        [{i}] {c.toGCode()}")
 
     def export2(self) -> Union[None, GCodeSections]:
         """
@@ -2045,12 +2035,17 @@ class PostProcessor:
         if not getattr(self, "_bundle_applied", False):
             self.apply_configuration_bundle()
 
-        # ===== STAGE 1: ORDERING =====
-        all_job_sections = []
+        # ===== STAGE 1: Postable List =====
+        # FreeCAD "supported" g-code
         postables = self._buildPostList()
         self._expand_postprocessor_commands(postables)
 
         # ===== STAGE 2: COMMAND EXPANSION =====
+        # and block insertion
+        # Postable world:
+        # Either a_Postable.item.path of Path.Commands,
+        # or a_Postable.item.type == "str" for opaque "blob" of text
+        # Path.Commands can become "Non-Conforming"
 
         self._expand_prefix(postables)
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
@@ -2077,26 +2072,27 @@ class PostProcessor:
         Path.Log.debug(postables)
 
         # ===== STAGE 3: COMMAND CONVERSION =====
+        # String world
 
         # convert postables to machine-specific gcode
+        # [ gcode-stringified ]
         job_sections = self._convert_job_sections(postables)
-
-        all_job_sections.extend(job_sections)
 
         # ===== STAGE 5: OUTPUT PRODUCTION =====
 
-        Path.Log.debug(f"Returning {len(all_job_sections)} sections")
-        Path.Log.debug(f"Sections: {all_job_sections}")
+        Path.Log.debug(f"Returning {len(job_sections)} sections")
+        Path.Log.debug(f"Sections: {job_sections}")
 
         # ===== STAGE 6: REMOTE POSTING =====
         try:
-            self.remote_post(all_job_sections)
+            self.remote_post(job_sections)
         except Exception as e:
             # Our output still might be interesting, so continue
             # FIXME: can we make the user notice this situation?
             Path.Log.error(f"Remote posting failed: {e}")
+            raise e
 
-        return all_job_sections
+        return job_sections
 
     def export(self) -> Union[None, GCodeSections]:
         """Process the parser arguments, then postprocess the 'postables'."""
@@ -2243,6 +2239,8 @@ class PostProcessor:
         self.parser: Parser = self.init_arguments(
             self.values, self.argument_defaults, self.arguments_visible
         )
+        self.machine_state = None
+
         #
         # Create another parser just to get a list of all possible arguments
         # that may be output using --output_all_arguments.
@@ -2343,7 +2341,6 @@ class PostProcessor:
         Returns:
             dict: Squawk dictionary compatible with CAMSanity
         """
-        from datetime import datetime
 
         # Map to same icons used by CAMSanity
         icon_map = {
@@ -2354,7 +2351,7 @@ class PostProcessor:
         }
 
         return {
-            "Date": datetime.now().strftime("%c"),
+            "Date": datetime.datetime.now().strftime("%c"),
             "Operator": self.__class__.__name__,
             "Note": note,
             "squawkType": squawk_type,
@@ -2405,7 +2402,6 @@ class PostProcessor:
         if (
             command.Name not in supported
             and not command.Name.startswith("(")
-            and not command.Name.startswith("T")
             and not command.Annotations.get(Constants.ANNOT_ALLOW_UNSUPPORTED, False)
         ):
             raise CAMValueError(
@@ -2445,7 +2441,7 @@ class PostProcessor:
             return self._convert_arc_move(command)
 
         # Drill cycles
-        if command_name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
+        if command_name in Constants.EXPANDABLE_DRILL_CYCLES:
             return self._convert_drill_cycle(command)
 
         # Probe
@@ -2579,6 +2575,7 @@ class PostProcessor:
             return str(int(value))
 
         # Parameter type mappings
+        # Should cover Constants.PARAMETER_ORDER
         param_formatters = {
             # Axis parameters
             "X": format_axis_param,
@@ -2615,7 +2612,7 @@ class PostProcessor:
 
     def _convert_move(self, command: Path.Command) -> str:
         """
-        Converts a rapid move command to gcode.
+        Converts a generic move command to gcode.
 
         This method can be overridden by derived postprocessors to customize rapid move handling.
         """
@@ -2634,11 +2631,7 @@ class PostProcessor:
         command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
-        parameter_order = self.values.get(
-            "PARAMETER_ORDER",
-            # FIXME: dry
-            ["X", "Y", "Z", "A", "B", "C", "F", "I", "J", "K", "R", "Q", "P", "S", "T"],
-        )
+        parameter_order = list(self.values.get("PARAMETER_ORDER", Constants.PARAMETER_ORDER))
 
         for parameter in parameter_order:
             if parameter in params:
@@ -2647,8 +2640,8 @@ class PostProcessor:
                 if not self.values["OUTPUT_DOUBLES"]:
                     # Suppress parameters that haven't changed
                     if (
-                        parameter in self._modal_state
-                        and self._modal_state[parameter] == current_value
+                        parameter in self.machine_state.Tracked
+                        and self.machine_state.previous[parameter] == current_value
                     ):
                         continue  # Skip this parameter
                 elif (
@@ -2660,8 +2653,6 @@ class PostProcessor:
 
                 formatted_value = self.format_parameter(parameter, current_value)
                 command_line.append(f"{parameter}{formatted_value}")
-
-                self._modal_state[parameter] = params[parameter]
 
         # Suppress commands where all parameters were removed by duplicate suppression
         # or parameter_order exclusion (e.g., Z suppression for wire EDM).
@@ -2754,8 +2745,7 @@ class PostProcessor:
         result = self._convert_move(command)
         # Reset modal state after tool change so that subsequent commands
         # (M3 S..., G4 P..., G0 X... etc.) are not suppressed as duplicates.
-        for key in self._modal_state:
-            self._modal_state[key] = None
+        self.machine_state.setState(None)
         return result
 
     def _convert_spindle_command(self, command: Path.Command) -> str:
@@ -2841,7 +2831,7 @@ class WrapperPost(PostProcessor):
         Path.Log.debug(f"postables count: {len(postables)}")
 
         g_code_sections = []
-        for idx, section in enumerate(postables):
+        for section in postables:
             partname, sublist = section
 
             gcode = self.script_module.export(sublist, "-", self._job.PostProcessorArgs)

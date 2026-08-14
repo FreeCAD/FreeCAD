@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import Path
 import Path.Base.Language as PathLanguage
 import CAMTests.PathTestUtils as PathTestUtils
 import math
@@ -29,9 +30,8 @@ PI = math.pi
 
 
 def MNVR(gcode, begin=None):
-    # 'turns out the replace() isn't really necessary
-    # leave it here anyway for clarity
-    return PathLanguage.Maneuver.FromGCode(gcode.replace("/", "\n"), begin)
+    pp = Path.Path([Path.Command(x) for x in gcode.split("/") if x != ""])
+    return PathLanguage.Maneuver.FromPath(pp, begin)
 
 
 def INSTR(gcode, begin=None):
