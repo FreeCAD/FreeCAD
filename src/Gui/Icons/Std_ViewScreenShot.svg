@@ -9,37 +9,32 @@
         <linearGradient
           id="linearGradient1"
           x1="0" y1="0"
-          x2="1" y2="0.5">
+          x2="1" y2="1">
             <stop
               offset="0"
-              style="stop-color:#588;stop-opacity:0;"/>
+              style="stop-color:#34e0e2;stop-opacity:1;"/>
             <stop
               offset="1"
-              style="stop-color:#588;stop-opacity:1;"/>
+              style="stop-color:#06989a;stop-opacity:1;"/>
         </linearGradient>
         <radialGradient
           id="radialGradient1"
-          cx="0.5"
-          cy="0.5"
-          fx="0.5"
+          cx="0.55"
+          cy="0.4"
+          fx="0.6"
           fy="0.5"
-          r="0.5">
+          r="0.55">
             <stop
               offset="0"
-              style="stop-color:#fff;stop-opacity:1;"/>
+              style="stop-color:#ffffff;stop-opacity:1;"/>
             <stop
               offset="1"
-              style="stop-color:#fff;stop-opacity:0;"/>
+              style="stop-color:#06989a;stop-opacity:1;"/>
         </radialGradient>
     </defs>
     <g id="Base"
-      style="fill:#3ee; fill-opacity:1; stroke:#2e3436; stroke-width:2;
+      style="fill:#34e0e2; fill-opacity:1; stroke:#042a2a; stroke-width:2;
       stroke-linejoin:round">
-        <path
-          style="stroke:none"
-          d="m 61,50 a 5.0,5.0 0 0 1 -5.0,5.0 h -48 a -5.0,-5.0 0 0 1 -5.0,-5.0
-          v -28.0 a 5.0,-5.0 0 0 1 5.0,-5.0 h 11 l 5.0,-7.5 h 16 l 5.0,7.5 h 11
-          a 5.0,5.0 0 0 1 5.0,5.0 z"/>
         <path
           style="fill:url(#linearGradient1)"
           d="m 61,50 a 5.0,5.0 0 0 1 -5.0,5.0 h -48 a -5.0,-5.0 0 0 1 -5.0,-5.0
@@ -47,21 +42,21 @@
           a 5.0,5.0 0 0 1 5.0,5.0 z"/>
     </g>
     <g id="Lens"
-      style="fill:#3ee; fill-opacity:1; stroke:#2e3436; stroke-width:2">
+      style="fill:#34e0e2; fill-opacity:1; stroke:#042a2a; stroke-width:2">
         <circle
           r="15"
           cx="32"
           cy="36" />
         <circle
-          style="fill:#588; fill-opacity:0.5; stroke:none"
+          style="fill:url(#radialGradient1); stroke:none"
           r="12"
           cx="32"
           cy="36" />
-        <ellipse
+        <ellipseo
           style="fill:url(#radialGradient1); stroke:none"
-          rx="9"
-          ry="10"
-          cx="35"
+          rx="12"
+          ry="12"
+          cx="32"
           cy="36" />
     </g>
 </svg>
