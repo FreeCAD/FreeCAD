@@ -33,8 +33,8 @@ import Path
 import Path.Geom as PathGeom
 import Path.Op.Base as PathOp
 import Path.Base.Generator.follow_wire as WireFollowGenerator
-import Path.Base.Generator.linking as linking
-import PathScripts.PathUtils as PathUtils
+from Path.Base.Generator import linking
+from PathScripts import PathUtils
 
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -241,6 +241,8 @@ def _analyze_face_pca(face, tol):
         for edge in face.Edges:
             pts.extend(edge.discretize(Number=100))
     except Exception:
+        # Degenerate/unsupported edge geometry - fall through with whatever
+        # points were collected; the length check below handles the rest.
         pass
 
     if len(pts) < 4:
@@ -502,6 +504,8 @@ def _centerline_from_valley_edge(edges, face_tuples, tol):
                 groove_half_angle = math.degrees(math.asin(min(1.0, abs(n.z) / nlen)))
                 break
         except Exception:
+            # Surface has no well-defined Axis (e.g. a plane) - try the next
+            # face; groove_half_angle keeps its default if none qualify.
             pass
 
     def _clean(val, tol=_PREC):
@@ -524,6 +528,8 @@ def _centerline_from_faces(face_tuples):
             for edge in face.OuterWire.Edges:
                 pts.extend(edge.discretize(Number=20))
         except Exception:
+            # Skip a face whose outer wire can't be discretized; the PCA
+            # below just runs on points from whichever faces succeeded.
             pass
 
     if len(pts) < 2:
@@ -684,7 +690,7 @@ def _clip_and_scale(pts, f, stock_top_z):
     for i in range(n - 2, -1, -1):
         dx = pts[i].x - pts[i + 1].x
         dy = pts[i].y - pts[i + 1].y
-        rev[i] = rev[i + 1] + math.sqrt(dx * dx + dy * dy)
+        rev[i] = rev[i + 1] + math.hypot(dx, dy)
 
     L_total = rev[0]
     if L_total < _PREC:
@@ -985,7 +991,7 @@ def _detect_floor_wire(face, base_obj, info, tol, group_extent=None):
 
         dx = end_info.x - start.x
         dy = end_info.y - start.y
-        L = math.sqrt(dx * dx + dy * dy)
+        L = math.hypot(dx, dy)
         if L < _PREC:
             return None, None, None
 
@@ -1240,7 +1246,7 @@ def _apply_blind_end_compensation(pts, tool_radius, tol):
 
     dx = blind_end.x - pts[-1].x
     dy = blind_end.y - pts[-1].y
-    seg_len = math.sqrt(dx * dx + dy * dy)
+    seg_len = math.hypot(dx, dy)
     if seg_len > _PREC:
         pts.append(
             FreeCAD.Vector(
@@ -1310,7 +1316,7 @@ def _apply_2d_profile(
     for i in range(1, n):
         dx = raw[i].x - raw[i - 1].x
         dy = raw[i].y - raw[i - 1].y
-        arc_len[i] = arc_len[i - 1] + math.sqrt(dx * dx + dy * dy)
+        arc_len[i] = arc_len[i - 1] + math.hypot(dx, dy)
     total_full = arc_len[-1]
     if total_full < _PREC:
         return None
@@ -2138,9 +2144,9 @@ class ObjectFlute(PathOp.ObjectOp):
             # Compute the XY span of ALL faces in the group so the section
             # plane covers ramp + flat + any exit ramp.
             bb_list = [ft[0].BoundBox for ft in group["faces"]]
-            group_xy_span = math.sqrt(
-                (max(b.XMax for b in bb_list) - min(b.XMin for b in bb_list)) ** 2
-                + (max(b.YMax for b in bb_list) - min(b.YMin for b in bb_list)) ** 2
+            group_xy_span = math.hypot(
+                max(b.XMax for b in bb_list) - min(b.XMin for b in bb_list),
+                max(b.YMax for b in bb_list) - min(b.YMin for b in bb_list),
             )
             wire, detected_floor_z, detected_top_z = _detect_floor_wire(
                 section_face, section_base, section_info, tol, group_extent=group_xy_span
