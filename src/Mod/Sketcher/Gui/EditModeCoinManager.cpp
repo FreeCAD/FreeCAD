@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <functional>
 #include <limits>
@@ -550,6 +551,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.ExternalWidth, param, 2);
          }},
+        {"DimensionalConstraintLineWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.DimensionalConstraintLineWidth, param, 2);
+         }},
         {"ExternalDefiningWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.ExternalDefiningWidth, param, 2);
@@ -558,9 +563,17 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.InformationWidth, param, 1);
          }},
+        {"AxisLineWidth",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updateWidth(drawingParameters.AxisLineWidth, param, 2);
+         }},
         {"EdgePattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.CurvePattern, param, 0b1111111111111111);
+         }},
+        {"DimensionalConstraintLinePattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.DimensionalConstraintLinePattern, param, 0b1111111111111111);
          }},
         {"ConstructionPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -581,6 +594,10 @@ void EditModeCoinManager::ParameterObserver::initParameters()
         {"InformationPattern",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updatePattern(drawingParameters.InformationPattern, param, 0b1111110011111100);
+         }},
+        {"AxisLinePattern",
+         [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
+             updatePattern(drawingParameters.AxisLinePattern, param, 0b1111111111111111);
          }},
         {"EditedEdgeColor",
          [this, drawingParameters = Client.drawingParameters](const std::string& param) {
@@ -866,28 +883,23 @@ void EditModeCoinManager::ParameterObserver::updateUnit(const std::string& param
     // OnChange.
 }
 
+namespace
+{
+constexpr std::array subscribedParameterGroupPaths = {
+    "User parameter:BaseApp/Preferences/View",
+    "User parameter:BaseApp/Preferences/Mod/Sketcher/General",
+    "User parameter:BaseApp/Preferences/Mod/Sketcher",
+    "User parameter:BaseApp/Preferences/Mod/Sketcher/View",
+    "User parameter:BaseApp/Preferences/Units",
+};
+}  // namespace
+
 void EditModeCoinManager::ParameterObserver::subscribeToParameters()
 {
     try {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View"
-        );
-        hGrp->Attach(this);
-
-        ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
-        );
-        hGrpsk->Attach(this);
-
-        ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher"
-        );
-        hGrpskg->Attach(this);
-
-        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Units"
-        );
-        hGrpu->Attach(this);
+        for (const char* path : subscribedParameterGroupPaths) {
+            App::GetApplication().GetParameterGroupByPath(path)->Attach(this);
+        }
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the exception is not propagated
@@ -899,25 +911,9 @@ void EditModeCoinManager::ParameterObserver::subscribeToParameters()
 void EditModeCoinManager::ParameterObserver::unsubscribeToParameters()
 {
     try {
-        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View"
-        );
-        hGrp->Detach(this);
-
-        ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
-        );
-        hGrpsk->Detach(this);
-
-        ParameterGrp::handle hGrpskg = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Mod/Sketcher"
-        );
-        hGrpskg->Detach(this);
-
-        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Units"
-        );
-        hGrpu->Detach(this);
+        for (const char* path : subscribedParameterGroupPaths) {
+            App::GetApplication().GetParameterGroupByPath(path)->Detach(this);
+        }
     }
     catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
                                          // the program is not terminated when calling the noexcept
@@ -2210,9 +2206,14 @@ void EditModeCoinManager::updateInventorNodeSizes()
     editModeScenegraphNodes.OriginPointSetOccluded->markerIndex
         = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
 
-    editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = 2 * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = 2
+    editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = drawingParameters.AxisLineWidth
         * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->lineWidth = drawingParameters.AxisLineWidth
+        * drawingParameters.pixelScalingFactor;
+
+    editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->linePattern = drawingParameters.AxisLinePattern;
+
     editModeScenegraphNodes.OriginPointDrawStyleOccluded->pointSize = 8
         * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.EditCurvesDrawStyle->lineWidth = 3 * drawingParameters.pixelScalingFactor;
@@ -2241,6 +2242,8 @@ void EditModeCoinManager::updateInventorWidths()
         = drawingParameters.ExternalDefiningWidth * drawingParameters.pixelScalingFactor;
     editModeScenegraphNodes.InformationDrawStyle->lineWidth = drawingParameters.InformationWidth
         * drawingParameters.pixelScalingFactor;
+    editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->lineWidth
+        = drawingParameters.ExternalDefiningWidth * drawingParameters.pixelScalingFactor;
 }
 
 void EditModeCoinManager::updateInventorPatterns()
@@ -2253,6 +2256,8 @@ void EditModeCoinManager::updateInventorPatterns()
     editModeScenegraphNodes.CurvesExternalDefiningDrawStyle->linePattern
         = drawingParameters.ExternalDefiningPattern;
     editModeScenegraphNodes.InformationDrawStyle->linePattern = drawingParameters.InformationPattern;
+    editModeScenegraphNodes.RootCrossDrawStyle->linePattern = drawingParameters.AxisLinePattern;
+    editModeScenegraphNodes.RootCrossDrawStyleOccluded->linePattern = drawingParameters.AxisLinePattern;
 }
 
 void EditModeCoinManager::updateInventorColors()
