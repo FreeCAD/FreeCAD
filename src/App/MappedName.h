@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -47,33 +48,22 @@ namespace Data
 class AppExport DecodedMappedSection {
     public:
         /// Definitions for these entries can be found in `ElementNamingUtils.h`
-        std::vector<std::string> referenceIDs;
-        std::vector<std::string> linkedNames;
-        std::string iterationTag = Data::EMPTY_VALUE;
-        std::string opCode = "";
-        std::string index = Data::EMPTY_VALUE;
-        char elementType = (*Data::EMPTY_VALUE);
-        std::string duplicateCount = Data::EMPTY_VALUE;
-        std::vector<std::string> mapperFlags;
-        std::vector<std::string> connectedElements;
+        /// This is ordered from largest to smallest to minimize the size of this object in memory.
+        std::string duplicateCount = Data::EMPTY_VALUE; // 32 bytes
+        std::string iterationTag = Data::EMPTY_VALUE; //   32 bytes
+        std::string opCode = ""; //                        32 bytes
+        std::string index = Data::EMPTY_VALUE; //          32 bytes
+        std::vector<std::string> referenceIDs; //          24 bytes
+        std::vector<std::string> linkedNames; //           24 bytes
+        std::vector<std::string> connectedElements; //     24 bytes
+        uint16_t mapperFlags; //                           2 bytes
+        char elementType = Data::EMPTY_VALUE[0]; //        1 byte
     
-        inline bool hasMapperFlag(std::string flag) const {
-            return (std::find(mapperFlags.begin(), mapperFlags.end(), flag) != mapperFlags.end());
+        inline bool hasMapperFlag(const uint16_t& flag) const {
+            return mapperFlags & flag;
         };
 
-        inline bool operator==(const DecodedMappedSection& other) const {
-            return (
-                referenceIDs == other.referenceIDs &&
-                linkedNames == other.linkedNames &&
-                iterationTag == other.iterationTag &&
-                opCode == other.opCode &&
-                index == other.index &&
-                elementType == other.elementType &&
-                duplicateCount == other.duplicateCount &&
-                mapperFlags == other.mapperFlags &&
-                connectedElements == other.connectedElements
-            );
-        };
+        inline bool operator==(const DecodedMappedSection& other) const = default;
 };
 
 /**
@@ -1167,7 +1157,7 @@ public:
         const std::string& index = "0",
         const char& elementType = 'E',
         const std::string& duplicateCount = "0",
-        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<uint16_t>& mapperFlags = {},
         const std::vector<std::string>& connectedElements = {}
     );
 
@@ -1179,7 +1169,7 @@ public:
         const int& index = 0,
         const char& elementType = 'E',
         const int& duplicateCount = 0,
-        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<uint16_t>& mapperFlags = {},
         const std::vector<MappedName>& connectedElements = {}
     );
 
@@ -1191,7 +1181,7 @@ public:
         const int& index = 0,
         const char& elementType = 'E',
         const int& duplicateCount = 0,
-        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<uint16_t>& mapperFlags = {},
         const std::vector<MappedName>& connectedElements = {}
     );
     
@@ -1203,8 +1193,8 @@ public:
         const std::string& index = 0,
         const char& elementType = 'E',
         const std::string& duplicateCount = 0,
-        const std::vector<std::string>& mapperFlags = {},
-        const  std::vector<MappedName>& connectedElements = {}
+        const std::vector<uint16_t>& mapperFlags = {},
+        const std::vector<MappedName>& connectedElements = {}
     );
 
     static std::string makeEncodedSection(
@@ -1215,7 +1205,7 @@ public:
         const std::string& index = 0,
         const char& elementType = 'E',
         const std::string& duplicateCount = 0,
-        const std::vector<std::string>& mapperFlags = {},
+        const uint16_t& mapperFlags = {},
         const std::vector<std::string>& connectedElements = {}
     );
 
