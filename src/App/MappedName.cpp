@@ -46,41 +46,6 @@ FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
 namespace Data
 {
 
-MappedName::MappedName(const DecodedMappedSection& section) noexcept
-        : raw(false)
-{
-    *this = MappedName::makeEncodedSection(section);
-    this->nameData.push_back(section);
-    this->nameDataTouched = false;
-}
-
-MappedName::MappedName(const DecodedMappedName& name) noexcept
-    : raw(false)
-{
-    *this = name;
-}
-
-MappedName& MappedName::operator=(const DecodedMappedName& name)
-{
-    *this = MappedName::makeEncodedName(name).c_str();
-
-    this->nameDataTouched = false;
-    this->nameData = name;
-
-    return *this;
-}
-
-MappedName& MappedName::operator=(const DecodedMappedSection& section)
-{
-    *this = MappedName::makeEncodedSection(section).c_str();
-
-    this->nameData.clear();
-    this->nameData.push_back(section);
-    this->nameDataTouched = false;
-
-    return *this;
-}
-
 void MappedName::append(const MappedName& other, int startPosition, int size)
 {
     // enforce 0 <= startPosition <= other.size
@@ -140,28 +105,6 @@ void MappedName::append(const MappedName& other, int startPosition, int size)
             append(other.postfix.constData() + startPosition, size);
         }
     }
-
-    if (!nameDataTouched) {
-        if (!other.nameDataTouched) {
-            for (const Data::DecodedMappedSection& decodedSection : other.nameData) {
-                nameData.push_back(decodedSection);
-            }
-        } else {
-            nameDataTouched = true;
-        }
-    }
-}
-
-void MappedName::append(const DecodedMappedSection& section)
-{
-    if (nameDataTouched) {
-        nameData = MappedName::getDecodedMappedName(toString());
-    }
-
-    nameData.push_back(section);
-    append((Data::NAME_SECTION_DELIMINATOR + MappedName::makeEncodedSection(section)).c_str());
-
-    nameDataTouched = false;
 }
 
 void MappedName::compact() const
@@ -304,25 +247,14 @@ DecodedMappedName& MappedName::getDecodedMappedName(const std::string& mappedNam
 
 DecodedMappedName& MappedName::getDecodedMappedName() {
     ZoneScoped;
-    std::string str = toString();
 
-    if (nameDataTouched || nameData.empty()) {
-        nameData = MappedName::getDecodedMappedName(str);
-        nameDataTouched = false;
-    }
-
-    return nameData;
+    return MappedName::getDecodedMappedName(toString());
 }
 
 MappedName MappedName::fromDecodedMappedName(const DecodedMappedName& name) {
     ZoneScoped;
 
-    MappedName returnName {makeEncodedName(name)};
-
-    returnName.nameDataTouched = false;
-    returnName.nameData = name;
-
-    return returnName;
+    return MappedName(makeEncodedName(name));
 }
 
 std::string MappedName::makeEncodedName(const DecodedMappedName& name) {
@@ -582,7 +514,7 @@ std::string MappedName::makeEncodedSection(
         + Data::SECTION_SUB_DELIMINATOR
         + duplicateCount
         + Data::SECTION_SUB_DELIMINATOR
-        + mapperFlags
+        + std::to_string(mapperFlags)
         + Data::SECTION_SUB_DELIMINATOR
     );
 
@@ -628,7 +560,7 @@ MappedName MappedName::makeUnmappedName(
     ZoneScoped;
 
     return MappedName(
-        MappedName::makeDecodedSection(
+        MappedName::makeEncodedSection(
             indexedNames,
             {},
             std::to_string(iterationTag),

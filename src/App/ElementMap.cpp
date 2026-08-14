@@ -1633,7 +1633,7 @@ void ElementMap::retagElementMap(long newTag) {
                     backSection.iterationTag = std::to_string(newTag);
 
                     auto it = mappedNames.find(foundNameRef.name);
-                    foundNameRef.name = decodedName;
+                    foundNameRef.name = MappedName::makeEncodedName(decodedName);
                     
                     if (it != mappedNames.end()) {
                         auto extractedNode = mappedNames.extract(it);

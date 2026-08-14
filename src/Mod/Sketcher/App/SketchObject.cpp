@@ -284,7 +284,7 @@ void SketchObject::buildShape()
             builtName = name;
         }
         else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-            builtName = Data::MappedName::makeDecodedSection(
+            builtName = Data::MappedName::makeEncodedSection(
                 {name},
                 {},
                 tag,

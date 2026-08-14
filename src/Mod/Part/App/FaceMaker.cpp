@@ -373,7 +373,7 @@ void Part::FaceMaker::postBuild()
                 this->myTopoShape.setElementName(
                     linkedNameEntry.first,
                     Data::MappedName(
-                        Data::MappedName::makeDecodedSection(
+                        Data::MappedName::makeEncodedSection(
                             {},
                             linkedNameEntry.second.first,
                             this->myTopoShape.Tag,

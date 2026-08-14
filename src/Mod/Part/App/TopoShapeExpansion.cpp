@@ -2431,8 +2431,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     emptyConnectedElementsIndex++;
                                 }
 
+                                newName.append(Data::NAME_SECTION_DELIMINATOR);
                                 newName.append(
-                                    Data::MappedName::makeDecodedSection(
+                                    Data::MappedName::makeEncodedSection(
                                         {},
                                         {},
                                         masterTag,
@@ -2442,7 +2443,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         0,
                                         {Data::MAPPER_FLAG_MODIFIED},
                                         newConnectedElementNames
-                                    )
+                                    ).c_str()
                                 );
                             }
 
@@ -2565,7 +2566,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 if (generatedShapes == 1) {
                     ensureElementMap()->setElementName(
                         generatedShapeEntry.first[0].newElementName,
-                        Data::MappedName(newNameSection),
+                        Data::MappedName(Data::MappedName::makeEncodedSection(newNameSection)),
                         masterTag
                     );
                 }
@@ -2656,7 +2657,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 ensureElementMap()->setElementName(
                     elementIndexName,
-                    Data::MappedName(elementMappedSection),
+                    Data::MappedName(Data::MappedName::makeEncodedSection(elementMappedSection)),
                     masterTag
                 );
             }
@@ -2708,7 +2709,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                             if (incomingShapeMapName) {
                                 Data::MappedName newName = Data::MappedName(
-                                    Data::MappedName::makeDecodedSection(
+                                    Data::MappedName::makeEncodedSection(
                                         {},
                                         {incomingShapeMapName},
                                         masterTag,
@@ -2751,7 +2752,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     if (linkedUpperNames.size()) {
                         Data::MappedName newName = Data::MappedName(
-                            Data::MappedName::makeDecodedSection(
+                            Data::MappedName::makeEncodedSection(
                                 {},
                                 linkedUpperNames,
                                 masterTag,
@@ -2816,7 +2817,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         if (linkedLowerNames.size()) {
                             Data::MappedName newName = Data::MappedName(
-                                Data::MappedName::makeDecodedSection(
+                                Data::MappedName::makeEncodedSection(
                                     {},
                                     linkedLowerNames,
                                     masterTag,

@@ -179,21 +179,13 @@ public:
         : data(other.data + other.postfix)
         , postfix(postfix)
         , raw(false)
-        , nameData(other.nameData)
-        , nameDataTouched(other.nameDataTouched)
     {}
 
     MappedName(MappedName&& other) noexcept
         : data(std::move(other.data))
         , postfix(std::move(other.postfix))
         , raw(other.raw)
-        , nameData(std::move(other.nameData))
-        , nameDataTouched(other.nameDataTouched)
     {}
-
-    MappedName(const DecodedMappedSection& section) noexcept;
-
-    MappedName(const DecodedMappedName& name) noexcept;
 
     ~MappedName() = default;
 
@@ -215,7 +207,6 @@ public:
             res.data =
                 QByteArray::fromRawData(name, size >= 0 ? size : static_cast<int>(qstrlen(name)));
             res.raw = true;
-            res.nameDataTouched = true;
         }
         return res;
     }
@@ -292,8 +283,6 @@ public:
         data = other.data;
         postfix = other.postfix;
         raw = other.raw;
-        nameData = other.nameData;
-        nameDataTouched = other.nameDataTouched;
 
         return *this;
     };
@@ -304,10 +293,6 @@ public:
         *this = MappedName(other);
         return *this;
     }
-
-    MappedName& operator=(const DecodedMappedName& name);
-
-    MappedName& operator=(const DecodedMappedSection& section);
 
     /// Create a new MappedName from a const char *. The character data is copied.
     MappedName& operator=(const char* other)
@@ -322,7 +307,6 @@ public:
         this->data = std::move(other.data);
         this->postfix = std::move(other.postfix);
         this->raw = other.raw;
-        this->nameData = std::move(other.nameData);
         return *this;
     }
 
@@ -450,7 +434,6 @@ public:
     {
         if (other && (other[0] != 0)) {
             this->postfix.append(other, static_cast<int>(qstrlen(other)));
-            nameDataTouched = true;
         }
         return *this;
     }
@@ -461,7 +444,6 @@ public:
         if (!other.empty()) {
             this->postfix.reserve(this->postfix.size() + static_cast<int>(other.size()));
             this->postfix.append(other.c_str(), static_cast<int>(other.size()));
-            nameDataTouched = true;
         }
         return *this;
     }
@@ -479,7 +461,6 @@ public:
     MappedName& operator+=(const QByteArray& other)
     {
         this->postfix += other;
-        nameDataTouched = true;
 
         return *this;
     }
@@ -524,7 +505,6 @@ public:
             else {
                 this->postfix.append(dataToAppend, size);
             }
-            nameDataTouched = true;
         }
     }
 
@@ -553,8 +533,6 @@ public:
      * consideration.
      */
     void append(const MappedName& other, int startPosition = 0, int size = -1);
-
-    void append(const DecodedMappedSection& section);
 
     /**
      * @brief Create a string representation.
@@ -908,8 +886,6 @@ public:
         MappedName res;
         res.data.append(this->data.constData(), this->data.size());
         res.postfix = this->postfix;
-        res.nameData = this->nameData;
-        res.nameDataTouched = this->nameDataTouched;
         return res;
     }
 
@@ -936,8 +912,6 @@ public:
     {
         this->data.clear();
         this->postfix.clear();
-        this->nameData.clear();
-        this->nameDataTouched = false;
         this->raw = false;
     }
 
@@ -1136,13 +1110,16 @@ public:
     // we use a static here for caching reasons.
     static DecodedMappedName& getDecodedMappedName(const std::string& mappedNameString);
 
-    DecodedMappedName& getDecodedMappedName(); // non-const, as it may touch nameData.
+    DecodedMappedName& getDecodedMappedName();
 
-    /// Checks if `nameData` is up to date.
-    bool hasValidNameData() const {
-        return !nameDataTouched;
+    const size_t& getDuplicateIndex() const {
+        return duplicateIndex;
     };
-    
+
+    void setDuplicateIndex(const size_t& newIndex) {
+        duplicateIndex = newIndex;
+    };
+
     static MappedName fromDecodedMappedName(const DecodedMappedName& name);
 
     static std::string makeEncodedName(const DecodedMappedName& name);
@@ -1221,10 +1198,8 @@ public:
 private:
     QByteArray data;
     QByteArray postfix;
+    size_t duplicateIndex;
     bool raw;
-
-    DecodedMappedName nameData; // only used with the V2.
-    bool nameDataTouched = true;
 };
 
 class AppExport MappedNameHasher {
