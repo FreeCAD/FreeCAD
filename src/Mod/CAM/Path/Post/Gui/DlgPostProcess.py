@@ -592,15 +592,17 @@ class PostProcessDialog:
 
     def _populate_output(self):
         """Set fields of Output tab while init dialog"""
+        from Path.Post.Utils import FilenameGenerator
 
         # set Output folder
-        generator = Path.Post.Utils.FilenameGenerator(job=self.job)
+        generator = FilenameGenerator(job=self.job)
         gen_filenames = generator.generate_filenames()
         resolved_dir = os.path.dirname(next(gen_filenames))
         self.dialog.lineEditOutputLocation.setText(resolved_dir)
 
         # set Filename template
-        default_template = getattr(self.job, "PostProcessorOutputFile", "") or ""
+        jobPostProcessorOutputFile = getattr(self.job, "PostProcessorOutputFile", "") or ""
+        default_template = os.path.basename(jobPostProcessorOutputFile)
         self.dialog.lineEditFilenameTemplate.setText(default_template)
 
     def _get_dialog_overrides(self):
