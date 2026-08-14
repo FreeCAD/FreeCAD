@@ -147,6 +147,7 @@ class CAMWorkbench(Workbench):
             "CAM_Helix",
             "CAM_Adaptive",
             "CAM_Slot",
+            "CAM_Flute",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
