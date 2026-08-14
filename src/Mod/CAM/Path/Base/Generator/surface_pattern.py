@@ -210,7 +210,7 @@ def group_features(faces_to_group, handle_mode):
 
 
 # ---------------------------------------------------------------------------
-# Scan lines reconstruction
+# Scan lines reconstruction C++
 # ---------------------------------------------------------------------------
 
 
@@ -221,6 +221,9 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
     OCL's PathDropCutter returns a single, continuous stream of points. This helper
     function intelligently groups those points back into discrete scan lines by detecting
     large "jumps" (rapids) where the tool lifted and moved to a new cutting area.
+
+    Delegates to the compiled C++ implementation — this is a tight per-point
+    loop over what can be a very large flat point stream.
 
     Args:
         flat_points (list): A flat list of (x, y, z) tuples from the OCL engine.
@@ -234,26 +237,7 @@ def reconstruct_scan_lines(flat_points, gap_threshold):
     if not flat_points:
         return []
 
-    lines = []
-    current_line = [flat_points[0]]
-
-    for i in range(1, len(flat_points)):
-        # Calculate the 2D distance between the current and previous point
-        dist = math.hypot(
-            flat_points[i][0] - flat_points[i - 1][0], flat_points[i][1] - flat_points[i - 1][1]
-        )
-
-        # If the distance is greater than our threshold, it signifies a rapid move (a break in the path)
-        if dist > gap_threshold:
-            if len(current_line) >= 2:
-                lines.append(current_line)
-            current_line = []
-        current_line.append(flat_points[i])
-
-    if len(current_line) >= 2:
-        lines.append(current_line)
-
-    return lines
+    return _pattern_cpp.reconstruct_scan_lines_cpp(flat_points, gap_threshold)
 
 
 # ---------------------------------------------------------------------------
@@ -412,7 +396,7 @@ def _reorient_wire_start(wire, start_point):
         return wire
 
     closest_idx = 0
-    min_dist_sq = float("inf")
+    min_dist_sq = float('inf')
     sx, sy = start_point.x, start_point.y
 
     for i, edge in enumerate(edges):
@@ -548,9 +532,7 @@ def _emit_zones_nearest_neighbor(chains, sample_interval, climb, current_start_p
     return region_lines, current_start_pt
 
 
-def _offset_rings_for_region(
-    face, stepover, tool_diam, sample_interval, climb, current_start_pt=None
-):
+def _offset_rings_for_region(face, stepover, tool_diam, sample_interval, climb, current_start_pt=None):
     """
     Generates concentric offset rings for one connected region (outer
     boundary + any holes), keeping each hole's rings and the outer
@@ -577,9 +559,9 @@ def generate_offset_scan_lines(
     Generates concentric toolpath rings that progressively shrink inwards from a boundary,
     using Path.Area() to repeatedly collapse the boundary geometry by the stepover amount.
 
-    Pipeline: split boundary_face into disjoint regions -> visit regions nearest-neighbor,
-    each fully cleared via _offset_rings_for_region (collect levels -> chain into zones ->
-    emit zones nearest-neighbor) -> optionally reverse the whole sequence.
+    If boundary_face is a compound of disjoint regions (e.g. separate islands fused
+    together by build_optimized_boundary), each region is cleared fully before moving
+    to the next, rather than interleaving them ring-by-ring.
 
     Args:
         boundary_face (Part.Face): The outermost boundary mask to shrink.

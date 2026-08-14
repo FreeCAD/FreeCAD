@@ -93,10 +93,8 @@ def _apply_fill_hole_masks(
         merge_engine = Path.Area()
         merge_engine.setPlane(wpc)
 
-    while (
-        fill_mask_idx < len(fill_holes_masks)
-        and fill_holes_masks[fill_mask_idx][0] >= z_target - loose_tol
-    ):
+    while (fill_mask_idx < len(fill_holes_masks) and
+           fill_holes_masks[fill_mask_idx][0] >= z_target - loose_tol):
 
         mask = fill_holes_masks[fill_mask_idx][1]
 
@@ -153,7 +151,9 @@ def _fuse_coplanar_masks(fill_holes_masks):
             if hasattr(fused, "removeSplitter"):
                 fused = fused.removeSplitter()
             fused_list.append((max_z, fused))
-            Path.Log.debug(f"_fuse_coplanar_masks: Fused {len(faces)} masks at Z={max_z:.4f}.")
+            Path.Log.debug(
+                f"_fuse_coplanar_masks: Fused {len(faces)} masks at Z={max_z:.4f}."
+            )
         except Exception as e:
             Path.Log.warning(
                 f" Failed to compound {len(faces)} fill selected holes "
@@ -283,7 +283,9 @@ def _make_flat_cap(wire, cap_z):
             flat_edge = Part.makePolygon(flat_pts)
             flat_edges.extend(flat_edge.Edges)
         except Exception as e:
-            Path.Log.debug(f"surface_zlevel.fill_selected: Edge flatten failed: {e}")
+            Path.Log.debug(
+                f"surface_zlevel.fill_selected: Edge flatten failed: {e}"
+            )
             continue
 
     if not flat_edges:
@@ -296,7 +298,9 @@ def _make_flat_cap(wire, cap_z):
         cap_face.translate(FreeCAD.Vector(0, 0, -cap_face.BoundBox.ZMin))
         return cap_face
     except Exception as e:
-        Path.Log.warning(f"surface_zlevel.fill_selected: Failed to build cap face: {e}")
+        Path.Log.warning(
+            f"surface_zlevel.fill_selected: Failed to build cap face: {e}"
+        )
         return None
 
 
@@ -369,9 +373,8 @@ def _cap_3d_wall(face):
     top_edges = []
     for edge in face.Edges:
         # 1. Identify and skip "seam" edges that run vertically down the walls
-        is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and (
-            round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3
-        )
+        is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and \
+                  (round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3)
         if is_seam:
             continue
 
@@ -564,10 +567,9 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
     Returns:
         A dictionary: {z_height: fused_face_at_Z0}.
     """
-
     def fuse_faces(faces):
         fuse_engine = Path.Area()
-        for i in range(0, len(faces)):
+        for i in range(len(faces)):
             fuse_engine.add(faces[i])
         try:
             result = fuse_engine.getShape()
@@ -601,7 +603,6 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
 
     # Detect pre-triangulated models and skip floor detection
     from . import surface_common
-
     is_triangulated = surface_common._is_triangulated_mesh(shape.Faces)
     if is_triangulated:
         Path.Log.warning(
@@ -689,7 +690,7 @@ def zlevel_hybrid_stack(
     # 1. Initialization
     stack = []
 
-    sub_face = all_prev_comp = None
+    all_prev_comp = None
     tol = 0.0001
     loose_tol = 0.0002
     fill_mask_idx = 0  # Fill holes masks list pointer
@@ -727,8 +728,7 @@ def zlevel_hybrid_stack(
 
         # Determine the Slice Height (Model Footprint)
         z_slice = z_target
-        if z_slice < model_bottom:
-            z_slice = model_bottom
+        z_slice = max(z_slice, model_bottom)
 
         # The depth at which the tool has submerged from the model_top
         dist_submerged = max(0, model_top - z_slice)
@@ -743,14 +743,8 @@ def zlevel_hybrid_stack(
 
         # B. Generate all 2D slices for this layer
         layer_slices = _generate_layer_slices(
-            area_engine,
-            params,
-            unique_steps,
-            z_target,
-            slice_bias,
-            stock_to_leave,
-            model_top,
-            model_bottom,
+            area_engine, params, unique_steps, z_target, slice_bias,
+            stock_to_leave, model_top, model_bottom
         )
 
         if not layer_slices or not len(layer_slices) > 0:
@@ -775,27 +769,13 @@ def zlevel_hybrid_stack(
         # E. Process and apply active fill hole masks
         if fill_holes_masks:
             fill_mask_idx, fill_holes_masks, floor_geo, all_prev_comp = _apply_fill_hole_masks(
-                wpc,
-                fill_holes_masks,
-                fill_mask_idx,
-                current_silhouette,
-                status,
-                floor_geo,
-                all_prev_comp,
-                z_target,
-                loose_tol,
+                wpc, fill_holes_masks, fill_mask_idx, current_silhouette,
+                status, floor_geo, all_prev_comp, z_target, loose_tol
             )
 
         # F: Calculate the final cutting area using the new helper
         cut_area = _calculate_cut_area(
-            wpc,
-            status,
-            current_silhouette,
-            floor_geo,
-            border_face,
-            trim_face,
-            all_prev_comp,
-            z_target,
+            wpc, status, current_silhouette, floor_geo, border_face, trim_face, all_prev_comp, z_target
         )
 
         # G: Finalize and store the result for this layer
@@ -1140,7 +1120,7 @@ def zlevel_hybrid_to_gcode(
     tool_diam = radius * 2
     vert_rapid = feed_params.get("horizRapid", 0.0)
     min_path_length = tool_diam
-    min_adaptive_area = math.pi * (radius**2)
+    min_adaptive_area = math.pi * (radius ** 2)
 
     # Extract heights
     safe_hght = height_params.get("safe_hght", 3.0)
@@ -1256,18 +1236,8 @@ def zlevel_hybrid_to_gcode(
 
                 # Generate the wire-following path
                 commands.extend(
-                    _generate_wire_path(
-                        wire,
-                        z_target,
-                        safe_hght,
-                        start_p,
-                        feed_params,
-                        keep_tool_down,
-                        keep_down_ratio,
-                        reverse_pattern,
-                        cut_climb,
-                        sort_mode=0,
-                    )
+                    _generate_wire_path(wire, z_target, safe_hght, start_p,
+                        feed_params, keep_tool_down, keep_down_ratio, reverse_pattern, cut_climb, sort_mode=0)
                 )
 
     if not commands:
@@ -1282,9 +1252,7 @@ def zlevel_hybrid_to_gcode(
     return commands
 
 
-def _setup_adaptive_geofence(
-    cut_area, bb_face, adaptive_params, radius, z_target, enforce_geofence
-):
+def _setup_adaptive_geofence(cut_area, bb_face, adaptive_params, radius, z_target, enforce_geofence):
     """
     Analyzes the geometric relationship between the cut area and the stock boundary
     to detect open pockets, and configures safety overrides for the Adaptive2d algorithm.
@@ -1325,12 +1293,10 @@ def _setup_adaptive_geofence(
     is_open = False
 
     # Fast AABB Check
-    if (
-        c_bb.XMin <= s_bb.XMin + tol
-        or c_bb.XMax >= s_bb.XMax - tol
-        or c_bb.YMin <= s_bb.YMin + tol
-        or c_bb.YMax >= s_bb.YMax - tol
-    ):
+    if (c_bb.XMin <= s_bb.XMin + tol or
+        c_bb.XMax >= s_bb.XMax - tol or
+        c_bb.YMin <= s_bb.YMin + tol or
+        c_bb.YMax >= s_bb.YMax - tol):
         is_open = True
     else:
         # Irregular Stock Check
@@ -1390,7 +1356,9 @@ def _find_start_point(wire, start_point, cut_climb):
         # Find the vertex closest to the user-defined start point
         start_p = min(
             [FreeCAD.Vector(v.X, v.Y, v.Z) for v in V],
-            key=lambda v: math.hypot(v.x - start_point.x, v.y - start_point.y),
+            key=lambda v: math.hypot(
+                v.x - start_point.x, v.y - start_point.y
+            ),
         )
     else:
         # Default — climb starts at last vertex (end of CCW wire for inside profile)
@@ -1416,7 +1384,7 @@ def _reorient_wire_start(wire, start_point):
         return wire
 
     closest_idx = 0
-    min_dist = float("inf")
+    min_dist = float('inf')
 
     for i, edge in enumerate(edges):
         if not edge.Vertexes:
@@ -1458,24 +1426,24 @@ def _generate_wire_path(
 ):
     """Standardizes G-code generation for a single wire segment.
 
-    Args:
-            wire (Part.Wire or list): The geometric path or list of paths to follow.
-            z_target (float): The target machining depth.
-            safe_hght (float): The height for safe rapid transitions.
-            start_p (FreeCAD.Vector or None): The calculated starting point, or None.
-            feed_params (dict): Dictionary containing 'horizFeed' and 'vertFeed' values.
-            keep_tool_down (bool): If True, minimizes Z-retractions between disconnected paths.
-            keep_down_ratio (float): The threshold distance for keeping the tool down.
-            reverse_pattern (bool): If True, reverses the toolpath orientation (e.g., Inside-Out).
-            cut_climb (bool): If True, uses Climb milling; otherwise, Conventional.
-            sort_mode (int): The native FreeCAD sorting mode (0 = None, 1 = Inside-Out,
-                2 = Outside-In, 3 = Nearest Neighbor).
+Args:
+        wire (Part.Wire or list): The geometric path or list of paths to follow.
+        z_target (float): The target machining depth.
+        safe_hght (float): The height for safe rapid transitions.
+        start_p (FreeCAD.Vector or None): The calculated starting point, or None.
+        feed_params (dict): Dictionary containing 'horizFeed' and 'vertFeed' values.
+        keep_tool_down (bool): If True, minimizes Z-retractions between disconnected paths.
+        keep_down_ratio (float): The threshold distance for keeping the tool down.
+        reverse_pattern (bool): If True, reverses the toolpath orientation (e.g., Inside-Out).
+        cut_climb (bool): If True, uses Climb milling; otherwise, Conventional.
+        sort_mode (int): The native FreeCAD sorting mode (0 = None, 1 = Inside-Out,
+            2 = Outside-In, 3 = Nearest Neighbor).
 
-        Returns:
-            list: A list of Path.Command objects.
+    Returns:
+        list: A list of Path.Command objects.
     """
     commands = []
-    # if reverse_pattern and cut_climb:
+    #if reverse_pattern and cut_climb:
     orientation = cut_climb if cut_climb and reverse_pattern else not cut_climb
 
     # Extract feeds and speeds
@@ -1571,9 +1539,7 @@ def _generatePattern(
     Returns:
         list: A flat list of Path.Command objects representing the pattern G-code.
     """
-    Path.Log.debug(
-        f"surface_zlevel._generatePattern: Generating {cut_pattern} pattern at Z={z_target}"
-    )
+    Path.Log.debug(f"surface_zlevel._generatePattern: Generating {cut_pattern} pattern at Z={z_target}")
 
     commands = []
     sort_mode = 3
@@ -1661,32 +1627,16 @@ def _generatePattern(
                 start_p = _find_start_point(wire, start_point, False)
                 commands.extend(
                     _generate_wire_path(
-                        wire,
-                        z_target,
-                        safe_hght,
-                        start_p,
-                        feed_params,
-                        keep_tool_down,
-                        keep_down_ratio,
-                        reverse_pattern,
-                        cut_climb,
-                        sort_mode=0,
+                        wire, z_target, safe_hght, start_p, feed_params,
+                        keep_tool_down, keep_down_ratio, reverse_pattern, cut_climb, sort_mode=0,
                     )
                 )
         else:  # ZigZag, Offset, Grid patterns
             # Pass the raw current_start_pt down (it will be sanitized downstream)
             commands.extend(
                 _generate_wire_path(
-                    filtered_wires,
-                    z_target,
-                    safe_hght,
-                    current_start_pt,
-                    feed_params,
-                    keep_tool_down,
-                    keep_down_ratio,
-                    reverse_pattern,
-                    cut_climb,
-                    sort_mode,
+                    filtered_wires, z_target, safe_hght, current_start_pt, feed_params,
+                    keep_tool_down, keep_down_ratio, reverse_pattern, cut_climb, sort_mode,
                 )
             )
 

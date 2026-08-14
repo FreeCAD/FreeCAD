@@ -230,17 +230,9 @@ def _optimize_travel(
     dy = next_point[1] - last_point[1]
     xy_dist_sqrd = dx * dx + dy * dy
 
-    if xy_dist_sqrd <= (cutter_diam * optimize_ratio) ** 2:
+    if xy_dist_sqrd <= (cutter_diam * optimize_ratio)**2:
         transition_cmds = _dropcutter_transition(
-            last_point,
-            next_point,
-            safe_pdc,
-            start_z,
-            depth_offset,
-            safe_z,
-            step_down,
-            horiz_feed,
-            force_keep_down,
+            last_point, next_point, safe_pdc, start_z, depth_offset, safe_z, step_down, horiz_feed, force_keep_down,
         )
         if transition_cmds:
             return transition_cmds
@@ -248,17 +240,7 @@ def _optimize_travel(
     return []
 
 
-def _dropcutter_transition(
-    start,
-    end,
-    safe_pdc,
-    start_z,
-    depth_offset,
-    safe_z,
-    step_down,
-    horiz_feed,
-    force_keep_down=False,
-):
+def _dropcutter_transition(start, end, safe_pdc, start_z, depth_offset, safe_z, step_down, horiz_feed, force_keep_down=False):
     """Probes a transition path and returns surface-following G1 commands."""
     ocl = _get_ocl()
     path = ocl.Path()
@@ -282,9 +264,7 @@ def _dropcutter_transition(
         above_start_z = start[2] > start_z
 
         # If the initial climb is more than half a step-down, it's faster to retract.
-        if (
-            step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition
-        ) or above_start_z:
+        if (step_down > 0 and initial_climb > (step_down / 2.0) and not step_over_transition) or above_start_z:
             Path.Log.debug(
                 f"Keep-down move aborted: initial climb ({initial_climb:.2f}mm) exceeds safety check."
             )
@@ -296,15 +276,11 @@ def _dropcutter_transition(
 
     # Generate G1 moves that follow the probed surface
     for pt in cl_points[1:-1]:  # Skip first and last point to avoid duplicating moves
-        z = (
-            max(pt.z, z_floor) + depth_offset
-        )  # Plus a small buffer to avoid touching previous on Multi-pass
+        z = max(pt.z, z_floor) + depth_offset  # Plus a small buffer to avoid touching previous on Multi-pass
         commands.append(Path.Command("G1", {"X": pt.x, "Y": pt.y, "Z": z, "F": horiz_feed}))
 
     # Ensure a perfect final connection to the start of the next cutting pass
-    commands.append(
-        Path.Command("G1", {"X": end[0], "Y": end[1], "Z": end[2] + depth_offset, "F": horiz_feed})
-    )
+    commands.append(Path.Command("G1", {"X": end[0], "Y": end[1], "Z": end[2] + depth_offset, "F": horiz_feed}))
     return commands
 
 
@@ -361,7 +337,9 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
 
     # Strategy 1: Forward tangent arc (Lead-in and Lead-out)
     # Standard entry/exit — tangent to the cut direction at full radius.
-    cmds, lead = _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in)
+    cmds, lead = _generate_lead_arc(
+        line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
+    )
     if lead:
         Path.Log.debug("LeadIn/LeadOut: forward tangent arc")
         return cmds, lead
@@ -370,7 +348,7 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
         # Strategy 2: (Lead-in only)
         # Construct a synthetic line that is rotated 90 degrees to the original cut direction.
         p_attach = line[0]
-        p_next = line[1]
+        p_next   = line[1]
         # Calculate the direction vector perpendicular to the cut.
         dx = p_next[0] - p_attach[0]
         dy = p_next[1] - p_attach[1]
@@ -392,11 +370,9 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
         # Construct a synthetic reversed line: same points, direction inverted.
         reversed_line = [
             p_attach,
-            (
-                p_attach[0] - (p_next[0] - p_attach[0]),
-                p_attach[1] - (p_next[1] - p_attach[1]),
-                p_attach[2],
-            ),
+            (p_attach[0] - (p_next[0] - p_attach[0]),
+            p_attach[1] - (p_next[1] - p_attach[1]),
+            p_attach[2]),
         ] + line[1:]
 
         cmds, lead = _generate_lead_arc(
@@ -410,11 +386,12 @@ def _attempt_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_in
     # Retreat to previous point and up
     else:
         p_attach = line[-1]
-        p_prev = line[-2]
+        p_prev   = line[-2]
         lead = (p_prev[0], p_prev[1], p_attach[2] + radius)
         Path.Log.debug("LeadOut: retreat to previous point")
         return [
-            Path.Command("G1", {"X": lead[0], "Y": lead[1], "Z": lead[2], "F": lead_feed})
+            Path.Command("G1", {"X": lead[0], "Y": lead[1],
+                                "Z": lead[2], "F": lead_feed})
         ], lead
 
     # Note: Other strategies can be added here.
@@ -470,11 +447,7 @@ def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_i
 
     # 3. Arc entry/exit point at constant Z (no surface projection needed)
     cut_z = p_attach[2]
-    entry_exit_point = (
-        entry_exit_2d[0],
-        entry_exit_2d[1],
-        cut_z + lift_lead_z,
-    )  # lift_lead also in commands for Lead-out below
+    entry_exit_point = (entry_exit_2d[0], entry_exit_2d[1], cut_z + lift_lead_z)  # lift_lead also in commands for Lead-out below
 
     # 4. Arc center — one radius away from p_attach in the away_vec direction
     center_x = p_attach[0] + away_vec[0] * radius
@@ -490,19 +463,11 @@ def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_i
         # I, J = offsets from arc start (entry_exit_point) to center.
         i_offset = center_x - entry_exit_point[0]
         j_offset = center_y - entry_exit_point[1]
-        commands.append(
-            Path.Command(
-                arc_cmd_str,
-                {
-                    "X": p_attach[0],
-                    "Y": p_attach[1],
-                    "Z": cut_z,
-                    "I": i_offset,
-                    "J": j_offset,
-                    "F": lead_feed,
-                },
-            )
-        )
+        commands.append(Path.Command(
+            arc_cmd_str,
+            {"X": p_attach[0], "Y": p_attach[1], "Z": cut_z,
+             "I": i_offset, "J": j_offset, "F": lead_feed}
+        ))
         return commands, entry_exit_point
 
     else:  # Lead-out
@@ -510,25 +475,15 @@ def _generate_lead_arc(line, safe_pdc, cutter, lead_feed, lift_lead_z, is_lead_i
         # I, J = offsets from arc start (p_attach) to center.
         i_offset = center_x - p_attach[0]
         j_offset = center_y - p_attach[1]
-        commands.append(
-            Path.Command(
-                arc_cmd_str,
-                {
-                    "X": entry_exit_point[0],
-                    "Y": entry_exit_point[1],
-                    "Z": cut_z + lift_lead_z,
-                    "I": i_offset,
-                    "J": j_offset,
-                    "F": lead_feed,
-                },
-            )
-        )
+        commands.append(Path.Command(
+            arc_cmd_str,
+            {"X": entry_exit_point[0], "Y": entry_exit_point[1], "Z": cut_z + lift_lead_z,
+             "I": i_offset, "J": j_offset, "F": lead_feed}
+        ))
         return commands, entry_exit_point
 
 
-def _get_material_side_vector(
-    p_segment_start, p_segment_end, cutter, safe_pdc, lift_lead_z, is_lead_in
-):
+def _get_material_side_vector(p_segment_start, p_segment_end, cutter, safe_pdc, lift_lead_z, is_lead_in):
     """
     Probes left and right of a path segment to find a clear "air" side for
     a lead-in or lead-out arc, and returns the chosen probe point as the
@@ -595,8 +550,10 @@ def _get_material_side_vector(
 
     # 4. Arc endpoints — one radius perpendicular from the probe base.
     # These are the exact arc entry/exit coordinates reused in _generate_lead_arc.
-    p_left_2d = (probe_base_x + perp_l_x * radius, probe_base_y + perp_l_y * radius)
-    p_right_2d = (probe_base_x + perp_r_x * radius, probe_base_y + perp_r_y * radius)
+    p_left_2d = (probe_base_x + perp_l_x * radius,
+                probe_base_y + perp_l_y * radius)
+    p_right_2d = (probe_base_x + perp_r_x * radius,
+                probe_base_y + perp_r_y * radius)
 
     # 5. Helper: true geometric midpoint of the 90° arc between p_arc_end
     # and p_attach, at 45° around the circle from each endpoint.
@@ -672,9 +629,7 @@ def _probe_surface_z(point_2d, reference_z, safe_pdc):
 # ---------------------------------------------------------------------------
 
 
-def _generate_volumetric_cut_commands(
-    line, depth_offset, horiz_feed, vert_feed, layer_start_z, layer_target_z, volumetric_percent
-):
+def _generate_volumetric_cut_commands(line, depth_offset, horiz_feed, vert_feed, layer_start_z, layer_target_z, volumetric_percent):
     """
     Generate G-code commands for a single scan line using a Volumetric feed rate.
 
@@ -721,14 +676,12 @@ def _generate_volumetric_cut_commands(
     )
 
     current_feed = round(initial_feed, 2)
-    commands.append(
-        Path.Command("G1", {"X": first_pt[0], "Y": first_pt[1], "Z": z, "F": current_feed})
-    )
+    commands.append(Path.Command("G1", {"X": first_pt[0], "Y": first_pt[1], "Z": z, "F": current_feed}))
 
     # Loop through the rest of the segments
     for i in range(1, len(line)):
         pt = line[i]
-        prev_pt = line[i - 1]
+        prev_pt = line[i-1]
         z = pt[2] + depth_offset
 
         # Calculate feed for This segment based on height and plunge angle
@@ -738,7 +691,7 @@ def _generate_volumetric_cut_commands(
 
         # Lookahead: Only look ahead to pre-brake for steep upcoming downhill drops
         if i + 1 < len(line):
-            next_pt = line[i + 1]
+            next_pt = line[i+1]
             next_target = _get_segment_target_feed(
                 pt, next_pt, horiz_feed, vert_feed, layer_start_z, layer_target_z, boost_factor
             )
@@ -749,9 +702,7 @@ def _generate_volumetric_cut_commands(
         # Threshold Cache: Only update if the change is significant enough
         if abs(curr_target - current_feed) >= threshold:
             calculated_feed = round(curr_target, 2)
-            commands.append(
-                Path.Command("G1", {"X": pt[0], "Y": pt[1], "Z": z, "F": calculated_feed})
-            )
+            commands.append(Path.Command("G1", {"X": pt[0], "Y": pt[1], "Z": z, "F": calculated_feed}))
             current_feed = calculated_feed  # Update the cache
         else:
             # Same speed, just output the coordinates
@@ -760,9 +711,7 @@ def _generate_volumetric_cut_commands(
     return commands
 
 
-def _get_segment_target_feed(
-    prev_pt, pt, horiz_feed, vert_feed, layer_start_z, layer_target_z, boost_factor
-):
+def _get_segment_target_feed(prev_pt, pt, horiz_feed, vert_feed, layer_start_z, layer_target_z, boost_factor):
     """
     Calculate the ideal feed rate for a single linear segment based on depth and slope.
 
@@ -878,7 +827,7 @@ def scan_lines_to_gcode(
     if not scan_lines:
         return []
 
-    safe_pdc = last_point = is_multi_pass = kept_down = None
+    safe_pdc = last_point = None
 
     depth_offset = options["depth_offset"]
     optimize_transitions = options["optimize_transitions"]
@@ -928,7 +877,7 @@ def scan_lines_to_gcode(
         if is_multipass:
             min_range = min(50, len(line))
 
-            for i in range(0, min_range):
+            for i in range(min_range):
                 pt = line[i]
                 if pt[2] < current_layer_target - 1e-2:
                     # If the tool drops into the next level, step the tracking bounds down
@@ -972,9 +921,7 @@ def scan_lines_to_gcode(
             if not travel_cmds:
                 travel_cmds = [
                     Path.Command("G0", {"Z": safe_z, "F": vert_rapid}),
-                    Path.Command(
-                        "G0", {"X": first_point[0], "Y": first_point[1], "F": horiz_rapid}
-                    ),
+                    Path.Command("G0", {"X": first_point[0], "Y": first_point[1], "F": horiz_rapid}),
                 ]
             commands.extend(travel_cmds)
         else:  # First move of operation
@@ -990,13 +937,8 @@ def scan_lines_to_gcode(
 
         # E. Cut along the scan line - Apply Volumetric Feed
         cut_cmds = _generate_volumetric_cut_commands(
-            line,
-            depth_offset,
-            horiz_feed,
-            vert_feed,
-            current_layer_start,
-            current_layer_target,
-            volumetric_percent,
+            line, depth_offset, horiz_feed, vert_feed,
+            current_layer_start, current_layer_target, volumetric_percent,
         )
         commands.extend(cut_cmds)
 
