@@ -32,6 +32,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <Mod/Measure/App/Preferences.h>
 #include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
@@ -44,7 +45,6 @@ using enum Gui::InputHint::UserInput;
 
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QSettings>
 #include <QAction>
 #include <QMenu>
 #include <QShortcut>
@@ -142,11 +142,9 @@ TaskMeasure::TaskMeasure()
 
     setupShortcuts(taskbox);
 
-    QSettings settings;
-    settings.beginGroup(taskMeasureSettingsGroup);
-    mAutoSave = settings.value(taskMeasureAutoSaveSettingsName, mAutoSave).toBool();
-    mGreedySelection = settings.value(taskMeasureGreedySelection, false).toBool();
-    settings.endGroup();
+    auto preferences = Measure::Preferences::getPreferenceGroup(taskMeasureSettingsGroup);
+    mAutoSave = preferences->GetBool(taskMeasureAutoSaveSettingsName, false);
+    mGreedySelection = preferences->GetBool(taskMeasureGreedySelection, false);
 
     autoSaveAction = new QAction(tr("Auto Save"));
     autoSaveAction->setCheckable(true);
@@ -159,9 +157,7 @@ TaskMeasure::TaskMeasure()
 
     newMeasurementBehaviourAction = new QAction(tr("Additive Selection"));
     newMeasurementBehaviourAction->setCheckable(true);
-    newMeasurementBehaviourAction->setChecked(
-        Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection
-    );
+    newMeasurementBehaviourAction->setChecked(mGreedySelection);
     newMeasurementBehaviourAction->setToolTip(
         tr("If checked, new selection will be added to the measurement. If unchecked, the Ctrl key "
            "must be "
@@ -718,21 +714,16 @@ void TaskMeasure::autoSaveChanged(bool checked)
 {
     mAutoSave = checked;
 
-    QSettings settings;
-    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    settings.setValue(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave);
-    settings.endGroup();
+    Measure::Preferences::getPreferenceGroup(taskMeasureSettingsGroup)
+        ->SetBool(taskMeasureAutoSaveSettingsName, mAutoSave);
 }
 
 void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
 {
-    QSettings settings;
-    settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
     mGreedySelection = checked;
+    Measure::Preferences::getPreferenceGroup(taskMeasureSettingsGroup)
+        ->SetBool(taskMeasureGreedySelection, mGreedySelection);
     updateSelectionType();
-
-    settings.endGroup();
 }
 void TaskMeasure::updateSelectionType()
 {
@@ -810,13 +801,11 @@ TaskMeasureDistanceInfo::TaskMeasureDistanceInfo(
 )
     : TaskMeasureTypeInfo(formLayout, std::move(measureObjectGetter))
 {
-    QSettings settings;
-    settings.beginGroup(taskMeasureSettingsGroup);
-    _delta = settings.value(taskMeasureShowDeltaSettingsName, _delta).toBool();
-    settings.endGroup();
-
     _showDelta = new QCheckBox();
-    _showDelta->setChecked(_delta);
+    _showDelta->setChecked(
+        Measure::Preferences::getPreferenceGroup(taskMeasureSettingsGroup)
+            ->GetBool(taskMeasureShowDeltaSettingsName, true)
+    );
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(_showDelta, &QCheckBox::checkStateChanged, this, &TaskMeasureDistanceInfo::showDeltaChanged);
 #else
@@ -848,7 +837,7 @@ TaskMeasureDistanceInfo::TaskMeasureDistanceInfo(
     containerLayout->addRow(showDeltaLayout);
     containerLayout->addRow(_deltaResult);
 
-    _deltaResult->setVisible(_delta);
+    _deltaResult->setVisible(_showDelta->isChecked());
 }
 
 void TaskMeasureDistanceInfo::resetUIState()
@@ -877,11 +866,11 @@ void TaskMeasureDistanceInfo::update()
 
     auto* showDeltaProp = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
     if (showDeltaProp) {
-        showDeltaProp->setValue(_delta);
+        showDeltaProp->setValue(_showDelta->isChecked());
         viewObject->update(showDeltaProp);
     }
 
-    if (!_delta) {
+    if (!_showDelta->isChecked()) {
         return;
     }
 
@@ -912,14 +901,11 @@ void TaskMeasureDistanceInfo::update()
 
 void TaskMeasureDistanceInfo::showDeltaChanged(int checkState)
 {
-    _delta = checkState == Qt::CheckState::Checked;
+    const bool showDelta = checkState == Qt::CheckState::Checked;
 
-    QSettings settings;
-    settings.beginGroup(taskMeasureSettingsGroup);
-    settings.setValue(taskMeasureShowDeltaSettingsName, _delta);
-    settings.endGroup();
-    settings.sync();  // immediate write to the settings file
+    Measure::Preferences::getPreferenceGroup(taskMeasureSettingsGroup)
+        ->SetBool(taskMeasureShowDeltaSettingsName, showDelta);
 
-    _deltaResult->setVisible(_delta);
+    _deltaResult->setVisible(showDelta);
     update();
 }
