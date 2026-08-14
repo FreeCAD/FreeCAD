@@ -331,6 +331,7 @@ def _boundary_via_techdraw(compound, offset, outline):
         )
     try:
         import TechDraw
+
         direction = FreeCAD.Vector(0, 0, 1)
         outline_shape = TechDraw.findShapeOutline(compound, 1.0, direction)
 
@@ -401,7 +402,7 @@ def generate_pattern_mask(
         # Use whole model silhouette
         main_boundary = bb_face
     else:
-        main_boundary = build_optimized_boundary([cutting_faces], outer_offset-epsilon, tolerance)
+        main_boundary = build_optimized_boundary([cutting_faces], outer_offset - epsilon, tolerance)
 
     if not main_boundary:
         Path.Log.warning("Could not determine geometry for main boundary mask.")
@@ -562,8 +563,7 @@ def _separate_touching_faces(faces, tolerance=0.01):
                     continue
             except Exception as e:
                 Path.Log.debug(
-                    f"_separate_touching_faces: distToShape failed for "
-                    f"faces {i},{j}: {e}"
+                    f"_separate_touching_faces: distToShape failed for " f"faces {i},{j}: {e}"
                 )
             # Fallback: check if face centroids are within a larger
             # proximity threshold based on average face diagonal.
@@ -576,25 +576,24 @@ def _separate_touching_faces(faces, tolerance=0.01):
                 cy_j = (bb_j.YMin + bb_j.YMax) / 2
                 centroid_dist = math.hypot(cx_i - cx_j, cy_i - cy_j)
                 avg_diag = (
-                    math.hypot(bb_i.XLength, bb_i.YLength) +
-                    math.hypot(bb_j.XLength, bb_j.YLength)
+                    math.hypot(bb_i.XLength, bb_i.YLength) + math.hypot(bb_j.XLength, bb_j.YLength)
                 ) / 2
                 if centroid_dist < avg_diag * 0.75:
                     union(i, j)
             except Exception as e:
                 Path.Log.debug(
-                    f"_separate_touching_faces: centroid check failed for "
-                    f"faces {i},{j}: {e}"
+                    f"_separate_touching_faces: centroid check failed for " f"faces {i},{j}: {e}"
                 )
 
     # Collect groups by root
     from collections import defaultdict
+
     groups = defaultdict(list)
     for i in range(n):
         groups[find(i)].append(flat_faces[i])
 
     touching_groups = []
-    isolated_faces  = []
+    isolated_faces = []
 
     for group in groups.values():
         if len(group) == 1:
@@ -747,7 +746,10 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
     epsilon = max(0.01, tolerance + 0.001)
 
     avoid_boundary = build_optimized_boundary(
-        prepared_faces, avoid_overlap + epsilon, tolerance, avoids=True,
+        prepared_faces,
+        avoid_overlap + epsilon,
+        tolerance,
+        avoids=True,
     )
 
     if not avoid_boundary:
@@ -804,8 +806,9 @@ def _classify_and_cap_faces(raw_faces):
         top_edges = []
         for edge in raw_face.Edges:
             # 1. Identify and skip "seam" edges that run vertically down the walls
-            is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and \
-                      (round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3)
+            is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and (
+                round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3
+            )
             if is_seam:
                 continue
 

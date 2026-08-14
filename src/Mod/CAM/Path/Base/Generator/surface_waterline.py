@@ -280,7 +280,7 @@ def _reorient_loop_start(loop, start_pt):
     if not loop or not start_pt:
         return loop
 
-    min_dist = float('inf')
+    min_dist = float("inf")
     closest_idx = 0
 
     for i, pt in enumerate(loop):
@@ -349,7 +349,7 @@ def waterline_to_gcode(
             # 1. Loop sorting: Find the nearest loop to the tool
             if current_tool_pos:
                 best_idx = 0
-                best_dist = float('inf')
+                best_dist = float("inf")
 
                 for i, loop in enumerate(remaining_loops):
                     for pt in loop:
@@ -382,7 +382,7 @@ def waterline_to_gcode(
             if current_tool_pos:
                 dist = math.hypot(first[0] - current_tool_pos[0], first[1] - current_tool_pos[1])
             else:
-                dist = float('inf')
+                dist = float("inf")
 
             # Only retract and rapid if the tool is moving to a new XY location
             if dist > STAY_DOWN_TOLERANCE:
@@ -390,7 +390,9 @@ def waterline_to_gcode(
                     commands.append(Path.Command("G0", {"Z": safe_z, "F": vert_rapid}))
                     is_retracted = True
 
-                commands.append(Path.Command("G0", {"X": first[0], "Y": first[1], "F": horiz_rapid}))
+                commands.append(
+                    Path.Command("G0", {"X": first[0], "Y": first[1], "F": horiz_rapid})
+                )
 
             # 4. Cut the loop
             for i, pt in enumerate(pts):
@@ -400,8 +402,8 @@ def waterline_to_gcode(
                     Path.Command(
                         "G1",
                         {"X": pt[0], "Y": pt[1], "Z": pt[2], "F": feed},
-                     )
-                 )
+                    )
+                )
 
             # 5. Update magnet state
             current_tool_pos = (pts[-1][0], pts[-1][1])

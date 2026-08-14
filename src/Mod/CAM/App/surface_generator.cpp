@@ -105,14 +105,18 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
     // the nearest micron and packed into three int64_t lanes, avoiding the
     // per-vertex double-to-string formatting/concatenation that a
     // std::string-keyed map would require in this hot loop.
-    struct VertexKey {
+    struct VertexKey
+    {
         int64_t x, y, z;
-        bool operator==(const VertexKey& other) const noexcept {
+        bool operator==(const VertexKey& other) const noexcept
+        {
             return x == other.x && y == other.y && z == other.z;
         }
     };
-    struct VertexKeyHash {
-        std::size_t operator()(const VertexKey& k) const noexcept {
+    struct VertexKeyHash
+    {
+        std::size_t operator()(const VertexKey& k) const noexcept
+        {
             // boost::hash_combine-style mixing of the three lanes. The magic
             // constant is 2^64 / golden_ratio (0x9e3779b97f4a7c15ULL), the
             // standard "golden ratio" mixing constant used by
@@ -121,9 +125,9 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
             // clustering for inputs that are already close together — as our
             // rounded-micron coordinates often are.
             constexpr std::size_t kHashMix = 0x9e3779b97f4a7c15ULL;
-            std::size_t h = std::hash<int64_t>{}(k.x);
-            h ^= std::hash<int64_t>{}(k.y) + kHashMix + (h << 6) + (h >> 2);
-            h ^= std::hash<int64_t>{}(k.z) + kHashMix + (h << 6) + (h >> 2);
+            std::size_t h = std::hash<int64_t> {}(k.x);
+            h ^= std::hash<int64_t> {}(k.y) + kHashMix + (h << 6) + (h >> 2);
+            h ^= std::hash<int64_t> {}(k.z) + kHashMix + (h << 6) + (h >> 2);
             return h;
         }
     };
@@ -134,7 +138,7 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
 
     std::unordered_map<VertexKey, int, VertexKeyHash> vertex_map;
     auto get_vertex_index = [&](const gp_Pnt& p) -> int {
-        VertexKey key{
+        VertexKey key {
             static_cast<int64_t>(std::llround(p.X() * kDedupScale)),
             static_cast<int64_t>(std::llround(p.Y() * kDedupScale)),
             static_cast<int64_t>(std::llround(p.Z() * kDedupScale)),
@@ -164,18 +168,22 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
     // edges) on a mesh containing duplicate triangles, since doubling every
     // edge's entries makes every edge look "interior" even where a real
     // front/back transition exists.
-    struct FacetKey {
+    struct FacetKey
+    {
         int a, b, c;  // always stored sorted ascending — order-independent
-        bool operator==(const FacetKey& other) const noexcept {
+        bool operator==(const FacetKey& other) const noexcept
+        {
             return a == other.a && b == other.b && c == other.c;
         }
     };
-    struct FacetKeyHash {
-        std::size_t operator()(const FacetKey& k) const noexcept {
+    struct FacetKeyHash
+    {
+        std::size_t operator()(const FacetKey& k) const noexcept
+        {
             constexpr std::size_t kHashMix = 0x9e3779b97f4a7c15ULL;
-            std::size_t h = std::hash<int>{}(k.a);
-            h ^= std::hash<int>{}(k.b) + kHashMix + (h << 6) + (h >> 2);
-            h ^= std::hash<int>{}(k.c) + kHashMix + (h << 6) + (h >> 2);
+            std::size_t h = std::hash<int> {}(k.a);
+            h ^= std::hash<int> {}(k.b) + kHashMix + (h << 6) + (h >> 2);
+            h ^= std::hash<int> {}(k.c) + kHashMix + (h << 6) + (h >> 2);
             return h;
         }
     };
@@ -227,9 +235,15 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
             // must keep their original order, since it encodes winding
             // (and thus the normal direction) already handled above.
             int key_a = v1_idx, key_b = v2_idx, key_c = v3_idx;
-            if (key_a > key_b) std::swap(key_a, key_b);
-            if (key_b > key_c) std::swap(key_b, key_c);
-            if (key_a > key_b) std::swap(key_a, key_b);
+            if (key_a > key_b) {
+                std::swap(key_a, key_b);
+            }
+            if (key_b > key_c) {
+                std::swap(key_b, key_c);
+            }
+            if (key_a > key_b) {
+                std::swap(key_a, key_b);
+            }
 
             if (!seen_facets.insert({key_a, key_b, key_c}).second) {
                 continue;  // exact duplicate triangle, already emitted
@@ -463,9 +477,7 @@ std::vector<std::vector<std::array<double, 3>>> clip_polyline_bisection(
 static void require_positive_stepover(double stepover)
 {
     if (!(stepover > 0.0)) {
-        throw std::invalid_argument(
-            "stepover must be positive, got " + std::to_string(stepover)
-        );
+        throw std::invalid_argument("stepover must be positive, got " + std::to_string(stepover));
     }
 }
 

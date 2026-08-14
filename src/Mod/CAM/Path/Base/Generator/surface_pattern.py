@@ -396,7 +396,7 @@ def _reorient_wire_start(wire, start_point):
         return wire
 
     closest_idx = 0
-    min_dist_sq = float('inf')
+    min_dist_sq = float("inf")
     sx, sy = start_point.x, start_point.y
 
     for i, edge in enumerate(edges):
@@ -532,7 +532,9 @@ def _emit_zones_nearest_neighbor(chains, sample_interval, climb, current_start_p
     return region_lines, current_start_pt
 
 
-def _offset_rings_for_region(face, stepover, tool_diam, sample_interval, climb, current_start_pt=None):
+def _offset_rings_for_region(
+    face, stepover, tool_diam, sample_interval, climb, current_start_pt=None
+):
     """
     Generates concentric offset rings for one connected region (outer
     boundary + any holes), keeping each hole's rings and the outer
