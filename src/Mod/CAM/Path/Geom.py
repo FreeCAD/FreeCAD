@@ -559,6 +559,32 @@ def wiresForPath(path, startPoint=Vector(0, 0, 0)):
     return wires
 
 
+def wireToPoints(wire, chord):
+    """wireToPoints(wire, chord)
+    Extract an ordered list of Vector waypoints from a wire.
+
+    Straight Line and LineSegment edges contribute only their two endpoints.
+    All other curve types (arcs, splines, etc.) are discretized at the given
+    chord spacing (mm) so their shape is preserved.  Coincident consecutive
+    points are suppressed.
+
+    Returns a list of FreeCAD.Vector.
+    """
+    pts = []
+    for edge in wire.Edges:
+        if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
+            raw = [
+                edge.valueAt(edge.FirstParameter),
+                edge.valueAt(edge.LastParameter),
+            ]
+        else:
+            raw = edge.discretize(Distance=chord)
+        for p in raw:
+            if not pts or not pointsCoincide(pts[-1], p):
+                pts.append(p)
+    return pts
+
+
 def arcToHelix(edge, z0, z1):
     """arcToHelix(edge, z0, z1)
     Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1.
