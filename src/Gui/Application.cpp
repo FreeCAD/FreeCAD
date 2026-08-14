@@ -2516,13 +2516,22 @@ void setAppNameAndIcon()
 {
     const std::map<std::string, std::string>& cfg = App::Application::Config();
 
-    // set application icon and window title
-    auto it = cfg.find("Application");
-    if (it != cfg.end()) {
-        QApplication::setApplicationName(QString::fromUtf8(it->second.c_str()));
+    // set application name and icon and organization name (used by QSettings)
+    auto app = cfg.find("Application");
+    if (app != cfg.end()) {
+        QApplication::setApplicationName(QString::fromUtf8(app->second.c_str()));
     }
     else {
         QApplication::setApplicationName(QString::fromStdString(App::Application::getExecutableName()));
+    }
+    auto vendor = cfg.find("ExeVendor");
+    if (vendor != cfg.end()) {
+        QApplication::setOrganizationName(QString::fromUtf8(vendor->second.c_str()));
+    }
+    else {
+        QApplication::setOrganizationName(
+            QString::fromStdString(App::Application::getExecutableName())
+        );
     }
 #ifndef Q_OS_MACOS
     QApplication::setWindowIcon(
