@@ -582,6 +582,7 @@ SET(Tests_SRCS
     CAMTests/TestDrillCycleExpander.py
     CAMTests/TestPathDrillable.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFlute.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py

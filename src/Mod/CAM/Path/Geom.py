@@ -742,7 +742,7 @@ def removeDuplicateEdges(wire):
 def flipEdge(edge):
     """flipEdge(edge)
     Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
-    Currently only lines, line segments, circles and arcs are supported."""
+    Currently only lines, line segments, circles, arcs and ellipses are supported."""
 
     if isinstance(edge.Curve, Part.Line) and not edge.Vertexes:
         return Part.Edge(
@@ -765,6 +765,29 @@ def flipEdge(edge):
         )
         # Now the edge always starts at 0 and LastParameter is the value range
         arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
+        return arc
+    elif isinstance(edge.Curve, Part.Ellipse):
+        # Ellipse has no (center, normal, radii) constructor to build the
+        # inverted curve directly the way Circle does above, so build it
+        # from explicit points instead: keep the same center and major-axis
+        # point (S1), but mirror the minor-axis reference point (S2) to the
+        # other side of the major axis. That flips the sign of the plane
+        # normal implied by (Center, S1, S2), which works out to
+        # newpoint(t) = point(-t) -- the same points, reverse direction,
+        # with parameter 0 still at the same physical point as before.
+        #
+        # Unlike a circle, an ellipse is NOT rotationally symmetric, so
+        # rotating it to shift the start point (the Circle branch's trick)
+        # would tilt it into a different ellipse entirely. Instead, trim to
+        # the mirrored parameter range [-LastParameter, -FirstParameter]:
+        # newpoint(-LastParameter) = point(LastParameter) (old end, now the
+        # new start) and newpoint(-FirstParameter) = point(FirstParameter)
+        # (old start, now the new end).
+        c = edge.Curve
+        s1 = c.Center + c.XAxis * c.MajorRadius
+        s2 = c.Center - c.YAxis * c.MinorRadius
+        ellipse = Part.Ellipse(s1, s2, c.Center)
+        arc = Part.Edge(ellipse, -edge.LastParameter, -edge.FirstParameter)
         return arc
     elif isinstance(edge.Curve, (Part.BSplineCurve, Part.BezierCurve)):
         if isinstance(edge.Curve, Part.BSplineCurve):

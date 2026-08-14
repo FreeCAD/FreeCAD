@@ -794,36 +794,89 @@ def _tangent_continuous(prev_edge, cur_edge, junction, prev_start, cur_end):
     return (1.0 - d) <= _TANGENT_DOT_TOL
 
 
-def _split_at_corners(edges, tol):
-    """Order a connected edge set and split it into tangent-continuous sub-chains.
+def _split_at_corners(edges, tol, combine=True):
+    """Partition a connected edge set into tangent-continuous groups.
 
-    Consecutive edges that meet smoothly (collinear straight lines or
-    smoothly-joined curves) stay in one sub-chain; a sharp corner starts a new
-    one, so each sub-chain becomes an independent flute path.  If the edges do
-    not form a single simple open chain (branching / not connected), each edge
-    is returned as its own sub-chain.
+    Two edges sharing an endpoint stay in the same group only when they meet
+    tangent-continuously (G1) there — collinear straight lines or
+    smoothly-joined curves both qualify.  A sharp corner is a group boundary.
 
-    Returns a list of ordered edge lists.
+    Every PAIR of edges meeting at a shared node is tested independently, not
+    just when exactly two edges meet there.  This matters for a hub where
+    several distinct flute paths happen to cross at one coincident point
+    (e.g. many spokes through a common center): each genuinely collinear pair
+    is still detected and merged, while unrelated edges at the same point
+    correctly stay separate — the tangent test itself disambiguates, so an
+    edge count higher than two at a node is not, by itself, a reason to
+    refuse merging.
+
+    Groups are found via union-find directly on the edge-adjacency graph, so a
+    branch elsewhere in a larger connected selection cannot prevent an
+    unrelated tangent pair from merging (unlike walking one linear chain,
+    which fails outright on any branching).  Groups are not internally
+    ordered — callers (_wire_from_edges / _apply_2d_profile) re-chain each
+    group's edges via _chain_wire_edges before use.
+
+    combine: if False, tangent-continuity is ignored entirely and every edge
+    is returned as its own independent group (the CombineTangentSegments
+    operator override).
+
+    Returns a list of edge lists (each list = one flute path's edges).
     """
-    if len(edges) == 1:
-        return [list(edges)]
-
-    chain = _chain_wire_edges(edges, tol)
-    if not chain:
+    if not combine or len(edges) <= 1:
         return [[edge] for edge in edges]
 
-    subchains = []
-    current = [chain[0][2]]
-    for i in range(1, len(chain)):
-        prev_start, junction, prev_edge = chain[i - 1]
-        _cur_start, cur_end, cur_edge = chain[i]
-        if _tangent_continuous(prev_edge, cur_edge, junction, prev_start, cur_end):
-            current.append(cur_edge)
-        else:
-            subchains.append(current)
-            current = [cur_edge]
-    subchains.append(current)
-    return subchains
+    nodes = []  # representative Vector per snapped node
+
+    def _node(p):
+        for i, np_ in enumerate(nodes):
+            if _dist2(np_, p) < tol.chain2:
+                return i
+        nodes.append(p)
+        return len(nodes) - 1
+
+    edge_nodes = []  # (nodeA, nodeB) per edge, aligned with `edges`
+    at_node = {}  # node id -> [edge indices touching it]
+    for idx, e in enumerate(edges):
+        a = _node(e.Vertexes[0].Point)
+        b = _node(e.Vertexes[-1].Point)
+        edge_nodes.append((a, b))
+        at_node.setdefault(a, []).append(idx)
+        at_node.setdefault(b, []).append(idx)
+
+    parent = list(range(len(edges)))
+
+    def _find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def _union(x, y):
+        rx, ry = _find(x), _find(y)
+        if rx != ry:
+            parent[rx] = ry
+
+    for node, idxs in at_node.items():
+        if len(idxs) < 2:
+            continue  # dangling end: nothing to pair up
+        junction = nodes[node]
+        for a in range(len(idxs)):
+            for b in range(a + 1, len(idxs)):
+                i1, i2 = idxs[a], idxs[b]
+                a1, b1 = edge_nodes[i1]
+                other1 = b1 if a1 == node else a1
+                a2, b2 = edge_nodes[i2]
+                other2 = b2 if a2 == node else a2
+                if _tangent_continuous(
+                    edges[i1], edges[i2], junction, nodes[other1], nodes[other2]
+                ):
+                    _union(i1, i2)
+
+    groups = {}
+    for idx in range(len(edges)):
+        groups.setdefault(_find(idx), []).append(edges[idx])
+    return list(groups.values())
 
 
 def _split_into_wires(edges, tol):
@@ -863,38 +916,22 @@ def _chain_wire_edges(edges, tol):
 
     Assumes edges form a single simple open path (no branching).  Returns
     None if they don't all connect into one chain.
+
+    Connectivity/ordering is delegated to OCC's Part.sortEdges, which anchors
+    on edges[0]'s own drawn direction (never reversing it) and grows the
+    chain in either direction from there, reversing only the edges that
+    follow to keep it connected -- the same contract this function had when
+    hand-rolled, and the same pattern used ~25+ places elsewhere in the Path
+    codebase (Part.Wire(Part.__sortEdges__(edges))).
     """
     if not edges:
         return None
 
-    remaining = list(edges[1:])
-    e0 = edges[0]
-    chain = [(e0.Vertexes[0].Point, e0.Vertexes[-1].Point, e0)]
+    chains = Part.sortEdges(list(edges), math.sqrt(tol.chain2))
+    if len(chains) != 1 or len(chains[0]) != len(edges):
+        return None  # branching, a gap, or edges outside chaining tolerance
 
-    changed = True
-    while remaining and changed:
-        changed = False
-        cur_s, cur_e = chain[0][0], chain[-1][1]
-        for e in list(remaining):
-            v0, v1 = e.Vertexes[0].Point, e.Vertexes[-1].Point
-            if _dist2(cur_e, v0) < tol.chain2:
-                chain.append((v0, v1, e))
-            elif _dist2(cur_e, v1) < tol.chain2:
-                chain.append((v1, v0, e))
-            elif _dist2(cur_s, v0) < tol.chain2:
-                chain.insert(0, (v1, v0, e))
-            elif _dist2(cur_s, v1) < tol.chain2:
-                chain.insert(0, (v0, v1, e))
-            else:
-                continue
-            remaining.remove(e)
-            changed = True
-            break
-
-    if remaining:
-        return None  # could not connect all edges into a single chain
-
-    return chain
+    return [(e.Vertexes[0].Point, e.Vertexes[-1].Point, e) for e in chains[0]]
 
 
 def _wire_from_edges(edges, tol):
@@ -912,25 +949,20 @@ def _wire_from_edges(edges, tol):
         )
         return None, None, None
 
-    # Orient so the shallower (higher Z) free end is the start.
+    wire = Part.Wire([edge for _, _, edge in chain])
+
+    # Orient so the shallower (higher Z) free end is the start. Every
+    # consumer of this wire (WireFollowGenerator.generate, _emitFlutePath)
+    # discretizes it themselves via PathGeom.edgesToPoints, so there is no
+    # need to sample points here just to rebuild a polyline wire from them.
     if chain[0][0].z < chain[-1][1].z:
-        chain = [(e, s, edge) for s, e, edge in reversed(chain)]
+        wire = PathGeom.flipWire(wire)
 
-    pts = PathGeom.edgesToPoints(
-        [edge for _, _, edge in chain],
-        tol.arc_chord,
-        startPoint=chain[0][0],
-        error=tol.arc_chord * 0.01,
-    )
-    if not pts:
-        return None, None, None
-
-    wire = _pts_to_wire(pts)
-    if wire is None:
-        return None, None, None
-
-    all_z = [p.z for p in pts]
-    return wire, max(all_z), min(all_z)
+    # BoundBox covers the true extent of curved edges too, not just their
+    # endpoints -- at least as accurate as sampling at the chord tolerance.
+    top_z = max(e.BoundBox.ZMax for e in wire.Edges)
+    floor_z = min(e.BoundBox.ZMin for e in wire.Edges)
+    return wire, top_z, floor_z
 
 
 # ---------------------------------------------------------------------------
@@ -1173,39 +1205,6 @@ def _apply_axial_leave_pts(pts, axial_leave, stock_top_z, tol):
 # ---------------------------------------------------------------------------
 
 
-def _simplify_collinear(pts, chord):
-    """Remove points that are collinear with their neighbours in 3D space.
-
-    Keeps only points whose perpendicular distance from the segment formed by
-    their predecessor and successor exceeds chord * 0.01.  Exactly collinear
-    points (e.g. intermediate samples on a straight edge with linear Z) are
-    removed; curved or smooth-Z segments are preserved.
-    """
-    if len(pts) < 3:
-        return list(pts)
-    tol_sq = (chord * 0.01) ** 2
-    result = [pts[0]]
-    for i in range(1, len(pts) - 1):
-        a, c = result[-1], pts[i + 1]
-        b = pts[i]
-        acx, acy, acz = c.x - a.x, c.y - a.y, c.z - a.z
-        ac2 = acx * acx + acy * acy + acz * acz
-        if ac2 < _PREC:
-            result.append(b)
-            continue
-        abx, aby, abz = b.x - a.x, b.y - a.y, b.z - a.z
-        t = (abx * acx + aby * acy + abz * acz) / ac2
-        px = a.x + t * acx
-        py = a.y + t * acy
-        pz = a.z + t * acz
-        dx, dy, dz = b.x - px, b.y - py, b.z - pz
-        if dx * dx + dy * dy + dz * dz < tol_sq:
-            continue
-        result.append(b)
-    result.append(pts[-1])
-    return result
-
-
 def _wire_is_flat(edges, tol):
     """Return True if all edges lie at essentially the same Z (2D wire)."""
     zs = [v.Point.z for e in edges for v in e.Vertexes]
@@ -1287,7 +1286,7 @@ def _apply_2d_profile(
         return None
 
     # Always discretize all edge types so intermediate arc-length positions
-    # exist for Z-profile sampling.  _simplify_collinear removes redundant
+    # exist for Z-profile sampling.  PathUtils.simplify3dLine removes redundant
     # collinear points afterward (e.g. straight edge + linear Z → 2 pts).
     raw = []
     for seg_s, seg_e, edge in chain:
@@ -1351,7 +1350,11 @@ def _apply_2d_profile(
         elif flute_type == "Ramp Start":
             f = min(t / ramp_frac, 1.0) if ramp_frac > _PREC else 1.0
         elif flute_type == "Ramp Start End":
-            half = ramp_frac / 2.0
+            # ramp_frac is the size of EACH side's ramp independently (not a
+            # combined total split between them).  If it's more than half the
+            # path the two ramps would overlap, so clamp to 0.5 -- they then
+            # meet exactly at the midpoint with no flat section remaining.
+            half = min(ramp_frac, 0.5)
             if half < _PREC:
                 f = 1.0
             elif t <= half:
@@ -1382,7 +1385,7 @@ def _apply_2d_profile(
         return start_z - f * depth
 
     pts = [FreeCAD.Vector(p.x, p.y, _z_at(arc_len[i] / total)) for i, p in enumerate(raw)]
-    pts = _simplify_collinear(pts, tol.arc_chord)
+    pts = PathUtils.simplify3dLine(pts, tolerance=tol.arc_chord * 0.01)
     return _pts_to_wire(pts)
 
 
@@ -1453,6 +1456,31 @@ class ObjectFlute(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyBool",
+            "CombineTangentSegments",
+            "Flute",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Merge connected edges that meet tangent-continuously "
+                "(collinear lines or smoothly-joined curves) into a single "
+                "flute path. When off, every selected edge is its own "
+                "independent flute path regardless of tangency.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyStringList",
+            "FlippedSegments",
+            "Flute",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Base geometry entries (stored as 'ObjectName.SubName') whose "
+                "individual edge direction is force-reversed before path "
+                "generation, regardless of how it was drawn. Set from the "
+                "checkboxes on the Base Geometry list. Independent of "
+                "FlipStart2D, which reverses the whole result at the end.",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyEnumeration",
             "FlutingType",
             "Flute2D",
@@ -1464,6 +1492,7 @@ class ObjectFlute(PathOp.ObjectOp):
             ),
         )
         obj.FlutingType = ["Ramp Full", "Ramp Start", "Ramp Start End"]
+        obj.FlutingType = "Ramp Full"
         obj.addProperty(
             "App::PropertyEnumeration",
             "RampType",
@@ -1487,21 +1516,46 @@ class ObjectFlute(PathOp.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyEnumeration",
+            "RampLengthType",
+            "Flute2D",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Whether Ramp Length or Ramp % defines the ramp size on 2D "
+                "wires. Only the selected one is used; they are independent "
+                "(not converted into each other).",
+            ),
+        )
+        obj.RampLengthType = ["Length", "Percent"]
+        obj.RampLengthType = "Length"
+        obj.addProperty(
             "App::PropertyDistance",
             "RampLength",
             "Flute2D",
             QtCore.QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Length of each ramp segment in mm (2D wires only). "
-                "When greater than zero, overrides Ramp %. "
-                "The fraction is derived at compute time from this length "
-                "divided by the actual wire length.",
+                "Used when Ramp Length Type is Length.",
             ),
         )
         obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "RampLengthPercent",
+            "Flute2D",
+            QtCore.QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Ramp size as a percentage of each wire's own length (2D "
+                "wires only). Used when Ramp Length Type is Percent; applied "
+                "independently to every selected wire. Capped at 50% for "
+                "Ramp Start End, since each side already ramps that fraction "
+                "independently -- beyond 50% the two ramps would overlap.",
+            ),
+        )
+        obj.RampLengthPercent = (100, 1, 100, 1)
+        obj.addProperty(
             "App::PropertyEnumeration",
             "MultiPassStrategy",
-            "Depth",
+            "Flute",
             QtCore.QT_TRANSLATE_NOOP(
                 "App::Property",
                 "How roughing passes are distributed across step-down depths. "
@@ -1513,14 +1567,21 @@ class ObjectFlute(PathOp.ObjectOp):
         )
         obj.MultiPassStrategy = ["Constant Angle", "Variable Angle"]
 
+        self.applyRampLengthTypeEditorMode(obj)
+        self.applyRampLengthPercentConstraint(obj)
+        self.applyBlindEndCompensationEditorMode(obj)
+
     def opSetDefaultValues(self, obj, job):
         obj.ReverseDirection = False
         obj.AxialStockToLeave = 0.0
         obj.BlindEndCompensation = False
+        obj.CombineTangentSegments = True
         obj.FlutingType = "Ramp Full"
         obj.RampType = "Linear"
         obj.FlipStart2D = False
+        obj.RampLengthType = "Length"
         obj.RampLength = 0.0
+        obj.RampLengthPercent = 100
         obj.MultiPassStrategy = "Constant Angle"
 
         d = None
@@ -1555,14 +1616,93 @@ class ObjectFlute(PathOp.ObjectOp):
                 except Part.OCCError as err:
                     Path.Log.error(err)
 
-        if z_max is not None:
-            obj.OpStartDepth = z_max
-        if z_min is not None:
+        if z_max is None or z_min is None:
+            return
+
+        # The wire's own Z is the ramp's starting surface, so it's always a
+        # valid StartDepth regardless of whether the selection is flat or 3D.
+        obj.OpStartDepth = z_max
+
+        if PathGeom.isRoughly(z_max, z_min):
+            # A flat (2D) wire has no Z range of its own -- z_min here just
+            # repeats the same single Z as z_max, which is NOT a meaningful
+            # final (deep) depth: it's the ramp's starting surface, not the
+            # cut's bottom. The base class's generic faceZmin heuristic
+            # (Path/Op/Base.py updateDepths) mistakes a flat wire for a top
+            # face and already set OpFinalDepth to that same Z before this
+            # override runs -- correct it back to the stock floor instead of
+            # collapsing FinalDepth to match StartDepth.
+            if hasattr(obj, "OpStockZMin"):
+                obj.OpFinalDepth = obj.OpStockZMin
+        else:
             obj.OpFinalDepth = z_min
 
     def onChanged(self, obj, prop):
         if prop == "Active" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+        if prop == "RampLengthType":
+            self.applyRampLengthTypeEditorMode(obj)
+        if prop == "FlutingType":
+            self.applyRampLengthPercentConstraint(obj)
+            self.applyRampLengthTypeEditorMode(obj)
+            self.applyBlindEndCompensationEditorMode(obj)
+
+    def applyBlindEndCompensationEditorMode(self, obj):
+        """Grey out (not hide) BlindEndCompensation when FlutingType is Ramp
+        Start End, since that profile always ramps back to the surface --
+        matching the same flute_type != "Ramp Start End" gate opExecute
+        already applies when computing whether to actually run the blind-end
+        logic.  Left fully editable (and thus usable) for a 3D wire
+        selection, where FlutingType has no bearing at all.
+
+        Runs from onChanged (works from any source) and once at creation.
+        """
+        if not hasattr(obj, "BlindEndCompensation"):
+            return
+        is_ramp_start_end = getattr(obj, "FlutingType", "Ramp Full") == "Ramp Start End"
+        obj.setEditorMode("BlindEndCompensation", 1 if is_ramp_start_end else 0)
+
+    def applyRampLengthPercentConstraint(self, obj):
+        """Cap Ramp % at 50 for Ramp Start End (each side already ramps that
+        fraction independently, so anything above 50% would just overlap and
+        clamp anyway -- capping the input directly avoids the false
+        impression of a bug).  Unclamps back to 100 for any other FlutingType.
+
+        Runs from onChanged (so it applies regardless of source: task panel,
+        Properties panel, or scripting) and once at creation for the initial
+        state.  Reassigning the constraint tuple also clamps the current
+        stored value down if it's now above the new maximum.
+        """
+        if not hasattr(obj, "RampLengthPercent"):
+            return
+        max_pct = 50 if getattr(obj, "FlutingType", "Ramp Full") == "Ramp Start End" else 100
+        current = min(obj.RampLengthPercent, max_pct)
+        obj.RampLengthPercent = (current, 1, max_pct, 1)
+
+    def applyRampLengthTypeEditorMode(self, obj):
+        """Show only the Ramp Length or Ramp % property matching RampLengthType
+        in the Properties panel, and grey out (not hide) the whole trio when
+        FlutingType is Ramp Full, since ramp_frac has no effect at all in that
+        mode.  Runs from onChanged on either RampLengthType or FlutingType (so
+        it stays correct regardless of source) and once at operation creation.
+
+        This method only ever chooses between mode 0 (editable) and mode 1
+        (read-only/greyed) -- never mode 2 (hidden).  Whether the trio is
+        visible at all (2D wire selected) is decided by the Gui task panel,
+        which knows the current wire-selection classification; layering a
+        hide/show decision in here too would risk the two fighting over the
+        same editor mode.
+        """
+        if not hasattr(obj, "RampLengthType"):
+            return
+        is_percent = obj.RampLengthType == "Percent"
+        ramp_full = getattr(obj, "FlutingType", "Ramp Full") == "Ramp Full"
+        greyed = 1 if ramp_full else 0
+        obj.setEditorMode("RampLengthType", greyed)
+        if hasattr(obj, "RampLength"):
+            obj.setEditorMode("RampLength", 2 if is_percent else greyed)
+        if hasattr(obj, "RampLengthPercent"):
+            obj.setEditorMode("RampLengthPercent", greyed if is_percent else 2)
 
     def _emitFlutePath(
         self,
@@ -1728,8 +1868,14 @@ class ObjectFlute(PathOp.ObjectOp):
             return tool_pos, False
 
         multi_pass_strategy = getattr(obj, "MultiPassStrategy", "Constant Angle")
-        ramp_len_prop = getattr(obj, "RampLength", None)
-        ramp_length_mm = ramp_len_prop.Value if ramp_len_prop is not None else 0.0
+        # Only Length mode overrides ramp_frac via an absolute length; in Percent
+        # mode ramp_frac (passed in from opExecute) is already the per-wire
+        # fraction, so no length override should apply.
+        if getattr(obj, "RampLengthType", "Length") == "Length":
+            ramp_len_prop = getattr(obj, "RampLength", None)
+            ramp_length_mm = ramp_len_prop.Value if ramp_len_prop is not None else 0.0
+        else:
+            ramp_length_mm = 0.0
 
         pass_wires = []
         for pf, f in passes:
@@ -1854,6 +2000,7 @@ class ObjectFlute(PathOp.ObjectOp):
 
         # Selected subelements can be faces (analysed via solid section) or
         # edges (used directly as the centerline wire, no analysis needed).
+        flipped_keys = set(getattr(obj, "FlippedSegments", None) or [])
         face_tuples = []
         edge_tuples = []
         for base, sub_list in obj.Base:
@@ -1866,6 +2013,10 @@ class ObjectFlute(PathOp.ObjectOp):
                 if elem.ShapeType == "Face":
                     face_tuples.append((elem, sub, base))
                 elif elem.ShapeType == "Edge":
+                    if "{}.{}".format(base.Name, sub) in flipped_keys:
+                        flipped = PathGeom.flipEdge(elem)
+                        if flipped is not None:
+                            elem = flipped
                     edge_tuples.append((elem, sub, base))
 
         if not face_tuples and not edge_tuples:
@@ -2056,11 +2207,18 @@ class ObjectFlute(PathOp.ObjectOp):
                 # each become their own independent flute path.
                 flute_type = getattr(obj, "FlutingType", "Ramp Full")
                 ramp_type = getattr(obj, "RampType", "Linear")
-                ramp_frac = 1.0  # full wire; overridden by RampLength if set
+                # Percent mode: ramp_frac is used directly, independently per wire.
+                # Length mode: ramp_frac defaults to full wire; _emit2dPasses
+                # overrides it per-wire from RampLength (see ramp_length_mm below).
+                ramp_length_type = getattr(obj, "RampLengthType", "Length")
+                ramp_frac = (
+                    (obj.RampLengthPercent / 100.0) if ramp_length_type == "Percent" else 1.0
+                )
                 flip = getattr(obj, "FlipStart2D", False)
+                combine_tangent = getattr(obj, "CombineTangentSegments", True)
                 processed_groups = []
                 for group in flat_groups:
-                    processed_groups.extend(_split_at_corners(group, tol))
+                    processed_groups.extend(_split_at_corners(group, tol, combine=combine_tangent))
                 Path.Log.debug(
                     "CAM_Flute: {} flat group(s) -> {} 2D flute path(s) after corner split\n".format(
                         len(flat_groups), len(processed_groups)
@@ -2091,9 +2249,10 @@ class ObjectFlute(PathOp.ObjectOp):
                 # 3D wires: edges carry Z information directly.  Split each
                 # connected component at sharp corners so a smooth run (straight
                 # or curved) is one flute and an L-corner becomes two.
+                combine_tangent = getattr(obj, "CombineTangentSegments", True)
                 solid_paths = []
                 for group in solid_groups:
-                    solid_paths.extend(_split_at_corners(group, tol))
+                    solid_paths.extend(_split_at_corners(group, tol, combine=combine_tangent))
                 for wire_edges in solid_paths:
                     sub_names = [edge_by_id.get(id(e), "?") for e in wire_edges]
                     wire, geo_top_z, geo_floor_z = _wire_from_edges(wire_edges, tol)
@@ -2137,10 +2296,14 @@ def SetupProperties():
         "ReverseDirection",
         "AxialStockToLeave",
         "BlindEndCompensation",
+        "CombineTangentSegments",
+        "FlippedSegments",
         "MultiPassStrategy",
         "FlutingType",
         "RampType",
+        "RampLengthType",
         "RampLength",
+        "RampLengthPercent",
         "FlipStart2D",
     ]
 

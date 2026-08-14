@@ -99,15 +99,26 @@
         </property>
        </widget>
       </item>
+      <!-- Combine tangent segments -->
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="combineTangentSegments">
+        <property name="toolTip">
+         <string>Merge connected edges that meet tangent-continuously (collinear lines or smoothly-joined curves) into a single flute path. Uncheck to keep every selected edge as its own independent flute path.</string>
+        </property>
+        <property name="text">
+         <string>Combine Tangent Segments</string>
+        </property>
+       </widget>
+      </item>
       <!-- Axial stock to leave -->
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="axialStockToLeave_label">
         <property name="text">
          <string>Axial Stock to Leave</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="Gui::QuantitySpinBox" name="axialStockToLeave">
         <property name="toolTip">
          <string>Stock to leave in the axial (depth) direction</string>
@@ -177,18 +188,33 @@
         </property>
        </widget>
       </item>
-      <!-- Ramp length -->
+      <!-- Ramp value mode: selects which of Ramp Length / Ramp % is used -->
       <item row="3" column="0">
+       <widget class="QLabel" name="rampLengthType_label">
+        <property name="text">
+         <string>Ramp Length Type</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QComboBox" name="rampLengthType">
+        <property name="toolTip">
+         <string>Whether Ramp Length or Ramp % defines the ramp size. They are independent — only the selected one is used, and it applies to every selected wire.</string>
+        </property>
+       </widget>
+      </item>
+      <!-- Ramp length -->
+      <item row="4" column="0">
        <widget class="QLabel" name="rampLength_label">
         <property name="text">
          <string>Ramp Length</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="Gui::QuantitySpinBox" name="rampLength">
         <property name="toolTip">
-         <string>Length of each ramp segment in mm. Syncs with Ramp % below. Set to 0 to drive from Ramp % only.</string>
+         <string>Length of each ramp segment in mm. Used when Ramp Length Type is set to Length.</string>
         </property>
         <property name="unit">
          <string>mm</string>
@@ -196,17 +222,17 @@
        </widget>
       </item>
       <!-- Ramp percent -->
-      <item row="4" column="0">
-       <widget class="QLabel" name="rampPercent_label">
+      <item row="5" column="0">
+       <widget class="QLabel" name="rampLengthPercent_label">
         <property name="text">
          <string>Ramp %</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QSpinBox" name="rampPercent">
+      <item row="5" column="1">
+       <widget class="QSpinBox" name="rampLengthPercent">
         <property name="toolTip">
-         <string>Percentage of the total path length occupied by each ramp segment. Syncs with Ramp Length above.</string>
+         <string>Ramp size as a percentage of each wire's own length. Used when Ramp Length Type is set to Percent; applied independently to every selected wire.</string>
         </property>
         <property name="minimum">
          <number>1</number>
@@ -220,7 +246,7 @@
        </widget>
       </item>
       <!-- Flip start -->
-      <item row="5" column="0" colspan="2">
+      <item row="6" column="0" colspan="2">
        <widget class="QCheckBox" name="flipStart2D">
         <property name="toolTip">
          <string>Reverse which end of the flat wire is the ramp entry point.</string>
