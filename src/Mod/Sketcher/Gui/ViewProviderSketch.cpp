@@ -199,7 +199,7 @@ void ViewProviderSketch::ParameterObserver::updateShapeAppearanceProperty(const 
     auto matProp = static_cast<App::PropertyMaterialList*>(property);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0x54abff40);
+    unsigned long shcol = hGrp->GetUnsigned(string.c_str(), 0xf59f0040);
     float r = ((shcol >> 24) & 0xff) / 255.0;
     float g = ((shcol >> 16) & 0xff) / 255.0;
     float b = ((shcol >> 8) & 0xff) / 255.0;
@@ -4122,7 +4122,8 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    menu->addAction(tr("Edit Sketch"), receiver, member);
+    QAction* act = menu->addAction(tr("Edit Sketch"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
@@ -4301,11 +4302,19 @@ bool ViewProviderSketch::setEdit(int ModNum)
     // In order to have updated solver information, solve must take "true", this cause the Geometry
     // property to be updated with the solver information, including solver extensions, and triggers
     // a draw(true) via ViewProvider::UpdateData.
-    getSketchObject()->solve(true);
+    try {
+        getSketchObject()->solve(true);
 
-    // Enable solver initial solution update while dragging.
-    getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
-        viewProviderParameters.recalculateInitialSolutionWhileDragging);
+        // Enable solver initial solution update while dragging.
+        getSketchObject()->setRecalculateInitialSolutionWhileMovingPoint(
+            viewProviderParameters.recalculateInitialSolutionWhileDragging);
+    }
+    catch (const Base::Exception& e) {
+        e.reportException();
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().error("ViewProviderSketch::setEdit: %s\n", e.GetMessageString());
+    }
 
     // intercept del key press from main app
     listener = std::make_unique<ShortcutListener>(this);
@@ -4488,6 +4497,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 {
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
+    }
+
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
     }
 
     setGridEnabled(nullptr);

@@ -58,8 +58,14 @@ class BIM_Slab:
             self.proceed()
         else:
             if hasattr(FreeCADGui, "draftToolBar"):
-                FreeCADGui.draftToolBar.selectUi()
+                FreeCADGui.draftToolBar.selectUi(on_close_call=self.finish)
             FreeCAD.Console.PrintMessage(translate("BIM", "Select a planar object") + "\n")
+            FreeCADGui.HintManager.show(
+                FreeCADGui.InputHint(
+                    translate("BIM", "%1 select a planar object"),
+                    FreeCADGui.UserInput.MouseLeft,
+                )
+            )
             self.view = FreeCADGui.ActiveDocument.ActiveView
             self.callback = self.view.addEventCallback("SoEvent", DraftTools.selectObject)
 
@@ -89,6 +95,7 @@ class BIM_Slab:
 
     def finish(self):
         self.removeCallback()
+        FreeCADGui.HintManager.hide()
         if hasattr(FreeCADGui, "draftToolBar"):
             FreeCADGui.draftToolBar.offUi()
 

@@ -300,6 +300,17 @@ class DocumentBasicCases(unittest.TestCase):
     def testMem(self):
         self.Doc.MemSize
 
+    def testViewObjectWithFreeCADGuiImportedInConsoleMode(self):
+        if FreeCAD.GuiUp:
+            self.skipTest("Console-mode regression test")
+
+        import FreeCADGui
+
+        obj = self.Doc.addObject("App::FeatureTest", "HeadlessViewObject")
+        self.assertIsNotNone(FreeCADGui)
+        self.assertFalse(hasattr(FreeCADGui, "getDocument"))
+        self.assertIsNone(obj.ViewObject)
+
     def testDuplicateLinks(self):
         obj = self.Doc.addObject("App::FeatureTest", "obj")
         grp = self.Doc.addObject("App::DocumentObjectGroup", "group")
@@ -1902,6 +1913,26 @@ class DocumentFileIncludeCases(unittest.TestCase):
         L7.File = (L5.File, "Copy.txt")
         self.assertTrue(os.path.exists(L7.File))
         FreeCAD.closeDocument("Doc2")
+
+    def testBinarySaveRestore(self):
+        payload = bytes((i % 251 for i in range(150000))) + b"\x00FreeCAD\x00restore\x00"
+        source_path = os.path.join(tempfile.gettempdir(), "FileIncludeBinarySource.bin")
+        doc_path = os.path.join(tempfile.gettempdir(), "FileIncludeTests.FCStd")
+
+        with open(source_path, "wb") as file:
+            file.write(payload)
+
+        obj = self.Doc.addObject("App::DocumentObjectFileIncluded", "BinaryFile")
+        obj.File = (source_path, "BinaryPayload.bin")
+        self.Doc.saveAs(doc_path)
+
+        FreeCAD.closeDocument("FileIncludeTests")
+        self.Doc = FreeCAD.open(doc_path)
+        obj = self.Doc.getObject("BinaryFile")
+
+        with open(obj.File, "rb") as file:
+            self.assertEqual(file.read(), payload)
+        self.assertEqual(obj.File.split("/")[-1], "BinaryPayload.bin")
 
     def tearDown(self):
         # closing doc

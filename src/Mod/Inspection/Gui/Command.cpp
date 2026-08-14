@@ -29,6 +29,7 @@
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/View3DInventor.h>
@@ -46,16 +47,16 @@ CmdVisualInspection::CmdVisualInspection()
 {
     sAppModule = "Inspection";
     sGroup = QT_TR_NOOP("Inspection");
-    sMenuText = QT_TR_NOOP("Visual Inspection…");
+    sMenuText = QT_TR_NOOP("Visual Inspection");
     sToolTipText = QT_TR_NOOP("Inspects the objects visually");
     sStatusTip = sToolTipText;
     sWhatsThis = "Inspection_VisualInspection";
+    sPixmap = "InspectionWorkbench";
 }
 
 void CmdVisualInspection::activated(int)
 {
-    InspectionGui::VisualInspection dlg(Gui::getMainWindow());
-    dlg.exec();
+    Gui::Control().showDialog(new InspectionGui::TaskVisualInspection());
 }
 
 bool CmdVisualInspection::isActive()

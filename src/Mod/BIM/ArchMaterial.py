@@ -1001,8 +1001,7 @@ class _ArchMultiMaterialTaskPanel:
         try:
             return float(text) * pref_factor
         except ValueError:
-            # Workaround for Building US unit system bug (Version 1.1, 2026):
-            return FreeCAD.Units.Quantity(text.replace("+", "--")).Value
+            return FreeCAD.Units.Quantity(text).Value
 
     def recalcThickness(self, item=None):
         prefix = translate("Arch", "Total thickness") + ": "
