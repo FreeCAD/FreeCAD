@@ -52,11 +52,5 @@
           r="12"
           cx="32"
           cy="36" />
-        <ellipseo
-          style="fill:url(#radialGradient1); stroke:none"
-          rx="12"
-          ry="12"
-          cx="32"
-          cy="36" />
     </g>
 </svg>
