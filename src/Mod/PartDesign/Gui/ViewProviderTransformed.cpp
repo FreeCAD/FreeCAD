@@ -23,6 +23,7 @@
  ******************************************************************************/
 
 
+#include <format>
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
@@ -58,7 +59,7 @@ const std::string& ViewProviderTransformed::featureName() const
 
 std::string ViewProviderTransformed::featureIcon() const
 {
-    return fmt::format("PartDesign_{}", featureName());
+    return std::format("PartDesign_{}", featureName());
 }
 
 void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)

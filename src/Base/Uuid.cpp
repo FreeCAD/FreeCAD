@@ -27,11 +27,10 @@
 #include <cctype>
 #include <cstdint>
 #include <cstring>
+#include <format>
 #include <random>
 #include <string_view>
 #include <stdexcept>
-
-#include <fmt/format.h>
 
 #if defined(_WIN32)
 # include <objbase.h>
@@ -64,7 +63,7 @@ int hexValue(const char ch)
 
 std::string formatUuid(const std::array<std::uint8_t, 16>& bytes)
 {
-    return fmt::format(
+    return std::format(
         "{:02x}{:02x}{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}-{:02x}{:02x}{:02x}{:02x}{:"
         "02x}{:02x}",
         bytes[0],

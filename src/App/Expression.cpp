@@ -36,12 +36,12 @@
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 
+#include <format>
 #include <numbers>
 #include <limits>
 #include <sstream>
 #include <stack>
 #include <string>
-#include <fmt/format.h>
 
 #include <QObject>
 
@@ -3770,11 +3770,11 @@ ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, con
     int result = ExpressionParser::ExpressionParser_yyparse ();
 
     if (result != 0) {
-        throw ParserError(fmt::format("Failed to parse expression '{}'", buffer));
+        throw ParserError(std::format("Failed to parse expression '{}'", buffer));
     }
 
     if (!ScanResult) {
-        throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
+        throw ParserError(std::format("Unknown error in expression '{}'", buffer));
     }
 
     if (!valueExpression) {

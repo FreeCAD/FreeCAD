@@ -25,6 +25,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <format>
 
 #include <Inventor/SoFCPlacementIndicatorKit.h>
 
@@ -38,8 +39,6 @@
 # include <GL/glext.h>
 # include <GL/glu.h>
 #endif
-
-#include <fmt/format.h>
 
 #include <algorithm>
 #include <array>
@@ -224,7 +223,7 @@ QString dimensionText(const View3DInventorViewer& viewer)
         auto hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
         // Create final string and update window
-        dim = fmt::format("{} x {}", wStr, hStr);
+        dim = std::format("{} x {}", wStr, hStr);
     }
 
     return QString::fromStdString(dim);
@@ -2052,7 +2051,7 @@ void View3DInventorViewer::updateFPSLabel()
 
     fpsCounter->setText(
         QString::fromStdString(
-            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+            std::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
         )
     );
 

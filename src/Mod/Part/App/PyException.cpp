@@ -23,10 +23,9 @@
 
 #if defined(__GLIBCXX__) || defined(_LIBCPP_ABI_VERSION)
 # include <cxxabi.h>
+#include <format>
 # include <memory>
 #endif
-
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
@@ -49,7 +48,7 @@ void pyThrowWrappedOccException(const Standard_Failure& e, PyObject* occErrorTyp
     const auto demangled = typeid(e).name();
 #endif
     const Standard_CString msg = e.GetMessageString();
-    const auto what = fmt::format("{}: {}", demangled, msg ? msg : "No OCCT Exception Message");
+    const auto what = std::format("{}: {}", demangled, msg ? msg : "No OCCT Exception Message");
     if (report) {
         Base::Console().error("%s\n", what);
     }
