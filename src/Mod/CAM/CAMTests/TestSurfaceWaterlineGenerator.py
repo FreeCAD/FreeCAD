@@ -60,6 +60,7 @@ def _make_hemisphere_stl_and_cutter():
     box = Part.makeBox(60, 60, 30, FreeCAD.Vector(-30, -30, -30))
     hemisphere = sphere.cut(box)
 
+    # Note: Waterline currently requires the Python STL converter
     stl = _shape_to_stl(hemisphere, 0.2, 0.2)
     cutter = make_ocl_cutter("ballend", 6.0, edge_height=10.0)
     return stl, cutter

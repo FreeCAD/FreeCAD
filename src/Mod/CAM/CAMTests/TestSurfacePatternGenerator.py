@@ -204,9 +204,7 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.surface_pattern import generate_offset_scan_lines
 
-        lines = generate_offset_scan_lines(
-            self.square_face, stepover=4.0, tool_diam=3.0, sample_interval=1.0
-        )
+        lines = generate_offset_scan_lines(self.square_face, stepover=4.0, tool_diam=3.0, sample_interval=1.0)
 
         self.assertIsNotNone(lines)
         # 20mm width, tool radius implicitly half of stepover.
@@ -232,9 +230,7 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.surface_pattern import generate_offset_scan_lines
 
-        lines = generate_offset_scan_lines(
-            self.face_with_hole, stepover=5.0, tool_diam=3.0, sample_interval=1.0
-        )
+        lines = generate_offset_scan_lines(self.face_with_hole, stepover=5.0, tool_diam=3.0, sample_interval=1.0)
         self.assertIsNotNone(lines)
         # Outer: 40x40 -> 2 passes. Inner: 20x20 -> 1 pass. Total 3 wires * 2 passes/wire = 6 lines
         self.assertGreaterEqual(
