@@ -43,6 +43,7 @@
 #include <stdexcept>
 #include <Python.h>
 #include <unordered_map>
+#include <unordered_set>
 #include <limits>
 #include <cstdint>
 #include <functional>
@@ -104,28 +105,25 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
     // the nearest micron and packed into three int64_t lanes, avoiding the
     // per-vertex double-to-string formatting/concatenation that a
     // std::string-keyed map would require in this hot loop.
-    struct VertexKey
-    {
+    struct VertexKey {
         int64_t x, y, z;
-        bool operator==(const VertexKey& other) const noexcept
-        {
+        bool operator==(const VertexKey& other) const noexcept {
             return x == other.x && y == other.y && z == other.z;
         }
     };
-    struct VertexKeyHash
-    {
-        std::size_t operator()(const VertexKey& k) const noexcept
-        {
+    struct VertexKeyHash {
+        std::size_t operator()(const VertexKey& k) const noexcept {
             // boost::hash_combine-style mixing of the three lanes. The magic
             // constant is 2^64 / golden_ratio (0x9e3779b97f4a7c15ULL), the
             // standard "golden ratio" mixing constant used by
             // boost::hash_combine: its bit pattern has no simple repeating
             // structure, which spreads the combined bits evenly and avoids
-            // clustering for inputs that are already close together.
+            // clustering for inputs that are already close together — as our
+            // rounded-micron coordinates often are.
             constexpr std::size_t kHashMix = 0x9e3779b97f4a7c15ULL;
-            std::size_t h = std::hash<int64_t> {}(k.x);
-            h ^= std::hash<int64_t> {}(k.y) + kHashMix + (h << 6) + (h >> 2);
-            h ^= std::hash<int64_t> {}(k.z) + kHashMix + (h << 6) + (h >> 2);
+            std::size_t h = std::hash<int64_t>{}(k.x);
+            h ^= std::hash<int64_t>{}(k.y) + kHashMix + (h << 6) + (h >> 2);
+            h ^= std::hash<int64_t>{}(k.z) + kHashMix + (h << 6) + (h >> 2);
             return h;
         }
     };
@@ -136,7 +134,7 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
 
     std::unordered_map<VertexKey, int, VertexKeyHash> vertex_map;
     auto get_vertex_index = [&](const gp_Pnt& p) -> int {
-        VertexKey key {
+        VertexKey key{
             static_cast<int64_t>(std::llround(p.X() * kDedupScale)),
             static_cast<int64_t>(std::llround(p.Y() * kDedupScale)),
             static_cast<int64_t>(std::llround(p.Z() * kDedupScale)),
@@ -153,6 +151,35 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
         vertex_map.emplace(key, index);
         return index;
     };
+
+    // Facet-level dedup: guards against genuinely duplicate triangles (same
+    // three vertices, any order) arising from overlapping/coincident faces
+    // in the source shape — e.g. left over from an imperfect fuse() on a
+    // messy multi-body model. Vertex-level dedup alone doesn't catch this:
+    // two coincident-but-distinct source faces each tessellate to their own
+    // triangles referencing the same (correctly deduplicated) vertex
+    // indices, and nothing stops the same triangle being pushed twice.
+    // This matters in practice, not just in theory — a downstream
+    // silhouette-extraction experiment failed silently (found zero boundary
+    // edges) on a mesh containing duplicate triangles, since doubling every
+    // edge's entries makes every edge look "interior" even where a real
+    // front/back transition exists.
+    struct FacetKey {
+        int a, b, c;  // always stored sorted ascending — order-independent
+        bool operator==(const FacetKey& other) const noexcept {
+            return a == other.a && b == other.b && c == other.c;
+        }
+    };
+    struct FacetKeyHash {
+        std::size_t operator()(const FacetKey& k) const noexcept {
+            constexpr std::size_t kHashMix = 0x9e3779b97f4a7c15ULL;
+            std::size_t h = std::hash<int>{}(k.a);
+            h ^= std::hash<int>{}(k.b) + kHashMix + (h << 6) + (h >> 2);
+            h ^= std::hash<int>{}(k.c) + kHashMix + (h << 6) + (h >> 2);
+            return h;
+        }
+    };
+    std::unordered_set<FacetKey, FacetKeyHash> seen_facets;
 
     for (TopExp_Explorer exp(topo_shape, TopAbs_FACE); exp.More(); exp.Next()) {
         const TopoDS_Face& face = TopoDS::Face(exp.Current());
@@ -196,6 +223,18 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
                 std::swap(v2_idx, v3_idx);
             }
 
+            // Sort only for the dedup key — v1_idx/v2_idx/v3_idx below
+            // must keep their original order, since it encodes winding
+            // (and thus the normal direction) already handled above.
+            int key_a = v1_idx, key_b = v2_idx, key_c = v3_idx;
+            if (key_a > key_b) std::swap(key_a, key_b);
+            if (key_b > key_c) std::swap(key_b, key_c);
+            if (key_a > key_b) std::swap(key_a, key_b);
+
+            if (!seen_facets.insert({key_a, key_b, key_c}).second) {
+                continue;  // exact duplicate triangle, already emitted
+            }
+
             facets.push_back({v1_idx, v2_idx, v3_idx});
         }
     }
@@ -207,6 +246,59 @@ std::pair<std::vector<std::array<double, 3>>, std::vector<std::array<int, 3>>> s
     }
 
     return {vertices, facets};
+}
+
+// -------------------------------------------------------------------------
+// Scan Line Reconstruction
+// -------------------------------------------------------------------------
+
+/**
+ * Regroups a flat stream of (x, y, z) points — as returned by OCL's
+ * PathDropCutter — back into discrete scan lines, by detecting XY gaps
+ * larger than gap_threshold (points where the tool lifted and rapided to
+ * a new area). Mirrors surface_pattern.reconstruct_scan_lines() exactly.
+ *
+ * Distances are compared as squared values against gap_threshold^2
+ * rather than taking a sqrt per point. Since both sides are non-negative
+ * and sqrt is monotonic, dist > threshold is exactly equivalent to
+ * dist_sq > threshold_sq — this isn't an approximation, just a cheaper
+ * way to get the identical answer.
+ */
+std::vector<std::vector<std::array<double, 3>>> reconstruct_scan_lines_cpp(
+    const std::vector<std::array<double, 3>>& flat_points,
+    double gap_threshold
+)
+{
+    std::vector<std::vector<std::array<double, 3>>> lines;
+
+    if (flat_points.empty()) {
+        return lines;
+    }
+
+    const double gap_threshold_sq = gap_threshold * gap_threshold;
+
+    std::vector<std::array<double, 3>> current_line;
+    current_line.push_back(flat_points[0]);
+
+    for (size_t i = 1; i < flat_points.size(); ++i) {
+        const double dx = flat_points[i][0] - flat_points[i - 1][0];
+        const double dy = flat_points[i][1] - flat_points[i - 1][1];
+        const double dist_sq = dx * dx + dy * dy;
+
+        if (dist_sq > gap_threshold_sq) {
+            if (current_line.size() >= 2) {
+                lines.push_back(std::move(current_line));
+            }
+            current_line.clear();
+        }
+        current_line.push_back(flat_points[i]);
+    }
+
+    if (current_line.size() >= 2) {
+        lines.push_back(std::move(current_line));
+    }
+
+    return lines;
 }
 
 // -------------------------------------------------------------------------
@@ -362,11 +454,18 @@ std::vector<std::vector<std::array<double, 3>>> clip_polyline_bisection(
 // -------------------------------------------------------------------------
 
 // All pattern generators below divide by `stepover` to determine how many
-// passes to generate.
+// passes to generate. A non-positive stepover (e.g. a user-set StepOver of
+// 0%) would otherwise produce an infinite/NaN pass count and, since that
+// count is cast to `int`, undefined behavior rather than a clean failure.
+// Callers on the Python side are expected to validate this too, but every
+// entry point here guards independently since this module can be called
+// directly.
 static void require_positive_stepover(double stepover)
 {
     if (!(stepover > 0.0)) {
-        throw std::invalid_argument("stepover must be positive, got " + std::to_string(stepover));
+        throw std::invalid_argument(
+            "stepover must be positive, got " + std::to_string(stepover)
+        );
     }
 }
 
@@ -572,7 +671,7 @@ std::vector<std::vector<std::array<double, 3>>> generate_spiral_pattern_cpp(
 
 PYBIND11_MODULE(surface_generator, m)
 {
-    m.doc() = "C++ helper for Planar Surface operations";
+    m.doc() = "C++ helper for 3D SurfaceExp operations";
 
     m.def(
         "shape_tessellate_fast",
@@ -586,4 +685,5 @@ PYBIND11_MODULE(surface_generator, m)
     m.def("generate_linear_pattern_cpp", &generate_linear_pattern_cpp);
     m.def("generate_circular_pattern_cpp", &generate_circular_pattern_cpp);
     m.def("generate_spiral_pattern_cpp", &generate_spiral_pattern_cpp);
+    m.def("reconstruct_scan_lines_cpp", &reconstruct_scan_lines_cpp);
 }

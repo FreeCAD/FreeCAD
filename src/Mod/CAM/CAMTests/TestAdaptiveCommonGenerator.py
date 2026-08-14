@@ -45,7 +45,6 @@ Path.Log.trackModule(Path.Log.thisModule())
 _area_available = False
 try:
     import area as _area
-
     _area_available = hasattr(_area, "Adaptive2d")
 except ImportError:
     pass
@@ -53,42 +52,40 @@ except ImportError:
 
 def _make_square_face(x, y, size, z=0.0):
     """Helper — build a flat closed square face at the given Z."""
-    wire = Part.makePolygon(
-        [
-            FreeCAD.Vector(x, y, z),
-            FreeCAD.Vector(x + size, y, z),
-            FreeCAD.Vector(x + size, y + size, z),
-            FreeCAD.Vector(x, y + size, z),
-            FreeCAD.Vector(x, y, z),
-        ]
-    )
+    wire = Part.makePolygon([
+        FreeCAD.Vector(x,        y,        z),
+        FreeCAD.Vector(x + size, y,        z),
+        FreeCAD.Vector(x + size, y + size, z),
+        FreeCAD.Vector(x,        y + size, z),
+        FreeCAD.Vector(x,        y,        z),
+    ])
     return Part.Face(wire)
 
 
 def _make_default_params():
     """Returns a fully populated adaptive_params dict with safe defaults."""
     return {
-        "op_type": "ClearingInside",
-        "adaptive_accuracy": 0.1,
-        "stock_to_leave": 0.0,
-        "force_insideout": True,
-        "finishing_profile": False,
-        "lift_distance": 0.5,
-        "keep_tool_down": 3.0,
-        "helix_angle": 3.0,
-        "helix_cone_angle": 0.0,
-        "helix_diameter": 75.0,
-        "helix_min_diameter": 10.0,
+        "op_type"            : "ClearingInside",
+        "adaptive_accuracy"  : 0.1,
+        "stock_to_leave"     : 0.0,
+        "force_insideout"    : True,
+        "finishing_profile"  : False,
+        "lift_distance"      : 0.5,
+        "keep_tool_down"     : 3.0,
+        "helix_angle"        : 3.0,
+        "helix_cone_angle"   : 0.0,
+        "helix_diameter"     : 75.0,
+        "helix_min_diameter" : 10.0,
     }
 
 
 def _make_default_feeds():
     """Returns a standard feed_params dict."""
     return {
-        "horizFeed": 300.0,
-        "vertFeed": 100.0,
-        "horizRapid": 1000.0,
-        "vertRapid": 1000.0,
+        "horizFeed"  : 300.0,
+        "vertFeed"   : 100.0,
+        "horizRapid" : 1000.0,
+        "vertRapid"  : 1000.0,
     }
 
 
@@ -103,13 +100,13 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
         # Cutting area — 40x40 square face at Z=0 (simulates a cleared layer)
         self.cut_area = _make_square_face(5, 5, 40)
 
-        self.radius = 3.0  # 6mm tool
+        self.radius    = 3.0  # 6mm tool
         self.step_over = 2.0
-        self.z_target = -5.0
-        self.prev_z = 0.0
-        self.safe_z = 25.0
+        self.z_target  = -5.0
+        self.prev_z    = 0.0
+        self.safe_z    = 25.0
 
-        self.feed_params = _make_default_feeds()
+        self.feed_params   = _make_default_feeds()
         self.adaptive_params = _make_default_params()
 
     # -----------------------------------------------------------------------
@@ -131,15 +128,13 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
         """
         from Path.Base.Generator.adaptive_common import _wire_to_2d
 
-        wire = Part.makePolygon(
-            [
-                FreeCAD.Vector(0, 0, 0),
-                FreeCAD.Vector(10, 0, 0),
-                FreeCAD.Vector(10, 10, 0),
-                FreeCAD.Vector(0, 10, 0),
-                FreeCAD.Vector(0, 0, 0),
-            ]
-        )
+        wire = Part.makePolygon([
+            FreeCAD.Vector(0,  0,  0),
+            FreeCAD.Vector(10, 0,  0),
+            FreeCAD.Vector(10, 10, 0),
+            FreeCAD.Vector(0,  10, 0),
+            FreeCAD.Vector(0,  0,  0),
+        ])
 
         pts = _wire_to_2d(wire)
 
@@ -147,9 +142,9 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
         for pt in pts:
             self.assertEqual(len(pt), 2, "Each point must be a 2-element [x, y] list")
             self.assertGreaterEqual(pt[0], -0.01)
-            self.assertLessEqual(pt[0], 10.01)
+            self.assertLessEqual(pt[0],    10.01)
             self.assertGreaterEqual(pt[1], -0.01)
-            self.assertLessEqual(pt[1], 10.01)
+            self.assertLessEqual(pt[1],    10.01)
 
     def test01_wire_to_2d_deflection(self):
         """
@@ -164,13 +159,14 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
         from Path.Base.Generator.adaptive_common import _wire_to_2d
 
         circle = Part.makeCircle(10)
-        wire = Part.Wire([circle])
+        wire   = Part.Wire([circle])
 
         pts_coarse = _wire_to_2d(wire, deflection=2.0)
-        pts_fine = _wire_to_2d(wire, deflection=0.1)
+        pts_fine   = _wire_to_2d(wire, deflection=0.1)
 
         self.assertGreater(
-            len(pts_fine), len(pts_coarse), "Finer deflection should produce more points"
+            len(pts_fine), len(pts_coarse),
+            "Finer deflection should produce more points"
         )
 
     # -----------------------------------------------------------------------
@@ -196,18 +192,18 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
 
         class MockRegion:
             HelixCenterPoint = [0.0, 0.0]
-            StartPoint = [0.1, 0.0]  # 0.1mm radius — too small for helix
+            StartPoint       = [0.1, 0.0]  # 0.1mm radius — too small for helix
 
         cmds = _generate_helix_entry(
-            region=MockRegion(),
-            z_target=self.z_target,
-            prev_z=self.prev_z,
-            safe_z=self.safe_z,
-            radius=self.radius,
-            feed_params=self.feed_params,
-            helix_min_diameter=self.radius * 2.0 * 0.1,  # 10% of tool_diam
-            helix_angle=3.0,
-            helix_cone_angle=0.0,
+            region             = MockRegion(),
+            z_target           = self.z_target,
+            prev_z             = self.prev_z,
+            safe_z             = self.safe_z,
+            radius             = self.radius,
+            feed_params        = self.feed_params,
+            helix_min_diameter = self.radius * 2.0 * 0.1,  # 10% of tool_diam
+            helix_angle        = 3.0,
+            helix_cone_angle   = 0.0,
         )
 
         self.assertGreater(len(cmds), 0, "Should always return at least a plunge")
@@ -238,18 +234,18 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
 
         class MockRegion:
             HelixCenterPoint = [25.0, 25.0]
-            StartPoint = [27.0, 25.0]  # 2mm radius — valid
+            StartPoint       = [27.0, 25.0]  # 2mm radius — valid
 
         cmds = _generate_helix_entry(
-            region=MockRegion(),
-            z_target=self.z_target,
-            prev_z=self.prev_z,
-            safe_z=self.safe_z,
-            radius=self.radius,
-            feed_params=self.feed_params,
-            helix_min_diameter=self.radius * 2.0 * 0.1,
-            helix_angle=3.0,
-            helix_cone_angle=0.0,
+            region             = MockRegion(),
+            z_target           = self.z_target,
+            prev_z             = self.prev_z,
+            safe_z             = self.safe_z,
+            radius             = self.radius,
+            feed_params        = self.feed_params,
+            helix_min_diameter = self.radius * 2.0 * 0.1,
+            helix_angle        = 3.0,
+            helix_cone_angle   = 0.0,
         )
 
         self.assertGreater(len(cmds), 2, "Should produce more than just a plunge")
@@ -280,20 +276,20 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
 
         class MockRegion:
             HelixCenterPoint = [25.0, 25.0]
-            StartPoint = [27.0, 25.0]
+            StartPoint       = [27.0, 25.0]
 
         prev_z = -2.0
 
         cmds = _generate_helix_entry(
-            region=MockRegion(),
-            z_target=-5.0,
-            prev_z=prev_z,
-            safe_z=self.safe_z,
-            radius=self.radius,
-            feed_params=self.feed_params,
-            helix_min_diameter=self.radius * 2.0 * 0.1,
-            helix_angle=3.0,
-            helix_cone_angle=0.0,
+            region             = MockRegion(),
+            z_target           = -5.0,
+            prev_z             = prev_z,
+            safe_z             = self.safe_z,
+            radius             = self.radius,
+            feed_params        = self.feed_params,
+            helix_min_diameter = self.radius * 2.0 * 0.1,
+            helix_angle        = 3.0,
+            helix_cone_angle   = 0.0,
         )
 
         self.assertGreater(len(cmds), 0)
@@ -419,9 +415,8 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
             z = cmd.Parameters.get("Z")
             if z is not None:
                 self.assertGreaterEqual(
-                    z,
-                    self.z_target - 0.01,
-                    f"Command {cmd.Name} has Z={z} below z_target={self.z_target}",
+                    z, self.z_target - 0.01,
+                    f"Command {cmd.Name} has Z={z} below z_target={self.z_target}"
                 )
 
     @unittest.skipUnless(_area_available, "libarea Adaptive2d not available")
@@ -459,15 +454,14 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
 
         # Count G1 commands that have a Z parameter
         g1_with_z = [c for c in cmds if c.Name == "G1" and "Z" in c.Parameters]
-        g1_total = [c for c in cmds if c.Name == "G1"]
+        g1_total  = [c for c in cmds if c.Name == "G1"]
 
         # With lz tracking, most G1 cuts should NOT have Z (it hasn't changed)
         # At minimum, the first cut after a plunge/helix will have Z, but subsequent cuts won't
         if len(g1_total) > 1:
             self.assertLess(
-                len(g1_with_z),
-                len(g1_total),
-                "lz tracking should prevent Z from being emitted on every G1",
+                len(g1_with_z), len(g1_total),
+                "lz tracking should prevent Z from being emitted on every G1"
             )
 
     @unittest.skipUnless(_area_available, "libarea Adaptive2d not available")
@@ -511,12 +505,12 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
         for cmd in cmds:
             z = cmd.Parameters.get("Z")
             if cmd.Name == "G0" and z is not None:
-                is_lift = abs(z - expected_lift_z) < 0.01
-                is_safe = abs(z - self.safe_z) < 0.01
-                is_prev = abs(z - self.prev_z) < 0.01
+                is_lift     = abs(z - expected_lift_z) < 0.01
+                is_safe     = abs(z - self.safe_z) < 0.01
+                is_prev     = abs(z - self.prev_z) < 0.01
                 self.assertTrue(
                     is_lift or is_safe,
-                    f"G0 Z={z} doesn't match lift_z={expected_lift_z} or safe_z={self.safe_z}",
+                    f"G0 Z={z} doesn't match lift_z={expected_lift_z} or safe_z={self.safe_z}"
                 )
 
     @unittest.skipUnless(_area_available, "libarea Adaptive2d not available")
@@ -582,22 +576,18 @@ class TestAdaptiveCommon(PathTestUtils.PathTestBase):
         tolerance = 0.2
 
         self.assertGreater(
-            min_x,
-            expected_min_bound - tolerance,
-            f"Path min_x ({min_x}) is outside the expected inner bound ({expected_min_bound})",
+            min_x, expected_min_bound - tolerance,
+            f"Path min_x ({min_x}) is outside the expected inner bound ({expected_min_bound})"
         )
         self.assertLess(
-            max_x,
-            expected_max_bound + tolerance,
-            f"Path max_x ({max_x}) is outside the expected inner bound ({expected_max_bound})",
+            max_x, expected_max_bound + tolerance,
+            f"Path max_x ({max_x}) is outside the expected inner bound ({expected_max_bound})"
         )
         self.assertGreater(
-            min_y,
-            expected_min_bound - tolerance,
-            f"Path min_y ({min_y}) is outside the expected inner bound ({expected_min_bound})",
+            min_y, expected_min_bound - tolerance,
+            f"Path min_y ({min_y}) is outside the expected inner bound ({expected_min_bound})"
         )
         self.assertLess(
-            max_y,
-            expected_max_bound + tolerance,
-            f"Path max_y ({max_y}) is outside the expected inner bound ({expected_max_bound})",
+            max_y, expected_max_bound + tolerance,
+            f"Path max_y ({max_y}) is outside the expected inner bound ({expected_max_bound})"
         )

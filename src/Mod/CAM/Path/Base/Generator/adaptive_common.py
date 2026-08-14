@@ -62,9 +62,9 @@ import FreeCAD
 import Part
 import Path
 
-__title__ = "Adaptive Clearing Generator"
-__author__ = "Dimitrios Pana"
-__url__ = "https://www.freecad.org"
+__title__  = "Adaptive Clearing Generator"
+__author__  = "Dimitrios Pana"
+__url__     = "https://www.freecad.org"
 
 
 if False:
@@ -100,9 +100,7 @@ def _filter_faces_by_area(shape, min_area=0.0):
         if face.Area >= min_area:
             valid_faces.append(face)
         else:
-            Path.Log.debug(
-                f"adaptive_common: Filtered out face with area {round(face.Area, 5)} < {min_area}"
-            )
+            Path.Log.debug(f"adaptive_common: Filtered out face with area {round(face.Area, 5)} < {min_area}")
 
     if not valid_faces:
         return None
@@ -125,13 +123,15 @@ def _offset_area(area, area_offset):
         offset_engine.add(area)
         offset_engine.setParams(Offset=area_offset)
         offset_area = offset_engine.getShape()
-        if offset_area and not offset_area.isNull() and offset_area.Wires:
+        if (offset_area and not offset_area.isNull() and offset_area.Wires):
             return offset_area
         else:
-            Path.Log.warning(f"Area offset failed.")
+            Path.Log.warning("Area offset failed.")
             return None
     except Exception as e:
-        Path.Log.warning(f"Area offset failed: {e} .")
+        Path.Log.warning(
+            f"Area offset failed: {e} ."
+        )
         return None
 
 
@@ -225,14 +225,14 @@ def _generate_helix_entry(
     """
     from . import helix as helix_gen
 
-    v_feed = feed_params.get("vertFeed", 0.0)
+    v_feed  = feed_params.get("vertFeed",   0.0)
     h_rapid = feed_params.get("horizRapid", 0.0)
-    v_rapid = feed_params.get("vertRapid", 0.0)
+    v_rapid = feed_params.get("vertRapid",  0.0)
 
-    p1 = region.HelixCenterPoint  # (x, y) helix center
-    p2 = region.StartPoint  # (x, y) helix radius endpoint / cut start
+    p1 = region.HelixCenterPoint   # (x, y) helix center
+    p2 = region.StartPoint         # (x, y) helix radius endpoint / cut start
 
-    helix_radius = math.dist(p1[:2], p2[:2])
+    helix_radius  = math.dist(p1[:2], p2[:2])
     dir_angle_rad = math.atan2(p2[1] - p1[1], p2[0] - p1[0])
 
     commands = []
@@ -241,26 +241,26 @@ def _generate_helix_entry(
     commands.append(Path.Command("G0", {"Z": safe_z, "F": v_rapid}))
 
     if helix_radius > helix_min_diameter / 2.0:
-        r = helix_radius - 0.01  # tiny margin from wall
+        r              = helix_radius - 0.01   # tiny margin from wall
         ramp_angle_rad = math.radians(max(helix_angle, 0.5))
-        pitch = max(2.0 * math.pi * r * math.tan(ramp_angle_rad), 0.001)
+        pitch          = max(2.0 * math.pi * r * math.tan(ramp_angle_rad), 0.001)
 
-        center_top = FreeCAD.Vector(p1[0], p1[1], prev_z)
+        center_top    = FreeCAD.Vector(p1[0], p1[1], prev_z)
         center_bottom = FreeCAD.Vector(p1[0], p1[1], z_target)
         edge = Part.makeLine(center_top, center_bottom)
 
         try:
             helix_cmds = helix_gen.generate(
-                edge=edge,
-                outer_radius=r,
-                pitch=pitch,
-                retract_height=prev_z,
-                direction="CCW",
-                startAt="Inside",
-                finish_circle=True,
-                cone_angle_rad=math.radians(helix_cone_angle),
-                dir_angle_rad=dir_angle_rad,
-                ramp_angle_rad=ramp_angle_rad,
+                edge                = edge,
+                outer_radius        = r,
+                pitch               = pitch,
+                retract_height      = prev_z,
+                direction           = "CCW",
+                startAt             = "Inside",
+                finish_circle       = True,
+                cone_angle_rad      = math.radians(helix_cone_angle),
+                dir_angle_rad       = dir_angle_rad,
+                ramp_angle_rad      = ramp_angle_rad,
             )
 
             # helix_gen.generate() prepends G0 Z retract [0] and appends
@@ -324,18 +324,20 @@ def _results_to_commands(
     Converts Adaptive2d results into a list of Path.Command objects.
     Tracks Z-height changes to avoid redundant vertical moves.
     """
-
     def _is_outside_geofence(x, y, bb, tol=-0.06):
         """
         Checks if a given coordinate is strictly outside the provided bounding box.
         """
         if not bb:
             return False
-        return x < bb.XMin - tol or x > bb.XMax + tol or y < bb.YMin - tol or y > bb.YMax + tol
+        return (
+            x < bb.XMin - tol or x > bb.XMax + tol or
+            y < bb.YMin - tol or y > bb.YMax + tol
+        )
 
-    h_feed = feed_params.get("horizFeed", 0.0)
-    v_feed = feed_params.get("vertFeed", 0.0)
-    v_rapid = feed_params.get("vertRapid", 0.0)
+    h_feed  = feed_params.get("horizFeed",  0.0)
+    v_feed  = feed_params.get("vertFeed",   0.0)
+    v_rapid = feed_params.get("vertRapid",  0.0)
     h_rapid = feed_params.get("horizRapid", 0.0)
 
     commands = []
@@ -347,15 +349,15 @@ def _results_to_commands(
         # Helix ramp entry for this region
         commands.extend(
             _generate_helix_entry(
-                region=result,
-                z_target=z_target,
-                prev_z=prev_z,
-                safe_z=safe_z,
-                radius=radius,
-                feed_params=feed_params,
-                helix_min_diameter=helix_min_diameter,
-                helix_angle=helix_angle,
-                helix_cone_angle=helix_cone_angle,
+                region             = result,
+                z_target           = z_target,
+                prev_z             = prev_z,
+                safe_z             = safe_z,
+                radius             = radius,
+                feed_params        = feed_params,
+                helix_min_diameter = helix_min_diameter,
+                helix_angle        = helix_angle,
+                helix_cone_angle   = helix_cone_angle,
             )
         )
 
@@ -472,40 +474,43 @@ def generate(
               or [] on failure.
     """
     if not cut_area or cut_area.isNull() or not bb_face or bb_face.isNull():
-        Path.Log.warning(f"No valid cutting area or boundary at Z={round(z_target, 3)} — skipping.")
+        Path.Log.warning(
+            f"No valid cutting area or boundary at Z={round(z_target, 3)} — skipping."
+        )
         return []
 
     try:
         import area as _area
     except ImportError:
         Path.Log.error(
-            "adaptive_common.generate: libarea not available — " "cannot run adaptive pattern."
+            "adaptive_common.generate: libarea not available — "
+            "cannot run adaptive pattern."
         )
         return []
 
     # -- Unpack parameters --
-    tool_diam = radius * 2.0
-    op_type = adaptive_params.get("op_type", "ClearingInside")
-    adaptive_accuracy = adaptive_params.get("adaptive_accuracy", 0.1)
-    stock_to_leave = adaptive_params.get("stock_to_leave", 0.0)
-    force_insideout = adaptive_params.get("force_insideout", True)
-    finishing_profile = adaptive_params.get("finishing_profile", True)
-    lift_distance = adaptive_params.get("lift_distance", 0.05)
-    keep_tool_down = adaptive_params.get("keep_tool_down", 3.0)
-    helix_angle = adaptive_params.get("helix_angle", 3.0)
-    helix_cone_angle = adaptive_params.get("helix_cone_angle", 0.0)
-    helix_diam_pct = adaptive_params.get("helix_diameter", 75.0)
-    helix_min_diam_pct = adaptive_params.get("helix_min_diameter", 10.0)
+    tool_diam           = radius * 2.0
+    op_type             = adaptive_params.get("op_type", "ClearingInside")
+    adaptive_accuracy   = adaptive_params.get("adaptive_accuracy",   0.1)
+    stock_to_leave      = adaptive_params.get("stock_to_leave",      0.0)
+    force_insideout     = adaptive_params.get("force_insideout",     True)
+    finishing_profile   = adaptive_params.get("finishing_profile",   True)
+    lift_distance       = adaptive_params.get("lift_distance",       0.05)
+    keep_tool_down      = adaptive_params.get("keep_tool_down",      3.0)
+    helix_angle         = adaptive_params.get("helix_angle",         3.0)
+    helix_cone_angle    = adaptive_params.get("helix_cone_angle",    0.0)
+    helix_diam_pct      = adaptive_params.get("helix_diameter",      75.0)
+    helix_min_diam_pct  = adaptive_params.get("helix_min_diameter",  10.0)
 
-    helix_diameter = tool_diam * helix_diam_pct / 100.0
-    helix_min_diameter = tool_diam * helix_min_diam_pct / 100.0
+    helix_diameter      = tool_diam * helix_diam_pct     / 100.0
+    helix_min_diameter  = tool_diam * helix_min_diam_pct / 100.0
 
     # Map string to enum
     op_type_map = {
-        "ClearingInside": _area.AdaptiveOperationType.ClearingInside,
-        "ClearingOutside": _area.AdaptiveOperationType.ClearingOutside,
-        "ProfilingInside": _area.AdaptiveOperationType.ProfilingInside,
-        "ProfilingOutside": _area.AdaptiveOperationType.ProfilingOutside,
+        "ClearingInside"   : _area.AdaptiveOperationType.ClearingInside,
+        "ClearingOutside"  : _area.AdaptiveOperationType.ClearingOutside,
+        "ProfilingInside"  : _area.AdaptiveOperationType.ProfilingInside,
+        "ProfilingOutside" : _area.AdaptiveOperationType.ProfilingOutside,
     }
 
     # Filter faces by area
@@ -527,31 +532,35 @@ def generate(
             return []
 
     # -- Build 2D path lists --
-    path2d = _shape_to_2d_paths(cut_area)
+    path2d  = _shape_to_2d_paths(cut_area)
     stock2d = _shape_to_2d_paths(bb_face)
 
     if not path2d:
-        Path.Log.warning(f"No valid closed wires at Z={round(z_target, 3)} — skipping.")
+        Path.Log.warning(
+            f"No valid closed wires at Z={round(z_target, 3)} — skipping."
+        )
         return []
 
     # -- Configure Adaptive2d --
     a2d = _area.Adaptive2d()
-    a2d.toolDiameter = float(tool_diam)
-    a2d.stepOverFactor = min(step_over / tool_diam, 1.0)
-    a2d.stockToLeave = float(stock_to_leave)
-    a2d.tolerance = float(max(float(adaptive_accuracy), 0.01))  # Adaptive2d minimum
-    a2d.forceInsideOut = bool(force_insideout)
-    a2d.finishingProfile = bool(finishing_profile)
-    a2d.opType = op_type_map.get(op_type, _area.AdaptiveOperationType.ClearingInside)
+    a2d.toolDiameter            = float(tool_diam)
+    a2d.stepOverFactor          = min(step_over / tool_diam, 1.0)
+    a2d.stockToLeave            = float(stock_to_leave)
+    a2d.tolerance               = float(max(float(adaptive_accuracy), 0.01))  # Adaptive2d minimum
+    a2d.forceInsideOut          = bool(force_insideout)
+    a2d.finishingProfile        = bool(finishing_profile)
+    a2d.opType                  = op_type_map.get(op_type, _area.AdaptiveOperationType.ClearingInside)
     a2d.helixRampTargetDiameter = float(helix_diameter)
-    a2d.helixRampMinDiameter = float(helix_min_diameter)
-    a2d.keepToolDownDistRatio = float(keep_tool_down)
+    a2d.helixRampMinDiameter    = float(helix_min_diameter)
+    a2d.keepToolDownDistRatio   = float(keep_tool_down)
 
     # -- Execute --
     try:
         results = a2d.Execute(stock2d, path2d, [], lambda tpaths: False)
     except Exception as e:
-        Path.Log.error(f"Adaptive2d algorithm failed at Z={round(z_target, 3)}: {e}")
+        Path.Log.error(
+            f"Adaptive2d algorithm failed at Z={round(z_target, 3)}: {e}"
+        )
         return []
 
     if not results:

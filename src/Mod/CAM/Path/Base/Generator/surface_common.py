@@ -217,66 +217,76 @@ def make_safe_cutter(
 # ---------------------------------------------------------------------------
 
 
-def create_boundary_face(
-    model_faces, offset=0.0, tolerance=0.005, avoids=False, model_boundary=False
-):
+def create_boundary_face(faces, offset=0.0, tolerance=0.005, avoids=False, compound=None):
     """
-    Creates a flat 2D boundary face from a list of 3D faces using
-    Path.Area's built-in HLR projection (Outline mode) as primary method,
-    falling back to TechDraw.findShapeOutline() if projection fails.
+    Creates a flat 2D boundary face from 3D faces using Path.Area's HLR
+    projection (Outline mode) as primary method, falling back to
+    TechDraw.findShapeOutline() if projection fails.
 
     Path.Area with Outline=True uses OCC's HLRBRep_Algo to project the
     3D shape silhouette onto the XY plane — more robust than TechDraw
     for complex curved and spiral faces where findShapeOutline() struggles.
 
     Args:
-        model_faces (list): List of Part.Face objects to build boundary from.
+        faces (list): Part.Face objects to build the boundary from. Also
+            used for mesh detection; pass the real list even when
+            `compound` is given too, so mesh detection isn't skipped.
         offset (float): Offset to apply to the resulting boundary.
         tolerance (float): Tolerance for wire joining.
         avoids (bool): 'True' only from _preprocess_avoid_faces.
+        compound (Part.Shape, optional): A pre-built shape to use directly
+            instead of rebuilding one from `faces` — pass this when the
+            caller already has a cohesive shape (e.g. a fused multi-body
+            model) to avoid reconstructing it from scratch.
 
     Returns:
         Part.Shape: The 2D boundary face, or None on failure.
     """
-    if not model_faces:
+    if not faces and not compound:
         Path.Log.warning(
             "No faces provided. Check that the Base Geometry selection contains valid faces."
         )
         return None
 
-    outline = True if not avoids else False
-    is_triangulated = _is_triangulated_mesh(model_faces)
+    if faces and not compound:
+        compound = faces[0] if len(faces) == 1 else Part.makeCompound(faces)
+
+    outline = bool(not avoids)
+    is_triangulated = _is_triangulated_mesh(faces)
 
     if not is_triangulated:
-        if model_boundary:
-            model_faces = _filter_vertical(model_faces)
-        result = _boundary_via_area(model_faces, offset, outline)
+        result = _boundary_via_area(compound, offset, outline)
         if result is not None:
             return result
 
-    return _boundary_via_techdraw(model_faces, offset, outline)
+    return _boundary_via_techdraw(compound, offset, outline)
 
 
-def _boundary_via_area(model_faces, offset, outline):
+def _boundary_via_area(compound, offset, outline):
     """
     Primary boundary engine: Path.Area projection/offset.
 
-    Returns:
-        Part.Shape: The resulting boundary, or None if Path.Area
-        produced an empty/null shape or raised an exception.
+    Args:
+        compound (Part.Shape): Shape to project — already built by the
+            caller (create_boundary_face), not rebuilt here.
+        offset (float): Offset to apply to the resulting boundary.
+        outline (bool): Path.Area's Outline mode flag.
+
+     Returns:
+         Part.Shape: The resulting boundary, or None if Path.Area
+         produced an empty/null shape or raised an exception.
     """
     try:
-        compound = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
-
         wpc = Part.makeCircle(2)
         area = Path.Area()
         area.setPlane(wpc)
         area.add(compound)
         area.setParams(
+            Project=True,
             Outline=outline,
             Offset=offset,
             Coplanar=0,  # CoplanarNone — don't restrict to coplanar
-            Fill=2,  # FillFace
+            Fill=2,
         )
         result = area.getShape()
 
@@ -295,7 +305,7 @@ def _boundary_via_area(model_faces, offset, outline):
         return None
 
 
-def _boundary_via_techdraw(model_faces, offset, outline):
+def _boundary_via_techdraw(compound, offset, outline):
     """
     Secondary (fallback) boundary engine: TechDraw.findShapeOutline(),
     followed by a second Path.Area pass purely to apply `offset`.
@@ -304,6 +314,12 @@ def _boundary_via_techdraw(model_faces, offset, outline):
     _boundary_via_area(), it cannot preserve inner wires (holes) when
     `outline` is False. If a caller needed holes preserved and lands
     here, that guarantee is lost, and a warning is logged.
+
+    Args:
+        compound (Part.Shape): Shape to project — already built by the
+            caller (create_boundary_face), not rebuilt here.
+        offset (float): Offset to apply to the resulting boundary.
+        outline (bool): Path.Area's Outline mode flag.
 
     Returns:
         Part.Shape: The resulting boundary, or None on failure.
@@ -314,10 +330,7 @@ def _boundary_via_techdraw(model_faces, offset, outline):
             "inner wires (holes). Any holes in this selection will be lost."
         )
     try:
-        compound = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
-
         import TechDraw
-
         direction = FreeCAD.Vector(0, 0, 1)
         outline_shape = TechDraw.findShapeOutline(compound, 1.0, direction)
 
@@ -385,10 +398,10 @@ def generate_pattern_mask(
     epsilon = max(0.01, tolerance + 0.001)
 
     if is_whole_model_job:
-        # Use TechDraw.findShapeOutline for whole model silhouette
+        # Use whole model silhouette
         main_boundary = bb_face
     else:
-        main_boundary = build_optimized_boundary([cutting_faces], outer_offset - epsilon, tolerance)
+        main_boundary = build_optimized_boundary([cutting_faces], outer_offset-epsilon, tolerance)
 
     if not main_boundary:
         Path.Log.warning("Could not determine geometry for main boundary mask.")
@@ -549,7 +562,8 @@ def _separate_touching_faces(faces, tolerance=0.01):
                     continue
             except Exception as e:
                 Path.Log.debug(
-                    f"_separate_touching_faces: distToShape failed for " f"faces {i},{j}: {e}"
+                    f"_separate_touching_faces: distToShape failed for "
+                    f"faces {i},{j}: {e}"
                 )
             # Fallback: check if face centroids are within a larger
             # proximity threshold based on average face diagonal.
@@ -562,24 +576,25 @@ def _separate_touching_faces(faces, tolerance=0.01):
                 cy_j = (bb_j.YMin + bb_j.YMax) / 2
                 centroid_dist = math.hypot(cx_i - cx_j, cy_i - cy_j)
                 avg_diag = (
-                    math.hypot(bb_i.XLength, bb_i.YLength) + math.hypot(bb_j.XLength, bb_j.YLength)
+                    math.hypot(bb_i.XLength, bb_i.YLength) +
+                    math.hypot(bb_j.XLength, bb_j.YLength)
                 ) / 2
                 if centroid_dist < avg_diag * 0.75:
                     union(i, j)
             except Exception as e:
                 Path.Log.debug(
-                    f"_separate_touching_faces: centroid check failed for " f"faces {i},{j}: {e}"
+                    f"_separate_touching_faces: centroid check failed for "
+                    f"faces {i},{j}: {e}"
                 )
 
     # Collect groups by root
     from collections import defaultdict
-
     groups = defaultdict(list)
     for i in range(n):
         groups[find(i)].append(flat_faces[i])
 
     touching_groups = []
-    isolated_faces = []
+    isolated_faces  = []
 
     for group in groups.values():
         if len(group) == 1:
@@ -732,10 +747,7 @@ def build_avoid_boundary(avoid_faces, avoid_overlap, tolerance):
     epsilon = max(0.01, tolerance + 0.001)
 
     avoid_boundary = build_optimized_boundary(
-        prepared_faces,
-        avoid_overlap + epsilon,
-        tolerance,
-        avoids=True,
+        prepared_faces, avoid_overlap + epsilon, tolerance, avoids=True,
     )
 
     if not avoid_boundary:
@@ -792,9 +804,8 @@ def _classify_and_cap_faces(raw_faces):
         top_edges = []
         for edge in raw_face.Edges:
             # 1. Identify and skip "seam" edges that run vertically down the walls
-            is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and (
-                round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3
-            )
+            is_seam = (round(edge.BoundBox.ZMin, 4) <= face_zmin + 1e-3) and \
+                      (round(edge.BoundBox.ZMax, 4) >= face_zmax - 1e-3)
             if is_seam:
                 continue
 
