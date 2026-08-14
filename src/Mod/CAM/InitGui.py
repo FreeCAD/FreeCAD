@@ -147,7 +147,6 @@ class CAMWorkbench(Workbench):
             "CAM_Helix",
             "CAM_Adaptive",
             "CAM_Slot",
-            "CAM_Flute",
         ]
         threedopcmdlist = ["CAM_Pocket3D"]
         engravecmdlist = ["CAM_Engrave", "CAM_Deburr", "CAM_Vcarve"]
@@ -219,7 +218,7 @@ class CAMWorkbench(Workbench):
         if Path.Preferences.experimentalFeaturesEnabled():
             prepcmdlist.append("CAM_PathShape")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
-            twodopcmdlist.append("CAM_Slot")
+            engravecmdlist.append("CAM_Flute")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -294,6 +293,7 @@ class CAMWorkbench(Workbench):
             + ["Separator"]
             + twodopcmdlist
             + drillingcmdlist
+            + ["Separator"]
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist

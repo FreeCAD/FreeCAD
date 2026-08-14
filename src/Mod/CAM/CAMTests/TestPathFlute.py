@@ -27,6 +27,42 @@ import Path.Op.Flute as PathFlute
 from CAMTests.PathTestUtils import PathTestBase
 
 
+class _StubFluteObj:
+    """Minimal stand-in for a Flute DocumentObject.
+
+    _emit2dPasses only reads a handful of properties, so a plain object is
+    enough -- no Document or Job required.
+    """
+
+    def __init__(self, reverse=False, blind=False, tool_diameter=6.0):
+        self.SafeHeight = FreeCAD.Units.Quantity(5.0, FreeCAD.Units.Length)
+        self.ReverseDirection = reverse
+        self.BlindEndCompensation = blind
+        self.MultiPassStrategy = "Constant Angle"
+        self.RampLengthType = "Length"
+        self.RampLength = FreeCAD.Units.Quantity(0.0, FreeCAD.Units.Length)
+        self.ToolController = _StubToolController(tool_diameter)
+
+
+class _StubToolController:
+    def __init__(self, diameter):
+        self.Tool = _StubTool(diameter)
+
+
+class _StubTool:
+    def __init__(self, diameter):
+        self.Diameter = FreeCAD.Units.Quantity(diameter, FreeCAD.Units.Length)
+
+
+class _StubOp:
+    """Collects the commands _emit2dPasses appends."""
+
+    def __init__(self):
+        self.commandlist = []
+        self.horizFeed = 100.0
+        self.vertFeed = 50.0
+
+
 class TestPathFlute(PathTestBase):
     """Direct tests of Flute's 2D ramp-profile synthesis (_apply_2d_profile).
 
@@ -113,3 +149,60 @@ class TestPathFlute(PathTestBase):
         # continues on to p0 via edge1 (reversed to connect).
         self.assertCoincide(pts[0], FreeCAD.Vector(10, 10, 0))
         self.assertCoincide(pts[-1], FreeCAD.Vector(0, 0, -4))
+
+    def test03_entry_move_targets_the_actual_first_cut_point(self):
+        """The linking move computed before the pass loop must target the same
+        point the cut actually starts at.
+
+        Both ReverseDirection and BlindEndCompensation change which XY the
+        first cutting move begins from, so the entry target has to account for
+        them.  If it doesn't, the tool rapids to one spot and the wire-follow
+        generator immediately rapids somewhere else -- wasted motion that is
+        never checked against the collision model.
+        """
+        edges = [Part.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(50, 0, 0))]
+        tol = PathFlute._make_tolerances(None)
+
+        for blind in (False, True):
+            for reverse in (False, True):
+                with self.subTest(blind=blind, reverse=reverse):
+                    obj = _StubFluteObj(reverse=reverse, blind=blind)
+                    op = _StubOp()
+                    captured = {}
+
+                    real = PathFlute.linking.get_linking_moves
+
+                    def spy(**kwargs):
+                        captured["target"] = kwargs.get("target_position")
+                        return []
+
+                    PathFlute.linking.get_linking_moves = spy
+                    try:
+                        PathFlute.ObjectFlute._emit2dPasses(
+                            op,
+                            obj,
+                            edges,
+                            "Ramp Full",
+                            "Linear",
+                            1.0,
+                            False,
+                            0.0,
+                            -4.0,
+                            0.0,
+                            0.0,
+                            4.0,
+                            5.0,
+                            {"heights_clearance": [5.0, 10.0]},
+                            FreeCAD.Vector(-10, -10, 5.0),
+                            tol,
+                            "Edge1",
+                        )
+                    finally:
+                        PathFlute.linking.get_linking_moves = real
+
+                    first_rapid = next(
+                        c for c in op.commandlist if c.Name == "G0" and "X" in c.Parameters
+                    )
+                    self.assertIsNotNone(captured.get("target"))
+                    self.assertRoughly(captured["target"].x, first_rapid.Parameters["X"])
+                    self.assertRoughly(captured["target"].y, first_rapid.Parameters["Y"])

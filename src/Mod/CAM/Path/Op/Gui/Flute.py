@@ -26,12 +26,12 @@ __doc__ = "Flute operation task panel controller and command implementation."
 
 import FreeCAD
 import FreeCADGui
+from PySide import QtCore, QtGui
+
 import Path
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Flute as PathFlute
 import Path.Op.Gui.Base as PathOpGui
-
-from PySide import QtCore, QtGui
 
 translate = FreeCAD.Qt.translate
 
@@ -65,6 +65,8 @@ def _classify_wire_selection(obj):
                 else:
                     has_3d = True
             except Exception:
+                # Stale/invalid sub-element reference (e.g. geometry edited
+                # since selection) - just don't count this edge either way.
                 pass
     if has_flat and has_3d:
         return "mixed"
@@ -84,7 +86,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     """
 
     def setFields(self, obj):
-        super(TaskPanelBaseGeometryPage, self).setFields(obj)
+        super().setFields(obj)
         flipped_keys = set(getattr(obj, "FlippedSegments", None) or [])
         show_flip = _classify_wire_selection(obj) == "flat"
         self.form.baseList.blockSignals(True)
@@ -100,7 +102,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                         "Force-reverse this segment's direction (2D wires only).",
                     )
                 )
-                key = "{}.{}".format(base.Name, sub)
+                key = f"{base.Name}.{sub}"
                 item.setCheckState(
                     QtCore.Qt.Checked if key in flipped_keys else QtCore.Qt.Unchecked
                 )
@@ -109,7 +111,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.blockSignals(False)
 
     def registerSignalHandlers(self, obj):
-        super(TaskPanelBaseGeometryPage, self).registerSignalHandlers(obj)
+        super().registerSignalHandlers(obj)
         self.form.baseList.itemChanged.connect(self.updateFlippedSegments)
 
     def updateFlippedSegments(self, item=None):
@@ -120,16 +122,16 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 base = it.data(self.DataObject)
                 sub = it.data(self.DataObjectSub)
                 if base and sub:
-                    flipped.append("{}.{}".format(base.Name, sub))
+                    flipped.append(f"{base.Name}.{sub}")
         self.obj.FlippedSegments = flipped
         self.setDirty()
 
     def deleteBase(self):
-        super(TaskPanelBaseGeometryPage, self).deleteBase()
+        super().deleteBase()
         self.updateFlippedSegments()
 
     def clearBase(self):
-        super(TaskPanelBaseGeometryPage, self).clearBase()
+        super().clearBase()
         self.obj.FlippedSegments = []
 
 
@@ -199,13 +201,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # under Ramp Start End).  The model applies the equivalent
         # Properties-panel editor modes independently via onChanged.
         self.form.flutingType.currentIndexChanged.connect(
-            lambda: self._update_fluting_type_dependent_controls()
+            self._update_fluting_type_dependent_controls
         )
 
     def setFields(self, obj):
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
-
         self.form.reverseDirection.setCheckState(
             QtCore.Qt.Checked if obj.ReverseDirection else QtCore.Qt.Unchecked
         )
@@ -245,9 +244,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self._update_2d_visibility(obj)
 
     def getFields(self, obj):
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
-
         obj.ReverseDirection = self.form.reverseDirection.isChecked()
         obj.BlindEndCompensation = self.form.blindEndCompensation.isChecked()
         if hasattr(obj, "CombineTangentSegments"):
@@ -268,8 +264,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getSignalsForUpdate(self, obj):
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
 
         for checkbox in (
             self.form.reverseDirection,
@@ -382,13 +376,16 @@ Command = PathOpGui.SetupOperation(
     "Flute",
     PathFlute.Create,
     TaskPanelOpPage,
-    "CAM_Slot",  # placeholder icon until CAM_Flute.svg is created
+    "CAM_Engrave",  # placeholder icon until CAM_Flute.svg is created
     QtCore.QT_TRANSLATE_NOOP("CAM_Flute", "Flute"),
     QtCore.QT_TRANSLATE_NOOP(
         "CAM_Flute",
-        "Create a ramping flute toolpath from a selected bottom face."
-        "\n\nThe path runs along the centerline of the face, stepping down"
-        "\nincrementally.  Supported tool types: flat, bull-nose, V-bit.",
+        "Create a ramping flute toolpath from a selected bottom face or flat wire."
+        "\n\nFor a 3D face (or pair of faces forming a V-bottom), the path follows"
+        "\nthe face centerline.  For a flat (2D) wire, the path follows the wire"
+        "\nitself, with its Z ramp shaped by the Fluting/Ramp Type settings."
+        "\nBoth cases step down in multiple passes to final depth."
+        "\n\nSupported tool types: flat, bull-nose, V-bit.",
     ),
     PathFlute.SetupProperties,
 )

@@ -28,15 +28,15 @@ import collections
 import math
 
 import FreeCAD
+from lazy_loader.lazy_loader import LazyLoader
+from PathScripts import PathUtils
 from PySide import QtCore
+
 import Path
+import Path.Base.Generator.follow_wire as WireFollowGenerator
 import Path.Geom as PathGeom
 import Path.Op.Base as PathOp
-import Path.Base.Generator.follow_wire as WireFollowGenerator
-import Path.Base.Generator.linking as linking
-import PathScripts.PathUtils as PathUtils
-
-from lazy_loader.lazy_loader import LazyLoader
+from Path.Base.Generator import linking
 
 Part = LazyLoader("Part", globals(), "Part")
 
@@ -153,27 +153,10 @@ def _analyze_face_cylinder(face):
 
         Path.Log.debug(
             "CAM_Flute BoundBox:\n"
-            "  X: [{:.4f}, {:.4f}]  Y: [{:.4f}, {:.4f}]  Z: [{:.4f}, {:.4f}]\n"
-            "  axis=({:.4f},{:.4f},{:.4f})  radius={:.4f}\n"
+            f"  X: [{bb.XMin:.4f}, {bb.XMax:.4f}]  Y: [{bb.YMin:.4f}, {bb.YMax:.4f}]  Z: [{bb.ZMin:.4f}, {bb.ZMax:.4f}]\n"
+            f"  axis=({axis.x:.4f},{axis.y:.4f},{axis.z:.4f})  radius={radius:.4f}\n"
             "CAM_Flute centerline:\n"
-            "  start=({:.4f},{:.4f},{:.4f})  end=({:.4f},{:.4f},{:.4f})\n".format(
-                bb.XMin,
-                bb.XMax,
-                bb.YMin,
-                bb.YMax,
-                bb.ZMin,
-                bb.ZMax,
-                axis.x,
-                axis.y,
-                axis.z,
-                radius,
-                p_start.x,
-                p_start.y,
-                p_start.z,
-                p_end.x,
-                p_end.y,
-                p_end.z,
-            )
+            f"  start=({p_start.x:.4f},{p_start.y:.4f},{p_start.z:.4f})  end=({p_end.x:.4f},{p_end.y:.4f},{p_end.z:.4f})\n"
         )
 
         def _clean(v, tol=_PREC):
@@ -186,6 +169,8 @@ def _analyze_face_cylinder(face):
             "width": _clean(2.0 * radius),
         }
     except Exception:
+        # Null/invalid shape, or not a face at all - report "not a
+        # cylinder" so the caller falls back to PCA analysis.
         return None
 
 
@@ -204,6 +189,8 @@ def _line_coincides_with_an_edge(face, p_a, p_b, tol):
     try:
         edges = face.Edges
     except Exception:
+        # A face with no readable edge list can't be tested for
+        # coincidence; treat it as "does not coincide".
         return False
 
     for edge in edges:
@@ -217,6 +204,8 @@ def _line_coincides_with_an_edge(face, p_a, p_b, tol):
             try:
                 dist = edge.distToShape(Part.Vertex(p))[0]
             except Exception:
+                # Edge that won't accept a distance query - stop testing this
+                # edge and move on to the next one.
                 coincides = False
                 break
             if dist > tol.pca_degenerate:
@@ -241,6 +230,8 @@ def _analyze_face_pca(face, tol):
         for edge in face.Edges:
             pts.extend(edge.discretize(Number=100))
     except Exception:
+        # Degenerate/unsupported edge geometry - fall through with whatever
+        # points were collected; the length check below handles the rest.
         pass
 
     if len(pts) < 4:
@@ -371,6 +362,8 @@ def _is_valley_edge(edge, face_a, face_b):
         face_z = (face_a.CenterOfMass.z + face_b.CenterOfMass.z) / 2.0
         return edge_z < face_z - _PREC * 10
     except Exception:
+        # Edge or face with no computable centre of mass (degenerate
+        # geometry) - can't be confirmed as a valley edge.
         return False
 
 
@@ -502,6 +495,8 @@ def _centerline_from_valley_edge(edges, face_tuples, tol):
                 groove_half_angle = math.degrees(math.asin(min(1.0, abs(n.z) / nlen)))
                 break
         except Exception:
+            # Surface has no well-defined Axis (e.g. a plane) - try the next
+            # face; groove_half_angle keeps its default if none qualify.
             pass
 
     def _clean(val, tol=_PREC):
@@ -524,6 +519,8 @@ def _centerline_from_faces(face_tuples):
             for edge in face.OuterWire.Edges:
                 pts.extend(edge.discretize(Number=20))
         except Exception:
+            # Skip a face whose outer wire can't be discretized; the PCA
+            # below just runs on points from whichever faces succeeded.
             pass
 
     if len(pts) < 2:
@@ -608,6 +605,8 @@ def _check_tool_fit(info, tool):
         try:
             tool_ha = tool.CuttingEdgeAngle.Value / 2.0
         except Exception:
+            # Tool has no CuttingEdgeAngle (not a V-bit after all) - a zero
+            # half-angle disables the fit check below.
             tool_ha = 0.0
 
         groove_ha = info.get("groove_half_angle", 0.0)
@@ -619,9 +618,7 @@ def _check_tool_fit(info, tool):
                 groove_ha = math.degrees(math.atan2(width / 2.0, depth))
 
         Path.Log.debug(
-            "CAM_Flute: tool half-angle={:.2f}° groove half-angle={:.2f}°\n".format(
-                tool_ha, groove_ha
-            )
+            f"CAM_Flute: tool half-angle={tool_ha:.2f}° groove half-angle={groove_ha:.2f}°\n"
         )
         if tool_ha > 0.0 and groove_ha > 0.0 and tool_ha > groove_ha * (1.0 + _VBIT_ANGLE_FRAC):
             FreeCAD.Console.PrintWarning(
@@ -648,8 +645,8 @@ def _get_centerline(group, tol):
     else:
         # >2 faces with no detected valley edge: run PCA across all faces
         Path.Log.debug(
-            "Flute group has {} faces with no detected valley edge; "
-            "falling back to combined PCA.\n".format(len(face_tuples))
+            f"Flute group has {len(face_tuples)} faces with no detected valley edge; "
+            "falling back to combined PCA.\n"
         )
         return _centerline_from_faces(face_tuples)
 
@@ -684,7 +681,7 @@ def _clip_and_scale(pts, f, stock_top_z):
     for i in range(n - 2, -1, -1):
         dx = pts[i].x - pts[i + 1].x
         dy = pts[i].y - pts[i + 1].y
-        rev[i] = rev[i + 1] + math.sqrt(dx * dx + dy * dy)
+        rev[i] = rev[i + 1] + math.hypot(dx, dy)
 
     L_total = rev[0]
     if L_total < _PREC:
@@ -740,6 +737,8 @@ def _pts_to_wire(pts):
     try:
         return Part.Wire(edges)
     except Exception:
+        # OCC rejected the edge chain (self-intersecting or otherwise
+        # unbuildable) - the caller skips this path.
         return None
 
 
@@ -766,6 +765,8 @@ def _tangent_at_endpoint(edge, endpoint):
             return None
         return FreeCAD.Vector(t.x / length, t.y / length, t.z / length)
     except Exception:
+        # Edge that can't be evaluated or has no tangent at the endpoint
+        # - the caller treats "no tangent" as "not continuous".
         return None
 
 
@@ -985,7 +986,7 @@ def _detect_floor_wire(face, base_obj, info, tol, group_extent=None):
 
         dx = end_info.x - start.x
         dy = end_info.y - start.y
-        L = math.sqrt(dx * dx + dy * dy)
+        L = math.hypot(dx, dy)
         if L < _PREC:
             return None, None, None
 
@@ -1018,7 +1019,7 @@ def _detect_floor_wire(face, base_obj, info, tol, group_extent=None):
             Path.Log.debug("CAM_Flute: section returned no edges\n")
             return None, None, None
 
-        Path.Log.debug("CAM_Flute: section returned {} edge(s)\n".format(len(all_edges)))
+        Path.Log.debug(f"CAM_Flute: section returned {len(all_edges)} edge(s)\n")
 
         # --- filter candidates --------------------------------------------------
         def path_proj(v):
@@ -1051,7 +1052,7 @@ def _detect_floor_wire(face, base_obj, info, tol, group_extent=None):
             Path.Log.debug("CAM_Flute: no floor edge candidates\n")
             return None, None, None
 
-        Path.Log.debug("CAM_Flute: {} candidate floor edge(s)\n".format(len(candidates)))
+        Path.Log.debug(f"CAM_Flute: {len(candidates)} candidate floor edge(s)\n")
 
         # --- chain from start ---------------------------------------------------
         def _orient(edge, toward_pt):
@@ -1100,7 +1101,7 @@ def _detect_floor_wire(face, base_obj, info, tol, group_extent=None):
             chain.append((nxt_s, nxt_end, nxt_e))
             cur_e = nxt_end
 
-        Path.Log.debug("CAM_Flute: chained {} edge(s)\n".format(len(chain)))
+        Path.Log.debug(f"CAM_Flute: chained {len(chain)} edge(s)\n")
 
         # --- convert chain to wire ----------------------------------------------
         pts = PathGeom.edgesToPoints(
@@ -1131,17 +1132,18 @@ def _detect_floor_wire(face, base_obj, info, tol, group_extent=None):
             return None, None, None
 
         Path.Log.debug(
-            "CAM_Flute: floor wire {} pts, floor_z={:.3f}, top_z={:.3f}\n".format(
-                len(pts), floor_z, top_z
-            )
+            f"CAM_Flute: floor wire {len(pts)} pts, floor_z={floor_z:.3f}, top_z={top_z:.3f}\n"
         )
         return wire, floor_z, top_z
 
     except Exception as exc:
+        # Floor detection is best-effort: any failure here just means
+        # this face gets handled by the 2D/PCA path instead, so log the
+        # cause for debugging and report no waypoints.
         import traceback
 
         Path.Log.debug(
-            "CAM_Flute: _detect_floor_waypoints error: {}\n{}\n".format(exc, traceback.format_exc())
+            f"CAM_Flute: _detect_floor_waypoints error: {exc}\n{traceback.format_exc()}\n"
         )
         return None, None, None
 
@@ -1240,7 +1242,7 @@ def _apply_blind_end_compensation(pts, tool_radius, tol):
 
     dx = blind_end.x - pts[-1].x
     dy = blind_end.y - pts[-1].y
-    seg_len = math.sqrt(dx * dx + dy * dy)
+    seg_len = math.hypot(dx, dy)
     if seg_len > _PREC:
         pts.append(
             FreeCAD.Vector(
@@ -1310,7 +1312,7 @@ def _apply_2d_profile(
     for i in range(1, n):
         dx = raw[i].x - raw[i - 1].x
         dy = raw[i].y - raw[i - 1].y
-        arc_len[i] = arc_len[i - 1] + math.sqrt(dx * dx + dy * dy)
+        arc_len[i] = arc_len[i - 1] + math.hypot(dx, dy)
     total_full = arc_len[-1]
     if total_full < _PREC:
         return None
@@ -1745,6 +1747,8 @@ class ObjectFlute(PathOp.ObjectOp):
             try:
                 tool_radius = obj.ToolController.Tool.Diameter.Value / 2.0
             except Exception:
+                # No tool controller or tool assigned yet - a zero radius
+                # disables blind-end compensation rather than failing the op.
                 tool_radius = 0.0
             _apply_blind_end_compensation(pts, tool_radius, tol)
 
@@ -1921,15 +1925,11 @@ class ObjectFlute(PathOp.ObjectOp):
         if not fp:
             return tool_pos, False
 
-        entry_pos = FreeCAD.Vector(fp[0].x, fp[0].y, obj.SafeHeight.Value)
-        if tool_pos is not None:
-            linking_kwargs["start_position"] = tool_pos
-            linking_kwargs["target_position"] = entry_pos
-            self.commandlist.extend(linking.get_linking_moves(**linking_kwargs))
-
         try:
             tool_radius = obj.ToolController.Tool.Diameter.Value / 2.0
         except Exception:
+            # No tool controller or tool assigned yet - a zero radius
+            # disables blind-end compensation rather than failing the op.
             tool_radius = 0.0
 
         # Blind-end compensation only applies when the path ends at floor depth.
@@ -1939,6 +1939,19 @@ class ObjectFlute(PathOp.ObjectOp):
             and tool_radius > _PREC * 10
             and flute_type != "Ramp Start End"
         )
+
+        # fp must go through the same transforms the pass loop below applies,
+        # or the entry move targets a point the cut doesn't actually start at.
+        if do_blind:
+            _apply_blind_end_compensation(fp, tool_radius, tol)
+        if obj.ReverseDirection:
+            fp = list(reversed(fp))
+
+        entry_pos = FreeCAD.Vector(fp[0].x, fp[0].y, obj.SafeHeight.Value)
+        if tool_pos is not None:
+            linking_kwargs["start_position"] = tool_pos
+            linking_kwargs["target_position"] = entry_pos
+            self.commandlist.extend(linking.get_linking_moves(**linking_kwargs))
 
         emitted = False
         last_pts = fp
@@ -2013,7 +2026,7 @@ class ObjectFlute(PathOp.ObjectOp):
                 if elem.ShapeType == "Face":
                     face_tuples.append((elem, sub, base))
                 elif elem.ShapeType == "Edge":
-                    if "{}.{}".format(base.Name, sub) in flipped_keys:
+                    if f"{base.Name}.{sub}" in flipped_keys:
                         flipped = PathGeom.flipEdge(elem)
                         if flipped is not None:
                             elem = flipped
@@ -2028,14 +2041,12 @@ class ObjectFlute(PathOp.ObjectOp):
         groups = _group_flutes(face_tuples, tol) if face_tuples else []
 
         Path.Log.debug(
-            "CAM_Flute: {} face(s) -> {} group(s), {} edge(s)\n".format(
-                len(face_tuples), len(groups), len(edge_tuples)
-            )
+            f"CAM_Flute: {len(face_tuples)} face(s) -> {len(groups)} group(s), {len(edge_tuples)} edge(s)\n"
         )
 
         if obj.Comment:
-            self.commandlist.append(Path.Command("({})".format(obj.Comment)))
-        self.commandlist.append(Path.Command("({})".format(obj.Label)))
+            self.commandlist.append(Path.Command(f"({obj.Comment})"))
+        self.commandlist.append(Path.Command(f"({obj.Label})"))
         self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
         solids = []
@@ -2138,9 +2149,9 @@ class ObjectFlute(PathOp.ObjectOp):
             # Compute the XY span of ALL faces in the group so the section
             # plane covers ramp + flat + any exit ramp.
             bb_list = [ft[0].BoundBox for ft in group["faces"]]
-            group_xy_span = math.sqrt(
-                (max(b.XMax for b in bb_list) - min(b.XMin for b in bb_list)) ** 2
-                + (max(b.YMax for b in bb_list) - min(b.YMin for b in bb_list)) ** 2
+            group_xy_span = math.hypot(
+                max(b.XMax for b in bb_list) - min(b.XMin for b in bb_list),
+                max(b.YMax for b in bb_list) - min(b.YMin for b in bb_list),
             )
             wire, detected_floor_z, detected_top_z = _detect_floor_wire(
                 section_face, section_base, section_info, tol, group_extent=group_xy_span
@@ -2189,9 +2200,7 @@ class ObjectFlute(PathOp.ObjectOp):
         if edge_tuples:
             edge_by_id = {id(e): sub for e, sub, _b in edge_tuples}
             wire_groups = _split_into_wires([e for e, _sub, _b in edge_tuples], tol)
-            Path.Log.debug(
-                "CAM_Flute: {} edge(s) -> {} wire(s)\n".format(len(edge_tuples), len(wire_groups))
-            )
+            Path.Log.debug(f"CAM_Flute: {len(edge_tuples)} edge(s) -> {len(wire_groups)} wire(s)\n")
 
             flat_groups = [wg for wg in wire_groups if _wire_is_flat(wg, tol)]
             solid_groups = [wg for wg in wire_groups if not _wire_is_flat(wg, tol)]
@@ -2220,9 +2229,7 @@ class ObjectFlute(PathOp.ObjectOp):
                 for group in flat_groups:
                     processed_groups.extend(_split_at_corners(group, tol, combine=combine_tangent))
                 Path.Log.debug(
-                    "CAM_Flute: {} flat group(s) -> {} 2D flute path(s) after corner split\n".format(
-                        len(flat_groups), len(processed_groups)
-                    )
+                    f"CAM_Flute: {len(flat_groups)} flat group(s) -> {len(processed_groups)} 2D flute path(s) after corner split\n"
                 )
                 for wire_edges in processed_groups:
                     sub_names = [edge_by_id.get(id(e), "?") for e in wire_edges]
