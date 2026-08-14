@@ -357,7 +357,7 @@ void Part::FaceMaker::postBuild()
             }
         }
 
-        std::vector<uint16_t> mapperFlags {Data::MAPPER_FLAG_LOWER};
+        std::vector<std::string> mapperFlags {Data::MAPPER_FLAG_LOWER};
 
         for (const auto& linkedNameEntry : linkedNameMap) {
             if (linkedNameEntry.second.first.size()) {

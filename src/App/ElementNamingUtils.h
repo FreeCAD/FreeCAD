@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include <cstdint>
 #include <string>
 #include <vector>
 #include <string_view>
@@ -115,33 +114,33 @@ constexpr const char* POSTFIX_MODGEN                    = ";:MG";
 constexpr const char* POSTFIX_DUPLICATE                 = ";D";
 
 /// Label to use for element index in element mapping.
-constexpr const char*    ELEMENT_MAP_INDEX                 = "_";
+constexpr const char* ELEMENT_MAP_INDEX                 = "_";
 /// Empty sub-section value for V2.
-constexpr const char*    EMPTY_VALUE                       = "_";
+constexpr const char* EMPTY_VALUE                       = "_";
 /// Sub-section list deliminator.
-constexpr const char*    SUB_SECTION_LIST_DELIMINATOR      = ",";
+constexpr const char* SUB_SECTION_LIST_DELIMINATOR      = ",";
 /// Section sub deliminator.
-constexpr const char*    SECTION_SUB_DELIMINATOR           = ";";
+constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
 /// Name section deliminator.
-constexpr const char*    NAME_SECTION_DELIMINATOR          = "|";
+constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
 /// Escape character for mapped names in sub-sections.
-constexpr const char*    SUB_SECTION_ESCAPE_CHAR           = "^";
+constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
 /// Mapper flag that designates that an element is mapped by its subelements.
-constexpr const uint16_t MAPPER_FLAG_LOWER                 = 1 << 0;
+constexpr const char* MAPPER_FLAG_LOWER                 = "LOW";
 /// Mapper flag that designates that an element is mapped by other, higher-level, connected elements.
-constexpr const uint16_t MAPPER_FLAG_UPPER                 = 1 << 1;
+constexpr const char* MAPPER_FLAG_UPPER                 = "UPP";
 /// Mapper flag that designates that an element is mapped with the `Generated` history method.
-constexpr const uint16_t MAPPER_FLAG_GENERATED             = 1 << 2;
+constexpr const char* MAPPER_FLAG_GENERATED             = "GEN";
 /// Mapper flag that designates that an element is mapped with the `Modified` history method.
-constexpr const uint16_t MAPPER_FLAG_MODIFIED              = 1 << 3;
-/// Mapper flag that designates that an element is mapped with `TopoDS_Shape` 's `IsPartner` method.
-constexpr const uint16_t MAPPER_FLAG_PARTNER               = 1 << 4;
+constexpr const char* MAPPER_FLAG_MODIFIED              = "MOD";
+/// Mapper flag that designates that an element is mapped with `TopoDS_Shape`'s `IsPartner` method.
+constexpr const char* MAPPER_FLAG_PARTNER               = "PTN";
 /// Mapper flag that designates that an element is a source of `ReferenceIDs`.
-constexpr const uint16_t MAPPER_FLAG_SOURCE                = 1 << 5;
+constexpr const char* MAPPER_FLAG_SOURCE                = "SRC";
 /// Mapper flag that designates that an element relies on unreliable, unstable, `IndexedName` mapping.
-constexpr const uint16_t MAPPER_FLAG_INDEX                 = 1 << 6;
+constexpr const char* MAPPER_FLAG_INDEX                 = "IDX";
 /// Mapper flag that designates that an element's `LinkedNames` do not share common entries with other names that also have this flag.
-constexpr const uint16_t MAPPER_FLAG_NON_DUPLICATE         = 1 << 7;
+constexpr const char* MAPPER_FLAG_NON_DUPLICATE         = "NDU";
 
 // Placement indexes of data in sections of MappedNames used by the V2 Topological Naming System.
 // DO NOT CHANGE THESE VALUES EVER!!! Data should only be added to sections, not removed or otherwise altered.

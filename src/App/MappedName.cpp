@@ -22,9 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#include <cstdint>
 #include <cstring>
-#include <sys/types.h>
 #include <unordered_set>
 
 #include "MappedName.h"
@@ -196,15 +194,7 @@ DecodedMappedName& MappedName::getDecodedMappedName(const std::string& mappedNam
                         section.duplicateCount = *stringVectorBufferFront;
                         break;
                     case Data::SECTION_MAPPER_FLAGS_INDEX:
-                        if (*stringVectorBufferFront != Data::EMPTY_VALUE) {
-                            try {
-                                section.mapperFlags = static_cast<uint16_t>(std::stoul(*stringVectorBufferFront));
-                                break;
-                            } catch (...) {
-                            }
-                        }
-                        
-                        section.mapperFlags = 0;
+                        section.mapperFlags = stringVectorBuffer;
                         break;
                     case Data::SECTION_CONNECTED_ELEMENTS_INDEX:
                         section.connectedElements = stringVectorBuffer;
@@ -305,7 +295,7 @@ DecodedMappedSection MappedName::makeDecodedSection(
     const std::string& index,
     const char& elementType,
     const std::string& duplicateCount,
-    const std::vector<uint16_t>& mapperFlags,
+    const std::vector<std::string>& mapperFlags,
     const std::vector<std::string>& connectedElements
 )
 {
@@ -325,12 +315,7 @@ DecodedMappedSection MappedName::makeDecodedSection(
     section.index = index;
     section.elementType = elementType;
     section.duplicateCount = duplicateCount;
-    section.mapperFlags = 0;
-    
-    for (const uint16_t& flag : mapperFlags) {
-        section.mapperFlags |= flag;
-    }
-
+    section.mapperFlags = mapperFlags;
     section.connectedElements = connectedElements;
 
     return section;
@@ -344,7 +329,7 @@ DecodedMappedSection MappedName::makeDecodedSection(
     const int& index,
     const char& elementType,
     const int& duplicateCount,
-    const std::vector<uint16_t>& mapperFlags,
+    const std::vector<std::string>& mapperFlags,
     const std::vector<MappedName>& connectedElements
 )
 {
@@ -388,7 +373,7 @@ std::string MappedName::makeEncodedSection(
     const int& index,
     const char& elementType,
     const int& duplicateCount,
-    const std::vector<uint16_t>& mapperFlags,
+    const std::vector<std::string>& mapperFlags,
     const std::vector<MappedName>& connectedElements
 )
 {
@@ -417,8 +402,8 @@ std::string MappedName::makeEncodedSection(
     const std::string& index,
     const char& elementType,
     const std::string& duplicateCount,
-    const std::vector<uint16_t>& mapperFlags,
-    const std::vector<MappedName>& connectedElements
+    const std::vector<std::string>& mapperFlags,
+    const  std::vector<MappedName>& connectedElements
 )
 {
     ZoneScoped;
@@ -438,12 +423,6 @@ std::string MappedName::makeEncodedSection(
         }
     }
 
-    uint16_t mapperFlagsInteger = 0;
-
-    for (const uint16_t& flag : mapperFlags) {
-        mapperFlagsInteger |= flag;
-    }
-
     return MappedName::makeEncodedSection(
         referenceIDs,
         formattedLinkedNames,
@@ -452,7 +431,7 @@ std::string MappedName::makeEncodedSection(
         index,
         elementType,
         duplicateCount,
-        mapperFlagsInteger,
+        mapperFlags,
         formattedConnectedElements
     );
 }
@@ -467,7 +446,7 @@ std::string MappedName::makeEncodedSection(
     const std::string& index,
     const char& elementType,
     const std::string& duplicateCount,
-    const uint16_t& mapperFlags,
+    const std::vector<std::string>& mapperFlags,
     const std::vector<std::string>& connectedElements
 )
 {
@@ -514,9 +493,21 @@ std::string MappedName::makeEncodedSection(
         + Data::SECTION_SUB_DELIMINATOR
         + duplicateCount
         + Data::SECTION_SUB_DELIMINATOR
-        + std::to_string(mapperFlags)
-        + Data::SECTION_SUB_DELIMINATOR
     );
+
+    if (mapperFlags.empty()) {
+        sectionString += Data::EMPTY_VALUE;
+    } else {
+        for (size_t i = 0; i < mapperFlags.size(); i++) {
+            if (i != 0) {
+                sectionString += Data::SUB_SECTION_LIST_DELIMINATOR;
+            }
+
+            sectionString += mapperFlags[i];
+        }
+    }
+    
+    sectionString += Data::SECTION_SUB_DELIMINATOR;
 
     if (connectedElements.empty()) {
         sectionString += Data::EMPTY_VALUE;
