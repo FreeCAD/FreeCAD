@@ -1150,7 +1150,22 @@ struct WireJoiner
 
                     BRepExtrema_DistShapeShape extss(BRepBuilderAPI_MakeVertex(p), info.edge);
                     if (extss.IsDone() && extss.NbSolution()) {
-                        const gp_Pnt& pp = extss.PointOnShape2(1);
+                        gp_Pnt pp = extss.PointOnShape2(1);
+
+                        // DistShapeShape allows the parameter to be out of the edge bounds by some
+                        // tolerance (typically 1e-7 in parameter space), but we don't want that.
+                        // Check if that happened, and coerce the point if needed
+                        if (extss.SupportTypeShape2(1) == BRepExtrema_IsOnEdge) {
+                            Standard_Real par, first, last;
+                            extss.ParOnEdgeS2(1, par);
+                            Handle(Geom_Curve) curve = BRep_Tool::Curve(info.edge, first, last);
+
+                            if (par < first || par > last) {
+                                Standard_Real clamped = std::max(first, std::min(last, par));
+                                pp = curve->Value(clamped);
+                            }
+                        }
+
                         if (pp.SquareDistance(p) <= Precision::SquareConfusion()) {
                             pt = pp;
                             intersects = true;
