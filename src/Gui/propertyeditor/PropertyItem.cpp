@@ -23,6 +23,7 @@
 
 
 #include <algorithm>
+#include <format>
 #include <iomanip>
 #include <limits>
 #include <QApplication>
@@ -1194,7 +1195,7 @@ QString PropertyUnitItem::toString(const QVariant& prop) const
     const Base::Quantity& unit = prop.value<Base::Quantity>();
     std::string str = unit.getUserString();
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += std::format("  ( {} )", getExpressionString());
     }
 
     return QString::fromStdString(str);
@@ -1817,14 +1818,14 @@ PropertyVectorDistanceItem::PropertyVectorDistanceItem()
 QString PropertyVectorDistanceItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    std::string str = fmt::format(
+    std::string str = std::format(
         "[{} {} {}]",
         Base::Quantity(value.x, Base::Unit::Length).getUserString(),
         Base::Quantity(value.y, Base::Unit::Length).getUserString(),
         Base::Quantity(value.z, Base::Unit::Length).getUserString()
     );
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += std::format("  ( {} )", getExpressionString());
     }
     return QString::fromStdString(str);
 }
@@ -1844,7 +1845,7 @@ void PropertyVectorDistanceItem::setValue(const QVariant& variant)
         return;
     }
     const Base::Vector3d& value = variant.value<Base::Vector3d>();
-    std::string val = fmt::format(
+    std::string val = std::format(
         "({:.{}g}, {:.{}g}, {:.{}g})",
         value.x,
         highPrec,
@@ -2600,7 +2601,7 @@ void PropertyRotationItem::setValue(const QVariant& value)
     Base::Vector3d axis;
     double angle {};
     h.getValue(axis, angle);
-    std::string val = fmt::format(
+    std::string val = std::format(
         "App.Rotation(App.Vector({:.{}g},{:.{}g},{:.{}g}),{:.{}g})",
         axis.x,
         highPrec,
@@ -2935,7 +2936,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     Base::Vector3d axis;
     double angle {};
     h.getValue(axis, angle);
-    std::string str = fmt::format(
+    std::string str = std::format(
         "App.Placement("
         "App.Vector({:.{}g},{:.{}g},{:.{}g}),"
         "App.Rotation(App.Vector({:.{}g},{:.{}g},{:.{}g}),{:.{}g}))",

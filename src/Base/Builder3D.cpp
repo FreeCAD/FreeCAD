@@ -24,13 +24,13 @@
 
 
 #include <algorithm>
+#include <format>
 #include <string>
 #include <string_view>
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/tokenizer.hpp>
-#include <fmt/format.h>
 
 #include "Builder3D.h"
 #include "Console.h"
@@ -1291,7 +1291,7 @@ BaseExport Vector3f stringToVector(std::string str)
 
 BaseExport std::string vectorToString(Vector3f vec)
 {
-    return fmt::format("({},{},{})", vec.x, vec.y, vec.z);
+    return std::format("({},{},{})", vec.x, vec.y, vec.z);
 }
 
 }  // namespace Base
