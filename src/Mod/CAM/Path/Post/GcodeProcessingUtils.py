@@ -30,6 +30,16 @@ operate on strings of pre-processed G-code.
 
 from typing import List
 
+# Annotation protecting functional rapid moves from filter_inefficient_moves.
+# Producers working on Path.Command objects (e.g. DrillCycleExpander) set
+# NO_COLLAPSE_ANNOTATION in the command's Annotations (by whole-dict
+# reassignment; item assignment does not persist). The formatting layers
+# (Processor._convert_move and UtilsParse) translate it into the
+# NO_COLLAPSE_MARKER word on the G-code line, which filter_inefficient_moves
+# honors and strips from the final output.
+NO_COLLAPSE_ANNOTATION = "no_collapse"
+NO_COLLAPSE_MARKER = "(no-collapse)"
+
 
 class NumberGenerator:
     """
@@ -226,10 +236,28 @@ def suppress_redundant_axes_words(gcode: List[str]) -> List[str]:
 
 
 def filter_inefficient_moves(gcode: List[str]) -> List[str]:
-    """Filter out inefficient or redundant moves from G-code.
+    """Collapse runs of consecutive rapid (G0) moves that travel along a
+    single axis, keeping only the final move of each run.
 
-    Removes unnecessary rapid (G0) moves by collapsing chains that only move
-    along single axes or within linear/rotary groups.
+    A run is collapsed only when the dropped moves are provably redundant
+    stutter: all motion is along one axis, in one direction, from a known
+    starting position, and the surviving line states the endpoint. Rapids
+    that change more than one axis are never collapsed, and neither is a
+    run containing a direction reversal — an excursion such as the
+    chip-clearing retract of an expanded peck-drilling cycle is intentional
+    motion whose purpose is the excursion itself, not its endpoint.
+
+    Producers can explicitly protect a rapid by annotating its line with the
+    NO_COLLAPSE_MARKER word (the formatting layer adds it for Path.Command
+    producers that set NO_COLLAPSE_ANNOTATION, e.g. the drill cycle
+    expander). Annotated lines never collapse and the marker is stripped
+    from the output.
+
+    Absolute positioning (G90) is assumed until a G91 is seen; collapsing is
+    suspended in incremental mode. Any command this function does not model
+    (tool changes, coordinate system changes, canned cycles, block delete,
+    unparsable words, ...) resets position tracking and passes through
+    unchanged.
 
     Args:
         gcode: List of G-code strings
@@ -238,168 +266,182 @@ def filter_inefficient_moves(gcode: List[str]) -> List[str]:
         List of G-code strings with inefficient moves filtered out
     """
     AXES = ("X", "Y", "Z", "A", "B", "C")
+    MOTION_GS = {0.0, 1.0, 2.0, 3.0}
+    # Words that neither move axes unpredictably nor change what tracked
+    # coordinates mean. Anything else invalidates tracked state.
+    TRACKED_LETTERS = {"G", "F", "S"} | set(AXES)
 
-    SIDE_EFFECT_KEYS = {
-        "tool",
-        "tool_change",
-        "spindle",
-        "spindle_on",
-        "spindle_off",
-        "coolant",
-        "dwell",
-        "feed",
-        "F",
-        "M",
-    }
-
-    def parse_gcode_line(line: str) -> dict:
-        """Parse a G-code line into command name and parameters."""
-        stripped = line.strip()
-        if not stripped or stripped.startswith("("):
-            return {"name": "COMMENT", "params": {}, "original": line}
-
-        # Check for blockdelete
-        has_blockdelete = stripped.startswith("/")
-        if has_blockdelete:
-            stripped = stripped[1:]
-
-        words = stripped.split()
-        if not words:
-            return {"name": "EMPTY", "params": {}, "original": line}
-
-        cmd_name = words[0]
-        params = {}
-
-        for word in words[1:]:
-            if len(word) > 1:
-                key = word[0]
-                try:
-                    value = float(word[1:])
-                    params[key] = value
-                except (ValueError, IndexError):
-                    params[word] = None  # Non-numeric parameter
-
-        return {
-            "name": cmd_name,
-            "params": params,
-            "original": line,
-            "blockdelete": has_blockdelete,
-        }
-
-    def is_rapid(parsed_cmd: dict) -> bool:
-        """Check if command is a rapid move (G0)."""
-        return parsed_cmd["name"] in ("G0", "G00")
-
-    def has_side_effects(parsed_cmd: dict) -> bool:
-        """Check if command has side effects that prevent optimization."""
-        # Check for side effect parameter keys
-        if any(k in parsed_cmd["params"] for k in SIDE_EFFECT_KEYS):
-            return True
-
-        # Check for M-codes and other side effect commands
-        cmd = parsed_cmd["name"]
-        if cmd.startswith("M") or cmd in (
-            "G28",
-            "G30",
-            "G53",
-            "G54",
-            "G55",
-            "G56",
-            "G57",
-            "G58",
-            "G59",
-            "G92",
-            "G10",
-            "T",  # Tool change
-            "G73",
-            "G74",
-            "G80",
-            "G81",
-            "G82",
-            "G83",
-            "G84",
-            "G85",
-            "G86",
-            "G87",
-            "G88",
-            "G89",  # Drill cycles
-            "G98",
-            "G99",
-        ):  # Retract modes
-            return True
-
-        return False
-
-    def full_position(parsed_cmd: dict, last_pos: dict) -> dict:
-        """Compute full position from command and last position."""
-        pos = {}
-        for ax in AXES:
-            if ax in parsed_cmd["params"] and parsed_cmd["params"][ax] is not None:
-                pos[ax] = parsed_cmd["params"][ax]
-            else:
-                pos[ax] = last_pos.get(ax)
-        return pos
-
-    def collapse_rapid_chain(chain):
-        """
-        Collapse a chain of rapid moves.
-        chain = list of dicts with 'parsed', 'pos', and 'original' keys.
-        """
-        if not chain:
-            return []
-
-        # Check which axes change across the chain
-        first = chain[0]["pos"]
-        axes_changed = {ax for ax in AXES if any(c["pos"][ax] != first[ax] for c in chain)}
-
-        # If only one axis changes → keep only the last command
-        if len(axes_changed) == 1:
-            return [chain[-1]["original"]]
-
-        # If changes are only within linear or rotary groups → keep only last
-        lin = {"X", "Y", "Z"}
-        rot = {"A", "B", "C"}
-
-        if axes_changed <= lin or axes_changed <= rot:
-            return [chain[-1]["original"]]
-
-        # Mixed changes → can't collapse, keep all
-        return [c["original"] for c in chain]
-
-    # Main optimization logic
     result = []
-    rapid_chain = []
-    last_full_pos = {ax: None for ax in AXES}
+    pos = {ax: None for ax in AXES}  # tracked absolute position, None = unknown
+    absolute_mode = True
+    modal_motion = None  # last motion G word seen (0.0-3.0)
+    chain = []  # pending consecutive collapsible rapids
+    chain_base = None  # tracked position before the first move of the chain
+
+    def changed_axes(move_pos: dict, base: dict) -> set:
+        """Axes whose value differs from base; unknown baselines count as changed."""
+        changed = set()
+        for ax in AXES:
+            a, b = move_pos[ax], base[ax]
+            if a is None and b is None:
+                continue
+            if a is None or b is None or a != b:
+                changed.add(ax)
+        return changed
+
+    def is_monotonic(run: list, run_base: dict, ax: str) -> bool:
+        """True when the run's motion along ax never reverses direction,
+        starting from a known position."""
+        values = [run_base[ax]] + [m["pos"][ax] for m in run]
+        if any(v is None for v in values):
+            return False
+        deltas = [b - a for a, b in zip(values, values[1:])]
+        return all(d >= 0 for d in deltas) or all(d <= 0 for d in deltas)
+
+    def emit_run(run: list, run_changed: set, run_base: dict) -> list:
+        """Emit a run of rapids, keeping only the last move when that is safe."""
+        if len(run) > 1 and len(run_changed) <= 1:
+            last = run[-1]
+            # The surviving line must state the endpoint of the changing
+            # axis, and a reversal (e.g. the chip-clearing retract of an
+            # expanded peck cycle) must never be dropped.
+            safe = run_changed <= last["axis_letters"] and all(
+                is_monotonic(run, run_base, ax) for ax in run_changed
+            )
+            if safe:
+                if last["has_motion_word"]:
+                    return [last["line"]]
+                # Modal rapid: carry the G0 word forward from a dropped line
+                # so the surviving line cannot execute in a different mode.
+                g_word = next((m["g_word"] for m in run if m["g_word"]), None)
+                if g_word:
+                    return [f"{g_word} {last['line'].strip()}"]
+        return [m["line"] for m in run]
+
+    def collapse_chain(moves: list, base: dict) -> list:
+        """Split a chain into single-axis runs and emit each independently."""
+        out = []
+        run = []
+        run_changed = set()
+        run_base = base
+        for move in moves:
+            move_changed = changed_axes(move["pos"], run_base)
+            if run and len(run_changed | move_changed) > 1:
+                out.extend(emit_run(run, run_changed, run_base))
+                run_base = run[-1]["pos"]
+                run = []
+                run_changed = set()
+                move_changed = changed_axes(move["pos"], run_base)
+            run.append(move)
+            run_changed |= move_changed
+        out.extend(emit_run(run, run_changed, run_base))
+        return out
 
     def flush_chain():
-        nonlocal rapid_chain
-        if rapid_chain:
-            result.extend(collapse_rapid_chain(rapid_chain))
-            rapid_chain = []
+        nonlocal chain, chain_base
+        if chain:
+            result.extend(collapse_chain(chain, chain_base))
+            chain = []
+            chain_base = None
 
     for line in gcode:
-        parsed = parse_gcode_line(line)
+        # Honor and strip explicit no-collapse annotations from upstream
+        # producers (e.g. drill-cycle retracts marked by DrillCycleExpander).
+        blocked = NO_COLLAPSE_MARKER in line
+        if blocked:
+            line = line.replace(NO_COLLAPSE_MARKER, "").rstrip()
 
-        # Skip comments and empty lines
-        if parsed["name"] in ("COMMENT", "EMPTY"):
-            flush_chain()  # Flush any pending rapid chain
+        stripped = line.strip()
+
+        # Comments and empty lines pass through; they end any pending chain.
+        if not stripped or stripped.startswith("("):
+            flush_chain()
             result.append(line)
             continue
 
-        # Get full position for this command
-        pos = full_position(parsed, last_full_pos)
-        last_full_pos = pos
+        # Block-deleted lines may or may not execute on the machine, so any
+        # Block-deleted lines may or may not execute on the machine, so any
+        # axis they mention becomes unknown.
+        if stripped.startswith("/"):
+            flush_chain()
+            modal_motion = None
+            for word in stripped[1:].split():
+                letter = word[:1].upper()
+                if letter in pos:
+                    pos[letter] = None
+            result.append(line)
+            continue
+        words = []
+        parse_ok = True
+        for raw in stripped.split():
+            letter = raw[:1].upper()
+            try:
+                words.append((letter, float(raw[1:]), raw))
+            except ValueError:
+                parse_ok = False
+                break
 
-        # Check if this is a rapid move without side effects
-        if is_rapid(parsed) and not has_side_effects(parsed):
-            rapid_chain.append({"parsed": parsed, "pos": pos, "original": line})
+        g_values = {value for letter, value, raw in words if letter == "G"}
+        letters = {letter for letter, value, raw in words}
+        motion_words = g_values & MOTION_GS
+
+        # Distance mode words can share a line with other commands, so update
+        # the mode even when the line is otherwise passed through below.
+        if 91.0 in g_values:
+            absolute_mode = False
+        elif 90.0 in g_values:
+            absolute_mode = True
+
+        if (
+            not parse_ok
+            or letters - TRACKED_LETTERS
+            or g_values - MOTION_GS - {90.0, 91.0}
+            or len(motion_words) > 1
+        ):
+            flush_chain()
+            pos = {ax: None for ax in AXES}
+            modal_motion = None
+            result.append(line)
+            continue
+
+        if motion_words:
+            modal_motion = next(iter(motion_words))
+
+        pos_before = dict(pos)
+        axis_letters = set()
+        for letter, value, raw in words:
+            if letter in pos:
+                axis_letters.add(letter)
+                pos[letter] = value if absolute_mode else None
+
+        # A rapid is collapsible only when it is not annotated as functional
+        # and carries nothing but motion: no F/S words, no distance mode
+        # change riding along.
+        collapsible = (
+            not blocked
+            and absolute_mode
+            and modal_motion == 0.0
+            and g_values <= {0.0}
+            and letters <= {"G"} | set(AXES)
+        )
+
+        if collapsible:
+            if not chain:
+                chain_base = pos_before
+            chain.append(
+                {
+                    "line": line,
+                    "pos": dict(pos),
+                    "axis_letters": axis_letters,
+                    "g_word": next((raw for letter, _, raw in words if letter == "G"), None),
+                    "has_motion_word": bool(motion_words),
+                }
+            )
         else:
-            flush_chain()  # Flush any pending rapid chain before adding this command
+            flush_chain()
             result.append(line)
 
-    # Flush any remaining rapid chain
     flush_chain()
-
     return result
 
 

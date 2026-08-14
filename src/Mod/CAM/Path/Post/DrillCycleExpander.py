@@ -30,6 +30,7 @@ from typing import List, Optional
 
 import Path
 from Path.Base.MachineState import MachineState
+from Path.Post.GcodeProcessingUtils import NO_COLLAPSE_ANNOTATION
 
 EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
 
@@ -221,7 +222,8 @@ class DrillCycleExpander:
         if cmd_name == "G82" and "P" in params:
             expanded.append(Path.Command("G4", {"P": params["P"]}))
 
-        # Retract
+        # Retract. The retract is functional motion; annotate it so
+        # move filtering never collapses it away.
         cmd = Path.Command(
             "G0",
             {
@@ -231,6 +233,7 @@ class DrillCycleExpander:
                 "F": self.machine_state.G0F,
             },
         )
+        cmd.Annotations = {NO_COLLAPSE_ANNOTATION: True}
         expanded.append(cmd)
         self.machine_state.addCommand(cmd)
 
@@ -245,7 +248,12 @@ class DrillCycleExpander:
         final_retract: float,
         feedrate: Optional[float],
     ) -> List[Path.Command]:
-        """Expand G73 (chip breaking) or G83 (peck drilling)."""
+        """Expand G73 (chip breaking) or G83 (peck drilling).
+
+        Every rapid in the cycle body is functional motion (chip clearing,
+        re-entry, retract), so all are annotated with NO_COLLAPSE_ANNOTATION
+        to protect them from move filtering.
+        """
         expanded = []
 
         peck_depth = params.get("Q", abs(drill_z - retract_z))
@@ -268,6 +276,7 @@ class DrillCycleExpander:
                         "F": self.machine_state.G0F,
                     },
                 )
+                cmd.Annotations = {NO_COLLAPSE_ANNOTATION: True}
                 expanded.append(cmd)
                 self.machine_state.addCommand(cmd)
 
@@ -297,6 +306,7 @@ class DrillCycleExpander:
                             "F": self.machine_state.G0F,
                         },
                     )
+                    cmd.Annotations = {NO_COLLAPSE_ANNOTATION: True}
                     expanded.append(cmd)
                     self.machine_state.addCommand(cmd)
                 else:
@@ -311,6 +321,7 @@ class DrillCycleExpander:
                             "F": self.machine_state.G0F,
                         },
                     )
+                    cmd.Annotations = {NO_COLLAPSE_ANNOTATION: True}
                     expanded.append(cmd)
                     self.machine_state.addCommand(cmd)
             elif cmd_name == "G83":
@@ -324,6 +335,7 @@ class DrillCycleExpander:
                         "F": self.machine_state.G0F,
                     },
                 )
+                cmd.Annotations = {NO_COLLAPSE_ANNOTATION: True}
                 expanded.append(cmd)
                 self.machine_state.addCommand(cmd)
 
@@ -340,6 +352,7 @@ class DrillCycleExpander:
                     "F": self.machine_state.G0F,
                 },
             )
+            cmd.Annotations = {NO_COLLAPSE_ANNOTATION: True}
             expanded.append(cmd)
             self.machine_state.addCommand(cmd)
 

@@ -38,6 +38,7 @@ import Path.Tool.Controller as PathToolController
 from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
 
 from .FilePathTestUtils import assertFilePathsEqual
+from Path.Post.GcodeProcessingUtils import NO_COLLAPSE_MARKER
 
 PathCommand.LOG_MODULE = Path.Log.thisModule()
 Path.Log.setLevel(Path.Log.Level.INFO, PathCommand.LOG_MODULE)
@@ -2013,3 +2014,42 @@ class TestExport2Integration(unittest.TestCase):
                 "nc",
                 "Existing property should not be overwritten",
             )
+
+    def test_drill_cycle_rapids_survive_move_filtering(self):
+        """Expanded drill-cycle rapids must survive filter_inefficient_moves.
+
+        The G98 final-retract pair (rapid to R, then rapid to initial Z) is
+        a monotonic single-axis chain that would collapse without the
+        no-collapse annotation reaching the formatted line. The marker
+        itself must never appear in the output.
+        """
+        machine = self._create_machine()
+        machine.processing.translate_drill_cycles = True
+        machine.processing.filter_inefficient_moves = True
+
+        commands = [
+            Path.Command("G0", {"X": 10.0, "Y": 10.0, "Z": 5.0, "F": 3000.0}),
+            Path.Command("G98", {}),
+            Path.Command("G83", {"X": 10.0, "Y": 10.0, "Z": -6.0, "R": 2.0, "Q": 2.0, "F": 100.0}),
+            Path.Command("G80", {}),
+        ]
+        with self._modify_operation_path(commands):
+            results = self._run_export2(machine=machine)
+        gcode = self._get_first_section_gcode(results)
+
+        self.assertNotIn(NO_COLLAPSE_MARKER, gcode, "marker leaked into output")
+
+        lines = [line.strip() for line in gcode.splitlines()]
+        last_feed = max(
+            i for i, line in enumerate(lines) if line.startswith("G1") and "Z-6." in line
+        )
+        moves_after = [line for line in lines[last_feed + 1 :] if line.startswith(("G0", "G1"))]
+        self.assertGreaterEqual(len(moves_after), 2, f"final retracts missing: {moves_after}")
+        self.assertTrue(
+            moves_after[0].startswith("G0") and "Z2." in moves_after[0],
+            f"retract to R was collapsed away: {moves_after}",
+        )
+        self.assertTrue(
+            moves_after[1].startswith("G0") and "Z5." in moves_after[1],
+            f"final retract to initial Z missing: {moves_after}",
+        )

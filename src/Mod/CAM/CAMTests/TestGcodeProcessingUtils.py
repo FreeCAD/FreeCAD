@@ -29,6 +29,7 @@ from Path.Post.GcodeProcessingUtils import (
     filter_inefficient_moves,
     deduplicate_repeated_commands,
     NumberGenerator,
+    NO_COLLAPSE_MARKER,
 )
 
 
@@ -248,17 +249,32 @@ class TestFilterInefficientMoves(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_optimize_single_axis_collapse(self):
-        """Test collapsing rapid chain with single-axis changes."""
+        """Test collapsing a same-direction rapid chain on one axis."""
+        gcode = ["G1 X0.0 F100", "G0 X10.0", "G0 X20.0", "G0 X30.0"]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G1 X0.0 F100", "G0 X30.0"]  # Only last position kept
+        self.assertEqual(result, expected)
+
+    def test_unknown_start_prevents_collapse(self):
+        """Test no collapse when the starting position is unknown.
+
+        Without a known start, a direction reversal (e.g. an initial
+        retract to safe height) cannot be ruled out.
+        """
         gcode = ["G0 X10.0", "G0 X20.0", "G0 X30.0"]
         result = filter_inefficient_moves(gcode)
-        expected = ["G0 X30.0"]  # Only last position kept
+        expected = ["G0 X10.0", "G0 X20.0", "G0 X30.0"]
         self.assertEqual(result, expected)
 
     def test_optimize_multi_axis_no_collapse(self):
-        """Test that multi-axis rapid chains within linear group DO collapse."""
+        """Test that multi-axis rapid chains do NOT collapse.
+
+        Collapsing them would replace two path segments with a single direct
+        move through different territory.
+        """
         gcode = ["G0 X10.0 Y10.0", "G0 X20.0 Y20.0"]
         result = filter_inefficient_moves(gcode)
-        expected = ["G0 X20.0 Y20.0"]  # Collapsed to final position (both X,Y in linear group)
+        expected = ["G0 X10.0 Y10.0", "G0 X20.0 Y20.0"]
         self.assertEqual(result, expected)
 
     def test_optimize_with_side_effects(self):
@@ -306,6 +322,7 @@ class TestFilterInefficientMoves(unittest.TestCase):
     def test_optimize_mixed_sequence(self):
         """Test mixed sequence with rapid and side effect commands."""
         gcode = [
+            "G1 X0.0 F100",
             "G0 X10.0",
             "G0 X20.0",
             "M3 S1000",  # Spindle on, side effect
@@ -313,30 +330,162 @@ class TestFilterInefficientMoves(unittest.TestCase):
         ]
         result = filter_inefficient_moves(gcode)
         expected = [
+            "G1 X0.0 F100",
             "G0 X20.0",  # First chain collapses to last position
             "M3 S1000",  # Side effect
             "G0 X30.0",  # New move after side effect
         ]
         self.assertEqual(result, expected)
 
-    def test_optimize_linear_group_collapse(self):
-        """Test collapsing rapid moves within linear axis group (X,Y,Z)."""
+    def test_optimize_linear_group_no_collapse(self):
+        """Test that rapids changing several linear axes are preserved."""
         gcode = [
             "G0 X10.0 Y10.0 Z10.0",
             "G0 X20.0 Y20.0 Z20.0",  # All linear axes change
         ]
         result = filter_inefficient_moves(gcode)
-        expected = ["G0 X20.0 Y20.0 Z20.0"]  # Collapsed to final position
+        expected = ["G0 X10.0 Y10.0 Z10.0", "G0 X20.0 Y20.0 Z20.0"]
         self.assertEqual(result, expected)
 
-    def test_optimize_rotary_group_collapse(self):
-        """Test collapsing rapid moves within rotary axis group (A,B,C)."""
+    def test_optimize_rotary_group_no_collapse(self):
+        """Test that rapids changing several rotary axes are preserved."""
         gcode = [
             "G0 A10.0 B10.0 C10.0",
             "G0 A20.0 B20.0 C20.0",  # All rotary axes change
         ]
         result = filter_inefficient_moves(gcode)
-        expected = ["G0 A20.0 B20.0 C20.0"]  # Collapsed to final position
+        expected = ["G0 A10.0 B10.0 C10.0", "G0 A20.0 B20.0 C20.0"]
+        self.assertEqual(result, expected)
+
+    def test_retract_then_traverse_preserved(self):
+        """Test that a retract rapid followed by a traverse rapid is preserved.
+
+        This is the standard between-operations pattern; dropping the Z
+        retract would drag the tool through the stock at cutting depth.
+        """
+        gcode = [
+            "G1 X50.0 Y50.0 Z-2.0 F500",
+            "G0 Z15.0",  # retract
+            "G0 X0.0 Y0.0",  # traverse at safe height
+        ]
+        result = filter_inefficient_moves(gcode)
+        self.assertEqual(result, gcode)
+
+    def test_single_axis_runs_collapse_independently(self):
+        """Test that a chain splits into single-axis runs, each collapsed."""
+        gcode = [
+            "G1 X0.0 Y0.0 Z0.0 F100",
+            "G0 X10.0",
+            "G0 X20.0",
+            "G0 Y5.0",
+            "G0 Y15.0",
+        ]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G1 X0.0 Y0.0 Z0.0 F100", "G0 X20.0", "G0 Y15.0"]
+        self.assertEqual(result, expected)
+
+    def test_direction_reversal_preserved(self):
+        """Test that a single-axis direction reversal is never collapsed.
+
+        An excursion is intentional motion; its purpose is the excursion
+        itself, not its endpoint.
+        """
+        gcode = ["G1 X0.0 F100", "G0 X10.0", "G0 X30.0", "G0 X20.0"]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G1 X0.0 F100", "G0 X10.0", "G0 X30.0", "G0 X20.0"]
+        self.assertEqual(result, expected)
+
+    def test_peck_drill_retracts_preserved(self):
+        """Test that expanded peck-drilling rapids are preserved.
+
+        The drill cycle expander converts G83 into feed and rapid moves;
+        the rapid out of the hole clears chips and the rapid back in
+        resumes the peck. Both reverse direction on Z and must survive.
+        """
+        gcode = [
+            "G0 X10.0 Y10.0",
+            "G0 Z2.0",
+            "G1 Z-5.0 F100",  # first peck
+            "G0 Z2.0",  # rapid out to clear chips
+            "G0 Z-4.5",  # rapid back to just above the bottom
+            "G1 Z-10.0 F100",  # second peck
+            "G0 Z2.0",  # final retract
+        ]
+        result = filter_inefficient_moves(gcode)
+        self.assertEqual(result, gcode)
+
+    def test_endpoint_word_required_on_survivor(self):
+        """Test no collapse when the last line lacks the changing axis word."""
+        gcode = [
+            "G1 X0.0 Y0.0 F100",
+            "G0 X10.0",
+            "G0 Y0.0",  # redundant Y word; X endpoint not stated here
+        ]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G1 X0.0 Y0.0 F100", "G0 X10.0", "G0 Y0.0"]
+        self.assertEqual(result, expected)
+
+    def test_unknown_baseline_prevents_collapse(self):
+        """Test that axes with unknown starting position count as changing."""
+        gcode = ["G0 X10.0 Y5.0", "G0 X20.0"]  # Y start unknown
+        result = filter_inefficient_moves(gcode)
+        expected = ["G0 X10.0 Y5.0", "G0 X20.0"]
+        self.assertEqual(result, expected)
+
+    def test_incremental_mode_disables_collapsing(self):
+        """Test that G91 suspends collapsing; repeated words are real motion."""
+        gcode = ["G91", "G0 X10.0", "G0 X10.0"]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G91", "G0 X10.0", "G0 X10.0"]
+        self.assertEqual(result, expected)
+
+    def test_modal_rapid_chain_collapses_with_motion_word(self):
+        """Test that bare modal rapids collapse and keep a G0 word."""
+        gcode = ["G1 X0.0 F100", "G0 X10.0", "X20.0", "X30.0"]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G1 X0.0 F100", "G0 X30.0"]
+        self.assertEqual(result, expected)
+
+    def test_no_op_rapids_keep_only_last(self):
+        """Test that rapids to the current known position collapse to one."""
+        gcode = [
+            "G1 X10.0 Y10.0 F100",
+            "G0 X10.0 Y10.0",
+            "G0 X10.0 Y10.0",
+        ]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G1 X10.0 Y10.0 F100", "G0 X10.0 Y10.0"]
+        self.assertEqual(result, expected)
+
+    def test_no_collapse_annotation_blocks_collapse(self):
+        """Test that an annotated rapid is never collapsed, even when the
+        run is monotonic, and that the marker is stripped from output."""
+        gcode = [
+            "G1 X0.0 F100",
+            f"G0 X10.0 {NO_COLLAPSE_MARKER}",
+            "G0 X20.0",
+            "G0 X30.0",
+        ]
+        result = filter_inefficient_moves(gcode)
+        expected = [
+            "G1 X0.0 F100",
+            "G0 X10.0",  # protected, marker stripped
+            "G0 X30.0",  # remaining unprotected run still collapses
+        ]
+        self.assertEqual(result, expected)
+
+    def test_no_collapse_marker_stripped_everywhere(self):
+        """Test that the marker is stripped even outside of chains."""
+        gcode = [f"G0 Z2.0 {NO_COLLAPSE_MARKER}", f"G1 Z-5.0 F100 {NO_COLLAPSE_MARKER}"]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G0 Z2.0", "G1 Z-5.0 F100"]
+        self.assertEqual(result, expected)
+
+    def test_blockdelete_flushes_chain(self):
+        """Test that block-deleted lines are passed through and end a chain."""
+        gcode = ["G0 X10.0", "/G0 X20.0", "G0 X30.0"]
+        result = filter_inefficient_moves(gcode)
+        expected = ["G0 X10.0", "/G0 X20.0", "G0 X30.0"]
         self.assertEqual(result, expected)
 
     def test_optimize_mixed_axes_no_collapse(self):
