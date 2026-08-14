@@ -554,11 +554,11 @@ MappedName MappedName::makeUnmappedName(
         MappedName::makeEncodedSection(
             indexedNames,
             {},
-            std::to_string(iterationTag),
+            iterationTag,
             opCode,
-            "0",
+            0,
             elementType,
-            "0",
+            0,
             {Data::MAPPER_FLAG_INDEX, Data::MAPPER_FLAG_SOURCE},
             {}
         )
