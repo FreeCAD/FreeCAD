@@ -23,11 +23,10 @@
 
 #pragma once
 
+#include <cmath>
+#include <format>
 #include <map>
 #include <vector>
-
-#include "fmt/format.h"
-#include "fmt/ranges.h"
 
 #include "UnitsConvData.h"
 #include "UnitsSchemasSpecs.h"
@@ -743,21 +742,21 @@ inline std::string toFractional(const double value, std::size_t denominator)
     }
 
     if (feet > 0) {
-        result += fmt::format("{}'", feet);
+        result += std::format("{}'", feet);
         addSpace = true;
     }
 
     if (inches > 0) {
-        result += fmt::format("{}{}\"", addSpace ? " " : "", inches);
+        result += std::format("{}{}\"", addSpace ? " " : "", inches);
         addSpace = false;
     }
 
     if (numerator > 0) {
         if (inches > 0) {
-            result += fmt::format(" {} ", value < 0 ? "-" : "+");
+            result += std::format(" {} ", value < 0 ? "-" : "+");
             addSpace = false;
         }
-        result += fmt::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
+        result += std::format("{}{}/{}\"", addSpace ? " " : "", numerator, denominator);
     }
 
     return result;
@@ -776,14 +775,14 @@ inline std::string toDms(const double value)
     };
 
     auto [degrees, totalMinutes] = calc(value);
-    std::string out = fmt::format("{}°", degrees);
+    std::string out = std::format("{}°", degrees);
 
     if (totalMinutes > 0) {
         auto [minutes, totalSeconds] = calc(totalMinutes);
-        out += fmt::format("{}′", minutes);
+        out += std::format("{}′", minutes);
 
         if (totalSeconds > 0) {
-            out += fmt::format("{}″", std::round(totalSeconds));
+            out += std::format("{}″", std::round(totalSeconds));
         }
     }
 

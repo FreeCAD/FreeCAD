@@ -30,8 +30,6 @@
 #include <QTreeWidget>
 #include <QStyledItemDelegate>
 
-#include <fmt/format.h>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
