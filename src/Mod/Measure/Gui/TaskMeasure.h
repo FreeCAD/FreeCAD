@@ -168,8 +168,6 @@ private:
     QLineEdit* _deltaYResult {nullptr};
     QLineEdit* _deltaZResult {nullptr};
     QWidget* _deltaResult {nullptr};
-
-    static inline bool _delta {true};
 };
 
 }  // namespace MeasureGui
