@@ -1279,6 +1279,8 @@ class ObjectSurface(PathOp.ObjectOp):
         """
         all_final_cmds = []
 
+        cutting_faces = list(cutting_faces) if cutting_faces else []
+
         is_whole_model_job = False if cutting_faces else True
         sample_interval = obj.SampleInterval.Value
         force_keep_down = True if obj.CutPattern in ("ZigZag", "CircularZigZag") else False
@@ -1585,6 +1587,52 @@ class ObjectSurface(PathOp.ObjectOp):
 
         return cmds
 
+    def _prepare_geometry(self, JOB):
+        """
+        Resolves the Job's model bodies into one working shape, used
+        throughout opExecute for boundary and STL generation.
+
+        Multiple bodies are fused into a single continuous solid where
+        possible, falling back to a plain Compound if the fuse itself
+        fails. Vertical faces are excluded up front — Surface Scan,
+        Waterline, and Z-Level all treat them as irrelevant for boundary
+        and mesh purposes, so there's no reason to carry them further
+        into the pipeline.
+
+        Returns:
+            tuple: (base_objs, model_shape, model_faces, optimized_shape),
+                or None if there is no valid geometry to machine.
+        """
+        base_objs = JOB.Model.Group
+        if not base_objs:
+            Path.Log.error("No models found in Job.")
+            return None
+
+        valid_shapes = []
+        for b in base_objs:
+            if b.Shape and not b.Shape.isNull():
+                valid_shapes.append(b.Shape.copy())
+
+        if len(valid_shapes) > 1:
+            try:
+                # Melt overlapping models into one clean continuous object
+                model_shape = valid_shapes[0].fuse(valid_shapes[1:])
+                if hasattr(model_shape, "removeSplitter"):
+                    model_shape = model_shape.removeSplitter()
+            except Exception as e:
+                Path.Log.warning(f"Boolean fuse failed, falling back to Compound: {e}")
+                model_shape = Part.Compound(valid_shapes)
+        elif len(valid_shapes) == 1:
+            model_shape = valid_shapes[0]
+        else:
+            Path.Log.error("No valid shapes found to machine.")
+            return None
+
+        model_faces = surface_common._filter_vertical(model_shape.Faces)
+        optimized_shape = model_faces[0] if len(model_faces) == 1 else Part.makeCompound(model_faces)
+
+        return base_objs, model_shape, model_faces, optimized_shape
+
     def opExecute(self, obj):
         """Main execution method for Planar Surface operation.
 
@@ -1662,29 +1710,10 @@ class ObjectSurface(PathOp.ObjectOp):
             tool_params["length_offset"] = op_depth + tool_params["edge_height"]
 
         # Geometry preperation
-        base_objs = JOB.Model.Group
-        if not base_objs:
-            Path.Log.error("No models found in Job.")
+        geometry = self._prepare_geometry(JOB)
+        if geometry is None:
             return
-
-        valid_shapes = []
-        for b in base_objs:
-            if b.Shape and not b.Shape.isNull():
-                valid_shapes.append(b.Shape.copy())
-        if len(valid_shapes) > 1:
-            try:
-                # Melt overlapping models into one clean continuous object
-                model_shape = valid_shapes[0].fuse(valid_shapes[1:])
-                if hasattr(model_shape, "removeSplitter"):
-                    model_shape = model_shape.removeSplitter()
-            except Exception as e:
-                Path.Log.warning(f"Boolean fuse failed, falling back to Compound: {e}")
-                model_shape = Part.Compound(valid_shapes)
-        elif len(valid_shapes) == 1:
-            model_shape = valid_shapes[0]
-        else:
-            Path.Log.error("No valid shapes found to machine.")
-            return
+        base_objs, model_shape, model_faces, optimized_shape = geometry
 
         # Split selected features
         if needs_face_selection:
@@ -1716,10 +1745,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
                 bb_face = Part.Face(Part.makePolygon([p1, p2, p3, p4, p1]))
             else:
-                # Create a boundary from model_shape
-                bb_face = surface_common.create_boundary_face(
-                    model_shape.Faces, offset, avoids=False, model_boundary=True
-                )
+                # Create a boundary from model optimized_shape
+                bb_face = surface_common.create_boundary_face(model_faces, offset, avoids=False, compound=optimized_shape)
 
         # Avoid Faces processing
         avoid_boundary = None
@@ -1770,7 +1797,8 @@ class ObjectSurface(PathOp.ObjectOp):
             stl_start = time.time()
 
             stl, safe_stl = surface_mesh.generate_stl(
-                model_shape=model_shape,
+                model_shape=optimized_shape,
+                model_faces=model_faces,
                 base_objs=base_objs,
                 optimize_stl=optimize_stl,
                 strategy=strategy,
