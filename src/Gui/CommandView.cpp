@@ -3234,7 +3234,8 @@ void StdCmdSelBack::activated(int iMsg)
 
 bool StdCmdSelBack::isActive()
 {
-    return Selection().selStackBackSize() > 1;
+    auto& selection = Selection();
+    return selection.selStackBackSize() > (selection.hasSelection() ? 1 : 0);
 }
 
 //===========================================================================
