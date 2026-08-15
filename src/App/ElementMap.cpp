@@ -632,8 +632,6 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             sid = &_sid;
         }
     } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-        size_t duplicateIndex = 1;
-
         IndexedName existing;
         MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
         if (res) {
@@ -641,7 +639,12 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             return res;
         }
 
-        auto spliceStringByDuplicateCount = [](const std::string& nameString, std::string* beforeDuplicateCount, std::string* afterDuplicateCount) {
+        auto spliceStringByDuplicateCount = [](
+            const std::string& nameString,
+            std::string* beforeDuplicateCount,
+            std::string* afterDuplicateCount,
+            std::string* duplicateCount)
+        {
             *beforeDuplicateCount = nameString;
 
             constexpr int DUPLICATE_COUNT_REVERSE_INDEX = Data::SECTION_SIZE - Data::SECTION_DUPLICATE_COUNT_INDEX;
@@ -652,6 +655,8 @@ MappedName ElementMap::setElementName(const IndexedName& element,
 
                 if (currentSectionIndex < (DUPLICATE_COUNT_REVERSE_INDEX - 1)) {
                     afterDuplicateCount->insert(0, 1, currentCharacter);
+                } else if (currentCharacter != Data::SECTION_SUB_DELIMINATOR[0]) {
+                    duplicateCount->insert(0, 1, currentCharacter);
                 }
 
                 if (currentCharacter == Data::SECTION_SUB_DELIMINATOR[0]
@@ -667,10 +672,21 @@ MappedName ElementMap::setElementName(const IndexedName& element,
 
         std::string mappedNameBeforeDuplicateCount;
         std::string mappedNameAfterDuplicateCount;
-
-        spliceStringByDuplicateCount(mappedName.toString(), &mappedNameBeforeDuplicateCount, &mappedNameAfterDuplicateCount);
+        std::string duplicateIndexString;
+        
+        spliceStringByDuplicateCount(
+            mappedName.toString(),
+            &mappedNameBeforeDuplicateCount,
+            &mappedNameAfterDuplicateCount,
+            &duplicateIndexString
+        );
 
         Data::MappedName fixedName;
+        unsigned long duplicateIndex = 1;
+
+        if (duplicateIndexString != "0" && duplicateIndexString != Data::EMPTY_VALUE) {
+            duplicateIndex = std::stoul(duplicateIndexString);
+        }
 
         for (size_t i = 0; i < mappedNames.size(); i++) {
             ZoneScopedN("V2 Duplicate Loop");

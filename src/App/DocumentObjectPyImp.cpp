@@ -921,6 +921,10 @@ PyObject* DocumentObjectPy::getPathsByOutList(PyObject* args)
 
 PyObject* DocumentObjectPy::getCorrectElementMapVersion(PyObject* args) const
 {
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
     return Py::new_reference_to(
         Py::String(getDocumentObjectPtr()->getCorrectElementMapVersion()));
 }
