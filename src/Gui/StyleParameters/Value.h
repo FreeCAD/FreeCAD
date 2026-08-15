@@ -93,6 +93,15 @@ struct GuiExport Numeric
     Numeric operator*(const Numeric& rhs) const;
     /// @}
 
+    /**
+     * @brief The value as a plain fraction — dimensionless as-is, `%` out of 100.
+     *
+     * Yields nothing for any other unit, so callers that only accept normalized numbers
+     * (gradient geometry, stop positions) can tell `50%` from `50px` instead of silently
+     * dropping the unit.
+     */
+    std::optional<double> asFraction() const;
+
 private:
     void ensureEqualUnits(const Numeric& rhs) const;
 };
