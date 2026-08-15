@@ -50,6 +50,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <QTimer>
 #include <sstream>
 
 #include <Inventor/SoPickedPoint.h>
@@ -280,6 +281,7 @@ ViewProviderPartExt::ViewProviderPartExt()
 
 ViewProviderPartExt::~ViewProviderPartExt()
 {
+    delete angularDeflectionTimer;
     pcFaceBind->unref();
     pcLineBind->unref();
     pcPointBind->unref();
@@ -321,8 +323,21 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
     }
     if (prop == &AngularDeflection) {
         lastRenderedShape = {};
-        if (isUpdateForced() || Visibility.getValue()) {
+        if (isUpdateForced()) {
             updateVisual();
+        }
+        else if (Visibility.getValue()) {
+            // Debounce: delay retessellation so typing intermediate values
+            // in the property editor doesn't freeze the GUI (issue #31047).
+            if (!angularDeflectionTimer) {
+                angularDeflectionTimer = new QTimer();
+                angularDeflectionTimer->setSingleShot(true);
+                angularDeflectionTimer->setInterval(500);  // 500 ms delay
+                QObject::connect(angularDeflectionTimer, &QTimer::timeout, [this]() {
+                    updateVisual();
+                });
+            }
+            angularDeflectionTimer->start();
         }
         else {
             VisualTouched = true;

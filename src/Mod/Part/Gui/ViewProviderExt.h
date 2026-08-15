@@ -58,6 +58,8 @@ class SoNormalBinding;
 class SoMaterialBinding;
 class SoIndexedLineSet;
 
+class QTimer;
+
 namespace PartGui
 {
 
@@ -253,6 +255,10 @@ private:
 
     // shape that was last rendered so if it does not change we don't re-render it without need
     TopoDS_Shape lastRenderedShape;
+
+    // Debounce timer to avoid immediate retessellation while typing
+    // angular deflection values in the property editor (issue #31047)
+    QTimer* angularDeflectionTimer = nullptr;
 };
 
 }  // namespace PartGui
