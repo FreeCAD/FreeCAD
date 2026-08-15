@@ -49,6 +49,13 @@
 #define USER_PREF "User parameter:BaseApp/Preferences/"
 using namespace Gui;
 namespace sp = std::placeholders;
+enum class GraphvizView::PathType : uint8_t
+{
+    Stored,     // Read from properties
+    AppPath,    // The dir containing the running executable
+    Default,    // Read via PATH environmnet variable
+    Selection,  // Select path with file dialog
+};
 
 namespace Gui
 {
@@ -180,6 +187,38 @@ GraphvizView::~GraphvizView()
     delete view;
 }
 
+QString GraphvizView::getDirPath()
+{
+    if (pathType == PathType::Stored) {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
+        if (auto path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str()); !path.isEmpty()) {
+            return path;
+        }
+        pathType = PathType::AppPath;
+    }
+    if (pathType == PathType::AppPath) {
+        return QCoreApplication::applicationDirPath();
+    }
+    if (pathType == PathType::Default) {
+        return "";  // Empty, non-null, string
+    }
+    auto msg = QStringLiteral(
+                   "<html><head/><body>%1 "
+                   "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2</a>"
+                   "<p>%3</p></body></html>"
+    )
+                   .arg(
+                       tr("Graphviz couldn't be found on your system."),
+                       tr("Read more about it here."),
+                       tr("Do you want to specify its installation path if it's already installed?")
+                   );
+    using MB = QMessageBox;
+    if (MB::warning(Gui::getMainWindow(), tr("Graphviz not found"), msg, MB::Yes, MB::No) == MB::Yes) {
+        return QFileDialog::getExistingDirectory(Gui::getMainWindow(), tr("Graphviz installation path"));
+    }
+    return QString();  // Null string
+}
+
 QString joinPath(const QString& path, const QString& file)
 {
     return path.isEmpty() ? file : QDir(path).filePath(file);
@@ -194,7 +233,6 @@ void GraphvizView::updateSvgItem()
         return;
     }
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
     QStringList args;
     // TODO: Make -Granksep flag value variable depending on number of edges,
     // the downside is that the value affects all subgraphs
@@ -202,43 +240,32 @@ void GraphvizView::updateSvgItem()
     if (!App::GetApplication().isFineGrainedRecomputeEnabled()) {
         args << QLatin1String("-Gsplines=ortho") << QLatin1String("-Goutputorder=edgesfirst");
     }
-    auto path = QString::fromUtf8(hGrp->GetASCII("Graphviz").c_str());
+    QString path;
     bool pathChanged = false;
     dotProc->setEnvironment(QProcess::systemEnvironment());
     unflattenProc->setEnvironment(QProcess::systemEnvironment());
     do {
+        if (path.isNull()) {
+            path = getDirPath();
+            if (path.isNull()) {
+                disconnectSignals();
+                return;
+            }
+        }
         unflattenProc->start(joinPath(path, QStringLiteral("unflatten")), {QLatin1String("-c2 -l2")});
         bool value = unflattenProc->waitForStarted();
         Q_UNUSED(value);  // quieten code analyzer
         dotProc->start(joinPath(path, QStringLiteral("dot")), args);
         if (dotProc->waitForStarted()) {
-            if (pathChanged) {
-                hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
-            }
             break;
         }
-        auto msg = QStringLiteral(
-                       "<html><head/><body>%1 "
-                       "<a href=\"https://www.freecad.org/wiki/Std_DependencyGraph\">%2</a>"
-                       "<p>%3</p></body></html>"
-        )
-                       .arg(
-                           tr("Graphviz couldn't be found on your system."),
-                           tr("Read more about it here."),
-                           tr("Do you want to specify its installation path if it's already "
-                              "installed?")
-                       );
-        using MB = QMessageBox;
-        if (MB::warning(getMainWindow(), tr("Graphviz not found"), msg, MB::Yes, MB::No) == MB::Yes) {
-            path = QFileDialog::getExistingDirectory(getMainWindow(), tr("Graphviz installation path"));
-            if (!path.isEmpty()) {
-                pathChanged = true;
-                continue;
-            }
-        }
-        disconnectSignals();
-        return;
+        path = QString();
+        pathType = (PathType)((int)pathType + 1);
     } while (true);
+    if (pathChanged) {
+        auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
+        hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
+    }
 
     // Create graph in dot format
     std::stringstream stream;
