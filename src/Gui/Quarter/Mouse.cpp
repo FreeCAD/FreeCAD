@@ -42,6 +42,7 @@
 #endif
 
 #include <QEvent>
+#include <QInputDevice>
 #include <QMouseEvent>
 #include <QWheelEvent>
 
@@ -190,6 +191,15 @@ MouseP::mouseWheelEvent(QWheelEvent * event)
   // user. A typical wheel click is 120, but values coming from touchpad
   // can be a lot lower
   this->wheel->setDelta(event->angleDelta().y());
+
+  const QPoint pixels = event->pixelDelta();
+  const QInputDevice * device = event->device();
+  const bool touchpad = device && device->type() == QInputDevice::DeviceType::TouchPad;
+  const SbVec2f widgetDelta(static_cast<float>(pixels.x()), static_cast<float>(pixels.y()));
+  this->wheel->setPixelDelta(
+    SoMouseWheelEvent::toGlPixelDelta(widgetDelta,
+                                      static_cast<float>(publ->quarter->devicePixelRatio())),
+    touchpad || !pixels.isNull());
 
   return this->wheel;
 }
