@@ -34,7 +34,6 @@ packages=(
   libexpat1-dev
   libgtest-dev
   libgmock-dev
-  libfmt-dev
   libkdtree++-dev
   libmedc-dev
   libocct-data-exchange-dev
