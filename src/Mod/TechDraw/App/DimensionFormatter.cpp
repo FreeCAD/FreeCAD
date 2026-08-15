@@ -24,9 +24,8 @@
 #include <QRegularExpression>
 #include <QString>
 
-#include <fmt/format.h>
-
 #include <Base/Console.h>
+#include <Base/PrintfFormat.h>
 #include <Base/UnitsApi.h>
 
 #include "DrawViewDimension.h"
@@ -277,7 +276,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
     QString formattedValue;
 
     constexpr auto format = [](QString f, double value){
-        return QString::fromStdString(fmt::sprintf(f.toStdString(), value));
+        return QString::fromStdString(Base::sprintf(f.toStdString().c_str(), value));
     };
 
     QRegularExpression wrRegExp(QStringLiteral("%(?<dec>.*)(?<spec>[wWrR])"));

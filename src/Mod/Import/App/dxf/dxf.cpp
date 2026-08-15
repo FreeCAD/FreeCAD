@@ -2389,7 +2389,7 @@ bool CDxfRead::ReadDimension()
             OnReadDimension(start, end, linePosition, dimensionType, Base::toRadians(rotation));
             break;
         default:
-            UnsupportedFeature("Dimension type '%d'", dimensionType);
+            UnsupportedFeature("Dimension type '{}'", dimensionType);
             break;
     }
     return true;
@@ -2398,7 +2398,7 @@ bool CDxfRead::ReadDimension()
 bool CDxfRead::ReadUnknownEntity()
 {
     ProcessAllEntityAttributes();
-    UnsupportedFeature("Entity type '%s'", m_current_entity_name.c_str());
+    UnsupportedFeature("Entity type '{}'", m_current_entity_name);
     return true;
 }
 
@@ -2453,10 +2453,9 @@ bool CDxfRead::SkipBlockContents()
 }
 
 template<typename... args>
-void CDxfRead::UnsupportedFeature(const char* format, args&&... argValuess)
+void CDxfRead::UnsupportedFeature(std::format_string<args...> format, args&&... argValues)
 {
-    // NOLINTNEXTLINE(runtime/printf)
-    std::string formattedMessage = fmt::sprintf(format, std::forward<args>(argValuess)...);
+    std::string formattedMessage = std::format(format, std::forward<args>(argValues)...);
     m_stats.unsupportedFeatures[formattedMessage].emplace_back(
         m_current_entity_line_number,
         m_current_entity_handle
@@ -3256,4 +3255,4 @@ Base::Color CDxfRead::ObjectColor(ColorIndex_t index)
 }
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
 
-template void CDxfRead::UnsupportedFeature<>(const char*);
+template void CDxfRead::UnsupportedFeature<>(std::format_string<>);

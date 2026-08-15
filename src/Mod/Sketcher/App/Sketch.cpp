@@ -523,7 +523,7 @@ bool Sketch::analyseBlockedConstraintDependentParameters(
                 params_to_block.push_back(thisparam);
                 prop_groups[i].blocking_param_in_group = thisparam;
 #ifdef DEBUG_BLOCK_CONSTRAINT
-                Base::Console().log("\nTentatively blocking group %d, with param=%x", i, thisparam);
+                Base::Console().log("\nTentatively blocking group %d, with param=%p", i, thisparam);
 #endif  // DEBUG_BLOCK_CONSTRAINT
                 break;
             }

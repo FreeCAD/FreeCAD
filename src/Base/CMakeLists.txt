@@ -222,6 +222,7 @@ SET(FreeCADBase_CPP_SRCS
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
+    PrintfFormat.cpp
     ProgressIndicatorPy.cpp
     PyException.cpp
     PyExport.cpp
@@ -292,6 +293,7 @@ SET(FreeCADBase_HPP_SRCS
     Persistence.h
     Placement.h
     Precision.h
+    PrintfFormat.h
     ProgressIndicatorPy.h
     PyException.h
     PyExport.h
