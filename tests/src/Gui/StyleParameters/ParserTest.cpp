@@ -1407,6 +1407,36 @@ TEST_F(ParserTest, CornersFromUnrelatedTupleDefaultsToZero)
     EXPECT_DOUBLE_EQ(corners.bottomLeft().value, 0.0);
     EXPECT_THAT(capture.messages(), Contains(HasSubstr("Expected Corners tuple, got Padding")));
 }
+
+TEST_F(ParserTest, ResolveTypedCorners)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{.name = "TestRadius", .value = "border_radius(1px, 2px, 3px, 4px)"}},
+        ParameterSource::Metadata {.name = "Corners Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top_left", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("top_right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom_right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom_left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Corners
+    );
+
+    ParameterDefinition<Corners> def {.name = "TestRadius", .defaultValue = Corners(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.topLeft().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.topRight().value, 2.0);
+    EXPECT_DOUBLE_EQ(resolved.bottomRight().value, 3.0);
+    EXPECT_DOUBLE_EQ(resolved.bottomLeft().value, 4.0);
+}
+
 // Gradient tests
 
 TEST_F(ParserTest, LinearGradientMinimal)
@@ -1652,6 +1682,56 @@ TEST_F(ParserTest, GradientStopsAccessibleViaMemberAccess)
     ASSERT_TRUE(result.holds<Tuple>());
     EXPECT_EQ(result.get<Tuple>().size(), 2);
 }
+
+TEST_F(ParserTest, ResolveTypedLinearGradient)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {
+            {.name = "TestGradient", .value = "linear_gradient(#ff0000, #00ff00, #0000ff)"}
+        },
+        ParameterSource::Metadata {.name = "Gradient Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    // Build a default LinearGradient tuple
+    Tuple defaultStopsTuple({
+        Tuple::Element::unnamed(Tuple({
+            Tuple::Element::unnamed(Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::unnamed(Base::Color(0, 0, 0)),
+        })),
+        Tuple::Element::unnamed(Tuple({
+            Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+            Tuple::Element::unnamed(Base::Color(1, 1, 1)),
+        })),
+    });
+
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("x1", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("y1", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("x2", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("y2", Numeric {.value = 1, .unit = ""}),
+            Tuple::Element::named("stops", std::move(defaultStopsTuple)),
+        },
+        TupleKind::LinearGradient
+    );
+
+    ParameterDefinition<LinearGradient> def {
+        .name = "TestGradient",
+        .defaultValue = LinearGradient(defaultTuple),
+    };
+    auto resolved = mgr.resolve(def);
+
+    auto stops = resolved.colorStops();
+    ASSERT_EQ(stops.size(), 3);
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 0.5);
+    EXPECT_DOUBLE_EQ(stops[2].position.value, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].color.g, 1.0);  // middle stop is green
+}
+
 // Gradient color function tests
 
 TEST_F(ParserTest, LightenGradient)
