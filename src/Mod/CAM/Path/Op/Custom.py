@@ -194,7 +194,6 @@ class ObjectCustom(PathOp.ObjectOp):
 
     def processLines(self, obj, lines):
         for i, line in enumerate(lines, 1):
-            line = line.strip()
             if line.startswith("!"):
                 newcommand = Path.Command("", {}, {Constants.ANNOT_AS_IS: line[1:]})
                 self.commandlist.append(newcommand)
@@ -202,6 +201,7 @@ class ObjectCustom(PathOp.ObjectOp):
                 newcommand = Path.Command("", {}, {Constants.ANNOT_AS_IS: line})
                 self.commandlist.append(newcommand)
             else:
+                line = line.strip()
                 line = self.parseExpressions(obj, line, i)
                 try:
                     newcommand = Path.Command(line, {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
