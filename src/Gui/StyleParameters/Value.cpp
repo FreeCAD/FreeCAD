@@ -24,9 +24,11 @@
 #include "Value.h"
 
 #include <algorithm>
+#include <format>
 #include <functional>
 #include <ranges>
-#include <fmt/ranges.h>
+
+#include <Base/Tools.h>
 
 #include <Base/Exception.h>
 
@@ -92,7 +94,7 @@ void Numeric::ensureEqualUnits(const Numeric& rhs) const
     if (unit != rhs.unit) {
         THROWM(
             Base::RuntimeError,
-            fmt::format("Units mismatch left expression is '{}', right expression is '{}'", unit, rhs.unit)
+            std::format("Units mismatch left expression is '{}', right expression is '{}'", unit, rhs.unit)
         );
     }
 }
@@ -116,10 +118,10 @@ std::string colorToString(const Base::Color& color)
     const uint32_t alpha = packed & channelMask;
 
     if (alpha == channelMask) {
-        return fmt::format("#{:0>6x}", color.getPackedRGB() >> channelBits);
+        return std::format("#{:0>6x}", color.getPackedRGB() >> channelBits);
     }
 
-    return fmt::format(
+    return std::format(
         "rgba({}, {}, {}, {})",
         (packed >> (3 * channelBits)) & channelMask,
         (packed >> (2 * channelBits)) & channelMask,
@@ -134,7 +136,7 @@ std::string Value::toString() const
 {
     if (holds<Numeric>()) {
         auto [value, unit] = get<Numeric>();
-        return fmt::format("{}{}", value, unit);
+        return std::format("{}{}", value, unit);
     }
 
     if (holds<Base::Color>()) {
@@ -151,7 +153,7 @@ std::string Value::toString() const
             std::string string;
 
             if (name) {
-                string = fmt::format("{}: {}", *name, value->toString());
+                string = std::format("{}: {}", *name, value->toString());
             }
             else {
                 string = value->toString();
@@ -160,7 +162,7 @@ std::string Value::toString() const
             parts.push_back(std::move(string));
         }
 
-        return fmt::format("({})", fmt::join(parts, ", "));
+        return std::format("({})", Base::Tools::joinFormatted(parts, ", "));
     }
 
     return get<std::string>();
@@ -179,7 +181,7 @@ TupleKind resolveKind(TupleKind lhs, TupleKind rhs)
     }
     THROWM(
         Base::ExpressionError,
-        fmt::format("Cannot combine {} and {} tuples", tupleKindName(lhs), tupleKindName(rhs))
+        std::format("Cannot combine {} and {} tuples", tupleKindName(lhs), tupleKindName(rhs))
     );
 }
 
@@ -435,13 +437,13 @@ Tuple ArgumentParser::resolve(const Tuple& args) const
         });
 
         if (it == params_.end()) {
-            THROWM(Base::ExpressionError, fmt::format("Unknown argument '{}'", *elem.name));
+            THROWM(Base::ExpressionError, std::format("Unknown argument '{}'", *elem.name));
         }
 
         auto index = static_cast<size_t>(std::distance(params_.begin(), it));
 
         if (slots[index]) {
-            THROWM(Base::ExpressionError, fmt::format("Duplicate argument '{}'", *elem.name));
+            THROWM(Base::ExpressionError, std::format("Duplicate argument '{}'", *elem.name));
         }
 
         slots[index] = elem.value;
@@ -467,7 +469,7 @@ Tuple ArgumentParser::resolve(const Tuple& args) const
         else {
             THROWM(
                 Base::ExpressionError,
-                fmt::format("Missing required argument '{}'", params_[i].name)
+                std::format("Missing required argument '{}'", params_[i].name)
             );
         }
     }
@@ -476,7 +478,7 @@ Tuple ArgumentParser::resolve(const Tuple& args) const
     if (unnamedIt != unnamed.end()) {
         THROWM(
             Base::ExpressionError,
-            fmt::format("Too many arguments: expected {}, got {}", params_.size(), args.size())
+            std::format("Too many arguments: expected {}, got {}", params_.size(), args.size())
         );
     }
 
