@@ -23,6 +23,7 @@
 
 #include <QCollator>
 #include <QColorDialog>
+#include "ShortcutManager.h"
 #include <QDebug>
 #include <QDesktopServices>
 #include <QDialogButtonBox>
@@ -395,7 +396,7 @@ bool AccelLineEdit::isEmpty() const
 
 QString AccelLineEdit::text() const
 {
-    return keySequence().toString(QKeySequence::NativeText);
+    return Gui::ShortcutManager::asString(keySequence(), QKeySequence::NativeText);
 }
 
 // ------------------------------------------------------------------------------
