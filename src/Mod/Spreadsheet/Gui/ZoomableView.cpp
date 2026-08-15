@@ -203,8 +203,11 @@ void ZoomableView::updateView(void)
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
 {
-    if (event->reason() == Qt::FocusReason::PopupFocusReason) {
-        return;
+    switch (event->reason()) {
+        case Qt::FocusReason::PopupFocusReason:
+        case Qt::FocusReason::TabFocusReason:
+            return;
+            break;
     }
 
     QGraphicsView::focusOutEvent(event);
