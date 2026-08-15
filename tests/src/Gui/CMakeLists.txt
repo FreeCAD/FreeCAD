@@ -8,6 +8,7 @@ add_executable(Gui_tests_run
         Assistant.cpp
         Camera.cpp
         ColorScaleOverlayTest.cpp
+        DocumentRecovery.cpp
         FileDialog.cpp
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
