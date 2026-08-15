@@ -66,6 +66,8 @@ Q_SIGNALS:
     void convertStart();
 
 private:
+    enum class PathType : uint8_t;
+    QString getDirPath();
     void updateSvgItem();
     void disconnectSignals();
 
@@ -79,6 +81,7 @@ private:
     QProcess* dotProc;
     QProcess* unflattenProc;
     int nPending;
+    PathType pathType = (PathType)0;
 
     using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;
