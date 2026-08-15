@@ -56,7 +56,9 @@ TEST(DocumentRecovery, ReleasesValidationStreams)
     const QString recoveryDir = temp.filePath(QStringLiteral("recovery"));
     ASSERT_TRUE(QDir().mkpath(recoveryDir));
     createArchive(original);
-    ASSERT_TRUE(QFile::copy(original, QDir(recoveryDir).filePath(QStringLiteral("fc_recovery_file.fcstd"))));
+    ASSERT_TRUE(
+        QFile::copy(original, QDir(recoveryDir).filePath(QStringLiteral("fc_recovery_file.fcstd")))
+    );
 
     QFile metadata(QDir(recoveryDir).filePath(QStringLiteral("fc_recovery_file.xml")));
     ASSERT_TRUE(metadata.open(QIODevice::WriteOnly | QIODevice::Text));
