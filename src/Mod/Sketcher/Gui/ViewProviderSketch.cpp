@@ -5610,7 +5610,7 @@ void ViewProviderSketch::preselectToSelection(const std::stringstream& ss,
                                                bool toggle)
 {
     Gui::Selection().selStackPush();
-    
+
     // If toggle true and preselection already selected remove from selection
     if (toggle && isSelected(ss.str())) {
         rmvSelection(ss.str());

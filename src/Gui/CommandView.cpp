@@ -3464,8 +3464,7 @@ StdTreeRecordSelection::StdTreeRecordSelection()
 {
     sGroup = "TreeView";
     sMenuText = QT_TR_NOOP("Record Selection History");
-    sToolTipText
-        = QT_TR_NOOP("Stores selection changes for Selection Back/Forward navigation");
+    sToolTipText = QT_TR_NOOP("Stores selection changes for Selection Back/Forward navigation");
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_TreeRecordSelection";
     sPixmap = "tree-rec-sel";
