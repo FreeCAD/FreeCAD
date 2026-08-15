@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFormMatch</class>
+ <widget class="QWidget" name="TaskFormMatch">
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0"><widget class="QLabel" name="continuityLabel"><property name="text"><string>Continuity</string></property></widget></item>
+   <item row="0" column="1"><widget class="QComboBox" name="continuityMode">
+    <item><property name="text"><string>Tangent to adjacent faces (G1)</string></property></item>
+    <item><property name="text"><string>Tangent to selected face (G1)</string></property></item>
+    <item><property name="text"><string>Connected only (G0)</string></property></item>
+   </widget></item>
+   <item row="1" column="0" colspan="2"><widget class="QLabel" name="explanation"><property name="text"><string>Adjacent faces continue the model surfaces around the opening; selected face starts the form within the selected face plane.</string></property><property name="wordWrap"><bool>true</bool></property></widget></item>
+   <item row="2" column="0" colspan="2"><widget class="QLabel" name="previewStatus"><property name="wordWrap"><bool>true</bool></property></widget></item>
+   <item row="3" column="0" colspan="2"><layout class="QHBoxLayout" name="buttonLayout">
+    <item><widget class="QPushButton" name="applyButton"><property name="text"><string>Apply</string></property></widget></item>
+    <item><widget class="QPushButton" name="cancelButton"><property name="text"><string>Cancel</string></property></widget></item>
+   </layout></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

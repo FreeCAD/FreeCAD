@@ -31,3 +31,6 @@ class ViewProvider(ViewProviderPartExt):
         the display mode. This can be used to show the shape of this viewprovider from
         other viewproviders without doing anything to the document and properties.
         """
+
+    def showPreviousFeature(self, visible: bool, /) -> None:
+        """Show the preceding feature instead of this feature."""

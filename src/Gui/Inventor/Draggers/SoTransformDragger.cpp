@@ -21,11 +21,14 @@
  *                                                                            *
  ******************************************************************************/
 
+#include <array>
 #include <cassert>
 #include <numbers>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Inventor/draggers/SoScale1Dragger.h>
+#include <Inventor/draggers/SoScale2UniformDragger.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -58,6 +61,7 @@
 #include "Utilities.h"
 
 #include <Gui/SoLabelNodes.h>
+#include <Gui/Inventor/SoToggleSwitch.h>
 
 
 /*
@@ -87,6 +91,103 @@
 */
 
 using namespace Gui;
+
+namespace
+{
+// The planar square spans 1.15..3.15 in each local axis.  Keep the scale
+// controls as three distinct sides of one offset outline: two straight bars
+// followed by the L-shaped corner.  4.075 halves the previous 1.85 clearance
+// between the square edge and the outer control coordinate.
+constexpr float planarScaleOffset = 4.075F;
+constexpr float planarScaleBarCenter = 1.665F;
+constexpr float planarScaleBarLength = 1.8F;
+constexpr float planarScaleCornerLength = 1.0F;
+constexpr float planarScaleLineThickness = 0.24F;
+constexpr float planarScaleLineDepth = 0.18F;
+
+SoSeparator* buildPlanarScaleBar(float alongBarCenter, bool active)
+{
+    auto root = new SoSeparator;
+
+    auto lightModel = new SoLightModel;
+    lightModel->model = SoLightModel::BASE_COLOR;
+    root->addChild(lightModel);
+
+    if (active) {
+        auto color = new SoBaseColor;
+        color->rgb = SbColor(1.0F, 1.0F, 0.0F);
+        root->addChild(color);
+    }
+
+    auto translation = new SoTranslation;
+    translation->translation = SbVec3f(planarScaleOffset, alongBarCenter, 0.0F);
+    root->addChild(translation);
+
+    auto handle = new SoCube;
+    handle->width = planarScaleLineThickness;
+    handle->height = planarScaleBarLength;
+    handle->depth = planarScaleLineDepth;
+    root->addChild(handle);
+    return root;
+}
+
+SoSeparator* buildPlanarScaleCorner(bool active)
+{
+    auto root = new SoSeparator;
+
+    auto lightModel = new SoLightModel;
+    lightModel->model = SoLightModel::BASE_COLOR;
+    root->addChild(lightModel);
+
+    if (active) {
+        auto color = new SoBaseColor;
+        color->rgb = SbColor(1.0F, 1.0F, 0.0F);
+        root->addChild(color);
+    }
+
+    // Join the two legs at their endpoints. Separate separators prevent one
+    // leg's translation from accumulating into the other leg.
+    constexpr float cornerCenter = planarScaleOffset - planarScaleCornerLength / 2.0F;
+    auto horizontalRoot = new SoSeparator;
+    auto horizontalPosition = new SoTranslation;
+    horizontalPosition->translation = SbVec3f(cornerCenter, planarScaleOffset, 0.0F);
+    horizontalRoot->addChild(horizontalPosition);
+    auto horizontal = new SoCube;
+    horizontal->width = planarScaleCornerLength;
+    horizontal->height = planarScaleLineThickness;
+    horizontal->depth = planarScaleLineDepth;
+    horizontalRoot->addChild(horizontal);
+    root->addChild(horizontalRoot);
+
+    auto verticalRoot = new SoSeparator;
+    auto verticalPosition = new SoTranslation;
+    verticalPosition->translation = SbVec3f(planarScaleOffset, cornerCenter, 0.0F);
+    verticalRoot->addChild(verticalPosition);
+    auto vertical = new SoCube;
+    vertical->width = planarScaleLineThickness;
+    vertical->height = planarScaleCornerLength;
+    vertical->depth = planarScaleLineDepth;
+    verticalRoot->addChild(vertical);
+    root->addChild(verticalRoot);
+    return root;
+}
+
+void setupPlanarScaleBar(SoScale1Dragger* dragger, float alongBarCenter)
+{
+    dragger->setPart("scaler", buildPlanarScaleBar(alongBarCenter, false));
+    dragger->setPart("scalerActive", buildPlanarScaleBar(alongBarCenter, true));
+    dragger->setPart("feedback", new SoSeparator);
+    dragger->setPart("feedbackActive", new SoSeparator);
+}
+
+void setupPlanarScaleCorner(SoScale2UniformDragger* dragger)
+{
+    dragger->setPart("scaler", buildPlanarScaleCorner(false));
+    dragger->setPart("scalerActive", buildPlanarScaleCorner(true));
+    dragger->setPart("feedback", new SoSeparator);
+    dragger->setPart("feedbackActive", new SoSeparator);
+}
+}  // namespace
 
 SO_KIT_SOURCE(SoTransformDragger)
 
@@ -222,6 +323,60 @@ SoTransformDragger::SoTransformDragger()
         TRUE
     );
 
+    // Planar scale
+    SO_KIT_ADD_CATALOG_ENTRY(planarScaleSwitch, SoToggleSwitch, TRUE, annotation, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleSeparator, SoSeparator, TRUE, planarScaleSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleSeparator, SoSeparator, TRUE, planarScaleSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleSeparator, SoSeparator, TRUE, planarScaleSwitch, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleColor, SoBaseColor, TRUE, xyPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleColor, SoBaseColor, TRUE, yzPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleColor, SoBaseColor, TRUE, zxPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleRotation, SoRotation, TRUE, xyPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleRotation, SoRotation, TRUE, yzPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleRotation, SoRotation, TRUE, zxPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleXSeparator, SoSeparator, TRUE, xyPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleXSeparator, SoSeparator, TRUE, yzPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleXSeparator, SoSeparator, TRUE, zxPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleXRotation, SoRotation, TRUE, xyPlanarScaleXSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleXRotation, SoRotation, TRUE, yzPlanarScaleXSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleXRotation, SoRotation, TRUE, zxPlanarScaleXSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleXDragger, SoScale1Dragger, TRUE, xyPlanarScaleXSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleXDragger, SoScale1Dragger, TRUE, yzPlanarScaleXSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleXDragger, SoScale1Dragger, TRUE, zxPlanarScaleXSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleYSeparator, SoSeparator, TRUE, xyPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleYSeparator, SoSeparator, TRUE, yzPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleYSeparator, SoSeparator, TRUE, zxPlanarScaleSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleYRotation, SoRotation, TRUE, xyPlanarScaleYSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleYRotation, SoRotation, TRUE, yzPlanarScaleYSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleYRotation, SoRotation, TRUE, zxPlanarScaleYSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(xyPlanarScaleYDragger, SoScale1Dragger, TRUE, xyPlanarScaleYSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(yzPlanarScaleYDragger, SoScale1Dragger, TRUE, yzPlanarScaleYSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(zxPlanarScaleYDragger, SoScale1Dragger, TRUE, zxPlanarScaleYSeparator, "", TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(
+        xyPlanarScaleUniformDragger,
+        SoScale2UniformDragger,
+        TRUE,
+        xyPlanarScaleSeparator,
+        "",
+        TRUE
+    );
+    SO_KIT_ADD_CATALOG_ENTRY(
+        yzPlanarScaleUniformDragger,
+        SoScale2UniformDragger,
+        TRUE,
+        yzPlanarScaleSeparator,
+        "",
+        TRUE
+    );
+    SO_KIT_ADD_CATALOG_ENTRY(
+        zxPlanarScaleUniformDragger,
+        SoScale2UniformDragger,
+        TRUE,
+        zxPlanarScaleSeparator,
+        "",
+        TRUE
+    );
+
     // Rotator
     SO_KIT_ADD_CATALOG_ENTRY(xRotatorDragger, SoRotationDraggerContainer, TRUE, annotation, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(yRotatorDragger, SoRotationDraggerContainer, TRUE, annotation, "", TRUE);
@@ -239,6 +394,9 @@ SoTransformDragger::SoTransformDragger()
     SO_KIT_ADD_FIELD(rotationIncrementCountX, (0));
     SO_KIT_ADD_FIELD(rotationIncrementCountY, (0));
     SO_KIT_ADD_FIELD(rotationIncrementCountZ, (0));
+
+    SO_KIT_ADD_FIELD(planarScaleFactor, (1.0, 1.0, 1.0));
+    SO_KIT_ADD_FIELD(planarScaleVisible, (FALSE));
 
     SO_KIT_ADD_FIELD(draggerSize, (1.0));
     SO_KIT_ADD_FIELD(autoScaleResult, (1.0));
@@ -277,6 +435,43 @@ SoTransformDragger::SoTransformDragger()
     translationIncrementCountX.appendConnection(&tPlanarDragger->translationIncrementXCount);
     translationIncrementCountZ.appendConnection(&tPlanarDragger->translationIncrementYCount);
 
+    auto planarScaleSwitch = SO_GET_ANY_PART(this, "planarScaleSwitch", SoToggleSwitch);
+    planarScaleSwitch->on.connectFrom(&planarScaleVisible);
+
+    setupPlanarScaleBar(
+        SO_GET_ANY_PART(this, "xyPlanarScaleXDragger", SoScale1Dragger),
+        -planarScaleBarCenter
+    );
+    setupPlanarScaleBar(
+        SO_GET_ANY_PART(this, "yzPlanarScaleXDragger", SoScale1Dragger),
+        -planarScaleBarCenter
+    );
+    setupPlanarScaleBar(
+        SO_GET_ANY_PART(this, "zxPlanarScaleXDragger", SoScale1Dragger),
+        -planarScaleBarCenter
+    );
+    setupPlanarScaleBar(
+        SO_GET_ANY_PART(this, "xyPlanarScaleYDragger", SoScale1Dragger),
+        planarScaleBarCenter
+    );
+    setupPlanarScaleBar(
+        SO_GET_ANY_PART(this, "yzPlanarScaleYDragger", SoScale1Dragger),
+        planarScaleBarCenter
+    );
+    setupPlanarScaleBar(
+        SO_GET_ANY_PART(this, "zxPlanarScaleYDragger", SoScale1Dragger),
+        planarScaleBarCenter
+    );
+    setupPlanarScaleCorner(
+        SO_GET_ANY_PART(this, "xyPlanarScaleUniformDragger", SoScale2UniformDragger)
+    );
+    setupPlanarScaleCorner(
+        SO_GET_ANY_PART(this, "yzPlanarScaleUniformDragger", SoScale2UniformDragger)
+    );
+    setupPlanarScaleCorner(
+        SO_GET_ANY_PART(this, "zxPlanarScaleUniformDragger", SoScale2UniformDragger)
+    );
+
     // Rotator
     setupRotationDraggers();
 
@@ -302,6 +497,28 @@ SoTransformDragger::SoTransformDragger()
     localRotation->rotation.setValue(SbVec3f(0.0, -1.0, 0.0), angle);
     localRotation = SO_GET_ANY_PART(this, "zxPlanarTranslatorRotation", SoRotation);
     localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
+    // Planar scale
+    localRotation = SO_GET_ANY_PART(this, "xyPlanarScaleRotation", SoRotation);
+    localRotation->rotation.setValue(SbRotation::identity());
+    localRotation = SO_GET_ANY_PART(this, "yzPlanarScaleRotation", SoRotation);
+    localRotation->rotation.setValue(SbVec3f(0.0, -1.0, 0.0), angle);
+    localRotation = SO_GET_ANY_PART(this, "zxPlanarScaleRotation", SoRotation);
+    localRotation->rotation.setValue(SbVec3f(1.0, 0.0, 0.0), angle);
+    // SoScale1Dragger always projects pointer motion onto its local X axis.
+    // Rotate the local-Y controls while keeping their authored geometry in
+    // place so each bar reacts to motion normal to the bar.
+    localRotation = SO_GET_ANY_PART(this, "xyPlanarScaleXRotation", SoRotation);
+    localRotation->rotation.setValue(SbVec3f(0.0, 0.0, 1.0), angle);
+    localRotation = SO_GET_ANY_PART(this, "yzPlanarScaleXRotation", SoRotation);
+    localRotation->rotation.setValue(SbVec3f(0.0, 0.0, 1.0), angle);
+    localRotation = SO_GET_ANY_PART(this, "zxPlanarScaleXRotation", SoRotation);
+    localRotation->rotation.setValue(SbVec3f(0.0, 0.0, 1.0), angle);
+    localRotation = SO_GET_ANY_PART(this, "xyPlanarScaleYRotation", SoRotation);
+    localRotation->rotation.setValue(SbRotation::identity());
+    localRotation = SO_GET_ANY_PART(this, "yzPlanarScaleYRotation", SoRotation);
+    localRotation->rotation.setValue(SbRotation::identity());
+    localRotation = SO_GET_ANY_PART(this, "zxPlanarScaleYRotation", SoRotation);
+    localRotation->rotation.setValue(SbRotation::identity());
     // Rotator
     SoRotationDraggerContainer* rDragger;
     rDragger = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
@@ -351,6 +568,7 @@ SoTransformDragger::SoTransformDragger()
 
 SoTransformDragger::~SoTransformDragger()
 {
+    this->setUpConnections(FALSE, TRUE);
     translationSensor.setData(nullptr);
     translationSensor.detach();
     rotationSensor.setData(nullptr);
@@ -380,6 +598,17 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         = SO_GET_ANY_PART(this, "yzPlanarTranslatorDragger", SoPlanarDragger);
     SoPlanarDragger* tPlanarDraggerZX
         = SO_GET_ANY_PART(this, "zxPlanarTranslatorDragger", SoPlanarDragger);
+    std::array<SoDragger*, 9> planarScaleDraggers {
+        SO_GET_ANY_PART(this, "xyPlanarScaleXDragger", SoScale1Dragger),
+        SO_GET_ANY_PART(this, "xyPlanarScaleYDragger", SoScale1Dragger),
+        SO_GET_ANY_PART(this, "xyPlanarScaleUniformDragger", SoScale2UniformDragger),
+        SO_GET_ANY_PART(this, "yzPlanarScaleXDragger", SoScale1Dragger),
+        SO_GET_ANY_PART(this, "yzPlanarScaleYDragger", SoScale1Dragger),
+        SO_GET_ANY_PART(this, "yzPlanarScaleUniformDragger", SoScale2UniformDragger),
+        SO_GET_ANY_PART(this, "zxPlanarScaleXDragger", SoScale1Dragger),
+        SO_GET_ANY_PART(this, "zxPlanarScaleYDragger", SoScale1Dragger),
+        SO_GET_ANY_PART(this, "zxPlanarScaleUniformDragger", SoScale2UniformDragger),
+    };
     auto rDraggerX = SO_GET_ANY_PART(this, "xRotatorDragger", SoRotationDraggerContainer);
     auto rDraggerY = SO_GET_ANY_PART(this, "yRotatorDragger", SoRotationDraggerContainer);
     auto rDraggerZ = SO_GET_ANY_PART(this, "zRotatorDragger", SoRotationDraggerContainer);
@@ -393,6 +622,11 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         registerChildDragger(tPlanarDraggerXZ);
         registerChildDragger(tPlanarDraggerYZ);
         registerChildDragger(tPlanarDraggerZX);
+        for (auto dragger : planarScaleDraggers) {
+            dragger->addValueChangedCallback(&SoTransformDragger::planarScaleValueChangedCB, this);
+            registerChildDraggerMovingIndependently(dragger);
+            dragger->addFinishCallback(&SoTransformDragger::planarScaleFinishCB, this);
+        }
         registerChildDragger(rDraggerX->getDragger());
         registerChildDragger(rDraggerY->getDragger());
         registerChildDragger(rDraggerZ->getDragger());
@@ -401,7 +635,6 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         if (this->translationSensor.getAttachedField() != &this->translation) {
             this->translationSensor.attach(&this->translation);
         }
-
         rotationSensorCB(this, nullptr);
         if (this->rotationSensor.getAttachedField() != &this->rotation) {
             this->rotationSensor.attach(&this->rotation);
@@ -414,6 +647,11 @@ SbBool SoTransformDragger::setUpConnections(SbBool onoff, SbBool doitalways)
         unregisterChildDragger(tPlanarDraggerXZ);
         unregisterChildDragger(tPlanarDraggerYZ);
         unregisterChildDragger(tPlanarDraggerZX);
+        for (auto dragger : planarScaleDraggers) {
+            dragger->removeValueChangedCallback(&SoTransformDragger::planarScaleValueChangedCB, this);
+            dragger->removeFinishCallback(&SoTransformDragger::planarScaleFinishCB, this);
+            unregisterChildDraggerMovingIndependently(dragger);
+        }
         unregisterChildDragger(rDraggerX->getDragger());
         unregisterChildDragger(rDraggerY->getDragger());
         unregisterChildDragger(rDraggerZ->getDragger());
@@ -453,6 +691,74 @@ void SoTransformDragger::rotationSensorCB(void* f, SoSensor*)
     SbMatrix matrix = sudoThis->getMotionMatrix();  // clazy:exclude=rule-of-two-soft
     sudoThis->workFieldsIntoTransform(matrix);
     sudoThis->setMotionMatrix(matrix);
+}
+
+void SoTransformDragger::planarScaleValueChangedCB(void* f, SoDragger* d)
+{
+    auto sudoThis = static_cast<SoTransformDragger*>(f);
+    if (!sudoThis || !d || sudoThis->resettingPlanarScale) {
+        return;
+    }
+
+    SbVec3f childScale;
+    if (auto scale1 = dynamic_cast<SoScale1Dragger*>(d)) {
+        childScale = scale1->scaleFactor.getValue();
+    }
+    else if (auto scale2 = dynamic_cast<SoScale2UniformDragger*>(d)) {
+        childScale = scale2->scaleFactor.getValue();
+    }
+    else {
+        return;
+    }
+
+    auto isPart = [sudoThis, d](const char* name) {
+        return sudoThis->getAnyPart(SbName(name), FALSE, FALSE, FALSE) == d;
+    };
+
+    SbVec3f localScale(1.0F, 1.0F, 1.0F);
+    const bool isY = isPart("xyPlanarScaleYDragger") || isPart("yzPlanarScaleYDragger")
+        || isPart("zxPlanarScaleYDragger");
+    const bool isUniform = isPart("xyPlanarScaleUniformDragger")
+        || isPart("yzPlanarScaleUniformDragger") || isPart("zxPlanarScaleUniformDragger");
+    if (isUniform) {
+        localScale.setValue(childScale[0], childScale[1], 1.0F);
+    }
+    else if (isY) {
+        localScale[0] = childScale[0];
+    }
+    else {
+        localScale[1] = childScale[0];
+    }
+
+    SbVec3f scale;
+    const bool isXY = isPart("xyPlanarScaleXDragger") || isPart("xyPlanarScaleYDragger")
+        || isPart("xyPlanarScaleUniformDragger");
+    const bool isYZ = isPart("yzPlanarScaleXDragger") || isPart("yzPlanarScaleYDragger")
+        || isPart("yzPlanarScaleUniformDragger");
+    if (isXY) {
+        scale = localScale;
+    }
+    else if (isYZ) {
+        scale.setValue(1.0F, localScale[1], localScale[0]);
+    }
+    else {
+        scale.setValue(localScale[0], 1.0F, localScale[1]);
+    }
+    sudoThis->planarScaleFactor = scale;
+
+    // The scale is an editing result, not the transform of the manipulator.
+    // Reset the child immediately so all nine controls remain screen-sized.
+    sudoThis->resettingPlanarScale = true;
+    d->setMotionMatrix(SbMatrix::identity());
+    sudoThis->resettingPlanarScale = false;
+}
+
+void SoTransformDragger::planarScaleFinishCB(void* f, SoDragger*)
+{
+    auto sudoThis = static_cast<SoTransformDragger*>(f);
+    if (sudoThis) {
+        sudoThis->planarScaleFactor = SbVec3f(1.0F, 1.0F, 1.0F);
+    }
 }
 
 void SoTransformDragger::valueChangedCB(void*, SoDragger* d)
@@ -642,6 +948,13 @@ void SoTransformDragger::setAxisColors(unsigned long x, unsigned long y, unsigne
     color = SO_GET_ANY_PART(this, "yzPlanarTranslatorColor", SoBaseColor);
     color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
     color = SO_GET_ANY_PART(this, "zxPlanarTranslatorColor", SoBaseColor);
+    color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
+    // Planar scale
+    color = SO_GET_ANY_PART(this, "xyPlanarScaleColor", SoBaseColor);
+    color->rgb.setValue(colorZ[0], colorZ[1], colorZ[2]);
+    color = SO_GET_ANY_PART(this, "yzPlanarScaleColor", SoBaseColor);
+    color->rgb.setValue(colorX[0], colorX[1], colorX[2]);
+    color = SO_GET_ANY_PART(this, "zxPlanarScaleColor", SoBaseColor);
     color->rgb.setValue(colorY[0], colorY[1], colorY[2]);
     // Rotator
     SoRotationDraggerContainer* rDragger;
