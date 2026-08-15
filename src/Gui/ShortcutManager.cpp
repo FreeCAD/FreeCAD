@@ -116,7 +116,9 @@ QString ShortcutManager::asString(const QKeySequence& ks, QKeySequence::Sequence
         parts << part;
     }
 
-    QString separator = (format == QKeySequence::PortableText) ? QStringLiteral(", ") : QCoreApplication::translate("QShortcut", ", ");
+    QString separator = (format == QKeySequence::PortableText)
+        ? QStringLiteral(", ")
+        : QCoreApplication::translate("QShortcut", ", ");
     return parts.join(separator);
 }
 
