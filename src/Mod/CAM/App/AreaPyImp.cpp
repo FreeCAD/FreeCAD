@@ -22,8 +22,10 @@
  ****************************************************************************/
 
 
+#include <pybind11/pybind11.h>
 #include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Mod/CAM/libarea/Area.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
@@ -564,6 +566,15 @@ PY_CATCH_OCC
 
 PyObject* AreaPy::toTopoShape(PyObject* args) {PY_TRY {if (!PyArg_ParseTuple(args, "")) return nullptr;
 return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
+}
+PY_CATCH_OCC
+}
+
+PyObject* AreaPy::copyCArea(PyObject* args) {PY_TRY {if (!PyArg_ParseTuple(args, "")) return nullptr;
+namespace py = pybind11;
+Area* area = getAreaPtr();
+CArea copy = area->copyCArea();
+return py::cast(copy).release().ptr();
 }
 PY_CATCH_OCC
 }
