@@ -29,9 +29,12 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <BRep_Builder.hxx>
 
+#include <string>
+
 #include <Base/Exception.h>
 #include <Base/ServiceProvider.h>
 #include <App/Document.h>
+#include <App/PropertyStandard.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -260,7 +263,19 @@ void ViewProvider::onChanged(const App::Property* prop)
 {
 
     // if the object is inside of a body we make sure it is the only visible one on activation
-    if (prop == &Visibility && Visibility.getValue()) {
+    // A Forms feature displays its live, selectable tool together with the
+    // preceding feature while it is edited. EditingForm is set before the
+    // Python view provider changes visibility, unlike the generic edit flag.
+    const auto* editingForm = dynamic_cast<const App::PropertyBool*>(
+        getObject()->getPropertyByName("EditingForm")
+    );
+    const auto* formType = dynamic_cast<const App::PropertyString*>(
+        getObject()->getPropertyByName("FormType")
+    );
+    const std::string type = formType ? formType->getValue() : "";
+    const bool allowFormEditPreview = editingForm && editingForm->getValue()
+        && type.rfind("Forms::", 0) == 0;
+    if (prop == &Visibility && Visibility.getValue() && !allowFormEditPreview) {
 
         Part::BodyBase* body = Part::BodyBase::findBodyOf(getObject());
         if (body) {

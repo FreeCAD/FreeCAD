@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <memory>
+
 #include "MDIView.h"
 #include "MDIViewPy.h"
 
@@ -34,6 +36,7 @@ namespace Gui
 {
 
 class View3DInventor;
+class ToolHandler;
 
 class View3DInventorPy: public Py::PythonExtension<View3DInventorPy>
 {
@@ -104,6 +107,8 @@ public:
     Py::Object getViewer();
     Py::Object addEventCallbackPivy(const Py::Tuple&);
     Py::Object removeEventCallbackPivy(const Py::Tuple&);
+    Py::Object activateToolHandler(const Py::Tuple&);
+    Py::Object deactivateToolHandler();
     Py::Object addEventCallbackSWIG(const Py::Tuple&);
     Py::Object removeEventCallbackSWIG(const Py::Tuple&);
     Py::Object listNavigationTypes();
@@ -140,6 +145,7 @@ private:
 private:
     Gui::MDIViewPy base;
     std::list<PyObject*> callbacks;
+    std::unique_ptr<ToolHandler> activePythonToolHandler;
 };
 
 }  // namespace Gui
