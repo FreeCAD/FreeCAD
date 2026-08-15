@@ -48,8 +48,7 @@ template<typename T>
 constexpr decltype(auto) printfArg(T&& value)
 {
     using Plain = std::remove_cvref_t<T>;
-    if constexpr (std::is_pointer_v<Plain>
-                  && !std::is_convertible_v<Plain, const char*>) {
+    if constexpr (std::is_pointer_v<Plain> && !std::is_convertible_v<Plain, const char*>) {
         return static_cast<const void*>(value);
     }
     else {
