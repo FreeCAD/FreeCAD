@@ -142,7 +142,7 @@ void LineEdit::keyPressEvent(QKeyEvent* event)
 
 XListView::XListView(LineEdit* parent)
     : QListView(parent)
-    , m_Silent{false}
+    , m_Silent {false}
 {
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -160,7 +160,7 @@ void XListView::setGeometrySilently(int ax, int ay, int aw, int ah)
 
 void XListView::resizeEvent(QResizeEvent* event)
 {
-    if(!m_Silent){
+    if (!m_Silent) {
         Q_EMIT geometryChanged();
         m_Silent = false;
     }
@@ -170,7 +170,7 @@ void XListView::resizeEvent(QResizeEvent* event)
 void XListView::updateGeometries()
 {
     QListView::updateGeometries();
-    if(!m_Silent){
+    if (!m_Silent) {
         Q_EMIT geometryChanged();
         m_Silent = false;
     }
