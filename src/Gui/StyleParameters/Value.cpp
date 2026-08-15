@@ -23,6 +23,7 @@
 
 #include "Value.h"
 
+#include <algorithm>
 #include <functional>
 #include <ranges>
 #include <fmt/ranges.h>
@@ -73,6 +74,19 @@ Numeric Numeric::operator*(const Numeric& rhs) const
     return {value * rhs.value, unit};
 }
 
+std::optional<double> Numeric::asFraction() const
+{
+    constexpr double percentScale = 100.0;
+
+    if (unit.empty()) {
+        return value;
+    }
+    if (unit == "%") {
+        return value / percentScale;
+    }
+    return std::nullopt;
+}
+
 void Numeric::ensureEqualUnits(const Numeric& rhs) const
 {
     if (unit != rhs.unit) {
@@ -83,6 +97,39 @@ void Numeric::ensureEqualUnits(const Numeric& rhs) const
     }
 }
 
+namespace
+{
+
+/**
+ * @brief Renders a color in the form the expression parser reads back.
+ *
+ * Translucent colors need the `rgba()` form: `#rrggbb` has nowhere to put the alpha, and this
+ * rendering is what ends up in generated QSS, where a dropped alpha turns a transparent stop
+ * into an opaque black one.
+ */
+std::string colorToString(const Base::Color& color)
+{
+    constexpr uint32_t channelMask = 0xFF;
+    constexpr uint32_t channelBits = 8;
+
+    const uint32_t packed = color.getPackedValue();
+    const uint32_t alpha = packed & channelMask;
+
+    if (alpha == channelMask) {
+        return fmt::format("#{:0>6x}", color.getPackedRGB() >> channelBits);
+    }
+
+    return fmt::format(
+        "rgba({}, {}, {}, {})",
+        (packed >> (3 * channelBits)) & channelMask,
+        (packed >> (2 * channelBits)) & channelMask,
+        (packed >> channelBits) & channelMask,
+        alpha
+    );
+}
+
+}  // namespace
+
 std::string Value::toString() const
 {
     if (holds<Numeric>()) {
@@ -91,8 +138,7 @@ std::string Value::toString() const
     }
 
     if (holds<Base::Color>()) {
-        auto color = get<Base::Color>();
-        return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
+        return colorToString(get<Base::Color>());
     }
 
     if (holds<Tuple>()) {
@@ -161,6 +207,8 @@ TupleKind survivingKind(TupleKind kind, const Tuple& typedSource, const Tuple& r
 
 Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
 {
+    const TupleKind kind = resolveKind(lhs.kind, rhs.kind);
+
     Tuple result;
     std::vector<bool> rhsUsed(rhs.size(), false);
 
@@ -227,6 +275,8 @@ Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
     for (size_t k = paired; k < rhsUnnamed.size(); ++k) {
         result.elements.push_back(rhs.elements[rhsUnnamed[k]]);
     }
+
+    result.kind = survivingKind(kind, lhs.kind == kind ? lhs : rhs, result);
 
     return result;
 }
