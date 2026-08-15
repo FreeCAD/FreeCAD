@@ -26,15 +26,13 @@
 #include <boost/random.hpp>
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <ranges>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "nlohmann/json.hpp"
-
-#include <fmt/ranges.h>
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
@@ -288,7 +286,7 @@ void Constraint::Restore(XMLReader& reader)
 
         if (ids.size() != positions.size()) {
             throw Base::ParserError(
-                fmt::format(
+                std::format(
                     "ElementIds and ElementPositions do not match in "
                     "size. Got {} ids and {} positions.",
                     ids.size(),
@@ -369,7 +367,7 @@ void Constraint::substituteIndexAndPos(int fromGeoId, PointPos fromPosId, int to
 
 std::string Constraint::toString() const
 {
-    return fmt::format(
+    return std::format(
         "Type={}, IntAlignType={}, Elements={}",
         this->typeToString(),
         this->internalAlignmentTypeToString(),
@@ -384,9 +382,9 @@ std::string Constraint::elementsToString() const
         | std::views::transform([&](size_t i) { return getElement(i); });
 #endif
 
-    return fmt::format(
+    return std::format(
         "[{}]",
-        fmt::join(
+        Base::Tools::joinFormatted(
             elements | std::views::transform([](const auto& element) { return element.toString(); }),
             ", "
         )
