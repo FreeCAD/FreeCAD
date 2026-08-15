@@ -144,6 +144,7 @@ TEST_F(YamlParameterSourceTest, SequenceResolvesToTupleValue)
 
     const auto& tuple = result->get<Tuple>();
     EXPECT_EQ(tuple.size(), 2);
+    EXPECT_EQ(tuple.kind, TupleKind::Generic);
     EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 10.0);
     EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 20.0);
 }

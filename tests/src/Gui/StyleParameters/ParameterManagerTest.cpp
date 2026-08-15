@@ -21,11 +21,20 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 #include <Gui/Application.h>
 #include <Gui/Utilities.h>
+#include <Gui/StyleParameters/Gradient.h>
+#include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/ParameterManager.h>
+
+#include "DiagnosticsCapture.h"
+
+using namespace Gui::StyleParameters;
+using ::testing::Contains;
+using ::testing::HasSubstr;
 
 using namespace Gui::StyleParameters;
 
@@ -371,6 +380,11 @@ TEST_F(ParameterManagerTest, QssFormattingGenericTuple)
     EXPECT_EQ(manager.replacePlaceholders("@{(1px, 2px)}"), "1px 2px");
 }
 
+TEST_F(ParameterManagerTest, QssFormattingInsetsTuple)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{padding(10px, 5px)}"), "10px 5px 10px 5px");
+}
+
 // --- @{expression} substitution tests ---
 
 TEST_F(ParameterManagerTest, InlineExpressionSimple)
@@ -379,10 +393,35 @@ TEST_F(ParameterManagerTest, InlineExpressionSimple)
     EXPECT_EQ(result, "padding: 10px");
 }
 
+TEST_F(ParameterManagerTest, InlineExpressionFunctionCall)
+{
+    auto result = manager.replacePlaceholders("padding: @{padding(10px, 5px)}");
+    EXPECT_EQ(result, "padding: 10px 5px 10px 5px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionWithParameterReference)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"InlineBase", "8px"}},
+        ParameterSource::Metadata {"Inline Source"}
+    );
+    manager.addSource(source.get());
+    sources.push_back(std::move(source));
+
+    auto result = manager.replacePlaceholders("padding: @{padding(@InlineBase)}");
+    EXPECT_EQ(result, "padding: 8px 8px 8px 8px");
+}
+
 TEST_F(ParameterManagerTest, InlineExpressionArithmetic)
 {
     auto result = manager.replacePlaceholders("margin: @{@BaseSize * 2}");
     EXPECT_EQ(result, "margin: 32px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionMixedWithToken)
+{
+    auto result = manager.replacePlaceholders("padding: @{padding(10px)}; color: @PrimaryColor;");
+    EXPECT_EQ(result, "padding: 10px 10px 10px 10px; color: #ff0000;");
 }
 
 TEST_F(ParameterManagerTest, InlineExpressionInvalidLogsWarning)
@@ -402,4 +441,429 @@ TEST_F(ParameterManagerTest, ExistingTokenUsesToQss)
     // @TokenName for non-tuple types should still work identically
     auto result = manager.replacePlaceholders("size: @BaseSize; color: @PrimaryColor;");
     EXPECT_EQ(result, "size: 16px; color: #ff0000;");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingLinearGradient)
+{
+    auto result = manager.replacePlaceholders("background: @{linear_gradient(#ff0000, #0000ff)}");
+    EXPECT_EQ(
+        result,
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ff0000, stop:1 #0000ff)"
+    );
+}
+
+TEST_F(ParameterManagerTest, QssFormattingLinearGradientCustomGeometry)
+{
+    auto result = manager.replacePlaceholders(
+        "background: @{linear_gradient(x1: 0, y1: 0, x2: 1, y2: 0, #ff0000, #0000ff)}"
+    );
+    EXPECT_EQ(
+        result,
+        "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #ff0000, stop:1 #0000ff)"
+    );
+}
+
+TEST_F(ParameterManagerTest, QssFormattingRadialGradient)
+{
+    auto result = manager.replacePlaceholders("background: @{radial_gradient(#ff0000, #0000ff)}");
+    EXPECT_EQ(
+        result,
+        "background: qradialgradient(cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, "
+        "stop:0 #ff0000, stop:1 #0000ff)"
+    );
+}
+
+TEST_F(ParameterManagerTest, QssFormattingKeepsStopAlpha)
+{
+    auto result = manager.replacePlaceholders(
+        "background: @{linear_gradient(rgba(255, 0, 0, 128), rgba(0, 0, 255, 0))}"
+    );
+    EXPECT_EQ(
+        result,
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+        "stop:0 rgba(255, 0, 0, 128), stop:1 rgba(0, 0, 255, 0))"
+    );
+}
+
+TEST_F(ParameterManagerTest, QssFormattingKeepsColorAlpha)
+{
+    auto result = manager.replacePlaceholders("color: @{rgba(255, 0, 0, 128)}");
+    EXPECT_EQ(result, "color: rgba(255, 0, 0, 128)");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingMalformedGradientStaysTransparent)
+{
+    DiagnosticsCapture capture;
+
+    // A gradient that cannot be interpreted degrades to fully transparent stops; serializing
+    // those as #000000 would paint the widget black instead of leaving it invisible.
+    auto result = manager.replacePlaceholders("background: @{linear_gradient(#ff0000)}");
+    EXPECT_EQ(
+        result,
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, "
+        "stop:0 rgba(0, 0, 0, 0), stop:1 rgba(0, 0, 0, 0))"
+    );
+}
+
+// --- Coercive resolve<T> tests ---
+
+// Every way a theme author can write four edges must resolve to the same Padding, whether the
+// token is a bare length, a positional or named generic tuple, or a differently-kinded edge
+// tuple. Only the wrong *shape* may fall back to the caller's default.
+TEST_F(ParameterManagerTest, ResolvePaddingCoercesEveryEquivalentTokenShape)
+{
+    struct TokenShape
+    {
+        std::string expression;
+        double top;
+        double right;
+        double bottom;
+        double left;
+    };
+
+    // clang-format off
+    const std::vector<TokenShape> shapes {
+        {.expression = "5px",                                              .top = 5,  .right = 5,  .bottom = 5,  .left = 5},
+        {.expression = "(5px)",                                            .top = 5,  .right = 5,  .bottom = 5,  .left = 5},
+        {.expression = "(10px, 5px)",                                      .top = 10, .right = 5,  .bottom = 10, .left = 5},
+        {.expression = "(top: 10px, right: 5px, bottom: 10px, left: 20px)",.top = 10, .right = 5,  .bottom = 10, .left = 20},
+        {.expression = "(horizontal: 10px, vertical: 20px)",               .top = 20, .right = 10, .bottom = 20, .left = 10},
+        {.expression = "padding(1px, 2px, 3px, 4px)",                      .top = 1,  .right = 2,  .bottom = 3,  .left = 4},
+        {.expression = "margins(10px)",                                    .top = 10, .right = 10, .bottom = 10, .left = 10},
+    };
+    // clang-format on
+
+    const Padding fallback {Value {Numeric {.value = 99.0, .unit = "px"}}};
+
+    for (const TokenShape& shape : shapes) {
+        InMemoryParameterSource source(
+            std::list<Parameter> {{.name = "BasePadding", .value = shape.expression}},
+            ParameterSource::Metadata {.name = "Coercive Source"}
+        );
+
+        // A fresh manager per shape: resolved values are cached by token name.
+        Gui::StyleParameters::ParameterManager coercive;
+        coercive.addSource(&source);
+
+        const Padding resolved = coercive.resolve(
+            ParameterDefinition<Padding> {.name = "BasePadding", .defaultValue = fallback}
+        );
+
+        EXPECT_DOUBLE_EQ(resolved.top().value, shape.top) << shape.expression;
+        EXPECT_EQ(resolved.top().unit, "px") << shape.expression;
+        EXPECT_DOUBLE_EQ(resolved.right().value, shape.right) << shape.expression;
+        EXPECT_DOUBLE_EQ(resolved.bottom().value, shape.bottom) << shape.expression;
+        EXPECT_DOUBLE_EQ(resolved.left().value, shape.left) << shape.expression;
+    }
+}
+
+TEST_F(ParameterManagerTest, ResolveDefinitionFallsBackWhenTokenHasWrongShape)
+{
+    DiagnosticsCapture capture;
+
+    InMemoryParameterSource source(
+        std::list<Parameter> {
+            {.name = "GradientToken", .value = "linear_gradient(#ff0000, #0000ff)"},
+            {.name = "PaddingToken", .value = "padding(4px, 8px)"},
+        },
+        ParameterSource::Metadata {.name = "Shape Test Source"}
+    );
+    manager.addSource(&source);
+
+    const Insets fallback {Value {Numeric {.value = 12.0, .unit = "px"}}};
+
+    // Wrong shape: the caller's default must win, not a degraded zero.
+    const Insets resolved = manager.resolve(
+        ParameterDefinition<Insets> {.name = "GradientToken", .defaultValue = fallback}
+    );
+    EXPECT_DOUBLE_EQ(resolved.top().value, 12.0);
+
+    // Right shape: the token must win.
+    const Insets fromToken = manager.resolve(
+        ParameterDefinition<Insets> {.name = "PaddingToken", .defaultValue = fallback}
+    );
+    EXPECT_DOUBLE_EQ(fromToken.top().value, 4.0);
+    EXPECT_DOUBLE_EQ(fromToken.right().value, 8.0);
+
+    // Missing token: the caller's default must win.
+    const Insets missing = manager.resolve(
+        ParameterDefinition<Insets> {.name = "NoSuchToken", .defaultValue = fallback}
+    );
+    EXPECT_DOUBLE_EQ(missing.top().value, 12.0);
+}
+
+TEST_F(ParameterManagerTest, ResolveDefinitionOfVariantTypeStillWorks)
+{
+    InMemoryParameterSource source(
+        std::list<Parameter> {{.name = "ColorToken", .value = "#ff0000"}},
+        ParameterSource::Metadata {.name = "Variant Test Source"}
+    );
+    manager.addSource(&source);
+
+    const Base::Color fallback(0.0F, 1.0F, 0.0F);
+
+    const Base::Color resolved = manager.resolve(
+        ParameterDefinition<Base::Color> {.name = "ColorToken", .defaultValue = fallback}
+    );
+    EXPECT_FLOAT_EQ(resolved.r, 1.0F);
+
+    const Base::Color missing = manager.resolve(
+        ParameterDefinition<Base::Color> {.name = "NoSuchToken", .defaultValue = fallback}
+    );
+    EXPECT_FLOAT_EQ(missing.g, 1.0F);
+}
+
+TEST_F(ParameterManagerTest, ReloadClearsDiagnosticState)
+{
+    DiagnosticsCapture capture;
+
+    Diagnostics::report("first");
+    Diagnostics::report("first");
+    manager.reload();
+    Diagnostics::report("first");
+
+    EXPECT_EQ(capture.messages().size(), 2U);
+}
+
+TEST_F(ParameterManagerTest, EvaluateWrapsNonBaseExceptionsAsExpressionError)
+{
+    // A 400-digit literal makes std::stod throw std::out_of_range deep in the parser.
+    EXPECT_THROW(manager.evaluate(std::string(400, '9')), Base::Exception);
+}
+
+// A 400-digit literal makes std::stod throw std::out_of_range, which is neither a
+// Base::Exception nor caught by the parser -- the kind of failure that must still be absorbed
+// placeholder by placeholder.
+TEST_F(ParameterManagerTest, ReplacePlaceholdersAbsorbsNonBaseExceptions)
+{
+    EXPECT_EQ(
+        manager.replacePlaceholders("width: @{" + std::string(400, '9') + "}; height: @BaseSize;"),
+        "width: ; height: 16px;"
+    );
+}
+
+namespace
+{
+
+/// Test double simulating a misbehaving ParameterSource: throws a plain std::exception
+/// (not a Base::Exception) from every get(), regardless of the requested name.
+class ThrowingParameterSource: public ParameterSource
+{
+public:
+    ThrowingParameterSource()
+        : ParameterSource(Metadata {.name = "Throwing Source"})
+    {}
+
+    std::list<Parameter> all() const override
+    {
+        return {};
+    }
+
+    std::optional<Parameter> get(const std::string&) const override
+    {
+        throw std::runtime_error("simulated parameter source failure");
+    }
+};
+
+}  // namespace
+
+// ParameterSource is a public virtual interface; a misbehaving subclass's get() can throw
+// anything. replacePlaceholders's @name branch must still absorb it even though resolve()
+// itself now guards the same call directly (see ResolveAbsorbsThrowingParameterSource below).
+TEST_F(ParameterManagerTest, ReplacePlaceholdersAbsorbsThrowingParameterSource)
+{
+    ThrowingParameterSource source;
+    manager.addSource(&source);
+
+    EXPECT_NO_THROW({
+        const std::string result = manager.replacePlaceholders("color: @AnyToken;");
+        EXPECT_EQ(result, "color: ;");
+    });
+}
+
+// resolve(name) calls ParameterSource::get() (via parameter()) before its own try block
+// around evaluate() begins. Called directly — not through replacePlaceholders, which would
+// catch it secondhand — a throwing source must not escape resolve() itself.
+TEST_F(ParameterManagerTest, ResolveAbsorbsThrowingParameterSource)
+{
+    ThrowingParameterSource source;
+    manager.addSource(&source);
+
+    std::optional<Value> result;
+    EXPECT_NO_THROW({ result = manager.resolve("AnyToken"); });
+    EXPECT_FALSE(result.has_value());
+}
+
+// resolve(definition) delegates to resolve(name); the caller's default must win when the
+// source throws, exactly as when the token is simply missing.
+TEST_F(ParameterManagerTest, ResolveDefinitionAbsorbsThrowingParameterSource)
+{
+    ThrowingParameterSource source;
+    manager.addSource(&source);
+
+    const Numeric fallback {.value = 42.0, .unit = "px"};
+    ParameterDefinition<Numeric> definition {.name = "AnyToken", .defaultValue = fallback};
+
+    Numeric result {};
+    EXPECT_NO_THROW({ result = manager.resolve(definition); });
+    EXPECT_DOUBLE_EQ(result.value, 42.0);
+    EXPECT_EQ(result.unit, "px");
+}
+
+namespace
+{
+
+/// Test double for the circular-reference path: get() succeeds the first time a name is looked
+/// up (returning a self-referential expression), then throws on every subsequent lookup of that
+/// same name.
+class SelfReferentialThenThrowingParameterSource: public ParameterSource
+{
+public:
+    SelfReferentialThenThrowingParameterSource()
+        : ParameterSource(Metadata {.name = "Cyclic Source"})
+    {}
+
+    std::list<Parameter> all() const override
+    {
+        return {};
+    }
+
+    std::optional<Parameter> get(const std::string& name) const override
+    {
+        if (name != "Cyclic") {
+            return std::nullopt;
+        }
+        if (lookupCount++ == 0) {
+            return Parameter {.name = "Cyclic", .value = "@Cyclic"};
+        }
+        throw std::runtime_error("simulated failure on repeated lookup");
+    }
+
+private:
+    mutable int lookupCount = 0;
+};
+
+}  // namespace
+
+// resolve()'s cycle branch falls back to expression(name), a second lookup of the same name
+// that no inner guard covers. The context is seeded as already-visited rather than letting the
+// recursion happen naturally, because natural recursion reaches the branch inside a nested
+// resolve() whose own catch would absorb the throw first -- proving the wrong guard.
+TEST_F(ParameterManagerTest, ResolveAbsorbsThrowFromCyclicFallback)
+{
+    SelfReferentialThenThrowingParameterSource source;
+    manager.addSource(&source);
+
+    Gui::StyleParameters::ParameterManager::ResolveContext context;
+    context.visited.insert("Cyclic");
+
+    std::optional<Value> result;
+    EXPECT_NO_THROW({ result = manager.resolve("Cyclic", context); });
+    EXPECT_FALSE(result.has_value());
+}
+
+// --- Diagnostic token attribution (Diagnostics::ResolutionScope, installed by resolve()) ---
+
+TEST_F(ParameterManagerTest, ResolveReportsAreAttributedToTheToken)
+{
+    DiagnosticsCapture capture;
+
+    InMemoryParameterSource source(
+        std::list<Parameter> {{.name = "BadPadding", .value = "padding(#ff0000)"}},
+        ParameterSource::Metadata {.name = "Bad Padding Source"}
+    );
+    manager.addSource(&source);
+
+    manager.resolve("BadPadding");
+
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("BadPadding: Argument 'top'")));
+}
+
+TEST_F(ParameterManagerTest, SameDefectInTwoTokensProducesTwoDistinctMessages)
+{
+    DiagnosticsCapture capture;
+
+    InMemoryParameterSource source(
+        std::list<Parameter> {
+            {.name = "BadPaddingA", .value = "padding(#ff0000)"},
+            {.name = "BadPaddingB", .value = "padding(#ff0000)"},
+        },
+        ParameterSource::Metadata {.name = "Bad Padding Source"}
+    );
+    manager.addSource(&source);
+
+    manager.resolve("BadPaddingA");
+    manager.resolve("BadPaddingB");
+
+    // Without the token prefix both defects produce the identical message and dedup into a
+    // single report naming neither token.
+    EXPECT_EQ(capture.messages().size(), 2U);
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("BadPaddingA: ")));
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("BadPaddingB: ")));
+}
+
+// --- Circular references report through Diagnostics, not to Base::Console directly ---
+
+TEST_F(ParameterManagerTest, CircularReferenceReportsThroughDiagnostics)
+{
+    DiagnosticsCapture capture;
+
+    auto circularSource = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {
+            {"A", "@B"},
+            {"B", "@A"},
+        },
+        ParameterSource::Metadata {"Circular Source"}
+    );
+    manager.addSource(circularSource.get());
+    sources.push_back(std::move(circularSource));
+
+    manager.resolve("A");
+
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("circular reference")));
+}
+
+// --- Failures are contained to the placeholder that caused them ---
+
+TEST_F(ParameterManagerTest, UnknownTokenIsDroppedAndNeighboursStillResolve)
+{
+    DiagnosticsCapture capture;
+
+    // Every placeholder is substituted under its own guard, so one that cannot be resolved
+    // collapses to nothing while its neighbours are unaffected. Only a failure of the
+    // substitution machinery itself -- outside all of those guards -- would echo the whole
+    // input back untouched, and no expression can provoke that.
+    EXPECT_EQ(manager.replacePlaceholders("border: @BaseSize solid @Missing;"), "border: 16px solid ;");
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("Missing")));
+}
+
+TEST_F(ParameterManagerTest, FailingInlineExpressionIsDroppedAndNeighboursStillResolve)
+{
+    DiagnosticsCapture capture;
+
+    EXPECT_EQ(
+        manager.replacePlaceholders("border: @{@BaseSize * 2} solid @{nope(1)};"),
+        "border: 32px solid ;"
+    );
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("nope(1)")));
+}
+
+TEST_F(ParameterManagerTest, TokenThatFailsToEvaluateSubstitutesItsLiteralText)
+{
+    DiagnosticsCapture capture;
+
+    // A token is only dropped when it does not exist. One that exists but cannot be evaluated
+    // keeps its authored text, which QSS is free to reject on its own terms -- guessing a
+    // replacement would be a worse lie than passing the source through.
+    InMemoryParameterSource source(
+        std::list<Parameter> {{.name = "Broken", .value = "nope(1)"}},
+        ParameterSource::Metadata {.name = "Broken Placeholder Source"}
+    );
+    manager.addSource(&source);
+
+    EXPECT_EQ(
+        manager.replacePlaceholders("border: @BaseSize solid @Broken;"),
+        "border: 16px solid nope(1);"
+    );
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("Broken")));
 }
