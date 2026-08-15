@@ -18,6 +18,7 @@ add_executable(Gui_tests_run
         StyleParameters/EdgesTest.cpp
         StyleParameters/CornersTest.cpp
         StyleParameters/GradientTest.cpp
+        StyleParameters/ColorShadingTest.cpp
         InputHintTest.cpp
         SelectionTest.cpp
 )
