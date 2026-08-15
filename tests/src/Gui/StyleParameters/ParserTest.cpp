@@ -470,16 +470,6 @@ TEST_F(ParserTest, ParseErrors)
         },
         Base::ExpressionError
     );
-
-    // Function with wrong argument type
-    EXPECT_THROW(
-        {
-            Parser parser("lighten(10px, 20)");
-            auto expr = parser.parse();
-            expr->evaluate({.manager = &manager, .context = {}});
-        },
-        Base::ExpressionError
-    );
 }
 
 // Test whitespace handling
@@ -838,7 +828,8 @@ TEST_F(ParserTest, TupleAtOutOfBounds)
 
     EXPECT_NO_THROW(tuple.at(0));
     EXPECT_NO_THROW(tuple.at(1));
-    EXPECT_THROW(tuple.at(2), Base::RuntimeError);
+    EXPECT_EQ(tuple.tryAt(2), nullptr);
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 0.0);
 }
 
 // Test Tuple::find nonexistent name
@@ -1018,16 +1009,6 @@ TEST_F(ParserTest, MemberAccessErrors)
             expr->evaluate({.manager = &manager, .context = {}});
         },
         Base::ExpressionError
-    );
-
-    // Index out of bounds
-    EXPECT_THROW(
-        {
-            Parser parser("@TestIndexedTuple.5");
-            auto expr = parser.parse();
-            expr->evaluate({.manager = &manager, .context = {}});
-        },
-        Base::RuntimeError
     );
 
     // Member access on non-tuple
@@ -1495,7 +1476,8 @@ TEST_F(ArgumentParserTest, TypedGetWrongType)
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
-    EXPECT_THROW(resolved.get<Base::Color>("color"), Base::ExpressionError);
+    EXPECT_EQ(resolved.tryGet<Base::Color>("color"), nullptr);
+    EXPECT_FLOAT_EQ(resolved.get<Base::Color>("color").a, 0.0F);
 }
 
 TEST_F(ArgumentParserTest, TypedGetMissingName)
@@ -1503,5 +1485,6 @@ TEST_F(ArgumentParserTest, TypedGetMissingName)
     auto args = makeTuple({{.name = std::nullopt, .value = Numeric {.value = 10, .unit = ""}}});
     auto resolved = ArgumentParser {{.name = "x"}}.resolve(args);
 
-    EXPECT_THROW(resolved.get<Numeric>("nonexistent"), Base::ExpressionError);
+    EXPECT_EQ(resolved.tryGet<Numeric>("nonexistent"), nullptr);
+    EXPECT_DOUBLE_EQ(resolved.get<Numeric>("nonexistent").value, 0.0);
 }

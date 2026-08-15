@@ -27,6 +27,8 @@
 #include <ranges>
 #include <fmt/ranges.h>
 
+#include <Base/Exception.h>
+
 namespace Gui::StyleParameters
 {
 
@@ -121,6 +123,42 @@ std::string Value::toString() const
 namespace
 {
 
+TupleKind resolveKind(TupleKind lhs, TupleKind rhs)
+{
+    if (lhs == rhs || rhs == TupleKind::Generic) {
+        return lhs;
+    }
+    if (lhs == TupleKind::Generic) {
+        return rhs;
+    }
+    THROWM(
+        Base::ExpressionError,
+        fmt::format("Cannot combine {} and {} tuples", tupleKindName(lhs), tupleKindName(rhs))
+    );
+}
+
+/// True when both tuples carry the same element names, in the same order.
+bool hasSameElementNames(const Tuple& lhs, const Tuple& rhs)
+{
+    return std::ranges::equal(lhs.elements, rhs.elements, {}, &Element::name, &Element::name);
+}
+
+/**
+ * @brief The kind an arithmetic result may keep.
+ *
+ * A typed kind asserts a validated structure, so it only survives while the result still has
+ * the exact elements of the typed operand. Combining with a differently-shaped tuple — say
+ * `padding(10px) + (foo: 5px)`, which leaves the four sides plus a stray fifth element — is
+ * no longer padding, and claiming otherwise would let it serialize as five QSS values.
+ */
+TupleKind survivingKind(TupleKind kind, const Tuple& typedSource, const Tuple& result)
+{
+    if (kind == TupleKind::Generic || hasSameElementNames(typedSource, result)) {
+        return kind;
+    }
+    return TupleKind::Generic;
+}
+
 Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
 {
     Tuple result;
@@ -196,6 +234,7 @@ Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
 Tuple scalarBroadcast(const Tuple& tuple, const Value& scalar, auto op)
 {
     Tuple result;
+    result.kind = tuple.kind;
     for (size_t i = 0; i < tuple.size(); ++i) {
         result.elements.emplace_back(
             tuple.elements[i].name,
@@ -264,6 +303,7 @@ Value Value::operator-() const
     if (holds<Tuple>()) {
         Tuple result;
         const auto& tuple = get<Tuple>();
+        result.kind = tuple.kind;
         for (size_t i = 0; i < tuple.size(); ++i) {
             result.elements.emplace_back(
                 tuple.elements[i].name,
@@ -275,15 +315,21 @@ Value Value::operator-() const
     THROWM(Base::ExpressionError, "Unary negation requires a numeric or tuple value");
 }
 
+const Value* Tuple::tryAt(size_t index) const
+{
+    return index < elements.size() ? elements[index].value.get() : nullptr;
+}
+
 const Value& Tuple::at(size_t index) const
 {
-    if (index >= elements.size()) {
-        THROWM(
-            Base::RuntimeError,
-            fmt::format("Tuple index {} out of range (size {})", index, elements.size())
-        );
+    if (const Value* value = tryAt(index)) {
+        return *value;
     }
-    return *elements[index].value;
+
+    Diagnostics::report("Tuple index {} out of range (size {})", index, elements.size());
+
+    static const Value fallback {styleDefault<Numeric>()};
+    return fallback;
 }
 
 const Value* Tuple::find(const std::string& name) const
@@ -299,6 +345,25 @@ size_t Tuple::size() const
 {
     return elements.size();
 }
+
+Tuple::Element Tuple::Element::named(std::string name, Value val)
+{
+    return {.name = std::move(name), .value = std::make_shared<const Value>(std::move(val))};
+}
+
+Tuple::Element Tuple::Element::unnamed(Value val)
+{
+    return {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(val))};
+}
+
+Tuple::Tuple(std::initializer_list<Element> elements)
+    : elements(elements)
+{}
+
+Tuple::Tuple(std::initializer_list<Element> elements, TupleKind kind)
+    : kind(kind)
+    , elements(elements)
+{}
 
 ArgumentParser::ArgumentParser(std::initializer_list<ParamDef> params)
     : params_(params)
