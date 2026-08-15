@@ -24,6 +24,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include <Gui/StyleParameters/Corners.h>
 #include <Gui/StyleParameters/Insets.h>
 
 #include "DiagnosticsCapture.h"
@@ -155,6 +156,20 @@ TEST(EdgesTest, PaddingOfNestedBorderColorsArgumentDegradesToZero)
     EXPECT_EQ(padding.tuple().kind, TupleKind::Padding);
     EXPECT_THAT(capture.messages(), Contains(HasSubstr("must be numeric")));
 }
+
+TEST(EdgesTest, PaddingTryFromCornersReturnsNulloptWithMessage)
+{
+    // Corners has no top/right/bottom/left elements at all, so expand() would silently
+    // backfill all four sides with zero — a differently-shaped tuple must be rejected
+    // before that happens, not waved through as zero padding with no diagnostic.
+    DiagnosticsCapture capture;
+
+    const Corners corners {Value {Numeric {.value = 4.0, .unit = "px"}}};
+
+    EXPECT_FALSE(Padding::tryFrom(Value {corners.tuple()}).has_value());
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("got Corners")));
+}
+
 TEST(EdgesTest, InsetsTryFromLinearGradientReturnsNullopt)
 {
     const Tuple gradient(
@@ -169,6 +184,19 @@ TEST(EdgesTest, InsetsTryFromLinearGradientReturnsNullopt)
 
     EXPECT_FALSE(Insets::tryFrom(Value {gradient}).has_value());
 }
+
+TEST(EdgesTest, PaddingFromCornersDegradesToZeroAndReports)
+{
+    DiagnosticsCapture capture;
+
+    const Corners corners {Value {Numeric {.value = 4.0, .unit = "px"}}};
+    const Padding padding {Value {corners.tuple()}};
+
+    EXPECT_DOUBLE_EQ(padding.top().value, 0.0);
+    EXPECT_EQ(padding.tuple().kind, TupleKind::Padding);
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("got Corners")));
+}
+
 TEST(EdgesTest, PaddingFromMarginsTupleCoerces)
 {
     // The four edge kinds share element type Numeric and are structurally interchangeable, so
