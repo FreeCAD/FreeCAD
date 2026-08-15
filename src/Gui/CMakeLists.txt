@@ -1373,6 +1373,7 @@ SET(FreeCADGui_CPP_SRCS
     StyleParameters/Value.cpp
     StyleParameters/Parser.cpp
     StyleParameters/ParameterManager.cpp
+    StyleParameters/Diagnostics.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1421,6 +1422,7 @@ SET(FreeCADGui_SRCS
     StyleParameters/Value.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
+    StyleParameters/Diagnostics.h
 )
 
 SET(FreeCADGui_SRCS
