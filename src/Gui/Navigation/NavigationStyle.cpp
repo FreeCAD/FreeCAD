@@ -2280,6 +2280,7 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE) && !processed) {
         if (SoMouseButtonEvent::isButtonReleaseEvent(ev, SoMouseButtonEvent::BUTTON1)) {
             if (!ev->wasCtrlDown()) {
+                Gui::Selection().selStackPush();
                 Gui::Selection().clearSelection();
             }
         }

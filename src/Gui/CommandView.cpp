@@ -3217,8 +3217,8 @@ StdCmdSelBack::StdCmdSelBack()
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Back");
     static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Restores the previous tree view selection. "
-                     "Only works if tree RecordSelection mode is switched on.")
+        + QT_TR_NOOP("Restores the previous selection. "
+                     "Requires 'Enable Selection History' to be enabled.")
         + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelBack";
@@ -3251,8 +3251,8 @@ StdCmdSelForward::StdCmdSelForward()
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Forward");
     static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Restores the next tree view selection. "
-                     "Only works if tree RecordSelection mode is switched on.")
+        + QT_TR_NOOP("Restores the next selection. "
+                     "Requires 'Enable Selection History' to be enabled.")
         + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelForward";
@@ -3463,9 +3463,9 @@ StdTreeRecordSelection::StdTreeRecordSelection()
     : Command("Std_TreeRecordSelection")
 {
     sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("Record Selection");
+    sMenuText = QT_TR_NOOP("Record Selection History");
     sToolTipText
-        = QT_TR_NOOP("Records the selection in the tree view in order to go back/forward using the navigation buttons");
+        = QT_TR_NOOP("Stores selection changes for Selection Back/Forward navigation");
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_TreeRecordSelection";
     sPixmap = "tree-rec-sel";
@@ -3538,11 +3538,6 @@ public:
 
         addCommand(new StdTreeDrag(), !cmds.empty());
         addCommand(new StdTreeSelection(), !cmds.empty());
-
-        addCommand();
-
-        addCommand(new StdCmdSelBack());
-        addCommand(new StdCmdSelForward());
     }
     const char* className() const override
     {
@@ -4321,6 +4316,8 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdDemoMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
+    rcCmdMgr.addCommand(new StdCmdSelBack());
+    rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdDockOverlay());

@@ -192,6 +192,31 @@ A larger value makes it easier to select elements, but may prevent selection of 
      </layout>
     </widget>
    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBoxSelectionHistory">
+      <property name="title">
+        <string>Selection History</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutSelectionHistory">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBoxRecord">
+          <property name="text">
+              <string>Enable Selection history</string>
+          </property>
+          <property name="toolTip">
+              <string>Stores selection changes so Selection Back/Forward can restore recent selections from tree and 3D view interactions.</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+            <cstring>RecordSelection</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+            <cstring>TreeView</cstring>
+          </property>
+         </widget>
+        </item>
+      </layout>
+     </widget>
+    </item>
    <item>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
@@ -224,22 +249,6 @@ A larger value makes it easier to select elements, but may prevent selection of 
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncSelection</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>TreeView</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBoxRecord">
-        <property name="text">
-         <string>Record selection in tree view in order to go back/forward using navigation button</string>
-        </property>
-        <property name="toolTip">
-         <string>Enables selection history. Use 'Back' and 'Forward' navigation to toggle between previously selected objects without re-searching the tree.</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>RecordSelection</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>TreeView</cstring>

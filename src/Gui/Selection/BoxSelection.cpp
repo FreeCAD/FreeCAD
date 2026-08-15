@@ -311,6 +311,7 @@ void Gui::applyBoxSelection(
     }
 
     if (!additive) {
+        Gui::Selection().selStackPush();
         Gui::Selection().clearSelection(doc->getName());
     }
 
