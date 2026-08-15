@@ -36,11 +36,13 @@ TreeParams.define()
 using namespace Gui;
 
 // Auto generated code (Tools/params_utils.py:187)
-namespace {
-class TreeParamsP: public ParameterGrp::ObserverType {
+namespace
+{
+class TreeParamsP: public ParameterGrp::ObserverType
+{
 public:
     ParameterGrp::handle handle;
-    std::unordered_map<const char *,void(*)(TreeParamsP*),App::CStringHasher,App::CStringHasher> funcs;
+    std::unordered_map<const char*, void (*)(TreeParamsP*), App::CStringHasher, App::CStringHasher> funcs;
 
     bool SyncSelection;
     bool CheckBoxesSelection;
@@ -82,8 +84,11 @@ public:
     bool VisibilityIcon;
 
     // Auto generated code (Tools/params_utils.py:215)
-    TreeParamsP() {
-        handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
+    TreeParamsP()
+    {
+        handle = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/TreeView"
+        );
         handle->Attach(this);
 
         SyncSelection = handle->GetBool("SyncSelection", true);
@@ -165,23 +170,26 @@ public:
     }
 
     // Auto generated code (Tools/params_utils.py:229)
-    ~TreeParamsP() {
-    }
+    ~TreeParamsP()
+    {}
 
     // Auto generated code (Tools/params_utils.py:234)
-    void OnChange(Base::Subject<const char*> &, const char* sReason) {
-        if(!sReason)
+    void OnChange(Base::Subject<const char*>&, const char* sReason)
+    {
+        if (!sReason) {
             return;
+        }
         auto it = funcs.find(sReason);
-        if(it == funcs.end())
+        if (it == funcs.end()) {
             return;
+        }
         it->second(this);
-        
     }
 
 
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateSyncSelection(TreeParamsP *self) {
+    static void updateSyncSelection(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("SyncSelection", true);
         if (self->SyncSelection != v) {
             self->SyncSelection = v;
@@ -189,7 +197,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateCheckBoxesSelection(TreeParamsP *self) {
+    static void updateCheckBoxesSelection(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("CheckBoxesSelection", false);
         if (self->CheckBoxesSelection != v) {
             self->CheckBoxesSelection = v;
@@ -197,19 +206,23 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateSyncView(TreeParamsP *self) {
+    static void updateSyncView(TreeParamsP* self)
+    {
         self->SyncView = self->handle->GetBool("SyncView", true);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updatePreSelection(TreeParamsP *self) {
+    static void updatePreSelection(TreeParamsP* self)
+    {
         self->PreSelection = self->handle->GetBool("PreSelection", true);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateSyncPlacement(TreeParamsP *self) {
+    static void updateSyncPlacement(TreeParamsP* self)
+    {
         self->SyncPlacement = self->handle->GetBool("SyncPlacement", false);
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateDocumentMode(TreeParamsP *self) {
+    static void updateDocumentMode(TreeParamsP* self)
+    {
         auto v = self->handle->GetInt("DocumentMode", 2);
         if (self->DocumentMode != v) {
             self->DocumentMode = v;
@@ -217,39 +230,48 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateStatusTimeout(TreeParamsP *self) {
+    static void updateStatusTimeout(TreeParamsP* self)
+    {
         self->StatusTimeout = self->handle->GetInt("StatusTimeout", 100);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateSelectionTimeout(TreeParamsP *self) {
+    static void updateSelectionTimeout(TreeParamsP* self)
+    {
         self->SelectionTimeout = self->handle->GetInt("SelectionTimeout", 100);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updatePreSelectionTimeout(TreeParamsP *self) {
+    static void updatePreSelectionTimeout(TreeParamsP* self)
+    {
         self->PreSelectionTimeout = self->handle->GetInt("PreSelectionTimeout", 500);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updatePreSelectionDelay(TreeParamsP *self) {
+    static void updatePreSelectionDelay(TreeParamsP* self)
+    {
         self->PreSelectionDelay = self->handle->GetInt("PreSelectionDelay", 700);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updatePreSelectionMinDelay(TreeParamsP *self) {
+    static void updatePreSelectionMinDelay(TreeParamsP* self)
+    {
         self->PreSelectionMinDelay = self->handle->GetInt("PreSelectionMinDelay", 200);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateRecomputeOnDrop(TreeParamsP *self) {
+    static void updateRecomputeOnDrop(TreeParamsP* self)
+    {
         self->RecomputeOnDrop = self->handle->GetBool("RecomputeOnDrop", true);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateKeepRootOrder(TreeParamsP *self) {
+    static void updateKeepRootOrder(TreeParamsP* self)
+    {
         self->KeepRootOrder = self->handle->GetBool("KeepRootOrder", true);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateTreeActiveAutoExpand(TreeParamsP *self) {
+    static void updateTreeActiveAutoExpand(TreeParamsP* self)
+    {
         self->TreeActiveAutoExpand = self->handle->GetBool("TreeActiveAutoExpand", true);
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateTreeActiveColor(TreeParamsP *self) {
+    static void updateTreeActiveColor(TreeParamsP* self)
+    {
         auto v = self->handle->GetUnsigned("TreeActiveColor", 3873898495);
         if (self->TreeActiveColor != v) {
             self->TreeActiveColor = v;
@@ -257,7 +279,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateTreeEditColor(TreeParamsP *self) {
+    static void updateTreeEditColor(TreeParamsP* self)
+    {
         auto v = self->handle->GetUnsigned("TreeEditColor", 11272191);
         if (self->TreeEditColor != v) {
             self->TreeEditColor = v;
@@ -265,7 +288,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateSelectingGroupColor(TreeParamsP *self) {
+    static void updateSelectingGroupColor(TreeParamsP* self)
+    {
         auto v = self->handle->GetUnsigned("SelectingGroupColor", 1082163711);
         if (self->SelectingGroupColor != v) {
             self->SelectingGroupColor = v;
@@ -273,7 +297,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateTreeActiveBold(TreeParamsP *self) {
+    static void updateTreeActiveBold(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("TreeActiveBold", true);
         if (self->TreeActiveBold != v) {
             self->TreeActiveBold = v;
@@ -281,7 +306,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateTreeActiveItalic(TreeParamsP *self) {
+    static void updateTreeActiveItalic(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("TreeActiveItalic", false);
         if (self->TreeActiveItalic != v) {
             self->TreeActiveItalic = v;
@@ -289,7 +315,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateTreeActiveUnderlined(TreeParamsP *self) {
+    static void updateTreeActiveUnderlined(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("TreeActiveUnderlined", false);
         if (self->TreeActiveUnderlined != v) {
             self->TreeActiveUnderlined = v;
@@ -297,7 +324,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateTreeActiveOverlined(TreeParamsP *self) {
+    static void updateTreeActiveOverlined(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("TreeActiveOverlined", false);
         if (self->TreeActiveOverlined != v) {
             self->TreeActiveOverlined = v;
@@ -305,7 +333,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateIndentation(TreeParamsP *self) {
+    static void updateIndentation(TreeParamsP* self)
+    {
         auto v = self->handle->GetInt("Indentation", 0);
         if (self->Indentation != v) {
             self->Indentation = v;
@@ -313,11 +342,13 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateLabelExpression(TreeParamsP *self) {
+    static void updateLabelExpression(TreeParamsP* self)
+    {
         self->LabelExpression = self->handle->GetBool("LabelExpression", false);
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateIconSize(TreeParamsP *self) {
+    static void updateIconSize(TreeParamsP* self)
+    {
         auto v = self->handle->GetInt("IconSize", 0);
         if (self->IconSize != v) {
             self->IconSize = v;
@@ -325,7 +356,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateFontSize(TreeParamsP *self) {
+    static void updateFontSize(TreeParamsP* self)
+    {
         auto v = self->handle->GetInt("FontSize", 0);
         if (self->FontSize != v) {
             self->FontSize = v;
@@ -333,7 +365,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateItemSpacing(TreeParamsP *self) {
+    static void updateItemSpacing(TreeParamsP* self)
+    {
         auto v = self->handle->GetInt("ItemSpacing", 0);
         if (self->ItemSpacing != v) {
             self->ItemSpacing = v;
@@ -341,7 +374,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateItemBackground(TreeParamsP *self) {
+    static void updateItemBackground(TreeParamsP* self)
+    {
         auto v = self->handle->GetUnsigned("ItemBackground", 0x00000000);
         if (self->ItemBackground != v) {
             self->ItemBackground = v;
@@ -349,7 +383,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateItemBackgroundPadding(TreeParamsP *self) {
+    static void updateItemBackgroundPadding(TreeParamsP* self)
+    {
         auto v = self->handle->GetInt("ItemBackgroundPadding", 0);
         if (self->ItemBackgroundPadding != v) {
             self->ItemBackgroundPadding = v;
@@ -357,7 +392,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateHideColumn(TreeParamsP *self) {
+    static void updateHideColumn(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("HideColumn", true);
         if (self->HideColumn != v) {
             self->HideColumn = v;
@@ -365,7 +401,8 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateHideInternalNames(TreeParamsP *self) {
+    static void updateHideInternalNames(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("HideInternalNames", true);
         if (self->HideInternalNames != v) {
             self->HideInternalNames = v;
@@ -373,15 +410,18 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateHideScrollBar(TreeParamsP *self) {
+    static void updateHideScrollBar(TreeParamsP* self)
+    {
         self->HideScrollBar = self->handle->GetBool("HideScrollBar", true);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateHideHeaderView(TreeParamsP *self) {
+    static void updateHideHeaderView(TreeParamsP* self)
+    {
         self->HideHeaderView = self->handle->GetBool("HideHeaderView", true);
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateResizableColumn(TreeParamsP *self) {
+    static void updateResizableColumn(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("ResizableColumn", false);
         if (self->ResizableColumn != v) {
             self->ResizableColumn = v;
@@ -389,23 +429,28 @@ public:
         }
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateColumnSize1(TreeParamsP *self) {
+    static void updateColumnSize1(TreeParamsP* self)
+    {
         self->ColumnSize1 = self->handle->GetInt("ColumnSize1", 0);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateColumnSize2(TreeParamsP *self) {
+    static void updateColumnSize2(TreeParamsP* self)
+    {
         self->ColumnSize2 = self->handle->GetInt("ColumnSize2", 0);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateColumnSize3(TreeParamsP *self) {
+    static void updateColumnSize3(TreeParamsP* self)
+    {
         self->ColumnSize3 = self->handle->GetInt("ColumnSize3", 0);
     }
     // Auto generated code (Tools/params_utils.py:250)
-    static void updateTreeToolTipIcon(TreeParamsP *self) {
+    static void updateTreeToolTipIcon(TreeParamsP* self)
+    {
         self->TreeToolTipIcon = self->handle->GetBool("TreeToolTipIcon", false);
     }
     // Auto generated code (Tools/params_utils.py:256)
-    static void updateVisibilityIcon(TreeParamsP *self) {
+    static void updateVisibilityIcon(TreeParamsP* self)
+    {
         auto v = self->handle->GetBool("VisibilityIcon", true);
         if (self->VisibilityIcon != v) {
             self->VisibilityIcon = v;
@@ -415,1049 +460,1237 @@ public:
 };
 
 // Auto generated code (Tools/params_utils.py:268)
-TreeParamsP *instance() {
-    static TreeParamsP *inst = new TreeParamsP;
+TreeParamsP* instance()
+{
+    static TreeParamsP* inst = new TreeParamsP;
     return inst;
 }
 
-} // Anonymous namespace
+}  // Anonymous namespace
 
 // Auto generated code (Tools/params_utils.py:277)
-ParameterGrp::handle TreeParams::getHandle() {
+ParameterGrp::handle TreeParams::getHandle()
+{
     return instance()->handle;
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docSyncSelection() {
+const char* TreeParams::docSyncSelection()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getSyncSelection() {
+const bool& TreeParams::getSyncSelection()
+{
     return instance()->SyncSelection;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultSyncSelection() {
+const bool& TreeParams::defaultSyncSelection()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setSyncSelection(const bool &v) {
-    instance()->handle->SetBool("SyncSelection",v);
+void TreeParams::setSyncSelection(const bool& v)
+{
+    instance()->handle->SetBool("SyncSelection", v);
     instance()->SyncSelection = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeSyncSelection() {
+void TreeParams::removeSyncSelection()
+{
     instance()->handle->RemoveBool("SyncSelection");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docCheckBoxesSelection() {
+const char* TreeParams::docCheckBoxesSelection()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getCheckBoxesSelection() {
+const bool& TreeParams::getCheckBoxesSelection()
+{
     return instance()->CheckBoxesSelection;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultCheckBoxesSelection() {
+const bool& TreeParams::defaultCheckBoxesSelection()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setCheckBoxesSelection(const bool &v) {
-    instance()->handle->SetBool("CheckBoxesSelection",v);
+void TreeParams::setCheckBoxesSelection(const bool& v)
+{
+    instance()->handle->SetBool("CheckBoxesSelection", v);
     instance()->CheckBoxesSelection = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeCheckBoxesSelection() {
+void TreeParams::removeCheckBoxesSelection()
+{
     instance()->handle->RemoveBool("CheckBoxesSelection");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docSyncView() {
+const char* TreeParams::docSyncView()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getSyncView() {
+const bool& TreeParams::getSyncView()
+{
     return instance()->SyncView;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultSyncView() {
+const bool& TreeParams::defaultSyncView()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setSyncView(const bool &v) {
-    instance()->handle->SetBool("SyncView",v);
+void TreeParams::setSyncView(const bool& v)
+{
+    instance()->handle->SetBool("SyncView", v);
     instance()->SyncView = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeSyncView() {
+void TreeParams::removeSyncView()
+{
     instance()->handle->RemoveBool("SyncView");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docPreSelection() {
+const char* TreeParams::docPreSelection()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getPreSelection() {
+const bool& TreeParams::getPreSelection()
+{
     return instance()->PreSelection;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultPreSelection() {
+const bool& TreeParams::defaultPreSelection()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setPreSelection(const bool &v) {
-    instance()->handle->SetBool("PreSelection",v);
+void TreeParams::setPreSelection(const bool& v)
+{
+    instance()->handle->SetBool("PreSelection", v);
     instance()->PreSelection = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removePreSelection() {
+void TreeParams::removePreSelection()
+{
     instance()->handle->RemoveBool("PreSelection");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docSyncPlacement() {
+const char* TreeParams::docSyncPlacement()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getSyncPlacement() {
+const bool& TreeParams::getSyncPlacement()
+{
     return instance()->SyncPlacement;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultSyncPlacement() {
+const bool& TreeParams::defaultSyncPlacement()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setSyncPlacement(const bool &v) {
-    instance()->handle->SetBool("SyncPlacement",v);
+void TreeParams::setSyncPlacement(const bool& v)
+{
+    instance()->handle->SetBool("SyncPlacement", v);
     instance()->SyncPlacement = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeSyncPlacement() {
+void TreeParams::removeSyncPlacement()
+{
     instance()->handle->RemoveBool("SyncPlacement");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docDocumentMode() {
+const char* TreeParams::docDocumentMode()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getDocumentMode() {
+const long& TreeParams::getDocumentMode()
+{
     return instance()->DocumentMode;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultDocumentMode() {
+const long& TreeParams::defaultDocumentMode()
+{
     const static long def = 2;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setDocumentMode(const long &v) {
-    instance()->handle->SetInt("DocumentMode",v);
+void TreeParams::setDocumentMode(const long& v)
+{
+    instance()->handle->SetInt("DocumentMode", v);
     instance()->DocumentMode = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeDocumentMode() {
+void TreeParams::removeDocumentMode()
+{
     instance()->handle->RemoveInt("DocumentMode");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docStatusTimeout() {
+const char* TreeParams::docStatusTimeout()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getStatusTimeout() {
+const long& TreeParams::getStatusTimeout()
+{
     return instance()->StatusTimeout;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultStatusTimeout() {
+const long& TreeParams::defaultStatusTimeout()
+{
     const static long def = 100;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setStatusTimeout(const long &v) {
-    instance()->handle->SetInt("StatusTimeout",v);
+void TreeParams::setStatusTimeout(const long& v)
+{
+    instance()->handle->SetInt("StatusTimeout", v);
     instance()->StatusTimeout = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeStatusTimeout() {
+void TreeParams::removeStatusTimeout()
+{
     instance()->handle->RemoveInt("StatusTimeout");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docSelectionTimeout() {
+const char* TreeParams::docSelectionTimeout()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getSelectionTimeout() {
+const long& TreeParams::getSelectionTimeout()
+{
     return instance()->SelectionTimeout;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultSelectionTimeout() {
+const long& TreeParams::defaultSelectionTimeout()
+{
     const static long def = 100;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setSelectionTimeout(const long &v) {
-    instance()->handle->SetInt("SelectionTimeout",v);
+void TreeParams::setSelectionTimeout(const long& v)
+{
+    instance()->handle->SetInt("SelectionTimeout", v);
     instance()->SelectionTimeout = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeSelectionTimeout() {
+void TreeParams::removeSelectionTimeout()
+{
     instance()->handle->RemoveInt("SelectionTimeout");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docPreSelectionTimeout() {
+const char* TreeParams::docPreSelectionTimeout()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getPreSelectionTimeout() {
+const long& TreeParams::getPreSelectionTimeout()
+{
     return instance()->PreSelectionTimeout;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultPreSelectionTimeout() {
+const long& TreeParams::defaultPreSelectionTimeout()
+{
     const static long def = 500;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setPreSelectionTimeout(const long &v) {
-    instance()->handle->SetInt("PreSelectionTimeout",v);
+void TreeParams::setPreSelectionTimeout(const long& v)
+{
+    instance()->handle->SetInt("PreSelectionTimeout", v);
     instance()->PreSelectionTimeout = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removePreSelectionTimeout() {
+void TreeParams::removePreSelectionTimeout()
+{
     instance()->handle->RemoveInt("PreSelectionTimeout");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docPreSelectionDelay() {
+const char* TreeParams::docPreSelectionDelay()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getPreSelectionDelay() {
+const long& TreeParams::getPreSelectionDelay()
+{
     return instance()->PreSelectionDelay;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultPreSelectionDelay() {
+const long& TreeParams::defaultPreSelectionDelay()
+{
     const static long def = 700;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setPreSelectionDelay(const long &v) {
-    instance()->handle->SetInt("PreSelectionDelay",v);
+void TreeParams::setPreSelectionDelay(const long& v)
+{
+    instance()->handle->SetInt("PreSelectionDelay", v);
     instance()->PreSelectionDelay = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removePreSelectionDelay() {
+void TreeParams::removePreSelectionDelay()
+{
     instance()->handle->RemoveInt("PreSelectionDelay");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docPreSelectionMinDelay() {
+const char* TreeParams::docPreSelectionMinDelay()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getPreSelectionMinDelay() {
+const long& TreeParams::getPreSelectionMinDelay()
+{
     return instance()->PreSelectionMinDelay;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultPreSelectionMinDelay() {
+const long& TreeParams::defaultPreSelectionMinDelay()
+{
     const static long def = 200;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setPreSelectionMinDelay(const long &v) {
-    instance()->handle->SetInt("PreSelectionMinDelay",v);
+void TreeParams::setPreSelectionMinDelay(const long& v)
+{
+    instance()->handle->SetInt("PreSelectionMinDelay", v);
     instance()->PreSelectionMinDelay = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removePreSelectionMinDelay() {
+void TreeParams::removePreSelectionMinDelay()
+{
     instance()->handle->RemoveInt("PreSelectionMinDelay");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docRecomputeOnDrop() {
+const char* TreeParams::docRecomputeOnDrop()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getRecomputeOnDrop() {
+const bool& TreeParams::getRecomputeOnDrop()
+{
     return instance()->RecomputeOnDrop;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultRecomputeOnDrop() {
+const bool& TreeParams::defaultRecomputeOnDrop()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setRecomputeOnDrop(const bool &v) {
-    instance()->handle->SetBool("RecomputeOnDrop",v);
+void TreeParams::setRecomputeOnDrop(const bool& v)
+{
+    instance()->handle->SetBool("RecomputeOnDrop", v);
     instance()->RecomputeOnDrop = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeRecomputeOnDrop() {
+void TreeParams::removeRecomputeOnDrop()
+{
     instance()->handle->RemoveBool("RecomputeOnDrop");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docKeepRootOrder() {
+const char* TreeParams::docKeepRootOrder()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getKeepRootOrder() {
+const bool& TreeParams::getKeepRootOrder()
+{
     return instance()->KeepRootOrder;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultKeepRootOrder() {
+const bool& TreeParams::defaultKeepRootOrder()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setKeepRootOrder(const bool &v) {
-    instance()->handle->SetBool("KeepRootOrder",v);
+void TreeParams::setKeepRootOrder(const bool& v)
+{
+    instance()->handle->SetBool("KeepRootOrder", v);
     instance()->KeepRootOrder = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeKeepRootOrder() {
+void TreeParams::removeKeepRootOrder()
+{
     instance()->handle->RemoveBool("KeepRootOrder");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeActiveAutoExpand() {
+const char* TreeParams::docTreeActiveAutoExpand()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getTreeActiveAutoExpand() {
+const bool& TreeParams::getTreeActiveAutoExpand()
+{
     return instance()->TreeActiveAutoExpand;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultTreeActiveAutoExpand() {
+const bool& TreeParams::defaultTreeActiveAutoExpand()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeActiveAutoExpand(const bool &v) {
-    instance()->handle->SetBool("TreeActiveAutoExpand",v);
+void TreeParams::setTreeActiveAutoExpand(const bool& v)
+{
+    instance()->handle->SetBool("TreeActiveAutoExpand", v);
     instance()->TreeActiveAutoExpand = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeActiveAutoExpand() {
+void TreeParams::removeTreeActiveAutoExpand()
+{
     instance()->handle->RemoveBool("TreeActiveAutoExpand");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeActiveColor() {
+const char* TreeParams::docTreeActiveColor()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const unsigned long & TreeParams::getTreeActiveColor() {
+const unsigned long& TreeParams::getTreeActiveColor()
+{
     return instance()->TreeActiveColor;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const unsigned long & TreeParams::defaultTreeActiveColor() {
+const unsigned long& TreeParams::defaultTreeActiveColor()
+{
     const static unsigned long def = 3873898495;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeActiveColor(const unsigned long &v) {
-    instance()->handle->SetUnsigned("TreeActiveColor",v);
+void TreeParams::setTreeActiveColor(const unsigned long& v)
+{
+    instance()->handle->SetUnsigned("TreeActiveColor", v);
     instance()->TreeActiveColor = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeActiveColor() {
+void TreeParams::removeTreeActiveColor()
+{
     instance()->handle->RemoveUnsigned("TreeActiveColor");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeEditColor() {
+const char* TreeParams::docTreeEditColor()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const unsigned long & TreeParams::getTreeEditColor() {
+const unsigned long& TreeParams::getTreeEditColor()
+{
     return instance()->TreeEditColor;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const unsigned long & TreeParams::defaultTreeEditColor() {
+const unsigned long& TreeParams::defaultTreeEditColor()
+{
     const static unsigned long def = 11272191;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeEditColor(const unsigned long &v) {
-    instance()->handle->SetUnsigned("TreeEditColor",v);
+void TreeParams::setTreeEditColor(const unsigned long& v)
+{
+    instance()->handle->SetUnsigned("TreeEditColor", v);
     instance()->TreeEditColor = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeEditColor() {
+void TreeParams::removeTreeEditColor()
+{
     instance()->handle->RemoveUnsigned("TreeEditColor");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docSelectingGroupColor() {
+const char* TreeParams::docSelectingGroupColor()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const unsigned long & TreeParams::getSelectingGroupColor() {
+const unsigned long& TreeParams::getSelectingGroupColor()
+{
     return instance()->SelectingGroupColor;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const unsigned long & TreeParams::defaultSelectingGroupColor() {
+const unsigned long& TreeParams::defaultSelectingGroupColor()
+{
     const static unsigned long def = 1082163711;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setSelectingGroupColor(const unsigned long &v) {
-    instance()->handle->SetUnsigned("SelectingGroupColor",v);
+void TreeParams::setSelectingGroupColor(const unsigned long& v)
+{
+    instance()->handle->SetUnsigned("SelectingGroupColor", v);
     instance()->SelectingGroupColor = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeSelectingGroupColor() {
+void TreeParams::removeSelectingGroupColor()
+{
     instance()->handle->RemoveUnsigned("SelectingGroupColor");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeActiveBold() {
+const char* TreeParams::docTreeActiveBold()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getTreeActiveBold() {
+const bool& TreeParams::getTreeActiveBold()
+{
     return instance()->TreeActiveBold;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultTreeActiveBold() {
+const bool& TreeParams::defaultTreeActiveBold()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeActiveBold(const bool &v) {
-    instance()->handle->SetBool("TreeActiveBold",v);
+void TreeParams::setTreeActiveBold(const bool& v)
+{
+    instance()->handle->SetBool("TreeActiveBold", v);
     instance()->TreeActiveBold = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeActiveBold() {
+void TreeParams::removeTreeActiveBold()
+{
     instance()->handle->RemoveBool("TreeActiveBold");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeActiveItalic() {
+const char* TreeParams::docTreeActiveItalic()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getTreeActiveItalic() {
+const bool& TreeParams::getTreeActiveItalic()
+{
     return instance()->TreeActiveItalic;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultTreeActiveItalic() {
+const bool& TreeParams::defaultTreeActiveItalic()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeActiveItalic(const bool &v) {
-    instance()->handle->SetBool("TreeActiveItalic",v);
+void TreeParams::setTreeActiveItalic(const bool& v)
+{
+    instance()->handle->SetBool("TreeActiveItalic", v);
     instance()->TreeActiveItalic = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeActiveItalic() {
+void TreeParams::removeTreeActiveItalic()
+{
     instance()->handle->RemoveBool("TreeActiveItalic");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeActiveUnderlined() {
+const char* TreeParams::docTreeActiveUnderlined()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getTreeActiveUnderlined() {
+const bool& TreeParams::getTreeActiveUnderlined()
+{
     return instance()->TreeActiveUnderlined;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultTreeActiveUnderlined() {
+const bool& TreeParams::defaultTreeActiveUnderlined()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeActiveUnderlined(const bool &v) {
-    instance()->handle->SetBool("TreeActiveUnderlined",v);
+void TreeParams::setTreeActiveUnderlined(const bool& v)
+{
+    instance()->handle->SetBool("TreeActiveUnderlined", v);
     instance()->TreeActiveUnderlined = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeActiveUnderlined() {
+void TreeParams::removeTreeActiveUnderlined()
+{
     instance()->handle->RemoveBool("TreeActiveUnderlined");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeActiveOverlined() {
+const char* TreeParams::docTreeActiveOverlined()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getTreeActiveOverlined() {
+const bool& TreeParams::getTreeActiveOverlined()
+{
     return instance()->TreeActiveOverlined;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultTreeActiveOverlined() {
+const bool& TreeParams::defaultTreeActiveOverlined()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeActiveOverlined(const bool &v) {
-    instance()->handle->SetBool("TreeActiveOverlined",v);
+void TreeParams::setTreeActiveOverlined(const bool& v)
+{
+    instance()->handle->SetBool("TreeActiveOverlined", v);
     instance()->TreeActiveOverlined = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeActiveOverlined() {
+void TreeParams::removeTreeActiveOverlined()
+{
     instance()->handle->RemoveBool("TreeActiveOverlined");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docIndentation() {
+const char* TreeParams::docIndentation()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getIndentation() {
+const long& TreeParams::getIndentation()
+{
     return instance()->Indentation;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultIndentation() {
+const long& TreeParams::defaultIndentation()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setIndentation(const long &v) {
-    instance()->handle->SetInt("Indentation",v);
+void TreeParams::setIndentation(const long& v)
+{
+    instance()->handle->SetInt("Indentation", v);
     instance()->Indentation = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeIndentation() {
+void TreeParams::removeIndentation()
+{
     instance()->handle->RemoveInt("Indentation");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docLabelExpression() {
+const char* TreeParams::docLabelExpression()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getLabelExpression() {
+const bool& TreeParams::getLabelExpression()
+{
     return instance()->LabelExpression;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultLabelExpression() {
+const bool& TreeParams::defaultLabelExpression()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setLabelExpression(const bool &v) {
-    instance()->handle->SetBool("LabelExpression",v);
+void TreeParams::setLabelExpression(const bool& v)
+{
+    instance()->handle->SetBool("LabelExpression", v);
     instance()->LabelExpression = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeLabelExpression() {
+void TreeParams::removeLabelExpression()
+{
     instance()->handle->RemoveBool("LabelExpression");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docIconSize() {
+const char* TreeParams::docIconSize()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getIconSize() {
+const long& TreeParams::getIconSize()
+{
     return instance()->IconSize;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultIconSize() {
+const long& TreeParams::defaultIconSize()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setIconSize(const long &v) {
-    instance()->handle->SetInt("IconSize",v);
+void TreeParams::setIconSize(const long& v)
+{
+    instance()->handle->SetInt("IconSize", v);
     instance()->IconSize = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeIconSize() {
+void TreeParams::removeIconSize()
+{
     instance()->handle->RemoveInt("IconSize");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docFontSize() {
+const char* TreeParams::docFontSize()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getFontSize() {
+const long& TreeParams::getFontSize()
+{
     return instance()->FontSize;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultFontSize() {
+const long& TreeParams::defaultFontSize()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setFontSize(const long &v) {
-    instance()->handle->SetInt("FontSize",v);
+void TreeParams::setFontSize(const long& v)
+{
+    instance()->handle->SetInt("FontSize", v);
     instance()->FontSize = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeFontSize() {
+void TreeParams::removeFontSize()
+{
     instance()->handle->RemoveInt("FontSize");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docItemSpacing() {
+const char* TreeParams::docItemSpacing()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getItemSpacing() {
+const long& TreeParams::getItemSpacing()
+{
     return instance()->ItemSpacing;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultItemSpacing() {
+const long& TreeParams::defaultItemSpacing()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setItemSpacing(const long &v) {
-    instance()->handle->SetInt("ItemSpacing",v);
+void TreeParams::setItemSpacing(const long& v)
+{
+    instance()->handle->SetInt("ItemSpacing", v);
     instance()->ItemSpacing = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeItemSpacing() {
+void TreeParams::removeItemSpacing()
+{
     instance()->handle->RemoveInt("ItemSpacing");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docItemBackground() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Tree view item background. Only effective in overlay.");
+const char* TreeParams::docItemBackground()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Tree view item background. Only effective in overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const unsigned long & TreeParams::getItemBackground() {
+const unsigned long& TreeParams::getItemBackground()
+{
     return instance()->ItemBackground;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const unsigned long & TreeParams::defaultItemBackground() {
+const unsigned long& TreeParams::defaultItemBackground()
+{
     const static unsigned long def = 0x00000000;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setItemBackground(const unsigned long &v) {
-    instance()->handle->SetUnsigned("ItemBackground",v);
+void TreeParams::setItemBackground(const unsigned long& v)
+{
+    instance()->handle->SetUnsigned("ItemBackground", v);
     instance()->ItemBackground = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeItemBackground() {
+void TreeParams::removeItemBackground()
+{
     instance()->handle->RemoveUnsigned("ItemBackground");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docItemBackgroundPadding() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Tree view item background padding.");
+const char* TreeParams::docItemBackgroundPadding()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Tree view item background padding.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getItemBackgroundPadding() {
+const long& TreeParams::getItemBackgroundPadding()
+{
     return instance()->ItemBackgroundPadding;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultItemBackgroundPadding() {
+const long& TreeParams::defaultItemBackgroundPadding()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setItemBackgroundPadding(const long &v) {
-    instance()->handle->SetInt("ItemBackgroundPadding",v);
+void TreeParams::setItemBackgroundPadding(const long& v)
+{
+    instance()->handle->SetInt("ItemBackgroundPadding", v);
     instance()->ItemBackgroundPadding = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeItemBackgroundPadding() {
+void TreeParams::removeItemBackgroundPadding()
+{
     instance()->handle->RemoveInt("ItemBackgroundPadding");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docHideColumn() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Hide extra tree view column for item description.");
+const char* TreeParams::docHideColumn()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Hide extra tree view column for item description.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getHideColumn() {
+const bool& TreeParams::getHideColumn()
+{
     return instance()->HideColumn;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultHideColumn() {
+const bool& TreeParams::defaultHideColumn()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setHideColumn(const bool &v) {
-    instance()->handle->SetBool("HideColumn",v);
+void TreeParams::setHideColumn(const bool& v)
+{
+    instance()->handle->SetBool("HideColumn", v);
     instance()->HideColumn = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeHideColumn() {
+void TreeParams::removeHideColumn()
+{
     instance()->handle->RemoveBool("HideColumn");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docHideInternalNames() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Hide extra tree view column - Internal Names.");
+const char* TreeParams::docHideInternalNames()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Hide extra tree view column - Internal Names.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getHideInternalNames() {
+const bool& TreeParams::getHideInternalNames()
+{
     return instance()->HideInternalNames;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultHideInternalNames() {
+const bool& TreeParams::defaultHideInternalNames()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setHideInternalNames(const bool &v) {
-    instance()->handle->SetBool("HideInternalNames",v);
+void TreeParams::setHideInternalNames(const bool& v)
+{
+    instance()->handle->SetBool("HideInternalNames", v);
     instance()->HideInternalNames = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeHideInternalNames() {
+void TreeParams::removeHideInternalNames()
+{
     instance()->handle->RemoveBool("HideInternalNames");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docHideScrollBar() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Hide tree view scroll bar in dock overlay.");
+const char* TreeParams::docHideScrollBar()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Hide tree view scroll bar in dock overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getHideScrollBar() {
+const bool& TreeParams::getHideScrollBar()
+{
     return instance()->HideScrollBar;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultHideScrollBar() {
+const bool& TreeParams::defaultHideScrollBar()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setHideScrollBar(const bool &v) {
-    instance()->handle->SetBool("HideScrollBar",v);
+void TreeParams::setHideScrollBar(const bool& v)
+{
+    instance()->handle->SetBool("HideScrollBar", v);
     instance()->HideScrollBar = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeHideScrollBar() {
+void TreeParams::removeHideScrollBar()
+{
     instance()->handle->RemoveBool("HideScrollBar");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docHideHeaderView() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Hide tree view header view in dock overlay.");
+const char* TreeParams::docHideHeaderView()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Hide tree view header view in dock overlay.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getHideHeaderView() {
+const bool& TreeParams::getHideHeaderView()
+{
     return instance()->HideHeaderView;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultHideHeaderView() {
+const bool& TreeParams::defaultHideHeaderView()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setHideHeaderView(const bool &v) {
-    instance()->handle->SetBool("HideHeaderView",v);
+void TreeParams::setHideHeaderView(const bool& v)
+{
+    instance()->handle->SetBool("HideHeaderView", v);
     instance()->HideHeaderView = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeHideHeaderView() {
+void TreeParams::removeHideHeaderView()
+{
     instance()->handle->RemoveBool("HideHeaderView");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docResizableColumn() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Allow tree view columns to be manually resized.");
+const char* TreeParams::docResizableColumn()
+{
+    return QT_TRANSLATE_NOOP("TreeParams", "Allow tree view columns to be manually resized.");
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getResizableColumn() {
+const bool& TreeParams::getResizableColumn()
+{
     return instance()->ResizableColumn;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultResizableColumn() {
+const bool& TreeParams::defaultResizableColumn()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setResizableColumn(const bool &v) {
-    instance()->handle->SetBool("ResizableColumn",v);
+void TreeParams::setResizableColumn(const bool& v)
+{
+    instance()->handle->SetBool("ResizableColumn", v);
     instance()->ResizableColumn = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeResizableColumn() {
+void TreeParams::removeResizableColumn()
+{
     instance()->handle->RemoveBool("ResizableColumn");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docColumnSize1() {
+const char* TreeParams::docColumnSize1()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getColumnSize1() {
+const long& TreeParams::getColumnSize1()
+{
     return instance()->ColumnSize1;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultColumnSize1() {
+const long& TreeParams::defaultColumnSize1()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setColumnSize1(const long &v) {
-    instance()->handle->SetInt("ColumnSize1",v);
+void TreeParams::setColumnSize1(const long& v)
+{
+    instance()->handle->SetInt("ColumnSize1", v);
     instance()->ColumnSize1 = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeColumnSize1() {
+void TreeParams::removeColumnSize1()
+{
     instance()->handle->RemoveInt("ColumnSize1");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docColumnSize2() {
+const char* TreeParams::docColumnSize2()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getColumnSize2() {
+const long& TreeParams::getColumnSize2()
+{
     return instance()->ColumnSize2;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultColumnSize2() {
+const long& TreeParams::defaultColumnSize2()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setColumnSize2(const long &v) {
-    instance()->handle->SetInt("ColumnSize2",v);
+void TreeParams::setColumnSize2(const long& v)
+{
+    instance()->handle->SetInt("ColumnSize2", v);
     instance()->ColumnSize2 = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeColumnSize2() {
+void TreeParams::removeColumnSize2()
+{
     instance()->handle->RemoveInt("ColumnSize2");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docColumnSize3() {
+const char* TreeParams::docColumnSize3()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const long & TreeParams::getColumnSize3() {
+const long& TreeParams::getColumnSize3()
+{
     return instance()->ColumnSize3;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const long & TreeParams::defaultColumnSize3() {
+const long& TreeParams::defaultColumnSize3()
+{
     const static long def = 0;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setColumnSize3(const long &v) {
-    instance()->handle->SetInt("ColumnSize3",v);
+void TreeParams::setColumnSize3(const long& v)
+{
+    instance()->handle->SetInt("ColumnSize3", v);
     instance()->ColumnSize3 = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeColumnSize3() {
+void TreeParams::removeColumnSize3()
+{
     instance()->handle->RemoveInt("ColumnSize3");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docTreeToolTipIcon() {
+const char* TreeParams::docTreeToolTipIcon()
+{
     return "";
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getTreeToolTipIcon() {
+const bool& TreeParams::getTreeToolTipIcon()
+{
     return instance()->TreeToolTipIcon;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultTreeToolTipIcon() {
+const bool& TreeParams::defaultTreeToolTipIcon()
+{
     const static bool def = false;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setTreeToolTipIcon(const bool &v) {
-    instance()->handle->SetBool("TreeToolTipIcon",v);
+void TreeParams::setTreeToolTipIcon(const bool& v)
+{
+    instance()->handle->SetBool("TreeToolTipIcon", v);
     instance()->TreeToolTipIcon = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeTreeToolTipIcon() {
+void TreeParams::removeTreeToolTipIcon()
+{
     instance()->handle->RemoveBool("TreeToolTipIcon");
 }
 
 // Auto generated code (Tools/params_utils.py:300)
-const char *TreeParams::docVisibilityIcon() {
-    return QT_TRANSLATE_NOOP("TreeParams",
-"Displays an eye icon in front of the tree view items, showing the items visibility status. When clicked the visibility is toggled");
+const char* TreeParams::docVisibilityIcon()
+{
+    return QT_TRANSLATE_NOOP(
+        "TreeParams",
+        "Displays an eye icon in front of the tree view items, showing the items visibility "
+        "status. When clicked the visibility is toggled"
+    );
 }
 
 // Auto generated code (Tools/params_utils.py:306)
-const bool & TreeParams::getVisibilityIcon() {
+const bool& TreeParams::getVisibilityIcon()
+{
     return instance()->VisibilityIcon;
 }
 
 // Auto generated code (Tools/params_utils.py:312)
-const bool & TreeParams::defaultVisibilityIcon() {
+const bool& TreeParams::defaultVisibilityIcon()
+{
     const static bool def = true;
     return def;
 }
 
 // Auto generated code (Tools/params_utils.py:319)
-void TreeParams::setVisibilityIcon(const bool &v) {
-    instance()->handle->SetBool("VisibilityIcon",v);
+void TreeParams::setVisibilityIcon(const bool& v)
+{
+    instance()->handle->SetBool("VisibilityIcon", v);
     instance()->VisibilityIcon = v;
 }
 
 // Auto generated code (Tools/params_utils.py:326)
-void TreeParams::removeVisibilityIcon() {
+void TreeParams::removeVisibilityIcon()
+{
     instance()->handle->RemoveBool("VisibilityIcon");
 }
 //[[[end]]]

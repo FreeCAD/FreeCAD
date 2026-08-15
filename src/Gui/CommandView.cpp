@@ -3216,8 +3216,8 @@ StdCmdSelBack::StdCmdSelBack()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Back");
-    static std::string toolTip
-        = std::string("<p>") + QT_TR_NOOP("Restores the previous selection.") + "</p>";
+    static std::string toolTip = std::string("<p>") + QT_TR_NOOP("Restores the previous selection.")
+        + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelBack";
     sStatusTip = sToolTipText;
@@ -3248,8 +3248,8 @@ StdCmdSelForward::StdCmdSelForward()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Forward");
-    static std::string toolTip
-        = std::string("<p>") + QT_TR_NOOP("Restores the next selection.") + "</p>";
+    static std::string toolTip = std::string("<p>") + QT_TR_NOOP("Restores the next selection.")
+        + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelForward";
     sStatusTip = sToolTipText;
