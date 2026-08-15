@@ -550,9 +550,8 @@ void CmdPartDesignClone::activated(int iMsg)
         if (actPart && actPart->getDocument() == obj->getDocument()) {
             Gui::cmdAppDocument(
                 obj,
-                std::stringstream() << actPart->getNameInDocument() 
-                                    << ".addObject(App.getDocument('" << obj->getDocument()->getName() << "')." 
-                                    << bodyName << ")"
+                std::stringstream() << actPart->getNameInDocument() << ".addObject(App.getDocument('"
+                                    << obj->getDocument()->getName() << "')." << bodyName << ")"
             );
         }
         Gui::cmdAppDocument(
