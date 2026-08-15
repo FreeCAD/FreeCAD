@@ -233,9 +233,31 @@ void SoBrepPointSet::IRRender(SoIRRenderAction* action)
         return idx >= startIndex && idx < endIndex;
     };
 
-    SelectionIR::applyPrimary(cmd, ctx, SelectionIR::getRootSelection(action), containsPoint);
-    SelectionIR::applySelectionOverlay(cmd, selectionCoordIndex, selectionColor.getValue(), containsPoint);
-    SelectionIR::applyHighlightOverlay(cmd, highlightCoordIndex, highlightColor.getValue(), containsPoint);
+    auto& selection = drawlist.getMutableSelectionState();
+    SelectionIR::applyPrimary(
+        selection,
+        firstCommand,
+        SO_PICK_VERTEX,
+        ctx,
+        SelectionIR::getRootSelection(action),
+        containsPoint
+    );
+    SelectionIR::applySelectionOverlay(
+        selection,
+        firstCommand,
+        SO_PICK_VERTEX,
+        selectionCoordIndex,
+        selectionColor.getValue(),
+        containsPoint
+    );
+    SelectionIR::applyHighlightOverlay(
+        selection,
+        firstCommand,
+        SO_PICK_VERTEX,
+        highlightCoordIndex,
+        highlightColor.getValue(),
+        containsPoint
+    );
 }
 
 void SoBrepPointSet::GLRender(SoGLRenderAction* action)

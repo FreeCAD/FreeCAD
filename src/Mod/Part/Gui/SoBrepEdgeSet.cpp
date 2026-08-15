@@ -414,10 +414,13 @@ void SoBrepEdgeSet::IRRender(SoIRRenderAction* action)
             return commandHasElement(cmd, idx);
         };
 
-        SelectionIR::applyPrimary(cmd, ctx, rootSelection, containsEdge);
+        auto& selection = drawlist.getMutableSelectionState();
+        SelectionIR::applyPrimary(selection, firstCommand + i, SO_PICK_EDGE, ctx, rootSelection, containsEdge);
         if (hasOverlaySelection) {
             SelectionIR::applySelectionOverlay(
-                cmd,
+                selection,
+                firstCommand + i,
+                SO_PICK_EDGE,
                 selectionEdgeIndex,
                 selectionColor.getValue(),
                 containsEdge
@@ -425,7 +428,9 @@ void SoBrepEdgeSet::IRRender(SoIRRenderAction* action)
         }
         if (hasOverlayHighlight) {
             SelectionIR::applyHighlightOverlay(
-                cmd,
+                selection,
+                firstCommand + i,
+                SO_PICK_EDGE,
                 highlightEdgeIndex,
                 highlightColor.getValue(),
                 containsEdge

@@ -4,9 +4,9 @@
 
 #pragma once
 
+#include <algorithm>
 #include <memory>
 
-#include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/rendering/SoRenderIR.h>
@@ -25,7 +25,7 @@ struct RootSelectionState
     SbColor highlightColor;
 };
 
-inline SbVec4f toVec4(const SbColor& color, float alpha = 1.0f)
+inline SbColor4f toColor4(const SbColor& color, float alpha = 1.0f)
 {
     return {color[0], color[1], color[2], alpha};
 }
@@ -34,12 +34,38 @@ inline SbVec4f toVec4(const SbColor& color, float alpha = 1.0f)
 // retained selection output visually identical across both pipelines.
 constexpr float DEFAULT_HIGHLIGHT_ALPHA = 1.0f;
 
-inline void reset(SoRenderCommand& cmd)
+inline void reset(SoSelectionState& selection, int commandIndex)
 {
-    cmd.selection.highlightWholeObject = false;
-    cmd.selection.highlightedElements.clear();
-    cmd.selection.selectWholeObject = false;
-    cmd.selection.selectedElements.clear();
+    auto removeCommandTargets = [commandIndex](auto& targets) {
+        targets.erase(
+            std::remove_if(
+                targets.begin(),
+                targets.end(),
+                [commandIndex](const SoSelectionTarget& target) {
+                    return target.commandIndex == commandIndex;
+                }
+            ),
+            targets.end()
+        );
+    };
+    removeCommandTargets(selection.selected);
+    removeCommandTargets(selection.highlighted);
+}
+
+inline void addTarget(
+    std::vector<SoSelectionTarget>& targets,
+    int commandIndex,
+    SoPickElementType type,
+    int elementIndex,
+    const SbColor4f& color
+)
+{
+    SoSelectionTarget target;
+    target.commandIndex = commandIndex;
+    target.type = type;
+    target.elementIndex = elementIndex;
+    target.color = color;
+    targets.push_back(target);
 }
 
 inline RootSelectionState getRootSelection(SoAction* action)
@@ -57,44 +83,60 @@ inline RootSelectionState getRootSelection(SoAction* action)
 
 template<typename ContextT, typename ContainsElementFn>
 inline void applyPrimary(
-    SoRenderCommand& cmd,
+    SoSelectionState& selection,
+    int commandIndex,
+    SoPickElementType elementType,
     const std::shared_ptr<ContextT>& ctx,
     const RootSelectionState& root,
     ContainsElementFn&& containsElement
 )
 {
-    reset(cmd);
+    reset(selection, commandIndex);
 
     if (ctx && ctx->isHighlightAll()) {
-        cmd.selection.highlightWholeObject = true;
-        cmd.selection.highlightColor = toVec4(ctx->highlightColor, DEFAULT_HIGHLIGHT_ALPHA);
+        addTarget(
+            selection.highlighted,
+            commandIndex,
+            SO_PICK_OBJECT,
+            -1,
+            toColor4(ctx->highlightColor, DEFAULT_HIGHLIGHT_ALPHA)
+        );
     }
     else if (root.highlighted) {
-        cmd.selection.highlightWholeObject = true;
-        cmd.selection.highlightColor = toVec4(root.highlightColor, DEFAULT_HIGHLIGHT_ALPHA);
+        addTarget(
+            selection.highlighted,
+            commandIndex,
+            SO_PICK_OBJECT,
+            -1,
+            toColor4(root.highlightColor, DEFAULT_HIGHLIGHT_ALPHA)
+        );
     }
     else if (ctx && ctx->highlightIndex >= 0 && containsElement(ctx->highlightIndex)) {
-        cmd.selection.highlightedElements.push_back(ctx->highlightIndex);
-        cmd.selection.highlightColor = toVec4(ctx->highlightColor, DEFAULT_HIGHLIGHT_ALPHA);
+        addTarget(
+            selection.highlighted,
+            commandIndex,
+            elementType,
+            ctx->highlightIndex,
+            toColor4(ctx->highlightColor, DEFAULT_HIGHLIGHT_ALPHA)
+        );
     }
 
     if (ctx && ctx->isSelectAll()) {
-        cmd.selection.selectionColor = toVec4(ctx->selectionColor);
-        cmd.selection.selectWholeObject = true;
+        addTarget(selection.selected, commandIndex, SO_PICK_OBJECT, -1, toColor4(ctx->selectionColor));
     }
     else if (root.selected) {
-        cmd.selection.selectionColor = toVec4(root.selectionColor);
-        cmd.selection.selectWholeObject = true;
+        addTarget(selection.selected, commandIndex, SO_PICK_OBJECT, -1, toColor4(root.selectionColor));
     }
     else if (ctx) {
-        bool hasSelectedElements = false;
         for (int idx : ctx->selectionIndex) {
             if (idx >= 0 && containsElement(idx)) {
-                if (!hasSelectedElements) {
-                    cmd.selection.selectionColor = toVec4(ctx->selectionColor);
-                    hasSelectedElements = true;
-                }
-                cmd.selection.selectedElements.push_back(idx);
+                addTarget(
+                    selection.selected,
+                    commandIndex,
+                    elementType,
+                    idx,
+                    toColor4(ctx->selectionColor)
+                );
             }
         }
     }
@@ -102,7 +144,9 @@ inline void applyPrimary(
 
 template<typename ContainsElementFn>
 inline void applySelectionOverlay(
-    SoRenderCommand& cmd,
+    SoSelectionState& selection,
+    int commandIndex,
+    SoPickElementType elementType,
     const SoMFInt32& overlayIndices,
     const SbColor& overlayColor,
     ContainsElementFn&& containsElement
@@ -112,27 +156,24 @@ inline void applySelectionOverlay(
         return;
     }
 
-    cmd.selection.selectionColor = toVec4(overlayColor);
-    cmd.selection.selectWholeObject = false;
-    cmd.selection.selectedElements.clear();
-
     const int32_t* indices = overlayIndices.getValues(0);
     for (int i = 0; i < overlayIndices.getNum(); ++i) {
         const int idx = indices[i];
         if (idx < 0) {
-            cmd.selection.selectWholeObject = true;
-            cmd.selection.selectedElements.clear();
+            addTarget(selection.selected, commandIndex, SO_PICK_OBJECT, -1, toColor4(overlayColor));
             return;
         }
         if (containsElement(idx)) {
-            cmd.selection.selectedElements.push_back(idx);
+            addTarget(selection.selected, commandIndex, elementType, idx, toColor4(overlayColor));
         }
     }
 }
 
 template<typename ContainsElementFn>
 inline void applyHighlightOverlay(
-    SoRenderCommand& cmd,
+    SoSelectionState& selection,
+    int commandIndex,
+    SoPickElementType elementType,
     const SoMFInt32& overlayIndices,
     const SbColor& overlayColor,
     ContainsElementFn&& containsElement
@@ -142,20 +183,21 @@ inline void applyHighlightOverlay(
         return;
     }
 
-    cmd.selection.highlightColor = toVec4(overlayColor, 1.0f);
-    cmd.selection.highlightWholeObject = false;
-    cmd.selection.highlightedElements.clear();
-
     const int32_t* indices = overlayIndices.getValues(0);
     for (int i = 0; i < overlayIndices.getNum(); ++i) {
         const int idx = indices[i];
         if (idx < 0) {
-            cmd.selection.highlightWholeObject = true;
-            cmd.selection.highlightedElements.clear();
+            addTarget(
+                selection.highlighted,
+                commandIndex,
+                SO_PICK_OBJECT,
+                -1,
+                toColor4(overlayColor, 1.0f)
+            );
             return;
         }
         if (containsElement(idx)) {
-            cmd.selection.highlightedElements.push_back(idx);
+            addTarget(selection.highlighted, commandIndex, elementType, idx, toColor4(overlayColor, 1.0f));
         }
     }
 }

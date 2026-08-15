@@ -398,7 +398,7 @@ void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
         const int count = std::max(0, partCounts[i]) * 3;
         if (count > 0) {
             SoRenderElementRange range;
-            range.elementType = SO_PICK_FACE;
+            range.type = SO_PICK_FACE;
             range.elementIndex = i;
             range.drawStart = vertexOffset;
             range.drawCount = count;
@@ -427,9 +427,18 @@ void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
             continue;
         }
 
+        // The generic primitive collector records one face range per emitted
+        // triangle. SoBrepFaceSet's partIndex is the authoritative topology
+        // for this node: one retained pick/highlight range represents all
+        // triangles belonging to one BRep face. Replace the generic ranges
+        // before adding the part ranges so an overlay cannot render the same
+        // requested face twice through two different identities.
+        cmd.pick.elementRanges.clear();
         for (const auto& partRange : elementRanges) {
-            const int rangeStart = std::max(commandVertexStart, partRange.drawStart);
-            const int rangeEnd = std::min(commandVertexEnd, partRange.drawStart + partRange.drawCount);
+            const int partStart = static_cast<int>(partRange.drawStart);
+            const int partEnd = partStart + static_cast<int>(partRange.drawCount);
+            const int rangeStart = std::max(commandVertexStart, partStart);
+            const int rangeEnd = std::min(commandVertexEnd, partEnd);
             if (rangeStart < rangeEnd) {
                 SoRenderElementRange range = partRange;
                 range.drawStart = rangeStart - commandVertexStart;
@@ -438,9 +447,24 @@ void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
             }
         }
 
-        SelectionIR::applyPrimary(cmd, ctx, rootSelection, containsPart);
-        SelectionIR::applySelectionOverlay(cmd, selectionPartIndex, selectionColor.getValue(), containsPart);
-        SelectionIR::applyHighlightOverlay(cmd, highlightPartIndex, highlightColor.getValue(), containsPart);
+        auto& selection = drawlist.getMutableSelectionState();
+        SelectionIR::applyPrimary(selection, commandIndex, SO_PICK_FACE, ctx, rootSelection, containsPart);
+        SelectionIR::applySelectionOverlay(
+            selection,
+            commandIndex,
+            SO_PICK_FACE,
+            selectionPartIndex,
+            selectionColor.getValue(),
+            containsPart
+        );
+        SelectionIR::applyHighlightOverlay(
+            selection,
+            commandIndex,
+            SO_PICK_FACE,
+            highlightPartIndex,
+            highlightColor.getValue(),
+            containsPart
+        );
         commandVertexStart = commandVertexEnd;
     }
 }
