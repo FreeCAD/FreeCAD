@@ -22,17 +22,418 @@
  ***************************************************************************/
 
 #include "Parser.h"
+#include "ColorShading.h"
+#include "Corners.h"
+#include "Gradient.h"
+#include "Insets.h"
 #include "ParameterManager.h"
 
 #include <Utilities.h>
+#include <Base/OkLch.h>
 #include <Base/Tools.h>
 
 #include <QColor>
 #include <algorithm>
+#include <cctype>
+#include <optional>
+#include <stdexcept>
+#include <string_view>
+#include <unordered_map>
 #include <variant>
 
 namespace Gui::StyleParameters
 {
+
+namespace
+{
+/// Returns the named argument of type T, throwing Base::ExpressionError when it is not.
+template<typename T>
+const T& requireArgument(const Tuple& args, const std::string& name, const char* function)
+{
+    if (const T* value = args.tryGet<T>(name)) {
+        return *value;
+    }
+
+    const Value* found = args.find(name);
+    THROWM(
+        Base::ExpressionError,
+        fmt::format(
+            "{}: '{}' argument must be {}, got {}",
+            function,
+            name,
+            valueTypeName<T>(),
+            found ? found->toString() : "nothing"
+        )
+    );
+}
+
+bool isDigitChar(char character)
+{
+    return std::isdigit(static_cast<unsigned char>(character)) != 0;
+}
+
+bool isAlphaChar(char character)
+{
+    return std::isalpha(static_cast<unsigned char>(character)) != 0;
+}
+
+bool isAlnumChar(char character)
+{
+    return std::isalnum(static_cast<unsigned char>(character)) != 0;
+}
+
+bool isSpaceChar(char character)
+{
+    return std::isspace(static_cast<unsigned char>(character)) != 0;
+}
+
+int parseIntOrThrow(const std::string& text, int base = 10)  // NOLINT(*-magic-numbers)
+{
+    try {
+        return std::stoi(text, nullptr, base);
+    }
+    catch (const std::invalid_argument&) {
+        THROWM(Base::ParserError, fmt::format("Invalid integer: {}", text));
+    }
+    catch (const std::out_of_range&) {
+        THROWM(Base::ParserError, fmt::format("Integer out of range: {}", text));
+    }
+}
+
+double parseDoubleOrThrow(const std::string& text)
+{
+    try {
+        return std::stod(text);
+    }
+    catch (const std::invalid_argument&) {
+        THROWM(Base::ParserError, fmt::format("Invalid number: {}", text));
+    }
+    catch (const std::out_of_range&) {
+        THROWM(Base::ParserError, fmt::format("Number out of range: {}", text));
+    }
+}
+
+std::optional<size_t> parseIndex(const std::string& text)
+{
+    try {
+        return std::stoul(text);
+    }
+    catch (const std::exception&) {
+        return std::nullopt;
+    }
+}
+
+/// Shrinks a (width, height) size by one or more insets.
+Value contentBox(const Tuple& args)
+{
+    if (args.size() < 2) {
+        THROWM(
+            Base::ExpressionError,
+            "content_box requires at least 2 arguments: a size tuple and at least one inset"
+        );
+    }
+
+    const Value& sizeValue = args.at(0);
+    Numeric width, height;
+
+    if (sizeValue.holds<Tuple>()) {
+        const auto& sizeTuple = sizeValue.get<Tuple>();
+        // The Base::TypeError branch below only guards the outer shape of the first argument
+        // (tuple vs. numeric vs. neither); it says nothing about what's inside the tuple, so
+        // "width"/"height" of the wrong type still need their own check.
+        width = requireArgument<Numeric>(sizeTuple, "width", "content_box");
+        height = requireArgument<Numeric>(sizeTuple, "height", "content_box");
+    }
+    else if (sizeValue.holds<Numeric>()) {
+        width = sizeValue.get<Numeric>();
+        height = sizeValue.get<Numeric>();
+    }
+    else {
+        THROWM(
+            Base::TypeError,
+            "content_box: first argument must be a (width, height) size tuple or a Numeric"
+        );
+    }
+
+    for (size_t index = 1; index < args.size(); ++index) {
+        const Insets insets(args.at(index));
+        width = width - insets.horizontal();
+        height = height - insets.vertical();
+    }
+
+    return Tuple({
+        Tuple::Element::named("width", width),
+        Tuple::Element::named("height", height),
+    });
+}
+
+/// True when a value is a valid linear or radial gradient, going through the same tryFrom
+/// validation mapGradientStops uses. Lets callers with more than one gradient argument (e.g.
+/// blend) decide between arguments before committing to a mapping.
+bool isGradientValue(const Value& value)
+{
+    return LinearGradient::tryFrom(value).has_value() || RadialGradient::tryFrom(value).has_value();
+}
+
+/// Converts a Numeric to a plain fraction, treating a "%" unit as out-of-100.
+float asPercent(const Numeric& numeric)
+{
+    if (numeric.unit == "%") {
+        return static_cast<float>(numeric.value / 100.0);
+    }
+    return static_cast<float>(numeric.value);
+}
+
+// Each of these has an ArgumentParser default, so a slot is always present; requireArgument
+// only ever throws here when the theme author supplied an explicit, wrongly-typed value —
+// a defaulted slot is always a Numeric and passes through untouched.
+ColorShading::Parameters parseShadingParams(const Tuple& resolved, const char* function)
+{
+    return ColorShading::Parameters {
+        .range = asPercent(requireArgument<Numeric>(resolved, "range", function)),
+        .minLightness = asPercent(requireArgument<Numeric>(resolved, "min", function)),
+        .maxLightness = asPercent(requireArgument<Numeric>(resolved, "max", function)),
+        .pivot = asPercent(requireArgument<Numeric>(resolved, "pivot", function)),
+        .chromaExponent = asPercent(requireArgument<Numeric>(resolved, "q", function)),
+    };
+}
+
+Base::Color applyShade(
+    float position,
+    const Base::Color& color,
+    const Base::OkLch& oklch,
+    const ColorShading::Parameters& shadingParams
+)
+{
+    auto shadeOklch = ColorShading::computeShade(position, oklch, shadingParams);
+    if (shadeOklch.lightness == oklch.lightness && shadeOklch.chroma == oklch.chroma) {
+        return color;
+    }
+    return Base::fromOkLch(shadeOklch, color.a);
+}
+
+/// Shared implementation of `lighten`/`darken`, distinguished only by the Qt lighter/darker
+/// call and the function name used in diagnostics.
+Value lightenOrDarken(const Tuple& args, bool lighten)
+{
+    const char* functionName = lighten ? "lighten" : "darken";
+
+    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+
+    // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
+    // we, however, want users to pass only the relative difference, hence we need to add the
+    // 100 required by Qt.
+    //
+    // NOLINTNEXTLINE(*-magic-numbers)
+    auto amount = 100
+        + static_cast<int>(requireArgument<Numeric>(resolved, "amount", functionName).value);
+
+    const auto applyToColor = [&](const Base::Color& color) -> Base::Color {
+        auto qcolor = color.asValue<QColor>();
+        if (lighten) {
+            return Base::Color::fromValue(qcolor.lighter(amount));
+        }
+        return Base::Color::fromValue(qcolor.darker(amount));
+    };
+
+    const Value* colorValue = resolved.find("color");
+    if (colorValue->holds<Tuple>()) {
+        auto mapped = mapGradientStops(*colorValue, applyToColor);
+        if (!mapped) {
+            THROWM(
+                Base::ExpressionError,
+                fmt::format("{}: color argument must be a color or gradient", functionName)
+            );
+        }
+        return Value {std::move(*mapped)};
+    }
+
+    return applyToColor(requireArgument<Base::Color>(resolved, "color", functionName));
+}
+
+Value lighten(const Tuple& args)
+{
+    return lightenOrDarken(args, true);
+}
+
+Value darken(const Tuple& args)
+{
+    return lightenOrDarken(args, false);
+}
+
+Value blend(const Tuple& args)
+{
+    auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
+
+    auto amount = Base::fromPercent(
+        static_cast<long>(requireArgument<Numeric>(resolved, "amount", "blend").value)
+    );
+
+    const auto blendColors =
+        [amount](const Base::Color& first, const Base::Color& second) -> Base::Color {
+        return Base::Color(
+            (1 - amount) * first.r + amount * second.r,
+            (1 - amount) * first.g + amount * second.g,
+            (1 - amount) * first.b + amount * second.b
+        );
+    };
+
+    const Value* fromValue = resolved.find("from");
+    const Value* toValue = resolved.find("to");
+
+    bool fromIsGradient = fromValue->holds<Tuple>() && isGradientValue(*fromValue);
+    bool toIsGradient = toValue->holds<Tuple>() && isGradientValue(*toValue);
+
+    if (fromValue->holds<Tuple>() && !fromIsGradient) {
+        THROWM(Base::ExpressionError, "blend: 'from' argument must be a color or gradient");
+    }
+    if (toValue->holds<Tuple>() && !toIsGradient) {
+        THROWM(Base::ExpressionError, "blend: 'to' argument must be a color or gradient");
+    }
+
+    if (fromIsGradient && toIsGradient) {
+        THROWM(Base::ExpressionError, "Cannot blend two gradients");
+    }
+
+    if (fromIsGradient) {
+        const auto& targetColor = requireArgument<Base::Color>(resolved, "to", "blend");
+        auto mapped = mapGradientStops(*fromValue, [&](const Base::Color& stopColor) {
+            return blendColors(stopColor, targetColor);
+        });
+        return Value {std::move(*mapped)};
+    }
+
+    if (toIsGradient) {
+        const auto& sourceColor = requireArgument<Base::Color>(resolved, "from", "blend");
+        auto mapped = mapGradientStops(*toValue, [&](const Base::Color& stopColor) {
+            return blendColors(sourceColor, stopColor);
+        });
+        return Value {std::move(*mapped)};
+    }
+
+    if (!fromValue->holds<Base::Color>()) {
+        THROWM(Base::ExpressionError, "Expected color as from argument");
+    }
+
+    if (!toValue->holds<Base::Color>()) {
+        THROWM(Base::ExpressionError, "Expected color as to argument");
+    }
+
+    return blendColors(fromValue->get<Base::Color>(), toValue->get<Base::Color>());
+}
+
+Value shade(const Tuple& args)
+{
+    auto resolved = ArgumentParser {
+        {.name = "color"},
+        {.name = "lightness"},
+        {.name = "range", .defaultValue = Numeric {0.8, ""}},
+        {.name = "min", .defaultValue = Numeric {0.17, ""}},
+        {.name = "max", .defaultValue = Numeric {0.97, ""}},
+        {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
+        {.name = "q", .defaultValue = Numeric {0.1, ""}},
+    }.resolve(args);
+
+    auto position = asPercent(requireArgument<Numeric>(resolved, "lightness", "shade"));
+    auto shadingParams = parseShadingParams(resolved, "shade");
+
+    const auto applyToColor = [&](const Base::Color& color) -> Base::Color {
+        auto oklch = Base::toOkLch(color);
+        return applyShade(position, color, oklch, shadingParams);
+    };
+
+    const Value* colorValue = resolved.find("color");
+    if (colorValue->holds<Tuple>()) {
+        auto mapped = mapGradientStops(*colorValue, applyToColor);
+        if (!mapped) {
+            THROWM(Base::ExpressionError, "shade: color argument must be a color or gradient");
+        }
+        return Value {std::move(*mapped)};
+    }
+
+    return applyToColor(requireArgument<Base::Color>(resolved, "color", "shade"));
+}
+
+Value shades(const Tuple& args)
+{
+    auto resolved = ArgumentParser {
+        {.name = "color"},
+        {.name = "shades"},
+        {.name = "range", .defaultValue = Numeric {0.8, ""}},
+        {.name = "min", .defaultValue = Numeric {0.17, ""}},
+        {.name = "max", .defaultValue = Numeric {0.97, ""}},
+        {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
+        {.name = "q", .defaultValue = Numeric {0.1, ""}},
+    }.resolve(args);
+
+    const auto& shadesSpec = requireArgument<Tuple>(resolved, "shades", "shades");
+    auto shadingParams = parseShadingParams(resolved, "shades");
+
+    const auto appendElement = [](Tuple& result, const Tuple::Element& spec, Value shadeValue) {
+        if (spec.name) {
+            result.elements.push_back(Tuple::Element::named(*spec.name, std::move(shadeValue)));
+        }
+        else {
+            result.elements.push_back(Tuple::Element::unnamed(std::move(shadeValue)));
+        }
+    };
+
+    const Value* colorValue = resolved.find("color");
+    if (colorValue->holds<Tuple>()) {
+        if (!isGradientValue(*colorValue)) {
+            THROWM(Base::ExpressionError, "shades: color argument must be a color or gradient");
+        }
+
+        Tuple result;
+        for (const auto& element : shadesSpec.elements) {
+            float position = asPercent(element.value->get<Numeric>());
+            auto shadedGradient
+                = mapGradientStops(*colorValue, [&](const Base::Color& stopColor) -> Base::Color {
+                      auto oklch = Base::toOkLch(stopColor);
+                      return applyShade(position, stopColor, oklch, shadingParams);
+                  });
+            appendElement(result, element, std::move(*shadedGradient));
+        }
+        return result;
+    }
+
+    const auto& baseColor = requireArgument<Base::Color>(resolved, "color", "shades");
+    auto baseOklch = Base::toOkLch(baseColor);
+
+    Tuple result;
+    for (const auto& element : shadesSpec.elements) {
+        float position = asPercent(element.value->get<Numeric>());
+        auto shadeColor = applyShade(position, baseColor, baseOklch, shadingParams);
+        appendElement(result, element, shadeColor);
+    }
+    return result;
+}
+
+using StyleFunction = Value (*)(const Tuple&);
+
+/// Table of all style functions taking a single Tuple argument, built once and reused —
+/// see FunctionCall::evaluate for the "coalesce" special case that bypasses it.
+const std::unordered_map<std::string_view, StyleFunction>& styleFunctions()
+{
+    static const std::unordered_map<std::string_view, StyleFunction> table = {
+        {"lighten", lighten},
+        {"darken", darken},
+        {"blend", blend},
+        {"shade", shade},
+        {"shades", shades},
+        {"content_box", contentBox},
+        {"padding", [](const Tuple& args) -> Value { return Padding(args).tuple(); }},
+        {"margins", [](const Tuple& args) -> Value { return Margins(args).tuple(); }},
+        {"border_colors", [](const Tuple& args) -> Value { return BorderColors(args).tuple(); }},
+        {"border_thickness", [](const Tuple& args) -> Value { return BorderThickness(args).tuple(); }},
+        {"border_radius", [](const Tuple& args) -> Value { return Corners(args).tuple(); }},
+        {"linear_gradient", [](const Tuple& args) -> Value { return LinearGradient(args).tuple(); }},
+        {"radial_gradient", [](const Tuple& args) -> Value { return RadialGradient(args).tuple(); }},
+    };
+    return table;
+}
+
+}  // namespace
 
 Value ParameterReference::evaluate(const EvaluationContext& context) const
 {
@@ -51,54 +452,25 @@ Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
 
 Value FunctionCall::evaluate(const EvaluationContext& context) const
 {
+    if (functionName == "coalesce") {
+        if (arguments.elements.empty()) {
+            THROWM(Base::ExpressionError, "coalesce requires at least one argument");
+        }
+        for (const auto& element : arguments.elements) {
+            Value result = element.expression->evaluate(context);
+            if (!result.holds<std::string>() || !result.get<std::string>().starts_with("@")) {
+                return result;
+            }
+        }
+        return arguments.elements.back().expression->evaluate(context);
+    }
+
     auto argsValue = arguments.evaluate(context);
     const auto& args = argsValue.get<Tuple>();
 
-    const auto lightenOrDarken = [this, &args]() -> Value {
-        auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
-
-        auto color = resolved.get<Base::Color>("color").asValue<QColor>();
-
-        // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
-        // we, however, want users to pass only the relative difference, hence we need to add the
-        // 100 required by Qt.
-        //
-        // NOLINTNEXTLINE(*-magic-numbers)
-        auto amount = 100 + static_cast<int>(resolved.get<Numeric>("amount").value);
-
-        if (functionName == "lighten") {
-            return Base::Color::fromValue(color.lighter(amount));
-        }
-
-        if (functionName == "darken") {
-            return Base::Color::fromValue(color.darker(amount));
-        }
-
-        return {};
-    };
-
-    const auto blend = [&args]() -> Value {
-        auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
-
-        auto firstColor = resolved.get<Base::Color>("from");
-        auto secondColor = resolved.get<Base::Color>("to");
-        auto amount = Base::fromPercent(static_cast<long>(resolved.get<Numeric>("amount").value));
-
-        return Base::Color(
-            (1 - amount) * firstColor.r + amount * secondColor.r,
-            (1 - amount) * firstColor.g + amount * secondColor.g,
-            (1 - amount) * firstColor.b + amount * secondColor.b
-        );
-    };
-
-    std::map<std::string, std::function<Value()>> functions = {
-        {"lighten", lightenOrDarken},
-        {"darken", lightenOrDarken},
-        {"blend", blend},
-    };
-
-    if (functions.contains(functionName)) {
-        return functions.at(functionName)();
+    const auto& table = styleFunctions();
+    if (auto entry = table.find(functionName); entry != table.end()) {
+        return entry->second(args);
     }
 
     THROWM(Base::ExpressionError, fmt::format("Unknown function '{}'", functionName));
@@ -161,8 +533,15 @@ Value MemberAccess::evaluate(const EvaluationContext& context) const
         return *found;
     }
 
-    if (std::ranges::all_of(member, ::isdigit)) {
-        return tuple.at(std::stoul(member));
+    if (std::ranges::all_of(member, isDigitChar)) {
+        const std::optional<size_t> index = parseIndex(member);
+        const Value* element = index ? tuple.tryAt(*index) : nullptr;
+
+        if (!element) {
+            THROWM(Base::ExpressionError, fmt::format("Tuple has no element at index '{}'", member));
+        }
+
+        return *element;
     }
 
     THROWM(Base::ExpressionError, fmt::format("Tuple has no member '{}'", member));
@@ -293,14 +672,24 @@ std::unique_ptr<Expr> Parser::parseColor()
 {
     const auto parseHexadecimalColor = [&]() {
         constexpr int hexadecimalBase = 16;
+        constexpr size_t hexDigitCount = 6;
+
+        const size_t start = pos;
 
         // Format is #RRGGBB
         pos++;
-        int r = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
+        if (input.size() - pos < hexDigitCount) {
+            THROWM(
+                Base::ParserError,
+                fmt::format("Invalid hexadecimal color, expected #RRGGBB, got '{}'", input.substr(start))
+            );
+        }
+
+        int r = parseIntOrThrow(input.substr(pos, 2), hexadecimalBase);
         pos += 2;
-        int g = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
+        int g = parseIntOrThrow(input.substr(pos, 2), hexadecimalBase);
         pos += 2;
-        int b = std::stoi(input.substr(pos, 2), nullptr, hexadecimalBase);
+        int b = parseIntOrThrow(input.substr(pos, 2), hexadecimalBase);
         pos += 2;
 
         return std::make_unique<Color>(Base::Color(r / 255.0, g / 255.0, b / 255.0));
@@ -338,20 +727,12 @@ std::unique_ptr<Expr> Parser::parseColor()
 
     skipWhitespace();
 
-    try {
-        if (input[pos] == '#') {
-            return parseHexadecimalColor();
-        }
-
-        if (peekString(rgbFunction) || peekString(rgbaFunction)) {
-            return parseFunctionStyleColor();
-        }
+    if (input[pos] == '#') {
+        return parseHexadecimalColor();
     }
-    catch (std::invalid_argument&) {
-        THROWM(
-            Base::ParserError,
-            "Invalid color format, expected #RRGGBB or rgb(r,g,b) or rgba(r,g,b,a)"
-        );
+
+    if (peekString(rgbFunction) || peekString(rgbaFunction)) {
+        return parseFunctionStyleColor();
     }
 
     THROWM(Base::ParserError, "Unknown color format");
@@ -370,7 +751,7 @@ std::unique_ptr<Expr> Parser::parseParameter()
         THROWM(Base::ParserError, fmt::format("Expected '@' for parameter, got '{}'", input[pos]));
     }
     size_t start = pos;
-    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+    while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
         ++pos;
     }
     if (start == pos) {
@@ -385,14 +766,14 @@ std::unique_ptr<Expr> Parser::parseParameter()
 bool Parser::peekFunction()
 {
     skipWhitespace();
-    return pos < input.size() && isalpha(input[pos]);
+    return pos < input.size() && isAlphaChar(input[pos]);
 }
 
 std::unique_ptr<Expr> Parser::parseFunctionCall()
 {
     skipWhitespace();
     size_t start = pos;
-    while (pos < input.size() && isalnum(input[pos])) {
+    while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
         ++pos;
     }
     std::string functionName = input.substr(start, pos - start);
@@ -411,18 +792,18 @@ bool Parser::peekNamedElement()
     skipWhitespace();
 
     // Check for `identifier :` pattern (identifiers may start with digits, e.g. shade names like 050)
-    if (pos >= input.size() || !isalnum(input[pos])) {
+    if (pos >= input.size() || !isAlnumChar(input[pos])) {
         pos = saved;
         return false;
     }
 
     // Skip identifier characters
-    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+    while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
         ++pos;
     }
 
     // Skip whitespace between identifier and colon
-    while (pos < input.size() && isspace(input[pos])) {
+    while (pos < input.size() && isSpaceChar(input[pos])) {
         ++pos;
     }
 
@@ -443,7 +824,7 @@ std::unique_ptr<TupleLiteral> Parser::parseTuple(std::optional<TupleLiteral::Ele
         if (peekNamedElement()) {
             skipWhitespace();
             size_t start = pos;
-            while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+            while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
                 ++pos;
             }
             elem.name = input.substr(start, pos - start);
@@ -485,37 +866,29 @@ int Parser::parseInt()
 {
     skipWhitespace();
     size_t start = pos;
-    while (pos < input.size() && (isdigit(input[pos]) || input[pos] == '.')) {
+    while (pos < input.size() && (isDigitChar(input[pos]) || input[pos] == '.')) {
         ++pos;
     }
-    return std::stoi(input.substr(start, pos - start));
+    return parseIntOrThrow(input.substr(start, pos - start));
 }
 
 std::unique_ptr<Expr> Parser::parseNumber()
 {
     skipWhitespace();
     size_t start = pos;
-    while (pos < input.size() && (isdigit(input[pos]) || input[pos] == '.')) {
+    while (pos < input.size() && (isDigitChar(input[pos]) || input[pos] == '.')) {
         ++pos;
     }
 
-    std::string number = input.substr(start, pos - start);
-
-    try {
-        double value = std::stod(number);
-        std::string unit = parseUnit();
-        return std::make_unique<Number>(value, unit);
-    }
-    catch (std::invalid_argument&) {
-        THROWM(Base::ParserError, fmt::format("Invalid number: {}", number));
-    }
+    const double value = parseDoubleOrThrow(input.substr(start, pos - start));
+    return std::make_unique<Number>(value, parseUnit());
 }
 
 std::string Parser::parseUnit()
 {
     skipWhitespace();
     size_t start = pos;
-    while (pos < input.size() && (isalpha(input[pos]) || input[pos] == '%')) {
+    while (pos < input.size() && (isAlphaChar(input[pos]) || input[pos] == '%')) {
         ++pos;
     }
     if (start == pos) {
@@ -527,7 +900,7 @@ std::string Parser::parseUnit()
 std::string Parser::parseMember()
 {
     size_t start = pos;
-    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+    while (pos < input.size() && (isAlnumChar(input[pos]) || input[pos] == '_')) {
         ++pos;
     }
     if (start == pos) {
@@ -548,7 +921,7 @@ bool Parser::match(char expected)
 
 void Parser::skipWhitespace()
 {
-    while (pos < input.size() && isspace(input[pos])) {
+    while (pos < input.size() && isSpaceChar(input[pos])) {
         ++pos;
     }
 }
