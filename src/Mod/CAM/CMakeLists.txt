@@ -456,6 +456,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/directional_facing.py
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
+    Path/Base/Generator/leadinout.py
     Path/Base/Generator/linking.py
     Path/Base/Generator/ramp_entry.py
     Path/Base/Generator/rotary_dropcutter.py
@@ -546,6 +547,7 @@ SET(Tests_SRCS
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestAreaOperations.py
+    CAMTests/TestSlicer.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
@@ -580,6 +582,7 @@ SET(Tests_SRCS
     CAMTests/TestPathHelix.py
     CAMTests/TestPathHelpers.py
     CAMTests/TestPathHelixGenerator.py
+    CAMTests/TestPathLeadInOutGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
     CAMTests/TestPathLogNew.py
@@ -649,6 +652,8 @@ SET(Tests_SRCS
 
 SET(Tests_Fixtures
     CAMTests/Fixtures/OpHelix_v0-21.FCStd
+    CAMTests/Fixtures/test_17748_cam_profile.FCStd
+    CAMTests/Fixtures/test_28534_truncated_pocket.FCStd
 )
 
 SET(PathImages_Ops

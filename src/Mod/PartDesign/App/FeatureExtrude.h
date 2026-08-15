@@ -54,6 +54,9 @@ public:
     App::PropertyBool UseCustomVector;
     App::PropertyVector Direction;
     App::PropertyBool AlongSketchNormal;
+    App::PropertyEnumeration StartType;
+    App::PropertyLength StartOffset;
+    App::PropertyLinkSub StartReference;
     App::PropertyLength Offset;
     App::PropertyLength Offset2;
     App::PropertyLinkSub ReferenceAxis;
@@ -61,6 +64,8 @@ public:
     static App::PropertyQuantityConstraint::Constraints signedLengthConstraint;
     static double maxAngle;
     static App::PropertyAngle::Constraints floatAngle;
+
+    double getStartOffset() const;
 
     /** @name methods override feature */
     //@{
@@ -74,6 +79,7 @@ public:
     //@}
 
     static const char* SideTypesEnums[];
+    static const char* StartTypesEnums[];
 
 protected:
     void onDocumentRestored() override;
@@ -120,6 +126,15 @@ protected:
         const TopoShape& base,      // The base shape for context (global CS)
         TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
     );
+
+    double getStartReferenceOffset(
+        const TopoShape& sketchShape,
+        const App::PropertyLinkSub& reference,
+        const gp_Dir& dir,
+        double offset,
+        const TopLoc_Location& invObjLoc
+    ) const;
+    static TopoShape moveProfileToStart(const TopoShape& sketchShape, const gp_Dir& dir, double offset);
 };
 
 }  // namespace PartDesign

@@ -15,39 +15,6 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="frame_2">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_5">
-        <property name="text">
-         <string>Tool controller</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="toolController"/>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Coolant</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="coolantController"/>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QCheckBox" name="editToolController">
-        <property name="text">
-         <string>Edit Tool Controller</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -133,7 +100,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="20" column="1">
        <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
         <property name="toolTip">
-         <string>How much material to leave in the XY-plane (i.e. for finishing operation)</string>
+         <string>How much stock to leave on the walls for this operation</string>
         </property>
         <property name="unit" stdset="0">
          <string notr="true"/>
@@ -143,7 +110,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
       <item row="20" column="0">
        <widget class="QLabel" name="label_12">
         <property name="text">
-         <string>XY stock to leave</string>
+         <string>Radial stock to leave</string>
         </property>
        </widget>
       </item>

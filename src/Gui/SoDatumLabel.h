@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFUShort.h>
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFName.h>
@@ -103,6 +104,7 @@ public:
     SoSFImage image;
     SoSFFloat lineWidth;
     SoSFFloat sampling;
+    SoSFUShort linePattern;
     bool useAntialiasing;
 
 protected:

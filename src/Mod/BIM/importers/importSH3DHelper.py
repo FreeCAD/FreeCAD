@@ -540,7 +540,6 @@ class SH3DImporter:
         Returns the first level if only one defined or level_id is None
 
         Args:
-            levels (list): The list of imported levels
             level_id (string): the level @id
 
         Returns:
@@ -732,9 +731,6 @@ class SH3DImporter:
             parent (Element): the parent of the elements to be imported.
                 Usually the <home> element.
             xpath (str): the xpath of the elements to be imported.
-            update_progress (bool, optional): whether to update the
-                progress. Set to false when importing a group of elements.
-                Defaults to True.
         """
         elements = parent.findall(xpath)
         # Is it a real tag name or an xpath expression?
@@ -1005,7 +1001,6 @@ class BaseHandler:
             None
 
         Args:
-            levels (list): The list of imported levels
             level_id (string): the level @id
 
         Returns:
@@ -1306,7 +1301,6 @@ class LevelHandler(BaseHandler):
             """Return the Part.Extrude suitable for fusion by the make_multi_fuse tool.
 
             Args:
-                floor (Arch.Floor): the Arch Floor for which to create the Slab
                 obj_to_extrude (Part): the space or wall to project onto the XY
                 plane to create the slab
 
@@ -2314,7 +2308,6 @@ class WallHandler(BaseHandler):
             floor (Arch::Level): the level the wall belongs to. Used to group
                 the resulting Facebinders
             wall (Arch::Wall): the wall to paint
-            elm (Element): the xml element for the wall to be imported
             left_face_name (str): the name of the left face suitable for selecting
             right_face_name (str): the name of the right face suitable for selecting
         """
@@ -2360,7 +2353,6 @@ class WallHandler(BaseHandler):
         Args:
             floor (Slab): the Slab the wall belongs to
             wall (Wall): the Arch wall
-            elm (Element): the wall being imported (with child baseboards)
             left_face (Part.Face): the left hand side of the wall
             right_face (Part.Face): the right hand side of the wall
 

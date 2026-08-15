@@ -155,11 +155,12 @@ HELPER_PYI_FILES = {
 }
 PUBLIC_STUB_DECORATORS = {
     "classmethod",
+    "deprecated",
     "overload",
     "staticmethod",
 }
 
-BindingFamily: TypeAlias = Literal["pycxx_add_method", "pycxx_slot", "pymethoddef"]
+BindingFamily: TypeAlias = Literal["module_stub", "pycxx_add_method", "pycxx_slot", "pymethoddef"]
 ContextKind: TypeAlias = Literal["pycxx_module", "pymethoddef_table", "python_type", "unknown"]
 MethodKind: TypeAlias = Literal["keyword", "noargs", "varargs"]
 ContextEntry: TypeAlias = tuple[int, ContextKind, str]
@@ -232,6 +233,7 @@ class StubSignature:
     returns: str
     class_symbol: str | None = None
     doc: str | None = None
+    deprecated_message: str | None = None
 
 
 @dataclass(frozen=True)

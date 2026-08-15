@@ -11,6 +11,16 @@ from __future__ import annotations
 
 from typing import Literal, TypeAlias, overload
 
+from Base.Metadata import module
+
+module(
+    Name="Console",
+    Namespace="Base",
+    Include="Console.h",
+    CallbackOwner="ConsoleSingleton",
+    CallbackPrefix="s",
+)
+
 _MessageType: TypeAlias = Literal["Log", "Wrn", "Msg", "Err", "Critical", "Notification"]
 
 # Console output

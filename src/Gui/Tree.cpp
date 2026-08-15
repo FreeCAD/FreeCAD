@@ -468,11 +468,11 @@ void TreeWidgetItemDelegate::initStyleOption(QStyleOptionViewItem* option, const
         return;
     }
 
-    // Clear State_Enabled for hidden objects so QSS ::item:disabled rules can
+    // Clear State_Enabled for invisible objects so QSS ::item:disabled rules can
     // override the overlay stylesheet's blanket ::item { color } for text fading.
     if (item->type() == TreeWidget::ObjectType) {
         if (auto* docItem = static_cast<DocumentObjectItem*>(item);
-            docItem->object() && !docItem->object()->isShow()) {
+            docItem->object() && !docItem->isVisibleInTree()) {
             option->state &= ~QStyle::State_Enabled;
         }
     }
@@ -2116,6 +2116,12 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
 
     if (visibilityIconDoubleClickTimer.isActive()) {
         TreeWidget::mousePressEvent(event);
+        return;
+    }
+
+    QModelIndex index = indexAt(event->pos());
+    if (index.column() != 0) {
+        QTreeWidget::mouseDoubleClickEvent(event);
         return;
     }
 
@@ -3919,6 +3925,7 @@ void TreeWidget::setupText()
 
     this->closeDocAction->setText(tr("Close Document"));
     this->closeDocAction->setStatusTip(tr("Closes the document"));
+    this->closeDocAction->setIcon(BitmapFactory().iconFromTheme("Std_CloseActiveWindow"));
 
 #ifdef Q_OS_MAC
     this->openFileLocationAction->setText(tr("Reveal in Finder"));
@@ -6450,13 +6457,8 @@ QIcon DocumentObjectItem::getVisibilityIcon(int currentStatus, QIcon& original_i
     return new_icon;
 }
 
-void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
+bool DocumentObjectItem::isVisibleInTree() const
 {
-    // guard against calling this during destruction when tree widget may be nullptr
-    if (!treeWidget()) {
-        return;
-    }
-
     App::DocumentObject* pObject = object()->getObject();
 
     int visible = -1;
@@ -6485,6 +6487,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
     if (visible < 0) {
         visible = object()->isShow() ? 1 : 0;
     }
+
+    return visible != 0;
+}
+
+void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2)
+{
+    // guard against calling this during destruction when tree widget may be nullptr
+    if (!treeWidget()) {
+        return;
+    }
+
+    App::DocumentObject* pObject = object()->getObject();
+    auto visible = isVisibleInTree();
 
     auto obj = object()->getObject();
     auto linked = obj->getLinkedObject(false);

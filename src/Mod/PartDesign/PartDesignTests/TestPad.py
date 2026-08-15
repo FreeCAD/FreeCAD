@@ -24,6 +24,7 @@
 import unittest
 
 import FreeCAD
+import Part
 from FreeCAD import Base
 import TestSketcherApp
 
@@ -72,6 +73,57 @@ class TestPad(unittest.TestCase):
         self.Body.addObject(self.Pad)
         self.Doc.recompute()
         self.assertEqual(len(self.Pad.Shape.Faces), 6)
+
+    def testStartOffsetAndReference(self):
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Pad.StartType = "Offset"
+        self.Pad.StartOffset = 2
+        self.Pad.Length = 3
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMin, 2.0)
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMax, 5.0)
+
+        reference = self.Doc.addObject("Part::Feature", "Reference")
+        outer = Part.makeCylinder(2, 1, Base.Vector(0, 0, 10))
+        inner = Part.makeCylinder(1, 1, Base.Vector(0, 0, 10))
+        reference.Shape = outer.cut(inner)
+        top_face = max(
+            range(1, len(reference.Shape.Faces) + 1),
+            key=lambda index: reference.Shape.Faces[index - 1].CenterOfMass.z,
+        )
+        self.Pad.StartReference = (reference, [f"Face{top_face}"])
+        self.Pad.StartType = "Reference"
+        self.Pad.StartOffset = 2
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMin, 13.0)
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMax, 16.0)
+
+    def testStartOffsetForTwoSidedAndSymmetricPad(self):
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Pad.StartType = "Offset"
+        self.Pad.StartOffset = 2
+        self.Pad.SideType = "Two sides"
+        self.Pad.Length = 1
+        self.Pad.Length2 = 1
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMin, 1.0)
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMax, 3.0)
+
+        self.Pad.SideType = "Symmetric"
+        self.Pad.Length = 4
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMin, 0.0)
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMax, 4.0)
 
     def testPadToFirstCase(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")

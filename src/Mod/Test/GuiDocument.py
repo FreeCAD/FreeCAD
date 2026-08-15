@@ -22,9 +22,11 @@
 ***************************************************************************/"""
 
 import os
+import tempfile
 import threading
 import time
 import unittest
+import warnings
 import zipfile
 
 import FreeCAD
@@ -190,6 +192,22 @@ class TestGuiDocument(unittest.TestCase):
 
         self.assertEqual(proxy.executed_thread_id, threading.get_ident())
         self.assertGreaterEqual(elapsed, 0.04)
+
+    def testSaveCommandDoesNotUseDeprecatedAPI(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            self.doc.saveAs(os.path.join(temp_dir, "TestDoc.FCStd"))
+            self.doc.addObject("App::FeaturePython", "ModifiedObject")
+
+            with warnings.catch_warnings(record=True) as caught_warnings:
+                warnings.simplefilter("always", DeprecationWarning)
+                FreeCADGui.runCommand("Std_Save", 0)
+
+            deprecations = [
+                warning
+                for warning in caught_warnings
+                if issubclass(warning.category, DeprecationWarning)
+            ]
+            self.assertEqual(deprecations, [])
 
     def testRecoverySnapshotIncludesGuiDocument(self):
         self.doc.addObject("App::FeaturePython", "RecoveryGuiObject")
