@@ -1079,6 +1079,11 @@ QString MaterialsEditor::getColorHash(const QString& colorString)
 void MaterialsEditor::updateMaterialAppearance()
 {
     QTreeView* tree = ui->treeAppearance;
+    tree->setMouseTracking(true);
+    if (tree->viewport()) {
+        tree->viewport()->setMouseTracking(true);
+        tree->viewport()->setAttribute(Qt::WA_Hover);
+    }
     auto treeModel = qobject_cast<QStandardItemModel*>(tree->model());
     treeModel->clear();
 
@@ -1108,14 +1113,21 @@ void MaterialsEditor::updateMaterialAppearance()
                     QList<QStandardItem*> items;
 
                     QString key = itp->first;
-                    // auto propertyItem = new QStandardItem(key);
                     auto propertyItem = new QStandardItem(itp->second.getDisplayName());
                     propertyItem->setData(key);
-                    propertyItem->setToolTip(itp->second.getDescription());
+                    
+                    QString valStr = _material->getAppearanceValueString(key);
+                    QString desc = itp->second.getDescription();
+                    QString tooltip = desc;
+                    if (tooltip.isEmpty()) {
+                        tooltip = QString::fromUtf8("Property: %1\nType: %2").arg(key).arg(itp->second.getPropertyType());
+                    }
+                    
+                    propertyItem->setToolTip(tooltip);
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(_material->getAppearanceValueString(key));
-                    valueItem->setToolTip(itp->second.getDescription());
+                    auto valueItem = new QStandardItem(valStr);
+                    valueItem->setToolTip(tooltip);
                     QVariant variant;
                     // variant.setValue(_material->getAppearanceValueString(key));
                     variant.setValue(_material);

@@ -131,7 +131,7 @@ def addComponents(objectsList, host):
     if not isinstance(objectsList, list):
         objectsList = [objectsList]
     hostType = Draft.getType(host)
-    if hostType in ["Floor", "Building", "Site", "Project", "BuildingPart"]:
+    if hostType in ["Floor", "Building", "Site", "Project", "BuildingPart", "Space"]:
         for o in objectsList:
             host.addObject(o)
     elif hostType in [
