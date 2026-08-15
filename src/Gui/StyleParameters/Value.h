@@ -24,20 +24,21 @@
 #ifndef STYLEPARAMETERS_VALUE_H
 #define STYLEPARAMETERS_VALUE_H
 
+#include <concepts>
 #include <memory>
 #include <optional>
 #include <string>
 #include <type_traits>
 #include <variant>
 #include <vector>
-#include <cassert>
+#include <cstdint>
 
 #include <fmt/format.h>
 
-#include "Base/Console.h"
 #include <Base/Color.h>
-#include <Base/Exception.h>
 #include <FCGlobal.h>
+
+#include "Diagnostics.h"
 
 namespace Gui::StyleParameters
 {
@@ -53,7 +54,7 @@ namespace Gui::StyleParameters
 struct GuiExport Numeric
 {
     /// Numeric value of the length.
-    double value;
+    double value = 0.0;
     /// Unit of the length, empty if the value is dimensionless.
     std::string unit = "";
 
@@ -101,6 +102,63 @@ private:
 struct Value;
 
 /**
+ * @brief Identifies the semantic kind of a tuple.
+ *
+ * Generic tuples have no special meaning. A typed kind carries structural identity, so
+ * consuming code can tell box-model insets from corner radii or a gradient rather than
+ * guessing from shape alone. Each kind is produced by its own construction function and
+ * accepted only after its expected element names and types have been validated.
+ */
+enum class TupleKind : std::uint8_t
+{
+    Generic,
+    Padding,
+    Margins,
+    BorderThickness,
+    BorderColors,
+    Corners,
+    LinearGradient,
+    RadialGradient,
+};
+
+constexpr const char* tupleKindName(TupleKind kind)
+{
+    switch (kind) {
+        case TupleKind::Generic:
+            return "Generic";
+        case TupleKind::Padding:
+            return "Padding";
+        case TupleKind::Margins:
+            return "Margins";
+        case TupleKind::BorderThickness:
+            return "BorderThickness";
+        case TupleKind::BorderColors:
+            return "BorderColors";
+        case TupleKind::Corners:
+            return "Corners";
+        case TupleKind::LinearGradient:
+            return "LinearGradient";
+        case TupleKind::RadialGradient:
+            return "RadialGradient";
+    }
+    return "<unknown>";
+}
+
+/// True for the tuple kinds that share the four-sided box shape and may coerce between each other.
+constexpr bool isEdgeKind(TupleKind kind)
+{
+    switch (kind) {
+        case TupleKind::Padding:
+        case TupleKind::Margins:
+        case TupleKind::BorderThickness:
+        case TupleKind::BorderColors:
+            return true;
+        default:
+            return false;
+    }
+}
+
+/**
  * @brief Represents a tuple of named or unnamed values.
  *
  * Tuples group related values into a single parameter using `(key: val1, val2)` syntax.
@@ -112,13 +170,28 @@ struct GuiExport Tuple
     {
         std::optional<std::string> name;
         std::shared_ptr<const Value> value;
+
+        /// Creates a named element, wrapping val in a shared_ptr.
+        static Element named(std::string name, Value val);
+
+        /// Creates an unnamed element, wrapping val in a shared_ptr.
+        static Element unnamed(Value val);
     };
 
+    Tuple() = default;
+    Tuple(std::initializer_list<Element> elements);
+    Tuple(std::initializer_list<Element> elements, TupleKind kind);
+
+    TupleKind kind = TupleKind::Generic;
     std::vector<Element> elements;
 
     /**
-     * @brief Returns the value at the given index (bounds-checked).
-     * @throws Base::RuntimeError if index is out of range.
+     * @brief Returns a pointer to the value at the given index, or nullptr when out of range.
+     */
+    const Value* tryAt(size_t index) const;
+
+    /**
+     * @brief Returns the value at the given index, or an empty value when out of range.
      */
     const Value& at(size_t index) const;
 
@@ -134,13 +207,58 @@ struct GuiExport Tuple
     size_t size() const;
 
     /**
-     * @brief Gets a named element with type checking and user-friendly error messages.
-     *
-     * @throws Base::ExpressionError if the element is not found or has the wrong type.
+     * @brief Returns a pointer to the named element of type T, or nullptr when absent or of
+     *        another type.
+     */
+    template<typename T>
+    const T* tryGet(const std::string& name) const;
+
+    /**
+     * @brief Returns the named element, or the empty value of type T when it cannot be produced.
      */
     template<typename T>
     const T& get(const std::string& name) const;
+
+    /**
+     * @brief Returns the named element, or the given fallback when it cannot be produced.
+     */
+    template<typename T>
+    T get(const std::string& name, const T& fallback) const;
+
+    /**
+     * @brief Returns the named element of type T, reporting when it is absent or of another type.
+     */
+    template<typename T>
+    const T* tryGetOrReport(const std::string& name) const;
 };
+
+/// Convenience alias for Tuple::Element, used pervasively by tuple-shaped wrappers.
+using Element = Tuple::Element;
+
+template<typename T>
+constexpr const char* valueTypeName()
+{
+    if constexpr (std::is_same_v<T, Numeric>) {
+        return "numeric";
+    }
+    else if constexpr (std::is_same_v<T, Base::Color>) {
+        return "color";
+    }
+    else if constexpr (std::is_same_v<T, std::string>) {
+        return "string";
+    }
+    else if constexpr (std::is_same_v<T, Tuple>) {
+        return "tuple";
+    }
+
+    return "<unknown>";
+}
+
+/**
+ * @brief The empty value substituted when a request of type T cannot be satisfied.
+ */
+template<typename T>
+const T& styleDefault();
 
 /**
  * @brief This struct represents any valid value that can be used as the parameter value.
@@ -174,20 +292,40 @@ struct GuiExport Value: std::variant<Numeric, Base::Color, std::string, Tuple>
     }
 
     /**
-     * @brief Gets the value of the given type.
-     *
-     * Throws std::bad_variant_access if the value does not hold the requested type.
+     * @brief Returns a pointer to the held value, or nullptr if it holds another type.
+     */
+    template<typename T>
+    const T* tryGet() const
+    {
+        return std::get_if<T>(this);
+    }
+
+    /**
+     * @brief Returns the held value, or the empty value of type T when it holds another type.
      */
     template<typename T>
     const T& get() const
     {
-        try {
-            return std::get<T>(*this);
+        if (const T* value = tryGet<T>()) {
+            return *value;
         }
-        catch (...) {
-            Base::Console().critical("This should never happen, probably missing holds<T> check.");
-            throw;
+
+        Diagnostics::report("Expected {} value, got {}", valueTypeName<T>(), toString());
+        return styleDefault<T>();
+    }
+
+    /**
+     * @brief Returns the held value, or the given fallback when it holds another type.
+     */
+    template<typename T>
+    T get(const T& fallback) const
+    {
+        if (const T* value = tryGet<T>()) {
+            return *value;
         }
+
+        Diagnostics::report("Expected {} value, got {}", valueTypeName<T>(), toString());
+        return fallback;
     }
 
     /**
@@ -205,42 +343,90 @@ struct GuiExport Value: std::variant<Numeric, Base::Color, std::string, Tuple>
     /// @}
 };
 
-template<typename T>
-constexpr const char* valueTypeName()
+template<>
+inline const Numeric& styleDefault<Numeric>()
 {
-    if constexpr (std::is_same_v<T, Numeric>) {
-        return "numeric";
-    }
-    else if constexpr (std::is_same_v<T, Base::Color>) {
-        return "color";
-    }
-    else if constexpr (std::is_same_v<T, std::string>) {
-        return "string";
-    }
-    else if constexpr (std::is_same_v<T, Tuple>) {
-        return "tuple";
+    static const Numeric value {.value = 0.0, .unit = ""};
+    return value;
+}
+
+template<>
+inline const Base::Color& styleDefault<Base::Color>()
+{
+    static const Base::Color value(0.0F, 0.0F, 0.0F, 0.0F);
+    return value;
+}
+
+template<>
+inline const std::string& styleDefault<std::string>()
+{
+    static const std::string value;
+    return value;
+}
+
+template<>
+inline const Tuple& styleDefault<Tuple>()
+{
+    static const Tuple value;
+    return value;
+}
+
+template<typename T>
+const T* Tuple::tryGetOrReport(const std::string& name) const
+{
+    if (const T* value = tryGet<T>(name)) {
+        return value;
     }
 
-    return "<unknown>";
+    if (const Value* found = find(name)) {
+        Diagnostics::report("Argument '{}' must be {}, got {}", name, valueTypeName<T>(), *found);
+    }
+    else {
+        Diagnostics::report("Missing argument '{}'", name);
+    }
+
+    return nullptr;
+}
+
+template<typename T>
+const T* Tuple::tryGet(const std::string& name) const
+{
+    const Value* value = find(name);
+    return value ? value->tryGet<T>() : nullptr;
 }
 
 template<typename T>
 const T& Tuple::get(const std::string& name) const
 {
-    const Value* value = find(name);
-
-    if (!value) {
-        THROWM(Base::ExpressionError, fmt::format("Missing argument '{}'", name));
+    if (const T* value = tryGetOrReport<T>(name)) {
+        return *value;
     }
 
-    if (!value->holds<T>()) {
-        THROWM(
-            Base::ExpressionError,
-            fmt::format("Argument '{}' must be {}, got {}", name, valueTypeName<T>(), value->toString())
-        );
+    return styleDefault<T>();
+}
+
+template<typename T>
+T Tuple::get(const std::string& name, const T& fallback) const
+{
+    if (const T* value = tryGetOrReport<T>(name)) {
+        return *value;
     }
 
-    return value->get<T>();
+    return fallback;
+}
+
+/**
+ * @brief Wraps a Value in a 1-element unnamed generic Tuple if it is not already a Tuple.
+ *
+ * This allows scalar values (e.g. a bare Numeric) to be passed into constructors that
+ * expect a Tuple and use CSS-like expansion (1 element → all sides equal).
+ */
+inline Tuple asTuple(const Value& value)
+{
+    if (value.holds<Tuple>()) {
+        return value.get<Tuple>();
+    }
+    return Tuple({Tuple::Element::unnamed(value)});
 }
 
 /**
@@ -279,6 +465,51 @@ private:
     std::vector<ParamDef> params_;
 };
 
+/**
+ * @brief Satisfied by domain wrapper types that validate a Value themselves.
+ */
+template<typename T>
+concept HasTryFrom = requires(const Value& value) {
+    { T::tryFrom(value) } -> std::same_as<std::optional<T>>;
+};
+
+/**
+ * @brief Extracts a typed value from an optional Value.
+ *
+ * Domain wrapper types (Insets, Padding, Corners, LinearGradient, …) validate through their
+ * own tryFrom. Variant member types (Numeric, Base::Color, std::string, Tuple) are returned
+ * only when the value holds exactly that type. Either way, a value of the wrong shape yields
+ * nothing, so callers keep their own default.
+ */
+template<HasTryFrom T>
+std::optional<T> valueAs(const std::optional<Value>& value)
+{
+    if (!value) {
+        return std::nullopt;
+    }
+    return T::tryFrom(*value);
+}
+
+template<typename T>
+    requires(!HasTryFrom<T>)
+std::optional<T> valueAs(const std::optional<Value>& value)
+{
+    if (!value) {
+        return std::nullopt;
+    }
+    const T* held = value->tryGet<T>();
+    return held ? std::optional<T>(*held) : std::nullopt;
+}
+
 }  // namespace Gui::StyleParameters
+
+template<>
+struct fmt::formatter<Gui::StyleParameters::Value>: fmt::formatter<std::string>
+{
+    auto format(const Gui::StyleParameters::Value& value, fmt::format_context& ctx) const
+    {
+        return fmt::formatter<std::string>::format(value.toString(), ctx);
+    }
+};
 
 #endif  // STYLEPARAMETERS_VALUE_H

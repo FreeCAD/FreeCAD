@@ -14,6 +14,7 @@ add_executable(Gui_tests_run
         StyleParameters/ParameterManagerTest.cpp
         StyleParameters/YamlParameterSourceTest.cpp
         StyleParameters/DiagnosticsTest.cpp
+        StyleParameters/ValueAccessTest.cpp
         InputHintTest.cpp
         SelectionTest.cpp
 )
