@@ -207,3 +207,6 @@ GCODE_NON_CONFORMING = (
 # i.e. allow any gcode
 # absence for false; any non-false presence for true: use "True"
 ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
+
+# G0 moves which can be replaced by G1 with No-Engagement Feed
+ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"

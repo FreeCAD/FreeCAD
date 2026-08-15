@@ -308,11 +308,9 @@ def GenerateGCode(op, obj, adaptiveResults):
                         if z != lz:
                             op.commandlist.append(Path.Command("G0", {"Z": z}))
 
-                        if feed := getattr(obj.ToolController, "NoEngagementFeed", 0):
-                            parameters = {"X": x, "Y": y, "F": feed.Value}
-                            op.commandlist.append(Path.Command("G1", parameters))
-                        else:
-                            op.commandlist.append(Path.Command("G0", {"X": x, "Y": y}))
+                        cmd = Path.Command("G0", {"X": x, "Y": y})
+                        cmd.Annotations = {Constants.ANNOT_NO_ENGAGEMENT_FEED: "True"}
+                        op.commandlist.append(cmd)
 
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:
                         z = obj.ClearanceHeight.Value
