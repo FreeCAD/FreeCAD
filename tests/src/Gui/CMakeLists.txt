@@ -9,10 +9,12 @@ add_executable(Gui_tests_run
         Camera.cpp
         ColorScaleOverlayTest.cpp
         FileDialog.cpp
+        StyleParameters/DiagnosticsCapture.h
         StyleParameters/StyleParametersApplicationTest.cpp
         StyleParameters/ParserTest.cpp
         StyleParameters/ParameterManagerTest.cpp
         StyleParameters/YamlParameterSourceTest.cpp
+        StyleParameters/DiagnosticsTest.cpp
         InputHintTest.cpp
         SelectionTest.cpp
 )
