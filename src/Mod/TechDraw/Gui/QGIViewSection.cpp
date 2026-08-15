@@ -41,14 +41,17 @@ void QGIViewSection::draw()
         return;
     }
 
-    QGIViewPart::draw();
-
     auto* section = dynamic_cast<TechDraw::DrawViewSection*>(getViewObject());
     if (section && section->SectionCutOnly.getValue()) {
-        // The section faces are drawn separately below. Remove the projected
-        // half-solid so only geometry lying on the cutting plane remains.
+        // Section faces are drawn separately below. Clear any primitives from
+        // a previous full-section draw without constructing a projected
+        // half-solid that would immediately be discarded.
+        prepareGeometryChange();
         removePrimitives();
         removeDecorations();
+    }
+    else {
+        QGIViewPart::draw();
     }
     drawSectionFace();
 }

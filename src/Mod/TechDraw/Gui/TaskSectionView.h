@@ -26,15 +26,17 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <QMetaObject>
+#include <QPointer>
 #include <QPointF>
 #include <QVariant>
+#include <memory>
 #include <utility>
 #include <vector>
-
 
 class Ui_TaskSectionView;
 class QGraphicsEllipseItem;
 class QGraphicsItem;
+class QGraphicsScene;
 
 namespace TechDraw {
     class DrawPage;
@@ -54,6 +56,23 @@ class QGISectionLine;
 class QGIViewPart;
 class QGVPage;
 class VectorEditWidget;
+
+// QGraphicsScene owns every item added to it. This deleter lets task-local
+// handles remove their items early, while becoming a no-op if the scene has
+// already destroyed them.
+class SceneItemDeleter
+{
+public:
+    SceneItemDeleter() = default;
+    explicit SceneItemDeleter(QGraphicsScene* scene);
+    void operator()(QGraphicsItem* item) const;
+
+private:
+    QPointer<QGraphicsScene> m_scene;
+};
+
+template<typename T>
+using SceneItemPtr = std::unique_ptr<T, SceneItemDeleter>;
 
 class TaskSectionView : public QWidget
 {
@@ -282,7 +301,7 @@ private:
 
     bool m_scaleEdited;
     bool m_directionChanged{false};
-    QGISectionLine* m_temporarySectionLine{nullptr};
+    SceneItemPtr<QGISectionLine> m_temporarySectionLine;
     QGIViewPart* m_baseItem{nullptr};
     QMetaObject::Connection m_baseItemPositionConnection;
     double m_temporaryStartAlong{0.0};
@@ -303,6 +322,7 @@ private:
             NotchAnchor,
             NotchOuter
         };
+
         double along{0.0};
         double offset{0.0};
         Transition transition{Transition::Sharp};
@@ -357,15 +377,16 @@ private:
     App::DocumentObject* m_saveProfileObject{nullptr};
     long m_saveProjectionStrategy{0};
     bool m_customComplexSection{false};
-    QGraphicsEllipseItem* m_centerHandle{nullptr};
-    std::vector<std::pair<QGraphicsEllipseItem*, QGraphicsEllipseItem*>>
+    SceneItemPtr<QGraphicsEllipseItem> m_centerHandle;
+    using EllipseItemPtr = SceneItemPtr<QGraphicsEllipseItem>;
+    std::vector<std::pair<EllipseItemPtr, EllipseItemPtr>>
         m_offsetHandles;
-    std::vector<std::pair<QGraphicsEllipseItem*, QGraphicsEllipseItem*>>
+    std::vector<std::pair<EllipseItemPtr, EllipseItemPtr>>
         m_arcBendHandles;
-    std::vector<QGraphicsItem*> m_selectableOffsetEdges;
-    std::vector<QGraphicsItem*> m_sectionControls;
-    QGraphicsItem* m_startRotationHandle{nullptr};
-    QGraphicsItem* m_endRotationHandle{nullptr};
+    std::vector<SceneItemPtr<QGraphicsItem>> m_selectableOffsetEdges;
+    std::vector<SceneItemPtr<QGraphicsItem>> m_sectionControls;
+    SceneItemPtr<QGraphicsItem> m_startRotationHandle;
+    SceneItemPtr<QGraphicsItem> m_endRotationHandle;
 };
 
 class TaskDlgSectionView : public Gui::TaskView::TaskDialog

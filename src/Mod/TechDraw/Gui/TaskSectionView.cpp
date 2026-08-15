@@ -30,6 +30,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsEllipseItem>
 #include <QGraphicsPathItem>
+#include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QSignalBlocker>
 #include <QTimer>
@@ -72,6 +73,7 @@
 
 // clang-format off
 #include "ui_TaskSectionView.h"
+#include "DrawGuiUtil.h"
 #include "QGIEdge.h"
 #include "QGIFace.h"
 #include "QGISectionLine.h"
@@ -93,8 +95,179 @@ using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
+SceneItemDeleter::SceneItemDeleter(QGraphicsScene* scene) :
+    m_scene(scene)
+{}
+
+void SceneItemDeleter::operator()(QGraphicsItem* item) const
+{
+    if (m_scene) {
+        delete item;
+    }
+}
+
 namespace
 {
+
+template<typename StoredItem, typename ConcreteItem = StoredItem, typename... Args>
+SceneItemPtr<StoredItem> makeSceneItem(QGraphicsScene& scene, Args&&... args)
+{
+    SceneItemPtr<StoredItem> item(
+        new ConcreteItem(std::forward<Args>(args)...),
+        SceneItemDeleter(&scene));
+    scene.addItem(item.get());
+    return item;
+}
+
+struct ArcSample
+{
+    double along{0.0};
+    double offset{0.0};
+};
+
+std::vector<ArcSample> tessellateQuarterArc(double startAlong,
+                                            double endAlong,
+                                            double startOffset,
+                                            double endOffset)
+{
+    constexpr std::size_t segmentCount = 10;
+    std::vector<ArcSample> result;
+    result.reserve(segmentCount + 1);
+    result.push_back({startAlong, startOffset});
+    const double radius = std::abs(endAlong - startAlong);
+    const double alongSign = endAlong >= startAlong ? 1.0 : -1.0;
+    const double offsetSign = endOffset >= startOffset ? 1.0 : -1.0;
+    for (std::size_t segment = 1; segment <= segmentCount; ++segment) {
+        const double ratio = static_cast<double>(segment) / segmentCount;
+        const double angle = ratio * std::numbers::pi / 2.0;
+        result.push_back({
+            startAlong + alongSign * radius * std::sin(angle),
+            startOffset + offsetSign * radius * (1.0 - std::cos(angle))});
+    }
+    return result;
+}
+
+class SectionPointMarker
+{
+public:
+    void showAt(QGVPage& page,
+                const QGIViewPart& baseItem,
+                const QPointF& localPoint)
+    {
+        if (!m_item) {
+            constexpr double markerRadius = 4.0;
+            m_item = makeSceneItem<QGraphicsEllipseItem>(
+                *page.getScene(),
+                -markerRadius, -markerRadius,
+                markerRadius * 2.0, markerRadius * 2.0);
+            m_item->setPen(QPen(Qt::black));
+            m_item->setBrush(Qt::black);
+            m_item->setZValue(1001.0);
+            m_item->setFlag(QGraphicsItem::ItemIgnoresTransformations);
+        }
+        m_item->setPos(baseItem.mapToScene(localPoint));
+    }
+
+private:
+    SceneItemPtr<QGraphicsEllipseItem> m_item;
+};
+
+class SectionOffsetHandler : public TechDrawHandler
+{
+protected:
+    explicit SectionOffsetHandler(TaskSectionView* task) : m_task(task) {}
+
+    bool snappedLocalPoint(QMouseEvent* event, QPointF& local) const
+    {
+        if (m_completed) {
+            event->accept();
+            return false;
+        }
+        QGIViewPart* baseItem = m_task ? m_task->baseItem() : nullptr;
+        if (!viewPage || !baseItem) {
+            return false;
+        }
+        local = baseItem->mapFromScene(viewPage->mapToScene(event->pos()));
+        local = m_task->snapViewPoint(
+            local, event->modifiers().testFlag(Qt::ControlModifier));
+        return true;
+    }
+
+    bool acceptsLeftPress(const QMouseEvent* event) const
+    {
+        return event->button() == Qt::LeftButton && m_task
+            && m_task->baseItem() && viewPage && !m_completed;
+    }
+
+    void completeAndApply()
+    {
+        m_completed = true;
+        QPointer<QGVPage> page = viewPage;
+        QPointer<TaskSectionView> task = m_task;
+        QTimer::singleShot(0, viewPage, [page, task]() {
+            if (!page) {
+                return;
+            }
+            page->deactivateHandler();
+            if (task) {
+                QTimer::singleShot(0, task, [task]() {
+                    if (task) {
+                        task->apply();
+                    }
+                });
+            }
+        });
+    }
+
+    void updateMarker(const QPointF& localPoint)
+    {
+        if (viewPage && m_task && m_task->baseItem()) {
+            m_pointMarker.showAt(
+                *viewPage, *m_task->baseItem(), localPoint);
+        }
+    }
+
+    void mouseReleaseEvent(QMouseEvent* event) override
+    {
+        if (event->button() == Qt::LeftButton && viewPage) {
+            viewPage->getScene()->clearSelection();
+            Gui::Selection().clearSelection();
+            event->accept();
+            return;
+        }
+        TechDrawHandler::mouseReleaseEvent(event);
+    }
+
+    void keyPressEvent(QKeyEvent* event) override
+    {
+        Q_UNUSED(event);
+    }
+
+    void deactivate() override
+    {
+        if (!m_completed && m_task) {
+            cancelPending();
+        }
+        if (m_task) {
+            m_task->setSectionControlsEnabled(true);
+            m_task->showSectionHandles();
+        }
+        TechDrawHandler::deactivate();
+    }
+
+    QString getCrosshairCursorSVGName() const override
+    {
+        return QStringLiteral("TechDraw_SectionView_Pointer");
+    }
+
+    virtual void cancelPending() = 0;
+
+    TaskSectionView* m_task{nullptr};
+    bool m_completed{false};
+
+private:
+    SectionPointMarker m_pointMarker;
+};
 
 class SectionDragHandle final : public QGraphicsEllipseItem
 {
@@ -469,19 +642,6 @@ std::pair<double, double> sectionLineBounds(QGIViewPart* baseItem,
 TaskSectionView::~TaskSectionView()
 {
     clearSectionControls();
-    delete m_centerHandle;
-    for (auto& handles : m_offsetHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
-    for (auto& handles : m_arcBendHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
-    for (QGraphicsItem* item : m_selectableOffsetEdges) {
-        delete item;
-    }
-    delete m_temporarySectionLine;
 }
 
 // ctor for interactive create without a preselected base view
@@ -990,10 +1150,14 @@ void TaskSectionView::onProjectionStrategyChanged(int index)
 }
 
 void TaskSectionView::adoptTemporarySectionLine(QGISectionLine* line,
-                                               QGIViewPart* baseItem)
+                                                 QGIViewPart* baseItem)
 {
-    delete m_temporarySectionLine;
-    m_temporarySectionLine = line;
+    if (!line || !line->scene()) {
+        delete line;
+        return;
+    }
+    m_temporarySectionLine = SceneItemPtr<QGISectionLine>(
+        line, SceneItemDeleter(line->scene()));
     setBaseGraphicsItem(baseItem);
     configureTemporarySectionLine();
     ui->cbCustomComplexSection->setEnabled(m_base != nullptr);
@@ -1054,24 +1218,11 @@ void TaskSectionView::resetInteractivePreview()
 {
     setSectionControlsEnabled(false);
     clearSectionControls();
-    delete m_centerHandle;
-    m_centerHandle = nullptr;
-    for (auto& handles : m_offsetHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
+    m_centerHandle.reset();
     m_offsetHandles.clear();
-    for (auto& handles : m_arcBendHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
     m_arcBendHandles.clear();
-    for (QGraphicsItem* item : m_selectableOffsetEdges) {
-        delete item;
-    }
     m_selectableOffsetEdges.clear();
-    delete m_temporarySectionLine;
-    m_temporarySectionLine = nullptr;
+    m_temporarySectionLine.reset();
     setBaseGraphicsItem(nullptr);
     m_offsetSteps.clear();
     m_arcBends.clear();
@@ -1192,8 +1343,7 @@ void TaskSectionView::initializeEditPreview(QGVPage* graphicsView)
         return;
     }
 
-    m_temporarySectionLine = new QGISectionLine();
-    pageScene->addItem(m_temporarySectionLine);
+    m_temporarySectionLine = makeSceneItem<QGISectionLine>(*pageScene);
     configureTemporarySectionLine();
     if (m_section) {
         setGeneratedSectionVisible(false);
@@ -1536,10 +1686,6 @@ void TaskSectionView::commitPendingSingleOffset()
             return left.along < right.along;
         });
     m_hasPendingOffset = false;
-    for (auto& handles : m_offsetHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
     m_offsetHandles.clear();
     drawTemporarySingleOffset();
 }
@@ -1692,33 +1838,18 @@ TaskSectionView::sectionPathPoints(bool includePending) const
             addedCenter = true;
         }
         if (step.transition == OffsetStep::Transition::Arc) {
-            const QPointF arcStart =
-                m_temporaryCenter + tangent * step.startAlong
-                + normal * currentOffset;
-            points.emplace_back(
-                rotateSectionPoint(arcStart, step.startAlong),
-                step.startAlong);
-            constexpr int arcSegments = 10;
-            const double radius =
-                std::abs(step.along - step.startAlong);
-            const double alongSign =
-                step.along >= step.startAlong ? 1.0 : -1.0;
-            const double offsetSign =
-                step.offset >= currentOffset ? 1.0 : -1.0;
-            for (int segment = 1; segment <= arcSegments; ++segment) {
-                const double ratio =
-                    static_cast<double>(segment) / arcSegments;
-                const double angle = ratio * std::numbers::pi / 2.0;
-                const double along =
-                    step.startAlong + alongSign * radius * std::sin(angle);
-                const double offset =
-                    currentOffset
-                    + offsetSign * radius * (1.0 - std::cos(angle));
+            const auto arc = tessellateQuarterArc(
+                step.startAlong, step.along, currentOffset, step.offset);
+            for (const auto& sample : arc) {
                 const QPointF arcPoint =
-                    m_temporaryCenter + tangent * along + normal * offset;
-                points.emplace_back(rotateSectionPoint(arcPoint, along),
-                                    along);
+                    m_temporaryCenter + tangent * sample.along
+                    + normal * sample.offset;
+                points.emplace_back(
+                    rotateSectionPoint(arcPoint, sample.along),
+                    sample.along);
             }
+            const double radius = std::abs(step.along - step.startAlong);
+            const double offsetSign = step.offset >= currentOffset ? 1.0 : -1.0;
             const double curvedEndOffset =
                 currentOffset + offsetSign * radius;
             if (std::abs(step.offset - curvedEndOffset) > 1.0e-6) {
@@ -1913,9 +2044,6 @@ void TaskSectionView::drawTemporarySingleOffset()
 
 void TaskSectionView::rebuildSelectableOffsetEdges()
 {
-    for (QGraphicsItem* item : m_selectableOffsetEdges) {
-        delete item;
-    }
     m_selectableOffsetEdges.clear();
     if (m_customComplexSection || !m_sectionControlsEnabled
         || !m_baseItem || !m_baseItem->scene()
@@ -1933,32 +2061,20 @@ void TaskSectionView::rebuildSelectableOffsetEdges()
         const OffsetStep& step = m_offsetSteps[i];
         QPainterPath edgePath;
         if (step.transition == OffsetStep::Transition::Arc) {
-            const QPointF start =
-                m_temporaryCenter + tangent * step.startAlong
-                + normal * currentOffset;
-            edgePath.moveTo(m_baseItem->mapToScene(
-                rotateSectionPoint(start, step.startAlong)));
-            constexpr int arcSegments = 10;
-            const double radius =
-                std::abs(step.along - step.startAlong);
-            const double alongSign =
-                step.along >= step.startAlong ? 1.0 : -1.0;
-            const double offsetSign =
-                step.offset >= currentOffset ? 1.0 : -1.0;
-            for (int segment = 1; segment <= arcSegments; ++segment) {
-                const double ratio =
-                    static_cast<double>(segment) / arcSegments;
-                const double angle = ratio * std::numbers::pi / 2.0;
-                const double along =
-                    step.startAlong
-                    + alongSign * radius * std::sin(angle);
-                const double offset =
-                    currentOffset
-                    + offsetSign * radius * (1.0 - std::cos(angle));
+            const auto arc = tessellateQuarterArc(
+                step.startAlong, step.along, currentOffset, step.offset);
+            for (const auto& sample : arc) {
                 const QPointF point =
-                    m_temporaryCenter + tangent * along + normal * offset;
-                edgePath.lineTo(m_baseItem->mapToScene(
-                    rotateSectionPoint(point, along)));
+                    m_temporaryCenter + tangent * sample.along
+                    + normal * sample.offset;
+                const QPointF scenePoint = m_baseItem->mapToScene(
+                    rotateSectionPoint(point, sample.along));
+                if (edgePath.isEmpty()) {
+                    edgePath.moveTo(scenePoint);
+                }
+                else {
+                    edgePath.lineTo(scenePoint);
+                }
             }
         }
         else {
@@ -1973,13 +2089,13 @@ void TaskSectionView::rebuildSelectableOffsetEdges()
             edgePath.lineTo(m_baseItem->mapToScene(
                 rotateSectionPoint(second, step.along)));
         }
-        auto* edge = new SelectableOffsetEdge([this, i]() {
+        auto edge = makeSceneItem<SelectableOffsetEdge>(
+            *m_baseItem->scene(), [this, i]() {
             QTimer::singleShot(
                 0, this, [this, i]() { removeOffsetStep(i); });
         });
         edge->setPath(edgePath);
-        m_baseItem->scene()->addItem(edge);
-        m_selectableOffsetEdges.push_back(edge);
+        m_selectableOffsetEdges.push_back(std::move(edge));
         currentOffset = step.offset;
     }
 
@@ -2007,13 +2123,13 @@ void TaskSectionView::rebuildSelectableOffsetEdges()
         if (!found || edgePath.elementCount() < 2) {
             continue;
         }
-        auto* edge = new SelectableOffsetEdge([this, i]() {
+        auto edge = makeSceneItem<SelectableOffsetEdge>(
+            *m_baseItem->scene(), [this, i]() {
             QTimer::singleShot(
                 0, this, [this, i]() { removeArcBend(i); });
         });
         edge->setPath(edgePath);
-        m_baseItem->scene()->addItem(edge);
-        m_selectableOffsetEdges.push_back(edge);
+        m_selectableOffsetEdges.push_back(std::move(edge));
     }
 }
 
@@ -2054,10 +2170,6 @@ void TaskSectionView::removeOffsetStep(size_t index)
         m_offsetSteps.erase(m_offsetSteps.begin() + index);
     }
 
-    for (auto& handles : m_offsetHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
     m_offsetHandles.clear();
     showUnappliedPreview(false);
     drawTemporarySingleOffset();
@@ -2071,10 +2183,6 @@ void TaskSectionView::removeArcBend(size_t index)
         return;
     }
     m_arcBends.erase(m_arcBends.begin() + index);
-    for (auto& handles : m_arcBendHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
     m_arcBendHandles.clear();
     showUnappliedPreview(false);
     drawTemporarySingleOffset();
@@ -2088,12 +2196,12 @@ void TaskSectionView::ensureSectionHandles()
         return;
     }
     if (!m_centerHandle) {
-        m_centerHandle = new SectionDragHandle(
+        m_centerHandle = makeSceneItem<QGraphicsEllipseItem, SectionDragHandle>(
+            *m_baseItem->scene(),
             Qt::black,
             [this](const QPointF& point, Qt::KeyboardModifiers modifiers) {
                 moveSectionCenter(point, modifiers);
             });
-        m_baseItem->scene()->addItem(m_centerHandle);
     }
     while (m_offsetHandles.size() < m_offsetSteps.size()) {
         const size_t index = m_offsetHandles.size();
@@ -2104,7 +2212,8 @@ void TaskSectionView::ensureSectionHandles()
             && m_offsetSteps[index].towardStart;
         const bool reverseSingle = !notchAnchor
             && m_offsetSteps[index].towardStart;
-        auto* p1Handle = new SectionDragHandle(
+        auto p1Handle = makeSceneItem<QGraphicsEllipseItem, SectionDragHandle>(
+            *m_baseItem->scene(),
             offsetColor,
             [this, index, notchAnchor, reverseNotch, reverseSingle](
                 const QPointF& point, Qt::KeyboardModifiers modifiers) {
@@ -2123,7 +2232,8 @@ void TaskSectionView::ensureSectionHandles()
                     moveSingleOffsetP1(index, point, modifiers);
                 }
             });
-        auto* p2Handle = new SectionDragHandle(
+        auto p2Handle = makeSceneItem<QGraphicsEllipseItem, SectionDragHandle>(
+            *m_baseItem->scene(),
             offsetColor,
             [this, index, notchAnchor, reverseNotch, reverseSingle](
                 const QPointF& point, Qt::KeyboardModifiers modifiers) {
@@ -2142,28 +2252,28 @@ void TaskSectionView::ensureSectionHandles()
                     moveSingleOffsetP2(index, point, modifiers);
                 }
             });
-        m_baseItem->scene()->addItem(p1Handle);
-        m_baseItem->scene()->addItem(p2Handle);
-        m_offsetHandles.emplace_back(p1Handle, p2Handle);
+        m_offsetHandles.emplace_back(std::move(p1Handle),
+                                     std::move(p2Handle));
     }
     while (m_arcBendHandles.size() < m_arcBends.size()) {
         const size_t index = m_arcBendHandles.size();
         const QColor arcColor(145, 70, 190);
-        auto* bendHandle = new SectionDragHandle(
+        auto bendHandle = makeSceneItem<QGraphicsEllipseItem, SectionDragHandle>(
+            *m_baseItem->scene(),
             arcColor,
             [this, index](const QPointF& point,
                           Qt::KeyboardModifiers modifiers) {
                 moveArcBendPoint(index, false, point, modifiers);
             });
-        auto* endpointHandle = new SectionDragHandle(
+        auto endpointHandle = makeSceneItem<QGraphicsEllipseItem, SectionDragHandle>(
+            *m_baseItem->scene(),
             arcColor,
             [this, index](const QPointF& point,
                           Qt::KeyboardModifiers modifiers) {
                 moveArcBendPoint(index, true, point, modifiers);
             });
-        m_baseItem->scene()->addItem(bendHandle);
-        m_baseItem->scene()->addItem(endpointHandle);
-        m_arcBendHandles.emplace_back(bendHandle, endpointHandle);
+        m_arcBendHandles.emplace_back(std::move(bendHandle),
+                                      std::move(endpointHandle));
     }
     updateSectionHandles();
 }
@@ -2240,7 +2350,8 @@ void TaskSectionView::ensureSectionControls()
         return;
     }
     if (!m_startRotationHandle) {
-        m_startRotationHandle = new SectionRotationHandle(
+        m_startRotationHandle = makeSceneItem<QGraphicsItem, SectionRotationHandle>(
+            *m_baseItem->scene(),
             [this](const QPointF& point, Qt::KeyboardModifiers modifiers,
                    bool commit) {
                 rotateSectionHalf(true, point, modifiers, commit);
@@ -2250,10 +2361,10 @@ void TaskSectionView::ensureSectionControls()
                     m_baseItem->setFrameForcedVisible(visible);
                 }
             });
-        m_baseItem->scene()->addItem(m_startRotationHandle);
     }
     if (!m_endRotationHandle) {
-        m_endRotationHandle = new SectionRotationHandle(
+        m_endRotationHandle = makeSceneItem<QGraphicsItem, SectionRotationHandle>(
+            *m_baseItem->scene(),
             [this](const QPointF& point, Qt::KeyboardModifiers modifiers,
                    bool commit) {
                 rotateSectionHalf(false, point, modifiers, commit);
@@ -2263,7 +2374,6 @@ void TaskSectionView::ensureSectionControls()
                     m_baseItem->setFrameForcedVisible(visible);
                 }
             });
-        m_baseItem->scene()->addItem(m_endRotationHandle);
     }
 }
 
@@ -2279,9 +2389,6 @@ void TaskSectionView::updateSectionControls()
         return;
     }
     ensureSectionControls();
-    for (QGraphicsItem* item : m_sectionControls) {
-        delete item;
-    }
     m_sectionControls.clear();
 
     std::vector<double> bounds{m_temporaryStartAlong, 0.0,
@@ -2345,7 +2452,8 @@ void TaskSectionView::updateSectionControls()
         const QPointF scenePosition = m_baseItem->mapToScene(position);
         const double minimumAlong = bounds[i - 1];
         const double maximumAlong = bounds[i];
-        auto* item = new SectionAddOffsetButton(
+        auto item = makeSceneItem<QGraphicsItem, SectionAddOffsetButton>(
+            *m_baseItem->scene(),
             [this, midpoint, minimumAlong, maximumAlong, towardStart]() {
                 startSingleOffset(midpoint, minimumAlong,
                                   maximumAlong, towardStart);
@@ -2363,19 +2471,18 @@ void TaskSectionView::updateSectionControls()
                                     maximumAlong, towardStart);
             });
         item->setPos(scenePosition);
-        m_baseItem->scene()->addItem(item);
-        m_sectionControls.push_back(item);
+        m_sectionControls.push_back(std::move(item));
     }
 
     const auto points = sectionPathPoints(false);
     if (points.size() >= 2) {
         const QPointF sceneCenter =
             m_baseItem->mapToScene(m_temporaryCenter);
-        static_cast<SectionRotationHandle*>(m_startRotationHandle)
+        static_cast<SectionRotationHandle*>(m_startRotationHandle.get())
             ->setRotationArc(sceneCenter,
                              m_baseItem->mapToScene(points.front().first),
                              true);
-        static_cast<SectionRotationHandle*>(m_endRotationHandle)
+        static_cast<SectionRotationHandle*>(m_endRotationHandle.get())
             ->setRotationArc(sceneCenter,
                              m_baseItem->mapToScene(points.back().first),
                              false);
@@ -2384,14 +2491,9 @@ void TaskSectionView::updateSectionControls()
 
 void TaskSectionView::clearSectionControls()
 {
-    for (QGraphicsItem* item : m_sectionControls) {
-        delete item;
-    }
     m_sectionControls.clear();
-    delete m_startRotationHandle;
-    m_startRotationHandle = nullptr;
-    delete m_endRotationHandle;
-    m_endRotationHandle = nullptr;
+    m_startRotationHandle.reset();
+    m_endRotationHandle.reset();
 }
 
 void TaskSectionView::showSectionHandles()
@@ -2414,7 +2516,7 @@ void TaskSectionView::showSectionHandles()
         handles.second->show();
     }
     rebuildSelectableOffsetEdges();
-    for (QGraphicsItem* item : m_sectionControls) {
+    for (const auto& item : m_sectionControls) {
         item->show();
     }
     if (m_startRotationHandle) {
@@ -2438,10 +2540,10 @@ void TaskSectionView::hideSectionHandles()
         handles.first->hide();
         handles.second->hide();
     }
-    for (QGraphicsItem* item : m_selectableOffsetEdges) {
+    for (const auto& item : m_selectableOffsetEdges) {
         item->hide();
     }
-    for (QGraphicsItem* item : m_sectionControls) {
+    for (const auto& item : m_sectionControls) {
         item->hide();
     }
     if (m_startRotationHandle) {
@@ -2707,42 +2809,8 @@ QPointF TaskSectionView::snapViewPoint(
         return point;
     }
 
-    constexpr double snapPixels = 12.0;
-    QPointF best = point;
-    double bestDistance = snapPixels;
-    const QPoint cursor =
-        m_graphicsView->mapFromScene(m_baseItem->mapToScene(point));
-    auto consider = [&](const Base::Vector3d& candidate) {
-        const QPointF local(Rez::guiX(candidate.x), Rez::guiX(candidate.y));
-        const QPoint viewport =
-            m_graphicsView->mapFromScene(m_baseItem->mapToScene(local));
-        const double distance =
-            std::hypot(viewport.x() - cursor.x(), viewport.y() - cursor.y());
-        if (distance < bestDistance) {
-            bestDistance = distance;
-            best = local;
-        }
-    };
-
-    for (const auto& vertex : m_base->getVertexGeometry()) {
-        if (vertex->getHlrVisible()) {
-            consider(vertex->point());
-        }
-    }
-    for (const auto& geometry : m_base->getEdgeGeometry()) {
-        if (!geometry->getHlrVisible()) {
-            continue;
-        }
-        if (geometry->getGeomType() == GeomType::CIRCLE
-            || geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
-            consider(std::static_pointer_cast<TechDraw::Circle>(geometry)->center);
-        }
-        else if (geometry->getGeomType() == GeomType::ELLIPSE
-                 || geometry->getGeomType() == GeomType::ARCOFELLIPSE) {
-            consider(std::static_pointer_cast<TechDraw::Ellipse>(geometry)->center);
-        }
-    }
-    return best;
+    return DrawGuiUtil::snapToViewGeometry(
+        point, *m_base, *m_baseItem, *m_graphicsView);
 }
 
 Base::Vector3d TaskSectionView::viewPointToSectionOrigin(const QPointF& point) const
@@ -2846,7 +2914,7 @@ void TaskSectionView::showGeneratedSectionWhenReady(int request)
     if (request != m_generationRequest || !m_section || !m_temporarySectionLine) {
         return;
     }
-    if (m_section->waitingForResult() || !m_section->hasGeometry()) {
+    if (m_section->waitingForResult()) {
         QTimer::singleShot(
             50, this, [this, request]() { showGeneratedSectionWhenReady(request); });
         return;
@@ -2855,6 +2923,12 @@ void TaskSectionView::showGeneratedSectionWhenReady(int request)
     setGeneratedSectionVisible(true);
     if (m_base) {
         m_base->requestPaint();
+    }
+    // A completed recompute with no geometry is a final result. No generated
+    // section line will be created, so keep the editable preview visible and
+    // stop polling until another generation request is made.
+    if (!m_section->hasGeometry()) {
+        return;
     }
     if (!m_baseItem || !m_baseItem->hasSectionLine(m_section)) {
         QTimer::singleShot(
@@ -3017,10 +3091,6 @@ void TaskSectionView::reverseSectionDirection(double newAngle)
 
     // Offset handle callbacks encode which side of a modifier they edit, so
     // rebuild them after the sides have been exchanged.
-    for (auto& handles : m_offsetHandles) {
-        delete handles.first;
-        delete handles.second;
-    }
     m_offsetHandles.clear();
 
     directionChanged(true);
@@ -3482,39 +3552,136 @@ void TaskSectionView::updateOffsetProfile()
 
 std::string TaskSectionView::serializeModernProfileState() const
 {
-    const Base::Vector3d center =
+    const Base::Vector3d centerOrigin =
         viewPointToSectionOrigin(m_temporaryCenter);
     std::ostringstream state;
-    state.precision(17);
-    state << 2 << ' '
-          << center.x << ' ' << center.y << ' ' << center.z << ' '
-          << m_displayedDirection.x << ' '
-          << m_displayedDirection.y << ' '
-          << m_displayedDirection.z << ' '
-          << m_temporaryStartAlong << ' '
-          << m_temporaryEndAlong << ' '
-          << m_startOffset << ' '
-          << m_startRotation << ' '
-          << m_endRotation << ' '
-          << m_nextModifierId << ' '
-          << m_offsetSteps.size();
+    state.precision(std::numeric_limits<double>::max_digits10);
+    state << 2 << ' ' << centerOrigin.x << ' ' << centerOrigin.y << ' '
+          << centerOrigin.z << ' ' << m_displayedDirection.x << ' '
+          << m_displayedDirection.y << ' ' << m_displayedDirection.z << ' '
+          << m_temporaryStartAlong << ' ' << m_temporaryEndAlong << ' '
+          << m_startOffset << ' ' << m_startRotation << ' ' << m_endRotation
+          << ' ' << m_nextModifierId << ' ' << m_offsetSteps.size();
     for (const OffsetStep& step : m_offsetSteps) {
-        state << ' ' << step.along
-              << ' ' << step.offset
-              << ' ' << static_cast<int>(step.transition)
-              << ' ' << step.startAlong
-              << ' ' << static_cast<int>(step.role)
-              << ' ' << step.modifierId
+        state << ' ' << step.along << ' ' << step.offset << ' '
+              << static_cast<int>(step.transition) << ' ' << step.startAlong
+              << ' ' << static_cast<int>(step.role) << ' ' << step.modifierId
               << ' ' << static_cast<int>(step.towardStart);
     }
     state << ' ' << m_arcBends.size();
     for (const ArcBend& bend : m_arcBends) {
-        state << ' ' << bend.along
-              << ' ' << bend.angle
-              << ' ' << static_cast<int>(bend.towardStart);
+        state << ' ' << bend.along << ' ' << bend.angle << ' '
+              << static_cast<int>(bend.towardStart);
     }
     return state.str();
 }
+
+namespace
+{
+
+struct SerializedOffsetStep
+{
+    double along{0.0};
+    double offset{0.0};
+    int transition{0};
+    double startAlong{0.0};
+    int role{0};
+    int modifierId{0};
+    bool towardStart{false};
+};
+
+struct SerializedArcBend
+{
+    double along{0.0};
+    double angle{0.0};
+    bool towardStart{false};
+};
+
+struct ModernProfileState
+{
+    Base::Vector3d centerOrigin;
+    Base::Vector3d displayedDirection{1.0, 0.0, 0.0};
+    double startAlong{0.0};
+    double endAlong{0.0};
+    double startOffset{0.0};
+    double startRotation{0.0};
+    double endRotation{0.0};
+    int nextModifierId{1};
+    std::vector<SerializedOffsetStep> offsetSteps;
+    std::vector<SerializedArcBend> arcBends;
+};
+
+std::unique_ptr<ModernProfileState>
+parseModernProfileState(const std::string& serialized)
+{
+    constexpr std::size_t maximumModifierCount = 10000;
+    auto restored = std::make_unique<ModernProfileState>();
+    std::istringstream input(serialized);
+    int version = 0;
+    std::size_t offsetCount = 0;
+    std::size_t arcCount = 0;
+    if (!(input >> version) || (version != 1 && version != 2)
+        || !(input >> restored->centerOrigin.x >> restored->centerOrigin.y
+                   >> restored->centerOrigin.z >> restored->displayedDirection.x
+                   >> restored->displayedDirection.y
+                   >> restored->displayedDirection.z)) {
+        return {};
+    }
+
+    if (version == 1) {
+        double halfLength = 0.0;
+        if (!(input >> halfLength)) {
+            return {};
+        }
+        restored->startAlong = -halfLength;
+        restored->endAlong = halfLength;
+    }
+    else if (!(input >> restored->startAlong >> restored->endAlong)) {
+        return {};
+    }
+
+    if (!(input >> restored->startOffset >> restored->startRotation
+                >> restored->endRotation >> restored->nextModifierId
+                >> offsetCount)
+        || offsetCount > maximumModifierCount) {
+        return {};
+    }
+    restored->offsetSteps.reserve(offsetCount);
+    for (std::size_t i = 0; i < offsetCount; ++i) {
+        SerializedOffsetStep step;
+        int towardStart = 0;
+        if (!(input >> step.along >> step.offset >> step.transition
+                    >> step.startAlong >> step.role >> step.modifierId
+                    >> towardStart)
+            || step.transition < 0 || step.transition > 1
+            || step.role < 0 || step.role > 2) {
+            return {};
+        }
+        step.towardStart = towardStart != 0;
+        restored->offsetSteps.push_back(step);
+    }
+
+    if (!(input >> arcCount) || arcCount > maximumModifierCount) {
+        return {};
+    }
+    restored->arcBends.reserve(arcCount);
+    for (std::size_t i = 0; i < arcCount; ++i) {
+        SerializedArcBend bend;
+        int towardStart = 0;
+        if (!(input >> bend.along >> bend.angle >> towardStart)) {
+            return {};
+        }
+        bend.towardStart = towardStart != 0;
+        restored->arcBends.push_back(bend);
+    }
+    input >> std::ws;
+    if (!input.eof()) {
+        return {};
+    }
+    return restored;
+}
+
+}  // namespace
 
 bool TaskSectionView::restoreModernProfileState()
 {
@@ -3527,85 +3694,44 @@ bool TaskSectionView::restoreModernProfileState()
         return false;
     }
 
-    std::istringstream state(stateProperty->getValue());
-    int version = 0;
-    size_t offsetCount = 0;
-    size_t arcCount = 0;
-    if (!(state >> version) || (version != 1 && version != 2)
-        || !(state >> m_modernCenterOrigin.x
-                   >> m_modernCenterOrigin.y
-                   >> m_modernCenterOrigin.z
-                   >> m_displayedDirection.x
-                   >> m_displayedDirection.y
-                   >> m_displayedDirection.z)) {
-        return false;
-    }
-    if (version == 1) {
-        double halfLength = 0.0;
-        if (!(state >> halfLength)) {
-            return false;
-        }
-        m_temporaryStartAlong = -halfLength;
-        m_temporaryEndAlong = halfLength;
-    }
-    else if (!(state >> m_temporaryStartAlong
-                    >> m_temporaryEndAlong)) {
-        return false;
-    }
-    if (!(state >> m_startOffset
-                   >> m_startRotation
-                   >> m_endRotation
-                   >> m_nextModifierId
-                   >> offsetCount)) {
+    auto restored = parseModernProfileState(stateProperty->getValue());
+    if (!restored) {
         return false;
     }
 
-    std::vector<OffsetStep> offsets;
-    offsets.reserve(offsetCount);
-    for (size_t i = 0; i < offsetCount; ++i) {
+    std::vector<OffsetStep> offsetSteps;
+    offsetSteps.reserve(restored->offsetSteps.size());
+    for (const SerializedOffsetStep& serialized : restored->offsetSteps) {
         OffsetStep step;
-        int transition = 0;
-        int role = 0;
-        int towardStart = 0;
-        if (!(state >> step.along
-                   >> step.offset
-                   >> transition
-                   >> step.startAlong
-                   >> role
-                   >> step.modifierId
-                   >> towardStart)) {
-            return false;
-        }
-        if (transition < static_cast<int>(OffsetStep::Transition::Sharp)
-            || transition > static_cast<int>(OffsetStep::Transition::Arc)
-            || role < static_cast<int>(OffsetStep::Role::Generic)
-            || role > static_cast<int>(OffsetStep::Role::NotchOuter)) {
-            return false;
-        }
-        step.transition =
-            static_cast<OffsetStep::Transition>(transition);
-        step.role = static_cast<OffsetStep::Role>(role);
-        step.towardStart = towardStart != 0;
-        offsets.push_back(step);
+        step.along = serialized.along;
+        step.offset = serialized.offset;
+        step.transition = static_cast<OffsetStep::Transition>(
+            serialized.transition);
+        step.startAlong = serialized.startAlong;
+        step.role = static_cast<OffsetStep::Role>(serialized.role);
+        step.modifierId = serialized.modifierId;
+        step.towardStart = serialized.towardStart;
+        offsetSteps.push_back(step);
+    }
+    std::vector<ArcBend> arcBends;
+    arcBends.reserve(restored->arcBends.size());
+    for (const SerializedArcBend& serialized : restored->arcBends) {
+        arcBends.push_back(
+            {serialized.along, serialized.angle, serialized.towardStart});
     }
 
-    if (!(state >> arcCount)) {
-        return false;
-    }
-    std::vector<ArcBend> arcs;
-    arcs.reserve(arcCount);
-    for (size_t i = 0; i < arcCount; ++i) {
-        ArcBend bend;
-        int towardStart = 0;
-        if (!(state >> bend.along >> bend.angle >> towardStart)) {
-            return false;
-        }
-        bend.towardStart = towardStart != 0;
-        arcs.push_back(bend);
-    }
-
-    m_offsetSteps = std::move(offsets);
-    m_arcBends = std::move(arcs);
+    // Commit only after the complete payload has been validated. A malformed
+    // property must leave the task in the state initialized by setUiEdit().
+    m_modernCenterOrigin = restored->centerOrigin;
+    m_displayedDirection = restored->displayedDirection;
+    m_temporaryStartAlong = restored->startAlong;
+    m_temporaryEndAlong = restored->endAlong;
+    m_startOffset = restored->startOffset;
+    m_startRotation = restored->startRotation;
+    m_endRotation = restored->endRotation;
+    m_nextModifierId = restored->nextModifierId;
+    m_offsetSteps = std::move(offsetSteps);
+    m_arcBends = std::move(arcBends);
     m_hasModernProfileState = true;
 
     // The generated profile stores the direction as it is displayed on the
@@ -4113,8 +4239,7 @@ public:
             m_mode = Mode::SeekDirection;
             m_firstPoint = m_center;
             m_lockedOrigin = toSectionOrigin(m_center);
-            m_task->adoptTemporarySectionLine(m_preview, m_baseItem);
-            m_preview = nullptr;
+            m_task->adoptTemporarySectionLine(m_preview.release(), m_baseItem);
             m_task->updateTemporarySectionLine(
                 m_center, m_direction);
             m_task->setDirectionControlsVisible(true);
@@ -4286,43 +4411,8 @@ private:
 
     QPointF snapPoint(const QPointF& point) const
     {
-        constexpr double snapPixels = 12.0;
-        QPointF best = point;
-        double bestDistance = snapPixels;
-
-        auto consider = [&](const Base::Vector3d& candidate) {
-            const QPointF local(Rez::guiX(candidate.x), Rez::guiX(candidate.y));
-            const QPoint viewport =
-                viewPage->mapFromScene(m_baseItem->mapToScene(local));
-            const QPoint cursor =
-                viewPage->mapFromScene(m_baseItem->mapToScene(point));
-            const double distance =
-                std::hypot(viewport.x() - cursor.x(), viewport.y() - cursor.y());
-            if (distance < bestDistance) {
-                bestDistance = distance;
-                best = local;
-            }
-        };
-
-        for (const auto& vertex : m_base->getVertexGeometry()) {
-            if (vertex->getHlrVisible()) {
-                consider(vertex->point());
-            }
-        }
-        for (const auto& geometry : m_base->getEdgeGeometry()) {
-            if (!geometry->getHlrVisible()) {
-                continue;
-            }
-            if (geometry->getGeomType() == GeomType::CIRCLE
-                || geometry->getGeomType() == GeomType::ARCOFCIRCLE) {
-                consider(std::static_pointer_cast<TechDraw::Circle>(geometry)->center);
-            }
-            else if (geometry->getGeomType() == GeomType::ELLIPSE
-                     || geometry->getGeomType() == GeomType::ARCOFELLIPSE) {
-                consider(std::static_pointer_cast<TechDraw::Ellipse>(geometry)->center);
-            }
-        }
-        return best;
+        return DrawGuiUtil::snapToViewGeometry(
+            point, *m_base, *m_baseItem, *viewPage);
     }
 
     DirectionSnap preselectedDirectionSnap(
@@ -4436,8 +4526,7 @@ private:
 
     void makePreview()
     {
-        m_preview = new QGISectionLine();
-        viewPage->getScene()->addItem(m_preview);
+        m_preview = makeSceneItem<QGISectionLine>(*viewPage->getScene());
         m_preview->setSymbol(const_cast<char*>(""));
         m_preview->setPathMode(false);
         m_preview->setSectionColor(Qt::black);
@@ -4489,14 +4578,13 @@ private:
 
     void clearPreview()
     {
-        delete m_preview;
-        m_preview = nullptr;
+        m_preview.reset();
     }
 
     TaskSectionView* m_task{nullptr};
     QGIViewPart* m_baseItem{nullptr};
     DrawViewPart* m_base{nullptr};
-    QGISectionLine* m_preview{nullptr};
+    SceneItemPtr<QGISectionLine> m_preview;
     Mode m_mode{Mode::SeekCenter};
     QPointF m_center;
     QPointF m_firstPoint;
@@ -4505,7 +4593,7 @@ private:
     bool m_completed{false};
 };
 
-class SingleOffsetHandler final : public TechDrawHandler
+class SingleOffsetHandler final : public SectionOffsetHandler
 {
 public:
     SingleOffsetHandler(TaskSectionView* task,
@@ -4514,7 +4602,7 @@ public:
                         double minimumAlong,
                         double maximumAlong,
                         bool towardStart) :
-        m_task(task),
+        SectionOffsetHandler(task),
         m_along(along),
         m_offset(startOffset),
         m_minimumAlong(minimumAlong),
@@ -4522,25 +4610,12 @@ public:
         m_towardStart(towardStart)
     {}
 
-    ~SingleOffsetHandler() override
-    {
-        delete m_pointMarker;
-    }
-
     void mouseMoveEvent(QMouseEvent* event) override
     {
-        if (m_completed) {
-            event->accept();
+        QPointF local;
+        if (!snappedLocalPoint(event, local)) {
             return;
         }
-        QGIViewPart* baseItem = m_task ? m_task->baseItem() : nullptr;
-        if (!viewPage || !baseItem) {
-            return;
-        }
-        QPointF local =
-            baseItem->mapFromScene(viewPage->mapToScene(event->pos()));
-        local = m_task->snapViewPoint(
-            local, event->modifiers().testFlag(Qt::ControlModifier));
         local = m_task->mapFromSectionHalf(local, m_towardStart);
         const Base::Vector3d direction = m_task->displayedDirection();
         const QPointF tangent(-direction.y, -direction.x);
@@ -4570,8 +4645,7 @@ public:
 
     void mousePressEvent(QMouseEvent* event) override
     {
-        if (event->button() != Qt::LeftButton || !m_task
-            || !m_task->baseItem() || m_completed) {
+        if (!acceptsLeftPress(event)) {
             return;
         }
         if (m_mode == Mode::SeekP1) {
@@ -4584,45 +4658,8 @@ public:
         }
         m_task->updatePendingSingleOffset(m_offset);
         m_task->commitPendingSingleOffset();
-        m_completed = true;
         event->accept();
-        QGVPage* page = viewPage;
-        TaskSectionView* task = m_task;
-        QTimer::singleShot(0, page, [page, task]() {
-            page->deactivateHandler();
-            QTimer::singleShot(0, task, [task]() {
-                task->apply();
-            });
-        });
-        return;
-    }
-
-    void mouseReleaseEvent(QMouseEvent* event) override
-    {
-        if (event->button() == Qt::LeftButton) {
-            viewPage->getScene()->clearSelection();
-            Gui::Selection().clearSelection();
-            event->accept();
-            return;
-        }
-        TechDrawHandler::mouseReleaseEvent(event);
-    }
-
-    void keyPressEvent(QKeyEvent* event) override
-    {
-        Q_UNUSED(event);
-    }
-
-    void deactivate() override
-    {
-        if (!m_completed && m_task) {
-            m_task->cancelPendingSingleOffset();
-        }
-        if (m_task) {
-            m_task->setSectionControlsEnabled(true);
-            m_task->showSectionHandles();
-        }
-        TechDrawHandler::deactivate();
+        completeAndApply();
     }
 
 private:
@@ -4646,39 +4683,20 @@ private:
         };
     }
 
-    QString getCrosshairCursorSVGName() const override
+    void cancelPending() override
     {
-        return QStringLiteral("TechDraw_SectionView_Pointer");
+        m_task->cancelPendingSingleOffset();
     }
 
-    void updateMarker(const QPointF& localPoint)
-    {
-        QGIViewPart* baseItem = m_task->baseItem();
-        if (!m_pointMarker) {
-            constexpr double markerRadius = 4.0;
-            m_pointMarker = new QGraphicsEllipseItem(
-                -markerRadius, -markerRadius, markerRadius * 2.0, markerRadius * 2.0);
-            m_pointMarker->setPen(QPen(Qt::black));
-            m_pointMarker->setBrush(Qt::black);
-            m_pointMarker->setZValue(1001.0);
-            m_pointMarker->setFlag(QGraphicsItem::ItemIgnoresTransformations);
-            viewPage->getScene()->addItem(m_pointMarker);
-        }
-        m_pointMarker->setPos(baseItem->mapToScene(localPoint));
-    }
-
-    TaskSectionView* m_task{nullptr};
-    QGraphicsEllipseItem* m_pointMarker{nullptr};
     Mode m_mode{Mode::SeekP1};
     double m_along{0.0};
     double m_offset{0.0};
     double m_minimumAlong{0.0};
     double m_maximumAlong{0.0};
     bool m_towardStart{false};
-    bool m_completed{false};
 };
 
-class NotchOffsetHandler final : public TechDrawHandler
+class NotchOffsetHandler final : public SectionOffsetHandler
 {
 public:
     NotchOffsetHandler(TaskSectionView* task,
@@ -4687,7 +4705,7 @@ public:
                        double minimumAlong,
                        double maximumAlong,
                        bool towardStart) :
-        m_task(task),
+        SectionOffsetHandler(task),
         m_along(initialAlong),
         m_outerAlong(initialAlong),
         m_offset(initialOffset),
@@ -4696,25 +4714,12 @@ public:
         m_towardStart(towardStart)
     {}
 
-    ~NotchOffsetHandler() override
-    {
-        delete m_pointMarker;
-    }
-
     void mouseMoveEvent(QMouseEvent* event) override
     {
-        if (m_completed) {
-            event->accept();
+        QPointF local;
+        if (!snappedLocalPoint(event, local)) {
             return;
         }
-        QGIViewPart* baseItem = m_task ? m_task->baseItem() : nullptr;
-        if (!viewPage || !baseItem) {
-            return;
-        }
-        QPointF local =
-            baseItem->mapFromScene(viewPage->mapToScene(event->pos()));
-        local = m_task->snapViewPoint(
-            local, event->modifiers().testFlag(Qt::ControlModifier));
         local = m_task->mapFromSectionHalf(local, m_towardStart);
         const Base::Vector3d direction = m_task->displayedDirection();
         const QPointF tangent(-direction.y, -direction.x);
@@ -4756,8 +4761,7 @@ public:
 
     void mousePressEvent(QMouseEvent* event) override
     {
-        if (event->button() != Qt::LeftButton || !m_task
-            || !m_task->baseItem() || m_completed) {
+        if (!acceptsLeftPress(event)) {
             return;
         }
         if (m_mode == Mode::SeekP1) {
@@ -4773,45 +4777,9 @@ public:
         else {
             m_task->updatePendingNotchOuterAlong(m_outerAlong);
             m_task->commitPendingSingleOffset();
-            m_completed = true;
-            QGVPage* page = viewPage;
-            TaskSectionView* task = m_task;
-            QTimer::singleShot(0, page, [page, task]() {
-                page->deactivateHandler();
-                QTimer::singleShot(0, task, [task]() {
-                    task->apply();
-                });
-            });
+            completeAndApply();
         }
         event->accept();
-    }
-
-    void mouseReleaseEvent(QMouseEvent* event) override
-    {
-        if (event->button() == Qt::LeftButton) {
-            viewPage->getScene()->clearSelection();
-            Gui::Selection().clearSelection();
-            event->accept();
-            return;
-        }
-        TechDrawHandler::mouseReleaseEvent(event);
-    }
-
-    void keyPressEvent(QKeyEvent* event) override
-    {
-        Q_UNUSED(event);
-    }
-
-    void deactivate() override
-    {
-        if (!m_completed && m_task) {
-            m_task->cancelPendingSingleOffset();
-        }
-        if (m_task) {
-            m_task->setSectionControlsEnabled(true);
-            m_task->showSectionHandles();
-        }
-        TechDrawHandler::deactivate();
     }
 
 private:
@@ -4843,31 +4811,11 @@ private:
         };
     }
 
-    QString getCrosshairCursorSVGName() const override
+    void cancelPending() override
     {
-        return QStringLiteral("TechDraw_SectionView_Pointer");
+        m_task->cancelPendingSingleOffset();
     }
 
-    void updateMarker(const QPointF& localPoint)
-    {
-        QGIViewPart* baseItem = m_task->baseItem();
-        if (!m_pointMarker) {
-            constexpr double markerRadius = 4.0;
-            m_pointMarker = new QGraphicsEllipseItem(
-                -markerRadius, -markerRadius,
-                markerRadius * 2.0, markerRadius * 2.0);
-            m_pointMarker->setPen(QPen(Qt::black));
-            m_pointMarker->setBrush(Qt::black);
-            m_pointMarker->setZValue(1001.0);
-            m_pointMarker->setFlag(
-                QGraphicsItem::ItemIgnoresTransformations);
-            viewPage->getScene()->addItem(m_pointMarker);
-        }
-        m_pointMarker->setPos(baseItem->mapToScene(localPoint));
-    }
-
-    TaskSectionView* m_task{nullptr};
-    QGraphicsEllipseItem* m_pointMarker{nullptr};
     Mode m_mode{Mode::SeekP1};
     double m_along{0.0};
     double m_outerAlong{0.0};
@@ -4875,10 +4823,9 @@ private:
     double m_minimumAlong{0.0};
     double m_maximumAlong{0.0};
     bool m_towardStart{false};
-    bool m_completed{false};
 };
 
-class ArcNotchHandler final : public TechDrawHandler
+class ArcNotchHandler final : public SectionOffsetHandler
 {
 public:
     ArcNotchHandler(TaskSectionView* task,
@@ -4886,7 +4833,7 @@ public:
                     double minimumAlong,
                     double maximumAlong,
                     bool towardStart) :
-        m_task(task),
+        SectionOffsetHandler(task),
         m_firstAlong(along),
         m_secondAlong(along),
         m_minimumAlong(minimumAlong),
@@ -4894,25 +4841,12 @@ public:
         m_towardStart(towardStart)
     {}
 
-    ~ArcNotchHandler() override
-    {
-        delete m_pointMarker;
-    }
-
     void mouseMoveEvent(QMouseEvent* event) override
     {
-        if (m_completed) {
-            event->accept();
+        QPointF local;
+        if (!snappedLocalPoint(event, local)) {
             return;
         }
-        QGIViewPart* baseItem = m_task ? m_task->baseItem() : nullptr;
-        if (!viewPage || !baseItem) {
-            return;
-        }
-        QPointF local =
-            baseItem->mapFromScene(viewPage->mapToScene(event->pos()));
-        local = m_task->snapViewPoint(
-            local, event->modifiers().testFlag(Qt::ControlModifier));
 
         const QPointF center = m_task->temporaryCenter();
         const Base::Vector3d direction = m_task->displayedDirection();
@@ -4965,8 +4899,7 @@ public:
 
     void mousePressEvent(QMouseEvent* event) override
     {
-        if (event->button() != Qt::LeftButton || !m_task
-            || !m_task->baseItem() || m_completed) {
+        if (!acceptsLeftPress(event)) {
             return;
         }
         if (m_mode == Mode::SeekP1) {
@@ -4982,43 +4915,9 @@ public:
         else {
             m_task->updatePendingArcNotch(m_angle, m_secondAlong);
             m_task->commitPendingArcNotch();
-            m_completed = true;
-            QGVPage* page = viewPage;
-            TaskSectionView* task = m_task;
-            QTimer::singleShot(0, page, [page, task]() {
-                page->deactivateHandler();
-                QTimer::singleShot(0, task, [task]() { task->apply(); });
-            });
+            completeAndApply();
         }
         event->accept();
-    }
-
-    void mouseReleaseEvent(QMouseEvent* event) override
-    {
-        if (event->button() == Qt::LeftButton) {
-            viewPage->getScene()->clearSelection();
-            Gui::Selection().clearSelection();
-            event->accept();
-            return;
-        }
-        TechDrawHandler::mouseReleaseEvent(event);
-    }
-
-    void keyPressEvent(QKeyEvent* event) override
-    {
-        Q_UNUSED(event);
-    }
-
-    void deactivate() override
-    {
-        if (!m_completed && m_task) {
-            m_task->cancelPendingArcNotch();
-        }
-        if (m_task) {
-            m_task->setSectionControlsEnabled(true);
-            m_task->showSectionHandles();
-        }
-        TechDrawHandler::deactivate();
     }
 
 private:
@@ -5050,9 +4949,9 @@ private:
         };
     }
 
-    QString getCrosshairCursorSVGName() const override
+    void cancelPending() override
     {
-        return QStringLiteral("TechDraw_SectionView_Pointer");
+        m_task->cancelPendingArcNotch();
     }
 
     QPointF rotateAroundCenter(const QPointF& point, double angle) const
@@ -5066,26 +4965,6 @@ private:
                           + delta.y() * std::cos(angle));
     }
 
-    void updateMarker(const QPointF& localPoint)
-    {
-        QGIViewPart* baseItem = m_task->baseItem();
-        if (!m_pointMarker) {
-            constexpr double markerRadius = 4.0;
-            m_pointMarker = new QGraphicsEllipseItem(
-                -markerRadius, -markerRadius,
-                markerRadius * 2.0, markerRadius * 2.0);
-            m_pointMarker->setPen(QPen(Qt::black));
-            m_pointMarker->setBrush(Qt::black);
-            m_pointMarker->setZValue(1001.0);
-            m_pointMarker->setFlag(
-                QGraphicsItem::ItemIgnoresTransformations);
-            viewPage->getScene()->addItem(m_pointMarker);
-        }
-        m_pointMarker->setPos(baseItem->mapToScene(localPoint));
-    }
-
-    TaskSectionView* m_task{nullptr};
-    QGraphicsEllipseItem* m_pointMarker{nullptr};
     Mode m_mode{Mode::SeekP1};
     double m_firstAlong{0.0};
     double m_secondAlong{0.0};
@@ -5093,10 +4972,9 @@ private:
     double m_minimumAlong{0.0};
     double m_maximumAlong{0.0};
     bool m_towardStart{false};
-    bool m_completed{false};
 };
 
-class ArcOffsetHandler final : public TechDrawHandler
+class ArcOffsetHandler final : public SectionOffsetHandler
 {
 public:
     ArcOffsetHandler(TaskSectionView* task,
@@ -5104,32 +4982,19 @@ public:
                      double minimumAlong,
                      double maximumAlong,
                      bool towardStart) :
-        m_task(task),
+        SectionOffsetHandler(task),
         m_along(along),
         m_minimumAlong(minimumAlong),
         m_maximumAlong(maximumAlong),
         m_towardStart(towardStart)
     {}
 
-    ~ArcOffsetHandler() override
-    {
-        delete m_pointMarker;
-    }
-
     void mouseMoveEvent(QMouseEvent* event) override
     {
-        if (m_completed) {
-            event->accept();
+        QPointF local;
+        if (!snappedLocalPoint(event, local)) {
             return;
         }
-        QGIViewPart* baseItem = m_task ? m_task->baseItem() : nullptr;
-        if (!viewPage || !baseItem) {
-            return;
-        }
-        QPointF local =
-            baseItem->mapFromScene(viewPage->mapToScene(event->pos()));
-        local = m_task->snapViewPoint(
-            local, event->modifiers().testFlag(Qt::ControlModifier));
         if (m_mode == Mode::SeekP1) {
             local = m_task->mapFromSectionHalf(
                 local, m_towardStart);
@@ -5174,8 +5039,7 @@ public:
 
     void mousePressEvent(QMouseEvent* event) override
     {
-        if (event->button() != Qt::LeftButton || !m_task
-            || !m_task->baseItem() || m_completed) {
+        if (!acceptsLeftPress(event)) {
             return;
         }
         if (m_mode == Mode::SeekP1) {
@@ -5187,44 +5051,8 @@ public:
         }
         m_task->updatePendingArcAngle(m_angle);
         m_task->commitPendingArc();
-        m_completed = true;
         event->accept();
-        QGVPage* page = viewPage;
-        TaskSectionView* task = m_task;
-        QTimer::singleShot(0, page, [page, task]() {
-            page->deactivateHandler();
-            QTimer::singleShot(0, task, [task]() {
-                task->apply();
-            });
-        });
-    }
-
-    void mouseReleaseEvent(QMouseEvent* event) override
-    {
-        if (event->button() == Qt::LeftButton) {
-            viewPage->getScene()->clearSelection();
-            Gui::Selection().clearSelection();
-            event->accept();
-            return;
-        }
-        TechDrawHandler::mouseReleaseEvent(event);
-    }
-
-    void keyPressEvent(QKeyEvent* event) override
-    {
-        Q_UNUSED(event);
-    }
-
-    void deactivate() override
-    {
-        if (!m_completed && m_task) {
-            m_task->cancelPendingArc();
-        }
-        if (m_task) {
-            m_task->setSectionControlsEnabled(true);
-            m_task->showSectionHandles();
-        }
-        TechDrawHandler::deactivate();
+        completeAndApply();
     }
 
 private:
@@ -5248,38 +5076,17 @@ private:
         };
     }
 
-    QString getCrosshairCursorSVGName() const override
+    void cancelPending() override
     {
-        return QStringLiteral("TechDraw_SectionView_Pointer");
+        m_task->cancelPendingArc();
     }
 
-    void updateMarker(const QPointF& localPoint)
-    {
-        QGIViewPart* baseItem = m_task->baseItem();
-        if (!m_pointMarker) {
-            constexpr double markerRadius = 4.0;
-            m_pointMarker = new QGraphicsEllipseItem(
-                -markerRadius, -markerRadius,
-                markerRadius * 2.0, markerRadius * 2.0);
-            m_pointMarker->setPen(QPen(Qt::black));
-            m_pointMarker->setBrush(Qt::black);
-            m_pointMarker->setZValue(1001.0);
-            m_pointMarker->setFlag(
-                QGraphicsItem::ItemIgnoresTransformations);
-            viewPage->getScene()->addItem(m_pointMarker);
-        }
-        m_pointMarker->setPos(baseItem->mapToScene(localPoint));
-    }
-
-    TaskSectionView* m_task{nullptr};
-    QGraphicsEllipseItem* m_pointMarker{nullptr};
     Mode m_mode{Mode::SeekP1};
     double m_along{0.0};
     double m_angle{0.0};
     double m_minimumAlong{0.0};
     double m_maximumAlong{0.0};
     bool m_towardStart{false};
-    bool m_completed{false};
 };
 
 }  // namespace
