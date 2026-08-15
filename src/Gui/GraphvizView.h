@@ -44,8 +44,6 @@ public:
     explicit GraphvizView(App::Document& _doc, QWidget* parent = nullptr);
     ~GraphvizView() override;
 
-    QByteArray exportGraph(const QString& filter, const QString& exportPath);
-
     /// Message handler
     bool onMsg(const char* pMsg) override;
     /// Message handler test
@@ -67,11 +65,12 @@ Q_SIGNALS:
 private:
     enum class PathType : uint8_t;
     QString getDirPath();
+    enum class ProcessType : uint8_t;
+    void convert(ProcessType type, const QString& exportType = "", const QString& exportPath = "");
     void updateSvgItem();
     void disconnectSignals();
 
     const App::Document& doc;
-    QByteArray graphCode;
     QGraphicsScene* scene;
     QGraphicsView* view;
     GraphicsViewZoom* zoomer;
@@ -79,8 +78,10 @@ private:
     QSvgRenderer* renderer;
     QProcess* dotProc;
     QProcess* unflattenProc;
-    int nPending;
     PathType pathType = (PathType)0;
+    ProcessType running = (ProcessType)0;
+    uint8_t pendingMask = 0;
+    QString pendingExportType, pendingExportPath;
 
     using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;
