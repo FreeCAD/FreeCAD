@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Yorik van Havre yorik@uncreated.net
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import re
@@ -105,12 +103,14 @@ class ObjectCustom(PathOp.ObjectOp):
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The G-code to be inserted"),
         )
+
         obj.addProperty(
             "App::PropertyBool",
-            "AddWithoutProcessing",
+            "PostProcessOutput",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Add lines without processing"),
+            QT_TRANSLATE_NOOP("App::Property", "Pass Custom G-code through Post Processor"),
         )
+        obj.PostProcessOutput = True
 
         # populate the property enumerations
         for n in self.propertyEnumerations():
@@ -142,14 +142,14 @@ class ObjectCustom(PathOp.ObjectOp):
                 "Path",
                 "File containing gcode to be inserted",
             )
-        if not hasattr(obj, "AddWithoutProcessing"):
+        if not hasattr(obj, "PostProcessOutput"):
             obj.addProperty(
                 "App::PropertyBool",
-                "AddWithoutProcessing",
+                "PostProcessOutput",
                 "Path",
-                QT_TRANSLATE_NOOP("App::Property", "Add lines without processing"),
+                QT_TRANSLATE_NOOP("App::Property", "Pass Custom G-code through Post Processor"),
             )
-
+            obj.PostProcessOutput = True
         # populate the property enumerations
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -198,7 +198,7 @@ class ObjectCustom(PathOp.ObjectOp):
             if line.startswith("!"):
                 newcommand = Path.Command("", {}, {Constants.ANNOT_AS_IS: line[1:]})
                 self.commandlist.append(newcommand)
-            elif obj.AddWithoutProcessing:
+            elif not obj.PostProcessOutput:
                 newcommand = Path.Command("", {}, {Constants.ANNOT_AS_IS: line})
                 self.commandlist.append(newcommand)
             else:
