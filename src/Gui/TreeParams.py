@@ -50,7 +50,6 @@ Params = [
     ParamBool("SyncView", True),
     ParamBool("PreSelection", True),
     ParamBool("SyncPlacement", False),
-    ParamBool("RecordSelection", True),
     ParamInt("DocumentMode", 2, on_change=True),
     ParamInt("StatusTimeout", 100),
     ParamInt("SelectionTimeout", 100),

@@ -809,9 +809,7 @@ void TreeWidget::selectAll()
     // if we already did a group select, the second press expand to document
     if (lastSelectAllParent) {
         SelectAllGuard guard(inSelectAllOperation);
-        if (TreeParams::getRecordSelection()) {
-            selection.selStackPush();
-        }
+        selection.selStackPush();
         selection.clearSelection();
         selectAllDocumentLevel();
         clearSelectAllContext();
@@ -844,9 +842,7 @@ void TreeWidget::selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isG
 {
     auto& selection = Gui::Selection();
 
-    if (TreeParams::getRecordSelection()) {
-        selection.selStackPush();
-    }
+    selection.selStackPush();
     selection.clearSelection();
 
     // If current item is a group, also select the group itself along with its children
@@ -910,9 +906,7 @@ void TreeWidget::selectAllDocumentLevel()
     }
 
     auto& selection = Gui::Selection();
-    if (TreeParams::getRecordSelection()) {
-        selection.selStackPush();
-    }
+    selection.selStackPush();
     selection.clearSelection();
     selection.setSelection(gdoc->getDocument()->getName(), gdoc->getDocument()->getObjects());
 }
@@ -4063,9 +4057,7 @@ void TreeWidget::onItemSelectionChanged()
     }
 
     if (selItems.size() <= 1) {
-        if (TreeParams::getRecordSelection()) {
-            Gui::Selection().selStackPush();
-        }
+        Gui::Selection().selStackPush();
 
         // This special handling to deal with possible discrepancy of
         // Gui.Selection and Tree view selection because of newly added
@@ -4094,9 +4086,7 @@ void TreeWidget::onItemSelectionChanged()
             v.second->clearSelection(item);
             currentDocItem = nullptr;
         }
-        if (TreeParams::getRecordSelection()) {
-            Gui::Selection().selStackPush();
-        }
+        Gui::Selection().selStackPush();
     }
     else {
         for (auto pos = DocumentMap.begin(); pos != DocumentMap.end(); ++pos) {
@@ -4104,9 +4094,7 @@ void TreeWidget::onItemSelectionChanged()
             pos->second->updateSelection(pos->second);
             currentDocItem = nullptr;
         }
-        if (TreeParams::getRecordSelection()) {
-            Gui::Selection().selStackPush(true, true);
-        }
+        Gui::Selection().selStackPush(true, true);
     }
 
     this->blockSelection(lock);

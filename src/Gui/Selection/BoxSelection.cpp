@@ -310,8 +310,9 @@ void Gui::applyBoxSelection(
         return;
     }
 
+    Gui::Selection().selStackPush();
+
     if (!additive) {
-        Gui::Selection().selStackPush();
         Gui::Selection().clearSelection(doc->getName());
     }
 
@@ -335,4 +336,6 @@ void Gui::applyBoxSelection(
             Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
         }
     }
+
+    Gui::Selection().selStackPush();
 }

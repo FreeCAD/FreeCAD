@@ -3216,10 +3216,8 @@ StdCmdSelBack::StdCmdSelBack()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Back");
-    static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Restores the previous selection. "
-                     "Requires 'Enable Selection History' to be enabled.")
-        + "</p>";
+    static std::string toolTip
+        = std::string("<p>") + QT_TR_NOOP("Restores the previous selection.") + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelBack";
     sStatusTip = sToolTipText;
@@ -3250,10 +3248,8 @@ StdCmdSelForward::StdCmdSelForward()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Forward");
-    static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Restores the next selection. "
-                     "Requires 'Enable Selection History' to be enabled.")
-        + "</p>";
+    static std::string toolTip
+        = std::string("<p>") + QT_TR_NOOP("Restores the next selection.") + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelForward";
     sStatusTip = sToolTipText;
@@ -3455,24 +3451,6 @@ StdTreePreSelection::StdTreePreSelection()
 }
 
 //===========================================================================
-// Std_TreeRecordSelection
-//===========================================================================
-TREEVIEW_CMD_DEF(RecordSelection)
-
-StdTreeRecordSelection::StdTreeRecordSelection()
-    : Command("Std_TreeRecordSelection")
-{
-    sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("Record Selection History");
-    sToolTipText = QT_TR_NOOP("Stores selection changes for Selection Back/Forward navigation");
-    sStatusTip = sToolTipText;
-    sWhatsThis = "Std_TreeRecordSelection";
-    sPixmap = "tree-rec-sel";
-    sAccel = "T,5";
-    eType = 0;
-}
-
-//===========================================================================
 // Std_TreeDrag
 //===========================================================================
 DEF_STD_CMD(StdTreeDrag)
@@ -3525,7 +3503,6 @@ public:
         addCommand(new StdTreeSyncSelection());
         addCommand(new StdTreeSyncPlacement());
         addCommand(new StdTreePreSelection());
-        addCommand(new StdTreeRecordSelection());
 
         addCommand();
 
