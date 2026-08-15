@@ -16,6 +16,7 @@ add_executable(Base_tests_run
         InputSource.cpp
         Handle.cpp
         Matrix.cpp
+        OkLch.cpp
         Parameter.cpp
         ParameterObserver.cpp
         Placement.cpp
