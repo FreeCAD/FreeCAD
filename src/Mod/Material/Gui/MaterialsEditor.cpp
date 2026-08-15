@@ -1111,11 +1111,16 @@ void MaterialsEditor::updateMaterialAppearance()
                     // auto propertyItem = new QStandardItem(key);
                     auto propertyItem = new QStandardItem(itp->second.getDisplayName());
                     propertyItem->setData(key);
-                    propertyItem->setToolTip(itp->second.getDescription());
+                    
+                    QString valStr = _material->getAppearanceValueString(key);
+                    QString desc = itp->second.getDescription();
+                    QString tooltip = desc.isEmpty() ? valStr : desc;
+                    
+                    propertyItem->setToolTip(tooltip);
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(_material->getAppearanceValueString(key));
-                    valueItem->setToolTip(itp->second.getDescription());
+                    auto valueItem = new QStandardItem(valStr);
+                    valueItem->setToolTip(tooltip);
                     QVariant variant;
                     // variant.setValue(_material->getAppearanceValueString(key));
                     variant.setValue(_material);
