@@ -327,7 +327,7 @@ void GraphvizView::disconnectSignals()
     redoConnection.disconnect();
 }
 
-QByteArray GraphvizView::exportGraph(const QString& format)
+QByteArray GraphvizView::exportGraph(const QString& format, const QString& exportPath)
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
     QProcess dotProc, flatProc;
@@ -376,7 +376,13 @@ QByteArray GraphvizView::exportGraph(const QString& format)
         return {};
     }
 
-    return dotProc.readAll();
+    auto buffer = dotProc.readAll();
+    if (!buffer.isEmpty()) {
+        if (QFile file(exportPath); file.open(QFile::WriteOnly)) {
+            file.write(buffer);
+            file.close();
+        }
+    }
 }
 
 bool GraphvizView::onMsg(const char* pMsg)
@@ -400,20 +406,19 @@ bool GraphvizView::onMsg(const char* pMsg)
         qsizetype selectedIdx = -1;
         auto fn = FileDialog::getSaveFileName(this, tr("Export Graph"), "", filterList, &selectedIdx);
         if (!fn.isEmpty()) {
-            QByteArray buffer;
             if (formatMap[selectedIdx].second == QStringLiteral("gv")) {
                 std::stringstream str;
                 doc.exportGraphviz(str);
-                buffer = QByteArray::fromStdString(str.str());
+                auto buffer = QByteArray::fromStdString(str.str());
+                if (!buffer.isEmpty()) {
+                    if (QFile file(fn); file.open(QFile::WriteOnly)) {
+                        file.write(buffer);
+                        file.close();
+                    }
+                }
             }
             else {
-                buffer = exportGraph(formatMap[selectedIdx].second);
-            }
-            if (!buffer.isEmpty()) {
-                if (QFile file(fn); file.open(QFile::WriteOnly)) {
-                    file.write(buffer);
-                    file.close();
-                }
+                exportGraph(formatMap[selectedIdx].second, fn);
             }
         }
         return true;
@@ -464,13 +469,7 @@ void GraphvizView::printPdf()
     FileDialog::FilterList filterList {{QStringLiteral("PDF"), {"*.pdf"}}};
     auto fn = FileDialog::getSaveFileName(this, tr("Export graph"), "", filterList);
     if (!fn.isEmpty()) {
-        QByteArray buffer = exportGraph("pdf");
-        if (!buffer.isEmpty()) {
-            if (QFile file(fn); file.open(QFile::WriteOnly)) {
-                file.write(buffer);
-                file.close();
-            }
-        }
+        exportGraph("pdf", fn);
     }
 }
 
