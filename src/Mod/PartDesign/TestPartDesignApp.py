@@ -52,6 +52,7 @@ from PartDesignTests.TestBaseFeature import TestBaseFeature
 
 # dressup features
 from PartDesignTests.TestFillet import TestFillet
+from PartDesignTests.TestFormSurface import TestFormSurface
 from PartDesignTests.TestChamfer import TestChamfer
 from PartDesignTests.TestDraft import TestDraft
 from PartDesignTests.TestThickness import TestThickness

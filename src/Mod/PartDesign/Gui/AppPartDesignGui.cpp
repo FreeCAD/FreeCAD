@@ -31,7 +31,9 @@
 #include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+#include <Mod/PartDesign/App/Body.h>
 
+#include "Utils.h"
 #include "Workbench.h"
 #include "ViewProviderBase.h"
 #include "ViewProviderBody.h"
@@ -85,10 +87,32 @@ public:
     Module()
         : Py::ExtensionModule<Module>("PartDesignGui")
     {
+        add_varargs_method(
+            "getBody",
+            &Module::getBody,
+            "getBody(messageIfNot=True) -> Body or None\n"
+            "\n"
+            "Return the active Part Design Body. A sole inactive Body is activated "
+            "automatically; otherwise the standard Body selection dialog is shown when "
+            "messageIfNot is true."
+        );
         initialize("This module is the PartDesignGui module.");  // register with Python
     }
 
 private:
+    Py::Object getBody(const Py::Tuple& args)
+    {
+        int messageIfNot = 1;
+        if (!PyArg_ParseTuple(args.ptr(), "|p", &messageIfNot)) {
+            throw Py::Exception();
+        }
+
+        auto* body = PartDesignGui::getBody(messageIfNot != 0);
+        if (!body) {
+            return Py::None();
+        }
+        return Py::Object(body->getPyObject(), true);
+    }
 };
 
 PyObject* initModule()

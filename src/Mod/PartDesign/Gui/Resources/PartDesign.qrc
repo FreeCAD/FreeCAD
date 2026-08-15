@@ -1,6 +1,14 @@
 <RCC>
     <qresource>
         <file>icons/PartDesign_AdditiveBox.svg</file>
+        <file>icons/PartDesign_AdditiveFormBox.svg</file>
+        <file>icons/PartDesign_AdditiveFormCylinder.svg</file>
+        <file>icons/PartDesign_AdditiveFormFace.svg</file>
+        <file>icons/PartDesign_AdditiveFormSphere.svg</file>
+        <file alias="icons/PartDesign_AdditiveFormQuadball.svg">icons/PartDesign_AdditiveFormSphere.svg</file>
+        <file>icons/PartDesign_AdditiveFormPipe.svg</file>
+        <file>icons/PartDesign_AdditiveFormTorus.svg</file>
+        <file>icons/PartDesign_AdditiveFormTube.svg</file>
         <file>icons/PartDesign_AdditiveCone.svg</file>
         <file>icons/PartDesign_AdditiveCylinder.svg</file>
         <file>icons/PartDesign_AdditiveEllipsoid.svg</file>
@@ -44,6 +52,14 @@
         <file>icons/PartDesign_Sprocket.svg</file>
         <file>icons/PartDesign_SubShapeBinder.svg</file>
         <file>icons/PartDesign_SubtractiveBox.svg</file>
+        <file>icons/PartDesign_SubtractiveFormBox.svg</file>
+        <file>icons/PartDesign_SubtractiveFormCylinder.svg</file>
+        <file>icons/PartDesign_SubtractiveFormFace.svg</file>
+        <file>icons/PartDesign_SubtractiveFormSphere.svg</file>
+        <file alias="icons/PartDesign_SubtractiveFormQuadball.svg">icons/PartDesign_SubtractiveFormSphere.svg</file>
+        <file>icons/PartDesign_SubtractiveFormPipe.svg</file>
+        <file>icons/PartDesign_SubtractiveFormTorus.svg</file>
+        <file>icons/PartDesign_SubtractiveFormTube.svg</file>
         <file>icons/PartDesign_SubtractiveCone.svg</file>
         <file>icons/PartDesign_SubtractiveCylinder.svg</file>
         <file>icons/PartDesign_SubtractiveEllipsoid.svg</file>

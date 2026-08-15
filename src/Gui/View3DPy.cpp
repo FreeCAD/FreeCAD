@@ -24,6 +24,10 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QImage>
+#include <QPointer>
+
+#include <memory>
+#include <utility>
 
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoWriteAction.h>
@@ -59,12 +63,39 @@
 #include "SoFCSelectionAction.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
+#include "ToolHandler.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
 
 using namespace Gui;
+
+namespace
+{
+class PythonCursorToolHandler final: public Gui::ToolHandler
+{
+public:
+    PythonCursorToolHandler(QString iconName, QWidget* cursorWidget)
+        : iconName(std::move(iconName))
+        , cursorWidget(cursorWidget)
+    {}
+
+private:
+    QString getCrosshairCursorSVGName() const override
+    {
+        return iconName;
+    }
+
+    QWidget* getCursorWidget() override
+    {
+        return cursorWidget.data();
+    }
+
+    QString iconName;
+    QPointer<QWidget> cursorWidget;
+};
+}  // namespace
 
 void View3DInventorPy::init_type()
 {
@@ -255,6 +286,16 @@ void View3DInventorPy::init_type()
         "removeEventCallbackPivy()"
     );
     add_varargs_method(
+        "activateToolHandler",
+        &View3DInventorPy::activateToolHandler,
+        "activateToolHandler(iconName)"
+    );
+    add_noargs_method(
+        "deactivateToolHandler",
+        &View3DInventorPy::deactivateToolHandler,
+        "deactivateToolHandler()"
+    );
+    add_varargs_method(
         "addEventCallbackSWIG",
         &View3DInventorPy::addEventCallbackSWIG,
         "Deprecated -- use addEventCallbackPivy()"
@@ -367,6 +408,10 @@ View3DInventorPy::View3DInventorPy(View3DInventor* vi)
 
 View3DInventorPy::~View3DInventorPy()
 {
+    if (activePythonToolHandler) {
+        activePythonToolHandler->deactivate();
+        activePythonToolHandler.reset();
+    }
     Base::PyGILStateLocker lock;
     for (auto it : callbacks) {
         Py_DECREF(it);
@@ -2403,6 +2448,37 @@ Py::Object View3DInventorPy::removeEventCallbackPivy(const Py::Tuple& args)
     catch (const Py::Exception&) {
         throw;
     }
+}
+
+Py::Object View3DInventorPy::activateToolHandler(const Py::Tuple& args)
+{
+    const char* iconName = nullptr;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &iconName)) {
+        throw Py::Exception();
+    }
+    if (activePythonToolHandler) {
+        activePythonToolHandler->deactivate();
+    }
+    auto* view = getView3DInventorPtr();
+    auto* viewer = view ? view->getViewer() : nullptr;
+    activePythonToolHandler = std::make_unique<PythonCursorToolHandler>(
+        QString::fromUtf8(iconName),
+        viewer ? viewer->getWidget() : nullptr
+    );
+    if (!activePythonToolHandler->activate()) {
+        activePythonToolHandler.reset();
+        return Py::Boolean(false);
+    }
+    return Py::Boolean(true);
+}
+
+Py::Object View3DInventorPy::deactivateToolHandler()
+{
+    if (activePythonToolHandler) {
+        activePythonToolHandler->deactivate();
+        activePythonToolHandler.reset();
+    }
+    return Py::None();
 }
 
 Py::Object View3DInventorPy::removeEventCallbackSWIG(const Py::Tuple& args)
