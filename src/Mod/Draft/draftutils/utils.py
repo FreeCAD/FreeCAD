@@ -866,6 +866,7 @@ def get_rgba_tuple(color, typ=1.0):
 def _modifiers_process_subselection(sels, copy):
     data_list = []
     sel_info = []
+    unsupported_objects = set()
     for sel in sels:
         for sub in sel.SubElementNames if sel.SubElementNames else [""]:
             if not ("Vertex" in sub or "Edge" in sub):
@@ -873,6 +874,18 @@ def _modifiers_process_subselection(sels, copy):
             if copy and "Vertex" in sub:
                 continue
             obj = sel.Object.getSubObject(sub, 1)
+            if not hasattr(obj, "Points"):
+                object_id = id(obj)
+                if object_id not in unsupported_objects:
+                    _wrn(
+                        translate(
+                            "draft",
+                            "Cannot modify subelements of this object. "
+                            "Uncheck the 'Modify subelements' option to modify the whole object.",
+                        )
+                    )
+                    unsupported_objects.add(object_id)
+                continue
             pla = sel.Object.getSubObject(sub, 3)
             if "Vertex" in sub:
                 vert_idx = int(sub.rpartition("Vertex")[2]) - 1
