@@ -69,7 +69,7 @@ class ObjectCustom(PathOp.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -217,15 +217,14 @@ class ObjectCustom(PathOp.ObjectOp):
         self.errors = []
         self.commandlist.append(Path.Command("(Begin Custom)"))
 
-        if job := PathUtils.findParentJob(obj):
-            if not job.Machine:
-                Path.Log.warning(
-                    translate(
-                        "PathCustom",
-                        "Pass Custom G-code through Post Processor"
-                        " should be enabled for legacy post processor",
-                    )
+        if not obj.PostProcessOutput and (job := PathUtils.findParentJob(obj)) and not job.Machine:
+            Path.Log.warning(
+                translate(
+                    "PathCustom",
+                    "Pass Custom G-code through Post Processor"
+                    " should be enabled for legacy post processor",
                 )
+            )
         if obj.Source == "Text" and obj.Gcode:
             self.processLines(obj, obj.Gcode)
         elif obj.Source == "File" and obj.GcodeFile:
