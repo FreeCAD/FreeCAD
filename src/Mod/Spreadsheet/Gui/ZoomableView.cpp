@@ -208,6 +208,8 @@ void ZoomableView::focusOutEvent(QFocusEvent* event)
         case Qt::FocusReason::TabFocusReason:
             return;
             break;
+        default:
+            break;
     }
 
     QGraphicsView::focusOutEvent(event);
