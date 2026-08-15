@@ -105,7 +105,7 @@ void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool 
 
     auto updatePopupGeom = [getPopupPos, getPopupWidth, xpopup]() {
         const QPoint new_pos = getPopupPos();
-        xpopup->setGeometry(new_pos.x(), new_pos.y(), getPopupWidth(), xpopup->height());
+        xpopup->setGeometrySilently(new_pos.x(), new_pos.y(), getPopupWidth(), xpopup->height());
     };
 
     QObject::connect(xpopup, &XListView::geometryChanged, this, updatePopupGeom);
@@ -142,6 +142,7 @@ void LineEdit::keyPressEvent(QKeyEvent* event)
 
 XListView::XListView(LineEdit* parent)
     : QListView(parent)
+    , m_Silent{false}
 {
     setEditTriggers(QAbstractItemView::NoEditTriggers);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -151,16 +152,28 @@ XListView::XListView(LineEdit* parent)
     setAttribute(Qt::WidgetAttribute::WA_ShowWithoutActivating);
 }
 
+void XListView::setGeometrySilently(int ax, int ay, int aw, int ah)
+{
+    m_Silent = true;
+    QListView::setGeometry(ax, ay, aw, ah);
+}
+
 void XListView::resizeEvent(QResizeEvent* event)
 {
-    Q_EMIT geometryChanged();
+    if(!m_Silent){
+        Q_EMIT geometryChanged();
+        m_Silent = false;
+    }
     QListView::resizeEvent(event);
 }
 
 void XListView::updateGeometries()
 {
     QListView::updateGeometries();
-    Q_EMIT geometryChanged();
+    if(!m_Silent){
+        Q_EMIT geometryChanged();
+        m_Silent = false;
+    }
 }
 
 #include "moc_LineEdit.cpp"

@@ -59,12 +59,16 @@ class XListView: public QListView
 public:
     explicit XListView(LineEdit* parent);
 
+    void setGeometrySilently(int ax, int ay, int aw, int ah);
+
 Q_SIGNALS:
     void geometryChanged(void);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
     void updateGeometries(void) override;
+
+    bool m_Silent;
 };
 
 }  // namespace SpreadsheetGui
