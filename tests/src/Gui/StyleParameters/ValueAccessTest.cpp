@@ -104,6 +104,27 @@ TEST(ValueAccessTest, TupleAtOutOfRangeReturnsDefaultAndReports)
     EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 0.0);
     EXPECT_THAT(capture.messages(), Contains(HasSubstr("out of range")));
 }
+
+// Regression: shades() read every element of its spec tuple with an unchecked get<Numeric>,
+// throwing std::bad_variant_access past every catch site on the resolve path.
+TEST(ValueAccessTest, ShadesWithNonNumericSpecIsContainedByResolve)
+{
+    DiagnosticsCapture capture;
+    Gui::StyleParameters::ParameterManager manager;
+    InMemoryParameterSource source(
+        std::list<Parameter> {{.name = "Broken", .value = "shades(#ff0000, (050: #ffffff))"}},
+        ParameterSource::Metadata {.name = "Test Source"}
+    );
+    manager.addSource(&source);
+
+    EXPECT_NO_THROW({
+        const auto resolved = manager.resolve("Broken");
+        ASSERT_TRUE(resolved.has_value());
+        EXPECT_TRUE(resolved->holds<Tuple>());
+    });
+    EXPECT_THAT(capture.messages(), Contains(HasSubstr("Expected numeric value")));
+}
+
 // Regression: with exactly one gradient operand, blend() called Value::get<Base::Color>() on
 // the other operand without checking it, throwing std::bad_variant_access past every catch
 // site on the resolve path.
