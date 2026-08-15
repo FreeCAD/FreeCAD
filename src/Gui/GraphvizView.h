@@ -44,7 +44,7 @@ public:
     explicit GraphvizView(App::Document& _doc, QWidget* parent = nullptr);
     ~GraphvizView() override;
 
-    QByteArray exportGraph(const QString& filter);
+    QByteArray exportGraph(const QString& filter, const QString& exportPath);
 
     /// Message handler
     bool onMsg(const char* pMsg) override;
