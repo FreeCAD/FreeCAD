@@ -25,6 +25,7 @@ import os
 import Path
 import Path.Op.Base as PathOp
 import Constants
+from PathScripts import PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -216,6 +217,15 @@ class ObjectCustom(PathOp.ObjectOp):
         self.errors = []
         self.commandlist.append(Path.Command("(Begin Custom)"))
 
+        if job := PathUtils.findParentJob(obj):
+            if not job.Machine:
+                Path.Log.warning(
+                    translate(
+                        "PathCustom",
+                        "Pass Custom G-code through Post Processor"
+                        " should be enabled for legacy post processor",
+                    )
+                )
         if obj.Source == "Text" and obj.Gcode:
             self.processLines(obj, obj.Gcode)
         elif obj.Source == "File" and obj.GcodeFile:
