@@ -2202,3 +2202,22 @@ TEST_F(ParserTest, ColorFunctionTypeErrorsAreContainedByResolve)
         EXPECT_EQ(resolved->get<std::string>(), "lighten(10px, 20)");
     });
 }
+
+TEST_F(ParserTest, MalformedGradientConvertsToNoBrush)
+{
+    // A LinearGradient-kinded tuple whose stops element is not a tuple of stops.
+    Tuple broken(
+        {
+            Tuple::Element::named("x1", Numeric {.value = 0.0, .unit = ""}),
+            Tuple::Element::named("y1", Numeric {.value = 0.0, .unit = ""}),
+            Tuple::Element::named("x2", Numeric {.value = 0.0, .unit = ""}),
+            Tuple::Element::named("y2", Numeric {.value = 1.0, .unit = ""}),
+            Tuple::Element::named("stops", Numeric {.value = 1.0, .unit = ""}),
+        },
+        TupleKind::LinearGradient
+    );
+
+    QBrush brush;
+    EXPECT_NO_THROW({ brush = Base::convertTo<QBrush>(Value {broken}); });
+    EXPECT_EQ(brush.style(), Qt::NoBrush);
+}
