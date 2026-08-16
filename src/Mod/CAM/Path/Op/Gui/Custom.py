@@ -70,8 +70,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
         if obj.Source != str(self.form.source.currentData()):
             obj.Source = str(self.form.source.currentData())
         if obj.GcodeFile != str(self.form.fileName.text()):
@@ -81,8 +79,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
         self.selectInComboBox(obj.Source, self.form.source)
         self.form.fileName.setText(obj.GcodeFile)
         self.editor.setText("\n".join(obj.Gcode))
@@ -92,8 +88,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         signals.append(self.form.source.currentIndexChanged)
         signals.append(self.form.fileName.editingFinished)
         signals.append(self.editor.textChanged)
