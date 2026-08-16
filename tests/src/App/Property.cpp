@@ -195,6 +195,47 @@ TEST_F(RenameProperty, lockedProperty)
     EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), nullptr);
 }
 
+// Tests that the Skip policy neither renames a locked property nor throws
+TEST_F(RenameProperty, lockedPropertySkipPolicyDoesNotRename)
+{
+    // Arrange
+    prop->setStatus(App::Property::LockDynamic, true);
+
+    // Act
+    bool isRenamed = varSet->renameDynamicProperty(prop, "NewName", App::RenameLockedPolicy::Skip);
+
+    // Assert
+    EXPECT_FALSE(isRenamed);
+    EXPECT_STREQ(varSet->getPropertyName(prop), "Variable");
+    EXPECT_EQ(prop->getValue(), value);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("Variable"), prop);
+    EXPECT_EQ(varSet->getDynamicPropertyByName("NewName"), nullptr);
+}
+
+// Tests that RenameLockedPolicy::Skip on a locked property with a bound expression leaves
+// the binding intact under the original name, rather than destroying it. The rename itself
+// is declined, so a binding re-created under the (never taken) new name would point at
+// nothing.
+TEST_F(RenameProperty, skipPolicyPreservesBoundExpressions)
+{
+    // Arrange
+    prop->setStatus(App::Property::LockDynamic, true);
+    App::ObjectIdentifier path(*prop);
+    std::shared_ptr<App::Expression> expr(App::Expression::parse(varSet, "1 + 1"));
+    varSet->setExpression(path, expr);
+
+    // Act
+    bool isRenamed = varSet->renameDynamicProperty(prop, "NewName", App::RenameLockedPolicy::Skip);
+
+    // Assert
+    EXPECT_FALSE(isRenamed);
+    EXPECT_STREQ(varSet->getPropertyName(prop), "Variable");
+
+    auto expressions = varSet->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    EXPECT_EQ(expressions.begin()->first.getProperty(), prop);
+}
+
 // Tests whether we can rename to a property that already exists
 TEST_F(RenameProperty, toExistingProperty)
 {
