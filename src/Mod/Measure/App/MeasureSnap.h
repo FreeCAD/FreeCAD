@@ -26,6 +26,7 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <string>
 #include <vector>
 
 #include <Bnd_Box.hxx>
@@ -85,9 +86,8 @@ public:
     // Foot of the perpendicular from p onto the infinite line; may lie past the origin.
     static gp_Pnt projectOntoAxis(const gp_Ax1& axis, const gp_Pnt& p);
 
-    // Angular slack for treating two axes as parallel. Placement round-trips leave
-    // nominally parallel axes a hair off, so Precision::Angular() is far too tight.
-    // Shared so the preview and the measurement agree.
+    // Placement float noise leaves nominally parallel axes 1e-8 rad off, far above
+    // Precision::Angular() (1e-12).
     static constexpr double parallelTolerance = 1e-6;
 
     // Closest points between two infinite axis lines; a deterministic pair for
@@ -98,10 +98,17 @@ public:
     // spanning twice the pairBounds diagonal so any foot inside pairBounds stays interior.
     static TopoDS_Edge boundedAxisEdge(const gp_Ax1& axis, const Bnd_Box& pairBounds);
 
+    // Sentinel-terminated for setEnums(); the vector overload would mark the property
+    // custom and write the label list into every saved document.
     static const char** snapModeEnums();
+
+    static const char* snapModeLabel(MeasureSnapMode mode);
 
     // Convert a stored index to a mode; out-of-range values fall back to Auto.
     static MeasureSnapMode snapModeFromIndex(long index);
+
+    // Whether a measurement type consults a snap point; Length/Area/Radius/Diameter do not.
+    static bool typeUsesSnapping(const std::string& measureTypeIdentifier);
 
     // Preview type for a hovered element: the active mode if its flag is set, else None;
     // Auto returns the best available snap (Center, then Midpoint, Vertex, then Axis).

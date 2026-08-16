@@ -91,7 +91,7 @@ SnapResult resolveSnap(
         Base::Console().warning(
             "%s: %s mode does not apply to %s; using nearest points for that element.\n",
             fullName,
-            MeasureSnap::snapModeEnums()[static_cast<int>(mode)],
+            MeasureSnap::snapModeLabel(mode),
             elementName
         );
         return {SnapKind::Unresolved, {}, {}};
