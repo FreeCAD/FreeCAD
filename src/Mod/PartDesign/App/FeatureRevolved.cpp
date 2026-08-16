@@ -174,9 +174,8 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     double angle2 = Base::toRadians(angle2Deg);
 
-    if (sideType == "Two sides" && method == RevolMethod::Angle
-        && method2 == RevolMethod::Angle && std::fabs(angle) >= Precision::Angular()
-        && std::fabs(angle2) >= Precision::Angular()
+    if (sideType == "Two sides" && method == RevolMethod::Angle && method2 == RevolMethod::Angle
+        && std::fabs(angle) >= Precision::Angular() && std::fabs(angle2) >= Precision::Angular()
         && std::fabs(angle + angle2) < Precision::Angular()) {
         const std::string warning = Base::Translation::translate(
             "PartDesign",
@@ -277,7 +276,8 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
         }
         else if (
             method == RevolMethod::Angle && method2 == RevolMethod::Angle
-            && std::fabs(combinedAngle) >= Precision::Angular()) {
+            && std::fabs(combinedAngle) >= Precision::Angular()
+        ) {
             // Both limits are angular, so construct the exact interval between them as one
             // primitive. Besides avoiding a boolean seam for opposite-side angles, this is
             // equivalent to XOR for same-side signed angles: 50 + (-20) starts at 20 degrees
@@ -357,10 +357,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
                 if (!sketchshape.findPlane(sketchPlane)) {
                     throw Base::RuntimeError("Could not determine the sketch plane!");
                 }
-                gp_Ax2 mirrorPlane(
-                    sketchPlane.Location(),
-                    sketchPlane.Axis().Direction()
-                );
+                gp_Ax2 mirrorPlane(sketchPlane.Location(), sketchPlane.Axis().Direction());
                 TopoShape mirroredUpToFace = upToFace.makeElementMirror(mirrorPlane);
                 gp_Dir dir2 = dir;
                 dir2.Reverse();
