@@ -248,10 +248,24 @@ Property* DynamicProperty::addDynamicProperty(
         name = "<null>";  // setting a bad name to trigger exception
     }
 
-    auto prop = pc.getPropertyByName(name.c_str());
-    if (prop && prop->getContainer() == &pc) {
+    // A real property under this name is always a collision.
+    auto existing = pc.getPropertyByName(name.c_str(), PropertyLookupMode::WithoutAliases);
+    if (existing && existing->getContainer() == &pc) {
         FC_THROWM(Base::NameError,
                   "Property " << pc.getFullName() << '.' << name << " already exists");
+    }
+
+    // The name may still be a registered alias. Add-ons guarded on PropertiesList membership
+    // will call this with the old name, so return the canonical property instead of failing.
+    auto aliased = pc.getPropertyByName(name.c_str());
+    if (aliased && aliased->getContainer() == &pc) {
+        if (aliased->getTypeId().getName() != type) {
+            FC_THROWM(Base::TypeError,
+                      "Property " << pc.getFullName() << '.' << name << " is an alias of "
+                                  << aliased->getName() << " which has type "
+                                  << aliased->getTypeId().getName() << ", not " << type);
+        }
+        return aliased;
     }
 
     if (Base::Tools::getIdentifier(name) != name) {

@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
 #include <Base/Writer.h>
 
 #include "Property.h"
@@ -81,13 +82,105 @@ App::Property* PropertyContainer::addDynamicProperty(
     return dynamicProps.addDynamicProperty(*this, type, name, group, doc, attr, ro, hidden);
 }
 
-Property *PropertyContainer::getPropertyByName(const char* name) const
+void PropertyContainer::addPropertyAlias(
+    const char* canonicalName, const char* alias, PropertyAliasType aliasType, const char* since)
+{
+    if (Base::Tools::isNullOrEmpty(canonicalName) || Base::Tools::isNullOrEmpty(alias)) {
+        FC_ERR("Ignoring property alias with an empty canonical name or alias");
+        return;
+    }
+
+    _propertyAliases[alias] = {.canonicalName = canonicalName,
+                               .since = Base::Tools::isNullOrEmpty(since) ? "" : since,
+                               .type = aliasType};
+
+    // Aliases cannot be registered before Restore() for Python-backed objects, because the
+    // Proxy is not loaded yet. Registration is therefore the point at which an old document's
+    // property is migrated to the canonical name. This also rewrites any expressions
+    // referencing it, via signalRenameDynamicProperty.
+    auto legacy = dynamicProps.getDynamicPropertyByName(alias);
+    if (!legacy) {
+        return;
+    }
+    if (getPropertyByName(canonicalName, PropertyLookupMode::WithoutAliases)) {
+        FC_WARN("Not migrating '" << alias << "' in '" << getFullName() << "': '"
+                                  << canonicalName << "' already exists.");
+        return;
+    }
+
+    renameDynamicProperty(legacy, canonicalName, RenameLockedPolicy::Force);
+}
+
+std::map<std::string, PropertyAliasEntry> PropertyContainer::getPropertyAliases() const
+{
+    std::map<std::string, PropertyAliasEntry> aliases;
+    getPropertyData().getAliasMap(aliases);
+
+    for (const auto& [alias, entry] : _propertyAliases) {
+        aliases.insert_or_assign(alias, entry);
+    }
+
+    return aliases;
+}
+
+void PropertyContainer::warnDeprecatedAlias(const char* alias, const char* canonicalName,
+                                            const char* since) const
+{
+    if (!_warnedAliases.insert(alias).second) {
+        return;
+    }
+
+    if (!Base::Tools::isNullOrEmpty(since)) {
+        FC_WARN("Property '" << alias << "' in '" << getFullName() << "' is deprecated since "
+                             << since << ", use '" << canonicalName << "' instead.");
+    }
+    else {
+        FC_WARN("Property '" << alias << "' in '" << getFullName() << "' is deprecated, use '"
+                             << canonicalName << "' instead.");
+    }
+}
+
+Property* PropertyContainer::resolveAlias(const char* name, AliasWarningPolicy warning) const
+{
+    const PropertyAliasEntry* entry = nullptr;
+
+    if (auto it = _propertyAliases.find(name); it != _propertyAliases.end()) {
+        entry = &it->second;
+    }
+    else {
+        entry = getPropertyData().findAlias(name);
+    }
+
+    if (!entry) {
+        return nullptr;
+    }
+
+    if (warning == AliasWarningPolicy::Emit && entry->type == PropertyAliasType::Deprecated) {
+        warnDeprecatedAlias(name, entry->canonicalName.c_str(), entry->since.c_str());
+    }
+
+    // Resolve through the virtual entry point so subclasses that host properties elsewhere —
+    // ExtensionContainer, which keeps extension properties outside PropertyData — can find the
+    // canonical property. WithoutAliases makes the alias branch unreachable, so a chained or
+    // cyclic alias still cannot recurse.
+    return getPropertyByName(entry->canonicalName.c_str(), PropertyLookupMode::WithoutAliases);
+}
+
+Property* PropertyContainer::getPropertyByName(const char* name, PropertyLookupMode mode) const
 {
     auto prop = dynamicProps.getDynamicPropertyByName(name);
     if (prop) {
         return prop;
     }
-    return getPropertyData().getPropertyByName(this,name);
+    prop = getPropertyData().getPropertyByName(this, name);
+    if (prop) {
+        return prop;
+    }
+    // Alias fallback — only reached when normal lookup finds nothing.
+    if (mode == PropertyLookupMode::WithoutAliases) {
+        return nullptr;
+    }
+    return resolveAlias(name, AliasWarningPolicy::Emit);
 }
 
 void PropertyContainer::getPropertyMap(std::map<std::string,Property*> &Map) const
@@ -333,7 +426,8 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
 
     for (int i=0;i<transientCount; ++i) {
         reader.readElement("_Property");
-        Property* prop = getPropertyByName(reader.getAttribute<const char*>("name"));
+        Property* prop = getPropertyByName(reader.getAttribute<const char*>("name"),
+                                           PropertyLookupMode::WithoutAliases);
         if(prop)
             FC_TRACE("restore transient '" << prop->getName() << "'");
         if(prop && reader.hasAttribute("status"))
@@ -349,9 +443,14 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // not its name. In this case we would force to read-in a wrong property
         // type and the behaviour would be undefined.
         try {
-            auto prop = getPropertyByName(PropName.c_str());
+            auto prop = getPropertyByName(PropName.c_str(), PropertyLookupMode::WithoutAliases);
             if (!prop || prop->getContainer() != this) {
                 prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
+            }
+            if (!prop) {
+                // Resolve directly rather than through getPropertyByName, so restoring an old
+                // document does not emit deprecation warnings the user cannot act on.
+                prop = resolveAlias(PropName.c_str(), AliasWarningPolicy::Suppress);
             }
 
             decltype(Property::StatusBits) status;
@@ -448,6 +547,9 @@ struct PropertyData::Impl
     >
     > propertyData;
      // clang-format on
+
+    /// Alias name to entry. Not merged with the parent; findAlias walks the chain.
+    std::map<std::string, PropertyAliasEntry> aliasData;
 };
 
 PropertyData::PropertyData(): impl(std::make_unique<Impl>()) {};
@@ -479,6 +581,49 @@ void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Prope
 
     Prop->syncType(Type);
     Prop->myName = PropName;
+}
+
+void PropertyData::addAlias(const char* canonicalName, const char* alias, PropertyAliasType type,
+                            const char* since)
+{
+    if (Base::Tools::isNullOrEmpty(canonicalName) || Base::Tools::isNullOrEmpty(alias)) {
+        FC_ERR("Ignoring property alias with an empty canonical name or alias");
+        return;
+    }
+
+    // aliasData is shared per-class state: every instance of the class re-registers the
+    // same alias in its constructor. Unlike insert_or_assign, try_emplace only writes the
+    // entry once, on the first construction, matching addProperty()'s find-then-emplace
+    // shape above -- an assignment here would race with findAlias() readers on other
+    // threads concurrently constructing instances of the same class.
+    impl->aliasData.try_emplace(
+        alias,
+        PropertyAliasEntry {.canonicalName = canonicalName,
+                            .since = Base::Tools::isNullOrEmpty(since) ? "" : since,
+                            .type = type}
+    );
+}
+
+const PropertyAliasEntry* PropertyData::findAlias(const char* alias) const
+{
+    for (const PropertyData* data = this; data; data = data->parentPropertyData) {
+        auto it = data->impl->aliasData.find(alias);
+        if (it != data->impl->aliasData.end()) {
+            return &it->second;
+        }
+    }
+    return nullptr;
+}
+
+void PropertyData::getAliasMap(std::map<std::string, PropertyAliasEntry>& map) const
+{
+    // Walk parents first so that entries declared on this class overwrite inherited ones.
+    if (parentPropertyData) {
+        parentPropertyData->getAliasMap(map);
+    }
+    for (const auto& entry : impl->aliasData) {
+        map.insert_or_assign(entry.first, entry.second);
+    }
 }
 
 void PropertyData::merge(PropertyData *other) const {
