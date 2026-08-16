@@ -5,6 +5,7 @@
 #include <cmath>
 #include <numbers>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <src/App/InitApplication.h>
@@ -29,16 +30,17 @@ public:
 template<typename PropertyT>
 void restoreLegacySupport(TestablePlane& plane, PropertyT& property)
 {
+    const std::string typeName(property.getTypeId().getName());
     Base::StringWriter writer;
     property.Save(writer);
 
     std::stringstream data;
     data << "<?xml version='1.0' encoding='utf-8'?>\n"
-         << "<Property name='Support' type='" << property.getTypeId().getName() << "'>\n"
+         << "<Property name='Support' type='" << typeName << "'>\n"
          << writer.getString() << "</Property>\n";
     Base::XMLReader reader("Document.xml", data);
 
-    EXPECT_TRUE(plane.restoreLegacySupport(reader, property.getTypeId().getName()));
+    EXPECT_TRUE(plane.restoreLegacySupport(reader, typeName.c_str()));
 }
 
 
@@ -283,7 +285,7 @@ TEST_F(AttachExtensionTest, testNonEmptyLegacySupportReplacesAttachmentSupport)
 
     App::PropertyLinkSub oldLinkSub;
     oldLinkSub.setContainer(object);
-    oldLinkSub.setValue(legacySupport, "Face2");
+    oldLinkSub.setValue(legacySupport, std::vector<std::string> {"Face2"});
     restoreLegacySupport(*object, oldLinkSub);
 
     ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
