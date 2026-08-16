@@ -183,53 +183,73 @@ void ViewProviderSketch3D::ensureReferenceGeometry()
     referenceGeometrySwitch->whichChild = SO_SWITCH_NONE;
     referenceGeometryRoot->addChild(referenceGeometrySwitch);
 
-    referenceGeometryContent = new SoSeparator();
+    auto* faces = new SoSeparator();
+    faces->setName("Face");
+    faces->renderCaching = SoSeparator::OFF;
 
     referenceFaceCoords = new SoCoordinate3();
-    referenceGeometryContent->addChild(referenceFaceCoords);
+    faces->addChild(referenceFaceCoords);
 
     referenceFaceNormals = new SoNormal();
-    referenceGeometryContent->addChild(referenceFaceNormals);
+    faces->addChild(referenceFaceNormals);
 
     referenceFaceMaterial = new SoMaterial();
     setDiffuseColor(referenceFaceMaterial, kPlaneOverlayColor);
     referenceFaceMaterial->transparency.setValue(kPlaneTransparency);
-    referenceGeometryContent->addChild(referenceFaceMaterial);
+    faces->addChild(referenceFaceMaterial);
 
-    auto* faceDrawStyle = new SoDrawStyle();
-    faceDrawStyle->style.setValue(SoDrawStyle::FILLED);
-    referenceGeometryContent->addChild(faceDrawStyle);
+    auto* faceStyle = new SoDrawStyle();
+    faceStyle->style.setValue(SoDrawStyle::FILLED);
+    faces->addChild(faceStyle);
 
     auto* facePick = new SoPickStyle();
     facePick->style.setValue(SoPickStyle::SHAPE);
-    referenceGeometryContent->addChild(facePick);
+    faces->addChild(facePick);
 
     referenceFaceset = new PartGui::SoBrepFaceSet();
-    referenceGeometryContent->addChild(referenceFaceset);
+    faces->addChild(referenceFaceset);
+    referenceGeometrySwitch->addChild(faces);
 
     referenceCoords = new SoCoordinate3();
-    referenceGeometryContent->addChild(referenceCoords);
+    referenceGeometrySwitch->addChild(referenceCoords);
 
     referenceNormals = new SoNormal();
-    referenceGeometryContent->addChild(referenceNormals);
+    referenceGeometrySwitch->addChild(referenceNormals);
+
+    auto* pointsRoot = new SoSeparator();
+    pointsRoot->setName("PointsRoot");
+    pointsRoot->renderCaching = SoSeparator::OFF;
+
+    auto* pointMaterial = new SoMaterial();
+    setDiffuseColor(pointMaterial, kReferenceColor);
+    pointsRoot->addChild(pointMaterial);
+
+    auto* pointStyle = new SoDrawStyle();
+    pointStyle->style.setValue(SoDrawStyle::POINTS);
+    pointStyle->pointSize.setValue(PointSize.getValue());
+    pointsRoot->addChild(pointStyle);
+
+    referencePointset = new PartGui::SoBrepPointSet();
+    pointsRoot->addChild(referencePointset);
+    referenceGeometrySwitch->addChild(pointsRoot);
+
+    auto* edges = new SoSeparator();
+    edges->setName("Edge");
+    edges->renderCaching = SoSeparator::OFF;
 
     auto* edgeMaterial = new SoMaterial();
     setDiffuseColor(edgeMaterial, kReferenceColor);
-    referenceGeometryContent->addChild(edgeMaterial);
+    edges->addChild(edgeMaterial);
 
     auto* edgeStyle = new SoDrawStyle();
     edgeStyle->style.setValue(SoDrawStyle::LINES);
     edgeStyle->lineWidth.setValue(LineWidth.getValue());
-    edgeStyle->pointSize.setValue(PointSize.getValue());
-    referenceGeometryContent->addChild(edgeStyle);
+    edges->addChild(edgeStyle);
 
     referenceLineset = new PartGui::SoBrepEdgeSet();
-    referenceGeometryContent->addChild(referenceLineset);
+    edges->addChild(referenceLineset);
+    referenceGeometrySwitch->addChild(edges);
 
-    referencePointset = new PartGui::SoBrepPointSet();
-    referenceGeometryContent->addChild(referencePointset);
-
-    referenceGeometrySwitch->addChild(referenceGeometryContent);
     pcRoot->addChild(referenceGeometryRoot);
 }
 
@@ -382,20 +402,17 @@ bool ViewProviderSketch3D::getDetailPath(
     auto [element, occIndex] = Part::TopoShape::getElementTypeAndIndex(subname + prefix.size());
     int index = static_cast<int>(occIndex) - 1;
 
-    SoNode* setNode = nullptr;
     std::unique_ptr<SoDetail> detail;
 
     if (index >= 0 && element == "Edge" && referenceLineset) {
         auto* lineDetail = new SoLineDetail();
         lineDetail->setLineIndex(index);
         detail.reset(lineDetail);
-        setNode = referenceLineset;
     }
     else if (index >= 0 && element == "Vertex" && referencePointset) {
         auto* pointDetail = new SoPointDetail();
         pointDetail->setCoordinateIndex(index + referencePointset->startIndex.getValue());
         detail.reset(pointDetail);
-        setNode = referencePointset;
     }
     else if (index >= 0 && element == "Face" && referenceFaceset) {
         auto it = std::find(planeGeoIds.begin(), planeGeoIds.end(), index);
@@ -403,7 +420,6 @@ bool ViewProviderSketch3D::getDetailPath(
             auto* faceDetail = new SoFaceDetail();
             faceDetail->setPartIndex(static_cast<int>(std::distance(planeGeoIds.begin(), it)));
             detail.reset(faceDetail);
-            setNode = referenceFaceset;
         }
     }
 
@@ -415,8 +431,6 @@ bool ViewProviderSketch3D::getDetailPath(
         pPath->append(pcRoot);
         pPath->append(referenceGeometryRoot);
         pPath->append(referenceGeometrySwitch);
-        pPath->append(referenceGeometryContent);
-        pPath->append(setNode);
     }
     det = detail.release();
     return true;

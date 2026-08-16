@@ -333,14 +333,14 @@ GeoElementId3D resolveSubNameInShape(
         return {};
     }
 
-    if (el.name.toString() == "RootPoint") {
-        return GeoElementId3D::RtPnt;
-    }
-
     long stableId = -1;
     PointPos pos = PointPos::none;
     if (!parseMappedName(el.name.toString().c_str(), stableId, pos)) {
         return {};
+    }
+
+    if (stableId == GeoEnum3D::RtPnt) {
+        return GeoElementId3D::RtPnt;
     }
 
     auto it = stableToIndex.find(stableId);
@@ -441,15 +441,12 @@ Part::TopoShape makeNamedCenterVertex(const Part::Geometry* geo)
 Part::TopoShape makeRootPointVertex()
 {
     Part::GeomPoint origin(Base::Vector3d(0.0, 0.0, 0.0));
+    Sketcher::GeometryFacade::setId(&origin, GeoEnum3D::RtPnt);
     auto ocShape = origin.toShape();
     if (ocShape.IsNull()) {
         return {};
     }
-
-    Part::TopoShape shape(ocShape);
-    shape.resetElementMap(std::make_shared<Data::ElementMap>());
-    setElementName(shape, "Vertex", 1, "RootPoint");
-    return shape;
+    return makeNamedVertex(ocShape, &origin, GeoElementId3D::RtPnt.Pos);
 }
 
 Part::TopoShape makeNamedGeometryShape(const Part::Geometry* geo)

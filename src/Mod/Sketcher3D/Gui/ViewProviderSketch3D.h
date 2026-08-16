@@ -251,7 +251,6 @@ private:
     // Reference geometry overlay nodes
     SoSeparator* referenceGeometryRoot {nullptr};
     SoSwitch* referenceGeometrySwitch {nullptr};
-    SoSeparator* referenceGeometryContent {nullptr};
     Part::TopoShape lastRenderedRefShape;
     /// Coin face part index -> reference-plane GeoId (geometry order).
     std::vector<int> planeGeoIds;
