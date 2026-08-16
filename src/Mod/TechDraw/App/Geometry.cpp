@@ -1150,6 +1150,8 @@ BSpline::BSpline(const TopoDS_Edge &e)
             GeometryUtils::asLinear(edgeCurve, splineOut);
         }
     } else {
+        // Geom_BSplineCurve::Segment() modifies the curve in-place, thus we must work on a copy
+        splineOut = Handle(Geom_BSplineCurve)::DownCast(edgeCurve.BSpline()->Copy());
         // Geom_BSplineCurve is a Geom_BoundedCurve, but copying from hCurve->BSpline() does
         // not preserve the bounds, so we apply them here.
         splineOut->Segment(std::min(hCurve->FirstParameter(), hCurve->LastParameter()),
