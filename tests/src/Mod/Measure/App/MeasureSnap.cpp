@@ -35,6 +35,17 @@
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
+namespace
+{
+constexpr double tolerance = 1e-6;
+
+// Exact arithmetic: axis directions and projections onto them carry no solver error.
+constexpr double exactTolerance = 1e-9;
+
+// Near-parallel axes amplify the extrema solve's residual, so that one pair needs slack.
+constexpr double nearParallelTolerance = 1e-4;
+}  // namespace
+
 // MeasureSnap is pure shape math: no App::Document, no property machinery, so
 // the fixture only builds OCCT shapes to feed the static helpers.
 class MeasureSnap: public ::testing::Test
@@ -269,9 +280,9 @@ TEST_F(MeasureSnap, testMidpointOnLineEdge)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Midpoint, nullptr, out)
     );
-    EXPECT_NEAR(out.X(), 2.0, 1e-6);
-    EXPECT_NEAR(out.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+    EXPECT_NEAR(out.X(), 2.0, tolerance);
+    EXPECT_NEAR(out.Y(), 0.0, tolerance);
+    EXPECT_NEAR(out.Z(), 0.0, tolerance);
 }
 
 // The midpoint of an arc lies on the curve, not on the chord: on a unit circle
@@ -283,9 +294,9 @@ TEST_F(MeasureSnap, testMidpointOnArcIsOnCurve)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(arc, Measure::MeasureSnapMode::Midpoint, nullptr, out)
     );
-    EXPECT_NEAR(out.X(), 0.877582561890, 1e-6);
-    EXPECT_NEAR(out.Y(), 0.479425538604, 1e-6);
-    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+    EXPECT_NEAR(out.X(), 0.877582561890, tolerance);
+    EXPECT_NEAR(out.Y(), 0.479425538604, tolerance);
+    EXPECT_NEAR(out.Z(), 0.0, tolerance);
 }
 
 // Arc-length middle (5,0,0), not the parameter middle (3.125,0,0): the result
@@ -297,9 +308,9 @@ TEST_F(MeasureSnap, testMidpointIsArcLengthNotParameter)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Midpoint, nullptr, out)
     );
-    EXPECT_NEAR(out.X(), 5.0, 1e-6);
-    EXPECT_NEAR(out.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+    EXPECT_NEAR(out.X(), 5.0, tolerance);
+    EXPECT_NEAR(out.Y(), 0.0, tolerance);
+    EXPECT_NEAR(out.Z(), 0.0, tolerance);
 }
 
 TEST_F(MeasureSnap, testMidpointOnVertexReturnsFalse)
@@ -474,7 +485,7 @@ TEST_F(MeasureSnap, testAxisOfCylinderFace)
     const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
     gp_Ax1 axis;
     ASSERT_TRUE(Measure::MeasureSnap::axisOfFace(face, axis));
-    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
     EXPECT_DOUBLE_EQ(axis.Location().X(), 0.0);
     EXPECT_DOUBLE_EQ(axis.Location().Y(), 0.0);
     EXPECT_DOUBLE_EQ(axis.Location().Z(), 0.0);
@@ -487,7 +498,7 @@ TEST_F(MeasureSnap, testAxisOfConeFace)
     const TopoDS_Face face = makeConeFace(2.0, 1.0, 5.0);
     gp_Ax1 axis;
     ASSERT_TRUE(Measure::MeasureSnap::axisOfFace(face, axis));
-    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
     EXPECT_DOUBLE_EQ(axis.Location().X(), 0.0);
     EXPECT_DOUBLE_EQ(axis.Location().Y(), 0.0);
 }
@@ -498,7 +509,7 @@ TEST_F(MeasureSnap, testAxisOfRevolutionFace)
     ASSERT_FALSE(face.IsNull());
     gp_Ax1 axis;
     ASSERT_TRUE(Measure::MeasureSnap::axisOfFace(face, axis));
-    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
     EXPECT_DOUBLE_EQ(axis.Location().X(), 0.0);
     EXPECT_DOUBLE_EQ(axis.Location().Y(), 0.0);
 }
@@ -563,9 +574,9 @@ TEST_F(MeasureSnap, testProjectOntoDiagonalAxis)
 {
     const gp_Ax1 axis(gp_Pnt(0.0, 0.0, 0.0), gp_Dir(1.0, 1.0, 0.0));
     const gp_Pnt foot = Measure::MeasureSnap::projectOntoAxis(axis, gp_Pnt(1.0, 0.0, 0.0));
-    EXPECT_NEAR(foot.X(), 0.5, 1e-9);
-    EXPECT_NEAR(foot.Y(), 0.5, 1e-9);
-    EXPECT_NEAR(foot.Z(), 0.0, 1e-9);
+    EXPECT_NEAR(foot.X(), 0.5, exactTolerance);
+    EXPECT_NEAR(foot.Y(), 0.5, exactTolerance);
+    EXPECT_NEAR(foot.Z(), 0.0, exactTolerance);
 }
 
 // Skew X and Y axes; common perpendicular joins (3,0,0) to (3,0,5).
@@ -576,13 +587,13 @@ TEST_F(MeasureSnap, testClosestPointsSkew)
     gp_Pnt onA;
     gp_Pnt onB;
     ASSERT_TRUE(Measure::MeasureSnap::closestPointsOnAxes(a, b, onA, onB));
-    EXPECT_NEAR(onA.X(), 3.0, 1e-6);
-    EXPECT_NEAR(onA.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(onA.Z(), 0.0, 1e-6);
-    EXPECT_NEAR(onB.X(), 3.0, 1e-6);
-    EXPECT_NEAR(onB.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(onB.Z(), 5.0, 1e-6);
-    EXPECT_NEAR(onA.Distance(onB), 5.0, 1e-6);
+    EXPECT_NEAR(onA.X(), 3.0, tolerance);
+    EXPECT_NEAR(onA.Y(), 0.0, tolerance);
+    EXPECT_NEAR(onA.Z(), 0.0, tolerance);
+    EXPECT_NEAR(onB.X(), 3.0, tolerance);
+    EXPECT_NEAR(onB.Y(), 0.0, tolerance);
+    EXPECT_NEAR(onB.Z(), 5.0, tolerance);
+    EXPECT_NEAR(onA.Distance(onB), 5.0, tolerance);
 }
 
 // Parallel axes at different heights: the pair pins to A's height (z=10), not B's.
@@ -626,8 +637,8 @@ TEST_F(MeasureSnap, testClosestPointsFloatNoiseTreatedParallel)
     gp_Pnt onA;
     gp_Pnt onB;
     ASSERT_TRUE(Measure::MeasureSnap::closestPointsOnAxes(a, b, onA, onB));
-    EXPECT_NEAR(onA.Z(), 10.0, 1e-6);
-    EXPECT_NEAR(onA.Distance(onB), 4.0, 1e-6);
+    EXPECT_NEAR(onA.Z(), 10.0, tolerance);
+    EXPECT_NEAR(onA.Distance(onB), 4.0, tolerance);
 }
 
 // Near-parallel (0.001 rad) must take the skew branch, not the parallel rule:
@@ -639,13 +650,13 @@ TEST_F(MeasureSnap, testClosestPointsNearParallelStaysSkew)
     gp_Pnt onA;
     gp_Pnt onB;
     ASSERT_TRUE(Measure::MeasureSnap::closestPointsOnAxes(a, b, onA, onB));
-    EXPECT_NEAR(onA.X(), 0.0, 1e-4);
-    EXPECT_NEAR(onA.Y(), 0.0, 1e-4);
-    EXPECT_NEAR(onA.Z(), 20.0, 1e-4);
-    EXPECT_NEAR(onB.X(), 0.0, 1e-4);
-    EXPECT_NEAR(onB.Y(), 5.0, 1e-4);
-    EXPECT_NEAR(onB.Z(), 20.0, 1e-4);
-    EXPECT_NEAR(onA.Distance(onB), 5.0, 1e-4);
+    EXPECT_NEAR(onA.X(), 0.0, nearParallelTolerance);
+    EXPECT_NEAR(onA.Y(), 0.0, nearParallelTolerance);
+    EXPECT_NEAR(onA.Z(), 20.0, nearParallelTolerance);
+    EXPECT_NEAR(onB.X(), 0.0, nearParallelTolerance);
+    EXPECT_NEAR(onB.Y(), 5.0, nearParallelTolerance);
+    EXPECT_NEAR(onB.Z(), 20.0, nearParallelTolerance);
+    EXPECT_NEAR(onA.Distance(onB), 5.0, nearParallelTolerance);
 }
 
 // A trimmed (wedge) cylindrical face still reports GeomAbs_Cylinder.
@@ -654,7 +665,7 @@ TEST_F(MeasureSnap, testAxisOfTrimmedCylinderFace)
     const TopoDS_Face face = makePartialCylinderFace(2.0, 5.0, 2.0);
     gp_Ax1 axis;
     ASSERT_TRUE(Measure::MeasureSnap::axisOfFace(face, axis));
-    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_TRUE(axis.Direction().IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
     EXPECT_DOUBLE_EQ(axis.Location().X(), 0.0);
     EXPECT_DOUBLE_EQ(axis.Location().Y(), 0.0);
     EXPECT_DOUBLE_EQ(axis.Location().Z(), 0.0);
@@ -679,10 +690,10 @@ TEST_F(MeasureSnap, testAxisSnapNoCursorProjectsBboxCentre)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, nullptr, out, &dir)
     );
-    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
     EXPECT_DOUBLE_EQ(out.X(), 0.0);
     EXPECT_DOUBLE_EQ(out.Y(), 0.0);
-    EXPECT_NEAR(out.Z(), 2.5, 1e-6);
+    EXPECT_NEAR(out.Z(), 2.5, tolerance);
 }
 
 // Cursor supplied: the preview point is the cursor projected onto the axis, so an
@@ -696,7 +707,7 @@ TEST_F(MeasureSnap, testAxisSnapCursorProjectsCursor)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, &cursor, out, &dir)
     );
-    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
+    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
     EXPECT_DOUBLE_EQ(out.X(), 0.0);
     EXPECT_DOUBLE_EQ(out.Y(), 0.0);
     EXPECT_DOUBLE_EQ(out.Z(), 3.0);
@@ -712,10 +723,10 @@ TEST_F(MeasureSnap, testAxisSnapOnLineEdge)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, nullptr, out, &dir)
     );
-    EXPECT_TRUE(dir.IsParallel(gp_Dir(1.0, 0.0, 0.0), 1e-9));
-    EXPECT_NEAR(out.X(), 2.0, 1e-6);
-    EXPECT_NEAR(out.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+    EXPECT_TRUE(dir.IsParallel(gp_Dir(1.0, 0.0, 0.0), exactTolerance));
+    EXPECT_NEAR(out.X(), 2.0, tolerance);
+    EXPECT_NEAR(out.Y(), 0.0, tolerance);
+    EXPECT_NEAR(out.Z(), 0.0, tolerance);
 }
 
 // The line is infinite: a cursor off the end projects past the edge (x=10 beyond the
@@ -729,9 +740,9 @@ TEST_F(MeasureSnap, testAxisSnapOnLineEdgeCursorProjectsPastEnd)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, &cursor, out, &dir)
     );
-    EXPECT_NEAR(out.X(), 10.0, 1e-6);
-    EXPECT_NEAR(out.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+    EXPECT_NEAR(out.X(), 10.0, tolerance);
+    EXPECT_NEAR(out.Y(), 0.0, tolerance);
+    EXPECT_NEAR(out.Z(), 0.0, tolerance);
 }
 
 // An edge that is neither a line nor a circle (a Bezier) carries no axis.
@@ -768,8 +779,8 @@ TEST_F(MeasureSnap, testBoundedAxisEdgeSpansTwiceDiagonal)
     TopExp::Vertices(edge, v1, v2);
     const gp_Pnt p1 = BRep_Tool::Pnt(v1);
     const gp_Pnt p2 = BRep_Tool::Pnt(v2);
-    EXPECT_NEAR(p1.Distance(p2), 20.0, 1e-6);
-    EXPECT_NEAR((p1.Z() + p2.Z()) / 2.0, 5.0, 1e-6);
+    EXPECT_NEAR(p1.Distance(p2), 20.0, tolerance);
+    EXPECT_NEAR((p1.Z() + p2.Z()) / 2.0, 5.0, tolerance);
 }
 
 // A probe near the top, offset 5 from the axis, must measure to the nearby
@@ -787,7 +798,7 @@ TEST_F(MeasureSnap, testBoundedAxisEdgeIgnoresArbitraryOrigin)
     ASSERT_FALSE(edge.IsNull());
     BRepExtrema_DistShapeShape dist(edge, probe);
     ASSERT_TRUE(dist.IsDone());
-    EXPECT_NEAR(dist.Value(), 5.0, 1e-6);
+    EXPECT_NEAR(dist.Value(), 5.0, tolerance);
 }
 
 // A void bounding box yields a null edge rather than throwing on CornerMin.
@@ -902,8 +913,8 @@ TEST_F(MeasureSnap, testAxisPreviewSegment)
     EXPECT_DOUBLE_EQ(a.Y(), 0.0);
     EXPECT_DOUBLE_EQ(b.X(), 0.0);
     EXPECT_DOUBLE_EQ(b.Y(), 0.0);
-    EXPECT_NEAR((a.Z() + b.Z()) / 2.0, 1.5, 1e-6);
-    EXPECT_NEAR(a.Distance(b), 6.0, 1e-6);
+    EXPECT_NEAR((a.Z() + b.Z()) / 2.0, 1.5, tolerance);
+    EXPECT_NEAR(a.Distance(b), 6.0, tolerance);
 }
 
 // A zero-size box (fillet-tiny face) falls back to the fixed minimum half-length of 1.
@@ -915,8 +926,8 @@ TEST_F(MeasureSnap, testAxisPreviewSegmentDegenerateBoxUsesMinLength)
     gp_Pnt a;
     gp_Pnt b;
     ASSERT_TRUE(Measure::MeasureSnap::axisPreviewSegment(axis, bounds, a, b));
-    EXPECT_NEAR((a.Z() + b.Z()) / 2.0, 3.0, 1e-6);
-    EXPECT_NEAR(a.Distance(b), 2.0, 1e-6);
+    EXPECT_NEAR((a.Z() + b.Z()) / 2.0, 3.0, tolerance);
+    EXPECT_NEAR(a.Distance(b), 2.0, tolerance);
 }
 
 // A void box declines rather than throwing on CornerMin.
@@ -937,11 +948,11 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnCylinder)
     const std::vector<gp_Pnt> ends
         = Measure::MeasureSnap::previewPoints(face, Measure::MeasureSnapMode::Axis);
     ASSERT_EQ(ends.size(), 2U);
-    EXPECT_NEAR(ends.front().X(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.back().X(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
-    EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 2.5, 1e-6);
+    EXPECT_NEAR(ends.front().X(), 0.0, tolerance);
+    EXPECT_NEAR(ends.front().Y(), 0.0, tolerance);
+    EXPECT_NEAR(ends.back().X(), 0.0, tolerance);
+    EXPECT_NEAR(ends.back().Y(), 0.0, tolerance);
+    EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 2.5, tolerance);
 }
 
 // A circular edge in the XY plane snaps to its centre as the axis point, with the
@@ -954,10 +965,10 @@ TEST_F(MeasureSnap, testAxisSnapOnCircleEdge)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Axis, nullptr, out, &dir)
     );
-    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), 1e-9));
-    EXPECT_NEAR(out.X(), 3.0, 1e-6);
-    EXPECT_NEAR(out.Y(), 4.0, 1e-6);
-    EXPECT_NEAR(out.Z(), 0.0, 1e-6);
+    EXPECT_TRUE(dir.IsParallel(gp_Dir(0.0, 0.0, 1.0), exactTolerance));
+    EXPECT_NEAR(out.X(), 3.0, tolerance);
+    EXPECT_NEAR(out.Y(), 4.0, tolerance);
+    EXPECT_NEAR(out.Z(), 0.0, tolerance);
 }
 
 // Wiring: a circular edge resolves to two axis-line endpoints along its normal,
@@ -968,11 +979,11 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnCircle)
     const std::vector<gp_Pnt> ends
         = Measure::MeasureSnap::previewPoints(circle, Measure::MeasureSnapMode::Axis);
     ASSERT_EQ(ends.size(), 2U);
-    EXPECT_NEAR(ends.front().X(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.back().X(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
-    EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 0.0, 1e-6);
+    EXPECT_NEAR(ends.front().X(), 0.0, tolerance);
+    EXPECT_NEAR(ends.front().Y(), 0.0, tolerance);
+    EXPECT_NEAR(ends.back().X(), 0.0, tolerance);
+    EXPECT_NEAR(ends.back().Y(), 0.0, tolerance);
+    EXPECT_NEAR((ends.front().Z() + ends.back().Z()) / 2.0, 0.0, tolerance);
 }
 
 // Wiring: a straight edge resolves to two axis-line endpoints along the edge,
@@ -983,11 +994,11 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnLine)
     const std::vector<gp_Pnt> ends
         = Measure::MeasureSnap::previewPoints(line, Measure::MeasureSnapMode::Axis);
     ASSERT_EQ(ends.size(), 2U);
-    EXPECT_NEAR(ends.front().Y(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.front().Z(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.back().Y(), 0.0, 1e-6);
-    EXPECT_NEAR(ends.back().Z(), 0.0, 1e-6);
-    EXPECT_NEAR((ends.front().X() + ends.back().X()) / 2.0, 2.0, 1e-6);
+    EXPECT_NEAR(ends.front().Y(), 0.0, tolerance);
+    EXPECT_NEAR(ends.front().Z(), 0.0, tolerance);
+    EXPECT_NEAR(ends.back().Y(), 0.0, tolerance);
+    EXPECT_NEAR(ends.back().Z(), 0.0, tolerance);
+    EXPECT_NEAR((ends.front().X() + ends.back().X()) / 2.0, 2.0, tolerance);
     // The preview overshoots the edge, so the span exceeds the edge length.
     EXPECT_GT(std::abs(ends.back().X() - ends.front().X()), 4.0);
 }

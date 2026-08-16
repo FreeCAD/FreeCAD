@@ -32,6 +32,7 @@
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
 #include <Mod/Measure/App/MeasureDistance.h>
+#include <Mod/Measure/App/MeasureSnap.h>
 #include <App/PropertyStandard.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
@@ -392,6 +393,14 @@ void TaskMeasure::tryUpdate()
         measureType = measureTypes.front();
     }
 
+
+    if (mSnapManager) {
+        // Only an explicitly chosen mode is a reliable signal. Under Auto the type is
+        // still moving: one edge resolves to Length on the way to a two-element Distance.
+        const bool snaps = !explicitMode || !measureType
+            || Measure::MeasureSnap::typeUsesSnapping(measureType->identifier);
+        mSnapManager->setEnabled(snaps);
+    }
 
     if (!measureType) {
         QSignalBlocker unitSwitchBlocker(unitSwitch);

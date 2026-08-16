@@ -49,9 +49,13 @@ public:
     // Called once per element entry/leave. Must not throw into the selection machinery.
     void onPreselect(const Gui::SelectionChanges& msg);
 
+    // Disabling hides a marker left over from the previous measurement type.
+    void setEnabled(bool enabled);
+
 private:
     std::unique_ptr<MeasureSnapIndicator> mIndicator;
     fastsignals::connection mDeleteDocConn;
+    bool mEnabled = true;
 };
 
 }  // namespace MeasureGui

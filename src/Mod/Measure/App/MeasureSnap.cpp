@@ -25,6 +25,8 @@
 #include "MeasureSnap.h"
 
 #include <algorithm>
+#include <array>
+#include <optional>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
@@ -55,12 +57,19 @@
 
 using namespace Measure;
 
-// Labels in MeasureSnapMode order; nullptr-terminated for setEnums().
-static const char* SnapModeEnums[] = {"Auto", "None", "Vertex", "Center", "Midpoint", "Axis", nullptr};
+namespace
+{
+
+// Mutable and sentinel-terminated because setEnums() takes const char**.
+std::array<const char*, 7> SnapModeLabels =
+    {"Auto", "None", "Vertex", "Center", "Midpoint", "Axis", nullptr};
+
+constexpr std::array<const char*, 5> SnaplessMeasureTypes =
+    {"LENGTH", "AREA", "DIAMETER", "RADIUS", "CENTEROFMASS"};
 
 // A degenerate or curveless edge (sphere pole, cone apex) carries no 3D curve;
 // constructing an adaptor on it raises, so callers must reject it first.
-static bool edgeHasCurve(const TopoDS_Edge& edge)
+bool edgeHasCurve(const TopoDS_Edge& edge)
 {
     if (BRep_Tool::Degenerated(edge)) {
         return false;
@@ -72,148 +81,174 @@ static bool edgeHasCurve(const TopoDS_Edge& edge)
 
 // Circle center of a circular edge; a single circular-edge wire is not
 // recognized as a circle by BRepAdaptor_CompCurve, so wires are not handled.
-static bool centerOf(const TopoDS_Shape& shape, gp_Pnt& out)
-{
-    if (shape.IsNull()) {
-        return false;
-    }
-    if (shape.ShapeType() == TopAbs_EDGE) {
-        BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
-        if (adapt.GetType() == GeomAbs_Circle) {
-            out = adapt.Circle().Location();
-            return true;
-        }
-        return false;
-    }
-    return false;
-}
-
-// Axis of a circular edge: through its centre, normal to its plane. False otherwise.
-static bool circleAxisOf(const TopoDS_Shape& shape, gp_Ax1& out)
+std::optional<gp_Pnt> centerOf(const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
-        return false;
+        return {};
     }
     BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
     if (adapt.GetType() != GeomAbs_Circle) {
-        return false;
+        return {};
     }
-    out = adapt.Circle().Axis();
-    return true;
+    return adapt.Circle().Location();
 }
 
-// Supporting line of a straight edge, as an axis. False otherwise.
-static bool lineAxisOf(const TopoDS_Shape& shape, gp_Ax1& out)
+std::optional<gp_Ax1> circleAxisOf(const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
-        return false;
+        return {};
+    }
+    BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
+    if (adapt.GetType() != GeomAbs_Circle) {
+        return {};
+    }
+    return adapt.Circle().Axis();
+}
+
+std::optional<gp_Ax1> lineAxisOf(const TopoDS_Shape& shape)
+{
+    if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
+        return {};
     }
     BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
     if (adapt.GetType() != GeomAbs_Line) {
-        return false;
+        return {};
     }
     const gp_Lin line = adapt.Line();
-    out = gp_Ax1(line.Location(), line.Direction());
-    return true;
+    return gp_Ax1(line.Location(), line.Direction());
 }
 
 // Arc-length middle of an edge (differs from the parameter midpoint on a
 // non-uniform curve).
-static bool midpointOf(const TopoDS_Shape& shape, gp_Pnt& out)
+std::optional<gp_Pnt> midpointOf(const TopoDS_Shape& shape)
 {
     if (shape.IsNull() || shape.ShapeType() != TopAbs_EDGE) {
-        return false;
+        return {};
     }
     BRepAdaptor_Curve adapt(TopoDS::Edge(shape));
     const double length = GCPnts_AbscissaPoint::Length(adapt);
     GCPnts_AbscissaPoint mid(adapt, length / 2.0, adapt.FirstParameter());
     if (!mid.IsDone()) {
-        return false;
+        return {};
     }
-    out = adapt.Value(mid.Parameter());
-    return true;
+    return adapt.Value(mid.Parameter());
+}
+
+// The axis a shape stands in for: a face's surface axis, else a circular or straight
+// edge's supporting line.
+std::optional<gp_Ax1> axisOfShape(const TopoDS_Shape& shape)
+{
+    if (shape.ShapeType() == TopAbs_FACE) {
+        gp_Ax1 axis;
+        if (!MeasureSnap::axisOfFace(TopoDS::Face(shape), axis)) {
+            return {};
+        }
+        return axis;
+    }
+    if (const auto circle = circleAxisOf(shape)) {
+        return circle;
+    }
+    return lineAxisOf(shape);
+}
+
+std::optional<gp_Pnt> boundsCentre(const Bnd_Box& box)
+{
+    if (box.IsVoid()) {
+        return {};
+    }
+    const gp_Pnt lo = box.CornerMin();
+    const gp_Pnt hi = box.CornerMax();
+    return gp_Pnt((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
 }
 
 // No cursor picks the first edge endpoint (deterministic at recompute); a cursor
 // picks the nearer one.
-static bool vertexOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp_Pnt& out)
+std::optional<gp_Pnt> vertexOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor)
 {
     if (shape.IsNull()) {
-        return false;
+        return {};
     }
     if (shape.ShapeType() == TopAbs_VERTEX) {
-        out = BRep_Tool::Pnt(TopoDS::Vertex(shape));
-        return true;
+        return BRep_Tool::Pnt(TopoDS::Vertex(shape));
     }
-    if (shape.ShapeType() == TopAbs_EDGE) {
-        TopoDS_Vertex v1;
-        TopoDS_Vertex v2;
-        TopExp::Vertices(TopoDS::Edge(shape), v1, v2);
-        if (v1.IsNull()) {
-            return false;
-        }
-        const gp_Pnt p1 = BRep_Tool::Pnt(v1);
-        if (!cursor || v2.IsNull()) {
-            out = p1;
-            return true;
-        }
-        const gp_Pnt p2 = BRep_Tool::Pnt(v2);
-        const gp_Pnt cur(cursor->x, cursor->y, cursor->z);
-        out = (cur.SquareDistance(p1) <= cur.SquareDistance(p2)) ? p1 : p2;
-        return true;
+    if (shape.ShapeType() != TopAbs_EDGE) {
+        return {};
     }
-    return false;
+    TopoDS_Vertex v1;
+    TopoDS_Vertex v2;
+    TopExp::Vertices(TopoDS::Edge(shape), v1, v2);
+    if (v1.IsNull()) {
+        return {};
+    }
+    const gp_Pnt p1 = BRep_Tool::Pnt(v1);
+    if (!cursor || v2.IsNull()) {
+        return p1;
+    }
+    const gp_Pnt p2 = BRep_Tool::Pnt(v2);
+    const gp_Pnt cur(cursor->x, cursor->y, cursor->z);
+    return (cur.SquareDistance(p1) <= cur.SquareDistance(p2)) ? p1 : p2;
 }
 
 // Preview point and direction for an axis snap. The point is the cursor, else the
 // face bbox centre, projected onto the axis so it sits on the visible geometry.
-static bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp_Pnt& out, gp_Dir* outDir)
+bool axisPointOf(
+    const TopoDS_Shape& shape,
+    const Base::Vector3d* cursor,
+    gp_Pnt& out,
+    gp_Dir* outDir
+)
 {
     if (shape.IsNull()) {
         return false;
     }
-    const bool isFace = shape.ShapeType() == TopAbs_FACE;
-    gp_Ax1 axis;
-    bool edgeIsLine = false;
-    if (isFace) {
-        if (!MeasureSnap::axisOfFace(TopoDS::Face(shape), axis)) {
-            return false;
-        }
-    }
-    else if (!circleAxisOf(shape, axis)) {
-        if (!lineAxisOf(shape, axis)) {
-            return false;
-        }
-        edgeIsLine = true;
+    const auto axis = axisOfShape(shape);
+    if (!axis) {
+        return false;
     }
     if (outDir) {
-        *outDir = axis.Direction();
+        *outDir = axis->Direction();
     }
     gp_Pnt target;
     if (cursor) {
         target = gp_Pnt(cursor->x, cursor->y, cursor->z);
     }
-    else if (isFace) {
+    else if (shape.ShapeType() == TopAbs_FACE) {
         Bnd_Box box;
         BRepBndLib::Add(shape, box);
-        const gp_Pnt lo = box.CornerMin();
-        const gp_Pnt hi = box.CornerMax();
-        target = gp_Pnt((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
+        target = boundsCentre(box).value_or(axis->Location());
     }
-    else if (edgeIsLine) {
-        gp_Pnt mid;
-        target = midpointOf(shape, mid) ? mid : axis.Location();
+    else if (circleAxisOf(shape)) {
+        target = axis->Location();  // circle centre lies on its axis
     }
     else {
-        target = axis.Location();  // circle centre lies on its axis
+        target = midpointOf(shape).value_or(axis->Location());
     }
-    out = MeasureSnap::projectOntoAxis(axis, target);
+    out = MeasureSnap::projectOntoAxis(*axis, target);
     return true;
 }
 
+}  // namespace
+
 const char** MeasureSnap::snapModeEnums()
 {
-    return SnapModeEnums;
+    return SnapModeLabels.data();
+}
+
+const char* MeasureSnap::snapModeLabel(MeasureSnapMode mode)
+{
+    const auto index = static_cast<std::size_t>(mode);
+    // The last slot is the setEnums() sentinel.
+    return index < SnapModeLabels.size() - 1 ? SnapModeLabels[index] : SnapModeLabels.front();
+}
+
+bool MeasureSnap::typeUsesSnapping(const std::string& measureTypeIdentifier)
+{
+    // Unknown types (Python-registered, third-party) keep the preview.
+    return std::none_of(
+        SnaplessMeasureTypes.begin(),
+        SnaplessMeasureTypes.end(),
+        [&measureTypeIdentifier](const char* id) { return measureTypeIdentifier == id; }
+    );
 }
 
 MeasureSnapMode MeasureSnap::snapModeFromIndex(long index)
@@ -287,16 +322,15 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
     if (shape.ShapeType() == TopAbs_EDGE && !edgeHasCurve(TopoDS::Edge(shape))) {
         return points;
     }
-    gp_Pnt p;
     switch (type) {
         case MeasureSnapMode::Center:
-            if (centerOf(shape, p)) {
-                points.push_back(p);
+            if (const auto centre = centerOf(shape)) {
+                points.push_back(*centre);
             }
             break;
         case MeasureSnapMode::Midpoint:
-            if (midpointOf(shape, p)) {
-                points.push_back(p);
+            if (const auto mid = midpointOf(shape)) {
+                points.push_back(*mid);
             }
             break;
         case MeasureSnapMode::Vertex:
@@ -316,20 +350,15 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
             }
             break;
         case MeasureSnapMode::Axis: {
-            gp_Ax1 axis;
-            if (shape.ShapeType() == TopAbs_FACE) {
-                if (!axisOfFace(TopoDS::Face(shape), axis)) {
-                    break;
-                }
-            }
-            else if (!circleAxisOf(shape, axis) && !lineAxisOf(shape, axis)) {
+            const auto axis = axisOfShape(shape);
+            if (!axis) {
                 break;
             }
             Bnd_Box box;
             BRepBndLib::Add(shape, box);
             gp_Pnt a;
             gp_Pnt b;
-            if (axisPreviewSegment(axis, box, a, b)) {
+            if (axisPreviewSegment(*axis, box, a, b)) {
                 points.push_back(a);
                 points.push_back(b);
             }
@@ -343,13 +372,13 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
 
 bool MeasureSnap::axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, gp_Pnt& a, gp_Pnt& b)
 {
-    if (bounds.IsVoid()) {
+    const auto centre = boundsCentre(bounds);
+    if (!centre) {
         return false;
     }
     const gp_Pnt lo = bounds.CornerMin();
     const gp_Pnt hi = bounds.CornerMax();
-    const gp_Pnt centre((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
-    const gp_Pnt onAxis = projectOntoAxis(axis, centre);
+    const gp_Pnt onAxis = projectOntoAxis(axis, *centre);
     // Overshoot the shape so the line reads as a reference, not the edge itself.
     constexpr double extentFactor = 0.6;
     constexpr double minHalfLength = 1.0;
@@ -376,13 +405,20 @@ bool MeasureSnap::computeSnapPoint(
         return false;
     }
 
+    auto assign = [&out](const std::optional<gp_Pnt>& point) {
+        if (point) {
+            out = *point;
+        }
+        return point.has_value();
+    };
+
     switch (mode) {
         case MeasureSnapMode::Center:
-            return centerOf(shape, out);
+            return assign(centerOf(shape));
         case MeasureSnapMode::Midpoint:
-            return midpointOf(shape, out);
+            return assign(midpointOf(shape));
         case MeasureSnapMode::Vertex:
-            return vertexOf(shape, cursor, out);
+            return assign(vertexOf(shape, cursor));
         case MeasureSnapMode::Axis:
             return axisPointOf(shape, cursor, out, outAxisDir);
         default:
@@ -491,13 +527,13 @@ bool MeasureSnap::closestPointsOnAxes(const gp_Ax1& a, const gp_Ax1& b, gp_Pnt& 
 
 TopoDS_Edge MeasureSnap::boundedAxisEdge(const gp_Ax1& axis, const Bnd_Box& pairBounds)
 {
-    if (pairBounds.IsVoid()) {
+    const auto centre = boundsCentre(pairBounds);
+    if (!centre) {
         return TopoDS_Edge();
     }
     const gp_Pnt lo = pairBounds.CornerMin();
     const gp_Pnt hi = pairBounds.CornerMax();
-    const gp_Pnt centre((lo.X() + hi.X()) / 2.0, (lo.Y() + hi.Y()) / 2.0, (lo.Z() + hi.Z()) / 2.0);
-    const gp_Pnt onAxis = projectOntoAxis(axis, centre);
+    const gp_Pnt onAxis = projectOntoAxis(axis, *centre);
     // A collapsed box would ask for a zero-length edge, which MakeEdge refuses.
     constexpr double minHalfSpan = 1.0;
     const gp_Vec halfSpan = gp_Vec(axis.Direction()) * std::max(lo.Distance(hi), minHalfSpan);
