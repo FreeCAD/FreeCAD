@@ -1603,6 +1603,228 @@ bool CmdTechDrawExtensionCreateChainDimensionGroup::isActive()
     return (havePage && haveView);
 }
 
+
+//===========================================================================
+// TechDraw_ExtensionCreateHorizOrdinateDimension
+//===========================================================================
+
+void execCreateHorizOrdinateDimension(Gui::Command* cmd)
+{
+    std::vector<Gui::SelectionObject> selection;
+    TechDraw::DrawViewPart* objFeat = nullptr;
+    if (!_checkSelObjAndSubs(cmd, selection, objFeat,
+                            QT_TRANSLATE_NOOP("QObject", "TechDraw Create Horizontal Ordinate Dimension"))) {
+        return;
+    }
+
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create Horizontal Ordinate Dimensions"));
+    const std::vector<std::string> subNames = selection[0].getSubNames();
+    std::vector<dimVertex> allVertexes = _getVertexInfo(objFeat, subNames);
+    if (allVertexes.size() > 1) {
+        double dimDistance = activeDimAttributes.getCascadeSpacing();
+        double yMaster = allVertexes[0].point.y - dimDistance;
+        if (std::signbit(yMaster)) {
+            dimDistance = -dimDistance;
+        }
+
+        auto* zeroDim = _createLinDimension(
+            objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateX");
+        zeroDim->X.setValue(allVertexes[0].point.x);
+        zeroDim->Y.setValue(-yMaster);
+
+        for (std::size_t n = 1; n < allVertexes.size(); ++n) {
+            auto* dim = _createLinDimension(
+                objFeat, allVertexes[0].name, allVertexes[n].name, "OrdinateX");
+            TechDraw::pointPair pp = dim->getLinearPoints();
+            dim->X.setValue(pp.second().x);
+            dim->Y.setValue(-yMaster);
+        }
+    }
+    objFeat->refreshCEGeoms();
+    objFeat->requestPaint();
+    cmd->getSelection().clearSelection();
+    cmd->commitCommand();
+}
+
+DEF_STD_CMD_A(CmdTechDrawExtensionCreateHorizOrdinateDimension)
+
+CmdTechDrawExtensionCreateHorizOrdinateDimension::CmdTechDrawExtensionCreateHorizOrdinateDimension()
+    : Command("TechDraw_ExtensionCreateHorizOrdinateDimension")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Horizontal Ordinate Dimensions");
+    sToolTipText = QT_TR_NOOP("Creates horizontal ordinate dimensions from the first selected vertex as the zero origin");
+    sWhatsThis = "TechDraw_ExtensionCreateHorizOrdinateDimension";
+    sStatusTip = sMenuText;
+    sPixmap = "TechDraw_ExtensionCreateHorizOrdinateDimension";
+}
+
+void CmdTechDrawExtensionCreateHorizOrdinateDimension::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    execCreateHorizOrdinateDimension(this);
+}
+
+bool CmdTechDrawExtensionCreateHorizOrdinateDimension::isActive()
+{
+    return DrawGuiUtil::needPage(this) && DrawGuiUtil::needView(this);
+}
+
+//===========================================================================
+// TechDraw_ExtensionCreateVertOrdinateDimension
+//===========================================================================
+
+void execCreateVertOrdinateDimension(Gui::Command* cmd)
+{
+    std::vector<Gui::SelectionObject> selection;
+    TechDraw::DrawViewPart* objFeat = nullptr;
+    if (!_checkSelObjAndSubs(cmd, selection, objFeat,
+                            QT_TRANSLATE_NOOP("QObject", "TechDraw Create Vertical Ordinate Dimension"))) {
+        return;
+    }
+
+    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create Vertical Ordinate Dimensions"));
+    const std::vector<std::string> subNames = selection[0].getSubNames();
+    std::vector<dimVertex> allVertexes = _getVertexInfo(objFeat, subNames);
+    if (allVertexes.size() > 1) {
+        double dimDistance = activeDimAttributes.getCascadeSpacing();
+        double xMaster = allVertexes[0].point.x - dimDistance;
+        if (std::signbit(xMaster)) {
+            dimDistance = -dimDistance;
+        }
+
+        auto* zeroDim = _createLinDimension(
+            objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateY");
+        zeroDim->X.setValue(xMaster);
+        zeroDim->Y.setValue(-allVertexes[0].point.y);
+
+        for (std::size_t n = 1; n < allVertexes.size(); ++n) {
+            auto* dim = _createLinDimension(
+                objFeat, allVertexes[0].name, allVertexes[n].name, "OrdinateY");
+            TechDraw::pointPair pp = dim->getLinearPoints();
+            dim->X.setValue(xMaster);
+            dim->Y.setValue(-pp.second().y);
+        }
+    }
+    objFeat->refreshCEGeoms();
+    objFeat->requestPaint();
+    cmd->getSelection().clearSelection();
+    cmd->commitCommand();
+}
+
+DEF_STD_CMD_A(CmdTechDrawExtensionCreateVertOrdinateDimension)
+
+CmdTechDrawExtensionCreateVertOrdinateDimension::CmdTechDrawExtensionCreateVertOrdinateDimension()
+    : Command("TechDraw_ExtensionCreateVertOrdinateDimension")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Vertical Ordinate Dimensions");
+    sToolTipText = QT_TR_NOOP("Creates vertical ordinate dimensions from the first selected vertex as the zero origin");
+    sWhatsThis = "TechDraw_ExtensionCreateVertOrdinateDimension";
+    sStatusTip = sMenuText;
+    sPixmap = "TechDraw_ExtensionCreateVertOrdinateDimension";
+}
+
+void CmdTechDrawExtensionCreateVertOrdinateDimension::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    execCreateVertOrdinateDimension(this);
+}
+
+bool CmdTechDrawExtensionCreateVertOrdinateDimension::isActive()
+{
+    return DrawGuiUtil::needPage(this) && DrawGuiUtil::needView(this);
+}
+
+//===========================================================================
+// TechDraw_ExtensionCreateOrdinateDimensionGroup
+//===========================================================================
+
+DEF_STD_CMD_ACL(CmdTechDrawExtensionCreateOrdinateDimensionGroup)
+
+CmdTechDrawExtensionCreateOrdinateDimensionGroup::CmdTechDrawExtensionCreateOrdinateDimensionGroup()
+    : Command("TechDraw_ExtensionCreateOrdinateDimensionGroup")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Horizontal Ordinate Dimensions");
+    sToolTipText = QT_TR_NOOP("Creates ordinate dimensions from the first selected vertex as the zero origin");
+    sWhatsThis = "TechDraw_ExtensionCreateOrdinateDimensionGroup";
+    sStatusTip = sMenuText;
+}
+
+void CmdTechDrawExtensionCreateOrdinateDimensionGroup::activated(int iMsg)
+{
+    Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    if (dlg) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
+                             QObject::tr("Close active task dialog and try again"));
+        return;
+    }
+
+    auto* action = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    action->setIcon(action->actions().at(iMsg)->icon());
+    if (iMsg == 0) {
+        execCreateHorizOrdinateDimension(this);
+    }
+    else if (iMsg == 1) {
+        execCreateVertOrdinateDimension(this);
+    }
+}
+
+Gui::Action* CmdTechDrawExtensionCreateOrdinateDimensionGroup::createAction()
+{
+    auto* action = new Gui::ActionGroup(this, Gui::getMainWindow());
+    action->setDropDownMenu(true);
+    applyCommandData(this->className(), action);
+
+    QAction* horizontal = action->addAction(QString());
+    horizontal->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateHorizOrdinateDimension"));
+    horizontal->setObjectName(QStringLiteral("TechDraw_ExtensionCreateHorizOrdinateDimension"));
+    horizontal->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateHorizOrdinateDimension"));
+
+    QAction* vertical = action->addAction(QString());
+    vertical->setIcon(Gui::BitmapFactory().iconFromTheme("TechDraw_ExtensionCreateVertOrdinateDimension"));
+    vertical->setObjectName(QStringLiteral("TechDraw_ExtensionCreateVertOrdinateDimension"));
+    vertical->setWhatsThis(QStringLiteral("TechDraw_ExtensionCreateVertOrdinateDimension"));
+
+    _pcAction = action;
+    languageChange();
+    action->setIcon(horizontal->icon());
+    action->setProperty("defaultAction", QVariant(0));
+    return action;
+}
+
+void CmdTechDrawExtensionCreateOrdinateDimensionGroup::languageChange()
+{
+    Command::languageChange();
+    if (!_pcAction) {
+        return;
+    }
+    auto* action = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> actions = action->actions();
+    actions[0]->setText(QApplication::translate(
+        "CmdTechDrawExtensionCreateHorizOrdinateDimension", "Horizontal Ordinate Dimensions"));
+    actions[0]->setToolTip(QApplication::translate(
+        "CmdTechDrawExtensionCreateHorizOrdinateDimension",
+        "Creates horizontal ordinate dimensions from the first selected vertex as the zero origin"));
+    actions[0]->setStatusTip(actions[0]->text());
+
+    actions[1]->setText(QApplication::translate(
+        "CmdTechDrawExtensionCreateVertOrdinateDimension", "Vertical Ordinate Dimensions"));
+    actions[1]->setToolTip(QApplication::translate(
+        "CmdTechDrawExtensionCreateVertOrdinateDimension",
+        "Creates vertical ordinate dimensions from the first selected vertex as the zero origin"));
+    actions[1]->setStatusTip(actions[1]->text());
+}
+
+bool CmdTechDrawExtensionCreateOrdinateDimensionGroup::isActive()
+{
+    return DrawGuiUtil::needPage(this) && DrawGuiUtil::needView(this, true);
+}
+
 //===========================================================================
 // TechDraw_ExtensionCreateHorizCoordDimension
 //===========================================================================
@@ -2484,6 +2706,9 @@ void CreateTechDrawCommandsExtensionDims()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateHorizCoordDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateVertCoordDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateObliqueCoordDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateOrdinateDimensionGroup());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateHorizOrdinateDimension());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateVertOrdinateDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionChamferDimensionGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateHorizChamferDimension());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCreateVertChamferDimension());

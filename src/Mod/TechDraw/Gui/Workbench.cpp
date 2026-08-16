@@ -147,6 +147,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "TechDraw_ExtensionCreateHorizCoordDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertCoordDimension";
     *tooldimensions << "TechDraw_ExtensionCreateObliqueCoordDimension";
+    *tooldimensions << "TechDraw_ExtensionCreateHorizOrdinateDimension";
+    *tooldimensions << "TechDraw_ExtensionCreateVertOrdinateDimension";
     *tooldimensions << "TechDraw_ExtensionCreateHorizChamferDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChamferDimension";
     *tooldimensions << "TechDraw_ExtensionCreateLengthArc";

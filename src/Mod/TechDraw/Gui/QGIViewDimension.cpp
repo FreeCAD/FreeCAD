@@ -404,6 +404,9 @@ void QGIViewDimension::draw()
             || strcmp(dimType, "DistanceY") == 0) {
             drawDistance(dim, vp);
         }
+        else if (strcmp(dimType, "OrdinateX") == 0 || strcmp(dimType, "OrdinateY") == 0) {
+            drawOrdinate(dim, vp);
+        }
         else if (strcmp(dimType, "Diameter") == 0) {
             drawDiameter(dim, vp);
         }
@@ -1852,6 +1855,84 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
         drawDistanceExecutive(fromQtApp(linePoints.extensionLineFirst()), fromQtApp(linePoints.extensionLineSecond()),
                               lineAngle, labelRectangle, standardStyle, renderExtent, flipArrows);
     }
+}
+
+
+void QGIViewDimension::drawOrdinate(TechDraw::DrawViewDimension* dimension,
+                                    ViewProviderDimension* viewProvider) const
+{
+    Base::BoundBox2d labelRectangle(
+        fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
+
+    pointPair linePoints = dimension->getLinearPoints();
+    Base::Vector2d attachPoint = fromQtApp(linePoints.extensionLineSecond());
+    Base::Vector2d center = labelRectangle.GetCenter();
+
+    std::vector<Base::Vector2d> points(4);
+    points[3] = center;
+
+    double lineAngle = 0.0;
+    double labelAngle = 0.0;
+    double rotationDelta = (labelRectangle.Width() - labelRectangle.Height()) / 2.0;
+
+    if (dimension->Type.isValue("OrdinateX")) {
+        if (attachPoint.y < center.y) {
+            lineAngle = std::numbers::pi / 2.0;
+            labelAngle = std::numbers::pi / 2.0;
+            points[3].y = labelRectangle.MinY - rotationDelta;
+        }
+        else {
+            lineAngle = -std::numbers::pi / 2.0;
+            labelAngle = std::numbers::pi / 2.0;
+            points[3].y = labelRectangle.MaxY + rotationDelta;
+        }
+    }
+    else {
+        if (attachPoint.x < center.x) {
+            points[3].x = labelRectangle.MinX;
+        }
+        else {
+            lineAngle = std::numbers::pi;
+            points[3].x = labelRectangle.MaxX;
+        }
+    }
+
+    double gapFactor {};
+    switch (viewProvider->StandardAndStyle.getValue()) {
+        case ViewProviderDimension::STD_STYLE_ASME_INLINED:
+        case ViewProviderDimension::STD_STYLE_ASME_REFERENCING:
+            gapFactor = viewProvider->GapFactorASME.getValue();
+            break;
+        default:
+            gapFactor = viewProvider->GapFactorISO.getValue();
+            break;
+    }
+    double gapSize = Rez::appX(m_lineWidth * gapFactor);
+
+    QPainterPath path;
+    points[0] = attachPoint + Base::Vector2d::FromPolar(gapSize, lineAngle);
+    points[1] = points[0] + Base::Vector2d::FromPolar(10.0, lineAngle);
+    points[2] = points[3] + Base::Vector2d::FromPolar(-10.0, lineAngle);
+
+    const double alignTolerance = Rez::appX(std::max(1.0, m_lineWidth));
+    const bool alreadyVertical = std::abs(points[0].x - points[3].x) <= alignTolerance;
+    const bool alreadyHorizontal = std::abs(points[0].y - points[3].y) <= alignTolerance;
+
+    path.moveTo(toQtGui(points[0]));
+    if ((dimension->Type.isValue("OrdinateX") && !alreadyVertical)
+        || (dimension->Type.isValue("OrdinateY") && !alreadyHorizontal)) {
+        path.lineTo(toQtGui(points[1]));
+        path.lineTo(toQtGui(points[2]));
+    }
+    path.lineTo(toQtGui(points[3]));
+
+    dimLines->setPath(path);
+    datumLabel->setTransformOriginPoint(datumLabel->tightBoundingRect().center());
+    datumLabel->setRotation(toQtDeg(labelAngle));
+
+    Base::Vector2d arrowPositions[2] {attachPoint, Base::Vector2d()};
+    double arrowAngles[2] {lineAngle, 0.0};
+    drawArrows(1, arrowPositions, arrowAngles, viewProvider->FlipArrowheads.getValue());
 }
 
 void QGIViewDimension::drawRadius(TechDraw::DrawViewDimension* dimension,

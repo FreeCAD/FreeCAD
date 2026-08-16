@@ -94,6 +94,8 @@ const char* DrawViewDimension::TypeEnums[] = {"Distance",
                                               "DistanceX",
                                               "DistanceY",
                                               "DistanceZ",
+                                              "OrdinateX",
+                                              "OrdinateY",
                                               "Radius",
                                               "Diameter",
                                               "Angle",
@@ -501,7 +503,8 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     // we have either or both valid References3D and References2D
     ReferenceVector references = getEffectiveReferences();
 
-    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
+    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")
+        || Type.isValue("OrdinateX") || Type.isValue("OrdinateY")) {
         if (getRefType() == RefType::oneEdge) {
             m_linearPoints = getPointsOneEdge(references);
         }
@@ -711,7 +714,8 @@ double DrawViewDimension::getTrueDimValue() const
 {
     double result = 0.0;
 
-    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
+    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")
+        || Type.isValue("OrdinateX") || Type.isValue("OrdinateY")) {
         result = measurement->length();
     }
     else if (Type.isValue("Radius")) {
@@ -738,7 +742,8 @@ double DrawViewDimension::getProjectedDimValue() const
     double result = 0.0;
     double scale = getViewPart()->getScale();
 
-    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
+    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")
+        || Type.isValue("OrdinateX") || Type.isValue("OrdinateY")) {
         pointPair pts = getLinearPoints();
         auto dbv = freecad_cast<DrawBrokenView*>(getViewPart());
         if (dbv)  {
@@ -761,7 +766,7 @@ double DrawViewDimension::getProjectedDimValue() const
         if (Type.isValue("Distance")) {
             result = dimVec.Length() / scale;
         }
-        else if (Type.isValue("DistanceX")) {
+        else if (Type.isValue("DistanceX") || Type.isValue("OrdinateX")) {
             result = fabs(dimVec.x) / scale;
         }
         else {
@@ -1902,7 +1907,8 @@ bool DrawViewDimension::validateReferenceForm() const
         return false;
     }
 
-    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")) {
+    if (Type.isValue("Distance") || Type.isValue("DistanceX") || Type.isValue("DistanceY")
+        || Type.isValue("OrdinateX") || Type.isValue("OrdinateY")) {
         if (getRefType() == RefType::oneEdge) {
             if (references.size() != 1) {
                 return false;
