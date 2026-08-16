@@ -1627,10 +1627,31 @@ void execCreateHorizOrdinateDimension(Gui::Command* cmd)
             dimDistance = -dimDistance;
         }
 
-        auto* zeroDim = _createLinDimension(
-            objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateX");
-        zeroDim->X.setValue(allVertexes[0].point.x);
-        zeroDim->Y.setValue(-yMaster);
+        bool hasZeroDimension = false;
+        if (TechDraw::DrawPage* page = objFeat->findParentPage()) {
+            for (auto* view : page->Views.getValues()) {
+                auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(view);
+                if (!dim || !dim->Type.isValue("OrdinateX")) {
+                    continue;
+                }
+                TechDraw::pointPair pp = dim->getLinearPoints();
+                const Base::Vector3d& origin = allVertexes[0].point;
+                if (std::abs(pp.first().x - origin.x) < 1e-6
+                    && std::abs(pp.first().y - origin.y) < 1e-6
+                    && std::abs(pp.second().x - origin.x) < 1e-6
+                    && std::abs(pp.second().y - origin.y) < 1e-6) {
+                    hasZeroDimension = true;
+                    break;
+                }
+            }
+        }
+
+        if (!hasZeroDimension) {
+            auto* zeroDim = _createLinDimension(
+                objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateX");
+            zeroDim->X.setValue(allVertexes[0].point.x);
+            zeroDim->Y.setValue(-yMaster);
+        }
 
         for (std::size_t n = 1; n < allVertexes.size(); ++n) {
             auto* dim = _createLinDimension(
@@ -1694,10 +1715,31 @@ void execCreateVertOrdinateDimension(Gui::Command* cmd)
             dimDistance = -dimDistance;
         }
 
-        auto* zeroDim = _createLinDimension(
-            objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateY");
-        zeroDim->X.setValue(xMaster);
-        zeroDim->Y.setValue(-allVertexes[0].point.y);
+        bool hasZeroDimension = false;
+        if (TechDraw::DrawPage* page = objFeat->findParentPage()) {
+            for (auto* view : page->Views.getValues()) {
+                auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(view);
+                if (!dim || !dim->Type.isValue("OrdinateY")) {
+                    continue;
+                }
+                TechDraw::pointPair pp = dim->getLinearPoints();
+                const Base::Vector3d& origin = allVertexes[0].point;
+                if (std::abs(pp.first().x - origin.x) < 1e-6
+                    && std::abs(pp.first().y - origin.y) < 1e-6
+                    && std::abs(pp.second().x - origin.x) < 1e-6
+                    && std::abs(pp.second().y - origin.y) < 1e-6) {
+                    hasZeroDimension = true;
+                    break;
+                }
+            }
+        }
+
+        if (!hasZeroDimension) {
+            auto* zeroDim = _createLinDimension(
+                objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateY");
+            zeroDim->X.setValue(xMaster);
+            zeroDim->Y.setValue(-allVertexes[0].point.y);
+        }
 
         for (std::size_t n = 1; n < allVertexes.size(); ++n) {
             auto* dim = _createLinDimension(
