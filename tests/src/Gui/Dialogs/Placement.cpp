@@ -3,13 +3,21 @@
 
 #include <QTest>
 
+#include <src/App/InitApplication.h>
+
 #include <Base/Vector3D.h>
-#include <Gui/Dialogs/Placement.h>
+#include <Gui/Placement.h>
 
 
 class TestPlacement final: public QObject
 {
     Q_OBJECT
+
+public:
+    TestPlacement()
+    {
+        tests::initApplication();
+    }
 
 private Q_SLOTS:
     void centerIsRelativeToTranslatedObject()
@@ -30,6 +38,17 @@ private Q_SLOTS:
             = Gui::Dialog::PlacementHandler::relativeCenter(globalCenter, Base::Vector3d());
 
         QVERIFY(center == globalCenter);
+    }
+
+    void missingCenterOfMassDoesNotUseTranslatedFallback()
+    {
+        Gui::Dialog::PlacementHandler handler;
+        Base::Vector3d center(1.0, 2.0, 3.0);
+
+        const bool found = handler.computeCenterOfMass(center);
+
+        QVERIFY(!found);
+        QVERIFY(center == Base::Vector3d());
     }
 };
 
