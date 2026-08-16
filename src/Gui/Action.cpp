@@ -891,7 +891,7 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent, bool addOp
     this->groupAction()->addAction(&sep);
 
     //: Empties the list of recent files
-    clearRecentFilesListAction.setText(tr("Clear Recent Files"));
+    clearRecentFilesListAction.setText(tr("Clear Recent Files…"));
     clearRecentFilesListAction.setIcon(QIcon(QStringLiteral(":/icons/edit-delete.svg")));
     clearRecentFilesListAction.setToolTip({});
     this->groupAction()->addAction(&clearRecentFilesListAction);
