@@ -343,10 +343,12 @@ TEST_F(MeasureDistance, testNearParallelLinesStillMeasureAsAxes)
     p1->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)));
     auto p2 = doc->addObject<Part::Feature>("Line2");
     p2->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)));
-    p2->Placement.setValue(Base::Placement(
-        Base::Vector3d(10.0, 0.0, 3.0),
-        Base::Rotation(Base::Vector3d(0.0, 1.0, 0.0), residualTilt)
-    ));
+    p2->Placement.setValue(
+        Base::Placement(
+            Base::Vector3d(10.0, 0.0, 3.0),
+            Base::Rotation(Base::Vector3d(0.0, 1.0, 0.0), residualTilt)
+        )
+    );
 
     auto md = doc->addObject<Measure::MeasureDistance>("Distance");
     md->Element1.setValue(p1, {"Edge1"});
