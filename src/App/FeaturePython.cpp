@@ -40,19 +40,7 @@ FeaturePythonImp::FeaturePythonImp(App::DocumentObject* o)
     : object(o)
 {}
 
-FeaturePythonImp::~FeaturePythonImp()
-{
-    Base::PyGILStateLocker lock;
-#undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) py_##_name = Py::None();
-
-    try {
-        FC_PY_FEATURE_PYTHON
-    }
-    catch (Py::Exception& e) {
-        e.clear();
-    }
-}
+FeaturePythonImp::~FeaturePythonImp() = default;
 
 void FeaturePythonImp::init(PyObject* pyobj)
 {
@@ -60,12 +48,14 @@ void FeaturePythonImp::init(PyObject* pyobj)
     has__object__ = !!PyObject_HasAttrString(pyobj, "__object__");
 
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_INIT(_name)
+#define FC_PY_ELEMENT(_name) FC_PY_FEATURE_ELEMENT_INIT(_name)
 
     FC_PY_FEATURE_PYTHON
 }
 
-#define FC_PY_CALL_CHECK(_name) _FC_PY_CALL_CHECK(_name, return (false))
+#define FC_PY_CALL_CHECK(_name) _FC_PY_FEATURE_CALL_CHECK(_name, return (false))
+#undef _FC_PY_CALL_CHECK
+#define _FC_PY_CALL_CHECK(_name, _ret) _FC_PY_FEATURE_CALL_CHECK(_name, _ret)
 
 /*!
  Calls the execute() method of the Python feature class. If the Python feature class doesn't have an
@@ -77,7 +67,7 @@ bool FeaturePythonImp::execute()
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
-            Py::Object res = Base::pyCall(py_execute.ptr());
+            Py::Object res = Base::pyCall(py_execute.get());
             if (res.isBoolean() && !res.isTrue()) {
                 return false;
             }
@@ -86,7 +76,7 @@ bool FeaturePythonImp::execute()
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Object res = Base::pyCall(py_execute.ptr(), args.ptr());
+            Py::Object res = Base::pyCall(py_execute.get(), args.ptr());
             if (res.isBoolean() && !res.isTrue()) {
                 return false;
             }
@@ -110,13 +100,13 @@ bool FeaturePythonImp::mustExecute() const
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
-            Py::Object res(Base::pyCall(py_mustExecute.ptr()));
+            Py::Object res(Base::pyCall(py_mustExecute.get()));
             return res.isTrue();
         }
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Py::Object res(Base::pyCall(py_mustExecute.ptr(), args.ptr()));
+            Py::Object res(Base::pyCall(py_mustExecute.get(), args.ptr()));
             return res.isTrue();
         }
     }
@@ -130,7 +120,7 @@ bool FeaturePythonImp::mustExecute() const
 
 void FeaturePythonImp::onBeforeChange(const Property* prop)
 {
-    if (py_onBeforeChange.isNone()) {
+    if (!py_onBeforeChange.get()) {
         return;
     }
 
@@ -144,13 +134,13 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, Py::String(prop_name));
-            Base::pyCall(py_onBeforeChange.ptr(), args.ptr());
+            Base::pyCall(py_onBeforeChange.get(), args.ptr());
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, Py::String(prop_name));
-            Base::pyCall(py_onBeforeChange.ptr(), args.ptr());
+            Base::pyCall(py_onBeforeChange.get(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -161,7 +151,7 @@ void FeaturePythonImp::onBeforeChange(const Property* prop)
 
 bool FeaturePythonImp::onBeforeChangeLabel(std::string& newLabel)
 {
-    if (py_onBeforeChangeLabel.isNone()) {
+    if (!py_onBeforeChangeLabel.get()) {
         return false;
     }
 
@@ -171,7 +161,7 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string& newLabel)
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1, Py::String(newLabel));
-        Py::Object ret(Base::pyCall(py_onBeforeChangeLabel.ptr(), args.ptr()));
+        Py::Object ret(Base::pyCall(py_onBeforeChangeLabel.get(), args.ptr()));
         if (!ret.isNone()) {
             if (!ret.isString()) {
                 throw Py::TypeError("onBeforeChangeLabel expects to return a string");
@@ -189,7 +179,7 @@ bool FeaturePythonImp::onBeforeChangeLabel(std::string& newLabel)
 
 void FeaturePythonImp::onChanged(const Property* prop)
 {
-    if (py_onChanged.isNone()) {
+    if (!py_onChanged.get()) {
         return;
     }
     // Run the execute method of the proxy object.
@@ -202,13 +192,13 @@ void FeaturePythonImp::onChanged(const Property* prop)
         if (has__object__) {
             Py::Tuple args(1);
             args.setItem(0, Py::String(prop_name));
-            Base::pyCall(py_onChanged.ptr(), args.ptr());
+            Base::pyCall(py_onChanged.get(), args.ptr());
         }
         else {
             Py::Tuple args(2);
             args.setItem(0, Py::Object(object->getPyObject(), true));
             args.setItem(1, Py::String(prop_name));
-            Base::pyCall(py_onChanged.ptr(), args.ptr());
+            Base::pyCall(py_onChanged.get(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -225,12 +215,12 @@ void FeaturePythonImp::onDocumentRestored()
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
-            Base::pyCall(py_onDocumentRestored.ptr());
+            Base::pyCall(py_onDocumentRestored.get());
         }
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Base::pyCall(py_onDocumentRestored.ptr(), args.ptr());
+            Base::pyCall(py_onDocumentRestored.get(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -247,12 +237,12 @@ void FeaturePythonImp::unsetupObject()
     Base::PyGILStateLocker lock;
     try {
         if (has__object__) {
-            Base::pyCall(py_unsetupObject.ptr());
+            Base::pyCall(py_unsetupObject.get());
         }
         else {
             Py::Tuple args(1);
             args.setItem(0, Py::Object(object->getPyObject(), true));
-            Base::pyCall(py_unsetupObject.ptr(), args.ptr());
+            Base::pyCall(py_unsetupObject.get(), args.ptr());
         }
     }
     catch (Py::Exception&) {
@@ -286,7 +276,7 @@ bool FeaturePythonImp::getSubObject(DocumentObject*& ret,
         args.setItem(4, Py::Boolean(transform));
         args.setItem(5, Py::Long(depth));
 
-        Py::Object res(Base::pyCall(py_getSubObject.ptr(), args.ptr()));
+        Py::Object res(Base::pyCall(py_getSubObject.get(), args.ptr()));
         if (res.isNone()) {
             ret = nullptr;
             return true;
@@ -343,7 +333,7 @@ bool FeaturePythonImp::getSubObjects(std::vector<std::string>& ret, int reason) 
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1, Py::Long(reason));
-        Py::Object res(Base::pyCall(py_getSubObjects.ptr(), args.ptr()));
+        Py::Object res(Base::pyCall(py_getSubObjects.get(), args.ptr()));
         if (!res.isTrue()) {
             return true;
         }
@@ -391,7 +381,7 @@ bool FeaturePythonImp::getLinkedObject(DocumentObject*& ret,
         args.setItem(3, Py::Boolean(transform));
         args.setItem(4, Py::Long(depth));
 
-        Py::Object res(Base::pyCall(py_getLinkedObject.ptr(), args.ptr()));
+        Py::Object res(Base::pyCall(py_getLinkedObject.get(), args.ptr()));
         if (!res.isTrue()) {
             ret = object;
             return true;
@@ -442,7 +432,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::hasChildElement() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_hasChildElement.ptr(), args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_hasChildElement.get(), args.ptr()));
         return static_cast<bool>(ok) ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -465,7 +455,7 @@ int FeaturePythonImp::isElementVisible(const char* element) const
         Py::Tuple args(2);
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1, Py::String(element ? element : ""));
-        return Py::Long(Base::pyCall(py_isElementVisible.ptr(), args.ptr()));
+        return Py::Long(Base::pyCall(py_isElementVisible.get(), args.ptr()));
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -487,7 +477,7 @@ int FeaturePythonImp::setElementVisible(const char* element, bool visible)
         args.setItem(0, Py::Object(object->getPyObject(), true));
         args.setItem(1, Py::String(element ? element : ""));
         args.setItem(2, Py::Boolean(visible));
-        return Py::Long(Base::pyCall(py_setElementVisible.ptr(), args.ptr()));
+        return Py::Long(Base::pyCall(py_setElementVisible.get(), args.ptr()));
     }
     catch (Py::Exception&) {
         if (PyErr_ExceptionMatches(PyExc_NotImplementedError)) {
@@ -506,7 +496,7 @@ std::string FeaturePythonImp::getViewProviderName()
     Base::PyGILStateLocker lock;
     try {
         Py::TupleN args(Py::Object(object->getPyObject(), true));
-        Py::String ret(Base::pyCall(py_getViewProviderName.ptr(), args.ptr()));
+        Py::String ret(Base::pyCall(py_getViewProviderName.get(), args.ptr()));
         return ret.as_string();
     }
     catch (Py::Exception&) {
@@ -524,7 +514,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::canLinkProperties() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_canLinkProperties.ptr(), args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_canLinkProperties.get(), args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -545,7 +535,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::allowDuplicateLabel() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_allowDuplicateLabel.ptr(), args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_allowDuplicateLabel.get(), args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -567,7 +557,7 @@ int FeaturePythonImp::canLoadPartial() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Long ret(Base::pyCall(py_canLoadPartial.ptr(), args.ptr()));
+        Py::Long ret(Base::pyCall(py_canLoadPartial.get(), args.ptr()));
         return ret;
     }
     catch (Py::Exception&) {
@@ -588,7 +578,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::supportsAsyncRecompute() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_supportsAsyncRecompute.ptr(), args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_supportsAsyncRecompute.get(), args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -614,7 +604,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::redirectSubName(std::ostringstream& s
         args.setItem(1, Py::String(ss.str()));
         args.setItem(2, topParent ? Py::Object(topParent->getPyObject(), true) : Py::Object());
         args.setItem(3, child ? Py::Object(child->getPyObject(), true) : Py::Object());
-        Py::Object ret(Base::pyCall(py_redirectSubName.ptr(), args.ptr()));
+        Py::Object ret(Base::pyCall(py_redirectSubName.get(), args.ptr()));
         if (ret.isNone()) {
             return Rejected;
         }
@@ -641,7 +631,7 @@ bool FeaturePythonImp::editProperty(const char* name)
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::String(name));
-        Py::Object ret(Base::pyCall(py_editProperty.ptr(), args.ptr()));
+        Py::Object ret(Base::pyCall(py_editProperty.get(), args.ptr()));
         return ret.isTrue();
     }
     catch (Py::Exception&) {
@@ -663,7 +653,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::isLink() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_isLink.ptr(), args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_isLink.get(), args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -685,7 +675,7 @@ FeaturePythonImp::ValueT FeaturePythonImp::isLinkGroup() const
     try {
         Py::Tuple args(1);
         args.setItem(0, Py::Object(object->getPyObject(), true));
-        Py::Boolean ok(Base::pyCall(py_isLinkGroup.ptr(), args.ptr()));
+        Py::Boolean ok(Base::pyCall(py_isLinkGroup.get(), args.ptr()));
         return ok ? Accepted : Rejected;
     }
     catch (Py::Exception&) {
@@ -726,7 +716,7 @@ bool FeaturePythonImp::getPlacementOf(
         }
 
         // Call the Python method
-        Py::Object res(Base::pyCall(py_getPlacementOf.ptr(), args.ptr()));
+        Py::Object res(Base::pyCall(py_getPlacementOf.get(), args.ptr()));
 
         // Check if Python returned None (implies "use base implementation")
         if (res.isNone()) {

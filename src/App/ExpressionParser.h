@@ -28,6 +28,7 @@
 
 #include "Expression.h"
 #include <Base/Matrix.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Quantity.h>
 #include <Base/Vector3D.h>
 
@@ -124,7 +125,7 @@ protected:
     Py::Object _getPyValue() const override;
 
 protected:
-    mutable PyObject* cache = nullptr;
+    mutable Base::NativePythonReference cache;
 
 private:
     Base::Quantity quantity;
@@ -552,7 +553,7 @@ protected:
     Py::Object _getPyValue() const override;
 
 protected:
-    PyObject* pyObj = nullptr;
+    Base::NativePythonReference pyObj;
 };
 
 /**
@@ -587,7 +588,7 @@ protected:
 
 private:
     std::string text; /**< Text string */
-    mutable PyObject* cache = nullptr;
+    mutable Base::NativePythonReference cache;
 };
 
 class AppExport RangeExpression: public App::Expression

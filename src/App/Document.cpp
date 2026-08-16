@@ -957,7 +957,7 @@ Document::Document(const char* documentName)
     // have to care about ref counting any more.
     setAutoCreated(false);
     Base::PyGILStateLocker lock;
-    d->DocumentPythonObject = Py::Object(new DocumentPy(this), true);
+    d->DocumentPythonObject.reset(new DocumentPy(this));
 
 #ifdef FC_LOGUPDATECHAIN
     Console().log("+App::Document: %p\n", this);
@@ -1070,15 +1070,14 @@ Document::~Document()
 
     d->clearDocument();
 
-    // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
-    // Python object or not. In the constructor we forced the wrapper to own the object so we need
-    // not to dec'ref the Python object any more.
-    // But we must still invalidate the Python object because it doesn't need to be
-    // destructed right now because the interpreter can own several references to it.
-    Base::PyGILStateLocker lock;
-    auto* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.ptr());
-    // Call before decrementing the reference counter, otherwise a heap error can occur
-    doc->setInvalid();
+    // Keep retained Python wrappers usable as invalidated objects, then release
+    // the native-owned reference while the interpreter is still running.
+    if (d->DocumentPythonObject) {
+        Base::PyGILStateLocker lock;
+        auto* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.get());
+        doc->setInvalid();
+    }
+    d->DocumentPythonObject.reset();
 
     // remove Transient directory
     try {
@@ -3992,7 +3991,8 @@ int Document::countObjectsOfType(const char* typeName) const
 
 PyObject* Document::getPyObject()
 {
-    return Py::new_reference_to(d->DocumentPythonObject);
+    Py_INCREF(d->DocumentPythonObject.get());
+    return d->DocumentPythonObject.get();
 }
 
 std::vector<DocumentObject*> Document::getRootObjects() const

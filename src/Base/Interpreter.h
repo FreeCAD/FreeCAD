@@ -45,8 +45,10 @@
 #endif
 
 #include <CXX/Extensions.hxx>
+#include <cstddef>
 #include <list>
 #include <string>
+#include <utility>
 #include "Exception.h"
 
 
@@ -213,7 +215,10 @@ class BaseExport PyGILStateLocker
 public:
     PyGILStateLocker()
     {
-        gstate = PyGILState_Ensure();  // NOLINT
+        // PyGILState_Ensure() is unsafe once interpreter finalization has
+        // started. Python-owned deallocation paths already hold the GIL, so
+        // preserve that state instead of attaching again.
+        gstate = PyGILState_Check() ? PyGILState_LOCKED : PyGILState_Ensure();  // NOLINT
     }
     ~PyGILStateLocker()
     {

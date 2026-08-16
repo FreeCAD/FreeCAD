@@ -102,7 +102,7 @@ public:
     int _setattr(const char *attr, PyObject *value) override;
 
 protected:
-    PyObject * dict_methods;
+    PyObject* dict_methods = nullptr;
 
 private:
 };
