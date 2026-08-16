@@ -2336,6 +2336,14 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
         }
     }
 
+    // Must run before onDocumentRestored() below (Python's chance to register runtime
+    // aliases) and before the dependency loop's final `if (!d->touchedObjs.contains(obj))
+    // obj->purgeTouched();`. The rewrite itself touches objects (ExpressionModifier::
+    // aboutToChange -> Property::hasSetValue -> DocumentObject::onChanged), so that purge
+    // is what keeps merely opening a document from marking it modified. Moving this call
+    // later without compensating for that purge would break that invariant; see
+    // core-app.dox's PropertyRenamingLimits section for why Python aliases are not covered
+    // by this rewrite either way.
     canonicalizeAliasedExpressions(objArray.empty() ? d->objectArray : objArray);
 
     if (checkPartial && !d->touchedObjs.empty()) {
