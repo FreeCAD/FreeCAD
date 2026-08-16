@@ -32,6 +32,8 @@
 # include <QObject>
 #endif
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <CXX/Extensions.hxx>
 #include <memory>
 
@@ -87,7 +89,12 @@ public:
     QString errorString() const;
 
 private:
-    Py::Object uiloader;
+    Py::Object pythonUiLoader() const
+    {
+        return Py::Object(uiloader.get());
+    }
+
+    Base::NativePythonReference uiloader;
 };
 #endif
 

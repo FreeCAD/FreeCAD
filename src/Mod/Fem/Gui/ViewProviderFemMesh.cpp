@@ -595,10 +595,10 @@ void ViewProviderFemMesh::resetHighlightNodes()
 PyObject* ViewProviderFemMesh::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderFemMeshPy(this);
+        pyViewObject.reset(new ViewProviderFemMeshPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 void ViewProviderFemMesh::setDisplacementByNodeId(const std::map<long, Base::Vector3d>& NodeDispMap)

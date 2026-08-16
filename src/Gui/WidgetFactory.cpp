@@ -229,29 +229,25 @@ void* PrefPageUiProducer::Produce() const
 // ----------------------------------------------------
 
 PrefPagePyProducer::PrefPagePyProducer(const Py::Object& p, const char* group)
-    : type(p)
 {
+    type.reset(p);
     std::string str;
     Base::PyGILStateLocker lock;
-    if (type.hasAttr("__name__")) {
-        str = static_cast<std::string>(Py::String(type.getAttr("__name__")));
+    if (pythonType().hasAttr("__name__")) {
+        str = static_cast<std::string>(Py::String(pythonType().getAttr("__name__")));
     }
 
     WidgetFactoryInst::instance().AddProducer(str.c_str(), this);
     Gui::Dialog::DlgPreferencesImp::addPage(str, group);
 }
 
-PrefPagePyProducer::~PrefPagePyProducer()
-{
-    Base::PyGILStateLocker lock;
-    type = Py::None();
-}
+PrefPagePyProducer::~PrefPagePyProducer() = default;
 
 void* PrefPagePyProducer::Produce() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::Callable method(type);
+        Py::Callable method(pythonType());
         Py::Tuple args;
         Py::Object page = method.apply(args);
         QWidget* widget = new Gui::Dialog::PreferencePagePython(page);
@@ -273,8 +269,8 @@ using namespace Gui::Dialog;
 
 PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
     : PreferencePage(parent)
-    , page(p)
 {
+    page.reset(p);
     Base::PyGILStateLocker lock;
     Gui::PythonWrapper wrap;
     if (wrap.loadCoreModule()) {
@@ -282,11 +278,11 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
         // old style class must have a form attribute while
         // new style classes can be the widget itself
         Py::Object widget;
-        if (page.hasAttr(std::string("form"))) {
-            widget = page.getAttr(std::string("form"));
+        if (pythonPage().hasAttr(std::string("form"))) {
+            widget = pythonPage().getAttr(std::string("form"));
         }
         else {
-            widget = page;
+            widget = pythonPage();
         }
 
         QObject* object = wrap.toQObject(widget);
@@ -302,11 +298,7 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
     }
 }
 
-PreferencePagePython::~PreferencePagePython()
-{
-    Base::PyGILStateLocker lock;
-    page = Py::None();
-}
+PreferencePagePython::~PreferencePagePython() = default;
 
 void PreferencePagePython::changeEvent(QEvent* e)
 {
@@ -317,8 +309,8 @@ void PreferencePagePython::loadSettings()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (page.hasAttr(std::string("loadSettings"))) {
-            Py::Callable method(page.getAttr(std::string("loadSettings")));
+        if (pythonPage().hasAttr(std::string("loadSettings"))) {
+            Py::Callable method(pythonPage().getAttr(std::string("loadSettings")));
             Py::Tuple args;
             method.apply(args);
         }
@@ -333,8 +325,8 @@ void PreferencePagePython::saveSettings()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (page.hasAttr(std::string("saveSettings"))) {
-            Py::Callable method(page.getAttr(std::string("saveSettings")));
+        if (pythonPage().hasAttr(std::string("saveSettings"))) {
+            Py::Callable method(pythonPage().getAttr(std::string("saveSettings")));
             Py::Tuple args;
             method.apply(args);
         }
@@ -735,13 +727,13 @@ Py::Object PyResource::connect(const Py::Tuple& args)
 
 SignalConnect::SignalConnect(PyObject* res, PyObject* cb)
     : myResource(res)
-    , myCallback(cb)
-{}
+{
+    myCallback.reset(cb);
+}
 
 SignalConnect::~SignalConnect()
 {
-    Base::PyGILStateLocker lock;
-    Py_XDECREF(myCallback); /* Dispose of callback */
+    myCallback.reset(); /* Dispose of callback */
 }
 
 /**
@@ -754,7 +746,7 @@ void SignalConnect::onExecute()
 
     /* Time to call the callback */
     arglist = Py_BuildValue("(O)", myResource);
-    result = PyObject_CallObject(myCallback, arglist);
+    result = PyObject_CallObject(myCallback.get(), arglist);
     Py_XDECREF(result);
     Py_DECREF(arglist);
 }

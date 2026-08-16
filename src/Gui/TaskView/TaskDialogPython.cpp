@@ -308,26 +308,26 @@ Py::Object ControlPy::showModelView(const Py::Tuple& args)
 
 TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
     : TaskWatcher(nullptr)
-    , watcher(o)
 {
+    watcher.reset(o);
     QString title;
-    if (watcher.hasAttr(std::string("title"))) {
-        Py::String name(watcher.getAttr(std::string("title")));
+    if (pythonObject().hasAttr(std::string("title"))) {
+        Py::String name(pythonObject().getAttr(std::string("title")));
         std::string s = static_cast<std::string>(name);
         title = QString::fromUtf8(s.c_str());
     }
 
     QPixmap icon;
-    if (watcher.hasAttr(std::string("icon"))) {
-        Py::String name(watcher.getAttr(std::string("icon")));
+    if (pythonObject().hasAttr(std::string("icon"))) {
+        Py::String name(pythonObject().getAttr(std::string("icon")));
         std::string s = static_cast<std::string>(name);
         icon = BitmapFactory().pixmap(s.c_str());
     }
 
     Gui::TaskView::TaskBox* tb = nullptr;
-    if (watcher.hasAttr(std::string("commands"))) {
+    if (pythonObject().hasAttr(std::string("commands"))) {
         tb = new Gui::TaskView::TaskBox(icon, title, true, nullptr);
-        Py::Sequence cmds(watcher.getAttr(std::string("commands")));
+        Py::Sequence cmds(pythonObject().getAttr(std::string("commands")));
         CommandManager& mgr = Gui::Application::Instance->commandManager();
         for (Py::Sequence::iterator it = cmds.begin(); it != cmds.end(); ++it) {
             Py::String name(*it);
@@ -339,11 +339,11 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         }
     }
 
-    if (watcher.hasAttr(std::string("widgets"))) {
+    if (pythonObject().hasAttr(std::string("widgets"))) {
         if (!tb && !title.isEmpty()) {
             tb = new Gui::TaskView::TaskBox(icon, title, true, nullptr);
         }
-        Py::Sequence list(watcher.getAttr(std::string("widgets")));
+        Py::Sequence list(pythonObject().getAttr(std::string("widgets")));
 
         Gui::PythonWrapper wrap;
         if (wrap.loadCoreModule()) {
@@ -368,8 +368,8 @@ TaskWatcherPython::TaskWatcherPython(const Py::Object& o)
         Content.push_back(tb);
     }
 
-    if (watcher.hasAttr(std::string("filter"))) {
-        Py::String name(watcher.getAttr(std::string("filter")));
+    if (pythonObject().hasAttr(std::string("filter"))) {
+        Py::String name(pythonObject().getAttr(std::string("filter")));
         std::string s = static_cast<std::string>(name);
         this->setFilter(s.c_str());
     }
@@ -380,8 +380,6 @@ TaskWatcherPython::~TaskWatcherPython()
     std::vector<QPointer<QWidget>> guarded;
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
-    Base::PyGILStateLocker lock;
-    this->watcher = Py::None();
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
 }
 
@@ -389,8 +387,8 @@ bool TaskWatcherPython::shouldShow()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (watcher.hasAttr(std::string("shouldShow"))) {
-            Py::Callable method(watcher.getAttr(std::string("shouldShow")));
+        if (pythonObject().hasAttr(std::string("shouldShow"))) {
+            Py::Callable method(pythonObject().getAttr(std::string("shouldShow")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -742,10 +740,10 @@ TaskDialogPython::~TaskDialogPython()
 
 bool TaskDialogPython::tryLoadUiFile()
 {
-    if (dlg.hasAttr(std::string("ui"))) {
+    if (dialogObject().hasAttr(std::string("ui"))) {
         auto loader = UiLoader::newInstance();
         QString fn, icon;
-        Py::String ui(dlg.getAttr(std::string("ui")));
+        Py::String ui(dialogObject().getAttr(std::string("ui")));
         std::string path = static_cast<std::string>(ui);
         fn = QString::fromUtf8(path.c_str());
 
@@ -770,8 +768,8 @@ bool TaskDialogPython::tryLoadUiFile()
 
 bool TaskDialogPython::tryLoadForm()
 {
-    if (dlg.hasAttr(std::string("form"))) {
-        Py::Object f(dlg.getAttr(std::string("form")));
+    if (dialogObject().hasAttr(std::string("form"))) {
+        Py::Object f(dialogObject().getAttr(std::string("form")));
         Py::List widgets;
         if (f.isList()) {
             widgets = f;
@@ -814,10 +812,11 @@ void TaskDialogPython::clearForm()
         // The widgets stored in the 'form' attribute will be deleted.
         // Thus, set this attribute to None to make sure that when using
         // the same dialog instance for a task panel won't segfault.
-        if (this->dlg.hasAttr(std::string("form"))) {
-            this->dlg.setAttr(std::string("form"), Py::None());
+        auto dialog = dialogObject();
+        if (dialog.hasAttr(std::string("form"))) {
+            dialog.setAttr(std::string("form"), Py::None());
         }
-        this->dlg = Py::None();
+        dlg.reset();
     }
     catch (Py::AttributeError& e) {
         e.clear();
@@ -828,8 +827,8 @@ void TaskDialogPython::open()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("open"))) {
-            Py::Callable method(dlg.getAttr(std::string("open")));
+        if (dialogObject().hasAttr(std::string("open"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("open")));
             Py::Tuple args;
             method.apply(args);
         }
@@ -844,8 +843,8 @@ void TaskDialogPython::clicked(int i)
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("clicked"))) {
-            Py::Callable method(dlg.getAttr(std::string("clicked")));
+        if (dialogObject().hasAttr(std::string("clicked"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("clicked")));
             PythonWrapper wrap;
             Py::Tuple args(1);
             args.setItem(0, wrap.toStandardButton(i));
@@ -862,8 +861,8 @@ bool TaskDialogPython::accept()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("accept"))) {
-            Py::Callable method(dlg.getAttr(std::string("accept")));
+        if (dialogObject().hasAttr(std::string("accept"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("accept")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -881,8 +880,8 @@ bool TaskDialogPython::reject()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("reject"))) {
-            Py::Callable method(dlg.getAttr(std::string("reject")));
+        if (dialogObject().hasAttr(std::string("reject"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("reject")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -900,8 +899,8 @@ void TaskDialogPython::helpRequested()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("helpRequested"))) {
-            Py::Callable method(dlg.getAttr(std::string("helpRequested")));
+        if (dialogObject().hasAttr(std::string("helpRequested"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("helpRequested")));
             Py::Tuple args;
             method.apply(args);
         }
@@ -917,8 +916,8 @@ bool TaskDialogPython::eventFilter(QObject* watched, QEvent* event)
     if (event->type() == QEvent::LanguageChange) {
         Base::PyGILStateLocker lock;
         try {
-            if (dlg.hasAttr(std::string("changeEvent"))) {
-                Py::Callable method(dlg.getAttr(std::string("changeEvent")));
+            if (dialogObject().hasAttr(std::string("changeEvent"))) {
+                Py::Callable method(dialogObject().getAttr(std::string("changeEvent")));
                 Py::Tuple args {1};
                 args.setItem(0, Py::Long(static_cast<int>(event->type())));
                 method.apply(args);
@@ -937,8 +936,8 @@ QDialogButtonBox::StandardButtons TaskDialogPython::getStandardButtons() const
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("getStandardButtons"))) {
-            Py::Callable method(dlg.getAttr(std::string("getStandardButtons")));
+        if (dialogObject().hasAttr(std::string("getStandardButtons"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("getStandardButtons")));
             Py::Tuple args;
             Gui::PythonWrapper wrap;
             wrap.loadWidgetsModule();
@@ -958,11 +957,11 @@ void TaskDialogPython::modifyStandardButtons(QDialogButtonBox* buttonBox)
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("modifyStandardButtons"))) {
+        if (dialogObject().hasAttr(std::string("modifyStandardButtons"))) {
             Gui::PythonWrapper wrap;
             wrap.loadGuiModule();
             wrap.loadWidgetsModule();
-            Py::Callable method(dlg.getAttr(std::string("modifyStandardButtons")));
+            Py::Callable method(dialogObject().getAttr(std::string("modifyStandardButtons")));
             Py::Tuple args(1);
             args.setItem(0, wrap.fromQWidget(buttonBox, "QDialogButtonBox"));
             method.apply(args);
@@ -978,8 +977,8 @@ bool TaskDialogPython::isAllowedAlterDocument() const
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("isAllowedAlterDocument"))) {
-            Py::Callable method(dlg.getAttr(std::string("isAllowedAlterDocument")));
+        if (dialogObject().hasAttr(std::string("isAllowedAlterDocument"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("isAllowedAlterDocument")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -997,8 +996,8 @@ bool TaskDialogPython::isAllowedAlterView() const
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("isAllowedAlterView"))) {
-            Py::Callable method(dlg.getAttr(std::string("isAllowedAlterView")));
+        if (dialogObject().hasAttr(std::string("isAllowedAlterView"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("isAllowedAlterView")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -1016,8 +1015,8 @@ bool TaskDialogPython::isAllowedAlterSelection() const
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("isAllowedAlterSelection"))) {
-            Py::Callable method(dlg.getAttr(std::string("isAllowedAlterSelection")));
+        if (dialogObject().hasAttr(std::string("isAllowedAlterSelection"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("isAllowedAlterSelection")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -1035,8 +1034,8 @@ bool TaskDialogPython::needsFullSpace() const
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("needsFullSpace"))) {
-            Py::Callable method(dlg.getAttr(std::string("needsFullSpace")));
+        if (dialogObject().hasAttr(std::string("needsFullSpace"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("needsFullSpace")));
             Py::Tuple args;
             Py::Boolean ret(method.apply(args));
             return (bool)ret;
@@ -1054,8 +1053,8 @@ void TaskDialogPython::autoClosedOnTransactionChange()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("autoClosedOnTransactionChange"))) {
-            Py::Callable method(dlg.getAttr(std::string("autoClosedOnTransactionChange")));
+        if (dialogObject().hasAttr(std::string("autoClosedOnTransactionChange"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("autoClosedOnTransactionChange")));
             Py::Tuple args;
             method.apply(args);
         }
@@ -1070,8 +1069,8 @@ void TaskDialogPython::autoClosedOnResetEdit()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("autoClosedOnResetEdit"))) {
-            Py::Callable method(dlg.getAttr(std::string("autoClosedOnResetEdit")));
+        if (dialogObject().hasAttr(std::string("autoClosedOnResetEdit"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("autoClosedOnResetEdit")));
             Py::Tuple args;
             method.apply(args);
         }
@@ -1086,8 +1085,8 @@ void TaskDialogPython::autoClosedOnDeletedDocument()
 {
     Base::PyGILStateLocker lock;
     try {
-        if (dlg.hasAttr(std::string("autoClosedOnDeletedDocument"))) {
-            Py::Callable method(dlg.getAttr(std::string("autoClosedOnDeletedDocument")));
+        if (dialogObject().hasAttr(std::string("autoClosedOnDeletedDocument"))) {
+            Py::Callable method(dialogObject().getAttr(std::string("autoClosedOnDeletedDocument")));
             Py::Tuple args;
             method.apply(args);
         }

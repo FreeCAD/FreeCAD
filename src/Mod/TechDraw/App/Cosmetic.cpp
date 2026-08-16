@@ -301,11 +301,11 @@ CosmeticEdge* CosmeticEdge::clone() const
 
 PyObject* CosmeticEdge::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new CosmeticEdgePy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new CosmeticEdgePy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 //------------------------------------------------------------------------------
@@ -442,15 +442,14 @@ GeomFormat* GeomFormat::copy() const
 
 PyObject* GeomFormat::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new GeomFormatPy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new GeomFormatPy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 bool CosmeticVertex::restoreCosmetic()
 {
     return Preferences::getPreferenceGroup("General")->GetBool("restoreCosmetic", true);
 }
-

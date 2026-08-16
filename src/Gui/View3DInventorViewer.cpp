@@ -1001,7 +1001,6 @@ View3DInventorViewer::View3DInventorViewer(QWidget* parent, const QOpenGLWidget*
     , redirected(false)
     , allowredir(false)
     , overrideMode("As Is")
-    , _viewerPy(nullptr)
 {
     init();
 }
@@ -1025,7 +1024,6 @@ View3DInventorViewer::View3DInventorViewer(
     , redirected(false)
     , allowredir(false)
     , overrideMode("As Is")
-    , _viewerPy(nullptr)
 {
     init();
 }
@@ -1399,10 +1397,6 @@ View3DInventorViewer::~View3DInventorViewer()
 
     removeEventFilter(viewerEventFilter);
     delete viewerEventFilter;
-
-    if (_viewerPy) {
-        static_cast<View3DInventorViewerPy*>(_viewerPy)->_viewer = nullptr;
-    }
 
     // In the init() function we have overridden the default SoGLRenderAction with our
     // own instance of SoBoxSelectionRenderAction and SoRenderManager destroyed the default.
@@ -5579,11 +5573,11 @@ void View3DInventorViewer::turnDeltaDimensionsOff()
 PyObject* View3DInventorViewer::getPyObject()
 {
     if (!_viewerPy) {
-        _viewerPy = new View3DInventorViewerPy(this);
+        _viewerPy.reset(new View3DInventorViewerPy(this));
     }
 
-    Py_INCREF(_viewerPy);
-    return _viewerPy;
+    Py_INCREF(_viewerPy.get());
+    return _viewerPy.get();
 }
 
 /**

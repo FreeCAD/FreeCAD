@@ -49,7 +49,7 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::AbstractSplitView, Gui::MDIView)
 AbstractSplitView::AbstractSplitView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags)
 {
-    _viewerPy = nullptr;
+    _viewerPy.reset();
     // important for highlighting
     setMouseTracking(true);
 }
@@ -60,10 +60,7 @@ AbstractSplitView::~AbstractSplitView()
          ++it) {
         delete *it;
     }
-    if (_viewerPy) {
-        Base::PyGILStateLocker lock;
-        Py_DECREF(_viewerPy);
-    }
+    _viewerPy.reset();
 }
 
 void AbstractSplitView::deleteSelf()
@@ -274,10 +271,10 @@ void AbstractSplitView::setOverrideCursor(const QCursor& aCursor)
 PyObject* AbstractSplitView::getPyObject()
 {
     if (!_viewerPy) {
-        _viewerPy = new AbstractSplitViewPy(this);
+        _viewerPy.reset(new AbstractSplitViewPy(this));
     }
-    Py_INCREF(_viewerPy);
-    return _viewerPy;
+    Py_INCREF(_viewerPy.get());
+    return _viewerPy.get();
 }
 
 void AbstractSplitView::setPyObject(PyObject*)
