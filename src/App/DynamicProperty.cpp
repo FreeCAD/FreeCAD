@@ -459,7 +459,8 @@ bool DynamicProperty::changeDynamicProperty(const Property* prop,
 }
 
 bool DynamicProperty::renameDynamicProperty(Property* prop,
-                                            const char* newName)
+                                            const char* newName,
+                                            RenameLockedPolicy policy)
 {
     auto& propIndex = impl->props.get<1>();
     auto propIt = propIndex.find(prop);
@@ -469,7 +470,14 @@ bool DynamicProperty::renameDynamicProperty(Property* prop,
     const PropData& data = *propIt;
 
     if (propIt->property->testStatus(Property::LockDynamic)) {
-        FC_THROWM(Base::RuntimeError, "Property " << prop->getName() << " is locked");
+        switch (policy) {
+            case RenameLockedPolicy::Throw:
+                FC_THROWM(Base::RuntimeError, "Property " << prop->getName() << " is locked");
+            case RenameLockedPolicy::Skip:
+                return false;
+            case RenameLockedPolicy::Force:
+                break;
+        }
     }
 
     PropertyContainer* container = prop->getContainer();

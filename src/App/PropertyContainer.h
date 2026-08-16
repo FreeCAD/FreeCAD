@@ -528,12 +528,14 @@ public:
    *
    * @param[in] prop The property to rename.
    * @param[in] name The new name for the property.
+   * @param[in] policy How to handle a property locked with Property::LockDynamic.
    *
    * @return `true` if the property was renamed; `false` otherwise.
    * @throw Base::NameError If the new name is invalid or already exists.
    */
-  virtual bool renameDynamicProperty(Property *prop, const char *name) {
-      return dynamicProps.renameDynamicProperty(prop, name);
+  virtual bool renameDynamicProperty(Property *prop, const char *name,
+                                     RenameLockedPolicy policy = RenameLockedPolicy::Throw) {
+      return dynamicProps.renameDynamicProperty(prop, name, policy);
   }
 
   /**

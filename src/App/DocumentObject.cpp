@@ -855,7 +855,8 @@ bool DocumentObject::removeDynamicProperty(const char* name)
     return TransactionalObject::removeDynamicProperty(name);
 }
 
-bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
+bool DocumentObject::renameDynamicProperty(Property* prop, const char* name,
+                                           RenameLockedPolicy policy)
 {
     std::string oldName = prop->getName();
 
@@ -874,15 +875,17 @@ bool DocumentObject::renameDynamicProperty(Property* prop, const char* name)
         ExpressionEngine.setValue(it, std::shared_ptr<Expression>());
     }
 
-    bool renamed = TransactionalObject::renameDynamicProperty(prop, name);
+    bool renamed = TransactionalObject::renameDynamicProperty(prop, name, policy);
     if (renamed && _pDoc) {
         _pDoc->renamePropertyOfObject(this, prop, oldName.c_str());
     }
 
-
-    App::ObjectIdentifier idNewProp(prop->getContainer(), std::string(name));
+    // If the base rename declined (e.g. RenameLockedPolicy::Skip on a locked property),
+    // the property is still named oldName: re-bind the expressions there rather than under
+    // a name that was never actually taken, which would otherwise destroy the binding.
+    App::ObjectIdentifier idProp(prop->getContainer(), renamed ? std::string(name) : oldName);
     for (auto& exprToMove : expressionsToMove) {
-        ExpressionEngine.setValue(idNewProp, exprToMove);
+        ExpressionEngine.setValue(idProp, exprToMove);
     }
 
     return renamed;
