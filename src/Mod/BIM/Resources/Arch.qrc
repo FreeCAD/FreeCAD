@@ -32,6 +32,8 @@
         <file>icons/Arch_Frame.svg</file>
         <file>icons/Arch_Frame_Tree.svg</file>
         <file>icons/Arch_Grid.svg</file>
+        <file>icons/Arch_Handrail.svg</file>
+        <file>icons/Arch_Handrail_Tree.svg</file>
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Material_Multi.svg</file>
@@ -70,6 +72,8 @@
         <file>icons/Arch_SplitMesh.svg</file>
         <file>icons/Arch_Stairs.svg</file>
         <file>icons/Arch_Stairs_Tree.svg</file>
+        <file>icons/Arch_Stringer.svg</file>
+        <file>icons/Arch_Stringer_Tree.svg</file>
         <file>icons/Arch_StructuralSystem.svg</file>
         <file>icons/Arch_StructuralSystem_Tree.svg</file>
         <file>icons/Arch_Structure.svg</file>
@@ -99,8 +103,8 @@
         <file>icons/BIM_Column.svg</file>
         <file>icons/BIM_Copy.svg</file>
         <file>icons/BIM_Covering.svg</file>
-        <file>icons/BIM_Covering_Tree.svg</file>
         <file>icons/BIM_Covering_Clone.svg</file>
+        <file>icons/BIM_Covering_Tree.svg</file>
         <file>icons/BIM_Diff.svg</file>
         <file>icons/BIM_DimensionAligned.svg</file>
         <file>icons/BIM_DimensionHorizontal.svg</file>
@@ -183,6 +187,7 @@
         <file>translations/Arch_fi.qm</file>
         <file>translations/Arch_fil.qm</file>
         <file>translations/Arch_fr.qm</file>
+        <file>translations/Arch_ga-IE.qm</file>
         <file>translations/Arch_gl.qm</file>
         <file>translations/Arch_hr.qm</file>
         <file>translations/Arch_hu.qm</file>
@@ -192,7 +197,9 @@
         <file>translations/Arch_ka.qm</file>
         <file>translations/Arch_kab.qm</file>
         <file>translations/Arch_ko.qm</file>
+        <file>translations/Arch_lo.qm</file>
         <file>translations/Arch_lt.qm</file>
+        <file>translations/Arch_ms.qm</file>
         <file>translations/Arch_nl.qm</file>
         <file>translations/Arch_no.qm</file>
         <file>translations/Arch_pl.qm</file>
@@ -205,17 +212,13 @@
         <file>translations/Arch_sr-CS.qm</file>
         <file>translations/Arch_sr.qm</file>
         <file>translations/Arch_sv.qm</file>
+        <file>translations/Arch_ta.qm</file>
         <file>translations/Arch_tr.qm</file>
         <file>translations/Arch_uk.qm</file>
         <file>translations/Arch_val-ES.qm</file>
         <file>translations/Arch_vi.qm</file>
         <file>translations/Arch_zh-CN.qm</file>
         <file>translations/Arch_zh-TW.qm</file>
-        <file>translations/Arch_ms.qm</file>
-        <file>translations/Arch_ta.qm</file>
-        <file>translations/Arch_ga-IE.qm</file>
-        <file>translations/Arch_sv.qm</file>
-        <file>translations/Arch_lo.qm</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchMultiMaterial.ui</file>
         <file>ui/ArchNest.ui</file>
@@ -238,6 +241,12 @@
         <file>ui/ParametersWindowFixed.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowStash.svg</file>
+        <!-- Stair Designer task-panel forms -->
+        <file>ui/TaskStairDesignerHandrails.ui</file>
+        <file>ui/TaskStairDesigner.ui</file>
+        <file>ui/TaskStairDesignerStair.ui</file>
+        <file>ui/TaskStairDesignerSteps.ui</file>
+        <file>ui/TaskStairDesignerStringers.ui</file>
         <file>ui/dialogAddPSet.ui</file>
         <file>ui/dialogAddProperty.ui</file>
         <file>ui/dialogClasses.ui</file>
