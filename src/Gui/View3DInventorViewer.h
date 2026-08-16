@@ -52,6 +52,8 @@
 #endif  // FC_OS_MACOSX
 
 #include <Base/BoundBox.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Placement.h>
 
 #include "Namespace.h"
@@ -730,7 +732,7 @@ private:
 
     ViewerEventFilter* viewerEventFilter;
 
-    PyObject* _viewerPy;
+    Base::NativePythonReference _viewerPy;
 
     static unsigned char XPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];
     static unsigned char YPM_pixel_data[YPM_WIDTH * YPM_HEIGHT * YPM_BYTES_PER_PIXEL + 1];

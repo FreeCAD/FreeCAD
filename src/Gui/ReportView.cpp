@@ -31,6 +31,7 @@
 
 
 #include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Color.h>
 
 #include "ReportView.h"
@@ -378,40 +379,36 @@ public:
         if (!default_stdout) {
             Base::PyGILStateLocker lock;
             default_stdout = PySys_GetObject("stdout");
-            replace_stdout = new OutputStdout();
+            replace_stdout.reset(new OutputStdout());
             redirected_stdout = false;
         }
 
         if (!default_stderr) {
             Base::PyGILStateLocker lock;
             default_stderr = PySys_GetObject("stderr");
-            replace_stderr = new OutputStderr();
+            replace_stderr.reset(new OutputStderr());
             redirected_stderr = false;
         }
     }
     ~Data()
     {
         if (replace_stdout) {
-            Base::PyGILStateLocker lock;
-            Py_DECREF(replace_stdout);
-            replace_stdout = nullptr;
+            replace_stdout.reset();
         }
 
         if (replace_stderr) {
-            Base::PyGILStateLocker lock;
-            Py_DECREF(replace_stderr);
-            replace_stderr = nullptr;
+            replace_stderr.reset();
         }
     }
 
     // make them static because redirection should done only once
     static bool redirected_stdout;
     static PyObject* default_stdout;
-    static PyObject* replace_stdout;
+    static Base::NativePythonReference replace_stdout;
 
     static bool redirected_stderr;
     static PyObject* default_stderr;
-    static PyObject* replace_stderr;
+    static Base::NativePythonReference replace_stderr;
 #ifdef FC_DEBUG
     long logMessageSize = 0;
 #else
@@ -421,11 +418,11 @@ public:
 
 bool ReportOutput::Data::redirected_stdout = false;
 PyObject* ReportOutput::Data::default_stdout = nullptr;
-PyObject* ReportOutput::Data::replace_stdout = nullptr;
+Base::NativePythonReference ReportOutput::Data::replace_stdout;
 
 bool ReportOutput::Data::redirected_stderr = false;
 PyObject* ReportOutput::Data::default_stderr = nullptr;
-PyObject* ReportOutput::Data::replace_stderr = nullptr;
+Base::NativePythonReference ReportOutput::Data::replace_stderr;
 
 /* TRANSLATOR Gui::DockWnd::ReportOutput */
 
@@ -849,7 +846,7 @@ void ReportOutput::onToggleRedirectPythonStdout()
     else {
         d->redirected_stdout = true;
         Base::PyGILStateLocker lock;
-        PySys_SetObject("stdout", d->replace_stdout);
+        PySys_SetObject("stdout", d->replace_stdout.get());
     }
 
     getWindowParameter()->SetBool("RedirectPythonOutput", d->redirected_stdout);
@@ -865,7 +862,7 @@ void ReportOutput::onToggleRedirectPythonStderr()
     else {
         d->redirected_stderr = true;
         Base::PyGILStateLocker lock;
-        PySys_SetObject("stderr", d->replace_stderr);
+        PySys_SetObject("stderr", d->replace_stderr.get());
     }
 
     getWindowParameter()->SetBool("RedirectPythonErrors", d->redirected_stderr);

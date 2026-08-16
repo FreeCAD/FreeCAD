@@ -24,6 +24,7 @@
 
 #include <CXX/Extensions.hxx>
 #include <list>
+#include <QPointer>
 
 
 namespace Gui
@@ -86,10 +87,7 @@ public:
 
     Py::Object getNavigationStyle(const Py::Tuple&);
 
-    View3DInventorViewer* getView3DInventorViewerPtr() const
-    {
-        return _viewer;
-    }
+    View3DInventorViewer* getView3DInventorViewerPtr() const;
 
 private:
     using method_varargs_handler = PyObject* (*)(PyObject * _self, PyObject* _args);
@@ -104,7 +102,7 @@ private:
 private:
     friend class EditableDatumLabelPy;
     std::list<PyObject*> callbacks;
-    View3DInventorViewer* _viewer;
+    QPointer<View3DInventorViewer> _viewer;
     friend class View3DInventorViewer;
 };
 

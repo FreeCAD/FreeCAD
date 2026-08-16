@@ -26,6 +26,7 @@
 
 #include <App/FeaturePython.h>
 #include <Base/Color.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -81,7 +82,7 @@ public:
     LineFormat m_format;
 
 protected:
-    Py::Object PythonObject;
+    Base::NativePythonReference PythonObject;
 };
 
 //********** GeomFormat ********************************************************
@@ -115,7 +116,7 @@ public:
     LineFormat m_format;
 
 protected:
-    Py::Object PythonObject;
+    Base::NativePythonReference PythonObject;
 };
 
 } //end namespace TechDraw

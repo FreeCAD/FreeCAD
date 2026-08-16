@@ -26,6 +26,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/ViewProviderDocumentObject.h>
+#include <Base/NativePythonReference.h>
 
 #include <QAbstractTableModel>
 
@@ -58,7 +59,12 @@ protected:
     bool initiallyCollapsed() override;
 
 private:
-    Py::Object m_panel;
+    Py::Object panelObject() const
+    {
+        return Py::Object(m_panel.get());
+    }
+
+    Base::NativePythonReference m_panel;
 };
 
 

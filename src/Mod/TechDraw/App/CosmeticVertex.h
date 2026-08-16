@@ -23,6 +23,7 @@
 #pragma once
 
 #include <App/FeaturePython.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -76,7 +77,7 @@ public:
     bool           visible{true};              //base class vertex also has visible property
 
 protected:
-    Py::Object PythonObject;
+    Base::NativePythonReference PythonObject;
 };
 
 } //end namespace TechDraw

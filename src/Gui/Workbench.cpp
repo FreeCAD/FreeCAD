@@ -1126,22 +1126,23 @@ PythonBaseWorkbench::~PythonBaseWorkbench()
     delete _toolBar;
     delete _commandBar;
     if (_workbenchPy) {
-        Base::PyGILStateLocker lock;
-        _workbenchPy->setInvalid();
-        _workbenchPy->DecRef();
+        auto* object = static_cast<Base::PyObjectBase*>(_workbenchPy.get());
+        object->setInvalid();
     }
+    _workbenchPy.reset();
 }
 
 PyObject* PythonBaseWorkbench::getPyObject()
 {
     if (!_workbenchPy) {
-        _workbenchPy = new PythonWorkbenchPy(this);
+        auto* object = new PythonWorkbenchPy(this);
+        _workbenchPy.reset(static_cast<PyObject*>(object));
     }
 
     // Increment every time when this object is returned
-    _workbenchPy->IncRef();
+    Py_INCREF(_workbenchPy.get());
 
-    return _workbenchPy;
+    return _workbenchPy.get();
 }
 
 MenuItem* PythonBaseWorkbench::setupMenuBar() const

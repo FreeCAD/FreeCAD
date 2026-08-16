@@ -30,6 +30,8 @@
 #include "Dialogs/DlgPreferencesImp.h"
 #include "PropertyPage.h"
 #include <CXX/Extensions.hxx>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 
 QT_BEGIN_NAMESPACE
 class QDir;
@@ -183,7 +185,12 @@ public:
     void* Produce() const override;
 
 private:
-    Py::Object type;
+    Py::Object pythonType() const
+    {
+        return Py::Object(type.get());
+    }
+
+    Base::NativePythonReference type;
 };
 
 // --------------------------------------------------------------------
@@ -371,7 +378,7 @@ public Q_SLOTS:
 
 private:
     PyObject* myResource;
-    PyObject* myCallback;
+    Base::NativePythonReference myCallback;
 };
 
 // ----------------------------------------------------
@@ -396,7 +403,12 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
-    Py::Object page;
+    Py::Object pythonPage() const
+    {
+        return Py::Object(page.get());
+    }
+
+    Base::NativePythonReference page;
 };
 
 }  // namespace Dialog

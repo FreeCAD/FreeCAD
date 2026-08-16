@@ -26,6 +26,7 @@
 
 
 #include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <App/Document.h>
 
 #include "MDIViewPyWrap.h"
@@ -41,9 +42,9 @@ namespace Gui
 class MDIViewPyWrapImp
 {
 public:
-    MDIViewPyWrapImp(Py::Object pyobject)
-        : pyobject {pyobject}
+    MDIViewPyWrapImp(Py::Object object)
     {
+        pyobject.reset(object);
         Base::PyGILStateLocker lock;
         std::vector<std::string> methods = {
             "widget",
@@ -59,16 +60,15 @@ public:
         };
 
         for (const auto& it : methods) {
-            if (pyobject.hasAttr(it)) {
-                func[it] = pyobject.getAttr(it);
+            if (object.hasAttr(it)) {
+                func[it].reset(object.getAttr(it));
             }
         }
     }
 
     ~MDIViewPyWrapImp()
     {
-        Base::PyGILStateLocker lock;
-        pyobject = Py::None();
+        pyobject.reset();
         func.clear();
     }
 
@@ -80,7 +80,7 @@ public:
         if (!func.contains("widget")) {
             throw Py::AttributeError("Object has no attribute 'widget'");
         }
-        Py::Callable target(func.at("widget"));
+        Py::Callable target(function("widget"));
         Py::Object pywidget(target.apply(Py::Tuple()));
         return qobject_cast<QWidget*>(wrap.toQObject(pywidget));
     }
@@ -88,7 +88,7 @@ public:
     bool onMsg(const char* pMsg)
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("onMsg"));
+        Py::Callable target(function("onMsg"));
         Py::Boolean result(target.apply(Py::TupleN(Py::String(pMsg))));
         return static_cast<bool>(result);
     }
@@ -96,7 +96,7 @@ public:
     bool onHasMsg(const char* pMsg)
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("onHasMsg"));
+        Py::Callable target(function("onHasMsg"));
         Py::Boolean result(target.apply(Py::TupleN(Py::String(pMsg))));
         return static_cast<bool>(result);
     }
@@ -104,7 +104,7 @@ public:
     bool canClose()
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("canClose"));
+        Py::Callable target(function("canClose"));
         Py::Boolean result(target.apply(Py::Tuple()));
         return static_cast<bool>(result);
     }
@@ -115,35 +115,35 @@ public:
         PythonWrapper wrap;
         wrap.loadPrintSupportModule();
         Py::Object pyprint = wrap.fromQPrinter(printer);
-        Py::Callable target(func.at("printDocument"));
+        Py::Callable target(function("printDocument"));
         target.apply(Py::TupleN(pyprint));
     }
 
     void print()
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("print"));
+        Py::Callable target(function("print"));
         target.apply(Py::Tuple());
     }
 
     void printPdf()
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("printPdf"));
+        Py::Callable target(function("printPdf"));
         target.apply(Py::Tuple());
     }
 
     void printPreview()
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("printPreview"));
+        Py::Callable target(function("printPreview"));
         target.apply(Py::Tuple());
     }
 
     QStringList undoActions()
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("undoActions"));
+        Py::Callable target(function("undoActions"));
         Py::List list(target.apply(Py::Tuple()));
         QStringList actions;
         for (const auto& it : list) {
@@ -156,7 +156,7 @@ public:
     QStringList redoActions()
     {
         Base::PyGILStateLocker lock;
-        Py::Callable target(func.at("redoActions"));
+        Py::Callable target(function("redoActions"));
         Py::List list(target.apply(Py::Tuple()));
         QStringList actions;
         for (const auto& it : list) {
@@ -167,8 +167,13 @@ public:
     }
 
 private:
-    std::unordered_map<std::string, Py::Object> func;
-    Py::Object pyobject;
+    Py::Object function(const char* name) const
+    {
+        return Py::Object(func.at(name).get());
+    }
+
+    std::unordered_map<std::string, Base::NativePythonReference> func;
+    Base::NativePythonReference pyobject;
 };
 
 }  // namespace Gui

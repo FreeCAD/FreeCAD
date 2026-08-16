@@ -1064,22 +1064,24 @@ LinkView::~LinkView()
 {
     unlink(linkInfo);
     unlink(linkOwner);
+    PythonObject.reset();
 }
 
 PyObject* LinkView::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        PythonObject = Py::Object(new LinkViewPy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new LinkViewPy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 void LinkView::setInvalid()
 {
-    if (!PythonObject.is(Py::_None())) {
-        auto obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
+    if (PythonObject) {
+        auto obj = static_cast<Base::PyObjectBase*>(PythonObject.get());
         obj->setInvalid();
-        obj->DecRef();
+        PythonObject.reset();
     }
     else {
         delete this;
@@ -3521,10 +3523,10 @@ void ViewProviderLink::updateLinks(ViewProvider* vp)
 PyObject* ViewProviderLink::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderLinkPy(this);
+        pyViewObject.reset(new ViewProviderLinkPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 PyObject* ViewProviderLink::getPyLinkView()

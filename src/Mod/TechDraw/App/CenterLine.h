@@ -23,6 +23,7 @@
 #pragma once
 
 #include <App/FeaturePython.h>
+#include <Base/NativePythonReference.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -68,7 +69,9 @@ public:
     }
 
     CenterLine();
+    CenterLine(const CenterLine& other);
     CenterLine(const CenterLine* cl);
+    CenterLine& operator=(const CenterLine& other);
     //set m_faces after using next 3 ctors
     CenterLine(const TechDraw::BaseGeomPtr& bg,
                const Mode m = Mode::VERTICAL,
@@ -178,7 +181,7 @@ public:
 protected:
     void initialize();
 
-    Py::Object PythonObject;
+    Base::NativePythonReference PythonObject;
 };
 
 }  // namespace TechDraw

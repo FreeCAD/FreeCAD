@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include "TaskDialog.h"
 #include "TaskWatcher.h"
 
@@ -67,7 +69,12 @@ public:
     bool shouldShow() override;
 
 private:
-    Py::Object watcher;
+    Py::Object pythonObject() const
+    {
+        return Py::Object(watcher.get());
+    }
+
+    Base::NativePythonReference watcher;
 };
 
 /**
@@ -191,9 +198,13 @@ private:
     bool tryLoadForm();
     void appendForm(QWidget* widget, const QPixmap& icon);
     void clearForm();
+    Py::Object dialogObject() const
+    {
+        return Py::Object(dlg.get());
+    }
 
 private:
-    Py::Object dlg;
+    Base::NativePythonReference dlg;
 };
 
 }  // namespace TaskView

@@ -133,10 +133,10 @@ ViewProvider::ViewProvider()
 ViewProvider::~ViewProvider()
 {
     if (pyViewObject) {
-        Base::PyGILStateLocker lock;
-        pyViewObject->setInvalid();
-        pyViewObject->DecRef();
+        auto* object = static_cast<Base::PyObjectBase*>(pyViewObject.get());
+        object->setInvalid();
     }
+    pyViewObject.reset();
 
     if (pcRoot && pcRoot->isOfType(SoFCSelectionRoot::getClassTypeId())) {
         static_cast<SoFCSelectionRoot*>(pcRoot)->setViewProvider(nullptr);
@@ -618,10 +618,11 @@ std::string ViewProvider::toString() const
 PyObject* ViewProvider::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderPy(this);
+        auto* object = new ViewProviderPy(this);
+        pyViewObject.reset(static_cast<PyObject*>(object));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 

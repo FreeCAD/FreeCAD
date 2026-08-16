@@ -734,8 +734,7 @@ PropertyMeshKernel::~PropertyMeshKernel()
     if (meshPyObject) {
         // Note: Do not call setInvalid() of the Python binding
         // because the mesh should still be accessible afterwards.
-        meshPyObject->parentProperty = nullptr;
-        Py_DECREF(meshPyObject);
+        static_cast<MeshPy*>(meshPyObject.get())->parentProperty = nullptr;
     }
 }
 
@@ -846,15 +845,14 @@ Base::Matrix4D PropertyMeshKernel::getTransform() const
 PyObject* PropertyMeshKernel::getPyObject()
 {
     if (!meshPyObject) {
-        meshPyObject = new MeshPy(&*_meshObject);  // Lgtm[cpp/resource-not-released-in-destructor]
-                                                   // ** Not destroyed in this class because it is
-                                                   // reference-counted and destroyed elsewhere
-        meshPyObject->setConst();                  // set immutable
-        meshPyObject->parentProperty = this;
+        auto* object = new MeshPy(&*_meshObject);
+        object->setConst();  // set immutable
+        object->parentProperty = this;
+        meshPyObject.reset(object);
     }
 
-    Py_INCREF(meshPyObject);
-    return meshPyObject;
+    Py_INCREF(meshPyObject.get());
+    return meshPyObject.get();
 }
 
 void PropertyMeshKernel::setPyObject(PyObject* value)

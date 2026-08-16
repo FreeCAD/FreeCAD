@@ -56,10 +56,10 @@ template<>
 PyObject* FemGui::ViewProviderPostFilterPython::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderFemPostFilterPy(this);
+        pyViewObject.reset(new ViewProviderFemPostFilterPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 // explicit template instantiation

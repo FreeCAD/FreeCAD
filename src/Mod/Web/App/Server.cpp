@@ -61,8 +61,9 @@ bool Firewall::filter(const QByteArray&) const
 }
 
 FirewallPython::FirewallPython(const Py::Object& o)
-    : obj(o)
-{}
+{
+    obj.reset(o);
+}
 
 FirewallPython::~FirewallPython() = default;
 
@@ -70,7 +71,8 @@ bool FirewallPython::filter(const QByteArray& msg) const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::Callable call(obj);
+        Py::Object firewallObject(obj.get());
+        Py::Callable call(firewallObject);
         Py::Tuple args(1);
         args.setItem(0, Py::String(msg.constData()));
         Py::Boolean ok(call.apply(args));
@@ -110,7 +112,7 @@ AppServer::AppServer(bool direct, QObject* parent)
 {
     PyObject* mod = PyImport_ImportModule("__main__");
     if (mod) {
-        module = mod;
+        module.reset(mod);
     }
     else {
         throw Py::RuntimeError("Cannot load __main__ module");
@@ -186,7 +188,8 @@ std::string AppServer::getRequest(const std::string& str) const
 {
     try {
         Base::PyGILStateLocker lock;
-        Py::Object attr = module.getAttr(std::string("GET"));
+        Py::Object mainModule(module.get());
+        Py::Object attr = mainModule.getAttr(std::string("GET"));
         return attr.as_string();
     }
     catch (Py::Exception& e) {

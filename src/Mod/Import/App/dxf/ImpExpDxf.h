@@ -33,6 +33,7 @@
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/FeatureCompound.h>
+#include <Base/NativePythonReference.h>
 
 #include "dxf.h"
 
@@ -58,10 +59,7 @@ public:
     ImpExpDxfRead(ImpExpDxfRead&&) = delete;
     void operator=(const ImpExpDxfRead&) = delete;
     void operator=(ImpExpDxfRead&&) = delete;
-    ~ImpExpDxfRead() override
-    {
-        Py_XDECREF(DraftModule);
-    }
+    ~ImpExpDxfRead() override = default;
     static std::map<std::string, int> PreScan(const std::string& filepath);
     void StartImport() override;
 
@@ -176,7 +174,7 @@ private:
     // to the drawing. unref's all the shapes in the collection, possibly freeing them.
     void CombineShapes(std::list<TopoDS_Shape>& shapes, const char* nameBase) const;
     TopoDS_Shape CombineShapesToCompound(const std::list<TopoDS_Shape>& shapes) const;
-    PyObject* DraftModule = nullptr;
+    Base::NativePythonReference DraftModule;
     std::set<std::string> m_referencedBlocks;
     void ComposeBlocks();
     void ComposeParametricBlock(const std::string& blockName, std::set<std::string>& composed);
@@ -187,14 +185,14 @@ private:
 protected:
     PyObject* getDraftModule()
     {
-        if (DraftModule == nullptr) {
+        if (!DraftModule) {
             static int times = 0;
-            DraftModule = PyImport_ImportModule("Draft");
-            if (DraftModule == nullptr && times++ == 0) {
+            DraftModule.reset(PyImport_ImportModule("Draft"));
+            if (!DraftModule && times++ == 0) {
                 ImportError("Unable to locate \"Draft\" module");
             }
         }
-        return DraftModule;
+        return DraftModule.get();
     }
     CDxfRead::Layer* MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType) override;
 
@@ -214,7 +212,7 @@ protected:
         void operator=(Layer&&) = delete;
         ~Layer() override;
         // The View object for the layer or Py_None (e.g. if no gui)
-        PyObject* const DraftLayerView;
+        Base::NativePythonReference DraftLayerView;
         std::vector<App::DocumentObject*> Contents;
         void FinishLayer() const;
         App::PropertyLinkListHidden* GroupContents;

@@ -25,6 +25,8 @@
 #pragma once
 
 #include <Gui/WorkbenchManipulator.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <CXX/Objects.hxx>
 
 namespace Gui
@@ -82,7 +84,12 @@ private:
     void tryModifyDockWindows(const Py::Dict& dict, DockWindowItems* dockWindow);
 
 private:
-    Py::Object object;
+    Py::Object pythonObject() const
+    {
+        return Py::Object(object.get());
+    }
+
+    Base::NativePythonReference object;
 };
 
 }  // namespace Gui

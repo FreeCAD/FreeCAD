@@ -263,8 +263,8 @@ bool ViewProviderFemPostPipeline::canDragObjectToTarget(
 PyObject* ViewProviderFemPostPipeline::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderFemPostPipelinePy(this);
+        pyViewObject.reset(new ViewProviderFemPostPipelinePy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }

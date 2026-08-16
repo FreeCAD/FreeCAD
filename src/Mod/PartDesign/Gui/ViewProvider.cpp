@@ -464,10 +464,10 @@ void ViewProvider::makeTemporaryVisible(bool onoff)
 PyObject* ViewProvider::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderPy(this);
+        pyViewObject.reset(new ViewProviderPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 ViewProviderBody* ViewProvider::getBodyViewProvider()

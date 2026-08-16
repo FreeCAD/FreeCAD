@@ -26,6 +26,8 @@
 #include "MDIViewPy.h"
 
 #include <Base/Parameter.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <vector>
 
 
@@ -75,7 +77,7 @@ protected:
 
 protected:
     std::vector<View3DInventorViewer*> _viewer;
-    PyObject* _viewerPy;
+    Base::NativePythonReference _viewerPy;
     std::unique_ptr<View3DSettings> viewSettings;
 };
 

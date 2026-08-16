@@ -61,21 +61,41 @@ CenterLine::CenterLine()
     initialize();
 }
 
-CenterLine::CenterLine(const TechDraw::CenterLine* cl)
+CenterLine::CenterLine(const TechDraw::CenterLine& cl)
+    : CenterLine()
 {
-    m_start = cl->m_start;
-    m_end = cl->m_end;
-    m_mode = cl->m_mode;
-    m_hShift = cl->m_hShift;
-    m_vShift = cl->m_vShift;
-    m_rotate = cl->m_rotate;
-    m_extendBy = cl->m_extendBy;
-    m_type = cl->m_type;
-    m_flip2Line = cl->m_flip2Line;
+    *this = cl;
+}
 
-    m_geometry = cl->m_geometry;    //new BaseGeom(cl->m_geometry);??
+CenterLine::CenterLine(const TechDraw::CenterLine* cl)
+    : CenterLine(*cl)
+{}
 
-    initialize();
+CenterLine& CenterLine::operator=(const TechDraw::CenterLine& cl)
+{
+    if (this == &cl) {
+        return *this;
+    }
+
+    m_start = cl.m_start;
+    m_end = cl.m_end;
+    m_faces = cl.m_faces;
+    m_edges = cl.m_edges;
+    m_verts = cl.m_verts;
+    m_type = cl.m_type;
+    m_mode = cl.m_mode;
+    m_hShift = cl.m_hShift;
+    m_vShift = cl.m_vShift;
+    m_rotate = cl.m_rotate;
+    m_extendBy = cl.m_extendBy;
+    m_format = cl.m_format;
+    m_flip2Line = cl.m_flip2Line;
+    m_geometry = cl.m_geometry;
+    setTag(cl.getTag());
+
+    // PythonObject is a cache for this native instance and must not be shared
+    // with a copied CenterLine.
+    return *this;
 }
 
 CenterLine::CenterLine(const TechDraw::BaseGeomPtr& bg,
@@ -1062,11 +1082,11 @@ CenterLine *CenterLine::clone() const
 // To do: make const
 PyObject* CenterLine::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new CenterLinePy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new CenterLinePy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 
@@ -1115,4 +1135,3 @@ bool CenterLine::getFlip() const
 {
     return m_flip2Line;
 }
-

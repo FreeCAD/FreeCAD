@@ -28,6 +28,8 @@
 #include <string>
 
 #include <App/Application.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 
 #include "StyleParameters/ParameterManager.h"
 
@@ -67,6 +69,10 @@ public:
     explicit Application(bool GUIenabled);
     /// destruction
     ~Application();
+
+    /// Close GUI-owned producers and native Python references before
+    /// interpreter finalization.
+    void prepareForShutdown();
 
     /// Initializes default configuration for Style Parameter Manager
     void initStyleParameterManager();
@@ -349,9 +355,10 @@ public:
 private:
     struct ApplicationP* d;
     /// workbench python dictionary
-    PyObject* _pcWorkbenchDictionary;
+    Base::NativePythonReference _pcWorkbenchDictionary;
     NavlibInterface* pNavlibInterface;
     void shutdown();
+    bool _preparedForShutdown {false};
     static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
 
     friend class ApplicationPy;
