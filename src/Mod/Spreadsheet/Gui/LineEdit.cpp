@@ -108,7 +108,11 @@ void LineEdit::setDocumentObject(const App::DocumentObject* currentDocObj, bool 
         xpopup->setGeometry(new_pos.x(), new_pos.y(), getPopupWidth(), xpopup->height());
     };
 
-    QObject::connect(xpopup, &XListView::geometryChanged, this, updatePopupGeom);
+    /* Queued: the signal comes from inside XListView's own paint, and moving a top-level window
+     * between screens of different scaling repaints synchronously, re-entering that paint.
+     * See #31348.
+     */
+    QObject::connect(xpopup, &XListView::geometryChanged, this, updatePopupGeom, Qt::QueuedConnection);
 }
 
 void LineEdit::focusOutEvent(QFocusEvent* event)
