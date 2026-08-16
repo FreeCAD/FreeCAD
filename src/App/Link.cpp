@@ -2532,10 +2532,10 @@ static bool isExcludedProperties(const char* name)
     return false;
 }
 
-Property* LinkBaseExtension::extensionGetPropertyByName(const char* name) const
+Property* LinkBaseExtension::extensionGetPropertyByName(const char* name, PropertyLookupMode mode) const
 {
     if (checkingProperty) {
-        return inherited::extensionGetPropertyByName(name);
+        return inherited::extensionGetPropertyByName(name, mode);
     }
     Base::StateLocker guard(checkingProperty);
     if (isExcludedProperties(name)) {
@@ -2543,14 +2543,14 @@ Property* LinkBaseExtension::extensionGetPropertyByName(const char* name) const
     }
     auto owner = getContainer();
     if (owner) {
-        App::Property* prop = owner->getPropertyByName(name);
+        App::Property* prop = owner->getPropertyByName(name, mode);
         if (prop) {
             return prop;
         }
         if (owner->canLinkProperties()) {
             auto linked = getTrueLinkedObject(true);
             if (linked) {
-                return linked->getPropertyByName(name);
+                return linked->getPropertyByName(name, mode);
             }
         }
     }

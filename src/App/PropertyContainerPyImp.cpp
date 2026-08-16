@@ -700,3 +700,53 @@ PyObject* PropertyContainerPy::renameProperty(PyObject* args) const
     PY_CATCH
 }
 
+PyObject* PropertyContainerPy::addPropertyAlias(PyObject* args, PyObject* kwds)
+{
+    const char* canonicalName {};
+    const char* alias {};
+    PyObject* pyDeprecated = Py_False;
+    const char* since = "";
+    static const std::array<const char*, 5> kwlist {"property",
+                                                     "alias",
+                                                     "deprecated",
+                                                     "since",
+                                                     nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(args,
+                                             kwds,
+                                             "ss|O!s",
+                                             kwlist,
+                                             &canonicalName,
+                                             &alias,
+                                             &PyBool_Type,
+                                             &pyDeprecated,
+                                             &since)) {
+        return nullptr;
+    }
+    PY_TRY
+    {
+        auto aliasType = PyObject_IsTrue(pyDeprecated) ? App::PropertyAliasType::Deprecated
+                                                       : App::PropertyAliasType::Normal;
+        getPropertyContainerPtr()->addPropertyAlias(canonicalName, alias, aliasType, since);
+        Py_Return;
+    }
+    PY_CATCH
+}
+
+PyObject* PropertyContainerPy::getPropertyAliases() const
+{
+    PY_TRY
+    {
+        Py::Dict dict;
+        for (const auto& [alias, entry] : getPropertyContainerPtr()->getPropertyAliases()) {
+            Py::Dict info;
+            info.setItem("canonical", Py::String(entry.canonicalName));
+            info.setItem("deprecated",
+                         Py::Boolean(entry.type == App::PropertyAliasType::Deprecated));
+            info.setItem("since", Py::String(entry.since));
+            dict.setItem(alias, info);
+        }
+        return Py::new_reference_to(dict);
+    }
+    PY_CATCH
+}
+
