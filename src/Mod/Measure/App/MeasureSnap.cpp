@@ -61,11 +61,11 @@ namespace
 {
 
 // Mutable and sentinel-terminated because setEnums() takes const char**.
-std::array<const char*, 7> SnapModeLabels =
-    {"Auto", "None", "Vertex", "Center", "Midpoint", "Axis", nullptr};
+std::array<const char*, 7> SnapModeLabels
+    = {"Auto", "None", "Vertex", "Center", "Midpoint", "Axis", nullptr};
 
-constexpr std::array<const char*, 5> SnaplessMeasureTypes =
-    {"LENGTH", "AREA", "DIAMETER", "RADIUS", "CENTEROFMASS"};
+constexpr std::array<const char*, 5> SnaplessMeasureTypes
+    = {"LENGTH", "AREA", "DIAMETER", "RADIUS", "CENTEROFMASS"};
 
 // A degenerate or curveless edge (sphere pole, cone apex) carries no 3D curve;
 // constructing an adaptor on it raises, so callers must reject it first.
@@ -191,12 +191,7 @@ std::optional<gp_Pnt> vertexOf(const TopoDS_Shape& shape, const Base::Vector3d* 
 
 // Preview point and direction for an axis snap. The point is the cursor, else the
 // face bbox centre, projected onto the axis so it sits on the visible geometry.
-bool axisPointOf(
-    const TopoDS_Shape& shape,
-    const Base::Vector3d* cursor,
-    gp_Pnt& out,
-    gp_Dir* outDir
-)
+bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp_Pnt& out, gp_Dir* outDir)
 {
     if (shape.IsNull()) {
         return false;
