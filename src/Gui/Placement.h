@@ -65,7 +65,7 @@ public:
     const Base::Placement& getRefPlacement() const;
     void applyPlacement(const Base::Placement& p, bool incremental);
     void applyPlacement(const QString& p, bool incremental);
-    Base::Vector3d computeCenterOfMass() const;
+    bool computeCenterOfMass(Base::Vector3d& centerOfMass) const;
     static Base::Vector3d relativeCenter(
         const Base::Vector3d& globalCenter,
         const Base::Vector3d& objectPosition
