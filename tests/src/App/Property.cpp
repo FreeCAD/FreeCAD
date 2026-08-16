@@ -1425,3 +1425,124 @@ TEST_F(PropertyAlias, registrationRenamesUserAddedPropertyOnCollision)
     EXPECT_STREQ(userAdded->getName(), "ClaimedName");
     EXPECT_EQ(userAdded->getValue(), 5);
 }
+
+// Tests that an expression written against an alias is rewritten to the canonical name when
+// the document is restored, so files stop accumulating alias references.
+TEST_F(PropertyAliasStatic, restoredExpressionIsCanonicalized)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasDeprecated")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    std::string text = expressions.begin()->second->toString();
+    EXPECT_NE(text.find("AliasTarget"), std::string::npos);
+    EXPECT_EQ(text.find("AliasDeprecated"), std::string::npos);
+}
+
+// Tests that healing an expression does not make the document dirty. Opening a file should
+// never mark it as modified.
+TEST_F(PropertyAliasStatic, canonicalizationLeavesDocumentUntouched)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasDeprecated")
+    );
+
+    doc->recompute();
+    doc->purgeTouched();
+    doc->afterRestore();
+
+    EXPECT_FALSE(doc->isTouched());
+}
+
+// Tests that the logged rewrite count is measured rather than assumed.
+TEST_F(PropertyAliasStatic, canonicalizationLogsRewriteCount)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasDeprecated")
+    );
+    doc->recompute();
+
+    LogCapture capture;
+    doc->afterRestore();
+
+    auto matches = [](const std::string& line) {
+        return line.find("canonicalized 1 expression reference(s)") != std::string::npos;
+    };
+    EXPECT_TRUE(std::ranges::any_of(capture.messages, matches));
+}
+
+// Tests that a document with no aliased references is left completely alone.
+TEST_F(PropertyAliasStatic, canonicalizationSkipsDocumentsWithoutAliasedReferences)
+{
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.AliasTarget")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    EXPECT_NE(expressions.begin()->second->toString().find("AliasTarget"), std::string::npos);
+}
+
+// Tests that an alias shadowed by a real property of the same name is left alone: it is a
+// genuine property reference, not a stale alias, so canonicalization must not rewrite it.
+TEST_F(PropertyAliasStatic, canonicalizationSkipsShadowedAlias)
+{
+    // "Shadowed" is first added as a real dynamic property, then separately registered as an
+    // alias for AliasTarget. Because AliasTarget already exists, addPropertyAlias() declines to
+    // migrate/rename the dynamic property, leaving "Shadowed" as a genuine property that
+    // happens to share its name with a registered alias.
+    first->addDynamicProperty("App::PropertyInteger", "Shadowed", "Variables");
+    first->addPropertyAlias("AliasTarget", "Shadowed", App::PropertyAliasType::Normal, "1.3");
+    ASSERT_TRUE(first->getPropertyByName("Shadowed", App::PropertyLookupMode::WithoutAliases));
+    ASSERT_TRUE(first->getPropertyAliases().contains("Shadowed"));
+
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.Shadowed")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    std::string text = expressions.begin()->second->toString();
+    EXPECT_NE(text.find("Shadowed"), std::string::npos);
+    EXPECT_EQ(text.find("AliasTarget"), std::string::npos);
+}
+
+// Tests that a dangling alias -- one whose canonical name does not resolve to any real
+// property, e.g. a typo or a bad add-on registration -- is left alone by canonicalization.
+// Rewriting an expression to a canonical name that does not exist would permanently corrupt
+// it, since the rewrite gets written back to the file on next save.
+TEST_F(PropertyAliasStatic, canonicalizationLeavesDanglingAliasAlone)
+{
+    first->addPropertyAlias("DoesNotExist", "DanglingAlias", App::PropertyAliasType::Normal, "1.3");
+    ASSERT_FALSE(first->getPropertyByName("DoesNotExist", App::PropertyLookupMode::WithoutAliases));
+    ASSERT_TRUE(first->getPropertyAliases().contains("DanglingAlias"));
+
+    second->setExpression(
+        App::ObjectIdentifier(second, std::string("Integer")),
+        App::Expression::parse(second, "First.DanglingAlias")
+    );
+
+    doc->recompute();
+    doc->afterRestore();
+
+    auto expressions = second->ExpressionEngine.getExpressions();
+    ASSERT_EQ(expressions.size(), 1U);
+    std::string text = expressions.begin()->second->toString();
+    EXPECT_NE(text.find("DanglingAlias"), std::string::npos);
+}

@@ -25,9 +25,13 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Expression.h>
 #include <App/FeatureTest.h>
+#include <App/ObjectIdentifier.h>
 #include <App/PropertyContainer.h>
 #include <App/PropertyStandard.h>
 #include <App/VarSet.h>
@@ -72,6 +76,41 @@ public:
     }
 
     std::vector<std::string> warnings;
+};
+
+/// RAII helper that captures messages emitted via Base::Console().
+class LogCapture: public Base::ILogger
+{
+public:
+    LogCapture()
+    {
+        Base::Console().attachObserver(this);
+    }
+
+    ~LogCapture() override
+    {
+        Base::Console().detachObserver(this);
+    }
+
+    const char* name() override
+    {
+        return "LogCapture";
+    }
+
+    void sendLog(
+        const std::string& /*notifierName*/,
+        const std::string& message,
+        Base::LogStyle level,
+        Base::IntendedRecipient /*recipient*/,
+        Base::ContentType /*content*/
+    ) override
+    {
+        if (level == Base::LogStyle::Message) {
+            messages.push_back(message);
+        }
+    }
+
+    std::vector<std::string> messages;
 };
 
 class PropertyAliasStatic: public ::testing::Test
