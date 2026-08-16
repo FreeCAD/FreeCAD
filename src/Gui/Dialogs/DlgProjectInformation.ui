@@ -374,8 +374,8 @@
     </widget>
    </item>
    <item row="2" column="0">
-    <widget class="QWidget" name="widgetFirstSaveOptions" native="true">
-     <layout class="QVBoxLayout" name="verticalLayoutFirstSaveOptions">
+    <widget class="QWidget" name="widgetNewDocumentOptions" native="true">
+     <layout class="QVBoxLayout" name="verticalLayoutNewDocumentOptions">
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -419,12 +419,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="checkBoxDontShowAgain">
-        <property name="toolTip">
-         <string>Stops showing this dialog when a document is saved for the first time. It can be re-enabled in Preferences, Document.</string>
-        </property>
-        <property name="text">
-         <string>Do not show this again when saving a new document</string>
+       <widget class="Line" name="lineNewDocumentOptions">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
@@ -432,11 +429,38 @@
     </widget>
    </item>
    <item row="3" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayoutButtons">
+     <item>
+      <widget class="QCheckBox" name="checkBoxDontShowAgain">
+       <property name="toolTip">
+        <string>Stops showing this dialog when a new document is created. It can be re-enabled in Preferences, Document.</string>
+       </property>
+       <property name="text">
+        <string>Do not ask again for new documents</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacerButtons">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QDialogButtonBox" name="buttonBox">
+       <property name="standardButtons">
+        <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

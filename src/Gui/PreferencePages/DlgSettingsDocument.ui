@@ -585,18 +585,18 @@ get date suffix according to the specified format</string>
        </widget>
       </item>
       <item row="11" column="0">
-       <widget class="Gui::PrefCheckBox" name="prefAskProjectInfoOnFirstSave">
+       <widget class="Gui::PrefCheckBox" name="prefAskProjectInfoOnNewDocument">
         <property name="toolTip">
-         <string>Shows the document information dialog when a document is saved for the first time</string>
+         <string>Shows the document information dialog when a new document is created</string>
         </property>
         <property name="text">
-         <string>Ask for document information on first save</string>
+         <string>Ask for document information when creating a new document</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>AskProjectInfoOnFirstSave</cstring>
+         <cstring>AskProjectInfoOnNewDocument</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Document</cstring>

@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/License.h>
+#include <App/PropertyStandard.h>
 #include <Base/UnitsApi.h>
 
 #include "Dialogs/DlgProjectInformationImp.h"
@@ -144,8 +145,9 @@ DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* 
     QString text = lines.join(QLatin1String("\n"));
     ui->textEditComment->setPlainText(text);
 
-    // Only shown when the dialog is opened on the first save of a document
-    ui->widgetFirstSaveOptions->hide();
+    // Only shown when the dialog is opened for a newly created document
+    ui->widgetNewDocumentOptions->hide();
+    ui->checkBoxDontShowAgain->hide();
 
     connect(ui->pushButtonOpenURL, &QPushButton::clicked, this, &DlgProjectInformationImp::open_url);
     connect(
@@ -165,53 +167,90 @@ DlgProjectInformationImp::~DlgProjectInformationImp()
     delete ui;
 }
 
-void DlgProjectInformationImp::setFirstSaveMode()
+void DlgProjectInformationImp::setNewDocumentMode()
 {
-    _firstSaveMode = true;
-    ui->widgetFirstSaveOptions->show();
+    _newDocumentMode = true;
+    ui->widgetNewDocumentOptions->show();
+    ui->checkBoxDontShowAgain->show();
 
     // Nothing in this section is known yet: the document has not been written, so it
     // has no path, no name of its own and no modification history
     ui->groupBoxFileInfo->hide();
 }
 
+void DlgProjectInformationImp::showForNewDocument(App::Document* doc)
+{
+    // Skip if no GUI (headless/scripted mode)
+    if (!doc || !getMainWindow()) {
+        return;
+    }
+
+    if (!App::GetApplication()
+             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+             ->GetBool("AskProjectInfoOnNewDocument", true)) {
+        return;
+    }
+
+    DlgProjectInformationImp dlg(doc, getMainWindow());
+    dlg.setNewDocumentMode();
+
+    // Dismissing the dialog just leaves the metadata at its defaults
+    dlg.exec();
+}
+
 /**
- * Applies the changes to the project information of the given document.
+ * Applies the changes to the project information of the given document. Properties are
+ * only written when their value actually changed, so that confirming the dialog without
+ * editing anything does not mark the document as modified.
  */
 void DlgProjectInformationImp::accept()
 {
-    _doc->CreatedBy.setValue(ui->lineEditCreator->text().toUtf8());
-    _doc->LastModifiedBy.setValue(ui->lineEditCreator->text().toUtf8());
-    _doc->Company.setValue(ui->lineEditCompany->text().toUtf8());
+    auto setIfChanged = [](App::PropertyString& property, const QByteArray& value) {
+        if (value != property.getValue()) {
+            property.setValue(value.constData());
+        }
+    };
+
+    const QByteArray creator {ui->lineEditCreator->text().toUtf8()};
+    setIfChanged(_doc->CreatedBy, creator);
+    setIfChanged(_doc->LastModifiedBy, creator);
+    setIfChanged(_doc->Company, ui->lineEditCompany->text().toUtf8());
     getMainWindow()->setUserSchema(ui->comboBox_unitSystem->currentIndex());
     QByteArray licenseName {ui->comboLicense->currentData().toByteArray()};
     // Is this really necessary?
     if (licenseName.isEmpty()) {
         licenseName = ui->comboLicense->currentText().toUtf8();
     }
-    _doc->License.setValue(licenseName);
-    _doc->LicenseURL.setValue(ui->lineEditLicenseURL->text().toUtf8());
+    setIfChanged(_doc->License, licenseName);
+    setIfChanged(_doc->LicenseURL, ui->lineEditLicenseURL->text().toUtf8());
 
     // Replace newline escape sequence through '\\n' string
     QStringList lines
         = ui->textEditComment->toPlainText().split(QLatin1String("\n"), Qt::KeepEmptyParts);
 
     QString text = lines.join(QLatin1String("\\n"));
-    _doc->Comment.setValue(text.isEmpty() ? QByteArray() : text.toUtf8());
+    setIfChanged(_doc->Comment, text.isEmpty() ? QByteArray() : text.toUtf8());
 
-    applyFirstSaveOptions();
+    applyNewDocumentOptions();
 
     QDialog::accept();
 }
 
+void DlgProjectInformationImp::reject()
+{
+    applyDontShowAgain();
+
+    QDialog::reject();
+}
+
 /**
  * Stores the creator, the company and the license as defaults for new documents, and
- * suppresses this dialog on future first saves, according to the options the user
+ * suppresses this dialog for future new documents, according to the options the user
  * selected. Each option is applied independently of the others.
  */
-void DlgProjectInformationImp::applyFirstSaveOptions()
+void DlgProjectInformationImp::applyNewDocumentOptions()
 {
-    if (!_firstSaveMode) {
+    if (!_newDocumentMode) {
         return;
     }
 
@@ -237,9 +276,18 @@ void DlgProjectInformationImp::applyFirstSaveOptions()
         }
     }
 
-    if (ui->checkBoxDontShowAgain->isChecked()) {
-        paramGrp->SetBool("AskProjectInfoOnFirstSave", false);
+    applyDontShowAgain();
+}
+
+void DlgProjectInformationImp::applyDontShowAgain()
+{
+    if (!_newDocumentMode || !ui->checkBoxDontShowAgain->isChecked()) {
+        return;
     }
+
+    App::GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+        ->SetBool("AskProjectInfoOnNewDocument", false);
 }
 
 void DlgProjectInformationImp::onLicenseTypeChanged(int index)
