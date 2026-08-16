@@ -2,6 +2,7 @@
 
 #include "IndexedName.h"
 #include "MappedName.h"
+#include <exception>
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
@@ -635,7 +636,6 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         IndexedName existing;
         MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
         if (res) {
-            ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
             return res;
         }
 
@@ -684,8 +684,15 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         Data::MappedName fixedName;
         unsigned long duplicateIndex = 1;
 
-        if (duplicateIndexString != "0" && duplicateIndexString != Data::EMPTY_VALUE) {
-            duplicateIndex = std::stoul(duplicateIndexString);
+        if (duplicateIndexString.size()
+            && duplicateIndexString != "0"
+            && duplicateIndexString != Data::EMPTY_VALUE)
+        {
+            try {
+                duplicateIndex = std::stoul(duplicateIndexString) + 1;
+            } catch(const std::exception& e) {
+                // duplicateIndexString was not a number, just give up and leave duplicateIndex at 1.
+            }
         }
 
         for (size_t i = 0; i < mappedNames.size(); i++) {
