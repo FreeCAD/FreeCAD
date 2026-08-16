@@ -24,6 +24,7 @@
 
 #include <gp_Ax2.hxx>
 #include <gp_Lin.hxx>
+#include <gp_Pln.hxx>
 #include <utility>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
@@ -34,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
+#include <Base/Translation.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 
 #include "FeatureRevolved.h"
@@ -172,6 +174,20 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     double angle2 = Base::toRadians(angle2Deg);
 
+    if (sideType == "Two sides" && method == RevolMethod::Angle
+        && method2 == RevolMethod::Angle && std::fabs(angle) >= Precision::Angular()
+        && std::fabs(angle2) >= Precision::Angular()
+        && std::fabs(angle + angle2) < Precision::Angular()) {
+        const std::string warning = Base::Translation::translate(
+            "PartDesign",
+            QT_TRANSLATE_NOOP(
+                "PartDesign",
+                "The two revolution angles cancel each other resulting in an empty operation."
+            )
+        );
+        Base::Console().warning("%s\n", warning.c_str());
+    }
+
     TopoShape sketchshape = getTopoShapeVerifiedFace();
 
     // if the Base property has a valid shape, fuse the AddShape into it
@@ -245,7 +261,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
         if (isThroughAll || coversFullRevolution) {
             // Through all is direction-independent, so either side makes the other one
             // irrelevant. Likewise, cap overlapping two-angle sweeps at one full turn.
-            // Smaller signed totals still need the XOR below (for example 90 + (-10) = 80).
+            // Smaller signed totals are handled as one exact angular interval below.
             addRevolution(generateSingleRevolutionSide(
                 isThroughAll ? RevolMethod::ThroughAll : RevolMethod::Angle,
                 fullRevolution,
@@ -258,6 +274,25 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
                 invObjLoc,
                 revolMode
             ));
+        }
+        else if (
+            method == RevolMethod::Angle && method2 == RevolMethod::Angle
+            && std::fabs(combinedAngle) >= Precision::Angular()) {
+            // Both limits are angular, so construct the exact interval between them as one
+            // primitive. Besides avoiding a boolean seam for opposite-side angles, this is
+            // equivalent to XOR for same-side signed angles: 50 + (-20) starts at 20 degrees
+            // and sweeps 30 degrees to 50 degrees.
+            generateRevolution(
+                result,
+                sketchshape,
+                gp_Ax1(pnt, dir),
+                angle,
+                angle2,
+                false,
+                false,
+                RevolMethod::TwoAngles
+            );
+            addRevolution(std::move(result));
         }
         else {
             fuseSideResults = usesBRepFeatRevolution(method, revolMode)
@@ -315,13 +350,16 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
             if (!side.isNull() && !side.getShape().IsNull()) {
                 addRevolution(side.makeElementCopy());
 
-                Base::Vector3d sketchNormal = getProfileNormal();
-                gp_Dir sketchNormalDir(sketchNormal.x, sketchNormal.y, sketchNormal.z);
-                sketchNormalDir.Transform(invObjLoc.Transformation());
-                Base::Vector3d sketchCenter = sketchshape.getBoundBox().GetCenter();
+                // Use the profile's actual plane. The center of its axis-aligned bounding box is
+                // not necessarily on that plane for an asymmetric tilted profile; using it as
+                // the mirror origin made the angles unequal and could make BRepFeat fail.
+                gp_Pln sketchPlane;
+                if (!sketchshape.findPlane(sketchPlane)) {
+                    throw Base::RuntimeError("Could not determine the sketch plane!");
+                }
                 gp_Ax2 mirrorPlane(
-                    gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
-                    sketchNormalDir
+                    sketchPlane.Location(),
+                    sketchPlane.Axis().Direction()
                 );
                 TopoShape mirroredUpToFace = upToFace.makeElementMirror(mirrorPlane);
                 gp_Dir dir2 = dir;
