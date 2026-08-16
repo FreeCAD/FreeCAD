@@ -55,8 +55,22 @@ MeasureSnapManager::~MeasureSnapManager()
     mDeleteDocConn.disconnect();
 }
 
+void MeasureSnapManager::setEnabled(bool enabled)
+{
+    if (mEnabled == enabled) {
+        return;
+    }
+    mEnabled = enabled;
+    if (!enabled) {
+        mIndicator->hide();
+    }
+}
+
 void MeasureSnapManager::onPreselect(const Gui::SelectionChanges& msg)
 {
+    if (!mEnabled) {
+        return;
+    }
     try {
         if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
             mIndicator->hide();

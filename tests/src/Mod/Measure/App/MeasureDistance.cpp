@@ -30,9 +30,15 @@
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Wire.hxx>
+#include <Precision.hxx>
 #include <algorithm>
 #include <cstdio>
 #include <sstream>
+
+namespace
+{
+constexpr double tolerance = 1e-6;
+}  // namespace
 
 class MeasureDistance: public ::testing::Test
 {
@@ -133,7 +139,7 @@ TEST_F(MeasureDistance, testCurvedFaceDistance)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 15.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 15.0, tolerance);
 }
 
 TEST_F(MeasureDistance, testCircleCircle)
@@ -197,10 +203,10 @@ TEST_F(MeasureDistance, testCircleLineExtremaNotCenter)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // Two parallel segments offset by 3 in Z. The closest pair is x-ambiguous, so
@@ -219,10 +225,10 @@ TEST_F(MeasureDistance, testLineLineExtrema)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, tolerance);
 }
 
 // Vertex at (10,0,0) against a sphere of radius 5 at the origin: 10 - 5 = 5.0.
@@ -240,10 +246,10 @@ TEST_F(MeasureDistance, testVertexFaceExtrema)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 5.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 5.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // A single circular-edge wire isn't reduced to a circle, so extrema measures rim-to-rim = 3.0.
@@ -261,20 +267,20 @@ TEST_F(MeasureDistance, testWireCircleExtremaNotCenter)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 1.8, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 2.4, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 1.8, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 2.4, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 
     const Base::Vector3d position1 = md->Position1.getValue();
-    EXPECT_NEAR(position1.x, 0.6, 1e-6);
-    EXPECT_NEAR(position1.y, 0.8, 1e-6);
-    EXPECT_NEAR(position1.z, 0.0, 1e-6);
+    EXPECT_NEAR(position1.x, 0.6, tolerance);
+    EXPECT_NEAR(position1.y, 0.8, tolerance);
+    EXPECT_NEAR(position1.z, 0.0, tolerance);
 
     const Base::Vector3d position2 = md->Position2.getValue();
-    EXPECT_NEAR(position2.x, 2.4, 1e-6);
-    EXPECT_NEAR(position2.y, 3.2, 1e-6);
-    EXPECT_NEAR(position2.z, 0.0, 1e-6);
+    EXPECT_NEAR(position2.x, 2.4, tolerance);
+    EXPECT_NEAR(position2.y, 3.2, tolerance);
+    EXPECT_NEAR(position2.z, 0.0, tolerance);
 }
 
 // Two parallel cylinders in Auto measure axis-to-axis: Z axes 4 apart give 4.0,
@@ -295,10 +301,10 @@ TEST_F(MeasureDistance, testTwoCylindersAxisDistance)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // A cylinder and a circle in Auto measure the cylinder axis to the circle centre:
@@ -319,10 +325,39 @@ TEST_F(MeasureDistance, testCylinderCircleAxisToCenter)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
+}
+
+// The finite-extrema fallback would report 8.544 corner-to-corner instead.
+TEST_F(MeasureDistance, testNearParallelLinesStillMeasureAsAxes)
+{
+    constexpr double residualTilt = 1e-9;
+    ASSERT_GT(residualTilt, Precision::Angular());
+    ASSERT_LT(residualTilt, Measure::MeasureSnap::parallelTolerance);
+
+    App::Document* doc = getDocument();
+    auto p1 = doc->addObject<Part::Feature>("Line1");
+    p1->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)));
+    auto p2 = doc->addObject<Part::Feature>("Line2");
+    p2->Shape.setValue(makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)));
+    p2->Placement.setValue(Base::Placement(
+        Base::Vector3d(10.0, 0.0, 3.0),
+        Base::Rotation(Base::Vector3d(0.0, 1.0, 0.0), residualTilt)
+    ));
+
+    auto md = doc->addObject<Measure::MeasureDistance>("Distance");
+    md->Element1.setValue(p1, {"Edge1"});
+    md->Element2.setValue(p2, {"Edge1"});
+
+    doc->recompute();
+
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, tolerance);
 }
 
 // Two parallel lines offset in X and Z: Auto measures between the infinite lines
@@ -341,10 +376,10 @@ TEST_F(MeasureDistance, testParallelLinesNominalDistance)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, tolerance);
 }
 
 // Collinear segments share one supporting line, so the axis pair would read 0.
@@ -363,8 +398,8 @@ TEST_F(MeasureDistance, testCollinearLinesMeasureTheGap)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 8.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 8.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 8.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 8.0, tolerance);
 }
 
 // Crossing supporting lines intersect, so the axis pair would read 0 with the feet
@@ -383,8 +418,8 @@ TEST_F(MeasureDistance, testCrossingLinesMeasureNearestPoints)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 3.0, tolerance);
 }
 
 // A cylinder and a line parallel to its axis, 4 apart in X: Auto measures the two
@@ -403,10 +438,10 @@ TEST_F(MeasureDistance, testCylinderLineAxisDistance)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // A cone's axis snaps like a cylinder's: the circle centre (4,0,0) projects onto
@@ -425,10 +460,10 @@ TEST_F(MeasureDistance, testConeCircleAxisToCenter)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // Reversed order takes the point-to-axis arm: circle centre first, cylinder axis second.
@@ -448,10 +483,10 @@ TEST_F(MeasureDistance, testCircleCylinderCenterToAxis)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(4.0, 0.0, 0.0));
 }
@@ -472,10 +507,10 @@ TEST_F(MeasureDistance, testVertexLineStaysFiniteExtrema)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 6.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 6.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 6.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 6.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // A measurement's results must survive save and reload unchanged.
@@ -657,10 +692,10 @@ TEST_F(MeasureDistance, testNoneNoneCirclesRimToRim)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 1.8, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 2.4, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 1.8, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 2.4, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // A single non-Auto side is enough to leave the shortcut: the same circles read
@@ -683,12 +718,12 @@ TEST_F(MeasureDistance, testMixedAutoNoneBypassesShortcutEitherOrder)
 
     md->Snap2.setValue("None");
     doc->recompute();
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
 
     md->Snap1.setValue("None");
     md->Snap2.setValue("Auto");
     doc->recompute();
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
 }
 
 // Center and Midpoint both resolve to points, (0,0,0) and (4,3,0); setValues
@@ -709,12 +744,12 @@ TEST_F(MeasureDistance, testCenterMidpointPointToPoint)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     const Base::Vector3d position2 = md->Position2.getValue();
-    EXPECT_NEAR(position2.x, 4.0, 1e-6);
-    EXPECT_NEAR(position2.y, 3.0, 1e-6);
-    EXPECT_NEAR(position2.z, 0.0, 1e-6);
+    EXPECT_NEAR(position2.x, 4.0, tolerance);
+    EXPECT_NEAR(position2.y, 3.0, tolerance);
+    EXPECT_NEAR(position2.z, 0.0, tolerance);
 }
 
 // Center pins the circle at (0,0,0); the Auto line side comes from extrema: distance 10.0.
@@ -734,12 +769,12 @@ TEST_F(MeasureDistance, testCenterAutoPinsSnappedPosition)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 10.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     const Base::Vector3d position2 = md->Position2.getValue();
-    EXPECT_NEAR(position2.x, 10.0, 1e-6);
-    EXPECT_NEAR(position2.y, 0.0, 1e-6);
-    EXPECT_NEAR(position2.z, 0.0, 1e-6);
+    EXPECT_NEAR(position2.x, 10.0, tolerance);
+    EXPECT_NEAR(position2.y, 0.0, tolerance);
+    EXPECT_NEAR(position2.z, 0.0, tolerance);
 }
 
 // Center does not apply to a straight edge, so the snap degrades: it warns and
@@ -760,10 +795,10 @@ TEST_F(MeasureDistance, testCenterOnStraightEdgeDegradesToGeneric)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 3.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 3.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // Both cylinders snap to their axes: an X-axis through the origin and a Y-axis
@@ -788,17 +823,17 @@ TEST_F(MeasureDistance, testAxisAxisSkewClosestApproach)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
     // Positions must land on their own axes: the common perpendicular joins
     // (3,0,0) on the X axis to (3,0,5) on the shifted Y axis.
     const Base::Vector3d position1 = md->Position1.getValue();
     const Base::Vector3d position2 = md->Position2.getValue();
-    EXPECT_NEAR(position1.x, 3.0, 1e-6);
-    EXPECT_NEAR(position1.y, 0.0, 1e-6);
-    EXPECT_NEAR(position1.z, 0.0, 1e-6);
-    EXPECT_NEAR(position2.x, 3.0, 1e-6);
-    EXPECT_NEAR(position2.y, 0.0, 1e-6);
-    EXPECT_NEAR(position2.z, 5.0, 1e-6);
+    EXPECT_NEAR(position1.x, 3.0, tolerance);
+    EXPECT_NEAR(position1.y, 0.0, tolerance);
+    EXPECT_NEAR(position1.z, 0.0, tolerance);
+    EXPECT_NEAR(position2.x, 3.0, tolerance);
+    EXPECT_NEAR(position2.y, 0.0, tolerance);
+    EXPECT_NEAR(position2.z, 5.0, tolerance);
 }
 
 // The cylinder snaps to its Z axis at the origin; the box is None, so it stays a
@@ -820,10 +855,10 @@ TEST_F(MeasureDistance, testAxisNoneToBox)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 10.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 10.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 10.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // Circle Center (0,0,0) projected onto the cylinder axis at (5,0,0): distance 5.0.
@@ -845,12 +880,12 @@ TEST_F(MeasureDistance, testCenterAxisPointToAxis)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     const Base::Vector3d position2 = md->Position2.getValue();
-    EXPECT_NEAR(position2.x, 5.0, 1e-6);
-    EXPECT_NEAR(position2.y, 0.0, 1e-6);
-    EXPECT_NEAR(position2.z, 0.0, 1e-6);
+    EXPECT_NEAR(position2.x, 5.0, tolerance);
+    EXPECT_NEAR(position2.y, 0.0, tolerance);
+    EXPECT_NEAR(position2.z, 0.0, tolerance);
 }
 
 // Snapped path (circle Center to line Midpoint) re-resolves after the circle moves: 4.0 then 8.0.
@@ -869,12 +904,12 @@ TEST_F(MeasureDistance, testSnapReResolvesWhenGeometryMoves)
     md->Snap2.setValue("Midpoint");
 
     doc->recompute();
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 3.0, 0.0));
 
     pCircle->Shape.setValue(makeCircle(gp_Pnt(-4.0, 3.0, 0.0)));
     doc->recompute();
-    EXPECT_NEAR(md->Distance.getValue(), 8.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 8.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(-4.0, 3.0, 0.0));
 }
 
@@ -896,12 +931,12 @@ TEST_F(MeasureDistance, testAutoCenterPinsSecondElement)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 10.0, tolerance);
     EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     const Base::Vector3d position1 = md->Position1.getValue();
-    EXPECT_NEAR(position1.x, 10.0, 1e-6);
-    EXPECT_NEAR(position1.y, 0.0, 1e-6);
-    EXPECT_NEAR(position1.z, 0.0, 1e-6);
+    EXPECT_NEAR(position1.x, 10.0, tolerance);
+    EXPECT_NEAR(position1.y, 0.0, tolerance);
+    EXPECT_NEAR(position1.z, 0.0, tolerance);
 }
 
 // Reversed arm: axis is Element1, Center-snapped circle Element2; distance 5.
@@ -923,12 +958,12 @@ TEST_F(MeasureDistance, testAxisCenterPinsSecondElement)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
     EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     const Base::Vector3d position1 = md->Position1.getValue();
-    EXPECT_NEAR(position1.x, 5.0, 1e-6);
-    EXPECT_NEAR(position1.y, 0.0, 1e-6);
-    EXPECT_NEAR(position1.z, 0.0, 1e-6);
+    EXPECT_NEAR(position1.x, 5.0, tolerance);
+    EXPECT_NEAR(position1.y, 0.0, tolerance);
+    EXPECT_NEAR(position1.z, 0.0, tolerance);
 }
 
 // Reverse of the axis/unresolved arm: the box is Element1 (None) and the cylinder
@@ -949,14 +984,14 @@ TEST_F(MeasureDistance, testNoneAxisToBoxReversed)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 10.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 10.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 10.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
     const Base::Vector3d position1 = md->Position1.getValue();
     const Base::Vector3d position2 = md->Position2.getValue();
-    EXPECT_NEAR(position1.x, 10.0, 1e-6);
-    EXPECT_NEAR(position2.x, 0.0, 1e-6);
+    EXPECT_NEAR(position1.x, 10.0, tolerance);
+    EXPECT_NEAR(position2.x, 0.0, tolerance);
 }
 
 // Vertex on both sides goes through the point/point arm with the deterministic
@@ -978,7 +1013,7 @@ TEST_F(MeasureDistance, testVertexVertexFirstEndpoints)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(0.0, 0.0, 0.0));
     EXPECT_EQ(md->Position2.getValue(), Base::Vector3d(3.0, 4.0, 0.0));
 }
@@ -1001,7 +1036,7 @@ TEST_F(MeasureDistance, testAxisOnPlanarFaceDegradesToGeneric)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 10.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 10.0, tolerance);
 }
 
 // Parallel cylinder axes: the deterministic parallel rule survives the dispatch,
@@ -1024,10 +1059,10 @@ TEST_F(MeasureDistance, testAxisAxisParallelClosestApproach)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, 1e-6);
-    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, 1e-6);
-    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceX.getValue(), 4.0, tolerance);
+    EXPECT_NEAR(md->DistanceY.getValue(), 0.0, tolerance);
+    EXPECT_NEAR(md->DistanceZ.getValue(), 0.0, tolerance);
 }
 
 // The snapped path sees placed geometry: a Center snap on a placed circle pins
@@ -1049,7 +1084,7 @@ TEST_F(MeasureDistance, testCenterSnapRespectsPlacement)
 
     doc->recompute();
 
-    EXPECT_NEAR(md->Distance.getValue(), 5.0, 1e-6);
+    EXPECT_NEAR(md->Distance.getValue(), 5.0, tolerance);
     EXPECT_EQ(md->Position1.getValue(), Base::Vector3d(10.0, 0.0, 5.0));
 }
 
@@ -1125,9 +1160,9 @@ TEST_F(MeasureDistance, testResolveShapeAppliesPlacementOnce)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr, centre)
     );
-    EXPECT_NEAR(centre.X(), 10.0, 1e-6);
-    EXPECT_NEAR(centre.Y(), 0.0, 1e-6);
-    EXPECT_NEAR(centre.Z(), 5.0, 1e-6);
+    EXPECT_NEAR(centre.X(), 10.0, tolerance);
+    EXPECT_NEAR(centre.Y(), 0.0, tolerance);
+    EXPECT_NEAR(centre.Z(), 5.0, tolerance);
 }
 
 // A container chain resolves through the App::Part placement, matching what
@@ -1151,9 +1186,9 @@ TEST_F(MeasureDistance, testResolveShapeThroughContainer)
     ASSERT_TRUE(
         Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr, centre)
     );
-    EXPECT_NEAR(centre.X(), 51.0, 1e-6);
-    EXPECT_NEAR(centre.Y(), 2.0, 1e-6);
-    EXPECT_NEAR(centre.Z(), 3.0, 1e-6);
+    EXPECT_NEAR(centre.X(), 51.0, tolerance);
+    EXPECT_NEAR(centre.Y(), 2.0, tolerance);
+    EXPECT_NEAR(centre.Z(), 3.0, tolerance);
 }
 
 // Anything unresolvable yields a null shape, never a throw: the hover code treats
@@ -1204,5 +1239,21 @@ TEST_F(MeasureDistance, testExplicitSnapOnDatumPlanesKeepsDatumPath)
     doc->recompute();
 
     EXPECT_DOUBLE_EQ(md->Distance.getValue(), 5.0);
+}
+
+TEST_F(MeasureDistance, testTypeUsesSnapping)
+{
+    EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("DISTANCE"));
+    EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("DISTANCEFREE"));
+    EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("ANGLE"));
+    EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("POSITION"));
+    // Types registered from Python keep the preview.
+    EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("SOME_ADDON_TYPE"));
+
+    EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("LENGTH"));
+    EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("AREA"));
+    EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("DIAMETER"));
+    EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("RADIUS"));
+    EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("CENTEROFMASS"));
 }
 // NOLINTEND
