@@ -212,9 +212,13 @@ TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupUnexpectedSuffix)
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(backup));
-    EXPECT_TRUE(std::filesystem::exists(backupDir / (backup.filename().string() + "2")));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / backup.filename()));
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (target.filename().string() + "2")));
     EXPECT_TRUE(std::filesystem::exists(backupDir / weird.filename())); // What is this doing if not testing the test?
+
+    int* ptr = nullptr;
+    *ptr = 42; // Crash: Writing to a null address
+    return ;
 }
 
 TEST_F(BackupPolicyTest, StandardWithTwoFilesOnePreviousBackupOutOfSequenceNumber)
@@ -246,12 +250,13 @@ TEST_F(BackupPolicyTest, StandardWithFCBakSet)
     setPolicyTerms(App::BackupPolicy::Policy::Standard, 1, true, "%Y-%m-%d_%H-%M-%S");
     auto source = createTempFile("source.fcstd");
     auto target = createTempFile("target.fcstd");
+    auto backupDir = source.parent_path() / "freecad-backups";
 
     // Act
     apply(source.string(), target.string());
 
     // Assert
-    EXPECT_TRUE(std::filesystem::exists(target.string() + "1"));  // No FCBak extension for Standard
+    EXPECT_TRUE(std::filesystem::exists(backupDir / (target.filename().string() + "1")));  // No FCBak extension for Standard
 }
  
 TEST_F(BackupPolicyTest, TimestampSourceDoesNotExist)
