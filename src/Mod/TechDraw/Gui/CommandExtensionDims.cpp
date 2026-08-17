@@ -83,6 +83,8 @@ namespace TechDrawGui {
     std::vector<TechDraw::DrawViewDimension*>_getDimensions(std::vector<Gui::SelectionObject> selection, std::string needDimType);
     std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,
         std::vector<std::string> subNames);
+    std::vector<std::string> _getSelectedVertexNamesInPickOrder(
+        Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);
     TechDraw::DrawViewDimension* _createLinDimension(
         TechDraw::DrawViewPart* objFeat,
         std::string startVertex,
@@ -1618,7 +1620,10 @@ void execCreateHorizOrdinateDimension(Gui::Command* cmd)
     }
 
     cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create Horizontal Ordinate Dimensions"));
-    const std::vector<std::string> subNames = selection[0].getSubNames();
+    std::vector<std::string> subNames = _getSelectedVertexNamesInPickOrder(cmd, objFeat);
+    if (subNames.empty()) {
+        subNames = selection[0].getSubNames();
+    }
     std::vector<dimVertex> allVertexes = _getVertexInfo(objFeat, subNames);
     if (allVertexes.size() > 1) {
         double dimDistance = activeDimAttributes.getCascadeSpacing();
@@ -1706,7 +1711,10 @@ void execCreateVertOrdinateDimension(Gui::Command* cmd)
     }
 
     cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Create Vertical Ordinate Dimensions"));
-    const std::vector<std::string> subNames = selection[0].getSubNames();
+    std::vector<std::string> subNames = _getSelectedVertexNamesInPickOrder(cmd, objFeat);
+    if (subNames.empty()) {
+        subNames = selection[0].getSubNames();
+    }
     std::vector<dimVertex> allVertexes = _getVertexInfo(objFeat, subNames);
     if (allVertexes.size() > 1) {
         double dimDistance = activeDimAttributes.getCascadeSpacing();
@@ -2681,6 +2689,27 @@ namespace TechDrawGui {
         objFeat->touch();
         dim->recomputeFeature();
         return dim;
+    }
+
+    std::vector<std::string> _getSelectedVertexNamesInPickOrder(
+        Gui::Command* cmd, TechDraw::DrawViewPart* objFeat) {
+        // getSelection() is a flat list whose order is the actual selection sequence.
+        // getSelectionEx() groups sub-elements by object, which does not preserve
+        // Ctrl-click order inside SelectionObject::getSubNames().
+        std::vector<std::string> subNames;
+        for (const auto& selected : cmd->getSelection().getSelection()) {
+            if (selected.pObject != objFeat && selected.pResolvedObject != objFeat) {
+                continue;
+            }
+            if (!selected.SubName) {
+                continue;
+            }
+            std::string name(selected.SubName);
+            if (TechDraw::DrawUtil::getGeomTypeFromName(name) == "Vertex") {
+                subNames.push_back(std::move(name));
+            }
+        }
+        return subNames;
     }
 
     std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,
