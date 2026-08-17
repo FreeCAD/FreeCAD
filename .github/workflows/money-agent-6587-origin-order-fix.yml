@@ -1,0 +1,59 @@
+name: MONEY_AGENT #6587 origin-order fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/money-agent-6587-origin-order-fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: money-agent-6587-ordinate-dimensions
+          fetch-depth: 0
+
+      - name: Preserve vertex pick order for ordinate origin
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('src/Mod/TechDraw/Gui/CommandExtensionDims.cpp')
+          text = path.read_text(encoding='utf-8')
+
+          decl_anchor = '''    std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,\n        std::vector<std::string> subNames);\n'''
+          decl_insert = decl_anchor + '''    std::vector<std::string> _getSelectedVertexNamesInPickOrder(\n        Gui::Command* cmd, TechDraw::DrawViewPart* objFeat);\n'''
+          if '_getSelectedVertexNamesInPickOrder(' not in text:
+              if decl_anchor not in text:
+                  raise SystemExit('declaration anchor not found')
+              text = text.replace(decl_anchor, decl_insert, 1)
+
+          old = '''    const std::vector<std::string> subNames = selection[0].getSubNames();\n    std::vector<dimVertex> allVertexes = _getVertexInfo(objFeat, subNames);\n'''
+          new = '''    std::vector<std::string> subNames = _getSelectedVertexNamesInPickOrder(cmd, objFeat);\n    if (subNames.empty()) {\n        subNames = selection[0].getSubNames();\n    }\n    std::vector<dimVertex> allVertexes = _getVertexInfo(objFeat, subNames);\n'''
+          count = text.count(old)
+          if count != 2:
+              raise SystemExit(f'expected 2 ordinate selection blocks, found {count}')
+          text = text.replace(old, new)
+
+          impl_anchor = '''    std::vector<dimVertex> _getVertexInfo(TechDraw::DrawViewPart* objFeat,\n        std::vector<std::string> subNames) {\n'''
+          helper = '''    std::vector<std::string> _getSelectedVertexNamesInPickOrder(\n        Gui::Command* cmd, TechDraw::DrawViewPart* objFeat) {\n        // getSelection() is a flat list whose order is the actual selection sequence.\n        // getSelectionEx() groups sub-elements by object, which does not preserve\n        // Ctrl-click order inside SelectionObject::getSubNames().\n        std::vector<std::string> subNames;\n        for (const auto& selected : cmd->getSelection().getSelection()) {\n            if (selected.pObject != objFeat && selected.pResolvedObject != objFeat) {\n                continue;\n            }\n            if (!selected.SubName) {\n                continue;\n            }\n            std::string name(selected.SubName);\n            if (TechDraw::DrawUtil::getGeomTypeFromName(name) == "Vertex") {\n                subNames.push_back(std::move(name));\n            }\n        }\n        return subNames;\n    }\n\n'''
+          if 'std::vector<std::string> _getSelectedVertexNamesInPickOrder(\n        Gui::Command* cmd, TechDraw::DrawViewPart* objFeat) {' not in text:
+              if impl_anchor not in text:
+                  raise SystemExit('implementation anchor not found')
+              text = text.replace(impl_anchor, helper + impl_anchor, 1)
+
+          path.write_text(text, encoding='utf-8')
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name "franklincg"
+          git config user.email "64386813+franklincg@users.noreply.github.com"
+          git add src/Mod/TechDraw/Gui/CommandExtensionDims.cpp
+          git diff --cached --check
+          git commit -m "fix: preserve selected ordinate origin order"
+          git push origin HEAD:money-agent-6587-ordinate-dimensions
