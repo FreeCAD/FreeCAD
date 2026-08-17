@@ -6564,7 +6564,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
       <source>Move Property</source>
-      <translation type="unfinished">Move Property</translation>
+      <translation>Sposta proprietà</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
@@ -6758,7 +6758,7 @@ Uscire senza salvare tutti i dati?</translation>
       <location filename="../Action.cpp" line="878"/>
       <location filename="../Action.cpp" line="879"/>
       <source>Open a document or import files.</source>
-      <translation type="unfinished">Open a document or import files.</translation>
+      <translation>Apre un documento o importa dei file.</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="894"/>
@@ -14863,7 +14863,7 @@ Ad esempio, premendo 'F' due volte di seguito più rapidamente dell'impostazione
     <message>
       <location filename="../CommandStd.cpp" line="323"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Apre la documentazione corrispondente alla selezione</translation>
     </message>
   </context>
   <context>

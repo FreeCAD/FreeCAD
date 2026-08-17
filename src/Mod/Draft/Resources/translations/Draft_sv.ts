@@ -1103,7 +1103,7 @@ flyttas till mitten av vyn.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
       <source>Solid</source>
-      <translation>Solid</translation>
+      <translation>Kropp</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
@@ -3693,7 +3693,7 @@ eller försök spara till en lägre DWG-version.</translation>
     <message>
       <location filename="../../draftutils/utils.py" line="637"/>
       <source>Solids:</source>
-      <translation>Fasta ämnen:</translation>
+      <translation>Kroppar:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="638"/>
@@ -6142,7 +6142,7 @@ För att aktivera FreeCAD för att ladda ner dessa bibliotek, svara Ja.</transla
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Spara kameravy</translation>
     </message>
   </context>
   <context>

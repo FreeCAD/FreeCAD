@@ -1785,12 +1785,12 @@ Más nialas é, is ionann é agus Ga2</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
       <source>No start reference selected</source>
-      <translation type="unfinished">No start reference selected</translation>
+      <translation>Níl aon tagairt tosaigh roghnaithe</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="68"/>
       <source>Offset from the profile or selected start reference</source>
-      <translation type="unfinished">Offset from the profile or selected start reference</translation>
+      <translation>Fritháireamh ón bpróifíl nó ón tagairt tosaigh roghnaithe</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="789"/>
@@ -1816,7 +1816,7 @@ Más nialas é, is ionann é agus Ga2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
       <source>Select face, plane...</source>
-      <translation type="unfinished">Select face, plane...</translation>
+      <translation>Roghnaigh aghaidh, plána...</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1195"/>
@@ -2545,7 +2545,7 @@ fad a thomhas feadh an treo shonraithe</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Profile plane</source>
-      <translation type="unfinished">Profile plane</translation>
+      <translation>Plána próifíle</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="35"/>
@@ -3538,7 +3538,7 @@ D’fhéadfadh torthaí gan choinne a bheith mar thoradh air seo.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>Base feature (%1) has an empty shape.</source>
-      <translation type="unfinished">Base feature (%1) has an empty shape.</translation>
+      <translation>Tá cruth folamh ar an ngné bhunúsach (%1).</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="428"/>

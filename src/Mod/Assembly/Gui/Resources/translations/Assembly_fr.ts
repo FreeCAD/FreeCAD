@@ -1244,7 +1244,7 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
       <source>Start</source>
-      <translation>Démarrer</translation>
+      <translation>Début</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
@@ -1636,7 +1636,7 @@ de degrés de liberté.</translation>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="49"/>
       <source>Snapshot</source>
-      <translation>Instantané</translation>
+      <translation>Créer un instantané</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="53"/>
@@ -1647,7 +1647,7 @@ l'assemblage.</translation>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="70"/>
       <source>Create Snapshot</source>
-      <translation>Créer un instantané</translation>
+      <translation>Crée un instantané.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="249"/>
@@ -1755,7 +1755,7 @@ l'assemblage.</translation>
     <message>
       <location filename="../../Commands.cpp" line="311"/>
       <source>Select Component Joints</source>
-      <translation>Sélectionner les liaisons des composants</translation>
+      <translation>Sélectionner les liaisons d'un composant</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="312"/>
