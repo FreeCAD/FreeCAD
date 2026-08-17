@@ -2006,11 +2006,6 @@ Action* StdViewDockUndockFullscreen::createAction()
 
 void StdViewDockUndockFullscreen::activated(int iMsg)
 {
-    // Check if main window is in fullscreen mode.
-    if (getMainWindow()->isFullScreen()) {
-        getMainWindow()->showNormal();
-    }
-
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) {  // no active view
         return;
@@ -2028,8 +2023,9 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
         return;
     }
 
-    // Change the view mode after an mdi view was already visible doesn't
-    // work well with Qt5 any more because of some strange OpenGL behaviour.
+    // Changing the view mode after an mdi view was already visible causes
+    // the window to reload strangely while flashing to black, identified
+    // as an OpenGL problem.
     // A workaround is to clone the mdi view, set its view mode and delete
     // the original view.
 
@@ -2039,13 +2035,14 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
     if (clone) {
         if (mode == MDIView::Child) {
             getMainWindow()->addWindow(clone);
+            getMainWindow()->setActiveWindow(clone);
+            qApp->processEvents();  // let the close and any queued activation settle
+            view->deleteSelf();
         }
         else {
+            view->deleteSelf();
             clone->setCurrentViewMode(mode);
         }
-
-        // destroy the old view
-        view->deleteSelf();
     }
     else {
         // no clone needed, simply change the view mode
