@@ -21,7 +21,6 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _sids = &_sid;
         _hasher = Base::Reference<App::StringHasher>(new App::StringHasher);
         ASSERT_EQ(_hasher.getRefCount(), 1);
     }
@@ -32,8 +31,6 @@ protected:
     }
 
     std::string _docName;
-    Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* _sids;
     App::StringHasherRef _hasher;
 };
 

@@ -30,9 +30,66 @@ the tests into individual parts.
 
 #include <gtest/gtest.h>
 
+#include <limits>
+#include <stdexcept>
+#include <string>
+#include <utility>
+#include <vector>
+
 using namespace Base;
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
+
+TEST(Base64, decodeSize)
+{
+    EXPECT_EQ(base64_decode_size(0), 0);
+    EXPECT_EQ(base64_decode_size(1), 3);
+    EXPECT_EQ(base64_decode_size(3), 3);
+    EXPECT_EQ(base64_decode_size(4), 3);
+    EXPECT_EQ(base64_decode_size(5), 6);
+
+    constexpr auto max = std::numeric_limits<std::size_t>::max();
+    EXPECT_EQ(base64_decode_size(max), (max / 4 + (max % 4 != 0)) * 3);
+}
+
+TEST(Base64, encodeSize)
+{
+    EXPECT_EQ(base64_encode_size(0), 0);
+    EXPECT_EQ(base64_encode_size(1), 4);
+    EXPECT_EQ(base64_encode_size(3), 4);
+    EXPECT_EQ(base64_encode_size(4), 8);
+
+    constexpr auto max = std::numeric_limits<std::size_t>::max();
+    constexpr auto maxCompleteBlocks = max / 4;
+    EXPECT_EQ(base64_encode_size(maxCompleteBlocks * 3), maxCompleteBlocks * 4);
+    EXPECT_THROW(base64_encode_size(maxCompleteBlocks * 3 + 1), std::length_error);
+    EXPECT_THROW(base64_encode_size(max), std::length_error);
+}
+
+TEST(Base64, decodeAppendSizeOverflow)
+{
+    struct MaximumSizeOutput
+    {
+        std::size_t size() const
+        {
+            return std::numeric_limits<std::size_t>::max();
+        }
+
+        void resize(std::size_t)
+        {
+            ADD_FAILURE();
+        }
+
+        unsigned char& operator[](std::size_t)
+        {
+            return value;
+        }
+
+        unsigned char value {};
+    } output;
+
+    EXPECT_THROW(base64_decode(output, "A", 1), std::length_error);
+}
 
 TEST(Base64, encode)
 {
@@ -89,6 +146,23 @@ TEST(Base64, oneEqualsSignPadding)
     std::string rest2_decoded = base64_decode(rest2_encoded);
 
     ASSERT_EQ(rest2_decoded, rest2_original);
+}
+
+TEST(Base64, unpaddedTrailingQuarters)
+{
+    const std::vector<std::pair<std::string, std::string>> cases {
+        {"YQ", "a"},
+        {"YWI", "ab"},
+        {"YWJjZA", "abcd"},
+        {"YWJjZGU", "abcde"},
+    };
+
+    for (const auto& [encoded, expected] : cases) {
+        std::string decoded;
+        const auto consumed = base64_decode(decoded, encoded);
+        EXPECT_EQ(consumed, encoded.size());
+        EXPECT_EQ(decoded, expected);
+    }
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)

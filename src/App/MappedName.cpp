@@ -28,7 +28,6 @@
 
 #include "Base/Console.h"
 
-#include <boost/algorithm/string/predicate.hpp>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
 
@@ -44,34 +43,14 @@ void MappedName::compact() const
         this);  // FIXME this is a workaround for a single call in ElementMap::addName()
 
     if (this->raw) {
-        self->data = QByteArray(self->data.constData(), self->data.size());
+        if (!self->data.empty()) {
+            self->data.makeOwning();
+        }
+        if (!self->postfix.empty()) {
+            self->postfix.makeOwning();
+        }
         self->raw = false;
     }
-}
-
-
-MappedName::MappedName(const char* name, int size) : raw(false)
-{
-    if (!name) {
-        return;
-    }
-    if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
-        name += ELEMENT_MAP_PREFIX_SIZE;
-    }
-
-    data = size < 0 ? QByteArray(name) : QByteArray(name, size);
-}
-
-MappedName::MappedName(const std::string& nameString)
-    : raw(false)
-{
-    auto size = nameString.size();
-    const char* name = nameString.c_str();
-    if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
-        name += ELEMENT_MAP_PREFIX_SIZE;
-        size -= ELEMENT_MAP_PREFIX_SIZE;
-    }
-    data = QByteArray(name, static_cast<int>(size));
 }
 
 int MappedName::findTagInElementName(long* tagOut,

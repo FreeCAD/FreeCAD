@@ -30,10 +30,6 @@
 #include <string>
 #include <vector>
 
-#ifdef FC_OS_WIN32
-#include <QString>
-#endif
-
 namespace App {
 
     /// A helper class to handle application-wide directory management on behalf of the main
@@ -173,10 +169,6 @@ namespace App {
         static MigrationResult migrateConfig(const std::filesystem::path& oldPath,
                                               const std::filesystem::path& newPath);
 
-#ifdef FC_OS_WIN32
-        /// On Windows, gets the location of the user's "AppData" directory. Invalid on other OSes.
-        QString getOldGenericDataLocation();
-#endif
         /// Adds subdirectory information to the appData vector for use in constructing full paths to config files, etc.
         static void getSubDirectories(const std::map<std::string,std::string>& mConfig,
                                       std::vector<std::string>& appData);
@@ -229,17 +221,6 @@ namespace App {
          * \endlist
          */
         static std::tuple<std::filesystem::path, std::filesystem::path, std::filesystem::path> getCustomPaths();
-
-        /*!
-         * Returns a tuple of XDG-compliant standard paths names where to store config, data and cached files.
-         * The method therefore reads the environment variables:
-         * \list
-         * \li XDG_CONFIG_HOME
-         * \li XDG_DATA_HOME
-         * \li XDG_CACHE_HOME
-         * \endlist
-         */
-        std::tuple<std::filesystem::path, std::filesystem::path, std::filesystem::path, std::filesystem::path> getStandardPaths();
 
         /// Find the BuildVersionMajor, BuildVersionMinor pair in the config map, convert them to an int tuple, and
         /// return it. If the pair is not found, or cannot be converted to integers, a RuntimeError is raised.
