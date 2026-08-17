@@ -27,7 +27,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import Path.Base.Drillable as Drillable
+from Path.Base.Drillable import isDrillable
 import math
 
 if False:
@@ -37,7 +37,7 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-class PathBaseGate(object):
+class PathBaseGate:
     pass
 
 
@@ -133,7 +133,7 @@ class DRILLGate(PathBaseGate):
         subobj = shape.getElement(sub)
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
-        return Drillable.isDrillable(shape, subobj, vector=None, allowPartial=True)
+        return isDrillable(shape, subobj, vector=None, allowPartial=True)
 
 
 class TAPGate(PathBaseGate):
@@ -145,7 +145,7 @@ class TAPGate(PathBaseGate):
         subobj = shape.getElement(sub)
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
-        return Drillable.isDrillable(shape, subobj, vector=None)
+        return isDrillable(shape, subobj, vector=None)
 
 
 class FACEGate(PathBaseGate):
@@ -239,7 +239,7 @@ class TURNGate(PathBaseGate):
         if hasattr(obj, "Shape") and sub:
             shape = obj.Shape
             subobj = shape.getElement(sub)
-            return Drillable.isDrillable(shape, subobj, vector=None)
+            return isDrillable(shape, subobj, vector=None)
         else:
             return False
 
