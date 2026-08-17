@@ -3613,6 +3613,7 @@ void View3DInventorViewer::renderDelayedAnnotations(SoIRRenderAction* action)
     // switchToPathTraversal() appends the retained annotation commands without
     // resetting the draw list, so they remain in Coin's pre-foreground
     // checkpoint and survive foreground-only rebuilds.
+    action->requestDepthClear();
     Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, action);
 }
 

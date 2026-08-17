@@ -71,6 +71,8 @@ public:
     SoDelayedAnnotationsElement(SoDelayedAnnotationsElement&& other) noexcept = delete;
 
     void init(SoState* state) override;
+    void push(SoState* state) override;
+    void pop(SoState* state, const SoElement* prevTopElement) override;
 
     static void initClass();
 

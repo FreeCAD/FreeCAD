@@ -80,6 +80,26 @@ void SoDelayedAnnotationsElement::init(SoState* state)
     processingDelayedPaths = false;
 }
 
+void SoDelayedAnnotationsElement::push(SoState* state)
+{
+    inherited::push(state);
+
+    // Delayed paths are accumulated by the traversal and must survive the
+    // separator scopes in which annotations are commonly encountered.  Keep
+    // the child scope empty so that pop() can merge only paths queued in that
+    // scope; processing state, on the other hand, is inherited normally.
+    paths.clear();
+    const auto* previous = static_cast<const SoDelayedAnnotationsElement*>(getNextInStack());
+    processingDelayedPaths = previous->processingDelayedPaths;
+}
+
+void SoDelayedAnnotationsElement::pop(SoState* state, const SoElement* prevTopElement)
+{
+    auto* child = static_cast<const SoDelayedAnnotationsElement*>(prevTopElement);
+    paths.insert(paths.end(), child->paths.begin(), child->paths.end());
+    inherited::pop(state, prevTopElement);
+}
+
 void SoDelayedAnnotationsElement::initClass()
 {
     SO_ELEMENT_INIT_CLASS(SoDelayedAnnotationsElement, inherited);
