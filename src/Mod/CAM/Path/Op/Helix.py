@@ -23,9 +23,9 @@ import FreeCAD
 import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
-import Path.Base.Generator.helix as helix
-import Path.Base.Generator.linking as linking
-import Path.Base.Generator.spiral as spiral
+from Path.Base.Generator import helix
+from Path.Base.Generator import linking
+from Path.Base.Generator import spiral
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
 import Path.Base.Language as PathLanguage
@@ -61,14 +61,10 @@ def _caclulatePathDirection(obj):
 
 def _caclulateCutMode(direction, side):
     """Calculates the cut mode from path direction and cut side"""
-    if direction == "CW" and side == "Inside":
+    if (direction == "CW" and side == "Inside") or (direction == "CCW" and side == "Outside"):
         return "Conventional"
-    elif direction == "CW" and side == "Outside":
+    elif (direction == "CW" and side == "Outside") or (direction == "CCW" and side == "Inside"):
         return "Climb"
-    elif direction == "CCW" and side == "Inside":
-        return "Climb"
-    elif direction == "CCW" and side == "Outside":
-        return "Conventional"
     else:
         raise ValueError(f"No mapping for '{direction}'/'{side}'")
 
@@ -110,7 +106,7 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -738,9 +734,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                     args["outer_radius"] = (
                         hole["d"] / 2 + toolradius + obj.RadialStockToLeaveOuter.Value
                     )
-                    if args["inner_radius"] > args["outer_radius"]:
-                        # exclude overlap inner and outer helices
-                        args["inner_radius"] = args["outer_radius"]
+                    # exclude overlap inner and outer helices
+                    args["inner_radius"] = min(args["inner_radius"], args["outer_radius"])
 
             if (args["outer_radius"] < 0 and not isRoughly(args["outer_radius"], 0)) or (
                 args["inner_radius"] < 0 and not isRoughly(args["inner_radius"], 0)
