@@ -584,11 +584,8 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
             _render_png(harness, coin, root, initial, _RENDERER_DRAW_LIST, frame_camera=False)
 
             manager = harness.viewer.getSoRenderManager()
-            select = getattr(manager, "setDrawListSelection", None)
-            if not callable(select):
-                raise unittest.SkipTest("DrawList selection API is not exposed by this build")
             self.assertTrue(
-                select(2, coin.SbColor4f(1.0, 0.0, 1.0, 1.0), False),
+                manager.setSelectionFromPickId(2, coin.SbColor4f(1.0, 0.0, 1.0, 1.0), False),
                 "the rear main object was not present in the DrawList pick LUT",
             )
             harness.view.redraw()
@@ -631,11 +628,8 @@ class CoinRenderPipelineTestCase(unittest.TestCase):
             _render_png(harness, coin, root, initial, _RENDERER_DRAW_LIST, frame_camera=False)
 
             manager = harness.viewer.getSoRenderManager()
-            select = getattr(manager, "setDrawListSelection", None)
-            if not callable(select):
-                raise unittest.SkipTest("DrawList selection API is not exposed by this build")
             self.assertTrue(
-                select(2, coin.SbColor4f(1.0, 1.0, 0.0, 1.0), False),
+                manager.setSelectionFromPickId(2, coin.SbColor4f(1.0, 1.0, 0.0, 1.0), False),
                 "the after-main object was not present in the DrawList pick LUT",
             )
             harness.view.redraw()
