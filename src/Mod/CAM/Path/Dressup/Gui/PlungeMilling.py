@@ -23,10 +23,10 @@ import FreeCAD
 import FreeCADGui
 import Part
 import Path
-import PathScripts.PathUtils as PathUtils
-import Path.Base.Generator.drill as drill
 import Path.Dressup.Utils as PathDressup
+from Path.Base.Generator import drill
 from Path.Base.MachineState import MachineState
+from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __doc__ = """Plunge Milling Dressup object"""
