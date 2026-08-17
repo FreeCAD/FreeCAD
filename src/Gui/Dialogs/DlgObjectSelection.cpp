@@ -455,6 +455,10 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem* objItem, int column)
         return;
     }
 
+    // setItemState() writes to the dependency lists too, so their signals have to be blocked as
+    // well or onDepItemChanged() re-enters and spreads the state to every selected row there
+    QSignalBlocker blocker(ui->depList);
+    QSignalBlocker blocker2(ui->inList);
     QSignalBlocker blocker3(ui->treeWidget);
     auto state = objItem->checkState(0);
     if (objItem == allItem) {
