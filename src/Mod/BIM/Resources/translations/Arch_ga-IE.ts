@@ -7166,7 +7166,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Sábháil Radharc Ceamara</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7327,7 +7327,7 @@ Cruthú foirgnimh curtha ar ceal.</translation>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="57"/>
       <source>Create Sketch</source>
-      <translation type="unfinished">Create Sketch</translation>
+      <translation>Cruthaigh Sceitse</translation>
     </message>
   </context>
   <context>
@@ -11683,12 +11683,12 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
     <message>
       <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Sábháil Radharc Ceamara</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Save Visibility of Objects</source>
-      <translation type="unfinished">Save Visibility of Objects</translation>
+      <translation>Sábháil Infheictheacht Réada</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
@@ -11698,7 +11698,7 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
     <message>
       <location filename="../../bimcommands/BimViews.py" line="147"/>
       <source>Saves the current camera view to the selected items</source>
-      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+      <translation>Sábhálann sé radharc reatha an cheamara sna míreanna roghnaithe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="148"/>
@@ -11734,7 +11734,7 @@ Alt+PgUp chun easbhrú a shíneadhAlt+PgDown chun easbhrú a chrapadhAlt+/ chun 
     <message>
       <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
-      <translation type="unfinished">Sets the selected item as the current working plane</translation>
+      <translation>Socraíonn an mhír roghnaithe mar an plána oibre reatha</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>

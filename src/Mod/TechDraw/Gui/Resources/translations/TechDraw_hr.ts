@@ -3748,7 +3748,7 @@ Ako se ne odabere nijedan predmet, otvara se preglednik datoteka za odabir SVG-a
     <message>
       <location filename="../../CommandDecorate.cpp" line="359"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Slikovne datoteke</translation>
     </message>
     <message>
       <location filename="../../CommandDecorate.cpp" line="363"/>

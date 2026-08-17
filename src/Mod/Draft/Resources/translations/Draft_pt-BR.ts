@@ -2757,7 +2757,7 @@ correspondendo aos eixos X, Y ou Z do sistema de coordenadas global</translation
     <message>
       <location filename="../ui/preferences-dwg.ui" line="100"/>
       <source>Note: DXF options apply to DWG files as well.</source>
-      <translation type="unfinished">Note: DXF options apply to DWG files as well.</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="26"/>
@@ -4703,12 +4703,12 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -5965,7 +5965,7 @@ dos objetos existentes em todos os documentos abertos?</translation>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="123"/>
       <source>%1 click on a line to split it</source>
-      <translation type="unfinished">%1 click on a line to split it</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../../draftguitools/gui_togglemodes.py" line="76"/>
@@ -6092,7 +6092,7 @@ Para permitir que o FreeCAD baixe estas bibliotecas, responda Sim.</translation>
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Salvar visualização da câmera</translation>
     </message>
   </context>
   <context>
@@ -6468,7 +6468,7 @@ no menu de ferramentas → Gerenciador de Extensões</translation>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="69"/>
       <source>Creates a 2-point line</source>
-      <translation>Cria um arco circular a partir de um ponto central e de um raio</translation>
+      <translation>Cria uma linha de 2 pontos</translation>
     </message>
   </context>
   <context>

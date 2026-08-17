@@ -4732,12 +4732,12 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 definisce il primo punto e il nodo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 definisce il punto successivo e il nodo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -6123,7 +6123,7 @@ Per consentire a FreeCAD di scaricare queste librerie, accettare con Sì.</trans
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Salva vista camera</translation>
     </message>
   </context>
   <context>

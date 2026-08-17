@@ -6694,7 +6694,7 @@ If selection without sub elements:
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="126"/>
       <source>Axial start position along the rotary axis.</source>
-      <translation type="unfinished">Axial start position along the rotary axis.</translation>
+      <translation>Posición inicial axial a lo largo del eje rotativo.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/RotarySurface.py" line="134"/>
@@ -7935,7 +7935,7 @@ Without sub selection all edges of the shape will be selected.</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="888"/>
       <source>(none assigned)</source>
-      <translation type="unfinished">(none assigned)</translation>
+      <translation>(ninguno asignado)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1139"/>
@@ -7980,7 +7980,7 @@ Without sub selection all edges of the shape will be selected.</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1814"/>
       <source>Add one.</source>
-      <translation type="unfinished">Add one.</translation>
+      <translation>Añada uno.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1815"/>
@@ -9773,7 +9773,7 @@ Esto no eliminará las herramientas que contiene.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="636"/>
       <source>Only one or two shapes should be selected.</source>
-      <translation type="unfinished">Only one or two shapes should be selected.</translation>
+      <translation>Solo se debe seleccionar una o dos formas.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="668"/>
@@ -9800,17 +9800,17 @@ Esto no eliminará las herramientas que contiene.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="818"/>
       <source>Shapes should be parallel to create slot between them.</source>
-      <translation type="unfinished">Shapes should be parallel to create slot between them.</translation>
+      <translation>Las formas deben ser paralelas para crear ranura entre ellas.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="911"/>
       <source>Points not defined.</source>
-      <translation type="unfinished">Points not defined.</translation>
+      <translation>Puntos no definidos.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="926"/>
       <source>Only one vertex selected. Add another feature to the Base Geometry.</source>
-      <translation type="unfinished">Only one vertex selected. Add another feature to the Base Geometry.</translation>
+      <translation>Sólo un vértice seleccionado. Añada otra característica a la geometría base.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="957"/>
@@ -10601,7 +10601,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
       <source>Simulates using CAMotics</source>
-      <translation type="unfinished">Simulates using CAMotics</translation>
+      <translation>Simula usando CAMotics</translation>
     </message>
   </context>
   <context>
@@ -10668,7 +10668,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="197"/>
       <source>Removing ToolController property from {} as base operation&apos;s ToolController is now used.</source>
-      <translation type="unfinished">Removing ToolController property from {} as base operation&apos;s ToolController is now used.</translation>
+      <translation>Eliminando la propiedad ToolController de {}, ya que ahora se usa ToolController de la operación base.</translation>
     </message>
   </context>
   <context>
@@ -11510,7 +11510,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="141"/>
       <source>Include Units</source>
-      <translation type="unfinished">Include Units</translation>
+      <translation>Incluir unidades</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="142"/>
@@ -11881,29 +11881,29 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1823"/>
       <source>Select the postprocessor file for this machine</source>
-      <translation type="unfinished">Select the postprocessor file for this machine</translation>
+      <translation>Seleccione el archivo postprocesador para esta máquina</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1849"/>
       <source>Post Processor:</source>
-      <translation type="unfinished">Post Processor:</translation>
+      <translation>Posprocesador:</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="1855"/>
       <source>Postprocessor Configuration</source>
-      <translation type="unfinished">Postprocessor Configuration</translation>
+      <translation>Configuración del postprocesador</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2242"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2332"/>
       <source>JSON Error</source>
-      <translation>JSON Error</translation>
+      <translation>Error JSON</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2243"/>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2333"/>
       <source>Invalid JSON: {}</source>
-      <translation>Inválido JSON {}</translation>
+      <translation>JSON inválido {}</translation>
     </message>
     <message>
       <location filename="../../../Machine/ui/editor/machine_editor.py" line="2248"/>
@@ -11969,7 +11969,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="68"/>
       <source>Machine configuration (.fcm) to use for post-processing</source>
-      <translation type="unfinished">Machine configuration (.fcm) to use for post-processing</translation>
+      <translation>Configuración de máquina (.fcm) a usar para el post-procesamiento</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="78"/>
@@ -11994,7 +11994,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="116"/>
       <source>Author name written into the G-code header comment</source>
-      <translation type="unfinished">Author name written into the G-code header comment</translation>
+      <translation>Nombre del autor escrito en el comentario de cabecera del G-code</translation>
     </message>
     <message>
       <location filename="../panels/DlgPostProcess.ui" line="119"/>
@@ -12588,7 +12588,7 @@ Several operations can be used with identical tool controller and coolant mode</
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="471"/>
       <source>Surface speed</source>
-      <translation type="unfinished">Surface speed</translation>
+      <translation>Velocidad de superficie</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/presets_tab.py" line="472"/>

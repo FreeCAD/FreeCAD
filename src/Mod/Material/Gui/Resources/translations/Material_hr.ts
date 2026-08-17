@@ -251,7 +251,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="204"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
-      <translation type="unfinished">Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
+      <translation>Definira osnovnu boju plohe kada je obasjana svjetlom. Predstavlja kako objekt jednoliko raspršuje svjetlost u svim smjerovima, neovisno o kutu gledatelja. Ovo svojstvo najviše utječe na boju materijala.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="215"/>
@@ -261,7 +261,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="217"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
-      <translation type="unfinished">Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</translation>
+      <translation>Definira boju plohe pod neizravnom, jednolikom rasvjetom, odnosno kako izgleda kada je obasjana samo ambijentalnom svjetlošću u prikazu, bez usmjerenog svjetla, sjena ili odsjaja</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="228"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="230"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
-      <translation type="unfinished">Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</translation>
+      <translation>Definira boju plohe koja izgleda kao da sama emitira svjetlost, neovisno o vanjskoj rasvjeti, čineći da objekt izgleda samosvijetleći. Postavite na crno da nema emisijske boje.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="241"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="243"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
-      <translation type="unfinished">Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</translation>
+      <translation>Definira boju i intenzitet svijetlih, zrcalnih odsjaja koji se javljaju na blistavim ili reflektirajućim plohama kada svjetlo padne izravno na njih. Postavite jarke boje za blistave objekte.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="254"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="256"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
-      <translation type="unfinished">Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</translation>
+      <translation>Definira veličinu i oštrinu zrcalnih odsjaja na plohi. Veće vrijednosti stvaraju male, izražene odsjaje, dok manje vrijednosti stvaraju široke, blage odsjaje. Napomena: intenzitet odsjaja određuje zrcalna boja.</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="268"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="269"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
-      <translation type="unfinished">Defines how much light passes through an object, making it partially or fully see-through</translation>
+      <translation>Određuje koliko svjetlosti prolazi kroz objekt, čineći ga djelomično ili potpuno prozirnim</translation>
     </message>
   </context>
   <context>
@@ -653,7 +653,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
       <location filename="../../ImageEdit.cpp" line="207"/>
       <location filename="../../ImageEdit.cpp" line="223"/>
       <source>Image files</source>
-      <translation type="unfinished">Image files</translation>
+      <translation>Slikovne datoteke</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.cpp" line="208"/>
@@ -1445,7 +1445,7 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     <message>
       <location filename="../../DlgMaterialImp.cpp" line="263"/>
       <source>Set Material</source>
-      <translation type="unfinished">Set Material</translation>
+      <translation>Odaberi materijal</translation>
     </message>
   </context>
 </TS>

@@ -1082,60 +1082,60 @@ verplaatst naar het centrum van de weergave.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="401"/>
       <source>Line width</source>
       <translation>Lijndikte</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="202"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="212"/>
       <source>Draw style</source>
       <translation>Tekenstijl</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
       <source>Solid</source>
       <translation>Volumemodel</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
       <source>Dashed</source>
       <translation>Gestreept</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="230"/>
       <source>Dotted</source>
       <translation>Gestippeld</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="235"/>
       <source>DashDot</source>
       <translation>Streepstip</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="243"/>
       <source>Display mode</source>
       <translation>Weergavemodus</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="245"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
       <source>Flat Lines</source>
       <translation>Platte lijn</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="261"/>
       <source>Wireframe</source>
       <translation>Draadmodel</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="256"/>
       <source>Shaded</source>
       <translation>Schaduw</translation>
     </message>
@@ -1145,17 +1145,17 @@ verplaatst naar het centrum van de weergave.</translation>
       <translation>Vul de onderstaande waardes in vanaf een opgeslagen stijl voorinstelling</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="184"/>
       <source>Point color</source>
       <translation>Puntkleur</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="195"/>
       <source>Point size</source>
       <translation>Puntgrootte</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
       <source>Points</source>
       <translation>Punten</translation>
     </message>
@@ -1165,165 +1165,165 @@ verplaatst naar het centrum van de weergave.</translation>
       <translation>Vorm kleur</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="667"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="673"/>
       <source>Annotations</source>
       <translation>Aantekeningen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
       <source>Extension line length</source>
       <translation>Lengte verlenglijn</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="613"/>
       <source>Extension line overshoot</source>
       <translation>Extensielijnoverschrijding</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="624"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="630"/>
       <source>Text spacing</source>
       <translation>Tekstafstand</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="372"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="378"/>
       <source>Text color</source>
       <translation>Tekst kleur</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="533"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>Dimensions</source>
       <translation>Dimensies</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="472"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="478"/>
       <source>Dot</source>
       <translation>punt</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>Annotation</source>
       <translation>Aantekening</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
       <source>Texts</source>
       <translation>Teksten</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>Line spacing factor</source>
       <translation>Lijn regelafstand factor</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>De annotatie schaal vermenigvuldiger is de inverse van de schaal instelling van de Annotatie schaal widget. Bij een schaal 1:100 wordt de vermenigvuldiger 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Start arrow type</source>
       <translation>Start pijl type</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="483"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="427"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="482"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="433"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
       <source>Arrow</source>
       <translation>Pijl</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="438"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="493"/>
       <source>Tick</source>
       <translation>Vink</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="492"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="443"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="498"/>
       <source>Tick-2</source>
       <translation>Schuine streep-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="442"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="497"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="448"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
       <source>None</source>
       <translation>Geen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="456"/>
       <source>Start arrow size</source>
       <translation>Start pijl grootte</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>End arrow type</source>
       <translation>Eind pijl grootte</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="511"/>
       <source>End arrow size</source>
       <translation>Grootte eindpijl</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="569"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Overschrijf de dimensie eenheden. Laat open om de huidige FreeCAD eenheid te gebruiken.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="576"/>
       <source>Dimension line overshoot</source>
       <translation>Afmetingslijnoverschrijding</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="577"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="583"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>De afstand waarmee de maatlijn wordt verlengd voorbij de verlenglijnen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="379"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>De kleur voor teksten, maat teksten en labels</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Font name</source>
       <translation>Font naam</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="340"/>
       <source>The font for texts, dimensions and labels</source>
       <translation>Het lettertype voor teksten, afmetingen en labels</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="347"/>
       <source>Font size</source>
       <translation>Lettergrootte</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="354"/>
       <source>The height for texts, dimension texts and label texts</source>
       <translation>De hoogte voor teksten, afmetingsteksten en label teksten</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="371"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>De regelafstand voor meerdere regels tekst en labels (ten opzichte van de lettergrootte)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="297"/>
       <source>Scale multiplier</source>
       <translation>Schaal vermenigvuldiger</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>Line and arrow color</source>
       <translation>Lijn en pijl kleur</translation>
     </message>
@@ -1343,17 +1343,17 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Vorm uiterlijk</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
       <source>Lines and Arrows</source>
       <translation>Lijnen en pijlen</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="546"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="552"/>
       <source>Adds a unit symbol to dimension texts</source>
       <translation>Voegt het symbool van de grootheid aan de dimensie tekst toe</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="594"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="600"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1361,37 +1361,37 @@ for linear dimensions.</source>
       <translation>De lengte van de markeerlijnen. Gebruik 0 voor volle markeerlijnen. Een negatieve waarde bepaalt de opening tussen de uiteindes van de markeerlijnen en de gemeten punten. Een positieve waarde bepaalt de maximale lengte van de markeerlijnen. Wordt enkel gebruikt voor lineaire afmetingen.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="614"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="620"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>De lengte van de markeerlijnen boven de afmetingslijn</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="631"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="637"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>De afstand tussen de afmetingslijn en de afmetingstekst</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="650"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="656"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Pas de bovenstaande stijl toe op de geselecteerde object(en)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="664"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="670"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Pas de bovenstaande stijl toe op alle annotaties (teksten, afmetingen en labels)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>Show unit</source>
       <translation>Toon eenheid</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>Unit override</source>
       <translation>Eenheid overschrijven</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="659"/>
       <source>Selected</source>
       <translation>Geselecteerd</translation>
     </message>
@@ -3579,7 +3579,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="101"/>
-      <location filename="../../draftutils/gui_utils.py" line="916"/>
+      <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/utils.py" line="1141"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
@@ -3600,7 +3600,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="137"/>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftutils/gui_utils.py" line="932"/>
       <source>Wrong input: object {} not in document.</source>
       <translation type="unfinished">Wrong input: object {} not in document.</translation>
     </message>
@@ -3615,22 +3615,22 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">Symbol not implemented. Using a default symbol.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="798"/>
+      <location filename="../../draftutils/gui_utils.py" line="806"/>
       <source>image is Null</source>
       <translation type="unfinished">image is Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="806"/>
+      <location filename="../../draftutils/gui_utils.py" line="814"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation type="unfinished">filename does not exist on the system or in the resource file</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="865"/>
+      <location filename="../../draftutils/gui_utils.py" line="873"/>
       <source>unable to load texture</source>
       <translation type="unfinished">unable to load texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="932"/>
+      <location filename="../../draftutils/gui_utils.py" line="940"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation type="unfinished">Does not have 'ViewObject.RootNode'.</translation>
     </message>
@@ -3761,7 +3761,7 @@ or try saving to a lower DWG version.</source>
       <translation>Kies het eerste punt</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="499"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="501"/>
       <source>Edges do not intersect!</source>
       <translation type="unfinished">Edges do not intersect!</translation>
     </message>
@@ -4095,17 +4095,17 @@ or try saving to a lower DWG version.</source>
       <translation type="unfinished">%1 pick third point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="86"/>
       <source>Only Draft lines, wires, and curves can be highlighted</source>
       <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="121"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="120"/>
       <source>Select an object to edit</source>
       <translation type="unfinished">Select an object to edit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="177"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
       <translation type="unfinished">%1 run Move, Rotate or Scale on subelements</translation>
     </message>
@@ -4693,13 +4693,13 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
-      <source>%1 click and drag to define first point and knot</source>
-      <translation type="unfinished">%1 click and drag to define first point and knot</translation>
+      <source>%1 define first point and knot</source>
+      <translation type="unfinished">%1 define first point and knot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
-      <source>%1 click and drag to define next point and knot</source>
-      <translation type="unfinished">%1 click and drag to define next point and knot</translation>
+      <source>%1 define next point and knot</source>
+      <translation type="unfinished">%1 define next point and knot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4788,39 +4788,39 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Dimensie maken</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="485"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="487"/>
       <source>Edge too short!</source>
       <translation type="unfinished">Edge too short!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="581"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
       <translation type="unfinished">%1 pick dimension position</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
       <translation type="unfinished">%1 select edge</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="600"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
       <translation type="unfinished">%1 pick next dimension point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
-      <location filename="../../draftguitools/gui_subelements.py" line="180"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
       <location filename="../../draftguitools/gui_edit.py" line="387"/>
       <source>%1 finish</source>
       <translation type="unfinished">%1 finish</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="608"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
       <translation type="unfinished">%1 pick first dimension point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
       <translation type="unfinished">%1 pick second dimension point</translation>
     </message>
@@ -6083,6 +6083,11 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
     </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6255,12 +6260,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">_BSpline.createGeometry: Closed with same first/last Point. Geometry not updated.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="106"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
       <source>Writing camera position</source>
       <translation type="unfinished">Writing camera position</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="124"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
       <source>Writing objects shown/hidden state</source>
       <translation type="unfinished">Writing objects shown/hidden state</translation>
     </message>
@@ -8082,12 +8087,12 @@ beyond the dimension line</translation>
       <translation type="unfinished">Shows the dimension line and arrows</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="52"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
       <source>The display length of this section plane</source>
       <translation type="unfinished">The display length of this section plane</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="55"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="56"/>
       <source>The size of the arrows of this section plane</source>
       <translation type="unfinished">The size of the arrows of this section plane</translation>
     </message>
@@ -8792,12 +8797,12 @@ The initial projection direction is the opposite of the current active view dire
   <context>
     <name>Draft_SubelementHighlight</name>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="66"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlight Subelements</source>
       <translation type="unfinished">Highlight Subelements</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="70"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="69"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
       <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
     </message>

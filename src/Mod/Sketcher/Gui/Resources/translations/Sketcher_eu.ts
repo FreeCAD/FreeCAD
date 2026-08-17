@@ -763,7 +763,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Sortu biribiltzea</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="199"/>
       <source>Trim edge</source>
       <translation>Muxarratu ertza</translation>
     </message>
@@ -1016,54 +1016,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Adabegi-aniztasunean aldaketarik ez egitea eskatzen ari zara.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Adabegi-indizea mugetatik kanpo dago. Kontuan izan, OCC notazioaren arabera, lehen adabegiaren indize-zenbakiak 1 izan behar duela, ez 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Aniztasuna ezin da handitu Bspline-aren gradutik gora.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Aniztasuna ezin da txikitu zerotik behera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-k ezin du aniztasuna txikitu tolerantzia maximoaren barruan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Adabegiak ezin du zero aniztasuna izan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the B-spline parameter range.</translation>
     </message>
@@ -3198,62 +3198,62 @@ This setting is only for the toolbar. Whichever you choose, all tools are always
 'Radius': The tool will apply radius to both arcs and circles.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Single tool</source>
       <translation>Tresna bakarra</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Separated tools</source>
       <translation>Tresna bereiztuak</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Both</source>
       <translation>Biak</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Auto</source>
       <translation>Automatikoa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Diameter</source>
       <translation>Diametroa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="251"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Radius</source>
       <translation>Erradioa</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="261"/>
       <source>Always</source>
       <translation>Beti</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Never</source>
       <translation>Inoiz ez</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="264"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>When no scale feature is visible</source>
       <translation type="unfinished">When no scale feature is visible</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="271"/>
       <source>None</source>
       <translation>Bat ere ez</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>Dimensions only</source>
       <translation type="unfinished">Dimensions only</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="274"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Position and dimensions</source>
       <translation type="unfinished">Position and dimensions</translation>
     </message>
@@ -3551,17 +3551,17 @@ Lehenetsia: %N = %V
       <translation>Oharra: ezarpen hauek krokis berriei aplikatutako balio lehenetsiak dira. Portaera 'Ikusi' fitxan gogoratuko dira, propietate gisa eta krokis bakoitzerako bereak.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="584"/>
+      <location filename="../../SketcherSettings.cpp" line="583"/>
       <source>Unexpected C++ exception</source>
       <translation>Espero ez zen C++ salbuespena</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="587"/>
+      <location filename="../../SketcherSettings.cpp" line="586"/>
       <source>Sketcher</source>
       <translation>Krokisgilea</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="611"/>
+      <location filename="../../SketcherSettings.cpp" line="610"/>
       <source>Glyphs not present:</source>
       <translation type="unfinished">Glyphs not present:</translation>
     </message>
@@ -4130,12 +4130,12 @@ Krokisaren geometriak eta murrizketak analizatzen dira horretarako.</translation
       <translation>Krokisa baliogabea da eta ezin da editatu.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Honako murrizketa partzialki erredundantea da:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Honako murrizketak partzialki erredundanteak dira:</translation>
     </message>
@@ -4160,72 +4160,72 @@ Krokisaren geometriak eta murrizketak analizatzen dira horretarako.</translation
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4447"/>
       <source>Empty sketch</source>
       <translation>Krokis hutsa</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>Over-constrained:</source>
       <translation type="unfinished">Over-constrained:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Malformed constraints:</source>
       <translation type="unfinished">Malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4466"/>
       <source>Redundant constraints:</source>
       <translation>Murrizketa erredundanteak:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Partially redundant:</source>
       <translation>Partzialki erredundantea:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Solver failed to converge</source>
       <translation>Ebazleak ezin izan du konbergitu</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4485"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4233,7 +4233,7 @@ Krokisaren geometriak eta murrizketak analizatzen dira horretarako.</translation
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4491"/>
       <source>Fully constrained</source>
       <translation>Osorik murritua</translation>
     </message>
@@ -4724,7 +4724,7 @@ Eigen Sparse QR algoritmoa matrize sakabanatuetarako optimizatuta dago; normalea
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4430"/>
       <source>and %1 more</source>
       <translation>eta %1 gehiago</translation>
     </message>
@@ -4945,7 +4945,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1636"/>
+      <location filename="../../../App/SketchObject.cpp" line="1644"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolak migratu dira. Migratutako fitxategiak ezin dira ireki FreeCADen aurreko bertsioetan.</translation>
@@ -4977,7 +4977,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
@@ -5146,7 +5146,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Huts egin du ertza gehitzeak</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="215"/>
       <source>Failed to trim edge</source>
       <translation>Huts egin du ertza muxarratzeak</translation>
     </message>
@@ -8270,10 +8270,20 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
+      <source>Trimming Parameters</source>
+      <translation type="unfinished">Trimming Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation type="unfinished">%1 pick edge to trim</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
+      <source>%1 toggle include axes as trim boundaries</source>
+      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8614,6 +8624,19 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
       <location filename="../../DrawSketchHandlerText.h" line="374"/>
       <source>Font</source>
       <translation type="unfinished">Font</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
     </message>
   </context>
   <context>

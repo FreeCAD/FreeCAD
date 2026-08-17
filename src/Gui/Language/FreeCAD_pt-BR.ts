@@ -10740,12 +10740,12 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="224"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 Selecionar primeiro ponto</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="226"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 Selecionar segundo ponto</translation>
     </message>
   </context>
   <context>
