@@ -37,8 +37,9 @@ public:
         const gp_Vec& xDir,
         const gp_Vec& zDir,
         double length,
-        const App::PropertyEnumeration& ThreadType,
-        const App::PropertyEnumeration& ThreadSize
+        const int threadType,
+        const int threadSize,
+        const int leftHanded
     );
     App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
     gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace);
@@ -122,6 +123,10 @@ public:
         int depthType;
         std::vector<std::string> sketches;
         std::vector<std::string> spreadsheets;
+        std::vector<std::string> sizes; //diameters
+        std::vector<std::string> pitches;
+        std::vector<std::string> designations;
+        std::vector<std::string> tapDrills;
 
         // Construtor padrão
         ThreadDefinition() : depthType(0) {}
@@ -169,6 +174,7 @@ private:
             std::vector<ThreadDefinition> definitions;
             std::optional<ThreadDefinition> readThreadDefinition(const Base::FileInfo& file);
             std::optional<ThreadDefinition> readThreadDocument(App::Document* doc);
+            void findSpreadsheets(App::Document* doc, ThreadDefinition& definition);
     };
 
     ThreadLibrary library;

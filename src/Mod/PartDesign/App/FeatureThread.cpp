@@ -159,8 +159,13 @@ App::DocumentObjectExecReturn* Thread::execute()
             );
         }
 
-        TopoDS_Shape thread
-            = threadUtils.makeThread(emptyXDir, emptyZDir, testLength, ThreadType, ThreadSize);
+        TopoDS_Shape thread = threadUtils.makeThread(
+                emptyXDir, 
+                emptyZDir, 
+                testLength, 
+                ThreadType.getValue(),
+                ThreadSize.getValue(),
+                ThreadDirection.getValue());
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
