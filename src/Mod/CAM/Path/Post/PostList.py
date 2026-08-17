@@ -383,7 +383,6 @@ def buildPostList(processor: Any) -> List[Tuple[str, List]]:
     Returns:
         List of tuples: [(section_name, [postable_items])]
     """
-
     orderby = processor._job.OrderOutputBy
     Path.Log.debug(f"Ordering by {orderby}")
 

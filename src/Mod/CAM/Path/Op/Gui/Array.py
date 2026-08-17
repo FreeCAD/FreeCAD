@@ -22,7 +22,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from DraftVecUtils import rotate2D
 from Path.Base.Util import coolantModeForOp
 from Path.Base.Util import toolControllerForOp
@@ -501,11 +501,8 @@ class ObjectArray:
     def isLegacy(self, obj):
         """Check compatibility of base operations for old type of array,
         identical tool controller and no coolant"""
-        tc0 = toolControllerForOp(obj.Base[0]) if obj.Base else None
-        if any(toolControllerForOp(b) != tc0 or coolantModeForOp(b) != "None" for b in obj.Base):
-            return False
-
-        return True
+        tc = toolControllerForOp(obj.Base[0]) if obj.Base else None
+        return all(toolControllerForOp(b) == tc and coolantModeForOp(b) == "None" for b in obj.Base)
 
     def cleanArrayGroup(self, obj, amount):
         """Keep only needed amount of child elements in array"""
@@ -579,13 +576,12 @@ class ObjectArray:
             toolController = toolControllerForOp(baseOp)
             coolantMode = coolantModeForOp(baseOp)
 
-            if counterCopies:
-                if (
-                    op["opName"] == obj.Base[0].Name
-                    or lastToolController != toolController
-                    or lastCoolant != coolantMode
-                ):  # switch to next child element
-                    i += 1
+            if counterCopies and (
+                op["opName"] == obj.Base[0].Name
+                or lastToolController != toolController
+                or lastCoolant != coolantMode
+            ):  # switch to next child element
+                i += 1
 
             if i > len(obj.ArrayGroup) - 1:
                 self.addNewArrayElement(obj)
@@ -1041,7 +1037,7 @@ class PathArray:
                     }
                 )
 
-    def getPointsAngle(self, p1, p2=FreeCAD.Vector()):
+    def getPointsAngle(self, p1, p2):
         """return angle between vector (direction) and Y-axis"""
         direction = p1 - p2
         if Path.Geom.pointsCoincide(direction, FreeCAD.Vector()):
