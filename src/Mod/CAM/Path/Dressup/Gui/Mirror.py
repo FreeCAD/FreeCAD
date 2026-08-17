@@ -22,8 +22,8 @@ import Constants
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
+from PathScripts import PathUtils
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
