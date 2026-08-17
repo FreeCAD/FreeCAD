@@ -60,9 +60,7 @@ def isOp(obj):
     if not getattr(obj, "Proxy", None):
         return False
     proxy = obj.Proxy.__module__
-    if "Path.Op" not in proxy and "Path.Dressup" not in proxy:
-        return False
-    return True
+    return "Path.Op" in proxy or "Path.Dressup" in proxy
 
 
 def baseOp(path):
