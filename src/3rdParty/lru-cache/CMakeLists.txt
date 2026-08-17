@@ -2,7 +2,7 @@
 ## CMAKE SETUP
 ###########################################################
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.11)
 project(lru-cache)
 
 add_compile_options(-g)
