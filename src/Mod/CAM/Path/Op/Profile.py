@@ -25,10 +25,10 @@
 
 import FreeCAD
 import Path
-import Path.Base.Drillable as Drillable
+from Path.Base import Drillable
 import Path.Op.Area as PathAreaOp
 import Path.Op.Base as PathOp
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -266,7 +266,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
@@ -303,13 +303,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if n in propList:
                 prop = getattr(obj, n)
                 val = PROP_DFLTS[n]
-                setVal = False
-                if hasattr(prop, "Value"):
-                    if isinstance(val, int) or isinstance(val, float):
-                        setVal = True
-                if setVal:
-                    # propVal = getattr(prop, 'Value')
-                    # Need to check if `val` below should be `propVal` commented out above
+                if hasattr(prop, "Value") and isinstance(val, (int, float)):
                     setattr(prop, "Value", val)
                 else:
                     setattr(obj, n, val)
@@ -465,7 +459,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """areaOpShapes(obj) ... returns envelope for all base shapes or wires"""
 
         shapes = []
-        self.isDebug = True if Path.Log.getLevel(Path.Log.thisModule()) == 4 else False
+        self.isDebug = Path.Log.getLevel(Path.Log.thisModule()) == 4
         self.inaccessibleMsg = translate(
             "PathProfile",
             "The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.",
@@ -521,22 +515,18 @@ class ObjectProfile(PathAreaOp.ObjectOp):
     def _processEachModel(self, base=None):
         """_processEachModel() ... returns envelope of shapes without sub selection"""
         shapeTups = []
-        if base:
-            models = [base]
-        else:
-            models = self.model
-        for base in models:
+        for model in [base] if base else self.model:
             error = False
-            if not hasattr(base, "Shape"):
+            if not hasattr(model, "Shape"):
                 continue
-            for shape in Path.Geom.uncompound(base.Shape):
+            for shape in Path.Geom.uncompound(model.Shape):
                 try:
                     if env := PathUtils.getEnvelope(partshape=shape, depthparams=self.depthparams):
                         shapeTups.append((env, False))
                 except Exception:
                     error = True
             if error:
-                Path.Log.warning(f"Error while create envelope from {base.Label}")
+                Path.Log.warning(f"Error while create envelope from {model.Label}")
         return shapeTups
 
     def _processBase(self, obj):
@@ -626,7 +616,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         """_processClosedWire(obj, base, edges) ... returns envelope of the closed wire"""
         Path.Log.track(base)
         shapeTups = []
-        origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
+        _, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
         if f := flatWire.Wires[0]:
             shape = Part.Face(f)
             if shapeEnv := PathUtils.getEnvelope(shape, depthparams=self.depthparams):
@@ -717,8 +707,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         toolDiam = 2 * self.radius  # self.radius defined in PathAreaOp or PathProfileBase modules
         minBfr = toolDiam * 1.25
         bbBfr = (self.ofstRadius * 2) * 1.25
-        if bbBfr < minBfr:
-            bbBfr = minBfr
+        bbBfr = max(bbBfr, minBfr)
         fwBB = flatWire.BoundBox
         wBB = origWire.BoundBox
         minArea = (self.ofstRadius - self.tol) ** 2 * math.pi
@@ -772,7 +761,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         botFc = []
         bbZMax = cutArea.BoundBox.ZMax
         bbZMin = cutArea.BoundBox.ZMin
-        for f in range(0, len(cutArea.Faces)):
+        for f in range(len(cutArea.Faces)):
             FcBB = cutArea.Faces[f].BoundBox
             if abs(FcBB.ZMax - bbZMax) < self.tol and abs(FcBB.ZMin - bbZMax) < self.tol:
                 topFc.append(f)
@@ -845,15 +834,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         else:
             wi = None
             for wvt in wire.Vertexes:
-                for w in range(0, lenWS):
+                for w in range(lenWS):
                     twr = WS[w]
-                    for v in range(0, len(twr.Vertexes)):
+                    for v in range(len(twr.Vertexes)):
                         V = twr.Vertexes[v]
-                        if abs(V.X - wvt.X) < self.tol:
-                            if abs(V.Y - wvt.Y) < self.tol:
-                                # Same vertex found.  This wire to be used for offset
-                                wi = w
-                                break
+                        if abs(V.X - wvt.X) < self.tol and abs(V.Y - wvt.Y) < self.tol:
+                            # Same vertex found.  This wire to be used for offset
+                            wi = w
+                            break
             # Efor
 
             if wi is None:
@@ -928,7 +916,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         subLoops = []
         rtnWIRES = []
-        osWrIdxs = []
         subDistFactor = 1.0  # Raise to include sub wires at greater distance from original
         fdv = flatWire.BoundBox.ZMax
         wire = flatWire
@@ -956,32 +943,24 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         self._addDebugObject("OffsetShape", ofstShp)
 
-        numOSWires = len(ofstShp.Wires)
-        for w in range(0, numOSWires):
-            osWrIdxs.append(w)
+        osWrIdxs = list(range(len(ofstShp.Wires)))
 
         # Identify two vertexes for dividing offset loop
         NEAR0 = self._findNearestVertex(ofstShp, cent0)
-        # min0i = 0
         min0 = NEAR0[0][4]
-        for n in range(0, len(NEAR0)):
+        for n in range(len(NEAR0)):
             N = NEAR0[n]
-            if N[4] < min0:
-                min0 = N[4]
-                # min0i = n
-        w0, vi0, pnt0, _, _ = NEAR0[0]  # min0i
+            min0 = min(N[4], min0)
+        w0, vi0, pnt0, _, _ = NEAR0[0]
         near0Shp = Part.makeLine(cent0, pnt0)
         self._addDebugObject("Near0", near0Shp)
 
         NEAR1 = self._findNearestVertex(ofstShp, cent1)
-        # min1i = 0
         min1 = NEAR1[0][4]
-        for n in range(0, len(NEAR1)):
+        for n in range(len(NEAR1)):
             N = NEAR1[n]
-            if N[4] < min1:
-                min1 = N[4]
-                # min1i = n
-        w1, vi1, pnt1, _, _ = NEAR1[0]  # min1i
+            min1 = min(N[4], min1)
+        w1, vi1, pnt1, _, _ = NEAR1[0]
         near1Shp = Part.makeLine(cent1, pnt1)
         self._addDebugObject("Near1", near1Shp)
 
@@ -993,8 +972,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         # Debugging
         """
         if self.isDebug:
-            Path.Log.debug('min0i is {}.'.format(min0i))
-            Path.Log.debug('min1i is {}.'.format(min1i))
             Path.Log.debug('NEAR0[{}] is {}.'.format(w0, NEAR0[w0]))
             Path.Log.debug('NEAR1[{}] is {}.'.format(w1, NEAR1[w1]))
             Path.Log.debug('NEAR0 is {}.'.format(NEAR0))
@@ -1004,7 +981,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         mainWire = ofstShp.Wires[w0]
 
         # Check for additional closed loops in offset wire by checking distance to iTAG or eTAG elements
-        if numOSWires > 1:
+        if len(ofstShp.Wires) > 1:
             # check all wires for proximity(children) to intersection tags
             tagsComList = []
             for T in self.cutSideTags.Faces:
@@ -1088,7 +1065,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             return tup[4]
 
         PNTS = []
-        for w in range(0, len(shape.Wires)):
+        for w in range(len(shape.Wires)):
             WR = shape.Wires[w]
             V = WR.Vertexes[0]
             P = FreeCAD.Vector(V.X, V.Y, 0.0)
@@ -1096,7 +1073,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             vi = 0
             pnt = P
             vrt = V
-            for v in range(0, len(WR.Vertexes)):
+            for v in range(len(WR.Vertexes)):
                 V = WR.Vertexes[v]
                 P = FreeCAD.Vector(V.X, V.Y, 0.0)
                 d = P.sub(PT).Length
@@ -1118,11 +1095,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         edgeCount = len(wire.Edges)
         FLGS = []
-        for e in range(0, edgeCount):
+        for e in range(edgeCount):
             FLGS.append(0)
 
         chk4 = False
-        for e in range(0, edgeCount):
+        for e in range(edgeCount):
             v = 0
             E = wire.Edges[e]
             fv0 = FreeCAD.Vector(E.Vertexes[0].X, E.Vertexes[0].Y, E.Vertexes[0].Z)
@@ -1159,7 +1136,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         IDXS = []
         IDX1 = []
         IDX2 = []
-        for e in range(0, edgeCount):
+        for e in range(edgeCount):
             f = FLGS[e]
             PRE.append(f)
             POST.append(f)
@@ -1176,7 +1153,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if chk4 is True:
             # find beginning 1 edge
             begIdx = None
-            for e in range(0, lenFULL):
+            for e in range(lenFULL):
                 f = PRE[e]
                 i = IDXS[e]
                 if f == 4:
@@ -1194,7 +1171,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             # find beginning 1 edge
             begIdx = None
             begFlg = False
-            for e in range(0, lenFULL):
+            for e in range(lenFULL):
                 f = PRE[e]
                 if f == 1:
                     if not begFlg:
@@ -1247,12 +1224,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         Makes face shape from cross-section object. Returns face shape at zHghtTrgt."""
         Path.Log.debug("_makeCrossSection()")
         # Create cross-section of shape and translate
-        wires = []
-        slcs = shape.slice(FreeCAD.Vector(0, 0, 1), sliceZ)
-        if len(slcs) > 0:
-            for i in slcs:
-                wires.append(i)
-            comp = Part.Compound(wires)
+        if slcs := shape.slice(FreeCAD.Vector(0, 0, 1), sliceZ):
+            comp = Part.Compound(slcs)
             if zHghtTrgt is not False:
                 comp.translate(FreeCAD.Vector(0, 0, zHghtTrgt - comp.BoundBox.ZMin))
             return comp
@@ -1282,7 +1255,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         tagCnt = 0
         begInt = False
         begExt = False
-        for e in range(0, numOrigEdges):
+        for e in range(numOrigEdges):
             E = useWire.Edges[e]
             LE = E.Length
             if LE > (self.radius * 2):
@@ -1292,7 +1265,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 nt = 4  # desired + 1
             mid = LE / nt
             spc = self.radius / 10
-            for i in range(0, int(nt)):
+            for i in range(int(nt)):
                 if i == 0:
                     if e == 0:
                         if LE > 0.2:
