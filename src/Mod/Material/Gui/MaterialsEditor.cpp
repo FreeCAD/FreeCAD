@@ -367,6 +367,58 @@ void MaterialsEditor::propertyChange(const QString& property, const QVariant& va
     else if (_material->hasAppearanceProperty(property)) {
         _material->setAppearanceValue(property, value);
         updatePreview();
+
+        auto treeModel = qobject_cast<QStandardItemModel*>(ui->treeAppearance->model());
+        if (treeModel) {
+            auto models = _material->getAppearanceModels();
+            if (models) {
+                for (const QString& uuid : *models) {
+                    try {
+                        auto appModel = Materials::ModelManager::getManager().getModel(uuid);
+                        if (appModel) {
+                            for (auto itp = appModel->begin(); itp != appModel->end(); itp++) {
+                                if (itp->first == property) {
+                                    QString tooltip = itp->second.getDescription().trimmed();
+                                    QString valStr = _material->getAppearanceValueString(property);
+                                    
+                                    if (!valStr.trimmed().isEmpty()) {
+                                        if (itp->second.getPropertyType() == QStringLiteral("Color")) {
+                                            QString hexCode = getColorHash(valStr);
+                                            if (!tooltip.isEmpty()) {
+                                                tooltip += QStringLiteral("\n\n");
+                                            }
+                                            tooltip += QString::fromUtf8("Value: %1 %2").arg(hexCode).arg(valStr);
+                                        } else {
+                                            if (!tooltip.isEmpty()) {
+                                                tooltip += QStringLiteral("\n\n");
+                                            }
+                                            tooltip += QString::fromUtf8("Value: %1").arg(valStr);
+                                        }
+                                    }
+
+                                    for (int r = 0; r < treeModel->rowCount(); ++r) {
+                                        auto rootItem = treeModel->item(r);
+                                        if (rootItem) {
+                                            for (int c = 0; c < rootItem->rowCount(); ++c) {
+                                                auto propItem = rootItem->child(c, 0);
+                                                auto valItem = rootItem->child(c, 1);
+                                                if (propItem && valItem && propItem->data().toString() == property) {
+                                                    propItem->setToolTip(tooltip);
+                                                    valItem->setToolTip(tooltip);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Materials::ModelNotFound const&) {
+                    }
+                }
+            }
+        }
     }
     update();
 }
@@ -1079,6 +1131,11 @@ QString MaterialsEditor::getColorHash(const QString& colorString)
 void MaterialsEditor::updateMaterialAppearance()
 {
     QTreeView* tree = ui->treeAppearance;
+    tree->setMouseTracking(true);
+    if (tree->viewport()) {
+        tree->viewport()->setMouseTracking(true);
+        tree->viewport()->setAttribute(Qt::WA_Hover);
+    }
     auto treeModel = qobject_cast<QStandardItemModel*>(tree->model());
     treeModel->clear();
 
@@ -1108,14 +1165,32 @@ void MaterialsEditor::updateMaterialAppearance()
                     QList<QStandardItem*> items;
 
                     QString key = itp->first;
-                    // auto propertyItem = new QStandardItem(key);
                     auto propertyItem = new QStandardItem(itp->second.getDisplayName());
                     propertyItem->setData(key);
-                    propertyItem->setToolTip(itp->second.getDescription());
+                    
+                    QString valStr = _material->getAppearanceValueString(key);
+                    QString tooltip = itp->second.getDescription().trimmed();
+                    
+                    if (!valStr.trimmed().isEmpty()) {
+                        if (itp->second.getPropertyType() == QStringLiteral("Color")) {
+                            QString hexCode = getColorHash(valStr);
+                            if (!tooltip.isEmpty()) {
+                                tooltip += QStringLiteral("\n\n");
+                            }
+                            tooltip += QString::fromUtf8("Value: %1 %2").arg(hexCode).arg(valStr);
+                        } else {
+                            if (!tooltip.isEmpty()) {
+                                tooltip += QStringLiteral("\n\n");
+                            }
+                            tooltip += QString::fromUtf8("Value: %1").arg(valStr);
+                        }
+                    }
+
+                    propertyItem->setToolTip(tooltip);
                     items.append(propertyItem);
 
-                    auto valueItem = new QStandardItem(_material->getAppearanceValueString(key));
-                    valueItem->setToolTip(itp->second.getDescription());
+                    auto valueItem = new QStandardItem(valStr);
+                    valueItem->setToolTip(tooltip);
                     QVariant variant;
                     // variant.setValue(_material->getAppearanceValueString(key));
                     variant.setValue(_material);

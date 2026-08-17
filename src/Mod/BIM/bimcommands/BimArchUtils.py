@@ -54,7 +54,10 @@ class Arch_Add:
         import Arch
 
         sel = FreeCADGui.Selection.getSelection()
-        if Draft.getType(sel[-1]) == "Space":
+        selex = FreeCADGui.Selection.getSelectionEx()
+        has_subelements = any(bool(s.SubElementNames) for s in selex[:-1])
+
+        if Draft.getType(sel[-1]) == "Space" and has_subelements:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch", "Add space boundary"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand(
