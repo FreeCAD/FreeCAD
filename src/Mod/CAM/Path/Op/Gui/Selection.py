@@ -26,6 +26,7 @@
 
 import FreeCAD
 import FreeCADGui
+import Part
 import Path
 from Path.Base.Drillable import isDrillable
 import math
@@ -134,6 +135,27 @@ class DRILLGate(PathBaseGate):
         if subobj.ShapeType not in ["Edge", "Face"]:
             return False
         return isDrillable(shape, subobj, vector=None, allowPartial=True)
+
+
+class HELIXGate(PathBaseGate):
+    def allow(self, doc, obj, sub):
+        Path.Log.debug("obj: {} sub: {}".format(obj, sub))
+        if not hasattr(obj, "Shape"):
+            return False
+        shape = obj.Shape
+        subShape = shape.getElement(sub)
+        if subShape.ShapeType not in ("Edge", "Face"):
+            return False
+        if isDrillable(shape, subShape, vector=None, allowPartial=True):
+            return True
+        elif subShape.ShapeType == "Edge" and isinstance(subShape.Curve, Part.Circle):
+            return True
+        elif subShape.ShapeType == "Face" and isinstance(
+            subShape.Surface, (Part.Cylinder, Part.Cone)
+        ):
+            return True
+
+        return False
 
 
 class TAPGate(PathBaseGate):
@@ -273,6 +295,12 @@ def drillselect():
         FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
 
 
+def helixselect():
+    FreeCADGui.Selection.addSelectionGate(HELIXGate())
+    if not Path.Preferences.suppressSelectionModeWarning():
+        FreeCAD.Console.PrintWarning("Drilling Select Mode\n")
+
+
 def tapselect():
     FreeCADGui.Selection.addSelectionGate(TAPGate())
     if not Path.Preferences.suppressSelectionModeWarning():
@@ -360,7 +388,7 @@ def select(op):
     opsel["Drilling"] = drillselect
     opsel["Tapping"] = tapselect
     opsel["Engrave"] = engraveselect
-    opsel["Helix"] = drillselect
+    opsel["Helix"] = helixselect
     opsel["MillFace"] = pocketselect
     opsel["MillFacing"] = pocketselect
     opsel["Pocket"] = pocketselect
