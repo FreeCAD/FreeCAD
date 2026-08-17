@@ -990,7 +990,7 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
         // findAncestors seem to want the duplicates.
         std::unordered_set<int> uniqueIndices(foundIndices.begin(), foundIndices.end());
 
-        Py::List list(uniqueIndices.size());
+        Py::List list;
         for (int idx : uniqueIndices) {
             list.append(shape2pyshape(containingShape.getSubTopoShape(desiredAncestorType, idx)));
         }

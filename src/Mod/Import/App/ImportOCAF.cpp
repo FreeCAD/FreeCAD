@@ -174,7 +174,9 @@ App::DocumentObject* ImportOCAF::loadShapes(
 
 #ifdef FC_DEBUG
     TopoDS_Shape debugShape;
-    int hash = aShapeTool->GetShape(label, debugShape) ? std::hash(debugShape) : 0;
+    int hash = aShapeTool->GetShape(label, debugShape)
+        ? static_cast<int>(std::hash<TopoDS_Shape> {}(debugShape))
+        : 0;
     Base::Console().log(
         "H:%d, N:%s, T:%d, A:%d, S:%d, C:%d, SS:%d, F:%d, R:%d, C:%d, SS:%d\n",
         hash,
