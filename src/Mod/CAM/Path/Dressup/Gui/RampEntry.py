@@ -23,9 +23,9 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
 
 from Path.Base.Generator.ramp_entry import RampEntry
+from PathScripts import PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import math
@@ -130,7 +130,7 @@ class ObjectDressup:
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
