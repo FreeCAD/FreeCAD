@@ -33,15 +33,15 @@
 #include <QStyledItemDelegate>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
-#include <fmt/format.h>
-#include <fmt/ranges.h>
 #include <cmath>
 #include <cstring>
+#include <format>
 #include <limits>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Expression.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -1246,7 +1246,7 @@ void TaskSketcherConstraints::onDeleteConstraints(const QList<int>& ids)
     }
 
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
-    const std::string idList = fmt::format("[{}]", fmt::join(ids, ", "));
+    const std::string idList = std::format("[{}]", Base::Tools::joinFormatted(ids, ", "));
     sketchView->getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Delete constraints"));
     try {
         Gui::cmdAppObjectArgs(sketch, "delConstraints(%s)", idList.c_str());

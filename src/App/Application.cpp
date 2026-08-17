@@ -40,6 +40,7 @@
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
 # include <chrono>
+#include <format>
 # include <optional>
 # include <memory>
 # include <utility>
@@ -51,8 +52,6 @@
 # include <map>
 # include <tuple>
 # include <vector>
-# include <fmt/format.h>
-# include <fmt/ranges.h>
 
 #ifdef FC_OS_WIN32
 # include <Shlobj.h>
@@ -1376,7 +1375,7 @@ std::string Application::getNameWithVersion()
     auto minor = config["BuildVersionMinor"];
     auto point = config["BuildVersionPoint"];
     auto suffix = config["BuildVersionSuffix"];
-    return fmt::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
+    return std::format("{} {}.{}.{}{}", appname, major, minor, point, suffix);
 }
 
 bool Application::isDevelopmentVersion()
@@ -1729,7 +1728,7 @@ namespace {
     // Given a description string and a list of extensions, construct a type string that Qt's file
     // dialogs will recognize
     void appendTypeString(std::string &description, const std::vector<std::string> &extensions) {
-        description = fmt::format("{} (*.{})", description, fmt::join(extensions, " *."));
+        description = std::format("{} (*.{})", description, Base::Tools::joinFormatted(extensions, " *."));
     }
 }
 

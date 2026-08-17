@@ -36,6 +36,7 @@
 #include <Build/Version.h>  // For FCCopyrightYear
 
 #include <cstdio>
+#include <format>
 #include <map>
 #include <stdexcept>
 
@@ -58,7 +59,7 @@
 
 void PrintInitHelp();
 
-const auto sBanner = fmt::format(
+const auto sBanner = std::format(
     "(C) 2001-{} FreeCAD contributors\n"
     "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
     FCCopyrightYear
@@ -446,7 +447,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     Base::Console().log("*** Unhandled Exception!\n");
     Base::Console().log("   ExpCode: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionCode);
     Base::Console().log("   ExpFlags: %d\n", pEx->ExceptionRecord->ExceptionFlags);
-    Base::Console().log("   ExpAddress: 0x%8.8X\n", pEx->ExceptionRecord->ExceptionAddress);
+    Base::Console().log("   ExpAddress: %p\n", pEx->ExceptionRecord->ExceptionAddress);
 
     bool bFailed = true;
     HANDLE hFile;

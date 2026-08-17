@@ -27,8 +27,7 @@
 #include <App/MeasureManager.h>
 #include <App/Document.h>
 
-#include <fmt/format.h>
-
+#include <format>
 #include "MeasurePosition.h"
 
 
@@ -137,7 +136,7 @@ std::string MeasurePosition::getResultString()
     Base::Quantity qy(value.y, unit);
     Base::Quantity qz(value.z, unit);
 
-    return fmt::format("X: {}\nY: {}\nZ: {}", formatQuantity(qx), formatQuantity(qy), formatQuantity(qz));
+    return std::format("X: {}\nY: {}\nZ: {}", formatQuantity(qx), formatQuantity(qy), formatQuantity(qz));
 }
 
 

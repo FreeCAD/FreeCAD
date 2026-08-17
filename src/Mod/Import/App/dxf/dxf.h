@@ -15,6 +15,7 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <format>
 #include <iosfwd>
 #include <list>
 #include <map>
@@ -755,7 +756,7 @@ protected:
         Base::ConsoleSingleton::instance().message(format, std::forward<args>(argValues)...);
     }
     template<typename... args>
-    void UnsupportedFeature(const char* format, args&&... argValues);
+    void UnsupportedFeature(std::format_string<args...> format, args&&... argValues);
 
 private:
     std::string m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet

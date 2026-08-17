@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <format>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 
 #include "PartFeature.h"
@@ -43,7 +44,7 @@ std::string PartFeaturePy::representation() const
         PyObject* repstr = PyObject_Repr(Featclass);
         if (repstr) {
             Py_ssize_t len;
-            std::string ret = fmt::format(
+            std::string ret = std::format(
                 "<{} ({})>\n",
                 static_cast<std::string>(getTypeId()),
                 PyUnicode_AsUTF8AndSize(repstr, &len)
@@ -53,7 +54,7 @@ std::string PartFeaturePy::representation() const
         }
     }
 
-    return fmt::format("<{}>", static_cast<std::string>(getTypeId()));
+    return std::format("<{}>", static_cast<std::string>(getTypeId()));
 }
 
 PyObject* PartFeaturePy::getElementHistory(PyObject* args, PyObject* kwds) const

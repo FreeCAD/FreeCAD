@@ -25,9 +25,9 @@
 #include "Parser.h"
 
 #include <QFile>
+#include <format>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
-#include <fmt/ranges.h>
 
 #include <QRegularExpression>
 #include <QString>
@@ -36,6 +36,7 @@
 #include <variant>
 
 #include <Base/Console.h>
+#include <Base/Tools.h>
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
@@ -60,7 +61,7 @@ std::string yamlNodeToExpression(const YAML::Node& node)
         for (const auto& element : node) {
             parts.push_back(yamlNodeToExpression(element));
         }
-        return fmt::format("({})", fmt::join(parts, ", "));
+        return std::format("({})", Base::Tools::joinFormatted(parts, ", "));
     }
 
     if (node.IsMap()) {
@@ -68,10 +69,10 @@ std::string yamlNodeToExpression(const YAML::Node& node)
         parts.reserve(node.size());
         for (auto it = node.begin(); it != node.end(); ++it) {
             parts.push_back(
-                fmt::format("{}: {}", it->first.as<std::string>(), yamlNodeToExpression(it->second))
+                std::format("{}: {}", it->first.as<std::string>(), yamlNodeToExpression(it->second))
             );
         }
-        return fmt::format("({})", fmt::join(parts, ", "));
+        return std::format("({})", Base::Tools::joinFormatted(parts, ", "));
     }
 
     return "";
@@ -92,7 +93,7 @@ std::string toQss(const Value& value)
             parts.push_back(toQss(*elem));
         }
 
-        return fmt::format("{}", fmt::join(parts, " "));
+        return Base::Tools::joinFormatted(parts, " ");
     }
 
     return value.toString();
@@ -165,7 +166,7 @@ std::optional<Parameter> BuiltInParameterSource::get(const std::string& name) co
 
         return Parameter {
             .name = name,
-            .value = fmt::format("#{:0>6x}", 0x00FFFFFF & (color >> 8)),  // NOLINT(*-magic-numbers)
+            .value = std::format("#{:0>6x}", 0x00FFFFFF & (color >> 8)),  // NOLINT(*-magic-numbers)
         };
     }
 

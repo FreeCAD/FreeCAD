@@ -26,14 +26,13 @@
 #include <boost/random.hpp>
 #include <algorithm>
 #include <cmath>
+#include <format>
 #include <ranges>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "nlohmann/json.hpp"
-
-#include <fmt/ranges.h>
 
 #include <Base/FileInfo.h>
 #include <Base/Reader.h>
@@ -190,8 +189,8 @@ void Constraint::Save(Writer& writer) const
         auto posIds = elements
             | std::views::transform([](const GeoElementId& e) { return e.posIdAsInt(); });
 
-        const std::string ids = fmt::format("{}", fmt::join(geoIds, " "));
-        const std::string positions = fmt::format("{}", fmt::join(posIds, " "));
+        const std::string ids = Base::Tools::joinFormatted(geoIds, " ");
+        const std::string positions = Base::Tools::joinFormatted(posIds, " ");
 
         writer.Stream() << "ElementIds=\"" << ids << "\" "
                         << "ElementPositions=\"" << positions << "\" ";
@@ -278,7 +277,7 @@ void Constraint::Restore(XMLReader& reader)
 
         if (ids.size() != positions.size()) {
             throw Base::ParserError(
-                fmt::format(
+                std::format(
                     "ElementIds and ElementPositions do not match in "
                     "size. Got {} ids and {} positions.",
                     ids.size(),

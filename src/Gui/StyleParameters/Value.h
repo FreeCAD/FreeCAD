@@ -24,6 +24,7 @@
 #ifndef STYLEPARAMETERS_VALUE_H
 #define STYLEPARAMETERS_VALUE_H
 
+#include <format>
 #include <memory>
 #include <optional>
 #include <string>
@@ -31,8 +32,6 @@
 #include <variant>
 #include <vector>
 #include <cassert>
-
-#include <fmt/format.h>
 
 #include "Base/Console.h"
 #include <Base/Color.h>
@@ -230,13 +229,13 @@ const T& Tuple::get(const std::string& name) const
     const Value* value = find(name);
 
     if (!value) {
-        THROWM(Base::ExpressionError, fmt::format("Missing argument '{}'", name));
+        THROWM(Base::ExpressionError, std::format("Missing argument '{}'", name));
     }
 
     if (!value->holds<T>()) {
         THROWM(
             Base::ExpressionError,
-            fmt::format("Argument '{}' must be {}, got {}", name, valueTypeName<T>(), value->toString())
+            std::format("Argument '{}' must be {}, got {}", name, valueTypeName<T>(), value->toString())
         );
     }
 

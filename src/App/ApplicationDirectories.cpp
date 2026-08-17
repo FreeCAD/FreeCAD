@@ -20,7 +20,7 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#include <fmt/format.h>
+#include <format>
 #include <utility>
 #include <QDir>
 #include <QProcessEnvironment>
@@ -502,7 +502,7 @@ std::string ApplicationDirectories::versionStringForPath(int major, int minor)
 {
     // NOTE: This is intended to be stable over time, so if the format changes, a condition should be added to check for
     // older versions and return this format for them, even if the new format differs.
-    return fmt::format("v{}-{}", major, minor);
+    return std::format("v{}-{}", major, minor);
 }
 
 bool ApplicationDirectories::isVersionedPath(const fs::path &startingPath) const {

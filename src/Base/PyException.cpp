@@ -21,6 +21,7 @@
 
 #include "PyException.h"
 
+#include <format>
 #include <typeinfo>
 
 #if defined(__GLIBCXX__) || defined(_LIBCPP_ABI_VERSION)
@@ -29,8 +30,6 @@
 #elif defined(_MSC_VER)
 # include <windows.h>  // SEH structures
 #endif
-
-#include <fmt/format.h>
 
 #include <Base/Console.h>
 
@@ -130,12 +129,12 @@ void pyThrowWrappedBaseException(const Base::Exception& e, bool report)
     if (report) {
         e.reportException();
     }
-    throw Py::Exception(e.getPyExceptionType(), fmt::format("FreeCAD exception thrown ({})", e.what()));
+    throw Py::Exception(e.getPyExceptionType(), std::format("FreeCAD exception thrown ({})", e.what()));
 }
 
 void pyThrowWrappedStdException(const std::exception& e, bool report)
 {
-    const auto what = fmt::format("FreeCAD exception thrown ({})", e.what());
+    const auto what = std::format("FreeCAD exception thrown ({})", e.what());
     if (report) {
         Base::Console().error("%s\n", what);
     }
@@ -172,7 +171,7 @@ void pyThrowWrappedUnknownException(bool report)
 #else
     const auto demangled = type->name();
 #endif
-    const auto what = fmt::format("Unknown C++ exception ({})", demangled);
+    const auto what = std::format("Unknown C++ exception ({})", demangled);
     if (report) {
         Base::Console().error("%s\n", what);
     }

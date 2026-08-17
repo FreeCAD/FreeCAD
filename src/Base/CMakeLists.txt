@@ -85,7 +85,7 @@ if(BUILD_TRACY_FRAME_PROFILER)
     list(APPEND FreeCADBase_LIBS TracyClient)
 endif()
 
-list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
+list(APPEND FreeCADBase_LIBS libfastsignals)
 
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
@@ -222,6 +222,7 @@ SET(FreeCADBase_CPP_SRCS
     Placement.cpp
     PlacementPyImp.cpp
     PrecisionPyImp.cpp
+    PrintfFormat.cpp
     ProgressIndicatorPy.cpp
     PyException.cpp
     PyExport.cpp
@@ -292,6 +293,7 @@ SET(FreeCADBase_HPP_SRCS
     Persistence.h
     Placement.h
     Precision.h
+    PrintfFormat.h
     ProgressIndicatorPy.h
     PyException.h
     PyExport.h
