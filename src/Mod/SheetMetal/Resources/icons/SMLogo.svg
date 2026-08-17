@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="64" height="64" version="1.1" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient23" x1="33.426" x2="36.703" y1="50.218" y2="28.851" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#729fcf" offset="0"/>
+   <stop stop-color="#3465a4" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient27" x1="42.808" x2="55.347" y1="29.324" y2="21.863" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#3465a4" offset="0"/>
+   <stop stop-color="#729fcf" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient39" x1="31.433" x2="7.182" y1="29.619" y2="10.643" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#3465a4" offset="0"/>
+   <stop stop-color="#3465a4" stop-opacity="0" offset="1"/>
+  </linearGradient>
+ </defs>
+ <metadata>
+  <rdf:RDF>
+   <cc:Work rdf:about="">
+    <dc:format>image/svg+xml</dc:format>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>[maxwxyz]</dc:title>
+     </cc:Agent>
+    </dc:creator>
+    <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+    <dc:publisher>
+     <cc:Agent>
+      <dc:title>FreeCAD</dc:title>
+     </cc:Agent>
+    </dc:publisher>
+    <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_CreateArc.svg</dc:identifier>
+    <dc:rights>
+     <cc:Agent>
+      <dc:title>FreeCAD LGPL2+</dc:title>
+     </cc:Agent>
+    </dc:rights>
+    <dc:date>2023-12-19</dc:date>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <g stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+  <g fill="#729fcf" fill-rule="evenodd" stroke="#0c1522">
+   <path d="m30.088 4.3652-23.93 13.818v22.107l20.146-11.633c0.72647-2.3842 2.0819-4.7314 3.7832-6.5527z"/>
+   <path d="m38.656 28.658 20.146 11.633v-11.055l-23.928-13.816v6.6855c1.7013 1.8213 3.0548 4.1686 3.7812 6.5527z"/>
+   <path d="m28.699 32.803-20.146 11.633 23.928 13.816 23.93-13.816-20.146-11.633c-2.4278 0.56289-5.1367 0.56289-7.5645 0z"/>
+   <path d="m26.305 28.658-20.146 11.633c0 1.5262 1.073 3.3815 2.3945 4.1445l20.146-11.633c-0.99151-0.1189-1.8501-0.68153-2.2969-1.502-0.43662-0.78276-0.47397-1.7609-0.097657-2.6426z"/>
+   <path d="m36.264 32.803 20.146 11.633c1.3216-0.76306 2.3926-2.6183 2.3926-4.1445l-20.146-11.633c0.38525 0.89969 0.33824 1.901-0.12305 2.6914-0.45377 0.79473-1.2979 1.3369-2.2695 1.4531z"/>
+   <path d="m27.695 2.9844-23.93 13.816 2.3926 1.3828 23.93-13.818z"/>
+   <path d="m34.875 15.42 23.928 13.816 2.3945-1.3809-23.93-13.818z"/>
+   <path d="m56.41 47.199v-2.7637l-23.93 13.816v2.7637z"/>
+  </g>
+  <g fill-rule="evenodd">
+   <g stroke="#0c1522">
+    <path d="m32.48 61.016v-2.7637l-23.928-13.816v2.7637z" fill="#3465a4"/>
+    <path d="m3.7656 38.908 2.3926 1.3828v-22.107l-2.3926-1.3828z" fill="#3465a4"/>
+    <path d="m61.197 27.855-2.3945 1.3809v11.055l2.3945-1.3828z" fill="#729fcf"/>
+    <path d="m61.197 38.908-2.3945 1.3828c0 1.5262-1.071 3.3815-2.3926 4.1445v2.7637c2.6432-1.5262 4.7871-5.2386 4.7871-8.291z" fill="#729fcf"/>
+    <path d="m8.5527 47.199v-2.7637c-1.3216-0.76306-2.3945-2.6183-2.3945-4.1445l-2.3926-1.3828c0 3.0524 2.144 6.7648 4.7871 8.291z" fill="#3465a4"/>
+   </g>
+   <g stroke="#729fcf">
+    <path d="m28.961 34.385c2.2814 0.44211 4.7596 0.44211 7.041 0l17.408 10.051-20.93 12.084-20.928-12.084z" fill="url(#linearGradient23)"/>
+    <path d="m36.375 18.018 20.928 12.084v7.5918l-17.406-10.051c-0.7576-2.1976-1.9973-4.3457-3.5215-6.1016z" fill="url(#linearGradient27)"/>
+    <path d="m28.588 6.9629v14.578c-1.5242 1.7555-2.7655 3.9036-3.5234 6.1016l-17.406 10.051v-18.645z" fill="url(#linearGradient39)"/>
+   </g>
+  </g>
+  <path d="m7.9248 40.936 16.69-9.6369" fill="none" stroke="#3465a4" style="paint-order:normal"/>
+  <path d="m56.99 40.936-16.69-9.6369" fill="#3465a4" stroke="#3465a4" style="paint-order:normal"/>
+ </g>
+</svg>

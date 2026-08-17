@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: General questions about the workbench
+    url: https://forum.freecad.org/viewtopic.php?t=60818
+    about: You can join the discussions on the FreeCAD forum.
