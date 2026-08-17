@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="842"/>
+      <location filename="../../AttacherTexts.cpp" line="862"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>Bilo koji</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="843"/>
+      <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation>Vrh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="844"/>
+      <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>Rub</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="845"/>
+      <location filename="../../AttacherTexts.cpp" line="865"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="847"/>
+      <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>Linija</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="848"/>
+      <location filename="../../AttacherTexts.cpp" line="868"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>Krivulja</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="849"/>
+      <location filename="../../AttacherTexts.cpp" line="869"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>Krug</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="850"/>
+      <location filename="../../AttacherTexts.cpp" line="870"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>Koničan</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="851"/>
+      <location filename="../../AttacherTexts.cpp" line="871"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>Elipsa</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="852"/>
+      <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>Parabola</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="853"/>
+      <location filename="../../AttacherTexts.cpp" line="873"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>Hiperbola</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="855"/>
+      <location filename="../../AttacherTexts.cpp" line="875"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="856"/>
+      <location filename="../../AttacherTexts.cpp" line="876"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>Kugla</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="857"/>
+      <location filename="../../AttacherTexts.cpp" line="877"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>Zakreni</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="858"/>
+      <location filename="../../AttacherTexts.cpp" line="878"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>Valjak</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="859"/>
+      <location filename="../../AttacherTexts.cpp" line="879"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>Zavojnica</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="860"/>
+      <location filename="../../AttacherTexts.cpp" line="880"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>Stožac</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="862"/>
+      <location filename="../../AttacherTexts.cpp" line="882"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>Objekt</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="863"/>
+      <location filename="../../AttacherTexts.cpp" line="883"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>Čvrsto tijelo</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="864"/>
+      <location filename="../../AttacherTexts.cpp" line="884"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>Žica</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="727"/>
+      <location filename="../../AttacherTexts.cpp" line="747"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Deaktiviran</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="728"/>
+      <location filename="../../AttacherTexts.cpp" line="748"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Dodavanje je onemogućeno. Točka može biti premještena uređivanjem svojstva razmještaja.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="736"/>
+      <location filename="../../AttacherTexts.cpp" line="756"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Ishodište Objekta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="737"/>
+      <location filename="../../AttacherTexts.cpp" line="757"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Točka je stavljena na poziciju položaja objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="746"/>
+      <location filename="../../AttacherTexts.cpp" line="766"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Fokus1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="747"/>
+      <location filename="../../AttacherTexts.cpp" line="767"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Fokus elipse, parabole, hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="755"/>
+      <location filename="../../AttacherTexts.cpp" line="775"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Fokus2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="756"/>
+      <location filename="../../AttacherTexts.cpp" line="776"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Drugi fokus elipse i hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="764"/>
+      <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Na rubu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="765"/>
+      <location filename="../../AttacherTexts.cpp" line="785"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Točka je stavljena na rub, MapPathParametr kontrolira gdje. Osim toga, vrhovi mogu biti povezani u za izradu projekcija.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="774"/>
+      <location filename="../../AttacherTexts.cpp" line="794"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Središte zakrivljenosti</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="775"/>
+      <location filename="../../AttacherTexts.cpp" line="795"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Središte priljubnog kruga jednog ruba. Optimalno spajanje vrha definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="784"/>
+      <location filename="../../AttacherTexts.cpp" line="804"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Centar mase</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="785"/>
+      <location filename="../../AttacherTexts.cpp" line="805"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Centar mase svih referenca (pretpostavlja se jednaka gustoća).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="793"/>
+      <location filename="../../AttacherTexts.cpp" line="813"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Presjek</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="794"/>
+      <location filename="../../AttacherTexts.cpp" line="814"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Nije realizirano</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="798"/>
+      <location filename="../../AttacherTexts.cpp" line="818"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Vrh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="799"/>
+      <location filename="../../AttacherTexts.cpp" line="819"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Stavite polazišnu točku koja se podudara s drugim vrhom.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="807"/>
+      <location filename="../../AttacherTexts.cpp" line="827"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Približno točka 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="808"/>
+      <location filename="../../AttacherTexts.cpp" line="828"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Točka na prvoj referenci koja je najbliža drugoj referenci.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="816"/>
+      <location filename="../../AttacherTexts.cpp" line="836"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>Približno točka 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="817"/>
+      <location filename="../../AttacherTexts.cpp" line="837"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>Točka na drugoj referenci koja je najbliža prvoj referenci.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="537"/>
+      <location filename="../../AttacherTexts.cpp" line="557"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Deaktiviran</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="538"/>
+      <location filename="../../AttacherTexts.cpp" line="558"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Dodavanje je onemogućeno. Linija se može pomaknuti uređivanjem svojstva položaja.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="546"/>
+      <location filename="../../AttacherTexts.cpp" line="566"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Objekt-ovo X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="547"/>
       <location filename="../../AttacherTexts.cpp" line="567"/>
+      <location filename="../../AttacherTexts.cpp" line="587"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija je poravnata uzduž Lokalne X osi objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="556"/>
+      <location filename="../../AttacherTexts.cpp" line="576"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Objekt-ovo Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="557"/>
+      <location filename="../../AttacherTexts.cpp" line="577"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija je poravnata uzduž Lokalne Y osi objekta. Radi na objektima sa položajem, i sa rubovima elipse/parabole/hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="566"/>
+      <location filename="../../AttacherTexts.cpp" line="586"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Objekt-ovo Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="576"/>
+      <location filename="../../AttacherTexts.cpp" line="596"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Osi zakrivljenosti</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="577"/>
+      <location filename="../../AttacherTexts.cpp" line="597"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija koja je os priljubnog kruga zakrivljenoga ruba. Opcionalni vrh definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="586"/>
+      <location filename="../../AttacherTexts.cpp" line="606"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Directrix1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="587"/>
+      <location filename="../../AttacherTexts.cpp" line="607"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Directrix linija za elipsu, parabolu, hiperbolu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="595"/>
+      <location filename="../../AttacherTexts.cpp" line="615"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Directrix2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="596"/>
+      <location filename="../../AttacherTexts.cpp" line="616"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Druga directrix linija za elipsu i hiperbolu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="604"/>
+      <location filename="../../AttacherTexts.cpp" line="624"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asimptota1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="605"/>
+      <location filename="../../AttacherTexts.cpp" line="625"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Asimptota od hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="609"/>
+      <location filename="../../AttacherTexts.cpp" line="629"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Asimptota2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="610"/>
+      <location filename="../../AttacherTexts.cpp" line="630"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Druga asimptota od hiperbole.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="614"/>
+      <location filename="../../AttacherTexts.cpp" line="634"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangenta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="615"/>
+      <location filename="../../AttacherTexts.cpp" line="635"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija tangente na jedan rub. Opcionalni vrh definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="623"/>
+      <location filename="../../AttacherTexts.cpp" line="643"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Normalno do ruba</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="624"/>
+      <location filename="../../AttacherTexts.cpp" line="644"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Poravnati sa N vektor Frenet-Serret koordinatnim sustavom zaobljenog ruba. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="633"/>
+      <location filename="../../AttacherTexts.cpp" line="653"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Binormalno</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="634"/>
+      <location filename="../../AttacherTexts.cpp" line="654"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Poravnati sa B vektor Frenet-Serret koordinatnim sustavom zaobljenog ruba. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="643"/>
+      <location filename="../../AttacherTexts.cpp" line="663"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangenta na površinu (U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="644"/>
-      <location filename="../../AttacherTexts.cpp" line="653"/>
+      <location filename="../../AttacherTexts.cpp" line="664"/>
+      <location filename="../../AttacherTexts.cpp" line="673"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Tangenta na površinu, uzduž U parametra. Poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="652"/>
+      <location filename="../../AttacherTexts.cpp" line="672"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Tangenta na površinu (V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="661"/>
+      <location filename="../../AttacherTexts.cpp" line="681"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Kroz dvije točke</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="662"/>
+      <location filename="../../AttacherTexts.cpp" line="682"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija koja prolazi kroz dva vrha.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="670"/>
+      <location filename="../../AttacherTexts.cpp" line="690"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Presjek</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="671"/>
+      <location filename="../../AttacherTexts.cpp" line="691"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Križanje dva naličja.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="675"/>
+      <location filename="../../AttacherTexts.cpp" line="695"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Približna linija</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="676"/>
+      <location filename="../../AttacherTexts.cpp" line="696"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija premoščenja najkraće udaljenosti između oblika.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="684"/>
+      <location filename="../../AttacherTexts.cpp" line="704"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>1. glavna os</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="685"/>
+      <location filename="../../AttacherTexts.cpp" line="705"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija slijedi prvi glavne osi inercije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="693"/>
+      <location filename="../../AttacherTexts.cpp" line="713"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>2. glavna os</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="694"/>
+      <location filename="../../AttacherTexts.cpp" line="714"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija slijedi drugi glavne osi inercije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="702"/>
+      <location filename="../../AttacherTexts.cpp" line="722"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>3. glavna os</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="703"/>
+      <location filename="../../AttacherTexts.cpp" line="723"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija slijedi treći glavne osi inercije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="711"/>
+      <location filename="../../AttacherTexts.cpp" line="731"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>Normalno na površinu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="712"/>
+      <location filename="../../AttacherTexts.cpp" line="732"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Linija okomito na površinu u točki postavljenoj na vrh.</translation>
@@ -507,207 +507,219 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Deaktiviran</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="297"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Dodavanje je onemogućeno. Objekt može biti premješten uređivanjem svojstva razmještaja.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="316"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Prenesi ishodište</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="307"/>
+      <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ishodište je poravnano sa krajnjom točkom linije. Orijentacija se kontrolira po položaju.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Objekt-ovo XY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je poravnata po lokalnoj ravnini XY povezanog objekta.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Objekt-ovo XZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je poravnata po lokalnoj ravnini XZ povezanog objekta.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="344"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>YZ Objekta</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="345"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je poravnata po lokalnoj ravnini YZ povezanog objekta.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="343"/>
+      <location filename="../../AttacherTexts.cpp" line="353"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY paralelno na ravninu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="344"/>
+      <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina X' Y' paralelna je s ravninom (XY objekta) i prolazi kroz vrh</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="353"/>
+      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <source>Midplane between faces</source>
+      <comment>AttachmentPlane mode caption</comment>
+      <translation type="unfinished">Midplane between faces</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="364"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="373"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Ravna ploha</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="354"/>
+      <location filename="../../AttacherTexts.cpp" line="374"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je poravnata sa podudarajućim ravnim licem.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="362"/>
+      <location filename="../../AttacherTexts.cpp" line="382"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Tangenta na površinu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <location filename="../../AttacherTexts.cpp" line="383"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je napravljena tangencionalno kroz tjemenu točku na površinu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="371"/>
+      <location filename="../../AttacherTexts.cpp" line="391"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Normalno do ruba</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="372"/>
+      <location filename="../../AttacherTexts.cpp" line="392"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je napravljena tangencionalno na rub. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="380"/>
+      <location filename="../../AttacherTexts.cpp" line="400"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Fernet NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="381"/>
-      <location filename="../../AttacherTexts.cpp" line="391"/>
       <location filename="../../AttacherTexts.cpp" line="401"/>
+      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="421"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Poravnati sa Frenet-Serret koordinatnim sustavom zaobljenog ruba. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="390"/>
+      <location filename="../../AttacherTexts.cpp" line="410"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="400"/>
+      <location filename="../../AttacherTexts.cpp" line="420"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="410"/>
+      <location filename="../../AttacherTexts.cpp" line="430"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Koncentričan</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="431"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Poravnati sa ravninom na priljubljeni krug jednog ruba. Ishodište je poravnato sa točkom zakrivljenosti. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="420"/>
+      <location filename="../../AttacherTexts.cpp" line="440"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Kružni odjeljak</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="421"/>
+      <location filename="../../AttacherTexts.cpp" line="441"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina je okomito na rub, i Y os je podešena na os priljubljenog kruga. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="430"/>
+      <location filename="../../AttacherTexts.cpp" line="450"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Ravnina od tri točke</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="431"/>
+      <location filename="../../AttacherTexts.cpp" line="451"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Poravna ravninu da prolazi kroz tri tjemene točke.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="439"/>
+      <location filename="../../AttacherTexts.cpp" line="459"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Normala od tri točke</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="440"/>
+      <location filename="../../AttacherTexts.cpp" line="460"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina će proći kroz prva dva vrha, i okomito na ravninu koja prolazi kroz tri vrha.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="449"/>
+      <location filename="../../AttacherTexts.cpp" line="469"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Presavijanje</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="450"/>
+      <location filename="../../AttacherTexts.cpp" line="470"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Specijalnost način za preklapanje polyhedra. Odaberite 4 ruba redoslijedom: preklopni rub, preklopni linija, druga preklopni linija, drugi preklopni rub. Ravnina će biti poravnata sa prvim rubom.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="460"/>
+      <location filename="../../AttacherTexts.cpp" line="480"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Inercije 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="461"/>
+      <location filename="../../AttacherTexts.cpp" line="481"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>Ravnina konstruirana na drugoj i trećoj glavnoj osi inercije (prolazi kroz centar mase).</translation>
@@ -788,269 +800,281 @@
       <translation>Ravnina X' Y' paralelna je s ravninom (XY objekta) i prolazi kroz vrh.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY na plohi</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ravnina X' Y' je poravnata sa podudarajućim ravnim licem.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="120"/>
+      <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY tangenta na površinu</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ravnina X' Y' je napravljena tangencijalno kroz tjemenu točku na površinu.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="129"/>
+      <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Z tangens na rub</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Ravnina Z' je dodana da paše tangencionalno na rub. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Fernet NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
       <location filename="../../AttacherTexts.cpp" line="150"/>
       <location filename="../../AttacherTexts.cpp" line="160"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Poravnati sa Frenet-Serret koordinatnim sustavom zaobljenog ruba. Opcionalno poveznica tjemene točke definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Fernet TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
+      <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Fernet TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Koncentričan</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Kružni odjeljak</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Poravnati Y' da odgovara na priljubni krug jednog ruba. Opcionalni vrh spajanja, definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Presavijanje</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Poravnati sa ravninom XY na priljubni krug jednog ruba. Opcionalni vrh spajanja, definira gdje.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <source>Midplane between faces</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">Midplane between faces</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY ravnina od tri točke</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Poravnajte ravninu XY da prođe kroz tri vrha.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="198"/>
+      <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XZ ravnina od tri točke</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="199"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Poravnajte XZ ravninu da prolazi kroz 3 točke; OS X će proći kroz prve dvije točke.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Specijalni način za preklapanje polyhedra. Odaberite 4 ruba redoslijedom: preklopni rub, preklopni linija, druga preklopna linija, drugi preklopni rub. Ravnina XY biti će poravnana sa prvim rubom.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="229"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Inercijski CS</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="220"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Inercijski koordinatni sustav, izgrađen na glavne osi inercije i centra mase.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-Z-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte Z' i X' osi prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-Z-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte Z' i Y' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
-      <location filename="../../AttacherTexts.cpp" line="490"/>
+      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="510"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-X-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte X' i Y' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-X-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte X ' i Z' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="269"/>
+      <location filename="../../AttacherTexts.cpp" line="279"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-Y-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="270"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte Y' i Z' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
-      <location filename="../../AttacherTexts.cpp" line="520"/>
+      <location filename="../../AttacherTexts.cpp" line="289"/>
+      <location filename="../../AttacherTexts.cpp" line="540"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-Y-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte Y' i X' osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="470"/>
+      <location filename="../../AttacherTexts.cpp" line="490"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-N-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="471"/>
+      <location filename="../../AttacherTexts.cpp" line="491"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte normalu i vodoravnu ravninu osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="480"/>
+      <location filename="../../AttacherTexts.cpp" line="500"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-N-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="481"/>
+      <location filename="../../AttacherTexts.cpp" line="501"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte normalu i okomitu ravninu osi prema vrhu / uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="491"/>
+      <location filename="../../AttacherTexts.cpp" line="511"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte horizontalnu i vertikalnu ravninu osi prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="500"/>
+      <location filename="../../AttacherTexts.cpp" line="520"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-X-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="501"/>
+      <location filename="../../AttacherTexts.cpp" line="521"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi porijeklo s prvim vrhom. Poravnajte horizontalnu ravninu osi i normale prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="510"/>
+      <location filename="../../AttacherTexts.cpp" line="530"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Poravnajte O-Y-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="511"/>
+      <location filename="../../AttacherTexts.cpp" line="531"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte vertikalnu ravninu osi i normale prema vrhu/ uzduž linije.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="521"/>
+      <location filename="../../AttacherTexts.cpp" line="541"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Uskladi ishodište s prvim vrhom. Poravnajte vertikalnu i horizontalnu ravninu osi prema vrhu/ uzduž linije.</translation>
@@ -5835,8 +5859,8 @@ Individual boolean operation checks:</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
-      <source>2x%1 select and confirm</source>
-      <translation type="unfinished">2x%1 select and confirm</translation>
+      <source>%1 select and confirm</source>
+      <translation type="unfinished">%1 select and confirm</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>

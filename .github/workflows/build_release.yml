@@ -54,7 +54,8 @@ jobs:
               SAFE_BRANCH=$(echo "$BRANCH" | sed 's/[^a-zA-Z0-9._-]/-/g')
               export BUILD_TAG=${SAFE_BRANCH}-$(date "+%Y.%m.%d")
             fi
-            gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" \
+            gh release create ${BUILD_TAG} --target "${{ github.sha }}" \
+                                           --title "Development Build ${BUILD_TAG}" \
                                            -F .github/workflows/weekly-build-notes.md \
                                            --prerelease || \
             gh release view ${BUILD_TAG} > /dev/null  # fail if it doesn't exist

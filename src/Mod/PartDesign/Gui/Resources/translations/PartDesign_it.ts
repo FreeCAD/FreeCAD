@@ -1785,12 +1785,12 @@ Se zero, è uguale a Raggio2</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
       <source>No start reference selected</source>
-      <translation type="unfinished">No start reference selected</translation>
+      <translation>Nessun riferimento iniziale selezionato</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="68"/>
       <source>Offset from the profile or selected start reference</source>
-      <translation type="unfinished">Offset from the profile or selected start reference</translation>
+      <translation>Scostamento dal profilo o dal riferimento iniziale selezionato</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="789"/>
@@ -1816,7 +1816,7 @@ Se zero, è uguale a Raggio2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
       <source>Select face, plane...</source>
-      <translation type="unfinished">Select face, plane...</translation>
+      <translation>Seleziona faccia, piano...</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1195"/>
@@ -2545,7 +2545,7 @@ misurata lungo la direzione specificata</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Profile plane</source>
-      <translation type="unfinished">Profile plane</translation>
+      <translation>Piano del profilo</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="35"/>
@@ -3535,7 +3535,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>Base feature (%1) has an empty shape.</source>
-      <translation type="unfinished">Base feature (%1) has an empty shape.</translation>
+      <translation>La funzione base (%1) ha una forma vuota.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="428"/>

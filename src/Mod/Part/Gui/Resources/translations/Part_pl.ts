@@ -583,13 +583,13 @@ Działa na obiektach z rozmieszczeniem i krawędziami elipsy lub paraboli lub hi
       <location filename="../../AttacherTexts.cpp" line="363"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Płaszczyzna środkowa między ścianami</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>Początek płaszczyzny znajduje się w środku pomiędzy środkami dwóch płaskich ścian, a jej orientacja dokładnie przepoławia ich kąt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="373"/>
@@ -902,13 +902,13 @@ Opcjonalne powiązanie z wierzchołkiem określa miejsce wyrównania.</translati
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Płaszczyzna środkowa między ścianami</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>Początek płaszczyzny znajduje się w środku pomiędzy środkami dwóch płaskich ścian, a jej orientacja dokładnie przepoławia ich kąt.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
@@ -5883,7 +5883,7 @@ Pojedyncze kontrole operacji logicznych:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 zaznacz i potwierdź</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>

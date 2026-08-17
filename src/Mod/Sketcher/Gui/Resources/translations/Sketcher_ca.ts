@@ -763,7 +763,7 @@ restriccions invàlides i geometria degenerada</translation>
       <translation>Crea un cantell</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="199"/>
       <source>Trim edge</source>
       <translation>Retalla l'aresta</translation>
     </message>
@@ -1016,54 +1016,54 @@ restriccions invàlides i geometria degenerada</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Se us ha demanat que no canvieu la multiplicitat del nus.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'índex de geometria B-spline (GeoID) està fora de límits.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>L'índex de geometria (GeoId) proporcionada no és una B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L'índex del nus és fora dels límits. Tingueu en compte que d'acord amb la notació d'OCC, el primer nus té l'índex 1 i no zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicitat no pot augmentar més enllà del grau de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicitat no es pot reduir més enllà de zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC no pot reduir la multiplicitat dins de la tolerància màxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El node no pot tenir multiplicitat zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>La multiplicitat de nodes no pot ser superior al grau de la B-Spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>El node no es pot inserir fora de l'interval de paràmetres B-spline.</translation>
     </message>
@@ -3193,62 +3193,62 @@ Aquesta configuració només és per a la barra d'eines. Trieu el que trieu, tot
 'Radi': l'eina aplicarà el radi tant als arcs com als cercles.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Single tool</source>
       <translation>Eina única</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Separated tools</source>
       <translation>Eines separades</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Both</source>
       <translation>Ambdós</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Auto</source>
       <translation>Auto</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Diameter</source>
       <translation>Diàmetre</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="251"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Radius</source>
       <translation>Radi</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="261"/>
       <source>Always</source>
       <translation>Sempre</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Never</source>
       <translation>Mai</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="264"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>When no scale feature is visible</source>
       <translation>Quan no hi ha cap característica d'escala visible</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="271"/>
       <source>None</source>
       <translation>Cap</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>Dimensions only</source>
       <translation>Només dimensional</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="274"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Position and dimensions</source>
       <translation>Posició i dimensions</translation>
     </message>
@@ -3545,17 +3545,17 @@ Per defecte: %N = %V
       <translation>Nota: aquests paràmetres són aplicats per defecte als nous croquis. El comportament és recordat per a cada croquis individualment, com a propietats a la pestanya Vista.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="584"/>
+      <location filename="../../SketcherSettings.cpp" line="583"/>
       <source>Unexpected C++ exception</source>
       <translation>S'ha produït una excepció inesperada de C++</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="587"/>
+      <location filename="../../SketcherSettings.cpp" line="586"/>
       <source>Sketcher</source>
       <translation>Esbossos</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="611"/>
+      <location filename="../../SketcherSettings.cpp" line="610"/>
       <source>Glyphs not present:</source>
       <translation type="unfinished">Glyphs not present:</translation>
     </message>
@@ -4124,12 +4124,12 @@ Això es fa mitjançant l'anàlisi de les geometries i restriccions de l'esbós.
       <translation>El croquis no és vàlid i no es pot editar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La restricció següent és parcialment redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Les següents restriccions són parcialment redundants:</translation>
     </message>
@@ -4154,72 +4154,72 @@ Això es fa mitjançant l'anàlisi de les geometries i restriccions de l'esbós.
       <translation>Voleu obrir l'eina de validació del croquis?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following constraint:</source>
       <translation>Elimina la restricció següent:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Elimineu almenys una de les restriccions següents:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Elimina la restricció redundant següent:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Elimina les restriccions redundants següents:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Elimina la restricció mal formada següent:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Elimina les restriccions mal formades següents:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4447"/>
       <source>Empty sketch</source>
       <translation>Croquis buit</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restringit:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Malformed constraints:</source>
       <translation>Restriccions mal formades:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4466"/>
       <source>Redundant constraints:</source>
       <translation>Restriccions redundants:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Partially redundant:</source>
       <translation>Parcialment redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Solver failed to converge</source>
       <translation>El solucionador no ha pogut convergir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4485"/>
       <source>Under-constrained:</source>
       <translation>Sub-restringit:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n grau de llibertat</numerusform>
@@ -4227,7 +4227,7 @@ Això es fa mitjançant l'anàlisi de les geometries i restriccions de l'esbós.
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4491"/>
       <source>Fully constrained</source>
       <translation>Esbós completament restringit</translation>
     </message>
@@ -4717,7 +4717,7 @@ L'algoritme Eigen Sparse QR està optimitzat per a matrius escasses; generalment
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4430"/>
       <source>and %1 more</source>
       <translation>i %1 més</translation>
     </message>
@@ -4938,7 +4938,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <translation>El canvi no gestionat de la propietat de geometria dona lloc a índexs de restricció no vàlids</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1636"/>
+      <location filename="../../../App/SketchObject.cpp" line="1644"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>S'han migrat les paràboles. Els arxius migrats no s'obriran en versions prèvies de FreeCAD!!
@@ -4971,7 +4971,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
@@ -5140,7 +5140,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <translation>No s'ha pogut afegir la vora</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="215"/>
       <source>Failed to trim edge</source>
       <translation>No s'ha pogut retallar la vora</translation>
     </message>
@@ -8264,10 +8264,20 @@ Els punts s’han d’establir més a prop que una cinquena part de l'espaiat de
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
+      <source>Trimming Parameters</source>
+      <translation type="unfinished">Trimming Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation>%1 tria l'aresta a retallar</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
+      <source>%1 toggle include axes as trim boundaries</source>
+      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8608,6 +8618,19 @@ Els punts s’han d’establir més a prop que una cinquena part de l'espaiat de
       <location filename="../../DrawSketchHandlerText.h" line="374"/>
       <source>Font</source>
       <translation type="unfinished">Font</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
     </message>
   </context>
   <context>

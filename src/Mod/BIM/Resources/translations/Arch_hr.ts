@@ -3780,18 +3780,18 @@ Zadani predložak nalazi se na:
     <name>Arch</name>
     <message>
       <location filename="../../ArchStructure.py" line="449"/>
-      <location filename="../../Arch.py" line="2574"/>
+      <location filename="../../Arch.py" line="2576"/>
       <source>Beam</source>
       <translation>Zraka</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="450"/>
-      <location filename="../../Arch.py" line="2578"/>
+      <location filename="../../Arch.py" line="2580"/>
       <source>Column</source>
       <translation>Stupac</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2627"/>
+      <location filename="../../Arch.py" line="2629"/>
       <source>StructuralSystem</source>
       <translation>StrukturniSustav</translation>
     </message>
@@ -4360,7 +4360,7 @@ Zadani predložak nalazi se na:
     <message>
       <location filename="../../ArchStructure.py" line="298"/>
       <source>%1 pick base point</source>
-      <translation type="unfinished">%1 pick base point</translation>
+      <translation>%1 odaberite osnovnu točku</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="327"/>
@@ -4461,7 +4461,7 @@ Zadani predložak nalazi se na:
       <translation>Gotovo</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="396"/>
+      <location filename="../../Arch.py" line="397"/>
       <source>Equipment</source>
       <translation>Oprema</translation>
     </message>
@@ -4476,7 +4476,7 @@ Zadani predložak nalazi se na:
       <translation>Napravi Opremu</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="172"/>
+      <location filename="../../Arch.py" line="173"/>
       <source>BuildingPart</source>
       <translation>Ugradni Dio</translation>
     </message>
@@ -4508,7 +4508,7 @@ Zadani predložak nalazi se na:
       <translation>Profili</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1279"/>
+      <location filename="../../Arch.py" line="1281"/>
       <source>Site</source>
       <translation>Lokacija</translation>
     </message>
@@ -4565,7 +4565,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Prevjes</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1153"/>
+      <location filename="../../Arch.py" line="1155"/>
       <location filename="../../ArchRoof.py" line="1072"/>
       <source>Roof</source>
       <translation>Krovište</translation>
@@ -4637,7 +4637,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Prednje</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1084"/>
+      <location filename="../../Arch.py" line="1086"/>
       <location filename="../../ArchReference.py" line="909"/>
       <source>External Reference</source>
       <translation>Vanjska referenca</translation>
@@ -4739,7 +4739,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Stvaranje vanjske reference</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="471"/>
+      <location filename="../../Arch.py" line="472"/>
       <source>Frame</source>
       <translation>Nosač</translation>
     </message>
@@ -4805,7 +4805,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
 </translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2098"/>
+      <location filename="../../Arch.py" line="2100"/>
       <source>Window</source>
       <translation>Prozor</translation>
     </message>
@@ -4945,7 +4945,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation type="unfinished">Retrieves the selected edge</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1782"/>
+      <location filename="../../ArchSectionPlane.py" line="1806"/>
       <location filename="../../ArchWindow.py" line="1706"/>
       <location filename="../../ArchSpace.py" line="954"/>
       <location filename="../../ArchAxis.py" line="985"/>
@@ -4965,7 +4965,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="765"/>
-      <location filename="../../ArchSectionPlane.py" line="1549"/>
+      <location filename="../../ArchSectionPlane.py" line="1593"/>
       <location filename="../../ArchWindow.py" line="1708"/>
       <location filename="../../ArchMaterial.py" line="471"/>
       <location filename="../../ArchMaterial.py" line="798"/>
@@ -5050,7 +5050,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Zadrži odabrani rub</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="141"/>
+      <location filename="../../Arch.py" line="142"/>
       <source>Axis System</source>
       <translation>Osi sustava</translation>
     </message>
@@ -5072,7 +5072,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Odaberite barem jednu os</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="101"/>
+      <location filename="../../Arch.py" line="102"/>
       <location filename="../../ArchAxis.py" line="984"/>
       <location filename="../../ArchComponent.py" line="2470"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
@@ -5088,12 +5088,12 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <location filename="../../importers/importJSON.py" line="62"/>
       <location filename="../../importers/importOBJ.py" line="300"/>
       <location filename="../../importers/importOBJ.py" line="338"/>
-      <location filename="../../importers/importWebGL.py" line="371"/>
+      <location filename="../../importers/importWebGL.py" line="372"/>
       <source>Successfully written</source>
       <translation>Uspješno napisan</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1661"/>
+      <location filename="../../Arch.py" line="1663"/>
       <source>Truss</source>
       <translation>Poprečna greda</translation>
     </message>
@@ -5128,52 +5128,52 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Pogreška: IfcOpenShell inačica je prestara</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="261"/>
+      <location filename="../../Arch.py" line="262"/>
       <source>Drawing</source>
       <translation>Crtež</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="435"/>
+      <location filename="../../Arch.py" line="436"/>
       <source>Fence</source>
       <translation>Ograda</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="601"/>
+      <location filename="../../Arch.py" line="602"/>
       <source>Materials</source>
       <translation>Materijali</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="695"/>
+      <location filename="../../Arch.py" line="696"/>
       <source>View of {panel.Label}</source>
       <translation>Prikaz {panel.Label}</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="924"/>
+      <location filename="../../Arch.py" line="926"/>
       <source>Project</source>
       <translation>Projekt</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1483"/>
+      <location filename="../../Arch.py" line="1485"/>
       <source>Stairs</source>
       <translation>Stube</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1607"/>
+      <location filename="../../Arch.py" line="1609"/>
       <source>Railing</source>
       <translation>Ograda</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2434"/>
+      <location filename="../../Arch.py" line="2436"/>
       <source>Report</source>
       <translation>Izvješće</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2512"/>
+      <location filename="../../Arch.py" line="2514"/>
       <source>Structure</source>
       <translation>Konstrukcija</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="2731"/>
+      <location filename="../../Arch.py" line="2733"/>
       <source>Covering</source>
       <translation type="unfinished">Covering</translation>
     </message>
@@ -5193,14 +5193,14 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Stvorite novi višeslojni materijal</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="539"/>
+      <location filename="../../Arch.py" line="540"/>
       <location filename="../../ArchMaterial.py" line="896"/>
       <location filename="../../ArchMaterial.py" line="922"/>
       <source>Material</source>
       <translation>Materijal</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="574"/>
+      <location filename="../../Arch.py" line="575"/>
       <source>MultiMaterial</source>
       <translation>Višeslojni Materijal</translation>
     </message>
@@ -5291,7 +5291,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Ukloni raspon</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="503"/>
+      <location filename="../../Arch.py" line="504"/>
       <location filename="../../ArchGrid.py" line="488"/>
       <source>Grid</source>
       <translation>Mreža</translation>
@@ -5437,7 +5437,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Kosina</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="204"/>
+      <location filename="../../Arch.py" line="205"/>
       <location filename="../../ArchPrecast.py" line="1723"/>
       <source>Level</source>
       <translation>Razina</translation>
@@ -5449,12 +5449,12 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Rotacija</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="657"/>
+      <location filename="../../Arch.py" line="658"/>
       <source>Panel</source>
       <translation>Ploča</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="723"/>
+      <location filename="../../Arch.py" line="724"/>
       <source>PanelSheet</source>
       <translation>Ploča</translation>
     </message>
@@ -5536,7 +5536,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Ovaj objekt nema lice</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="361"/>
+      <location filename="../../Arch.py" line="362"/>
       <source>Curtain Wall</source>
       <translation>Viseća (zglobna) fasada</translation>
     </message>
@@ -5554,7 +5554,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
     </message>
     <message>
       <location filename="../../ArchReport.py" line="436"/>
-      <location filename="../../Arch.py" line="2447"/>
+      <location filename="../../Arch.py" line="2449"/>
       <source>New Statement</source>
       <translation type="unfinished">New Statement</translation>
     </message>
@@ -5566,7 +5566,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
     </message>
     <message>
       <location filename="../../ArchReport.py" line="894"/>
-      <location filename="../../Arch.py" line="758"/>
+      <location filename="../../Arch.py" line="759"/>
       <source>Pipe</source>
       <translation>Cijev</translation>
     </message>
@@ -6089,7 +6089,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation type="unfinished">BIM SQL Cheatsheet</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="805"/>
+      <location filename="../../Arch.py" line="806"/>
       <source>Connector</source>
       <translation>Spajalica</translation>
     </message>
@@ -6250,7 +6250,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Jedinica</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1204"/>
+      <location filename="../../Arch.py" line="1206"/>
       <source>Schedule</source>
       <translation>Raspored</translation>
     </message>
@@ -6659,7 +6659,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Skup novih svojstava</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1011"/>
+      <location filename="../../Arch.py" line="1013"/>
       <source>Rebar</source>
       <translation>Građevinsko željezo</translation>
     </message>
@@ -6675,7 +6675,7 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Odaberite osnovno lice na strukturni objekt</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1238"/>
+      <location filename="../../Arch.py" line="1240"/>
       <source>Section</source>
       <translation>Odjeljak</translation>
     </message>
@@ -6685,97 +6685,97 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Napravi ravninu presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1775"/>
+      <location filename="../../ArchSectionPlane.py" line="1799"/>
       <source>Scope</source>
       <translation>Djelokrug</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1778"/>
+      <location filename="../../ArchSectionPlane.py" line="1802"/>
       <source>Placement and Visuals</source>
       <translation>Položaj i vizualni elementi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1781"/>
+      <location filename="../../ArchSectionPlane.py" line="1805"/>
       <source>Objects seen by this section plane</source>
       <translation>Objekti koje vidi ova ravnina presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1787"/>
+      <location filename="../../ArchSectionPlane.py" line="1811"/>
       <source>Removes highlighted objects from the list above</source>
       <translation>Uklanja istaknute objekte sa liste iznad</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1788"/>
+      <location filename="../../ArchSectionPlane.py" line="1812"/>
       <source>Add Selected</source>
       <translation>Dodaj odabrano</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1793"/>
+      <location filename="../../ArchSectionPlane.py" line="1817"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation>Dodaje odabrane objekte u područje ovog presjeka ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1794"/>
+      <location filename="../../ArchSectionPlane.py" line="1818"/>
       <source>Cut View</source>
       <translation>Pogled presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1801"/>
+      <location filename="../../ArchSectionPlane.py" line="1825"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation>Stvara rez uživo u 3D prikazu, skrivajući geometriju s jedne strane ravnine kako bi se vidjela unutrašnjost vašeg modela</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1802"/>
+      <location filename="../../ArchSectionPlane.py" line="1826"/>
       <source>Rotate by 90°</source>
       <translation>Rotiraj 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1806"/>
+      <location filename="../../ArchSectionPlane.py" line="1830"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation>Rotira ravninu oko svoje lokalne X-osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1810"/>
+      <location filename="../../ArchSectionPlane.py" line="1834"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation>Rotira ravninu oko svoje lokalne Y-osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1814"/>
+      <location filename="../../ArchSectionPlane.py" line="1838"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation>Rotira ravninu oko svoje lokalne Z-osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1815"/>
+      <location filename="../../ArchSectionPlane.py" line="1839"/>
       <source>Resize to Fit</source>
       <translation>Promijenite veličinu da odgovara</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1821"/>
+      <location filename="../../ArchSectionPlane.py" line="1845"/>
       <source>Recenter Plane</source>
       <translation>Ponovno središte ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1803"/>
+      <location filename="../../ArchSectionPlane.py" line="1827"/>
       <source>Rotate X</source>
       <translation>Rotiraj X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1554"/>
+      <location filename="../../ArchSectionPlane.py" line="1598"/>
       <source>Toggle Cut View</source>
       <translation type="unfinished">Toggle Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1807"/>
+      <location filename="../../ArchSectionPlane.py" line="1831"/>
       <source>Rotate Y</source>
       <translation>Rotiraj Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1811"/>
+      <location filename="../../ArchSectionPlane.py" line="1835"/>
       <source>Rotate Z</source>
       <translation>Rotiraj Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1820"/>
+      <location filename="../../ArchSectionPlane.py" line="1844"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Promijeni veličinu ravnine radi postavljanja objekata na gornji popis</translation>
     </message>
@@ -6787,12 +6787,12 @@ The ladybug or pysolar Python module is required.</translation>
       <translation>Središte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1826"/>
+      <location filename="../../ArchSectionPlane.py" line="1850"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrira ravninu na objekte na gornjem popisu</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="231"/>
+      <location filename="../../Arch.py" line="232"/>
       <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>Zgrada</translation>
@@ -6830,7 +6830,7 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Izradi Zgradu</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1341"/>
+      <location filename="../../Arch.py" line="1343"/>
       <source>Space</source>
       <translation>Prostor</translation>
     </message>
@@ -6886,12 +6886,12 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Granice prostora</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1729"/>
+      <location filename="../../Arch.py" line="1731"/>
       <source>Wall</source>
       <translation>Zid</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="1740"/>
+      <location filename="../../Arch.py" line="1742"/>
       <source>Walls can only be based on Part or Mesh objects</source>
       <translation>Zidovi mogu temeljiti samo na objektima Dio ili Mreža</translation>
     </message>
@@ -7198,8 +7198,8 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
-      <source>Write Camera Position</source>
-      <translation>Zapiši položaj kamere</translation>
+      <source>Save Camera View</source>
+      <translation>Spremi prikaz kamere</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7356,6 +7356,11 @@ Stvaranje zgrade prekinuto.</translation>
       <location filename="../../ArchTruss.py" line="421"/>
       <source>Rod Type</source>
       <translation type="unfinished">Rod Type</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimSketch.py" line="57"/>
+      <source>Create Sketch</source>
+      <translation type="unfinished">Create Sketch</translation>
     </message>
   </context>
   <context>
@@ -7561,8 +7566,8 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Električna energija potrebna u ovoj opremi</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="234"/>
-      <location filename="../../Arch.py" line="316"/>
+      <location filename="../../Arch.py" line="235"/>
+      <location filename="../../Arch.py" line="317"/>
       <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Vrsta ove zgrade</translation>
@@ -7603,7 +7608,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="282"/>
-      <location filename="../../ArchSectionPlane.py" line="1005"/>
+      <location filename="../../ArchSectionPlane.py" line="1049"/>
       <source>The shape of this object</source>
       <translation>Oblik ovog objekta</translation>
     </message>
@@ -7625,7 +7630,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="547"/>
-      <location filename="../../ArchSectionPlane.py" line="1177"/>
+      <location filename="../../ArchSectionPlane.py" line="1221"/>
       <source>The line width of this object</source>
       <translation>Širina linije ovog objekta</translation>
     </message>
@@ -8073,17 +8078,17 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Prikaži tekstualne oznake za ključne sate na putanji sunca</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2357"/>
+      <location filename="../../ArchSite.py" line="2359"/>
       <source>The altitude of the sun above the horizon</source>
       <translation>Visina sunca iznad horizonta</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2367"/>
+      <location filename="../../ArchSite.py" line="2369"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation>Smjer Sunca prema kompasu (0° je sjever)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2375"/>
+      <location filename="../../ArchSite.py" line="2377"/>
       <source>The date and time for this sun position</source>
       <translation>Datum i vrijeme za ovaj položaj sunca</translation>
     </message>
@@ -9205,7 +9210,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="997"/>
+      <location filename="../../ArchSectionPlane.py" line="1041"/>
       <source>The placement of this object</source>
       <translation>polozaj ovih objekta</translation>
     </message>
@@ -9426,81 +9431,81 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Oblik čelične armature</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1016"/>
+      <location filename="../../ArchSectionPlane.py" line="1060"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Objekti koji se razmatraju po ravnini rezanja. Prazno znači čitav dokument. </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1027"/>
+      <location filename="../../ArchSectionPlane.py" line="1071"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Ako je netočno, ne krute tvari će se rezati također, s moguće lošim rezultatom.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1039"/>
+      <location filename="../../ArchSectionPlane.py" line="1083"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Ako je istinito, rezultirajući pogledi bit će izrezani na područje ravnine presjeka.
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1050"/>
+      <location filename="../../ArchSectionPlane.py" line="1094"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Ako je istinito, boja predmeta materijala upotrijebit će se za popunjavanje izreznih područja.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1062"/>
+      <location filename="../../ArchSectionPlane.py" line="1106"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Geometrija koja je veća od ove vrijednosti bit će odrezana. Zadržite nulu za neograničeno. </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
+      <location filename="../../ArchSectionPlane.py" line="1179"/>
       <source>The display length of this section plane</source>
       <translation>Dužina prikaza ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1147"/>
+      <location filename="../../ArchSectionPlane.py" line="1191"/>
       <source>The display height of this section plane</source>
       <translation>Visina prikaza ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1159"/>
+      <location filename="../../ArchSectionPlane.py" line="1203"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Veličina strelica  ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1168"/>
+      <location filename="../../ArchSectionPlane.py" line="1212"/>
       <source>The transparency of this object</source>
       <translation>Prozirnost ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1186"/>
-      <location filename="../../ArchSectionPlane.py" line="1203"/>
+      <location filename="../../ArchSectionPlane.py" line="1230"/>
+      <location filename="../../ArchSectionPlane.py" line="1247"/>
       <source>Show the cut in the 3D view</source>
       <translation>Prikaži rez u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1194"/>
+      <location filename="../../ArchSectionPlane.py" line="1238"/>
       <source>The color of this object</source>
       <translation>Boja ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1214"/>
+      <location filename="../../ArchSectionPlane.py" line="1258"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Udaljenost između ravnine rezanja i aktualnog pogleda rezanja (mala vrijednost ali ne nula)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1223"/>
+      <location filename="../../ArchSectionPlane.py" line="1267"/>
       <source>Show the label in the 3D view</source>
       <translation>Prikaži oznaku u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1231"/>
+      <location filename="../../ArchSectionPlane.py" line="1275"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Ime pisma</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1240"/>
+      <location filename="../../ArchSectionPlane.py" line="1284"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Veličina pisma teksta</translation>
@@ -11288,7 +11293,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Izbrišite nekorišteno</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="95"/>
+      <location filename="../../bimcommands/BimViews.py" line="108"/>
       <location filename="../../bimcommands/BimMaterial.py" line="175"/>
       <source>Rename</source>
       <translation>Preimenuj</translation>
@@ -11304,7 +11309,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Spoji sa…</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="91"/>
+      <location filename="../../bimcommands/BimViews.py" line="103"/>
       <location filename="../../bimcommands/BimMaterial.py" line="181"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
@@ -11698,89 +11703,106 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Odaberite točno jedan objekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="93"/>
+      <location filename="../../bimcommands/BimViews.py" line="105"/>
       <source>Isolate</source>
       <translation>Izoliraj</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="124"/>
+      <location filename="../../bimcommands/BimViews.py" line="137"/>
       <source>Creates a new working plane proxy</source>
       <translation>Stvara novi proxy radne ravnine</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="125"/>
+      <location filename="../../bimcommands/BimViews.py" line="138"/>
       <source>Deletes the selected item</source>
       <translation>Briše odabranu stavku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="88"/>
+      <location filename="../../bimcommands/BimViews.py" line="100"/>
+      <location filename="../../bimcommands/BimViews.py" line="698"/>
       <source>Active</source>
       <translation>Aktivan</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="89"/>
-      <source>New Level Above</source>
-      <translation type="unfinished">New Level Above</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="90"/>
+      <location filename="../../bimcommands/BimViews.py" line="102"/>
       <source>New Working Plane Proxy</source>
       <translation>Novi Proxy Radne ravnine</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="92"/>
+      <location filename="../../bimcommands/BimViews.py" line="104"/>
       <source>Toggle Visibility</source>
       <translation>Promijeni vidljivost</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="94"/>
-      <source>Save View Position</source>
-      <translation>Spremi položaj pogleda</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="121"/>
-      <source>Creates a new level above the highest existing one</source>
-      <translation type="unfinished">Creates a new level above the highest existing one</translation>
-    </message>
-    <message>
-      <location filename="../../bimcommands/BimViews.py" line="128"/>
+      <location filename="../../bimcommands/BimViews.py" line="141"/>
       <source>Toggles the visibility of selected items</source>
       <translation>Uključuje/isključuje vidljivost odabranih stavki</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="131"/>
+      <location filename="../../bimcommands/BimViews.py" line="144"/>
       <source>Turns all items off except the selected ones</source>
       <translation>Isključuje sve stavke osim odabranih</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="134"/>
-      <source>Saves the current camera position to the selected items</source>
-      <translation>Sprema trenutni položaj kamere u odabrane stavke</translation>
+      <location filename="../../bimcommands/BimViews.py" line="101"/>
+      <source>New Level Above</source>
+      <translation type="unfinished">New Level Above</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="135"/>
+      <location filename="../../bimcommands/BimViews.py" line="106"/>
+      <source>Save Camera View</source>
+      <translation>Spremi prikaz kamere</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="107"/>
+      <source>Save Visibility of Objects</source>
+      <translation type="unfinished">Save Visibility of Objects</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="134"/>
+      <source>Creates a new level above the highest existing one</source>
+      <translation type="unfinished">Creates a new level above the highest existing one</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="147"/>
+      <source>Saves the current camera view to the selected items</source>
+      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="148"/>
       <source>Renames the selected item</source>
       <translation>Preimenuje odabranu stavku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="136"/>
+      <location filename="../../bimcommands/BimViews.py" line="149"/>
+      <location filename="../../bimcommands/BimViews.py" line="701"/>
       <source>Activates the selected item</source>
       <translation>Aktivira odabranu stavku</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="162"/>
+      <location filename="../../bimcommands/BimViews.py" line="176"/>
       <source>BIM Views Manager</source>
       <translation type="unfinished">BIM Views Manager</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="310"/>
+      <location filename="../../bimcommands/BimViews.py" line="324"/>
       <source>2D Views</source>
       <translation>2D Pogledi</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="323"/>
+      <location filename="../../bimcommands/BimViews.py" line="337"/>
       <source>Sheets</source>
       <translation>Listovi</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="709"/>
+      <source>Set Working Plane</source>
+      <translation>Odaberite Radnu Ravninu</translation>
+    </message>
+    <message>
+      <location filename="../../bimcommands/BimViews.py" line="713"/>
+      <source>Sets the selected item as the current working plane</source>
+      <translation type="unfinished">Sets the selected item as the current working plane</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>
@@ -11943,7 +11965,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <translation>Nije pronađen element s Id-om '{id}' i tipom '{sh_type}'</translation>
     </message>
     <message>
-      <location filename="../../importers/importSH3DHelper.py" line="3263"/>
+      <location filename="../../importers/importSH3DHelper.py" line="3255"/>
       <source>Type of &lt;{elm.tag}&gt; #{i} is not supported: '{attribute}'. Skipping!</source>
       <translation>Vrsta &lt;{elm.tag}&gt; #{i} nije podržana: '{attribute}'. Preskakanje!</translation>
     </message>
@@ -12559,12 +12581,12 @@ Molimo provjerite svoju instalaciju FreeCAD-a ili navedite prilagođeni predlož
   <context>
     <name>BIM_Sketch</name>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="37"/>
+      <location filename="../../bimcommands/BimSketch.py" line="38"/>
       <source>New Sketch</source>
       <translation>Nova skica</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimSketch.py" line="40"/>
+      <location filename="../../bimcommands/BimSketch.py" line="41"/>
       <source>Creates a new sketch in the current working plane</source>
       <translation>Stvara novu skicu u trenutnoj radnoj ravnini</translation>
     </message>
@@ -12650,12 +12672,12 @@ Molimo provjerite svoju instalaciju FreeCAD-a ili navedite prilagođeni predlož
   <context>
     <name>BIM_Views</name>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="44"/>
+      <location filename="../../bimcommands/BimViews.py" line="55"/>
       <source>Views Manager</source>
       <translation>Rukovatelj pogleda</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimViews.py" line="45"/>
+      <location filename="../../bimcommands/BimViews.py" line="56"/>
       <source>Shows or hides the views manager</source>
       <translation>Prikaži ili sakrij rukovatelj pogleda</translation>
     </message>

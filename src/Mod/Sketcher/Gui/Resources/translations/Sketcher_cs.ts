@@ -762,7 +762,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Vytvořit zaoblení</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="199"/>
       <source>Trim edge</source>
       <translation>Oříznout hranu</translation>
     </message>
@@ -1015,54 +1015,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2817"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2851"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Nepožadujete změnu v násobnosti uzlů.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2809"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2987"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2843"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3021"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Geometrický index (GeoID) B-splajnu je mimo meze.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2826"/>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3003"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2860"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3037"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Daný geometrický index (GeoId) není B-splajna.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2838"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2872"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Index uzlu je mimo hranice. Všimněte si, že v souladu s OCC zápisem je index prvního uzlu 1 a ne 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2854"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2888"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Násobnost nemůže být zvýšena nad stupeň B-splajnu.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2865"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2899"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Násobnost nemůže být snížena pod nulu.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2881"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="2915"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC není schopno snížit násobnost na maximální toleranci.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="2994"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3028"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Uzel nemůže mít nulovou násobnost.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3016"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3050"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Násobnost uzlu nemůže být vyšší než stupeň B-splajnu.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObjectOperations.cpp" line="3026"/>
+      <location filename="../../../App/SketchObjectOperations.cpp" line="3060"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Nelze vložit uzel mimo rozsah parametrů B-splajnu.</translation>
     </message>
@@ -3197,62 +3197,62 @@ Toto nastavení je pouze pro panel nástrojů. Ať už si vyberete cokoliv, vše
 'Poloměr': Nástroj bude aplikovat poloměr na oblouky i kružnice.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="226"/>
+      <location filename="../../SketcherSettings.cpp" line="225"/>
       <source>Single tool</source>
       <translation>Jediný nástroj</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="227"/>
+      <location filename="../../SketcherSettings.cpp" line="226"/>
       <source>Separated tools</source>
       <translation>Oddělené nástroje</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="228"/>
+      <location filename="../../SketcherSettings.cpp" line="227"/>
       <source>Both</source>
       <translation>Oboje</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="249"/>
+      <location filename="../../SketcherSettings.cpp" line="248"/>
       <source>Auto</source>
       <translation>Automaticky</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="250"/>
+      <location filename="../../SketcherSettings.cpp" line="249"/>
       <source>Diameter</source>
       <translation>Průměr</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="251"/>
+      <location filename="../../SketcherSettings.cpp" line="250"/>
       <source>Radius</source>
       <translation>Poloměr</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="262"/>
+      <location filename="../../SketcherSettings.cpp" line="261"/>
       <source>Always</source>
       <translation>Vždy</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="263"/>
+      <location filename="../../SketcherSettings.cpp" line="262"/>
       <source>Never</source>
       <translation>Nikdy</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="264"/>
+      <location filename="../../SketcherSettings.cpp" line="263"/>
       <source>When no scale feature is visible</source>
       <translation type="unfinished">When no scale feature is visible</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="272"/>
+      <location filename="../../SketcherSettings.cpp" line="271"/>
       <source>None</source>
       <translation>Žádný</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="273"/>
+      <location filename="../../SketcherSettings.cpp" line="272"/>
       <source>Dimensions only</source>
       <translation>Pouze rozměry</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="274"/>
+      <location filename="../../SketcherSettings.cpp" line="273"/>
       <source>Position and dimensions</source>
       <translation>Poloha a rozměry</translation>
     </message>
@@ -3550,17 +3550,17 @@ Výchozí nastavení: %N = %V
       <translation>Poznámka: tato nastavení jsou výchozí pro nové náčrty. Chování je uloženo individuálně pro každý náčrt jako vlastnost v záložce Pohled.</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="584"/>
+      <location filename="../../SketcherSettings.cpp" line="583"/>
       <source>Unexpected C++ exception</source>
       <translation>Neočekávaná C++ vyjímka</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="587"/>
+      <location filename="../../SketcherSettings.cpp" line="586"/>
       <source>Sketcher</source>
       <translation>Náčrt</translation>
     </message>
     <message>
-      <location filename="../../SketcherSettings.cpp" line="611"/>
+      <location filename="../../SketcherSettings.cpp" line="610"/>
       <source>Glyphs not present:</source>
       <translation type="unfinished">Glyphs not present:</translation>
     </message>
@@ -4129,12 +4129,12 @@ Toto se provádí analýzou geometrií a vazeb náčrtu.</translation>
       <translation>Náčrt není platný a nemůže být upravován.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4372"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Toto omezení je částečně nadbytečné:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4381"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Tato omezení jsou částečně nadbytečná:</translation>
     </message>
@@ -4159,72 +4159,72 @@ Toto se provádí analýzou geometrií a vazeb náčrtu.</translation>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4358"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4359"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4367"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4365"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4373"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4366"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4374"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4379"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4387"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4380"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4388"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4439"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4447"/>
       <source>Empty sketch</source>
       <translation>Prázdný náčrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4452"/>
       <source>Over-constrained:</source>
       <translation>Převazbené:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4450"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
       <source>Malformed constraints:</source>
       <translation>Poškozené vazby:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4458"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4466"/>
       <source>Redundant constraints:</source>
       <translation>Nadbytečné vazby:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4464"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4472"/>
       <source>Partially redundant:</source>
       <translation>Částečně nadbytečné:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4471"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
       <source>Solver failed to converge</source>
       <translation>Řešič nezkonvergoval</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4477"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4485"/>
       <source>Under-constrained:</source>
       <translation>Nedostatečně omezený:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="4479"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4487"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -4234,7 +4234,7 @@ Toto se provádí analýzou geometrií a vazeb náčrtu.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4483"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4491"/>
       <source>Fully constrained</source>
       <translation>Plně zavazbené</translation>
     </message>
@@ -4724,7 +4724,7 @@ Eigen Sparse QR algoritmus je optimalizován pro řídké matrice; obvykle rychl
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="4422"/>
+      <location filename="../../ViewProviderSketch.cpp" line="4430"/>
       <source>and %1 more</source>
       <translation>a %1 další</translation>
     </message>
@@ -4945,7 +4945,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="1636"/>
+      <location filename="../../../App/SketchObject.cpp" line="1644"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Paraboly byly migrovány. Migrované soubory se v předchozích verzích FreeCADu neotevřou!!
@@ -4978,7 +4978,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="214"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="237"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
@@ -5147,7 +5147,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Přidání hrany se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="215"/>
       <source>Failed to trim edge</source>
       <translation>Nepodařilo se oříznout okraj</translation>
     </message>
@@ -8271,10 +8271,20 @@ Body musí být k lince mřížky blíže než pětina rozteče mřížky, aby s
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
+      <source>Trimming Parameters</source>
+      <translation type="unfinished">Trimming Parameters</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation type="unfinished">%1 pick edge to trim</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
+      <source>%1 toggle include axes as trim boundaries</source>
+      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
     </message>
   </context>
   <context>
@@ -8615,6 +8625,19 @@ Body musí být k lince mřížky blíže než pětina rozteče mřížky, aby s
       <location filename="../../DrawSketchHandlerText.h" line="374"/>
       <source>Font</source>
       <translation>Font</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskSketcherTool_c1_trimming</name>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
+      <source>Include axes (U)</source>
+      <translation type="unfinished">Include axes (U)</translation>
+    </message>
+    <message>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
+      <source>Include axes as trim boundaries</source>
+      <translation type="unfinished">Include axes as trim boundaries</translation>
     </message>
   </context>
   <context>

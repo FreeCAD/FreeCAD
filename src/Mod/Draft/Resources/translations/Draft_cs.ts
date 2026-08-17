@@ -1082,60 +1082,60 @@ bude rovina přesunuta do středu pohledu.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="401"/>
       <source>Line width</source>
       <translation>Tloušťka čáry</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="202"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source> px</source>
       <translation> px</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="212"/>
       <source>Draw style</source>
       <translation>Styl kreslení</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
       <source>Solid</source>
       <translation>Plný</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
       <source>Dashed</source>
       <translation>Přerušovaný</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="230"/>
       <source>Dotted</source>
       <translation>Tečkovaný</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="235"/>
       <source>DashDot</source>
       <translation>Čárka tečka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="243"/>
       <source>Display mode</source>
       <translation>Styl zobrazení</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="245"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
       <source>Flat Lines</source>
       <translation>Rovné čáry</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="261"/>
       <source>Wireframe</source>
       <translation>Drátěný</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="256"/>
       <source>Shaded</source>
       <translation>Stínované</translation>
     </message>
@@ -1145,17 +1145,17 @@ bude rovina přesunuta do středu pohledu.</translation>
       <translation>Vyplnit níže uvedené hodnoty dle přednastaveného stylu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="184"/>
       <source>Point color</source>
       <translation>Barva bodu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="195"/>
       <source>Point size</source>
       <translation>Velikost bodu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
@@ -1165,166 +1165,166 @@ bude rovina přesunuta do středu pohledu.</translation>
       <translation>Barva tvaru</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="667"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="673"/>
       <source>Annotations</source>
       <translation>Poznámky</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
       <source>Extension line length</source>
       <translation>Délka vynášecí čáry</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="613"/>
       <source>Extension line overshoot</source>
       <translation>Přesah vynášecí čáry</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="624"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="630"/>
       <source>Text spacing</source>
       <translation>Odsazení textu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="372"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="378"/>
       <source>Text color</source>
       <translation>Barva textu</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="533"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>Dimensions</source>
       <translation>Rozměry</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="472"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="478"/>
       <source>Dot</source>
       <translation>Tečka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>Annotation</source>
       <translation>Poznámka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
       <source>Texts</source>
       <translation>Texty</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>Line spacing factor</source>
       <translation>Koeficient rozteče čar</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Multiplikátor měřítka poznámek je inverzní k měřítku nastavenému pomocí widgetu
 Měřítko poznámek. Pokud je měřítko 1:100, multiplikátor je 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Start arrow type</source>
       <translation type="unfinished">Start arrow type</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="483"/>
       <source>Circle</source>
       <translation>Kruh</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="427"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="482"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="433"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
       <source>Arrow</source>
       <translation>Šipka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="438"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="493"/>
       <source>Tick</source>
       <translation>Fajfka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="492"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="443"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="498"/>
       <source>Tick-2</source>
       <translation>Fajfka-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="442"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="497"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="448"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
       <source>None</source>
       <translation>Žádný</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="456"/>
       <source>Start arrow size</source>
       <translation type="unfinished">Start arrow size</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>End arrow type</source>
       <translation type="unfinished">End arrow type</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="511"/>
       <source>End arrow size</source>
       <translation type="unfinished">End arrow size</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="569"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Jednotka pro přepsání rozměrů. Pro použití aktuální jednotky FreeCADu ponechte prázdné.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="576"/>
       <source>Dimension line overshoot</source>
       <translation>Přesah kótovací čáry</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="577"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="583"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Vzdálenost, ve které je kótovací čára prodloužena za vynášecí čáry</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="379"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Barva textů, textů rozměrů a textů štítků</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Font name</source>
       <translation>Název písma</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="340"/>
       <source>The font for texts, dimensions and labels</source>
       <translation>Písmo pro texty, rozměry a popisky</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="347"/>
       <source>Font size</source>
       <translation>Velikost písma</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="354"/>
       <source>The height for texts, dimension texts and label texts</source>
       <translation>Výška textů, textů rozměrů a textů štítků</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="371"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Mezera řádků pro vícevrstvé texty a popisky (vzhledem k velikosti písma)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="297"/>
       <source>Scale multiplier</source>
       <translation>Koeficient měřítka</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>Line and arrow color</source>
       <translation>Barva čáry a šipky</translation>
     </message>
@@ -1344,17 +1344,17 @@ Měřítko poznámek. Pokud je měřítko 1:100, multiplikátor je 100.</transla
       <translation type="unfinished">Shape Appearance</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
       <source>Lines and Arrows</source>
       <translation type="unfinished">Lines and Arrows</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="546"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="552"/>
       <source>Adds a unit symbol to dimension texts</source>
       <translation type="unfinished">Adds a unit symbol to dimension texts</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="594"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="600"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1365,37 +1365,37 @@ Kladná hodnota definuje maximální délku vynášecích čar. Používá se po
 pro lineární kóty.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="614"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="620"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Délka vynášecí čáry za kótovací čarou</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="631"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="637"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Mezera mezi kótovací čárou a textem</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="650"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="656"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Použít výše uvedený styl na vybrané objekty</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="664"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="670"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Použít výše uvedený styl na všechny poznámky (texty, rozměry a štítky)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>Show unit</source>
       <translation>Zobrazit jednotky</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>Unit override</source>
       <translation>Přepsat jednotky</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="659"/>
       <source>Selected</source>
       <translation>Vybrané</translation>
     </message>
@@ -3632,7 +3632,7 @@ nebo zkuste uložit do nižší verze DWG.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="101"/>
-      <location filename="../../draftutils/gui_utils.py" line="916"/>
+      <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/utils.py" line="1141"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
@@ -3653,7 +3653,7 @@ nebo zkuste uložit do nižší verze DWG.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="137"/>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftutils/gui_utils.py" line="932"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Chybný vstup: objekt {} není v dokumentu.</translation>
     </message>
@@ -3668,22 +3668,22 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <translation>Symbol není implementován. Použití výchozího symbolu.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="798"/>
+      <location filename="../../draftutils/gui_utils.py" line="806"/>
       <source>image is Null</source>
       <translation>obrázek je Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="806"/>
+      <location filename="../../draftutils/gui_utils.py" line="814"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>název_souboru neexistuje v systému ani v souboru prostředků</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="865"/>
+      <location filename="../../draftutils/gui_utils.py" line="873"/>
       <source>unable to load texture</source>
       <translation>nelze načíst texturu</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="932"/>
+      <location filename="../../draftutils/gui_utils.py" line="940"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Nemá 'ViewObject.RootNode'.</translation>
     </message>
@@ -3814,7 +3814,7 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <translation>Vyberte první bod</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="499"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="501"/>
       <source>Edges do not intersect!</source>
       <translation type="unfinished">Edges do not intersect!</translation>
     </message>
@@ -4148,17 +4148,17 @@ nebo zkuste uložit do nižší verze DWG.</translation>
       <translation type="unfinished">%1 pick third point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="86"/>
       <source>Only Draft lines, wires, and curves can be highlighted</source>
       <translation type="unfinished">Only Draft lines, wires, and curves can be highlighted</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="121"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="120"/>
       <source>Select an object to edit</source>
       <translation>Vyberte objekt, který chcete upravit</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="177"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
       <translation type="unfinished">%1 run Move, Rotate or Scale on subelements</translation>
     </message>
@@ -4746,13 +4746,13 @@ The final angle will be the base angle plus this amount.</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
-      <source>%1 click and drag to define first point and knot</source>
-      <translation type="unfinished">%1 click and drag to define first point and knot</translation>
+      <source>%1 define first point and knot</source>
+      <translation type="unfinished">%1 define first point and knot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
-      <source>%1 click and drag to define next point and knot</source>
-      <translation type="unfinished">%1 click and drag to define next point and knot</translation>
+      <source>%1 define next point and knot</source>
+      <translation type="unfinished">%1 define next point and knot</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4841,39 +4841,39 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Vytvořit kótu</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="485"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="487"/>
       <source>Edge too short!</source>
       <translation>Hrana je příliš krátká!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="581"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
       <translation type="unfinished">%1 pick dimension position</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
       <translation type="unfinished">%1 select edge</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="600"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
       <translation type="unfinished">%1 pick next dimension point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
-      <location filename="../../draftguitools/gui_subelements.py" line="180"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
       <location filename="../../draftguitools/gui_edit.py" line="387"/>
       <source>%1 finish</source>
       <translation type="unfinished">%1 finish</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="608"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
       <translation type="unfinished">%1 pick first dimension point</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
       <translation type="unfinished">%1 pick second dimension point</translation>
     </message>
@@ -6136,6 +6136,11 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</source>
       <translation type="unfinished">Keeps the value fixed during 3D input. The lock icon or a double-click unlocks the field.</translation>
     </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <source>Save Camera View</source>
+      <translation type="unfinished">Save Camera View</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6308,12 +6313,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>_BSpline.createGeometry: Uzavřeno se stejným prvním/posledním bodem. Geometrie není aktualizována.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="106"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
       <source>Writing camera position</source>
       <translation>Zápis polohy kamery</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="124"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Zápis objektů zobrazený/skrytý stav</translation>
     </message>
@@ -8135,12 +8140,12 @@ za kótovací čárou</translation>
       <translation>Zobrazuje kótovací čáru a šipky</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="52"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
       <source>The display length of this section plane</source>
       <translation>Zobrazovaná délka této roviny řezu</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="55"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="56"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Velikost šipek této roviny řezu</translation>
     </message>
@@ -8845,12 +8850,12 @@ The initial projection direction is the opposite of the current active view dire
   <context>
     <name>Draft_SubelementHighlight</name>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="66"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlight Subelements</source>
       <translation type="unfinished">Highlight Subelements</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="70"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="69"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
       <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
     </message>

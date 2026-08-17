@@ -1083,60 +1083,60 @@ will be moved to the center of the view.</source>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="167"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="401"/>
       <source>Line width</source>
       <translation>Шырыня лініі</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="253"/>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="174"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="199"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="402"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="202"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="408"/>
       <source> px</source>
       <translation> пікселяў</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="206"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="212"/>
       <source>Draw style</source>
       <translation>Стыль прадстаўлення</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="214"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="220"/>
       <source>Solid</source>
       <translation>Суцэльны</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="219"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="225"/>
       <source>Dashed</source>
       <translation>Штрыхавы</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="224"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="230"/>
       <source>Dotted</source>
       <translation>Пункцірны</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="229"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="235"/>
       <source>DashDot</source>
       <translation>Штрых-пункцірны</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="237"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="243"/>
       <source>Display mode</source>
       <translation>Рэжым адлюстравання</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="245"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="251"/>
       <source>Flat Lines</source>
       <translation>Плоскія лініі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="255"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="261"/>
       <source>Wireframe</source>
       <translation>Каркас</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="250"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="256"/>
       <source>Shaded</source>
       <translation>Заценены</translation>
     </message>
@@ -1146,17 +1146,17 @@ will be moved to the center of the view.</source>
       <translation>Запоўніць прыведзеныя ніжэй значэння з захаванага набору стыляў</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="184"/>
       <source>Point color</source>
       <translation>Колер кропкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="195"/>
       <source>Point size</source>
       <translation>Памер кропкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="260"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="266"/>
       <source>Points</source>
       <translation>Кропкі</translation>
     </message>
@@ -1166,166 +1166,166 @@ will be moved to the center of the view.</source>
       <translation>Колер фігуры</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="667"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="673"/>
       <source>Annotations</source>
       <translation>Заметкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="593"/>
       <source>Extension line length</source>
       <translation>Даўжыня вынасной лініі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="613"/>
       <source>Extension line overshoot</source>
       <translation>Перакрыццё вынасной лініі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="624"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="630"/>
       <source>Text spacing</source>
       <translation>Інтэрвал тэксту</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="372"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="378"/>
       <source>Text color</source>
       <translation>Колер тэксту</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="533"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
       <source>Dimensions</source>
       <translation>Вымярэнне</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="417"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="472"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="423"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="478"/>
       <source>Dot</source>
       <translation>Кропка</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="285"/>
       <source>Annotation</source>
       <translation>Заметка</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
       <source>Texts</source>
       <translation>Тэксты</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="364"/>
       <source>Line spacing factor</source>
       <translation>Каэфіцыент міжрадковага інтэрвалу</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="304"/>
       <source>The annotation scale multiplier is the inverse of the scale set in the
 Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Множнік маштабу заметкі з'яўляецца велічынёй, якая зваротная маштабу, які зададзены ў фішцы маштабу заметак.
 Калі маштаб роўны 1: 100, множнік роўны 100.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="415"/>
       <source>Start arrow type</source>
       <translation>Тып пачатковай стрэлкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="477"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="428"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="483"/>
       <source>Circle</source>
       <translation>Акружнасць</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="427"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="482"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="433"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="488"/>
       <source>Arrow</source>
       <translation>Стрэлка</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="432"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="487"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="438"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="493"/>
       <source>Tick</source>
       <translation>Зачэп</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="437"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="492"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="443"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="498"/>
       <source>Tick-2</source>
       <translation>Зачэп-2</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="442"/>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="497"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="448"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="503"/>
       <source>None</source>
       <translation>Нічога</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="456"/>
       <source>Start arrow size</source>
       <translation>Памер пачатковай стрэлкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="470"/>
       <source>End arrow type</source>
       <translation>Тып канцавой стрэлкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="511"/>
       <source>End arrow size</source>
       <translation>Памер канцавой стрэлкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="569"/>
       <source>The unit override for dimensions. Leave blank to use the current FreeCAD unit.</source>
       <translation>Адзінка вымярэння, якая пераназначана для вымярэння. Пакіньце поле пустым, каб ужыць бягучыя адзінкі вымярэння FreeCAD.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="570"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="576"/>
       <source>Dimension line overshoot</source>
       <translation>Перакрыццё лініі вымярэння</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="577"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="583"/>
       <source>The distance the dimension line is extended past the extension lines</source>
       <translation>Адлегласць, на якую лінія вымярэння праходзіць за вынаснымі лініямі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="379"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="385"/>
       <source>The color for texts, dimension texts and label texts</source>
       <translation>Колер для тэкстаў, тэкстаў вымярэння і тэкстаў метак</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="321"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="327"/>
       <source>Font name</source>
       <translation>Назва шрыфту</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="334"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="340"/>
       <source>The font for texts, dimensions and labels</source>
       <translation>Шрыфт для тэкстаў, вымярэнняў і метак</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="341"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="347"/>
       <source>Font size</source>
       <translation>Памер шрыфту</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="348"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="354"/>
       <source>The height for texts, dimension texts and label texts</source>
       <translation>Вышыня для тэкстаў, тэкстаў вымярэння і тэкстаў метак</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="371"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
       <translation>Міжрадковы інтэрвал для шматрадковых тэкстаў і метак (адносна памеру шрыфту)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="297"/>
       <source>Scale multiplier</source>
       <translation>Маштабны множнік</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="519"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="525"/>
       <source>Line and arrow color</source>
       <translation>Колер лініі і стрэлкі</translation>
     </message>
@@ -1345,17 +1345,17 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
       <translation>Знешні выгляд фігуры</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="395"/>
       <source>Lines and Arrows</source>
       <translation>Лініі і стрэлкі</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="546"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="552"/>
       <source>Adds a unit symbol to dimension texts</source>
       <translation>Дадае знак адзінкі вымярэння да тэкстаў вымярэння</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="594"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="600"/>
       <source>The length of extension lines. Use 0 for full extension lines. A negative value
 defines the gap between the ends of the extension lines and the measured points.
 A positive value defines the maximum length of the extension lines. Only used
@@ -1367,37 +1367,37 @@ for linear dimensions.</source>
 Ужываецца толькі для лінейных вымярэнняў.</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="614"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="620"/>
       <source>The length of extension lines above the dimension line</source>
       <translation>Даўжыня вынасных ліній па-над ліняй вымярэння</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="631"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="637"/>
       <source>The space between the dimension line and the dimension text</source>
       <translation>Прастора паміж лініяй вымярэння і тэкстам</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="650"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="656"/>
       <source>Apply the above style to selected object(s)</source>
       <translation>Прымяніць вышэйзгаданы стыль да абраных аб'ектаў</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="664"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="670"/>
       <source>Apply the above style to all annotations (texts, dimensions and labels)</source>
       <translation>Прымяніць вышэйзгаданы стыль да ўсіх заметак (тэксты, вымярэнні і меткі)</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="539"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="545"/>
       <source>Show unit</source>
       <translation>Паказаць адзінку вымярэння</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="556"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="562"/>
       <source>Unit override</source>
       <translation>Пераазначэнне адзінкі вымярэння</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPanel_SetStyle.ui" line="653"/>
+      <location filename="../ui/TaskPanel_SetStyle.ui" line="659"/>
       <source>Selected</source>
       <translation>Абраны</translation>
     </message>
@@ -3628,7 +3628,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="101"/>
-      <location filename="../../draftutils/gui_utils.py" line="916"/>
+      <location filename="../../draftutils/gui_utils.py" line="924"/>
       <location filename="../../draftutils/utils.py" line="1141"/>
       <location filename="../../draftfunctions/cut.py" line="60"/>
       <location filename="../../draftmake/make_pointarray.py" line="92"/>
@@ -3649,7 +3649,7 @@ or try saving to a lower DWG version.</source>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="137"/>
-      <location filename="../../draftutils/gui_utils.py" line="924"/>
+      <location filename="../../draftutils/gui_utils.py" line="932"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Няправільны ўвод: аб'ект {} адсутнічае ў дакуменце.</translation>
     </message>
@@ -3664,22 +3664,22 @@ or try saving to a lower DWG version.</source>
       <translation>Знак не рэалізаваны. Ужыты першапачатковы знак.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="798"/>
+      <location filename="../../draftutils/gui_utils.py" line="806"/>
       <source>image is Null</source>
       <translation>выява пустая</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="806"/>
+      <location filename="../../draftutils/gui_utils.py" line="814"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>імя файла не існуе ні ў сістэме, ні ў файле рэсурсаў</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="865"/>
+      <location filename="../../draftutils/gui_utils.py" line="873"/>
       <source>unable to load texture</source>
       <translation>немагчыма загрузіць тэкстуру</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="932"/>
+      <location filename="../../draftutils/gui_utils.py" line="940"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Не мае 'ViewObject.RootNode'.</translation>
     </message>
@@ -3814,7 +3814,7 @@ or try saving to a lower DWG version.</source>
       <translation>Выберыце першую кропку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="499"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="501"/>
       <source>Edges do not intersect!</source>
       <translation>Рэбры не перасякаюцца!</translation>
     </message>
@@ -4148,17 +4148,17 @@ or try saving to a lower DWG version.</source>
       <translation>%1 выбраць трэццю кропку</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="87"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="86"/>
       <source>Only Draft lines, wires, and curves can be highlighted</source>
       <translation>Можна вылучыць толькі лініі, ломаныя лініі і крывыя чарнавіка</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="121"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="120"/>
       <source>Select an object to edit</source>
       <translation>Абярыце аб'ект для змены</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="177"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="176"/>
       <source>%1 run Move, Rotate or Scale on subelements</source>
       <translation>%1 выканаць перамяшчэнне, паварот ці маштабаванне ўкладзеных элементаў</translation>
     </message>
@@ -4748,13 +4748,13 @@ The final angle will be the base angle plus this amount.</source>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
-      <source>%1 click and drag to define first point and knot</source>
-      <translation>%1 націснуць і перацягнуць, каб вызначыць першую кропку і вузел</translation>
+      <source>%1 define first point and knot</source>
+      <translation>Вызначыць першую кропку і вузел %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
-      <source>%1 click and drag to define next point and knot</source>
-      <translation>%1 націснуць і перацягнуць, каб вызначыць наступную кропку і вузел</translation>
+      <source>%1 define next point and knot</source>
+      <translation>Вызначыць наступную кропку і вузел %1</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -4843,39 +4843,39 @@ The final angle will be the base angle plus this amount.</source>
       <translation>Стварыць вымярэнне</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="485"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="487"/>
       <source>Edge too short!</source>
       <translation>Рабро занадта кароткае!</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="581"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
       <source>%1 pick dimension position</source>
       <translation>Выбраць становішча памеру %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="583"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="585"/>
       <source>%1 select edge</source>
       <translation>Абраць рабро %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="600"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
       <source>%1 pick next dimension point</source>
       <translation>Выбраць наступную кропку вымярэння %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="602"/>
-      <location filename="../../draftguitools/gui_subelements.py" line="180"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="604"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="179"/>
       <location filename="../../draftguitools/gui_edit.py" line="387"/>
       <source>%1 finish</source>
       <translation>Скончыць %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="608"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="610"/>
       <source>%1 pick first dimension point</source>
       <translation>Выбраць першую кропку вымярэння %1</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_dimensions.py" line="617"/>
+      <location filename="../../draftguitools/gui_dimensions.py" line="619"/>
       <source>%1 pick second dimension point</source>
       <translation>Выбраць другую кропку вымярэння %1</translation>
     </message>
@@ -6141,6 +6141,11 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>Пакідае значэнне нязменным пры трохмерным уводзе.
 Гузік блакавання ці падвоеная пстрычка разблакуюць поле.</translation>
     </message>
+    <message>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
+      <source>Save Camera View</source>
+      <translation>Захаваць выгляд камеры</translation>
+    </message>
   </context>
   <context>
     <name>Workbench</name>
@@ -6313,12 +6318,12 @@ To enabled FreeCAD to download these libraries, answer Yes.</source>
       <translation>_BSpline.createGeometry: Замкнуты з той жа першай/апошняй кропкай. Геаметрыя не абноўлена.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="106"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="109"/>
       <source>Writing camera position</source>
       <translation>Запісвае становішча камеры</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="124"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="127"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Запіс аб'ектаў у паказаным/схаваным стане</translation>
     </message>
@@ -8117,12 +8122,12 @@ beyond the dimension line</source>
       <translation>Паказаць лінію вымярэння і стрэлкі</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="52"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
       <source>The display length of this section plane</source>
       <translation>Даўжыня адлюстравання плоскасці перасеку</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="55"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="56"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Памер стрэлак плоскасці перасеку</translation>
     </message>
@@ -8828,12 +8833,12 @@ The initial projection direction is the opposite of the current active view dire
   <context>
     <name>Draft_SubelementHighlight</name>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="66"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlight Subelements</source>
       <translation>Вылучаць укладзеныя элементы</translation>
     </message>
     <message>
-      <location filename="../../draftguitools/gui_subelements.py" line="70"/>
+      <location filename="../../draftguitools/gui_subelements.py" line="69"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
       <translation>Вылучае ўкладзеныя элементы абраных аб'ектаў, каб мець магчымасць змяняць рухаць, паварочваць і маштабаваць іх</translation>
     </message>

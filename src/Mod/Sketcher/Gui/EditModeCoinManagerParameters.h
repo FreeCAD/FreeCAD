@@ -154,6 +154,7 @@ struct DrawingParameters
     int ExternalDefiningWidth = 1;           // width of external defining edges
     int InformationWidth = 1;                // width of information edges
     int DimensionalConstraintLineWidth = 2;  // width of dimensional constraint lines
+    int AxisLineWidth = 2;                   // width of axis lines
 
     unsigned int CurvePattern = 0b1111111111111111;             // pattern of normal edges
     unsigned int ConstructionPattern = 0b1111110011111100;      // pattern of construction edges
@@ -163,6 +164,7 @@ struct DrawingParameters
     unsigned int InformationPattern = 0b1111110011111100;  // pattern of information layer edges
     unsigned int DimensionalConstraintLinePattern = 0b1111111111111111;  // pattern of dimensional
                                                                          // constraints lines
+    unsigned int AxisLinePattern = 0b1111111111111111;                   // pattern of axis lines
     //@}
 
     DrawingParameters()

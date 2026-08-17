@@ -6564,7 +6564,7 @@ Conas is mian leat dul ar aghaidh?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
       <source>Move Property</source>
-      <translation type="unfinished">Move Property</translation>
+      <translation>Bog Maoin</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
@@ -6758,7 +6758,7 @@ Scoir gan na sonraí go léir a shábháil?</translation>
       <location filename="../Action.cpp" line="878"/>
       <location filename="../Action.cpp" line="879"/>
       <source>Open a document or import files.</source>
-      <translation type="unfinished">Open a document or import files.</translation>
+      <translation>Oscail doiciméad nó iompórtáil comhaid.</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="894"/>
@@ -14876,7 +14876,7 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="323"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Osclaíonn an doiciméadú a fhreagraíonn don rogha</translation>
     </message>
   </context>
   <context>

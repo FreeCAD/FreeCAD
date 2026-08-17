@@ -4323,7 +4323,7 @@ The default template is located at:
       <location filename="../../bimcommands/BimTruss.py" line="83"/>
       <location filename="../../bimcommands/BimCurtainwall.py" line="94"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 Selecionar primeiro ponto</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="296"/>
@@ -7148,7 +7148,7 @@ Criação de edifício abortada.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Salvar visualização da câmera</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -10668,7 +10668,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
       <location filename="../../bimcommands/BimBox.py" line="81"/>
       <location filename="../../bimcommands/BimImagePlane.py" line="81"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 Selecionar primeiro ponto</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimBox.py" line="83"/>
@@ -11665,7 +11665,7 @@ Alt+PgUp to extend extrusionAlt+PgDown to shrink extrusionAlt+/ to switch betwee
     <message>
       <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Salvar visualização da câmera</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>
@@ -13245,7 +13245,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="57"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Dimensão horizontal</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="60"/>
@@ -13258,7 +13258,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="79"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Dimensão vertical</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimDimensions.py" line="80"/>
