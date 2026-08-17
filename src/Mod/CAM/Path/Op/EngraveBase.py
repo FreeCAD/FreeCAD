@@ -24,7 +24,7 @@
 from lazy_loader.lazy_loader import LazyLoader
 import FreeCAD
 import Path
-import Path.Base.Generator.linking as linking
+from Path.Base.Generator import linking
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
 import tsp_solver
