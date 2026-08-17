@@ -160,6 +160,9 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
             continue;  // can't print this one
         }
 
+        QGSPage* ourScene = vpp->getQGSPage();
+        ourScene->setExportingPdf(true);
+
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
         double width = A4Heightmm;  // default to A4 Landscape 297 x 210
         double height = A4Widthmm;
@@ -173,6 +176,7 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
         renderPage(vpp, painter, sourceRect, targetRect);
+        ourScene->setExportingPdf(false);
         dPage->redrawCommand();
     }
 
@@ -236,7 +240,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
             continue;// can't print this one
         }
 
-        auto ourScene = vpp->getQGSPage();
+        QGSPage* ourScene = vpp->getQGSPage();
         ourScene->setExportingPdf(true);
 
         auto dPage = static_cast<TechDraw::DrawPage*>(obj);
@@ -253,11 +257,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
         renderPage(vpp, painter, sourceRect, targetRect);
-        dPage->redrawCommand();
-
         ourScene->setExportingPdf(false);
+        dPage->redrawCommand();
     }
-
     ourDoc->setModified(docModifiedState);
 }
 
@@ -333,10 +335,10 @@ void PagePrinter::print(ViewProviderPage* vpPage, QPrinter* printer, bool isPrev
     QPainter painter(printer);
 
     auto ourScene = vpPage->getQGSPage();
-    if (!printer->outputFileName().isEmpty() ||
-        isPreview) {
-        ourScene->setExportingPdf(true);
-    }
+    // printing = exporting.  Graphics items make decisions (ex view frames) based on exporting
+    // status.
+    ourScene->setExportingPdf(true);
+
     auto ourDoc = Gui::Application::Instance->getDocument(dPage->getDocument());
     auto docModifiedState = ourDoc->isModified();
 
