@@ -698,8 +698,6 @@ class CommandPathShape:
         return False
 
     def Activated(self):
-        doc = FreeCAD.ActiveDocument
-        doc.openTransaction("Create PathShape")
         selection = FreeCADGui.Selection.getSelectionEx()
         base = []
         for sel in selection:
@@ -707,13 +705,37 @@ class CommandPathShape:
             subNames = sel.SubElementNames if sel.SubElementNames else ("",)
             base.append([baseObj, subNames])
 
-        pathObj = doc.addObject("Path::FeaturePython", "PathShape")
-        job = PathUtils.addToJob(pathObj)
-        ObjectPathShape(pathObj, job)
-        ViewProviderPathShape(pathObj.ViewObject)
-        pathObj.Base = base
-        FreeCAD.ActiveDocument.commitTransaction()
-        doc.recompute()
+        if not base:
+            return
+
+        return Create(base)
+
+
+def Create(base, name="PathShape", obj=None, parentJob=None):
+    """Create(base, [name, obj, parentJob]) ... Creates and returns a PathShape operation.
+    base: list of base geometry [[Part.Shape, ("Edge1", "Edge2", ...), ...]
+    obj: set Proxy to exists Path::FeaturePython object
+    parentJob: add PathShape to this Job
+
+    import Path.Op.Gui.PathShape as pathshape
+    pathshape.Create(base)
+    """
+    FreeCAD.ActiveDocument.openTransaction("Create PathShape")
+    if obj is None:
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", name)
+
+    jobName = getattr(parentJob, "Name", None)
+    job = PathUtils.addToJob(obj, jobName)
+
+    obj.Proxy = ObjectPathShape(obj, job)
+    if base:
+        obj.Base = base
+
+    ViewProviderPathShape(obj.ViewObject)
+    FreeCAD.ActiveDocument.commitTransaction()
+    FreeCAD.ActiveDocument.recompute()
+
+    return obj
 
 
 if FreeCAD.GuiUp:
