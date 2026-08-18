@@ -37,13 +37,6 @@ App::DocumentObjectExecReturn* PreviewExtensionPythonT<ExtensionT>::recomputePre
 {
     EXTENSION_PROXY_NOARG(recomputePreview)
 
-    static App::DocumentObjectExecReturn error("");
-
-    if (!result.isNone() && result.isString()) {
-        error.Why = Py::String(result);
-        return &error;
-    }
-
     if (!result.isNone()) {
         return App::DocumentObject::StdReturn;
     }
