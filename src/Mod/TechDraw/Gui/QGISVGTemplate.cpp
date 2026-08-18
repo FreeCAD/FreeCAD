@@ -234,8 +234,6 @@ void QGISVGTemplate::load(QByteArray svgCode)
     QSize size = m_svgRender->defaultSize();
     m_svgItem->setSharedRenderer(m_svgRender);
 
-    createClickHandles();
-
     //convert from pixels or mm or inches in svg file to mm page size
     TechDraw::DrawSVGTemplate* tmplte = getSVGTemplate();
     double xaspect = tmplte->getWidth() / static_cast<double>(size.width());
@@ -280,6 +278,9 @@ void QGISVGTemplate::draw()
 
     QString templateSvg = tmplte->processTemplate();
     load(templateSvg.toUtf8());
+
+    clearClickHandles();
+    createClickHandles();
 }
 
 void QGISVGTemplate::drawPageRectangle()
@@ -307,10 +308,7 @@ void QGISVGTemplate::drawPageRectangle()
 
 void QGISVGTemplate::updateView(bool update)
 {
-    if (update) {
-        clearClickHandles();
-        createClickHandles();
-    }
+    Q_UNUSED(update);
     draw();
 }
 
@@ -456,6 +454,7 @@ void QGISVGTemplate::createClickHandles()
         item->setLineColor(PreferencesGui::templateClickBoxColor());
         item->setZValue(ZVALUE::SVGTEMPLATE + 1);
 
+        item->setShortText(isShortText);
         if (isShortText) {
             item->showLine();
         } else {
