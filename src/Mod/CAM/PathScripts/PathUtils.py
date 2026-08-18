@@ -1,43 +1,36 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2014 Dan Falck <ddfalck@gmail.com>
+# SPDX-FileCopyrightText: 2025 Billy Huddleston <billy@ivdc.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
-# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """PathUtils -common functions used in PathScripts for filtering, sorting, and generating gcode toolpath data"""
 
 import FreeCAD
 from FreeCAD import Vector
 from PySide import QtCore
+import Part
 import Path
 import Path.Main.Job as PathJob
 import math
 from numpy import linspace
 import tsp_solver
-
-# lazily loaded modules
-from lazy_loader.lazy_loader import LazyLoader
-
-DraftGeomUtils = LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
-Part = LazyLoader("Part", globals(), "Part")
-TechDraw = LazyLoader("TechDraw", globals(), "TechDraw")
 
 translate = FreeCAD.Qt.translate
 
@@ -101,7 +94,7 @@ def loopdetect(obj, edge1, edge2):
     Path.Log.track()
     hashList = (edge1.hashCode(), edge2.hashCode())
     candidates = [w for w in obj.Shape.Wires for e in w.Edges if e.hashCode() in hashList]
-    loop = set([w for w in candidates if candidates.count(w) > 1])  # return the duplicate item
+    loop = {w for w in candidates if candidates.count(w) > 1}  # return the duplicates item
     if len(loop) == 1:
         return loop.pop().Edges
     else:
@@ -456,13 +449,13 @@ def getOffsetArea(
 
 
 def reverseEdge(e):
-    if DraftGeomUtils.geomType(e) == "Circle":
+    if isinstance(e.Curve, Part.Circle):
         arcstpt = e.valueAt(e.FirstParameter)
         arcmid = e.valueAt((e.LastParameter - e.FirstParameter) * 0.5 + e.FirstParameter)
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif DraftGeomUtils.geomType(e) == "LineSegment" or DraftGeomUtils.geomType(e) == "Line":
+    elif isinstance(e.Curve, (Part.Line, Part.LineSegment)):
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)
@@ -621,7 +614,7 @@ def sort_locations(locations, keys, attractors=None):
             # prevent dictionary comparison by inserting the index
             q.put((dist(j, location) + weight(j), i, j))
 
-        prio, i, result = q.get()
+        _, i, result = q.get()
 
         return result
 
@@ -1021,7 +1014,7 @@ def applyPlacementToPath(placement, path):
                 currI = i = params.get("I", 0)
                 currJ = j = params.get("J", 0)
 
-                i, j, k = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
+                i, j, _ = placement.Rotation.multVec(FreeCAD.Vector(i, j, 0))
 
                 if currI != i:
                     params.update({"I": i})
