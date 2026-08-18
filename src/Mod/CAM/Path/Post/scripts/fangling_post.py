@@ -32,13 +32,6 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
-debug = False
-if debug:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
-
 Values = Dict[str, Any]
 
 POST_TYPE = "machine"
@@ -49,15 +42,9 @@ class Fangling(PostProcessor):
 
     @classmethod
     def get_common_property_schema(cls):
-        """Return common properties with Fangling defaults (uses base defaults)."""
-        """Override common properties with Fangling-specific defaults."""
-        common_props = super().get_common_property_schema()
-
-        # for prop in common_props:
-        #    if prop['name'] == 'file_extension':
-        #        prop['default'] = 'cnc'
-
-        return common_props
+        """Return common properties with Fangling defaults (uses base defaults)"""
+        """Override common properties with Fangling-specific defaults"""
+        return super().get_common_property_schema()
 
     @classmethod
     def get_property_schema(cls):
@@ -130,7 +117,7 @@ class Fangling(PostProcessor):
         Path.Log.debug("Fangling post processor initialized")
 
     def init_values(self, values: Values) -> None:
-        """Initialize values that are used throughout the postprocessor."""
+        """Initialize values that are used throughout the postprocessor"""
         #
         super().init_values(values)
 
@@ -165,7 +152,6 @@ class Fangling(PostProcessor):
         return ""
 
     def convert_command_to_gcode(self, command: Path.Command):
-        props = self._machine.postprocessor_properties
         out = ""
         if (
             "X" not in command.Parameters
@@ -201,7 +187,7 @@ class Fangling(PostProcessor):
                 out += "(Pierce Delay)\n"
             out += "G4 P" + str(self.values["DWELL_TIME"]) + "\n"
             self.last_command = command.Name
-        if command.Name in ["G54", "G55", "G56", "G57" "G58", "G59"]:
+        if command.Name in ["G54", "G55", "G56", "G57" , "G58", "G59"]:
             # remove coordinate space info
             return ""
         if command.Name in ["G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"]:
