@@ -48,6 +48,7 @@
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
+#include "CoinRenderFeatures.h"
 #include "Camera.h"
 #include "Flag.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
@@ -60,7 +61,9 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"
-#include "SoDevicePixelRatioElement.h"
+#if !FC_COIN_HAVE_DEVICE_PIXEL_RATIO
+# include "SoFCDevicePixelRatioElement.h"
+#endif
 #include "SoFCColorBar.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
@@ -105,7 +108,9 @@ SbBool Gui::SoFCDB::isInitialized()
 void Gui::SoFCDB::init()
 {
     SoInteraction ::init();
-    SoDevicePixelRatioElement ::initClass();
+#if !FC_COIN_HAVE_DEVICE_PIXEL_RATIO
+    SoFCDevicePixelRatioElement ::initClass();
+#endif
     SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
     SoGLWidgetElement ::initClass();

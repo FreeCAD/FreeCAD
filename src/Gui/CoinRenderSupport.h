@@ -23,6 +23,9 @@
 
 #include "CoinRenderFeatures.h"
 
+class SoRenderManager;
+class SoState;
+
 namespace Gui::CoinRenderSupport
 {
 
@@ -35,5 +38,14 @@ constexpr bool hasDrawListStack()
 {
     return FC_COIN_HAVE_DRAWLIST_STACK;
 }
+
+void invalidateScene(SoRenderManager* manager);
+void invalidateForeground(SoRenderManager* manager);
+void invalidateSharedGLState(SoRenderManager* manager);
+void releaseRenderBackendResources(SoRenderManager* manager);
+void discardRenderBackendResources(SoRenderManager* manager);
+
+void setDevicePixelRatio(SoState* state, float ratio);
+float devicePixelRatio(SoState* state);
 
 }  // namespace Gui::CoinRenderSupport

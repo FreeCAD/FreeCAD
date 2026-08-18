@@ -26,32 +26,32 @@
 #include <Inventor/misc/SoState.h>
 
 
-#include "SoDevicePixelRatioElement.h"
+#include "SoFCDevicePixelRatioElement.h"
 
-SO_ELEMENT_SOURCE(SoDevicePixelRatioElement);
+SO_ELEMENT_SOURCE(SoFCDevicePixelRatioElement);
 
-void SoDevicePixelRatioElement::initClass()
+void SoFCDevicePixelRatioElement::initClass()
 {
-    SO_ELEMENT_INIT_CLASS(SoDevicePixelRatioElement, SoFloatElement);
+    SO_ELEMENT_INIT_CLASS(SoFCDevicePixelRatioElement, SoFloatElement);
     // Ensure the element is enabled for GLRenderAction
-    SO_ENABLE(SoGLRenderAction, SoDevicePixelRatioElement);
+    SO_ENABLE(SoGLRenderAction, SoFCDevicePixelRatioElement);
 }
 
-void SoDevicePixelRatioElement::init(SoState* state)
+void SoFCDevicePixelRatioElement::init(SoState* state)
 {
     SoFloatElement::init(state);
     data = 1.0f;  // Default to a device pixel ratio of 1.0
 }
 
-void SoDevicePixelRatioElement::set(SoState* state, float dpr)
+void SoFCDevicePixelRatioElement::set(SoState* state, float dpr)
 {
     SoFloatElement::set(classStackIndex, state, dpr);
 }
 
-float SoDevicePixelRatioElement::get(SoState* state)
+float SoFCDevicePixelRatioElement::get(SoState* state)
 {
     return SoFloatElement::get(classStackIndex, state);
 }
 
-SoDevicePixelRatioElement::~SoDevicePixelRatioElement()
+SoFCDevicePixelRatioElement::~SoFCDevicePixelRatioElement()
 {}

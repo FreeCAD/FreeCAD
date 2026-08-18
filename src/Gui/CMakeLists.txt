@@ -1112,7 +1112,7 @@ SET(Inventor_CPP_SRCS
     Selection/SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
-    SoDevicePixelRatioElement.cpp
+    SoFCDevicePixelRatioElement.cpp
     SoLabelNodes.cpp
     TranslateManip.cpp
     SoDatumLabel.cpp
@@ -1155,7 +1155,7 @@ SET(Inventor_SRCS
     Selection/SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
-    SoDevicePixelRatioElement.h
+    SoFCDevicePixelRatioElement.h
     SoLabelNodes.h
     TranslateManip.h
     SoDatumLabel.h

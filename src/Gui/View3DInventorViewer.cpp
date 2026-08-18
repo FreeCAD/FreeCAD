@@ -57,7 +57,6 @@
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/details/SoDetail.h>
-#include <Inventor/elements/SoGLLazyElement.h>
 #include <Inventor/elements/SoLightModelElement.h>
 #include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
@@ -139,7 +138,7 @@
 #include "Navigation/GestureNavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "Selection.h"
-#include "SoDevicePixelRatioElement.h"
+#include "CoinRenderSupport.h"
 #include "SoFCDB.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCOffscreenRenderer.h"
@@ -284,17 +283,7 @@ void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer
  */
 void resetMainLazyGLState(const View3DInventorViewer* viewer)
 {
-    if (!viewer || !viewer->getSoRenderManager()) {
-        return;
-    }
-
-    SoGLRenderAction* mainAction = viewer->getSoRenderManager()->getGLRenderAction();
-    if (!mainAction || !mainAction->getState()) {
-        return;
-    }
-
-    SoGLLazyElement::getInstance(mainAction->getState())
-        ->reset(mainAction->getState(), SoLazyElement::ALL_MASK);
+    CoinRenderSupport::invalidateSharedGLState(viewer ? viewer->getSoRenderManager() : nullptr);
 }
 
 SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
@@ -2193,7 +2182,7 @@ void View3DInventorViewer::syncNaviCubeVisibility()
     }
 
     if (auto* rm = getSoRenderManager()) {
-        rm->scheduleRedraw();
+        CoinRenderSupport::invalidateForeground(rm);
     }
 }
 
@@ -3334,7 +3323,7 @@ void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, So
 
     {
         ZoneScopedN("Background");
-        SoDevicePixelRatioElement::set(state, devicePixelRatio());
+        CoinRenderSupport::setDevicePixelRatio(state, devicePixelRatio());
         SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
         SoGLRenderActionElement::set(state, glra);
         SoGLVBOActivatedElement::set(state, this->vboEnabled);
@@ -5059,7 +5048,7 @@ void View3DInventorViewer::setFeedbackVisibility(bool enable)
     this->axiscrossEnabled = enable;
 
     if (this->isViewing()) {
-        this->getSoRenderManager()->scheduleRedraw();
+        CoinRenderSupport::invalidateForeground(this->getSoRenderManager());
     }
 }
 
@@ -5086,7 +5075,7 @@ void View3DInventorViewer::setFeedbackSize(int size)
     this->axiscrossSize = size;
 
     if (this->isFeedbackVisible() && this->isViewing()) {
-        this->getSoRenderManager()->scheduleRedraw();
+        CoinRenderSupport::invalidateForeground(this->getSoRenderManager());
     }
 }
 

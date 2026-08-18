@@ -51,7 +51,7 @@
 
 #include "SoAxisCrossKit.h"
 #include "SoFCBoundingBox.h"
-#include "SoDevicePixelRatioElement.h"
+#include "CoinRenderSupport.h"
 
 using namespace Gui;
 
@@ -107,8 +107,7 @@ void SoShapeScale::updateScale(SoState* state)
     }
     else {
         if (!state->isElementEnabled(SoViewportRegionElement::getClassStackIndex())
-            || !state->isElementEnabled(SoViewVolumeElement::getClassStackIndex())
-            || !state->isElementEnabled(SoDevicePixelRatioElement::getClassStackIndex())) {
+            || !state->isElementEnabled(SoViewVolumeElement::getClassStackIndex())) {
             return;
         }
 
@@ -125,7 +124,7 @@ void SoShapeScale::updateScale(SoState* state)
         SoModelMatrixElement::get(state).multVecMatrix(center, center);  // world coords
         float sf = vv.getWorldToScreenScale(center, nsize);
 
-        sf *= SoDevicePixelRatioElement::get(state);
+        sf *= CoinRenderSupport::devicePixelRatio(state);
 
         SbVec3f v(sf, sf, sf);
         if (scale->scaleFactor.getValue() != v) {

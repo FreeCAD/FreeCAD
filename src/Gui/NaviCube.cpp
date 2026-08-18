@@ -56,6 +56,7 @@
 #include <Base/Color.h>
 #include <Base/Tools.h>
 #include "NaviCube.h"
+#include "CoinRenderSupport.h"
 #include "Application.h"
 #include "Camera.h"
 #include "Command.h"
@@ -483,7 +484,7 @@ void NaviCubeImplementation::requestRedraw(bool touchNode)
     }
     if (viewer) {
         if (auto* rm = viewer->getSoRenderManager()) {
-            rm->scheduleRedraw();
+            CoinRenderSupport::invalidateForeground(rm);
         }
     }
 }
@@ -1163,7 +1164,7 @@ void NaviCubeImplementation::setHilite(PickId hilite)
         if (soNaviCube) {
             soNaviCube->hiliteId = static_cast<int>(hiliteId);
         }
-        viewer->getSoRenderManager()->scheduleRedraw();
+        CoinRenderSupport::invalidateForeground(viewer->getSoRenderManager());
     }
 }
 
@@ -1230,7 +1231,7 @@ bool NaviCubeImplementation::mouseMoved(short x, short y)
 
     if (hovering != this->hovering) {
         this->hovering = hovering;
-        viewer->getSoRenderManager()->scheduleRedraw();
+        CoinRenderSupport::invalidateForeground(viewer->getSoRenderManager());
     }
 
     if (!dragStarted) {
@@ -1256,7 +1257,7 @@ bool NaviCubeImplementation::mouseMoved(short x, short y)
             relPos[0] = std::min(std::max(newX, 0.0f), 1.0f);
             relPos[1] = std::min(std::max(newY, 0.0f), 1.0f);
 
-            viewer->getSoRenderManager()->scheduleRedraw();
+            CoinRenderSupport::invalidateForeground(viewer->getSoRenderManager());
         }
         return true;
     }
