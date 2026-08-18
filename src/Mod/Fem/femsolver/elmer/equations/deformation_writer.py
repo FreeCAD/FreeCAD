@@ -85,7 +85,7 @@ class DeformationWriter:
         for obj in self.write.getMember("Fem::ConstraintPressure"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    pressure = float(obj.Pressure.getValueAs("Pa"))
+                    pressure = obj.Pressure
                     if not obj.Reversed:
                         pressure *= -1
                     self.write.boundary(name, "Normal Force", pressure)
@@ -101,7 +101,7 @@ class DeformationWriter:
         for obj in self.write.getMember("Fem::ConstraintForce"):
             if obj.References:
                 for name in obj.References[0][1]:
-                    force = float(obj.Force.getValueAs("N"))
+                    force = obj.Force
                     self.write.boundary(name, "Force 1", obj.DirectionVector.x * force)
                     self.write.boundary(name, "Force 1 Normalize by Area", True)
                     self.write.boundary(name, "Force 2", obj.DirectionVector.y * force)
@@ -119,19 +119,19 @@ class DeformationWriter:
                         continue
                     if not obj.xFree:
                         if not obj.hasXFormula:
-                            displacement = float(obj.xDisplacement.getValueAs("m"))
+                            displacement = obj.xDisplacement
                         else:
                             displacement = obj.xDisplacementFormula
                         self.write.boundary(name, "Displacement 1", displacement)
                     if not obj.yFree:
                         if not obj.hasYFormula:
-                            displacement = float(obj.yDisplacement.getValueAs("m"))
+                            displacement = obj.yDisplacement
                         else:
                             displacement = obj.yDisplacementFormula
                         self.write.boundary(name, "Displacement 2", displacement)
                     if not obj.zFree:
                         if not obj.hasZFormula:
-                            displacement = float(obj.zDisplacement.getValueAs("m"))
+                            displacement = obj.zDisplacement
                         else:
                             displacement = obj.zDisplacementFormula
                         self.write.boundary(name, "Displacement 3", displacement)
@@ -140,9 +140,9 @@ class DeformationWriter:
             if obj.References:
                 for name in obj.References[0][1]:
                     if obj.ElmerStiffness == "Normal Stiffness":
-                        spring = float(obj.NormalStiffness.getValueAs("N/m"))
+                        spring = obj.NormalStiffness
                     else:
-                        spring = float(obj.TangentialStiffness.getValueAs("N/m"))
+                        spring = obj.TangentialStiffness
                     self.write.boundary(name, "Spring", spring)
                 self.write.handled(obj)
 
@@ -153,22 +153,13 @@ class DeformationWriter:
         obj = self.write.getSingleMember("Fem::ConstraintSelfWeight")
         if obj is not None:
             for name in bodies:
-                gravity = self.write.convert(obj.GravityAcceleration.toStr(), "L/T^2")
+                gravity = obj.GravityAcceleration
                 if self.write.getBodyMaterial(name) is None:
                     raise general_writer.WriteError(
                         f"The body {name} is not referenced in any material.\n\n"
                     )
                 m = self.write.getBodyMaterial(name).Material
-
-                densityQuantity = Units.Quantity(m["Density"])
-                dimension = "M/L^3"
-                if name.startswith("Edge"):
-                    # not tested, bernd
-                    # TODO: test
-                    densityQuantity.Unit = Units.Unit(-2, 1)
-                    dimension = "M/L^2"
-                density = self.write.convert(densityQuantity, dimension)
-
+                density = Units.Quantity(m["Density"])
                 force1 = gravity * obj.GravityDirection.x * density
                 force2 = gravity * obj.GravityDirection.y * density
                 force3 = gravity * obj.GravityDirection.z * density
@@ -192,7 +183,7 @@ class DeformationWriter:
         # temperature
         tempObj = self.write.getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = float(tempObj.InitialTemperature.getValueAs("K"))
+            refTemp = tempObj.InitialTemperature
             for name in bodies:
                 self.write.material(name, "Reference Temperature", refTemp)
         # get the material data for all bodies
@@ -214,19 +205,15 @@ class DeformationWriter:
                     )
                 self.write.material(name, "Name", m["Name"])
                 if density_needed is True:
-                    self.write.material(name, "Density", self.write.getDensity(m))
-                self.write.material(name, "Youngs Modulus", self._getYoungsModulus(m))
-                self.write.material(name, "Poisson ratio", float(m["PoissonRatio"]))
+                    self.write.material(name, "Density", Units.Quantity(m["Density"]))
+                self.write.material(name, "Youngs Modulus", Units.Quantity(m["YoungsModulus"]))
+                self.write.material(name, "Poisson ratio", Units.Quantity(m["PoissonRatio"]))
                 if tempObj:
                     self.write.material(
                         name,
                         "Heat expansion Coefficient",
-                        self.write.convert(m["ThermalExpansionCoefficient"], "O^-1"),
+                        Units.Quantity(m["ThermalExpansionCoefficient"]),
                     )
-
-    def _getYoungsModulus(self, m):
-        youngsModulus = self.write.convert(m["YoungsModulus"], "M/(L*T^2)")
-        return youngsModulus
 
 
 ##  @}

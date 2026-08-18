@@ -38,11 +38,9 @@ import subprocess
 import tempfile
 from platform import system
 
-from FreeCAD import Console
-from FreeCAD import Units
-from FreeCAD import ParamGet
-
+import FreeCAD
 import Fem
+
 from . import sifio
 from .. import settings
 from femtools import constants
@@ -73,7 +71,7 @@ _COORDS_NON_MAGNETO_2D = [
 RESULT_FILENAME = "FreeCAD"
 RESULT_DIRECTORY = "Result"
 SCALARS_DIRECTORY = "Scalars"
-FRAMES_INFO = [None, Units.Unit(""), ""]
+FRAMES_INFO = [None, FreeCAD.Units.Unit(""), ""]
 
 
 def _getAllSubObjects(obj):
@@ -90,12 +88,11 @@ class Writer:
         self.analysis = solver.getParentGroup()
         self.solver = solver
         self.directory = directory
-        Console.PrintMessage(f"Write elmer input files to: {self.directory}\n")
+        FreeCAD.Console.PrintMessage(f"Write elmer input files to: {self.directory}\n")
         self.testmode = testmode
         self._usedVarNames = set()
         self._builder = sifio.Builder()
         self._handledObjects = set()
-        self._handleUnits()
         self._handleConstants()
         self.scanning_file = "scanning.dat"
         # to set eigen analysis in result output block
@@ -108,7 +105,6 @@ class Writer:
         return self._handledObjects
 
     def _writeBlocks(self):
-        self._handleRedifinedConstants()
         self._handleSimulation()
         self._handleDeformation()
         self._handleElasticity()
@@ -128,92 +124,6 @@ class Writer:
         self._writeSif()
         self._writeStartinfo()
 
-    def _handleUnits(self):
-        # Elmer solver writer no longer uses FreeCAD unit system
-        # to retrieve units for writing the sif file
-        #
-        # ATM Elmer writer uses SI units only
-        #
-        # see forum topic: https://forum.freecad.org/viewtopic.php?f=18&t=70150
-        #
-        # TODO: adapt method and comment
-        # should be only one system for all solver and not in each solver
-        # https://forum.freecad.org/viewtopic.php?t=47895
-        # https://forum.freecad.org/viewtopic.php?t=48451
-        # https://forum.freecad.org/viewtopic.php?f=10&t=48642
-        # The FreeCAD unit schema is only used to determine the schema number
-        # all definition are done here ATM
-        # keep in mind a unit schema might not be consistent:
-        # Length could be mm and Area could be m2 and Volume could be cm3
-        # as long as only the seven base units are retrieved from a unit schema
-        # the units are consistent
-        # TODO retrieve the seven base units from FreeCAD unit schema
-        # instead of hard coding them here for a second once
-        self.unit_schema = Units.Scheme.Internal
-        self.unit_system = {  # standard FreeCAD Base units = unit schema 0
-            "L": "m",
-            "M": "kg",
-            "T": "s",
-            "I": "A",
-            "O": "K",
-            "N": "mol",
-            "J": "cd",
-        }
-        param = ParamGet("User parameter:BaseApp/Preferences/Units")
-        self.unit_schema = param.GetInt("UserSchema", Units.Scheme.Internal)
-        if self.unit_schema == Units.Scheme.Internal:
-            Console.PrintMessage(
-                "The FreeCAD standard unit schema mm/kg/s is used. "
-                "Elmer sif-file writing is however done in SI units.\n"
-            )
-        elif self.unit_schema == Units.Scheme.MKS:
-            Console.PrintMessage(
-                "The SI unit schema m/kg/s is used. "
-                "Elmer sif-file writing is done in SI-units.\n"
-            )
-            self.unit_system = {
-                "L": "m",
-                "M": "kg",
-                "T": "s",
-                "I": "A",
-                "O": "K",
-                "N": "mol",
-                "J": "cd",
-            }
-        elif self.unit_schema == Units.Scheme.FEM:
-            # see also unit comment in calculix writer
-            Console.PrintMessage(
-                "The FEM unit schema mm/N/s is used. "
-                "Elmer sif-file writing is however done in SI units.\n"
-            )
-            self.unit_system = {
-                "L": "m",
-                "M": "kg",
-                "T": "s",
-                "I": "A",
-                "O": "K",
-                "N": "mol",
-                "J": "cd",
-            }
-        elif self.unit_schema > Units.Scheme.MKS and self.unit_schema != Units.Scheme.FEM:
-            Console.PrintMessage(
-                "Unit schema: {} not supported by Elmer writer. "
-                "The FreeCAD standard unit schema mm/kg/s is used. "
-                "Elmer sif-file writing is done in Standard FreeCAD units.\n".format(
-                    Units.listSchemas(self.unit_schema)
-                )
-            )
-
-    def getFromUi(self, value, unit, outputDim):
-        quantity = Units.Quantity(str(value) + str(unit))
-        return self.convert(quantity, outputDim)
-
-    def convert(self, quantityStr, unit):
-        quantity = Units.Quantity(quantityStr)
-        for key, setting in self.unit_system.items():
-            unit = unit.replace(key, setting)
-        return float(quantity.getValueAs(unit))
-
     def _handleConstants(self):
         self.constsdef = {
             "Gravity": constants.gravity(),
@@ -223,32 +133,11 @@ class Writer:
             "BoltzmannConstant": constants.boltzmann_constant(),
         }
 
-    def _handleRedifinedConstants(self):
-        """
-        redefine constants in self.constsdef according constant redefine objects
-        """
-        objs = self.getMember("Fem::ConstantVacuumPermittivity")
-        if len(objs) == 1:
-            permittivity = float(objs[0].VacuumPermittivity.getValueAs("F/m"))
-            # since the base unit of FC is in mm, we must scale it to get plain SI
-            permittivity = permittivity * 1e-9
-            Console.PrintLog(f"Overwriting vacuum permittivity with: {permittivity}\n")
-            self.constsdef["PermittivityOfVacuum"] = "{} {}".format(permittivity, "F/m")
-            self.handled(objs[0])
-        elif len(objs) > 1:
-            Console.PrintError(
-                "More than one permittivity constant overwriting objects ({} objs). "
-                "The permittivity constant overwriting is ignored.\n".format(len(objs))
-            )
-
     def _handleSimulation(self):
         self._simulation("Coordinate System", self.solver.CoordinateSystem)
         self._simulation("Coordinate Mapping", (1, 2, 3))
-        # Elmer uses SI base units, but our mesh is in mm, therefore we must tell
-        # the solver that we have another scale
-        self._simulation("Coordinate Scaling", 0.001)
         self._simulation("Simulation Type", self.solver.SimulationType)
-        param = ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
         out_level = 10 if self.testmode else param.GetInt("MaxOutputLevel", 10)
         self._simulation("Max Output Level", out_level)
         if self.solver.SimulationType == "Steady State":
@@ -630,10 +519,6 @@ class Writer:
         # 'name' was not in the reference of any material
         return None
 
-    def getDensity(self, m):
-        density = self.convert(m["Density"], "M/L^3")
-        return density
-
     def _hasExpression(self, equation):
         for obj, exp in equation.ExpressionEngine:
             if obj == equation:
@@ -696,10 +581,6 @@ class Writer:
 
     def _addOutputSolver(self):
         s = sifio.createSection(sifio.SOLVER)
-        # Since FreeCAD meshes are in mm we let Elmer scale it
-        # _handleSimulation(self).
-        # To get it back in the original size we let Elmer scale it back
-        s["Coordinate Scaling Revert"] = True
         s["Equation"] = "ResultOutput"
         if self.solver.SimulationType in ["Transient", "Scanning"]:
             # we must execute the post solver every time we output a result
@@ -732,22 +613,38 @@ class Writer:
             s["Variable 1"] = "Time"
             # ignore scalars from solvers
             s["Scalars Prefix"] = ""
-            self.frames_info = ["scanning", Units.Unit(""), "Scanning step"]
+            self.frames_info = ["scanning", FreeCAD.Units.Unit(""), "Scanning step"]
             self.frames_values_file = self.scanning_file
             self.eigen_analysis = False
             for name in self.getAllBodies():
                 self._addSolver(name, s)
         elif self.solver.SimulationType == "Transient":
             # special case. No need set SaveScalars to collect multiframes
-            self.frames_info = [None, Units.Unit("s"), "Timestep"]
+            self.frames_info = [None, FreeCAD.Units.Unit("s"), "Timestep"]
             self.frames_values_file = ""
             self.eigen_analysis = False
 
     def _writeSif(self):
         sifPath = os.path.join(self.directory, _SIF_NAME)
         with open(sifPath, "w") as fstream:
-            sif = sifio.Sif(self._builder)
+            sif = sifio.Sif(self.solver.UnitSystem, self._builder)
             sif.write(fstream)
+
+    def get_coherent_value(self, quantity):
+        return Fem.getCoherentValue(quantity, self.solver.UnitSystem)
+
+    def get_scaled_mesh(self):
+        scale = Fem.getCoherentLengthScale(self.solver.UnitSystem)
+        mesh = self.getMesh().FemMesh
+        if scale == 1:
+            return mesh
+
+        mesh = mesh.copy()
+        mat = FreeCAD.Matrix()
+        mat.scale(1 / scale)
+        mesh.transformGeometry(mat)
+
+        return mesh
 
     def handled(self, obj):
         self._handledObjects.add(obj)

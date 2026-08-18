@@ -1250,8 +1250,11 @@ class _SolverElmer(CommandManager):
             "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
         )
         elmer_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Elmer")
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         bin_out = elmer_prefs.GetBool("BinaryOutput", False)
         save_id = elmer_prefs.GetBool("SaveGeometryIndex", False)
+        units = gen_prefs.GetString("DefaultUnitSystem", "FEM")
+        FreeCADGui.doCommand("FreeCAD.ActiveDocument.ActiveObject.UnitSystem = '{}'".format(units))
         FreeCADGui.doCommand(
             "FreeCAD.ActiveDocument.ActiveObject.BinaryOutput = {}".format(bin_out)
         )
