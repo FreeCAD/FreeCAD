@@ -90,6 +90,7 @@
 #include "MainWindow.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelectionAction.h"
+#include "../View3DInventorViewer.h"
 #include "ViewParams.h"
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
@@ -402,10 +403,14 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
 {
     ViewProvider* last_vp = nullptr;
     std::vector<PickedInfo> ret;
-    const SoPickedPointList& points = action->getPickedPointList();
-    for (int i = 0, count = points.getLength(); i < count; ++i) {
+    SoPickedPointList rendererPoints;
+    const SoPickedPointList* points = &action->getPickedPointList();
+    if (this->viewer && this->viewer->acquireRendererPickResults(*action, rendererPoints)) {
+        points = &rendererPoints;
+    }
+    for (int i = 0, count = points->getLength(); i < count; ++i) {
         PickedInfo info;
-        info.pp = points[i];
+        info.pp = (*points)[i];
         info.vpd = nullptr;
         ViewProvider* vp = nullptr;
         auto path = Gui::toFullPath(info.pp->getPath());

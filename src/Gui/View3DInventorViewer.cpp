@@ -549,6 +549,7 @@ SoSeparator* createAxisArrowGeometry()
 
 struct OverlayAxisCrossState
 {
+    SbViewportRegion viewport;
     SoSeparator* axisRoot {nullptr};
     SoPerspectiveCamera* axisCamera {nullptr};
     SoDepthBuffer* axisDepth {nullptr};
@@ -1153,6 +1154,7 @@ void View3DInventorViewer::init()
     // point which causes a certain slow-down because for all objects the primitives
     // must be created. Using an SoSeparator avoids this drawback.
     selectionRoot = new Gui::SoFCUnifiedSelection();
+    selectionRoot->viewer = this;
     selectionRoot->applySettings();
 
     // set the ViewProvider root node
@@ -3336,6 +3338,16 @@ void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
     }
 }
 
+bool View3DInventorViewer::acquireRendererPickResults(
+    SoHandleEventAction& action,
+    SoPickedPointList& results
+) const
+{
+    (void)action;
+    (void)results;
+    return false;
+}
+
 void View3DInventorViewer::renderLegacyBackground(const QColor& backgroundColor, SoGLRenderAction* glra)
 {
     SoState* state = glra->getState();
@@ -5206,20 +5218,20 @@ void View3DInventorViewer::updateColors()
     }
 }
 
-void View3DInventorViewer::drawAxisCross()
+bool View3DInventorViewer::updateAxisCrossGeometry()
 {
     const SbVec2s view = this->getSoRenderManager()->getSize();
     const int viewWidth = view[0];
     const int viewHeight = view[1];
     if (viewWidth <= 0 || viewHeight <= 0) {
-        return;
+        return false;
     }
 
     const int pixelarea = static_cast<int>(
         static_cast<float>(this->axiscrossSize) / 100.0F * std::min(viewWidth, viewHeight)
     );
     if (pixelarea <= 0) {
-        return;
+        return false;
     }
 
     const SbVec2s origin(viewWidth - pixelarea, 0);
@@ -5272,7 +5284,7 @@ void View3DInventorViewer::drawAxisCross()
     overlay.ensureCreated();
     if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup || !overlay.lettersRoot
         || !overlay.lettersCamera) {
-        return;
+        return false;
     }
 
     SbRotation inv;
@@ -5359,22 +5371,36 @@ void View3DInventorViewer::drawAxisCross()
 
     SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
+    overlay.viewport = vp;
+    return true;
+}
+
+void View3DInventorViewer::renderAxisCrossLegacy()
+{
+    auto& overlay = overlayAxisCrossState();
 
     {
-        SoGLRenderAction axisAction(vp);
+        SoGLRenderAction axisAction(overlay.viewport);
         setOverlayCacheContext(axisAction, this);
         axisAction.setTransparencyType(SoGLRenderAction::BLEND);
         axisAction.apply(overlay.axisRoot);
     }
 
     {
-        SoGLRenderAction letterAction(vp);
+        SoGLRenderAction letterAction(overlay.viewport);
         setOverlayCacheContext(letterAction, this);
         letterAction.setTransparencyType(SoGLRenderAction::BLEND);
         letterAction.apply(overlay.lettersRoot);
     }
 
     resetMainLazyGLState(this);
+}
+
+void View3DInventorViewer::drawAxisCross()
+{
+    if (updateAxisCrossGeometry()) {
+        renderAxisCrossLegacy();
+    }
 }
 
 void View3DInventorViewer::drawSingleBackground(const QColor& col)

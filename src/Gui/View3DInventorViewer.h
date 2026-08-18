@@ -84,6 +84,7 @@ class QImage;
 class SoGroup;  // NOLINT
 class SoGLRenderAction;
 class SoPickStyle;
+class SoPickedPointList;
 class NaviCube;
 class SoClipPlane;
 class SoTimerSensor;
@@ -638,6 +639,8 @@ private:
     void initialize();
     void syncNaviCubeVisibility();
     void drawAxisCross();
+    bool updateAxisCrossGeometry();
+    void renderAxisCrossLegacy();
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
@@ -651,6 +654,7 @@ private:
     void aboutToDestroyGLContext();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
+    bool acquireRendererPickResults(SoHandleEventAction& action, SoPickedPointList& results) const;
 
 private:
     NaviCube* naviCube;
@@ -747,6 +751,7 @@ private Q_SLOTS:
 
     // friends
     friend class NavigationStyle;
+    friend class SoFCUnifiedSelection;
     friend class GLPainter;
     friend class ViewerEventFilter;
 };

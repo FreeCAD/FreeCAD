@@ -158,6 +158,7 @@ private:
     std::vector<PickedInfo> getPickedList(SoHandleEventAction* action, bool singlePick) const;
 
     Gui::Document* pcDocument {nullptr};
+    View3DInventorViewer* viewer {nullptr};
 
     static SoFullPath* currentHighlightPath;
     SoFullPath* detailPath;
