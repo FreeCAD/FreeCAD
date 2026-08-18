@@ -45,6 +45,7 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
     // fill solvers combo with available solvers
     ui->cmb_def_solver->clear();
     std::vector<std::string> Solvers = {"None", "CalculiX", "Elmer", "Mystran", "Z88"};
+    std::vector<std::string> Units = {"FEM", "Internal", "MKS", "US"};
 
     QStringList solversList;
     for (auto item : Solvers) {
@@ -54,6 +55,15 @@ DlgSettingsFemGeneralImp::DlgSettingsFemGeneralImp(QWidget* parent)
 
     ParameterGrp::handle hGrp = ui->cmb_def_solver->getWindowParameter();
     ui->cmb_def_solver->setCurrentIndex(hGrp->GetInt(ui->cmb_def_solver->entryName(), 0));
+
+    QStringList unitsList;
+    for (auto item : Units) {
+        unitsList << QLatin1String(item.c_str());
+    }
+    ui->cmb_def_units->addItems(unitsList);
+
+    hGrp = ui->cmb_def_units->getWindowParameter();
+    ui->cmb_def_units->setCurrentIndex(hGrp->GetInt(ui->cmb_def_units->entryName(), 0));
 
     connect(
         ui->fc_ext_editor,
@@ -86,6 +96,7 @@ void DlgSettingsFemGeneralImp::saveSettings()
     ui->fc_ext_editor->onSave();
 
     ui->cmb_def_solver->onSave();
+    ui->cmb_def_units->onSave();
 
     // set default solver icon
     Gui::CommandManager& cmdMgr = Gui::Application::Instance->commandManager();
@@ -113,6 +124,9 @@ void DlgSettingsFemGeneralImp::loadSettings()
     ui->fc_ext_editor->onRestore();
 
     ui->cmb_def_solver->onRestore();
+
+    populateUnitSystem();
+    ui->cmb_def_units->onRestore();
 }
 
 /**
@@ -126,6 +140,27 @@ void DlgSettingsFemGeneralImp::changeEvent(QEvent* e)
     else {
         QWidget::changeEvent(e);
     }
+}
+
+void DlgSettingsFemGeneralImp::populateUnitSystem()
+{
+    std::list<std::pair<std::string, std::string>> mapValues = {
+        {QT_TR_NOOP("FEM (mm, ton, s, K)"), "FEM"},
+        {QT_TR_NOOP("Internal (mm, kg, s, K)"), "Internal"},
+        {QT_TR_NOOP("MKS (m, kg, s, K)"), "MKS"},
+        {QT_TR_NOOP("US(in) (in, lbf*s^2/in, s, K)"), "US"},
+    };
+
+    ui->cmb_def_units->clear();
+    for (const auto& val : mapValues) {
+        ui->cmb_def_units->addItem(tr(val.first.c_str()), QByteArray::fromStdString(val.second));
+    }
+
+    // set default index
+    auto hGrp = ui->cmb_def_units->getWindowParameter();
+    std::string current = hGrp->GetASCII(ui->cmb_def_units->entryName(), "FEM");
+    int index = ui->cmb_def_units->findData(QByteArray::fromStdString(current));
+    ui->cmb_def_units->setCurrentIndex(index);
 }
 
 void DlgSettingsFemGeneralImp::onfileNameSelected(const QString& fileName)
