@@ -80,6 +80,11 @@ void Part::PreviewExtension::updatePreview()
     _isPreviewFresh = true;
 }
 
+void Part::PreviewExtension::invalidatePreview()
+{
+    _isPreviewFresh = false;
+}
+
 bool Part::PreviewExtension::mustRecomputePreview() const
 {
     return getExtendedObject()->mustRecompute();

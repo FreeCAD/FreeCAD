@@ -53,6 +53,9 @@ public:
 
     void updatePreview();
 
+    /// Marks the preview as stale so the next updatePreview() recomputes it.
+    void invalidatePreview();
+
     virtual bool mustRecomputePreview() const;
 
 protected:
