@@ -27,7 +27,10 @@
 #include <limits>
 #include <vector>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#include <Gui/CoinRenderFeatures.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/misc/SoState.h>
@@ -254,6 +257,7 @@ void SoFCControlPoints::GLRender(SoGLRenderAction* action)
     renderRoot->GLRender(action);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoFCControlPoints::IRRender(SoIRRenderAction* action)
 {
     if (!action || !renderRoot || !syncRenderGeometry(action->getState())) {
@@ -262,6 +266,7 @@ void SoFCControlPoints::IRRender(SoIRRenderAction* action)
 
     renderRoot->doAction(action);
 }
+#endif
 
 void SoFCControlPoints::computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center)
 {
@@ -301,12 +306,14 @@ void SoFCControlPoints::generatePrimitives(SoAction*)
 
 void SoFCControlPoints::doAction(SoAction* action)
 {
+#if FC_COIN_HAVE_RETAINED_RENDERER
     if (action && action->getTypeId().isDerivedFrom(SoIRRenderAction::getClassTypeId())) {
         if (renderRoot && syncRenderGeometry(action->getState())) {
             renderRoot->doAction(action);
         }
         return;
     }
+#endif
 
     inherited::doAction(action);
 }

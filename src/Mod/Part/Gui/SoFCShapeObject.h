@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoPickStyle.h>
 
 #include <Mod/Part/PartGlobal.h>
+#include <Gui/CoinRenderFeatures.h>
 
 class SoState;
 class SoIRRenderAction;
@@ -101,7 +102,9 @@ public:
 protected:
     ~SoFCControlPoints() override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void IRRender(SoIRRenderAction* action) override;
+#endif
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
     void generatePrimitives(SoAction* action) override;
     void doAction(SoAction* action) override;

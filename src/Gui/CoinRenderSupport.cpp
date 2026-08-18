@@ -21,6 +21,9 @@
 
 #include "CoinRenderSupport.h"
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoGLLazyElement.h>
@@ -77,7 +80,7 @@ void invalidateSharedGLState(SoRenderManager* manager)
 
 void releaseRenderBackendResources(SoRenderManager* manager)
 {
-#if FC_COIN_HAVE_RENDER_BACKEND_LIFECYCLE
+#if FC_COIN_HAVE_RETAINED_RENDERER
     if (manager) {
         manager->releaseRenderBackendResources();
     }
@@ -88,12 +91,36 @@ void releaseRenderBackendResources(SoRenderManager* manager)
 
 void discardRenderBackendResources(SoRenderManager* manager)
 {
-#if FC_COIN_HAVE_RENDER_BACKEND_LIFECYCLE
+#if FC_COIN_HAVE_RETAINED_RENDERER
     if (manager) {
         manager->discardRenderBackendResources();
     }
 #else
     (void)manager;
+#endif
+}
+
+void requestRetainedDepthClear(SoIRRenderAction* action)
+{
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    if (action) {
+        action->requestDepthClear();
+    }
+#else
+    (void)action;
+#endif
+}
+
+void traverseAdditionalRetainedPath(SoIRRenderAction* action, SoPath* path)
+{
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    if (!action || !path) {
+        return;
+    }
+    action->traverseAdditionalPath(path);
+#else
+    (void)action;
+    (void)path;
 #endif
 }
 

@@ -23,8 +23,19 @@
 
 #include <Inventor/C/basic.h>
 
-// Normalize independently-upstreamable Coin renderer capabilities here. GUI
-// code must not infer API availability from FREECAD_USE_EXTERNAL_COIN_PIVY.
+// FreeCAD treats Coin's complete retained renderer as one versioned public
+// capability. Individual capability macros are used only for features that
+// provide value independently.
+//
+// Never infer renderer support from FREECAD_USE_EXTERNAL_COIN_PIVY and never
+// reconstruct the retained-renderer contract from implementation-detail flags.
+
+#if defined(COIN_HAVE_RETAINED_RENDERER) && defined(COIN_RETAINED_RENDERER_API_VERSION) \
+    && COIN_RETAINED_RENDERER_API_VERSION >= 1
+# define FC_COIN_HAVE_RETAINED_RENDERER 1
+#else
+# define FC_COIN_HAVE_RETAINED_RENDERER 0
+#endif
 
 #if defined(COIN_HAVE_DEVICE_PIXEL_RATIO)
 # define FC_COIN_HAVE_DEVICE_PIXEL_RATIO 1
@@ -44,34 +55,10 @@
 # define FC_COIN_HAVE_SHARED_GL_STATE_INVALIDATION 0
 #endif
 
-#if defined(COIN_HAVE_RENDER_BACKEND_LIFECYCLE)
-# define FC_COIN_HAVE_RENDER_BACKEND_LIFECYCLE 1
-#else
-# define FC_COIN_HAVE_RENDER_BACKEND_LIFECYCLE 0
-#endif
-
 #if defined(COIN_HAVE_RENDER_MANAGER_STAGES)
 # define FC_COIN_HAVE_RENDER_MANAGER_STAGES 1
 #else
 # define FC_COIN_HAVE_RENDER_MANAGER_STAGES 0
-#endif
-
-#if defined(COIN_HAVE_RENDER_LAYER_GROUP)
-# define FC_COIN_HAVE_RENDER_LAYER_GROUP 1
-#else
-# define FC_COIN_HAVE_RENDER_LAYER_GROUP 0
-#endif
-
-#if defined(COIN_HAVE_IR_RENDER_ACTION)
-# define FC_COIN_HAVE_IR_RENDER_ACTION 1
-#else
-# define FC_COIN_HAVE_IR_RENDER_ACTION 0
-#endif
-
-#if defined(COIN_HAVE_RENDER_PIPELINES)
-# define FC_COIN_HAVE_RENDER_PIPELINES 1
-#else
-# define FC_COIN_HAVE_RENDER_PIPELINES 0
 #endif
 
 #if defined(COIN_HAVE_RETAINED_PICKING)
@@ -79,13 +66,3 @@
 #else
 # define FC_COIN_HAVE_RETAINED_PICKING 0
 #endif
-
-#if defined(COIN_RENDERER_API_VERSION)
-# define FC_COIN_RENDERER_API_VERSION COIN_RENDERER_API_VERSION
-#else
-# define FC_COIN_RENDERER_API_VERSION 0
-#endif
-
-#define FC_COIN_HAVE_DRAWLIST_STACK \
-    (FC_COIN_HAVE_IR_RENDER_ACTION && FC_COIN_HAVE_RENDER_PIPELINES \
-     && FC_COIN_HAVE_RENDER_MANAGER_STAGES && FC_COIN_HAVE_RENDER_BACKEND_LIFECYCLE)

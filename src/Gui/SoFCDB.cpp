@@ -112,7 +112,6 @@ void Gui::SoFCDB::init()
 #if !FC_COIN_HAVE_DEVICE_PIXEL_RATIO
     SoFCDevicePixelRatioElement ::initClass();
 #endif
-    SoGLRenderActionElement ::initClass();
     SoFCInteractiveElement ::initClass();
     SoFCColorBar ::initClass();
     SoFCScreenSpaceGroup ::initClass();

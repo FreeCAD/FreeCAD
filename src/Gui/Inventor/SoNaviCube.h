@@ -36,6 +36,7 @@
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec4f.h>
 #include <Inventor/nodes/SoShape.h>
+#include "../CoinRenderFeatures.h"
 
 #include <cstdint>
 #include <array>
@@ -129,7 +130,9 @@ protected:
     ~SoNaviCube() override;
 
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void IRRender(SoIRRenderAction* action) override;
+#endif
     void generatePrimitives(SoAction* action) override;
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 
@@ -177,9 +180,13 @@ private:
     void updateOverlayViewport(int viewportX, int viewportY, int viewportWidth, int viewportHeight) const;
     void setOverlayState(SoState* state, bool transparentMaterial, bool transparentTexture);
     void beginOverlayPass(SoGLRenderAction* action, const RenderParams& params);
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void beginDrawListOverlayPass(SoIRRenderAction* action, const RenderParams& params);
+#endif
     void renderOverlayScene(SoGLRenderAction* action);
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void renderOverlayScene(SoIRRenderAction* action);
+#endif
     void ensureGeometry() const;
     void rebuildGeometry() const;
     void addCubeFace(const SbVec3f& x, const SbVec3f& z, CubeFaceKind kind, PickId pickId) const;
@@ -227,7 +234,7 @@ private:
     };
 
     mutable SoSeparator* sceneRoot {nullptr};
-    mutable SoRenderLayerGroup* overlayRoot {nullptr};
+    mutable SoSeparator* overlayRoot {nullptr};
     mutable SoSwitch* cameraSwitch {nullptr};
     mutable SoOrthographicCamera* orthoCamera {nullptr};
     mutable SoPerspectiveCamera* perspCamera {nullptr};

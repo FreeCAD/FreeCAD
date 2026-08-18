@@ -21,6 +21,7 @@
  ******************************************************************************/
 
 #include <FCConfig.h>
+#include "../CoinRenderFeatures.h"
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
@@ -59,7 +60,9 @@
 #include <Inventor/nodes/SoPerspectiveCamera.h>
 #include <Inventor/nodes/SoPointSet.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
-#include <Inventor/nodes/SoRenderLayerGroup.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/nodes/SoRenderLayerGroup.h>
+#endif
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoSwitch.h>
@@ -73,8 +76,10 @@
 
 #include "SoNaviCube.h"
 
-#include <Inventor/actions/SoIRRenderAction.h>
-#include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+# include <Inventor/elements/SoMultiTextureEnabledElement.h>
+#endif
 
 using namespace Gui;
 
@@ -132,6 +137,49 @@ constexpr std::array<SoNaviCube::PickId, 9> kButtonPickIds = {
     SoNaviCube::PickId::Home,
     SoNaviCube::PickId::ViewMenu
 };
+
+#if !FC_COIN_HAVE_RETAINED_RENDERER
+class ScopedLegacyOverlayViewport
+{
+public:
+    ScopedLegacyOverlayViewport(int x, int y, int width, int height)
+    {
+        glGetIntegerv(GL_VIEWPORT, viewport);
+        glGetIntegerv(GL_SCISSOR_BOX, scissorBox);
+        scissorEnabled = glIsEnabled(GL_SCISSOR_TEST);
+        glGetBooleanv(GL_DEPTH_WRITEMASK, &depthWriteMask);
+        glGetDoublev(GL_DEPTH_CLEAR_VALUE, &depthClearValue);
+
+        glViewport(x, y, width, height);
+        glEnable(GL_SCISSOR_TEST);
+        glScissor(x, y, width, height);
+        glDepthMask(GL_TRUE);
+        glClearDepth(1.0);
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
+
+    ~ScopedLegacyOverlayViewport()
+    {
+        glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+        glScissor(scissorBox[0], scissorBox[1], scissorBox[2], scissorBox[3]);
+        if (!scissorEnabled) {
+            glDisable(GL_SCISSOR_TEST);
+        }
+        glDepthMask(depthWriteMask);
+        glClearDepth(depthClearValue);
+    }
+
+    ScopedLegacyOverlayViewport(const ScopedLegacyOverlayViewport&) = delete;
+    ScopedLegacyOverlayViewport& operator=(const ScopedLegacyOverlayViewport&) = delete;
+
+private:
+    GLint viewport[4] {};
+    GLint scissorBox[4] {};
+    GLboolean scissorEnabled {GL_FALSE};
+    GLboolean depthWriteMask {GL_TRUE};
+    GLdouble depthClearValue {1.0};
+};
+#endif
 
 constexpr int cubeFaceIndex(SoNaviCube::PickId id)
 {
@@ -430,11 +478,17 @@ void SoNaviCube::ensureSceneGraph() const
         sceneRoot = new SoSeparator;
         sceneRoot->ref();
 
-        overlayRoot = new SoRenderLayerGroup;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+        auto* renderLayer = new SoRenderLayerGroup;
+        overlayRoot = renderLayer;
         overlayRoot->ref();
-        overlayRoot->layer = SoRenderLayerGroup::FOREGROUND;
-        overlayRoot->viewportOverride = TRUE;
-        overlayRoot->clearDepthBuffer = TRUE;
+        renderLayer->layer = SoRenderLayerGroup::FOREGROUND;
+        renderLayer->viewportOverride = TRUE;
+        renderLayer->clearDepthBuffer = TRUE;
+#else
+        overlayRoot = new SoSeparator;
+        overlayRoot->ref();
+#endif
         overlayRoot->addChild(sceneRoot);
 
         sceneDirty = true;
@@ -1201,6 +1255,7 @@ void SoNaviCube::updateOverlayViewport(
     int viewportHeight
 ) const
 {
+#if FC_COIN_HAVE_RETAINED_RENDERER
     if (!overlayRoot) {
         return;
     }
@@ -1211,11 +1266,18 @@ void SoNaviCube::updateOverlayViewport(
         static_cast<float>(viewportWidth),
         static_cast<float>(viewportHeight)
     );
-    const SbVec4f& current = overlayRoot->viewportPixels.getValue();
+    auto* renderLayer = static_cast<SoRenderLayerGroup*>(overlayRoot);
+    const SbVec4f& current = renderLayer->viewportPixels.getValue();
     if (current[0] != rect[0] || current[1] != rect[1] || current[2] != rect[2]
         || current[3] != rect[3]) {
-        overlayRoot->viewportPixels = rect;
+        renderLayer->viewportPixels = rect;
     }
+#else
+    (void)viewportX;
+    (void)viewportY;
+    (void)viewportWidth;
+    (void)viewportHeight;
+#endif
 }
 
 void SoNaviCube::setOverlayState(SoState* state, bool transparentMaterial, bool transparentTexture)
@@ -1277,6 +1339,7 @@ void SoNaviCube::beginOverlayPass(SoGLRenderAction* action, const RenderParams& 
     SoGLShaderProgramElement::enable(state, FALSE);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoNaviCube::beginDrawListOverlayPass(SoIRRenderAction* action, const RenderParams& params)
 {
     if (!action) {
@@ -1291,6 +1354,7 @@ void SoNaviCube::beginDrawListOverlayPass(SoIRRenderAction* action, const Render
     SoMultiTextureEnabledElement::disableAll(state);
     setOverlayState(state, params.transparentMaterial, params.transparentTexture);
 }
+#endif
 void SoNaviCube::renderOverlayScene(SoGLRenderAction* action)
 {
     if (!action) {
@@ -1307,6 +1371,7 @@ void SoNaviCube::renderOverlayScene(SoGLRenderAction* action)
     SoGLTextureEnabledElement::disableAll(state);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoNaviCube::renderOverlayScene(SoIRRenderAction* action)
 {
     if (!action) {
@@ -1323,6 +1388,7 @@ void SoNaviCube::renderOverlayScene(SoIRRenderAction* action)
     }
     SoMultiTextureEnabledElement::disableAll(state);
 }
+#endif
 
 void SoNaviCube::renderCoin(SoGLRenderAction* action)
 {
@@ -1352,6 +1418,9 @@ void SoNaviCube::renderCoin(SoGLRenderAction* action)
 
     state->push();
     updateOverlayViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+#if !FC_COIN_HAVE_RETAINED_RENDERER
+    ScopedLegacyOverlayViewport legacyViewport(viewportX, viewportY, viewportWidth, viewportHeight);
+#endif
     beginOverlayPass(action, params);
     renderOverlayScene(action);
     state->pop();
@@ -1365,6 +1434,7 @@ void SoNaviCube::GLRender(SoGLRenderAction* action)
     renderCoin(action);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoNaviCube::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
@@ -1397,6 +1467,7 @@ void SoNaviCube::IRRender(SoIRRenderAction* action)
     renderOverlayScene(action);
     state->pop();
 }
+#endif
 
 void SoNaviCube::computeBBox(SoAction*, SbBox3f& box, SbVec3f& center)
 {

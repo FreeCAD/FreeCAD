@@ -38,7 +38,10 @@
 #include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#include "CoinRenderFeatures.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
@@ -432,7 +435,11 @@ void NaviCubeImplementation::syncNodeState(SoAction* action)
 
     const SoType type = action->getTypeId();
     const bool isGLRender = type.isDerivedFrom(SoGLRenderAction::getClassTypeId());
+#if FC_COIN_HAVE_RETAINED_RENDERER
     const bool isIRRender = type.isDerivedFrom(SoIRRenderAction::getClassTypeId());
+#else
+    const bool isIRRender = false;
+#endif
 
     if (isGLRender || isIRRender) {
         if (!readyToRender()) {

@@ -40,6 +40,7 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoText2.h>
 #include <FCGlobal.h>
+#include "CoinRenderFeatures.h"
 
 #include "BitmapFactory.h"
 
@@ -150,7 +151,9 @@ protected:
     ~SoFrameLabel() override = default;
     void notify(SoNotList* list) override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void IRRender(::SoIRRenderAction* action) override;
+#endif
 
 private:
     void prepareImage(SoState* state);

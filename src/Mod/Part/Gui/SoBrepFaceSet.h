@@ -29,6 +29,7 @@
 #include <memory>
 #include <vector>
 #include <Gui/Selection/SoFCSelectionContext.h>
+#include <Gui/CoinRenderFeatures.h>
 #include <Mod/Part/PartGlobal.h>
 
 class SoIRRenderAction;
@@ -102,7 +103,9 @@ public:
 protected:
     ~SoBrepFaceSet() override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void IRRender(::SoIRRenderAction* action) override;
+#endif
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
     SoDetail* createTriangleDetail(

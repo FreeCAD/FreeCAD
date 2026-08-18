@@ -32,7 +32,10 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#include <Gui/CoinRenderFeatures.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoFaceDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
@@ -56,7 +59,9 @@
 #include <Gui/Inventor/So3DAnnotation.h>
 
 #include "SoBrepFaceSet.h"
-#include "SoBrepSelectionIR.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include "SoBrepSelectionIR.h"
+#endif
 #include "ViewProviderExt.h"
 
 using namespace PartGui;
@@ -373,6 +378,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
     inherited::doAction(action);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
@@ -468,6 +474,7 @@ void SoBrepFaceSet::IRRender(SoIRRenderAction* action)
         commandVertexStart = commandVertexEnd;
     }
 }
+#endif
 
 void SoBrepFaceSet::renderHighlight(SoGLRenderAction* action, SelContextPtr ctx)
 {
@@ -885,6 +892,7 @@ void SoBrepFaceSet::GLRenderBelowPath(SoGLRenderAction* action)
 
 void SoBrepFaceSet::generatePrimitives(SoAction* action)
 {
+#if FC_COIN_HAVE_RETAINED_RENDERER
     if (!action || !action->isOfType(SoIRRenderAction::getClassTypeId())) {
         inherited::generatePrimitives(action);
         return;
@@ -963,6 +971,9 @@ void SoBrepFaceSet::generatePrimitives(SoAction* action)
     irAction->pushPrimitiveCollector(&collector);
     inherited::generatePrimitives(action);
     irAction->popPrimitiveCollector(&collector);
+#else
+    inherited::generatePrimitives(action);
+#endif
 }
 
 void SoBrepFaceSet::getBoundingBox(SoGetBoundingBoxAction* action)

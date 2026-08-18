@@ -401,12 +401,20 @@ std::vector<SoFCUnifiedSelection::PickedInfo> SoFCUnifiedSelection::getPickedLis
     std::vector<PickedInfo> ret;
     SoPickedPointList rendererPoints;
     const SoPickedPointList* points = &action->getPickedPointList();
-    if (this->viewer && this->viewer->acquireRendererPickResults(*action, rendererPoints)) {
+    const bool rendererAcquisition = this->viewer
+        && this->viewer->acquireRendererPickResults(*action, rendererPoints, singlePick);
+    if (rendererAcquisition) {
         points = &rendererPoints;
     }
     for (int i = 0, count = points->getLength(); i < count; ++i) {
         PickedInfo info;
-        info.pp = (*points)[i];
+        if (rendererAcquisition) {
+            info.owned = std::make_shared<SoPickedPoint>(*(*points)[i]);
+            info.pp = info.owned.get();
+        }
+        else {
+            info.pp = (*points)[i];
+        }
         info.vpd = nullptr;
         ViewProvider* vp = nullptr;
         auto path = Gui::toFullPath(info.pp->getPath());

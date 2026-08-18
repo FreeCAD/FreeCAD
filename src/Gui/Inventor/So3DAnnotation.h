@@ -25,13 +25,14 @@
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/SoPath.h>
-#include <Inventor/misc/SoRefPtr.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/elements/SoElement.h>
 #include <Inventor/elements/SoSubElement.h>
-#include <Inventor/rendering/SoRenderIR.h>
 #include <FCGlobal.h>
+#include <memory>
 #include <vector>
+
+#include "../CoinRenderFeatures.h"
 
 class SoAction;
 class SoIRRenderAction;
@@ -55,15 +56,15 @@ protected:
     // priority (lower renders first)
     struct PriorityPath
     {
-        SoRefPtr<SoPath> path;
+        std::shared_ptr<SoPath> path;
         int priority;
-        SoIRRenderContext context;
 
-        PriorityPath(SoPath* p, int pr, const SoIRRenderContext& capturedContext)
-            : path(p)
+        PriorityPath(SoPath* p, int pr)
+            : path(p, [](SoPath* value) { value->unref(); })
             , priority(pr)
-            , context(capturedContext)
-        {}
+        {
+            p->ref();
+        }
     };
 
 public:
@@ -86,7 +87,9 @@ public:
     static SoPathList getDelayedPaths(SoState* state);
 
     static void processDelayedPathsWithPriority(SoState* state, SoGLRenderAction* action);
+#if FC_COIN_HAVE_RETAINED_RENDERER
     static void processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action);
+#endif
 
     SbBool matches([[maybe_unused]] const SoElement* element) const override
     {

@@ -29,11 +29,15 @@
 #include <QFontMetrics>
 #include <QPainter>
 
+#include "CoinRenderFeatures.h"
+
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
 #include <Inventor/elements/SoLazyElement.h>
@@ -207,7 +211,9 @@ SO_NODE_SOURCE(SoDatumLabel)
 void SoDatumLabel::initClass()
 {
     SO_NODE_INIT_CLASS(SoDatumLabel, SoShape, "Shape");
+#if FC_COIN_HAVE_RETAINED_RENDERER
     SoIRRenderAction::addMethod(SoDatumLabel::getClassTypeId(), SoDatumLabel::IRRender);
+#endif
 }
 
 // NOLINTNEXTLINE
@@ -1702,6 +1708,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
     state->pop();
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoDatumLabel::IRRender(SoAction* action, SoNode* node)
 {
     auto* label = static_cast<SoDatumLabel*>(node);
@@ -1746,6 +1753,7 @@ void SoDatumLabel::renderAction(SoIRRenderAction* action)
     m_Root->doAction(action);
     state->pop();
 }
+#endif
 
 bool SoDatumLabel::hasDatumText() const
 {
