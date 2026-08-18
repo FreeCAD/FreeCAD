@@ -115,7 +115,7 @@ class Fangling(PostProcessor):
                 "help": translate(
                     "CAM",
                     "Spindle speeds (in RPM) below this value abort posting - this "
-                    "usually indicates a missing spindle speed.",
+                    "usually indicates a missing spindle speed",
                 ),
             },
         ]
