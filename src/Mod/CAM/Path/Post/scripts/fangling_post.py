@@ -187,7 +187,7 @@ class Fangling(PostProcessor):
                 out += "(Pierce Delay)\n"
             out += "G4 P" + str(self.values["DWELL_TIME"]) + "\n"
             self.last_command = command.Name
-        if command.Name in ["G54", "G55", "G56", "G57" , "G58", "G59"]:
+        if command.Name in ["G54", "G55", "G56", "G57", "G58", "G59"]:
             # remove coordinate space info
             return ""
         if command.Name in ["G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"]:
