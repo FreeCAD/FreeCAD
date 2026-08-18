@@ -115,7 +115,7 @@ class Fablin(PostProcessor):
         # in the G-code file.
         #
         values["POSTAMBLE"] = """M5"""
-        
+
         return
 
     def convert_command_to_gcode(self, command: Path.Command):
