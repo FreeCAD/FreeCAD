@@ -59,14 +59,20 @@ public:
     void printPreview() override;
     //@}
 
-Q_SIGNALS:
-    void convertStart();
-
 private:
     enum class PathType : uint8_t;
     QString getDirPath();
     enum class ProcessType : uint8_t;
     void convert(ProcessType type, const QString& exportType = "", const QString& exportPath = "");
+    void convertDotStart();
+    void convertDotStarted();
+    void convertDotError();
+    void convertUnflattenStart();
+    void convertUnflattenStarted();
+    void convertUnflattenError();
+    void convertUnflattenFinished();
+    void convertDotWrite();
+    void convertDotFinished();
     void updateSvgItem();
     void disconnectSignals();
 
@@ -78,10 +84,13 @@ private:
     QSvgRenderer* renderer;
     QProcess* dotProc;
     QProcess* unflattenProc;
+    QByteArray graphCode;
+    QString path;
     PathType pathType = (PathType)0;
     ProcessType running = (ProcessType)0;
     uint8_t pendingMask = 0;
     QString pendingExportType, pendingExportPath;
+    QString runningExportType, runningExportPath;
 
     using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;

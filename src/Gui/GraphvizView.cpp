@@ -174,7 +174,12 @@ GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
 
     dotProc = new QProcess(this);
     unflattenProc = new QProcess(this);
-    connect(this, &GraphvizView::convertStart, this, [this] { convert(ProcessType::None); });
+    connect(dotProc, &QProcess::started, this, &GraphvizView::convertDotStarted);
+    connect(dotProc, &QProcess::errorOccurred, this, &GraphvizView::convertDotError);
+    connect(dotProc, &QProcess::finished, this, &GraphvizView::convertDotFinished);
+    connect(unflattenProc, &QProcess::started, this, &GraphvizView::convertUnflattenStarted);
+    connect(unflattenProc, &QProcess::errorOccurred, this, &GraphvizView::convertUnflattenError);
+    connect(unflattenProc, &QProcess::finished, this, &GraphvizView::convertUnflattenFinished);
 
     // NOLINTBEGIN
     //  Connect signal from document
@@ -188,6 +193,8 @@ GraphvizView::GraphvizView(App::Document& _doc, QWidget* parent)
 
 GraphvizView::~GraphvizView()
 {
+    unflattenProc->disconnect();
+    dotProc->disconnect();
     delete scene;
     delete view;
 }
@@ -238,7 +245,6 @@ void GraphvizView::convert(ProcessType type, const QString& exportType, const QS
     if (running != None) {
         return;
     }
-    QString runningExportType, runningExportPath;
     for (int t = (int)Export; running == None && t >= (int)View; t--) {
         if ((pendingMask & (1 << t)) != 0) {
             pendingMask ^= (1 << t);
@@ -253,6 +259,15 @@ void GraphvizView::convert(ProcessType type, const QString& exportType, const QS
         return;
     }
 
+    // Create graph in dot format
+    std::stringstream stream;
+    doc.exportGraphviz(stream);
+    graphCode = QByteArray::fromStdString(stream.str());
+
+    convertDotStart();
+}
+void GraphvizView::convertDotStart()
+{
     QStringList dotArgs;
     if (running == ProcessType::Export) {
         dotArgs << QStringLiteral("-T%1").arg(runningExportType);
@@ -265,63 +280,70 @@ void GraphvizView::convert(ProcessType type, const QString& exportType, const QS
             dotArgs << QLatin1String("-Gsplines=ortho") << QLatin1String("-Goutputorder=edgesfirst");
         }
     }
-    QString path;
-    bool pathChanged = false;
-    dotProc->setEnvironment(QProcess::systemEnvironment());
-    unflattenProc->setEnvironment(QProcess::systemEnvironment());
-    do {
+    if (path.isNull()) {
+        path = getDirPath();
         if (path.isNull()) {
-            path = getDirPath();
-            if (path.isNull()) {
-                disconnectSignals();
-                return;
-            }
+            disconnectSignals();
+            return;
         }
-        unflattenProc->start(joinPath(path, QStringLiteral("unflatten")), {QLatin1String("-c2 -l2")});
-        bool value = unflattenProc->waitForStarted();
-        Q_UNUSED(value);  // quieten code analyzer
-        dotProc->start(joinPath(path, QStringLiteral("dot")), dotArgs);
-        if (dotProc->waitForStarted()) {
-            break;
-        }
-        path = QString();
-        pathType = (PathType)((int)pathType + 1);
-    } while (true);
-    if (pathChanged) {
+    }
+    dotProc->setEnvironment(QProcess::systemEnvironment());
+    dotProc->start(joinPath(path, QStringLiteral("dot")), dotArgs);
+}
+void GraphvizView::convertDotStarted()
+{
+    if (pathType == PathType::Selection) {
         auto hGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "Paths");
         hGrp->SetASCII("Graphviz", (const char*)path.toUtf8());
     }
-
-    // Create graph in dot format
-    std::stringstream stream;
-    doc.exportGraphviz(stream);
-    auto graphCode = QByteArray::fromStdString(stream.str());
-
     auto depGrp = App::GetApplication().GetParameterGroupByPath(USER_PREF "DependencyGraph");
     if (depGrp->GetBool("Unflatten", true)) {
-        // Write data to unflatten process
-        unflattenProc->write(graphCode);
-        unflattenProc->closeWriteChannel();
-        // no error handling: unflatten is optional
-        unflattenProc->waitForFinished();
-        QByteArray unflattened = unflattenProc->readAll();
-        if (!unflattened.isEmpty()) {
-            graphCode = unflattened;
-        }
+        convertUnflattenStart();
     }
     else {
-        unflattenProc->closeWriteChannel();
-        unflattenProc->waitForFinished();
+        convertDotWrite();
     }
-
-    dotProc->write(graphCode);
-    dotProc->closeWriteChannel();
-    if (!dotProc->waitForFinished()) {
-        // If the worker fails for some reason, stop giving it more data later
-        disconnectSignals();
+}
+void GraphvizView::convertDotError()
+{
+    if (dotProc->error() == QProcess::ProcessError::FailedToStart) {
+        path = QString();
+        pathType = (PathType)((int)pathType + 1);
+        convertDotStart();
         return;
     }
-
+    disconnectSignals();
+}
+void GraphvizView::convertUnflattenStart()
+{
+    unflattenProc->setEnvironment(QProcess::systemEnvironment());
+    unflattenProc->start(joinPath(path, QStringLiteral("unflatten")), {QLatin1String("-c2 -l2")});
+}
+void GraphvizView::convertUnflattenStarted()
+{
+    unflattenProc->write(graphCode);
+    unflattenProc->closeWriteChannel();
+}
+void GraphvizView::convertUnflattenError()
+{
+    // no error handling: unflatten is optional
+    convertDotWrite();
+}
+void GraphvizView::convertUnflattenFinished()
+{
+    auto unflattened = unflattenProc->readAll();
+    if (!unflattened.isEmpty()) {
+        graphCode = unflattened;
+    }
+    convertDotWrite();
+}
+void GraphvizView::convertDotWrite()
+{
+    dotProc->write(graphCode);
+    dotProc->closeWriteChannel();
+}
+void GraphvizView::convertDotFinished()
+{
     auto data = dotProc->readAll();
     if (running == ProcessType::View) {
         if (!data.isEmpty() && renderer->load(data)) {
@@ -344,8 +366,7 @@ void GraphvizView::convert(ProcessType type, const QString& exportType, const QS
         disconnectSignals();
         running = ProcessType::None;
     }
-
-    Q_EMIT convertStart();
+    convert(ProcessType::None);
 }
 
 void GraphvizView::updateSvgItem()
