@@ -26,6 +26,7 @@
 #include <QFileInfo>
 #include <QImage>
 #include <QMenu>
+#include <QPainter>
 #include <QString>
 #include <QSvgRenderer>
 #include <Inventor/nodes/SoCoordinate3.h>
@@ -236,6 +237,22 @@ QImage ViewProviderImagePlane::loadRaster(const char* fileName) const
 {
     QImage img;
     img.load(QString::fromUtf8(fileName));
+
+    // Images may carry premultiplied alpha (e.g. PDF loaded through the
+    // Qt PDF image plugin), where transparent regions are alpha=0 / RGB=0.
+    // Using them as-is renders the page background black and darkens all
+    // colors.  Compositing onto white yields the expected appearance.
+    if (!img.isNull() && img.hasAlphaChannel()) {
+        QImage opaque(img.size(), QImage::Format_RGB32);
+        opaque.fill(Qt::white);
+        QPainter painter(&opaque);
+        painter.drawImage(0, 0, img);
+        painter.end();
+        opaque.setDotsPerMeterX(img.dotsPerMeterX());
+        opaque.setDotsPerMeterY(img.dotsPerMeterY());
+        return opaque;
+    }
+
     return img;
 }
 
