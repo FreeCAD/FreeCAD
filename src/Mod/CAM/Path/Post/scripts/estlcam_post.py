@@ -30,13 +30,6 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
-debug = False
-if debug:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
-
 Values = Dict[str, Any]
 
 POST_TYPE = "machine"
@@ -47,42 +40,10 @@ class Estlcam(PostProcessor):
 
     @classmethod
     def get_common_property_schema(cls):
-        """Return common properties with Estlcam defaults (uses base defaults)."""
-        """Override common properties with Estlcam-specific defaults."""
-        common_props = super().get_common_property_schema()
+        """Return common properties with Estlcam defaults (uses base defaults)"""
+        """Override common properties with Estlcam-specific defaults"""
 
-        for prop in common_props:
-            if prop["name"] == "file_extension":
-                prop["default"] = "cnc"
-            elif prop["name"] == "supports_tool_radius_compensation":
-                prop["default"] = False
-            elif prop["name"] == "preamble":
-                prop["default"] = "G90 G94\nG17"
-            elif prop["name"] == "postamble":
-                prop["default"] = "M05\nG17 G90\nG28\nM30\n"
-            elif prop["name"] == "pre_tool_change":
-                # Stop the spindle before every tool change.
-                prop["default"] = "M05"
-            elif prop["name"] == "output_tool_length_offset":
-                # Makera has no G43 support.
-                prop["default"] = False
-            elif prop["name"] == "translate_drill_cycles":
-                # Makera can't run canned cycles; expand them to G0/G1/G4 moves.
-                prop["default"] = True
-            elif prop["name"] == "drill_cycles_to_translate":
-                prop["default"] = "G81\nG82\nG83"
-            elif prop["name"] == "parameter_order":
-                # Makera doesn't want K on the XY plane (arcs need work),
-                # and has no H/D (tool length offset) or C axis support.
-                prop["default"] = "XYZABIJFSTQRL"
-            elif prop["name"] == "axis_precision":
-                prop["default"] = 5
-            elif prop["name"] == "feed_precision":
-                prop["default"] = 5
-            elif prop["name"] == "spindle_decimals":
-                prop["default"] = 0
-
-        return common_props
+        return super().get_common_property_schema()
 
     @classmethod
     def get_property_schema(cls):
@@ -93,7 +54,7 @@ class Estlcam(PostProcessor):
                 "runtime": False,
                 "label": translate("CAM", "Use Alternative Tool Change"),
                 "default": False,
-                "help": translate("CAM", "Use alternative tool change command."),
+                "help": translate("CAM", "Use alternative tool change command"),
             },
             {
                 "name": "min_feed_rate",
@@ -106,7 +67,7 @@ class Estlcam(PostProcessor):
                 "help": translate(
                     "CAM",
                     "Feed rates (in the current output units/min) below this value "
-                    "abort posting - this usually indicates a missing feed rate.",
+                    "abort posting - this usually indicates a missing feed rate",
                 ),
             },
             {
@@ -120,7 +81,7 @@ class Estlcam(PostProcessor):
                 "help": translate(
                     "CAM",
                     "Spindle speeds (in RPM) below this value abort posting - this "
-                    "usually indicates a missing spindle speed.",
+                    "usually indicates a missing spindle speed",
                 ),
             },
         ]
@@ -135,7 +96,7 @@ class Estlcam(PostProcessor):
         Path.Log.debug("Estlcam post processor initialized")
 
     def init_values(self, values: Values) -> None:
-        """Initialize values that are used throughout the postprocessor."""
+        """Initialize values that are used throughout the postprocessor"""
         #
         super().init_values(values)
 
@@ -166,8 +127,6 @@ class Estlcam(PostProcessor):
         values["POSTAMBLE"] = """M5"""
 
     def convert_command_to_gcode(self, command: Path.Command):
-        props = self._machine.postprocessor_properties
-
         if command.Name == "G21":
             return ""
         if command.Name in ("M7", "M07"):
