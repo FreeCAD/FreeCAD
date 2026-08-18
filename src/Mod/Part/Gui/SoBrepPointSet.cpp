@@ -27,7 +27,10 @@
 #include <limits>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#include <Gui/CoinRenderFeatures.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
@@ -46,7 +49,9 @@
 
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
-#include "SoBrepSelectionIR.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include "SoBrepSelectionIR.h"
+#endif
 
 
 using namespace PartGui;
@@ -183,6 +188,7 @@ SoBrepPointSet::~SoBrepPointSet()
     }
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoBrepPointSet::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
@@ -259,6 +265,7 @@ void SoBrepPointSet::IRRender(SoIRRenderAction* action)
         containsPoint
     );
 }
+#endif
 
 void SoBrepPointSet::GLRender(SoGLRenderAction* action)
 {

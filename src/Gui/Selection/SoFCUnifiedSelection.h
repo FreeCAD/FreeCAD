@@ -25,6 +25,7 @@
 
 #include <cstddef>
 #include <list>
+#include <memory>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -129,6 +130,7 @@ private:
 
     struct PickedInfo
     {
+        std::shared_ptr<SoPickedPoint> owned;
         const SoPickedPoint* pp {nullptr};
         ViewProviderDocumentObject* vpd {nullptr};
         std::string element;

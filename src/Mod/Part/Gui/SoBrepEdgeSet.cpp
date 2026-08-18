@@ -29,7 +29,10 @@
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#include <Gui/CoinRenderFeatures.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
@@ -47,7 +50,9 @@
 #include <Gui/Selection/Selection.h>
 #include <Base/Color.h>
 #include "SoBrepEdgeSet.h"
-#include "SoBrepSelectionIR.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include "SoBrepSelectionIR.h"
+#endif
 #include "ViewProviderExt.h"
 
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -120,6 +125,7 @@ bool appendEdgeSections(
     return valid;
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 bool commandHasElement(const SoRenderCommand& cmd, int elementIndex)
 {
     for (const auto& range : cmd.pick.elementRanges) {
@@ -129,6 +135,7 @@ bool commandHasElement(const SoRenderCommand& cmd, int elementIndex)
     }
     return false;
 }
+#endif
 
 }  // namespace
 
@@ -360,6 +367,7 @@ SoBrepEdgeSet::~SoBrepEdgeSet()
     }
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoBrepEdgeSet::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
@@ -438,6 +446,7 @@ void SoBrepEdgeSet::IRRender(SoIRRenderAction* action)
         }
     }
 }
+#endif
 
 void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
 {

@@ -59,6 +59,7 @@
 
 #include "Namespace.h"
 #include "RenderPipeline.h"
+#include "CoinRenderFeatures.h"
 #include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
@@ -577,6 +578,7 @@ public:
     void setRenderCache(int);
     /** Return the pipeline selected for this viewer. */
     RenderPipeline getRenderPipeline() const;
+    bool isRenderPipelineAvailable(RenderPipeline mode) const;
     void setRenderPipeline(RenderPipeline mode);
 
     //! Update colors of axis in corner to match preferences
@@ -663,7 +665,9 @@ private:
     void renderLegacyMainScene(SoGLRenderAction* glra);
     void renderLegacyAfterMain(SoGLRenderAction* glra);
     void renderLegacyForeground(SoGLRenderAction* glra, RenderIntent intent);
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void renderDelayedAnnotations(SoIRRenderAction* action);
+#endif
     RenderFrameResult renderFrame(const RenderFrameOptions& options);
     RenderFrameResult renderFrameToFramebuffer(
         QOpenGLFramebufferObject& framebuffer,
@@ -673,7 +677,11 @@ private:
     void destroyNaviCube();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
-    bool acquireRendererPickResults(SoHandleEventAction& action, SoPickedPointList& results) const;
+    bool acquireRendererPickResults(
+        SoHandleEventAction& action,
+        SoPickedPointList& results,
+        bool singlePick
+    ) const;
 
 private:
     NaviCube* naviCube;
@@ -689,7 +697,7 @@ private:
     SoSeparator* decorationroot;
     SoSeparator* combinedForegroundRoot;
     SoSwitch* decorationSwitch;
-    SoRenderLayerGroup* axisCrossOverlay {nullptr};
+    SoSeparator* axisCrossOverlay {nullptr};
     std::unique_ptr<OverlayAxisCrossState> axisCrossState;
 
     SoDirectionalLight* backlight;

@@ -24,26 +24,20 @@
 #include "CoinRenderFeatures.h"
 
 class SoRenderManager;
+class SoIRRenderAction;
+class SoPath;
 class SoState;
 
 namespace Gui::CoinRenderSupport
 {
-
-constexpr int rendererApiVersion()
-{
-    return FC_COIN_RENDERER_API_VERSION;
-}
-
-constexpr bool hasDrawListStack()
-{
-    return FC_COIN_HAVE_DRAWLIST_STACK;
-}
 
 void invalidateScene(SoRenderManager* manager);
 void invalidateForeground(SoRenderManager* manager);
 void invalidateSharedGLState(SoRenderManager* manager);
 void releaseRenderBackendResources(SoRenderManager* manager);
 void discardRenderBackendResources(SoRenderManager* manager);
+void requestRetainedDepthClear(SoIRRenderAction* action);
+void traverseAdditionalRetainedPath(SoIRRenderAction* action, SoPath* path);
 
 void setDevicePixelRatio(SoState* state, float ratio);
 float devicePixelRatio(SoState* state);

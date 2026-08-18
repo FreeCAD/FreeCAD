@@ -31,6 +31,7 @@
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/nodes/SoShape.h>
 #include <Mod/Mesh/MeshGlobal.h>
+#include <Gui/CoinRenderFeatures.h>
 
 class SoCoordinate3;
 class SoIndexedLineSet;
@@ -83,8 +84,10 @@ private:
     /// Synchronize the private retained graph from the active coordinate state.
     bool syncRenderGeometry(SoState* state);
     void updateLineIndices(int32_t vertexCount);
+#if FC_COIN_HAVE_RETAINED_RENDERER
     static void IRRender(SoAction* action, SoNode* node);
     void renderAction(::SoIRRenderAction* action);
+#endif
 
     int32_t cachedVertexCount {-1};
     std::vector<int32_t> lineIndices;

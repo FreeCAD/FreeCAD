@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
+#include "../CoinRenderFeatures.h"
 
 #ifdef FC_OS_WIN32
 # include <Windows.h>
@@ -44,7 +45,9 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/actions/SoActions.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoDepthBufferElement.h>
 
 #include "ViewParams.h"
@@ -191,6 +194,7 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
     state->pop();
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoFCBoundingBox::IRRender(SoIRRenderAction* action)
 {
     if (!action) {
@@ -229,6 +233,7 @@ void SoFCBoundingBox::IRRender(SoIRRenderAction* action)
 
     state->pop();
 }
+#endif
 
 void SoFCBoundingBox::prepareGeometry(SoState* state)
 {

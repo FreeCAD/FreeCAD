@@ -45,6 +45,8 @@
 
 #include <cassert>
 
+#include "../CoinRenderFeatures.h"
+
 #if HAVE_CONFIG_H
 # include <config.h>
 # ifdef  HAVE_GL_GL_H
@@ -623,7 +625,9 @@ QuarterWidget::setSceneGraph(SoNode * node)
   SoCamera * camera = nullptr;
   SoSeparator * superscene = nullptr;
   bool viewall = false;
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
   bool cameraInSceneGraph = false;
+#endif
 
   if (node) {
     PRIVATE(this)->scene = node;
@@ -638,7 +642,9 @@ QuarterWidget::setSceneGraph(SoNode * node)
       superscene->addChild(camera);
       viewall = true;
     }
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
     cameraInSceneGraph = camera != nullptr;
+#endif
 
     superscene->addChild(node);
   }
@@ -647,7 +653,9 @@ QuarterWidget::setSceneGraph(SoNode * node)
   PRIVATE(this)->sorendermanager->setCamera(camera);
   PRIVATE(this)->soeventmanager->setSceneGraph(superscene);
   PRIVATE(this)->sorendermanager->setSceneGraph(superscene);
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
   PRIVATE(this)->sorendermanager->setCameraInSceneGraph(cameraInSceneGraph);
+#endif
 
   if (viewall) { this->viewAll(); }
   if (superscene) { superscene->touch(); }
@@ -676,11 +684,15 @@ QuarterWidget::setSoRenderManager(SoRenderManager * manager)
   SoNode * scene = nullptr;
   SoCamera * camera = nullptr;
   SbViewportRegion vp;
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
   SbBool cameraInSceneGraph = FALSE;
+#endif
   if (PRIVATE(this)->sorendermanager && manager) {
     scene = PRIVATE(this)->sorendermanager->getSceneGraph();
     camera = PRIVATE(this)->sorendermanager->getCamera();
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
     cameraInSceneGraph = PRIVATE(this)->sorendermanager->isCameraInSceneGraph();
+#endif
     vp = PRIVATE(this)->sorendermanager->getViewportRegion(); // clazy:exclude=rule-of-two-soft
     carrydata = true;
   }
@@ -698,14 +710,18 @@ QuarterWidget::setSoRenderManager(SoRenderManager * manager)
   }
   PRIVATE(this)->sorendermanager = manager;
   if (PRIVATE(this)->sorendermanager) {
+#if FC_COIN_HAVE_DEVICE_PIXEL_RATIO
     PRIVATE(this)->sorendermanager->setDevicePixelRatio(
       static_cast<float>(PRIVATE(this)->device_pixel_ratio)
     );
+#endif
   }
   if (carrydata) {
     PRIVATE(this)->sorendermanager->setSceneGraph(scene);
     PRIVATE(this)->sorendermanager->setCamera(camera);
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
     PRIVATE(this)->sorendermanager->setCameraInSceneGraph(cameraInSceneGraph);
+#endif
     PRIVATE(this)->sorendermanager->setViewportRegion(vp);
   }
 
@@ -828,9 +844,11 @@ QuarterWidget::updateDevicePixelRatio() {
     if(PRIVATE(this)->device_pixel_ratio != dev_pix_ratio) {
         PRIVATE(this)->device_pixel_ratio = dev_pix_ratio;
         if (PRIVATE(this)->sorendermanager) {
+#if FC_COIN_HAVE_DEVICE_PIXEL_RATIO
             PRIVATE(this)->sorendermanager->setDevicePixelRatio(
                 static_cast<float>(dev_pix_ratio)
             );
+#endif
         }
         Q_EMIT devicePixelRatioChanged(dev_pix_ratio);
         return true;

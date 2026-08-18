@@ -52,7 +52,10 @@
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#include "CoinRenderFeatures.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
@@ -60,6 +63,8 @@
 #include <Inventor/annex/Profiler/SoProfiler.h>
 #include <Inventor/annex/Profiler/elements/SoProfilerElement.h>
 #include <Inventor/details/SoDetail.h>
+#include <Inventor/elements/SoLightModelElement.h>
+#include <Inventor/elements/SoOverrideElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/events/SoEvent.h>
@@ -90,7 +95,9 @@
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 #include <Inventor/nodes/SoVertexProperty.h>
-#include <Inventor/nodes/SoRenderLayerGroup.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/nodes/SoRenderLayerGroup.h>
+#endif
 #include <QBitmap>
 #include <QElapsedTimer>
 #include <QEventLoop>
@@ -181,6 +188,15 @@ bool renderIntentIncludesDecorations(View3DInventorViewer::RenderIntent intent)
     return intent == View3DInventorViewer::RenderIntent::LiveInteractive;
 }
 
+enum class RenderFallbackReason
+{
+    None,
+    PipelineUnavailable,
+    TargetUnsupported,
+    BackendInitializationFailed
+};
+
+#if FC_COIN_HAVE_RETAINED_RENDERER
 SoRenderManager::RenderPipeline toCoinRenderPipeline(RenderPipeline mode)
 {
     switch (mode) {
@@ -191,7 +207,6 @@ SoRenderManager::RenderPipeline toCoinRenderPipeline(RenderPipeline mode)
             return SoRenderManager::RenderPipeline::LEGACY_GL;
     }
 }
-
 RenderPipeline fromCoinRenderPipeline(SoRenderManager::RenderPipeline mode)
 {
     switch (mode) {
@@ -203,13 +218,23 @@ RenderPipeline fromCoinRenderPipeline(SoRenderManager::RenderPipeline mode)
     }
 }
 
-enum class RenderFallbackReason
+RenderFallbackReason fromCoinFallbackReason(SoRenderManager::RenderResult::FallbackReason reason)
 {
-    None,
-    PipelineUnavailable,
-    TargetUnsupported,
-    BackendInitializationFailed
-};
+    using CoinReason = SoRenderManager::RenderResult::FallbackReason;
+    switch (reason) {
+        case CoinReason::MANAGER_FEATURE_UNSUPPORTED:
+        case CoinReason::TRAVERSAL_UNSUPPORTED:
+            return RenderFallbackReason::PipelineUnavailable;
+        case CoinReason::CONTEXT_UNSUPPORTED:
+            return RenderFallbackReason::TargetUnsupported;
+        case CoinReason::BACKEND_INITIALIZATION_FAILED:
+            return RenderFallbackReason::BackendInitializationFailed;
+        case CoinReason::NONE:
+        default:
+            return RenderFallbackReason::None;
+    }
+}
+#endif
 
 }  // namespace
 
@@ -259,7 +284,28 @@ View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrame(
         return result;
     }
 
-    result.usedPipeline = fromCoinRenderPipeline(renderManager->getRenderPipeline());
+#if !FC_COIN_HAVE_RENDER_MANAGER_STAGES
+    if (selectedPipeline != RenderPipeline::LegacyGL) {
+        result.fallback = RenderFallbackReason::PipelineUnavailable;
+        return result;
+    }
+    auto* glra = renderManager->getGLRenderAction();
+    if (!glra) {
+        result.fallback = RenderFallbackReason::BackendInitializationFailed;
+        return result;
+    }
+    const SbViewportRegion previousViewport = renderManager->getViewportRegion();
+    renderManager->setViewportRegion(options.viewport);
+    auto restoreViewport = qScopeGuard([renderManager, previousViewport]() {
+        renderManager->setViewportRegion(previousViewport);
+    });
+    ScopedRenderIntent scopedIntent(*this, options.intent);
+    renderLegacyFrame(options, glra);
+    result.rendered = true;
+    return result;
+#else
+
+    result.usedPipeline = selectedPipeline;
 
     const SbVec2s size = options.viewport.getViewportSizePixels();
     if (size[0] <= 0 || size[1] <= 0) {
@@ -322,7 +368,9 @@ View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrame(
         }
     });
 
+# if FC_COIN_HAVE_RETAINED_RENDERER
     renderManager->setRenderPipeline(toCoinRenderPipeline(selectedPipeline));
+# endif
 
     const SbVec2s origin = options.viewport.getViewportOriginPixels();
     glViewport(origin[0], origin[1], size[0], size[1]);
@@ -338,15 +386,16 @@ View3DInventorViewer::RenderFrameResult View3DInventorViewer::renderFrame(
 
     inherited::actualRedraw();
 
-    result.usedPipeline = fromCoinRenderPipeline(renderManager->getRenderPipeline());
+# if FC_COIN_HAVE_RETAINED_RENDERER
+    const auto& coinResult = renderManager->getLastRenderResult();
+    result.usedPipeline = fromCoinRenderPipeline(coinResult.usedPipeline);
+    result.rendered = coinResult.rendered;
+    result.fallback = fromCoinFallbackReason(coinResult.fallbackReason);
+# else
     result.rendered = true;
-    if (result.usedPipeline != selectedPipeline) {
-        result.fallback = result.usedPipeline == RenderPipeline::LegacyGL
-                && renderManager->getRenderBackend() == nullptr
-            ? RenderFallbackReason::BackendInitializationFailed
-            : RenderFallbackReason::PipelineUnavailable;
-    }
+# endif
     return result;
+#endif
 }
 
 namespace
@@ -446,30 +495,6 @@ void resetMainLazyGLState(const View3DInventorViewer* viewer)
     CoinRenderSupport::invalidateSharedGLState(viewer ? viewer->getSoRenderManager() : nullptr);
 }
 
-SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
-{
-    auto* root = new SoSeparator;
-    root->ref();
-
-    auto* camera = new SoOrthographicCamera;
-    camera->aspectRatio.setValue(
-        static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight)
-    );
-    camera->height.setValue(static_cast<float>(viewportHeight));
-    root->addChild(camera);
-
-    auto* depth = new SoDepthBuffer;
-    depth->test.setValue(false);
-    depth->write.setValue(false);
-    depth->function.setValue(SoDepthBuffer::ALWAYS);
-    root->addChild(depth);
-
-    auto* lightModel = new SoLightModel;
-    lightModel->model.setValue(SoLightModel::BASE_COLOR);
-    root->addChild(lightModel);
-
-    return root;
-}
 void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const View3DInventorViewer* viewer)
 {
     SoGLRenderAction action(SbViewportRegion(viewportWidth, viewportHeight));
@@ -1308,12 +1333,31 @@ void View3DInventorViewer::init()
     }
     auto& axisCross = *this->axisCrossState;
     axisCross.ensureCreated();
-    this->axisCrossOverlay = new SoRenderLayerGroup;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    auto* axisCrossLayer = new SoRenderLayerGroup;
+    this->axisCrossOverlay = axisCrossLayer;
     this->axisCrossOverlay->ref();
-    this->axisCrossOverlay->layer = SoRenderLayerGroup::FOREGROUND;
-    this->axisCrossOverlay->viewportOverride = TRUE;
+    axisCrossLayer->layer = SoRenderLayerGroup::FOREGROUND;
+    axisCrossLayer->viewportOverride = TRUE;
+#else
+    this->axisCrossOverlay = new SoSeparator;
+    this->axisCrossOverlay->ref();
+#endif
     this->axisCrossOverlay->addChild(axisCross.sceneRoot);
+#if FC_COIN_HAVE_RETAINED_RENDERER
     this->decorationroot->addChild(this->axisCrossOverlay);
+#elif FC_COIN_HAVE_RENDER_MANAGER_STAGES
+    auto* axisCrossTransport = new SoCallback;
+    axisCrossTransport->setCallback(
+        [](void* userdata, SoAction* action) {
+            if (userdata && action && action->isOfType(SoGLRenderAction::getClassTypeId())) {
+                static_cast<View3DInventorViewer*>(userdata)->drawAxisCross();
+            }
+        },
+        this
+    );
+    this->decorationroot->addChild(axisCrossTransport);
+#endif
     axisCross.visibilitySwitch->whichChild = this->axiscrossEnabled ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 
     rubberbandOverlayRenderer = std::unique_ptr<RubberbandOverlay>(new RubberbandOverlay);
@@ -1505,9 +1549,6 @@ View3DInventorViewer::~View3DInventorViewer()
 {
     rubberbandOverlayRenderer.reset();
 
-    // to prevent following OpenGL error message: "Texture is not valid in the current context.
-    // Texture has not been destroyed"
-    aboutToDestroyGLContext();
     destroyNaviCube();
 
     // It can happen that a document has several MDI views and when the about to be
@@ -1528,11 +1569,13 @@ View3DInventorViewer::~View3DInventorViewer()
         naviCubeDecorationRoot = nullptr;
     }
 
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
     if (auto* rm = this->getSoRenderManager()) {
         rm->removeAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
         rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_BACKGROUND, nullptr);
         rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, nullptr);
     }
+#endif
     this->backgroundroot->unref();
     this->backgroundroot = nullptr;
     this->combinedForegroundRoot->unref();
@@ -1720,7 +1763,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges& reason)
         selectionAction.apply(pcViewProviderRoot);
     }
     if (auto* rm = this->getSoRenderManager()) {
-        rm->invalidateScene();
+        CoinRenderSupport::invalidateScene(rm);
     }
 }
 /// @endcond
@@ -2285,13 +2328,21 @@ void View3DInventorViewer::initializeRenderManager()
         return;
     }
 
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
     rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_BACKGROUND, backgroundroot);
     rm->setRenderLayerRoot(SoRenderManager::RENDER_LAYER_FOREGROUND, combinedForegroundRoot);
     rm->addAfterMainSceneCallback(&View3DInventorViewer::afterMainSceneCB, this);
     rm->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
     configuredPipeline = parseRenderPipeline(ViewParams::instance()->getRenderPipeline())
                              .value_or(RenderPipeline::LegacyGL);
+# if FC_COIN_HAVE_RETAINED_RENDERER
     rm->setRenderPipeline(toCoinRenderPipeline(configuredPipeline));
+# else
+    configuredPipeline = RenderPipeline::LegacyGL;
+# endif
+#else
+    configuredPipeline = RenderPipeline::LegacyGL;
+#endif
 }
 
 void View3DInventorViewer::updateDecorationSwitch(RenderIntent intent)
@@ -2308,9 +2359,11 @@ void View3DInventorViewer::updateDecorationSwitch(RenderIntent intent)
 
 void View3DInventorViewer::syncLightingMode()
 {
+#if FC_COIN_HAVE_RENDER_MANAGER_STAGES
     if (auto* renderManager = this->getSoRenderManager()) {
         renderManager->setLightingMode(shading ? SoRenderManager::LIT : SoRenderManager::UNLIT);
     }
+#endif
 }
 
 RenderPipeline View3DInventorViewer::getRenderPipeline() const
@@ -2318,8 +2371,25 @@ RenderPipeline View3DInventorViewer::getRenderPipeline() const
     return configuredPipeline;
 }
 
+bool View3DInventorViewer::isRenderPipelineAvailable(RenderPipeline mode) const
+{
+    if (mode == RenderPipeline::LegacyGL) {
+        return true;
+    }
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    auto* manager = getSoRenderManager();
+    return manager && manager->isRenderPipelineAvailable(SoRenderManager::RenderPipeline::DRAW_LIST);
+#else
+    return false;
+#endif
+}
+
 void View3DInventorViewer::setRenderPipeline(RenderPipeline mode)
 {
+    if (!isRenderPipelineAvailable(mode)) {
+        throw Base::ValueError("DrawList rendering is unavailable with this Coin build");
+    }
+#if FC_COIN_HAVE_RETAINED_RENDERER
     configuredPipeline = mode;
 
     auto* rm = this->getSoRenderManager();
@@ -2328,6 +2398,9 @@ void View3DInventorViewer::setRenderPipeline(RenderPipeline mode)
     }
 
     rm->setRenderPipeline(toCoinRenderPipeline(mode));
+#else
+    configuredPipeline = RenderPipeline::LegacyGL;
+#endif
 }
 void View3DInventorViewer::setRenderCache(int mode)
 {
@@ -3183,7 +3256,7 @@ void View3DInventorViewer::renderPresentationItems()
 
     auto invalidateSharedGLState = qScopeGuard([this]() {
         if (auto* manager = this->getSoRenderManager()) {
-            manager->invalidateSharedGLState();
+            CoinRenderSupport::invalidateSharedGLState(manager);
         }
     });
 
@@ -3272,7 +3345,7 @@ void View3DInventorViewer::invalidateMainRenderActionState()
         // Coin tracks this transition for every action sharing the cache
         // context, including temporary image/FBO actions.
         // Full backend/owner tracking remains a separate Coin follow-up.
-        manager->invalidateSharedGLState();
+        CoinRenderSupport::invalidateSharedGLState(manager);
     }
 }
 
@@ -3538,12 +3611,35 @@ void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
 
 bool View3DInventorViewer::acquireRendererPickResults(
     SoHandleEventAction& action,
-    SoPickedPointList& results
+    SoPickedPointList& results,
+    bool singlePick
 ) const
 {
+#if FC_COIN_HAVE_RETAINED_PICKING
+    if (configuredPipeline != RenderPipeline::DrawList || !action.getEvent()) {
+        return false;
+    }
+    auto* manager = getSoRenderManager();
+    if (!manager) {
+        return false;
+    }
+    const SbVec2s point = action.getEvent()->getPosition();
+    const int radius = std::max(0, static_cast<int>(std::lround(action.getPickRadius())));
+    if (singlePick) {
+        SoPickedPoint* hit = nullptr;
+        if (!manager->pickClosest(point[0], point[1], radius, hit) || !hit) {
+            return true;
+        }
+        results.append(hit);
+        return true;
+    }
+    return manager->pickDepthStack(point[0], point[1], radius, 8, results, 32);
+#else
     (void)action;
     (void)results;
+    (void)singlePick;
     return false;
+#endif
 }
 
 void View3DInventorViewer::renderLegacyBackground(const QColor& backgroundColor, SoGLRenderAction* glra)
@@ -3571,8 +3667,12 @@ void View3DInventorViewer::renderLegacyForeground(SoGLRenderAction* glra, Render
 {
     ZoneScopedN("Foreground");
     glra->apply(this->foregroundroot);
-    if (shouldRenderDecorations(intent)) {
+    if (renderIntentIncludesDecorations(intent)) {
         glra->apply(this->decorationroot);
+        if (this->axiscrossEnabled) {
+            updateAxisCrossGeometry();
+            renderAxisCrossLegacy();
+        }
     }
 }
 
@@ -3602,6 +3702,7 @@ void View3DInventorViewer::renderLegacyFrame(const RenderFrameOptions& options, 
     renderLegacyForeground(glra, options.intent);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void View3DInventorViewer::renderDelayedAnnotations(SoIRRenderAction* action)
 {
     SoState* state = action->getState();
@@ -3613,9 +3714,10 @@ void View3DInventorViewer::renderDelayedAnnotations(SoIRRenderAction* action)
     // switchToPathTraversal() appends the retained annotation commands without
     // resetting the draw list, so they remain in Coin's pre-foreground
     // checkpoint and survive foreground-only rebuilds.
-    action->requestDepthClear();
+    CoinRenderSupport::requestRetainedDepthClear(action);
     Gui::SoDelayedAnnotationsElement::processDelayedPathsWithPriority(state, action);
 }
+#endif
 
 void View3DInventorViewer::afterMainSceneCB(void* userdata, SoRenderManager* manager, SoAction* action)
 {
@@ -3628,9 +3730,11 @@ void View3DInventorViewer::afterMainSceneCB(void* userdata, SoRenderManager* man
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         viewer->renderDelayedAnnotations(static_cast<SoGLRenderAction*>(action));
     }
+#if FC_COIN_HAVE_RETAINED_RENDERER
     else if (action->isOfType(SoIRRenderAction::getClassTypeId())) {
         viewer->renderDelayedAnnotations(static_cast<SoIRRenderAction*>(action));
     }
+#endif
 }
 
 void View3DInventorViewer::renderScene()
@@ -5319,7 +5423,7 @@ void View3DInventorViewer::setFeedbackVisibility(bool enable)
     axisCross.visibilitySwitch->whichChild = enable ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 
     if (auto* renderManager = this->getSoRenderManager()) {
-        renderManager->invalidateForeground();
+        CoinRenderSupport::invalidateForeground(renderManager);
     }
 
     if (this->isViewing()) {
@@ -5451,7 +5555,7 @@ void View3DInventorViewer::updateColors()
     naviCube->updateColors();
 
     if (auto* renderManager = this->getSoRenderManager()) {
-        renderManager->invalidateForeground();
+        CoinRenderSupport::invalidateForeground(renderManager);
     }
 }
 
@@ -5549,12 +5653,6 @@ bool View3DInventorViewer::updateAxisCrossGeometry()
     const SbVec3f yLetterProjected = projectLetterAnchor(SbVec3f(0, 1, 0));
     const SbVec3f zLetterProjected = projectLetterAnchor(SbVec3f(0, 0, 1));
 
-    auto& overlay = overlayAxisCrossState();
-    overlay.ensureCreated();
-    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup || !overlay.lettersRoot
-        || !overlay.lettersCamera) {
-        return false;
-    }
     SbRotation inv;
     if (cam) {
         inv = cam->orientation.getValue().inverse();
@@ -5659,6 +5757,7 @@ bool View3DInventorViewer::updateAxisCrossGeometry()
         overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
     }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
     if (!overlay.inputsValid || viewportChanged || sizeChanged) {
         const SbVec4f rect(
             static_cast<float>(origin[0]),
@@ -5666,12 +5765,14 @@ bool View3DInventorViewer::updateAxisCrossGeometry()
             static_cast<float>(pixelarea),
             static_cast<float>(pixelarea)
         );
-        const SbVec4f& current = this->axisCrossOverlay->viewportPixels.getValue();
+        auto* axisCrossLayer = static_cast<SoRenderLayerGroup*>(this->axisCrossOverlay);
+        const SbVec4f& current = axisCrossLayer->viewportPixels.getValue();
         if (current[0] != rect[0] || current[1] != rect[1] || current[2] != rect[2]
             || current[3] != rect[3]) {
-            this->axisCrossOverlay->viewportPixels = rect;
+            axisCrossLayer->viewportPixels = rect;
         }
     }
+#endif
     if (!overlay.inputsValid) {
         overlay.visibilitySwitch->whichChild = this->axiscrossEnabled ? SO_SWITCH_ALL
                                                                       : SO_SWITCH_NONE;
@@ -5698,7 +5799,10 @@ bool View3DInventorViewer::updateAxisCrossGeometry()
 
 void View3DInventorViewer::renderAxisCrossLegacy()
 {
-    auto& overlay = overlayAxisCrossState();
+    if (!this->axisCrossState) {
+        return;
+    }
+    auto& overlay = *this->axisCrossState;
     SoGLRenderAction action(overlay.viewport);
     setOverlayCacheContext(action, this);
     action.setTransparencyType(SoGLRenderAction::BLEND);
@@ -5708,7 +5812,8 @@ void View3DInventorViewer::renderAxisCrossLegacy()
 
 void View3DInventorViewer::drawAxisCross()
 {
-    if (updateAxisCrossGeometry()) {
+    updateAxisCrossGeometry();
+    if (this->axisCrossState) {
         renderAxisCrossLegacy();
     }
 }
@@ -5718,7 +5823,8 @@ void View3DInventorViewer::drawSingleBackground(const QColor& col)
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     const SbVec2s size = vp.getViewportSizePixels();
     if (size[0] > 0 && size[1] > 0) {
-        renderOverlaySolidColor(col, size[0], size[1], this);
+        glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), float(col.alphaF()));
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 }
 

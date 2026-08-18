@@ -33,6 +33,7 @@
 #include <Inventor/nodes/SoShape.h>
 #include <Inventor/elements/SoInt32Element.h>
 #include <FCGlobal.h>
+#include "../CoinRenderFeatures.h"
 
 class SbBox3f;
 class SoIRRenderAction;
@@ -73,7 +74,9 @@ public:
 protected:
     ~SoFCBoundingBox() override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
     void IRRender(SoIRRenderAction* action) override;
+#endif
     void generatePrimitives(SoAction* action) override;
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 

@@ -22,6 +22,7 @@
  ******************************************************************************/
 
 #include <FCConfig.h>
+#include "CoinRenderFeatures.h"
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
@@ -43,7 +44,9 @@
 #include <QStringList>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
-#include <Inventor/actions/SoIRRenderAction.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/C/basic.h>
@@ -125,7 +128,9 @@ SO_NODE_SOURCE(SoStringLabel)
 void SoStringLabel::initClass()
 {
     SO_NODE_INIT_CLASS(SoStringLabel, SoNode, "Node");
+#if FC_COIN_HAVE_RETAINED_RENDERER
     SoIRRenderAction::addMethod(SoStringLabel::getClassTypeId(), SoStringLabel::IRRender);
+#endif
 }
 
 SoStringLabel::SoStringLabel()
@@ -563,8 +568,10 @@ void SoFrameLabel::GLRender(SoGLRenderAction* action)
     inherited::GLRender(action);
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
 void SoFrameLabel::IRRender(SoIRRenderAction* action)
 {
     prepareImage(action ? action->getState() : nullptr);
     inherited::IRRender(action);
 }
+#endif

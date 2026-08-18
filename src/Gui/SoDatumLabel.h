@@ -38,6 +38,7 @@
 #include <Inventor/nodes/SoShape.h>
 
 #include <FCGlobal.h>
+#include "CoinRenderFeatures.h"
 
 class SoBaseColor;
 class SoDepthBuffer;
@@ -114,8 +115,10 @@ protected:
     void computeBBox(SoAction*, SbBox3f& box, SbVec3f& center) override;
     void generatePrimitives(SoAction* action) override;
     void notify(SoNotList* l) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
     static void IRRender(SoAction* action, SoNode* node);
     void renderAction(::SoIRRenderAction* action);
+#endif
 
 private:
     struct DistanceGeometry

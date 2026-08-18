@@ -68,6 +68,10 @@ class _View3DInventorViewer:
         """Set the pick radius used for hit-testing."""
         ...
 
+    def getAvailableRenderPipelines(self) -> list[RenderPipeline]:
+        """Return rendering pipelines supported by the active Coin build."""
+        ...
+
     def setupEditingRoot(self, node: object | None = None, matrix: Matrix | None = None, /) -> None:
         """Install one temporary editing root node."""
         ...

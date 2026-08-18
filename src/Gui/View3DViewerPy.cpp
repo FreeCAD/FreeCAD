@@ -188,6 +188,12 @@ void View3DInventorViewerPy::init_type()
         &View3DInventorViewerPy::getRenderPipeline,
         "getRenderPipeline() -> str: return the selected Coin rendering pipeline for this viewer."
     );
+    add_varargs_method(
+        "getAvailableRenderPipelines",
+        &View3DInventorViewerPy::getAvailableRenderPipelines,
+        "getAvailableRenderPipelines() -> list[str]: return rendering pipelines supported by "
+        "the active Coin build."
+    );
 
     add_varargs_method(
         "setEnabledNaviCube",
@@ -446,6 +452,20 @@ Py::Object View3DInventorViewerPy::getRenderPipeline(const Py::Tuple& args)
     }
 
     return Py::String(std::string(renderPipelineName(_viewer->getRenderPipeline())));
+}
+
+Py::Object View3DInventorViewerPy::getAvailableRenderPipelines(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    Py::List pipelines;
+    pipelines.append(Py::String("LegacyGL"));
+    if (_viewer->isRenderPipelineAvailable(RenderPipeline::DrawList)) {
+        pipelines.append(Py::String("DrawList"));
+    }
+    return pipelines;
 }
 
 Py::Object View3DInventorViewerPy::getSoEventManager(const Py::Tuple& args)
