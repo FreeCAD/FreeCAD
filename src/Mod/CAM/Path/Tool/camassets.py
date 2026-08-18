@@ -22,11 +22,11 @@
 # ***************************************************************************
 import json
 import pathlib
-from typing import Optional, Union, Sequence
+from typing import Optional
 import Path
 from Path import Preferences
 from Path.Preferences import addToolPreferenceObserver
-from .assets import AssetManager, AssetUri, Asset, FileStore
+from .assets import AssetManager, AssetUri, FileStore
 from .toolbit.migration import ParameterAccessor, migrate_parameters
 
 if False:
@@ -36,7 +36,9 @@ else:
     Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
-def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_library_assets_initialized(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the given store is initialized with built-in library
     if it is currently empty.
@@ -45,10 +47,10 @@ def ensure_library_assets_initialized(asset_manager: AssetManager, store_name: s
 
     if asset_manager.is_empty("toolbitlibrary", store=store_name):
         for path in builtin_library_path.glob("*.fctl"):
-            asset_manager.add_file("toolbitlibrary", path)
+            asset_manager.add_file("toolbitlibrary", path, store=store_name)
 
 
-def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: Optional[str] = None):
     from .shape import ToolBitShape
 
     toolbit_uris = asset_manager.list_assets(
@@ -95,7 +97,9 @@ def ensure_toolbits_have_shape_type(asset_manager: AssetManager, store_name: str
             asset_manager.add_raw("toolbit", uri.asset_id, data, store=store_name)
 
 
-def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbit_assets_initialized(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the given store is initialized with built-in bits
     if it is currently empty.
@@ -104,12 +108,14 @@ def ensure_toolbit_assets_initialized(asset_manager: AssetManager, store_name: s
 
     if asset_manager.is_empty("toolbit", store=store_name):
         for path in builtin_toolbit_path.glob("*.fctb"):
-            asset_manager.add_file("toolbit", path)
+            asset_manager.add_file("toolbit", path, store=store_name)
 
     ensure_toolbits_have_shape_type(asset_manager, store_name)
 
 
-def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbitshape_assets_present(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the given store is initialized with built-in shapes
     if it is currently empty. This copies all built-in shapes,
@@ -130,7 +136,7 @@ def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: 
                 asset_id=path.stem,
             )
             if not asset_manager.exists(uri, store=store_name):
-                asset_manager.add_file("toolbitshape", path)
+                asset_manager.add_file("toolbitshape", path, store=store_name)
 
         for path in builtin_shape_path.glob("*.svg"):
             uri = AssetUri.build(
@@ -138,7 +144,9 @@ def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: 
                 asset_id=path.stem + ".svg",
             )
             if not asset_manager.exists(uri, store=store_name):
-                asset_manager.add_file("toolbitshapesvg", path, asset_id=path.stem + ".svg")
+                asset_manager.add_file(
+                    "toolbitshapesvg", path, store=store_name, asset_id=path.stem + ".svg"
+                )
 
         for path in builtin_shape_path.glob("*.png"):
             uri = AssetUri.build(
@@ -146,10 +154,14 @@ def ensure_toolbitshape_assets_present(asset_manager: AssetManager, store_name: 
                 asset_id=path.stem + ".png",
             )
             if not asset_manager.exists(uri, store=store_name):
-                asset_manager.add_file("toolbitshapepng", path, asset_id=path.stem + ".png")
+                asset_manager.add_file(
+                    "toolbitshapepng", path, store=store_name, asset_id=path.stem + ".png"
+                )
 
 
-def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_name: str = "local"):
+def ensure_toolbitshape_assets_initialized(
+    asset_manager: AssetManager, store_name: Optional[str] = None
+):
     """
     Ensures the toolbitshape directory structure exists without adding any files.
     """
@@ -160,13 +172,14 @@ def ensure_toolbitshape_assets_initialized(asset_manager: AssetManager, store_na
     shape_path.mkdir(parents=True, exist_ok=True)
 
 
-def ensure_assets_initialized(asset_manager: AssetManager, store="local"):
+def ensure_assets_initialized(asset_manager: AssetManager, store: Optional[str] = None):
     """
     Ensures the given store is initialized with built-in assets.
     """
-    ensure_library_assets_initialized(asset_manager, store)
-    ensure_toolbit_assets_initialized(asset_manager, store)
-    ensure_toolbitshape_assets_initialized(asset_manager, store)
+    target_store = store or Preferences.getAssetStoreWriteStore()
+    ensure_library_assets_initialized(asset_manager, target_store)
+    ensure_toolbit_assets_initialized(asset_manager, target_store)
+    ensure_toolbitshape_assets_initialized(asset_manager, target_store)
 
 
 def _on_asset_path_changed(group, key, value):
@@ -210,9 +223,11 @@ builtin_asset_store = FileStore(
 
 class CamAssetManager(AssetManager):
     """
-    Custom CAM Asset Manager that extends the base AssetManager, such
-    that the get methods return fallbacks: if the asset is not present
-    in the "local" store, then it falls back to the builtin-asset store.
+    Custom CAM Asset Manager that registers the user's "local" store and the
+    "builtin" store. Read APIs inherited from AssetManager resolve store=None
+    through the configured search order (default "local,builtin"), so local
+    assets shadow the built-in ones and additional stores registered by
+    addons participate without callers naming them.
     """
 
     def __init__(self):
@@ -227,30 +242,6 @@ class CamAssetManager(AssetManager):
             Path.Log.error(f"Failed to initialize CAM assets in {user_asset_store._base_dir}: {e}")
         else:
             Path.Log.debug(f"Using CAM assets in {user_asset_store._base_dir}")
-
-    def get(
-        self,
-        uri: Union[AssetUri, str],
-        store: Union[str, Sequence[str]] = ("local", "builtin"),
-        depth: Optional[int] = None,
-    ) -> Asset:
-        """
-        Gets an asset from the "local" store, falling back to the "builtin"
-        store if not found locally.
-        """
-        return super().get(uri, store=store, depth=depth)
-
-    def get_or_none(
-        self,
-        uri: Union[AssetUri, str],
-        store: Union[str, Sequence[str]] = ("local", "builtin"),
-        depth: Optional[int] = None,
-    ) -> Optional[Asset]:
-        """
-        Gets an asset from the "local" store, falling back to the "builtin"
-        store if not found locally.
-        """
-        return super().get_or_none(uri, store=store, depth=depth)
 
 
 # Set up the CAM asset manager.

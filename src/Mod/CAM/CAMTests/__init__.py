@@ -17,8 +17,6 @@ _EXCLUDE_MODULES = {
 
 _EXCLUDE_MEMBERS = {
     "TestMachine": ["TestOutputOptions"],
-    "TestPathToolAssetStore": ["BaseTestPathToolAssetStore"],
-    "TestPathToolBitSerializer": ["_BaseToolBitSerializerTestCase"],
     "TestPostToolProcessing": ["TestEmptyMoveSuppression"],
 }
 

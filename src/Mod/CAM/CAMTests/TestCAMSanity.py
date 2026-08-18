@@ -710,6 +710,10 @@ class TestCAMSanity(PathTestBase):
         mock_job.Machine = "test_machine"
         mock_job.Tools.Group = []
         mock_job.Operations.Group = []
+        # Real string values keep _outputData() away from filesystem calls
+        # that would misinterpret a MagicMock as a file descriptor.
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessorOutputFile = ""
 
         # Create a mock postprocessor with sanity checks
         class MockPostprocessor:
@@ -767,6 +771,8 @@ class TestCAMSanity(PathTestBase):
         mock_job.Machine = "error_machine"
         mock_job.Tools.Group = []
         mock_job.Operations.Group = []
+        mock_job.LastPostProcessOutput = ""
+        mock_job.PostProcessorOutputFile = ""
 
         class ErrorPostprocessor:
             def get_sanity_checks(self, job):

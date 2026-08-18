@@ -59,6 +59,8 @@ ToolGroup = PreferencesGroup + "/Tools"
 ToolPath = "ToolPath"
 LastToolLibrary = "LastToolLibrary"
 LastToolLibrarySortKey = "LastToolLibrarySortKey"
+AssetStoreSearchOrder = "AssetStoreSearchOrder"
+AssetStoreWriteStore = "AssetStoreWriteStore"
 
 # Linear tolerance to use when generating Paths, eg when tessellating geometry
 GeometryTolerance = "GeometryTolerance"
@@ -196,6 +198,38 @@ def getLastToolLibrarySortKey() -> Optional[str]:
 def setLastToolLibrarySortKey(name: str):
     pref = tool_preferences()
     pref.SetString(LastToolLibrarySortKey, name)
+
+
+def getAssetStoreSearchOrder(default: Optional[tuple[str, ...]] = None) -> tuple[str, ...]:
+    pref = tool_preferences()
+    value = pref.GetString(AssetStoreSearchOrder, "")
+    if value:
+        stores = [store.strip() for store in value.split(",") if store.strip()]
+        if stores:
+            return tuple(stores)
+    if default is None:
+        return ("local", "builtin")
+    return default
+
+
+def setAssetStoreSearchOrder(stores: tuple[str, ...] | list[str] | str):
+    if isinstance(stores, str):
+        value = stores
+    else:
+        value = ",".join(stores)
+    pref = tool_preferences()
+    pref.SetString(AssetStoreSearchOrder, value)
+
+
+def getAssetStoreWriteStore(default: str = "local") -> str:
+    pref = tool_preferences()
+    value = pref.GetString(AssetStoreWriteStore, "")
+    return value or default
+
+
+def setAssetStoreWriteStore(store: str):
+    pref = tool_preferences()
+    pref.SetString(AssetStoreWriteStore, store)
 
 
 def allAvailablePostProcessors():
