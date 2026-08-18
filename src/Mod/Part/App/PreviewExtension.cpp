@@ -22,6 +22,7 @@
  ***************************************************************************/
 
 #include "PreviewExtension.h"
+#include "PreviewExtensionPy.h"
 
 #include <App/DocumentObject.h>
 #include <App/ExtensionPython.h>
@@ -81,6 +82,14 @@ void Part::PreviewExtension::invalidatePreview()
 bool Part::PreviewExtension::mustRecomputePreview() const
 {
     return getExtendedObject()->mustRecompute();
+}
+
+PyObject* Part::PreviewExtension::getExtensionPyObject()
+{
+    if (ExtensionPythonObject.is(Py::_None())) {
+        ExtensionPythonObject = Py::Object(new PreviewExtensionPy(this), true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
 }
 
 void Part::PreviewExtension::extensionOnChanged(const App::Property* prop)
