@@ -101,7 +101,7 @@ class Fangling(PostProcessor):
                 "help": translate(
                     "CAM",
                     "Feed rates (in the current output units/min) below this value "
-                    "abort posting - this usually indicates a missing feed rate.",
+                    "abort posting - this usually indicates a missing feed rate",
                 ),
             },
             {
