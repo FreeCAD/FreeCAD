@@ -1811,7 +1811,7 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
     // check for left click without selecting something
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE) && !processed) {
         if (SoMouseButtonEvent::isButtonReleaseEvent(ev, SoMouseButtonEvent::BUTTON1)) {
-            if (!ev->wasCtrlDown()) {
+            if ( !(ev->wasCtrlDown() || ev->wasShiftDown() ) ) {
                 Gui::Selection().clearSelection();
             }
         }

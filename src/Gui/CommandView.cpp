@@ -3262,7 +3262,7 @@ static void doSelect(void* ud, SoEventCallback* cb)
         cb->setHandled();
 
         const SoEvent* ev = cb->getEvent();
-        if (ev && !ev->wasCtrlDown()) {
+        if (ev && !(ev->wasCtrlDown() || ev->wasShiftDown() ) ) {
             Gui::Selection().clearSelection(doc->getName());
         }
 
