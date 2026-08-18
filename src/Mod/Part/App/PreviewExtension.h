@@ -58,6 +58,8 @@ public:
 
     virtual bool mustRecomputePreview() const;
 
+    PyObject* getExtensionPyObject() override;
+
 protected:
     void extensionOnChanged(const App::Property* prop) override;
 
