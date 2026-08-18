@@ -1323,10 +1323,13 @@ class _SolverZ88(CommandManager):
             "FemGui.getActiveAnalysis().addObject(FreeCAD.ActiveDocument.ActiveObject)"
         )
         z88_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         solver_type = z88_prefs.GetString("Solver", "sorcg")
         maxgs = z88_prefs.GetInt("MaxGS", 100000000)
         maxkoi = z88_prefs.GetInt("MaxKOI", 2800000)
+        units = gen_prefs.GetString("DefaultUnitSystem", "FEM")
 
+        FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.UnitSystem = '{units}'")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.SolverType = '{solver_type}'")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.MatrixMaximum = {maxgs}")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.VectorMaximum = {maxkoi}")

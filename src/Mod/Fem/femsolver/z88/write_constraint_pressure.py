@@ -36,7 +36,7 @@ class WriterPressure(WriterList):
 
     def write_item(self, item):
         obj = item["Object"]
-        pressure = obj.Pressure.getValueAs("MPa").Value
+        pressure = self.writer.get_coherent_value(obj.Pressure)
         pressure *= -1 if obj.Reversed else 1
 
         for feat, surf, is_sub_el in item["PressureFaces"]:

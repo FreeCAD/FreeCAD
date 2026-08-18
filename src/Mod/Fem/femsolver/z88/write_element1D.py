@@ -47,6 +47,6 @@ class WriterElement1D(WriterList):
     def get_param(self, obj):
         param = 0
         if self.writer.solver_obj.ExcludeBendingStiffness:
-            param = obj.TrussArea.getValueAs("mm^2").Value
+            param = self.writer.get_coherent_value(obj.TrussArea)
 
         return param

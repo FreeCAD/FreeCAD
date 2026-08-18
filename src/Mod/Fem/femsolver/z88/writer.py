@@ -262,7 +262,7 @@ class FemInputWriterZ88(writerbase.FemInputWriter):
         self.z88dyn.close()
 
     def write_z88_mesh(self):
-        mesh = self.mesh_object.FemMesh
+        mesh = self.get_scaled_mesh()
         mesh_nodes = dict(sorted(mesh.Nodes.items()))
 
         # initialize some variables

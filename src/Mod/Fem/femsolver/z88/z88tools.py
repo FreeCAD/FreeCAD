@@ -38,6 +38,7 @@ from vtkmodules.util import numpy_support as vtk_np
 from vtkmodules.vtkCommonDataModel import vtkUnstructuredGrid
 
 import FreeCAD
+import Fem
 
 from . import writer
 from .. import settings
@@ -55,6 +56,7 @@ class Z88Tools(ObjectTools):
     def __init__(self, obj):
         super().__init__(obj)
         self.model_file = ""
+        self.mesh_scale = 1
 
     def prepare(self):
         self._clear_results()
@@ -87,6 +89,7 @@ class Z88Tools(ObjectTools):
             self.obj.WorkingDirectory,
         )
         w.write_solver_input()
+        self.mesh_scale = Fem.getCoherentLengthScale(self.obj.UnitSystem)
 
     def compute(self):
         self._clear_results()
@@ -176,6 +179,7 @@ class Z88Tools(ObjectTools):
         if self.obj.DisplaceMesh:
             self.generate_disp_mesh(grid)
         pipeline.Data = grid
+        pipeline.Scale = self.mesh_scale
 
         if create and FreeCAD.GuiUp:
             # default display mode
