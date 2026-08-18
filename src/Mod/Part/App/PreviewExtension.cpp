@@ -89,7 +89,7 @@ void Part::PreviewExtension::extensionOnChanged(const App::Property* prop)
 
     // Invalidate the preview on any input property change. The PreviewShape itself is the
     // output of recomputePreview, so changing it does not require another recompute.
-    const bool isInputProp = prop != &PreviewShape && !prop->testStatus(App::Property::Output);
+    const bool isInputProp = prop != &PreviewShape && !getExtendedObject()->isOutputProperty(prop);
 
     if (isInputProp || mustRecomputePreview()) {
         _isPreviewFresh = false;

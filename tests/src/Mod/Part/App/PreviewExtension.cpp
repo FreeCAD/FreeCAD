@@ -29,10 +29,13 @@ public:
     {
         ADD_PROPERTY_TYPE(Trigger, (0), "Test", App::Prop_None, "Plain input property");
         ADD_PROPERTY_TYPE(Result, (0), "Test", App::Prop_Output, "Output-status property");
-        // extensionOnChanged() checks the Output *status* bit (the same one PreviewShape
-        // itself carries), not the Prop_Output *property type* set above by ADD_PROPERTY_TYPE
-        // -- those are distinct StatusBits positions, so both must be set here.
-        Result.setStatus(App::Property::Output, true);
+        ADD_PROPERTY_TYPE(
+            TypeOnlyOutput,
+            (0),
+            "Test",
+            App::Prop_Output,
+            "Output declared by property type only, the shape PartDesign::Feature::_Body uses"
+        );
 
         // Required for a statically-inherited extension: it wires the extension into the
         // owning object's extension map, which is what routes property-changed notifications
@@ -43,6 +46,7 @@ public:
 
     App::PropertyInteger Trigger;
     App::PropertyInteger Result;
+    App::PropertyInteger TypeOnlyOutput;
 
     int recomputePreviewCalls {0};
 
@@ -155,6 +159,17 @@ TEST_F(PreviewExtensionTest, changingOutputPropertyDoesNotInvalidate)
     ASSERT_TRUE(feature->isPreviewFresh());
 
     feature->Result.setValue(7);
+
+    EXPECT_TRUE(feature->isPreviewFresh());
+}
+
+TEST_F(PreviewExtensionTest, changingTypeOnlyOutputPropertyDoesNotInvalidate)
+{
+    auto* feature = getFeature();
+    feature->updatePreview();
+    ASSERT_TRUE(feature->isPreviewFresh());
+
+    feature->TypeOnlyOutput.setValue(7);
 
     EXPECT_TRUE(feature->isPreviewFresh());
 }
