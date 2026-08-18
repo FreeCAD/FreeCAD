@@ -73,7 +73,7 @@ class Fangling(PostProcessor):
                 "decimals": 2,
                 "help": translate(
                     "CAM",
-                    "Time to wait after torch on for pierce to happen before cutting moves. ",
+                    "Time to wait after torch on for pierce to happen before cutting moves",
                 ),
             },
             {
