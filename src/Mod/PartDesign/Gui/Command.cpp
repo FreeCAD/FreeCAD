@@ -1601,7 +1601,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Additive Loft");
     sToolTipText = QT_TR_NOOP(
-        "Creates a solid between one or more sketches, profiles or faces and adds it to the body"
+        "Lofts the selected sketch or profile through one or more sections and adds it to the body"
     );
     sWhatsThis = "PartDesign_AdditiveLoft";
     sStatusTip = sToolTipText;
