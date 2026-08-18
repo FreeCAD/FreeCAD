@@ -26,7 +26,6 @@ from Path.Post.Processor import PostProcessor
 import Path
 import FreeCAD
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
@@ -45,6 +44,7 @@ POST_TYPE = "machine"
 
 class Fablin(PostProcessor):
     coolant_End_Command = ""
+
     @classmethod
     def get_common_property_schema(cls):
         """Return common properties with Fablin defaults (uses base defaults)."""
@@ -54,7 +54,7 @@ class Fablin(PostProcessor):
 
     @classmethod
     def get_property_schema(cls):
-         return [
+        return [
             {
                 "name": "min_feed_rate",
                 "type": "float",
@@ -83,7 +83,7 @@ class Fablin(PostProcessor):
                     "usually indicates a missing spindle speed.",
                 ),
             },
-            ]
+        ]
 
     def __init__(self, job):
         super().__init__(
@@ -101,8 +101,7 @@ class Fablin(PostProcessor):
 
         values["POSTPROCESSOR_FILE_NAME"] = __name__
         values["MACHINE_NAME"] = "Fablin"
-        
-        
+
         if self._machine and hasattr(self._machine, "postprocessor_properties"):
             props = self._machine.postprocessor_properties
             values["MIN_FEED_RATE"] = props.get("min_feed_rate", 5.0)
@@ -110,7 +109,7 @@ class Fablin(PostProcessor):
         else:
             values["MIN_FEED_RATE"] = 5.0
             values["MIN_SPINDLE_SPEED"] = 5.0
-            
+
         # Set any values here that need to override the default values set
         # in the parent routine.
         #
@@ -123,19 +122,19 @@ class Fablin(PostProcessor):
         # in the G-code file.
         #
         values["POSTAMBLE"] = """M5"""
-    
+
     def convert_command_to_gcode(self, command: Path.Command):
         props = self._machine.postprocessor_properties
-        if command.Name == 'T':
+        if command.Name == "T":
             return
         return super().convert_command_to_gcode(command)
-    
-    def _convert_tool_change(self, command: Path.Command): #ignore any tool change text
+
+    def _convert_tool_change(self, command: Path.Command):  # ignore any tool change text
         return ""
-    
-    def _convert_fixture(self, command: Path.Command): #ignore any G54-59 commands
-        return""
-    
+
+    def _convert_fixture(self, command: Path.Command):  # ignore any G54-59 commands
+        return ""
+
     @property
     def tooltip(self):
 
