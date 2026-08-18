@@ -1795,13 +1795,13 @@ def exportIFC2X3Attributes(obj, kwargs, scale=0.001):
                 internal = "INTERNAL"
             else:
                 internal = "EXTERNAL"
-        kwargs.update(
-            {
-                "CompositionType": "ELEMENT",
-                "InteriorOrExteriorSpace": internal,
-                "ElevationWithFlooring": obj.Shape.BoundBox.ZMin * scale,
-            }
-        )
+        attributes = {
+            "CompositionType": "ELEMENT",
+            "InteriorOrExteriorSpace": internal,
+        }
+        if hasattr(obj, "ElevationWithFlooring") and obj.ElevationWithFlooring.Value:
+            attributes["ElevationWithFlooring"] = obj.ElevationWithFlooring.Value * scale
+        kwargs.update(attributes)
     elif ifctype == "IfcReinforcingBar":
         kwargs.update({"NominalDiameter": obj.Diameter.Value, "BarLength": obj.Length.Value})
     elif ifctype == "IfcBuildingStorey":
