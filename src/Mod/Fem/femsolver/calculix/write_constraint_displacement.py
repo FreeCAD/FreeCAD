@@ -74,27 +74,39 @@ def write_constraint(f, femobj, disp_obj, ccxwriter):
         f.write("*BOUNDARY\n")
     if not disp_obj.xFree:
         f.write(
-            "{},1,1,{:.13G}\n".format(disp_obj.Name, disp_obj.xDisplacement.getValueAs("mm").Value)
+            "{},1,1,{:.13G}\n".format(
+                disp_obj.Name, ccxwriter.get_coherent_value(disp_obj.xDisplacement)
+            )
         )
     if not disp_obj.yFree:
         f.write(
-            "{},2,2,{:.13G}\n".format(disp_obj.Name, disp_obj.yDisplacement.getValueAs("mm").Value)
+            "{},2,2,{:.13G}\n".format(
+                disp_obj.Name, ccxwriter.get_coherent_value(disp_obj.yDisplacement)
+            )
         )
     if not disp_obj.zFree:
         f.write(
-            "{},3,3,{:.13G}\n".format(disp_obj.Name, disp_obj.zDisplacement.getValueAs("mm").Value)
+            "{},3,3,{:.13G}\n".format(
+                disp_obj.Name, ccxwriter.get_coherent_value(disp_obj.zDisplacement)
+            )
         )
 
     if ccxwriter.member.geos_beamsection or ccxwriter.member.geos_shellthickness:
         if not disp_obj.rotxFree:
             f.write(
-                "{},4,4,{:.13G}\n".format(disp_obj.Name, disp_obj.xRotation.getValueAs("rad").Value)
+                "{},4,4,{:.13G}\n".format(
+                    disp_obj.Name, ccxwriter.get_coherent_value(disp_obj.xRotation)
+                )
             )
         if not disp_obj.rotyFree:
             f.write(
-                "{},5,5,{:.13G}\n".format(disp_obj.Name, disp_obj.yRotation.getValueAs("rad").Value)
+                "{},5,5,{:.13G}\n".format(
+                    disp_obj.Name, ccxwriter.get_coherent_value(disp_obj.yRotation)
+                )
             )
         if not disp_obj.rotzFree:
             f.write(
-                "{},6,6,{:.13G}\n".format(disp_obj.Name, disp_obj.zRotation.getValueAs("rad").Value)
+                "{},6,6,{:.13G}\n".format(
+                    disp_obj.Name, ccxwriter.get_coherent_value(disp_obj.zRotation)
+                )
             )

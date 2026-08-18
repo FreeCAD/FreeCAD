@@ -1081,12 +1081,20 @@ class _SolverCalculixContextManager:
 
     def __enter__(self):
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+        gen_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        units = (
+            gen_prefs.GetString("DefaultUnitSystem", "FEM")
+            if self.make_name == "makeSolverCalculiX"
+            else "FEM"
+        )
+
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculiX")
         FreeCADGui.addModule("ObjectsFem")
         FreeCADGui.addModule("FemGui")
         FreeCADGui.doCommand(
             f"{self.cli_name} = ObjectsFem.{self.make_name}(FreeCAD.ActiveDocument)"
         )
+        FreeCADGui.doCommand("{}.UnitSystem = '{}'".format(self.cli_name, units))
         FreeCADGui.doCommand(
             "{}.AnalysisType = {}".format(self.cli_name, ccx_prefs.GetInt("AnalysisType", 0))
         )

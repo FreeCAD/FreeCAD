@@ -42,6 +42,9 @@ class SolverCcxTools(SolverCalculiX):
 
     def __init__(self, obj):
         super().__init__(obj)
+        # set UnitSystem property as read only
+        obj.UnitSystem = "FEM"
+        obj.setPropertyStatus("UnitSystem", "ReadOnly")
 
     def _get_properties(self):
         prop = super()._get_properties()
@@ -66,3 +69,9 @@ class SolverCcxTools(SolverCalculiX):
         )
 
         return prop
+
+    def onDocumentRestored(self, obj):
+        super().onDocumentRestored(obj)
+        # set UnitSystem property as read only
+        obj.UnitSystem = "FEM"
+        obj.setPropertyStatus("UnitSystem", "ReadOnly")

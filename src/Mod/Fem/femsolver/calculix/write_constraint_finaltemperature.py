@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 # ***************************************************************************
-# *   Copyright (c) 2025 Jakub Michalski <jakub.j.michalski[at]gmail.com>         *
+# *   Copyright (c) 2025 Jakub Michalski <jakub.j.michalski[at]gmail.com>   *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -58,7 +58,7 @@ def write_constraint(f, femobj, inittemp_obj, ccxwriter):
     if inittemp_obj.EnableFinalTemperature:
         # floats read from ccx should use {:.13G}, see comment in writer module
 
-        finaltemp = inittemp_obj.FinalTemperature.getValueAs("K")
+        finaltemp = ccxwriter.get_coherent_value(inittemp_obj.FinalTemperature)
 
         if inittemp_obj.EnableAmplitude:
             f.write(f"*TEMPERATURE, AMPLITUDE={inittemp_obj.Name}\n")

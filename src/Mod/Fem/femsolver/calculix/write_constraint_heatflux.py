@@ -53,13 +53,13 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
         heatflux_facetype = "F"
         heatflux_facesubtype = ""
         heatflux_values = "{:.13G},{:.13G}".format(
-            heatflux_obj.AmbientTemp.getValueAs("K").Value,
-            heatflux_obj.FilmCoef.getValueAs("t/s^3/K").Value,
+            ccxwriter.get_coherent_value(heatflux_obj.AmbientTemp),
+            ccxwriter.get_coherent_value(heatflux_obj.FilmCoef),
         )
 
     elif heatflux_obj.ConstraintType == "Radiation":
         heatflux_facetype = "R"
-        amb_temp = heatflux_obj.AmbientTemp.getValueAs("K").Value
+        amb_temp = ccxwriter.get_coherent_value(heatflux_obj.AmbientTemp)
         if heatflux_obj.CavityRadiation:
             heatflux_key_word = f"RADIATE, CAVITY={heatflux_obj.CavityName}"
             heatflux_facesubtype = "CR"
@@ -76,7 +76,7 @@ def write_meshdata_constraint(f, femobj, heatflux_obj, ccxwriter):
         heatflux_facetype = "S"
         heatflux_facesubtype = ""
         heatflux_values = "{:.13G}".format(
-            heatflux_obj.DistributedHeatFlux.getValueAs("t/s^3").Value
+            ccxwriter.get_coherent_value(heatflux_obj.DistributedHeatFlux)
         )
 
     else:

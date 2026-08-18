@@ -81,12 +81,13 @@ def write_constraint(f, femobj, den_obj, ccxwriter):
 
     if den_obj.Concentrated and den_obj.Mode == "Total Source":
         nodes = len(femobj["Nodes"])
-        node_charge = den_obj.TotalCharge.getValueAs("C").Value / nodes
+        node_charge = ccxwriter.get_coherent_value(den_obj.TotalCharge) / nodes
         f.write("*CFLUX\n")
         f.write("{},11,{:.13G}\n".format(den_obj.Name, node_charge))
         f.write("\n")
         return
 
+    density = 0
     match den_obj.Mode:
         case "Source":
             density = den_obj.SourceChargeDensity
@@ -97,13 +98,13 @@ def write_constraint(f, femobj, den_obj, ccxwriter):
         case "Total Interface":
             density = den_obj.Proxy.get_total_interface_density(den_obj)
 
+    density = ccxwriter.get_coherent_value(density)
     if den_obj.Mode in ["Source", "Total Source"]:
         f.write("*DFLUX\n")
-        f.write("{},BF,{:.13G}\n".format(den_obj.Name, density.getValueAs("C/mm^3").Value))
+        f.write("{},BF,{:.13G}\n".format(den_obj.Name, density))
         f.write("\n")
 
     elif den_obj.Mode in ["Interface", "Total Interface"]:
-        density = density.getValueAs("C/mm^2").Value
         # check internal interface
         internal = _check_shared_interface(den_obj)
         for feat, surf, is_sub_el in femobj["ChargeDensityFaces"]:
