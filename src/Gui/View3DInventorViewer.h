@@ -26,6 +26,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <vector>
 
@@ -623,6 +624,7 @@ private:
 
 private:
     class ScopedRenderIntent;
+    struct RenderFrameOptions;
     static void selectCB(void* viewer, SoPath* path);
     // A small intent stack lets nested export/capture code paths temporarily
     // override the default live-view traversal behavior.
@@ -639,8 +641,12 @@ private:
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
-    void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
-    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
+    void renderLegacyFrame(const RenderFrameOptions& options, SoGLRenderAction* glra);
+    void renderLegacyBackground(const QColor& backgroundColor, SoGLRenderAction* glra);
+    void renderLegacyMainScene(SoGLRenderAction* glra);
+    void renderLegacyAfterMain(SoGLRenderAction* glra);
+    void renderLegacyForeground(SoGLRenderAction* glra, RenderIntent intent);
+    bool renderToFramebuffer(QOpenGLFramebufferObject*, const RenderFrameOptions& options);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext();
     void createStandardCursors();

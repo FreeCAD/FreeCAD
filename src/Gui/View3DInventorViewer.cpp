@@ -189,6 +189,14 @@ private:
     View3DInventorViewer& viewer;
 };
 
+struct View3DInventorViewer::RenderFrameOptions
+{
+    SbViewportRegion viewport;
+    RenderIntent intent = RenderIntent::LiveInteractive;
+    bool includeViewerLighting = true;
+    std::optional<QColor> backgroundOverride;
+};
+
 namespace
 {
 constexpr qint64 DimensionPaneUpdateIntervalMs = 100;
@@ -2967,7 +2975,8 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                 auto fbo = new QOpenGLFramebufferObject(width, height, fboFormat);
                 if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
-                    if (!renderToFramebuffer(fbo)) {
+                    RenderFrameOptions options {vp, currentRenderIntent(), true, std::nullopt};
+                    if (!renderToFramebuffer(fbo, options)) {
                         delete fbo;
                         break;
                     }
@@ -2987,7 +2996,8 @@ void View3DInventorViewer::setRenderType(RenderType type)
                         fallbackFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                         fbo = new QOpenGLFramebufferObject(width, height, fallbackFormat);
                     }
-                    if (!renderToFramebuffer(fbo)) {
+                    RenderFrameOptions options {vp, currentRenderIntent(), true, std::nullopt};
+                    if (!renderToFramebuffer(fbo, options)) {
                         delete fbo;
                         break;
                     }
@@ -3088,7 +3098,13 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
         setGradientBackground(Background::NoGradient);
     }
 
-    if (!renderToFramebuffer(&fbo, options.includeViewerLighting)) {
+    RenderFrameOptions frameOptions {
+        SbViewportRegion(width, height),
+        options.intent,
+        options.includeViewerLighting,
+        overrideBackground ? std::optional<QColor>(opaqueBackground) : std::nullopt
+    };
+    if (!renderToFramebuffer(&fbo, frameOptions)) {
         return {};
     }
     img = fbo.toImage();
@@ -3125,7 +3141,10 @@ QImage View3DInventorViewer::renderToImage(const RenderImageOptions& options)
     return img;
 }
 
-bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bool includeViewerLighting)
+bool View3DInventorViewer::renderToFramebuffer(
+    QOpenGLFramebufferObject* fbo,
+    const RenderFrameOptions& options
+)
 {
     static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
     if (!fbo->bind()) {
@@ -3139,7 +3158,7 @@ bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bo
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH);
 
-    const QColor col = this->backgroundColor();
+    const QColor col = options.backgroundOverride.value_or(this->backgroundColor());
     glViewport(0, 0, width, height);
     glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), float(col.alphaF()));
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -3161,7 +3180,7 @@ bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bo
     // while creating a new render action has it set to GL_LEQUAL. So, in order to get
     // the exact same result set it explicitly to GL_LESS.
     glDepthFunc(GL_LESS);
-    if (includeViewerLighting) {
+    if (options.includeViewerLighting) {
         gl.apply(this->getSoRenderManager()->getSceneGraph());
     }
     else {
@@ -3171,11 +3190,11 @@ bool View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo, bo
     }
     renderDelayedAnnotations(&gl);
     gl.apply(this->foregroundroot);
-    if (shouldRenderDecorations(currentRenderIntent())) {
+    if (shouldRenderDecorations(options.intent)) {
         gl.apply(this->decorationroot);
     }
 
-    if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
+    if (shouldRenderDecorations(options.intent) && this->axiscrossEnabled) {
         this->drawAxisCross();
     }
 
@@ -3317,19 +3336,42 @@ void View3DInventorViewer::renderDelayedAnnotations(SoGLRenderAction* glra)
     }
 }
 
-void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra)
+void View3DInventorViewer::renderLegacyBackground(const QColor& backgroundColor, SoGLRenderAction* glra)
 {
     SoState* state = glra->getState();
 
-    {
-        ZoneScopedN("Background");
-        CoinRenderSupport::setDevicePixelRatio(state, devicePixelRatio());
-        SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
-        SoGLRenderActionElement::set(state, glra);
-        SoGLVBOActivatedElement::set(state, this->vboEnabled);
-        drawSingleBackground(backgroundColor);
-        glra->apply(this->backgroundroot);
+    ZoneScopedN("Background");
+    CoinRenderSupport::setDevicePixelRatio(state, devicePixelRatio());
+    SoGLWidgetElement::set(state, qobject_cast<QOpenGLWidget*>(this->getGLWidget()));
+    SoGLRenderActionElement::set(state, glra);
+    SoGLVBOActivatedElement::set(state, this->vboEnabled);
+    drawSingleBackground(backgroundColor);
+    glra->apply(this->backgroundroot);
+}
+
+void View3DInventorViewer::renderLegacyMainScene(SoGLRenderAction*)
+{
+    inherited::actualRedraw();
+}
+
+void View3DInventorViewer::renderLegacyAfterMain(SoGLRenderAction* glra)
+{
+    renderDelayedAnnotations(glra);
+}
+
+void View3DInventorViewer::renderLegacyForeground(SoGLRenderAction* glra, RenderIntent intent)
+{
+    ZoneScopedN("Foreground");
+    glra->apply(this->foregroundroot);
+    if (shouldRenderDecorations(intent)) {
+        glra->apply(this->decorationroot);
     }
+}
+
+void View3DInventorViewer::renderLegacyFrame(const RenderFrameOptions& options, SoGLRenderAction* glra)
+{
+    SoState* state = glra->getState();
+    renderLegacyBackground(options.backgroundOverride.value_or(backgroundColor()), glra);
 
     if (!this->shading) {
         state->push();
@@ -3338,9 +3380,8 @@ void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, So
     }
 
     try {
-        // Render normal scenegraph.
-        inherited::actualRedraw();
-        renderDelayedAnnotations(glra);
+        renderLegacyMainScene(glra);
+        renderLegacyAfterMain(glra);
     }
     catch (const Base::MemoryException&) {
         this->recoverFromRenderMemoryException();
@@ -3350,13 +3391,7 @@ void View3DInventorViewer::renderGLActionScene(const QColor& backgroundColor, So
         state->pop();
     }
 
-    {
-        ZoneScopedN("Foreground");
-        glra->apply(this->foregroundroot);
-        if (shouldRenderDecorations(currentRenderIntent())) {
-            glra->apply(this->decorationroot);
-        }
-    }
+    renderLegacyForeground(glra, options.intent);
 }
 
 void View3DInventorViewer::renderScene()
@@ -3377,7 +3412,8 @@ void View3DInventorViewer::renderScene()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
-    this->renderGLActionScene(col, this->getSoRenderManager()->getGLRenderAction());
+    RenderFrameOptions options {vp, currentRenderIntent(), true, col};
+    this->renderLegacyFrame(options, this->getSoRenderManager()->getGLRenderAction());
 
     if (shouldRenderDecorations(currentRenderIntent()) && this->axiscrossEnabled) {
         this->drawAxisCross();
