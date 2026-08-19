@@ -1465,7 +1465,7 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-                    else:  # if not self.basewires:
+                    elif not (base and placement):
                         FreeCAD.Console.PrintWarning(
                             translate(
                                 "Arch",
