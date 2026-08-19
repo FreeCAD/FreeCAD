@@ -24,6 +24,9 @@
 #include "ViewProviderPreviewExtensionPy.h"
 #include "ViewProviderPreviewExtensionPy.cpp"
 
+#include <Base/Interpreter.h>
+#include <Mod/Part/App/TopoShapePy.h>
+
 using namespace PartGui;
 
 std::string ViewProviderPreviewExtensionPy::representation() const
@@ -55,6 +58,108 @@ PyObject* ViewProviderPreviewExtensionPy::isPreviewEnabled(PyObject* args) const
         return nullptr;
     }
     return Py::new_reference_to(Py::Boolean(getViewProviderPreviewExtensionPtr()->isPreviewEnabled()));
+}
+
+Py::Object ViewProviderPreviewExtensionPy::getPreviewRootNode() const
+{
+    try {
+        SoSeparator* node = getViewProviderPreviewExtensionPtr()->getPreviewRootNode();
+
+        // Null until extensionAttach() runs; addExtension() alone does not
+        // trigger that, so a preview node can legitimately not exist yet.
+        if (!node) {
+            throw Py::RuntimeError("Preview extension is not attached");
+        }
+
+        PyObject* pointer
+            = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
+        node->ref();
+
+        return Py::Object(pointer, true);
+    }
+    catch (const Base::Exception& exception) {
+        throw Py::RuntimeError(exception.what());
+    }
+}
+
+Py::Object ViewProviderPreviewExtensionPy::getPreviewShapeNode() const
+{
+    try {
+        SoPreviewShape* node = getViewProviderPreviewExtensionPtr()->getPreviewShapeNode();
+
+        if (!node) {
+            throw Py::RuntimeError("Preview extension is not attached");
+        }
+
+        // pivy has no wrapper for the concrete SoPreviewShape type, so it is
+        // handed out as its SoSeparator base.
+        PyObject* pointer
+            = Base::Interpreter().createSWIGPointerObj("pivy.coin", "_p_SoSeparator", node, 1);
+        node->ref();
+
+        return Py::Object(pointer, true);
+    }
+    catch (const Base::Exception& exception) {
+        throw Py::RuntimeError(exception.what());
+    }
+}
+
+PyObject* ViewProviderPreviewExtensionPy::updatePreview(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    try {
+        getViewProviderPreviewExtensionPtr()->updatePreview();
+    }
+    catch (Base::Exception& exception) {
+        exception.setPyException();
+        return nullptr;
+    }
+
+    Py_RETURN_NONE;
+}
+
+PyObject* ViewProviderPreviewExtensionPy::updatePreviewShape(PyObject* args)
+{
+    PyObject* shapeObject {nullptr};
+    PyObject* nodeObject {nullptr};
+
+    if (!PyArg_ParseTuple(args, "O!O", &Part::TopoShapePy::Type, &shapeObject, &nodeObject)) {
+        return nullptr;
+    }
+
+    void* pointer {nullptr};
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "_p_SoNode", nodeObject, &pointer, 0);
+    }
+    catch (const Base::Exception&) {
+        PyErr_SetString(PyExc_TypeError, "second argument must be an SoPreviewShape");
+        return nullptr;
+    }
+
+    auto* node = static_cast<SoNode*>(pointer);
+
+    if (!node || !node->isOfType(SoPreviewShape::getClassTypeId())) {
+        PyErr_SetString(PyExc_TypeError, "second argument must be an SoPreviewShape");
+        return nullptr;
+    }
+
+    const Part::TopoShape shape = *static_cast<Part::TopoShapePy*>(shapeObject)->getTopoShapePtr();
+
+    try {
+        getViewProviderPreviewExtensionPtr()->updatePreviewShape(
+            shape,
+            static_cast<SoPreviewShape*>(node)
+        );
+    }
+    catch (Base::Exception& exception) {
+        exception.setPyException();
+        return nullptr;
+    }
+
+    Py_RETURN_NONE;
 }
 
 PyObject* ViewProviderPreviewExtensionPy::getCustomAttributes(const char* /*attr*/) const
