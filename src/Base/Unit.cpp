@@ -77,7 +77,8 @@ constexpr auto unitSpecs = std::to_array<UnitSpec>({
     { "Force"                                 , {  1,  1, -2                     } },
     { "Frequency"                             , {  0,  0, -1                     } },
     { "HeatFlux"                              , {  0,  1, -3                     } },
-    { "Inertia"                               , {  2,  1                         } },
+    { "MassMomentOfInertia"                   , {  2,  1                         } },
+    { "AreaMomentOfInertia"                   , {  4                             } },
     { "InverseArea"                           , { -2                             } },
     { "InverseLength"                         , { -1                             } },
     { "InverseVolume"                         , { -3                             } },
@@ -346,7 +347,8 @@ constexpr Unit Unit::ElectromagneticPotential              = make("Electromagnet
 constexpr Unit Unit::Force                                 = make("Force"                       );
 constexpr Unit Unit::Frequency                             = make("Frequency"                   );
 constexpr Unit Unit::HeatFlux                              = make("HeatFlux"                    );
-constexpr Unit Unit::Inertia                               = make("Inertia"                     );
+constexpr Unit Unit::MassMomentOfInertia                   = make("MassMomentOfInertia"         );
+constexpr Unit Unit::AreaMomentOfInertia                   = make("AreaMomentOfInertia"         );
 constexpr Unit Unit::InverseArea                           = make("InverseArea"                 );
 constexpr Unit Unit::InverseLength                         = make("InverseLength"               );
 constexpr Unit Unit::InverseVolume                         = make("InverseVolume"               );
