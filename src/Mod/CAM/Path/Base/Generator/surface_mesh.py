@@ -376,6 +376,8 @@ def _mesh_to_stl(mesh_obj):
     Returns:
         ocl.STLSurf: The generated OCL mesh object, or None on failure.
     """
+    from . import surface_common
+
     if not hasattr(mesh_obj, "Mesh") or not mesh_obj.Mesh.Facets:
         Path.Log.error("The provided object is not a valid mesh or is empty.")
         return None
@@ -523,14 +525,11 @@ def _model_optimization(
     from . import surface_common
 
     # Detect pre-triangulated models and skip optimization
-    if not exempt_faces:
-        if surface_common._is_triangulated_mesh(shape.Faces):
-            Path.Log.debug(
-                "surface_mesh._model_optimization: Pre-triangulated model detected. Skipping face optimization."
-            )
-            return shape
-
-    sample_faces = shape.Faces if not exempt_faces else exempt_faces
+    if not exempt_faces and surface_common._is_triangulated_mesh(shape.Faces):
+        Path.Log.debug(
+            "surface_mesh._model_optimization: Pre-triangulated model detected. Skipping face optimization."
+        )
+        return shape
 
     filtered = []
     rejected = 0
@@ -644,7 +643,6 @@ def _shape_to_safe_stl(
         ocl.STLSurf: The generated safety mesh, or None on failure.
     """
     fused_shapes = []
-    offset_avoid = None
     bb = bb_safe.BoundBox
 
     fused_shapes.append(model_shape)
@@ -770,7 +768,7 @@ def generate_stl(
         Path.Log.debug(
             "surface_mesh.generate_stl. Mesh object detected as Base. Using direct mesh conversion."
         )
-        stl = mesh_to_stl(base_objs[0])
+        stl = _mesh_to_stl(base_objs[0])
         if stl is None:
             Path.Log.error("Could not create a valid shape for primary STL generation.")
             return None, None

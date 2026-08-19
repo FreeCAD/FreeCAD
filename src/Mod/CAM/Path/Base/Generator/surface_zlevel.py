@@ -567,7 +567,7 @@ def _get_fused_floor_geometry(shape, start_z, final_z, tolerance=0.001):
 
     def fuse_faces(faces):
         fuse_engine = Path.Area()
-        for i in range(0, len(faces)):
+        for i in range(len(faces)):
             fuse_engine.add(faces[i])
         try:
             result = fuse_engine.getShape()
@@ -689,7 +689,7 @@ def zlevel_hybrid_stack(
     # 1. Initialization
     stack = []
 
-    sub_face = all_prev_comp = None
+    all_prev_comp = None
     tol = 0.0001
     loose_tol = 0.0002
     fill_mask_idx = 0  # Fill holes masks list pointer
@@ -726,9 +726,7 @@ def zlevel_hybrid_stack(
             continue
 
         # Determine the Slice Height (Model Footprint)
-        z_slice = z_target
-        if z_slice < model_bottom:
-            z_slice = model_bottom
+        z_slice = max(z_target, model_bottom)
 
         # The depth at which the tool has submerged from the model_top
         dist_submerged = max(0, model_top - z_slice)

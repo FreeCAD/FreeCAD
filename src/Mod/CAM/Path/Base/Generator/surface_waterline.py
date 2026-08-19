@@ -339,7 +339,7 @@ def waterline_to_gcode(
     # Tolerance (mm) to determine if the next loop starts at the exact same location
     STAY_DOWN_TOLERANCE = 0.01
 
-    for z_height, raw_loops in waterline_data.items():
+    for raw_loops in waterline_data.values():
         # Copy the list so we can pop loops out as we process them
         remaining_loops = list(raw_loops)
 

@@ -878,7 +878,7 @@ def scan_lines_to_gcode(
     if not scan_lines:
         return []
 
-    safe_pdc = last_point = is_multi_pass = kept_down = None
+    safe_pdc = last_point = None
 
     depth_offset = options["depth_offset"]
     optimize_transitions = options["optimize_transitions"]
@@ -928,7 +928,7 @@ def scan_lines_to_gcode(
         if is_multipass:
             min_range = min(50, len(line))
 
-            for i in range(0, min_range):
+            for i in range(min_range):
                 pt = line[i]
                 if pt[2] < current_layer_target - 1e-2:
                     # If the tool drops into the next level, step the tracking bounds down

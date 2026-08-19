@@ -128,7 +128,7 @@ def _offset_area(area, area_offset):
         if offset_area and not offset_area.isNull() and offset_area.Wires:
             return offset_area
         else:
-            Path.Log.warning(f"Area offset failed.")
+            Path.Log.warning("Area offset failed.")
             return None
     except Exception as e:
         Path.Log.warning(f"Area offset failed: {e} .")

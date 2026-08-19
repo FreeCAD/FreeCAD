@@ -244,7 +244,7 @@ def create_boundary_face(
         )
         return None
 
-    outline = True if not avoids else False
+    outline = not avoids
     is_triangulated = _is_triangulated_mesh(model_faces)
 
     if not is_triangulated:
