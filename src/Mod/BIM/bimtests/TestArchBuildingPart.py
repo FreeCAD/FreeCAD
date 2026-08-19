@@ -273,6 +273,30 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.assertIsNotNone(obj, "make2DDrawing failed to create an object")
         self.assertEqual(obj.Label, "Drawing", "Incorrect default label for 2D Drawing")
 
+    def test_drawing_annotation_sources_are_non_owning_and_reusable(self):
+        """Annotation references do not move model objects out of their level."""
+        level = Arch.makeFloor(name="Level")
+        space = Arch.makeSpace(name="Office")
+        level.addObject(space)
+
+        first = Arch.make2DDrawing(name="First Drawing")
+        second = Arch.make2DDrawing(name="Second Drawing")
+        first.AnnotationSources = [space]
+        second.AnnotationSources = [space]
+        self.document.recompute()
+
+        self.assertIn(space, level.Group)
+        self.assertNotIn(space, first.Group)
+        self.assertNotIn(space, second.Group)
+        self.assertEqual(first.AnnotationSources, [space])
+        self.assertEqual(second.AnnotationSources, [space])
+
+        first.AnnotationSources = []
+        self.document.recompute()
+        self.assertEqual(first.AnnotationSources, [])
+        self.assertEqual(second.AnnotationSources, [space])
+        self.assertIn(space, level.Group)
+
     def test_make2DDrawing_uses_base_object_label(self):
         """Test make2DDrawing default label from a base object."""
         operation = "Testing make2DDrawing label with base object..."

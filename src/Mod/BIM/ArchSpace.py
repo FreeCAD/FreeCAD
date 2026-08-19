@@ -182,6 +182,18 @@ ConditioningTypes = [
 AreaCalculationType = ["XY-plane projection", "At Center of Mass"]
 
 
+def _touch_annotation_drawings(obj):
+    """Invalidate drawings that reference an object for its annotation."""
+    for parent in obj.InList:
+        if "AnnotationSources" not in parent.PropertiesList:
+            continue
+        if obj not in parent.AnnotationSources:
+            continue
+        parent.Proxy.svgcache = None
+        parent.Proxy.shapecache = None
+        parent.touch()
+
+
 class _Space(ArchComponent.Component):
     "A space object"
 
@@ -380,6 +392,7 @@ class _Space(ArchComponent.Component):
                     if hasattr(obj.Zone.ViewObject, "Proxy"):
                         if hasattr(obj.Zone.ViewObject.Proxy, "claimChildren"):
                             obj.Zone.ViewObject.Proxy.claimChildren()
+        _touch_annotation_drawings(obj)
         if hasattr(obj, "Area"):
             obj.setEditorMode("Area", 1)
         ArchComponent.Component.onChanged(self, obj, prop)
@@ -874,6 +887,22 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         elif prop == "Transparency":
             if hasattr(vobj, "DisplayMode"):
                 vobj.DisplayMode = "Wireframe" if vobj.Transparency == 100 else "Flat Lines"
+
+        if prop in {
+            "Text",
+            "Decimals",
+            "ShowUnit",
+            "FontName",
+            "FontSize",
+            "FirstLine",
+            "LineSpacing",
+            "TextColor",
+            "TextPosition",
+            "TextAlign",
+            "Visibility",
+            "Transparency",
+        }:
+            _touch_annotation_drawings(vobj.Object)
 
     def setEdit(self, vobj, mode):
         if mode != 0:

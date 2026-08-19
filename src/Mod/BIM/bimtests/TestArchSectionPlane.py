@@ -22,11 +22,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import unittest
+import FreeCAD as App
+
 import Arch
 import ArchSectionPlane
 import Draft
-import os
-import FreeCAD as App
 from bimtests import TestArchBase
 
 
@@ -142,6 +144,11 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         drawing.addObjects([view, cut])
         App.ActiveDocument.recompute()
 
+        self.assertIn(view, drawing.Group)
+        self.assertIn(cut, drawing.Group)
+        self.assertEqual(Draft.getType(view), "Shape2DView")
+        self.assertEqual(Draft.getType(cut), "Shape2DView")
+
         # Create a TD page
         tpath = os.path.join(
             App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
@@ -158,6 +165,41 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         view.Y = "15cm"
         App.ActiveDocument.recompute()
         assert True
+
+    @unittest.skipUnless(App.GuiUp, "Space SVG labels require the FreeCAD GUI")
+    def test_drawing_annotation_source_is_rendered_in_svg(self):
+        """A drawing reference uses the existing Space SVG exporter."""
+        box = self._makeBox()
+        space = Arch.makeSpace(box, name="Office")
+        level = Arch.makeFloor([space], name="Level")
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        svg = Draft.get_svg(
+            drawing,
+            direction=App.Vector(0, 0, 1),
+            techdraw=True,
+        )
+        self.assertIn("Office", svg)
+        self.assertIn(space, level.Group)
+        self.assertNotIn(space, drawing.Group)
+
+    def test_drawing_annotation_sources_feed_section_data(self):
+        """Referenced annotations are inputs without becoming Group children."""
+        box = self._makeBox()
+        space = Arch.makeSpace(box, name="Office")
+        level = Arch.makeFloor([space], name="Level")
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        objects, _cutplane, _only_solids, _clip, _direction = ArchSectionPlane.getSectionData(
+            drawing
+        )
+        self.assertIn(space, objects)
+        self.assertIn(space, level.Group)
+        self.assertNotIn(space, drawing.Group)
 
     def testShape2DViewGeneration(self):
         """Tests Draft_Shape2DView face with hole creation"""
