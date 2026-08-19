@@ -117,13 +117,13 @@ class ObjectDressup:
             "App::PropertyAngle",
             "AngleIn",
             "Path Lead-in",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In"),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "AngleOut",
             "Path Lead-out",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out"),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -612,16 +612,33 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
-        self.radiusIn = QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")
-        self.radiusOut = QuantitySpinBox(self.form.dspRadiusOut, self.obj, "RadiusOut")
-        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn")
-        self.angleOut = QuantitySpinBox(self.form.dspAngleOut, self.obj, "AngleOut")
-        self.extendIn = QuantitySpinBox(self.form.dspExtendIn, self.obj, "ExtendIn")
-        self.extendOut = QuantitySpinBox(self.form.dspExtendOut, self.obj, "ExtendOut")
-        self.offsetIn = QuantitySpinBox(self.form.dspOffsetIn, self.obj, "OffsetIn")
-        self.offsetOut = QuantitySpinBox(self.form.dspOffsetOut, self.obj, "OffsetOut")
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.threshold = QuantitySpinBox(self.form.dspThreshold, self.obj, "RetractThreshold")
+
+        self.radiusIn = QuantitySpinBox(
+            self.form.dspRadiusIn, self.obj, "RadiusIn", setToolTip=True
+        )
+        self.radiusOut = QuantitySpinBox(
+            self.form.dspRadiusOut, self.obj, "RadiusOut", setToolTip=True
+        )
+        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn", setToolTip=True)
+        self.angleOut = QuantitySpinBox(
+            self.form.dspAngleOut, self.obj, "AngleOut", setToolTip=True
+        )
+        self.extendIn = QuantitySpinBox(
+            self.form.dspExtendIn, self.obj, "ExtendIn", setToolTip=True
+        )
+        self.extendOut = QuantitySpinBox(
+            self.form.dspExtendOut, self.obj, "ExtendOut", setToolTip=True
+        )
+        self.offsetIn = QuantitySpinBox(
+            self.form.dspOffsetIn, self.obj, "OffsetIn", setToolTip=True
+        )
+        self.offsetOut = QuantitySpinBox(
+            self.form.dspOffsetOut, self.obj, "OffsetOut", setToolTip=True
+        )
+        self.threshold = QuantitySpinBox(
+            self.form.dspThreshold, self.obj, "RetractThreshold", setToolTip=True
+        )
 
         self.radiusIn.updateWidget()
         self.radiusOut.updateWidget()

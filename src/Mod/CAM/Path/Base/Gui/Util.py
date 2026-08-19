@@ -33,6 +33,7 @@ __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"
 __doc__ = "A collection of helper and utility functions for the CAM GUI."
 
+translate = FreeCAD.Qt.translate
 
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
@@ -119,7 +120,7 @@ class QuantitySpinBox(QtCore.QObject):
             onBeforeChange ... an optional callback being executed before the value of the property is changed
     """
 
-    def __init__(self, widget, obj, prop, onBeforeChange=None):
+    def __init__(self, widget, obj, prop, onBeforeChange=None, setToolTip=False):
         super().__init__()
         Path.Log.track(widget)
         self.widget = widget
@@ -137,6 +138,8 @@ class QuantitySpinBox(QtCore.QObject):
         except AttributeError:
             # Widget may not have this signal
             pass
+        if setToolTip:
+            self.setToolTipWidget()
 
     def onFormulaDialogStateChanged(self, isOpen):
         """
@@ -182,6 +185,13 @@ class QuantitySpinBox(QtCore.QObject):
                 self.valid = False
         else:
             self.valid = False
+
+    def setToolTipWidget(self):
+        """set tooltip from property description"""
+        if self.valid:
+            self.widget.setToolTip(
+                translate("App::Property", self.obj.getDocumentationOfProperty(self.prop))
+            )
 
     def expression(self):
         """returns the expression if one is bound to the property"""
