@@ -80,7 +80,7 @@ public:
     ViewProviderPreviewExtension();
 
     /// Returns shape that should be used as the preview
-    virtual Part::TopoShape getPreviewShape() const;
+    virtual Part::TopoShape getPreviewShape();
 
     void extensionAttach(App::DocumentObject*) override;
     void extensionBeforeDelete() override;
@@ -95,16 +95,30 @@ public:
     /// Switches preview on or off
     virtual void showPreview(bool enable);
 
+    /// Root of the preview scene graph; may be restructured freely by subclasses
+    /// and by Python hooks.
+    SoSeparator* getPreviewRootNode() const
+    {
+        return pcPreviewRoot;
+    }
+
+    /// The node the default implementation feeds with getPreviewShape()
+    SoPreviewShape* getPreviewShapeNode() const
+    {
+        return pcPreviewShape;
+    }
+
+    /// updates preview
+    virtual void updatePreview();
+    /// updates geometry of the preview shape
+    void updatePreviewShape(Part::TopoShape shape, SoPreviewShape* preview);
+
 protected:
     void extensionOnChanged(const App::Property* prop) override;
     void extensionUpdateData(const App::Property* prop) override;
 
     /// attaches preview to the scene graph
     virtual void attachPreview();
-    /// updates preview
-    virtual void updatePreview();
-    /// updates geometry of the preview shape
-    void updatePreviewShape(Part::TopoShape shape, SoPreviewShape* preview);
 
     Gui::CoinPtr<SoSeparator> pcPreviewRoot;
     Gui::CoinPtr<SoPreviewShape> pcPreviewShape;

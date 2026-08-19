@@ -149,6 +149,17 @@ void ViewProviderPreviewExtension::extensionAttach(App::DocumentObject* document
 
     attachPreview();
 
+    if (!freecad_cast<ViewProviderPartExt*>(getExtendedViewProvider())) {
+        Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
+        App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
+
+        Base::Console().userTranslatedNotification(
+            tr("Preview requires a Part-based view provider; none found for %1.")
+                .arg(object ? QString::fromUtf8(object->getFullName().c_str()) : tr("unknown object"))
+                .toUtf8()
+        );
+    }
+
     auto document = documentObject->getDocument();
     if (!document->testStatus(App::Document::Restoring)) {
         updatePreview();
@@ -234,7 +245,7 @@ void ViewProviderPreviewExtension::extensionUpdateData(const App::Property* prop
     ViewProviderExtension::extensionUpdateData(prop);
 }
 
-Part::TopoShape ViewProviderPreviewExtension::getPreviewShape() const
+Part::TopoShape ViewProviderPreviewExtension::getPreviewShape()
 {
     const Gui::ViewProviderDocumentObject* viewProvider = getExtendedViewProvider();
     const App::DocumentObject* object = viewProvider ? viewProvider->getObject() : nullptr;
