@@ -399,6 +399,11 @@ protected:
         const Base::Vector2d& Pos,
         AutoConstraint::TargetType type
     );
+    void seekPointAlignmentAutoConstraint(
+        std::vector<AutoConstraint>& constraints,
+        const Base::Vector2d& Pos,
+        AutoConstraint::TargetType type
+    );
 
     void resetLineExtensionAutoConstraintHint();
     void renderLineExtensionAutoConstraintHint() const;
