@@ -806,6 +806,39 @@ TEST_F(CrashReporterTests, clearBeforeScanDoesNothing)  // NOLINT
     Base::CrashReporter::Manager::clear();  // Doesn't crash, throw, etc.
 }
 
+TEST_F(CrashReporterTests, scanSetsOSVersionWhenPresent)  // NOLINT
+{
+    // Arrange
+    const auto buffer = createGoodCrashReport();
+    placeReport(tempDir.path(), 1700000000, 1234, buffer);
+
+    // Act
+    Base::CrashReporter::Manager::scan(tempDir.string(), {}, "The best version");
+    const auto& reports = Base::CrashReporter::Manager::reports();
+    ASSERT_EQ(reports.size(), 1U);
+
+    // Assert
+    const auto osVersion = reports.at(0).osVersion;
+    EXPECT_EQ(osVersion, "The best version");
+}
+
+TEST_F(CrashReporterTests, scanDoesNotSetOSVersionWhenNotPresent)  // NOLINT
+{
+    // Arrange
+    const auto buffer = createGoodCrashReport();
+    placeReport(tempDir.path(), 1700000000, 1234, buffer);
+
+    // Act
+    Base::CrashReporter::Manager::
+        scan(tempDir.string(), {} /*, No version string set here: defaults to an empty optional*/);
+    const auto& reports = Base::CrashReporter::Manager::reports();
+    ASSERT_EQ(reports.size(), 1U);
+
+    // Assert
+    const auto osVersion = reports.at(0).osVersion;
+    EXPECT_FALSE(osVersion.has_value());
+}
+
 
 namespace
 {
@@ -956,18 +989,18 @@ TEST_F(CrashReporterTests, retentionDeletesCompanionDump)  // NOLINT
     EXPECT_FALSE(archivedDumpExists(tempDir.path(), now - (200 * secondsPerDay), 1236));
 }
 
-TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsFalseForCodeWithoutAddress)
+TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsFalseForCodeWithoutAddress)  // NOLINT
 {
     EXPECT_FALSE(Base::CrashReporter::faultAddressIsMeaningful(syntheticFaultCodeWithoutAddress()));
 }
 
-TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsTrueForCodeWithAddress)
+TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsTrueForCodeWithAddress)  // NOLINT
 {
     // Spot check (don't bother with an exhaustive test, it's tautological)
     EXPECT_TRUE(Base::CrashReporter::faultAddressIsMeaningful(syntheticFaultCodeWithAddress()));
 }
 
-TEST_F(CrashReporterTests, describeFaultCodeGivesValidResultForValidCode)
+TEST_F(CrashReporterTests, describeFaultCodeGivesValidResultForValidCode)  // NOLINT
 {
     // Spot check (don't bother with an exhaustive test, it's tautological)
     auto description = Base::CrashReporter::describeFaultCode(syntheticFaultCodeWithAddress());
@@ -975,7 +1008,7 @@ TEST_F(CrashReporterTests, describeFaultCodeGivesValidResultForValidCode)
     EXPECT_FALSE(description->name.empty());
 }
 
-TEST_F(CrashReporterTests, describeFaultCodeGivesNulloptForBadCode)
+TEST_F(CrashReporterTests, describeFaultCodeGivesNulloptForBadCode)  // NOLINT
 {
     auto description = Base::CrashReporter::describeFaultCode(
         std::numeric_limits<std::uint32_t>::max()

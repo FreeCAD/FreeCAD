@@ -70,7 +70,12 @@ struct ParsedCrashReport
     std::optional<std::string> minidumpPath {};
 
     OS osID = OS::None;
+
+    // Note that osVersion is always going to be the *reading* version, not the *crashing* version:
+    // the code to get the version can't be run async-signal-safe during a crash, so some tiny
+    // percentage of the time (an OS upgrade between the crash and the reload) this will be wrong.
     std::optional<std::string> osVersion {};
+
     Architecture architectureID = Architecture::None;
 
     std::uint8_t freecadVersionMajor = 0;

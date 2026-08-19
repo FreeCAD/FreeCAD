@@ -57,8 +57,14 @@ public:
      *
      * @param crashReportDirectory The path to the new crash reports
      * @param policy A report retention policy that overrides the defaults (optional)
+     * @param osVersion A string description of the version of the current operating system version:
+     * passed in here so that nothing in Base needs to be able to access that information.
      */
-    static void scan(const std::string& crashReportDirectory, RetentionPolicy policy = {});
+    static void scan(
+        const std::string& crashReportDirectory,
+        RetentionPolicy policy = {},
+        const std::string& osVersion = {}
+    );
 
     /**
      * Get the reports that were discovered by the last run of `scan()`.

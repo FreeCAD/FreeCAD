@@ -3008,7 +3008,10 @@ void Application::initCrashReporter()
         const std::string crashReportsDirectory {getUserAppDataDir() + "CrashReports"};
         Base::CrashReporter::Writer::prewarm();
         Base::CrashReporter::Writer::install(crashReportsDirectory);
-        Base::CrashReporter::Manager::scan(crashReportsDirectory);
+        Base::CrashReporter::Manager::scan(
+            crashReportsDirectory,
+            {},
+            App::ProgramInformation::prettyProductInfoWrapper());
     } catch (Base::Exception &e) {
         Base::Console().warning("Crash reporting failed during startup:\n%s\n", e.getMessage());
     } catch (std::exception &e) {

@@ -198,8 +198,7 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
     parsedReport.buildID = extractStringFromTable(stringTable, header.buildIDStringOffset);
     parsedReport.minidumpPath = extractStringFromTable(stringTable, header.minidumpPathStringOffset);
 
-    // parsedReport.osVersion = Set by App-level consumer at report-submission, Base has no easy
-    // access to OS information
+    // parsedReport.osVersion = Set by the manager, which is called from App (which has this info)
     parsedReport.osID = header.osID;
     parsedReport.architectureID = header.architectureID;
 
