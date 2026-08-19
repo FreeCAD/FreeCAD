@@ -1578,7 +1578,8 @@ if FreeCAD.GuiUp:
                     self.obj_to_edit.ViewObject.Selectable = self._old_selectable
 
             FreeCAD.activeDraftCommand = None
-            FreeCADGui.Snapper.off()
+            if hasattr(FreeCADGui, "Snapper"):
+                FreeCADGui.Snapper.off()
             self.update_hints()
 
         def get_hints(self):
