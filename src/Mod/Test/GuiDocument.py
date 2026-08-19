@@ -116,6 +116,32 @@ class TestGuiDocument(unittest.TestCase):
         expected_root_objects = [group1, group2, obj1, part1]
         self.assertEqual(set(root_objects), set(expected_root_objects))
 
+    def testGroupCommandAddsSelectedObjects(self):
+        first = self.doc.addObject("App::FeaturePython", "First")
+        second = self.doc.addObject("App::FeaturePython", "Second")
+        FreeCADGui.Selection.clearSelection()
+        self.addCleanup(FreeCADGui.Selection.clearSelection)
+        FreeCADGui.Selection.addSelection(first)
+        FreeCADGui.Selection.addSelection(second)
+
+        FreeCADGui.runCommand("Std_Group", 0)
+
+        group = self.doc.getObject("Group")
+        self.assertIsNotNone(group)
+        self.assertCountEqual(group.Group, [first, second])
+
+    def testGroupCommandAddsSingleSelectedObject(self):
+        selected = self.doc.addObject("App::FeaturePython", "Selected")
+        FreeCADGui.Selection.clearSelection()
+        self.addCleanup(FreeCADGui.Selection.clearSelection)
+        FreeCADGui.Selection.addSelection(selected)
+
+        FreeCADGui.runCommand("Std_Group", 0)
+
+        group = self.doc.getObject("Group")
+        self.assertIsNotNone(group)
+        self.assertEqual(group.Group, [selected])
+
     def testIssue30418(self):
         class ViewProvider:
             def __init__(self, vobj):

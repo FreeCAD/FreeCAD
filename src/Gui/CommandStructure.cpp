@@ -132,7 +132,7 @@ StdCmdGroup::StdCmdGroup()
     sToolTipText = QT_TR_NOOP(
         "Creates a group, which is a general-purpose container to group objects in the "
         "tree view, regardless of their data type. It is a simple folder to organize "
-        "the objects in a model."
+        "the objects in a model. Selected objects are added to the new group."
     );
     sWhatsThis = "Std_Group";
     sStatusTip = sToolTipText;
@@ -144,6 +144,7 @@ void StdCmdGroup::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Add a group"));
+    doCommand(Doc, "selected_objects = Gui.Selection.getSelection(App.activeDocument().Name)");
 
     std::string GroupName;
     GroupName = getUniqueObjectName("Group");
@@ -175,6 +176,14 @@ void StdCmdGroup::activated(int iMsg)
             }
         }
     }  // if we have no active object, group will be added to root doc
+
+    doCommand(
+        Doc,
+        "for obj in selected_objects:\n"
+        "    contains_group = hasattr(obj, 'hasObject') and obj.hasObject(group, True)\n"
+        "    if obj != group and not contains_group and group.allowObject(obj):\n"
+        "        group.addObject(obj)"
+    );
 
     commitCommand();
 
