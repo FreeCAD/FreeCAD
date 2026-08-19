@@ -2443,7 +2443,7 @@ CmdPartDesignPathPattern::CmdPartDesignPathPattern()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Path Pattern");
-    sToolTipText = QT_TR_NOOP("Duplicates the selected features or active body along a path");
+    sToolTipText = QT_TR_NOOP("Duplicates the selected features or the active body along a path");
     sWhatsThis = "PartDesign_PathPattern";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_PathPattern";
@@ -2481,7 +2481,7 @@ CmdPartDesignPointPattern::CmdPartDesignPointPattern()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Point Pattern");
-    sToolTipText = QT_TR_NOOP("Duplicates the selected features or active body at points from a shape");
+    sToolTipText = QT_TR_NOOP("Duplicates the selected features or the active body at points from a shape");
     sWhatsThis = "PartDesign_PointPattern";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_PointPattern";

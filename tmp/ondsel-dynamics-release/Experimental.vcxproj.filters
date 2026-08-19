@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Pierre\Desktop\freecad-src\tmp\ondsel-dynamics-release\CMakeFiles\8924dc4a643d48f95fa29c872b667cc8\Experimental.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Pierre\Desktop\freecad-src\src\3rdParty\OndselSolver\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Pierre\Desktop\freecad-src\tmp\ondsel-dynamics-release\CMakeFiles\Experimental" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2788D8DA-C365-3DF8-A7FD-4998BAC90015}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

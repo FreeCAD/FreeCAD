@@ -24,10 +24,13 @@
 #include "LinkArrayLinear.h"
 
 #include <optional>
+#include <algorithm>
 
 #include <App/Document.h>
 #include <App/Datums.h>
 #include <App/PropertyLinks.h>
+#include <App/SuppressibleExtension.h>
+#include <Base/Tools.h>
 #include <Precision.hxx>
 #include <gp_Trsf.hxx>
 
@@ -38,13 +41,113 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(Part::LinkArrayLinear, Part::LinkArray)
 LinkArrayLinear::LinkArrayLinear()
 {
     Part::LinearPatternExtension::initExtension(this);
+    ADD_PROPERTY_TYPE(
+        GeneratedOccurrences2,
+        (0),
+        "Pattern",
+        static_cast<App::PropertyType>(App::Prop_Hidden | App::Prop_ReadOnly | App::Prop_Output),
+        "Second-direction occurrence count used to generate the current elements"
+    );
     setDirectionLinkScopes();
+}
+
+App::DocumentObjectExecReturn* LinkArrayLinear::execute()
+{
+    Base::StateLocker guard(syncingSuppression);
+    auto* result = inherited::execute();
+    applyElementSuppression();
+    return result;
+}
+
+void LinkArrayLinear::connectElementSuppression()
+{
+    suppressionConnections.clear();
+    const auto& elements = ElementList.getValues();
+    for (size_t i = 0; i < elements.size(); ++i) {
+        if (!elements[i]) {
+            continue;
+        }
+        suppressionConnections.emplace_back(elements[i]->signalChanged.connect(
+            [this, i](const App::DocumentObject& obj, const App::Property& prop) {
+                if (syncingSuppression || isRestoring()
+                    || (getDocument() && getDocument()->isPerformingTransaction())) {
+                    return;
+                }
+                const auto* suppressible = obj.getExtensionByType<App::SuppressibleExtension>(true);
+                if (!suppressible || &prop != &suppressible->Suppressed) {
+                    return;
+                }
+                const auto stride = static_cast<size_t>(std::max(1L, GeneratedOccurrences2.getValue())
+                );
+                setPositionSuppressed(
+                    Base::Vector3d(i / stride, i % stride, 0),
+                    suppressible->Suppressed.getValue()
+                );
+            }
+        ));
+    }
+}
+
+void LinkArrayLinear::restoreElementSuppression()
+{
+    // Legacy files only store Suppressed on the generated links.
+    if (GeneratedOccurrences2.getValue() == 0) {
+        GeneratedOccurrences2.setValue(Occurrences2.getValue());
+        const auto& elements = ElementList.getValues();
+        for (size_t i = 0; i < elements.size(); ++i) {
+            const auto* suppressible = elements[i]
+                ? elements[i]->getExtensionByType<App::SuppressibleExtension>(true)
+                : nullptr;
+            if (suppressible && suppressible->Suppressed.getValue()) {
+                setInstanceSuppressed(static_cast<long>(i), true);
+            }
+        }
+    }
+    connectElementSuppression();
+}
+
+void LinkArrayLinear::applyElementSuppression()
+{
+    Base::StateLocker guard(syncingSuppression);
+    const auto& positions = SuppressedPositions.getValues();
+    const auto& elements = ElementList.getValues();
+    const auto stride = static_cast<size_t>(std::max(1L, GeneratedOccurrences2.getValue()));
+    for (size_t i = 0; i < elements.size(); ++i) {
+        auto* suppressible = elements[i]
+            ? elements[i]->getExtensionByType<App::SuppressibleExtension>(true)
+            : nullptr;
+        if (!suppressible) {
+            continue;
+        }
+        const Base::Vector3d position(i / stride, i % stride, 0);
+        const bool suppressed = std::ranges::find(positions, position) != positions.end();
+        if (suppressible->Suppressed.getValue() != suppressed) {
+            suppressible->Suppressed.setValue(suppressed);
+        }
+    }
+}
+
+void LinkArrayLinear::onChanged(const App::Property* prop)
+{
+    inherited::onChanged(prop);
+    if (isRestoring()) {
+        return;
+    }
+    if (prop == &ElementList) {
+        connectElementSuppression();
+    }
+    else if (prop == &SuppressedPositions && !syncingSuppression
+             && !(getDocument() && getDocument()->isPerformingTransaction())) {
+        applyElementSuppression();
+    }
 }
 
 void LinkArrayLinear::onDocumentRestored()
 {
     inherited::onDocumentRestored();
     setDirectionLinkScopes();
+    Base::StateLocker guard(syncingSuppression);
+    restoreElementSuppression();
 }
 
 void LinkArrayLinear::setDirectionLinkScopes()
@@ -164,7 +267,11 @@ std::vector<Base::Placement> LinkArrayLinear::getElementPlacements()
         }
     }
 
-    return placementsFromTransforms(transformations);
+    auto placements = placementsFromTransforms(transformations);
+    if (GeneratedOccurrences2.getValue() != occurrences2) {
+        GeneratedOccurrences2.setValue(occurrences2);
+    }
+    return placements;
 }
 
 gp_Vec LinkArrayLinear::calculateOffsetVectorWithDefault(LinearPatternDirection dir) const

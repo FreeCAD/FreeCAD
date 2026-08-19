@@ -42,6 +42,11 @@ class PartDesignExport LinearPattern: public PartDesign::Transformed,
 public:
     LinearPattern();
 
+    bool isTransformationSuppressed(int index) const override;
+    void setTransformationSuppressed(int index, bool suppressed) override;
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
+
     // Virtual override to support PartDesign datum objects
     gp_Dir getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const override;
 
@@ -76,6 +81,11 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
+
+private:
+    void importSuppressedIndices();
+    void updateSuppressedIndices();
+    bool syncingSuppression = false;
 };
 
 }  // namespace PartDesign

@@ -23,6 +23,9 @@
    </item>
    <item row="0" column="1">
     <widget class="QPushButton" name="linkedObjectButton">
+     <property name="text">
+      <string>Select Object</string>
+     </property>
      <property name="checkable">
       <bool>true</bool>
      </property>

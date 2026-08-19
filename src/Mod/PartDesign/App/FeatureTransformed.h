@@ -88,7 +88,8 @@ public:
         return std::list<gp_Trsf>();  // Default method
     }
 
-    bool isTransformationSuppressed(int index) const;
+    virtual bool isTransformationSuppressed(int index) const;
+    virtual void setTransformationSuppressed(int index, bool suppressed);
     const std::list<gp_Trsf> getFilteredTransformations(
         const std::vector<App::DocumentObject*> originals
     );

@@ -39,11 +39,21 @@ public:
 
     gp_Dir getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const override;
     void onDocumentRestored() override;
+    App::DocumentObjectExecReturn* execute() override;
 
 protected:
+    void onChanged(const App::Property* prop) override;
     std::vector<Base::Placement> getElementPlacements() override;
 
 private:
+    // The stride of the existing elements may differ from Occurrences2 until recompute.
+    App::PropertyInteger GeneratedOccurrences2;
+    bool syncingSuppression = false;
+    std::vector<fastsignals::scoped_connection> suppressionConnections;
+
+    void connectElementSuppression();
+    void restoreElementSuppression();
+    void applyElementSuppression();
     gp_Vec calculateOffsetVectorWithDefault(LinearPatternDirection dir) const;
     void setDirectionLinkScopes();
 };

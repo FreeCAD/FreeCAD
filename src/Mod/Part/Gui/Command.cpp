@@ -2631,7 +2631,7 @@ CmdPartLinkArrayCircular::CmdPartLinkArrayCircular()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Circular Link Array");
-    sToolTipText = QT_TR_NOOP("Creates concentric circular arrays of linked objects");
+    sToolTipText = QT_TR_NOOP("Creates a concentric circular array of linked objects");
     sWhatsThis = "Part_LinkArrayCircular";
     sStatusTip = sToolTipText;
     sPixmap = "Part_CircularLinkArray";
@@ -2644,7 +2644,7 @@ void CmdPartLinkArrayCircular::activated(int iMsg)
 
     activateLinkArrayCommand(
         *this,
-        QT_TRANSLATE_NOOP("Command", "Create circular link array"),
+        QT_TRANSLATE_NOOP("Command", "Circular Link Array"),
         "Part::LinkArrayCircular",
         "CircularLinkArray",
         PartGui::showLinkArrayCircularTask
@@ -2667,7 +2667,7 @@ CmdPartLinkArrayPath::CmdPartLinkArrayPath()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Path Link Array");
-    sToolTipText = QT_TR_NOOP("Creates linked copies distributed along a path");
+    sToolTipText = QT_TR_NOOP("Creates an array of linked objects along a path");
     sWhatsThis = "Part_LinkArrayPath";
     sStatusTip = sToolTipText;
     sPixmap = "Part_PathLinkArray";
@@ -2680,7 +2680,7 @@ void CmdPartLinkArrayPath::activated(int iMsg)
 
     activateLinkArrayCommand(
         *this,
-        QT_TRANSLATE_NOOP("Command", "Create path link array"),
+        QT_TRANSLATE_NOOP("Command", "Path Link Array"),
         "Part::LinkArrayPath",
         "PathLinkArray",
         PartGui::showLinkArrayPathTask
@@ -2703,7 +2703,7 @@ CmdPartLinkArrayPoint::CmdPartLinkArrayPoint()
     sAppModule = "Part";
     sGroup = QT_TR_NOOP("Part");
     sMenuText = QT_TR_NOOP("Point Link Array");
-    sToolTipText = QT_TR_NOOP("Creates linked copies at every point of a sketch or shape");
+    sToolTipText = QT_TR_NOOP("Creates an array of linked objects at each point of a sketch or shape");
     sWhatsThis = "Part_LinkArrayPoint";
     sStatusTip = sToolTipText;
     sPixmap = "Part_PointLinkArray";
@@ -2716,7 +2716,7 @@ void CmdPartLinkArrayPoint::activated(int iMsg)
 
     activateLinkArrayCommand(
         *this,
-        QT_TRANSLATE_NOOP("Command", "Create point link array"),
+        QT_TRANSLATE_NOOP("Command", "Point Link Array"),
         "Part::LinkArrayPoint",
         "PointLinkArray",
         PartGui::showLinkArrayPointTask
@@ -2752,7 +2752,7 @@ void CmdPartLinkArrayLinear::activated(int iMsg)
 
     activateLinkArrayCommand(
         *this,
-        QT_TRANSLATE_NOOP("Command", "Create linear link array"),
+        QT_TRANSLATE_NOOP("Command", "Linear Link Array"),
         "Part::LinkArrayLinear",
         "LinearLinkArray",
         PartGui::showLinkArrayLinearTask
@@ -2788,7 +2788,7 @@ void CmdPartLinkArrayPolar::activated(int iMsg)
 
     activateLinkArrayCommand(
         *this,
-        QT_TRANSLATE_NOOP("Command", "Create polar link array"),
+        QT_TRANSLATE_NOOP("Command", "Polar Link Array"),
         "Part::LinkArrayPolar",
         "PolarLinkArray",
         PartGui::showLinkArrayPolarTask

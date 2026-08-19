@@ -376,12 +376,12 @@ void TaskLinkArrayParameters::setupLinkedObjectButton()
 void TaskLinkArrayParameters::updateLinkedObjectButton()
 {
     if (linkedObjectSelectionMode) {
-        ui->linkedObjectButton->setText(translate("Selecting"));
+        ui->linkedObjectButton->setText(translate("Selecting…"));
         return;
     }
 
     App::DocumentObject* linked = getSelectedLinkedObject();
-    ui->linkedObjectButton->setText(linked ? objectLabel(linked) : translate("None"));
+    ui->linkedObjectButton->setText(linked ? objectLabel(linked) : translate("Select Object"));
 }
 
 void TaskLinkArrayParameters::enterLinkedObjectSelectionMode()
@@ -878,7 +878,7 @@ bool TaskLinkArrayParameters::accept()
     try {
         App::DocumentObject* linked = getSelectedLinkedObject();
         if (!linked) {
-            QMessageBox::warning(this, translate("Input error"), translate("Select an object to link."));
+            QMessageBox::warning(this, translate("Input Error"), translate("Select an object to link."));
             return false;
         }
 
@@ -893,7 +893,7 @@ bool TaskLinkArrayParameters::accept()
         array->getDocument()->abortTransaction();
         QMessageBox::warning(
             this,
-            translate("Input error"),
+            translate("Input Error"),
             QCoreApplication::translate("Exception", e.what())
         );
         return false;

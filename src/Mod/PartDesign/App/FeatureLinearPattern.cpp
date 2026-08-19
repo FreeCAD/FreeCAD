@@ -23,6 +23,8 @@
  ******************************************************************************/
 
 #include <limits>
+#include <algorithm>
+#include <cmath>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -33,7 +35,9 @@
 #include <TopoDS_Face.hxx>
 
 #include <App/Datums.h>
+#include <App/Document.h>
 #include <Base/Axis.h>
+#include <Base/Tools.h>
 #include <Mod/Part/App/Tools.h>
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/Part2DObject.h>
@@ -53,6 +57,76 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::LinearPattern, PartDesign::Transform
 LinearPattern::LinearPattern()
 {
     Part::LinearPatternExtension::initExtension(this);
+    SuppressedIndices.setStatus(App::Property::Hidden, true);
+}
+
+bool LinearPattern::isTransformationSuppressed(int index) const
+{
+    return isInstanceSuppressed(index);
+}
+
+void LinearPattern::setTransformationSuppressed(int index, bool suppressed)
+{
+    setInstanceSuppressed(index, suppressed);
+}
+
+void LinearPattern::importSuppressedIndices()
+{
+    std::vector<Base::Vector3d> positions;
+    for (long index : SuppressedIndices.getValues()) {
+        if (index >= 0) {
+            positions.push_back(getInstancePosition(index));
+        }
+    }
+    SuppressedPositions.setValues(positions);
+}
+
+void LinearPattern::updateSuppressedIndices()
+{
+    // Keep the legacy Python property as a projection onto the current grid.
+    std::vector<long> indices;
+    for (const auto& position : SuppressedPositions.getValues()) {
+        if (position.x >= 0 && position.x < Occurrences.getValue() && position.y >= 0
+            && position.y < Occurrences2.getValue() && position.x == std::floor(position.x)
+            && position.y == std::floor(position.y) && position.z == 0) {
+            const double index = position.x * Occurrences2.getValue() + position.y;
+            if (index <= std::numeric_limits<long>::max()) {
+                indices.push_back(static_cast<long>(index));
+            }
+        }
+    }
+    std::ranges::sort(indices);
+    indices.erase(std::unique(indices.begin(), indices.end()), indices.end());
+    if (indices != SuppressedIndices.getValues()) {
+        SuppressedIndices.setValues(indices);
+    }
+}
+
+void LinearPattern::onChanged(const App::Property* prop)
+{
+    if (!syncingSuppression && !isRestoring()
+        && !(getDocument() && getDocument()->isPerformingTransaction())) {
+        Base::StateLocker guard(syncingSuppression);
+        if (prop == &SuppressedIndices) {
+            importSuppressedIndices();
+        }
+        else if (prop == &SuppressedPositions || prop == &Occurrences || prop == &Occurrences2) {
+            updateSuppressedIndices();
+        }
+    }
+    Transformed::onChanged(prop);
+}
+
+void LinearPattern::onDocumentRestored()
+{
+    Transformed::onDocumentRestored();
+    Base::StateLocker guard(syncingSuppression);
+    // Older documents only contain flat indices. All occurrence properties are restored now.
+    if (SuppressedPositions.getSize() == 0 && SuppressedIndices.getSize() != 0) {
+        importSuppressedIndices();
+    }
+    updateSuppressedIndices();
+    SuppressedIndices.setStatus(App::Property::Hidden, true);
 }
 
 gp_Dir LinearPattern::getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const

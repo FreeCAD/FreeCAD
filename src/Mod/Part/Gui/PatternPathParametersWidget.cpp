@@ -141,7 +141,7 @@ void PatternPathParametersWidget::getPath(
 void PatternPathParametersWidget::updatePathButton()
 {
     if (!pathProperty || !pathProperty->getValue()) {
-        ui->pathButton->setText(tr("Select path…"));
+        ui->pathButton->setText(tr("Select Path"));
         return;
     }
 
@@ -153,7 +153,7 @@ void PatternPathParametersWidget::updatePathButton()
     if (!subnames.empty()) {
         text += QStringLiteral(" : %1").arg(QString::fromStdString(subnames.front()));
         if (subnames.size() > 1) {
-            text += tr(" (+%1)").arg(subnames.size() - 1);
+            text += QStringLiteral(" ") + tr("(+%1)").arg(subnames.size() - 1);
         }
     }
     ui->pathButton->setText(text);
