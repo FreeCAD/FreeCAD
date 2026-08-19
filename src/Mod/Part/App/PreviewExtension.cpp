@@ -45,6 +45,18 @@ App::DocumentObjectExecReturn* PreviewExtensionPythonT<ExtensionT>::recomputePre
     return ExtensionT::recomputePreview();
 }
 
+template<typename ExtensionT>
+bool PreviewExtensionPythonT<ExtensionT>::mustRecomputePreview()
+{
+    EXTENSION_PROXY_NOARG(mustRecomputePreview)
+
+    if (result.isBoolean()) {
+        return Py::Boolean(result);
+    }
+
+    return ExtensionT::mustRecomputePreview();
+}
+
 template class PartExport PreviewExtensionPythonT<PreviewExtension>;
 
 }  // namespace Part
@@ -79,7 +91,7 @@ void Part::PreviewExtension::invalidatePreview()
     _isPreviewFresh = false;
 }
 
-bool Part::PreviewExtension::mustRecomputePreview() const
+bool Part::PreviewExtension::mustRecomputePreview()
 {
     return getExtendedObject()->mustRecompute();
 }
