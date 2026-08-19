@@ -6995,7 +6995,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
                 std::vector<int> nGeoId3;
                 std::vector<PointPos> nPosId3;
-                const int found = Obj->getConnectedPoints(GeoId1, GeoId2, nGeoId3, nPosId3);
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3);
 
                 if (found > 1) {  // too many intersection points
                     Gui::TranslatedUserWarning(
@@ -7229,7 +7229,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
             if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
                 std::vector<int> nGeoId3;
                 std::vector<PointPos> nPosId3;
-                const int found = Obj->getConnectedPoints(GeoId1, GeoId2, nGeoId3, nPosId3);
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3);
 
                 if (found > 1) {  // too many intersection points
                     Gui::TranslatedUserWarning(

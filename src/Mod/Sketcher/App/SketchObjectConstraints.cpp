@@ -2196,7 +2196,7 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
     return false;
 }
 
-int SketchObject::getConnectedPoints(
+int SketchObject::getDirectlyCoincidentPoints(
     const int GeoId1,
     const int GeoId2,
     std::vector<int>& GeoId3,

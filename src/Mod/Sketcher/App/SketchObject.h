@@ -672,7 +672,7 @@ public:
 
     /// retrieves all points that connect GeoId1 and GeoId2 using a Coincident or PointOnObject
     /// constraint
-    int getConnectedPoints(
+    int getDirectlyCoincidentPoints(
         const int GeoId1,
         const int GeoId2,
         std::vector<int>& GeoId3,
