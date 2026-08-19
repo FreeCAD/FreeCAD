@@ -202,12 +202,12 @@ void Manager::enforceRetention(RetentionPolicy policy)
     }
 }
 
-std::pair<std::string, std::string> Manager::archiveFile(
+std::pair<std::string, std::optional<std::string>> Manager::archiveFile(
     const std::string& fcrashPath,
-    const std::string& dumpPath
+    const std::optional<std::string>& dumpPath
 )
 {
-    std::pair<std::string, std::string> newPaths {fcrashPath, dumpPath};
+    std::pair<std::string, std::optional<std::string>> newPaths {fcrashPath, dumpPath};
     auto archivePath = getArchive();
     if (!archivePath.exists()) {
         if (!archivePath.createDirectories()) {
@@ -219,8 +219,8 @@ std::pair<std::string, std::string> Manager::archiveFile(
         fcrashInfo.renameFile((archiveBase + "/" + fcrashInfo.fileName()).c_str());
         newPaths.first = fcrashInfo.filePath();
     }
-    if (!dumpPath.empty()) {
-        if (FileInfo dmpInfo {dumpPath}; dmpInfo.exists()) {
+    if (dumpPath.has_value() && !dumpPath.value().empty()) {
+        if (FileInfo dmpInfo {dumpPath.value()}; dmpInfo.exists()) {
             dmpInfo.renameFile((archiveBase + "/" + dmpInfo.fileName()).c_str());
             newPaths.second = dmpInfo.filePath();
         }

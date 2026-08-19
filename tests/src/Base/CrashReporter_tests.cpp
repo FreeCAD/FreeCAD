@@ -4,6 +4,7 @@
 
 #include <gtest/gtest.h>
 
+#include <Base/CrashReporter/FaultCodes.h>
 #include <Base/CrashReporter/Reader.h>
 #include <Base/CrashReporter/Writer.h>
 #include <Base/CrashReporter/Manager.h>
@@ -14,7 +15,13 @@
 #include <cstring>  // IWYU pragma: keep
 #include <fstream>
 
-#ifdef _MSC_VER
+#ifdef FC_OS_WIN32
+# ifndef WIN32_LEAN_AND_MEAN
+#  define WIN32_LEAN_AND_MEAN
+# endif
+# ifndef NOMINMAX
+#  define NOMINMAX
+# endif
 # include <windows.h>
 # include <cstdlib>  // IWYU pragma: keep
 # include <Base/CrashReporter/WindowsCrashReporter.h>
@@ -23,15 +30,34 @@
 # include <sys/resource.h>
 #endif
 
-/// Whether this is a fault code that carries a faulting data address, on the platform this test
-/// binary was built for. These are the only codes for which the Writer can populate one. POSIX
-/// has two: an unmapped access is reported as SIGBUS rather than SIGSEGV on some platforms.
+/// For tests that need a fault that specifically contains an address
+constexpr std::uint32_t syntheticFaultCodeWithAddress()
+{
+#ifdef FC_OS_WIN32
+    return EXCEPTION_ACCESS_VIOLATION;
+#else
+    return SIGSEGV;
+#endif
+}
+
+/// The reverse of the above: a code that does *not* contain an address
+constexpr std::uint32_t syntheticFaultCodeWithoutAddress()
+{
+#ifdef FC_OS_WIN32
+    return EXCEPTION_STACK_OVERFLOW;
+#else
+    return SIGABRT;
+#endif
+}
+
+/// A check for the above: not general, specific to this test suite -- all tests below use this set
+/// of three utility methods to manage this bit of machinery.
 constexpr bool isAddressCarryingFaultCode(std::uint32_t code)
 {
 #ifdef FC_OS_WIN32
-    return code == EXCEPTION_ACCESS_VIOLATION;
+    return code == syntheticFaultCodeWithAddress();
 #else
-    return code == SIGSEGV || code == SIGBUS;
+    return code == syntheticFaultCodeWithAddress() || code == SIGBUS;
 #endif
 }
 
@@ -40,7 +66,9 @@ constexpr bool isAddressCarryingFaultCode(std::uint32_t code)
 class CrashReporterTests: public testing::Test
 {
 public:
-    static std::vector<char> createGoodCrashReport();
+    static std::vector<char> createGoodCrashReport(
+        std::uint32_t faultCode = syntheticFaultCodeWithAddress()
+    );
 
     /// Sometimes we need a name that can actually be parsed (for example, to test `scan()`). This
     /// creates an on-disk file with a name that the code internals can parse.
@@ -59,10 +87,10 @@ public:
         bool withDump = false
     );
 
-    /// Check for existence of archived fcrash with this timestamp and PID
+    /// Check for the existence of archived fcrash with this timestamp and PID
     static bool archivedFcrashExists(const std::filesystem::path& dir, std::int64_t ts, int pid);
 
-    /// Check for existence of archived minidump with this timestamp and PID
+    /// Check for the existence of archived minidump with this timestamp and PID
     static bool archivedDumpExists(const std::filesystem::path& dir, std::int64_t ts, int pid);
 
 protected:
@@ -79,20 +107,31 @@ uint32_t addStringToTable(std::vector<char>& stringTable, const std::string& str
     return offset;
 }
 
-std::vector<char> CrashReporterTests::createGoodCrashReport()
+std::vector<char> CrashReporterTests::createGoodCrashReport(std::uint32_t faultCode)
 {
     std::vector<char> buffer;
 
     Base::CrashReporter::Header header;
+
+    // Always planted, whatever the fault code
     header.faultAddress = 0xDEADBEEFCAFEF00D;
+
     header.threadID = 0x1122334455667788;
     header.timestamp = 1700000000;
     header.processID = 0xABCD;
-    header.code = 11;  // SIGSEGV
+    header.code = faultCode;
     header.freecadVersionMajor = 5;
     header.freecadVersionMinor = 6;
     header.freecadVersionPatch = 7;
+#ifdef FC_OS_MACOSX
+    header.osID = Base::CrashReporter::OS::macOS;
+#elif defined(FC_OS_WIN32)
     header.osID = Base::CrashReporter::OS::Windows;
+#elif defined(FC_OS_LINUX)
+    header.osID = Base::CrashReporter::OS::Linux;
+#elif defined(FC_OS_BSD)
+    header.osID = Base::CrashReporter::OS::BSDFamily;
+#endif
     header.architectureID = Base::CrashReporter::Architecture::x64;
 
     std::vector<char> stringTable;
@@ -101,7 +140,6 @@ std::vector<char> CrashReporterTests::createGoodCrashReport()
 #else
     header.buildIDStringOffset = addStringToTable(stringTable, "R43210");
 #endif
-    header.exceptionMessageStringOffset = addStringToTable(stringTable, "A bad thing happened");
     header.freecadVersionSuffixStringOffset = addStringToTable(stringTable, "dev");
     header.minidumpPathStringOffset = Base::CrashReporter::NoString;
 
@@ -239,9 +277,22 @@ TEST_F(CrashReporterTests, parseGoodCrashReportLoads)  // NOLINT
         ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
     }
     auto report = Base::CrashReporter::parse(fcrashPath.string());
+
+    // On all platforms we've specifically chosen a fault code that has an address, so make sure
+    // it's there:
     EXPECT_EQ(report.faultAddress, 0xDEADBEEFCAFEF00D);
     EXPECT_EQ(report.threadID, 0x1122334455667788);
+
+#ifdef FC_OS_MACOSX
+    EXPECT_EQ(report.osID, Base::CrashReporter::OS::macOS);
+#elif defined(FC_OS_WIN32)
     EXPECT_EQ(report.osID, Base::CrashReporter::OS::Windows);
+#elif defined(FC_OS_LINUX)
+    EXPECT_EQ(report.osID, Base::CrashReporter::OS::Linux);
+#elif defined(FC_OS_BSD)
+    EXPECT_EQ(report.osID, Base::CrashReporter::OS::BSDFamily);
+#endif
+
     EXPECT_EQ(report.architectureID, Base::CrashReporter::Architecture::x64);
     EXPECT_FALSE(report.partialWrite);
 #ifdef FCRepositoryHash
@@ -249,14 +300,61 @@ TEST_F(CrashReporterTests, parseGoodCrashReportLoads)  // NOLINT
 #else
     EXPECT_EQ(report.buildID, "R43210");
 #endif
-    EXPECT_EQ(report.exceptionMessage, "A bad thing happened");
-    EXPECT_TRUE(report.minidumpPath.empty());  // NoString -> empty
+    EXPECT_FALSE(report.minidumpPath.has_value());
     ASSERT_EQ(report.stackFrames.size(), 4U);
     EXPECT_EQ(report.stackFrames.at(0).rawAddress, 0x11111111U);
     EXPECT_EQ(report.stackFrames.at(0).modulePath, "Module1");
     EXPECT_EQ(report.stackFrames.at(1).modulePath, "Module1");  // deduped offset
     EXPECT_EQ(report.stackFrames.at(2).modulePath, "Module2");
     EXPECT_TRUE(report.stackFrames.at(3).modulePath.empty());  // NoString frame
+}
+
+TEST_F(CrashReporterTests, parseDropsFaultAddressForCodeThatHasNone)  // NOLINT
+{
+    auto fcrashPath = tempDir.path() / "no_fault_address.fcrash";
+    {
+        std::ofstream ofs(fcrashPath, std::ios::binary);
+        auto buffer = createGoodCrashReport(syntheticFaultCodeWithoutAddress());
+        ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+    }
+    auto report = Base::CrashReporter::parse(fcrashPath.string());
+
+    // The record carries 0xDEADBEEFCAFEF00D like every other fixture, but this fault code has no
+    // faulting data address, so the Reader must drop it rather than pass it on.
+    EXPECT_FALSE(report.faultAddress.has_value());
+    EXPECT_EQ(report.code, syntheticFaultCodeWithoutAddress());
+
+    // The record is well-formed: everything else must still parse.
+    EXPECT_FALSE(report.partialWrite);
+    EXPECT_EQ(report.threadID, 0x1122334455667788);
+    EXPECT_EQ(report.processID, 0xABCDU);
+    ASSERT_EQ(report.stackFrames.size(), 4U);
+}
+
+TEST_F(CrashReporterTests, parseNamesUnrecognizedFaultCodeWithItsHexValue)  // NOLINT
+{
+    // Not a valid fault code on any platform we support, so it cannot be in the lookup table.
+    constexpr std::uint32_t unrecognizedCode = std::numeric_limits<std::uint32_t>::max();
+
+    auto fcrashPath = tempDir.path() / "unrecognized_fault_code.fcrash";
+    {
+        std::ofstream ofs(fcrashPath, std::ios::binary);
+        auto buffer = createGoodCrashReport(unrecognizedCode);
+        ofs.write(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+    }
+    auto report = Base::CrashReporter::parse(fcrashPath.string());
+
+    // The exact spelling is deliberately pinned: downstream consumers might be doing something with
+    // this, don't change it without good cause. (The address doesn't matter, but the form does)
+    EXPECT_EQ(report.faultName, "UNKNOWN(0xFFFFFFFF)");
+
+    // Nothing is known about the code, so nothing can be claimed about its address either.
+    EXPECT_FALSE(report.faultAddress.has_value());
+
+    // The record itself is well-formed: only the code is unrecognized.
+    EXPECT_FALSE(report.partialWrite);
+    EXPECT_EQ(report.code, unrecognizedCode);
+    ASSERT_EQ(report.stackFrames.size(), 4U);
 }
 
 TEST_F(CrashReporterTests, parseBadMagicNumber)  // NOLINT
@@ -533,7 +631,7 @@ TEST_F(CrashReporterTests, DISABLED_DeliberateSegfaultRoundTrip)  // NOLINT
     // Keep this code around: you can uncomment it to check out a new/different OS's call stack
     // to add those symbols to the skip-list
     for (std::size_t i = 0; i < report.stackFrames.size(); ++i) {
-        std::printf("[%2zu] %s\n", i, report.stackFrames.at(i).symbol.c_str());
+        std::printf("[%2zu] %s\n", i, report.stackFrames.at(i).symbol.value_or("<unresolved>").c_str());
     }
     std::fflush(stdout);
     // END DISCOVERY CODE
@@ -588,12 +686,12 @@ TEST_F(CrashReporterTests, trimLeadingPlumbingFramesKeepsUnsymbolicatedTopFrame)
 {
     const std::vector<Base::CrashReporter::ParsedFrame> frames = {
         {.symbol = "__kernel_rt_sigreturn"},
-        {.symbol = ""},  // unsymbolicated: treated as real
+        {.symbol = std::nullopt},  // unsymbolicated: treated as real
         {.symbol = "App::foo()"},
     };
     const auto trimmed = Base::CrashReporter::trimLeadingPlumbingFrames(frames);
     EXPECT_EQ(trimmed.size(), frames.size() - 1);
-    EXPECT_TRUE(trimmed.front().symbol.empty());  // Our unsymbolicated frame is still here
+    EXPECT_FALSE(trimmed.front().symbol.has_value());  // Our unsymbolicated frame is still here
 }
 
 
@@ -857,5 +955,33 @@ TEST_F(CrashReporterTests, retentionDeletesCompanionDump)  // NOLINT
     EXPECT_FALSE(archivedFcrashExists(tempDir.path(), now - (200 * secondsPerDay), 1236));
     EXPECT_FALSE(archivedDumpExists(tempDir.path(), now - (200 * secondsPerDay), 1236));
 }
+
+TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsFalseForCodeWithoutAddress)
+{
+    EXPECT_FALSE(Base::CrashReporter::faultAddressIsMeaningful(syntheticFaultCodeWithoutAddress()));
+}
+
+TEST_F(CrashReporterTests, faultAddressIsMeaningfulReturnsTrueForCodeWithAddress)
+{
+    // Spot check (don't bother with an exhaustive test, it's tautological)
+    EXPECT_TRUE(Base::CrashReporter::faultAddressIsMeaningful(syntheticFaultCodeWithAddress()));
+}
+
+TEST_F(CrashReporterTests, describeFaultCodeGivesValidResultForValidCode)
+{
+    // Spot check (don't bother with an exhaustive test, it's tautological)
+    auto description = Base::CrashReporter::describeFaultCode(syntheticFaultCodeWithAddress());
+    ASSERT_NE(description, std::nullopt);
+    EXPECT_FALSE(description->name.empty());
+}
+
+TEST_F(CrashReporterTests, describeFaultCodeGivesNulloptForBadCode)
+{
+    auto description = Base::CrashReporter::describeFaultCode(
+        std::numeric_limits<std::uint32_t>::max()
+    );
+    EXPECT_EQ(description, std::nullopt);
+}
+
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
