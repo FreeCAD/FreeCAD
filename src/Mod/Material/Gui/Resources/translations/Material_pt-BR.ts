@@ -816,7 +816,7 @@ Se desmarcado, eles serão classificados pelo nome.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation>Antecessor</translation>
+      <translation>Material pai</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>

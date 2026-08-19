@@ -37,6 +37,7 @@
 
 #include "OCCError.h"
 #include <App/Document.h>
+#include "ShapeAnalysis_FreeBoundsFix.h"
 #include <Base/GeometryPyCXX.h>
 
 // inclusion of the generated files (generated out of TopoShapeCompoundPy.xml)
@@ -151,7 +152,7 @@ PyObject* TopoShapeCompoundPy::connectEdgesToWires(PyObject* args) const
             hEdges->Append(xp.Current());
         }
 
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, Base::asBoolean(shared), hWires);
+        Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(hEdges, tol, Base::asBoolean(shared), hWires);
 
         TopoDS_Compound comp;
         BRep_Builder builder;

@@ -750,7 +750,7 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="113"/>
       <source>List of components captured in this snapshot.</source>
-      <translation>Liste der in diesem Schnappschuss erfassten Komponenten.</translation>
+      <translation>Liste der in dieser Momentaufnahme erfassten Komponenten.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="124"/>
@@ -765,7 +765,7 @@ SLOPE definiert die Steilheit des Übergangs zwischen 0 und H1 und H2 auf 0 übe
     <message>
       <location filename="../../../CommandCreateSnapshot.py" line="146"/>
       <source>If true, applying the snapshot will solve the assembly after restoring the placements.</source>
-      <translation>Falls dies zutrifft, wird durch das Anwenden des Snapshots die Assembly nach der Wiederherstellung der Platzierungen aufgelöst.</translation>
+      <translation>Wenn aktiviert, wird durch das Anwenden der Momentaufnahme die Baugruppe nach dem Wiederherstellen der Positionierungen neu berechnet.</translation>
     </message>
   </context>
   <context>
@@ -1119,7 +1119,7 @@ Die Dateien heißen "runPreDrag.asmt" und "dragging.log" und befinden sich im St
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="58"/>
       <source>Adds only part containers and sub-assemblies to the bill of materials. Solids (e.g. bodies, fasteners, primitives) are excluded.</source>
-      <translation>Fügt nur Part Container und Unterbaugruppen zur Stückliste hinzu. Festkörper (z.B. Körper, Verbindungen, Primitive) werden ausgeschlossen.</translation>
+      <translation>Fügt nur Part Container und Unterbaugruppen zur Stückliste hinzu. Festkörper (z. B. Körper, Verbindungen, Primitive) werden ausgeschlossen.</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="61"/>
@@ -1621,7 +1621,7 @@ Hinweis: Derzeit werden nur unverbundene Bauteile ausgewählt, keine festgelegte
     <message>
       <location filename="../../Commands.cpp" line="101"/>
       <source>Assembly</source>
-      <translation>Assembly</translation>
+      <translation>Baugruppe</translation>
     </message>
     <message>
       <location filename="../../Commands.cpp" line="102"/>

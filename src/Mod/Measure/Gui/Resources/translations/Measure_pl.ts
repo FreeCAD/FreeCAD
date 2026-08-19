@@ -353,6 +353,11 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <translation>Powierzchnia</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Średnica</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Promień</translation>

@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1731"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Dimensão de ângulo</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1732"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1534"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Dimensão de diâmetro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1535"/>
@@ -1780,7 +1780,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1486"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Dimensão de raio</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1487"/>
@@ -2858,7 +2858,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../mrichtextedit.ui" line="224"/>
       <source>Link</source>
-      <translation>Link</translation>
+      <translation>Vínculo</translation>
     </message>
     <message>
       <location filename="../../mrichtextedit.ui" line="257"/>
@@ -5518,7 +5518,7 @@ for using drawings as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="220"/>
       <source>Arrow size</source>
-      <translation>Tamanho do ponteiro</translation>
+      <translation>Tamanho da seta</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="232"/>
@@ -9158,7 +9158,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="33"/>
       <source>Tick</source>
-      <translation>Diagonal</translation>
+      <translation>Traço oblíquo simples</translation>
     </message>
     <message>
       <location filename="../../../App/ArrowPropEnum.cpp" line="34"/>
@@ -9395,7 +9395,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="74"/>
       <source>GeomHatch</source>
-      <translation>HachuraGeom</translation>
+      <translation>Hachura</translation>
     </message>
   </context>
   <context>

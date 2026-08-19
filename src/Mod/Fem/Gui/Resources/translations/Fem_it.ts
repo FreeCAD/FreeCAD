@@ -1812,6 +1812,16 @@ messaggio di errore che "MAXGS" deve essere aumentato.</translation>
       <translation>Elimina</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
+      <source>Only one face in object! - moved to master face</source>
+      <translation>Solo una faccia nell'oggetto! - spostata nella faccia principale</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>Seleziona la geometria secondaria del tipo: </translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
@@ -1835,26 +1845,16 @@ messaggio di errore che "MAXGS" deve essere aumentato.</translation>
       <translation>Errore di selezione</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
-      <source>Only one face in object! - moved to master face</source>
-      <translation>Solo una faccia nell'oggetto! - spostata nella faccia principale</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <source>Select slave geometry of type: </source>
-      <translation>Seleziona la geometria secondaria del tipo: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
-      <source>Face</source>
-      <translation>Faccia</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>fare clic su Aggiungi o Rimuovi</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>Bordo, Faccia</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
@@ -5020,13 +5020,13 @@ Per le variabili possibili, vedere la casella di descrizione qui sotto.</transla
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Seleziona la geometria principale del tipo: Faccia; fare clic su Aggiungi o Rimuovi</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Seleziona la geometria principale del tipo: bordo, faccia; fare clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>Seleziona la geometria secondaria del tipo: Faccia; fare clic su Aggiungi o Rimuovi</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation>Seleziona la geometria secondaria del tipo: bordo, faccia; fare clic su Aggiungi o Rimuovi</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="150"/>

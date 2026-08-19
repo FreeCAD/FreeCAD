@@ -33,10 +33,12 @@
 \**************************************************************************/
 
 #include <Inventor/SbBasic.h>
+#include <QElapsedTimer>
 #include <QList>
 #include <QUrl>
 
 class QOpenGLWidget;
+class QTimer;
 
 class SoNode;
 class SoCamera;
@@ -71,6 +73,12 @@ public:
   QList<QAction *> renderModeActions() const;
   QList<QAction *> stereoModeActions() const;
 
+  int millisecondsUntilNextFrame() const;
+  void setMaxFrameRate(int fps);
+  void requestRedraw();
+  void issueRedraw();
+  void frameRendered();
+
   QuarterWidget * const master;
   SoNode * scene;
   EventFilter * eventfilter;
@@ -89,6 +97,17 @@ public:
   bool addactions;
   bool processdelayqueue;
   QUrl navigationModeFile;
+
+  // Frame rate limiting:
+  //   * A negative value uses the refresh rate of the screen the widget is displayed on
+  //   * Zero renders as fast as the driver allows
+  //   * A positive value is an explicit limit in frames per second
+  int maxframerate {-1};
+
+  QTimer * redrawtimer {nullptr};
+  QElapsedTimer timesincelastframe;
+  bool redrawdeferred {false};
+
   SoScXMLStateMachine * currentStateMachine;
   qreal device_pixel_ratio;
 

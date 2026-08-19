@@ -2667,7 +2667,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
 
     for (std::size_t ic = 0; ic < newVals.size(); ic++) {// ic = index of constraint
         bool affected = false;
-        Constraint* constNew = nullptr;
+        std::unique_ptr<Constraint> constNew;
         for (int ig = 1; ig <= 3; ig++) {
             // cycle through constraint.first, second, third
             int geoId = 0;
@@ -2697,7 +2697,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
                         // Gotcha! a link to an endpoint of external arc that is reversed.
                         // create a constraint copy, affect it, replace the pointer
                         if (!affected)
-                            constNew = newVals[ic]->clone();
+                            constNew.reset(newVals[ic]->clone());
                         affected = true;
                         // Do the fix on temp vars
                         if (posId == Sketcher::PointPos::start)
@@ -2727,7 +2727,9 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
         }
         if (affected) {
             cntToBeAffected++;
-            newVals[ic] = constNew;
+            if (!justAnalyze) {
+                newVals[ic] = constNew.release();
+            }
             Base::Console().log("Constraint%i will be affected\n", ic + 1);
         };
     }
