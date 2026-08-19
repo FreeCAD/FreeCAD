@@ -56,8 +56,23 @@ protected:
 
 PROPERTY_SOURCE(Part::PreviewTestFeature, Part::Feature)
 
+/// Feature whose preview does not depend on its properties.
+class PreviewIndependentFeature: public PreviewTestFeature
+{
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::PreviewIndependentFeature);
+
+public:
+    bool mustRecomputePreview() override
+    {
+        return false;
+    }
+};
+
+PROPERTY_SOURCE(Part::PreviewIndependentFeature, Part::PreviewTestFeature)
+
 }  // namespace Part
 
+using Part::PreviewIndependentFeature;
 using Part::PreviewTestFeature;
 
 class PreviewExtensionTest: public ::testing::Test
@@ -69,6 +84,7 @@ protected:
         // registers Part::Feature, the parent type init() below resolves
         Base::Interpreter().runString("import Part");
         PreviewTestFeature::init();
+        PreviewIndependentFeature::init();
     }
 
     void SetUp() override
@@ -86,6 +102,11 @@ protected:
     PreviewTestFeature* getFeature() const
     {
         return _feature;
+    }
+
+    App::Document* getDocument() const
+    {
+        return _doc;
     }
 
 private:
@@ -192,4 +213,17 @@ TEST_F(PreviewExtensionTest, mustRecomputePreviewFollowsMustRecompute)
 
     ASSERT_TRUE(feature->mustRecompute());
     EXPECT_EQ(feature->mustRecomputePreview(), feature->mustRecompute());
+}
+
+/// Counterpart of changingInputPropertyInvalidates: the same change on a feature
+/// that declines the recompute must leave the preview alone.
+TEST_F(PreviewExtensionTest, decliningRecomputeKeepsPreviewFreshOnInputChange)
+{
+    auto* feature = getDocument()->addObject<PreviewIndependentFeature>("Independent");
+    feature->updatePreview();
+    ASSERT_TRUE(feature->isPreviewFresh());
+
+    feature->Trigger.setValue(42);
+
+    EXPECT_TRUE(feature->isPreviewFresh());
 }

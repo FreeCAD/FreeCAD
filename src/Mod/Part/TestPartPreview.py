@@ -68,3 +68,31 @@ class TestPreviewExtensionPython(unittest.TestCase):
         self.object.Size = 20.0
 
         self.assertFalse(self.object.isPreviewFresh())
+
+
+class FreshPreviewFeature(PreviewFeature):
+    """Feature that declares its preview never needs recomputing."""
+
+    def mustRecomputePreview(self, ext):
+        return False
+
+
+class TestMustRecomputePreviewRouting(unittest.TestCase):
+    def setUp(self):
+        self.document = FreeCAD.newDocument("MustRecomputePreviewTest")
+        self.object = self.document.addObject("Part::FeaturePython", "Feature")
+        self.feature = FreshPreviewFeature(self.object)
+        self.document.recompute()
+
+    def tearDown(self):
+        FreeCAD.closeDocument(self.document.Name)
+
+    def testReturningFalseKeepsPreviewFresh(self):
+        """Counterpart of testIsPreviewFreshTracksInvalidation, which makes the same
+        change without the override and does go stale."""
+        self.object.updatePreview()
+        self.assertTrue(self.object.isPreviewFresh())
+
+        self.object.Size = 20.0
+
+        self.assertTrue(self.object.isPreviewFresh())
