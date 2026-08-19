@@ -466,7 +466,7 @@ def getDocNode():
         if tw.topLevelItemCount() != 1 or tw.topLevelItem(0).text(0) != "Application":
             continue
         toptree = tw.topLevelItem(0)
-        for i in range(0, toptree.childCount()):
+        for i in range(toptree.childCount()):
             docitem = toptree.child(i)
             if docitem.text(0) == doc:
                 return docitem
@@ -478,12 +478,12 @@ def disableItem(item):
     Dropflag = QtCore.Qt.ItemFlag.ItemIsDropEnabled
     item.setFlags(item.flags() & ~Dragflag)
     item.setFlags(item.flags() & ~Dropflag)
-    for idx in range(0, item.childCount()):
+    for idx in range(item.childCount()):
         disableItem(item.child(idx))
 
 
 def findItem(docitem, objname):
-    for i in range(0, docitem.childCount()):
+    for i in range(docitem.childCount()):
         if docitem.child(i).text(0) == objname:
             return docitem.child(i)
         res = findItem(docitem.child(i), objname)

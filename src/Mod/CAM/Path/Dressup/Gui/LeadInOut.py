@@ -25,13 +25,12 @@ import FreeCAD as App
 import FreeCADGui
 import Part
 import Path
-import Path.Base.Generator.leadinout as leadinout
-
+from Path.Base.Generator import leadinout
 from Path.Base.Gui.Util import QuantitySpinBox
 from Path.Base.Util import toolControllerForOp
 from Path.Dressup import Utils as PathDressup
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
-from PathScripts import PathUtils as PathUtils
+from PathScripts import PathUtils
 from Path.Base.MachineState import MachineState
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
@@ -268,15 +267,13 @@ class ObjectDressup:
             )
             obj.AngleOut = 90
 
-        if styleOn:
-            if styleOn == "Arc":
-                obj.StyleIn = "Arc"
-                obj.AngleIn = 90
+        if styleOn and styleOn == "Arc":
+            obj.StyleIn = "Arc"
+            obj.AngleIn = 90
 
-        if styleOff:
-            if styleOff == "Arc":
-                obj.StyleOut = "Arc"
-                obj.AngleOut = 90
+        if styleOff and styleOff == "Arc":
+            obj.StyleOut = "Arc"
+            obj.AngleOut = 90
 
         for prop in ("Length", "LengthIn"):
             if hasattr(obj, prop):
@@ -439,9 +436,9 @@ class ObjectDressup:
         ):
 
             def _isVertical(currentposition, cmd):
-                x = cmd.Parameters["X"] if "X" in cmd.Parameters else currentposition.x
-                y = cmd.Parameters["Y"] if "Y" in cmd.Parameters else currentposition.y
-                z = cmd.Parameters["Z"] if "Z" in cmd.Parameters else currentposition.z
+                x = cmd.Parameters.get("X", currentposition.x)
+                y = cmd.Parameters.get("Y", currentposition.y)
+                z = cmd.Parameters.get("Z", currentposition.z)
                 endpoint = App.Vector(x, y, z)
                 if Path.Geom.pointsCoincide(currentposition, endpoint):
                     return True
