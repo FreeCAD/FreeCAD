@@ -48,6 +48,13 @@ class TestLinearPattern(unittest.TestCase):
         self.Body.addObject(self.LinearPattern)
         self.Doc.recompute()
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
+        self.LinearPattern.SuppressedIndices = [0]
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 9e3)
+        self.assertAlmostEqual(self.LinearPattern.Shape.BoundBox.XMin, 10.0)
+        self.LinearPattern.SuppressedIndices = []
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # 44 + 84 + 42 = 170.  44 - 8 = 36 / 9 = 4.  84-12 = 72 / 9 = 8.  42 - 6 = 36 / 9 = 4
         # We have the original 26 from the first shape, plus 4 more vertices, 8 more edges and
         # 4 more faces for each additional copy.  Since they have to touch ( single shape rule ),
@@ -79,6 +86,84 @@ class TestLinearPattern(unittest.TestCase):
         self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 1e4)
         # self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 170)    # TODO
         self.assertEqual(self.LinearPattern.Shape.ElementMapSize, 26)
+
+    def testSuppressOriginalFeatureOccurrence(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.BaseBox = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
+        self.Body.addObject(self.BaseBox)
+        self.BaseBox.Length = 40.0
+        self.BaseBox.Width = 10.0
+        self.BaseBox.Height = 10.0
+
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        self.Body.addObject(self.Box)
+        self.Box.Length = 10.0
+        self.Box.Width = 10.0
+        self.Box.Height = 10.0
+        self.Box.Placement.Base.z = 10.0
+        self.Doc.recompute()
+
+        self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
+        self.Body.addObject(self.LinearPattern)
+        self.LinearPattern.Originals = [self.Box]
+        self.LinearPattern.Direction = (self.Doc.X_Axis, [""])
+        self.LinearPattern.Length = 20.0
+        self.LinearPattern.Occurrences = 3
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 7e3)
+
+        self.LinearPattern.SuppressedIndices = [0]
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 6e3)
+
+    def testSuppressOriginalWholeShapeOccurrence(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        self.Body.addObject(self.Box)
+        self.Box.Length = 10.0
+        self.Box.Width = 10.0
+        self.Box.Height = 10.0
+        self.Doc.recompute()
+
+        self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
+        self.Body.addObject(self.LinearPattern)
+        self.LinearPattern.TransformMode = "Whole shape"
+        self.LinearPattern.Direction = (self.Doc.X_Axis, [""])
+        self.LinearPattern.Length = 20.0
+        self.LinearPattern.Occurrences = 3
+        self.LinearPattern.SuppressedIndices = [0]
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 2e3)
+        self.assertAlmostEqual(self.LinearPattern.Shape.BoundBox.XMin, 10.0)
+
+    def testSuppressOriginalSubtractiveOccurrence(self):
+        self.Body = self.Doc.addObject("PartDesign::Body", "Body")
+        self.BaseBox = self.Doc.addObject("PartDesign::AdditiveBox", "BaseBox")
+        self.Body.addObject(self.BaseBox)
+        self.BaseBox.Length = 40.0
+        self.BaseBox.Width = 10.0
+        self.BaseBox.Height = 10.0
+
+        self.Box = self.Doc.addObject("PartDesign::SubtractiveBox", "Box")
+        self.Body.addObject(self.Box)
+        self.Box.Length = 10.0
+        self.Box.Width = 10.0
+        self.Box.Height = 5.0
+        self.Box.Placement.Base.z = 5.0
+        self.Doc.recompute()
+
+        self.LinearPattern = self.Doc.addObject("PartDesign::LinearPattern", "LinearPattern")
+        self.Body.addObject(self.LinearPattern)
+        self.LinearPattern.Originals = [self.Box]
+        self.LinearPattern.Direction = (self.Doc.X_Axis, [""])
+        self.LinearPattern.Length = 20.0
+        self.LinearPattern.Occurrences = 3
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 2.5e3)
+
+        self.LinearPattern.SuppressedIndices = [0]
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.LinearPattern.Shape.Volume, 3e3)
 
     def testZAxisLinearPattern(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")

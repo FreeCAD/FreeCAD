@@ -330,11 +330,9 @@ void TaskPatternParameters::updateInstanceControls()
     int index = 0;
     const gp_Trsf patternLocation = pattern->getLocation().Transformation();
     for (const auto& transformation : transformations) {
-        if (index > 0) {
-            Base::Vector3d center = transformedPoint(*sourceCenter, transformation);
-            center = transformedPoint(center, patternLocation);
-            instances.push_back({index, center, pattern->isTransformationSuppressed(index)});
-        }
+        Base::Vector3d center = transformedPoint(*sourceCenter, transformation);
+        center = transformedPoint(center, patternLocation);
+        instances.push_back({index, center, pattern->isTransformationSuppressed(index)});
         ++index;
     }
 
@@ -343,7 +341,7 @@ void TaskPatternParameters::updateInstanceControls()
 
 void TaskPatternParameters::setInstanceSuppressed(int index, bool suppress)
 {
-    if (index <= 0) {
+    if (index < 0) {
         return;
     }
 

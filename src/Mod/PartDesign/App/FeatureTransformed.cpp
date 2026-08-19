@@ -81,7 +81,7 @@ Transformed::Transformed()
         (std::vector<long>()),
         "Transformation",
         App::Prop_None,
-        "Indices of generated pattern instances that are suppressed."
+        "Indices of pattern instances that are suppressed."
     );
 }
 
@@ -282,7 +282,7 @@ short Transformed::mustExecute() const
 
 bool Transformed::isTransformationSuppressed(int index) const
 {
-    if (index <= 0) {
+    if (index < 0) {
         return false;
     }
 
@@ -430,15 +430,74 @@ App::DocumentObjectExecReturn* Transformed::execute()
         );
     }
 
-    // create an untransformed copy of the support shape
+    // Create an untransformed copy of the support shape. The original occurrence is already part
+    // of this shape, so remove the actual material added or removed by each selected feature when
+    // occurrence zero is suppressed. Computing the delta from the feature's before/after shapes
+    // avoids cutting into the earlier support or restoring tool material that was never removed.
     Part::TopoShape supportShape(supportTopShape);
+    Part::TopoShape wholeShapeSource(supportTopShape);
 
     gp_Trsf trsfInv = supportShape.getShape().Location().Transformation().Inverted();
 
+    const auto transformToSupport = [&trsfInv](Part::TopoShape shape) {
+        if (shape.isNull()) {
+            return shape;
+        }
+        const gp_Trsf location = shape.getShape().Location().Transformation();
+        shape.setTransform(Base::Matrix4D());
+        return shape.makeElementTransform(trsfInv.Multiplied(location));
+    };
+
     supportShape.setTransform(Base::Matrix4D());
+    wholeShapeSource.setTransform(Base::Matrix4D());
+
+    if (isTransformationSuppressed(0)) {
+        if (mode == Mode::WholeShape) {
+            supportShape.setShape(TopoDS_Shape());
+        }
+        else {
+            const auto sortedOriginals = getSortedOriginals();
+            for (auto it = sortedOriginals.rbegin(); it != sortedOriginals.rend(); ++it) {
+                auto* feature = freecad_cast<FeatureAddSub*>(*it);
+                if (!feature) {
+                    continue;
+                }
+
+                Part::TopoShape before = transformToSupport(feature->getBaseTopoShape(true));
+                Part::TopoShape after = transformToSupport(feature->Shape.getShape());
+
+                Part::TopoShape delta;
+                if (feature->getAddSubType() == FeatureAddSub::Additive) {
+                    if (before.isNull()) {
+                        delta = after;
+                    }
+                    else {
+                        delta.makeElementCut({after, before});
+                    }
+                    if (!delta.isNull() && !supportShape.isNull()) {
+                        supportShape.makeElementCut({supportShape, delta});
+                    }
+                }
+                else if (!before.isNull()) {
+                    delta.makeElementCut({before, after});
+                    if (!delta.isNull()) {
+                        if (supportShape.isNull()) {
+                            supportShape = delta;
+                        }
+                        else {
+                            supportShape.makeElementFuse({supportShape, delta});
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     auto getTransformedCompShape = [&](const auto& supportShape, const auto& origShape) {
-        std::vector<TopoShape> shapes = {supportShape};
+        std::vector<TopoShape> shapes;
+        if (!supportShape.isNull()) {
+            shapes.push_back(supportShape);
+        }
         TopoShape shape(origShape);
         int idx = 1;
         auto transformIter = transformations.cbegin();
@@ -496,23 +555,29 @@ App::DocumentObjectExecReturn* Transformed::execute()
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    supportShape.makeElementFuse(shapes);
+                    if (!shapes.empty()) {
+                        supportShape.makeElementFuse(shapes);
+                    }
                 }
                 if (!cutShape.isNull()) {
                     auto shapes = getTransformedCompShape(supportShape, cutShape);
                     if (Base::Sequencer().wasCanceled()) {
                         return new App::DocumentObjectExecReturn("User aborted");
                     }
-                    supportShape.makeElementCut(shapes);
+                    if (shapes.size() > 1) {
+                        supportShape.makeElementCut(shapes);
+                    }
                 }
             }
             break;
         case Mode::WholeShape: {
-            auto shapes = getTransformedCompShape(supportShape, supportShape);
+            auto shapes = getTransformedCompShape(supportShape, wholeShapeSource);
             if (Base::Sequencer().wasCanceled()) {
                 return new App::DocumentObjectExecReturn("User aborted");
             }
-            supportShape.makeElementFuse(shapes);
+            if (!shapes.empty()) {
+                supportShape.makeElementFuse(shapes);
+            }
             break;
         }
     }
