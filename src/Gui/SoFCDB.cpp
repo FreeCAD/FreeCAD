@@ -25,6 +25,7 @@
 #include <Inventor/SbString.h>
 #include <Inventor/SoInteraction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
+#include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/actions/SoToVRML2Action.h>
 #include <Inventor/actions/SoWriteAction.h>
 #include <Inventor/fields/SoMFNode.h>
@@ -48,6 +49,7 @@
 #include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
+#include "CoinRenderFeatures.h"
 #include "Camera.h"
 #include "Flag.h"
 #include "Inventor/Draggers/SoTransformDragger.h"
@@ -60,7 +62,9 @@
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/SiemensNXNavigationStyle.h"
 #include "SelectionObject.h"
-#include "SoDevicePixelRatioElement.h"
+#if !FC_COIN_HAVE_DEVICE_PIXEL_RATIO
+# include "SoFCDevicePixelRatioElement.h"
+#endif
 #include "SoFCColorBar.h"
 #include "SoFCInteractiveElement.h"
 #include "SoFCSelection.h"
@@ -105,10 +109,10 @@ SbBool Gui::SoFCDB::isInitialized()
 void Gui::SoFCDB::init()
 {
     SoInteraction ::init();
-    SoDevicePixelRatioElement ::initClass();
-    SoGLRenderActionElement ::initClass();
+#if !FC_COIN_HAVE_DEVICE_PIXEL_RATIO
+    SoFCDevicePixelRatioElement ::initClass();
+#endif
     SoFCInteractiveElement ::initClass();
-    SoGLWidgetElement ::initClass();
     SoFCColorBar ::initClass();
     SoFCScreenSpaceGroup ::initClass();
     SoFCBackgroundGradient ::initClass();
@@ -118,7 +122,6 @@ void Gui::SoFCDB::init()
     SoFCPreselectionAction ::initClass();
     SoFCSelectionAction ::initClass();
     SoFCDocumentAction ::initClass();
-    SoGLWidgetNode ::initClass();
     SoGLVBOActivatedElement ::initClass();
     SoFCEnableSelectionAction ::initClass();
     SoFCEnablePreselectionAction ::initClass();

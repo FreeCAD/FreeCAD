@@ -31,6 +31,10 @@
 #include <Inventor/elements/SoViewingMatrixElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
+#include "../CoinRenderFeatures.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/rendering/SoRenderIR.h>
+#endif
 #include <Inventor/misc/SoState.h>
 
 #include "SoFCScreenSpaceGroup.h"
@@ -118,8 +122,16 @@ void SoFCScreenSpaceGroup::setDepthBuffer(
 
 void SoFCScreenSpaceGroup::doAction(SoAction* action)
 {
+    SoState* state = action ? action->getState() : nullptr;
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    applyScreenSpaceGeometryState(state);
     prepareScreenSpaceGeometry(action);
     inherited::doAction(action);
+    state->pop();
 }
 
 void SoFCScreenSpaceGroup::GLRenderBelowPath(SoGLRenderAction* action)
@@ -195,6 +207,9 @@ void SoFCScreenSpaceGroup::applyScreenSpaceGeometryState(SoState* state)
 
     // Screen-space overlays define their own coordinate system and should not
     // inherit the current 3D camera transform.
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    SoRenderIR::setCommandMatricesOverride(state, TRUE);
+#endif
     SoModelMatrixElement::set(state, this, SbMatrix::identity());
     SoViewingMatrixElement::set(state, this, SbMatrix::identity());
 

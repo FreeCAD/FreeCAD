@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Any, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 
 from FreeCAD import Matrix, Vector
 from FreeCADGui import NavigationStyle
@@ -12,6 +12,8 @@ from FreeCADGui import NavigationStyle
 _Point2: TypeAlias = tuple[int, int]
 _Point3: TypeAlias = tuple[float, float, float]
 _Color: TypeAlias = tuple[float, float, float]
+RenderPipeline: TypeAlias = Literal["LegacyGL", "DrawList"]
+RenderType: TypeAlias = Literal["Native", "Framebuffer", "Image"]
 
 class _View3DInventorViewer:
     """Low-level Coin viewer wrapper behind the 3D view."""
@@ -66,6 +68,10 @@ class _View3DInventorViewer:
         """Set the pick radius used for hit-testing."""
         ...
 
+    def getAvailableRenderPipelines(self) -> list[RenderPipeline]:
+        """Return rendering pipelines supported by the active Coin build."""
+        ...
+
     def setupEditingRoot(self, node: object | None = None, matrix: Matrix | None = None, /) -> None:
         """Install one temporary editing root node."""
         ...
@@ -116,6 +122,18 @@ class _View3DInventorViewer:
 
     def setOverrideMode(self, mode: str, /) -> None:
         """Set the viewer override rendering mode."""
+        ...
+
+    def setRenderType(self, render_type: RenderType, /) -> None:
+        """Set the viewer presentation type ('Native', 'Framebuffer', or 'Image')."""
+        ...
+
+    def setRenderPipeline(self, pipeline: RenderPipeline, /) -> None:
+        """Set the Coin rendering pipeline ('LegacyGL' or 'DrawList')."""
+        ...
+
+    def getRenderPipeline(self) -> RenderPipeline:
+        """Return the selected Coin rendering pipeline."""
         ...
 
     def setEnabledNaviCube(self, enabled: bool, /) -> None:

@@ -76,6 +76,7 @@
 #include "TaskTransform.h"
 #include "TaskElementColors.h"
 #include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 #include "ViewParams.h"
 #include "ViewProviderGeometryObject.h"
 

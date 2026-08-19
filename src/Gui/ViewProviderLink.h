@@ -30,6 +30,7 @@
 #include <memory>
 
 #include "Selection/SoFCUnifiedSelection.h"
+#include <Inventor/nodes/SoShapeHints.h>
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "ViewProviderFeaturePython.h"

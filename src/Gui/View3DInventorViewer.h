@@ -26,15 +26,18 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <vector>
 
+#include <QColor>
 #include <QCursor>
 #include <QImage>
 #include <QLabel>
 
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbTime.h>
+#include <Inventor/SbViewportRegion.h>
 #include <Inventor/nodes/SoEnvironment.h>
 #include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoRotation.h>
@@ -55,6 +58,8 @@
 #include <Base/Placement.h>
 
 #include "Namespace.h"
+#include "RenderPipeline.h"
+#include "CoinRenderFeatures.h"
 #include "Selection/Selection.h"
 
 #include "CornerCrossLetters.h"
@@ -66,11 +71,11 @@ class QOpenGLWidget;
 class QSurfaceFormat;
 class QTimer;
 
+class SoAction;
+class SoNode;
 class SoTranslation;
 class SoTransform;
 class SoText2;
-class SoAnnotation;
-
 class SoSeparator;
 class SoShapeHints;
 class SoMaterial;
@@ -82,7 +87,10 @@ class SoVectorizeAction;
 class QImage;
 class SoGroup;  // NOLINT
 class SoGLRenderAction;
+class SoIRRenderAction;
 class SoPickStyle;
+class SoPickedPointList;
+class SoRenderLayerGroup;
 class NaviCube;
 class SoClipPlane;
 class SoTimerSensor;
@@ -144,8 +152,6 @@ public:
     };
     //@}
 
-    /// Declares why the viewer scene is being traversed so screen-only
-    /// decorations can be excluded from capture and export paths.
     enum class RenderIntent
     {
         /// Interactive viewport traversal including viewer decorations.
@@ -570,6 +576,10 @@ public:
     void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
+    /** Return the pipeline selected for this viewer. */
+    RenderPipeline getRenderPipeline() const;
+    bool isRenderPipelineAvailable(RenderPipeline mode) const;
+    void setRenderPipeline(RenderPipeline mode);
 
     //! Update colors of axis in corner to match preferences
     void updateColors();
@@ -597,6 +607,7 @@ protected:
     void renderRubberbandOverlay();
     void renderFramebuffer();
     void renderGLImage();
+    void renderPresentationItems();
     void animatedViewAll(const SbBox3f& bbox, int steps, int ms);
     void actualRedraw() override;
     void setSeekMode(bool on) override;
@@ -613,42 +624,68 @@ protected:
     static void onViewFitTimer(void*, SoSensor*);
 
 private:
+    struct RenderFrameOptions;
+    struct RenderFrameResult;
+
+    struct OverlayAxisCrossState;
+
     static void setViewportCB(void* userdata, SoAction* action);
     static void clearBufferCB(void* userdata, SoAction* action);
-    static void setGLWidgetCB(void* userdata, SoAction* action);
-    static void handleEventCB(void* userdata, SoEventCallback* n);
     static void interactionStartCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
     static void interactionFinishCB(void* data, Quarter::SoQTQuarterAdaptor* viewer);
     static void interactionLoggerCB(void* ud, SoAction* action);
 
 private:
     class ScopedRenderIntent;
+    struct RenderFrameOptions;
     static void selectCB(void* viewer, SoPath* path);
+    static void afterMainSceneCB(void* userdata, SoRenderManager* manager, SoAction* action);
     // A small intent stack lets nested export/capture code paths temporarily
     // override the default live-view traversal behavior.
     void pushRenderIntentOverride(RenderIntent intent) const;
     void popRenderIntentOverride() const;
     RenderIntent currentRenderIntent() const;
-    static bool shouldRenderDecorations(RenderIntent intent);
+    void initializeRenderManager();
+    void updateDecorationSwitch(RenderIntent intent);
 
     static void deselectCB(void* viewer, SoPath* path);
     static SoPath* pickFilterCB(void* viewer, const SoPickedPoint* pp);
     void initialize();
+    void syncLightingMode();
+    void invalidateMainRenderActionState();
     void syncNaviCubeVisibility();
     void drawAxisCross();
+    bool updateAxisCrossGeometry();
+    void renderAxisCrossLegacy();
     void drawSingleBackground(const QColor&);
     void recoverFromRenderMemoryException();
     void renderDelayedAnnotations(SoGLRenderAction* glra);
-    void renderGLActionScene(const QColor& backgroundColor, SoGLRenderAction* glra);
-    bool renderToFramebuffer(QOpenGLFramebufferObject*, bool includeViewerLighting = true);
+    void renderLegacyFrame(const RenderFrameOptions& options, SoGLRenderAction* glra);
+    void renderLegacyBackground(const QColor& backgroundColor, SoGLRenderAction* glra);
+    void renderLegacyMainScene(SoGLRenderAction* glra);
+    void renderLegacyAfterMain(SoGLRenderAction* glra);
+    void renderLegacyForeground(SoGLRenderAction* glra, RenderIntent intent);
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void renderDelayedAnnotations(SoIRRenderAction* action);
+#endif
+    RenderFrameResult renderFrame(const RenderFrameOptions& options);
+    RenderFrameResult renderFrameToFramebuffer(
+        QOpenGLFramebufferObject& framebuffer,
+        const RenderFrameOptions& options
+    );
     void setCursorRepresentation(int mode);
-    void aboutToDestroyGLContext();
+    void destroyNaviCube();
     void createStandardCursors();
     bool applyCameraState(const SoCamera& camera);
+    bool acquireRendererPickResults(
+        SoHandleEventAction& action,
+        SoPickedPointList& results,
+        bool singlePick
+    ) const;
 
 private:
     NaviCube* naviCube;
-    SoAnnotation* naviCubeAnnotation;
+    SoSeparator* naviCubeDecorationRoot;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;
@@ -657,9 +694,11 @@ private:
     SoFCBackgroundGradient* pcBackGround;
     SoSeparator* backgroundroot;
     SoSeparator* foregroundroot;
-    // Dedicated root for viewer-owned HUD/decorations that should not be
-    // treated as model content during capture/export traversals.
     SoSeparator* decorationroot;
+    SoSeparator* combinedForegroundRoot;
+    SoSwitch* decorationSwitch;
+    SoSeparator* axisCrossOverlay {nullptr};
+    std::unique_ptr<OverlayAxisCrossState> axisCrossState;
 
     SoDirectionalLight* backlight;
     SoDirectionalLight* fillLight;
@@ -688,6 +727,7 @@ private:
     RenderType renderType;
     QOpenGLFramebufferObject* framebuffer;
     QImage glImage;
+    RenderPipeline configuredPipeline {RenderPipeline::LegacyGL};
     bool shading;
     SoSwitch* dimensionRoot;
 
@@ -705,6 +745,8 @@ private:
     QLabel* fpsCounter = nullptr;
     QTimer* fpsUpdateTimer = nullptr;
     unsigned long previousAxisLetterColor = 0;
+    SbColor axisCrossLetterColor {0.0F, 0.0F, 0.0F};
+    bool axisCrossLetterColorValid {false};
     bool vboEnabled;
     bool naviCubeEnabled;
 
@@ -741,6 +783,7 @@ private Q_SLOTS:
 
     // friends
     friend class NavigationStyle;
+    friend class SoFCUnifiedSelection;
     friend class GLPainter;
     friend class ViewerEventFilter;
 };

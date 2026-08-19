@@ -38,6 +38,10 @@
 #include <Inventor/SbVec4f.h>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include "CoinRenderFeatures.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/events/SoEvent.h>
 #include <Inventor/events/SoLocation2Event.h>
@@ -56,6 +60,7 @@
 #include <Base/Color.h>
 #include <Base/Tools.h>
 #include "NaviCube.h"
+#include "CoinRenderSupport.h"
 #include "Application.h"
 #include "Camera.h"
 #include "Command.h"
@@ -97,7 +102,7 @@ public:
     bool processSoEvent(const SoEvent* ev);
     void setSize(int size);
     SoNode* getCoinNode() const;
-    void requestRedraw(bool touchNode = true);
+    void requestRedraw();
 
 private:
     void resetClickState();
@@ -430,8 +435,13 @@ void NaviCubeImplementation::syncNodeState(SoAction* action)
 
     const SoType type = action->getTypeId();
     const bool isGLRender = type.isDerivedFrom(SoGLRenderAction::getClassTypeId());
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    const bool isIRRender = type.isDerivedFrom(SoIRRenderAction::getClassTypeId());
+#else
+    const bool isIRRender = false;
+#endif
 
-    if (isGLRender) {
+    if (isGLRender || isIRRender) {
         if (!readyToRender()) {
             return;
         }
@@ -470,20 +480,13 @@ void NaviCubeImplementation::syncNodeState(SoAction* action)
     ) {
         return;
     }
-
-    if (!isGLRender) {
-        soNaviCube->touch();
-    }
 }
 
-void NaviCubeImplementation::requestRedraw(bool touchNode)
+void NaviCubeImplementation::requestRedraw()
 {
-    if (touchNode && soNaviCube) {
-        soNaviCube->touch();
-    }
     if (viewer) {
         if (auto* rm = viewer->getSoRenderManager()) {
-            rm->scheduleRedraw();
+            CoinRenderSupport::invalidateForeground(rm);
         }
     }
 }
@@ -1163,7 +1166,7 @@ void NaviCubeImplementation::setHilite(PickId hilite)
         if (soNaviCube) {
             soNaviCube->hiliteId = static_cast<int>(hiliteId);
         }
-        viewer->getSoRenderManager()->scheduleRedraw();
+        requestRedraw();
     }
 }
 
@@ -1219,7 +1222,7 @@ void NaviCubeImplementation::updateCameraRotationDrag(short x, short y)
     navigation->updateOrbitDrag(curpos, prevpos);
 
     lastDragPos = SbVec2s(x, y);
-    requestRedraw(false);
+    requestRedraw();
 }
 
 bool NaviCubeImplementation::mouseMoved(short x, short y)
@@ -1230,7 +1233,7 @@ bool NaviCubeImplementation::mouseMoved(short x, short y)
 
     if (hovering != this->hovering) {
         this->hovering = hovering;
-        viewer->getSoRenderManager()->scheduleRedraw();
+        requestRedraw();
     }
 
     if (!dragStarted) {
@@ -1256,7 +1259,7 @@ bool NaviCubeImplementation::mouseMoved(short x, short y)
             relPos[0] = std::min(std::max(newX, 0.0f), 1.0f);
             relPos[1] = std::min(std::max(newY, 0.0f), 1.0f);
 
-            viewer->getSoRenderManager()->scheduleRedraw();
+            requestRedraw();
         }
         return true;
     }

@@ -40,12 +40,14 @@
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodes/SoText2.h>
 #include <FCGlobal.h>
+#include "CoinRenderFeatures.h"
 
 #include "BitmapFactory.h"
 
 class SoAction;
 class SoGLRenderAction;
 class SoState;
+class SoIRRenderAction;
 
 namespace Gui
 {
@@ -93,8 +95,10 @@ protected:
     void notify(SoNotList* list) override;
 
 private:
+    static void IRRender(SoAction* action, SoNode* node);
     void ensureTextGeometry(SoState* state);
-    void renderRetained(SoGLRenderAction* action);
+    void renderAction(SoGLRenderAction* action);
+    void renderAction(SoAction* action);
 
     mutable Inventor::SoFCScreenSpaceGroup* textRoot {nullptr};
     mutable SoSwitch* textSwitch {nullptr};
@@ -147,6 +151,9 @@ protected:
     ~SoFrameLabel() override = default;
     void notify(SoNotList* list) override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void IRRender(::SoIRRenderAction* action) override;
+#endif
 
 private:
     void prepareImage(SoState* state);

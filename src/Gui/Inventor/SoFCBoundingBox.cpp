@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
+#include "../CoinRenderFeatures.h"
 
 #ifdef FC_OS_WIN32
 # include <Windows.h>
@@ -44,6 +45,10 @@
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/actions/SoActions.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
+#include <Inventor/elements/SoDepthBufferElement.h>
 
 #include "ViewParams.h"
 #include "SoFCUnifiedSelection.h"
@@ -188,6 +193,47 @@ void SoFCBoundingBox::GLRender(SoGLRenderAction* action)
     }
     state->pop();
 }
+
+#if FC_COIN_HAVE_RETAINED_RENDERER
+void SoFCBoundingBox::IRRender(SoIRRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    prepareGeometry(state);
+
+    const SbBool coord = coordsOn.getValue();
+    const SbBool dimension = dimensionsOn.getValue();
+
+    state->push();
+
+    if (ViewParams::instance()->getRenderProjectedBBox()) {
+        SoModelMatrixElement::makeIdentity(state, this);
+    }
+
+    SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
+    SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
+    bboxSep->doAction(action);
+
+    if (coord || dimension) {
+        SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0F, 1.0F));
+        if (coord) {
+            textSep->doAction(action);
+        }
+        if (dimension) {
+            dimSep->doAction(action);
+        }
+    }
+
+    state->pop();
+}
+#endif
 
 void SoFCBoundingBox::prepareGeometry(SoState* state)
 {

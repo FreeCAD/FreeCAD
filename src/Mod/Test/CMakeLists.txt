@@ -27,7 +27,11 @@ SET(Test_SRCS
     TestTreeSelection.py
     TestGraphicsViewWrapping.py
     TestRubberbandSelection.py
+    CoinSnapshotHarness.py
+    CoinSnapshotScenes.py
     TestCoinNodeSnapshots.py
+    TestCoinRenderPipelines.py
+    TestSelectionCursor.py
     TestView3DFramebufferCapture.py
     TestSelectionVisual.py
     TestCornerAxisCrossVisual.py
@@ -69,6 +73,21 @@ ADD_CUSTOM_TARGET(Test ALL
     SOURCES ${Test_SRCS} ${TestData_SRCS}
 )
 
+# The Coin renderer pipeline tests load workbench plugins and Python resources
+# at runtime. Keep their targets in the Test dependency graph.
+if(BUILD_GUI)
+    foreach(_coin_render_pipeline_target
+            pivy
+            PartScripts
+            PartGui
+            MeshGui
+            MeshPartGui)
+        if(TARGET ${_coin_render_pipeline_target})
+            add_dependencies(Test ${_coin_render_pipeline_target})
+        endif()
+    endforeach()
+endif()
+
 fc_copy_sources(Test "${CMAKE_BINARY_DIR}/Mod/Test" ${Test_SRCS} ${TestData_SRCS})
 
 # Coin node snapshot visual test baselines (Python unittest `TestCoinNodeSnapshots`).
@@ -77,27 +96,31 @@ fc_copy_sources(Test "${CMAKE_BINARY_DIR}/Mod/Test" ${Test_SRCS} ${TestData_SRCS
 set(_coin_node_snapshot_baseline_dir "${CMAKE_SOURCE_DIR}/tests/visual/baselines/coin-nodes")
 if(EXISTS "${_coin_node_snapshot_baseline_dir}")
     file(
-        GLOB
+        GLOB_RECURSE
         TestCoinNodeSnapshotBaselines
+        RELATIVE "${_coin_node_snapshot_baseline_dir}"
         CONFIGURE_DEPENDS
         "${_coin_node_snapshot_baseline_dir}/*.png"
+        "${_coin_node_snapshot_baseline_dir}/*/*.png"
     )
     if(TestCoinNodeSnapshotBaselines)
         set(_coin_node_snapshot_baseline_outdir "${CMAKE_BINARY_DIR}/tests/visual/baselines/coin-nodes")
         set(_coin_node_snapshot_baseline_outputs)
         foreach(_baseline ${TestCoinNodeSnapshotBaselines})
-            get_filename_component(_baseline_name "${_baseline}" NAME)
-            set(_baseline_out "${_coin_node_snapshot_baseline_outdir}/${_baseline_name}")
+            set(_baseline_src "${_coin_node_snapshot_baseline_dir}/${_baseline}")
+            set(_baseline_out "${_coin_node_snapshot_baseline_outdir}/${_baseline}")
+            get_filename_component(_baseline_outdir "${_baseline_out}" DIRECTORY)
             add_custom_command(
                 OUTPUT "${_baseline_out}"
-                COMMAND "${CMAKE_COMMAND}" -E make_directory "${_coin_node_snapshot_baseline_outdir}"
-                COMMAND "${CMAKE_COMMAND}" -E copy "${_baseline}" "${_baseline_out}"
-                DEPENDS "${_baseline}"
-                COMMENT "Copying ${_baseline} to ${_baseline_out}"
+                COMMAND "${CMAKE_COMMAND}" -E make_directory "${_baseline_outdir}"
+                COMMAND "${CMAKE_COMMAND}" -E copy "${_baseline_src}" "${_baseline_out}"
+                DEPENDS "${_baseline_src}"
+                COMMENT "Copying ${_baseline_src} to ${_baseline_out}"
             )
             list(APPEND _coin_node_snapshot_baseline_outputs "${_baseline_out}")
         endforeach()
         add_custom_target(TestCoinNodeSnapshotBaselines ALL DEPENDS ${_coin_node_snapshot_baseline_outputs})
+        add_dependencies(TestSources TestCoinNodeSnapshotBaselines)
         add_dependencies(Test TestCoinNodeSnapshotBaselines)
     endif()
 endif()
@@ -129,6 +152,7 @@ if(EXISTS "${_coin_node_snapshot_font_dir}")
             list(APPEND _coin_node_snapshot_font_outputs "${_font_out}")
         endforeach()
         add_custom_target(TestCoinNodeSnapshotFonts ALL DEPENDS ${_coin_node_snapshot_font_outputs})
+        add_dependencies(TestSources TestCoinNodeSnapshotFonts)
         add_dependencies(Test TestCoinNodeSnapshotFonts)
     endif()
 endif()

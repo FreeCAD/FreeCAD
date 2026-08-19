@@ -22,6 +22,7 @@
  ******************************************************************************/
 
 #include <FCConfig.h>
+#include "CoinRenderFeatures.h"
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
@@ -36,11 +37,16 @@
 #include <QFont>
 #include <QFontMetrics>
 #include <QImage>
+#include <QOpenGLContext>
+#include <QOpenGLFunctions>
 #include <QPainter>
 #include <QPen>
 #include <QStringList>
 #include <Inventor/actions/SoAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/C/basic.h>
@@ -122,6 +128,9 @@ SO_NODE_SOURCE(SoStringLabel)
 void SoStringLabel::initClass()
 {
     SO_NODE_INIT_CLASS(SoStringLabel, SoNode, "Node");
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    SoIRRenderAction::addMethod(SoStringLabel::getClassTypeId(), SoStringLabel::IRRender);
+#endif
 }
 
 SoStringLabel::SoStringLabel()
@@ -170,7 +179,7 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction* action)
 {
-    renderRetained(action);
+    renderAction(action);
 }
 
 SoStringLabel::~SoStringLabel()
@@ -186,7 +195,61 @@ SoStringLabel::~SoStringLabel()
     textVertexProperty = nullptr;
 }
 
-void SoStringLabel::renderRetained(SoGLRenderAction* action)
+void SoStringLabel::renderAction(SoGLRenderAction* action)
+{
+    if (!action || !textRoot || !textSwitch) {
+        return;
+    }
+
+    SoState* state = action->getState();
+    if (!state) {
+        return;
+    }
+
+    state->push();
+    ensureTextGeometry(state);
+
+    if (textSwitch->whichChild.getValue() != SO_SWITCH_NONE) {
+        SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+        QOpenGLContext* context = QOpenGLContext::currentContext();
+        QOpenGLFunctions* functions = context ? context->functions() : nullptr;
+        GLboolean blendWasEnabled = GL_FALSE;
+        GLint blendSource = GL_SRC_ALPHA;
+        GLint blendDestination = GL_ONE_MINUS_SRC_ALPHA;
+        if (functions) {
+            blendWasEnabled = functions->glIsEnabled(GL_BLEND);
+            functions->glGetIntegerv(GL_BLEND_SRC, &blendSource);
+            functions->glGetIntegerv(GL_BLEND_DST, &blendDestination);
+            functions->glEnable(GL_BLEND);
+            functions->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        }
+        textRoot->GLRender(action);
+        if (functions) {
+            if (blendWasEnabled) {
+                functions->glEnable(GL_BLEND);
+                functions->glBlendFunc(blendSource, blendDestination);
+            }
+            else {
+                functions->glDisable(GL_BLEND);
+            }
+        }
+    }
+
+    state->pop();
+}
+
+void SoStringLabel::IRRender(SoAction* action, SoNode* node)
+{
+    auto* label = static_cast<SoStringLabel*>(node);
+    if (!label || !action) {
+        return;
+    }
+
+    label->renderAction(action);
+}
+
+void SoStringLabel::renderAction(SoAction* action)
 {
     if (!action || !textRoot || !textSwitch) {
         return;
@@ -205,7 +268,7 @@ void SoStringLabel::renderRetained(SoGLRenderAction* action)
         SoShapeStyleElement::setTransparencyType(state, SoGLRenderAction::BLEND);
         SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
         SoLazyElement::enableBlending(state, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        textRoot->GLRender(action);
+        textRoot->doAction(action);
     }
 
     state->pop();
@@ -504,3 +567,11 @@ void SoFrameLabel::GLRender(SoGLRenderAction* action)
     prepareImage(action ? action->getState() : nullptr);
     inherited::GLRender(action);
 }
+
+#if FC_COIN_HAVE_RETAINED_RENDERER
+void SoFrameLabel::IRRender(SoIRRenderAction* action)
+{
+    prepareImage(action ? action->getState() : nullptr);
+    inherited::IRRender(action);
+}
+#endif

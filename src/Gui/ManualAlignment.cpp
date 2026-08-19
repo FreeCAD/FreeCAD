@@ -415,7 +415,7 @@ public:
 
         if (smoothing) {
             for (const auto& i : _viewer) {
-                i->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+                i->getSoRenderManager()->setAntialiasing(true, 1);
             }
         }
 

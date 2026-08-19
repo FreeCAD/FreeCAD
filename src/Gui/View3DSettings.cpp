@@ -29,11 +29,13 @@
 
 #include <Base/Builder3D.h>
 #include <Base/Color.h>
+#include <Base/Console.h>
 
 #include "NaviCube.h"
 #include "Navigation/NavigationStyle.h"
 #include "Selection/SelectionColors.h"
 #include "SoFCSelectionAction.h"
+#include "RenderPipeline.h"
 #include "View3DSettings.h"
 #include "View3DInventorViewer.h"
 
@@ -96,6 +98,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp, "UseVBO");
     OnChange(*hGrp, "RenderCache");
     OnChange(*hGrp, "MaxFrameRate");
+    OnChange(*hGrp, "CoinRenderPipeline");
     OnChange(*hGrp, "Orthographic");
     OnChange(*hGrp, "NavigationStyle");
     OnChange(*hGrp, "OrbitStyle");
@@ -126,7 +129,7 @@ void View3DSettings::applySettings()
 
 void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
 {
-    const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
+    ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
     if (strcmp(Reason, "EnableHeadlight") == 0) {
         bool enable = rGrp.GetBool("EnableHeadlight", true);
         for (auto _viewer : _viewers) {
@@ -438,6 +441,24 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::
     else if (strcmp(Reason, "MaxFrameRate") == 0) {
         for (auto _viewer : _viewers) {
             _viewer->setMaxFrameRate(static_cast<int>(rGrp.GetInt("MaxFrameRate", -1)));
+        }
+    }
+    else if (strcmp(Reason, "CoinRenderPipeline") == 0) {
+        const auto value = rGrp.GetASCII("CoinRenderPipeline", "LegacyGL");
+        const auto parsed = parseRenderPipeline(value);
+        if (!parsed) {
+            Base::Console().warning(
+                "Unknown CoinRenderPipeline preference '%s'; using LegacyGL\n",
+                value.c_str()
+            );
+        }
+        const auto pipeline = parsed.value_or(RenderPipeline::LegacyGL);
+        const auto canonical = std::string(renderPipelineName(pipeline));
+        if (value != canonical) {
+            rGrp.SetASCII("CoinRenderPipeline", canonical.c_str());
+        }
+        for (auto _viewer : _viewers) {
+            _viewer->setRenderPipeline(pipeline);
         }
     }
     else if (strcmp(Reason, "Orthographic") == 0) {

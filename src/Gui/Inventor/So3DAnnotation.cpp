@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 #include <FCConfig.h>
+#include "../CoinRenderFeatures.h"
+#include "../CoinRenderSupport.h"
 
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
@@ -34,6 +36,11 @@
 #endif
 
 #include <Inventor/elements/SoCacheElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+# include <Inventor/rendering/SoRenderIR.h>
+#endif
 #include <algorithm>
 
 #include "So3DAnnotation.h"
@@ -43,12 +50,59 @@ using namespace Gui;
 
 SO_ELEMENT_SOURCE(SoDelayedAnnotationsElement);
 
-bool SoDelayedAnnotationsElement::isProcessingDelayedPaths = false;
+namespace
+{
+
+class DelayedPathsProcessingScope
+{
+public:
+    explicit DelayedPathsProcessingScope(SoState* state)
+        : state(state)
+        , previous(SoDelayedAnnotationsElement::isProcessingDelayedPaths(state))
+    {
+        SoDelayedAnnotationsElement::setProcessingDelayedPaths(this->state, true);
+    }
+
+    ~DelayedPathsProcessingScope()
+    {
+        SoDelayedAnnotationsElement::setProcessingDelayedPaths(this->state, this->previous);
+    }
+
+    DelayedPathsProcessingScope(const DelayedPathsProcessingScope&) = delete;
+    DelayedPathsProcessingScope& operator=(const DelayedPathsProcessingScope&) = delete;
+
+private:
+    SoState* state;
+    bool previous;
+};
+
+}  // namespace
 
 void SoDelayedAnnotationsElement::init(SoState* state)
 {
     SoElement::init(state);
     paths.clear();
+    processingDelayedPaths = false;
+}
+
+void SoDelayedAnnotationsElement::push(SoState* state)
+{
+    inherited::push(state);
+
+    // Delayed paths are accumulated by the traversal and must survive the
+    // separator scopes in which annotations are commonly encountered.  Keep
+    // the child scope empty so that pop() can merge only paths queued in that
+    // scope; processing state, on the other hand, is inherited normally.
+    paths.clear();
+    const auto* previous = static_cast<const SoDelayedAnnotationsElement*>(getNextInStack());
+    processingDelayedPaths = previous->processingDelayedPaths;
+}
+
+void SoDelayedAnnotationsElement::pop(SoState* state, const SoElement* prevTopElement)
+{
+    auto* child = static_cast<const SoDelayedAnnotationsElement*>(prevTopElement);
+    paths.insert(paths.end(), child->paths.begin(), child->paths.end());
+    inherited::pop(state, prevTopElement);
 }
 
 void SoDelayedAnnotationsElement::initClass()
@@ -56,6 +110,9 @@ void SoDelayedAnnotationsElement::initClass()
     SO_ELEMENT_INIT_CLASS(SoDelayedAnnotationsElement, inherited);
 
     SO_ENABLE(SoGLRenderAction, SoDelayedAnnotationsElement);
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    SO_ENABLE(SoIRRenderAction, SoDelayedAnnotationsElement);
+#endif
 }
 
 SoDelayedAnnotationsElement* SoDelayedAnnotationsElement::getElement(SoState* state)
@@ -65,13 +122,22 @@ SoDelayedAnnotationsElement* SoDelayedAnnotationsElement::getElement(SoState* st
 
 void SoDelayedAnnotationsElement::addDelayedPath(SoState* state, SoPath* path, int priority)
 {
-    // add to unified storage with specified priority (default = 0)
     getElement(state)->paths.emplace_back(path, priority);
 }
 
 bool SoDelayedAnnotationsElement::hasDelayedPaths(SoState* state)
 {
     return !getElement(state)->paths.empty();
+}
+
+bool SoDelayedAnnotationsElement::isProcessingDelayedPaths(SoState* state)
+{
+    return getElement(state)->processingDelayedPaths;
+}
+
+void SoDelayedAnnotationsElement::setProcessingDelayedPaths(SoState* state, bool processing)
+{
+    getElement(state)->processingDelayedPaths = processing;
 }
 
 SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
@@ -91,7 +157,7 @@ SoPathList SoDelayedAnnotationsElement::getDelayedPaths(SoState* state)
 
     SoPathList sortedPaths;
     for (const auto& priorityPath : elt->paths) {
-        sortedPaths.append(priorityPath.path);
+        sortedPaths.append(priorityPath.path.get());
     }
 
     // Clear storage
@@ -114,23 +180,46 @@ void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state
         [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
     );
 
-    isProcessingDelayedPaths = true;
+    DelayedPathsProcessingScope processingScope(state);
 
     for (const auto& priorityPath : elt->paths) {
         SoPathList singlePath;
-        singlePath.append(priorityPath.path);
+        singlePath.append(priorityPath.path.get());
 
         action->apply(singlePath, TRUE);
     }
 
-    isProcessingDelayedPaths = false;
-
     elt->paths.clear();
 }
 
-SO_NODE_SOURCE(So3DAnnotation);
+#if FC_COIN_HAVE_RETAINED_RENDERER
+void SoDelayedAnnotationsElement::processDelayedPathsWithPriority(SoState* state, SoIRRenderAction* action)
+{
+    auto* elt = static_cast<SoDelayedAnnotationsElement*>(state->getElementNoPush(classStackIndex));
 
-bool So3DAnnotation::render = false;
+    if (elt->paths.empty()) {
+        return;
+    }
+
+    std::stable_sort(
+        elt->paths.begin(),
+        elt->paths.end(),
+        [](const PriorityPath& a, const PriorityPath& b) { return a.priority < b.priority; }
+    );
+
+    DelayedPathsProcessingScope processingScope(state);
+    for (const auto& priorityPath : elt->paths) {
+        // Annotation paths commonly depend on coordinates, normals, and
+        // bindings established by their ancestors. Replay the full path so
+        // those state elements are reconstructed before the delayed tail.
+        CoinRenderSupport::traverseAdditionalRetainedPath(action, priorityPath.path.get());
+    }
+
+    elt->paths.clear();
+}
+#endif
+
+SO_NODE_SOURCE(So3DAnnotation);
 
 So3DAnnotation::So3DAnnotation()
 {
@@ -140,6 +229,9 @@ So3DAnnotation::So3DAnnotation()
 void So3DAnnotation::initClass()
 {
     SO_NODE_INIT_CLASS(So3DAnnotation, SoSeparator, "3DAnnotation");
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    SoIRRenderAction::addMethod(So3DAnnotation::getClassTypeId(), So3DAnnotation::IRRender);
+#endif
 }
 
 void So3DAnnotation::GLRender(SoGLRenderAction* action)
@@ -160,7 +252,7 @@ void So3DAnnotation::GLRender(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 {
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState())) {
         inherited::GLRenderBelowPath(action);
     }
     else {
@@ -171,7 +263,7 @@ void So3DAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 
 void So3DAnnotation::GLRenderInPath(SoGLRenderAction* action)
 {
-    if (render) {
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(action->getState())) {
         inherited::GLRenderInPath(action);
     }
     else {
@@ -184,3 +276,25 @@ void So3DAnnotation::GLRenderOffPath(SoGLRenderAction* /* action */)
 {
     // should never render, this is a separator node
 }
+
+#if FC_COIN_HAVE_RETAINED_RENDERER
+void So3DAnnotation::IRRender(SoAction* action, SoNode* node)
+{
+    auto* annotation = static_cast<So3DAnnotation*>(node);
+    auto* renderAction = static_cast<SoIRRenderAction*>(action);
+    SoState* state = renderAction->getState();
+
+    if (SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
+        state->push();
+        // The after-main DrawList stage clears the main depth buffer once,
+        // then retains normal depth testing for annotation self-occlusion.
+        SoDepthBufferElement::set(state, TRUE, TRUE, SoDepthBufferElement::LEQUAL, SbVec2f(0.0F, 1.0F));
+        annotation->inherited::doAction(action);
+        state->pop();
+        return;
+    }
+
+    SoCacheElement::invalidate(state);
+    SoDelayedAnnotationsElement::addDelayedPath(state, action->getCurPath()->copy());
+}
+#endif

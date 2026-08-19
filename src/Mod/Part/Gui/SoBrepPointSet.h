@@ -29,11 +29,13 @@
 #include <memory>
 #include <vector>
 #include <Gui/Selection/SoFCSelectionContext.h>
+#include <Gui/CoinRenderFeatures.h>
 #include <Mod/Part/PartGlobal.h>
 
 
 class SoCoordinateElement;
 class SoIndexedPointSet;
+class SoIRRenderAction;
 
 namespace PartGui
 {
@@ -63,6 +65,9 @@ public:
 protected:
     ~SoBrepPointSet() override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void IRRender(::SoIRRenderAction* action) override;
+#endif
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
 

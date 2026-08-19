@@ -27,9 +27,9 @@
 
 class SoState;
 
-class SoDevicePixelRatioElement: public SoFloatElement
+class SoFCDevicePixelRatioElement: public SoFloatElement
 {
-    SO_ELEMENT_HEADER(SoDevicePixelRatioElement);
+    SO_ELEMENT_HEADER(SoFCDevicePixelRatioElement);
 
 public:
     // Initializes the class
@@ -45,5 +45,5 @@ public:
     static float get(SoState* state);
 
 protected:
-    virtual ~SoDevicePixelRatioElement();
+    ~SoFCDevicePixelRatioElement() override;
 };

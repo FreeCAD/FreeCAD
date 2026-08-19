@@ -23,6 +23,7 @@
 
 #include <string>
 #include <QApplication>
+#include <QCursor>
 #include <QKeyEvent>
 #include <QEvent>
 #include <QDropEvent>
@@ -130,7 +131,7 @@ View3DInventor::View3DInventor(
     }
 
     if (smoothing) {
-        _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
+        _viewer->getSoRenderManager()->setAntialiasing(true, 1);
     }
 
     // create the inventor widget and set the defaults
@@ -619,7 +620,10 @@ void View3DInventor::setOverrideCursor(const QCursor& aCursor)
 
 void View3DInventor::restoreOverrideCursor()
 {
-    _viewer->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
+    auto* widget = _viewer->getWidget();
+    if (widget->cursor().shape() == Qt::ForbiddenCursor) {
+        widget->setCursor(QCursor(Qt::ArrowCursor));
+    }
 }
 
 // defined in SoFCDB.cpp

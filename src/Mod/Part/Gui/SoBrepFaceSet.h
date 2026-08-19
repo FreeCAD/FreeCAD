@@ -29,8 +29,10 @@
 #include <memory>
 #include <vector>
 #include <Gui/Selection/SoFCSelectionContext.h>
+#include <Gui/CoinRenderFeatures.h>
 #include <Mod/Part/PartGlobal.h>
 
+class SoIRRenderAction;
 
 namespace PartGui
 {
@@ -101,6 +103,9 @@ public:
 protected:
     ~SoBrepFaceSet() override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void IRRender(::SoIRRenderAction* action) override;
+#endif
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
     SoDetail* createTriangleDetail(
@@ -132,7 +137,12 @@ private:
 
     void renderHighlight(SoGLRenderAction* action, SelContextPtr);
     void renderSelection(SoGLRenderAction* action, SelContextPtr, bool push = true);
-
+    void renderOverlayFaces(
+        SoGLRenderAction* action,
+        const std::vector<int32_t>& coordIndex,
+        const SbColor& color,
+        bool onTop
+    );
     bool overrideMaterialBinding(SoGLRenderAction* action, SelContextPtr ctx, SelContextPtr ctx2);
 
 #ifdef RENDER_GLARRAYS

@@ -36,6 +36,7 @@
 #include <Inventor/fields/SoSFVec2f.h>
 #include <Inventor/fields/SoSFVec4f.h>
 #include <Inventor/nodes/SoShape.h>
+#include "../CoinRenderFeatures.h"
 
 #include <cstdint>
 #include <array>
@@ -56,16 +57,16 @@ class SoShapeHints;
 class SoCamera;
 class SoOrthographicCamera;
 class SoPerspectiveCamera;
+class SoRenderLayerGroup;
+class SoState;
 class SoTransform;
 class SoVertexProperty;
+class SoIRRenderAction;
 namespace Gui
 {
 
 /**
- * Placeholder Coin node for the navigation cube overlay.
- *
- * Rendering responsibilities will be migrated from NaviCubeImplementation
- * into this node in subsequent steps.
+ * Coin node for the navigation cube overlay.
  */
 class GuiExport SoNaviCube: public SoShape
 {
@@ -129,6 +130,9 @@ protected:
     ~SoNaviCube() override;
 
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void IRRender(SoIRRenderAction* action) override;
+#endif
     void generatePrimitives(SoAction* action) override;
     void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
 
@@ -173,15 +177,16 @@ private:
     void updateButtons(const RenderParams& params) const;
     void updateLabels(const RenderParams& params) const;
     void updateSceneGraph() const;
-    void beginOverlayPass(
-        SoGLRenderAction* action,
-        const RenderParams& params,
-        int viewportX,
-        int viewportY,
-        int viewportWidth,
-        int viewportHeight
-    );
+    void updateOverlayViewport(int viewportX, int viewportY, int viewportWidth, int viewportHeight) const;
+    void setOverlayState(SoState* state, bool transparentMaterial, bool transparentTexture);
+    void beginOverlayPass(SoGLRenderAction* action, const RenderParams& params);
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void beginDrawListOverlayPass(SoIRRenderAction* action, const RenderParams& params);
+#endif
     void renderOverlayScene(SoGLRenderAction* action);
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void renderOverlayScene(SoIRRenderAction* action);
+#endif
     void ensureGeometry() const;
     void rebuildGeometry() const;
     void addCubeFace(const SbVec3f& x, const SbVec3f& z, CubeFaceKind kind, PickId pickId) const;
@@ -229,6 +234,7 @@ private:
     };
 
     mutable SoSeparator* sceneRoot {nullptr};
+    mutable SoSeparator* overlayRoot {nullptr};
     mutable SoSwitch* cameraSwitch {nullptr};
     mutable SoOrthographicCamera* orthoCamera {nullptr};
     mutable SoPerspectiveCamera* perspCamera {nullptr};

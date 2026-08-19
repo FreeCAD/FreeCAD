@@ -30,10 +30,12 @@
 #include <memory>
 #include <vector>
 #include <Gui/Selection/SoFCSelectionContext.h>
+#include <Gui/CoinRenderFeatures.h>
 #include <Mod/Part/PartGlobal.h>
 
 
 class SoCoordinateElement;
+class SoIRRenderAction;
 
 namespace PartGui
 {
@@ -55,6 +57,11 @@ public:
         viewProvider = vp;
     }
 
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    // The semantic edge-index fields are preferred. The coordinate-index fields
+    // remain for the legacy overlay path and are ignored by the render backend.
+    SoMFInt32 highlightEdgeIndex;
+    SoMFInt32 selectionEdgeIndex;
     SoMFInt32 highlightCoordIndex;
     SoMFInt32 selectionCoordIndex;
     SoSFColor highlightColor;
@@ -63,6 +70,9 @@ public:
 protected:
     ~SoBrepEdgeSet() override;
     void GLRender(SoGLRenderAction* action) override;
+#if FC_COIN_HAVE_RETAINED_RENDERER
+    void IRRender(::SoIRRenderAction* action) override;
+#endif
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
     SoDetail* createLineSegmentDetail(

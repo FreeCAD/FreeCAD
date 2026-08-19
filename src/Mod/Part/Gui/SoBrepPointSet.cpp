@@ -27,6 +27,10 @@
 #include <limits>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGLRenderAction.h>
+#include <Gui/CoinRenderFeatures.h>
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include <Inventor/actions/SoIRRenderAction.h>
+#endif
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoDepthBufferElement.h>
@@ -40,15 +44,21 @@
 #include <Inventor/nodes/SoIndexedPointSet.h>
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
+#include <Gui/Selection/Selection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 
 #include "ViewProviderExt.h"
 #include "SoBrepPointSet.h"
+#if FC_COIN_HAVE_RETAINED_RENDERER
+# include "SoBrepSelectionIR.h"
+#endif
 
 
 using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepPointSet)
+
+static constexpr float MIN_SELECTION_POINT_SIZE = 6.0f;
 
 /// Controls how B-rep overlay primitives interact with the scene depth buffer.
 enum class OverlayDepthMode
@@ -134,8 +144,8 @@ static void renderOverlayPoints(
     SoLazyElement::setPacked(state, pointSet, 1, &packedColor, false);
 
     float ps = SoPointSizeElement::get(state);
-    if (ps < 4.0f) {
-        SoPointSizeElement::set(state, pointSet, 4.0f);
+    if (ps < MIN_SELECTION_POINT_SIZE) {
+        SoPointSizeElement::set(state, pointSet, MIN_SELECTION_POINT_SIZE);
     }
 
     // setValues() does not shrink the field, so rewrite the overlay index array
@@ -178,6 +188,85 @@ SoBrepPointSet::~SoBrepPointSet()
     }
 }
 
+#if FC_COIN_HAVE_RETAINED_RENDERER
+void SoBrepPointSet::IRRender(SoIRRenderAction* action)
+{
+    if (!action) {
+        return;
+    }
+
+    SelContextPtr ctx2;
+    SelContextPtr ctx = Gui::SoFCSelectionRoot::getRenderContext(action, this, selContext, ctx2);
+    if (selContext2->checkGlobal(ctx)) {
+        ctx = selContext2;
+    }
+
+    auto& drawlist = action->getMutableDrawList();
+    const int firstCommand = drawlist.getNumCommands();
+    inherited::IRRender(action);
+
+    const int appendedCount = drawlist.getNumCommands() - firstCommand;
+    if (appendedCount <= 0) {
+        return;
+    }
+    if (appendedCount != 1) {
+        static bool warned = false;
+        if (!warned) {
+            warned = true;
+            SoDebugError::postWarning(
+                "SoBrepPointSet::render",
+                "Draw-list traversal emitted %d commands for one SoBrepPointSet; "
+                "point selection metadata expects exactly one point command",
+                appendedCount
+            );
+        }
+        return;
+    }
+
+    auto& cmd = drawlist.getCommand(firstCommand);
+    if (cmd.geometry.topology != SO_TOPOLOGY_POINTS) {
+        return;
+    }
+
+    const int startIndex = this->startIndex.getValue();
+    const int pointCount = static_cast<int>(cmd.geometry.vertexCount);
+    if (pointCount <= 0) {
+        return;
+    }
+
+    const int endIndex = startIndex + pointCount;
+    auto containsPoint = [startIndex, endIndex](int idx) {
+        return idx >= startIndex && idx < endIndex;
+    };
+
+    auto& selection = drawlist.getMutableSelectionState();
+    SelectionIR::applyPrimary(
+        selection,
+        firstCommand,
+        SO_PICK_VERTEX,
+        ctx,
+        SelectionIR::getRootSelection(action),
+        containsPoint
+    );
+    SelectionIR::applySelectionOverlay(
+        selection,
+        firstCommand,
+        SO_PICK_VERTEX,
+        selectionCoordIndex,
+        selectionColor.getValue(),
+        containsPoint
+    );
+    SelectionIR::applyHighlightOverlay(
+        selection,
+        firstCommand,
+        SO_PICK_VERTEX,
+        highlightCoordIndex,
+        highlightColor.getValue(),
+        containsPoint
+    );
+}
+#endif
+
 void SoBrepPointSet::GLRender(SoGLRenderAction* action)
 {
     auto state = action->getState();
@@ -204,7 +293,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     // for clarifyselection, add this node to delayed path if it is highlighted and render it on
     // top of everything else (highest priority)
     if (Gui::Selection().isClarifySelectionActive() && hasContextHighlight
-        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+        && !Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
         if (viewProvider) {
             viewProvider->setFaceHighlightActive(true);
         }
@@ -268,7 +357,7 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
     if (ctx2 && !ctx2->selectionIndex.empty()) {
         renderSelection(action, ctx2, false);
     }
-    else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths) {
+    else if (Gui::SoDelayedAnnotationsElement::isProcessingDelayedPaths(state)) {
         state->push();
         SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
         inherited::GLRender(action);

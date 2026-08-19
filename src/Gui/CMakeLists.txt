@@ -897,6 +897,7 @@ SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 # The 3d view
 SET(View3D_CPP_SRCS
     Camera.cpp
+    CoinRenderSupport.cpp
     Flag.cpp
     GLBuffer.cpp
     GLPainter.cpp
@@ -910,6 +911,7 @@ SET(View3D_CPP_SRCS
     View3DInventorViewer.cpp
     View3DInventorRiftViewer.cpp
     View3DSettings.cpp
+    RenderPipeline.cpp
     CoinRiftWidget.cpp
     View3DPy.cpp
     View3DViewerPy.cpp
@@ -918,6 +920,8 @@ SET(View3D_CPP_SRCS
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
     Camera.h
+    CoinRenderFeatures.h
+    CoinRenderSupport.h
     Flag.h
     GLBuffer.h
     RubberbandOverlay.h
@@ -929,6 +933,7 @@ SET(View3D_SRCS
     View3DInventor.h
     View3DInventorSelection.h
     View3DInventorViewer.h
+    RenderPipeline.h
     View3DPy.h
     View3DInventorRiftViewer.h
     View3DSettings.h
@@ -1109,7 +1114,7 @@ SET(Inventor_CPP_SRCS
     Selection/SoFCSelectionAction.cpp
     SoFCVectorizeSVGAction.cpp
     SoFCVectorizeU3DAction.cpp
-    SoDevicePixelRatioElement.cpp
+    SoFCDevicePixelRatioElement.cpp
     SoLabelNodes.cpp
     TranslateManip.cpp
     SoDatumLabel.cpp
@@ -1152,7 +1157,7 @@ SET(Inventor_SRCS
     Selection/SoFCSelectionAction.h
     SoFCVectorizeSVGAction.h
     SoFCVectorizeU3DAction.h
-    SoDevicePixelRatioElement.h
+    SoFCDevicePixelRatioElement.h
     SoLabelNodes.h
     TranslateManip.h
     SoDatumLabel.h
