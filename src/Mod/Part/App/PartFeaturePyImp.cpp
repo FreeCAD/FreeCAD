@@ -138,7 +138,5 @@ PyObject* PartFeaturePy::doNamesMatch(PyObject* args)
     Data::MappedName mappedName1 {name1};
     Data::MappedName mappedName2 {name2};
 
-    return (Py::new_reference_to(
-        Py::Boolean(Feature::doNamesMatch(mappedName1, mappedName2))
-    ));
+    return (Py::new_reference_to(Py::Boolean(Feature::doNamesMatch(mappedName1, mappedName2))));
 }

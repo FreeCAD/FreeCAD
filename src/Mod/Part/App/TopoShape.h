@@ -315,10 +315,7 @@ public:
         const TopoDS_Shape& shape = TopoDS_Shape(),
         long Tag = 0
     );
-    TopoShape(
-        const App::HistoryAlgorithm& historyAlgorithm,
-        long Tag
-    );
+    TopoShape(const App::HistoryAlgorithm& historyAlgorithm, long Tag);
     ~TopoShape() override;
 
     void setShape(const TopoDS_Shape& shape, bool resetElementMap = true);
@@ -1181,8 +1178,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape
-            .makeElementOffset2D(*this, offset, join, fill, allowOpenResult, intersection, op);
+        return newShape.makeElementOffset2D(*this, offset, join, fill, allowOpenResult, intersection, op);
     }
 
     /** Make a 2D offset of face with separate control for outer and inner (hole) wires
@@ -1238,8 +1234,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape
-            .makeElementOffsetFace(*this, offset, innerOffset, join, innerJoin, op);
+        return newShape.makeElementOffsetFace(*this, offset, innerOffset, join, innerJoin, op);
     }
 
 
@@ -1921,8 +1916,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape
-            .makeElementEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
+        return newShape.makeElementEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
     }
 
     /** Make an loft that is a shell or solid passing through a set of sections in a given sequence
@@ -2554,8 +2548,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape
-            .makeElementChamfer(*this, edges, chamferType, radius1, radius2, op, flipDirection);
+        return newShape.makeElementChamfer(*this, edges, chamferType, radius1, radius2, op, flipDirection);
     }
 
     /** Make a new shape with transformation
@@ -2675,8 +2668,7 @@ public:
         CopyType copy = CopyType::noCopy
     )
     {
-        return TopoShape(Tag, Hasher, getHistoryAlgorithm())
-            .makeElementTransform(*this, trsf, op, copy);
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementTransform(*this, trsf, op, copy);
     }
 
     /* Make draft shape
@@ -2733,8 +2725,7 @@ public:
             newShape.Tag = Tag;
         }
 
-        return newShape
-            .makeElementDraft(*this, faces, pullDirection, angle, neutralPlane, retry, op);
+        return newShape.makeElementDraft(*this, faces, pullDirection, angle, neutralPlane, retry, op);
     }
 
     /* Make a shell using this shape

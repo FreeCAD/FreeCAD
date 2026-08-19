@@ -2263,7 +2263,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 if (!foundSubShape.IsNull()) {
                     Data::IndexedName foundIdxName {info->shapetype, i};
                     Data::MappedName foundMappedName = getMappedName(foundIdxName);
-                    
+
                     if (foundMappedName) {
                         includedModifiedNameMap[foundSubShape] = foundMappedName;
                     }
@@ -2316,9 +2316,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     std::vector<TopoDS_Shape> modifiedShapes = mapper.modified(incomingShapeElement);
                     std::vector<TopoDS_Shape> generatedShapes = mapper.generated(incomingShapeElement);
 
-                    std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>, ShapeHasher, ShapeHasher> connectedElementMap;
-                    std::unordered_multiset<Data::MappedName, Data::MappedNameHasher>
-                        allConnectedElementNames;
+                    std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>, ShapeHasher, ShapeHasher>
+                        connectedElementMap;
+                    std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> allConnectedElementNames;
 
                     if (modifiedShapes.size() > 1 && lowerMapTypeEntry != lowerMapTypes.end()) {
                         for (size_t modifiedI = 0; modifiedI < modifiedShapes.size(); modifiedI++) {
@@ -2333,21 +2333,17 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 );
 
                                 if (includedModifiedNameEntry != includedModifiedNameMap.end()
-                                    && includedModifiedNameEntry->second)
-                                {
+                                    && includedModifiedNameEntry->second) {
                                     connectedElementMap[modifiedShape].push_back(
                                         includedModifiedNameEntry->second
                                     );
-                                    allConnectedElementNames.insert(
-                                        includedModifiedNameEntry->second
-                                    );
+                                    allConnectedElementNames.insert(includedModifiedNameEntry->second);
                                 }
                             }
                         }
 
                         for (std::pair<const TopoDS_Shape, std::vector<Data::MappedName>>&
-                                 connectedElementEntry : connectedElementMap)
-                        {
+                                 connectedElementEntry : connectedElementMap) {
                             std::vector<Data::MappedName> newConnectedElementNames;
 
                             for (const Data::MappedName& connectedElementName :
@@ -2420,7 +2416,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         0,
                                         {Data::MAPPER_FLAG_MODIFIED},
                                         newConnectedElementNames
-                                    ).c_str()
+                                    )
+                                        .c_str()
                                 );
                             }
 
@@ -2488,7 +2485,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         // key is the new generated shape, value is a pair where the first value is the `IndexedName`
         // of the key, and the second is the `DecodedMappedSection` associated with the key.
-        std::unordered_map<TopoDS_Shape, Data::DecodedMappedSection, ShapeHasher, ShapeHasher> namedGeneratedShapes;
+        std::unordered_map<TopoDS_Shape, Data::DecodedMappedSection, ShapeHasher, ShapeHasher>
+            namedGeneratedShapes;
         std::unordered_map<std::vector<NamingMapKey>, Data::DecodedMappedSection, Part::NamingMapKeyHasher>
             delayedGeneratedMap;
 
@@ -2551,7 +2549,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        std::unordered_map<TopoDS_Shape, std::vector<std::string>, ShapeHasher, ShapeHasher> generatedConnectedElementMap;
+        std::unordered_map<TopoDS_Shape, std::vector<std::string>, ShapeHasher, ShapeHasher>
+            generatedConnectedElementMap;
         std::unordered_multiset<std::string> allGeneratedConnectedElementNames;
         int emptyConnectedElementsIndex = 0;
 
@@ -2584,7 +2583,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         if (encodedMappedSection.size()) {
                             generatedConnectedElementMap[elementShape].push_back(encodedMappedSection);
                             allGeneratedConnectedElementNames.insert(encodedMappedSection);
-                            
+
                             continue;
                         }
 
@@ -3359,7 +3358,12 @@ TopoShape& TopoShape::makeElementOffset(
     BRep_Builder builder;
     std::vector<TopoShape> shapes;
     for (int index = 1; index <= freeCheck.NbClosedFreeBounds(); ++index) {
-        TopoShape originalWire(shape.Tag, shape.Hasher, freeCheck.ClosedFreeBound(index)->FreeBound(), getHistoryAlgorithm());
+        TopoShape originalWire(
+            shape.Tag,
+            shape.Hasher,
+            freeCheck.ClosedFreeBound(index)->FreeBound(),
+            getHistoryAlgorithm()
+        );
         originalWire.mapSubElement(shape);
         const BRepAlgo_Image& img = mkOffset.MakeOffset().OffsetEdgesFromShapes();
 
@@ -3409,7 +3413,9 @@ TopoShape& TopoShape::makeElementOffset(
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
 
-        shapes.push_back(TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementShape(aGenerator, wires));
+        shapes.push_back(
+            TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementShape(aGenerator, wires)
+        );
     }
 
     TopoShape perimeterCompound(Tag, Hasher, getHistoryAlgorithm());
@@ -4016,12 +4022,7 @@ TopoShape& TopoShape::makeElementWires(
         edgeList.pop_front();
 
         // current new wire
-        TopoShape new_wire {
-            Tag,
-            Hasher,
-            mkWire.Wire(),
-            getHistoryAlgorithm()
-        };
+        TopoShape new_wire {Tag, Hasher, mkWire.Wire(), getHistoryAlgorithm()};
 
         // try to connect each edge to the wire, the wire is complete if no more edges are
         // connectible
@@ -4233,8 +4234,8 @@ TopoShape& TopoShape::makeElementOrderedWires(
     std::vector<TopoShape> wires;
     std::list<TopoShape> edgeList;
 
-    auto shape
-        = TopoShape(getHistoryAlgorithm()).makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
+    auto shape = TopoShape(getHistoryAlgorithm())
+                     .makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
     for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
         edgeList.push_back(edge);
     }
@@ -5973,7 +5974,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
         builder.Add(comp, e3);
         builder.Add(comp, e4);
 
-        TopoShape s{getHistoryAlgorithm()};
+        TopoShape s {getHistoryAlgorithm()};
         s.makeShapeWithElementMap(comp, mapper, edges, Part::OpCodes::Split);
         return makeElementBSplineFace(s, style, op);
     }
@@ -7082,8 +7083,7 @@ long TopoShape::isElementGenerated(Data::MappedName& _name, int depth) const
             const Data::DecodedMappedSection& lastSection = _decodedName.back();
 
             if (lastSection.iterationTag == std::to_string(Tag)
-                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED))
-            {
+                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED)) {
                 return true;
             }
         }

@@ -276,13 +276,19 @@ std::string ShapeSegment::getName() const
 TYPESYSTEM_SOURCE(Part::TopoShape, Data::ComplexGeoData)
 
 
-TopoShape::~TopoShape() {
+TopoShape::~TopoShape()
+{
     if (elementMap(false)) {
         elementMap(false)->syncHistoryAlgorithm(nullptr);
     }
 }
 
-TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& shape, const App::HistoryAlgorithm& historyAlgorithm)
+TopoShape::TopoShape(
+    long tag,
+    App::StringHasherRef hasher,
+    const TopoDS_Shape& shape,
+    const App::HistoryAlgorithm& historyAlgorithm
+)
     : _Shape(*this, shape)
 {
     Tag = tag;
@@ -303,7 +309,12 @@ TopoShape::TopoShape(long tag, const App::HistoryAlgorithm& historyAlgorithm)
     setHistoryAlgorithm(historyAlgorithm);
 }
 
-TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
+TopoShape::TopoShape(
+    const TopoDS_Shape& shape,
+    long tag,
+    App::StringHasherRef hasher,
+    const App::HistoryAlgorithm& historyAlgorithm
+)
     : _Shape(*this, shape)
 {
     Tag = tag;
@@ -2935,7 +2946,8 @@ TopoDS_Shape TopoShape::makeOffset2D(
             TopoDS_Iterator it(_Shape);
             for (; it.More(); it.Next()) {
                 shapesToReturn.push_back(
-                    TopoShape(getHistoryAlgorithm(), it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
+                    TopoShape(getHistoryAlgorithm(), it.Value())
+                        .makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                 );
                 forceOutputCompound = true;
             }

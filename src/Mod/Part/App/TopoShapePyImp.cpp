@@ -155,7 +155,8 @@ PyObject* TopoShapePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Pyt
 
 int TopoShapePy::PyInit(PyObject* args, PyObject* keywds)
 {
-    static const std::array<const char*, 6> kwlist {"shape", "op", "tag", "hasher", "historyAlgorithm", nullptr};
+    static const std::array<const char*, 6>
+        kwlist {"shape", "op", "tag", "hasher", "historyAlgorithm", nullptr};
     long tag = 0;
     PyObject* pyHasher = nullptr;
     const char* op = nullptr;
@@ -179,7 +180,8 @@ int TopoShapePy::PyInit(PyObject* args, PyObject* keywds)
     self.Tag = tag;
     if (historyAlgorithm) {
         self.setHistoryAlgorithm(App::getHistoryAlgorithm(historyAlgorithm));
-    } else if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+    }
+    else if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
         self.setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
     }
     if (pyHasher) {
@@ -767,9 +769,9 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj, shapes);
-        return Py::new_reference_to(
-            shape2pyshape(TopoShape(shape.getHistoryAlgorithm()).makeElementBoolean(op, shapes, 0, tol, elementMapPolicy))
-        );
+        return Py::new_reference_to(shape2pyshape(
+            TopoShape(shape.getHistoryAlgorithm()).makeElementBoolean(op, shapes, 0, tol, elementMapPolicy)
+        ));
     }
     PY_CATCH_OCC
 }
@@ -786,9 +788,9 @@ static PyObject* makeShape(const char* op, const TopoShape& shape, PyObject* arg
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         getPyShapes(pcObj, shapes);
-        return Py::new_reference_to(
-            shape2pyshape(TopoShape(shape.getHistoryAlgorithm()).makeElementBoolean(op, shapes, nullptr, tol))
-        );
+        return Py::new_reference_to(shape2pyshape(
+            TopoShape(shape.getHistoryAlgorithm()).makeElementBoolean(op, shapes, nullptr, tol)
+        ));
     }
     PY_CATCH_OCC
 }
@@ -1303,7 +1305,9 @@ PyObject* TopoShapePy::makeFillet(PyObject* args) const
                     }
                 }
             }
-            return new TopoShapePy(new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), mkFillet.Shape()));
+            return new TopoShapePy(
+                new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), mkFillet.Shape())
+            );
         }
         catch (Standard_Failure& e) {
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -1371,7 +1375,9 @@ PyObject* TopoShapePy::makeChamfer(PyObject* args) const
                     }
                 }
             }
-            return new TopoShapePy(new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), mkChamfer.Shape()));
+            return new TopoShapePy(
+                new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), mkChamfer.Shape())
+            );
         }
         catch (Standard_Failure& e) {
             PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -1803,7 +1809,9 @@ PyObject* TopoShapePy::project(PyObject* args) const
         algo.SetParams(1.e-6, 1.e-6, GeomAbs_C1, 14, 10000);
         // algo.SetDefaultParams();
         algo.Build();
-        return new TopoShapePy(new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), algo.Projection()));
+        return new TopoShapePy(
+            new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), algo.Projection())
+        );
     }
     catch (Standard_Failure&) {
         PyErr_SetString(PartExceptionOCCError, "Failed to project shape");
@@ -1826,7 +1834,9 @@ PyObject* TopoShapePy::makeParallelProjection(PyObject* args) const
         Base::Vector3d vec = Py::Vector(pDir, false).toVector();
         BRepProj_Projection proj(wire, shape, gp_Dir(vec.x, vec.y, vec.z));
         TopoDS_Shape projected = proj.Shape();
-        return new TopoShapePy(new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), projected));
+        return new TopoShapePy(
+            new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), projected)
+        );
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -1849,7 +1859,9 @@ PyObject* TopoShapePy::makePerspectiveProjection(PyObject* args) const
         Base::Vector3d vec = Py::Vector(pDir, false).toVector();
         BRepProj_Projection proj(wire, shape, gp_Pnt(vec.x, vec.y, vec.z));
         TopoDS_Shape projected = proj.Shape();
-        return new TopoShapePy(new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), projected));
+        return new TopoShapePy(
+            new TopoShape(this->getTopoShapePtr()->getHistoryAlgorithm(), projected)
+        );
     }
     catch (Standard_Failure& e) {
         PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
@@ -2929,7 +2941,8 @@ Py::String TopoShapePy::getHistoryAlgorithm() const
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         return "V1";
-    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+    }
+    else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
         return "V2";
     }
 

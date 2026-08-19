@@ -179,10 +179,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject* args) const
     try {
         Base::Vector3d pt = Py::Vector(pPnt, false).toVector();
         TopoShape* thisShape = this->getTopoShapePtr();
-        BRepPrimAPI_MakeHalfSpace mkHS(
-            TopoDS::Shell(thisShape->getShape()),
-            gp_Pnt(pt.x, pt.y, pt.z)
-        );
+        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Shell(thisShape->getShape()), gp_Pnt(pt.x, pt.y, pt.z));
         return new TopoShapeSolidPy(new TopoShape(thisShape->getHistoryAlgorithm(), mkHS.Solid()));
     }
     catch (Standard_Failure& e) {

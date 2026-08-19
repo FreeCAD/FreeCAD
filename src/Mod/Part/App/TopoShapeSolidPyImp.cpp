@@ -79,7 +79,7 @@ int TopoShapeSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
         getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
     }
-    
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Solid
         getTopoShapePtr()->setShape(TopoDS_Solid());

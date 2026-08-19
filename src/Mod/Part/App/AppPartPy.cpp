@@ -1109,8 +1109,10 @@ private:
         if (pythonShapes.size()) {
             historyAlgorithm = pythonShapes.front().getHistoryAlgorithm();
         }
-        
-        return shape2pyshape(Part::TopoShape(historyAlgorithm).makeElementCompound(pythonShapes, op, policy));
+
+        return shape2pyshape(
+            Part::TopoShape(historyAlgorithm).makeElementCompound(pythonShapes, op, policy)
+        );
     }
     Py::Object makeShell(const Py::Tuple& args, const Py::Dict& kwds)
     {
@@ -1126,7 +1128,7 @@ private:
         if (pythonShapes.size()) {
             historyAlgorithm = pythonShapes.front().getHistoryAlgorithm();
         }
-        
+
         return shape2pyshape(
             Part::TopoShape(historyAlgorithm).makeElementBoolean(Part::OpCodes::Shell, pythonShapes, op)
         );
@@ -1161,9 +1163,10 @@ private:
         if (pythonShapes.size()) {
             historyAlgorithm = pythonShapes.front().getHistoryAlgorithm();
         }
-        
+
         return shape2pyshape(
-            Part::TopoShape(historyAlgorithm).makeElementFace(pythonShapes, op, className, nullptr, elementMapPolicy)
+            Part::TopoShape(historyAlgorithm)
+                .makeElementFace(pythonShapes, op, className, nullptr, elementMapPolicy)
         );
     }
 
@@ -1275,9 +1278,8 @@ private:
         if (shapes.empty()) {
             throw Py::ValueError("No input shape");
         }
-        return shape2pyshape(
-            TopoShape(0, shapes.front().Hasher, shapes.front().getHistoryAlgorithm()).makeElementFilledFace(shapes, params, op)
-        );
+        return shape2pyshape(TopoShape(0, shapes.front().Hasher, shapes.front().getHistoryAlgorithm())
+                                 .makeElementFilledFace(shapes, params, op));
     }
 
     Py::Object makeFilledFace(const Py::Tuple& args, const Py::Dict& kwds)
@@ -1360,9 +1362,8 @@ private:
         if (shapes.empty()) {
             throw Py::ValueError("No input shape");
         }
-        return shape2pyshape(
-            TopoShape(0, shapes.front().Hasher, shapes.front().getHistoryAlgorithm()).makeElementFilledFace(shapes, params, op)
-        );
+        return shape2pyshape(TopoShape(0, shapes.front().Hasher, shapes.front().getHistoryAlgorithm())
+                                 .makeElementFilledFace(shapes, params, op));
     }
 
     Py::Object makeSolid(const Py::Tuple& args, const Py::Dict& kwds)
@@ -1499,7 +1500,7 @@ private:
             if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
                 shape->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
             }
-            
+
             return Py::asObject(new TopoShapeSolidPy(shape));
         }
         catch (Standard_DomainError&) {
@@ -1830,7 +1831,7 @@ private:
             if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
                 shape->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
             }
-            
+
             return Py::asObject(new TopoShapeSolidPy(shape));
         }
         catch (Standard_DomainError&) {
@@ -1988,7 +1989,7 @@ private:
             if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
                 shape->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
             }
-            
+
             return Py::asObject(new TopoShapeWirePy(shape));
         }
         catch (Standard_Failure& e) {
@@ -2137,15 +2138,21 @@ private:
 
             if (type == defaultType) {
                 TopoDS_Shape shape = mkRev.Solid();
-                return Py::asObject(new TopoShapeSolidPy(new TopoShape(selectedHistoryAlgorithm, shape)));
+                return Py::asObject(
+                    new TopoShapeSolidPy(new TopoShape(selectedHistoryAlgorithm, shape))
+                );
             }
             else if (type == shellType) {
                 TopoDS_Shape shape = mkRev.Shell();
-                return Py::asObject(new TopoShapeShellPy(new TopoShape(selectedHistoryAlgorithm, shape)));
+                return Py::asObject(
+                    new TopoShapeShellPy(new TopoShape(selectedHistoryAlgorithm, shape))
+                );
             }
             else if (type == faceType) {
                 TopoDS_Shape shape = mkRev.Face();
-                return Py::asObject(new TopoShapeFacePy(new TopoShape(selectedHistoryAlgorithm, shape)));
+                return Py::asObject(
+                    new TopoShapeFacePy(new TopoShape(selectedHistoryAlgorithm, shape))
+                );
             }
             else {
                 TopoDS_Shape shape = mkRev.Shape();
@@ -2181,7 +2188,8 @@ private:
         std::vector<TopoShape> shapes;
         shapes.push_back(*static_cast<TopoShapePy*>(sh1)->getTopoShapePtr());
         shapes.push_back(*static_cast<TopoShapePy*>(sh2)->getTopoShapePtr());
-        return shape2pyshape(TopoShape(shapes.front().getHistoryAlgorithm()).makeElementRuledSurface(shapes, orientation, op));
+        return shape2pyshape(TopoShape(shapes.front().getHistoryAlgorithm())
+                                 .makeElementRuledSurface(shapes, orientation, op));
     }
 
     Py::Object makeShellFromWires(const Py::Tuple& args, const Py::Dict& kwds)
@@ -2199,9 +2207,10 @@ private:
             if (pythonShapes.size()) {
                 historyAlgorithm = pythonShapes.front().getHistoryAlgorithm();
             }
-            
+
             return shape2pyshape(
-                Part::TopoShape(historyAlgorithm).makeElementShellFromWires(pythonShapes, /*silent*/ false, op)
+                Part::TopoShape(historyAlgorithm)
+                    .makeElementShellFromWires(pythonShapes, /*silent*/ false, op)
             );
         }
         catch (Standard_Failure&) {
@@ -2262,11 +2271,12 @@ private:
         try {
             TopoShape* pTopoShape = static_cast<TopoShapePy*>(pshape)->getTopoShapePtr();
 
-            const TopoDS_Shape& path_shape
-                = pTopoShape->getShape();
+            const TopoDS_Shape& path_shape = pTopoShape->getShape();
             TopoShape myShape(path_shape);
             TopoDS_Shape face = myShape.makeTube(radius, tolerance, cont, maxdegree, maxsegment);
-            return Py::asObject(new TopoShapeFacePy(new TopoShape(pTopoShape->getHistoryAlgorithm(), face)));
+            return Py::asObject(
+                new TopoShapeFacePy(new TopoShape(pTopoShape->getHistoryAlgorithm(), face))
+            );
         }
         catch (Standard_Failure& e) {
             throw Py::Exception(PartExceptionOCCError, e.GetMessageString());
@@ -2352,16 +2362,15 @@ private:
             historyAlgorithm = pythonShapes.front().getHistoryAlgorithm();
         }
 
-        return shape2pyshape(
-            TopoShape(historyAlgorithm).makeElementLoft(
-                pythonShapes,
-                anIsSolid ? Part::IsSolid::solid : Part::IsSolid::notSolid,
-                anIsRuled ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
-                anIsClosed ? Part::IsClosed::closed : Part::IsClosed::notClosed,
-                degMax,
-                op
-            )
-        );
+        return shape2pyshape(TopoShape(historyAlgorithm)
+                                 .makeElementLoft(
+                                     pythonShapes,
+                                     anIsSolid ? Part::IsSolid::solid : Part::IsSolid::notSolid,
+                                     anIsRuled ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
+                                     anIsClosed ? Part::IsClosed::closed : Part::IsClosed::notClosed,
+                                     degMax,
+                                     op
+                                 ));
     }
 
     Py::Object makeSplitShape(const Py::Tuple& args)
@@ -2675,7 +2684,9 @@ private:
         std::list<TopoDS_Edge> sorted = sort_Edges(Precision::Confusion(), edges);
         Py::List sorted_list;
         for (const auto& it : sorted) {
-            sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(historyAlgorithm, it)), true));
+            sorted_list.append(
+                Py::Object(new TopoShapeEdgePy(new TopoShape(historyAlgorithm, it)), true)
+            );
         }
 
         return sorted_list;
@@ -2721,7 +2732,9 @@ private:
             std::list<TopoDS_Edge> sorted = sort_Edges(tol3d, edges);
             Py::List sorted_list;
             for (const auto& it : sorted) {
-                sorted_list.append(Py::Object(new TopoShapeEdgePy(new TopoShape(historyAlgorithm, it)), true));
+                sorted_list.append(
+                    Py::Object(new TopoShapeEdgePy(new TopoShape(historyAlgorithm, it)), true)
+                );
             }
             root_list.append(sorted_list);
         }

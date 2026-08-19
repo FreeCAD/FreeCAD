@@ -64,7 +64,7 @@ int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
         getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
     }
-    
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Vertex
         getTopoShapePtr()->setShape(TopoDS_Vertex());

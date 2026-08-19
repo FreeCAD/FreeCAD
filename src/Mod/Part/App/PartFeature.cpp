@@ -211,8 +211,7 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                 if ((name1Section.iterationTag != Data::EMPTY_VALUE
                      && name2Section.iterationTag == name1Section.iterationTag)
                     && (name1Section.opCode != Data::EMPTY_VALUE
-                        && name2Section.opCode == name1Section.opCode))
-                {
+                        && name2Section.opCode == name1Section.opCode)) {
                     entry.push_back(name2Section);
                 }
             }
@@ -251,10 +250,7 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                             if ((name1LinkedName == name2LinkedName)
                                 || (name1LinkedName != Data::EMPTY_VALUE
                                     && name2LinkedName != Data::EMPTY_VALUE
-                                    && doNamesMatch(
-                                        name1LinkedMappedName,
-                                        name2LinkedMappedName
-                                    ))) {
+                                    && doNamesMatch(name1LinkedMappedName, name2LinkedMappedName))) {
                                 linkedNameInterference++;
                             }
                         }
@@ -265,17 +261,15 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                         Data::MappedName name2ConnectedMappedName;
 
                         for (const std::string& name2ConnectedName :
-                             loopCheckSection.connectedElements)
-                        {    
+                             loopCheckSection.connectedElements) {
                             name2ConnectedMappedName = name2ConnectedName;
 
-                            if ((name1ConnectedName == name2ConnectedName)
+                            if (
+                                (name1ConnectedName == name2ConnectedName)
                                 || (name1ConnectedName != Data::EMPTY_VALUE
                                     && name2ConnectedName != Data::EMPTY_VALUE
-                                    && doNamesMatch(
-                                        name1ConnectedMappedName,
-                                        name2ConnectedMappedName
-                                    ))) {
+                                    && doNamesMatch(name1ConnectedMappedName, name2ConnectedMappedName))
+                            ) {
                                 connectedNameInterference++;
                             }
                         }
@@ -1164,7 +1158,7 @@ static TopoShape _getTopoShape(
 
 {
     if (!obj) {
-        return { };
+        return {};
     }
 
     TopoShape shape = Feature::makeTopoShape(obj);
@@ -1300,7 +1294,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape,obj->getSelectedHistoryAlgorithm());
+                        shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                     }
                     else if (boost::iequals("o", element) || boost::iequals("origin", element)) {
                         static TopoDS_Shape _shape;
@@ -2185,7 +2179,12 @@ void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, c
     replacementName = oldLink;
 }
 
-TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, const TopoDS_Shape& newShape, long tag, bool useHasher)
+TopoShape Feature::makeTopoShape(
+    const App::DocumentObject* documentObject,
+    const TopoDS_Shape& newShape,
+    long tag,
+    bool useHasher
+)
 {
     ZoneScoped;
 
@@ -2202,7 +2201,8 @@ TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, cons
         }
 
         newTopoShape.Tag = tag;
-    } else if (selectedVersion == App::HistoryAlgorithm::V2) {
+    }
+    else if (selectedVersion == App::HistoryAlgorithm::V2) {
         newTopoShape.Tag = tag == 0 ? documentObject->getID() : tag;
     }
 

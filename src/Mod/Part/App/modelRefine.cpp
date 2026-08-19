@@ -1214,7 +1214,7 @@ bool FaceUniter::process()
 
                     // TODO: uncomment in the V2 algorithm PR
                     // if (this->myTopoShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
-                        break;
+                    break;
                     // }
                 }
             }

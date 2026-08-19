@@ -320,7 +320,7 @@ void TopoCrossSection::sliceSolid(
     FCBRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
 
     if (mkCut.IsDone()) {
-        TopoShape res{shape.Tag, shape.Hasher, shape.getHistoryAlgorithm()};
+        TopoShape res {shape.Tag, shape.Hasher, shape.getHistoryAlgorithm()};
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         shapes.push_back(solid);

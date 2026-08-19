@@ -121,7 +121,7 @@ PyObject* TopoShapeEdgePy::PyMake(struct _typeobject*, PyObject*, PyObject*)  //
 // constructor method
 int TopoShapeEdgePy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
-    
+
     if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
         getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
     }

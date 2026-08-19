@@ -136,7 +136,11 @@ public:
     App::Material getMaterialAppearance() const override;
     void setMaterialAppearance(const App::Material& material) override;
 
-    static bool doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, bool logMatchedElements = false);
+    static bool doNamesMatch(
+        Data::MappedName& name1,
+        Data::MappedName& name2,
+        bool logMatchedElements = false
+    );
 
     // This method searches through the element map to find a set of similar names for the input
     // (`searchName`) by utilizing the above doNamesMatch() function.
@@ -224,7 +228,12 @@ public:
         double atol = 1e-10
     ) const override;
 
-    static TopoShape makeTopoShape(const App::DocumentObject* documentObject, const TopoDS_Shape& newShape = TopoDS_Shape(), long tag = 0, bool allowHasher = true);
+    static TopoShape makeTopoShape(
+        const App::DocumentObject* documentObject,
+        const TopoDS_Shape& newShape = TopoDS_Shape(),
+        long tag = 0,
+        bool allowHasher = true
+    );
     TopoShape makeTopoShape(bool allowHasher) const;
     TopoShape makeTopoShape(long tag = 0, bool allowHasher = true) const;
     TopoShape makeTopoShape(const TopoDS_Shape& newShape, long tag = 0, bool allowHasher = true) const;

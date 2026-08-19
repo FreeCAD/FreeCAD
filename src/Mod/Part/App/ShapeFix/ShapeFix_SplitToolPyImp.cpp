@@ -88,7 +88,8 @@ PyObject* ShapeFix_SplitToolPy::splitEdge(PyObject* args)
             TopoDS_Shape v = static_cast<TopoShapePy*>(vert)->getTopoShapePtr()->getShape();
             TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
 
-            historyAlgorithm = static_cast<TopoShapePy*>(edge)->getTopoShapePtr()->getHistoryAlgorithm();
+            historyAlgorithm
+                = static_cast<TopoShapePy*>(edge)->getTopoShapePtr()->getHistoryAlgorithm();
 
             ok = getShapeFix_SplitToolPtr()->SplitEdge(
                 TopoDS::Edge(e),
@@ -122,7 +123,8 @@ PyObject* ShapeFix_SplitToolPy::splitEdge(PyObject* args)
             TopoDS_Shape v = static_cast<TopoShapePy*>(vert)->getTopoShapePtr()->getShape();
             TopoDS_Shape f = static_cast<TopoShapePy*>(face)->getTopoShapePtr()->getShape();
 
-            historyAlgorithm = static_cast<TopoShapePy*>(edge)->getTopoShapePtr()->getHistoryAlgorithm();
+            historyAlgorithm
+                = static_cast<TopoShapePy*>(edge)->getTopoShapePtr()->getHistoryAlgorithm();
 
             ok = getShapeFix_SplitToolPtr()->SplitEdge(
                 TopoDS::Edge(e),

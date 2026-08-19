@@ -200,7 +200,12 @@ void PropertyPartShape::setPyObject(PyObject* value)
             if (shape.Tag || shape.getElementMapSize()) {
                 // We can't trust the meaning of the input shape tag, so we
                 // remap anyway
-                TopoShape res(owner->getID(), owner->getDocument()->getStringHasher(), shape.getShape(), shape.getHistoryAlgorithm());
+                TopoShape res(
+                    owner->getID(),
+                    owner->getDocument()->getStringHasher(),
+                    shape.getShape(),
+                    shape.getHistoryAlgorithm()
+                );
                 res.mapSubElement(shape);
                 shape = res;
             }
@@ -380,7 +385,8 @@ void PropertyPartShape::Save(Base::Writer& writer) const
         }
     }
 
-    writer.Stream() << " HistoryAlgorithm=\"" << App::getHistoryAlgorithm(_Shape.getHistoryAlgorithm()) << "\"";
+    writer.Stream() << " HistoryAlgorithm=\""
+                    << App::getHistoryAlgorithm(_Shape.getHistoryAlgorithm()) << "\"";
 
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
@@ -495,7 +501,8 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
 
             if (owner) {
                 correctVersion = owner->getCorrectElementMapVersion();
-            } else {
+            }
+            else {
                 correctVersion = "?";
             }
 

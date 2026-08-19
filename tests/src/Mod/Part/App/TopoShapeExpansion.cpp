@@ -1787,16 +1787,20 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftV1)
     transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 10.0));
     auto wire2 = wire1;  // Shallow copy
     wire2.Move(TopLoc_Location(transform));
-    TopoShape wire1ts {App::HistoryAlgorithm::V1, wire1, 1L};  // One of these shapes should have a tag or else we won't get an
-                                    // Element Map
-    TopoShape wire2ts {App::HistoryAlgorithm::V1, wire2, 2L};  // If you change either tag or eliminate one it changes the
-                                    // resulting name.
+    TopoShape wire1ts {App::HistoryAlgorithm::V1, wire1, 1L};  // One of these shapes should have a
+                                                               // tag or else we won't get an Element Map
+    TopoShape wire2ts {App::HistoryAlgorithm::V1, wire2, 2L};  // If you change either tag or eliminate
+                                                               // one it changes the resulting name.
     std::vector<TopoShape> shapes = {wire1ts, wire2ts};
     // Act
-    auto& topoShape = (new TopoShape(App::HistoryAlgorithm::V1))->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
-    auto& topoShape2 = (new TopoShape(App::HistoryAlgorithm::V1))->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
-    auto& topoShape3 = (new TopoShape(App::HistoryAlgorithm::V1))->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
-    auto& topoShape4 = (new TopoShape(App::HistoryAlgorithm::V1))->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
+    auto& topoShape = (new TopoShape(App::HistoryAlgorithm::V1))
+                          ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
+    auto& topoShape2 = (new TopoShape(App::HistoryAlgorithm::V1))
+                           ->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
+    auto& topoShape3 = (new TopoShape(App::HistoryAlgorithm::V1))
+                           ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
+    auto& topoShape4 = (new TopoShape(App::HistoryAlgorithm::V1))
+                           ->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
     auto& topoShape5
         = (new TopoShape(App::HistoryAlgorithm::V1))
               ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled, IsClosed::closed);

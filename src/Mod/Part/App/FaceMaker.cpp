@@ -353,7 +353,7 @@ void Part::FaceMaker::postBuild()
                 linkedNameEntry.second.first = fixedNameVector;
             }
             else {
-            linkedNameEntry.second.second = false;
+                linkedNameEntry.second.second = false;
             }
         }
 

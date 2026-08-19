@@ -670,10 +670,7 @@ PyObject* TopoShapeFacePy::makeHalfSpace(PyObject* args) const
     try {
         TopoShape* thisShape = this->getTopoShapePtr();
         Base::Vector3d pt = Py::Vector(pPnt, false).toVector();
-        BRepPrimAPI_MakeHalfSpace mkHS(
-            TopoDS::Face(thisShape->getShape()),
-            gp_Pnt(pt.x, pt.y, pt.z)
-        );
+        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Face(thisShape->getShape()), gp_Pnt(pt.x, pt.y, pt.z));
         return new TopoShapeSolidPy(new TopoShape(thisShape->getHistoryAlgorithm(), mkHS.Solid()));
     }
     catch (Standard_Failure& e) {
@@ -1039,7 +1036,9 @@ Py::Object TopoShapeFacePy::getOuterWire() const
     }
     if (shape.ShapeType() == TopAbs_FACE) {
         TopoDS_Wire wire = BRepTools::OuterWire(TopoDS::Face(shape));
-        Base::PyObjectBase* wirepy = new TopoShapeWirePy(new TopoShape(topoShape->getHistoryAlgorithm(), wire));
+        Base::PyObjectBase* wirepy = new TopoShapeWirePy(
+            new TopoShape(topoShape->getHistoryAlgorithm(), wire)
+        );
         wirepy->setNotTracking();
         return Py::asObject(wirepy);
     }
