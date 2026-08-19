@@ -147,7 +147,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
                 faces = &mapIterator->second;
                 solid = TopShape.getSubTopoShape(TopAbs_SOLID, mapIterator->first);
             }
-            TopoShape res(0);
+            TopoShape res = makeTopoShape(false);
             try {
                 res = solid.makeElementThickSolid(
                     *faces,
@@ -170,7 +170,7 @@ App::DocumentObjectExecReturn* Thickness::execute()
         }
     }
 
-    TopoShape result(0);
+    TopoShape result = makeTopoShape(false);
     if (shapes.size() > 1) {
         result.makeElementFuse(shapes);
     }

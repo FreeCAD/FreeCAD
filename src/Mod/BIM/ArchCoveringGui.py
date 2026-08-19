@@ -216,7 +216,7 @@ if FreeCAD.GuiUp:
             import pivy.coin as coin
             from draftutils import gui_utils
 
-            switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+            switch = vobj.SwitchNode
             if not switch:
                 return None
 

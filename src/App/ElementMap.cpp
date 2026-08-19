@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include "IndexedName.h"
+#include "MappedName.h"
+#include <exception>
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
@@ -511,7 +514,7 @@ MappedName ElementMap::addName(MappedName& name,
 {
     ZoneScoped;
 
-    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG) && getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         if (name.find("#") >= 0 && name.findTagInElementName() < 0) {
             FC_ERR("missing tag postfix " << name);  // NOLINT
         }
@@ -600,7 +603,7 @@ MappedName ElementMap::setElementName(const IndexedName& element,
         sid = &_sid;
     }
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
     Data::MappedName mappedName(name);
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
@@ -630,29 +633,36 @@ MappedName ElementMap::setElementName(const IndexedName& element,
             sid = &_sid;
         }
     } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-        size_t duplicateIndex = 1;
-
         IndexedName existing;
         MappedName res = this->addName(mappedName, element, *sid, overwrite, &existing);
         if (res) {
-            ZoneNameF("%s, %d", name.toString().c_str(), static_cast<int>(duplicateIndex));
             return res;
         }
 
-        auto spliceStringByDuplicateCount = [](const std::string& nameString, std::string* beforeDuplicateCount, std::string* afterDuplicateCount) {
+        auto spliceStringByDuplicateCount = [](
+            const std::string& nameString,
+            std::string* beforeDuplicateCount,
+            std::string* afterDuplicateCount,
+            std::string* duplicateCount)
+        {
             *beforeDuplicateCount = nameString;
 
             constexpr int DUPLICATE_COUNT_REVERSE_INDEX = Data::SECTION_SIZE - Data::SECTION_DUPLICATE_COUNT_INDEX;
             int currentSectionIndex = 0;
 
-            for (size_t i = beforeDuplicateCount->size(); i-- > 0;) {
+            for (size_t i = beforeDuplicateCount->size(); i-- > 1;) {
                 const char& currentCharacter = (*beforeDuplicateCount)[i];
 
                 if (currentSectionIndex < (DUPLICATE_COUNT_REVERSE_INDEX - 1)) {
                     afterDuplicateCount->insert(0, 1, currentCharacter);
+                } else if (currentCharacter != Data::SECTION_SUB_DELIMINATOR[0]) {
+                    duplicateCount->insert(0, 1, currentCharacter);
                 }
 
-                if (currentCharacter == (*Data::SECTION_SUB_DELIMINATOR) && ++currentSectionIndex == DUPLICATE_COUNT_REVERSE_INDEX) {
+                if (currentCharacter == Data::SECTION_SUB_DELIMINATOR[0]
+                    && (*beforeDuplicateCount)[i - 1] != Data::SUB_SECTION_ESCAPE_CHAR[0]
+                    && ++currentSectionIndex == DUPLICATE_COUNT_REVERSE_INDEX)
+                {
                     break;
                 }
 
@@ -662,10 +672,28 @@ MappedName ElementMap::setElementName(const IndexedName& element,
 
         std::string mappedNameBeforeDuplicateCount;
         std::string mappedNameAfterDuplicateCount;
-
-        spliceStringByDuplicateCount(mappedName.toString(), &mappedNameBeforeDuplicateCount, &mappedNameAfterDuplicateCount);
+        std::string duplicateIndexString;
+        
+        spliceStringByDuplicateCount(
+            mappedName.toString(),
+            &mappedNameBeforeDuplicateCount,
+            &mappedNameAfterDuplicateCount,
+            &duplicateIndexString
+        );
 
         Data::MappedName fixedName;
+        unsigned long duplicateIndex = 1;
+
+        if (duplicateIndexString.size()
+            && duplicateIndexString != "0"
+            && duplicateIndexString != Data::EMPTY_VALUE)
+        {
+            try {
+                duplicateIndex = std::stoul(duplicateIndexString) + 1;
+            } catch(const std::exception& e) {
+                // duplicateIndexString was not a number, just give up and leave duplicateIndex at 1.
+            }
+        }
 
         for (size_t i = 0; i < mappedNames.size(); i++) {
             ZoneScopedN("V2 Duplicate Loop");
@@ -700,7 +728,7 @@ void ElementMap::encodeElementName(char element_type,
 {
     ZoneScoped;
 
-    if (App::getSelectedHistoryAlgorithm() != App::HistoryAlgorithm::V1)
+    if (getHistoryAlgorithm() != App::HistoryAlgorithm::V1)
         return;
 
     if (postfix && (postfix[0] != 0)) {
@@ -843,7 +871,7 @@ MappedName ElementMap::renameDuplicateElement(int index,
 {
     ZoneScoped;
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+    if (getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
         int idx = index;
         std::ostringstream ss;
         ss << ELEMENT_MAP_PREFIX << 'D' << std::hex << idx;
@@ -1192,7 +1220,7 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 {
     ZoneScoped;
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
     std::ostringstream ss;
     ss << std::hex;
 
@@ -1606,6 +1634,42 @@ void ElementMap::traceElement(const MappedName& name, long masterTag, TraceCallb
             return;
         }
         masterTag = encodedTag;
+    }
+}
+
+void ElementMap::retagElementMap(long newTag) {
+    if (historyAlgorithmRef == nullptr
+        || *historyAlgorithmRef != App::HistoryAlgorithm::V2
+        || newTag == 0)
+    {
+        return;
+    }
+
+    for (auto& indexedNameEntry : indexedNames) {
+        for (MappedNameRef& foundNameRef : indexedNameEntry.second.names) {
+            DecodedMappedName& decodedName = foundNameRef.name.getDecodedMappedName();
+
+            if (decodedName.size()) {
+                DecodedMappedSection& backSection = decodedName.back();
+
+                if (backSection.iterationTag == "0") {
+                    backSection.iterationTag = std::to_string(newTag);
+
+                    auto it = mappedNames.find(foundNameRef.name);
+                    foundNameRef.name = MappedName::makeEncodedName(decodedName);
+                    
+                    if (it != mappedNames.end()) {
+                        auto extractedNode = mappedNames.extract(it);
+
+                        if (extractedNode.key()) {
+                            extractedNode.key() = foundNameRef.name;
+
+                            mappedNames.insert(std::move(extractedNode));
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

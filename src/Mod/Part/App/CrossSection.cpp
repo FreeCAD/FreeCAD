@@ -30,6 +30,7 @@
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
+#include <BRep_Tool.hxx>
 #include <gp_Pln.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
@@ -44,6 +45,7 @@
 
 
 #include "CrossSection.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 #include "TopoShapeOpCode.h"
 
 
@@ -146,6 +148,7 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     FCBRepAlgoAPI_Cut mkCut(shape, solid);
 
     if (mkCut.IsDone()) {
+        Standard_Real fuzzyTol = mkCut.FuzzyValue();
         TopTools_IndexedMapOfShape mapOfFaces;
         TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);
         for (int i = 1; i <= mapOfFaces.Extent(); i++) {
@@ -153,8 +156,10 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
             BRepAdaptor_Surface adapt(face);
             if (adapt.GetType() == GeomAbs_Plane) {
                 gp_Pln plane = adapt.Plane();
+                Standard_Real faceTol = BRep_Tool::Tolerance(face);
+                Standard_Real tol = faceTol + fuzzyTol;
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
-                    && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
+                    && plane.Distance(slicePlane.Location()) < tol) {
                     // sort and repair the wires
                     TopTools_IndexedMapOfShape mapOfWires;
                     TopExp::MapShapes(face, TopAbs_WIRE, mapOfWires);
@@ -211,7 +216,7 @@ void CrossSection::connectWires(
     }
 
     Handle(TopTools_HSequenceOfShape) hSorted = new TopTools_HSequenceOfShape();
-    ShapeAnalysis_FreeBounds::ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectWiresToWires(hWires, Precision::Confusion(), false, hSorted);
 
     for (int i = 1; i <= hSorted->Length(); i++) {
         const TopoDS_Wire& new_wire = TopoDS::Wire(hSorted->Value(i));
@@ -266,7 +271,7 @@ TopoShape TopoCrossSection::slice(int idx, double d) const
 {
     std::vector<TopoShape> wires;
     slice(idx, d, wires);
-    return TopoShape()
+    return TopoShape(shape.getHistoryAlgorithm())
         .makeElementCompound(wires, 0, TopoShape::SingleShapeCompoundCreationPolicy::returnShape);
 }
 
@@ -281,7 +286,7 @@ void TopoCrossSection::sliceNonSolid(
     if (cs.IsDone()) {
         std::string prefix(op);
         prefix += Data::indexSuffix(idx);
-        auto res = TopoShape()
+        auto res = TopoShape(shape.getHistoryAlgorithm())
                        .makeElementShape(cs, shape, prefix.c_str())
                        .makeElementWires()
                        .getSubTopoShapes(TopAbs_WIRE);
@@ -298,8 +303,7 @@ void TopoCrossSection::sliceSolid(
 {
     gp_Pln slicePlane(a, b, c, -d);
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
-    TopoShape face(idx);
-    face.setShape(mkFace.Face());
+    TopoShape face {idx, nullptr, mkFace.Face(), shape.getHistoryAlgorithm()};
 
     // Make sure to choose a point that does not lie on the plane (fixes #0001228)
     gp_Vec tempVector(a, b, c);
@@ -309,14 +313,14 @@ void TopoCrossSection::sliceSolid(
     refPoint.Translate(tempVector);
 
     BRepPrimAPI_MakeHalfSpace mkSolid(TopoDS::Face(face.getShape()), refPoint);
-    TopoShape solid(idx);
+    TopoShape solid(idx, shape.getHistoryAlgorithm());
     std::string prefix(op);
     prefix += Data::indexSuffix(idx);
     solid.makeElementShape(mkSolid, face, prefix.c_str());
     FCBRepAlgoAPI_Cut mkCut(shape.getShape(), solid.getShape());
 
     if (mkCut.IsDone()) {
-        TopoShape res(shape.Tag, shape.Hasher);
+        TopoShape res{shape.Tag, shape.Hasher, shape.getHistoryAlgorithm()};
         std::vector<TopoShape> shapes;
         shapes.push_back(shape);
         shapes.push_back(solid);
@@ -327,7 +331,7 @@ void TopoCrossSection::sliceSolid(
                 gp_Pln plane = adapt.Plane();
                 if (plane.Axis().IsParallel(slicePlane.Axis(), Precision::Confusion())
                     && plane.Distance(slicePlane.Location()) < Precision::Confusion()) {
-                    auto repaired_wires = TopoShape(face.Tag)
+                    auto repaired_wires = TopoShape(face.Tag, shape.getHistoryAlgorithm())
                                               .makeElementWires(
                                                   face.getSubTopoShapes(TopAbs_EDGE),
                                                   prefix.c_str(),

@@ -642,6 +642,7 @@ void ExtrusionHelper::makeElementDraft(
         aFix.FixClosed();
         sourceWire.setShape(aFix.Wire());
         sourceWire.Tag = shape.Tag;
+        sourceWire.setHistoryAlgorithm(shape.getHistoryAlgorithm());
         sourceWire.mapSubElement(shape);
     }
     else if (shape.shapeType() == TopAbs_COMPOUND) {

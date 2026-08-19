@@ -1213,9 +1213,9 @@ bool FaceUniter::process()
                     it.second = sew.Modified(it.second);
 
                     // TODO: uncomment in the V2 algorithm PR
-                    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                    // if (this->myTopoShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
                         break;
-                    }
+                    // }
                 }
             }
 

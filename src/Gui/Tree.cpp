@@ -2119,6 +2119,12 @@ void TreeWidget::mouseDoubleClickEvent(QMouseEvent* event)
         return;
     }
 
+    QModelIndex index = indexAt(event->pos());
+    if (index.column() != 0) {
+        QTreeWidget::mouseDoubleClickEvent(event);
+        return;
+    }
+
     try {
         if (item->type() == TreeWidget::DocumentType) {
             Gui::Document* doc = static_cast<DocumentItem*>(item)->document();

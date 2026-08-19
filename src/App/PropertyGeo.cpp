@@ -1294,24 +1294,6 @@ PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
 PropertyComplexGeoData::~PropertyComplexGeoData() = default;
 
-std::string PropertyComplexGeoData::getElementMapVersion(bool) const
-{
-    auto data = getComplexData();
-    if (!data) {
-        return std::string();
-    }
-    return data->getElementMapVersion();
-}
-
-bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
-{
-    auto data = getComplexData();
-    if (!data) {
-        return false;
-    }
-    return data->checkElementMapVersion(ver + 2);
-}
-
 
 void PropertyComplexGeoData::afterRestore()
 {

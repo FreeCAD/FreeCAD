@@ -104,6 +104,7 @@
 #include "Geometry.h"
 #include "BRepOffsetAPI_MakeOffsetFix.h"
 #include "ProgressIndicator.h"
+#include "ShapeAnalysis_FreeBoundsFix.h"
 
 #include <App/ElementMap.h>
 #include <App/ElementNamingUtils.h>
@@ -166,6 +167,7 @@ Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
     if (elementMap) {
         _cache->cachedElementMap = elementMap;
         _cache->subLocation.Identity();
+        _cache->selectedHistoryAlgorithm = getHistoryAlgorithm();
         _subLocation.Identity();
         _parentCache.reset();
     }
@@ -188,15 +190,22 @@ void TopoShape::flushElementMap() const
             const_cast<TopoShape*>(this)->resetElementMap(this->_cache->cachedElementMap);
         }
         else if (this->_parentCache) {
-            TopoShape parent(this->Tag, this->Hasher, this->_parentCache->shape);
+            TopoShape parent(
+                this->Tag,
+                this->Hasher,
+                this->_parentCache->shape,
+                this->_parentCache->selectedHistoryAlgorithm
+            );
             parent._cache = _parentCache;
             parent.flushElementMap();
             TopoShape self(
                 this->Tag,
                 this->Hasher,
-                this->_Shape.Located(this->_subLocation * this->_cache->subLocation)
+                this->_Shape.Located(this->_subLocation * this->_cache->subLocation),
+                getHistoryAlgorithm()
             );
             self._cache = _cache;
+            self.setHistoryAlgorithm(parent.getHistoryAlgorithm());
             self.mapSubElement(parent);
             this->_parentCache.reset();
             this->_subLocation.Identity();
@@ -301,6 +310,7 @@ void TopoShape::operator=(const TopoShape& sh)
         this->_cache = sh._cache;
         this->_parentCache = sh._parentCache;
         this->_subLocation = sh._subLocation;
+        setHistoryAlgorithm(sh.getHistoryAlgorithm());
         resetElementMap(sh.elementMap(false));
     }
 }
@@ -464,15 +474,15 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
         case TopAbs_VERTEX:
             // Vertex search will do comparison with tolerance to account for
             // rounding error inccured through transformation.
-            for (auto& shape : getSubTopoShapes(TopAbs_VERTEX)) {
+            for (auto& shape : getSubShapes(TopAbs_VERTEX)) {
                 ++index;
-                if (BRep_Tool::Pnt(TopoDS::Vertex(shape.getShape()))
+                if (BRep_Tool::Pnt(TopoDS::Vertex(shape))
                         .SquareDistance(BRep_Tool::Pnt(TopoDS::Vertex(subshape.getShape())))
                     <= tol2) {
                     if (names) {
                         names->push_back(std::string("Vertex") + std::to_string(index));
                     }
-                    res.push_back(shape);
+                    res.push_back(getSubTopoShape(TopAbs_VERTEX, index));
                     if (singleSearch) {
                         return res;
                     }
@@ -486,7 +496,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
             bool isPlane = false;
 
             std::vector<TopoDS_Shape> vertices;
-            TopoShape wire;
+            TopoShape wire(getHistoryAlgorithm());
             if (shapeType == TopAbs_FACE) {
                 wire = subshape.splitWires();
                 vertices = wire.getSubShapes(TopAbs_VERTEX);
@@ -568,7 +578,7 @@ std::vector<TopoShape> TopoShape::findSubShapesWithSharedVertex(
                     if (!shapeSet.insert(shape).second) {
                         continue;
                     }
-                    TopoShape otherWire;
+                    TopoShape otherWire(getHistoryAlgorithm());
                     std::vector<TopoDS_Shape> otherVertices;
                     if (shapeType == TopAbs_FACE) {
                         otherWire = shape.splitWires();
@@ -836,7 +846,7 @@ void TopoShape::mapSubElementTypeForShape(
     bool& warned
 )
 {
-    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = getHistoryAlgorithm();
     auto& shapeMap = _cache->getAncestry(type);
     auto& otherMap = other._cache->getAncestry(type);
     const char* shapeType = shapeName(type).c_str();
@@ -946,7 +956,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
 
     bool warned = false;
     static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
-    const App::HistoryAlgorithm& historyVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyVersion = getHistoryAlgorithm();
 
     auto checkHasher = [this](const TopoShape& other) {
         if (Hasher) {
@@ -1022,7 +1032,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                              {otherElement.toString()},
                              other.Tag,
                              op,
-                             (*element.getType())
+                             element.getType()[0]
                          ),
                          {}}
                     );
@@ -1046,7 +1056,7 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                 }
                 ss.str("");
 
-                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                if (historyVersion == App::HistoryAlgorithm::V1) {
                     ensureElementMap()
                         ->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
                 }
@@ -1223,7 +1233,7 @@ std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
     if (shapeType() == TopAbs_WIRE) {
         BRepTools_WireExplorer xp(TopoDS::Wire(getShape()));
         while (xp.More()) {
-            shapes.push_back(TopoShape(xp.Current()));
+            shapes.push_back(TopoShape(getHistoryAlgorithm(), xp.Current()));
             xp.Next();
         }
     }
@@ -1233,7 +1243,7 @@ std::vector<TopoShape> TopoShape::getOrderedEdges(MapElement mapElement) const
         for (const auto& w : getSubShapes(TopAbs_WIRE)) {
             BRepTools_WireExplorer xp(TopoDS::Wire(w));
             while (xp.More()) {
-                shapes.push_back(TopoShape(xp.Current()));
+                shapes.push_back(TopoShape(getHistoryAlgorithm(), xp.Current()));
                 xp.Next();
             }
         }
@@ -1256,7 +1266,7 @@ std::vector<TopoShape> TopoShape::getOrderedVertexes(MapElement mapElement) cons
         auto wire = TopoDS::Wire(s);
         BRepTools_WireExplorer xp(wire);
         while (xp.More()) {
-            shapes.push_back(TopoShape(xp.CurrentVertex()));
+            shapes.push_back(TopoShape(getHistoryAlgorithm(), xp.CurrentVertex()));
             xp.Next();
         }
         // special treatment for open wires
@@ -1264,7 +1274,7 @@ std::vector<TopoShape> TopoShape::getOrderedVertexes(MapElement mapElement) cons
         TopExp::Vertices(wire, Vfirst, Vlast);
         if (!Vfirst.IsNull() && !Vlast.IsNull()) {
             if (!Vfirst.IsSame(Vlast)) {
-                shapes.push_back(TopoShape(Vlast));
+                shapes.push_back(TopoShape(getHistoryAlgorithm(), Vlast));
             }
         }
     };
@@ -1672,7 +1682,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
     infoMap[TopAbs_COMPOUND] = &faceInfo;
     infoMap[TopAbs_COMPSOLID] = &faceInfo;
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         std::ostringstream ss;
@@ -2212,12 +2222,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(
         // This algorithm has some edgecase detection from the V1 Algorithm, which is why it looks a
         // little bit copypasted.
 
-        NamingMap generatedNamingMap {};
-        NamingMap modifiedNamingMap {};
+        NamingMap generatedNamingMap;
+        NamingMap modifiedNamingMap;
 
         // The key is a MappedName from an incoming shape (the element that created the new
         // shape(s)). The value are the resultant shape(s).
-        std::unordered_map<std::string, std::vector<TopoDS_Shape>> normalGeneratedMap {};
+        std::unordered_map<std::string, std::vector<TopoDS_Shape>> normalGeneratedMap;
 
         const std::map<std::string, TopAbs_ShapeEnum> upperMapTypes {
             {"Edge", TopAbs_FACE},
@@ -2240,16 +2250,29 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        // These loops generate names with the Modified and Generated methods of the Maker class.
-        // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
-        std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes {};
-        std::unordered_map<std::string, Data::MappedName> includedModifiedNameMap {};
+        std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes;
+        std::unordered_map<TopoDS_Shape, Data::MappedName, ShapeHasher, ShapeHasher> includedModifiedNameMap;
 
         // add names found with mapSubElement.
-        for (Data::MappedElement mappedElement : getElementMap()) {
-            includedModifiedNameMap[mappedElement.index.toString()] = mappedElement.name;
+        for (auto& info : infos) {
+            TopoShapeCache::Ancestry& infoAncestry = info->cache;
+
+            for (int i = 1; i <= infoAncestry.count(); i++) {
+                TopoDS_Shape foundSubShape = info->find(i);
+
+                if (!foundSubShape.IsNull()) {
+                    Data::IndexedName foundIdxName {info->shapetype, i};
+                    Data::MappedName foundMappedName = getMappedName(foundIdxName);
+                    
+                    if (foundMappedName) {
+                        includedModifiedNameMap[foundSubShape] = foundMappedName;
+                    }
+                }
+            }
         }
 
+        // These loops generate names with the Modified and Generated methods of the Maker class.
+        // This will miss some shapes, so in the next stage we will find names with the IsPartner method.
         for (auto& info : infos) {
             std::string stringSubshapeType {info->shapetype};
 
@@ -2259,10 +2282,12 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 if (!canMapElement(incomingShape)) {
                     continue;
                 }
+
                 auto& otherMap = incomingShape._cache->getAncestry(info->type);
                 if (otherMap.empty()) {
                     continue;
                 }
+
                 for (int i = 1; i <= otherMap.count(); i++) {
                     const auto& incomingShapeElement = otherMap.find(incomingShape._Shape, i);
                     Data::IndexedName incomingShapeElementIndexedName
@@ -2281,6 +2306,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                              ),
                              {}}
                         );
+
+                        continue;
                     }
 
                     // Use copies here, because if we store a reference to `modified`, then call the
@@ -2289,13 +2316,11 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     std::vector<TopoDS_Shape> modifiedShapes = mapper.modified(incomingShapeElement);
                     std::vector<TopoDS_Shape> generatedShapes = mapper.generated(incomingShapeElement);
 
-                    std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>> connectedElementMap {};
+                    std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>, ShapeHasher, ShapeHasher> connectedElementMap;
                     std::unordered_multiset<Data::MappedName, Data::MappedNameHasher>
-                        allConnectedElementNames {};
+                        allConnectedElementNames;
 
                     if (modifiedShapes.size() > 1 && lowerMapTypeEntry != lowerMapTypes.end()) {
-                        const char* lowerSubshapeType = shapeName(lowerMapTypeEntry->second).c_str();
-
                         for (size_t modifiedI = 0; modifiedI < modifiedShapes.size(); modifiedI++) {
                             const TopoDS_Shape& modifiedShape = modifiedShapes[modifiedI];
 
@@ -2303,43 +2328,27 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             xp.Init(modifiedShape, lowerMapTypeEntry->second);
 
                             for (; xp.More(); xp.Next()) {
-                                const TopoDS_Shape& lowerShape = xp.Current();
-                                Data::IndexedName lowerSubshapeIndexName;
+                                auto includedModifiedNameEntry = includedModifiedNameMap.find(
+                                    xp.Current()
+                                );
 
-                                if (strcmp(lowerSubshapeType, "Edge") == 0) {
-                                    lowerSubshapeIndexName = Data::IndexedName::fromConst(
-                                        lowerSubshapeType,
-                                        edgeInfo.find(lowerShape)
+                                if (includedModifiedNameEntry != includedModifiedNameMap.end()
+                                    && includedModifiedNameEntry->second)
+                                {
+                                    connectedElementMap[modifiedShape].push_back(
+                                        includedModifiedNameEntry->second
                                     );
-                                }
-                                else if (strcmp(lowerSubshapeType, "Vertex") == 0) {
-                                    lowerSubshapeIndexName = Data::IndexedName::fromConst(
-                                        lowerSubshapeType,
-                                        vertexInfo.find(lowerShape)
+                                    allConnectedElementNames.insert(
+                                        includedModifiedNameEntry->second
                                     );
-                                }
-
-                                if (lowerSubshapeIndexName) {
-                                    auto includedModifiedNameEntry = includedModifiedNameMap.find(
-                                        lowerSubshapeIndexName.toString()
-                                    );
-
-                                    if (includedModifiedNameEntry != includedModifiedNameMap.end()
-                                        && includedModifiedNameEntry->second) {
-                                        connectedElementMap[modifiedShape].push_back(
-                                            includedModifiedNameEntry->second
-                                        );
-                                        allConnectedElementNames.insert(
-                                            includedModifiedNameEntry->second
-                                        );
-                                    }
                                 }
                             }
                         }
 
                         for (std::pair<const TopoDS_Shape, std::vector<Data::MappedName>>&
-                                 connectedElementEntry : connectedElementMap) {
-                            std::vector<Data::MappedName> newConnectedElementNames {};
+                                 connectedElementEntry : connectedElementMap)
+                        {
+                            std::vector<Data::MappedName> newConnectedElementNames;
 
                             for (const Data::MappedName& connectedElementName :
                                  connectedElementEntry.second) {
@@ -2374,7 +2383,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         Data::IndexedName element
                             = Data::IndexedName::fromConst(newInfo.shapetype, modifiedShapeIndex);
 
-                        includedModifiedNameMap[element.toString()]
+                        includedModifiedNameMap[modifiedShape]
                             = incomingShapeElementMappedNames.front().first;
 
                         // Since indexed names can have multiple MappedNames assigned to them,
@@ -2383,8 +2392,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         for (const auto& incomingShapeMappedName : incomingShapeElementMappedNames) {
                             std::vector<std::pair<Data::MappedName, Data::ElementIDRefs>> mappedNames
                                 = getElementMappedNames(element);
-                            std::vector<Data::MappedName> newConnectedElementNames {};
-                            Data::MappedName newName = Data::MappedName(incomingShapeMappedName.first);
+                            std::vector<Data::MappedName> newConnectedElementNames;
+                            Data::MappedName newName {incomingShapeMappedName.first};
 
                             if (connectedElementMap.find(modifiedShape) != connectedElementMap.end()) {
                                 newConnectedElementNames = connectedElementMap[modifiedShape];
@@ -2399,8 +2408,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     emptyConnectedElementsIndex++;
                                 }
 
+                                newName.append(Data::NAME_SECTION_DELIMINATOR);
                                 newName.append(
-                                    Data::MappedName::makeSection(
+                                    Data::MappedName::makeEncodedSection(
                                         {},
                                         {},
                                         masterTag,
@@ -2410,8 +2420,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         0,
                                         {Data::MAPPER_FLAG_MODIFIED},
                                         newConnectedElementNames
-                                    )
-                                        .c_str()
+                                    ).c_str()
                                 );
                             }
 
@@ -2479,13 +2488,11 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
         // key is the new generated shape, value is a pair where the first value is the `IndexedName`
         // of the key, and the second is the `DecodedMappedSection` associated with the key.
-        std::unordered_map<size_t, Data::DecodedMappedSection> namedGeneratedShapes {};
+        std::unordered_map<TopoDS_Shape, Data::DecodedMappedSection, ShapeHasher, ShapeHasher> namedGeneratedShapes;
         std::unordered_map<std::vector<NamingMapKey>, Data::DecodedMappedSection, Part::NamingMapKeyHasher>
-            delayedGeneratedMap {};
+            delayedGeneratedMap;
 
         generatedNamingMap.build();
-
-        std::hash<TopoDS_Shape> shapeHasher;
 
         for (const std::pair<const std::vector<Part::NamingMapKey>, std::vector<Part::NamingMapValue>>&
                  generatedShapeEntry : generatedNamingMap.getMultiMap()) {
@@ -2526,7 +2533,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     // we put all generated elements in here, even if it was just mapped above.
                     // we do this so we can look up those values later.
-                    namedGeneratedShapes[shapeHasher(generatedElementShape)] = newNameSection;
+                    namedGeneratedShapes[generatedElementShape] = newNameSection;
                 }
 
                 // if the source shapes create more than one resultant shapes, then wait to map
@@ -2534,7 +2541,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                 if (generatedShapes == 1) {
                     ensureElementMap()->setElementName(
                         generatedShapeEntry.first[0].newElementName,
-                        Data::MappedName(Data::MappedName::makeSection(newNameSection)),
+                        Data::MappedName(Data::MappedName::makeEncodedSection(newNameSection)),
                         masterTag
                     );
                 }
@@ -2544,8 +2551,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
-        std::unordered_map<TopoDS_Shape, std::vector<std::string>> generatedConnectedElementMap {};
-        std::unordered_multiset<std::string> allGeneratedConnectedElementNames {};
+        std::unordered_map<TopoDS_Shape, std::vector<std::string>, ShapeHasher, ShapeHasher> generatedConnectedElementMap;
+        std::unordered_multiset<std::string> allGeneratedConnectedElementNames;
         int emptyConnectedElementsIndex = 0;
 
         // pair<const std::vector<NamingMapKey>, Data::DecodedMappedSection>
@@ -2566,20 +2573,28 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     for (; xp.More(); xp.Next()) {
                         const TopoDS_Shape& foundSubshape = xp.Current();
-                        std::string encodedMappedSection;
-                        auto namedGeneratedShapesIterator = namedGeneratedShapes.find(
-                            shapeHasher(foundSubshape)
-                        );
+                        auto namedGeneratedIterator = namedGeneratedShapes.find(foundSubshape);
 
-                        if (namedGeneratedShapesIterator != namedGeneratedShapes.end()) {
-                            encodedMappedSection = Data::MappedName::makeSection(
-                                namedGeneratedShapesIterator->second
+                        if (namedGeneratedIterator != namedGeneratedShapes.end()) {
+                            std::string encodedMappedSection = Data::MappedName::makeEncodedSection(
+                                namedGeneratedIterator->second
                             );
                         }
 
                         if (encodedMappedSection.size()) {
                             generatedConnectedElementMap[elementShape].push_back(encodedMappedSection);
                             allGeneratedConnectedElementNames.insert(encodedMappedSection);
+                            
+                            continue;
+                        }
+
+                        auto namedModifiedIterator = includedModifiedNameMap.find(foundSubshape);
+
+                        if (namedModifiedIterator != includedModifiedNameMap.end()) {
+                            std::string foundModifiedName = namedModifiedIterator->second.toString();
+
+                            generatedConnectedElementMap[elementShape].push_back(foundModifiedName);
+                            allGeneratedConnectedElementNames.insert(foundModifiedName);
                         }
                     }
                 }
@@ -2619,7 +2634,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 ensureElementMap()->setElementName(
                     elementIndexName,
-                    Data::MappedName(Data::MappedName::makeSection(elementMappedSection)),
+                    Data::MappedName(Data::MappedName::makeEncodedSection(elementMappedSection)),
                     masterTag
                 );
             }
@@ -2629,9 +2644,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             emptyConnectedElementsIndex = 0;
         }
 
-        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedUpperNames {};
-        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedLowerNames {};
-        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> usedPartnerNames {};
+        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedUpperNames;
+        std::unordered_multiset<std::vector<Data::MappedName>, Data::MappedNameHasher> usedLowerNames;
+        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> usedPartnerNames;
         std::array<ShapeInfo*, 3> topologyMapElementOrder = {&faceInfo, &edgeInfo, &vertexInfo};
 
         // Now let's map any unmapped shapes with the IsPartner and ancestor method.
@@ -2671,7 +2686,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                             if (incomingShapeMapName) {
                                 Data::MappedName newName = Data::MappedName(
-                                    Data::MappedName::makeSection(
+                                    Data::MappedName::makeEncodedSection(
                                         {},
                                         {incomingShapeMapName},
                                         masterTag,
@@ -2681,7 +2696,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         0,
                                         {Data::MAPPER_FLAG_PARTNER}
                                     )
-                                        .c_str()
                                 );
 
                                 usedPartnerNames.insert(incomingShapeMapName);
@@ -2697,7 +2711,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                 if (!wasMapped && upperMapTypeEntry != upperMapTypes.end()) {
                     std::vector<int> ancestors = findAncestors(mainElement, upperMapTypeEntry->second);
-                    std::vector<Data::MappedName> linkedUpperNames {};
+                    std::vector<Data::MappedName> linkedUpperNames;
 
                     for (const auto& ancestorIndex : ancestors) {
                         Data::IndexedName ancestorIndexName = Data::IndexedName::fromConst(
@@ -2715,7 +2729,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                     if (linkedUpperNames.size()) {
                         Data::MappedName newName = Data::MappedName(
-                            Data::MappedName::makeSection(
+                            Data::MappedName::makeEncodedSection(
                                 {},
                                 linkedUpperNames,
                                 masterTag,
@@ -2725,7 +2739,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 0,
                                 {Data::MAPPER_FLAG_UPPER}
                             )
-                                .c_str()
                         );
 
                         usedUpperNames.insert(linkedUpperNames);
@@ -2737,7 +2750,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     auto lowerMapTypeEntry = lowerMapTypes.find(stringSubshapeType);
 
                     if (lowerMapTypeEntry != lowerMapTypes.end()) {
-                        std::vector<Data::MappedName> linkedLowerNames {};
+                        std::vector<Data::MappedName> linkedLowerNames;
 
                         TopExp_Explorer xp;
                         if (stringSubshapeType == "Face") {
@@ -2752,21 +2765,14 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                         }
 
                         for (; xp.More(); xp.Next()) {
-                            Data::IndexedName lowerSubshapeIndexName {};
+                            Data::IndexedName lowerSubshapeIndexName;
                             TopoDS_Shape foundLowerSubshape = xp.Current();
-                            std::string stringLowerSubshapeType = shapeName(lowerMapTypeEntry->second);
-                            const char* lowerSubshapeType = stringLowerSubshapeType.c_str();
+                            ShapeInfo*& lowerSubshapeInfo = infoMap.at(lowerMapTypeEntry->second);
 
-                            if (stringLowerSubshapeType == "Edge") {
+                            if (lowerSubshapeInfo->type == lowerMapTypeEntry->second) {
                                 lowerSubshapeIndexName = Data::IndexedName::fromConst(
-                                    lowerSubshapeType,
-                                    edgeInfo.find(foundLowerSubshape)
-                                );
-                            }
-                            else if (stringLowerSubshapeType == "Vertex") {
-                                lowerSubshapeIndexName = Data::IndexedName::fromConst(
-                                    lowerSubshapeType,
-                                    vertexInfo.find(foundLowerSubshape)
+                                    shapeName(lowerMapTypeEntry->second).c_str(),
+                                    lowerSubshapeInfo->find(foundLowerSubshape)
                                 );
                             }
 
@@ -2788,7 +2794,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
 
                         if (linkedLowerNames.size()) {
                             Data::MappedName newName = Data::MappedName(
-                                Data::MappedName::makeSection(
+                                Data::MappedName::makeEncodedSection(
                                     {},
                                     linkedLowerNames,
                                     masterTag,
@@ -2798,7 +2804,6 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                     0,
                                     {Data::MAPPER_FLAG_LOWER}
                                 )
-                                    .c_str()
                             );
 
                             usedLowerNames.insert(linkedLowerNames);
@@ -2870,14 +2875,14 @@ TopoShape TopoShape::getSubTopoShape(const char* Type, bool silent) const
         if (!silent) {
             FC_THROWM(Base::CADKernelError, "Mapped element not found: " << Type);
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     auto res = shapeTypeAndIndex(mapped.index);
     if (res.second <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape name " << (Type ? Type : ""));
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     return getSubTopoShape(res.first, res.second, silent);
 }
@@ -2889,19 +2894,19 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
         if (!silent) {
             FC_THROWM(NullShapeException, "null shape");
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     if (idx <= 0) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape index " << idx);
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     if (type < 0 || type > TopAbs_SHAPE) {
         if (!silent) {
             FC_THROWM(Base::ValueError, "Invalid shape type " << type);
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
     initCache();
     auto& shapeMap = _cache->getAncestry(type);
@@ -2909,32 +2914,10 @@ TopoShape TopoShape::getSubTopoShape(TopAbs_ShapeEnum type, int idx, bool silent
         if (!silent) {
             FC_THROWM(Base::IndexError, "Shape index " << idx << " out of bound " << shapeMap.count());
         }
-        return TopoShape();
+        return TopoShape(getHistoryAlgorithm());
     }
 
     return shapeMap.getTopoShape(*this, idx);
-}
-
-static const std::string& _getElementMapVersion()
-{
-    static std::string _ver;
-    if (_ver.empty()) {
-        std::ostringstream ss;
-        // Stabilize the reported OCCT version: report 7.2.0 as the version so that we aren't
-        // constantly inadvertently reporting differing versions. This is retained for
-        // cross-compatibility with LinkStage3 (which retains supporting code for OCCT 6.x,
-        // removed here).
-        unsigned occ_ver {0x070200};
-        ss << OpCodes::Version << '.' << std::hex << occ_ver << '.'
-           << App::getSelectedUnderlyingHistoryAlgorithm() << ".";
-        _ver = ss.str();
-    }
-    return _ver;
-}
-
-std::string TopoShape::getElementMapVersion() const
-{
-    return _getElementMapVersion() + Data::ComplexGeoData::getElementMapVersion();
 }
 
 TopoShape& TopoShape::makeElementEvolve(
@@ -3155,7 +3138,7 @@ TopoShape& TopoShape::makeElementRuledSurface(
     // without any API to provide relationship to the output edges. So we have
     // to use searchSubShape() to build the relationship by ourselves.
 
-    TopoShape res(ruledShape.Located(TopLoc_Location()));
+    TopoShape res(getHistoryAlgorithm(), ruledShape.Located(TopLoc_Location()));
     std::vector<TopoShape> edges;
     for (const auto& c : curves) {
         for (const auto& e : c.getSubTopoShapes(TopAbs_EDGE)) {
@@ -3191,14 +3174,14 @@ TopoShape& TopoShape::makeElementCompound(
     builder.MakeCompound(comp);
 
     if (shapes.empty()) {
-        setShape(comp);
+        setShape(comp, false);
         if (elementMapPolicy == ElementMapPolicy::Drop) {
             dropElementNaming();
         }
         return *this;
     }
     addShapesToBuilder(shapes, builder, comp);
-    setShape(comp);
+    setShape(comp, false);
 
     if (elementMapPolicy == ElementMapPolicy::Drop) {
         dropElementNaming();
@@ -3350,7 +3333,7 @@ TopoShape& TopoShape::makeElementOffset(
         FC_THROWM(Base::CADKernelError, "BRepOffsetAPI_MakeOffsetShape not done");
     }
 
-    TopoShape res(Tag, Hasher);
+    TopoShape res(Tag, Hasher, getHistoryAlgorithm());
     res.makeElementShape(mkOffset, shape, op);
     if (shape.hasSubShape(TopAbs_SOLID) && !res.hasSubShape(TopAbs_SOLID)) {
         try {
@@ -3376,7 +3359,7 @@ TopoShape& TopoShape::makeElementOffset(
     BRep_Builder builder;
     std::vector<TopoShape> shapes;
     for (int index = 1; index <= freeCheck.NbClosedFreeBounds(); ++index) {
-        TopoShape originalWire(shape.Tag, shape.Hasher, freeCheck.ClosedFreeBound(index)->FreeBound());
+        TopoShape originalWire(shape.Tag, shape.Hasher, freeCheck.ClosedFreeBound(index)->FreeBound(), getHistoryAlgorithm());
         originalWire.mapSubElement(shape);
         const BRepAlgo_Image& img = mkOffset.MakeOffset().OffsetEdgesFromShapes();
 
@@ -3408,7 +3391,7 @@ TopoShape& TopoShape::makeElementOffset(
         }
         std::vector<TopoShape> wires;
         wires.push_back(originalWire);
-        wires.push_back(TopoShape(Tag, Hasher, offsetWire));
+        wires.push_back(TopoShape(Tag, Hasher, offsetWire, getHistoryAlgorithm()));
         wires.back().mapSubElement(res);
 
         // It would be nice if we could get thruSections to build planar faces
@@ -3426,10 +3409,10 @@ TopoShape& TopoShape::makeElementOffset(
             FC_THROWM(Base::CADKernelError, "ThruSections failed");
         }
 
-        shapes.push_back(TopoShape(Tag, Hasher).makeElementShape(aGenerator, wires));
+        shapes.push_back(TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementShape(aGenerator, wires));
     }
 
-    TopoShape perimeterCompound(Tag, Hasher);
+    TopoShape perimeterCompound(Tag, Hasher, getHistoryAlgorithm());
     perimeterCompound.makeElementCompound(shapes, op);
 
     // still had to sew. not using the passed in parameter for sew.
@@ -3458,7 +3441,7 @@ TopoShape& TopoShape::makeElementOffset(
     shapes.push_back(shape);
     shapes.push_back(res);
     shapes.push_back(perimeterCompound);
-    *this = TopoShape(Tag, Hasher)
+    *this = TopoShape(Tag, Hasher, getHistoryAlgorithm())
                 .makeShapeWithElementMap(outputShape, MapperSewing(sewTool), shapes, op);
     return *this;
 }
@@ -3516,7 +3499,7 @@ TopoShape& TopoShape::makeElementOffsetFace(
         }
 
         if (std::abs(innerOffset) > Precision::Confusion()) {
-            TopoShape innerWires(0, Hasher);
+            TopoShape innerWires(0, Hasher, getHistoryAlgorithm());
             innerWires.makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::returnShape);
             innerWires = innerWires.makeElementOffset2D(
                 innerOffset,
@@ -3531,7 +3514,7 @@ TopoShape& TopoShape::makeElementOffsetFace(
         wires.push_back(outerWire);
         gp_Pln pln;
         res.push_back(
-            TopoShape(0, Hasher)
+            TopoShape(0, Hasher, getHistoryAlgorithm())
                 .makeElementFace(wires, nullptr, nullptr, face.findPlane(pln) ? &pln : nullptr)
         );
     }
@@ -3582,7 +3565,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             // simply recursively process the children, independently
             for (TopoDS_Iterator it(shape.getShape()); it.More(); it.Next()) {
                 shapesToReturn.push_back(
-                    TopoShape(it.Value())
+                    TopoShape(getHistoryAlgorithm(), it.Value())
                         .makeElementOffset2D(offset, joinType, fill, allowOpenResult, intersection, op)
                 );
                 outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
@@ -3595,7 +3578,7 @@ TopoShape& TopoShape::makeElementOffset2D(
                 if (s.getShape().ShapeType() == TopAbs_COMPOUND) {
                     // recursively process subcompounds
                     shapesToReturn.push_back(
-                        TopoShape(Tag, Hasher)
+                        TopoShape(Tag, Hasher, getHistoryAlgorithm())
                             .makeElementOffset2D(s, offset, joinType, fill, allowOpenResult, intersection, op)
                     );
                     outputPolicy = SingleShapeCompoundCreationPolicy::forceCompound;
@@ -3611,7 +3594,7 @@ TopoShape& TopoShape::makeElementOffset2D(
     }
 
     if (shapesToProcess.size() > 0) {
-        TopoShape res(Tag, Hasher);
+        TopoShape res(Tag, Hasher, getHistoryAlgorithm());
 
         // although 2d offset supports offsetting a face directly, it seems there is
         // no way to do a collective offset of multiple faces. So, we are doing it
@@ -3657,7 +3640,7 @@ TopoShape& TopoShape::makeElementOffset2D(
 
         // find plane.
         gp_Pln workingPlane;
-        if (!TopoShape()
+        if (!TopoShape(getHistoryAlgorithm())
                  .makeElementCompound(sourceWires, "", SingleShapeCompoundCreationPolicy::returnShape)
                  .findPlane(workingPlane)) {
             FC_THROWM(Base::CADKernelError, "makeOffset2D: wires are nonplanar or noncoplanar");
@@ -3697,7 +3680,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             offsetShape = shape.makeElementShape(mkOffset, op).makeElementCopy();
         }
         else {
-            offsetShape = TopoShape(Tag, Hasher)
+            offsetShape = TopoShape(Tag, Hasher, getHistoryAlgorithm())
                               .makeElementCompound(
                                   sourceWires,
                                   0,
@@ -3860,14 +3843,14 @@ TopoShape& TopoShape::makeElementOffset2D(
                 mkWire.Build();
 #endif
                 wiresForMakingFaces.push_back(
-                    TopoShape(Tag, Hasher).makeElementShape(mkWire, openWires, op)
+                    TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementShape(mkWire, openWires, op)
                 );
             }
         }
 
         // make faces
         if (wiresForMakingFaces.size() > 0) {
-            TopoShape face(0, Hasher);
+            TopoShape face(0, Hasher, getHistoryAlgorithm());
             face.makeElementFace(wiresForMakingFaces, nullptr, nullptr, &workingPlane);
             expandCompound(face, shapesToReturn);
         }
@@ -3982,7 +3965,7 @@ TopoShape& TopoShape::makeElementWires(
         if (hEdges->Length() == 0) {
             FC_THROWM(NullShapeException, "Null shape");
         }
-        ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, tol, Standard_True, hWires);
+        Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(hEdges, tol, Standard_True, hWires);
         if (hWires->Length() == 0) {
             FC_THROWM(NullShapeException, "Null shape");
         }
@@ -4032,7 +4015,13 @@ TopoShape& TopoShape::makeElementWires(
         }
         edgeList.pop_front();
 
-        TopoDS_Wire new_wire = mkWire.Wire();  // current new wire
+        // current new wire
+        TopoShape new_wire {
+            Tag,
+            Hasher,
+            mkWire.Wire(),
+            getHistoryAlgorithm()
+        };
 
         // try to connect each edge to the wire, the wire is complete if no more edges are
         // connectible
@@ -4053,17 +4042,18 @@ TopoShape& TopoShape::makeElementWires(
                         (*output)[edges.back()] = *it;
                     }
                     edgeList.erase(it);
-                    new_wire = mkWire.Wire();
+                    new_wire.setShape(mkWire.Wire(), false);
                     break;
                 }
             }
         }
 
-        wires.emplace_back(new_wire);
         if (elementMapPolicy == ElementMapPolicy::Propagate) {
-            wires.back().mapSubElement(edges, op);
+            new_wire.mapSubElement(edges, op);
         }
-        wires.back().fix();
+        new_wire.fix();
+
+        wires.push_back(new_wire);
     }
     return makeElementCompound(
         wires,
@@ -4111,7 +4101,7 @@ TopoShape TopoShape::reverseEdge(const TopoShape& edge)
     const Handle(Geom_Curve) & curve = BRep_Tool::Curve(TopoDS::Edge(edge.getShape()), first, last);
     first = curve->ReversedParameter(first);
     last = curve->ReversedParameter(last);
-    TopoShape res(BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
+    TopoShape res(edge.getHistoryAlgorithm(), BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
     auto edgeName = Data::IndexedName::fromConst("Edge", 1);
     if (auto mapped = edge.getMappedName(edgeName)) {
         res.elementMap()->setElementName(edgeName, mapped, res.Tag);
@@ -4244,7 +4234,7 @@ TopoShape& TopoShape::makeElementOrderedWires(
     std::list<TopoShape> edgeList;
 
     auto shape
-        = TopoShape().makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
+        = TopoShape(getHistoryAlgorithm()).makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::returnShape);
     for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
         edgeList.push_back(edge);
     }
@@ -4441,15 +4431,9 @@ struct MapperThruSections: MapperMaker
 {
     TopoShape firstProfile;
     TopoShape lastProfile;
-    const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap;
 
-    MapperThruSections(
-        BRepOffsetAPI_ThruSections& tmaker,
-        const std::vector<TopoShape>& profiles,
-        const TopTools_DataMapOfShapeListOfShape& compatibleWiresMap
-    )
+    MapperThruSections(BRepOffsetAPI_ThruSections& tmaker, const std::vector<TopoShape>& profiles)
         : MapperMaker(tmaker)
-        , compatibleWiresMap(compatibleWiresMap)
     {
         if (!tmaker.FirstShape().IsNull()) {
             firstProfile = profiles.front();
@@ -4475,29 +4459,6 @@ struct MapperThruSections: MapperMaker
             }
             else if (lastProfile.getShape().IsSame(s) || lastProfile.findShape(s)) {
                 _res.push_back(tmaker.LastShape());
-            }
-        }
-        catch (const Standard_Failure& e) {
-            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
-            }
-        }
-        return _res;
-    }
-    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override
-    {
-        _res.clear();
-
-        try {
-            const TopTools_ListOfShape& modifiedList = compatibleWiresMap.Find(s);
-
-            if (modifiedList.Size()) {
-                TopTools_ListIteratorOfListOfShape shapeListIterator;
-
-                for (shapeListIterator.Init(modifiedList); shapeListIterator.More();
-                     shapeListIterator.Next()) {
-                    _res.push_back(shapeListIterator.Value());
-                }
             }
         }
         catch (const Standard_Failure& e) {
@@ -4721,7 +4682,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 shapes.begin() + params.boundary_begin,
                 shapes.begin() + params.boundary_end
             );
-            wires = TopoShape(0, Hasher)
+            wires = TopoShape(0, Hasher, getHistoryAlgorithm())
                         .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                         .getSubTopoShapes(TopAbs_WIRE);
             shapes.erase(shapes.begin() + params.boundary_begin, shapes.begin() + params.boundary_end);
@@ -4742,7 +4703,7 @@ TopoShape& TopoShape::makeElementFilledFace(
                 }
             }
             if (edges.size()) {
-                wires = TopoShape(0, Hasher)
+                wires = TopoShape(0, Hasher, getHistoryAlgorithm())
                             .makeElementWires(edges, "", 0.0, ConnectionPolicy::mergeWithTolerance, &output)
                             .getSubTopoShapes(TopAbs_WIRE);
             }
@@ -5125,6 +5086,7 @@ TopoShape& TopoShape::makeElementGeneralFuse(
         for (TopTools_ListIteratorOfListOfShape it(mkGFA.Modified(shape.getShape())); it.More();
              it.Next()) {
             TopoShape res(Tag);
+            res.setHistoryAlgorithm(getHistoryAlgorithm());
             res.setShape(it.Value());
             mod.push_back(res);
         }
@@ -5203,7 +5165,7 @@ TopoShape& TopoShape::makeElementXor(
         const char* currentOp = (i == inputs.size() - 1) ? op : nullptr;
 
         // Step 1: Union(A, B) - intermediate result, no op code.
-        TopoShape tempUnion(0, Hasher);
+        TopoShape tempUnion(0, Hasher, getHistoryAlgorithm());
         tempUnion.makeElementBoolean(
             Part::OpCodes::Fuse,
             {result, inputs[i]},
@@ -5213,7 +5175,7 @@ TopoShape& TopoShape::makeElementXor(
         );
 
         // Step 2: Common(A, B) - intermediate result, no op code.
-        TopoShape tempCommon(0, Hasher);
+        TopoShape tempCommon(0, Hasher, getHistoryAlgorithm());
         tempCommon.makeElementBoolean(
             Part::OpCodes::Common,
             {result, inputs[i]},
@@ -5363,33 +5325,10 @@ TopoShape& TopoShape::makeElementLoft(
         FC_THROWM(Base::CADKernelError, "Need at least two vertices, edges or wires to create loft face");
     }
 
-    TopTools_SequenceOfShape wireProfiles;
-    BRepFill_CompatibleWires compatibleWiresBuilder;
-    std::vector<TopoShape> compatibleProfiles;
-
-    for (const TopoShape& profile : profiles) {
-        if (profile.shapeType() == TopAbs_WIRE) {
-            wireProfiles.Append(profile.getShape());
-        }
-        else {
-            compatibleProfiles.push_back(profile);
-        }
-    }
-
-    compatibleWiresBuilder.Init(wireProfiles);
-    compatibleWiresBuilder.Perform();
-
-    TopTools_SequenceOfShape::Iterator compatibleWiresIterator;
-    compatibleWiresIterator.Init(compatibleWiresBuilder.Shape());
-
-    for (; compatibleWiresIterator.More(); compatibleWiresIterator.Next()) {
-        compatibleProfiles.push_back({compatibleWiresIterator.Value()});
-    }
-
     int i = 0;
-    for (auto& sh : compatibleProfiles) {
+    for (auto& sh : profiles) {
         if (i > 0) {
-            if (!checkProfiles(sh, compatibleProfiles[i - 1])) {
+            if (!checkProfiles(sh, profiles[i - 1])) {
                 FC_THROWM(Base::CADKernelError, "Segments of a loft do not have sufficient separation");
             }
         }
@@ -5409,7 +5348,7 @@ TopoShape& TopoShape::makeElementLoft(
             - V1-W1-W2-W3     ==> V1-W1-W2-W3-V1     valid closed
             - W1-W2-W3-V1     ==> W1-W2-W3-V1-W1     invalid closed
             - W1-W2-W3        ==> W1-W2-W3-W1        valid closed*/
-        if (compatibleProfiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
+        if (profiles.back().getShape().ShapeType() == TopAbs_VERTEX) {
             Base::Console().message(
                 "TopoShape::makeLoft: can't close Loft with Vertex as last "
                 "profile. 'Closed' ignored.\n"
@@ -5417,7 +5356,7 @@ TopoShape& TopoShape::makeElementLoft(
         }
         else {
             // repeat Add logic above for first profile
-            const TopoDS_Shape& firstProfile = compatibleProfiles.front().getShape();
+            const TopoDS_Shape& firstProfile = profiles.front().getShape();
             if (firstProfile.ShapeType() == TopAbs_VERTEX) {
                 aGenerator.AddVertex(TopoDS::Vertex(firstProfile));
             }
@@ -5441,7 +5380,7 @@ TopoShape& TopoShape::makeElementLoft(
 #endif
     return makeShapeWithElementMap(
         aGenerator.Shape(),
-        MapperThruSections(aGenerator, compatibleProfiles, compatibleWiresBuilder.Generated()),
+        MapperThruSections(aGenerator, profiles),
         shapes,
         op
     );
@@ -5628,7 +5567,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                     FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                 }
 
-                if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
                     result.Tag = Tag;
                 }
 
@@ -5811,6 +5750,8 @@ TopoShape& TopoShape::makeElementFace(
     ElementMapPolicy elementMapPolicy
 )
 {
+    const App::HistoryAlgorithm& historyAlgorithm = getHistoryAlgorithm();
+
     if (!maker || !maker[0]) {
         maker = "Part::FaceMakerBullseye";
     }
@@ -5818,8 +5759,13 @@ TopoShape& TopoShape::makeElementFace(
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
     mkFace->MyElementMapPolicy = elementMapPolicy;
+    mkFace->setHistoryAlgorithm(historyAlgorithm);
     if (plane) {
         mkFace->setPlane(*plane);
+    }
+
+    if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+        mkFace->MyTag = Tag;
     }
 
     for (auto& shape : shapes) {
@@ -6027,7 +5973,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
         builder.Add(comp, e3);
         builder.Add(comp, e4);
 
-        TopoShape s;
+        TopoShape s{getHistoryAlgorithm()};
         s.makeShapeWithElementMap(comp, mapper, edges, Part::OpCodes::Split);
         return makeElementBSplineFace(s, style, op);
     }
@@ -6155,7 +6101,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
 
     aFaceBuilder.Init(aSurface, u1, u2, v1, v2, Precision::Confusion());
 
-    TopoShape aFace(0, Hasher, aFaceBuilder.Face());
+    TopoShape aFace(0, Hasher, aFaceBuilder.Face(), getHistoryAlgorithm());
 
     if (!aFaceBuilder.IsDone()) {
         FC_THROWM(Base::CADKernelError, "Face unable to be constructed");
@@ -6392,7 +6338,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitW
     }
 
     if (outerWire.IsNull()) {
-        return TopoShape {};
+        return TopoShape {getHistoryAlgorithm()};
     }
 
     TopAbs_Orientation orientOuter, orientInner;
@@ -6438,7 +6384,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitW
         }
     };
 
-    TopoShape outerWireResult {};
+    TopoShape outerWireResult {getHistoryAlgorithm()};
 
     for (auto& wire : getSubTopoShapes(TopAbs_WIRE)) {
         if (wire.getShape().IsSame(outerWire)) {
@@ -6707,7 +6653,7 @@ TopoShape& TopoShape::makeElementShell(bool silent, const char* op, ElementMapPo
 
         Data::ElementMapPtr elementMap;
         if (elementMapPolicy == ElementMapPolicy::Propagate) {
-            TopoShape tmp(Tag, Hasher, shell);
+            TopoShape tmp(Tag, Hasher, shell, getHistoryAlgorithm());
             tmp.resetElementMap();
             tmp.mapSubElement(*this, op);
             elementMap = tmp.elementMap();
@@ -7045,24 +6991,16 @@ TopoShape& TopoShape::makeElementBoolean(
 
     TopTools_ListOfShape shapeArguments, shapeTools;
 
+    std::vector<TopoShape> fixedInputs = inputs;
+
     int i = -1;
-    for (const auto& shape : inputs) {
+    for (auto& shape : fixedInputs) {
         if (shape.isNull()) {
             FC_THROWM(NullShapeException, "Null input shape");
         }
 
         if (!shape.isValid()) {
-            std::ostringstream details;
-            shape.analyze(false, details);
-
-            std::string message = "Invalid input shape for boolean ";
-            message += maker;
-            if (!details.str().empty()) {
-                message += ":\n";
-                message += details.str();
-            }
-
-            FC_THROWM(Base::CADKernelError, message.c_str());
+            shape.fix();
         }
 
         if (++i == 0) {
@@ -7092,7 +7030,7 @@ TopoShape& TopoShape::makeElementBoolean(
     if (Base::Sequencer().wasCanceled()) {
         FC_THROWM(Base::CADKernelError, "User aborted");
     }
-    makeElementShape(*mk, inputs, op, elementMapPolicy);
+    makeElementShape(*mk, fixedInputs, op, elementMapPolicy);
 
     if (buildShell) {
         makeElementShell(true, nullptr, elementMapPolicy);
@@ -7110,9 +7048,9 @@ bool TopoShape::isSame(const Data::ComplexGeoData& _other) const
     return Tag == other.Tag && Hasher == other.Hasher && _Shape.IsEqual(other._Shape);
 }
 
-long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) const
+long TopoShape::isElementGenerated(Data::MappedName& _name, int depth) const
 {
-    const App::HistoryAlgorithm& historyAlgo = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& historyAlgo = getHistoryAlgorithm();
 
     if (historyAlgo == App::HistoryAlgorithm::V1) {
         long res = 0;
@@ -7138,13 +7076,14 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
         return res;
     }
     else if (historyAlgo == App::HistoryAlgorithm::V2) {
-        Data::DecodedMappedName _decodedName = _name.getDecodedMappedName();
+        const Data::DecodedMappedName& _decodedName = _name.getDecodedMappedName();
 
         if (_decodedName.size()) {
-            Data::DecodedMappedSection lastSection = _decodedName.back();
+            const Data::DecodedMappedSection& lastSection = _decodedName.back();
 
             if (lastSection.iterationTag == std::to_string(Tag)
-                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED)) {
+                && lastSection.hasMapperFlag(Data::MAPPER_FLAG_GENERATED))
+            {
                 return true;
             }
         }
@@ -7153,7 +7092,7 @@ long TopoShape::isElementGenerated(const Data::MappedName& _name, int depth) con
     return false;
 }
 
-void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix, bool force)
+void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix)
 {
     ZoneScoped;
     if (!tag) {
@@ -7165,31 +7104,19 @@ void TopoShape::reTagElementMap(long tag, App::StringHasherRef hasher, const cha
         return;
     }
 
-    const App::HistoryAlgorithm& selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
-    TopoShape tmp(*this);
+    const App::HistoryAlgorithm& selectedHistoryAlgorithm = getHistoryAlgorithm();
     initCache(1);
     Hasher = hasher;
     Tag = tag;
 
     if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V1) {
+        TopoShape tmp(*this);
+
         resetElementMap();
         copyElementMap(tmp, postfix);
     }
     else if (selectedHistoryAlgorithm == App::HistoryAlgorithm::V2) {
-        std::vector<Data::MappedElement> copiedElementMap = tmp.ensureElementMap()->getAll();
-
-        for (Data::MappedElement& mappedElement : copiedElementMap) {
-            Data::DecodedMappedName decodedName = mappedElement.name.getDecodedMappedName();
-
-            if (decodedName.size() && (decodedName.back().iterationTag == "0" || force)) {
-                decodedName.back().iterationTag = std::to_string(tag);
-
-                mappedElement.name = Data::MappedName::fromDecodedMappedName(decodedName);
-            }
-        }
-
-        resetElementMap();
-        setElementMap(copiedElementMap);
+        ensureElementMap()->retagElementMap(tag);
     }
 }
 

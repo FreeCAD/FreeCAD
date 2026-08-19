@@ -92,7 +92,7 @@ class AppExport DecodedMappedSection {
  * its contents into a datatype which is easy to use and
  * understand in the FreeCAD codebase.
  * 
- * The V2 does include a method to do this: `getDecodedMappedName()`.
+ * The V2 includes a method to do so: `getDecodedMappedName()`.
  * This returns a `DecodedMappedName` (or a `std::vector<DecodedMappedSection>`).
  * 
  */
@@ -122,9 +122,8 @@ public:
      * element map prefix, which will be omitted from the stored MappedName.
      *
      * @param nameString The new name. A deep copy is made.
-     * @param historyAlgorithm The algorithm used to make `nameString`. Defaulted to `V1`.
      */
-    explicit MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2);
+    explicit MappedName(const std::string& nameString);
 
     /**
      * @brief Create a MappedName from an IndexedName.
@@ -157,12 +156,6 @@ public:
         : raw(false)
     {}
 
-    /// Create a MappedName with a marked history algorithm.
-    MappedName(const App::HistoryAlgorithm historyAlgorithm)
-        : raw(false)
-        , usedHistoryAlgorithm(historyAlgorithm)
-    {}
-
     MappedName(const MappedName& other) = default;
 
     /**
@@ -179,7 +172,7 @@ public:
      * and start positions
      */
     MappedName(const MappedName& other, int startPosition, int size = -1)
-        : raw(false), usedHistoryAlgorithm(other.usedHistoryAlgorithm)
+        : raw(false)
     {
         append(other, startPosition, size);
     }
@@ -196,14 +189,12 @@ public:
         : data(other.data + other.postfix)
         , postfix(postfix)
         , raw(false)
-        , usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {}
 
     MappedName(MappedName&& other) noexcept
         : data(std::move(other.data))
         , postfix(std::move(other.postfix))
         , raw(other.raw)
-        , usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {}
 
     ~MappedName() = default;
@@ -276,7 +267,6 @@ public:
 
         MappedName res;
         res.raw = true;
-        res.usedHistoryAlgorithm = other.usedHistoryAlgorithm;
         if (size < 0) {
             size = other.size() - startPosition;
         }
@@ -299,7 +289,13 @@ public:
     }
 
     /// Share data with another MappedName.
-    MappedName& operator=(const MappedName& other) = default;
+    MappedName& operator=(const MappedName& other) {
+        data = other.data;
+        postfix = other.postfix;
+        raw = other.raw;
+
+        return *this;
+    };
 
     /// Create a new MappedName from a std::string: the string's data is copied.
     MappedName& operator=(const std::string& other)
@@ -475,6 +471,7 @@ public:
     MappedName& operator+=(const QByteArray& other)
     {
         this->postfix += other;
+
         return *this;
     }
 
@@ -516,12 +513,6 @@ public:
                 this->data.append(dataToAppend, size);
             }
             else {
-                const char* constData = this->postfix.constData();
-
-                if (strlen(constData) == 0 || constData[strlen(constData) - 1] != '|') {
-                    this->postfix.append("|", 1);
-                }
-
                 this->postfix.append(dataToAppend, size);
             }
         }
@@ -551,66 +542,7 @@ public:
      * other's combined data storage when taking @p startPosition into
      * consideration.
      */
-    void append(const MappedName& other, int startPosition = 0, int size = -1)
-    {
-        // enforce 0 <= startPosition <= other.size
-        if (startPosition < 0) {
-            startPosition = 0;
-        }
-        else if (startPosition > other.size()) {
-            return;
-        }
-
-        // enforce 0 <= size <= other.size - startPosition
-        if (size < 0 || size > other.size() - startPosition) {
-            size = other.size() - startPosition;
-        }
-
-
-        if (startPosition < other.data.size())  // if starting inside data
-        {
-            int count = size;
-            // make sure count doesn't exceed data size and end up in postfix
-            if (count > other.data.size() - startPosition) {
-                count = other.data.size() - startPosition;
-            }
-
-            // if this is empty append in data else append in postfix
-            if (startPosition == 0 && count == other.data.size() && this->empty()) {
-                this->data = other.data;
-                this->raw = other.raw;
-            }
-            else {
-                append(other.data.constData() + startPosition, count);
-            }
-
-            // setup startPosition and count to continue appending the remainder to postfix
-            startPosition = 0;
-            size -= count;
-        }
-        else  // else starting inside postfix
-        {
-            startPosition -= other.data.size();
-        }
-
-        // if there is still data to be added to postfix
-        if (size != 0) {
-            if (startPosition == 0 && size == other.postfix.size()) {
-                if (this->empty()) {
-                    this->data = other.postfix;
-                }
-                else if (this->postfix.isEmpty()) {
-                    this->postfix = other.postfix;
-                }
-                else {
-                    this->postfix += other.postfix;
-                }
-            }
-            else {
-                append(other.postfix.constData() + startPosition, size);
-            }
-        }
-    }
+    void append(const MappedName& other, int startPosition = 0, int size = -1);
 
     /**
      * @brief Create a string representation.
@@ -964,7 +896,6 @@ public:
         MappedName res;
         res.data.append(this->data.constData(), this->data.size());
         res.postfix = this->postfix;
-        res.usedHistoryAlgorithm = this->usedHistoryAlgorithm;
         return res;
     }
 
@@ -1186,69 +1117,99 @@ public:
         return qHash(data, qHash(postfix));
     }
 
-    App::HistoryAlgorithm getHistoryAlgorithm() const {
-        return usedHistoryAlgorithm;
-    };
-
-    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
-        usedHistoryAlgorithm = newAlgorithm;
-    };
-
     // we use a static here for caching reasons.
-    static DecodedMappedName getDecodedMappedName(const std::string& mappedNameString);
+    static DecodedMappedName& getDecodedMappedName(const std::string& mappedNameString);
 
-    DecodedMappedName getDecodedMappedName() const;
-    
+    DecodedMappedName& getDecodedMappedName();
+
+    const size_t& getDuplicateIndex() const {
+        return duplicateIndex;
+    };
+
+    void setDuplicateIndex(const size_t& newIndex) {
+        duplicateIndex = newIndex;
+    };
+
     static MappedName fromDecodedMappedName(const DecodedMappedName& name);
 
-    static std::vector<std::string> splitToSections(const std::string& data, const char deliminator);
-
-    static std::vector<std::string> splitToSections(const std::string& data, const char* deliminator);
+    static std::string makeEncodedName(const DecodedMappedName& name);
 
     static std::string escapeString(const std::string& stringToEscape);
 
-    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
-                                   const std::vector<MappedName>& linkedNames = { },
-                                   const int&  iterationTag = 0,
-                                   const char* opCode = "MKR",
-                                   const int& index = 0,
-                                   const char& elementType = 'E',
-                                   const int& duplicateCount = 0,
-                                   const std::vector<std::string>& mapperFlags = { },
-                                   const std::vector<MappedName>& connectedElements = { });
+    static DecodedMappedSection makeDecodedSection(
+        const std::vector<std::string>& referenceIDs = {},
+        const std::vector<std::string>& linkedNames = {},
+        const std::string& iterationTag = "0",
+        const char* opCode = "MKR",
+        const std::string& index = "0",
+        const char& elementType = 'E',
+        const std::string& duplicateCount = "0",
+        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<std::string>& connectedElements = {}
+    );
+
+    static DecodedMappedSection makeDecodedSection(
+        const std::vector<std::string>& referenceIDs = {},
+        const std::vector<MappedName>& linkedNames = {},
+        const long& iterationTag = 0,
+        const char* opCode = "MKR",
+        const int& index = 0,
+        const char& elementType = 'E',
+        const int& duplicateCount = 0,
+        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<MappedName>& connectedElements = {}
+    );
+
+    static std::string makeEncodedSection(
+        const std::vector<std::string>& referenceIDs = {},
+        const std::vector<MappedName>& linkedNames = {},
+        const int&  iterationTag = 0,
+        const char* opCode = "MKR",
+        const int& index = 0,
+        const char& elementType = 'E',
+        const int& duplicateCount = 0,
+        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<MappedName>& connectedElements = {}
+    );
     
-    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
-                                   const std::vector<MappedName>& linkedNames = { },
-                                   const std::string& iterationTag = 0,
-                                   const char* opCode = "MKR",
-                                   const std::string& index = 0,
-                                   const char& elementType = 'E',
-                                   const std::string& duplicateCount = 0,
-                                   const std::vector<std::string>& mapperFlags = { },
-                                   const  std::vector<MappedName>& connectedElements = { });
+    static std::string makeEncodedSection(
+        const std::vector<std::string>& referenceIDs = {},
+        const std::vector<MappedName>& linkedNames = {},
+        const std::string& iterationTag = 0,
+        const char* opCode = "MKR",
+        const std::string& index = 0,
+        const char& elementType = 'E',
+        const std::string& duplicateCount = 0,
+        const std::vector<std::string>& mapperFlags = {},
+        const  std::vector<MappedName>& connectedElements = {}
+    );
 
-    static std::string makeSection(const std::vector<std::string>& referenceIDs = { },
-                                   const std::vector<std::string>& linkedNames = { },
-                                   const std::string& iterationTag = 0,
-                                   const char* opCode = "MKR",
-                                   const std::string& index = 0,
-                                   const char& elementType = 'E',
-                                   const std::string& duplicateCount = 0,
-                                   const std::vector<std::string>& mapperFlags = { },
-                                   const std::vector<std::string>& connectedElements = { });
+    static std::string makeEncodedSection(
+        const std::vector<std::string>& referenceIDs = {},
+        const std::vector<std::string>& linkedNames = {},
+        const std::string& iterationTag = 0,
+        const char* opCode = "MKR",
+        const std::string& index = 0,
+        const char& elementType = 'E',
+        const std::string& duplicateCount = 0,
+        const std::vector<std::string>& mapperFlags = {},
+        const std::vector<std::string>& connectedElements = {}
+    );
 
-    static std::string makeSection(const DecodedMappedSection& decodedSection);
+    static std::string makeEncodedSection(const DecodedMappedSection& decodedSection);
 
-    static MappedName makeUnmappedName(const std::vector<std::string>& indexedNames = { },
-                                       const int& iterationTag = 0,
-                                       const char* opCode = "MKR",
-                                       const char& elementType = 'E');
+    static MappedName makeUnmappedName(
+        const std::vector<std::string>& indexedNames = {},
+        const int& iterationTag = 0,
+        const char* opCode = "MKR",
+        const char& elementType = 'E'
+    );
     
 private:
     QByteArray data;
     QByteArray postfix;
+    size_t duplicateIndex;
     bool raw;
-    enum App::HistoryAlgorithm usedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 };
 
 class AppExport MappedNameHasher {

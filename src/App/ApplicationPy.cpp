@@ -1107,7 +1107,7 @@ PyObject* ApplicationPy::sGetDecodedMappedName(PyObject* /*self*/, PyObject* arg
     }
 
     Data::MappedName inputMappedName {inputName};
-    Data::DecodedMappedName decodedName = inputMappedName.getDecodedMappedName();
+    const Data::DecodedMappedName& decodedName = inputMappedName.getDecodedMappedName();
 
     PyObject* returnList = PyList_New(0);
 

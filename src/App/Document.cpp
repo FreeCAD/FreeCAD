@@ -71,6 +71,7 @@
 #include <Base/UnitsApi.h>
 
 #include "Document.h"
+#include "ElementNamingUtils.h"
 #include "private/DocumentP.h"
 #include "Application.h"
 #include "AutoTransaction.h"
@@ -273,6 +274,14 @@ bool Document::redo(const int id)
     return true;
 }
 
+Base::ScopeGuard Document::setDefiningTransaction()
+{
+    d->definingTransaction = true;
+    return Base::ScopeGuard([this]() {
+        d->definingTransaction = false;
+    });
+}
+
 void Document::changePropertyOfObject(TransactionalObject* obj,
                                       const Property* prop,
                                       const std::function<void()>& changeFunc)
@@ -299,6 +308,16 @@ void Document::renamePropertyOfObject(TransactionalObject* obj,
 {
     changePropertyOfObject(obj, prop, [this, obj, prop, oldName]() {
         d->activeUndoTransaction->renameProperty(obj, prop, oldName);
+    });
+}
+
+void Document::arrangeMovePropertyOfObject(TransactionalObject* obj,
+                                           const Property* prop,
+                                           TransactionalObject* targetObj,
+                                           Property* newProp)
+{
+    changePropertyOfObject(obj, prop, [this, obj, prop, targetObj, newProp]() {
+        d->activeUndoTransaction->arrangeMoveProperty(obj, prop, targetObj, newProp);
     });
 }
 
@@ -844,6 +863,8 @@ void Document::onChanged(const Property* prop)
 {
     signalChanged(*this, *prop);
 
+    bool recomputeSubObjects = false;
+
     // the Name property is a label for display purposes
     if (prop == &Label) {
         Base::FlagToggler<> flag(globalIsRelabeling);
@@ -893,6 +914,14 @@ void Document::onChanged(const Property* prop)
         }
     }
     else if (prop == &UseHasher) {
+        recomputeSubObjects = true;
+    }
+    else if (prop == &HistoryAlgorithm) {
+        selectedHistoryAlgorithm = App::getHistoryAlgorithm(HistoryAlgorithm.getValueAsString());
+        recomputeSubObjects = true;
+    }
+
+    if (recomputeSubObjects) {
         for (auto obj : d->objectArray) {
             auto geofeature = freecad_cast<GeoFeature*>(obj);
             if (geofeature && geofeature->getPropertyOfGeometry()) {
@@ -907,7 +936,7 @@ void Document::onBeforeChangeProperty(const TransactionalObject* Who, const Prop
     if (Who->isDerivedFrom<DocumentObject>()) {
         signalBeforeChangeObject(*static_cast<const DocumentObject*>(Who), *What);
     }
-    if (!d->rollback && !globalIsRelabeling) {
+    if (!d->rollback && !globalIsRelabeling && !d->definingTransaction) {
         _checkTransaction(nullptr, What, __LINE__);
         if (d->activeUndoTransaction) {
             d->activeUndoTransaction->addObjectChange(Who, What);
@@ -1014,6 +1043,14 @@ Document::Document(const char* documentName)
                       0,
                       PropertyType(Prop_Hidden),
                       "Whether to use hasher on topological naming");
+    
+    HistoryAlgorithm.setEnums({"V1", "V2"});
+    ADD_PROPERTY_TYPE(HistoryAlgorithm,
+                      (App::getHistoryAlgorithm(App::getDefaultHistoryAlgorithm())),
+                      0,
+                      PropertyType(Prop_Hidden),
+                      "The Topological Naming Version to use for this document.");
+    selectedHistoryAlgorithm = App::getHistoryAlgorithm(HistoryAlgorithm.getValueAsString());
 
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,
@@ -1983,7 +2020,7 @@ bool Document::saveToFile(const char* filename) const
     // check if file is writeable, then block the save if it is not.
     Base::FileInfo originalFileInfo(nativePath);
     if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
-        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+        throw Base::FileWritePermissionException(originalFileInfo);
     }
 
     // make a tmp. file where to save the project data first and then rename to
@@ -2102,6 +2139,23 @@ std::string Document::makeUniqueLabel(std::string_view modelLabel)
     }
 
     return d->objectLabelManager.makeUniqueName(modelLabel, 3);
+}
+
+const std::string& Document::getCorrectElementMapVersion() {
+    if (elementMapVersion.empty()) {
+        std::ostringstream ss;
+        // Stabilize the reported OCCT version: report 7.2.0 as the version so that we aren't
+        // constantly inadvertently reporting differing versions. This is retained for
+        // cross-compatibility with LinkStage3 (which retains supporting code for OCCT 6.x,
+        // removed here).
+        unsigned occ_ver {0x070200};
+        ss << Data::ELEMENT_NAME_ENCODING_VERSION << '.' << std::hex << occ_ver << '.'
+           << App::getHistoryAlgorithm(selectedHistoryAlgorithm) << "." << Data::ELEMENT_MAP_VERSION;
+        
+        elementMapVersion = ss.str();
+    }
+    
+    return elementMapVersion;
 }
 
 bool Document::isAnyRestoring()

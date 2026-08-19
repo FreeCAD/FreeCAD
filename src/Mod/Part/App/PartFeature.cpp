@@ -181,8 +181,10 @@ App::ElementNamePair Feature::getElementName(const char* name, ElementNameType t
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
-bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName& name2)
+bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, bool logMatchedElements)
 {
+    ZoneScoped;
+
     if (!name1 || !name2) {
         return false;
     }
@@ -209,7 +211,8 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
                 if ((name1Section.iterationTag != Data::EMPTY_VALUE
                      && name2Section.iterationTag == name1Section.iterationTag)
                     && (name1Section.opCode != Data::EMPTY_VALUE
-                        && name2Section.opCode == name1Section.opCode)) {
+                        && name2Section.opCode == name1Section.opCode))
+                {
                     entry.push_back(name2Section);
                 }
             }
@@ -240,13 +243,17 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
 
                     for (const std::string& name1LinkedName : mainCheckSection.linkedNames) {
                         Data::MappedName name1LinkedMappedName {name1LinkedName};
+                        Data::MappedName name2LinkedMappedName;
 
                         for (const std::string& name2LinkedName : loopCheckSection.linkedNames) {
+                            name2LinkedMappedName = name2LinkedName;
+
                             if ((name1LinkedName == name2LinkedName)
-                                || (name1LinkedName != "_" && name2LinkedName != "_"
+                                || (name1LinkedName != Data::EMPTY_VALUE
+                                    && name2LinkedName != Data::EMPTY_VALUE
                                     && doNamesMatch(
                                         name1LinkedMappedName,
-                                        Data::MappedName(name2LinkedName)
+                                        name2LinkedMappedName
                                     ))) {
                                 linkedNameInterference++;
                             }
@@ -255,15 +262,19 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
 
                     for (const std::string& name1ConnectedName : mainCheckSection.connectedElements) {
                         Data::MappedName name1ConnectedMappedName {name1ConnectedName};
+                        Data::MappedName name2ConnectedMappedName;
 
                         for (const std::string& name2ConnectedName :
-                             loopCheckSection.connectedElements) {
+                             loopCheckSection.connectedElements)
+                        {    
+                            name2ConnectedMappedName = name2ConnectedName;
+
                             if ((name1ConnectedName == name2ConnectedName)
                                 || (name1ConnectedName != Data::EMPTY_VALUE
                                     && name2ConnectedName != Data::EMPTY_VALUE
                                     && doNamesMatch(
                                         name1ConnectedMappedName,
-                                        Data::MappedName(name2ConnectedName)
+                                        name2ConnectedMappedName
                                     ))) {
                                 connectedNameInterference++;
                             }
@@ -333,30 +344,33 @@ bool Feature::doNamesMatch(const Data::MappedName& name1, const Data::MappedName
         return false;
     }
 
+    if (logMatchedElements) {
+        Base::Console().log(
+            "Name match resolved name %s as equivelent to %s\n",
+            name1.toString(),
+            name2.toString()
+        );
+    }
+
     return true;
 }
 
 // This is the name matching algorithms used for the V2 algorithm.
 std::vector<Data::MappedElement> Feature::findSimilarNames(
-    const Data::MappedName& searchName,
+    Data::MappedName& searchName,
     const TopoShape& searchShape
 )
 {
     ZoneScoped;
     std::vector<Data::MappedElement> ret {};
 
-    if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-        for (const Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
+    if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        for (Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
             if (loopNamePair.name == searchName) {
                 ret.push_back(loopNamePair);
             }
-            else if (Feature::doNamesMatch(searchName, loopNamePair.name)) {
+            else if (Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
                 ret.push_back(loopNamePair);
-                Base::Console().log(
-                    "Name match resolved name %s as equivelent to %s\n",
-                    searchName.toString(),
-                    loopNamePair.name.toString()
-                );
             }
         }
     }
@@ -364,7 +378,7 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
     return ret;
 }
 
-std::vector<Data::MappedElement> Feature::findSimilarNames(const Data::MappedName& searchName) const
+std::vector<Data::MappedElement> Feature::findSimilarNames(Data::MappedName& searchName)
 {
     return findSimilarNames(searchName, Shape.getShape());
 }
@@ -1149,11 +1163,11 @@ static TopoShape _getTopoShape(
 )
 
 {
-    TopoShape shape;
-
     if (!obj) {
-        return shape;
+        return { };
     }
+
+    TopoShape shape = Feature::makeTopoShape(obj);
 
     PyObject* pyobj = nullptr;
     Base::Matrix4D mat;
@@ -1251,7 +1265,7 @@ static TopoShape _getTopoShape(
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Plane>()) {
                 static TopoDS_Shape _shape;
@@ -1264,7 +1278,7 @@ static TopoShape _getTopoShape(
                     _shape = builder.Shape();
                     _shape.Infinite(Standard_True);
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Point>()) {
                 static TopoDS_Shape _shape;
@@ -1272,7 +1286,7 @@ static TopoShape _getTopoShape(
                     BRepBuilderAPI_MakeVertex builder(gp_Pnt(0, 0, 0));
                     _shape = builder.Shape();
                 }
-                shape = TopoShape(tag, hasher, _shape);
+                shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
             }
             else if (linked->isDerivedFrom<App::Placement>()) {
                 auto element = Data::findElementName(subname);
@@ -1286,7 +1300,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape);
+                        shape = TopoShape(tag, hasher, _shape,obj->getSelectedHistoryAlgorithm());
                     }
                     else if (boost::iequals("o", element) || boost::iequals("origin", element)) {
                         static TopoDS_Shape _shape;
@@ -1295,7 +1309,7 @@ static TopoShape _getTopoShape(
                             _shape = builder.Shape();
                             _shape.Infinite(Standard_True);
                         }
-                        shape = TopoShape(tag, hasher, _shape);
+                        shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                     }
                 }
                 if (shape.isNull()) {
@@ -1305,7 +1319,7 @@ static TopoShape _getTopoShape(
                         _shape = builder.Shape();
                         _shape.Infinite(Standard_True);
                     }
-                    shape = TopoShape(tag, hasher, _shape);
+                    shape = TopoShape(tag, hasher, _shape, obj->getSelectedHistoryAlgorithm());
                 }
             }
 
@@ -1372,7 +1386,7 @@ static TopoShape _getTopoShape(
         // Acceleration for link array. Unlike non-array link, a link array does
         // not return the linked object when calling getLinkedObject().
         // Therefore, it should be handled here.
-        TopoShape baseShape;
+        TopoShape baseShape = Feature::makeTopoShape(obj);
         Base::Matrix4D baseMat;
         std::string op;
         if (link && link->getElementCountValue()) {
@@ -1468,6 +1482,7 @@ static TopoShape _getTopoShape(
         }
         shape.Tag = tag;
         shape.Hasher = hasher;
+        shape.setHistoryAlgorithm(obj->getSelectedHistoryAlgorithm());
         shape.makeElementCompound(shapes);
     }
 
@@ -2168,6 +2183,47 @@ void Feature::guessNewLink(std::string& replacementName, DocumentObject* base, c
         return;
     }
     replacementName = oldLink;
+}
+
+TopoShape Feature::makeTopoShape(const App::DocumentObject* documentObject, const TopoDS_Shape& newShape, long tag, bool useHasher)
+{
+    ZoneScoped;
+
+    if (!documentObject || !documentObject->isAttachedToDocument()) {
+        return App::getDefaultHistoryAlgorithm();
+    }
+
+    const App::HistoryAlgorithm& selectedVersion = documentObject->getSelectedHistoryAlgorithm();
+    TopoShape newTopoShape {newShape};
+
+    if (selectedVersion == App::HistoryAlgorithm::V1) {
+        if (useHasher) {
+            newTopoShape.Hasher = documentObject->getDocument()->getStringHasher();
+        }
+
+        newTopoShape.Tag = tag;
+    } else if (selectedVersion == App::HistoryAlgorithm::V2) {
+        newTopoShape.Tag = tag == 0 ? documentObject->getID() : tag;
+    }
+
+    newTopoShape.setHistoryAlgorithm(selectedVersion);
+
+    return newTopoShape;
+}
+
+TopoShape Feature::makeTopoShape(bool useHasher) const
+{
+    return makeTopoShape(this, TopoDS_Shape(), 0, useHasher);
+}
+
+TopoShape Feature::makeTopoShape(long tag, bool useHasher) const
+{
+    return makeTopoShape(this, TopoDS_Shape(), tag, useHasher);
+}
+
+TopoShape Feature::makeTopoShape(const TopoDS_Shape& newShape, long tag, bool useHasher) const
+{
+    return makeTopoShape(this, newShape, tag, useHasher);
 }
 
 // ---------------------------------------------------------

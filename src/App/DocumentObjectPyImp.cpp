@@ -919,20 +919,14 @@ PyObject* DocumentObjectPy::getPathsByOutList(PyObject* args)
     }
 }
 
-PyObject* DocumentObjectPy::getElementMapVersion(PyObject* args) const
+PyObject* DocumentObjectPy::getCorrectElementMapVersion(PyObject* args) const
 {
-    const char* name;
-    PyObject* restored = Py_False;
-    if (!PyArg_ParseTuple(args, "s|O", &name, &restored)) {
-        return NULL;
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
     }
 
-    Property* prop = getDocumentObjectPtr()->getPropertyByName(name);
-    if (!prop) {
-        throw Py::ValueError("property not found");
-    }
     return Py::new_reference_to(
-        Py::String(getDocumentObjectPtr()->getElementMapVersion(prop, Base::asBoolean(restored))));
+        Py::String(getDocumentObjectPtr()->getCorrectElementMapVersion()));
 }
 
 PyObject* DocumentObjectPy::getCustomAttributes(const char* attr) const
@@ -1065,6 +1059,19 @@ void DocumentObjectPy::setNoTouch(Py::Boolean value)
     getDocumentObjectPtr()->setStatus(ObjectStatus::NoTouch, value.isTrue());
 }
 
+Py::String DocumentObjectPy::getToponamingAlgorithm() const
+{
+    const App::HistoryAlgorithm& selectedHistoryVersion = getDocumentObjectPtr()->getSelectedHistoryAlgorithm();
+
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+        return "V1";
+    } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+        return "V2";
+    }
+
+    return "N/A";
+}
+
 PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
 {
     char* subname;
@@ -1092,4 +1099,24 @@ PyObject* DocumentObjectPy::getPlacementOf(PyObject* args)
         return new Base::PlacementPy(new Base::Placement(p));
     }
     PY_CATCH
+}
+
+PyObject* DocumentObjectPy::moveProperty(PyObject* args) const
+{
+    char* name {};
+    PyObject* targetObjObj {};
+    if (PyArg_ParseTuple(args, "sO", &name, &targetObjObj) == 0) {
+        return nullptr;
+    }
+
+    try {
+        DocumentObject* targetObj =
+            static_cast<DocumentObjectPy*>(targetObjObj)->getDocumentObjectPtr();
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(name);
+        getDocumentObjectPtr()->moveDynamicProperty(prop, targetObj);
+        Py_Return;
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
 }

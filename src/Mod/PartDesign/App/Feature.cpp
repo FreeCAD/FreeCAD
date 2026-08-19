@@ -166,7 +166,7 @@ void Feature::setMaterialToBodyMaterial()
 
 void Feature::updateSuppressedShape()
 {
-    TopoShape res(getID());
+    TopoShape res = makeTopoShape(false);
     TopoShape shape = Shape.getShape();
     shape.setPlacement(Base::Placement());
     std::vector<TopoShape> generated;
@@ -197,7 +197,7 @@ short Feature::mustExecute() const
 TopoShape Feature::getSolid(const TopoShape& shape) const
 {
     if (shape.isNull()) {
-        throw Part::NullShapeException("Null shape");
+        throw Part::NullShapeException("Null shape 1");
     }
 
     // If single solid rule is not enforced  we simply return the shape as is
@@ -244,7 +244,7 @@ bool Feature::relinkToMatchingSubelements(
     std::vector<std::string> newSubs;
     newSubs.reserve(oldSubs.size());
 
-    const App::HistoryAlgorithm& selectedHistoryAlgorithm = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryAlgorithm = oldFeature->getSelectedHistoryAlgorithm();
 
     for (const auto& sub : oldSubs) {
         if (sub.empty()) {
@@ -396,7 +396,7 @@ TopoShape Feature::fixSolids(const TopoShape& solids)
         bb.Add(comp, fix.Solid());
     }
 
-    TopoShape fixShape(comp);
+    TopoShape fixShape = makeTopoShape(comp);
     return fixShape;
 }
 
@@ -495,7 +495,7 @@ const TopoDS_Shape& Feature::getBaseShape() const
 
 Part::TopoShape Feature::getBaseTopoShape(bool silent) const
 {
-    Part::TopoShape result;
+    Part::TopoShape result = makeTopoShape(false);
 
     const Part::Feature* BaseObject = getBaseObject(silent);
     if (!BaseObject) {
@@ -503,13 +503,6 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
     }
 
     if (BaseObject != BaseFeature.getValue()) {
-        auto body = getFeatureBody();
-        if (!body) {
-            if (silent) {
-                return result;
-            }
-            throw Base::RuntimeError("Missing container body");
-        }
         if (BaseObject->isDerivedFrom<PartDesign::ShapeBinder>()
             || BaseObject->isDerivedFrom<PartDesign::SubShapeBinder>()) {
             if (silent) {
@@ -655,7 +648,7 @@ TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
     }
 
-    return TopoShape(obj->getID(), nullptr, builder.Shape());
+    return Feature::makeTopoShape(obj, builder.Shape(), 0, false);
 }
 
 Body* Feature::getFeatureBody() const

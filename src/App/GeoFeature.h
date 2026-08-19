@@ -76,6 +76,8 @@ public:
      * The default implementation returns null.
      */
     virtual const PropertyComplexGeoData* getPropertyOfGeometry() const;
+    /// Returns the geometry property of a GeoFeature object, or null for other object types.
+    static const PropertyComplexGeoData* getPropertyOfGeometry(const DocumentObject* object);
     /**
      * @brief getPyObject returns the Python binding object
      * @return the Python binding object
@@ -138,7 +140,7 @@ public:
      *
      * @return Return a vector of `Data::MappedName` which contains matching names to `searchName`.
      */
-    virtual std::vector<Data::MappedElement> findSimilarNames(const Data::MappedName &searchName) const
+    virtual std::vector<Data::MappedElement> findSimilarNames(Data::MappedName &searchName)
     {
         (void)searchName;
         return { };

@@ -404,7 +404,7 @@ App::DocumentObjectExecReturn* Extrusion::execute()
 
     try {
         ExtrusionParameters params = computeFinalParameters();
-        TopoShape result(getID(), getDocument()->getStringHasher());
+        TopoShape result = makeTopoShape(getID());
 
         extrudeShape(
             result,

@@ -798,31 +798,19 @@ public:
     ///@}
 
     /**
-     * @brief Get the element map version of the geometry data stored in the given property.
+     * @brief Get the correct element map version of the document.
      *
-     * @param[in] prop: the geometry property to query for element map version
-     * @param[in] restored: whether to query for the restored element map version.
-     *                      In case of version upgrade, the restored version may
-     *                      be different from the current version.
-     *
-     * @return Return the element map version string.
+     * @return Return the correct element map version string.
      */
-    virtual std::string getElementMapVersion(const App::Property* prop,
-                                             bool restored = false) const;
+    virtual std::string getCorrectElementMapVersion() const;
 
-    /** @brief Check the element map version of the property.
+    /** @brief Check the history algorithm used by the object.
      *
-     * This function checks whether the element map version of the given
-     * property matches the given version string.  If the function returns
-     * true, the geometry element names need to be recomputed.
+     * This method the history algorithm used by the object.
      *
-     * @param[in] prop: the geometry property to query for element map version
-     * @param[in] ver: the version string to compare with
-     *
-     * @return true if the element map version differs and the geometry element
-     * names need to be recomputed.
+     * @return The history algorithm used by the object.
      */
-    virtual bool checkElementMapVersion(const App::Property* prop, const char* ver) const;
+    const App::HistoryAlgorithm& getSelectedHistoryAlgorithm() const;
 
 public:
 
@@ -1157,6 +1145,20 @@ public:
 
     bool renameDynamicProperty(Property *prop, const char *name) override;
 
+    /**
+     * @brief Move the dynamic property to a document object.
+     *
+     * @param[in] prop The property to move.
+     * @param[in] targetObj The object to which the property is moved.
+     *
+     * @return a pointer to the moved property if successful; `nullptr` if the
+     * target object is the same as the current one.
+     * @throw Base::NameError If the property already exists in the object.
+     * @throw Base::RuntimeError On various runtime errors, such as when the
+     *   property is locked or the target object is invalid.
+     */
+    virtual Property* moveDynamicProperty(Property* prop, DocumentObject* targetObj);
+
     App::Property* addDynamicProperty(
         std::string_view type,
         const char* name = nullptr,
@@ -1471,6 +1473,11 @@ protected:
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
 
 private:
+    void moveExpressionTargetingProp(Property* prop, Property* newProp,
+                                     DocumentObject* targetObj);
+    void arrangeMoveProperty(Property* toBeMovedProp,
+                             Property* newProp,
+                             DocumentObject* targetObj);
     void printInvalidLinks() const;
     void setTouched(const char* propName);
 

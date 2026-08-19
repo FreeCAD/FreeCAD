@@ -75,6 +75,12 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
+const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry(const DocumentObject* object)
+{
+    auto* geoFeature = freecad_cast<const GeoFeature*>(object);
+    return geoFeature ? geoFeature->getPropertyOfGeometry() : nullptr;
+}
+
 PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
@@ -253,13 +259,12 @@ void GeoFeature::updateElementReference()
     if (!prop) {
         return;
     }
-    auto geo = prop->getComplexData();
-    if (!geo) {
+    if (!prop->getComplexData()) {
         return;
     }
     bool reset = false;
 
-    auto version = getElementMapVersion(prop);
+    auto version = getCorrectElementMapVersion();
     if (_ElementMapVersion.getStrValue().empty()) {
         _ElementMapVersion.setValue(version);
     }
@@ -285,7 +290,7 @@ void GeoFeature::onChanged(const Property* prop)
 void GeoFeature::onDocumentRestored()
 {
     if (!getDocument()->testStatus(Document::Status::Importing)) {
-        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(), true));
+        _ElementMapVersion.setValue(getCorrectElementMapVersion());
     }
     DocumentObject::onDocumentRestored();
 }

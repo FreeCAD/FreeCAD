@@ -116,7 +116,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       (App::PropertyType)(App::Prop_None),
                       "Tolerance for fitting arcs of projected external geometry");
     ADD_PROPERTY(InternalShape,
-                 (Part::TopoShape()));
+                 (makeTopoShape()));
     ADD_PROPERTY_TYPE(MakeInternals,
                       (false),
                       "Internal Geometry",
@@ -271,7 +271,7 @@ void SketchObject::buildShape()
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
+    const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
 
     auto addVertex = [&vertices, &selectedHistoryVersion](auto vertex, auto name, int tag) {
         if (!vertex.hasElementMap()) {
@@ -284,7 +284,7 @@ void SketchObject::buildShape()
             builtName = name;
         }
         else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-            builtName = Data::MappedName::makeSection(
+            builtName = Data::MappedName::makeEncodedSection(
                 {name},
                 {},
                 tag,
@@ -318,7 +318,7 @@ void SketchObject::buildShape()
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             int idx = getVertexIndexGeoPos(geoId - 1, Sketcher::PointPos::start);
             addVertex(
-                Part::TopoShape {TopoDS::Vertex(geo->toShape())},
+                makeTopoShape(TopoDS::Vertex(geo->toShape())),
                 convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false),
                 getID()
             );
@@ -344,7 +344,7 @@ void SketchObject::buildShape()
 
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             addVertex(
-                Part::TopoShape {TopoDS::Vertex(geo->toShape())},
+                makeTopoShape(TopoDS::Vertex(geo->toShape())),
                 convertSubName(indexedName, false),
                 getID()
             );
@@ -357,11 +357,11 @@ void SketchObject::buildShape()
     internalElementMap.clear();
 
     if (shapes.empty() && vertices.empty()) {
-        InternalShape.setValue(Part::TopoShape());
-        Shape.setValue(Part::TopoShape());
+        InternalShape.setValue(makeTopoShape());
+        Shape.setValue(makeTopoShape());
         return;
     }
-    Part::TopoShape result(0, getDocument()->getStringHasher());
+    Part::TopoShape result = makeTopoShape();
     if (vertices.empty()) {
         // Notice here we supply op code Part::OpCodes::Sketch to makeElementWires().
         result.makeElementWires(shapes, Part::OpCodes::Sketch);
@@ -374,7 +374,7 @@ void SketchObject::buildShape()
             // SketchObject::getElementName() relies on this op code to
             // differentiate geometries that are exposed with those in edit
             // mode.
-            auto wires = Part::TopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
+            auto wires = makeTopoShape().makeElementWires(shapes, Part::OpCodes::Sketch);
             for (const auto& wire : wires.getSubTopoShapes(TopAbs_WIRE)) {
                 results.push_back(wire);
             }
@@ -425,14 +425,14 @@ const std::map<std::string,std::string> SketchObject::getInternalElementMap() co
 
 Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const {
     if (!MakeInternals.getValue())
-        return Part::TopoShape();
+        return makeTopoShape();
 
     try {
         // Old sketches keep FaceMakerRing: FaceMakerBuildFace names the internal
         // faces differently, breaking references from downstream features.
         const bool legacy = _InternalFaceVersion.getValue() < 2;
 
-        Part::TopoShape result(getID(), getDocument()->getStringHasher());
+        Part::TopoShape result = makeTopoShape(getID());
         Part::WireJoiner joiner;
         joiner.setTightBound(true);
         joiner.setMergeEdges(true);
@@ -462,7 +462,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
         }
 
         // Append open wires (edges not part of any closed face)
-        Part::TopoShape openWires(getID(), getDocument()->getStringHasher());
+        Part::TopoShape openWires = makeTopoShape(getID());
         joiner.getOpenWires(openWires, "SKF");
 
         if (openWires.isNull()) {
@@ -477,7 +477,7 @@ Part::TopoShape SketchObject::buildInternals(const Part::TopoShape &edges) const
     } catch (Standard_Failure &e) {
         FC_WARN("Failed to make face for sketch: " << e.GetMessageString());
     }
-    return Part::TopoShape();
+    return makeTopoShape();
 }
 
 static const char *hasSketchMarker(const char *name) {
@@ -1416,6 +1416,11 @@ void SketchObject::onSketchRestore()
         }else
             acceptGeometry();
 
+        // Must run after the external geometry above: the orientations are derived from the
+        // geometry the constraints reference, and projected external geometry does not exist
+        // before it is rebuilt or accepted.
+        migrateConstraintOrientations();
+
         synchroniseGeometryState();
         // this may happen when saving a sketch directly in edit mode
         // but never performed a recompute before
@@ -1453,6 +1458,19 @@ void SketchObject::onSketchRestore()
 }
 
 // clang-format on
+void SketchObject::migrateConstraintOrientations()
+{
+    // Migrate point-line and circle-line distance and tangency from unsigned to signed. Documents
+    // written before signed constraints existed carry no orientation at all, so the side each
+    // constraint was solved on has to be read back out of the geometry stored in the file.
+    auto constraints = Constraints.getValues();
+    for (auto& constr : constraints) {
+        setOrientation(constr, false);
+    }
+
+    Constraints.setValues(std::move(constraints));
+}
+
 void SketchObject::migrateSketch()
 {
     // Old documents lack _InternalFaceVersion; infer it from the saving version (still the
@@ -1519,16 +1537,6 @@ void SketchObject::migrateSketch()
 
             g->deleteExtension(Part::GeometryMigrationExtension::getClassTypeId());
         }
-    }
-
-    {
-        // Migrate point-line, circle-circle and circle-line distance from abs to signed
-        auto constraints = Constraints.getValues();
-        for (auto& constr : constraints) {
-            setOrientation(constr, false);
-        }
-
-        Constraints.setValues(std::move(constraints));
     }
 
     /* parabola axis as internal geometry */
@@ -1767,7 +1775,7 @@ App::DocumentObject *SketchObject::getSubObject(
     }
 
     // pyObj exists from here
-    Part::TopoShape shape;
+    Part::TopoShape shape = makeTopoShape();
     std::string name = convertSubName(indexedName,false);
     if (geo) {
         shape = getEdge(geo,name.c_str());
@@ -1904,7 +1912,7 @@ const char *SketchObject::convertInternalName(const char *name)
     return nullptr;
 }
 
-std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::MappedName &searchName) const
+std::vector<Data::MappedElement> SketchObject::findSimilarNames(Data::MappedName &searchName)
 {
     std::vector<Data::MappedElement> ret;
 
@@ -1913,9 +1921,9 @@ std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::Mapp
     if (ret.empty()) {
         const Part::TopoShape &internalShape = InternalShape.getShape();
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
-            for (const Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
-                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name)) {
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            for (Data::MappedElement &loopNamePair : internalShape.getElementMap()) {
+                if (loopNamePair.name == searchName || Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
                     std::string loopNameIndexString = internalPrefix();
                     loopNameIndexString += loopNamePair.index.toString();
 
@@ -1924,7 +1932,6 @@ std::vector<Data::MappedElement> SketchObject::findSimilarNames(const Data::Mapp
                     );
 
                     ret.emplace_back(loopNamePair.name, loopNameIndex);
-                    Base::Console().log("Name match resolved name %s as equivelent to %s\n", searchName.toString(), loopNamePair.name.toString());
                 }
             }
         }

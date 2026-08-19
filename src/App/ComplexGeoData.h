@@ -488,12 +488,11 @@ public:
      * @param[in] postfix An optional postfix to append after the tag.
      */
     virtual void
-    reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix = nullptr, bool force = true)
+    reTagElementMap(long tag, App::StringHasherRef hasher, const char* postfix = nullptr)
     {
         (void)tag;
         (void)hasher;
         (void)postfix;
-        (void)force;
     }
 
     /**
@@ -557,12 +556,6 @@ public:
      * @param silent: if true, suppress throwing exceptions.
      */
     virtual std::vector<IndexedName> getHigherElements(const char* name, bool silent = false) const;
-
-    /// Get the current element map version.
-    virtual std::string getElementMapVersion() const;
-
-    /// Check the element map version.
-    virtual bool checkElementMapVersion(const char* ver) const;
 
     /// Check if the given sub-name only contains an element name.
     static bool isElementName(const char* subName)
@@ -639,6 +632,14 @@ public:
      * @return The string with the element map.
      */
     const std::string dumpElementMap() const;
+
+    const App::HistoryAlgorithm& getHistoryAlgorithm() const {
+        return selectedHistoryAlgorithm;
+    };
+
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newAlgorithm) {
+        selectedHistoryAlgorithm = newAlgorithm;
+    };
 
 protected:
     /// Transform the point from local to outside.
@@ -751,6 +752,7 @@ protected:
 
 private:
     ElementMapPtr _elementMap;
+    App::HistoryAlgorithm selectedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 
 protected:
     /// The persistence file name.

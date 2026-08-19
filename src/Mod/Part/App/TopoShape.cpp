@@ -276,26 +276,58 @@ std::string ShapeSegment::getName() const
 TYPESYSTEM_SOURCE(Part::TopoShape, Data::ComplexGeoData)
 
 
-TopoShape::~TopoShape() = default;
-
-TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& shape)
-    : _Shape(*this, shape)
-{
-    Tag = tag;
-    Hasher = hasher;
+TopoShape::~TopoShape() {
+    if (elementMap(false)) {
+        elementMap(false)->syncHistoryAlgorithm(nullptr);
+    }
 }
 
-TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher)
+TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const TopoDS_Shape& shape, const App::HistoryAlgorithm& historyAlgorithm)
     : _Shape(*this, shape)
 {
     Tag = tag;
     Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
+{
+    Tag = tag;
+    Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(long tag, const App::HistoryAlgorithm& historyAlgorithm)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(const TopoDS_Shape& shape, long tag, App::StringHasherRef hasher, const App::HistoryAlgorithm& historyAlgorithm)
+    : _Shape(*this, shape)
+{
+    Tag = tag;
+    Hasher = hasher;
+    setHistoryAlgorithm(historyAlgorithm);
 }
 
 TopoShape::TopoShape(const TopoShape& shape)
     : _Shape(*this)
 {
     *this = shape;
+}
+
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, const TopoDS_Shape& shape, long tag)
+    : _Shape(*this, shape)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
+}
+
+TopoShape::TopoShape(const App::HistoryAlgorithm& historyAlgorithm, long tag)
+{
+    Tag = tag;
+    setHistoryAlgorithm(historyAlgorithm);
 }
 
 std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)
@@ -694,8 +726,11 @@ void TopoShape::read(const char* FileName)
     Base::FileInfo File(FileName);
 
     // checking on the file
+    if (!File.exists()) {
+        throw Base::FileNotFoundException(FileName);
+    }
     if (!File.isReadable()) {
-        throw Base::FileException("File to load not existing or not readable", FileName);
+        throw Base::FileReadPermissionException(FileName);
     }
 
     if (File.hasExtension({"igs", "iges"})) {
@@ -710,7 +745,7 @@ void TopoShape::read(const char* FileName)
         importBrep(File.filePath().c_str());
     }
     else {
-        throw Base::FileException("Unknown extension");
+        throw Base::FileFormatException(FileName);
     }
 }
 
@@ -758,7 +793,7 @@ void TopoShape::importIges(const char* FileName)
         // http://www.opencascade.org/org/forum/thread_20603/?forum=3
         aReader.SetReadVisible(Standard_True);
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Error in reading IGES");
+            throw Base::FileReadException(FileName);
         }
 
         // make brep
@@ -777,7 +812,7 @@ void TopoShape::importStep(const char* FileName)
     try {
         STEPControl_Reader aReader;
         if (aReader.ReadFile(encodeFilename(FileName).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Error in reading STEP");
+            throw Base::FileReadException(FileName);
         }
 
         // Root transfers
@@ -866,7 +901,7 @@ void TopoShape::write(const char* FileName) const
         exportStl(File.filePath().c_str(), 0.01);
     }
     else {
-        throw Base::FileException("Unknown extension");
+        throw Base::FileFormatException(FileName);
     }
 }
 
@@ -884,7 +919,7 @@ void TopoShape::exportIges(const char* filename) const
         aWriter.AddShape(this->_Shape);
         aWriter.ComputeModel();
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Writing of IGES failed");
+            throw Base::FileWriteException(filename);
         }
     }
     catch (Standard_Failure& e) {
@@ -915,7 +950,7 @@ void TopoShape::exportStep(const char* filename) const
         Handle(Transfer_FinderProcess) hFinder = hTransferWriter->FinderProcess();
 
         if (aWriter.Transfer(this->_Shape, STEPControl_AsIs) != IFSelect_RetDone) {
-            throw Base::FileException("Error in transferring STEP");
+            throw Base::FileException("Error in transferring STEP", filename);
         }
 
         APIHeaderSection_MakeHeader makeHeader(aWriter.Model());
@@ -927,7 +962,7 @@ void TopoShape::exportStep(const char* filename) const
         makeHeader.SetDescriptionValue(1, new TCollection_HAsciiString("FreeCAD Model"));
 
         if (aWriter.Write(encodeFilename(filename).c_str()) != IFSelect_RetDone) {
-            throw Base::FileException("Writing of STEP failed");
+            throw Base::FileWriteException(filename);
         }
     }
     catch (Standard_Failure& e) {
@@ -945,11 +980,11 @@ void TopoShape::exportBrep(const char* filename) const
             Standard_False,
             TopTools_FormatVersion_VERSION_1
         )) {
-        throw Base::FileException("Writing of BREP failed");
+        throw Base::FileWriteException(filename);
     }
 #else
     if (!BRepTools::Write(this->_Shape, encodeFilename(filename).c_str())) {
-        throw Base::FileException("Writing of BREP failed");
+        throw Base::FileWriteException(filename);
     }
 #endif
 }
@@ -2900,7 +2935,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
             TopoDS_Iterator it(_Shape);
             for (; it.More(); it.Next()) {
                 shapesToReturn.push_back(
-                    TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
+                    TopoShape(getHistoryAlgorithm(), it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                 );
                 forceOutputCompound = true;
             }
@@ -2913,7 +2948,7 @@ TopoDS_Shape TopoShape::makeOffset2D(
                 if (it.Value().ShapeType() == TopAbs_COMPOUND) {
                     // recursively process subcompounds
                     shapesToReturn.push_back(
-                        TopoShape(it.Value())
+                        TopoShape(getHistoryAlgorithm(), it.Value())
                             .makeOffset2D(offset, joinType, fill, allowOpenResult, intersection)
                     );
                     forceOutputCompound = true;
@@ -4048,7 +4083,7 @@ void TopoShape::getFacesFromSubElement(
 
         // get the meshes of all faces and then merge them
         std::vector<Domain> domains;
-        TopoShape(shape).getDomains(domains);
+        TopoShape(getHistoryAlgorithm(), shape).getDomains(domains);
         getFacesFromDomains(domains, points, faces);
 
         (void)pointNormals;  // leave this empty

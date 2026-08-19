@@ -1624,15 +1624,15 @@ int SketchObject::getVertexIndexGeoPos(int GeoId, PointPos PosId) const
 
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
 {
-    const App::HistoryAlgorithm& selectedHistoryVersion = App::getSelectedHistoryAlgorithm();
-    Part::TopoShape shape(geo->toShape());
+    const App::HistoryAlgorithm& selectedHistoryVersion = getSelectedHistoryAlgorithm();
+    Part::TopoShape shape = makeTopoShape(geo->toShape());
     Data::MappedName builtName = Data::MappedName();
     Data::MappedName builtVertexName = Data::MappedName();
 
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         builtName = name;
     } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-        builtName = Data::MappedName::makeSection(
+        builtName = Data::MappedName::makeEncodedSection(
             {name},
             {},
             getID(),
@@ -1665,7 +1665,7 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
                 if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
                     builtVertexName = ss.str();
                 } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-                    builtVertexName = Data::MappedName::makeSection(
+                    builtVertexName = Data::MappedName::makeEncodedSection(
                         {ss.str()},
                         {},
                         getID(),

@@ -11,14 +11,15 @@
 namespace App
 {
 
-enum HistoryAlgorithm : int {
-    V1 = 0,
-    V2 = 1
+enum class HistoryAlgorithm {
+    V1,
+    V2
 };
 
-AppExport const HistoryAlgorithm& getSelectedHistoryAlgorithm();
-AppExport HistoryAlgorithm getDefaultHistoryAlgorithm();
+AppExport const HistoryAlgorithm& getDefaultHistoryAlgorithm();
 AppExport HistoryAlgorithm getHistoryAlgorithm(int fromUnderlyingInteger);
+AppExport HistoryAlgorithm getHistoryAlgorithm(std::string fromString);
+AppExport int getHistoryAlgorithm(const HistoryAlgorithm& fromHistoryAlgorithm);
 AppExport const int& getSelectedUnderlyingHistoryAlgorithm();
 
 /// Return type for lookups of new and old style sub-element names
@@ -58,6 +59,18 @@ namespace Data
  *
  * @{
  */
+
+/** Element name encoding scheme version number
+    *
+    * Increase this version if there is major change in encoding scheme.
+    * Opening a document containing a mismatched version number will cause the
+    * element map to be regenerated after recompute
+    */
+
+constexpr const int   ELEMENT_NAME_ENCODING_VERSION     = 15;
+
+/// The Element Map Version
+constexpr const int   ELEMENT_MAP_VERSION               = 5;
 
 /// Special prefix to mark the beginning of a mapped sub-element name
 constexpr const char* ELEMENT_MAP_PREFIX                = ";";
@@ -99,6 +112,7 @@ constexpr const char* POSTFIX_GEN                       = ";:G";
 constexpr const char* POSTFIX_MODGEN                    = ";:MG";
 /// Postfix to mark a duplicate element.
 constexpr const char* POSTFIX_DUPLICATE                 = ";D";
+
 /// Label to use for element index in element mapping.
 constexpr const char* ELEMENT_MAP_INDEX                 = "_";
 /// Empty sub-section value for V2.
@@ -111,7 +125,6 @@ constexpr const char* SECTION_SUB_DELIMINATOR           = ";";
 constexpr const char* NAME_SECTION_DELIMINATOR          = "|";
 /// Escape character for mapped names in sub-sections.
 constexpr const char* SUB_SECTION_ESCAPE_CHAR           = "^";
-
 /// Mapper flag that designates that an element is mapped by its subelements.
 constexpr const char* MAPPER_FLAG_LOWER                 = "LOW";
 /// Mapper flag that designates that an element is mapped by other, higher-level, connected elements.

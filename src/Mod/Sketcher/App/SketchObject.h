@@ -481,7 +481,7 @@ public:
     );
 
     /// trim a curve
-    int trim(int geoId, const Base::Vector3d& point);
+    int trim(int geoId, const Base::Vector3d& point, bool includeSketchAxes = false);
     /// extend a curve
     int extend(int geoId, double increment, PointPos endPoint);
     /// Once smaller pieces have been created from a larger curve (by split or trim, say), derive
@@ -927,7 +927,7 @@ public:
 
     App::ElementNamePair getElementName(const char* name, ElementNameType type) const override;
 
-    std::vector<Data::MappedElement> findSimilarNames(const Data::MappedName& searchName) const override;
+    std::vector<Data::MappedElement> findSimilarNames(Data::MappedName& searchName) override;
 
     bool isPerformingInternalTransaction() const
     {
@@ -942,6 +942,7 @@ public:
     bool seekTrimPoints(
         int GeoId,
         const Base::Vector3d& point,
+        bool includeSketchAxes,
         int& GeoId1,
         Base::Vector3d& intersect1,
         int& GeoId2,
@@ -1091,6 +1092,9 @@ protected:
 
     // migration functions
     void migrateSketch();
+    /// Derive the signed-constraint orientations of a legacy sketch from its stored geometry.
+    /// Must be called once the external geometry of the sketch is available.
+    void migrateConstraintOrientations();
 
     static void appendConstraintsMsg(
         const std::vector<int>& vector,
@@ -1156,8 +1160,14 @@ public:
     void changeConstraintAfterDeletingGeo(Constraint* constr, const int deletedGeoId) const;
 
 private:
+    /// As getGeometry, but warns instead of quietly returning nullptr when @p geoId cannot be
+    /// resolved, so that a constraint left without an orientation is traceable.
+    const Part::Geometry* getGeometryOrWarn(int geoId) const;
     void setOrientationDistance(Constraint* constr);
     void setOrientationTangent(Constraint* constr);
+    /// Re-derive the orientation of every signed constraint that references one of
+    /// @p reversedGeoIds, whose projection came back running the other way.
+    void reorientConstraintsOnReversedGeometry(const std::set<int>& reversedGeoIds);
 
     /// Internal helper method for exposeInternalGeometryForType
     /// Add geometry and constraints to `this`, then delete the geometry and constraints in the

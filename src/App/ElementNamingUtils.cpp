@@ -6,14 +6,10 @@
 #include <Base/Parameter.h>
 #include "Application.h"
 
-const App::HistoryAlgorithm& App::getSelectedHistoryAlgorithm() {
-    static App::HistoryAlgorithm selectedHistoryAlgorithm = App::getHistoryAlgorithm(App::getSelectedUnderlyingHistoryAlgorithm());
-
-    return selectedHistoryAlgorithm;
-}
-
-App::HistoryAlgorithm App::getDefaultHistoryAlgorithm() {
-    return HistoryAlgorithm::V2;
+const App::HistoryAlgorithm& App::getDefaultHistoryAlgorithm() {
+    static App::HistoryAlgorithm defaultAlgorithm = App::HistoryAlgorithm::V2;
+    
+    return defaultAlgorithm;
 }
 
 
@@ -26,6 +22,26 @@ App::HistoryAlgorithm App::getHistoryAlgorithm(int fromUnderlying) {
         return App::getDefaultHistoryAlgorithm();
     }
 }
+
+App::HistoryAlgorithm App::getHistoryAlgorithm(std::string fromString) {
+    if (fromString == "V1") {
+        return App::HistoryAlgorithm::V1;
+    } else if (fromString == "V2") {
+        return App::HistoryAlgorithm::V2;
+    } else {
+        return App::getDefaultHistoryAlgorithm();
+    }
+}
+
+int App::getHistoryAlgorithm(const App::HistoryAlgorithm& fromHistoryAlgorithm) {
+    if (fromHistoryAlgorithm == App::HistoryAlgorithm::V1) {
+        return 0;
+    } else if (fromHistoryAlgorithm == App::HistoryAlgorithm::V2) {
+        return 1;
+    }
+
+    return 1;
+};
 
 const int& App::getSelectedUnderlyingHistoryAlgorithm() {
     static int underlyingHistoryAlgorithm = -1;

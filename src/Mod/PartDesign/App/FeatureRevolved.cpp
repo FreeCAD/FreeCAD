@@ -155,7 +155,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     }
 
     // Create a fresh support even when base exists so that it can be used for patterns
-    TopoShape result(0);
+    TopoShape result = makeTopoShape(false);
     TopoShape supportface = tryGetSupportShape();
 
     supportface.move(invObjLoc);
@@ -261,7 +261,7 @@ TopoShape Revolved::tryToRevolveToFace(
 
 TopoShape Revolved::tryGetBaseShape() const
 {
-    TopoShape base;
+    TopoShape base = makeTopoShape(false);
     try {
         base = getBaseTopoShape();
     }
@@ -274,7 +274,7 @@ TopoShape Revolved::tryGetBaseShape() const
 
 TopoShape Revolved::tryGetSupportShape() const
 {
-    TopoShape supportface(0);
+    TopoShape supportface = makeTopoShape(false);
     try {
         supportface = getSupportFace();
     }

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from DocumentObject import DocumentObject
+from Base.Metadata import deprecated
 from Base.Placement import Placement
 from typing import Any, Final, Optional
 
@@ -18,9 +19,6 @@ class GeoFeature(DocumentObject):
     to any particular property name.
     """
 
-    ElementMapVersion: Final[str] = ""
-    """Element map version"""
-
     def getPaths(self) -> Any:
         """
         Returns all possible paths to the root of the document.
@@ -28,6 +26,12 @@ class GeoFeature(DocumentObject):
         """
         ...
 
+    @deprecated(
+        deprecated_in="26.3",
+        removed_in="27.2",
+        replacement="getGlobalPlacementOf",
+        details="This method does not handle Links correctly.",
+    )
     def getGlobalPlacement(self) -> Placement:
         """
         Deprecated: This function does not handle Links correctly. Use getGlobalPlacementOf instead.

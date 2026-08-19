@@ -2009,7 +2009,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             );
         }
 
-        TopoShape result(0);
+        TopoShape result = makeTopoShape(false);
 
         // set the subtractive shape property for later usage in e.g. pattern
         this->AddSubShape.setValue(compound);
@@ -2201,7 +2201,7 @@ TopoShape Hole::findHoles(
     const TopoDS_Shape& protoHole
 ) const
 {
-    TopoShape result(0);
+    TopoShape result = makeTopoShape(false);
     _holeLocations.clear();
 
     auto addHole = [&](Part::TopoShape const& baseshape, gp_Pnt loc) {
@@ -2211,7 +2211,7 @@ TopoShape Hole::findHoles(
 
         Part::MappingStatus status = Part::MappingStatus::Modified;
 
-        if (App::getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
             // we want to use generated here, because when an element is modified, it is usually
             // split apart into similar elements which is not happening here. what is happening is
             // an edge is creating a face, which is only possible with generated.
@@ -2219,9 +2219,9 @@ TopoShape Hole::findHoles(
         }
 
         Part::ShapeMapper mapper;
-        mapper.populate(status, baseshape, TopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
+        mapper.populate(status, baseshape, makeTopoShape(protoHole).getSubTopoShapes(TopAbs_FACE));
 
-        TopoShape hole(-getID());
+        TopoShape hole = makeTopoShape(-getID());
         hole.makeShapeWithElementMap(protoHole, mapper, {baseshape});
 
         // transform and generate element map.
@@ -2267,7 +2267,7 @@ TopoShape Hole::findHoles(
             addHole(profileVertex, BRep_Tool::Pnt(vertex));
         }
     }
-    return TopoShape().makeElementCompound(holes);
+    return makeTopoShape(false).makeElementCompound(holes);
 }
 
 std::vector<gp_Pnt> Hole::getHoleLocations() const

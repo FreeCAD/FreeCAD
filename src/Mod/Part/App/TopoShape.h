@@ -291,14 +291,34 @@ public:
     TopoShape(
         long Tag = 0,  // NOLINT google-explicit-constructor
         App::StringHasherRef hasher = App::StringHasherRef(),
-        const TopoDS_Shape& shape = TopoDS_Shape()
+        const TopoDS_Shape& shape = TopoDS_Shape(),
+        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V2
+    );  // Cannot be made explicit
+    TopoShape(
+        long Tag,  // NOLINT google-explicit-constructor
+        App::StringHasherRef hasher,
+        const App::HistoryAlgorithm& historyAlgorithm
+    );  // Cannot be made explicit
+    TopoShape(
+        long Tag,  // NOLINT google-explicit-constructor
+        const App::HistoryAlgorithm& historyAlgorithm
     );  // Cannot be made explicit
     TopoShape(
         const TopoDS_Shape&,  // NOLINT google-explicit-constructor
         long Tag = 0,
-        App::StringHasherRef hasher = App::StringHasherRef()
+        App::StringHasherRef hasher = App::StringHasherRef(),
+        const App::HistoryAlgorithm& historyAlgorithm = App::HistoryAlgorithm::V2
     );  // Cannot be made explicit
     TopoShape(const TopoShape&);
+    TopoShape(
+        const App::HistoryAlgorithm& historyAlgorithm,
+        const TopoDS_Shape& shape = TopoDS_Shape(),
+        long Tag = 0
+    );
+    TopoShape(
+        const App::HistoryAlgorithm& historyAlgorithm,
+        long Tag
+    );
     ~TopoShape() override;
 
     void setShape(const TopoDS_Shape& shape, bool resetElementMap = true);
@@ -938,7 +958,7 @@ public:
         RefineFail no_fail = RefineFail::throwException
     ) const
     {
-        return TopoShape(Tag, Hasher).makeElementRefine(*this, op, no_fail);
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm()).makeElementRefine(*this, op, no_fail);
     }
 
 
@@ -1012,7 +1032,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher).makeElementThickSolid(
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementThickSolid(
             *this,
             faces,
             offset,
@@ -1085,7 +1112,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher)
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape
             .makeElementOffset(*this, offset, tol, intersection, selfInter, offsetMode, join, fill, op);
     }
 
@@ -1140,7 +1174,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher)
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape
             .makeElementOffset2D(*this, offset, join, fill, allowOpenResult, intersection, op);
     }
 
@@ -1190,7 +1231,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher)
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape
             .makeElementOffsetFace(*this, offset, innerOffset, join, innerJoin, op);
     }
 
@@ -1236,7 +1284,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher).makeElementRevolve(*this, axis, d, face_maker, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementRevolve(*this, axis, d, face_maker, op);
     }
 
 
@@ -1293,7 +1348,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher).makeElementRevolution(
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementRevolution(
             *this,
             profile,
             axis,
@@ -1330,7 +1392,14 @@ public:
      */
     TopoShape makeElementPrism(const gp_Vec& vec, const char* op = nullptr) const
     {
-        return TopoShape(0, Hasher).makeElementPrism(*this, vec, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementPrism(*this, vec, op);
     }
 
     /// Operation mode for makeElementPrismUntil()
@@ -1403,7 +1472,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher).makeElementPrismUntil(
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementPrismUntil(
             *this,
             profile,
             supportFace,
@@ -1470,7 +1546,14 @@ public:
      */
     TopoShape replaceElementShape(const std::vector<std::pair<TopoShape, TopoShape>>& s) const
     {
-        return TopoShape(0, Hasher).replaceElementShape(*this, s);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.replaceElementShape(*this, s);
     }
 
     /* Make a shape with some subshapes removed
@@ -1492,7 +1575,14 @@ public:
      */
     TopoShape removeElementShape(const std::vector<TopoShape>& s) const
     {
-        return TopoShape(0, Hasher).removeElementShape(*this, s);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.removeElementShape(*this, s);
     }
 
     /** Make shape using generalized fusion and return the modified sub shapes
@@ -1543,7 +1633,14 @@ public:
      */
     TopoShape makeElementFuse(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
-        return TopoShape(0, Hasher).makeElementFuse({*this, source}, op, tol);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementFuse({*this, source}, op, tol);
     }
 
     /** Make a boolean cut of this shape with an input shape
@@ -1574,7 +1671,14 @@ public:
      */
     TopoShape makeElementCut(const TopoShape& source, const char* op = nullptr, double tol = -1.0) const
     {
-        return TopoShape(0, Hasher).makeElementCut({*this, source}, op, tol);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementCut({*this, source}, op, tol);
     }
 
     /** Make a boolean xor of this shape with an input shape
@@ -1611,23 +1715,15 @@ public:
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementXor({*this, source}, op, tol, elementMapPolicy);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementXor({*this, source}, op, tol, elementMapPolicy);
     }
-
-    App::HistoryAlgorithm getHistoryAlgorithm() const
-    {
-        if (elementMap() != nullptr) {
-            return elementMap()->getHistoryAlgorithm();
-        }
-        else {
-            return App::HistoryAlgorithm::V2;
-        }
-    };
-
-    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm)
-    {
-        ensureElementMap()->setHistoryAlgorithm(newAlgorithm);
-    };
 
     /** Try to simplify geometry of any linear/planar subshape to line/plane
      *
@@ -1661,11 +1757,10 @@ public:
     void reTagElementMap(
         long tag,  // NOLINT google-default-arguments
         App::StringHasherRef hasher,
-        const char* postfix = nullptr,
-        bool force = true  // force retag a section if the tag is not 0
+        const char* postfix = nullptr
     ) override;
 
-    long isElementGenerated(const Data::MappedName& name, int depth = 1) const;
+    long isElementGenerated(Data::MappedName& name, int depth = 1) const;
 
     /** @name sub shape cached functions
      *
@@ -1726,8 +1821,6 @@ public:
     void mapSubElement(const std::vector<TopoShape>& shapes, const char* op = nullptr);
     void mapSubElementsTo(std::vector<TopoShape>& shapes, const char* op = nullptr) const;
     bool hasPendingElementMap() const;
-
-    std::string getElementMapVersion() const override;
 
     void flushElementMap() const override;
 
@@ -1821,7 +1914,14 @@ public:
         const char* op = nullptr
     )
     {
-        return TopoShape(0, Hasher)
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape
             .makeElementEvolve(*this, profile, join, axeProf, solid, profOnSpine, tol, op);
     }
 
@@ -2051,7 +2151,14 @@ public:
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output, elementMapPolicy);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementWires(*this, op, tol, policy, output, elementMapPolicy);
     }
 
     /** Make a new shape with transformation that may contain non-uniform scaling
@@ -2093,7 +2200,14 @@ public:
         CopyType copy = CopyType::noCopy
     ) const
     {
-        return TopoShape(Tag, Hasher).makeElementGTransform(*this, mat, op, copy);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementGTransform(*this, mat, op, copy);
     }
 
     /** Make a deep copy of the shape
@@ -2136,7 +2250,14 @@ public:
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(Tag, Hasher).makeElementCopy(*this, op, copyGeom, copyMesh, elementMapPolicy);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementCopy(*this, op, copyGeom, copyMesh, elementMapPolicy);
     }
 
 
@@ -2204,7 +2325,14 @@ public:
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementBoolean(maker, *this, op, tol, elementMapPolicy);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementBoolean(maker, *this, op, tol, elementMapPolicy);
     }
 
     /** Make a mirrored shape
@@ -2231,7 +2359,14 @@ public:
      */
     TopoShape makeElementMirror(const gp_Ax2& ax, const char* op = nullptr) const
     {
-        return TopoShape(0, Hasher).makeElementMirror(*this, ax, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementMirror(*this, ax, op);
     }
 
     /** Make a cross section slice
@@ -2265,7 +2400,14 @@ public:
      */
     TopoShape makeElementSlice(const Base::Vector3d& dir, double distance, const char* op = nullptr) const
     {
-        return TopoShape(0, Hasher).makeElementSlice(*this, dir, distance, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementSlice(*this, dir, distance, op);
     }
 
     /** Make multiple cross section slices
@@ -2303,7 +2445,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher).makeElementSlices(*this, dir, distances, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementSlices(*this, dir, distances, op);
     }
 
     /* Make fillet shape
@@ -2345,7 +2494,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher).makeElementFillet(*this, edges, radius1, radius2, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementFillet(*this, edges, radius1, radius2, op);
     }
 
     /* Make chamfer shape
@@ -2391,7 +2547,14 @@ public:
         Flip flipDirection = Flip::none
     ) const
     {
-        return TopoShape(0, Hasher)
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape
             .makeElementChamfer(*this, edges, chamferType, radius1, radius2, op, flipDirection);
     }
 
@@ -2471,7 +2634,8 @@ public:
         CopyType copy = CopyType::noCopy
     )
     {
-        return TopoShape(Tag, Hasher).makeElementTransform(*this, mat, op, checkScale, copy);
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm())
+            .makeElementTransform(*this, mat, op, checkScale, copy);
     }
 
     /** Make a new shape with transformation
@@ -2511,7 +2675,8 @@ public:
         CopyType copy = CopyType::noCopy
     )
     {
-        return TopoShape(Tag, Hasher).makeElementTransform(*this, trsf, op, copy);
+        return TopoShape(Tag, Hasher, getHistoryAlgorithm())
+            .makeElementTransform(*this, trsf, op, copy);
     }
 
     /* Make draft shape
@@ -2561,7 +2726,14 @@ public:
         const char* op = nullptr
     ) const
     {
-        return TopoShape(0, Hasher)
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape
             .makeElementDraft(*this, faces, pullDirection, angle, neutralPlane, retry, op);
     }
 
@@ -2687,8 +2859,15 @@ public:
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane, elementMapPolicy);
-    }
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementFace(*this, op, maker, plane, elementMapPolicy);
+    };
 
     /** Make a face with BSpline (or Bezier) surface
      *
@@ -2751,7 +2930,14 @@ public:
         const char* op = nullptr
     )
     {
-        return TopoShape(0, Hasher).makeElementBSplineFace(*this, style, keepBezier, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementBSplineFace(*this, style, keepBezier, op);
     }
 
 
@@ -2841,7 +3027,14 @@ public:
      */
     TopoShape makeElementSolid(const char* op = nullptr) const
     {
-        return TopoShape(0, Hasher).makeElementSolid(*this, op);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementSolid(*this, op);
     }
 
 
@@ -2902,7 +3095,14 @@ public:
         ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
     ) const
     {
-        return TopoShape(0, Hasher).makeElementShape(mkShape, *this, op, elementMapPolicy);
+        const App::HistoryAlgorithm& selectedHistoryVersion = getHistoryAlgorithm();
+        TopoShape newShape {0, Hasher, selectedHistoryVersion};
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            newShape.Tag = Tag;
+        }
+
+        return newShape.makeElementShape(mkShape, *this, op, elementMapPolicy);
     }
 
     /** Specialized shape making for BRepBuilderAPI_MakePrism with mapped element name

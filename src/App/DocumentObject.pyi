@@ -76,6 +76,9 @@ class DocumentObject(ExtensionContainer):
     NoTouch: bool = False
     """Enable/disable no touch on any property change"""
 
+    ToponamingAlgorithm: Final[str] = ""
+    """Topological Naming Algorithm used by the Object."""
+
     def addProperty(
         self,
         type: str,
@@ -324,9 +327,9 @@ class DocumentObject(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementMapVersion(self, property_name: str, /) -> str:
+    def getCorrectElementMapVersion(self) -> str:
         """
-        return element map version of a given geometry property
+        return correct element map version of the document.
         """
         ...
 
@@ -341,5 +344,19 @@ class DocumentObject(ExtensionContainer):
         """
         Return the placement of the sub-object relative to the link object.
         getPlacementOf(subname, [targetObj]) -> Base.Placement
+        """
+        ...
+
+    @constmethod
+    def moveProperty(self, name: str, targetObj: DocumentObject, /) -> None:
+        """
+        moveProperty(name, targetObj) -> None
+
+        Move a property to the target container.
+
+        name : str
+            The name of the property to move.
+        targetObj : DocumentObject
+            The target object to move the property to.
         """
         ...
