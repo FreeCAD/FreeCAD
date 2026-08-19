@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="307"/>
       <source>From Shape</source>
-      <translation>Créer un parcours à partir d'une forme</translation>
+      <translation>Crée un parcours à partir d'une forme.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="308"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="101"/>
       <source>Create Path Area View</source>
-      <translation>Créer une vue de la zone du parcours</translation>
+      <translation>Crée une vue de la zone du parcours.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="118"/>
@@ -524,7 +524,7 @@ Les noms en majuscules et minuscules s'affichent avec des espaces « casse mixte
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="23"/>
       <source>Tool Controller Selection</source>
-      <translation>Sélection du contrôleur d'outils</translation>
+      <translation>Sélection d'un outil coupant</translation>
     </message>
     <message>
       <location filename="../panels/DlgTCChooser.ui" line="29"/>
@@ -935,7 +935,7 @@ pour connaître la valeur appropriée.</translation>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <location filename="../panels/PageHeightsEdit.ui" line="204"/>
       <source>Finish step down</source>
-      <translation>Terminer le pas de descente</translation>
+      <translation>Pas de finition</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="170"/>
@@ -967,7 +967,7 @@ mouvements latéraux et descendants sont effectués à la vitesse d'avance.</tra
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="126"/>
       <source>Start</source>
-      <translation>Démarrer</translation>
+      <translation>Début</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="133"/>
@@ -987,7 +987,7 @@ mouvements latéraux et descendants sont effectués à la vitesse d'avance.</tra
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="236"/>
       <source>Final</source>
-      <translation>Dernier</translation>
+      <translation>Fin</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="243"/>
@@ -1442,7 +1442,7 @@ vers le centre.</translation>
       <location filename="../panels/PageOpHelixEdit.ui" line="118"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="182"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool&apos;s diameter).</source>
-      <translation>La course latérale* de l'outil de coupe se déplaçant entre deux passes successives (*exprimée en pourcentage du diamètre de l'outil).</translation>
+      <translation>Le décalage latéral (exprimé en % du diamètre de l'outil) de l'outil de coupe entre deux passes successives.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="140"/>
@@ -1558,10 +1558,10 @@ contact avec la pièce sur votre machine.</translation>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="50"/>
       <source>Spiral: continuous helical sweep — fastest, best surface continuity. Parallel: axial zig-zag passes stepped over angularly. Rings: full-revolution rings stepped axially. All three produce continuous 4-axis XYZA motion.</source>
-      <translation>- Spirale : balayage hélicoïdal continu, le plus rapide, la meilleure continuité de surface
-- Parallèle : passages en zigzag axiaux décalés angulairement
-- Anneaux : anneaux à tour complet décalés axialement
-Ces trois modes produisent un mouvement continu sur les quatre axes XYZA.</translation>
+      <translation>Les trois modes suivants produisent un mouvement continu sur les quatre axes XYZA :
+- en spirale : balayage hélicoïdal continu, le plus rapide, la meilleure continuité de surface,
+- parallèle : passes axiales en zigzag décalées angulairement,
+- par anneaux : passes par anneaux complets décalées axialement.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="57"/>
@@ -1628,10 +1628,9 @@ limites des axes rotatifs de la machine sont dépassées.</translation>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="134"/>
       <source>Axial advance per full revolution (mm). Spiral: pitch. Rings: distance between rings. Parallel: also drives the angular stepover, derived as StepOver / max_radius.</source>
       <translation>Avance axiale par tour complet (mm) :
-- Spiral : pas
-- Anneaux : distance entre les anneaux
-- Parallèle : détermine également le recouvrement angulaire, calculé comme le rapport entre un recouvrement entre les passes et le  rayon
-maximum.</translation>
+- en spirale : pas,
+- par anneaux : distance entre les anneaux,
+- parallèle : gère également le recouvrement angulaire, rapport entre le recouvrement entre les passes et le rayon maximum.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpRotarySurfaceEdit.ui" line="141"/>
@@ -1735,7 +1734,7 @@ opposition, la rotation de l'outil coupant et le mouvement latéral de l'outil s
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="101"/>
       <source>ZigZagOffset</source>
-      <translation>Décalage du zigzag</translation>
+      <translation>Parallèle + contour</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="106"/>
@@ -1803,7 +1802,7 @@ opposition, la rotation de l'outil coupant et le mouvement latéral de l'outil s
       <location filename="../panels/PageOpMillFacingEdit.ui" line="109"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="145"/>
       <source>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool&apos;s diameter).</source>
-      <translation>La course latérale* de l'outil de coupe se déplaçant entre deux passes successives (*exprimée en pourcentage du diamètre de l'outil).</translation>
+      <translation>Le décalage latéral (exprimé en % du diamètre de l'outil) de l'outil de coupe entre deux passes successives.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpMillFacingEdit.ui" line="112"/>
@@ -2891,26 +2890,25 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &amp;quot;/home/cnc/%d.g-code&amp;quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation>Saisir un chemin d'accès et, au besoin, un nom de fichier (voir ci-dessous) qui servira de valeur par défaut pour l'exportation via le post-
-processeur. Les substitutions suivantes sont effectuées avant que le nom ne soit résolu au moment du post-traitement. Elles permettent :
+      <translation>Saisir un chemin d'accès et, au besoin, un nom de fichier (voir ci-dessous) qui servira de valeur par défaut pour l'exportation via le post-processeur.
+Les substitutions suivantes sont effectuées avant que le nom ne soit résolu au moment du post-traitement. Elles permettent :
 %D     répertoire du document actif
-%d     nom du document actif (avec extension)
-%M     répertoire des macros de l'utilisateur
-%j     nom de l'objet de la taĉhe active
+%d      nom du document actif (avec extension)
+%M    répertoire des macros de l'utilisateur
+%j       nom de l'objet de la taĉhe active
 
 Les éléments suivants peuvent être utilisés si le résultat est divisé. Si le résultat n'est pas divisé, ils seront ignorés.
 %T     numéro d'outil
-%t     étiquette du contrôleur d'outil
-%W     système de coordonnées de travail
+%t      étiquette du contrôleur d'outil
+%W    système de coordonnées de travail
 %O     étiquette de l'opération
 
-Lors de la séparation du résultat, un numéro de séquence sera toujours ajouté. Si %S est inclus, il est possible de spécifier l'endroit où le
-numéro apparaît. Sans cela, le numéro sera ajouté à la fin de la chaîne.
+Lors de la séparation du résultat, un numéro de séquence sera toujours ajouté. Si %S est inclus, il est possible de spécifier l'endroit où le numéro apparaît. Sans cela, le numéro sera ajouté à la fin de la chaîne.
 %S     numéro de séquence
 
-L'exemple suivant enregistre tous les fichiers portant le même nom que le document dans le répertoire /home/freecad (enlever les
-guillemets) :
+L'exemple suivant enregistre tous les fichiers portant le même nom que le document dans le répertoire /home/freecad (enlever les guillemets) :
 « /home/cnc/%d.g-code »
+
 Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment traiter les conflits de noms.</translation>
     </message>
     <message>
@@ -3891,25 +3889,25 @@ if %S is included, you can specify where the number occurs.  Without it, the num
 The following example stores all files with the same name as the document in the directory /home/freecad (please remove quotes):
 &quot;/home/cnc/%d.g-code&quot;
 See the file save policy below on how to deal with name conflicts.</source>
-      <translation>Saisir un chemin d'accès et, au besoin, un nom de fichier (voir ci-dessous) qui servira de valeur par défaut pour l'exportation via le post-
-processeur. Les substitutions suivantes sont effectuées avant que le nom ne soit résolu au moment du post-traitement. Elles permettent :
+      <translation>Saisir un chemin d'accès et, au besoin, un nom de fichier (voir ci-dessous) qui servira de valeur par défaut pour l'exportation via le post-processeur.
+Les substitutions suivantes sont effectuées avant que le nom ne soit résolu au moment du post-traitement. Elles permettent :
 %D     répertoire du document actif
-%d     nom du document actif (avec extension)
-%M     répertoire des macros de l'utilisateur
-%j     nom de l'objet de la taĉhe active
+%d      nom du document actif (avec extension)
+%M    répertoire des macros de l'utilisateur
+%j       nom de l'objet de la taĉhe active
 
 Les éléments suivants peuvent être utilisés si le résultat est divisé. Si le résultat n'est pas divisé, ils seront ignorés.
 %T     numéro d'outil
-%t     étiquette du contrôleur d'outil
-%W     système de coordonnées de travail
+%t      étiquette du contrôleur d'outil
+%W    système de coordonnées de travail
 %O     étiquette de l'opération
 
-Lors de la séparation du résultat, un numéro de séquence sera toujours ajouté. Si %S est inclus, il est possible de spécifier l'endroit où le
-numéro apparaît. Sans cela, le numéro sera ajouté à la fin de la chaîne.
+Lors de la séparation du résultat, un numéro de séquence sera toujours ajouté. Si %S est inclus, il est possible de spécifier l'endroit où le numéro apparaît. Sans cela, le numéro sera ajouté à la fin de la chaîne.
 %S     numéro de séquence
 
 L'exemple suivant enregistre tous les fichiers portant le même nom que le document dans le répertoire /home/freecad (enlever les guillemets) :
 « /home/cnc/%d.g-code »
+
 Voir la politique d'enregistrement des fichiers ci-dessous pour savoir comment traiter les conflits de noms.</translation>
     </message>
     <message>
@@ -4253,7 +4251,7 @@ permet de choisir si la sélection porte sur le brut ou le modèle.</translation
     <message>
       <location filename="../panels/PathEdit.ui" line="353"/>
       <source>Toggle whether origin/axis picks target the Model (default) or the Stock. Useful when Stock and Model overlap and the desired vertex is hidden.</source>
-      <translation>Activer/désactiver la sélection de l'origine ou des axes sur le modèle (par défaut) ou sur le brut. Utile lorsque le brut et le modèle se
+      <translation>Active/désactive la sélection de l'origine ou des axes sur le modèle (par défaut) ou sur le brut. Ceci est utile lorsque le brut et le modèle se
 chevauchent et que le sommet souhaité est masqué.</translation>
     </message>
     <message>
@@ -8012,7 +8010,7 @@ Sélectionner un parcours de profil</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="888"/>
       <source>(none assigned)</source>
-      <translation>(rien d'assigné)</translation>
+      <translation>(Il n'y a rien d'assigné.)</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="1139"/>
@@ -9609,7 +9607,7 @@ filtrées.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Drilling.py" line="272"/>
       <source>Creates a Drilling toolpath from the features of a base object</source>
-      <translation>Créer un parcours de perçage à partir des entités d'un objet de base</translation>
+      <translation>Crée un parcours de perçage à partir des entités d'un objet de base.</translation>
     </message>
   </context>
   <context>
@@ -9622,7 +9620,7 @@ filtrées.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Helix.py" line="121"/>
       <source>Creates a Helical toolpath from the features of a base object</source>
-      <translation>Créer un parcours hélicoïdal à partir des entités d'un objet de base</translation>
+      <translation>Crée un parcours hélicoïdal à partir des entités d'un objet de base.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="93"/>
@@ -9720,7 +9718,7 @@ filtrées.</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="72"/>
       <source>ZigZagOffset</source>
-      <translation>Décalage du zigzag</translation>
+      <translation>Parallèle + contour</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="73"/>
@@ -10231,7 +10229,7 @@ personnalisés. La sélection est limitée à un seul modèle :
     <message>
       <location filename="../../../Path/Op/Gui/Vcarve.py" line="225"/>
       <source>Creates a medial line engraving toolpath</source>
-      <translation>Créer un parcours de gravure de la ligne centrale</translation>
+      <translation>Crée un parcours de gravure de la ligne centrale.</translation>
     </message>
   </context>
   <context>
@@ -10306,7 +10304,7 @@ personnalisés. La sélection est limitée à un seul modèle :
     <message>
       <location filename="../../../Path/Op/Gui/Deburr.py" line="137"/>
       <source>Creates a Deburr toolpath along Edges or around Faces</source>
-      <translation>Créer un parcours d'ébavurage le long des arêtes ou autour des faces</translation>
+      <translation>Crée un parcours d'ébavurage le long des arêtes ou autour des faces.</translation>
     </message>
   </context>
   <context>
@@ -10319,7 +10317,7 @@ personnalisés. La sélection est limitée à un seul modèle :
     <message>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="168"/>
       <source>Creates an Engraving toolpath around a Draft ShapeString</source>
-      <translation>Créer un parcours de gravure autour d'une forme à partir d'un texte de l'atelier Draft</translation>
+      <translation>Crée un parcours de gravure autour d'une forme à partir d'un texte de l'atelier Draft.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Engrave.py" line="98"/>
@@ -10357,7 +10355,7 @@ personnalisés. La sélection est limitée à un seul modèle :
     <message>
       <location filename="../../../Path/Op/Gui/Pocket.py" line="59"/>
       <source>Creates a 3D Pocket toolpath from a face or faces</source>
-      <translation>Créer un parcours d'évidement 3D à partir d'une face ou de plusieurs faces</translation>
+      <translation>Crée un parcours d'évidement 3D à partir d'une face ou de plusieurs faces.</translation>
     </message>
   </context>
   <context>
@@ -10370,7 +10368,7 @@ personnalisés. La sélection est limitée à un seul modèle :
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="74"/>
       <source>Creates a pocket toolpath from a face or faces</source>
-      <translation>Créer un parcours de poche à partir d'une face ou de plusieurs faces</translation>
+      <translation>Crée un parcours de poche à partir d'une face ou de plusieurs faces.</translation>
     </message>
   </context>
   <context>
@@ -10411,7 +10409,7 @@ de refroidissement.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Waterline.py" line="200"/>
       <source>Create a Waterline toolpath from a model</source>
-      <translation>Créer un parcours de lignes de niveau à partir d'un modèle</translation>
+      <translation>Crée un parcours de lignes de niveau à partir d'un modèle.</translation>
     </message>
   </context>
   <context>
@@ -10732,7 +10730,7 @@ de refroidissement.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Tapping.py" line="176"/>
       <source>Creates a Tapping toolpath from the features of a base object</source>
-      <translation>Créer un parcours de taraudage à partir des entités d'un objet de base</translation>
+      <translation>Crée un parcours de taraudage à partir des entités d'un objet de base.</translation>
     </message>
   </context>
   <context>

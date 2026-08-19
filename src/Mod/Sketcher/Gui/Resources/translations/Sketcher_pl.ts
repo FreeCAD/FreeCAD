@@ -8316,7 +8316,7 @@ ujemne do wewnątrz</translation>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
       <source>Trimming Parameters</source>
-      <translation type="unfinished">Trimming Parameters</translation>
+      <translation>Parametry przycinania</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
@@ -8327,7 +8327,7 @@ ujemne do wewnątrz</translation>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
       <source>%1 toggle include axes as trim boundaries</source>
-      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
+      <translation>%1 przełącz uwzględnienie osi jako granic przycinania</translation>
     </message>
   </context>
   <context>
@@ -8675,12 +8675,12 @@ ujemne do wewnątrz</translation>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
       <source>Include axes (U)</source>
-      <translation type="unfinished">Include axes (U)</translation>
+      <translation>Uwzględnij osie (U)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
       <source>Include axes as trim boundaries</source>
-      <translation type="unfinished">Include axes as trim boundaries</translation>
+      <translation>Uwzględnij osie jako granice przycinania</translation>
     </message>
   </context>
   <context>

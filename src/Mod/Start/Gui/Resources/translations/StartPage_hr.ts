@@ -271,12 +271,12 @@ Višestruke mape se mogu dodati koristeći ";;" za razdvajanje putanji.</transla
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
-      <translation type="unfinished">Created at:</translation>
+      <translation>Stvoreno:</translation>
     </message>
     <message>
       <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
-      <translation type="unfinished">Modified at:</translation>
+      <translation>Preuređeno:</translation>
     </message>
   </context>
 </TS>

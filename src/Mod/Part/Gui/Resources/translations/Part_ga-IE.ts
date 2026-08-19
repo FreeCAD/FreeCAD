@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="363"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Lárphlána idir aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>Tá bunús an phlána leath bealaigh idir láir dhá aghaidh phlánacha agus roinneann a threoshuíomh a n-uillinn go cothrom.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="373"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Lárphlána idir aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>Tá bunús an phlána leath bealaigh idir láir dhá aghaidh phlánacha agus roinneann a threoshuíomh a n-uillinn go cothrom.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
@@ -5854,7 +5854,7 @@ Seiceálacha oibríochta booléan aonair:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 roghnaigh agus deimhnigh</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>

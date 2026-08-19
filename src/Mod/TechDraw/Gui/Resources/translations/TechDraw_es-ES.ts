@@ -7544,7 +7544,7 @@ Si se marca &apos;igual tolerancia&apos;, se sustituirá por el valor negativo d
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Sets the extension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the extension line angle to match the selected edge or vertices</translation>
+      <translation>Establece el ángulo de línea de extensión para que coincida con la arista o vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="357"/>
@@ -7555,7 +7555,7 @@ Si se marca &apos;igual tolerancia&apos;, se sustituirá por el valor negativo d
     <message>
       <location filename="../../TaskDimension.ui" line="370"/>
       <source>Sets the dimension line angle to match the selected edge or vertices</source>
-      <translation type="unfinished">Sets the dimension line angle to match the selected edge or vertices</translation>
+      <translation>Establece el ángulo de línea de cota para que coincida con la arista o vértices seleccionados</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="380"/>

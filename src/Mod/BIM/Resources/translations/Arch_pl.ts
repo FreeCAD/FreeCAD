@@ -7247,7 +7247,7 @@ Anuluj tworzenie arkusza kalkulacyjnego dla obiektu:</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Zapisz widok kamery</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7409,7 +7409,7 @@ Odsunięcie zostało pominięte.</translation>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="57"/>
       <source>Create Sketch</source>
-      <translation type="unfinished">Create Sketch</translation>
+      <translation>Utwórz szkic</translation>
     </message>
   </context>
   <context>
@@ -11822,12 +11822,12 @@ Zweryfikuj połączenie internetowe (jest to wymagane tylko raz).</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Zapisz widok kamery</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>
       <source>Save Visibility of Objects</source>
-      <translation type="unfinished">Save Visibility of Objects</translation>
+      <translation>Zapisz widoczność obiektów</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="134"/>
@@ -11837,7 +11837,7 @@ Zweryfikuj połączenie internetowe (jest to wymagane tylko raz).</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="147"/>
       <source>Saves the current camera view to the selected items</source>
-      <translation type="unfinished">Saves the current camera view to the selected items</translation>
+      <translation>Zapisuje bieżący widok kamery do wybranych obiektów</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="148"/>
@@ -11873,7 +11873,7 @@ Zweryfikuj połączenie internetowe (jest to wymagane tylko raz).</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="713"/>
       <source>Sets the selected item as the current working plane</source>
-      <translation type="unfinished">Sets the selected item as the current working plane</translation>
+      <translation>Ustawia wybrany obiekt jako bieżącą płaszczyznę roboczą</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimWindows.py" line="225"/>

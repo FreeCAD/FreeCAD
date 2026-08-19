@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="79"/>
       <source>Document Units</source>
-      <translation type="unfinished">Document Units</translation>
+      <translation>Mjerne jedinice dokumenta</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="82"/>
@@ -381,7 +381,7 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,…</source>
-      <translation type="unfinished">val1,val2,val3,…</translation>
+      <translation>val1,val2,val3…</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -456,7 +456,7 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="203"/>
       <source>Table of toolbits of the library</source>
-      <translation type="unfinished">Table of toolbits of the library</translation>
+      <translation>Tabela Alatnih nastavaka biblioteke</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="14"/>
@@ -749,7 +749,7 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="31"/>
       <source>Sorting</source>
-      <translation type="unfinished">Sorting</translation>
+      <translation>Sortiranje</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="39"/>
@@ -759,7 +759,7 @@ Za materijal obrade iz graničnog okvira to znači dodatni materijal u svim smje
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="44"/>
       <source>Manual</source>
-      <translation type="unfinished">Manual</translation>
+      <translation>Priručnik</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="62"/>
@@ -812,12 +812,12 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="181"/>
       <source>Auto-select</source>
-      <translation type="unfinished">Auto-select</translation>
+      <translation>Automatski odabir</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="188"/>
       <source>Clear All</source>
-      <translation type="unfinished">Clear All</translation>
+      <translation>Počisti sve</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="197"/>
@@ -971,7 +971,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="236"/>
       <source>Final</source>
-      <translation type="unfinished">Final</translation>
+      <translation>Finalno</translation>
     </message>
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="243"/>
@@ -1136,7 +1136,7 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="250"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="71"/>
       <source>Max pitch</source>
-      <translation type="unfinished">Max pitch</translation>
+      <translation>Maksimalni korak</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="257"/>
@@ -1163,17 +1163,17 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="308"/>
       <source>Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</source>
-      <translation type="unfinished">Maximum (and nominal) helix entry diameter, as a percentage of the tool diameter.</translation>
+      <translation>Najveći (i nominalni) ulazni promjer spirale, postotak promjera alata.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="330"/>
       <source>Min diameter</source>
-      <translation type="unfinished">Min diameter</translation>
+      <translation>Minimalni promjer</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="337"/>
       <source>Minimum acceptable entry diameter, as a percentage of the tool diameter.</source>
-      <translation type="unfinished">Minimum acceptable entry diameter, as a percentage of the tool diameter.</translation>
+      <translation>Najmanji dopušteni ulazni promjer, postotak promjera alata.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="169"/>
@@ -1271,12 +1271,12 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
       <source>Strategy</source>
-      <translation type="unfinished">Strategy</translation>
+      <translation>Strategija</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
       <source>Hole-making strategy: Drilling, Tapping, etc.</source>
-      <translation type="unfinished">Hole-making strategy: Drilling, Tapping, etc.</translation>
+      <translation>Način izrade provrta: Bušenje, Izrada navoja, itd.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="46"/>
@@ -1327,7 +1327,7 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="94"/>
       <source>Retract</source>
-      <translation type="unfinished">Retract</translation>
+      <translation>Povlačenje</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="148"/>
@@ -1405,12 +1405,12 @@ Veće vrijednosti (dalje udesno) će brže izračunati; manje vrijednosti (dalje
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="47"/>
       <source>Cut mode</source>
-      <translation type="unfinished">Cut mode</translation>
+      <translation>Način rezanja</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="54"/>
       <source>The direction of the circular cuts</source>
-      <translation type="unfinished">The direction of the circular cuts</translation>
+      <translation>Smjer kružnih rezova</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="104"/>
@@ -5710,7 +5710,7 @@ Automatic - Sorting wires by the nearest neighbour method, further improved with
       <location filename="../../../Path/Op/Helix.py" line="155"/>
       <location filename="../../../Path/Op/Helix.py" line="537"/>
       <source>The direction of the circular cuts</source>
-      <translation type="unfinished">The direction of the circular cuts</translation>
+      <translation>Smjer kružnih rezova</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Helix.py" line="176"/>

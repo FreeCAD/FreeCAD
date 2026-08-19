@@ -824,7 +824,7 @@
     <message>
       <location filename="../../DlgDecimating.ui" line="57"/>
       <source>Full</source>
-      <translation>Totale</translation>
+      <translation>Tout</translation>
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>

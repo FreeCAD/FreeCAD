@@ -6613,7 +6613,7 @@ lub klawisze PgUp/PgDown na klawiaturze.</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
       <source>Move Property</source>
-      <translation type="unfinished">Move Property</translation>
+      <translation>Przenieś właściwość</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
@@ -6807,7 +6807,7 @@ Zakończyć bez zapisywania wszystkich danych?</translation>
       <location filename="../Action.cpp" line="878"/>
       <location filename="../Action.cpp" line="879"/>
       <source>Open a document or import files.</source>
-      <translation type="unfinished">Open a document or import files.</translation>
+      <translation>Otwórz dokument lub zaimportuj pliki.</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="894"/>
@@ -14968,7 +14968,7 @@ zostanie traktowane jako sekwencja skrótu klawiszowego "F, F".</translation>
     <message>
       <location filename="../CommandStd.cpp" line="323"/>
       <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+      <translation>Otwiera dokumentację odpowiadającą zaznaczeniu</translation>
     </message>
   </context>
   <context>
