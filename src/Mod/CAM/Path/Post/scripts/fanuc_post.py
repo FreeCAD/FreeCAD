@@ -78,15 +78,6 @@ class Fanuc(PostProcessor):
 
         values['POSTPROCESSOR_FILE_NAME'] = __name__
         values['MACHINE_NAME'] = 'Fanuc'
-        
-        
-        if self._machine and hasattr(self._machine, 'postprocessor_properties'):
-            props = self._machine.postprocessor_properties
-            values['MIN_FEED_RATE'] = props.get('min_feed_rate', 5.0)
-            values['MIN_SPINDLE_SPEED'] = props.get('min_spindle_speed', 5.0)
-        else:
-            values['MIN_FEED_RATE'] = 5.0
-            values['MIN_SPINDLE_SPEED'] = 5.0
             
         # Set any values here that need to override the default values set
         # in the parent routine.
@@ -209,6 +200,7 @@ class Fanuc(PostProcessor):
         return gcode_string
     
     def _expand_tool_length_offset(self, postables):
+
         """Inject or remove G43 tool length offset commands.
 
         When OUTPUT_TOOL_LENGTH_OFFSET is True, adds G43 commands after M6
@@ -234,11 +226,9 @@ class Fanuc(PostProcessor):
             else:
                 if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
                     tool_num = cmd.Parameters["T"]
-                    Path.Log.debug(f"Added G43 H{tool_num} after M6 in operation {item.label}")
                     line = "G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 \n G90"
                     command = Path.Command("", {}, {Constants.ANNOT_AS_IS:line})
-                    
-                    return 0, [command]
+                    return 1, [command]
                 else:
                     return None, None
 
