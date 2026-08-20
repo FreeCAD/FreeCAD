@@ -2798,28 +2798,7 @@ int Sketch::addConstraint(const Constraint* constraint)
             rtn = addOffsetConstraint(constraint->First, constraint->Second, c.value, c.driving);
         } break;
         case Restriction: {
-            c.value = new double(constraint->getValue());
-            c.secondvalue = new double(constraint->getValue());
-
-            // TODO: Ensure that this is NOT driving
-            // Driving doesn't make sense here, like point-on-object
-            if (c.driving) {
-                FixParameters.push_back(c.value);
-            }
-            else {
-                Parameters.push_back(c.value);
-                DrivenParameters.push_back(c.value);
-                Parameters.push_back(c.secondvalue);
-                DrivenParameters.push_back(c.secondvalue);
-            }
-
-            rtn = addRestrictionConstraint(
-                constraint->First,
-                constraint->Second,
-                c.value,
-                c.secondvalue,
-                c.driving
-            );
+            rtn = addRestrictionConstraint(constraint->First, constraint->Second, c.driving);
         } break;
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
@@ -4012,13 +3991,7 @@ int Sketch::addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value
     return ConstraintsCounter;
 }
 
-int Sketch::addRestrictionConstraint(
-    int geoIdBasis,
-    int geoIdResCurve,
-    double* value,
-    double* secondValue,
-    bool driving
-)
+int Sketch::addRestrictionConstraint(int geoIdBasis, int geoIdResCurve, bool driving)
 {
     geoIdBasis = checkGeoId(geoIdBasis);
     geoIdResCurve = checkGeoId(geoIdResCurve);
@@ -4055,27 +4028,12 @@ int Sketch::addRestrictionConstraint(
 
     int tag = ++ConstraintsCounter;
     // Add point-on-object constraint with a parameter for ends.
-    // TODO: we can put two (probably unneeded) point-on-object constraints,
-    // will it do any good?
     if (Geoms[geoIdBasis].type == BSpline) {
         GCS::BSpline& b = BSplines[Geoms[geoIdBasis].index];
-        // auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoIdBasis].geo);
-        // double uNear;
-        // partBsp->closestParameter(
-        //     Base::Vector3d(*(cRestricted->start.x), *(cRestricted->start.y), 0.0),
-        //     uNear
-        // );
-        // *cRestricted->firstParam = uNear;
-        // partBsp->closestParameter(
-        //     Base::Vector3d(*(cRestricted->end.x), *(cRestricted->end.y), 0.0),
-        //     uNear
-        // );
-        // *cRestricted->lastParam = uNear;
         GCSsys.addConstraintPointOnBSpline(cRestricted->start, b, cRestricted->firstParam, tag, driving);
         GCSsys.addConstraintPointOnBSpline(cRestricted->end, b, cRestricted->lastParam, tag, driving);
     }
 
-    // GCSsys.addConstraintRestriction(*cRes, value, tag, driving);
     return ConstraintsCounter;
 }
 
