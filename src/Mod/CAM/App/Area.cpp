@@ -3784,7 +3784,6 @@ std::list<TopoDS_Shape> Area::sortWires(
         auto best_it = shape_list.begin();
         for (auto it = best_it; it != shape_list.end(); ++it) {
             double d;
-            gp_Pnt pt;
             if (it->myPlanar && current_it == shape_list.end()) {
                 d = it->myPln.SquareDistance(pstart);
             }
