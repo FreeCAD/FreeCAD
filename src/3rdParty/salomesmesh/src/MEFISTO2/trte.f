@@ -688,7 +688,7 @@ c      letree(0:8,1) : racine de l'arbre  (triangle sans sur triangle)
 c      si letree(0,.)>0 alors
 c         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j
 c      sinon
-c         letree(0:3,j) :-no pxyd des 1 …a 4 points internes au triangle j
+c         letree(0:3,j) :-no pxyd des 1 â€¦a 4 points internes au triangle j
 c                         0  si pas de point
 c                       ( j est alors une feuille de l'arbre )
 c      letree(4,j) : no letree du sur-triangle du triangle j
@@ -760,7 +760,7 @@ c      letree(0:8,1) : racine de l'arbre  (triangle sans sur triangle)
 c      si letree(0,.)>0 alors
 c         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j
 c      sinon
-c         letree(0:3,j) :-no pxyd des 1 … 4 points internes au triangle j
+c         letree(0:3,j) :-no pxyd des 1 â€¦ 4 points internes au triangle j
 c                         0  si pas de point
 c                        ( j est alors une feuille de l'arbre )
 c      letree(4,j) : no letree du sur-triangle du triangle j
@@ -818,7 +818,7 @@ c      letree(0:8,1) : racine de l'arbre  (triangle sans sur triangle)
 c      si letree(0,.)>0 alors
 c         letree(0:3,j) : no (>0) letree des 4 sous-triangles du triangle j
 c      sinon
-c         letree(0:3,j) :-no pxyd des 1 …a 4 points internes au triangle j
+c         letree(0:3,j) :-no pxyd des 1 â€¦a 4 points internes au triangle j
 c                         0  si pas de point
 c                        ( j est alors une feuille de l'arbre )
 c      letree(4,j) : no letree du sur-triangle du triangle j
