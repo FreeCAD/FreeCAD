@@ -395,17 +395,8 @@ public:
     /**
      *   add a restriction constraint
      *
-     *   double * value, secondValue are pointers to double allocated in the heap, containing the
-     *   constraint value and already inserted into either the FixParameters or
-     *   Parameters array, as the case may be.
      */
-    int addRestrictionConstraint(
-        int geoIdBasis,
-        int geoIdResCurve,
-        double* value,
-        double* secondValue,
-        bool driving = true
-    );
+    int addRestrictionConstraint(int geoIdBasis, int geoIdResCurve, bool driving = true);
 
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
