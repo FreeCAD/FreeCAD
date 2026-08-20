@@ -4054,7 +4054,27 @@ int Sketch::addRestrictionConstraint(
     cRestricted->basis = cBasis;
 
     int tag = ++ConstraintsCounter;
-    // TODO: we can put two (probably unneeded) point-on-object constraints, will it do any good?
+    // Add point-on-object constraint with a parameter for ends.
+    // TODO: we can put two (probably unneeded) point-on-object constraints,
+    // will it do any good?
+    if (Geoms[geoIdBasis].type == BSpline) {
+        GCS::BSpline& b = BSplines[Geoms[geoIdBasis].index];
+        // auto partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoIdBasis].geo);
+        // double uNear;
+        // partBsp->closestParameter(
+        //     Base::Vector3d(*(cRestricted->start.x), *(cRestricted->start.y), 0.0),
+        //     uNear
+        // );
+        // *cRestricted->firstParam = uNear;
+        // partBsp->closestParameter(
+        //     Base::Vector3d(*(cRestricted->end.x), *(cRestricted->end.y), 0.0),
+        //     uNear
+        // );
+        // *cRestricted->lastParam = uNear;
+        GCSsys.addConstraintPointOnBSpline(cRestricted->start, b, cRestricted->firstParam, tag, driving);
+        GCSsys.addConstraintPointOnBSpline(cRestricted->end, b, cRestricted->lastParam, tag, driving);
+    }
+
     // GCSsys.addConstraintRestriction(*cRes, value, tag, driving);
     return ConstraintsCounter;
 }
@@ -5245,12 +5265,14 @@ void Sketch::updateOffsetCurve(const GeoDef& def)
 void Sketch::updateRestrictedCurve(const GeoDef& def)
 {
     auto* restrc = static_cast<GeomRestrictedCurve*>(def.geo);
+    GCS::RestrictedCurve& myGcsRestr = RestrictedCurves[def.index];
 
     // Find basis and update
     // TODO: Basis can be stored in Geoms
     // FIXME: It is assumed that basis curve is already updated.
     auto* basis = static_cast<GeomCurve*>(Geoms[def.basisId].geo);
     restrc->setBasis(basis);
+    restrc->setRange(*myGcsRestr.firstParam, *myGcsRestr.lastParam);
 }
 
 bool Sketch::updateNonDrivingConstraints()
