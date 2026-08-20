@@ -25,21 +25,20 @@ import Path
 import FreeCAD
 import Constants
 
-
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
 Values = Dict[str, Any]
 
-POST_TYPE = 'machine'
+POST_TYPE = "machine"
 
 
 class Fanuc(PostProcessor):
     @classmethod
     def get_common_property_schema(cls):
-        '''Return common properties with Fanuc defaults (uses base defaults)'''
-        '''Override common properties with Fanuc-specific defaults'''
+        """Return common properties with Fanuc defaults (uses base defaults)"""
+        """Override common properties with Fanuc-specific defaults"""
         common_props = super().get_common_property_schema()
 
         return common_props
@@ -47,58 +46,55 @@ class Fanuc(PostProcessor):
     @classmethod
     def get_property_schema(cls):
         return [
-        {
-                'name': 'END_SPINDLE_EMPTY',
-                'type': 'bool',
-                'runtime': True,
-                'label': translate('CAM', 'End Spindle Empty'),
-                'default': False,
-                'help': translate(
-                    'CAM',
-                    ''
-                ),
+            {
+                "name": "END_SPINDLE_EMPTY",
+                "type": "bool",
+                "runtime": True,
+                "label": translate("CAM", "End Spindle Empty"),
+                "default": False,
+                "help": translate("CAM", ""),
             },
         ]
 
     tapspeed = 0
-    
+
     def __init__(self, job):
         super().__init__(
             job=job,
-            tooltip=translate('CAM', 'Fanuc post processor'),
+            tooltip=translate("CAM", "Fanuc post processor"),
             tooltipargs=[],
-            units='Metric',
+            units="Metric",
         )
-        Path.Log.debug('Fanuc post processor initialized')
+        Path.Log.debug("Fanuc post processor initialized")
 
     def init_values(self, values: Values) -> None:
-        '''Initialize values that are used throughout the postprocessor'''
+        """Initialize values that are used throughout the postprocessor"""
         #
         super().init_values(values)
 
-        values['POSTPROCESSOR_FILE_NAME'] = __name__
-        values['MACHINE_NAME'] = 'Fanuc'
-            
+        values["POSTPROCESSOR_FILE_NAME"] = __name__
+        values["MACHINE_NAME"] = "Fanuc"
+
         # Set any values here that need to override the default values set
         # in the parent routine.
         #
         # Any commands in this value will be output after the header and
         # safety block at the beginning of the G-code file.
         #
-        values['PREAMBLE'] = ''''''
+        values["PREAMBLE"] = """"""
         #
         # Any commands in this value will be output as the last commands
         # in the G-code file.
         #
-        values['POSTAMBLE'] = ''''''
-    
+        values["POSTAMBLE"] = """"""
+
     def convert_command_to_gcode(self, command: Path.Command):
         if command.Name == "G20":
             self._units = "Imperial"
         if command.Name == "G21":
             self._units = "Metric"
-        
-        if command.Name in ["G74" , "G84"]:
+
+        if command.Name in ["G74", "G84"]:
             out = ""
             pitch_mm = float(command.Parameters["F"])
             # Convert pitch to inches if needed
@@ -111,7 +107,7 @@ class Fanuc(PostProcessor):
             out += "M29 S" + str(tapSpeed) + "\n"
 
             feed_rate = None
-            
+
             # Calculate feed rate as distance per minute
             if tapSpeed is not None:
                 feed_rate = pitch * tapSpeed
@@ -119,19 +115,18 @@ class Fanuc(PostProcessor):
                 # No spindle speed found, output pitch as F
                 feed_rate = pitch, precision_string
 
-            
             new_command = Path.Command(command.Name)
             new_command.Parameters = command.Parameters
             if feed_rate:
                 new_command.Parameters["F"] = feed_rate
-            
+
             out += super().convert_command_to_gcode(new_command)
             out += "\n G80"
 
             return out
 
         return super().convert_command_to_gcode(command)
-    
+
     def _expand_trailing_lines(self, postables):
         """Append post_job and postamble lines, to each section."""
         trailing = []
@@ -139,16 +134,16 @@ class Fanuc(PostProcessor):
             trailing.append(self._make_postable("Post: post_job", lines))
         if (lines := self.values["POSTAMBLE"]) is not None and lines != "":
             if self.values["END_SPINDLE_EMPTY"]:
-                trailing.append(self._make_postable("Post: postamble spindle empty", ["M05","M6 T0\n"]))
-            
+                trailing.append(
+                    self._make_postable("Post: postamble spindle empty", ["M05", "M6 T0\n"])
+                )
+
             trailing.append(self._make_postable("Post: postamble", lines))
-            
 
         if trailing:
             for _, section in postables:
                 section.extend(trailing)
-    
-    
+
     def _convert_drill_cycle(self, command: Path.Command):
         """
         Converts a drill cycle command to gcode. Overridden to ensure drill cycles always include Q and R
@@ -180,7 +175,7 @@ class Fanuc(PostProcessor):
             if parameter in params:
                 # Check if we should suppress duplicate parameters
                 current_value = params[parameter]
-                #cannot skip over parameters in drill cycles
+                # cannot skip over parameters in drill cycles
 
                 formatted_value = self.format_parameter(parameter, current_value)
                 command_line.append(f"{parameter}{formatted_value}")
@@ -198,9 +193,8 @@ class Fanuc(PostProcessor):
         gcode_string = f"{block_delete_string}{formatted_line}"
 
         return gcode_string
-    
-    def _expand_tool_length_offset(self, postables):
 
+    def _expand_tool_length_offset(self, postables):
         """Inject or remove G43 tool length offset commands.
 
         When OUTPUT_TOOL_LENGTH_OFFSET is True, adds G43 commands after M6
@@ -227,20 +221,20 @@ class Fanuc(PostProcessor):
                 if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
                     tool_num = cmd.Parameters["T"]
                     line = "G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 \n G90"
-                    command = Path.Command("", {}, {Constants.ANNOT_AS_IS:line})
+                    command = Path.Command("", {}, {Constants.ANNOT_AS_IS: line})
                     return 1, [command]
                 else:
                     return None, None
 
         self._edit_command_list(postables, edit)
-        
+
     @property
     def tooltip(self):
 
-        tooltip = '''
+        tooltip = """
         Generate G-code from a Path that is compatible with the Fanuc CNC controller.
         Have a look at WEBSITEPATH
-        '''
+        """
         return tooltip
 
     @property
