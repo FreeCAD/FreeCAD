@@ -312,6 +312,7 @@ bool StdCmdSendToPythonConsole::isActive()
 
 void StdCmdSendToPythonConsole::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     if (!Gui::Selection().hasSelection()) {
         return;
     }
