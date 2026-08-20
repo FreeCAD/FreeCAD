@@ -387,7 +387,7 @@ class MachineEditorDialog(QtGui.QDialog):
         ("-Z", [0, 0, -1]),
     ]
 
-    def __init__(self, machine_filename: Optional[str] = None, parent=None):
+    def __init__(self, machine_filename: Optional[str] = None, parent=None, machine=None):
         super().__init__(parent)
         self.setMinimumSize(700, 900)
         self.resize(700, 900)
@@ -399,7 +399,10 @@ class MachineEditorDialog(QtGui.QDialog):
         self.filename = machine_filename
         self.machine = None  # Store the Machine object
 
-        if machine_filename:
+        if machine is not None:
+            # An in-memory machine not yet saved to disk (e.g. an import)
+            self.machine = machine
+        elif machine_filename:
             self.machine = MachineFactory.load_configuration(machine_filename)
         else:
             self.machine = Machine(name="New Machine")
