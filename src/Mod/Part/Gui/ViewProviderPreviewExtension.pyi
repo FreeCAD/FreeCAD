@@ -17,6 +17,19 @@ from typing import Any, Final
 class ViewProviderPreviewExtension(ViewProviderExtension):
     """
     Provides a 3D preview of an upcoming geometry change.
+
+    The view provider's Proxy may define three optional hooks:
+
+    - attachPreview(self, vext) and updatePreview(self, vext) run AFTER the
+      C++ default and augment its result (add nodes, rewire the scene graph).
+    - getPreviewShape(self, vext) -> Part.Shape | None REPLACES the default
+      shape when it returns one; returning None keeps the default.
+
+    A Coin node held in a Python attribute across calls - e.g. shared between
+    updatePreview() invocations - is not kept alive by that reference alone;
+    unlike Gui::CoinPtr on the C++ side, a SWIG pointer does not ref() the
+    underlying SoBase. Call node.ref() yourself, or the node may be freed the
+    moment its last scene graph parent is removed, crashing on next use.
     """
 
     PreviewRootNode: Final[Any] = ...
