@@ -19,7 +19,6 @@
 #                                                                              #
 ################################################################################
 
-from typing import Any, Dict
 from Path.Post.Processor import PostProcessor
 import Path
 import FreeCAD
@@ -29,7 +28,6 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 translate = FreeCAD.Qt.translate
 
-Values = Dict[str, Any]
 
 POST_TYPE = "machine"
 
@@ -103,17 +101,17 @@ class Fanuc(PostProcessor):
             else:
                 pitch = pitch_mm
             if command.Parameters["S"]:
-                tapSpeed = int(command.Parameters["S"])
-            out += "M29 S" + str(tapSpeed) + "\n"
+                self.tapSpeed = int(command.Parameters["S"])
+            out += "M29 S" + str(self.tapSpeed) + "\n"
 
             feed_rate = None
 
             # Calculate feed rate as distance per minute
-            if tapSpeed is not None:
-                feed_rate = pitch * tapSpeed
+            if self.tapSpeed is not None:
+                self.feed_rate = pitch * self.tapSpeed
             else:
                 # No spindle speed found, output pitch as F
-                feed_rate = pitch, precision_string
+                self.feed_rate = pitch
 
             new_command = Path.Command(command.Name)
             new_command.Parameters = command.Parameters
@@ -219,7 +217,6 @@ class Fanuc(PostProcessor):
             # add
             else:
                 if cmd.Name in Constants.MCODE_TOOL_CHANGE and "T" in cmd.Parameters:
-                    tool_num = cmd.Parameters["T"]
                     line = "G91 G0 G43 G54 Z-[#[2000+#4120]] H#4120 \n G90"
                     command = Path.Command("", {}, {Constants.ANNOT_AS_IS: line})
                     return 1, [command]
