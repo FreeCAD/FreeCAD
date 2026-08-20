@@ -15,7 +15,7 @@ int main(int /*argc*/, char** /*argv*/)
     if (PyRun_SimpleString(
             "import FreeCAD as App\n"
             "_freecad_typepy_lifetime = "
-            "App.TypeId.fromName('App::StringHasher').createInstance()\n"
+            "App.Base.TypeId.fromName('App::StringHasher').createInstance()\n"
         )
         != 0) {
         PyErr_Print();

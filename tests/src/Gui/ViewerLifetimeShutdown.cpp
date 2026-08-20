@@ -10,6 +10,7 @@
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Navigation/NavigationStyle.h>
 #include <Gui/View3DInventorViewer.h>
 
 #include <src/App/InitApplication.h>
@@ -32,6 +33,7 @@ int main(int argc, char** argv)
 
         PyGILState_STATE gilState = PyGILState_Ensure();
         PyObject* wrapper = viewer->getPyObject();
+        PyObject* navigationWrapper = viewer->navigationStyle()->getPyObject();
 
         // Keep the wrapper reachable from Python. Its native-owned reference
         // is released when the viewer is destroyed below; the remaining
@@ -42,7 +44,13 @@ int main(int argc, char** argv)
             PyErr_Print();
             result = 1;
         }
+        if (PyDict_SetItemString(mainDict, "_freecad_navigation_style_lifetime_test", navigationWrapper)
+            != 0) {
+            PyErr_Print();
+            result = 1;
+        }
         Py_DECREF(wrapper);
+        Py_DECREF(navigationWrapper);
         viewer.reset();
         PyGILState_Release(gilState);
     }

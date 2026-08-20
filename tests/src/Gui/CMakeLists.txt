@@ -32,6 +32,14 @@ target_link_libraries(PyResourceLifetimeShutdown PRIVATE
 )
 add_test(NAME PyResourceLifetimeShutdown COMMAND PyResourceLifetimeShutdown)
 
+add_executable(GeneratedWrapperLifetimeShutdown GeneratedWrapperLifetimeShutdown.cpp)
+target_link_libraries(GeneratedWrapperLifetimeShutdown PRIVATE
+    FreeCADApp
+    FreeCADGui
+    ${Python3_LIBRARIES}
+)
+add_test(NAME GeneratedWrapperLifetimeShutdown COMMAND GeneratedWrapperLifetimeShutdown)
+
 target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main
     FreeCADApp
