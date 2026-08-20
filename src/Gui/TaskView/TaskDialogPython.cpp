@@ -729,7 +729,6 @@ TaskDialogPython::~TaskDialogPython()
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
 
-    Base::PyGILStateLocker lock;
     clearForm();
 
     // Assigning None to 'dlg' may destroy some of the stored widgets.

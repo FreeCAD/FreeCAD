@@ -24,6 +24,14 @@ setup_qt_test(ViewerLifetime)
 setup_qt_test(ViewerLifetimeShutdown)
 setup_qt_test(EditableDatumLabelLifetimeShutdown)
 
+add_executable(PyResourceLifetimeShutdown PyResourceLifetimeShutdown.cpp)
+target_link_libraries(PyResourceLifetimeShutdown PRIVATE
+    FreeCADApp
+    FreeCADGui
+    ${Python3_LIBRARIES}
+)
+add_test(NAME PyResourceLifetimeShutdown COMMAND PyResourceLifetimeShutdown)
+
 target_link_libraries(Gui_tests_run PRIVATE
     GTest::gmock_main
     FreeCADApp
