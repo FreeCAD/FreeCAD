@@ -127,7 +127,27 @@ private:
     bool _isPreviewEnabled {false};
 };
 
+/**
+ * Routes the preview scene graph hooks to the Python proxy.
+ *
+ * attachPreview and updatePreview augment the C++ result - the base runs first,
+ * then the proxy hook. getPreviewShape replaces it when the proxy returns a shape.
+ */
+template<typename ExtensionT>
+class ViewProviderPreviewExtensionPythonT: public ExtensionT
+{
+public:
+    ViewProviderPreviewExtensionPythonT() = default;
+    ~ViewProviderPreviewExtensionPythonT() override = default;
+
+    Part::TopoShape getPreviewShape() override;
+    void updatePreview() override;
+
+protected:
+    void attachPreview() override;
+};
+
 using ViewProviderPreviewExtensionPython
-    = Gui::ViewProviderExtensionPythonT<ViewProviderPreviewExtension>;
+    = Gui::ViewProviderExtensionPythonT<ViewProviderPreviewExtensionPythonT<ViewProviderPreviewExtension>>;
 
 }  // namespace PartGui

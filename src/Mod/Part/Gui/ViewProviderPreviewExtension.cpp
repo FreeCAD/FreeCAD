@@ -33,11 +33,13 @@
 #include "ViewProviderPreviewExtensionPy.h"
 
 #include <App/Document.h>
+#include <App/ExtensionPython.h>
 #include <Base/ServiceProvider.h>
 #include <Gui/Utilities.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Mod/Part/App/PreviewExtension.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/TopoShapePy.h>
 
 using namespace PartGui;
 
@@ -325,6 +327,43 @@ void ViewProviderPreviewExtension::updatePreviewShape(Part::TopoShape shape, SoP
     }
 }
 
+namespace PartGui
+{
+
+template<typename ExtensionT>
+void ViewProviderPreviewExtensionPythonT<ExtensionT>::attachPreview()
+{
+    ExtensionT::attachPreview();
+
+    EXTENSION_PROXY_NOARG(attachPreview)
+    (void)result;
+}
+
+template<typename ExtensionT>
+void ViewProviderPreviewExtensionPythonT<ExtensionT>::updatePreview()
+{
+    ExtensionT::updatePreview();
+
+    EXTENSION_PROXY_NOARG(updatePreview)
+    (void)result;
+}
+
+template<typename ExtensionT>
+Part::TopoShape ViewProviderPreviewExtensionPythonT<ExtensionT>::getPreviewShape()
+{
+    EXTENSION_PROXY_NOARG(getPreviewShape)
+
+    if (!result.isNone() && PyObject_TypeCheck(result.ptr(), &Part::TopoShapePy::Type)) {
+        return *static_cast<Part::TopoShapePy*>(result.ptr())->getTopoShapePtr();
+    }
+
+    return ExtensionT::getPreviewShape();
+}
+
+template class PartGuiExport ViewProviderPreviewExtensionPythonT<ViewProviderPreviewExtension>;
+
+}  // namespace PartGui
+
 namespace Gui
 {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(
@@ -333,5 +372,6 @@ EXTENSION_PROPERTY_SOURCE_TEMPLATE(
 )
 
 // explicit template instantiation
-template class PartGuiExport ViewProviderExtensionPythonT<PartGui::ViewProviderPreviewExtension>;
+template class PartGuiExport ViewProviderExtensionPythonT<
+    PartGui::ViewProviderPreviewExtensionPythonT<PartGui::ViewProviderPreviewExtension>>;
 }  // namespace Gui
