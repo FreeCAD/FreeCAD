@@ -32,7 +32,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 
-
+#include <App/Document.h>
 #include <Base/Vector3D.h>
 #include <Base/VectorPy.h>
 
@@ -61,6 +61,10 @@ PyObject* TopoShapeVertexPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  
 // constructor method
 int TopoShapeVertexPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    if (App::Document* activeDocument = App::GetApplication().getActiveDocument()) {
+        getTopoShapePtr()->setHistoryAlgorithm(activeDocument->getSelectedHistoryAlgorithm());
+    }
+
     if (PyArg_ParseTuple(args, "")) {
         // Undefined Vertex
         getTopoShapePtr()->setShape(TopoDS_Vertex());

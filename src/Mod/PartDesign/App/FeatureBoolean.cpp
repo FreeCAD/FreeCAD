@@ -179,7 +179,7 @@ App::DocumentObjectExecReturn* Boolean::execute()
     }
 
     // Get the base shape to operate on
-    Part::TopoShape baseTopShape;
+    Part::TopoShape baseTopShape = makeTopoShape(false);
     if (baseFeature) {
         if (UseLegacyBodyPlacement.getValue()) {
             baseTopShape = baseFeature->Shape.getShape();
@@ -314,7 +314,7 @@ void Boolean::updatePreviewShape()
             shapes.push_back(getBooleanTopoShape(obj));
         }
 
-        TopoShape result;
+        TopoShape result = makeTopoShape(false);
         result.makeCompound(shapes);
 
         PreviewShape.setValue(result.getShape());

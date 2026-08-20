@@ -136,6 +136,21 @@ public:
     App::Material getMaterialAppearance() const override;
     void setMaterialAppearance(const App::Material& material) override;
 
+    static bool doNamesMatch(
+        Data::MappedName& name1,
+        Data::MappedName& name2,
+        bool logMatchedElements = false
+    );
+
+    // This method searches through the element map to find a set of similar names for the input
+    // (`searchName`) by utilizing the above doNamesMatch() function.
+    std::vector<Data::MappedElement> findSimilarNames(Data::MappedName& searchName) override;
+
+    static std::vector<Data::MappedElement> findSimilarNames(
+        Data::MappedName& searchName,
+        const TopoShape& searchShape
+    );
+
     /** Convenience function to extract shape from fully qualified subname
      *
      * @param obj: the parent object
@@ -212,6 +227,16 @@ public:
         double tol = 1e-7,
         double atol = 1e-10
     ) const override;
+
+    static TopoShape makeTopoShape(
+        const App::DocumentObject* documentObject,
+        const TopoDS_Shape& newShape = TopoDS_Shape(),
+        long tag = 0,
+        bool allowHasher = true
+    );
+    TopoShape makeTopoShape(bool allowHasher) const;
+    TopoShape makeTopoShape(long tag = 0, bool allowHasher = true) const;
+    TopoShape makeTopoShape(const TopoDS_Shape& newShape, long tag = 0, bool allowHasher = true) const;
 
 protected:
     /// recompute only this object

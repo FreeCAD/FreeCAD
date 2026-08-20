@@ -69,19 +69,25 @@ void PropertyPartShape::setValue(const TopoShape& sh)
     _Shape = sh;
     auto obj = freecad_cast<App::DocumentObject*>(getContainer());
     if (obj) {
+        const App::HistoryAlgorithm& historyAlgorithm = _Shape.getHistoryAlgorithm();
+
         if (_Shape.getElementMap().size() != sh.getElementMap().size()) {
-            TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape());
+            TopoShape res(obj->getID(), sh.Hasher, _Shape.getShape(), _Shape.getHistoryAlgorithm());
             res.mapSubElement(_Shape);
             _Shape = res;
         }
 
         auto tag = obj->getID();
-        if (_Shape.Tag && tag != _Shape.Tag) {
+        if (_Shape.Tag && tag != _Shape.Tag && historyAlgorithm == App::HistoryAlgorithm::V1) {
             auto hasher = _Shape.Hasher ? _Shape.Hasher : obj->getDocument()->getStringHasher();
 
-            _Shape.reTagElementMap(tag, hasher);
+            _Shape.reTagElementMap(tag, hasher, nullptr);
         }
         else {
+            if (!_Shape.Tag && historyAlgorithm == App::HistoryAlgorithm::V2) {
+                _Shape.reTagElementMap(obj->getID(), nullptr, nullptr);
+            }
+
             _Shape.Tag = obj->getID();
         }
         if (!_Shape.Hasher && _Shape.hasChildElementMap()) {
@@ -194,7 +200,12 @@ void PropertyPartShape::setPyObject(PyObject* value)
             if (shape.Tag || shape.getElementMapSize()) {
                 // We can't trust the meaning of the input shape tag, so we
                 // remap anyway
-                TopoShape res(owner->getID(), owner->getDocument()->getStringHasher(), shape.getShape());
+                TopoShape res(
+                    owner->getID(),
+                    owner->getDocument()->getStringHasher(),
+                    shape.getShape(),
+                    shape.getHistoryAlgorithm()
+                );
                 res.mapSubElement(shape);
                 shape = res;
             }
@@ -373,16 +384,17 @@ void PropertyPartShape::Save(Base::Writer& writer) const
             writer.Stream() << " SaveHasher=\"1\"";
         }
     }
+
+    writer.Stream() << " HistoryAlgorithm=\""
+                    << App::getHistoryAlgorithm(_Shape.getHistoryAlgorithm()) << "\"";
+
     std::string version;
     // If exporting, do not export mapped element name, but still make a mark
     auto const version_valid = _Ver.size() && (_Ver != "?");
     if (owner) {
         if (!owner->isExporting()) {
-            version = version_valid ? _Ver : owner->getElementMapVersion(this);
+            version = version_valid ? _Ver : owner->getCorrectElementMapVersion();
         }
-    }
-    else {
-        version = version_valid ? _Ver : _Shape.getElementMapVersion();
     }
     writer.Stream() << " ElementMap=\"" << version << '"';
 
@@ -424,14 +436,6 @@ void PropertyPartShape::Save(Base::Writer& writer) const
     }
 }
 
-std::string PropertyPartShape::getElementMapVersion(bool restored) const
-{
-    if (restored) {
-        return _Ver;
-    }
-    return PropertyComplexGeoData::getElementMapVersion(false);
-}
-
 void PropertyPartShape::Restore(Base::XMLReader& reader)
 {
     reader.readElement("Part");
@@ -445,6 +449,9 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
 
     int hasher_idx = reader.getAttribute<int>("HasherIndex", -1);
     int save_hasher = reader.getAttribute<int>("SaveHasher", 0);
+    int history_algorithm = reader.getAttribute<int>("HistoryAlgorithm", 0);
+
+    _Shape.setHistoryAlgorithm(App::getHistoryAlgorithm(history_algorithm));
 
     TopoShape shape;
 
@@ -490,13 +497,17 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
         }
         else {
             _Shape.Restore(reader);
-            if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
-                      : _Shape.checkElementMapVersion(_Ver.c_str())) {
-                auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
-                if (!owner || !owner->getNameInDocument()) {
-                    _Ver = ver;
-                }
-                else {
+            std::string correctVersion;
+
+            if (owner) {
+                correctVersion = owner->getCorrectElementMapVersion();
+            }
+            else {
+                correctVersion = "?";
+            }
+
+            if (_Ver != correctVersion) {
+                if (owner && owner->getNameInDocument()) {
                     // version mismatch, signal for regenerating.
                     static const char* warnedDoc = 0;
                     if (warnedDoc != owner->getDocument()->getName()) {
@@ -504,14 +515,14 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
                         FC_WARN(
                             "Recomputation required for document '"
                             << warnedDoc << "' on geo element version change in " << getFullName()
-                            << ": " << _Ver << " -> " << ver
+                            << ": " << _Ver << " -> " << correctVersion
                         );
                     }
                     owner->getDocument()->addRecomputeObject(owner);
 
                     // sometimes objects will not update _Ver properly,
                     // so lets do it here to avoid unnecessary remigration
-                    _Ver = ver;
+                    _Ver = correctVersion;
                 }
             }
         }
@@ -777,6 +788,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader& reader)
     // restore the element map
     shape.Hasher = hasher;
     shape.resetElementMap(elementMap);
+    shape.setHistoryAlgorithm(_Shape.getHistoryAlgorithm());
     setValue(shape);
     _Ver = ver;
 }

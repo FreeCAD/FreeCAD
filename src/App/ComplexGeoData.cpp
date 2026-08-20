@@ -209,16 +209,6 @@ const std::string& ComplexGeoData::elementMapPrefix()
     return prefix;
 }
 
-std::string ComplexGeoData::getElementMapVersion() const
-{
-    return "5";
-}
-
-bool ComplexGeoData::checkElementMapVersion(const char* ver) const
-{
-    return !boost::ends_with(ver, "5");
-}
-
 size_t ComplexGeoData::getElementMapSize(bool flush) const
 {
     if (flush) {
@@ -320,8 +310,12 @@ ElementMapPtr ComplexGeoData::resetElementMap(ElementMapPtr elementMap)
     _elementMap.swap(elementMap);
     // We expect that if the ComplexGeoData ( TopoShape ) has a hasher, then its elementMap will
     // have the same one.  Make sure that happens.
-    if (_elementMap && !_elementMap->hasher) {
-        _elementMap->hasher = Hasher;
+    if (_elementMap) {
+        if (!_elementMap->hasher) {
+            _elementMap->hasher = Hasher;
+        }
+
+        _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
     }
     return elementMap;
 }
@@ -361,6 +355,8 @@ void ComplexGeoData::setElementMap(const std::vector<MappedElement>& map)
     for (auto& element : map) {
         _elementMap->setElementName(element.index, element.name, Tag);
     }
+    
+    _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
 }
 
 char ComplexGeoData::elementType(const Data::MappedName& name) const
@@ -514,6 +510,11 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
         resetElementMap(std::make_shared<ElementMap>());
         _elementMap =
             _elementMap->restore(Hasher, reader.beginCharStream(Base::CharStreamFormat::Raw));
+        
+        if (_elementMap) {
+            _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
+        }
+
         reader.endCharStream();
         reader.readEndElement("ElementMap2");
         return;
@@ -663,6 +664,8 @@ void ComplexGeoData::RestoreDocFile(Base::Reader& reader)
         else {
             resetElementMap(std::make_shared<ElementMap>());
             _elementMap = _elementMap->restore(Hasher, reader);
+            if (_elementMap)
+                _elementMap->syncHistoryAlgorithm(&selectedHistoryAlgorithm);
             return;
         }
     }

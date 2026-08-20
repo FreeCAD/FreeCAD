@@ -26,6 +26,7 @@
 
 #include <Base/Tools.h>
 
+#include "Base/Console.h"
 #include "ComplexGeoData.h"
 #include "Document.h"
 #include "GeoFeature.h"
@@ -36,6 +37,7 @@
 
 using namespace App;
 
+FC_LOG_LEVEL_INIT("Part", true, true)
 
 PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 
@@ -257,13 +259,12 @@ void GeoFeature::updateElementReference()
     if (!prop) {
         return;
     }
-    auto geo = prop->getComplexData();
-    if (!geo) {
+    if (!prop->getComplexData()) {
         return;
     }
     bool reset = false;
 
-    auto version = getElementMapVersion(prop);
+    auto version = getCorrectElementMapVersion();
     if (_ElementMapVersion.getStrValue().empty()) {
         _ElementMapVersion.setValue(version);
     }
@@ -289,7 +290,7 @@ void GeoFeature::onChanged(const Property* prop)
 void GeoFeature::onDocumentRestored()
 {
     if (!getDocument()->testStatus(Document::Status::Importing)) {
-        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(), true));
+        _ElementMapVersion.setValue(getCorrectElementMapVersion());
     }
     DocumentObject::onDocumentRestored();
 }

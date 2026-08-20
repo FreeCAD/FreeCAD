@@ -64,6 +64,7 @@ public:
 
     void addTopoShape(const TopoShape& s);
     void useTopoCompound(const TopoShape& comp);
+    void setHistoryAlgorithm(const App::HistoryAlgorithm& newHistoryAlgorithm);
     const TopoShape& getTopoShape() const;
     const TopoShape& TopoFace() const;
 
@@ -108,6 +109,7 @@ public:
     static std::unique_ptr<FaceMaker> ConstructFromType(const char* className);
     static std::unique_ptr<FaceMaker> ConstructFromType(Base::Type type);
 
+    long MyTag = 0;
     const char* MyOp = 0;
     App::StringHasherRef MyHasher;
     ElementMapPolicy MyElementMapPolicy = ElementMapPolicy::Propagate;
@@ -123,6 +125,8 @@ protected:
     Handle(BRepTools_History) myPreSplitHistory;
     TopoDS_Compound myPreSplitCompound;
     TopoShape myTopoShape;
+    App::HistoryAlgorithm MyHistoryAlgorithm = App::HistoryAlgorithm::V2;
+    bool MyHistoryAlgorithmUpdated = false;
     int minElementNames = 1;
 
     /**

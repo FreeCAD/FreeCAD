@@ -34,6 +34,7 @@
 #include <Base/Parameter.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/Sequencer.h>
+#include <App/MappedName.h>
 
 #include "Application.h"
 #include "ApplicationPy.h"
@@ -1096,4 +1097,47 @@ PyObject* ApplicationPy::sCheckAbort(PyObject* /*self*/, PyObject* args)
     }
     PY_CATCH
 }
+
+PyObject* ApplicationPy::sGetDecodedMappedName(PyObject* /*self*/, PyObject* args)
+{
+    const char* inputName;
+
+    if (!PyArg_ParseTuple(args, "s", &inputName)) {
+        return nullptr;
+    }
+
+    Data::MappedName inputMappedName {inputName};
+    const Data::DecodedMappedName& decodedName = inputMappedName.getDecodedMappedName();
+
+    PyObject* returnList = PyList_New(0);
+
+    auto stringVectorToPyList = [](const std::vector<std::string>& vector) -> PyObject* {
+        PyObject* pyList = PyList_New(0);
+
+        for (const std::string& vectorString : vector) {
+            PyList_Append(pyList, PyUnicode_DecodeUTF8(vectorString.c_str(), vectorString.size(), nullptr));
+        }
+
+        return pyList;
+    };
+
+    for (const Data::DecodedMappedSection& loopSection : decodedName) {
+        PyObject* sectionDict = PyDict_New();
+
+        PyDict_SetItemString(sectionDict, "referenceIDs", stringVectorToPyList(loopSection.referenceIDs));
+        PyDict_SetItemString(sectionDict, "linkedNames", stringVectorToPyList(loopSection.linkedNames));
+        PyDict_SetItemString(sectionDict, "iterationTag", PyUnicode_DecodeUTF8(loopSection.iterationTag.c_str(), loopSection.iterationTag.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "opCode", PyUnicode_DecodeUTF8(loopSection.opCode.c_str(), loopSection.opCode.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "index", PyUnicode_DecodeUTF8(loopSection.index.c_str(), loopSection.index.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "elementType", PyUnicode_DecodeUTF8(&loopSection.elementType, 1, nullptr));
+        PyDict_SetItemString(sectionDict, "duplicateCount", PyUnicode_DecodeUTF8(loopSection.duplicateCount.c_str(), loopSection.duplicateCount.size(), nullptr));
+        PyDict_SetItemString(sectionDict, "mapperFlags", stringVectorToPyList(loopSection.mapperFlags));
+        PyDict_SetItemString(sectionDict, "connectedElements", stringVectorToPyList(loopSection.connectedElements));
+    
+        PyList_Append(returnList, sectionDict);
+    }
+
+    return returnList;
+}
+
 // NOLINTEND(cppcoreguidelines-pro-type-*)
