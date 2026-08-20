@@ -54,8 +54,6 @@ class Fanuc(PostProcessor):
             },
         ]
 
-    tapspeed = 0
-
     def __init__(self, job):
         super().__init__(
             job=job,
@@ -95,23 +93,24 @@ class Fanuc(PostProcessor):
         if command.Name in ["G74", "G84"]:
             out = ""
             pitch_mm = float(command.Parameters["F"])
+            tapSpeed = None
             # Convert pitch to inches if needed
             if self._units == "Imperial":  # imperial
                 pitch = pitch_mm / 25.4
             else:
                 pitch = pitch_mm
             if command.Parameters["S"]:
-                self.tapSpeed = int(command.Parameters["S"])
-            out += "M29 S" + str(self.tapSpeed) + "\n"
+                tapSpeed = int(command.Parameters["S"])
+            out += "M29 S" + str(tapSpeed) + "\n"
 
             feed_rate = None
 
             # Calculate feed rate as distance per minute
-            if self.tapSpeed is not None:
-                self.feed_rate = pitch * self.tapSpeed
+            if tapSpeed is not None:
+                feed_rate = pitch * tapSpeed
             else:
                 # No spindle speed found, output pitch as F
-                self.feed_rate = pitch
+                feed_rate = pitch
 
             new_command = Path.Command(command.Name)
             new_command.Parameters = command.Parameters
