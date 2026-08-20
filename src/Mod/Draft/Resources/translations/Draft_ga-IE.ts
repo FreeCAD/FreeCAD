@@ -4740,12 +4740,12 @@ Is é an uillinn deiridh an uillinn bhunáite móide an méid seo.</translation>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="503"/>
       <source>%1 define first point and knot</source>
-      <translation type="unfinished">%1 define first point and knot</translation>
+      <translation>%1 sainmhíníonn an chéad phointe agus an snaidhm</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_beziers.py" line="509"/>
       <source>%1 define next point and knot</source>
-      <translation type="unfinished">%1 define next point and knot</translation>
+      <translation>%1 sainmhínigh an chéad phointe agus an snaidhm eile</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_ellipses.py" line="73"/>
@@ -6131,7 +6131,7 @@ Chun FreeCAD a chumasú chun na leabharlanna seo a íoslódáil, freagair Tá.</
     <message>
       <location filename="../../draftviewproviders/view_wpproxy.py" line="95"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Sábháil Radharc Ceamara</translation>
     </message>
   </context>
   <context>

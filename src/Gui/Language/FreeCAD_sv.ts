@@ -4642,7 +4642,7 @@ För att lägga till en beräkning, tryck på Return i värdeinmatningsfältet</
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="94"/>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="100"/>
       <source>Quantity</source>
-      <translation>Antal</translation>
+      <translation>Kvantitet</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgUnitsCalculator.ui" line="117"/>
@@ -6574,7 +6574,7 @@ Hur vill du gå vidare?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
       <source>Move Property</source>
-      <translation type="unfinished">Move Property</translation>
+      <translation>Flytta egenskap</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>

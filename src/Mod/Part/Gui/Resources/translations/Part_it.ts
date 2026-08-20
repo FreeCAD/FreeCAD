@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="363"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Piano di mezzo tra le facce</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>L'origine del piano è a metà strada tra i centri di due facce planari e il suo orientamento separa ugualmente il loro angolo.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="373"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>Piano di mezzo tra le facce</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>L'origine del piano è a metà strada tra i centri di due facce planari e il suo orientamento separa ugualmente il loro angolo.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
@@ -5848,7 +5848,7 @@ Controlli individuali delle operazioni booleane:</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 seleziona e conferma</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>

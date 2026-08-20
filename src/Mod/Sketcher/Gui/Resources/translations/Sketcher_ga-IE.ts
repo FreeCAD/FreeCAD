@@ -8275,7 +8275,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
       <source>Trimming Parameters</source>
-      <translation type="unfinished">Trimming Parameters</translation>
+      <translation>Paraiméadair Bearrtha</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
@@ -8286,7 +8286,7 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
       <source>%1 toggle include axes as trim boundaries</source>
-      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
+      <translation>%1 scoránaigh lena n-áirítear aiseanna mar theorainneacha bearrtha</translation>
     </message>
   </context>
   <context>
@@ -8634,12 +8634,12 @@ Ní mór pointí a shocrú níos gaire ná an cúigiú cuid den spásáil eanga�
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
       <source>Include axes (U)</source>
-      <translation type="unfinished">Include axes (U)</translation>
+      <translation>Cuir aiseanna san áireamh (U)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
       <source>Include axes as trim boundaries</source>
-      <translation type="unfinished">Include axes as trim boundaries</translation>
+      <translation>Cuir aiseanna san áireamh mar theorainneacha bearrtha</translation>
     </message>
   </context>
   <context>

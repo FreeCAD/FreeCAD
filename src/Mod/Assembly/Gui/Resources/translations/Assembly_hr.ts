@@ -354,7 +354,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="495"/>
       <source>Enter your formula…</source>
-      <translation type="unfinished">Enter your formula…</translation>
+      <translation>Unesite svoju formulu…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="548"/>
@@ -499,7 +499,7 @@ NAGIB definira strminu prijelaza između 0 i H1 i H2 do 0 oko vremena = T1 i T2.
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1100"/>
       <source>Generating Frames…</source>
-      <translation type="unfinished">Generating Frames…</translation>
+      <translation>Stvaranje kadrova…</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1101"/>
@@ -524,7 +524,7 @@ NAGIB definira strminu prijelaza između 0 i H1 i H2 do 0 oko vremena = T1 i T2.
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="1205"/>
       <source>Unknown video export format</source>
-      <translation type="unfinished">Unknown video export format</translation>
+      <translation>Nepoznat izlazni video format</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="168"/>

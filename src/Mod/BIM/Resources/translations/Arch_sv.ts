@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
       <source>The name/label of this material</source>
-      <translation>Namn/etikett för detta material</translation>
+      <translation>Namnet/etiketten för det här materialet</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="101"/>
       <source>An optional description for this material</source>
-      <translation>En valfri beskrivning för detta material</translation>
+      <translation>En valfri beskrivning för det här materialet</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="112"/>
@@ -205,7 +205,7 @@
       <location filename="../ui/ArchSchedule.ui" line="68"/>
       <location filename="../ui/dialogTree.ui" line="65"/>
       <source>Property</source>
-      <translation>Fastighet</translation>
+      <translation>Egenskap</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="82"/>
@@ -238,7 +238,7 @@ När du hanterar inbyggda IFC-objekt kan du använda FreeCAD-egenskapsnamn, t.ex
     <message>
       <location filename="../ui/ArchSchedule.ui" line="160"/>
       <source>Adds a row below the selected row/cell</source>
-      <translation>Lägger till en rad under den valda raden/cellen</translation>
+      <translation>Lägger till en rad under den markerade raden/cellen</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="163"/>
@@ -248,7 +248,7 @@ När du hanterar inbyggda IFC-objekt kan du använda FreeCAD-egenskapsnamn, t.ex
     <message>
       <location filename="../ui/ArchSchedule.ui" line="174"/>
       <source>Deletes the selected row</source>
-      <translation>Tar bort den markerade raden</translation>
+      <translation>Raderar den markerade raden</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="205"/>
@@ -285,7 +285,7 @@ hämtas.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="14"/>
       <source>Schedule Definition</source>
-      <translation>Definition av schema</translation>
+      <translation>Schemadefinition</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="22"/>
@@ -295,7 +295,7 @@ hämtas.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="85"/>
       <source>Optional unit for the result, e.g. m³, m^3, or m3</source>
-      <translation>Valfri enhet för resultatet, t.ex. m³, m^3 eller m3</translation>
+      <translation>Valfri måttenhet på resultatet, t.ex. m³, m^3 eller m3</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -431,7 +431,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="32"/>
       <source>Only selected objects</source>
-      <translation>Endast valda objekt</translation>
+      <translation>Endast markerade objekt</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
@@ -530,7 +530,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <location filename="../ui/dialogIfcProperties.ui" line="78"/>
       <location filename="../ui/dialogIfcElements.ui" line="70"/>
       <source>Model structure</source>
-      <translation>Modellens struktur</translation>
+      <translation>Modellstruktur</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="101"/>
@@ -748,7 +748,7 @@ i det projektet, oavsett om de är expanderade eller inte.</translation>
       <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <location filename="../ui/dialogPhases.ui" line="55"/>
       <source>Delete</source>
-      <translation>Ta bort</translation>
+      <translation>Radera</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
@@ -7001,7 +7001,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="834"/>
       <source>contains a non-closed solid</source>
-      <translation>innehåller en osluten kropp</translation>
+      <translation>innehåller en icke-sluten kropp</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="838"/>
@@ -7174,7 +7174,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Spara kameravy</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="1182"/>
@@ -7335,7 +7335,7 @@ Skapandet av byggnaden avbröts.</translation>
     <message>
       <location filename="../../bimcommands/BimSketch.py" line="57"/>
       <source>Create Sketch</source>
-      <translation type="unfinished">Create Sketch</translation>
+      <translation>Skapa skiss</translation>
     </message>
   </context>
   <context>
@@ -11695,7 +11695,7 @@ Alt+/ för att växla mellan automatiskt och manuellt läge</translation>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="106"/>
       <source>Save Camera View</source>
-      <translation type="unfinished">Save Camera View</translation>
+      <translation>Spara kameravy</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="107"/>

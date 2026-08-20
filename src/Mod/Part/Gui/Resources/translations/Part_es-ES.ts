@@ -5952,7 +5952,7 @@ Comprobación de operaciones booleanas individuales:</translation>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="26"/>
       <source>Edge from vertices</source>
-      <translation>Borde desde vértices</translation>
+      <translation>Arista desde vértices</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.ui" line="33"/>
