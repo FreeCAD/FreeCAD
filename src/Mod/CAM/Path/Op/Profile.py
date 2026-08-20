@@ -195,6 +195,26 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
+                "App::PropertyIntegerConstraint",
+                "SpringPasses",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Number of exact repetitions of the final cutting pass, at the same depth"
+                    " and offset, to recover tool deflection",
+                ),
+            ),
+            (
+                "App::PropertyEnumeration",
+                "SpringPassScope",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Whether spring passes are added only at the final depth"
+                    " or at every depth layer",
+                ),
+            ),
+            (
                 "App::PropertyBool",
                 "UseLongestEdge",
                 "Start Point",
@@ -261,6 +281,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Automatic"), "Automatic"),
                 (translate("PathProfile", "Manual"), "Manual"),
             ],
+            "SpringPassScope": [
+                (translate("PathProfile", "Final Depth"), "Final Depth"),
+                (translate("PathProfile", "Every Depth"), "Every Depth"),
+            ],
         }
 
         if dataType == "raw":
@@ -294,6 +318,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "processPerimeter": True,
             "Stepover": 0,
             "NumPasses": (1, 1, 99999, 1),
+            "SpringPasses": (0, 0, 10, 1),
+            "SpringPassScope": "Final Depth",
         }
 
     def areaOpApplyPropertyDefaults(self, obj, job, propList):
@@ -337,8 +363,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         )
         sortingMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
         multiPassMode = 0 if obj.NumPasses > 1 else 2
+        springPassMode = 0 if obj.SpringPasses > 0 else 2
 
         obj.setEditorMode("Stepover", multiPassMode)
+        obj.setEditorMode("SpringPassScope", springPassMode)
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
@@ -368,8 +396,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         if hasattr(self, "propertiesReady") and self.propertiesReady:
             self.setOpEditorProperties(obj)
 
-    def areaOpAreaParams(self, obj, isHole):
-        """areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
+    def areaOpAreaParams(self, obj, isHole, finalPassOnly=False):
+        """areaOpAreaParams(obj, isHole, finalPassOnly=False) ... returns dictionary with area parameters.
+        With finalPassOnly=True only the finishing offset is returned, without the
+        multi-pass offset ladder. Used to rebuild the geometry a spring pass repeats.
         Do not overwrite."""
         params = {}
         params["Fill"] = 0
@@ -396,13 +426,20 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             offset = 0 - offset
             stepover = -stepover
 
-        # Modify offset and stepover to do passes from most-offset to least
-        offset += stepover * (num_passes - 1)
-        stepover = -stepover
+        if finalPassOnly:
+            # The finishing offset is the least-offset pass, i.e. the value before
+            # the multi-pass ladder is stacked on top of it below.
+            params["Offset"] = offset
+            params["ExtraPass"] = 0
+            params["Stepover"] = 0
+        else:
+            # Modify offset and stepover to do passes from most-offset to least
+            offset += stepover * (num_passes - 1)
+            stepover = -stepover
 
-        params["Offset"] = offset
-        params["ExtraPass"] = num_passes - 1
-        params["Stepover"] = stepover
+            params["Offset"] = offset
+            params["ExtraPass"] = num_passes - 1
+            params["Stepover"] = stepover
 
         # Map JoinType string to AreaParams enum value
         jointype_map = {
@@ -446,8 +483,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             else:
                 params["orientation"] = 0
 
-        if obj.NumPasses > 1:
-            # Disable path sorting to ensure that offsets appear in order, from farthest offset to closest, on all layers
+        if obj.NumPasses > 1 or obj.SpringPasses > 0:
+            # Disable path sorting to ensure that offsets appear in order, from farthest offset to
+            # closest, on all layers, and that spring passes stay adjacent to the pass they repeat
             params["sort_mode"] = 0
 
         return params
@@ -471,6 +509,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             "The selected edge(s) are inaccessible. If multiple, re-ordering selection might work.",
         )
         self.offsetExtra = obj.OffsetExtra.Value
+        # Open-edge wires collected by _processWire(), and the subset of them belonging to
+        # the finishing offset. Consumed by PathAreaOp when deciding which wires a spring
+        # pass may repeat.
+        self.openEdgeWires = []
+        self.openEdgeFinishWires = []
 
         if self.isDebug:
             for grpNm in ("tmpDebugGrp", "tmpDebugGrp001"):
@@ -661,6 +704,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 self._addDebugObject("FlatWire", flatWire)
 
                 openWires = []
+                finishWires = []
                 params = self.areaOpAreaParams(obj, False)
                 passOffsets = [
                     self.ofstRadius + i * abs(params["Stepover"])
@@ -676,8 +720,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     if cutWireObjs:
                         for cW in cutWireObjs:
                             openWires.append(cW)
+                        # passOffsets runs from the largest offset to the smallest, so
+                        # the wires of the last successful iteration are the finishing
+                        # offset. Only those may be repeated by a spring pass.
+                        finishWires = list(cutWireObjs)
                     else:
                         Path.Log.error(self.inaccessibleMsg)
+                self.openEdgeWires.extend(openWires)
+                self.openEdgeFinishWires.extend(finishWires)
                 shapeTups.append((openWires[0], openWires, "OpenEdge"))
 
         return shapeTups

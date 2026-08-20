@@ -233,6 +233,133 @@ class TestPathProfile(PathTestBase):
             "expected_moves: {}\noperationMoves: {}".format(expected_moves, operationMoves),
         )
 
+    # Spring passes
+    def _springPassOp(self, name, base=("Face18",), **properties):
+        """_springPassOp(name, base, **properties) ... creates a recomputed Profile.
+
+        Pass base=None to profile the whole model as a contour, which is the only way
+        to get more than one depth layer out of the test geometry."""
+        profile = PathProfile.Create(name)
+        if base:
+            profile.Base = [(self.doc.Body, list(base))]
+        profile.Label = name
+        profile.UseComp = True
+        profile.Direction = "CW"
+        for prop, value in properties.items():
+            setattr(profile, prop, value)
+        _addViewProvider(profile)
+        self.doc.recompute()
+        return profile
+
+    @staticmethod
+    def _cutMovesByDepth(profile):
+        """_cutMovesByDepth(profile) ... returns {z: number of cutting moves at that z}."""
+        byDepth = {}
+        for move in getGcodeMoves(profile.Path.Commands, includeRapids=False):
+            z = float(move.rsplit("Z", 1)[1])
+            byDepth[z] = byDepth.get(z, 0) + 1
+        return byDepth
+
+    def testSpringPassPropertyDefaults(self):
+        """testSpringPassPropertyDefaults() Verify a Profile makes no spring passes unless asked."""
+        profile = self._springPassOp("ProfileSpringDefaults")
+
+        self.assertEqual(profile.SpringPasses, 0)
+        self.assertEqual(profile.SpringPassScope, "Final Depth")
+        self.assertEqual(
+            profile.getEnumerationsOfProperty("SpringPassScope"),
+            ["Final Depth", "Every Depth"],
+        )
+
+    def testSpringPassRepeatsFinalPass(self):
+        """testSpringPassRepeatsFinalPass() Verify a spring pass repeats the final pass exactly,
+        without retracting between the pass and its repeat."""
+        one = self._springPassOp("ProfileSpringOne", SpringPasses=1)
+        two = self._springPassOp("ProfileSpringTwo", SpringPasses=2)
+
+        cutsOne = getGcodeMoves(one.Path.Commands, includeRapids=False)
+        cutsTwo = getGcodeMoves(two.Path.Commands, includeRapids=False)
+
+        self.assertTrue(cutsOne, "Profile produced no cutting moves")
+        self.assertEqual(len(cutsOne) % 2, 0, "cutting moves: {}".format(cutsOne))
+
+        # One spring pass cuts the profile twice, two spring passes cut it three times.
+        loop = cutsOne[: len(cutsOne) // 2]
+        self.assertEqual(cutsOne, loop * 2, "cutting moves: {}".format(cutsOne))
+        self.assertEqual(cutsTwo, loop * 3, "cutting moves: {}".format(cutsTwo))
+
+        # A spring pass adds cutting moves and nothing else. If the repeat retracted and
+        # plunged back in it would leave a dwell mark on the wall it has just finished.
+        rapidsOne = getGcodeMoves(one.Path.Commands, includeLines=False, includeArcs=False)
+        rapidsTwo = getGcodeMoves(two.Path.Commands, includeLines=False, includeArcs=False)
+        self.assertEqual(
+            rapidsOne,
+            rapidsTwo,
+            "Spring passes added rapids.\nSpringPasses=1: {}\nSpringPasses=2: {}".format(
+                rapidsOne, rapidsTwo
+            ),
+        )
+
+    def testSpringPassRepeatsFinishingOffsetOnly(self):
+        """testSpringPassRepeatsFinishingOffsetOnly() Verify that on a multi-pass profile the
+        spring pass repeats the finishing offset rather than the whole offset ladder."""
+        plain = self._springPassOp("ProfileSpringMulti", NumPasses=3, Stepover=1.0)
+        sprung = self._springPassOp(
+            "ProfileSpringMultiSprung", NumPasses=3, Stepover=1.0, SpringPasses=1
+        )
+
+        cuts = getGcodeMoves(plain.Path.Commands, includeRapids=False)
+        sprungCuts = getGcodeMoves(sprung.Path.Commands, includeRapids=False)
+
+        self.assertTrue(cuts, "Multi-pass profile produced no cutting moves")
+        self.assertEqual(len(cuts) % 3, 0, "cutting moves: {}".format(cuts))
+
+        # The offsets run from the largest to the smallest, so the finishing offset is
+        # the last of the three, and it is the only one a spring pass may repeat.
+        finishing = cuts[2 * len(cuts) // 3 :]
+        self.assertEqual(
+            sprungCuts,
+            cuts + finishing,
+            "expected the finishing offset repeated once.\n"
+            "finishing offset: {}\nsprung: {}".format(finishing, sprungCuts),
+        )
+
+    def testSpringPassScopeEveryDepth(self):
+        """testSpringPassScopeEveryDepth() Verify spring passes land on the final depth alone
+        or on every depth layer, according to SpringPassScope."""
+        finalOnly = self._springPassOp("ProfileSpringFinalDepth", base=None, SpringPasses=1)
+        everyDepth = self._springPassOp(
+            "ProfileSpringEveryDepth",
+            base=None,
+            SpringPasses=1,
+            SpringPassScope="Every Depth",
+        )
+        for profile in (finalOnly, everyDepth):
+            profile.setExpression("StepDown", None)
+            profile.StepDown.Value = 5.0
+        self.doc.recompute()
+
+        finalCounts = self._cutMovesByDepth(finalOnly)
+        everyCounts = self._cutMovesByDepth(everyDepth)
+
+        depths = sorted(everyCounts)  # ascending, so depths[0] is the final depth
+        self.assertGreater(len(depths), 1, "Test needs more than one depth layer")
+        self.assertEqual(depths, sorted(finalCounts))
+
+        # The topmost layer is never repeated under 'Final Depth', so it sizes one loop.
+        loop = finalCounts[depths[-1]]
+        for z in depths:
+            self.assertEqual(
+                finalCounts[z],
+                2 * loop if z == depths[0] else loop,
+                "'Final Depth' scope, cutting moves per depth: {}".format(finalCounts),
+            )
+            self.assertEqual(
+                everyCounts[z],
+                2 * loop,
+                "'Every Depth' scope, cutting moves per depth: {}".format(everyCounts),
+            )
+
 
 class TestPathOpenProfile(PathTestBase):
     """Unit tests for profiling open edges (edges of geometry)."""
@@ -296,10 +423,12 @@ class TestPathOpenProfile(PathTestBase):
                     edges_at_origin.append(f"Edge{i+1}")
 
         # Save triangle geometry for test assertions
+        cls.job = job
         cls.triangle_part = triangle_part
         cls.triangle_edges = edges_at_origin
         cls.triangle_base = triangle_base
         cls.triangle_height = triangle_height
+        cls.extrude_height = extrude_height
 
         # Create profile operation for the two edges
         cls.profile = PathProfile.Create("TriangleProfile", parentJob=job)
@@ -413,6 +542,86 @@ class TestPathOpenProfile(PathTestBase):
             expected_arc_length,
             delta=expected_arc_length * 0.01,
             msg=f"Arc length ({arc_total:.2f}) should equal radius × angle ({expected_arc_length:.2f})",
+        )
+
+    def _openProfileOp(self, name, **properties):
+        """_openProfileOp(name, **properties) ... creates a recomputed open-edge Profile
+        with two depth layers."""
+        profile = PathProfile.Create(name, parentJob=self.job)
+        profile.Base = [(self.triangle_part, self.triangle_edges)]
+        profile.Label = name
+        profile.Direction = "CCW"
+        profile.Side = "Outside"
+        profile.setExpression("FinalDepth", None)
+        profile.setExpression("StartDepth", None)
+        profile.setExpression("StepDown", None)
+        profile.FinalDepth.Value = 0.0
+        profile.StartDepth.Value = self.extrude_height
+        profile.StepDown.Value = self.extrude_height / 2.0
+        for prop, value in properties.items():
+            setattr(profile, prop, value)
+        _addViewProvider(profile)
+        self.doc.recompute()
+        return profile
+
+    @staticmethod
+    def _cutMovesByDepth(profile):
+        """_cutMovesByDepth(profile) ... returns {z: number of cutting moves at that z}."""
+        byDepth = {}
+        for move in getGcodeMoves(profile.Path.Commands, includeRapids=False):
+            z = float(move.rsplit("Z", 1)[1])
+            byDepth[z] = byDepth.get(z, 0) + 1
+        return byDepth
+
+    def testSpringPassOnOpenEdges(self):
+        """testSpringPassOnOpenEdges() Verify spring passes repeat an open-edge profile at the
+        final depth alone, or at every depth, according to SpringPassScope."""
+        plain = self._openProfileOp("OpenProfileSpringOff")
+        finalOnly = self._openProfileOp("OpenProfileSpringFinal", SpringPasses=1)
+        everyDepth = self._openProfileOp(
+            "OpenProfileSpringEvery", SpringPasses=1, SpringPassScope="Every Depth"
+        )
+
+        plainCounts = self._cutMovesByDepth(plain)
+        finalCounts = self._cutMovesByDepth(finalOnly)
+        everyCounts = self._cutMovesByDepth(everyDepth)
+
+        depths = sorted(plainCounts)  # ascending, so depths[0] is the final depth
+        self.assertGreater(len(depths), 1, "Test needs more than one depth layer")
+
+        for z in depths:
+            self.assertEqual(
+                finalCounts[z],
+                2 * plainCounts[z] if z == depths[0] else plainCounts[z],
+                "'Final Depth' scope, cutting moves per depth: {}".format(finalCounts),
+            )
+            self.assertEqual(
+                everyCounts[z],
+                2 * plainCounts[z],
+                "'Every Depth' scope, cutting moves per depth: {}".format(everyCounts),
+            )
+
+    def testSpringPassOnOpenEdgesRepeatsFinishingOffsetOnly(self):
+        """testSpringPassOnOpenEdgesRepeatsFinishingOffsetOnly() Verify that on a multi-pass
+        open-edge profile the spring pass repeats the finishing offset only."""
+        plain = self._openProfileOp("OpenProfileMulti", NumPasses=3, Stepover=1.0)
+        sprung = self._openProfileOp(
+            "OpenProfileMultiSprung", NumPasses=3, Stepover=1.0, SpringPasses=1
+        )
+
+        cuts = getGcodeMoves(plain.Path.Commands, includeRapids=False)
+        sprungCuts = getGcodeMoves(sprung.Path.Commands, includeRapids=False)
+
+        # Each offset is emitted as its own wire, deepest layer last, so the finishing
+        # offset's final-depth moves are the tail of the path and the repeat follows them.
+        added = len(sprungCuts) - len(cuts)
+        self.assertGreater(added, 0, "Spring pass added no cutting moves")
+        self.assertEqual(sprungCuts[: len(cuts)], cuts, "Spring pass altered the preceding passes")
+        self.assertEqual(
+            sprungCuts[-added:],
+            cuts[-added:],
+            "expected the finishing offset repeated once.\n"
+            "finishing offset: {}\nrepeat: {}".format(cuts[-added:], sprungCuts[-added:]),
         )
 
 
