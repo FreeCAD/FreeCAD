@@ -67,7 +67,7 @@ class Fanuc(PostProcessor):
         )
         Path.Log.debug("Fanuc post processor initialized")
 
-    def init_values(self, values: Values) -> None:
+    def init_values(self, values: dict) -> None:
         """Initialize values that are used throughout the postprocessor"""
         #
         super().init_values(values)
