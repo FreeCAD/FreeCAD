@@ -69,7 +69,7 @@ class Fanuc(PostProcessor):
 
     def init_values(self, values: dict) -> None:
         """Initialize values that are used throughout the postprocessor"""
-        #
+        
         super().init_values(values)
 
         values["POSTPROCESSOR_FILE_NAME"] = __name__
