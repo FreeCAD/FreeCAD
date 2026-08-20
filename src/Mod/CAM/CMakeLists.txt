@@ -183,6 +183,7 @@ SET(PathPythonToolsFeedsSpeeds_SRCS
 
 SET(PathPythonMachineUi_SRCS
     Machine/ui/__init__.py
+    Machine/ui/mtconnect_import_dialog.py
 )
 
 SET(PathPythonMachineUiEditor_SRCS
@@ -195,6 +196,7 @@ SET(PathPythonMachineUiEditor_SRCS
 SET(PathPythonMachineModels_SRCS
     Machine/models/__init__.py
     Machine/models/machine.py
+    Machine/models/mtconnect_import.py
 )
 
 SET(PathPythonToolsToolBit_SRCS
@@ -647,10 +649,19 @@ SET(Tests_SRCS
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
+    CAMTests/TestMachineMTConnectImport.py
 )
 
 SET(Tests_Fixtures
     CAMTests/Fixtures/OpHelix_v0-21.FCStd
+)
+
+SET(Tests_Fixtures_MTConnect
+    CAMTests/Fixtures/mtconnect/probe_xyz_mm.xml
+    CAMTests/Fixtures/mtconnect/probe_xyz_inch.xml
+    CAMTests/Fixtures/mtconnect/probe_xyzac_trt.xml
+    CAMTests/Fixtures/mtconnect/probe_foreign_vendor.xml
+    CAMTests/Fixtures/mtconnect/probe_multi_device.xml
 )
 
 SET(PathImages_Ops
@@ -733,6 +744,7 @@ SET(test_files
   ${Path_Scripts}
   ${Tests_SRCS}
   ${Tests_Fixtures}
+  ${Tests_Fixtures_MTConnect}
 )
 
 ADD_CUSTOM_TARGET(Tests ALL
@@ -1036,6 +1048,13 @@ INSTALL(
         ${Tests_Fixtures}
     DESTINATION
         Mod/CAM/CAMTests/Fixtures
+)
+
+INSTALL(
+    FILES
+        ${Tests_Fixtures_MTConnect}
+    DESTINATION
+        Mod/CAM/CAMTests/Fixtures/mtconnect
 )
 
 INSTALL(
