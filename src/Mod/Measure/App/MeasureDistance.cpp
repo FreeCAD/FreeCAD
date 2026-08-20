@@ -85,9 +85,8 @@ SnapResult resolveSnap(
     if (mode == MeasureSnapMode::Auto || mode == MeasureSnapMode::None) {
         return {SnapKind::Unresolved, {}, {}};
     }
-    gp_Pnt point;
-    gp_Dir dir;
-    if (!MeasureSnap::computeSnapPoint(shape, mode, nullptr, point, &dir)) {
+    const auto snap = MeasureSnap::computeSnapPoint(shape, mode, nullptr);
+    if (!snap) {
         Base::Console().warning(
             "%s: %s mode does not apply to %s; using nearest points for that element.\n",
             fullName,
@@ -97,9 +96,9 @@ SnapResult resolveSnap(
         return {SnapKind::Unresolved, {}, {}};
     }
     if (mode == MeasureSnapMode::Axis) {
-        return {SnapKind::Axis, point, gp_Ax1(point, dir)};
+        return {SnapKind::Axis, snap->point, gp_Ax1(snap->point, *snap->axisDir)};
     }
-    return {SnapKind::Point, point, {}};
+    return {SnapKind::Point, snap->point, {}};
 }
 
 enum class AutoElement
@@ -143,7 +142,7 @@ bool straightEdgesMeasureAsAxes(const TopoDS_Shape& shape1, const TopoDS_Shape& 
     const BRepAdaptor_Curve c2(TopoDS::Edge(shape2));
     const gp_Lin l1 = c1.Line();
     const gp_Lin l2 = c2.Line();
-    if (!l1.Direction().IsParallel(l2.Direction(), MeasureSnap::parallelTolerance)) {
+    if (!l1.Direction().IsParallel(l2.Direction(), Precision::Angular())) {
         return false;
     }
     const gp_Ax1 axis1(l1.Location(), l1.Direction());
@@ -543,10 +542,8 @@ void MeasureDistance::distanceSnapped(
         return;
     }
     if (r1.kind == SnapKind::Axis && r2.kind == SnapKind::Axis) {
-        gp_Pnt onA;
-        gp_Pnt onB;
-        if (MeasureSnap::closestPointsOnAxes(r1.axis, r2.axis, onA, onB)) {
-            setValues(onA, onB);
+        if (const auto feet = MeasureSnap::closestPointsOnAxes(r1.axis, r2.axis)) {
+            setValues(feet->first, feet->second);
             return;
         }
         // Extrema failed; avoid falling through to the mixed branch below,
