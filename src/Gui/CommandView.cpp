@@ -3104,13 +3104,12 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     if (!vpd) {
         return;
     }
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
     const auto trees = getMainWindow()->findChildren<TreeWidget*>();
     for (auto tree : trees) {
         tree->selectAllInstances(*vpd);
     }
-    Selection().selStackPush();
 }
 
 

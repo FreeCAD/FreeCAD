@@ -867,14 +867,13 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     static char buf[513];
     auto subName = info.element;
     std::string objectName = objname;
+    Gui::SelectionHistoryBatcher historyBatch;
 
     // Keep both the previous and resulting states in the selection history;
     // the current selection is expected to be the top stack entry.
     if (ctrlDown) {
         if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
-            Gui::Selection().selStackPush();
             Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);
-            Gui::Selection().selStackPush();
             return true;
         }
         else {
@@ -882,7 +881,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             // So, make sure that the object still exists afterwards (#17965)
             ViewProviderWeakPtrT guard(vpd);
             getFullSubElementName(subName);
-            Gui::Selection().selStackPush();
             bool ok = Gui::Selection().addSelection(
                 docname,
                 objname,
@@ -894,9 +892,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
                 true,
                 Gui::SelectionChanges::PickedPoint::Valid
             );
-            if (ok) {
-                Gui::Selection().selStackPush();
-            }
             if (guard.expired()) {
                 return false;
             }
@@ -994,7 +989,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
         }
 
         FC_TRACE("clearing selection");
-        Gui::Selection().selStackPush();
         Gui::Selection().clearSelection();
         FC_TRACE("add selection");
         bool ok = Gui::Selection().addSelection(
@@ -1009,7 +1003,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
             Gui::SelectionChanges::PickedPoint::Valid
         );
         if (ok) {
-            Gui::Selection().selStackPush();
             type = hasNext ? SoSelectionElementAction::All : SoSelectionElementAction::Append;
         }
 

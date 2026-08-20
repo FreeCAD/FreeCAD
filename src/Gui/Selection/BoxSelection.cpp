@@ -310,7 +310,7 @@ void Gui::applyBoxSelection(
         return;
     }
 
-    Gui::Selection().selStackPush();
+    Gui::SelectionHistoryBatcher historyBatch;
 
     if (!additive) {
         Gui::Selection().clearSelection(doc->getName());
@@ -336,6 +336,4 @@ void Gui::applyBoxSelection(
             Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
         }
     }
-
-    Gui::Selection().selStackPush();
 }

@@ -728,6 +728,16 @@ public:
      *                   stack instead of pushing a new entry.
      */
     void selStackPush(bool clearForward = true, bool overwrite = false);
+
+    /// Increase automatic selection history suppression depth.
+    void beginSelectionHistorySuppression();
+    /// Decrease automatic selection history suppression depth.
+    void endSelectionHistorySuppression();
+
+    /// Increase automatic selection history batching depth.
+    void beginSelectionHistoryBatch();
+    /// Decrease automatic selection history batching depth.
+    void endSelectionHistoryBatch();
     //@}
 
     /** @name Picked list functions
@@ -852,6 +862,11 @@ protected:
     std::deque<SelStackItem> _SelStackBack;
     std::deque<SelStackItem> _SelStackForward;
 
+    class AutoHistoryMutationGuard;
+
+    SelStackItem makeSelStackItem() const;
+    void recordAutomaticSelectionHistoryIfChanged(const SelStackItem& beforeState);
+
     int checkSelection(
         const char* pDocName,
         const char* pObjectName,
@@ -911,6 +926,11 @@ protected:
     bool logHasSelection {false};
     bool clarifySelectionActive {false};
 
+    int _selectionHistorySuppressionDepth {0};
+    int _selectionHistoryBatchDepth {0};
+    bool _selectionHistoryBatchChanged {false};
+    SelStackItem _selectionHistoryBatchStartState;
+
     SelectionStyle selectionStyle;
     std::deque<SelectionChanges> NotificationQueue;
     bool Notifying {false};
@@ -968,6 +988,42 @@ public:
 
 private:
     bool silent;
+};
+
+class GuiExport SelectionHistorySuppressor
+{
+public:
+    SelectionHistorySuppressor()
+    {
+        Selection().beginSelectionHistorySuppression();
+    }
+    ~SelectionHistorySuppressor()
+    {
+        Selection().endSelectionHistorySuppression();
+    }
+
+    SelectionHistorySuppressor(const SelectionHistorySuppressor&) = delete;
+    SelectionHistorySuppressor& operator=(const SelectionHistorySuppressor&) = delete;
+    SelectionHistorySuppressor(SelectionHistorySuppressor&&) = delete;
+    SelectionHistorySuppressor& operator=(SelectionHistorySuppressor&&) = delete;
+};
+
+class GuiExport SelectionHistoryBatcher
+{
+public:
+    SelectionHistoryBatcher()
+    {
+        Selection().beginSelectionHistoryBatch();
+    }
+    ~SelectionHistoryBatcher()
+    {
+        Selection().endSelectionHistoryBatch();
+    }
+
+    SelectionHistoryBatcher(const SelectionHistoryBatcher&) = delete;
+    SelectionHistoryBatcher& operator=(const SelectionHistoryBatcher&) = delete;
+    SelectionHistoryBatcher(SelectionHistoryBatcher&&) = delete;
+    SelectionHistoryBatcher& operator=(SelectionHistoryBatcher&&) = delete;
 };
 
 }  // namespace Gui

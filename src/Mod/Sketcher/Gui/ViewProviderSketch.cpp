@@ -1440,7 +1440,6 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_StartRubberBand:// a single click happened, so clear selection
                                                    // unless user hold control.
                     if (!(QApplication::keyboardModifiers() & Qt::ControlModifier)) {
-                        Gui::Selection().selStackPush();
                         Gui::Selection().clearSelection();
                     }
                     setSketchMode(STATUS_NONE);
@@ -1757,7 +1756,7 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
         }
     }
 
-    Gui::Selection().selStackPush();
+    Gui::SelectionHistoryBatcher historyBatch;
 
     for (const auto& edge : connectedEdges) {
         std::string selName = getSelectionName(edge.geoId);
@@ -1768,8 +1767,6 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
             addSelection2(selName);
         }
     }
-
-    Gui::Selection().selStackPush();
 }
 
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
@@ -3350,13 +3347,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     }
 
     if (!batchSelection.empty()) {
-        Gui::Selection().selStackPush();
         Gui::Selection().addSelections(
             editDocName.c_str(),
             editObjName.c_str(),
             batchSelection
         );
-        Gui::Selection().selStackPush();
     }
 
     selection.selectionBuffering = false;
@@ -3429,7 +3424,7 @@ bool ViewProviderSketch::selectAll()
         return false;
     }
 
-    Gui::Selection().selStackPush();
+    Gui::SelectionHistoryBatcher historyBatch;
     Gui::Selection().clearSelection();
 
     std::vector<std::string> batchSelection;
@@ -3528,7 +3523,6 @@ bool ViewProviderSketch::selectAll()
             editObjName.c_str(),
             batchSelection
         );
-        Gui::Selection().selStackPush();
     }
 
     selection.selectionBuffering = false;
@@ -5609,18 +5603,15 @@ void ViewProviderSketch::preselectToSelection(const std::stringstream& ss,
                                                const Base::Vector3d& pickedPoint,
                                                bool toggle)
 {
-    Gui::Selection().selStackPush();
+    Gui::SelectionHistoryBatcher historyBatch;
 
     // If toggle true and preselection already selected remove from selection
     if (toggle && isSelected(ss.str())) {
         rmvSelection(ss.str());
-        Gui::Selection().selStackPush();
     }
     // add to selection
     else {
-        if (addSelection2(ss.str(), pickedPoint.x, pickedPoint.y, pickedPoint.z)) {
-            Gui::Selection().selStackPush();
-        }
+        addSelection2(ss.str(), pickedPoint.x, pickedPoint.y, pickedPoint.z);
         drag.resetIds();
     }
 }

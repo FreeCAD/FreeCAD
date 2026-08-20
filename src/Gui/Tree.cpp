@@ -809,7 +809,6 @@ void TreeWidget::selectAll()
     // if we already did a group select, the second press expand to document
     if (lastSelectAllParent) {
         SelectAllGuard guard(inSelectAllOperation);
-        selection.selStackPush();
         selection.clearSelection();
         selectAllDocumentLevel();
         clearSelectAllContext();
@@ -841,8 +840,8 @@ void TreeWidget::selectAll()
 void TreeWidget::selectAllGroupLevel(const QTreeWidgetItem* targetNode, bool isGroup)
 {
     auto& selection = Gui::Selection();
+    Gui::SelectionHistoryBatcher historyBatch;
 
-    selection.selStackPush();
     selection.clearSelection();
 
     // If current item is a group, also select the group itself along with its children
@@ -906,7 +905,7 @@ void TreeWidget::selectAllDocumentLevel()
     }
 
     auto& selection = Gui::Selection();
-    selection.selStackPush();
+    Gui::SelectionHistoryBatcher historyBatch;
     selection.clearSelection();
     selection.setSelection(gdoc->getDocument()->getName(), gdoc->getDocument()->getObjects());
 }
@@ -1111,14 +1110,13 @@ void TreeWidget::itemSearch(const QString& text, bool select)
             SelectionChanges::MsgSource::TreeView
         );
         if (select) {
-            Gui::Selection().selStackPush();
+            Gui::SelectionHistoryBatcher historyBatch;
             Gui::Selection().clearSelection();
             Gui::Selection().addSelection(
                 obj->getDocument()->getName(),
                 obj->getNameInDocument(),
                 subname.c_str()
             );
-            Gui::Selection().selStackPush();
         }
         else {
             searchObject = item->object()->getObject();
@@ -1524,6 +1522,7 @@ void TreeWidget::onSelectDependents()
     // We only have this context menu entry if the selection is within one document but it
     // might be not the active document. Therefore get the document not here but later by casting.
     App::Document* doc;
+    SelectionHistoryBatcher historyBatch;
 
     // if the selected object is a document
     if (this->contextItem && this->contextItem->type() == DocumentType) {
@@ -2596,7 +2595,7 @@ bool TreeWidget::dropInDocument(
     }
     // Because the existence of subname, we must de-select the drag the
     // object manually. Just do a complete clear here for simplicity
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
 
     // Open command
@@ -2823,7 +2822,7 @@ bool TreeWidget::dropInObject(
     std::ostringstream targetSubname;
     App::DocumentObject* targetParent = nullptr;
     targetItemObj->getSubName(targetSubname, targetParent);
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
     if (targetParent) {
         targetSubname << vp->getObject()->getNameInDocument() << '.';
@@ -3131,7 +3130,7 @@ bool TreeWidget::dropInObject(
         }
         Base::FlagToggler<> guard(_DisableCheckTopParent);
         if (setSelection && !droppedObjects.empty()) {
-            Selection().selStackPush();
+            SelectionHistoryBatcher historyBatch;
             Selection().clearCompleteSelection();
             for (auto& v : droppedObjects) {
                 Selection().addSelection(
@@ -3140,7 +3139,6 @@ bool TreeWidget::dropInObject(
                     v.second.c_str()
                 );
             }
-            Selection().selStackPush();
         }
 
         // If moved, then we sort objects properly.
@@ -4057,7 +4055,7 @@ void TreeWidget::onItemSelectionChanged()
     }
 
     if (selItems.size() <= 1) {
-        Gui::Selection().selStackPush();
+        Gui::SelectionHistoryBatcher historyBatch;
 
         // This special handling to deal with possible discrepancy of
         // Gui.Selection and Tree view selection because of newly added
@@ -4086,15 +4084,14 @@ void TreeWidget::onItemSelectionChanged()
             v.second->clearSelection(item);
             currentDocItem = nullptr;
         }
-        Gui::Selection().selStackPush();
     }
     else {
+        Gui::SelectionHistoryBatcher historyBatch;
         for (auto pos = DocumentMap.begin(); pos != DocumentMap.end(); ++pos) {
             currentDocItem = pos->second;
             pos->second->updateSelection(pos->second);
             currentDocItem = nullptr;
         }
-        Gui::Selection().selStackPush(true, true);
     }
 
     this->blockSelection(lock);

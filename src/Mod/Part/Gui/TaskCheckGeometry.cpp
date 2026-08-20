@@ -958,6 +958,7 @@ void TaskCheckGeometryResults::setupFunctionMap()
 
 void TaskCheckGeometryResults::currentRowChanged(const QModelIndex& current, const QModelIndex& previous)
 {
+    Gui::SelectionHistoryBatcher historyBatch;
     Gui::Selection().clearSelection();
     if (previous.isValid()) {
         ResultEntry* entry = model->getEntry(previous);

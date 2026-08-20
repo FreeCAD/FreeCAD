@@ -315,6 +315,7 @@ public:
             return;
         }
         busy = true;
+        SelectionHistoryBatcher historyBatch;
         std::map<std::string, int> sels;
         for (auto& sel : Selection().getSelectionEx(
                  editDoc.c_str(),
