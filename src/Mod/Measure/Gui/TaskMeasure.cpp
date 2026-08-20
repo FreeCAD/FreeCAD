@@ -395,10 +395,9 @@ void TaskMeasure::tryUpdate()
 
 
     if (mSnapManager) {
-        // Only an explicitly chosen mode is a reliable signal. Under Auto the type is
-        // still moving: one edge resolves to Length on the way to a two-element Distance.
-        const bool snaps = !explicitMode || !measureType
-            || Measure::MeasureSnap::typeUsesSnapping(measureType->identifier);
+        // Auto is not gated: the type is still moving while elements are picked.
+        App::MeasureType* chosen = explicitMode ? getMeasureType() : nullptr;
+        const bool snaps = !chosen || Measure::MeasureSnap::typeUsesSnapping(chosen->identifier);
         mSnapManager->setEnabled(snaps);
     }
 
