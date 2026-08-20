@@ -1122,8 +1122,8 @@ TEST_F(MeasureDistance, testResolveShapeAppliesPlacementOnce)
     const TopoDS_Shape shape = Measure::MeasureSnap::resolveShape(App::SubObjectT(pCircle, "Edge1"));
     ASSERT_FALSE(shape.IsNull());
     ASSERT_EQ(shape.ShapeType(), TopAbs_EDGE);
-    const auto centre =
-        Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr);
+    const auto centre
+        = Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr);
     ASSERT_TRUE(centre.has_value());
     EXPECT_NEAR(centre->point.X(), 10.0, Precision::Confusion());
     EXPECT_NEAR(centre->point.Y(), 0.0, Precision::Confusion());
@@ -1147,8 +1147,8 @@ TEST_F(MeasureDistance, testResolveShapeThroughContainer)
     );
     ASSERT_FALSE(shape.IsNull());
     ASSERT_EQ(shape.ShapeType(), TopAbs_EDGE);
-    const auto centre =
-        Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr);
+    const auto centre
+        = Measure::MeasureSnap::computeSnapPoint(shape, Measure::MeasureSnapMode::Center, nullptr);
     ASSERT_TRUE(centre.has_value());
     EXPECT_NEAR(centre->point.X(), 51.0, Precision::Confusion());
     EXPECT_NEAR(centre->point.Y(), 2.0, Precision::Confusion());

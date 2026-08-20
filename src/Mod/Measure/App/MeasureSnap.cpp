@@ -188,8 +188,7 @@ std::optional<gp_Pnt> vertexOf(const TopoDS_Shape& shape, const Base::Vector3d* 
 
 // Preview point and direction for an axis snap. The point is the cursor, else the
 // face bbox centre, projected onto the axis so it sits on the visible geometry.
-std::optional<MeasureSnap::SnapPoint>
-axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor)
+std::optional<MeasureSnap::SnapPoint> axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor)
 {
     if (shape.IsNull()) {
         return {};
@@ -213,8 +212,7 @@ axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor)
     else {
         target = midpointOf(shape).value_or(axis->Location());
     }
-    return MeasureSnap::SnapPoint {MeasureSnap::projectOntoAxis(*axis, target),
-                                   axis->Direction()};
+    return MeasureSnap::SnapPoint {MeasureSnap::projectOntoAxis(*axis, target), axis->Direction()};
 }
 
 }  // namespace
@@ -356,8 +354,10 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
     return points;
 }
 
-std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::axisPreviewSegment(const gp_Ax1& axis,
-                                                                         const Bnd_Box& bounds)
+std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::axisPreviewSegment(
+    const gp_Ax1& axis,
+    const Bnd_Box& bounds
+)
 {
     const auto centre = boundsCentre(bounds);
     if (!centre) {
@@ -374,10 +374,11 @@ std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::axisPreviewSegment(const g
     return std::pair {onAxis.Translated(-step), onAxis.Translated(step)};
 }
 
-std::optional<MeasureSnap::SnapPoint>
-MeasureSnap::computeSnapPoint(const TopoDS_Shape& shape,
-                              MeasureSnapMode mode,
-                              const Base::Vector3d* cursor)
+std::optional<MeasureSnap::SnapPoint> MeasureSnap::computeSnapPoint(
+    const TopoDS_Shape& shape,
+    MeasureSnapMode mode,
+    const Base::Vector3d* cursor
+)
 {
     if (shape.IsNull()) {
         return {};
@@ -479,8 +480,10 @@ gp_Pnt MeasureSnap::projectOntoAxis(const gp_Ax1& axis, const gp_Pnt& p)
     return ElCLib::Value(ElCLib::Parameter(line, p), line);
 }
 
-std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::closestPointsOnAxes(const gp_Ax1& a,
-                                                                          const gp_Ax1& b)
+std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::closestPointsOnAxes(
+    const gp_Ax1& a,
+    const gp_Ax1& b
+)
 {
     const gp_Lin lineA(a);
     const gp_Lin lineB(b);

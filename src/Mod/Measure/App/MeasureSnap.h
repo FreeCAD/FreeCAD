@@ -79,8 +79,11 @@ public:
         std::optional<gp_Dir> axisDir;
     };
 
-    static std::optional<SnapPoint>
-    computeSnapPoint(const TopoDS_Shape& shape, MeasureSnapMode mode, const Base::Vector3d* cursor);
+    static std::optional<SnapPoint> computeSnapPoint(
+        const TopoDS_Shape& shape,
+        MeasureSnapMode mode,
+        const Base::Vector3d* cursor
+    );
     static int getAvailableSnapTypes(const TopoDS_Shape& shape);
 
     // Axis line of a cylindrical, conical, or revolution face.
@@ -92,8 +95,10 @@ public:
 
     // Closest points between two infinite axis lines; a deterministic pair for
     // parallel axes, nothing if the extrema solve fails.
-    static std::optional<std::pair<gp_Pnt, gp_Pnt>> closestPointsOnAxes(const gp_Ax1& a,
-                                                                        const gp_Ax1& b);
+    static std::optional<std::pair<gp_Pnt, gp_Pnt>> closestPointsOnAxes(
+        const gp_Ax1& a,
+        const gp_Ax1& b
+    );
 
     // Finite edge standing in for the infinite axis in a shape-to-shape extrema query,
     // spanning twice the pairBounds diagonal so any foot inside pairBounds stays interior.
@@ -117,8 +122,10 @@ public:
 
     // Endpoints of the axis preview line: the bbox centre projected onto the axis,
     // extended each way by a bbox-proportional length. Nothing for a void box.
-    static std::optional<std::pair<gp_Pnt, gp_Pnt>> axisPreviewSegment(const gp_Ax1& axis,
-                                                                       const Bnd_Box& bounds);
+    static std::optional<std::pair<gp_Pnt, gp_Pnt>> axisPreviewSegment(
+        const gp_Ax1& axis,
+        const Bnd_Box& bounds
+    );
 
     // Placed sub-shape a preselection refers to, matching what execute() measures on;
     // a null shape if it cannot be resolved.
