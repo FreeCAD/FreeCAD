@@ -80,7 +80,6 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     BRepBuilderAPI_Copy BuilderCopy(shape);
     TopoDS_Shape copyShape = BuilderCopy.Shape();
 
-    gp_Pnt inputCenter(0, 0, 0);
     TopoDS_Shape scaledShape;
     scaledShape = ShapeUtils::scaleShape(copyShape,
                                        scale);
