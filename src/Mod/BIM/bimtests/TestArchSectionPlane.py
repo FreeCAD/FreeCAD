@@ -185,6 +185,23 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.assertIn(space, level.Group)
         self.assertNotIn(space, drawing.Group)
 
+        template_path = os.path.join(
+            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
+        )
+        page = self.document.addObject("TechDraw::DrawPage", "Page")
+        template = self.document.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = template_path
+        page.Template = template
+        techdraw_view = self.document.addObject("TechDraw::DrawViewDraft", "DraftView")
+        techdraw_view.Source = drawing
+        page.addView(techdraw_view)
+        self.document.recompute()
+        self.assertIn("Office", techdraw_view.Symbol)
+
+        space.Label = "Renamed Office"
+        self.document.recompute()
+        self.assertIn("Renamed Office", techdraw_view.Symbol)
+
     def test_drawing_annotation_sources_feed_section_data(self):
         """Referenced annotations are inputs without becoming Group children."""
         box = self._makeBox()
@@ -200,6 +217,27 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.assertIn(space, objects)
         self.assertIn(space, level.Group)
         self.assertNotIn(space, drawing.Group)
+
+    @unittest.skipUnless(App.GuiUp, "Space SVG labels require the FreeCAD GUI")
+    def test_duplicate_drawing_annotation_source_is_rendered_once(self):
+        """A source in both Group and AnnotationSources is rendered only once."""
+        box = self._makeBox()
+        space = Arch.makeSpace(box, name="Office")
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.addObject(space)
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        svg = Draft.get_svg(
+            drawing,
+            direction=App.Vector(0, 0, 1),
+            techdraw=True,
+        )
+        self.assertEqual(svg.count("Office"), 1)
+        objects, _cutplane, _only_solids, _clip, _direction = ArchSectionPlane.getSectionData(
+            drawing
+        )
+        self.assertEqual(objects.count(space), 1)
 
     def testShape2DViewGeneration(self):
         """Tests Draft_Shape2DView face with hole creation"""

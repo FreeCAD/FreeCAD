@@ -111,6 +111,9 @@ public:
         UserEdit = 17,
         /// Do not propagate changes of the property to its container
         DisableNotify = 18,
+        /// Marks a link property whose dependents need presentation updates
+        /// when the linked object changes without an ordinary data change.
+        PresentationDependency = 19,
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be

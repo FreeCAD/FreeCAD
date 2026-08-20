@@ -125,10 +125,13 @@ def getSectionData(source):
             m = source.ViewObject.CutMargin.Value
         cutplane.translate(FreeCAD.Vector(0, 0, m))
         cutplane.Placement = cutplane.Placement.multiply(source.Placement)
-        # Drawing containers keep annotation sources as non-owning links.  Add
-        # those sources to the render input without changing the BIM Group.
+        # Drawing containers keep Space annotation sources as non-owning links.
+        # Add those sources to the render input without changing the BIM Group.
         if "AnnotationSources" in source.PropertiesList:
-            objs = list(objs) + [obj for obj in source.AnnotationSources if obj]
+            objs = list(objs)
+            for annotation in source.AnnotationSources:
+                if annotation and annotation not in objs:
+                    objs.append(annotation)
     onlySolids = True
     if hasattr(source, "OnlySolids"):
         onlySolids = source.OnlySolids

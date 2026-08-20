@@ -64,21 +64,21 @@ unicode = str
 
 
 def _ensure_drawing_annotation_sources(obj):
-    """Add the non-owning annotation links to Drawing BuildingParts."""
-    if (
-        "ObjectType" in obj.PropertiesList
-        and str(obj.ObjectType).upper() == "DRAWING"
-        and "AnnotationSources" not in obj.PropertiesList
-    ):
+    """Add non-owning Space annotation links to Drawing BuildingParts."""
+    if "ObjectType" not in obj.PropertiesList or str(obj.ObjectType).upper() != "DRAWING":
+        return
+
+    if "AnnotationSources" not in obj.PropertiesList:
         obj.addProperty(
             "App::PropertyLinkListGlobal",
             "AnnotationSources",
             "Drawing",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Objects whose annotations are rendered in this drawing",
+                "Space objects whose annotations are rendered in this drawing",
             ),
         )
+    obj.setPropertyStatus("AnnotationSources", "PresentationDependency")
 
 
 # fmt: off
@@ -417,6 +417,10 @@ class BuildingPart(ArchIFC.IfcProduct):
 
     def execute(self, obj):
         "gather all the child shapes into a compound"
+
+        if "AnnotationSources" in obj.PropertiesList:
+            self.svgcache = None
+            self.shapecache = None
 
         pl = obj.Placement
         shapes, materialstable = self.getShapes(obj)

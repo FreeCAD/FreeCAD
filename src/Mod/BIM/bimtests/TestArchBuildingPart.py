@@ -23,6 +23,9 @@
 # *                                                                         *
 # ***************************************************************************
 
+import os
+import tempfile
+
 import FreeCAD as App
 import Arch
 import ifcopenshell
@@ -296,6 +299,141 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
         self.assertEqual(first.AnnotationSources, [])
         self.assertEqual(second.AnnotationSources, [space])
         self.assertIn(space, level.Group)
+
+    def test_drawing_annotation_sources_use_global_links(self):
+        """Drawing annotation references use non-owning global link properties."""
+        drawing = Arch.make2DDrawing(name="Drawing")
+
+        self.assertEqual(
+            drawing.getTypeIdOfProperty("AnnotationSources"),
+            "App::PropertyLinkListGlobal",
+        )
+        self.assertIn(
+            "PresentationDependency",
+            drawing.getPropertyStatus("AnnotationSources"),
+        )
+
+    def test_presentation_dependency_touches_only_marked_links(self):
+        """Presentation changes touch only dependents opting into the status."""
+
+        class RecomputeCounter:
+            def __init__(self):
+                self.count = 0
+
+            def execute(self, obj):
+                self.count += 1
+
+        source = self.document.addObject("App::FeaturePython", "Source")
+        marked = self.document.addObject("App::FeaturePython", "Marked")
+        marked.addProperty("App::PropertyLinkListGlobal", "Sources")
+        marked.setPropertyStatus("Sources", "PresentationDependency")
+        marked.Sources = [source]
+        marked.Proxy = RecomputeCounter()
+        ordinary = self.document.addObject("App::FeaturePython", "Ordinary")
+        ordinary.addProperty("App::PropertyLinkListGlobal", "Sources")
+        ordinary.Sources = [source]
+        ordinary.Proxy = RecomputeCounter()
+
+        self.document.recompute()
+        marked_count = marked.Proxy.count
+        ordinary_count = ordinary.Proxy.count
+        source.Label = "Renamed"
+        self.document.recompute()
+
+        self.assertGreater(marked.Proxy.count, marked_count)
+        self.assertEqual(ordinary.Proxy.count, ordinary_count)
+
+    def test_drawing_annotation_source_can_cross_levels(self):
+        """A drawing can reference a Space owned by another Level."""
+        level = Arch.makeFloor(name="Level")
+        other_level = Arch.makeFloor(name="Other Level")
+        space = Arch.makeSpace(name="Office")
+        other_level.addObject(space)
+        drawing = Arch.make2DDrawing(name="Drawing")
+
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        self.assertIn(space, other_level.Group)
+        self.assertNotIn(space, level.Group)
+        self.assertEqual(drawing.AnnotationSources, [space])
+
+    def test_drawing_annotation_source_deletion_clears_links(self):
+        """Deleting a referenced Space leaves a valid empty link list."""
+        space = Arch.makeSpace(name="Office")
+        drawing = Arch.make2DDrawing(name="Drawing")
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        self.document.removeObject(space.Name)
+        self.document.recompute()
+
+        self.assertEqual(drawing.AnnotationSources, [])
+
+    def test_drawing_annotation_sources_survive_save_and_reopen(self):
+        """Non-owning annotation links persist and restore with the document."""
+        level = Arch.makeFloor(name="Level")
+        space = Arch.makeSpace(name="Office")
+        level.addObject(space)
+        drawing = Arch.make2DDrawing(name="Drawing")
+        drawing.AnnotationSources = [space]
+        self.document.recompute()
+
+        temporary_file = tempfile.NamedTemporaryFile(delete=False, suffix=".FCStd")
+        temporary_file.close()
+        reopened = None
+        try:
+            self.document.saveCopy(temporary_file.name)
+            reopened = App.openDocument(temporary_file.name)
+            restored_drawing = reopened.getObject(drawing.Name)
+            restored_space = reopened.getObject(space.Name)
+            restored_level = reopened.getObject(level.Name)
+
+            self.assertEqual(
+                restored_drawing.getTypeIdOfProperty("AnnotationSources"),
+                "App::PropertyLinkListGlobal",
+            )
+            self.assertIn(
+                "PresentationDependency",
+                restored_drawing.getPropertyStatus("AnnotationSources"),
+            )
+            self.assertEqual(restored_drawing.AnnotationSources, [restored_space])
+            self.assertIn(restored_space, restored_level.Group)
+        finally:
+            if reopened is not None:
+                App.closeDocument(reopened.Name)
+            os.unlink(temporary_file.name)
+
+    def test_old_drawing_without_annotation_sources_is_migrated_on_restore(self):
+        """Restoring an older Drawing adds the new annotation link property."""
+        drawing = Arch.make2DDrawing(name="Drawing")
+        drawing.removeProperty("AnnotationSources")
+        self.assertNotIn("AnnotationSources", drawing.PropertiesList)
+
+        temporary_file = tempfile.NamedTemporaryFile(delete=False, suffix=".FCStd")
+        temporary_file.close()
+        reopened = None
+        try:
+            self.document.saveCopy(temporary_file.name)
+            reopened = App.openDocument(temporary_file.name)
+            restored_drawing = reopened.getObject(drawing.Name)
+            self.assertEqual(
+                restored_drawing.getTypeIdOfProperty("AnnotationSources"),
+                "App::PropertyLinkListGlobal",
+            )
+        finally:
+            if reopened is not None:
+                App.closeDocument(reopened.Name)
+            os.unlink(temporary_file.name)
+
+    def test_late_drawing_object_type_adds_annotation_sources(self):
+        """Drawing containers restored/imported with a late ObjectType get the property."""
+        drawing = Arch.makeBuildingPart(name="Drawing")
+
+        self.assertNotIn("AnnotationSources", drawing.PropertiesList)
+        drawing.ObjectType = "DRAWING"
+
+        self.assertIn("AnnotationSources", drawing.PropertiesList)
 
     def test_make2DDrawing_uses_base_object_label(self):
         """Test make2DDrawing default label from a base object."""

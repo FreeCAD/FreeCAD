@@ -248,6 +248,10 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     }
 
     ViewProvider::onChanged(prop);
+
+    if (getObject()) {
+        getObject()->touchPresentationDependents();
+    }
 }
 
 void ViewProviderDocumentObject::hide()
