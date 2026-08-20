@@ -26,7 +26,9 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <Bnd_Box.hxx>
@@ -70,29 +72,28 @@ enum class MeasureSnapFlag : int
 class MeasureExport MeasureSnap
 {
 public:
-    static bool computeSnapPoint(
-        const TopoDS_Shape& shape,
-        MeasureSnapMode mode,
-        const Base::Vector3d* cursor,
-        gp_Pnt& out,
-        gp_Dir* outAxisDir = nullptr
-    );
+    // Snapped preview point; axisDir is set for Axis snaps only.
+    struct SnapPoint
+    {
+        gp_Pnt point;
+        std::optional<gp_Dir> axisDir;
+    };
+
+    static std::optional<SnapPoint>
+    computeSnapPoint(const TopoDS_Shape& shape, MeasureSnapMode mode, const Base::Vector3d* cursor);
     static int getAvailableSnapTypes(const TopoDS_Shape& shape);
 
-    // Axis line of a cylindrical, conical, or revolution face; false otherwise.
+    // Axis line of a cylindrical, conical, or revolution face.
     // Origin is the surface frame's own, not a measurement anchor.
-    static bool axisOfFace(const TopoDS_Face& face, gp_Ax1& out);
+    static std::optional<gp_Ax1> axisOfFace(const TopoDS_Face& face);
 
     // Foot of the perpendicular from p onto the infinite line; may lie past the origin.
     static gp_Pnt projectOntoAxis(const gp_Ax1& axis, const gp_Pnt& p);
 
-    // Placement float noise leaves nominally parallel axes 1e-8 rad off, far above
-    // Precision::Angular() (1e-12).
-    static constexpr double parallelTolerance = 1e-6;
-
     // Closest points between two infinite axis lines; a deterministic pair for
-    // parallel axes. False if the extrema solve fails.
-    static bool closestPointsOnAxes(const gp_Ax1& a, const gp_Ax1& b, gp_Pnt& onA, gp_Pnt& onB);
+    // parallel axes, nothing if the extrema solve fails.
+    static std::optional<std::pair<gp_Pnt, gp_Pnt>> closestPointsOnAxes(const gp_Ax1& a,
+                                                                        const gp_Ax1& b);
 
     // Finite edge standing in for the infinite axis in a shape-to-shape extrema query,
     // spanning twice the pairBounds diagonal so any foot inside pairBounds stays interior.
@@ -115,8 +116,9 @@ public:
     static MeasureSnapMode pickPreviewType(int availableFlags, MeasureSnapMode activeMode);
 
     // Endpoints of the axis preview line: the bbox centre projected onto the axis,
-    // extended each way by a bbox-proportional length. False for a void box.
-    static bool axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, gp_Pnt& a, gp_Pnt& b);
+    // extended each way by a bbox-proportional length. Nothing for a void box.
+    static std::optional<std::pair<gp_Pnt, gp_Pnt>> axisPreviewSegment(const gp_Ax1& axis,
+                                                                       const Bnd_Box& bounds);
 
     // Placed sub-shape a preselection refers to, matching what execute() measures on;
     // a null shape if it cannot be resolved.

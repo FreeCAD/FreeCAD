@@ -48,6 +48,7 @@
 #include <gp_Cylinder.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Vec.hxx>
+#include <Precision.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -139,11 +140,7 @@ std::optional<gp_Pnt> midpointOf(const TopoDS_Shape& shape)
 std::optional<gp_Ax1> axisOfShape(const TopoDS_Shape& shape)
 {
     if (shape.ShapeType() == TopAbs_FACE) {
-        gp_Ax1 axis;
-        if (!MeasureSnap::axisOfFace(TopoDS::Face(shape), axis)) {
-            return {};
-        }
-        return axis;
+        return MeasureSnap::axisOfFace(TopoDS::Face(shape));
     }
     if (const auto circle = circleAxisOf(shape)) {
         return circle;
@@ -191,17 +188,15 @@ std::optional<gp_Pnt> vertexOf(const TopoDS_Shape& shape, const Base::Vector3d* 
 
 // Preview point and direction for an axis snap. The point is the cursor, else the
 // face bbox centre, projected onto the axis so it sits on the visible geometry.
-bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp_Pnt& out, gp_Dir* outDir)
+std::optional<MeasureSnap::SnapPoint>
+axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor)
 {
     if (shape.IsNull()) {
-        return false;
+        return {};
     }
     const auto axis = axisOfShape(shape);
     if (!axis) {
-        return false;
-    }
-    if (outDir) {
-        *outDir = axis->Direction();
+        return {};
     }
     gp_Pnt target;
     if (cursor) {
@@ -218,8 +213,8 @@ bool axisPointOf(const TopoDS_Shape& shape, const Base::Vector3d* cursor, gp_Pnt
     else {
         target = midpointOf(shape).value_or(axis->Location());
     }
-    out = MeasureSnap::projectOntoAxis(*axis, target);
-    return true;
+    return MeasureSnap::SnapPoint {MeasureSnap::projectOntoAxis(*axis, target),
+                                   axis->Direction()};
 }
 
 }  // namespace
@@ -239,11 +234,9 @@ const char* MeasureSnap::snapModeLabel(MeasureSnapMode mode)
 bool MeasureSnap::typeUsesSnapping(const std::string& measureTypeIdentifier)
 {
     // Unknown types (Python-registered, third-party) keep the preview.
-    return std::none_of(
-        SnaplessMeasureTypes.begin(),
-        SnaplessMeasureTypes.end(),
-        [&measureTypeIdentifier](const char* id) { return measureTypeIdentifier == id; }
-    );
+    return std::ranges::none_of(SnaplessMeasureTypes, [&measureTypeIdentifier](const char* id) {
+        return measureTypeIdentifier == id;
+    });
 }
 
 MeasureSnapMode MeasureSnap::snapModeFromIndex(long index)
@@ -351,11 +344,9 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
             }
             Bnd_Box box;
             BRepBndLib::Add(shape, box);
-            gp_Pnt a;
-            gp_Pnt b;
-            if (axisPreviewSegment(*axis, box, a, b)) {
-                points.push_back(a);
-                points.push_back(b);
+            if (const auto segment = axisPreviewSegment(*axis, box)) {
+                points.push_back(segment->first);
+                points.push_back(segment->second);
             }
             break;
         }
@@ -365,11 +356,12 @@ std::vector<gp_Pnt> MeasureSnap::previewPoints(const TopoDS_Shape& shape, Measur
     return points;
 }
 
-bool MeasureSnap::axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, gp_Pnt& a, gp_Pnt& b)
+std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::axisPreviewSegment(const gp_Ax1& axis,
+                                                                         const Bnd_Box& bounds)
 {
     const auto centre = boundsCentre(bounds);
     if (!centre) {
-        return false;
+        return {};
     }
     const gp_Pnt lo = bounds.CornerMin();
     const gp_Pnt hi = bounds.CornerMax();
@@ -379,45 +371,40 @@ bool MeasureSnap::axisPreviewSegment(const gp_Ax1& axis, const Bnd_Box& bounds, 
     constexpr double minHalfLength = 1.0;
     const double half = std::max(extentFactor * lo.Distance(hi), minHalfLength);
     const gp_Vec step = gp_Vec(axis.Direction()) * half;
-    a = onAxis.Translated(-step);
-    b = onAxis.Translated(step);
-    return true;
+    return std::pair {onAxis.Translated(-step), onAxis.Translated(step)};
 }
 
-bool MeasureSnap::computeSnapPoint(
-    const TopoDS_Shape& shape,
-    MeasureSnapMode mode,
-    const Base::Vector3d* cursor,
-    gp_Pnt& out,
-    gp_Dir* outAxisDir
-)
+std::optional<MeasureSnap::SnapPoint>
+MeasureSnap::computeSnapPoint(const TopoDS_Shape& shape,
+                              MeasureSnapMode mode,
+                              const Base::Vector3d* cursor)
 {
     if (shape.IsNull()) {
-        return false;
+        return {};
     }
 
     if (shape.ShapeType() == TopAbs_EDGE && !edgeHasCurve(TopoDS::Edge(shape))) {
-        return false;
+        return {};
     }
 
-    auto assign = [&out](const std::optional<gp_Pnt>& point) {
-        if (point) {
-            out = *point;
+    auto pointOnly = [](const std::optional<gp_Pnt>& point) -> std::optional<SnapPoint> {
+        if (!point) {
+            return {};
         }
-        return point.has_value();
+        return SnapPoint {*point, {}};
     };
 
     switch (mode) {
         case MeasureSnapMode::Center:
-            return assign(centerOf(shape));
+            return pointOnly(centerOf(shape));
         case MeasureSnapMode::Midpoint:
-            return assign(midpointOf(shape));
+            return pointOnly(midpointOf(shape));
         case MeasureSnapMode::Vertex:
-            return assign(vertexOf(shape, cursor));
+            return pointOnly(vertexOf(shape, cursor));
         case MeasureSnapMode::Axis:
-            return axisPointOf(shape, cursor, out, outAxisDir);
+            return axisPointOf(shape, cursor);
         default:
-            return false;
+            return {};
     }
 }
 
@@ -459,8 +446,7 @@ int MeasureSnap::getAvailableSnapTypes(const TopoDS_Shape& shape)
     }
 
     if (shape.ShapeType() == TopAbs_FACE) {
-        gp_Ax1 axis;
-        if (axisOfFace(TopoDS::Face(shape), axis)) {
+        if (axisOfFace(TopoDS::Face(shape))) {
             return static_cast<int>(MeasureSnapFlag::FlagAxis);
         }
         return 0;
@@ -469,24 +455,21 @@ int MeasureSnap::getAvailableSnapTypes(const TopoDS_Shape& shape)
     return 0;
 }
 
-bool MeasureSnap::axisOfFace(const TopoDS_Face& face, gp_Ax1& out)
+std::optional<gp_Ax1> MeasureSnap::axisOfFace(const TopoDS_Face& face)
 {
     if (face.IsNull()) {
-        return false;
+        return {};
     }
     BRepAdaptor_Surface surf(face);
     switch (surf.GetType()) {
         case GeomAbs_Cylinder:
-            out = surf.Cylinder().Axis();
-            return true;
+            return surf.Cylinder().Axis();
         case GeomAbs_Cone:
-            out = surf.Cone().Axis();
-            return true;
+            return surf.Cone().Axis();
         case GeomAbs_SurfaceOfRevolution:
-            out = surf.AxeOfRevolution();
-            return true;
+            return surf.AxeOfRevolution();
         default:
-            return false;
+            return {};
     }
 }
 
@@ -496,28 +479,26 @@ gp_Pnt MeasureSnap::projectOntoAxis(const gp_Ax1& axis, const gp_Pnt& p)
     return ElCLib::Value(ElCLib::Parameter(line, p), line);
 }
 
-bool MeasureSnap::closestPointsOnAxes(const gp_Ax1& a, const gp_Ax1& b, gp_Pnt& onA, gp_Pnt& onB)
+std::optional<std::pair<gp_Pnt, gp_Pnt>> MeasureSnap::closestPointsOnAxes(const gp_Ax1& a,
+                                                                          const gp_Ax1& b)
 {
     const gp_Lin lineA(a);
     const gp_Lin lineB(b);
-    Extrema_ExtElC ext(lineA, lineB, parallelTolerance);
+    Extrema_ExtElC ext(lineA, lineB, Precision::Angular());
     if (!ext.IsDone()) {
-        return false;
+        return {};
     }
     if (ext.IsParallel()) {
-        onA = a.Location();
-        onB = projectOntoAxis(b, onA);
-        return true;
+        const gp_Pnt onA = a.Location();
+        return std::pair {onA, projectOntoAxis(b, onA)};
     }
     if (ext.NbExt() < 1) {
-        return false;
+        return {};
     }
     Extrema_POnCurv pOnA;
     Extrema_POnCurv pOnB;
     ext.Points(1, pOnA, pOnB);
-    onA = pOnA.Value();
-    onB = pOnB.Value();
-    return true;
+    return std::pair {pOnA.Value(), pOnB.Value()};
 }
 
 TopoDS_Edge MeasureSnap::boundedAxisEdge(const gp_Ax1& axis, const Bnd_Box& pairBounds)
