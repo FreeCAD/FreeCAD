@@ -24,6 +24,7 @@
 import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import Constants
 import Path
 import Path.Base.Util as PathUtil
 import Path.Geom
@@ -1194,12 +1195,12 @@ class ObjectOp(object):
         # Add the command to turn it off right after the last non-rapid move in the command list.
         if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
             # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
-            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            # Extended drilling cycles include the G74/G84 tapping commands.
             first_feed_index = None
             last_feed_index = None
 
             for i, cmd in enumerate(self.commandlist):
-                if cmd.Name in Path.Geom.CmdMove:
+                if cmd.Name in Path.Geom.CmdMove + Constants.GCODE_DRILL_EXTENDED:
                     if first_feed_index is None:
                         first_feed_index = i
                     last_feed_index = i
