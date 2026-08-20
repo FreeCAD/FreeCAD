@@ -310,13 +310,17 @@ void DlgObjectSelection::updateDepSplitter()
         depSizes[0] = 0;
         depSizes[1] = total;
     }
-    // avoid collapsing user-selected sizes
     else if (hasDep && hasIn && (depSizes[0] == 0 || depSizes[1] == 0)) {
         depSizes[0] = depSizes[1] = total / 2;
     }
     // both lists empty - currently show empty lists while dependency checkbox selected
     else if (!hasDep && !hasIn) {
         depSizes[0] = depSizes[1] = total / 2;
+    }
+    else {
+        // implicit case where both have content and user has manually
+        // resized, nothing to do
+        return;
     }
     ui->splitter->setSizes(depSizes);
 }
