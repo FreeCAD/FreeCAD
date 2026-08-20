@@ -26,6 +26,7 @@
 # Base system tests
 FreeCAD.__unit_test__ += [
     "BaseTests",
+    "PresentationDependency",
     "UnitTests",
     "Document",
     "Metadata",

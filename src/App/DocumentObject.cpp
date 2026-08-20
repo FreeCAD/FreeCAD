@@ -235,7 +235,7 @@ void DocumentObject::touchPresentationDependents()
         auto* property = edge.fromObj->getPropertyByName(edge.fromProp.c_str());
         if (property && property->testStatus(Property::PresentationDependency)
             && touched.insert(edge.fromObj).second) {
-            edge.fromObj->touch();
+            edge.fromObj->enforceRecompute(edge.fromProp);
         }
     }
 }

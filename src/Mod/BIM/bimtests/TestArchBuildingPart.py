@@ -313,36 +313,6 @@ class TestArchBuildingPart(TestArchBase.TestArchBase):
             drawing.getPropertyStatus("AnnotationSources"),
         )
 
-    def test_presentation_dependency_touches_only_marked_links(self):
-        """Presentation changes touch only dependents opting into the status."""
-
-        class RecomputeCounter:
-            def __init__(self):
-                self.count = 0
-
-            def execute(self, obj):
-                self.count += 1
-
-        source = self.document.addObject("App::FeaturePython", "Source")
-        marked = self.document.addObject("App::FeaturePython", "Marked")
-        marked.addProperty("App::PropertyLinkListGlobal", "Sources")
-        marked.setPropertyStatus("Sources", "PresentationDependency")
-        marked.Sources = [source]
-        marked.Proxy = RecomputeCounter()
-        ordinary = self.document.addObject("App::FeaturePython", "Ordinary")
-        ordinary.addProperty("App::PropertyLinkListGlobal", "Sources")
-        ordinary.Sources = [source]
-        ordinary.Proxy = RecomputeCounter()
-
-        self.document.recompute()
-        marked_count = marked.Proxy.count
-        ordinary_count = ordinary.Proxy.count
-        source.Label = "Renamed"
-        self.document.recompute()
-
-        self.assertGreater(marked.Proxy.count, marked_count)
-        self.assertEqual(ordinary.Proxy.count, ordinary_count)
-
     def test_drawing_annotation_source_can_cross_levels(self):
         """A drawing can reference a Space owned by another Level."""
         level = Arch.makeFloor(name="Level")

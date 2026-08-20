@@ -42,6 +42,20 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.document.recompute()
         return box
 
+    def _makeTechDrawView(self, drawing):
+        template_path = os.path.join(
+            App.getResourceDir(), "Mod", "TechDraw", "Templates", "ISO", "A3_Landscape_blank.svg"
+        )
+        page = self.document.addObject("TechDraw::DrawPage", "Page")
+        template = self.document.addObject("TechDraw::DrawSVGTemplate", "Template")
+        template.Template = template_path
+        page.Template = template
+        view = self.document.addObject("TechDraw::DrawViewDraft", "DraftView")
+        view.Source = drawing
+        page.addView(view)
+        self.document.recompute()
+        return view
+
     def test_makeSectionPlane(self):
         """Test the makeSectionPlane function."""
         operation = "Testing makeSectionPlane function"
@@ -166,7 +180,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         App.ActiveDocument.recompute()
         assert True
 
-    @unittest.skipUnless(App.GuiUp, "Space SVG labels require the FreeCAD GUI")
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
     def test_drawing_annotation_source_is_rendered_in_svg(self):
         """A drawing reference uses the existing Space SVG exporter."""
         box = self._makeBox()
@@ -202,6 +216,35 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.document.recompute()
         self.assertIn("Renamed Office", techdraw_view.Symbol)
 
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
+    def test_drawing_draft_text_source_refreshes(self):
+        """A non-Space linked source refreshes when its content changes."""
+        text = Draft.make_text(["Draft Text"], height=100)
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [text]
+        techdraw_view = self._makeTechDrawView(drawing)
+
+        self.assertIn("Draft Text", techdraw_view.Symbol)
+        text.Text = ["Updated Text"]
+        self.document.recompute()
+        self.assertIn("Updated Text", techdraw_view.Symbol)
+
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
+    def test_drawing_source_view_property_refreshes(self):
+        """A linked source ViewObject change refreshes its TechDraw output."""
+        text = Draft.make_text(["Draft Text"], height=100)
+        drawing = Arch.make2DDrawing(name="Floor Plan")
+        drawing.AnnotationSources = [text]
+        techdraw_view = self._makeTechDrawView(drawing)
+        initial_symbol = techdraw_view.Symbol
+
+        text.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+        self.document.recompute()
+        updated_symbol = techdraw_view.Symbol
+
+        self.assertNotEqual(initial_symbol, updated_symbol)
+        self.assertIn("#ff0000", updated_symbol.lower())
+
     def test_drawing_annotation_sources_feed_section_data(self):
         """Referenced annotations are inputs without becoming Group children."""
         box = self._makeBox()
@@ -218,7 +261,7 @@ class TestArchSectionPlane(TestArchBase.TestArchBase):
         self.assertIn(space, level.Group)
         self.assertNotIn(space, drawing.Group)
 
-    @unittest.skipUnless(App.GuiUp, "Space SVG labels require the FreeCAD GUI")
+    @unittest.skipUnless(App.GuiUp, "Draft SVG/TechDraw rendering requires the FreeCAD GUI")
     def test_duplicate_drawing_annotation_source_is_rendered_once(self):
         """A source in both Group and AnnotationSources is rendered only once."""
         box = self._makeBox()
