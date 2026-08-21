@@ -244,6 +244,25 @@ TEST_F(ExpressionParserTest, badExpressionsDoNotParse)
         << "function with too many arguments";
 }
 
+// Regression test for FreeCAD issue #5750: a quoted <<name>> must be accepted as a
+// property / sub-property component, not only as a (sub-)object name. Otherwise a
+// constraint/alias whose name contains a space (e.g. Sketch.Constraints.<<my length>>)
+// can never be referenced and produces "Failed to parse expression".
+TEST_F(ExpressionParserTest, quotedPropertyNamesParse)
+{
+    EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "Sketch.<<Length>>"))
+        << "quoted property name on a document object";
+    EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "Sketch.Constraints.<<my length>>"))
+        << "quoted, spaced sub-property name (the #5750 case)";
+    EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "Sketch.Placement.<<Base>>.x"))
+        << "quoted middle component, chained";
+    // pre-existing behaviour that must keep working:
+    EXPECT_NO_THROW(App::ExpressionParser::parse(this_obj(), "<<Sketch>>.Length"))
+        << "quoted object name (already supported)";
+    EXPECT_ANY_THROW(App::ExpressionParser::parse(this_obj(), "Sketch.my length"))
+        << "unquoted spaced name must still be a parse error";
+}
+
 TEST_F(ExpressionParserTest, expressionsWithMultiplyDivideParse)
 {
     EXPECT_THAT(parseExpr("1 mm * 2 cm"), IsQuantity(mm2(20))) << "mixed-unit multiplication";

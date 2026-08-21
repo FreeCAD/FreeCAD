@@ -180,6 +180,13 @@ iden
                                                 $$.addComponent(ObjectIdentifier::SimpleComponent($3));
                                                 $$.resolveAmbiguity();
                                             }
+    | object '.' STRING                     { /* Path to a quoted (special-char/spaced) property of a document object, e.g. Sketch.<<my constraint>> */
+                                                $$ = ObjectIdentifier(DocumentObject);
+                                                $1.checkImport(DocumentObject);
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent($1));
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(ObjectIdentifier::String(std::move($3), true)));
+                                                $$.resolveAmbiguity();
+                                            }
     | document '#' object '.' id_or_cell    { /* Path to property from an external document, within a named document object */
                                                 $$ = ObjectIdentifier(DocumentObject);
                                                 $$.setDocumentName(std::move($1), true);
@@ -195,6 +202,10 @@ iden
                                                 $$.resolveAmbiguity();
                                             }
     | iden '.' IDENTIFIER                   { $$= std::move($1); $$.addComponent(ObjectIdentifier::SimpleComponent($3)); }
+    | iden '.' STRING                       { /* chained quoted (special-char/spaced) property/sub-property name */
+                                                $$= std::move($1);
+                                                $$.addComponent(ObjectIdentifier::SimpleComponent(ObjectIdentifier::String(std::move($3), true)));
+                                            }
     ;
 
 indexer
