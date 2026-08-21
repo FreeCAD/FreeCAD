@@ -75,6 +75,10 @@ public:
 
 
     DrawViewPart* getSourceView() const;
+    bool affectsFace(int i);
+    bool removeSub(std::string toRemove);
+    bool removeSub(int i);
+    bool empty();
 
     std::vector<LineSet> getFaceOverlay(int iFace = 0);
     std::vector<LineSet> getTrimmedLines(int iFace = 0);
