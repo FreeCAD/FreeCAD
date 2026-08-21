@@ -361,10 +361,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 linkingArgs["target_position"] = target_at_safe_height
                 linking_moves = linking.get_linking_moves(**linkingArgs)
 
-                """if linking_moves contains only 2 commands this means
-                it not contains vertical moves to clearance height
-                and this commands should be skipped"""
-                if len(linking_moves) > 2:
+                # linking_moves should be skipped, if first move not vertical
+                if not Path.Geom.isRoughly(linking_moves[0].z, startPoint.z):
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
                     self.commandlist.extend(linking_moves)
