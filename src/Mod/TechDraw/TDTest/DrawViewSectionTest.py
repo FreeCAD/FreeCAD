@@ -53,6 +53,9 @@ class DrawViewSectionTest(unittest.TestCase):
         section.Direction = (0.0, 1.0, 0.0)
         section.SectionNormal = (0.0, 1.0, 0.0)
         section.SectionOrigin = (5.0, 5.0, 5.0)
+        self.assertFalse(section.SectionCutOnly)
+        section.SectionCutOnly = True
+        self.assertTrue(section.SectionCutOnly)
         print("DrawViewSection test: section created")
         FreeCAD.ActiveDocument.recompute()
 

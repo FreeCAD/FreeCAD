@@ -104,10 +104,12 @@
 #include <cmath>
 
 #include <sstream>
+#include <unordered_set>
 
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Material.h>
+#include <App/PropertyStandard.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Converter.h>
@@ -313,6 +315,23 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         // this is bad!
         throw Base::RuntimeError("Complex section: profile wire has no edges.");
     }
+    std::unordered_set<int> transitionSegments;
+    if (App::DocumentObject* profileObject =
+            CuttingToolWireObject.getValue()) {
+        const auto* transitionProperty =
+            dynamic_cast<const App::PropertyIntegerList*>(
+                profileObject->getPropertyByName(
+                    "SectionTransitionEdges"));
+        if (transitionProperty) {
+            for (long index : transitionProperty->getValues()) {
+                if (index >= 0
+                    && index < static_cast<long>(edgesAll.size())) {
+                    transitionSegments.insert(
+                        static_cast<int>(index));
+                }
+            }
+        }
+    }
 
     // the reversers control left to right vs right to left (or top to bottom vs bottom to top)
     // arrangement of the cut pieces.
@@ -351,6 +370,9 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
         // the normal.
         std::pair<int, Base::Vector3d> segmentPair = findNormalForFace(face, faceNormals, edgesAll);
         int segmentIndex = segmentPair.first;
+        if (transitionSegments.contains(segmentIndex)) {
+            continue;
+        }
         Base::Vector3d segmentNormal = segmentPair.second * -1;
         segmentNormal.Normalize();
 
@@ -409,6 +431,9 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     size_t stopAt = pieces.size();
     double cursorPosition = 0.0;
     for (size_t iPiece = 0; iPiece < stopAt; iPiece++) {
+        if (pieces.at(iPiece).IsNull()) {
+            continue;
+        }
         double pieceSizeMoveDist = pieceXSizeAll.at(iPiece);
         if (isProfileVertical) {
             pieceSizeMoveDist = pieceYSizeAll.at(iPiece);
@@ -430,7 +455,9 @@ void DrawComplexSection::makeAlignedPieces(const TopoDS_Shape& rawShape)
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
     for (auto& piece : pieces) {
-        builder.Add(comp, piece);
+        if (!piece.IsNull()) {
+            builder.Add(comp, piece);
+        }
     }
 
     //center the compound along SectionCS XDirection

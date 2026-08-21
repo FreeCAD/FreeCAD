@@ -27,6 +27,7 @@
 
 #include "QGIViewSection.h"
 #include "QGIFace.h"
+#include "Rez.h"
 #include "ViewProviderViewSection.h"
 #include "ZVALUE.h"
 
@@ -40,7 +41,18 @@ void QGIViewSection::draw()
         return;
     }
 
-    QGIViewPart::draw();
+    auto* section = dynamic_cast<TechDraw::DrawViewSection*>(getViewObject());
+    if (section && section->SectionCutOnly.getValue()) {
+        // Section faces are drawn separately below. Clear any primitives from
+        // a previous full-section draw without constructing a projected
+        // half-solid that would immediately be discarded.
+        prepareGeometryChange();
+        removePrimitives();
+        removeDecorations();
+    }
+    else {
+        QGIViewPart::draw();
+    }
     drawSectionFace();
 }
 
@@ -72,10 +84,12 @@ void QGIViewSection::drawSectionFace()
     for(; fit != sectionFaces.end(); fit++, i++) {
         QGIFace* newFace = drawFace(*fit, -1);
         newFace->setZValue(ZVALUE::SECTIONFACE);
-        if (section->showSectionEdges()) {
+        // A cut-only view has no projected half-solid to provide the boundary,
+        // so its section faces must always draw their own outline.
+        if (section->SectionCutOnly.getValue() || section->showSectionEdges()) {
             newFace->setDrawEdges(true);
             newFace->setStyle(Qt::SolidLine);
-            newFace->setWidth(lineWidth);
+            newFace->setWidth(Rez::guiX(lineWidth));
         } else {
             newFace->setDrawEdges(false);
         }

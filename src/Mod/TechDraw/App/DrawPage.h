@@ -50,6 +50,7 @@ public:
     App::PropertyEnumeration ProjectionType;// First or Third angle
 
     App::PropertyInteger NextBalloonIndex;
+    App::PropertyInteger NextViewIdentifierIndex;
 
     /** @name methods override Feature */
     //@{
@@ -94,6 +95,8 @@ public:
     std::vector<App::DocumentObject*> getAllViews() const;
 
     int getNextBalloonIndex();
+    /// Return the next page-wide identifier for named views (A..Z, AA..).
+    std::string getNextViewIdentifier(bool advance = true);
 
     void updateAllViews();
     static bool GlobalUpdateDrawings();

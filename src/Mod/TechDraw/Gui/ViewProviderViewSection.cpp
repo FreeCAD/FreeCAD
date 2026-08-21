@@ -32,14 +32,12 @@
 #include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 
-#include <Mod/TechDraw/App/DrawComplexSection.h>
 #include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
 
 #include "TaskSectionView.h"
-#include "TaskComplexSection.h"
 #include "ViewProviderViewSection.h"
 #include "QGIView.h"
 
@@ -114,6 +112,7 @@ void ViewProviderViewSection::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->FileHatchPattern)   ||
         prop == &(getViewObject()->CutSurfaceDisplay)    ||
+        prop == &(getViewObject()->SectionCutOnly)    ||
         prop == &(getViewObject()->NameGeomPattern)    ||
         prop == &(getViewObject()->HatchScale)  ||
         prop == &(getViewObject()->HatchRotation) ) {
@@ -143,11 +142,6 @@ bool ViewProviderViewSection::setEdit(int ModNum)
     // clear the selection (convenience)
     Gui::Selection().clearSelection();
 
-    auto dcs = dynamic_cast<TechDraw::DrawComplexSection*>(getViewObject());
-    if (dcs) {
-        Gui::Control().showDialog(new TaskDlgComplexSection(dcs));
-        return true;
-    }
     Gui::Control().showDialog(new TaskDlgSectionView(getViewObject()));
     return true;
 }
