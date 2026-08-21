@@ -56,6 +56,12 @@ jobs:
       - name: Run typing API contract tests
         run: pixi run python -m unittest discover -s src/Tools/typing/tests -v
 
+      - name: Validate generated Python stubs
+        run: |
+          pixi run python src/Tools/typing/generate_stubs.py check \
+            --root . \
+            --out-dir src/Tools/typing/generated
+
       - name: Generate API documentation
         run: |
           pixi run python src/Tools/typing/generate_stubs.py docs \

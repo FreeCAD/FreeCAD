@@ -27,6 +27,18 @@ handling. The pipeline is further split across focused modules such as
 `render.py`. `type_context_rules.py` holds the remaining manual PyCXX context
 classifications that are not derivable yet.
 
+The Python API pipeline has one semantic model for both public stubs and API
+documentation. `python_api/extract.py` combines binding discovery with curated
+source-adjacent stubs into `ApiModel`; the stub generator and documentation
+renderers consume that model independently. Imports, `TYPE_CHECKING` blocks,
+helper protocols, and other support declarations remain source-AST merge input
+rather than becoming public API model symbols.
+
+The C++ documentation pipeline is intentionally separate: Doxygen XML is
+normalized into `CppApiModel`, then rendered into MDX and Starlight navigation.
+The Python and C++ models share output conventions but are not forced through a
+premature generic API abstraction.
+
 That command writes under `src/Tools/typing/generated/`:
 
 - `stubs/`: import-shaped public stubs with overlays applied, plus mapped
