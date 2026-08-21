@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="58.703045"
+   height="58.790672"
+   id="svg5821"
+   version="1.1"
+   xml:space="preserve"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><defs
+     id="defs5823" /><metadata
+     id="metadata5826"><rdf:RDF><cc:Work
+         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:creator><cc:Agent><dc:title>[WandererFan]</dc:title></cc:Agent></dc:creator><dc:date>2016-04-27</dc:date><dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation><dc:publisher><cc:Agent><dc:title>FreeCAD</dc:title></cc:Agent></dc:publisher><dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/TechDraw_Dimension_Diameter.svg</dc:identifier><dc:rights><cc:Agent><dc:title>FreeCAD LGPL2+</dc:title></cc:Agent></dc:rights><cc:license
+           rdf:resource="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/copyleft/lesser.html</cc:license><dc:contributor><cc:Agent><dc:title>[agryson] Alexander Gryson</dc:title></cc:Agent></dc:contributor><dc:subject><rdf:Bag><rdf:li>double arrow</rdf:li><rdf:li>circle</rdf:li></rdf:Bag></dc:subject></cc:Work></rdf:RDF></metadata><g
+     id="layer1"
+     transform="translate(-0.1784387,-0.18587361)"><g
+       id="crosshair"
+       style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
+       transform="translate(-0.8215613,-0.81412639)"><path
+         d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+         id="path9"
+         style="stroke:#2e3436;stroke-width:4;stroke-dasharray:none" /><path
+         d="m 16,3 v 9 m 0,8 v 9 M 3,16 h 9 m 8,0 h 9"
+         id="path7"
+         style="stroke:#eeeeec;stroke-width:2;stroke-dasharray:none" /></g><g
+       id="layer2"
+       transform="matrix(2.256028,0,0,2.256028,19.623186,19.825342)"><g
+         id="g3"
+         style="display:inline"><ellipse
+           style="fill:none;stroke:#555753;stroke-width:1.58751;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+           id="path1"
+           cx="8.4666662"
+           cy="8.4666681"
+           rx="6.8791614"
+           ry="6.8791628" /><ellipse
+           style="fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+           id="ellipse1"
+           cx="8.4666662"
+           cy="8.4666681"
+           rx="6.8791614"
+           ry="6.8791628" /></g><path
+         style="fill:none;stroke:#555753;stroke-width:1.5875;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:1.05833"
+         d="M 0.52916667,8.4666664 H 16.404167"
+         id="path2" /><path
+         style="fill:none;stroke:#555753;stroke-width:1.5875;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:4"
+         d="m 8.4666667,16.404167 2e-7,-15.87500033"
+         id="path6" /><path
+         style="fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:2.11667, 1.05833, 0.529167, 1.05833;stroke-dashoffset:0.264583"
+         d="M 0.52916667,8.4666664 H 16.404167"
+         id="path7-9" /><path
+         style="fill:none;stroke:#d3d7cf;stroke-width:0.529167;stroke-linejoin:round;stroke-dasharray:2.11667, 1.05833, 0.529167, 1.05833;stroke-dashoffset:0.264583"
+         d="m 8.4666667,16.404167 2e-7,-15.87500033"
+         id="path8" /><path
+         d="M 12.169544,8.4727662 A 3.7035339,3.704185 0 0 1 8.4619464,12.170851 3.7035339,3.704185 0 0 1 4.7624806,8.4646355 3.7035339,3.704185 0 0 1 8.466014,4.7624801"
+         id="path1408-5"
+         style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#0b1521;stroke-width:2.11667;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" /><path
+         d="M 12.169544,8.4727662 A 3.7035339,3.704185 0 0 1 8.4619464,12.170851 3.7035339,3.704185 0 0 1 4.7624806,8.4646355 3.7035339,3.704185 0 0 1 8.466014,4.7624801"
+         id="path3"
+         style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#3465a4;stroke-width:1.05833;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" /><path
+         d="M 11.904981,8.208203 A 3.7035339,3.704185 0 0 1 8.1973831,11.906288 3.7035339,3.704185 0 0 1 4.4979173,8.2000723 3.7035339,3.704185 0 0 1 8.2014507,4.4979169"
+         id="path4"
+         style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#729fcf;stroke-width:0.529167;stroke-linecap:square;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" /></g></g></svg>
