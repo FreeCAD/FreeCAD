@@ -16,7 +16,7 @@ from stubgen.python_api.model import (
     ApiModule,
     ApiSourceLocation,
 )
-from stubgen.class_merge import merge_api_class_methods
+from stubgen.class_merge import merge_api_class_attributes, merge_api_class_methods
 from stubgen.render import write_stub_file
 from stubgen.signature_parser import group_callable_definitions, parse_callable_group
 
@@ -118,6 +118,25 @@ def outside() -> None:
         self.assertIn("# Generated header", output)
         self.assertIn("class Other:\n    pass", output)
         self.assertIn("def outside() -> None:\n    ...", output)
+
+    def test_curated_class_attributes_replace_merged_assignments(self) -> None:
+        source = """class Example:
+    state: int = 1
+    label = "old"
+"""
+        api_class = ApiClass(
+            name="Example",
+            module_name="Example",
+            attributes=(
+                ApiAttribute(name="state", annotation="str", value='"ready"'),
+                ApiAttribute(name="label", value='"new"'),
+            ),
+        )
+
+        output = merge_api_class_attributes(source, api_class)
+
+        self.assertIn("state: str = 'ready'", output)
+        self.assertIn("label = 'new'", output)
 
     def test_curated_module_functions_render_with_api_model_signatures(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

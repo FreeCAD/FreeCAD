@@ -29,11 +29,13 @@ from .model import (
     PublicClassStub,
 )
 from .module_merge import (
+    api_attribute_source,
     class_body_defined_symbols,
     import_stmt_line,
     module_names_from_classes,
     module_stub_path,
     public_stub_symbols,
+    top_level_symbol_names,
     type_checking_test,
 )
 from .naming import valid_identifier
@@ -1039,8 +1041,8 @@ def rewritten_api_method(
     return method
 
 
-def source_node_start(node: ast.FunctionDef | ast.AsyncFunctionDef) -> tuple[int, int]:
-    if node.decorator_list:
+def source_node_start(node: ast.stmt) -> tuple[int, int]:
+    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.decorator_list:
         decorator = node.decorator_list[0]
         return decorator.lineno, max(0, decorator.col_offset - 1)
     return node.lineno, node.col_offset
@@ -1048,8 +1050,8 @@ def source_node_start(node: ast.FunctionDef | ast.AsyncFunctionDef) -> tuple[int
 
 def replace_source_node(
     source: str,
-    node: ast.FunctionDef | ast.AsyncFunctionDef,
-    replacement: ast.FunctionDef | ast.AsyncFunctionDef,
+    node: ast.stmt,
+    replacement: ast.stmt,
 ) -> str:
     lines = source.splitlines(keepends=True)
     start_line, start_col = source_node_start(node)
@@ -1126,6 +1128,52 @@ def merge_api_class_methods(
     return merged
 
 
+def merge_api_class_attributes(
+    target_source: str,
+    api_class: ApiClass,
+) -> str:
+    """Replace curated class assignments with their normalized API-model form."""
+
+    if not api_class.attributes:
+        return target_source
+
+    target_tree = ast.parse(target_source)
+    target_class = next(
+        (
+            node
+            for node in target_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == api_class.name
+        ),
+        None,
+    )
+    if target_class is None:
+        return target_source
+
+    attributes = {attribute.name: attribute for attribute in api_class.attributes}
+    replacements: list[tuple[ast.stmt, ast.stmt]] = []
+    for node in target_class.body:
+        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+            continue
+        names = top_level_symbol_names(node)
+        if len(names) != 1:
+            continue
+        attribute = attributes.get(next(iter(names)))
+        if attribute is None:
+            continue
+        replacement = ast.parse(api_attribute_source(attribute)).body[0]
+        if ast.dump(node, include_attributes=False) == ast.dump(
+            replacement,
+            include_attributes=False,
+        ):
+            continue
+        replacements.append((node, replacement))
+
+    merged = target_source
+    for original, replacement in reversed(replacements):
+        merged = replace_source_node(merged, original, replacement)
+    return merged
+
+
 def merge_api_class_methods_into_stubs(
     target_dir: Path,
     api_model: ApiModel,
@@ -1140,6 +1188,27 @@ def merge_api_class_methods_into_stubs(
         merged = original
         for api_class in api_module.classes:
             merged = merge_api_class_methods(merged, api_class)
+        if merged == original:
+            continue
+        path.write_text(merged, encoding="utf-8")
+        count += 1
+    return count
+
+
+def merge_api_class_attributes_into_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    count = 0
+    for api_module in api_model.modules:
+        path = module_stub_path(target_dir, api_module.name, module_names)
+        if not path.exists():
+            continue
+        original = path.read_text(encoding="utf-8")
+        merged = original
+        for api_class in api_module.classes:
+            merged = merge_api_class_attributes(merged, api_class)
         if merged == original:
             continue
         path.write_text(merged, encoding="utf-8")
