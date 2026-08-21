@@ -945,6 +945,7 @@ SET(Navigation_CPP_SRCS
     Navigation/InventorNavigationStyle.cpp
     Navigation/CADNavigationStyle.cpp
     Navigation/RevitNavigationStyle.cpp
+    Navigation/FusionNavigationStyle.cpp
     Navigation/BlenderNavigationStyle.cpp
     Navigation/SiemensNXNavigationStyle.cpp
     Navigation/SolidWorksNavigationStyle.cpp

@@ -35,6 +35,8 @@
         <file>icons/NavigationBlender_dark.svg</file>
         <file>icons/NavigationCAD_light.svg</file>
         <file>icons/NavigationCAD_dark.svg</file>
+        <file>icons/NavigationFusion_light.svg</file>
+        <file>icons/NavigationFusion_dark.svg</file>
         <file>icons/NavigationGesture_light.svg</file>
         <file>icons/NavigationGesture_dark.svg</file>
         <file>icons/NavigationMayaGesture_light.svg</file>
