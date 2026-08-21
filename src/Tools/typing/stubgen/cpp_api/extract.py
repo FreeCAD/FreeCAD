@@ -124,14 +124,22 @@ def enum_declaration(member: ET.Element) -> str:
     return f"{prefix} {name}".strip()
 
 
+def enum_initializer(value: ET.Element) -> str | None:
+    """Return an enum value expression without Doxygen's leading ``=``."""
+
+    initializer = element_text(value.find("initializer"))
+    if initializer.startswith("="):
+        initializer = initializer[1:].strip()
+    return initializer or None
+
+
 def extract_enum(member: ET.Element, root: Path) -> CppApiEnum:
     values: list[CppApiEnumValue] = []
     for value in member.findall("enumvalue"):
-        initializer = element_text(value.find("initializer"))
         values.append(
             CppApiEnumValue(
                 name=value.findtext("name") or "",
-                initializer=initializer or None,
+                initializer=enum_initializer(value),
                 doc=description_text(value.find("briefdescription"))
                 or description_text(value.find("detaileddescription")),
             )

@@ -6,8 +6,15 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from stubgen.cpp_api.markdown import render_class_page, write_cpp_api_markdown_docs
-from stubgen.cpp_api.model import CppApiClass, CppApiFunction, CppApiModel, CppApiNamespace
+from stubgen.cpp_api.markdown import render_class_page, render_enum, write_cpp_api_markdown_docs
+from stubgen.cpp_api.model import (
+    CppApiClass,
+    CppApiEnum,
+    CppApiEnumValue,
+    CppApiFunction,
+    CppApiModel,
+    CppApiNamespace,
+)
 from stubgen.cpp_api.starlight import render_cpp_starlight_sidebar_fragment
 
 
@@ -26,6 +33,18 @@ def api_class() -> CppApiClass:
 
 
 class CppApiRenderTests(unittest.TestCase):
+    def test_enum_initializer_is_rendered_once(self) -> None:
+        enum = CppApiEnum(
+            name="Mode",
+            declaration="enum class Mode",
+            values=(CppApiEnumValue(name="Active", initializer="State::Active"),),
+        )
+
+        page = render_enum(enum, source_base_url=None)
+
+        self.assertIn("`Active = State::Active`", "\n".join(page))
+        self.assertNotIn("= =", "\n".join(page))
+
     def test_class_page_keeps_callable_categories_separate(self) -> None:
         page = render_class_page(api_class(), source_base_url=None)
 

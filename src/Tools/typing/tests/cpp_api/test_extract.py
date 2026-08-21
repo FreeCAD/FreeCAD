@@ -67,7 +67,7 @@ class CppApiDocsTests(unittest.TestCase):
             Path("/repo"),
         )
 
-        self.assertEqual(enum.values[0].initializer, "= State::Active")
+        self.assertEqual(enum.values[0].initializer, "State::Active")
 
     def test_templated_class_lifecycle_members_are_classified(self) -> None:
         klass = extract_class(

@@ -1,0 +1,81 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+name: Python and C++ API docs
+
+on:
+  workflow_dispatch: ~
+  push:
+    branches:
+      - main
+      - releases/**
+    paths:
+      - ".github/workflows/typing-docs.yml"
+      - "pixi.lock"
+      - "pixi.toml"
+      - "src/App/**"
+      - "src/Base/**"
+      - "src/Gui/**"
+      - "src/Mod/Part/App/**"
+      - "src/Tools/typing/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/typing-docs.yml"
+      - "pixi.lock"
+      - "pixi.toml"
+      - "src/App/**"
+      - "src/Base/**"
+      - "src/Gui/**"
+      - "src/Mod/Part/App/**"
+      - "src/Tools/typing/**"
+
+permissions:
+  contents: read
+
+jobs:
+  docs:
+    name: Generate and build API docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@bf7454d6d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Check out code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
+        with:
+          pixi-version: v0.68.1
+          cache: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "22"
+
+      - name: Install site dependencies
+        working-directory: src/Tools/typing/site
+        run: npm ci
+
+      - name: Run C++ API contract tests
+        run: pixi run python -m unittest discover -s src/Tools/typing/tests -v
+
+      - name: Generate API documentation
+        run: |
+          pixi run python src/Tools/typing/generate_stubs.py docs \
+            --root . \
+            --out-dir src/Tools/typing/site/src/content/docs \
+            --sidebar-out src/Tools/typing/site/src/generated/python-api-sidebar.ts
+          pixi run python src/Tools/typing/generate_stubs.py cpp-docs \
+            --root . \
+            --out-dir src/Tools/typing/site/src/content/docs \
+            --sidebar-out src/Tools/typing/site/src/generated/cpp-api-sidebar.ts \
+            --run-doxygen
+
+      - name: Build Astro site
+        working-directory: src/Tools/typing/site
+        run: npm run build
