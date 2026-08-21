@@ -8,7 +8,11 @@ import tempfile
 import unittest
 
 from stubgen.model import BindingMethod, StubSignature
-from stubgen.module_merge import merge_api_module_aliases, merge_api_module_attributes
+from stubgen.module_merge import (
+    merge_api_module_aliases,
+    merge_api_module_attributes,
+    merge_api_module_attributes_into_stubs,
+)
 from stubgen.model import BindingClass
 from stubgen.python_api.model import (
     ApiAlias,
@@ -152,6 +156,21 @@ def run() -> None: ...
         self.assertIn("Alias = tuple[str, ...]", output)
         self.assertIn("def run() -> None:\n    ...", output)
 
+    def test_curated_module_attributes_add_missing_assignments(self) -> None:
+        target = """from __future__ import annotations
+
+def run() -> None: ...
+"""
+        api_module = ApiModule(
+            name="Example",
+            attributes=(ApiAttribute(name="Ready", annotation="bool", value="True"),),
+        )
+
+        output = merge_api_module_attributes(target, api_module)
+
+        self.assertIn("Ready: bool = True", output)
+        self.assertLess(output.index("Ready"), output.index("def run"))
+
     def test_curated_class_methods_replace_merged_methods(self) -> None:
         source = '''# Generated header
 class Other:
@@ -286,6 +305,24 @@ def outside() -> None:
 
         self.assertEqual(stub_source.count("def open("), 2)
         self.assertIn("def open(path: str, /) -> object:", stub_source)
+
+    def test_curated_module_attributes_render_without_discovered_methods(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "stubs"
+            model = ApiModel(
+                modules=(
+                    ApiModule(
+                        name="FreeCAD.Constants",
+                        attributes=(ApiAttribute(name="Ready", annotation="bool"),),
+                    ),
+                ),
+            )
+            write_public_module_stubs(output, [], {"FreeCAD.Constants"}, {}, model)
+            merge_api_module_attributes_into_stubs(output, model, {"FreeCAD.Constants"})
+            generated = output / "FreeCAD" / "Constants.pyi"
+            stub_source = generated.read_text(encoding="utf-8")
+
+        self.assertIn("Ready: bool", stub_source)
 
     def test_deprecation_metadata_can_follow_discovered_registration_sources(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

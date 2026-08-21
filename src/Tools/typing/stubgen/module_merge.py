@@ -502,13 +502,15 @@ def merge_api_module_attributes(
     target_source: str,
     api_module: ApiModule,
 ) -> str:
-    """Replace curated module assignments with their normalized API-model form."""
+    """Add or replace curated module assignments from the API model."""
 
     if not api_module.attributes:
         return target_source
 
     target_tree = ast.parse(target_source)
     attributes = {attribute.name: attribute for attribute in api_module.attributes}
+    existing_symbols = top_level_defined_symbols(target_tree.body)
+    missing_nodes: list[ast.stmt] = []
     changed = False
     for index, node in enumerate(target_tree.body):
         if not isinstance(node, (ast.Assign, ast.AnnAssign)):
@@ -521,6 +523,18 @@ def merge_api_module_attributes(
             continue
         replacement = ast.parse(api_attribute_source(attribute)).body[0]
         target_tree.body[index] = replacement
+        changed = True
+
+    for attribute in api_module.attributes:
+        if attribute.name in existing_symbols:
+            continue
+        missing_nodes.append(ast.parse(api_attribute_source(attribute)).body[0])
+
+    if missing_nodes:
+        insertion_index = overlay_insertion_index(target_tree.body)
+        target_tree.body = normalize_future_imports(
+            target_tree.body[:insertion_index] + missing_nodes + target_tree.body[insertion_index:]
+        )
         changed = True
 
     if not changed:
