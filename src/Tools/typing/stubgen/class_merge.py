@@ -19,6 +19,7 @@ import ast
 import copy
 from dataclasses import replace
 from pathlib import Path
+from typing import cast
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .model import (
@@ -121,7 +122,7 @@ class PublicClassStubTransformer(ast.NodeTransformer):
                     raise ValueError(
                         f"deprecated attribute '{name}' metadata must be a structured mapping"
                     )
-                message = structured_deprecation_message(value)
+                message = structured_deprecation_message(cast(dict[str, object], value))
                 if message is None:
                     raise ValueError(
                         f"deprecated attribute '{name}' metadata requires lifecycle fields"
@@ -266,8 +267,14 @@ class PublicClassStubTransformer(ast.NodeTransformer):
 
             visited = self.visit(item)
             if isinstance(visited, list):
-                transformed.extend(visited)
+                children = cast(list[object], visited)
+                for child in children:
+                    if not isinstance(child, ast.stmt):
+                        raise TypeError("class transformer produced a non-statement node")
+                    transformed.append(child)
             else:
+                if not isinstance(visited, ast.stmt):
+                    raise TypeError("class transformer produced a non-statement node")
                 transformed.append(visited)
             index += 1
         return transformed
@@ -1293,7 +1300,7 @@ def new_api_method_node(
 def append_source_class_members(
     source: str,
     target_class: ast.ClassDef,
-    members: list[ast.FunctionDef],
+    members: list[ast.stmt],
 ) -> str:
     """Append missing members without reformatting the authored class body."""
 
@@ -1457,7 +1464,7 @@ def merge_api_class_methods(
         )
         replacements.append((node, replacement, preserve_body))
 
-    missing_nodes: list[ast.FunctionDef] = []
+    missing_nodes: list[ast.stmt] = []
     for group in api_class.methods:
         start = existing_counts.get(group.name, 0)
         missing_nodes.extend(
