@@ -47,6 +47,10 @@ PyObject* ViewProviderPartExtPy::getCustomAttributes(const char* attr) const
 {
     ViewProviderPartExt* vp = getViewProviderPartExtPtr();
     if (strcmp(attr, "DiffuseColor") == 0) {
+        // DiffuseColor is the legacy Python facade for face colors. Synchronize
+        // pending topological remaps before exposing the positional list.
+        vp->ensureCurrentFaceAppearances();
+
         // Get the color properties
         App::PropertyColorList prop;
 

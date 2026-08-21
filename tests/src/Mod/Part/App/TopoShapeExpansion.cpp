@@ -2872,6 +2872,11 @@ TEST_F(TopoShapeExpansionTest, makeElementPrism)
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 0.75, 1.0, 1.0)));
     EXPECT_FLOAT_EQ(getVolume(result.getShape()), 0.75);
     // Assert elementMap is correct
+    // Finite prisms keep the standard Generated() history names when OCCT
+    // provides them. FirstShape/LastShape are only a fallback for missing cap
+    // history, so existing stable face names are preserved.
+    // Keep the opaque topology names one-per-line so changes remain reviewable.
+    // clang-format off
     EXPECT_TRUE(elementsMatch(
         result,
         {
@@ -2902,6 +2907,7 @@ TEST_F(TopoShapeExpansionTest, makeElementPrism)
             "Vertex4;:H2,V",
         }
     ));
+    // clang-format on
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementPrismUntil)
