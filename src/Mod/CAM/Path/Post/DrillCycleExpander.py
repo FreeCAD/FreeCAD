@@ -135,6 +135,10 @@ class DrillCycleExpander:
                     f"To expand a drill-cycle{why_clause}, we need a previous command that established parameters {missing}, but they are None at command {command.toGCode()}"
                 )
 
+        # PostUtils.cannedCycleTerminator expands out a G98, if it was called
+        if r := command.Annotations.get("RetractMode", None):
+            self.machine_state.addCommand(Path.Command(r))
+
         # always need machine_state params:
         require_previous("", "X", "Y", "Z", "ReturnMode")
 
@@ -325,7 +329,7 @@ class DrillCycleExpander:
                 "Z": next_depth,
                 "F": self.machine_state.F,
             }
-            if feedrate:
+            if feedrate is not None:
                 move_params["F"] = feedrate
             cmd = Path.Command("G1", move_params)
             expanded.append(cmd)

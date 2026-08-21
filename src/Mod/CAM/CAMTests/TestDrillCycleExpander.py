@@ -119,13 +119,14 @@ class TestDrillCycleExpander(unittest.TestCase):
 
     def test_04_g81_with_g98(self):
         """Test 1: Basic G81 (simple drill) with G98 retract"""
-        machine_state = MachineState(
-            {"X": 0, "Y": 0, "Z": 30.0, "G0F": 110, "ReturnMode": "Z"}
-        )  # G98
+        machine_state = MachineState({"X": 0, "Y": 0, "Z": 30.0, "G0F": 110})
         expander = DrillCycleExpander(machine_state)
 
+        # Generated drill commands actually have annotation
         input_cmds = [
-            Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 10, "F": 10.0}),
+            Path.Command(
+                "G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 10, "F": 10.0}, {"RetractMode": "G98"}
+            ),
         ]
 
         expected_cmds = [

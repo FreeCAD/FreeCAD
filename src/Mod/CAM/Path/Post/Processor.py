@@ -2046,8 +2046,8 @@ class PostProcessor:
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
         postables = self._expand_pre_item(postables)
 
-        self._expand_translate_drill_cycles(postables)
         self._expand_canned_cycles(postables)
+        self._expand_translate_drill_cycles(postables)
         self._expand_split_arcs(postables)
         self._expand_spindle_wait(postables)
         self._expand_coolant_delay(postables)
