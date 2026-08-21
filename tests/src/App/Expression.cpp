@@ -23,13 +23,18 @@
 
 #include <gtest/gtest.h>
 
+#include <string>
+
 #include <src/App/InitApplication.h>
+
+#include "Base/Quantity.h"
 
 #include "App/Document.h"
 #include "App/DocumentObject.h"
 #include "App/Expression.h"
 #include "App/ExpressionParser.h"
 #include "App/ExpressionTokenizer.h"
+#include "App/ObjectIdentifier.h"
 
 // +------------------------------------------------+
 // | Note: For more expression related tests, see:  |
@@ -329,6 +334,58 @@ TEST_F(Expression, test_e_rad)
     auto op = std::make_unique<App::OperatorExpression>(nullptr, constant.get(), App::OperatorExpression::UNIT, unit.get());
     EXPECT_EQ(op->toString(), "e rad");
     op.release();
+}
+
+static std::string reserialize(const char* text)
+{
+    return App::ExpressionParser::parse(nullptr, text)->toString();
+}
+
+static Base::Quantity valueOf(const char* text)
+{
+    const auto expression = App::ExpressionParser::parse(nullptr, text);
+    return App::any_cast<Base::Quantity>(expression->getValueAsAny());
+}
+
+// The grammar binds '^' more tightly than the number/unit juxtaposition, so "10 mm ^ 3" is
+// unambiguous and must not be wrapped in parentheses when serialized.
+// https://github.com/FreeCAD/FreeCAD/issues/24884
+TEST_F(Expression, serializeUnitPower)
+{
+    EXPECT_EQ(reserialize("10 mm ^ 3"), "10 mm ^ 3");
+    EXPECT_EQ(reserialize("10 mm ^ -3"), "10 mm ^ -3");
+    EXPECT_EQ(reserialize("10 (mm ^ 3)"), "10 mm ^ 3");
+    EXPECT_EQ(reserialize("pi rad ^ 2"), "pi rad ^ 2");
+    EXPECT_EQ(reserialize("10 (mm / s) ^ 2"), "10 (mm / s) ^ 2");
+}
+
+// Juxtaposition binds more tightly than '*' and '/', so "10 (mm / s)" and "10 mm / s" are
+// different parse trees and those parentheses must survive serialization.
+TEST_F(Expression, serializeUnitProductKeepsParens)
+{
+    EXPECT_EQ(reserialize("10 (mm / s)"), "10 (mm / s)");
+    EXPECT_EQ(reserialize("10 (mm * s)"), "10 (mm * s)");
+    EXPECT_EQ(reserialize("10 mm / s"), "10 mm / s");
+}
+
+// Serializing must be idempotent and value preserving: saving and reloading a document may
+// not perturb the expression.
+TEST_F(Expression, serializeUnitPowerRoundTrip)
+{
+    for (const char* text : {"10 mm ^ 3", "10 mm ^ -3", "10 (mm ^ 3)", "pi rad ^ 2",
+                             "10 (mm / s) ^ 2", "10 (mm / s)", "10 mm / s"}) {
+        const std::string once = reserialize(text);
+        EXPECT_EQ(reserialize(once.c_str()), once) << "not idempotent: " << text;
+        EXPECT_EQ(valueOf(once.c_str()), valueOf(text)) << "value changed: " << text;
+    }
+}
+
+// Guards the resolution of the shift/reduce conflict the serializer now relies on: '^' binds
+// to the unit, not to the quantity, so "10 mm ^ 3" is ten cubic millimetres.
+TEST_F(Expression, unitPowerAppliesToUnitOnly)
+{
+    EXPECT_EQ(valueOf("10 mm ^ 3"), Base::Quantity(10, Base::Unit::Volume));
+    EXPECT_EQ(valueOf("(10 mm) ^ 3"), Base::Quantity(1000, Base::Unit::Volume));
 }
 
 class Evaluate: public ::testing::Test
