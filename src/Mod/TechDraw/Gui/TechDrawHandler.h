@@ -24,7 +24,12 @@
 
 #include <Gui/ToolHandler.h>
 
+#include <QKeyEvent>
+#include <QMouseEvent>
+
+#include <Gui/InputHint.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
+#include <Mod/TechDraw/App/DrawPage.h>
 
 namespace TechDrawGui
 {
@@ -36,6 +41,8 @@ public:
 
     TechDrawHandler();
     virtual ~TechDrawHandler();
+
+    std::list<Gui::InputHint> getToolHints() const override;
 
     void activate(QGVPage* vPage);
     void deactivate() override;
