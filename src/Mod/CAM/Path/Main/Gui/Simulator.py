@@ -25,9 +25,8 @@ import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 import Path.Main.Job as PathJob
-import PathGui
 import PathSimulator
 import math
 import os
@@ -114,7 +113,6 @@ class PathSimulation:
         # Make Job selection combobox
         setJobIdx = 0
         jobName = ""
-        jIdx = 0
         # Get list of Job objects in active document
         jobList = FreeCAD.ActiveDocument.findObjects("Path::FeaturePython", "Job.*")
         jCnt = len(jobList)
@@ -131,12 +129,11 @@ class PathSimulation:
         form.comboJobs.blockSignals(True)
         form.comboJobs.clear()
         form.comboJobs.blockSignals(False)
-        for j in jobList:
+        for index, j in enumerate(jobList):
             form.comboJobs.addItem(j.ViewObject.Icon, j.Label)
             self.jobs.append(j)
             if j.Name == jobName or jCnt == 1:
-                setJobIdx = jIdx
-            jIdx += 1
+                setJobIdx = index
 
         # Preselect GUI-selected job in the combobox
         if jobName or jCnt == 1:
@@ -157,15 +154,10 @@ class PathSimulation:
 
         self.stock = self.job.Stock.Shape
         if self.isVoxel:
-            maxlen = self.stock.BoundBox.XLength
-            if maxlen < self.stock.BoundBox.YLength:
-                maxlen = self.stock.BoundBox.YLength
+            maxlen = max(self.stock.BoundBox.XLength, self.stock.BoundBox.YLength)
             self.resolution = 0.01 * self.accuracy * maxlen
             self.voxSim.BeginSimulation(self.stock, self.resolution)
-            (
-                self.cutMaterial.Mesh,
-                self.cutMaterialIn.Mesh,
-            ) = self.voxSim.GetResultMesh()
+            self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
         self.busy = False
@@ -350,10 +342,7 @@ class PathSimulation:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, cmd)
             if not self.disableAnim:
                 self.cutTool.Placement = self.curpos
-                (
-                    self.cutMaterial.Mesh,
-                    self.cutMaterialIn.Mesh,
-                ) = self.voxSim.GetResultMesh()
+                self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         if cmd.Name == "G80":
             self.firstDrill = True
         if cmd.Name in ("G73", "G81", "G82", "G83", "G84", "G85"):
@@ -368,10 +357,7 @@ class PathSimulation:
                 self.curpos = self.voxSim.ApplyCommand(self.curpos, ecmd)
                 if not self.disableAnim:
                     self.cutTool.Placement = self.curpos
-                    (
-                        self.cutMaterial.Mesh,
-                        self.cutMaterialIn.Mesh,
-                    ) = self.voxSim.GetResultMesh()
+                    self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         self.icmd += 1
         self.iprogress += 1
         self.UpdateProgress()
@@ -462,13 +448,9 @@ class PathSimulation:
         res = None
         if type == "ChamferMill":
             ang = 90 - tool.CuttingEdgeAngle / 2.0
-            if ang > 80:
-                ang = 80
-            if ang < 0:
-                ang = 0
-            h1 = math.tan(ang * math.pi / 180) * rad
-            if h1 > (h - 0.1):
-                h1 = h - 0.1
+            ang = min(ang, 80)
+            ang = max(ang, 0)
+            h1 = min(math.tan(ang * math.pi / 180) * rad, h - 0.1)
             vBR = Vector(xp + yf, yp - xf, zp + h1)
             lR = Part.makeLine(vBR, vTR)
             lB = Part.makeLine(vBC, vBR)
@@ -570,10 +552,7 @@ class PathSimulation:
 
     def ViewShape(self):
         if self.isVoxel:
-            (
-                self.cutMaterial.Mesh,
-                self.cutMaterialIn.Mesh,
-            ) = self.voxSim.GetResultMesh()
+            self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
         else:
             self.cutMaterial.Shape = self.stock
 

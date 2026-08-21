@@ -27,9 +27,9 @@ import FreeCAD
 import Part
 import Path
 import Path.Base.FeedRate as PathFeedRate
-import Path.Base.Generator.drill as drill
-import Path.Base.Generator.tapping as tapping
-import Path.Base.Generator.linking as linking
+from Path.Base.Generator import drill
+from Path.Base.Generator import tapping
+from Path.Base.Generator import linking
 import Path.Base.MachineState as PathMachineState
 import Path.Op.Base as PathOp
 import Path.Op.CircularHoleBase as PathCircularHoleBase
@@ -81,7 +81,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if dataType == "raw":
             return enums
 
-        data = list()
+        data = []
         idx = 0 if dataType == "translated" else 1
 
         Path.Log.debug(enums)
