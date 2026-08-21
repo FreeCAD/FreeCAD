@@ -15,6 +15,7 @@ from stubgen.python_api.model import (
     ApiAttribute,
     ApiCallableGroup,
     ApiClass,
+    ApiModel,
     ApiModule,
     ApiOrigin,
     ApiSourceLocation,
@@ -25,6 +26,7 @@ from stubgen.class_merge import (
     merge_api_class_header,
     merge_api_class_methods,
 )
+from stubgen.generator import write_public_module_stubs
 from stubgen.render import write_stub_file
 from stubgen.signature_parser import group_callable_definitions, parse_callable_group
 
@@ -261,6 +263,29 @@ def outside() -> None:
         self.assertIn("def open(path: str, mode: str, /) -> object:", output)
         self.assertIn('    """Open a file through the console module."""', output)
         self.assertEqual(output.count("    ..."), 2)
+
+    def test_curated_module_functions_render_without_discovered_methods(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "stubs"
+            write_public_module_stubs(
+                output,
+                [],
+                {"FreeCAD.Standalone"},
+                {},
+                ApiModel(
+                    modules=(
+                        ApiModule(
+                            name="FreeCAD.Standalone",
+                            functions=api_module().functions,
+                        ),
+                    ),
+                ),
+            )
+            generated = output / "FreeCAD" / "Standalone.pyi"
+            stub_source = generated.read_text(encoding="utf-8")
+
+        self.assertEqual(stub_source.count("def open("), 2)
+        self.assertIn("def open(path: str, /) -> object:", stub_source)
 
     def test_deprecation_metadata_can_follow_discovered_registration_sources(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

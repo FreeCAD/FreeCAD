@@ -63,10 +63,12 @@ def write_public_module_stubs(
     module_methods, _, _ = group_methods(methods)
     api_modules = {module.name: module for module in api_model.modules}
     ensure_parent_package_stubs(out_dir, module_names)
-    for module_name, group in sorted(module_methods.items()):
+    module_names_to_write = set(module_methods)
+    module_names_to_write.update(module.name for module in api_model.modules if module.functions)
+    for module_name in sorted(module_names_to_write):
         write_stub_file(
             module_stub_path(out_dir, module_name, module_names),
-            group,
+            module_methods.get(module_name, []),
             stub_signature_overrides=stub_signature_overrides,
             api_module=api_modules.get(module_name),
             module_name=module_name,
