@@ -1102,9 +1102,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if mode != 0:
             return None
 
-        self.Object.Document.openTransaction(
-            translate("Arch", "Edit %1").replace("%1", self.Object.Label)
-        )
         taskd = _ArchWindowTaskPanel()
         taskd.obj = self.Object
         self.sets = [vobj.DisplayMode, vobj.Transparency]
@@ -1402,9 +1399,9 @@ class _ArchWindowTaskPanel:
         QtCore.QObject.connect(self.field6, QtCore.SIGNAL("clicked()"), self.addEdge)
         self.update()
 
-        self.widthWidget.valueChanged.connect(self.updateAndRecompute)
-        self.heightWidget.valueChanged.connect(self.updateAndRecompute)
-        self.openingWidget.valueChanged.connect(self.updateAndRecompute)
+        self.widthWidget.valueChanged.connect(self.updateObjectData)
+        self.heightWidget.valueChanged.connect(self.updateObjectData)
+        self.openingWidget.valueChanged.connect(self.updateObjectData)
 
         FreeCADGui.Selection.clearSelection()
 
@@ -1816,10 +1813,6 @@ class _ArchWindowTaskPanel:
                 i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None)
             )
 
-    def updateAndRecompute(self):
-        self.updateObjectData()
-        self.obj.Document.recompute()
-
     def updateObjectData(self):
         if not self.obj or self._suppressLiveUpdate:
             return
@@ -1840,7 +1833,7 @@ class _ArchWindowTaskPanel:
         if self.obj:
             self._suppressLiveUpdate = False  # ensure that object gets updated
             self.updateObjectData()
-            self.obj.Document.commitTransaction()
+            self.obj.Document.recompute()
 
         self.basepanel.obj = self.obj
         return self.basepanel.accept()

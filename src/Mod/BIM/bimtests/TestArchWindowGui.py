@@ -23,6 +23,7 @@
 import FreeCAD as App
 import Arch
 import ArchSectionPlane
+import ArchWindow
 import Draft
 from bimtests import TestArchBaseGui
 
@@ -70,10 +71,8 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
         self.assertNotAlmostEqual(self.window.PreviewShape.Volume, volumeBefore, places=3)
 
-    def test_change_window_opening(self):
-        """Tests if changes to a window opening touches the window's chain of hosts"""
-
-        # Create a wall, a window, a level and a section.
+    def _makeHostedWindow(self):
+        """Wall hosting a window, recomputed once so both have settled geometry."""
         points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
         line = Draft.make_wire(points)
         wall = Arch.makeWall(line, height=2000)
@@ -92,6 +91,69 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
             placement=wpl,
         )
         win.Hosts = [wall]
+        App.ActiveDocument.recompute()
+        return wall, win
+
+    def testEditingWidthThroughTaskPanelDoesNotTouchHosts(self):
+        """A live property edit must not recompute the host wall - that used to happen on
+        every spinbox tick and is now deferred to accept()."""
+        wall, win = self._makeHostedWindow()
+        wallVolumeBefore = wall.Shape.Volume
+
+        taskd = ArchWindow._ArchWindowTaskPanel()
+        taskd.obj = win
+        taskd.update()
+        taskd.widthWidget.setProperty("rawValue", win.Width.Value * 2.0)
+        self.pump_gui_events()
+
+        self.assertAlmostEqual(win.Width.Value, 2000.0, places=3)
+        self.assertAlmostEqual(wall.Shape.Volume, wallVolumeBefore, places=3)
+
+        taskd.reject()
+
+    def testAcceptingWindowEditRecomputesHosts(self):
+        """accept() must still trigger the real recompute that used to happen per keystroke."""
+        wall, win = self._makeHostedWindow()
+        wallVolumeBefore = wall.Shape.Volume
+
+        taskd = ArchWindow._ArchWindowTaskPanel()
+        taskd.obj = win
+        taskd.update()
+        taskd.widthWidget.setProperty("rawValue", win.Width.Value * 2.0)
+        self.pump_gui_events()
+
+        taskd.accept()
+
+        self.assertAlmostEqual(win.Width.Value, 2000.0, places=3)
+        self.assertNotAlmostEqual(wall.Shape.Volume, wallVolumeBefore, places=3)
+
+    def testRejectingWindowEditRevertsWidth(self):
+        """Cancel must revert the property change.
+
+        Instantiating the task panel directly bypasses Tree.cpp's double-click handler, which
+        is what books the edit transaction in real usage, so this test books one explicitly.
+        abortTransaction()'s revert does not depend on who opened the transaction.
+        """
+        _, win = self._makeHostedWindow()
+        originalWidth = win.Width.Value
+
+        App.ActiveDocument.openTransaction("Edit Window")
+
+        taskd = ArchWindow._ArchWindowTaskPanel()
+        taskd.obj = win
+        taskd.update()
+        taskd.widthWidget.setProperty("rawValue", originalWidth * 2.0)
+        self.pump_gui_events()
+        self.assertNotAlmostEqual(win.Width.Value, originalWidth, places=3)
+
+        taskd.reject()
+
+        self.assertAlmostEqual(win.Width.Value, originalWidth, places=3)
+
+    def test_change_window_opening(self):
+        """Tests if changes to a window opening touches the window's chain of hosts"""
+
+        wall, win = self._makeHostedWindow()
         level = Arch.makeFloor()
         level.addObject(wall)
         section = Arch.makeSectionPlane(level)
