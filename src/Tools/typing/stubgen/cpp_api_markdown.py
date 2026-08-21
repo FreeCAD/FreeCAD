@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import re
 import shutil
@@ -59,15 +60,19 @@ def namespace_slug(qualified_name: str) -> str:
 
 
 def class_slug_token(klass: CppApiClass) -> str:
-    token = klass.display_name.replace("::", "-")
+    raw_token = klass.display_name.replace("::", "-")
+    token = raw_token
     token = re.sub(r"[^0-9A-Za-z_-]+", "-", token)
     token = re.sub(r"-{2,}", "-", token)
     token = token.strip("-")
-    return token or klass.name
+    if token != klass.display_name:
+        suffix = hashlib.sha256(klass.qualified_name.encode("utf-8")).hexdigest()[:8]
+        token = f"{token or klass.name}-{suffix}"
+    return token
 
 
 def class_slug(klass: CppApiClass) -> str:
-    return "/".join((namespace_slug(klass.top_namespace), TYPE_GROUP_DIR, class_slug_token(klass)))
+    return "/".join((namespace_slug(klass.namespace_name), TYPE_GROUP_DIR, class_slug_token(klass)))
 
 
 def namespace_doc_dir(out_dir: Path, qualified_name: str) -> Path:
@@ -87,7 +92,9 @@ def class_doc_filename(klass: CppApiClass) -> str:
 
 def class_doc_path(out_dir: Path, klass: CppApiClass) -> Path:
     return (
-        namespace_doc_dir(out_dir, klass.top_namespace) / TYPE_GROUP_DIR / class_doc_filename(klass)
+        namespace_doc_dir(out_dir, klass.namespace_name)
+        / TYPE_GROUP_DIR
+        / class_doc_filename(klass)
     )
 
 
@@ -192,7 +199,19 @@ def namespace_classes(
     namespace: CppApiNamespace,
     classes: tuple[CppApiClass, ...],
 ) -> tuple[CppApiClass, ...]:
-    return tuple(klass for klass in classes if klass.top_namespace == namespace.qualified_name)
+    return tuple(klass for klass in classes if klass.namespace_name == namespace.qualified_name)
+
+
+def validate_class_paths(out_dir: Path, classes: tuple[CppApiClass, ...]) -> None:
+    paths: dict[Path, str] = {}
+    for klass in classes:
+        path = class_doc_path(out_dir, klass)
+        previous = paths.get(path)
+        if previous is not None:
+            raise ValueError(
+                f"C++ API class pages collide at {path}: {previous} and {klass.qualified_name}"
+            )
+        paths[path] = klass.qualified_name
 
 
 def render_namespace_summary(namespace: CppApiNamespace) -> str:
@@ -345,6 +364,7 @@ def write_cpp_api_markdown_docs(
     cpp_root = content_root_dir(out_dir)
     shutil.rmtree(cpp_root, ignore_errors=True)
     cpp_root.mkdir(parents=True, exist_ok=True)
+    validate_class_paths(out_dir, model.classes)
 
     page_count = 0
     root_path = cpp_root / "index.mdx"

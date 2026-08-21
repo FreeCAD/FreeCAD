@@ -33,6 +33,12 @@ def compact_text(text: str) -> str:
     return " ".join(text.split())
 
 
+def element_text(element: ET.Element | None) -> str:
+    if element is None:
+        return ""
+    return compact_text("".join(element.itertext()))
+
+
 def description_text(element: ET.Element | None) -> str | None:
     if element is None:
         return None
@@ -83,11 +89,15 @@ def class_display_name(qualified_name: str) -> str:
     return "::".join(parts[1:])
 
 
+def bare_class_name(qualified_name: str) -> str:
+    return qualified_name.rsplit("::", 1)[-1].split("<", 1)[0].strip()
+
+
 def function_declaration(member: ET.Element) -> str:
-    member_type = compact_text("".join((member.findtext("type") or "").splitlines()))
-    definition = compact_text(member.findtext("definition") or member.findtext("name") or "")
-    args = compact_text(member.findtext("argsstring") or "")
-    trailing = compact_text(member.findtext("exceptions") or "")
+    member_type = element_text(member.find("type"))
+    definition = element_text(member.find("definition")) or member.findtext("name") or ""
+    args = element_text(member.find("argsstring"))
+    trailing = element_text(member.find("exceptions"))
     if member_type and not definition.startswith(member_type):
         signature = f"{member_type} {definition}{args}"
     else:
@@ -117,7 +127,7 @@ def enum_declaration(member: ET.Element) -> str:
 def extract_enum(member: ET.Element, root: Path) -> CppApiEnum:
     values: list[CppApiEnumValue] = []
     for value in member.findall("enumvalue"):
-        initializer = compact_text(value.findtext("initializer") or "")
+        initializer = element_text(value.find("initializer"))
         values.append(
             CppApiEnumValue(
                 name=value.findtext("name") or "",
@@ -187,7 +197,8 @@ def extract_class(root: Path, compound: ET.Element) -> CppApiClass | None:
     location = source_location(root, compound.find("location"))
     if not project_source_location(location):
         return None
-    class_name = qualified_name.rsplit("::", 1)[-1]
+    class_name = bare_class_name(qualified_name)
+    namespace_name = qualified_name.rsplit("::", 1)[0]
     methods: list[CppApiFunction] = []
     enums: list[CppApiEnum] = []
     for section in compound.findall("sectiondef"):
@@ -212,6 +223,7 @@ def extract_class(root: Path, compound: ET.Element) -> CppApiClass | None:
         qualified_name=qualified_name,
         name=class_name,
         display_name=class_display_name(qualified_name),
+        namespace_name=namespace_name,
         top_namespace=top_namespace(qualified_name),
         kind=compound.get("kind", "class"),
         doc=description_text(compound.find("briefdescription"))

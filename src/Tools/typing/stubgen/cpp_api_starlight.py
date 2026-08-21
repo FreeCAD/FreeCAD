@@ -20,7 +20,7 @@ def namespace_children(
 def namespace_classes(
     namespace: CppApiNamespace, classes: tuple[CppApiClass, ...]
 ) -> tuple[CppApiClass, ...]:
-    return tuple(klass for klass in classes if klass.top_namespace == namespace.qualified_name)
+    return tuple(klass for klass in classes if klass.namespace_name == namespace.qualified_name)
 
 
 def namespace_sidebar_group(

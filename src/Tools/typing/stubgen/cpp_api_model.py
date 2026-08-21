@@ -78,6 +78,7 @@ class CppApiClass:
     qualified_name: str
     name: str
     display_name: str
+    namespace_name: str
     top_namespace: str
     kind: str
     doc: str | None = None

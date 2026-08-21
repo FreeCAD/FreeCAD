@@ -149,6 +149,13 @@ def resolve_sidebar_out(root: Path, out_dir: Path, sidebar_out: Path | None) -> 
     return sidebar_out if sidebar_out.is_absolute() else root / sidebar_out
 
 
+def display_path(root: Path, path: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return str(path)
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
     if argv and argv[0] == "docs":
         parser = argparse.ArgumentParser(
@@ -354,7 +361,7 @@ def run_generate_docs(args: argparse.Namespace) -> int:
     )
     sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
     sidebar_path = write_starlight_sidebar_fragment(sidebar_out, model)
-    print(f"Wrote {page_count} MDX API docs and {sidebar_path.relative_to(root)}")
+    print(f"Wrote {page_count} MDX API docs and {display_path(root, sidebar_path)}")
     return 0
 
 
@@ -385,8 +392,8 @@ def run_generate_cpp_docs(args: argparse.Namespace) -> int:
     sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
     sidebar_path = write_cpp_starlight_sidebar_fragment(sidebar_out, model)
     print(
-        f"Wrote {page_count} C++ MDX API docs from {xml_dir.relative_to(root)} "
-        f"and {sidebar_path.relative_to(root)}"
+        f"Wrote {page_count} C++ MDX API docs from {display_path(root, xml_dir)} "
+        f"and {display_path(root, sidebar_path)}"
     )
     return 0
 
