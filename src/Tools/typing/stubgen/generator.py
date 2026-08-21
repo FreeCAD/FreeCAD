@@ -24,8 +24,10 @@ import shutil
 
 from .class_merge import (
     append_class_stubs,
+    merge_api_class_headers_into_stubs,
     merge_api_class_attributes_into_stubs,
     merge_api_class_methods_into_stubs,
+    normalize_api_model_binding_class_headers,
     validate_public_class_aliases,
 )
 from .module_merge import (
@@ -176,6 +178,7 @@ def write_outputs(
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
     api_model = extract_curated_api_model(root, source_dir, binding_classes=classes)
+    api_model = normalize_api_model_binding_class_headers(root, classes, api_model)
     write_public_module_stubs(
         out_dir / "stubs",
         methods,
@@ -196,6 +199,7 @@ def write_outputs(
         module_names,
     )
     append_class_stubs(out_dir / "stubs", root, classes, module_names)
+    merge_api_class_headers_into_stubs(out_dir / "stubs", api_model, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
     merge_api_class_methods_into_stubs(out_dir / "stubs", api_model, module_names)
     merge_api_class_attributes_into_stubs(out_dir / "stubs", api_model, module_names)

@@ -19,7 +19,11 @@ from stubgen.python_api.model import (
     ApiSourceLocation,
 )
 from stubgen.python_api.extract import binding_class_aliases
-from stubgen.class_merge import merge_api_class_attributes, merge_api_class_methods
+from stubgen.class_merge import (
+    merge_api_class_attributes,
+    merge_api_class_header,
+    merge_api_class_methods,
+)
 from stubgen.render import write_stub_file
 from stubgen.signature_parser import group_callable_definitions, parse_callable_group
 
@@ -63,6 +67,25 @@ def binding_method() -> BindingMethod:
 
 
 class PythonApiStubRenderTests(unittest.TestCase):
+    def test_api_class_header_replaces_only_the_declaration(self) -> None:
+        source = """class Example(OldBase):
+    value: int
+
+    def run(self) -> None:
+        ...
+"""
+        api_class = ApiClass(
+            name="Example",
+            module_name="Example",
+            bases=("NewBase",),
+        )
+
+        output = merge_api_class_header(source, api_class)
+
+        self.assertIn("class Example(NewBase):", output)
+        self.assertIn("value: int", output)
+        self.assertIn("def run(self) -> None:", output)
+
     def test_binding_class_public_names_become_api_aliases(self) -> None:
         aliases = binding_class_aliases(
             [

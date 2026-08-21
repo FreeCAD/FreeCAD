@@ -32,7 +32,11 @@ from .model import (
 )
 from ..naming import valid_identifier
 from ..model import BindingClass
-from ..parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
+from ..parsing import (
+    iter_module_stub_pyi_files,
+    iter_type_stub_pyi_files,
+    parse_python_source,
+)
 from ..signature_parser import (
     CallableSignature,
     group_callable_definitions,
@@ -257,25 +261,13 @@ def binding_class_aliases(classes: Iterable[BindingClass]) -> tuple[ApiAlias, ..
 
     aliases: dict[str, ApiAlias] = {}
     for klass in classes:
-        targets: list[tuple[str, str]] = []
-        for public_name in klass.public_names:
-            if "." not in public_name:
-                continue
-            module_name, symbol = public_name.rsplit(".", 1)
-            if not module_name or not valid_identifier(symbol):
-                continue
-            target = (module_name, symbol)
-            if target not in targets:
-                targets.append(target)
+        targets = binding_class_targets(klass)
         if len(targets) < 2:
             continue
 
-        canonical = targets[0]
-        if klass.source.startswith("src/Base/"):
-            canonical = next(
-                (target for target in targets if target[0] == "FreeCAD.Base"),
-                targets[0],
-            )
+        canonical = binding_class_canonical_target(klass)
+        if canonical is None:
+            continue
         target_path = ".".join(canonical)
         for public_module, public_symbol in targets:
             public_path = f"{public_module}.{public_symbol}"
@@ -288,6 +280,96 @@ def binding_class_aliases(classes: Iterable[BindingClass]) -> tuple[ApiAlias, ..
                 location=ApiSourceLocation(klass.source, klass.line),
             )
     return tuple(aliases[name] for name in sorted(aliases))
+
+
+def binding_class_targets(klass: BindingClass) -> list[tuple[str, str]]:
+    targets: list[tuple[str, str]] = []
+    for public_name in klass.public_names:
+        if "." not in public_name:
+            continue
+        module_name, symbol = public_name.rsplit(".", 1)
+        if not module_name or not valid_identifier(symbol):
+            continue
+        target = (module_name, symbol)
+        if target not in targets:
+            targets.append(target)
+    return targets
+
+
+def binding_class_canonical_target(klass: BindingClass) -> tuple[str, str] | None:
+    targets = binding_class_targets(klass)
+    if not targets:
+        return None
+    if klass.source.startswith("src/Base/"):
+        return next(
+            (target for target in targets if target[0] == "FreeCAD.Base"),
+            targets[0],
+        )
+    return targets[0]
+
+
+def binding_class_from_source(
+    root: Path,
+    klass: BindingClass,
+    module_name: str,
+    public_symbol: str,
+) -> ApiClass:
+    path = root / klass.source
+    tree = parse_python_source(path)
+    node = next(
+        (
+            node
+            for node in (tree.body if tree is not None else [])
+            if isinstance(node, ast.ClassDef)
+            and node.name == klass.class_name
+            and node.lineno == klass.line
+        ),
+        None,
+    )
+    if node is None:
+        return ApiClass(
+            module_name=module_name,
+            name=public_symbol,
+            bases=(klass.base_class,) if klass.base_class else (),
+            origin=ApiOrigin.BINDING_SPEC,
+            location=ApiSourceLocation(klass.source, klass.line),
+        )
+
+    source_class = class_from_node(
+        root,
+        path,
+        module_name,
+        node,
+        origin=ApiOrigin.BINDING_SPEC,
+    )
+    return ApiClass(
+        module_name=module_name,
+        name=public_symbol,
+        doc=source_class.doc,
+        bases=source_class.bases,
+        methods=source_class.methods,
+        attributes=source_class.attributes,
+        origin=source_class.origin,
+        location=source_class.location,
+    )
+
+
+def merge_class_piece(builder: ApiModuleBuilder, piece: ApiClass) -> None:
+    existing = builder.classes.get(piece.name)
+    if existing is None:
+        builder.classes[piece.name] = piece
+        return
+    builder.classes[piece.name] = ApiClass(
+        module_name=existing.module_name,
+        name=existing.name,
+        doc=existing.doc or piece.doc,
+        bases=existing.bases or piece.bases,
+        methods=existing.methods or piece.methods,
+        attributes=existing.attributes or piece.attributes,
+        aliases=existing.aliases or piece.aliases,
+        origin=existing.origin,
+        location=existing.location or piece.location,
+    )
 
 
 def module_from_stub_file(
@@ -347,6 +429,7 @@ def extract_curated_api_model(
     """Build a neutral API model from curated source-adjacent stub inputs."""
 
     modules: dict[str, ApiModuleBuilder] = {}
+    binding_classes = tuple(binding_classes)
 
     for path in sorted(iter_module_stub_pyi_files(root, source_dir)):
         piece = module_from_stub_file(
@@ -359,6 +442,17 @@ def extract_curated_api_model(
         )
         builder = modules.setdefault(piece.name, ApiModuleBuilder(name=piece.name))
         merge_module_piece(builder, piece)
+
+    for klass in binding_classes:
+        target = binding_class_canonical_target(klass)
+        if target is None:
+            continue
+        module_name, public_symbol = target
+        builder = modules.setdefault(module_name, ApiModuleBuilder(name=module_name))
+        merge_class_piece(
+            builder,
+            binding_class_from_source(root, klass, module_name, public_symbol),
+        )
 
     for path in sorted(iter_type_stub_pyi_files(root, source_dir)):
         module_name, class_symbol = parse_type_stub_target(path)

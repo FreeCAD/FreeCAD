@@ -10,6 +10,7 @@ from pathlib import Path
 from .extract import extract_curated_api_model
 from .markdown import write_api_markdown_docs
 from .starlight import write_starlight_sidebar_fragment
+from ..class_merge import normalize_api_model_binding_class_headers
 from ..source_inputs import collect_binding_classes
 
 
@@ -42,6 +43,7 @@ def generate_python_docs(options: PythonDocsOptions) -> PythonDocsResult:
         options.source_dir,
         binding_classes=classes,
     )
+    model = normalize_api_model_binding_class_headers(options.root, classes, model)
     page_count = write_api_markdown_docs(
         options.out_dir,
         model,

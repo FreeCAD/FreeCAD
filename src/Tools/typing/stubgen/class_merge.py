@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import ast
 import copy
+from dataclasses import replace
 from pathlib import Path
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
@@ -40,7 +41,7 @@ from .module_merge import (
 )
 from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
-from .python_api.model import ApiCallableGroup, ApiClass, ApiModel
+from .python_api.model import ApiCallableGroup, ApiClass, ApiModel, ApiModule, ApiOrigin
 from .signature_parser import CallableSignature
 
 TYPE_CHECKING_IMPORT_LINE = "from typing import TYPE_CHECKING"
@@ -950,6 +951,126 @@ def class_stub_lines(
     return header + body
 
 
+def normalize_api_model_binding_class_headers(
+    root: Path,
+    classes: list[BindingClass],
+    api_model: ApiModel,
+) -> ApiModel:
+    """Normalize binding-class bases using the public class transformation rules."""
+
+    grouped = group_classes_by_module(classes)
+    import_targets = public_import_target_index(classes)
+    internal_roots = known_stub_module_roots(classes)
+    model_modules: list[ApiModule] = []
+    for module in api_model.modules:
+        api_classes: list[ApiClass] = []
+        module_classes = grouped.get(module.name, [])
+        module_symbols = {
+            symbol
+            for klass in module_classes
+            if (symbol := class_public_symbol(klass, module.name)) is not None
+        }
+        renames = module_symbol_renames(module_classes, module.name)
+        for api_class in module.classes:
+            if api_class.origin != ApiOrigin.BINDING_SPEC:
+                api_classes.append(api_class)
+                continue
+            binding_class = next(
+                (
+                    klass
+                    for klass in module_classes
+                    if class_public_symbol(klass, module.name) == api_class.name
+                ),
+                None,
+            )
+            if binding_class is None:
+                api_classes.append(api_class)
+                continue
+            stub = public_class_stub_source(
+                root,
+                binding_class,
+                module.name,
+                renames,
+                module_symbols,
+                import_targets,
+                internal_roots,
+            )
+            if stub is None:
+                api_classes.append(api_class)
+                continue
+            tree = ast.parse(stub.source)
+            class_node = next(
+                (node for node in tree.body if isinstance(node, ast.ClassDef)),
+                None,
+            )
+            if class_node is None:
+                api_classes.append(api_class)
+                continue
+            api_classes.append(
+                replace(api_class, bases=tuple(ast.unparse(base) for base in class_node.bases))
+            )
+        model_modules.append(replace(module, classes=tuple(api_classes)))
+    return replace(api_model, modules=tuple(model_modules))
+
+
+def render_api_class_header(api_class: ApiClass) -> str:
+    if not api_class.bases:
+        return f"class {api_class.name}:"
+    return f"class {api_class.name}({', '.join(api_class.bases)}):"
+
+
+def merge_api_class_header(target_source: str, api_class: ApiClass) -> str:
+    """Replace one top-level class header from the normalized API model."""
+
+    tree = ast.parse(target_source)
+    target_class = next(
+        (
+            node
+            for node in tree.body
+            if isinstance(node, ast.ClassDef) and node.name == api_class.name
+        ),
+        None,
+    )
+    if target_class is None:
+        return target_source
+    current_bases = tuple(ast.unparse(base) for base in target_class.bases)
+    if current_bases == api_class.bases:
+        return target_source
+
+    lines = target_source.splitlines(keepends=True)
+    line_index = target_class.lineno - 1
+    line = lines[line_index]
+    class_start = target_class.col_offset
+    colon = line.rfind(":")
+    if colon < class_start:
+        return target_source
+    lines[line_index] = line[:class_start] + render_api_class_header(api_class) + line[colon + 1 :]
+    return "".join(lines)
+
+
+def merge_api_class_headers_into_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    count = 0
+    for module in api_model.modules:
+        path = module_stub_path(target_dir, module.name, module_names)
+        if not path.exists():
+            continue
+        original = path.read_text(encoding="utf-8")
+        merged = original
+        for api_class in module.classes:
+            if api_class.origin != ApiOrigin.BINDING_SPEC:
+                continue
+            merged = merge_api_class_header(merged, api_class)
+        if merged == original:
+            continue
+        path.write_text(merged, encoding="utf-8")
+        count += 1
+    return count
+
+
 def append_class_stubs(
     out_dir: Path,
     root: Path,
@@ -1073,7 +1194,7 @@ def merge_api_class_methods(
 ) -> str:
     """Replace curated class methods with their normalized API-model form."""
 
-    if not api_class.methods:
+    if not api_class.methods or api_class.origin == ApiOrigin.BINDING_SPEC:
         return target_source
 
     target_tree = ast.parse(target_source)
@@ -1134,7 +1255,7 @@ def merge_api_class_attributes(
 ) -> str:
     """Replace curated class assignments with their normalized API-model form."""
 
-    if not api_class.attributes:
+    if not api_class.attributes or api_class.origin == ApiOrigin.BINDING_SPEC:
         return target_source
 
     target_tree = ast.parse(target_source)
