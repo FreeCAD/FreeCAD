@@ -425,8 +425,8 @@ bool PreferencePackManager::isVisible(
         hiddenPacks.begin(),
         hiddenPacks.end(),
         [addonName, preferencePackName](ParameterGrp::handle handle) {
-            return (handle->GetASCII("addonName", "") == addonName)
-                && (handle->GetASCII("preferencePackName", "") == preferencePackName);
+            return (handle->getString("addonName", "") == addonName)
+                && (handle->getString("preferencePackName", "") == preferencePackName);
         }
     );
     if (hiddenPack == hiddenPacks.end()) {
@@ -453,15 +453,15 @@ void PreferencePackManager::toggleVisibility(
         hiddenPacks.begin(),
         hiddenPacks.end(),
         [addonName, preferencePackName](ParameterGrp::handle handle) {
-            return (handle->GetASCII("addonName", "") == addonName)
-                && (handle->GetASCII("preferencePackName", "") == preferencePackName);
+            return (handle->getString("addonName", "") == addonName)
+                && (handle->getString("preferencePackName", "") == preferencePackName);
         }
     );
     if (hiddenPack == hiddenPacks.end()) {
         auto name = findUnusedName("PreferencePack", pref);
         auto group = pref->GetGroup(name.c_str());
-        group->SetASCII("addonName", addonName.c_str());
-        group->SetASCII("preferencePackName", preferencePackName.c_str());
+        group->setString("addonName", addonName);
+        group->setString("preferencePackName", preferencePackName);
     }
     else {
         auto groupName = (*hiddenPack)->GetGroupName();
@@ -533,10 +533,10 @@ static void copyTemplateParameters(
         outputGroup->SetFloat(kv.first.c_str(), currentValue);
     }
 
-    auto asciiMap = templateGroup->GetASCIIMap();
+    auto asciiMap = templateGroup->getAllStringsMap();
     for (const auto& kv : asciiMap) {
-        auto currentValue = userParameterHandle->GetASCII(kv.first.c_str(), kv.second.c_str());
-        outputGroup->SetASCII(kv.first.c_str(), currentValue.c_str());
+        auto currentValue = userParameterHandle->getString(kv.first, kv.second);
+        outputGroup->setString(kv.first, currentValue);
     }
 
     // Recurse...

@@ -285,7 +285,7 @@ void DlgParameterImp::showEvent(QShowEvent*)
     ParameterGrp::handle hGrp
         = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
     hGrp = hGrp->GetGroup("ParameterEditor");
-    std::string buf = hGrp->GetASCII("Geometry", "");
+    std::string buf = hGrp->getString("Geometry", "");
     if (!buf.empty()) {
         int x1, y1, x2, y2;
         char sep;
@@ -313,12 +313,12 @@ void DlgParameterImp::closeEvent(QCloseEvent*)
         }
 
         QString path = paths.join(QLatin1String("."));
-        hGrp->SetASCII("LastParameterGroup", (const char*)path.toUtf8());
+        hGrp->setString("LastParameterGroup", path.toStdString());
         // save geometry of window
         const QRect& r = this->geometry();
         std::stringstream str;
         str << "(" << r.left() << "," << r.top() << "," << r.right() << "," << r.bottom() << ")";
-        hGrp->SetASCII("Geometry", str.str().c_str());
+        hGrp->setString("Geometry", str.str());
     }
 }
 
@@ -331,11 +331,11 @@ void DlgParameterImp::onGroupSelected(QTreeWidgetItem* item)
         static_cast<ParameterValue*>(paramValue)->setCurrentGroup(_hcGrp);
 
         // filling up Text nodes
-        std::vector<std::pair<std::string, std::string>> mcTextMap = _hcGrp->GetASCIIMap();
+        std::vector<std::pair<std::string, std::string>> mcTextMap = _hcGrp->getAllStringsMap();
         for (const auto& It2 : mcTextMap) {
             (void)new ParameterText(
                 paramValue,
-                QString::fromUtf8(It2.first.c_str()),
+                QString::fromStdString(It2.first),
                 It2.second.c_str(),
                 _hcGrp
             );
@@ -407,7 +407,7 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ParameterGrp::handle hGrp
         = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
     hGrp = hGrp->GetGroup("ParameterEditor");
-    QString path = QString::fromUtf8(hGrp->GetASCII("LastParameterGroup").c_str());
+    QString path = QString::fromStdString(hGrp->getString("LastParameterGroup"));
     QStringList paths = path.split(QLatin1String("."), Qt::SkipEmptyParts);
 
     QTreeWidgetItem* parent = nullptr;
@@ -821,9 +821,9 @@ void ParameterValue::onCreateTextItem()
         return;
     }
 
-    std::vector<std::pair<std::string, std::string>> smap = _hcGrp->GetASCIIMap();
+    std::vector<std::pair<std::string, std::string>> smap = _hcGrp->getAllStringsMap();
     for (const auto& it : smap) {
-        if (name == QLatin1String(it.first.c_str())) {
+        if (name == QString::fromStdString(it.first)) {
             QMessageBox::critical(
                 this,
                 tr("Existing Item"),
@@ -1196,25 +1196,25 @@ void ParameterText::changeValue()
     );
     if (ok) {
         setText(2, txt);
-        _hcGrp->SetASCII(text(0).toLatin1(), txt.toUtf8());
+        _hcGrp->setString(text(0).toStdString(), txt.toStdString());
     }
 }
 
 void ParameterText::removeFromGroup()
 {
-    _hcGrp->RemoveASCII(text(0).toLatin1());
+    _hcGrp->removeString(text(0).toStdString());
 }
 
 void ParameterText::replace(const QString& oldName, const QString& newName)
 {
-    std::string val = _hcGrp->GetASCII(oldName.toLatin1());
-    _hcGrp->RemoveASCII(oldName.toLatin1());
-    _hcGrp->SetASCII(newName.toLatin1(), val.c_str());
+    std::string val = _hcGrp->getString(oldName.toStdString());
+    _hcGrp->removeString(oldName.toStdString());
+    _hcGrp->setString(newName.toStdString(), val);
 }
 
 void ParameterText::appendToGroup()
 {
-    _hcGrp->SetASCII(text(0).toLatin1(), text(2).toUtf8());
+    _hcGrp->setString(text(0).toStdString(), text(2).toStdString());
 }
 
 // --------------------------------------------------------------------

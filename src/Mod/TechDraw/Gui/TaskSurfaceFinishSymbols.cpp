@@ -145,9 +145,12 @@ TaskSurfaceFinishSymbols::TaskSurfaceFinishSymbols(const std::string &ownerName)
 QColor TaskSurfaceFinishSymbols::getPenColor()
 {
     // TODO: should be dependent on global API giving pen color - not from hacking stylesheet name
-    const std::string stylesheetName = App::GetApplication().GetParameterGroupByPath
-        ("User parameter:BaseApp/Preferences/MainWindow")->GetASCII("StyleSheet");
-    if(boost::icontains(stylesheetName, "dark")) {
+    const std::string stylesheetName = App::GetApplication()
+                                           .GetParameterGroupByPath(
+                                               "User parameter:BaseApp/Preferences/MainWindow"
+                                           )
+                                           ->getString("StyleSheet");
+    if (boost::icontains(stylesheetName, "dark")) {
         return Qt::white;
     }
     return Qt::black;

@@ -55,8 +55,8 @@ DlgMacroRecordImp::DlgMacroRecordImp(QWidget* parent, Qt::WindowFlags fl)
     setupConnections();
 
     // get the macro home path
-    this->macroPath = QString::fromUtf8(
-        getWindowParameter()->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str()).c_str()
+    this->macroPath = QString::fromStdString(
+        getWindowParameter()->getString("MacroPath", App::Application::getUserMacroDir())
     );
     this->macroPath = QDir::toNativeSeparators(QDir(this->macroPath).path() + QDir::separator());
 
@@ -202,11 +202,11 @@ void DlgMacroRecordImp::onButtonChooseDirClicked()
             userMacroDir = userMacroDir.parent_path();
         }
         if (chosenPath != userMacroDir) {
-            getWindowParameter()->SetASCII("MacroPath", macroPath.toUtf8());
+            getWindowParameter()->setString("MacroPath", macroPath.toStdString());
         }
-        else if (getWindowParameter()->GetASCII("MacroPath", "UNSET") != "UNSET") {
+        else if (getWindowParameter()->getString("MacroPath", "UNSET") != "UNSET") {
             // If the new path IS the default path, remove any existing storage of the path
-            getWindowParameter()->RemoveASCII("MacroPath");
+            getWindowParameter()->removeString("MacroPath");
         }
     }
 }

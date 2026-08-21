@@ -84,7 +84,7 @@ void DlgSettingsFemInOutVtkImp::populateExportLevel() const
 
     // set default index
     auto hGrp = ui->cb_export_level->getWindowParameter();
-    std::string current = hGrp->GetASCII(ui->cb_export_level->entryName(), "Highest");
+    std::string current = hGrp->getString(ui->cb_export_level->entryName().toStdString(), "Highest");
     int index = ui->cb_export_level->findData(QByteArray::fromStdString(current));
     ui->cb_export_level->setCurrentIndex(index);
 }

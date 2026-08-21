@@ -241,20 +241,20 @@ TEST_F(ParameterTest, TestString)
 {
     auto cfg = getCreateConfig();
     auto grp = cfg->GetGroup("TopLevelGroup");
-    grp->SetASCII("Parameter1", "Value1");
-    grp->SetASCII("Parameter2", "Value2");
-    EXPECT_EQ(grp->GetASCII("Parameter1", "Value3"), "Value1");
-    EXPECT_EQ(grp->GetASCII("Parameter3", "Value3"), "Value3");
-    EXPECT_EQ(grp->GetASCII("Parameter3", "Value4"), "Value4");
+    grp->setString("Parameter1", "Value1");
+    grp->setString("Parameter2", "Value2");
+    EXPECT_EQ(grp->getString("Parameter1", "Value3"), "Value1");
+    EXPECT_EQ(grp->getString("Parameter3", "Value3"), "Value3");
+    EXPECT_EQ(grp->getString("Parameter3", "Value4"), "Value4");
 
-    EXPECT_TRUE(grp->GetASCIIs("Test").empty());
-    EXPECT_EQ(grp->GetASCIIs().size(), 2);
-    EXPECT_EQ(grp->GetASCIIs().at(0), "Value1");
-    EXPECT_EQ(grp->GetASCIIs().at(1), "Value2");
-    EXPECT_EQ(grp->GetASCIIMap().size(), 2);
+    EXPECT_TRUE(grp->getAllStrings("Test").empty());
+    EXPECT_EQ(grp->getAllStrings().size(), 2);
+    EXPECT_EQ(grp->getAllStrings().at(0), "Value1");
+    EXPECT_EQ(grp->getAllStrings().at(1), "Value2");
+    EXPECT_EQ(grp->getAllStringsMap().size(), 2);
 
-    grp->RemoveASCII("Parameter1");
-    EXPECT_EQ(grp->GetASCIIs().size(), 1);
+    grp->removeString("Parameter1");
+    EXPECT_EQ(grp->getAllStrings().size(), 1);
 }
 
 TEST_F(ParameterTest, TestCopy)

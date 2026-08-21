@@ -84,11 +84,13 @@ void ImportExportSettings::initIGES(Base::Reference<ParameterGrp> hGrp)
     int value = Interface_Static::IVal("write.iges.brep.mode");
     bool brep = hIgesGrp->GetBool("BrepMode", value > 0);
     Interface_Static::SetIVal("write.iges.brep.mode", brep ? 1 : 0);
-    Interface_Static::SetCVal("write.iges.header.company", hIgesGrp->GetASCII("Company").c_str());
-    Interface_Static::SetCVal("write.iges.header.author", hIgesGrp->GetASCII("Author").c_str());
+    Interface_Static::SetCVal("write.iges.header.company", hIgesGrp->getString("Company").c_str());
+    Interface_Static::SetCVal("write.iges.header.author", hIgesGrp->getString("Author").c_str());
     Interface_Static::SetCVal(
         "write.iges.header.product",
-        hIgesGrp->GetASCII("Product", Interface_Static::CVal("write.iges.header.product")).c_str()
+        hIgesGrp
+            ->getString("Product", std::string_view {Interface_Static::CVal("write.iges.header.product")})
+            .c_str()
     );
 
     int unitIges = hIgesGrp->GetInt("Unit", 0);
@@ -147,11 +149,16 @@ void ImportExportSettings::initSTEP(Base::Reference<ParameterGrp> hGrp)
             break;
     }
 
-    std::string ap = hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+    std::string ap = hStepGrp->getString(
+        "Scheme",
+        std::string_view {Interface_Static::CVal("write.step.schema")}
+    );
     Interface_Static::SetCVal("write.step.schema", ap.c_str());
     Interface_Static::SetCVal(
         "write.step.product.name",
-        hStepGrp->GetASCII("Product", Interface_Static::CVal("write.step.product.name")).c_str()
+        hStepGrp
+            ->getString("Product", std::string_view {Interface_Static::CVal("write.step.product.name")})
+            .c_str()
     );
 }
 
