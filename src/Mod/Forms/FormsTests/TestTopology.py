@@ -191,6 +191,13 @@ class GeometryEditingTest(unittest.TestCase):
         pending[0]()
         self.assertEqual(applied, [expected])
 
+    def test_face_deletion_rejects_boundaries_touching_at_one_vertex(self):
+        vertices, faces = face_control_cage(10, 10, 5, 5)
+        cage = ControlCage(vertices, faces).delete_faces([0])
+
+        with self.assertRaisesRegex(ValueError, "boundaries meeting at a vertex"):
+            cage.delete_faces([5])
+
     def test_flatten_projects_to_best_fit_plane(self):
         vertices = [(0, 0, 0.0), (2, 0, 0.3), (2, 2, -0.2), (0, 2, 0.1)]
         result = flatten_points(vertices, range(4))

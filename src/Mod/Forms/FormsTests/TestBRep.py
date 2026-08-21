@@ -1336,6 +1336,25 @@ class BRepConversionTest(unittest.TestCase):
         self.assertEqual(len(edited.vertex_sharpness), 4)
         self.assertTrue(set(edited.edge_sharpness).issubset(set(cage_edges(edited.faces))))
 
+    def test_invalid_second_face_deletion_leaves_the_form_unchanged(self):
+        document = App.newDocument("FormsTestRejectedFaceDeletion")
+        obj = create_face(document)
+        obj.XSegments = 5
+        obj.YSegments = 5
+        document.recompute()
+        delete_faces(obj, [0])
+        document.recompute()
+        points_before = list(obj.ControlPoints)
+        faces_before = list(obj.ControlFaces)
+        shape_hash_before = obj.Shape.hashCode()
+
+        with self.assertRaisesRegex(ValueError, "boundaries meeting at a vertex"):
+            delete_faces(obj, [5])
+
+        self.assertEqual(list(obj.ControlPoints), points_before)
+        self.assertEqual(list(obj.ControlFaces), faces_before)
+        self.assertEqual(obj.Shape.hashCode(), shape_hash_before)
+
     def test_generated_faces_map_back_to_unique_control_faces(self):
         document = App.newDocument("FormsTestFaceMapping")
         obj = create_box(document)

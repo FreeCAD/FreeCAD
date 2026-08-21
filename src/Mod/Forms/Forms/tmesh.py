@@ -33,6 +33,8 @@ from dataclasses import dataclass
 import json
 import math
 
+from .topology import validate_manifold_boundary
+
 
 def _edge(first, second):
     return tuple(sorted((int(first), int(second))))
@@ -226,6 +228,7 @@ class HierarchicalTMesh:
         counts = self.edge_counts()
         if any(count > 2 for count in counts.values()):
             raise ValueError("The T-mesh contains a non-manifold edge")
+        validate_manifold_boundary(counts, "T-mesh")
         if set(self.edge_intervals) != set(counts):
             raise ValueError("Every atomic T-mesh edge requires exactly one knot interval")
         if any(not math.isfinite(value) or value <= 0.0 for value in self.edge_intervals.values()):

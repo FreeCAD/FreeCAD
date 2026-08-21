@@ -329,10 +329,19 @@ def _run_topology_operation(selections, transaction_name, operation):
                 session.topology_changed()
         for document in own_transactions:
             document.commitTransaction()
+    except ValueError as error:
+        for document in own_transactions:
+            document.abortTransaction()
+        message = f"{transaction_name}: {error}"
+        App.Console.PrintWarning(message + "\n")
+        if App.GuiUp:
+            Gui.getMainWindow().statusBar().showMessage(message, 5000)
+        return False
     except Exception:
         for document in own_transactions:
             document.abortTransaction()
         raise
+    return True
 
 
 class CommandDeleteFaces:

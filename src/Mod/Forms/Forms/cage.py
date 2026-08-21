@@ -54,6 +54,7 @@ from .topology import (
     cage_edges,
     catmull_clark_limit_points,
     catmull_clark_patch_grids,
+    validate_manifold_boundary,
 )
 
 
@@ -163,8 +164,10 @@ class ControlCage:
                 raise ValueError("Control-cage faces cannot repeat a vertex")
             if any(index < 0 or index >= len(self.vertices) for index in face):
                 raise ValueError("Control-cage face index is out of range")
-        if any(count > 2 for count in self.edge_counts().values()):
+        edge_counts = self.edge_counts()
+        if any(count > 2 for count in edge_counts.values()):
             raise ValueError("The control cage contains a non-manifold edge")
+        validate_manifold_boundary(edge_counts)
         # Hierarchical T-mesh edges use stable IDs outside the base cage, so
         # they are intentionally allowed here. Their topology is validated by
         # HierarchicalTMesh; this layer only guards the numeric OCC boundary.

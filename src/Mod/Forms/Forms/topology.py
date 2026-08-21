@@ -26,6 +26,21 @@
 import math
 
 
+def validate_manifold_boundary(edge_counts, label="control cage"):
+    """Reject free boundaries that branch or meet only at one vertex."""
+    neighbors = {}
+    for edge, count in edge_counts.items():
+        if count != 1:
+            continue
+        first, second = edge
+        neighbors.setdefault(first, set()).add(second)
+        neighbors.setdefault(second, set()).add(first)
+    if any(len(adjacent) != 2 for adjacent in neighbors.values()):
+        raise ValueError(
+            f"The {label} has non-manifold boundaries meeting at a vertex"
+        )
+
+
 def _average(points):
     count = len(points)
     return tuple(sum(point[axis] for point in points) / count for axis in range(3))

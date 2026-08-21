@@ -2059,7 +2059,10 @@ class FormEditSession(FormEditToolsMixin):
         return vertices, edges
 
     def _selected_sharpness_context(self):
-        mapper = self._control_element_mapper()
+        try:
+            mapper = self._control_element_mapper()
+        except (Part.OCCError, RuntimeError, ValueError):
+            return set(), set(), set(), set()
         cage_faces = (
             [face.boundary for face in mapper.mesh.faces.values()]
             if mapper.mesh is not None
