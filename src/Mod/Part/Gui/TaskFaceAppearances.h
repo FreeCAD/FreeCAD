@@ -72,6 +72,7 @@ protected:
     void updatePanel();
     void syncMaterialWidget();
     int getFirstIndex() const;
+    void markFaceAppearanceOverrides();
 
 private:
     class Private;
