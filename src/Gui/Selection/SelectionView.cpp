@@ -230,23 +230,7 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
         }
     }
     else if (Reason.Type == SelectionChanges::SetSelection) {
-        // remove all items
-        selectionView->clear();
-        std::vector<SelectionSingleton::SelObj> objs
-            = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
-        for (const auto& it : objs) {
-            // save as user data
-            QStringList list;
-            list << QString::fromUtf8(it.DocName);
-            list << QString::fromUtf8(it.FeatName);
-
-            App::Document* doc = App::GetApplication().getDocument(it.DocName);
-            App::DocumentObject* obj = doc->getObject(it.FeatName);
-            getSelectionName(str, it.DocName, it.FeatName, it.SubName, obj);
-            QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
-            item->setData(Qt::UserRole, list);
-            selObject.clear();
-        }
+        refreshSelectionListFromCurrentSelection(Reason.pDocName);
     }
     else if (Reason.Type == SelectionChanges::PickedListChanged) {
         bool picking = Selection().needPickedList();
@@ -276,6 +260,56 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
                 new QListWidgetItem(selObject, pickList);
             }
         }
+    }
+}
+
+void SelectionView::refreshSelectionListFromCurrentSelection(const char* pDocName)
+{
+    selectionView->clear();
+    std::vector<SelectionSingleton::SelObj> objs
+        = Gui::Selection().getSelection(pDocName, ResolveMode::NoResolve);
+
+    QString selObject;
+    QTextStream str(&selObject);
+
+    auto getSelectionName = [](QTextStream& str,
+                               const char* docName,
+                               const char* objName,
+                               const char* subName,
+                               App::DocumentObject* obj) {
+        str << QString::fromUtf8(docName);
+        str << "#";
+        str << QString::fromUtf8(objName);
+        if (subName != 0 && subName[0] != 0) {
+            str << ".";
+            App::ElementNamePair elementName;
+            App::GeoFeature::resolveElement(obj, subName, elementName);
+            str << elementName.oldName.c_str();
+            if (elementName.newName.size() > 0) {
+                str << " []";
+            }
+            auto subObj = obj->getSubObject(subName);
+            if (subObj) {
+                obj = subObj;
+            }
+        }
+        str << " (";
+        str << QString::fromUtf8(obj->Label.getValue());
+        str << ")";
+    };
+
+    for (const auto& it : objs) {
+        // save as user data
+        QStringList list;
+        list << QString::fromUtf8(it.DocName);
+        list << QString::fromUtf8(it.FeatName);
+
+        App::Document* doc = App::GetApplication().getDocument(it.DocName);
+        App::DocumentObject* obj = doc->getObject(it.FeatName);
+        getSelectionName(str, it.DocName, it.FeatName, it.SubName, obj);
+        QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
+        item->setData(Qt::UserRole, list);
+        selObject.clear();
     }
 
     countLabel->setText(QString::number(selectionView->count()));
@@ -313,6 +347,11 @@ void SelectionView::search(const QString& text)
             }
             countLabel->setText(QString::number(selectionView->count()));
         }
+    }
+    else {
+        // When search text is cleared, restore the current selection
+        searchList.clear();
+        refreshSelectionListFromCurrentSelection();
     }
 }
 
