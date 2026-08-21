@@ -1627,6 +1627,7 @@ class PathAdaptive(PathOp.ObjectOp):
                 "To take a finishing profile path at the end",
             ),
         )
+        obj.setEditorMode("FinishingProfile", 2)  # hide this property
         obj.addProperty(
             "App::PropertyBool",
             "Stopped",
