@@ -81,11 +81,6 @@ void QGVNavStyleTouchpad::handleKeyReleaseEvent(QKeyEvent *event)
 
 void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
         //if shift is down then we are panning
         if (panningActive) {

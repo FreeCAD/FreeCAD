@@ -577,7 +577,7 @@ void QGSPage::addBalloonToParent(QGIViewBalloon* balloon, QGIView* parent)
 }
 
 // origin is in scene coordinates from QGVPage widget
-void QGSPage::createBalloon(QPointF origin, DrawView* parent)
+TechDraw::DrawViewBalloon* QGSPage::createBalloon(QPointF origin, QPointF headPlacement, DrawView* parent)
 {
     std::string featName = getDrawPage()->getDocument()->getUniqueObjectName("Balloon");
     std::string pageName = getDrawPage()->getNameInDocument();
@@ -607,11 +607,23 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
     auto parentRotationDeg = parent->Rotation.getValue();
     parentOrigin.RotateZ(Base::toRadians(-parentRotationDeg));               // unrotated
 
+    auto parentHeadPlacement = DU::toVector3d(qgParent->mapFromScene(headPlacement));
+    parentHeadPlacement = Rez::appX(parentHeadPlacement) / parent->getScale();
+    parentHeadPlacement = DrawUtil::invertY(parentHeadPlacement);
+    parentHeadPlacement.RotateZ(Base::toRadians(-parentRotationDeg));
+
     balloon->setOrigin(parentOrigin);
 
-    double textOffset = 20.0 / parent->getScale();
-    balloon->setPosition(parentOrigin.x + textOffset,
-                         parentOrigin.y + textOffset);
+    if (headPlacement.isNull())
+    {
+        double textOffset = 20.0 / parent->getScale();
+        balloon->setPosition(parentOrigin.x + textOffset,
+                             parentOrigin.y + textOffset);
+    }
+    else
+    {
+        balloon->setPosition(parentHeadPlacement.x, parentHeadPlacement.y);
+    }
 
     int idx = getDrawPage()->getNextBalloonIndex();
     balloon->Text.setValue(std::to_string(idx).c_str());
@@ -623,6 +635,8 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
 
     // Touch the parent feature so the balloon in tree view appears as a child
     parent->touch(true);
+
+    return balloon;
 }
 
 QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)

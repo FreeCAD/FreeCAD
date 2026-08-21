@@ -55,11 +55,6 @@ void QGVNavStyleInventor::handleMousePressEvent(QMouseEvent *event)
 
 void QGVNavStyleInventor::handleMouseMoveEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        balloonCursorMovement(event);
-        return;
-    }
-
     if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&
         (QGuiApplication::mouseButtons() & Qt::MiddleButton)) {
         //zoom mode 2 - LMB + MMB
@@ -82,10 +77,6 @@ void QGVNavStyleInventor::handleMouseMoveEvent(QMouseEvent *event)
 
 void QGVNavStyleInventor::handleMouseReleaseEvent(QMouseEvent *event)
 {
-    if (getViewer()->isBalloonPlacing()) {
-        placeBalloon(event->pos());
-    }
-
     if (event->button() == Qt::MiddleButton) {
         //pan mode MMB
         if (panningActive) {
