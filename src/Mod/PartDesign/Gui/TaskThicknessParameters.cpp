@@ -89,8 +89,6 @@ void TaskThicknessParameters::initControls()
 
     setupConnections();
 
-    int mode = static_cast<int>(thickness->Mode.getValue());
-    ui->modeComboBox->setCurrentIndex(mode);
 
     int join = static_cast<int>(thickness->Join.getValue());
     ui->joinComboBox->setCurrentIndex(join);
@@ -116,8 +114,6 @@ void TaskThicknessParameters::setupConnections()
             this, &TaskThicknessParameters::onIntersectionChanged);
     connect(ui->buttonRefSel, &QToolButton::toggled,
             this, &TaskThicknessParameters::onButtonRefSel);
-    connect(ui->modeComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
-            this, &TaskThicknessParameters::onModeChanged);
     connect(ui->joinComboBox, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &TaskThicknessParameters::onJoinTypeChanged);
 
@@ -189,13 +185,6 @@ void TaskThicknessParameters::onJoinTypeChanged(int join)
     }
 }
 
-void TaskThicknessParameters::onModeChanged(int mode)
-{
-    if (PartDesign::Thickness* thickness = onBeforeChange()) {
-        thickness->Mode.setValue(mode);
-        onAfterChange(thickness);
-    }
-}
 
 double TaskThicknessParameters::getValue() const
 {
@@ -236,11 +225,6 @@ int TaskThicknessParameters::getJoinType() const
     return ui->joinComboBox->currentIndex();
 }
 
-int TaskThicknessParameters::getMode() const
-{
-
-    return ui->modeComboBox->currentIndex();
-}
 
 TaskThicknessParameters::~TaskThicknessParameters()
 {
@@ -341,7 +325,6 @@ bool TaskDlgThicknessParameters::accept()
 
     FCMD_OBJ_CMD(obj, "Value = " << draftparameter->getValue());
     FCMD_OBJ_CMD(obj, "Reversed = " << draftparameter->getReversed());
-    FCMD_OBJ_CMD(obj, "Mode = " << draftparameter->getMode());
     FCMD_OBJ_CMD(obj, "Intersection = " << draftparameter->getIntersection());
     FCMD_OBJ_CMD(obj, "Join = " << draftparameter->getJoinType());
 
