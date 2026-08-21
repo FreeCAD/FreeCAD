@@ -27,6 +27,8 @@
 #endif
 
 #include <cassert>
+#include <array>
+#include <numeric>
 
 #include "Geo.h"
 
@@ -34,36 +36,75 @@
 namespace GCS
 {
 
+//----------------Distance
+Distance::Distance(std::array<double, Constants::n_dimensions> deltas_)
+    : deltas(deltas_)
+{
+    value2 = std::inner_product(deltas.begin(), deltas.end(), deltas.begin(), 0);
+}
+double Distance::value() const
+{
+    return sqrt(value2);
+}
+double Distance::dx() const
+{
+    return deltas[0];
+}
+double Distance::dy() const
+{
+    return deltas[1];
+}
+
+
 //----------------Point
+Point::Point(double* px, double* py)
+{
+    coords[0] = px;
+    coords[1] = px;
+}
+void Point::copyValue(const Point& other)
+{
+    for (size_t i = 0; i < coords.size(); ++i) {
+        *coords[i] = *other.coords[i];
+    }
+}
 int Point::PushOwnParams(VEC_pD& pvec) const
 {
-    int cnt = 0;
-    pvec.push_back(x);
-    cnt++;
-    pvec.push_back(y);
-    cnt++;
-    return cnt;
+    pvec.insert(pvec.end(), coords.begin(), coords.end());
+    return coords.size();
 }
 
 void Point::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    x = pvec[cnt];
-    cnt++;
-    y = pvec[cnt];
-    cnt++;
+    for (size_t i = 0; i < coords.size(); ++i, ++cnt) {
+        coords[i] = pvec[cnt];
+    }
+}
+bool Point::hasParam(double* param)
+{
+    return std::ranges::find(coords, param) != coords.end();
+}
+
+Distance Point::distance(const Point& other) const
+{
+    std::array<double, Constants::n_dimensions> tmp;
+    for (size_t i = 0; i < coords.size(); ++i) {
+        tmp[i] = coords[i] - other.coords[i];
+    }
+    return Distance(tmp);
 }
 
 //----------------DeriVector2
 DeriVector2::DeriVector2(const Point& p, const double* derivparam)
-    : x(*p.x)
+    : x(*p.x())
     , dx(0.0)
-    , y(*p.y)
+    , y(*p.y())
     , dy(0.0)
 {
-    if (derivparam == p.x) {
+    if (derivparam == p.x()) {
         dx = 1.0;
     }
-    if (derivparam == p.y) {
+    if (derivparam == p.y()) {
         dy = 1.0;
     }
 }
@@ -124,7 +165,10 @@ DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam
 }
 
 //----------------Line
-
+Line::Line(Point p1_, Point p2_)
+    : p1(p1_)
+    , p2(p2_)
+{}
 DeriVector2 Line::CalculateNormal(const Point& p, const double* derivparam) const
 {
     (void)p;
@@ -146,35 +190,30 @@ DeriVector2 Line::Value(double u, double du, const double* derivparam) const
 int Line::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(p1.x);
-    cnt++;
-    pvec.push_back(p1.y);
-    cnt++;
-    pvec.push_back(p2.x);
-    cnt++;
-    pvec.push_back(p2.y);
-    cnt++;
+    cnt += p1.PushOwnParams(pvec);
+    cnt += p2.PushOwnParams(pvec);
     return cnt;
 }
 void Line::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    p1.x = pvec[cnt];
-    cnt++;
-    p1.y = pvec[cnt];
-    cnt++;
-    p2.x = pvec[cnt];
-    cnt++;
-    p2.y = pvec[cnt];
-    cnt++;
+    p1.ReconstructOnNewPvec(pvec, cnt);
+    p2.ReconstructOnNewPvec(pvec, cnt);
 }
 Line* Line::Copy()
 {
     return new Line(*this);
 }
-
+Distance Line::length() const
+{
+    return p1.distance(p2);
+}
 
 //---------------circle
 
+Circle::Circle(Point center_, double* rad_)
+    : center(center_)
+    , rad(rad_)
+{}
 DeriVector2 Circle::CalculateNormal(const Point& p, const double* derivparam) const
 {
     DeriVector2 cv(center, derivparam);
@@ -202,20 +241,14 @@ DeriVector2 Circle::Value(double u, double du, const double* derivparam) const
 int Circle::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(center.x);
-    cnt++;
-    pvec.push_back(center.y);
-    cnt++;
+    cnt += center.PushOwnParams(pvec);
     pvec.push_back(rad);
     cnt++;
     return cnt;
 }
 void Circle::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    center.x = pvec[cnt];
-    cnt++;
-    center.y = pvec[cnt];
-    cnt++;
+    center.ReconstructOnNewPvec(pvec, cnt);
     rad = pvec[cnt];
     cnt++;
 }
@@ -229,14 +262,8 @@ int Arc::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Circle::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
@@ -246,14 +273,8 @@ int Arc::PushOwnParams(VEC_pD& pvec)
 void Arc::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
     Circle::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -267,6 +288,11 @@ Arc* Arc::Copy()
 
 //--------------ellipse
 
+Ellipse::Ellipse(Point center_, Point focus1_, double* radmin_)
+    : center(center_)
+    , focus1(focus1_)
+    , radmin(radmin_)
+{}
 // this function is exposed to allow reusing pre-filled derivectors in constraints code
 double Ellipse::getRadMaj(
     const DeriVector2& center,
@@ -359,28 +385,16 @@ DeriVector2 Ellipse::Value(double u, double du, const double* derivparam) const
 int Ellipse::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(center.x);
-    cnt++;
-    pvec.push_back(center.y);
-    cnt++;
-    pvec.push_back(focus1.x);
-    cnt++;
-    pvec.push_back(focus1.y);
-    cnt++;
+    cnt += center.PushOwnParams(pvec);
+    cnt += focus1.PushOwnParams(pvec);
     pvec.push_back(radmin);
     cnt++;
     return cnt;
 }
 void Ellipse::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    center.x = pvec[cnt];
-    cnt++;
-    center.y = pvec[cnt];
-    cnt++;
-    focus1.x = pvec[cnt];
-    cnt++;
-    focus1.y = pvec[cnt];
-    cnt++;
+    center.ReconstructOnNewPvec(pvec, cnt);
+    focus1.ReconstructOnNewPvec(pvec, cnt);
     radmin = pvec[cnt];
     cnt++;
 }
@@ -395,14 +409,8 @@ int ArcOfEllipse::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Ellipse::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
@@ -412,14 +420,8 @@ int ArcOfEllipse::PushOwnParams(VEC_pD& pvec)
 void ArcOfEllipse::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
     Ellipse::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -523,28 +525,16 @@ DeriVector2 Hyperbola::Value(double u, double du, const double* derivparam) cons
 int Hyperbola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(center.x);
-    cnt++;
-    pvec.push_back(center.y);
-    cnt++;
-    pvec.push_back(focus1.x);
-    cnt++;
-    pvec.push_back(focus1.y);
-    cnt++;
+    cnt += center.PushOwnParams(pvec);
+    cnt += focus1.PushOwnParams(pvec);
     pvec.push_back(radmin);
     cnt++;
     return cnt;
 }
 void Hyperbola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    center.x = pvec[cnt];
-    cnt++;
-    center.y = pvec[cnt];
-    cnt++;
-    focus1.x = pvec[cnt];
-    cnt++;
-    focus1.y = pvec[cnt];
-    cnt++;
+    center.ReconstructOnNewPvec(pvec, cnt);
+    focus1.ReconstructOnNewPvec(pvec, cnt);
     radmin = pvec[cnt];
     cnt++;
 }
@@ -558,14 +548,8 @@ int ArcOfHyperbola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Hyperbola::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
@@ -575,14 +559,8 @@ int ArcOfHyperbola::PushOwnParams(VEC_pD& pvec)
 void ArcOfHyperbola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
     Hyperbola::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -595,6 +573,10 @@ ArcOfHyperbola* ArcOfHyperbola::Copy()
 
 //---------------parabola
 
+Parabola::Parabola(Point vertex_, Point focus1_)
+    : vertex(vertex_)
+    , focus1(focus1_)
+{}
 DeriVector2 Parabola::CalculateNormal(const Point& p, const double* derivparam) const
 {
     // fill some vectors in
@@ -643,27 +625,15 @@ DeriVector2 Parabola::Value(double u, double du, const double* derivparam) const
 int Parabola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
-    pvec.push_back(vertex.x);
-    cnt++;
-    pvec.push_back(vertex.y);
-    cnt++;
-    pvec.push_back(focus1.x);
-    cnt++;
-    pvec.push_back(focus1.y);
-    cnt++;
+    cnt += vertex.PushOwnParams(pvec);
+    cnt += focus1.PushOwnParams(pvec);
     return cnt;
 }
 
 void Parabola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
-    vertex.x = pvec[cnt];
-    cnt++;
-    vertex.y = pvec[cnt];
-    cnt++;
-    focus1.x = pvec[cnt];
-    cnt++;
-    focus1.y = pvec[cnt];
-    cnt++;
+    vertex.ReconstructOnNewPvec(pvec, cnt);
+    focus1.ReconstructOnNewPvec(pvec, cnt);
 }
 
 Parabola* Parabola::Copy()
@@ -676,14 +646,8 @@ int ArcOfParabola::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
     cnt += Parabola::PushOwnParams(pvec);
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
     pvec.push_back(startAngle);
     cnt++;
     pvec.push_back(endAngle);
@@ -693,14 +657,8 @@ int ArcOfParabola::PushOwnParams(VEC_pD& pvec)
 void ArcOfParabola::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
     Parabola::ReconstructOnNewPvec(pvec, cnt);
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
     startAngle = pvec[cnt];
     cnt++;
     endAngle = pvec[cnt];
@@ -722,7 +680,7 @@ DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) c
 
     if (mult[0] > degree && mult[mult.size() - 1] > degree) {
         // if endpoints through end poles
-        if (*p.x == *start.x && *p.y == *start.y) {
+        if (p.distance(start).value() < 1e-10) {
             // and you are asking about the normal at start point
             // then tangency is defined by first to second poles
             DeriVector2 endpt(this->poles[1], derivparam);
@@ -731,7 +689,7 @@ DeriVector2 BSpline::CalculateNormal(const Point& p, const double* derivparam) c
             DeriVector2 tg = endpt.subtr(spt);
             return tg.rotate90ccw();
         }
-        if (*p.x == *end.x && *p.y == *end.y) {
+        if (p.distance(end).value() < 1e-10) {
             // and you are asking about the normal at end point
             // then tangency is defined by last to last but one poles
             DeriVector2 endpt(this->poles[poles.size() - 1], derivparam);
@@ -760,10 +718,10 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
     }
 
     auto polexat = [&](size_t i) {
-        return poles[(startpole + i) % poles.size()].x;
+        return poles[(startpole + i) % poles.size()].x();
     };
     auto poleyat = [&](size_t i) {
-        return poles[(startpole + i) % poles.size()].y;
+        return poles[(startpole + i) % poles.size()].y();
     };
     auto weightat = [&](size_t i) {
         return weights[(startpole + i) % weights.size()];
@@ -883,10 +841,10 @@ DeriVector2 BSpline::Value(double u, double /*du*/, const double* /*derivparam*/
     // double wsum = 0., wslopesum = 0.;
 
     auto polexat = [&](size_t i) {
-        return poles[(startpole + i) % poles.size()].x;
+        return poles[(startpole + i) % poles.size()].x();
     };
     auto poleyat = [&](size_t i) {
-        return poles[(startpole + i) % poles.size()].y;
+        return poles[(startpole + i) % poles.size()].y();
     };
     auto weightat = [&](size_t i) {
         return weights[(startpole + i) % weights.size()];
@@ -955,10 +913,10 @@ void BSpline::valueHomogenous(
     }
 
     auto polexat = [&](size_t i) {
-        return poles[(startpole + i) % poles.size()].x;
+        return poles[(startpole + i) % poles.size()].x();
     };
     auto poleyat = [&](size_t i) {
-        return poles[(startpole + i) % poles.size()].y;
+        return poles[(startpole + i) % poles.size()].y();
     };
     auto weightat = [&](size_t i) {
         return weights[(startpole + i) % weights.size()];
@@ -1002,11 +960,8 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
     std::size_t cnt = 0;
 
     for (const auto& pole : poles) {
-        pvec.push_back(pole.x);
-        pvec.push_back(pole.y);
+        cnt += pole.PushOwnParams(pvec);
     }
-
-    cnt = cnt + poles.size() * 2;
 
     pvec.insert(pvec.end(), weights.begin(), weights.end());
     cnt = cnt + weights.size();
@@ -1014,14 +969,8 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
     pvec.insert(pvec.end(), knots.begin(), knots.end());
     cnt = cnt + knots.size();
 
-    pvec.push_back(start.x);
-    cnt++;
-    pvec.push_back(start.y);
-    cnt++;
-    pvec.push_back(end.x);
-    cnt++;
-    pvec.push_back(end.y);
-    cnt++;
+    cnt += start.PushOwnParams(pvec);
+    cnt += end.PushOwnParams(pvec);
 
     return static_cast<int>(cnt);
 }
@@ -1029,10 +978,7 @@ int BSpline::PushOwnParams(VEC_pD& pvec)
 void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
 {
     for (auto& pole : poles) {
-        pole.x = pvec[cnt];
-        cnt++;
-        pole.y = pvec[cnt];
-        cnt++;
+        pole.ReconstructOnNewPvec(pvec, cnt);
     }
 
     for (auto& weight : weights) {
@@ -1045,14 +991,8 @@ void BSpline::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
         cnt++;
     }
 
-    start.x = pvec[cnt];
-    cnt++;
-    start.y = pvec[cnt];
-    cnt++;
-    end.x = pvec[cnt];
-    cnt++;
-    end.y = pvec[cnt];
-    cnt++;
+    start.ReconstructOnNewPvec(pvec, cnt);
+    end.ReconstructOnNewPvec(pvec, cnt);
 }
 
 BSpline* BSpline::Copy()
