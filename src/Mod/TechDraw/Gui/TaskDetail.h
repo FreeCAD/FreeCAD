@@ -67,6 +67,9 @@ public:
     TechDraw::DrawViewPart* getBaseFeat();
     TechDraw::DrawViewDetail* getDetailFeat();
 
+    void setInitialAnchor(const Base::Vector3d& anchor);
+    void setViewPosition(const Base::Vector3d& position, bool finished = false);
+
 public Q_SLOTS:
         void onDraggerClicked(bool clicked);
         void onHighlightMoved(QPointF dragEnd);
@@ -153,6 +156,8 @@ public:
     void modifyStandardButtons(QDialogButtonBox* box) override;
 
     std::string getDetailName() const;
+    void setInitialAnchor(const Base::Vector3d& anchor) { widget->setInitialAnchor(anchor); }
+    void setViewPosition(const Base::Vector3d& position, bool finished = false) { widget->setViewPosition(position, finished); }
 
 private:
     TaskDetail * widget;

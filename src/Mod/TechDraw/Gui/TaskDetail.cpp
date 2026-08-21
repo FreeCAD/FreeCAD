@@ -227,6 +227,24 @@ void TaskDetail::restoreDetailState()
     dvd->Radius.setValue(m_saveRadius);
 }
 
+void TaskDetail::setInitialAnchor(const Base::Vector3d& anchor)
+{
+    TechDraw::DrawViewDetail* dvd = getDetailFeat();
+    dvd->AnchorPoint.setValue(anchor);
+    setUiFromFeat();
+    dvd->recomputeFeature();
+}
+
+void TaskDetail::setViewPosition(const Base::Vector3d& position, bool finished)
+{
+    TechDraw::DrawViewDetail* dvd = getDetailFeat();
+    dvd->X.setValue(position.x);
+    dvd->Y.setValue(position.y);
+    if (finished) {
+        dvd->recomputeFeature();
+    }
+}
+
 //***** ui stuff ***************************************************************
 
 void TaskDetail::setUiFromFeat()
