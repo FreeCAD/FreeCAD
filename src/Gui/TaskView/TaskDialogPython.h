@@ -181,6 +181,8 @@ public:
 public:
     /// is called by the framework when the dialog is opened
     void open() override;
+    /// is called by the framework before the dialog is destroyed
+    void closed() override;
     /// is called by the framework if a button is clicked which has no accept or reject role
     void clicked(int) override;
     /// is called by the framework if the dialog is accepted (Ok)

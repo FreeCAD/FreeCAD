@@ -729,12 +729,14 @@ TaskDialogPython::~TaskDialogPython()
     guarded.insert(guarded.begin(), Content.begin(), Content.end());
     Content.clear();
 
-    clearForm();
-
-    // Assigning None to 'dlg' may destroy some of the stored widgets.
-    // By guarding them with QPointer their pointers will be set to null
-    // so that the destructor of the base class can reliably call 'delete'.
+    // The Python dialog reference is released by NativePythonReference after
+    // this destructor returns. Do not access Python from this native destructor.
     Content.insert(Content.begin(), guarded.begin(), guarded.end());
+}
+
+void TaskDialogPython::closed()
+{
+    clearForm();
 }
 
 bool TaskDialogPython::tryLoadUiFile()
