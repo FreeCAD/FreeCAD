@@ -53,6 +53,26 @@ public:
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
 };
 
+class SketcherExport Point3D
+{
+public:
+    Point3D()
+        : x(nullptr)
+        , y(nullptr)
+        , z(nullptr)
+    {}
+    Point3D(double* px, double* py, double* pz)
+        : x(px)
+        , y(py)
+        , z(pz)
+    {}
+    double* x;
+    double* y;
+    double* z;
+    int PushOwnParams(VEC_pD& pvec) const;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
+};
+
 using VEC_P = std::vector<Point>;
 
 /// Class DeriVector2 holds a vector value and its derivative on the
@@ -153,6 +173,102 @@ public:
     DeriVector2 linCombi(double m1, const DeriVector2& v2, double m2) const
     {
         return {x * m1 + v2.x * m2, y * m1 + v2.y * m2, dx * m1 + v2.dx * m2, dy * m1 + v2.dy * m2};
+    }
+};
+
+
+class SketcherExport DeriVector3
+{
+public:
+    DeriVector3()
+        : x(0)
+        , dx(0)
+        , y(0)
+        , dy(0)
+        , z(0)
+        , dz(0)
+    {}
+    DeriVector3(double x, double y, double z)
+        : x(x)
+        , dx(0)
+        , y(y)
+        , dy(0)
+        , z(z)
+        , dz(0)
+    {}
+    DeriVector3(double x, double y, double z, double dx, double dy, double dz)
+        : x(x)
+        , dx(dx)
+        , y(y)
+        , dy(dy)
+        , z(z)
+        , dz(dz)
+    {}
+    DeriVector3(const Point3D& p, const double* derivparam);
+
+    double x, dx;
+    double y, dy;
+    double z, dz;
+
+    double length() const
+    {
+        return sqrt(x * x + y * y + z * z);
+    }
+
+    // returns length and writes length deriv into the dlength argument.
+    double length(double& dlength) const;
+
+    // unlike other vectors in FreeCAD, this normalization creates a new vector instead of
+    // modifying existing one.
+    // returns zero vector if the original is zero.
+    DeriVector3 getNormalized() const;
+
+    // calculates scalar product of two vectors and returns the result. The derivative
+    // of the result is written into argument dprd.
+    double scalarProd(const DeriVector3& v2, double* dprd = nullptr) const;
+
+    // calculates the full 3D cross product of two vectors and returns the result.
+    // Derivatives are propagated through the result's dx, dy, dz fields.
+    DeriVector3 crossProd(const DeriVector3& v2) const;
+
+    // adds two vectors and returns result
+    DeriVector3 sum(const DeriVector3& v2) const
+    {
+        return {x + v2.x, y + v2.y, z + v2.z, dx + v2.dx, dy + v2.dy, dz + v2.dz};
+    }
+
+    // subtracts two vectors and returns result
+    DeriVector3 subtr(const DeriVector3& v2) const
+    {
+        return {x - v2.x, y - v2.y, z - v2.z, dx - v2.dx, dy - v2.dy, dz - v2.dz};
+    }
+
+    // multiplies the vector by a number. Derivatives are scaled.
+    DeriVector3 mult(double val) const
+    {
+        return {x * val, y * val, z * val, dx * val, dy * val, dz * val};
+    }
+
+    // multiply vector by a variable with a derivative.
+    DeriVector3 multD(double val, double dval) const
+    {
+        return {x * val, y * val, z * val, dx * val + x * dval, dy * val + y * dval, dz * val + z * dval};
+    }
+
+    // divide vector by a variable with a derivative
+    DeriVector3 divD(double val, double dval) const;
+
+    // linear combination of two vectors
+    DeriVector3 linCombi(double m1, const DeriVector3& v2, double m2) const
+    {
+        return {
+            x * m1 + v2.x * m2,
+            y * m1 + v2.y * m2,
+            z * m1 + v2.z * m2,
+            dx * m1 + v2.dx * m2,
+            dy * m1 + v2.dy * m2,
+            dz * m1 + v2.dz * m2
+        };
     }
 };
 
@@ -410,6 +526,81 @@ public:
     /// d is the vector of (relevant) poles (note that this is not const and will be changed)
     /// flatknots is the vector of knots
     static double splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots);
+};
+
+///////////////////////////////////////
+// Geometries 3D
+///////////////////////////////////////
+
+class SketcherExport Curve3D
+{
+public:
+    virtual ~Curve3D() = default;
+
+    // returns an outward normal vector at a point on the curve. For curves
+    // where the normal is not well defined without a reference plane.
+    // current implementations return a zero vector.
+    virtual DeriVector3 CalculateNormal(const Point3D& p, const double* derivparam = nullptr) const = 0;
+
+    /**
+     * @brief Value: returns point (vector) given the value of parameter
+     * @param u: value of parameter
+     * @param du: derivative of parameter by derivparam
+     * @param derivparam: pointer to sketch parameter to calculate the derivative for
+     * @return
+     */
+    virtual DeriVector3 Value(double u, double du, const double* derivparam = nullptr) const;
+
+    // adds curve's parameters to pvec (used by constraints)
+    virtual int PushOwnParams(VEC_pD& pvec) = 0;
+    // reconstruct curve's parameters reading them from pvec starting at index cnt.
+    // cnt will be incremented by the same amount that PushOwnParams() pushed.
+    virtual void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) = 0;
+    // DeepSOIC: I haven't found a way to simply copy a curve object provided pointer to a curve
+    // object.
+    virtual Curve3D* Copy() = 0;
+};
+
+class SketcherExport Line3D: public Curve3D
+{
+public:
+    Point3D p1;
+    Point3D p2;
+    DeriVector3 CalculateNormal(const Point3D& p, const double* derivparam = nullptr) const override;
+    DeriVector3 Value(double u, double du, const double* derivparam = nullptr) const override;
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    Line3D* Copy() override;
+};
+
+class SketcherExport Circle3D: public Curve3D
+{
+public:
+    Point3D center;
+    double* rad {nullptr};
+    Point3D normal;
+    Point3D xAxis;
+
+    DeriVector3 CalculateNormal(const Point3D& p, const double* derivparam = nullptr) const override;
+    DeriVector3 Value(double u, double du, const double* derivparam = nullptr) const override;
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    Circle3D* Copy() override;
+};
+
+class SketcherExport Arc3D: public Circle3D
+{
+public:
+    double* startAngle {nullptr};
+    double* endAngle {nullptr};
+    // double *rad{nullptr}; //inherited
+    // start and end points are computed by an ArcRules constraint
+    Point3D start;
+    Point3D end;
+    // Point center; //inherited
+    int PushOwnParams(VEC_pD& pvec) override;
+    void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
+    Arc3D* Copy() override;
 };
 
 }  // namespace GCS
