@@ -23,6 +23,7 @@ setup_qt_test(QuantitySpinBox)
 setup_qt_test(ViewerLifetime)
 setup_qt_test(ViewerLifetimeShutdown)
 setup_qt_test(EditableDatumLabelLifetimeShutdown)
+setup_qt_test(TaskDialogLifetimeShutdown)
 
 add_executable(PyResourceLifetimeShutdown PyResourceLifetimeShutdown.cpp)
 target_link_libraries(PyResourceLifetimeShutdown PRIVATE
