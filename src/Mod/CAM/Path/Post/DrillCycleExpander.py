@@ -30,6 +30,7 @@ from typing import List, Optional
 
 import Path
 from Path.Base.MachineState import MachineState
+import Constants
 
 EXPANDABLE_DRILL_CYCLES = {"G81", "G82", "G83", "G73"}
 
@@ -314,7 +315,7 @@ class DrillCycleExpander:
                 }
                 if self.machine_state.G0F is not None:
                     params["F"] = self.machine_state.G0F
-                cmd = Path.Command("G0", params)
+                cmd = Path.Command("G0", params, {Constants.ANNOT_NO_COLLAPSE_G0: True})
                 expanded.append(cmd)
                 self.machine_state.addCommand(cmd)
 
@@ -355,7 +356,7 @@ class DrillCycleExpander:
                     }
                     if self.machine_state.G0F is not None:
                         params["F"] = self.machine_state.G0F
-                    cmd = Path.Command("G0", params)
+                    cmd = Path.Command("G0", params, {Constants.ANNOT_NO_COLLAPSE_G0: True})
                     expanded.append(cmd)
                     self.machine_state.addCommand(cmd)
             elif cmd_name == "G83":
