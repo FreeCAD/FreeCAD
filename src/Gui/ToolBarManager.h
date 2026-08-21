@@ -137,7 +137,16 @@ public:
     void updateCustomGripVisibility();
 
 protected:
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
+Q_SIGNALS:
+    void movedByUser();
+
+private:
     void setupConnections();
+    bool movedByLeftButtonDrag = false;
 };
 
 /**
