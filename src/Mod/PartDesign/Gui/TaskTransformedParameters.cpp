@@ -126,17 +126,24 @@ void TaskTransformedParameters::setupUI()
 
     ui->buttonGroupMode->setId(ui->radioTransformBody, static_cast<int>(Mode::WholeShape));
     ui->buttonGroupMode->setId(ui->radioTransformToolShapes, static_cast<int>(Mode::Features));
+    ui->buttonGroupMode->setId(
+        ui->radioTransformToolShapesAsBody,
+        static_cast<int>(Mode::FeaturesAsShape)
+    );
 
     connect(ui->buttonGroupMode, &QButtonGroup::idClicked, this, &TaskTransformedParameters::onModeChanged);
 
     auto const mode = static_cast<Mode>(pcTransformed->TransformMode.getValue());
-    ui->groupFeatureList->setEnabled(mode == Mode::Features);
+    ui->groupFeatureList->setEnabled(mode != Mode::WholeShape);
     switch (mode) {
         case Mode::WholeShape:
             ui->radioTransformBody->setChecked(true);
             break;
         case Mode::Features:
             ui->radioTransformToolShapes->setChecked(true);
+            break;
+        case Mode::FeaturesAsShape:
+            ui->radioTransformToolShapesAsBody->setChecked(true);
             break;
     }
 
