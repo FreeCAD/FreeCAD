@@ -29,6 +29,47 @@ from bimtests import TestArchBaseGui
 
 class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
+    def setUp(self):
+        super().setUp()
+        self.rectangle = Draft.make_rectangle(length=1000, height=1000)
+        # The rectangle's Shape is only populated on recompute; makeWindow()
+        # derives its default WindowParts from baseobj.Shape.Wires at call
+        # time, so without this recompute WindowParts stays empty and the
+        # window has no geometry at all.
+        App.ActiveDocument.recompute()
+        self.window = Arch.makeWindow(self.rectangle)
+        App.ActiveDocument.recompute()
+
+    def testWindowHasPreviewExtensions(self):
+        self.assertTrue(self.window.hasExtension("Part::PreviewExtensionPython"))
+        self.assertTrue(
+            self.window.ViewObject.hasExtension("PartGui::ViewProviderPreviewExtensionPython")
+        )
+
+    def testRecomputePreviewPublishesShape(self):
+        self.window.invalidatePreview()
+        self.window.updatePreview()
+
+        self.assertFalse(self.window.PreviewShape.isNull())
+
+    def testPreviewFollowsWindowPartsWithoutDocumentRecompute(self):
+        self.window.invalidatePreview()
+        self.window.updatePreview()
+        volumeBefore = self.window.PreviewShape.Volume
+
+        parts = self.window.WindowParts
+        # WindowParts is a flat list of 5-tuples; index 3 is the component
+        # thickness, extruded along the panel normal in buildShapes() - doubling
+        # it changes the solid's volume.
+        parts[3] = str(float(parts[3]) * 2.0)
+        self.window.WindowParts = parts
+
+        # Deliberately no Document.recompute() here - that is the point: the
+        # preview must follow WindowParts on its own.
+        self.window.updatePreview()
+
+        self.assertNotAlmostEqual(self.window.PreviewShape.Volume, volumeBefore, places=3)
+
     def test_change_window_opening(self):
         """Tests if changes to a window opening touches the window's chain of hosts"""
 
