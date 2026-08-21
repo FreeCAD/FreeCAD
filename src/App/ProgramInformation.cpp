@@ -67,17 +67,18 @@ std::string ProgramInformation::prettyProductInfoWrapper()
     auto fi = QFileInfo(macosVersionFile);
     if (fi.exists() && fi.isReadable()) {
         auto plistFile = QFile(macosVersionFile);
-        plistFile.open(QIODevice::ReadOnly);
-        while (!plistFile.atEnd()) {
-            auto line = plistFile.readLine();
-            if (line.contains("ProductUserVisibleVersion")) {
-                auto nextLine = plistFile.readLine();
-                if (nextLine.contains("<string>")) {
-                    QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
-                    auto matches = re.match(QString::fromUtf8(nextLine));
-                    if (matches.hasMatch()) {
-                        productName = QStringLiteral("macOS ") + matches.captured(1);
-                        break;
+        if (plistFile.open(QIODevice::ReadOnly)) {
+            while (!plistFile.atEnd()) {
+                auto line = plistFile.readLine();
+                if (line.contains("ProductUserVisibleVersion")) {
+                    auto nextLine = plistFile.readLine();
+                    if (nextLine.contains("<string>")) {
+                        QRegularExpression re(QStringLiteral("\\s*<string>(.*)</string>"));
+                        auto matches = re.match(QString::fromUtf8(nextLine));
+                        if (matches.hasMatch()) {
+                            productName = QStringLiteral("macOS ") + matches.captured(1);
+                            break;
+                        }
                     }
                 }
             }
