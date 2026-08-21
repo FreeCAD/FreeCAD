@@ -813,6 +813,8 @@ void StdCmdNew::activated(int iMsg)
     if (hViewGrp->GetBool("ShowAxisCross")) {
         doCommand(Command::Gui, "Gui.ActiveDocument.ActiveView.setAxisCross(True)");
     }
+
+    Dialog::DlgProjectInformationImp::showForNewDocument(App::GetApplication().getActiveDocument());
 }
 
 //===========================================================================
