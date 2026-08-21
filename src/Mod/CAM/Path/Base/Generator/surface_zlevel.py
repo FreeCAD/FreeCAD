@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2026 Dimitrios Pana <dimitriospana75@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2026 Dimitris75 <dimitriospana75@gmail.com>             *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 """Z-Level Hybrid (constant-Z contour) generation using native geometry.
 
@@ -520,7 +518,7 @@ def categorize_floor_steps(shape, start_z, final_z, step_down, clear_planar_only
     # 3. Match standard steps to physical floors
     for z_std in z_heights:
         match_z = None
-        for floor_z in fused_geometry.keys():
+        for floor_z in fused_geometry:
             if abs(floor_z - z_std) < floor_match_tol:
                 match_z = floor_z
                 break
@@ -1345,7 +1343,7 @@ def _setup_adaptive_geofence(
     # Apply Safety Overrides
     if is_open and not force_insideout:
         # Respect the power-user toggle
-        geofence = True if enforce_geofence else False
+        geofence = bool(enforce_geofence)
         bb_offset = -0.01
         adaptive_params["finishing_profile"] = False
 
