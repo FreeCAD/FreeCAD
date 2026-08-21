@@ -316,7 +316,6 @@ def outside() -> None:
             output = Path(directory) / "stubs"
             write_public_module_stubs(
                 output,
-                [],
                 {"FreeCAD.Standalone"},
                 {},
                 ApiModel(
@@ -345,7 +344,7 @@ def outside() -> None:
                     ),
                 ),
             )
-            write_public_module_stubs(output, [], {"FreeCAD.Constants"}, {}, model)
+            write_public_module_stubs(output, {"FreeCAD.Constants"}, {}, model)
             merge_api_module_attributes_into_stubs(output, model, {"FreeCAD.Constants"})
             generated = output / "FreeCAD" / "Constants.pyi"
             stub_source = generated.read_text(encoding="utf-8")
@@ -368,7 +367,7 @@ def outside() -> None:
                     ),
                 ),
             )
-            write_public_module_stubs(output, [], {"FreeCAD.Exports"}, {}, model)
+            write_public_module_stubs(output, {"FreeCAD.Exports"}, {}, model)
             merge_api_module_aliases_into_stubs(output, model, {"FreeCAD.Exports"})
             generated = output / "FreeCAD" / "Exports.pyi"
             stub_source = generated.read_text(encoding="utf-8")
