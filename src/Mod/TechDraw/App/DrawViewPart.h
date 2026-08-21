@@ -138,6 +138,11 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     const char* getViewProviderName() const override { return "TechDrawGui::ViewProviderViewPart"; }
     PyObject* getPyObject() override;
+    App::DocumentObject* getSubObject(const char* subname,
+                                      PyObject** pyObj = nullptr,
+                                      Base::Matrix4D* mat = nullptr,
+                                      bool transform = true,
+                                      int depth = 0) const override;
     void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 

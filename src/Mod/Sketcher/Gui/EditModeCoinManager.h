@@ -323,6 +323,9 @@ public:
 
     void updateElementSizeParameters();
 
+    /// Use colors with sufficient contrast when editing over a light drawing page.
+    void useLightBackgroundColors();
+
 private:
     PreselectionResult detectConstraintPreselection(
         const SoPickedPointList& points,

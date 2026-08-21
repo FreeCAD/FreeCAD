@@ -183,7 +183,7 @@ std::vector<App::DocumentObject*> ViewProviderProjGroup::claimChildren() const
     //    - Balloons
     //    - Leaders
     //    - RichAnno
-    std::vector<App::DocumentObject*> temp;
+    std::vector<App::DocumentObject*> temp = getViewObject()->Sketches.getValues();
     const std::vector<App::DocumentObject*>& candidates = getViewObject()->getInList();
     // DPGI's do not point at the DPG, the DPG/DVC maintains links to the items
 
