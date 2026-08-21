@@ -143,7 +143,7 @@ if (_flag_found)
 endif ()
 
 
-SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
+SET_BIN_DIR(RobotGui)
 SET_PYTHON_PREFIX_SUFFIX(RobotGui)
 
 fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})
