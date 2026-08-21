@@ -83,17 +83,17 @@ class BIM_Diff:
 
                 activedocids = {}  # main document, the original freecad one
                 for obj in activedoc.Objects:
-                    if hasattr(obj, "IfcData") and obj.ViewObject.Visibility:
-                        if "IfcUID" in obj.IfcData:
-                            activedocids[obj.IfcData["IfcUID"]] = obj
+                    if hasattr(obj, "GlobalId") and obj.ViewObject.Visibility:
+                        if obj.GlobalId:
+                            activedocids[obj.GlobalId] = obj
                         elif obj.isDerivedFrom("Part::Feature"):  # discard BuildingParts
                             objswithoutid.append(obj)
 
                 otherdocids = {}  # other doc to be merged to the main one
                 for obj in otherdoc.Objects:
-                    if hasattr(obj, "IfcData") and obj.ViewObject.Visibility:
-                        if "IfcUID" in obj.IfcData:
-                            otherdocids[obj.IfcData["IfcUID"]] = obj
+                    if hasattr(obj, "GlobalId") and obj.ViewObject.Visibility:
+                        if obj.GlobalId:
+                            otherdocids[obj.GlobalId] = obj
 
                 toselect = []  # objects to select when finished
                 additions = []  # objects added
@@ -114,7 +114,11 @@ class BIM_Diff:
                         if obj.Label != mainobj.Label:
                             # object has a different name
                             renamed[mainobj.Name] = obj.Label
-                        if obj.IfcProperties and (obj.IfcProperties != mainobj.IfcProperties):
+                        if (
+                            hasattr(obj, "IfcProperties")
+                            and hasattr(mainobj, "IfcProperties")
+                            and obj.IfcProperties != mainobj.IfcProperties
+                        ):
                             # properties have changed
                             propertieschanged[id] = obj.IfcProperties
                         if hasattr(obj, "Shape") and hasattr(mainobj, "Shape"):
@@ -139,27 +143,25 @@ class BIM_Diff:
                                         < MOVE_TOLERANCE
                                     ):
                                         # same boundbox
-                                        if (
-                                            hasattr(obj, "Material")
-                                            and hasattr(mainobj, "Material")
-                                            and (
+                                        if hasattr(obj, "Material") and hasattr(
+                                            mainobj, "Material"
+                                        ):
+                                            if (
                                                 obj.Material
                                                 and mainobj.Material
-                                                and (obj.Material.Label == mainobj.Material.Label)
-                                            )
-                                            or (obj.Material == mainobj.Material)
-                                        ):
-                                            # same material names
-                                            obj.ViewObject.hide()
-                                        else:
-                                            print(
-                                                "Object",
-                                                mainobj.Label,
-                                                "material has changed",
-                                            )
-                                            obj.ViewObject.hide()  # we hide these objects since the shape hasn't changed but we keep their shapes
-                                            matchangedghost.append(obj.Shape)
-                                            matchanged.append(obj)
+                                                and obj.Material.Label == mainobj.Material.Label
+                                            ):
+                                                # same material names
+                                                obj.ViewObject.hide()
+                                            else:
+                                                print(
+                                                    "Object",
+                                                    mainobj.Label,
+                                                    "material has changed",
+                                                )
+                                                obj.ViewObject.hide()  # we hide these objects since the shape hasn't changed but we keep their shapes
+                                                matchangedghost.append(obj.Shape)
+                                                matchanged.append(obj)
                                     else:
                                         print(
                                             "Object",
@@ -265,49 +267,54 @@ class BIM_Diff:
                         FreeCADGui.Selection.addSelection(obj)
 
                 if additions:
-                    shape = Part.makeCompound([a.Shape for a in additions])
-                    obj = activedoc.addObject("Part::Feature", "Additions")
-                    obj.Shape = shape
-                    obj.ViewObject.LineWidth = 5
-                    obj.ViewObject.LineColor = (0.0, 1.0, 0.0)
-                    obj.ViewObject.ShapeColor = (0.0, 1.0, 0.0)
-                    obj.ViewObject.Transparency = 60
+                    shapes = [a.Shape for a in additions if not a.Shape.isNull()]
+                    if shapes:
+                        obj = activedoc.addObject("Part::Feature", "Additions")
+                        obj.Shape = Part.makeCompound(shapes)
+                        obj.ViewObject.LineWidth = 5
+                        obj.ViewObject.LineColor = (0.0, 1.0, 0.0)
+                        obj.ViewObject.ShapeColor = (0.0, 1.0, 0.0)
+                        obj.ViewObject.Transparency = 60
 
                 if subtractions:
-                    shape = Part.makeCompound([s.Shape for s in subtractions])
-                    obj = activedoc.addObject("Part::Feature", "Subtractions")
-                    obj.Shape = shape
-                    obj.ViewObject.LineWidth = 5
-                    obj.ViewObject.LineColor = (1.0, 0.0, 0.0)
-                    obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0)
-                    obj.ViewObject.Transparency = 60
+                    shapes = [s.Shape for s in subtractions if not s.Shape.isNull()]
+                    if shapes:
+                        obj = activedoc.addObject("Part::Feature", "Subtractions")
+                        obj.Shape = Part.makeCompound(shapes)
+                        obj.ViewObject.LineWidth = 5
+                        obj.ViewObject.LineColor = (1.0, 0.0, 0.0)
+                        obj.ViewObject.ShapeColor = (1.0, 0.0, 0.0)
+                        obj.ViewObject.Transparency = 60
 
                 if modified:
-                    shape = Part.makeCompound([m.Shape for m in modified])
-                    obj = activedoc.addObject("Part::Feature", "Modified")
-                    obj.Shape = shape
-                    obj.ViewObject.LineWidth = 5
-                    obj.ViewObject.LineColor = (1.0, 0.5, 0.0)
-                    obj.ViewObject.ShapeColor = (1.0, 0.5, 0.0)
-                    obj.ViewObject.Transparency = 60
+                    shapes = [m.Shape for m in modified if not m.Shape.isNull()]
+                    if shapes:
+                        obj = activedoc.addObject("Part::Feature", "Modified")
+                        obj.Shape = Part.makeCompound(shapes)
+                        obj.ViewObject.LineWidth = 5
+                        obj.ViewObject.LineColor = (1.0, 0.5, 0.0)
+                        obj.ViewObject.ShapeColor = (1.0, 0.5, 0.0)
+                        obj.ViewObject.Transparency = 60
 
                 if moved:
-                    shape = Part.makeCompound([m.Shape for m in moved])
-                    obj = activedoc.addObject("Part::Feature", "Moved")
-                    obj.Shape = shape
-                    obj.ViewObject.LineWidth = 5
-                    obj.ViewObject.LineColor = (1.0, 1.0, 0.0)
-                    obj.ViewObject.ShapeColor = (1.0, 1.0, 0.0)
-                    obj.ViewObject.Transparency = 60
+                    shapes = [m.Shape for m in moved if not m.Shape.isNull()]
+                    if shapes:
+                        obj = activedoc.addObject("Part::Feature", "Moved")
+                        obj.Shape = Part.makeCompound(shapes)
+                        obj.ViewObject.LineWidth = 5
+                        obj.ViewObject.LineColor = (1.0, 1.0, 0.0)
+                        obj.ViewObject.ShapeColor = (1.0, 1.0, 0.0)
+                        obj.ViewObject.Transparency = 60
 
                 if matchangedghost:
-                    shape = Part.makeCompound(matchangedghost)
-                    obj = otherdoc.addObject("Part::Feature", "Material_changed")
-                    obj.Shape = shape
-                    obj.ViewObject.LineWidth = 1
-                    obj.ViewObject.LineColor = (0.0, 0.0, 1.0)
-                    obj.ViewObject.ShapeColor = (0.0, 0.0, 1.0)
-                    obj.ViewObject.Transparency = 90
+                    shapes = [m.Shape for m in matchangedghost if not m.Shape.isNull()]
+                    if shapes:
+                        obj = otherdoc.addObject("Part::Feature", "Material_changed")
+                        obj.Shape = Part.makeCompound(shapes)
+                        obj.ViewObject.LineWidth = 1
+                        obj.ViewObject.LineColor = (0.0, 0.0, 1.0)
+                        obj.ViewObject.ShapeColor = (0.0, 0.0, 1.0)
+                        obj.ViewObject.Transparency = 90
 
                 if matchanged:
                     reply = QtGui.QMessageBox.question(
@@ -326,7 +333,7 @@ class BIM_Diff:
                         for obj in matchanged:
                             mat = obj.Material
                             if mat:
-                                mainobj = activedocids[obj.IfcData["IfcUID"]]
+                                mainobj = activedocids[obj.GlobalId]
                                 if mainobj.Material:
                                     mainmatlabel = mainobj.Material.Label
                                 else:
@@ -382,9 +389,7 @@ class BIM_Diff:
                             obj = activedoc.getObject(name)
                             if obj:
                                 print("Transferring new ID to object", obj.Label)
-                                a = obj.IfcData
-                                a["IfcUID"] = id
-                                obj.IfcData = a
+                                obj.GlobalId = id
 
                 if renamed:
                     reply = QtGui.QMessageBox.question(
@@ -434,8 +439,8 @@ class BIM_Diff:
                     )
                     if reply == QtGui.QMessageBox.Yes:
                         for obj in moved:
-                            mainobj = activedocids[obj.IfcData["IfcUID"]]
-                            otherobj = otherdocids[obj.IfcData["IfcUID"]]
+                            mainobj = activedocids[obj.GlobalId]
+                            otherobj = otherdocids[obj.GlobalId]
                             delta = otherobj.Shape.BoundBox.Center.sub(
                                 mainobj.Shape.BoundBox.Center
                             )
@@ -453,7 +458,7 @@ class BIM_Diff:
                     )
                     if reply == QtGui.QMessageBox.Yes:
                         for obj in moved:
-                            otherobj = otherdocids[obj.IfcData["IfcUID"]]
+                            otherobj = otherdocids[obj.GlobalId]
                             try:
                                 otherobj.ViewObject.LineColor = (1.0, 1.0, 0.0)
                                 otherobj.ViewObject.ShapeColor = (1.0, 1.0, 0.0)
@@ -474,7 +479,7 @@ class BIM_Diff:
                     )
                     if reply == QtGui.QMessageBox.Yes:
                         for obj in modified:
-                            otherobj = otherdocids[obj.IfcData["IfcUID"]]
+                            otherobj = otherdocids[obj.GlobalId]
                             try:
                                 otherobj.ViewObject.LineColor = (1.0, 0.5, 0.0)
                                 otherobj.ViewObject.ShapeColor = (1.0, 0.5, 0.0)
@@ -512,11 +517,12 @@ class BIM_Diff:
                     )
                     if reply == QtGui.QMessageBox.Yes:
                         for obj in subtractions:
-                            otherobj = otherdoc.addObject("Part::Feature", "Deleted")
-                            otherobj.Shape = obj.Shape
-                            otherobj.ViewObject.LineColor = (1.0, 0.0, 0.0)
-                            otherobj.ViewObject.ShapeColor = (1.0, 0.0, 0.0)
-                            otherobj.ViewObject.Transparency = 60
+                            if not obj.Shape.isNull():
+                                otherobj = otherdoc.addObject("Part::Feature", "Deleted")
+                                otherobj.Shape = obj.Shape
+                                otherobj.ViewObject.LineColor = (1.0, 0.0, 0.0)
+                                otherobj.ViewObject.ShapeColor = (1.0, 0.0, 0.0)
+                                otherobj.ViewObject.Transparency = 60
 
                 if additions:
                     reply = QtGui.QMessageBox.question(
@@ -531,7 +537,7 @@ class BIM_Diff:
                     )
                     if reply == QtGui.QMessageBox.Yes:
                         for obj in additions:
-                            otherobj = otherdocids[obj.IfcData["IfcUID"]]
+                            otherobj = otherdocids[obj.GlobalId]
                             try:
                                 otherobj.ViewObject.LineColor = (0.0, 1.0, 0.0)
                                 otherobj.ViewObject.ShapeColor = (0.0, 1.0, 0.0)
