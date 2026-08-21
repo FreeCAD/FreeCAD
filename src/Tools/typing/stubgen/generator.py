@@ -33,6 +33,7 @@ from .module_merge import (
     copy_overlay_stubs,
     copy_type_support_stubs,
     ensure_parent_package_stubs,
+    merge_api_module_aliases_into_stubs,
     merge_api_module_attributes_into_stubs,
     module_stub_path,
     public_module_names,
@@ -174,7 +175,7 @@ def write_outputs(
         shutil.rmtree(out_dir / generated_dir, ignore_errors=True)
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
-    api_model = extract_curated_api_model(root, source_dir)
+    api_model = extract_curated_api_model(root, source_dir, binding_classes=classes)
     write_public_module_stubs(
         out_dir / "stubs",
         methods,
@@ -198,4 +199,5 @@ def write_outputs(
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
     merge_api_class_methods_into_stubs(out_dir / "stubs", api_model, module_names)
     merge_api_class_attributes_into_stubs(out_dir / "stubs", api_model, module_names)
+    merge_api_module_aliases_into_stubs(out_dir / "stubs", api_model, module_names)
     return overlay_count

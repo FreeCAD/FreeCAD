@@ -28,7 +28,9 @@ class PythonApiPipelineTests(unittest.TestCase):
 
             self.assertGreater(result.page_count, 0)
             self.assertTrue((output / "python-api/index.mdx").exists())
-            self.assertTrue((output / "python-api/freecad/index.mdx").exists())
+            freecad_page = output / "python-api/freecad/index.mdx"
+            self.assertTrue(freecad_page.exists())
+            self.assertIn("`FreeCAD.Axis` -> `FreeCAD.Base.Axis`", freecad_page.read_text())
             self.assertTrue(sidebar_path.exists())
 
 

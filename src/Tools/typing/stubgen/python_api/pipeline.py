@@ -10,6 +10,7 @@ from pathlib import Path
 from .extract import extract_curated_api_model
 from .markdown import write_api_markdown_docs
 from .starlight import write_starlight_sidebar_fragment
+from ..source_inputs import collect_binding_classes
 
 
 @dataclass(frozen=True)
@@ -35,7 +36,12 @@ class PythonDocsResult:
 def generate_python_docs(options: PythonDocsOptions) -> PythonDocsResult:
     """Generate Python API pages and a Starlight sidebar."""
 
-    model = extract_curated_api_model(options.root, options.source_dir)
+    classes = collect_binding_classes(options.root, options.source_dir)
+    model = extract_curated_api_model(
+        options.root,
+        options.source_dir,
+        binding_classes=classes,
+    )
     page_count = write_api_markdown_docs(
         options.out_dir,
         model,

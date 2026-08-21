@@ -8,14 +8,17 @@ import tempfile
 import unittest
 
 from stubgen.model import BindingMethod, StubSignature
-from stubgen.module_merge import merge_api_module_attributes
+from stubgen.module_merge import merge_api_module_aliases, merge_api_module_attributes
+from stubgen.model import BindingClass
 from stubgen.python_api.model import (
+    ApiAlias,
     ApiAttribute,
     ApiCallableGroup,
     ApiClass,
     ApiModule,
     ApiSourceLocation,
 )
+from stubgen.python_api.extract import binding_class_aliases
 from stubgen.class_merge import merge_api_class_attributes, merge_api_class_methods
 from stubgen.render import write_stub_file
 from stubgen.signature_parser import group_callable_definitions, parse_callable_group
@@ -60,6 +63,47 @@ def binding_method() -> BindingMethod:
 
 
 class PythonApiStubRenderTests(unittest.TestCase):
+    def test_binding_class_public_names_become_api_aliases(self) -> None:
+        aliases = binding_class_aliases(
+            [
+                BindingClass(
+                    source="src/Base/Axis.pyi",
+                    line=7,
+                    class_name="Axis",
+                    export_name="AxisPy",
+                    python_name=None,
+                    public_names=["FreeCAD.Axis", "FreeCAD.Base.Axis"],
+                    base_class=None,
+                    explicit_export=False,
+                )
+            ]
+        )
+
+        self.assertEqual(len(aliases), 1)
+        self.assertEqual(aliases[0].public_path, "FreeCAD.Axis")
+        self.assertEqual(aliases[0].target_path, "FreeCAD.Base.Axis")
+
+    def test_api_aliases_add_missing_reexports_without_duplicates(self) -> None:
+        source = """from __future__ import annotations
+
+class Existing:
+    ...
+"""
+        api_module = ApiModule(
+            name="FreeCAD",
+            aliases=(
+                ApiAlias(
+                    public_path="FreeCAD.Axis",
+                    target_path="FreeCAD.Base.Axis",
+                ),
+            ),
+        )
+
+        output = merge_api_module_aliases(source, api_module)
+
+        self.assertIn("from .Base import Axis as Axis", output)
+        self.assertEqual(output.count("from .Base import Axis as Axis"), 1)
+
     def test_curated_module_attributes_replace_merged_assignments(self) -> None:
         target = """from __future__ import annotations
 

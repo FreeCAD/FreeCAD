@@ -16,12 +16,13 @@ curated stub sources independently.
 from __future__ import annotations
 
 import ast
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .model import (
     ApiAttribute,
+    ApiAlias,
     ApiCallableGroup,
     ApiClass,
     ApiModel,
@@ -29,6 +30,8 @@ from .model import (
     ApiOrigin,
     ApiSourceLocation,
 )
+from ..naming import valid_identifier
+from ..model import BindingClass
 from ..parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
 from ..signature_parser import (
     CallableSignature,
@@ -51,6 +54,7 @@ class ApiModuleBuilder:
     )
     classes: dict[str, ApiClass] = field(default_factory=lambda: dict[str, ApiClass]())
     attributes: dict[str, ApiAttribute] = field(default_factory=lambda: dict[str, ApiAttribute]())
+    aliases: dict[str, ApiAlias] = field(default_factory=lambda: dict[str, ApiAlias]())
 
 
 def module_stub_name(path: Path) -> str:
@@ -245,6 +249,45 @@ def merge_module_piece(builder: ApiModuleBuilder, piece: ApiModule) -> None:
     builder.functions.update({group.name: group for group in piece.functions})
     builder.classes.update({klass.name: klass for klass in piece.classes})
     builder.attributes.update({attribute.name: attribute for attribute in piece.attributes})
+    builder.aliases.update({alias.public_path: alias for alias in piece.aliases})
+
+
+def binding_class_aliases(classes: Iterable[BindingClass]) -> tuple[ApiAlias, ...]:
+    """Convert multi-public binding classes into semantic API re-exports."""
+
+    aliases: dict[str, ApiAlias] = {}
+    for klass in classes:
+        targets: list[tuple[str, str]] = []
+        for public_name in klass.public_names:
+            if "." not in public_name:
+                continue
+            module_name, symbol = public_name.rsplit(".", 1)
+            if not module_name or not valid_identifier(symbol):
+                continue
+            target = (module_name, symbol)
+            if target not in targets:
+                targets.append(target)
+        if len(targets) < 2:
+            continue
+
+        canonical = targets[0]
+        if klass.source.startswith("src/Base/"):
+            canonical = next(
+                (target for target in targets if target[0] == "FreeCAD.Base"),
+                targets[0],
+            )
+        target_path = ".".join(canonical)
+        for public_module, public_symbol in targets:
+            public_path = f"{public_module}.{public_symbol}"
+            if (public_module, public_symbol) == canonical:
+                continue
+            aliases[public_path] = ApiAlias(
+                public_path=public_path,
+                target_path=target_path,
+                origin=ApiOrigin.BINDING_SPEC,
+                location=ApiSourceLocation(klass.source, klass.line),
+            )
+    return tuple(aliases[name] for name in sorted(aliases))
 
 
 def module_from_stub_file(
@@ -296,7 +339,11 @@ def module_from_stub_file(
     )
 
 
-def extract_curated_api_model(root: Path, source_dir: Path) -> ApiModel:
+def extract_curated_api_model(
+    root: Path,
+    source_dir: Path,
+    binding_classes: Iterable[BindingClass] = (),
+) -> ApiModel:
     """Build a neutral API model from curated source-adjacent stub inputs."""
 
     modules: dict[str, ApiModuleBuilder] = {}
@@ -327,6 +374,11 @@ def extract_curated_api_model(root: Path, source_dir: Path) -> ApiModel:
         builder = modules.setdefault(piece.name, ApiModuleBuilder(name=piece.name))
         merge_module_piece(builder, piece)
 
+    for alias in binding_class_aliases(binding_classes):
+        module_name = alias.public_path.rsplit(".", 1)[0]
+        builder = modules.setdefault(module_name, ApiModuleBuilder(name=module_name))
+        builder.aliases[alias.public_path] = alias
+
     return ApiModel(
         modules=tuple(
             ApiModule(
@@ -335,6 +387,7 @@ def extract_curated_api_model(root: Path, source_dir: Path) -> ApiModel:
                 functions=tuple(builder.functions[name] for name in sorted(builder.functions)),
                 classes=tuple(builder.classes[name] for name in sorted(builder.classes)),
                 attributes=tuple(builder.attributes[name] for name in sorted(builder.attributes)),
+                aliases=tuple(builder.aliases[name] for name in sorted(builder.aliases)),
                 origin=builder.origin,
                 location=builder.location,
             )
