@@ -276,8 +276,7 @@ TEST_F(ExpressionParserTest, dimensionlessExpressionsParseAsLongOrDouble)
     // fit in a long must keep their value, not get clamped to 2147483647.
     EXPECT_THAT(parseExpr("9999999999"), IsLong(9999999999L))
         << "10-digit literal must not clamp to INT_MAX (#23419)";
-    EXPECT_THAT(parseExpr("12000054321"), IsLong(12000054321L))
-        << "11-digit literal (#23419)";
+    EXPECT_THAT(parseExpr("12000054321"), IsLong(12000054321L)) << "11-digit literal (#23419)";
     EXPECT_THAT(parseExpr("-9999999999"), IsLong(-9999999999L))
         << "large negative literal stays correct (#23419)";
 }
