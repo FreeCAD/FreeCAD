@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doxygenindex>
+  <compound refid="namespaceApp" kind="namespace">
+    <name>App</name>
+  </compound>
+  <compound refid="classApp_1_1Widget" kind="class">
+    <name>App::Widget</name>
+  </compound>
+</doxygenindex>

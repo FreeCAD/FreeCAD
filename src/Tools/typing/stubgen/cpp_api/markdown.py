@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 import shutil
 
-from .cpp_api_model import (
+from .model import (
     CppApiClass,
     CppApiEnum,
     CppApiFunction,

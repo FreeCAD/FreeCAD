@@ -12,11 +12,8 @@ Module layout:
 - ``api_extract`` builds that neutral API model from curated stub inputs.
 - ``api_markdown`` renders package-shaped Markdown pages from that model.
 - ``api_starlight`` renders Starlight-specific sidebar config from that model.
-- ``cpp_api_model`` holds the neutral C++ API model extracted from Doxygen XML.
-- ``cpp_doxygen`` prepares and runs the XML-oriented Doxygen input step.
-- ``cpp_api_extract`` builds the neutral C++ API model from Doxygen XML.
-- ``cpp_api_markdown`` renders Starlight-shaped MDX pages for the C++ API.
-- ``cpp_api_starlight`` renders a Starlight sidebar fragment for the C++ API.
+- ``cpp_api`` owns the Doxygen, extraction, model, Markdown, and sidebar stages
+  for C++ API documentation.
 - ``discovery`` inventories C++ registrations and PyCXX contexts.
 - ``source_inputs`` reads binding specs plus curated source-adjacent stub files.
 - ``render`` formats individual stub fragments and inventory skeletons.
@@ -29,8 +26,7 @@ Module layout:
 
 A useful reading order is ``model`` -> ``parsing`` -> ``signature_parser`` ->
 ``api_model`` -> ``api_extract`` -> ``api_markdown`` -> ``api_starlight`` ->
-``cpp_api_model`` -> ``cpp_doxygen`` -> ``cpp_api_extract`` ->
-``cpp_api_markdown`` -> ``cpp_api_starlight`` -> ``naming`` -> ``discovery`` -> ``source_inputs`` -> ``render`` ->
+``cpp_api`` -> ``naming`` -> ``discovery`` -> ``source_inputs`` -> ``render`` ->
 ``module_merge`` -> ``class_merge`` -> ``type_context_rules`` ->
 ``generator`` -> ``cli``.
 """

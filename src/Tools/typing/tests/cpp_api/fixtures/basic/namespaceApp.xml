@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doxygen version="1.0">
+  <compounddef kind="namespace">
+    <compoundname>App</compoundname>
+    <location file="src/App/Widget.h" line="1"/>
+    <briefdescription><para>Application namespace.</para></briefdescription>
+    <sectiondef kind="func">
+      <memberdef kind="function">
+        <type>void</type>
+        <definition>void App::open</definition>
+        <argsstring>()</argsstring>
+        <name>open</name>
+        <location file="src/App/Widget.h" line="4"/>
+      </memberdef>
+    </sectiondef>
+  </compounddef>
+</doxygen>

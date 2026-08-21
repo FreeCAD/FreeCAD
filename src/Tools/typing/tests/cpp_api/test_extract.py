@@ -7,15 +7,15 @@ import tempfile
 import unittest
 from xml.etree import ElementTree as ET
 
-from stubgen.cpp_api_extract import extract_class, extract_enum, function_declaration
-from stubgen.cpp_api_markdown import (
+from stubgen.cpp_api.extract import extract_class, extract_enum, function_declaration
+from stubgen.cpp_api.markdown import (
     class_slug,
     class_slug_token,
     namespace_classes,
     validate_class_paths,
 )
-from stubgen.cpp_api_model import CppApiClass, CppApiNamespace
-from stubgen.cpp_api_starlight import namespace_classes as sidebar_namespace_classes
+from stubgen.cpp_api.model import CppApiClass, CppApiNamespace
+from stubgen.cpp_api.starlight import namespace_classes as sidebar_namespace_classes
 from stubgen.cli import display_path
 
 

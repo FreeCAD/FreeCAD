@@ -23,10 +23,7 @@ import sys
 from .api_extract import extract_curated_api_model
 from .api_markdown import write_api_markdown_docs
 from .api_starlight import write_starlight_sidebar_fragment
-from .cpp_api_extract import extract_cpp_api_model
-from .cpp_api_markdown import write_cpp_api_markdown_docs
-from .cpp_api_starlight import write_cpp_starlight_sidebar_fragment
-from .cpp_doxygen import run_doxygen_xml
+from .cpp_api.pipeline import CppDocsOptions, generate_cpp_docs
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
@@ -371,29 +368,34 @@ def run_generate_cpp_docs(args: argparse.Namespace) -> int:
     doxygen_out_dir = (
         args.doxygen_out_dir if args.doxygen_out_dir.is_absolute() else root / args.doxygen_out_dir
     )
-    if args.run_doxygen:
-        xml_dir = run_doxygen_xml(root, doxygen_out_dir)
-    else:
-        xml_dir = (
+    xml_dir = (
+        None
+        if args.doxygen_xml_dir is None
+        else (
             args.doxygen_xml_dir
-            if args.doxygen_xml_dir and args.doxygen_xml_dir.is_absolute()
-            else root / args.doxygen_xml_dir if args.doxygen_xml_dir else doxygen_out_dir / "xml"
+            if args.doxygen_xml_dir.is_absolute()
+            else root / args.doxygen_xml_dir
         )
-    if not xml_dir.exists():
-        print_stderr(f"Doxygen XML directory does not exist: {xml_dir}\n")
-        return 2
-
-    model = extract_cpp_api_model(root, xml_dir)
-    page_count = write_cpp_api_markdown_docs(
-        out_dir,
-        model,
-        source_base_url=args.source_base_url,
     )
     sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
-    sidebar_path = write_cpp_starlight_sidebar_fragment(sidebar_out, model)
+    try:
+        result = generate_cpp_docs(
+            CppDocsOptions(
+                root=root,
+                out_dir=out_dir,
+                doxygen_out_dir=doxygen_out_dir,
+                doxygen_xml_dir=xml_dir,
+                run_doxygen=args.run_doxygen,
+                source_base_url=args.source_base_url,
+                sidebar_out=sidebar_out,
+            )
+        )
+    except FileNotFoundError as error:
+        print_stderr(f"{error}\n")
+        return 2
     print(
-        f"Wrote {page_count} C++ MDX API docs from {display_path(root, xml_dir)} "
-        f"and {display_path(root, sidebar_path)}"
+        f"Wrote {result.page_count} C++ MDX API docs from {display_path(root, result.xml_dir)} "
+        f"and {display_path(root, result.sidebar_path)}"
     )
     return 0
 

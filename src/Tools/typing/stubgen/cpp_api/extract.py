@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-from .cpp_api_model import (
+from .model import (
     CppApiClass,
     CppApiEnum,
     CppApiEnumValue,

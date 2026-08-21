@@ -7,8 +7,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .cpp_api_markdown import CPP_API_ROOT, class_slug, namespace_slug, page_link
-from .cpp_api_model import CppApiClass, CppApiModel, CppApiNamespace
+from .markdown import CPP_API_ROOT, class_slug, namespace_slug, page_link
+from .model import CppApiClass, CppApiModel, CppApiNamespace
 
 
 def namespace_children(
