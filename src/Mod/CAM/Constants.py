@@ -34,14 +34,17 @@ GCODE_MOVE_ARC = GCODE_MOVE_CW + GCODE_MOVE_CCW
 # Canned drilling cycles
 GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
 
+# Additional drilling cycles
+GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
+
 # Cutting moves (feed moves and arcs)
 GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
 
 # All cutting moves (feed moves, arcs, and drill cycles)
-GCODE_MOVE = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
+GCODE_MOVE = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC + GCODE_MOVE_DRILL + GCODE_DRILL_EXTENDED
 
 # All move commands (cutting moves + rapid)
-GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL
+GCODE_MOVE_ALL = GCODE_MOVE_LINE + GCODE_MOVE_ARC + GCODE_MOVE_DRILL + GCODE_DRILL_EXTENDED
 
 # =============================================================================
 # G-Code Modal Commands
@@ -59,9 +62,6 @@ GCODE_CUTTER_COMPENSATION = ["G40", "G41", "G42"]
 
 # Canned cycle cancel
 GCODE_CYCLE_CANCEL = ["G80"]
-
-# Additional drilling cycles
-GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
 
 # Probing
 GCODE_PROBE = ["G38.2"]
