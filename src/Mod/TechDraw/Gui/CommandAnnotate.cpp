@@ -46,6 +46,7 @@
 
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
+#include "QGVPage.h"
 #include "TaskCenterLine.h"
 #include "TaskCosmeticLine.h"
 #include "TaskCosVertex.h"
@@ -56,6 +57,7 @@
 #include "TaskWeldingSymbol.h"
 #include "ViewProviderViewPart.h"
 #include "CommandHelpers.h"
+#include "TechDrawAxonometricHandler.h"
 
 
 using namespace TechDrawGui;
@@ -506,6 +508,57 @@ void CmdTechDrawQuadrants::activated(int iMsg)
 }
 
 bool CmdTechDrawQuadrants::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this, true);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_AxoLengthDimension
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawAxoLengthDimension)
+
+CmdTechDrawAxoLengthDimension::CmdTechDrawAxoLengthDimension()
+  : Command("TechDraw_AxoLengthDimension")
+{
+    sGroup        = QT_TR_NOOP("TechDraw");
+    sMenuText     = QT_TR_NOOP("Axonometric Length Dimension");
+    sToolTipText  = QT_TR_NOOP("Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement");
+    sWhatsThis    = "TechDraw_AxoLengthDimension";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "actions/TechDraw_AxoLengthDimension.svg";
+}
+
+void CmdTechDrawAxoLengthDimension::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
+        return;
+    }
+
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
+        return;
+    }
+
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
+        return;
+    }
+
+    TechDrawAxonometricHandler* handler = new TechDrawAxonometricHandler();
+
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
+}
+
+bool CmdTechDrawAxoLengthDimension::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1530,5 +1583,6 @@ void CreateTechDrawCommandsAnnotate()
     rcCmdMgr.addCommand(new CmdTechDrawShowAll());
     rcCmdMgr.addCommand(new CmdTechDrawWeldSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawSurfaceFinishSymbols());
+    rcCmdMgr.addCommand(new CmdTechDrawAxoLengthDimension());
 }
 
