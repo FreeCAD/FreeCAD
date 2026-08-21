@@ -50,7 +50,10 @@ class TaskPostExtraction: public TaskPostWidget
 
 public:
     explicit TaskPostExtraction(ViewProviderFemPostObject* view, QWidget* parent = nullptr);
-    ~TaskPostExtraction();
+    ~TaskPostExtraction() override;
+
+    /// Clear the Python panel before the task widget is destroyed.
+    void clearPythonPanel() noexcept;
 
 protected:
     bool isGuiTaskOnly() override;

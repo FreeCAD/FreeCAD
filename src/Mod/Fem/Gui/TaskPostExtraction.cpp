@@ -90,8 +90,13 @@ TaskPostExtraction::TaskPostExtraction(ViewProviderFemPostObject* view, QWidget*
     Base::Console().error("Unable to import data extraction widget\n");
 };
 
-TaskPostExtraction::~TaskPostExtraction()
+TaskPostExtraction::~TaskPostExtraction() = default;
+
+void TaskPostExtraction::clearPythonPanel() noexcept
 {
+    if (!m_panel) {
+        return;
+    }
 
     Base::PyGILStateLocker lock;
     try {
@@ -99,11 +104,12 @@ TaskPostExtraction::~TaskPostExtraction()
         if (panel.hasAttr(std::string("widget"))) {
             panel.setAttr(std::string("widget"), Py::None());
         }
-        m_panel.reset();
     }
-    catch (Py::AttributeError& e) {
+    catch (Py::Exception& e) {
         e.clear();
     }
+
+    m_panel.reset();
 }
 
 void TaskPostExtraction::onPostDataChanged(Fem::FemPostObject* obj)
