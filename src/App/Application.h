@@ -897,6 +897,7 @@ public:
     bool hasLinksTo(const DocumentObject *obj) const;
     /// @}
 
+    static const char* getUserParameterTemplatePath();
 
     friend class App::Document;
 
