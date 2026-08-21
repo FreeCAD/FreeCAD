@@ -17,8 +17,9 @@ from __future__ import annotations
 
 import ast
 from collections.abc import Callable, Iterable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields, is_dataclass
 from pathlib import Path
+from typing import Any, cast
 
 from .model import (
     ApiAttribute,
@@ -31,6 +32,7 @@ from .model import (
     ApiSourceLocation,
 )
 from ..naming import valid_identifier
+from ..diagnostics import MergeDiagnostic, origin_precedence
 from ..model import BindingClass
 from ..parsing import (
     iter_module_stub_pyi_files,
@@ -59,6 +61,68 @@ class ApiModuleBuilder:
     classes: dict[str, ApiClass] = field(default_factory=lambda: dict[str, ApiClass]())
     attributes: dict[str, ApiAttribute] = field(default_factory=lambda: dict[str, ApiAttribute]())
     aliases: dict[str, ApiAlias] = field(default_factory=lambda: dict[str, ApiAlias]())
+    diagnostics: list[MergeDiagnostic] = field(default_factory=lambda: list[MergeDiagnostic]())
+
+
+def declaration_shape(value: Any) -> Any:
+    """Return a declaration value without source-location-only differences."""
+
+    if is_dataclass(value):
+        declaration_fields = cast(tuple[Any, ...], fields(value))
+        return tuple(
+            (item.name, declaration_shape(getattr(value, item.name)))
+            for item in declaration_fields
+            if item.name != "location"
+        )
+    if isinstance(value, tuple):
+        items = cast(tuple[Any, ...], value)
+        return tuple(declaration_shape(item) for item in items)
+    if isinstance(value, list):
+        items = cast(list[Any], value)
+        return tuple(declaration_shape(item) for item in items)
+    if isinstance(value, dict):
+        items = cast(dict[Any, Any], value)
+        return tuple(
+            sorted((declaration_shape(key), declaration_shape(item)) for key, item in items.items())
+        )
+    return value
+
+
+def record_definition_collision(
+    builder: ApiModuleBuilder,
+    kind: str,
+    name: str,
+    existing: object,
+    incoming: object,
+) -> None:
+    """Record a conflict when the incoming declaration does not refine safely."""
+
+    if declaration_shape(existing) == declaration_shape(incoming):
+        return
+
+    existing_origin = getattr(existing, "origin", ApiOrigin.GENERATED)
+    incoming_origin = getattr(incoming, "origin", ApiOrigin.GENERATED)
+    if origin_precedence(incoming_origin) > origin_precedence(existing_origin):
+        return
+
+    severity = (
+        "error"
+        if origin_precedence(incoming_origin) == origin_precedence(existing_origin)
+        else "warning"
+    )
+    code = "conflicting-definition" if severity == "error" else "lower-precedence-definition"
+    builder.diagnostics.append(
+        MergeDiagnostic(
+            code=code,
+            severity=severity,
+            symbol=f"{builder.name}.{name}",
+            message=(
+                f"{builder.name}.{name} has conflicting {kind} definitions from "
+                f"{existing_origin.value} and {incoming_origin.value}"
+            ),
+            location=getattr(incoming, "location", None),
+        )
+    )
 
 
 def module_stub_name(path: Path) -> str:
@@ -250,10 +314,26 @@ def merge_module_piece(builder: ApiModuleBuilder, piece: ApiModule) -> None:
     if piece.location and builder.location is None:
         builder.location = piece.location
         builder.origin = piece.origin
-    builder.functions.update({group.name: group for group in piece.functions})
-    builder.classes.update({klass.name: klass for klass in piece.classes})
-    builder.attributes.update({attribute.name: attribute for attribute in piece.attributes})
-    builder.aliases.update({alias.public_path: alias for alias in piece.aliases})
+    for group in piece.functions:
+        existing = builder.functions.get(group.name)
+        if existing is not None:
+            record_definition_collision(builder, "function", group.name, existing, group)
+        builder.functions[group.name] = group
+    for klass in piece.classes:
+        existing = builder.classes.get(klass.name)
+        if existing is not None:
+            record_definition_collision(builder, "class", klass.name, existing, klass)
+        builder.classes[klass.name] = klass
+    for attribute in piece.attributes:
+        existing = builder.attributes.get(attribute.name)
+        if existing is not None:
+            record_definition_collision(builder, "attribute", attribute.name, existing, attribute)
+        builder.attributes[attribute.name] = attribute
+    for alias in piece.aliases:
+        existing = builder.aliases.get(alias.public_path)
+        if existing is not None:
+            record_definition_collision(builder, "alias", alias.public_path, existing, alias)
+        builder.aliases[alias.public_path] = alias
 
 
 def binding_class_aliases(classes: Iterable[BindingClass]) -> tuple[ApiAlias, ...]:
@@ -421,12 +501,12 @@ def module_from_stub_file(
     )
 
 
-def extract_curated_api_model(
+def extract_curated_api_model_with_diagnostics(
     root: Path,
     source_dir: Path,
     binding_classes: Iterable[BindingClass] = (),
-) -> ApiModel:
-    """Build a neutral API model from curated source-adjacent stub inputs."""
+) -> tuple[ApiModel, tuple[MergeDiagnostic, ...]]:
+    """Build an API model and report conflicts between its input layers."""
 
     modules: dict[str, ApiModuleBuilder] = {}
     binding_classes = tuple(binding_classes)
@@ -471,9 +551,12 @@ def extract_curated_api_model(
     for alias in binding_class_aliases(binding_classes):
         module_name = alias.public_path.rsplit(".", 1)[0]
         builder = modules.setdefault(module_name, ApiModuleBuilder(name=module_name))
+        existing = builder.aliases.get(alias.public_path)
+        if existing is not None:
+            record_definition_collision(builder, "alias", alias.public_path, existing, alias)
         builder.aliases[alias.public_path] = alias
 
-    return ApiModel(
+    model = ApiModel(
         modules=tuple(
             ApiModule(
                 name=builder.name,
@@ -488,3 +571,22 @@ def extract_curated_api_model(
             for builder in (modules[name] for name in sorted(modules))
         )
     )
+    diagnostics = tuple(
+        diagnostic for name in sorted(modules) for diagnostic in modules[name].diagnostics
+    )
+    return model, diagnostics
+
+
+def extract_curated_api_model(
+    root: Path,
+    source_dir: Path,
+    binding_classes: Iterable[BindingClass] = (),
+) -> ApiModel:
+    """Build a neutral API model from curated source-adjacent stub inputs."""
+
+    model, _ = extract_curated_api_model_with_diagnostics(
+        root,
+        source_dir,
+        binding_classes=binding_classes,
+    )
+    return model

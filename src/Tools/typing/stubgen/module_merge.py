@@ -21,7 +21,7 @@ import copy
 from pathlib import Path
 
 from .discovery import module_names_from_methods, module_names_from_type_methods
-from .model import BindingClass
+from .model import BindingClass, BindingMethod
 from .parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
 from .python_api.model import ApiAlias, ApiAttribute, ApiModel, ApiModule
 from .source_inputs import parse_type_stub_target
@@ -56,7 +56,7 @@ def module_names_from_overlays(overlay_dir: Path | None) -> set[str]:
 
 
 def public_module_names(
-    methods,
+    methods: list[BindingMethod],
     classes: list[BindingClass],
     type_registrations: dict[str, list[str]],
     overlay_dir: Path | None,

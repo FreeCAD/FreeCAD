@@ -21,6 +21,7 @@ import subprocess
 import sys
 
 from .cpp_api.pipeline import CppDocsOptions, generate_cpp_docs
+from .diagnostics import MergeDiagnostics
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
@@ -258,7 +259,7 @@ def run_logged_command(
     return result.returncode, output
 
 
-def run_generate(args: argparse.Namespace) -> int:
+def run_generate(args: argparse.Namespace, *, strict_diagnostics: bool = False) -> int:
     root = args.root.resolve()
     source_dir = args.source_dir if args.source_dir.is_absolute() else root / args.source_dir
     if not source_dir.exists():
@@ -283,6 +284,7 @@ def run_generate(args: argparse.Namespace) -> int:
 
     if args.out_dir:
         out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+        diagnostic_items = []
         overlay_count = write_outputs(
             out_dir,
             root,
@@ -292,7 +294,11 @@ def run_generate(args: argparse.Namespace) -> int:
             type_registrations,
             stub_signature_overrides,
             overlay_dir,
+            diagnostics=diagnostic_items,
         )
+        diagnostics = MergeDiagnostics(tuple(diagnostic_items))
+        if diagnostics.items:
+            print_stderr(diagnostics.render() + "\n")
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
             f"({overlay_count} overlay stub files applied)"
@@ -300,7 +306,12 @@ def run_generate(args: argparse.Namespace) -> int:
         print(summary)
         if getattr(args, "log_dir", None):
             log_dir = args.log_dir.resolve()
-            write_log(log_dir / "python-stubs-generate.log", summary + "\n")
+            write_log(
+                log_dir / "python-stubs-generate.log",
+                summary + "\n" + (diagnostics.render() + "\n" if diagnostics.items else ""),
+            )
+        if strict_diagnostics and diagnostics.errors:
+            return 1
     else:
         print_stdout(markdown_report(methods))
     return 0
@@ -310,7 +321,7 @@ def run_check(args: argparse.Namespace) -> int:
     root = args.root.resolve()
     if args.out_dir is None:
         args.out_dir = DEFAULT_STUBS_OUT_DIR
-    generation_code = run_generate(args)
+    generation_code = run_generate(args, strict_diagnostics=True)
     if generation_code != 0:
         return generation_code
 

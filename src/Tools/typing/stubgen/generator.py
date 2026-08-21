@@ -30,6 +30,7 @@ from .class_merge import (
     normalize_api_model_binding_class_headers,
     validate_public_class_aliases,
 )
+from .diagnostics import MergeDiagnostic, generated_output_diagnostics
 from .module_merge import (
     copy_module_support_stubs,
     copy_overlay_stubs,
@@ -47,7 +48,7 @@ from .discovery import (
     module_names_from_type_methods,
 )
 from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
-from .python_api.extract import extract_curated_api_model
+from .python_api.extract import extract_curated_api_model_with_diagnostics
 from .python_api.model import ApiModel
 from .render import type_stub_lines, write_stub_file
 
@@ -170,6 +171,7 @@ def write_outputs(
     type_registrations: dict[str, list[str]],
     stub_signature_overrides: StubSignatureOverrides,
     overlay_dir: Path | None = None,
+    diagnostics: list[MergeDiagnostic] | None = None,
 ) -> int:
     validate_public_class_aliases(classes)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -177,7 +179,14 @@ def write_outputs(
         shutil.rmtree(out_dir / generated_dir, ignore_errors=True)
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
-    api_model = extract_curated_api_model(root, source_dir, binding_classes=classes)
+    api_model, model_diagnostics = extract_curated_api_model_with_diagnostics(
+        root,
+        source_dir,
+        binding_classes=classes,
+    )
+    module_names.update(module.name for module in api_model.modules)
+    if diagnostics is not None:
+        diagnostics.extend(model_diagnostics)
     api_model = normalize_api_model_binding_class_headers(root, classes, api_model)
     write_public_module_stubs(
         out_dir / "stubs",
@@ -204,4 +213,6 @@ def write_outputs(
     merge_api_class_methods_into_stubs(out_dir / "stubs", api_model, module_names)
     merge_api_class_attributes_into_stubs(out_dir / "stubs", api_model, module_names)
     merge_api_module_aliases_into_stubs(out_dir / "stubs", api_model, module_names)
+    if diagnostics is not None:
+        diagnostics.extend(generated_output_diagnostics(out_dir / "stubs", api_model, module_names))
     return overlay_count
