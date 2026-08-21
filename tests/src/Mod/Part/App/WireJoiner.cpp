@@ -928,4 +928,96 @@ TEST_F(WireJoinerTest, IsDeleted)
     EXPECT_TRUE(wjIsDeleted.IsDeleted(edge5));
 }
 
+// Intersection handling in splitEdges(), covering the configurations that the
+// line/line case has to get right. splitEdges() reports its outcome through the
+// resulting edge count: an intersection in the interior of an edge splits that
+// edge in two, an intersection at a shared endpoint splits nothing.
+//
+// Helper: run WireJoiner over a set of edges with splitting enabled and return
+// how many edges come back.
+namespace
+{
+size_t splitEdgeCount(const std::vector<TopoDS_Shape>& edges, int tag)
+{
+    auto wj {Part::WireJoiner()};
+    // without this, splitEdges() runs via the tight bound path regardless
+    wj.setTightBound(false);
+    wj.addShape(edges);
+    wj.setSplitEdges();
+    wj.Build();
+
+    auto result {Part::TopoShape(tag)};
+    wj.getOpenWires(result, nullptr, false);
+    return result.getSubTopoShapes(TopAbs_EDGE).size();
+}
+}  // namespace
+
+TEST_F(WireJoinerTest, splitEdgesCrossingLines)
+{
+    // Two lines crossing in the middle: both get split, so 2 edges become 4.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 1), 4);
+}
+
+TEST_F(WireJoinerTest, splitEdgesTJunction)
+{
+    // The end of edge2 lands in the middle of edge1. Only edge1 is split, so
+    // 2 edges become 3.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 2), 3);
+}
+
+TEST_F(WireJoinerTest, splitEdgesSharedCornerIsNotSplit)
+{
+    // Two edges meeting at a shared corner. The intersection is an endpoint of
+    // both, which is not something to split at, so the count is unchanged.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 3), 2);
+}
+
+TEST_F(WireJoinerTest, splitEdgesParallelLines)
+{
+    // Parallel and apart: nothing to split.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 4), 2);
+}
+
+TEST_F(WireJoinerTest, splitEdgesCollinearOverlap)
+{
+    // Collinear and overlapping. Extrema reports these as parallel, so they are
+    // handled by the generic path, not the line/line one. The expected count
+    // here is whatever the generic path already produced: this test exists to
+    // pin that the fast path does not change it.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(3.0, 0.0, 0.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 5), 3);
+}
+
+TEST_F(WireJoinerTest, splitEdgesLinesThatMissEachOther)
+{
+    // The infinite lines cross, but the crossing is outside both segments.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(5.0, 1.0, 0.0), gp_Pnt(5.0, 2.0, 0.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 6), 2);
+}
+
+TEST_F(WireJoinerTest, splitEdgesSkewLinesDoNotIntersect)
+{
+    // Same projection, different Z: the segments do not actually meet.
+    auto edge1 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 1.0, 0.0)).Edge()};
+    auto edge2 {BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 1.0, 1.0), gp_Pnt(1.0, 0.0, 1.0)).Edge()};
+
+    EXPECT_EQ(splitEdgeCount({edge1, edge2}, 7), 2);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

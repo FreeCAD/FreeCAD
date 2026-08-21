@@ -42,6 +42,11 @@
 #include <BRepTools.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <gp_Pln.hxx>
+#include <ElCLib.hxx>
+#include <Extrema_ExtElC.hxx>
+#include <Extrema_POnCurv.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_TrimmedCurve.hxx>
 #include <GeomAdaptor_Curve.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <GProp_GProps.hxx>
@@ -1218,7 +1223,84 @@ public:
         return true;
     }
 
-    void checkIntersection(
+    // Unwraps the (possibly trimmed) underlying Geom_Line of an edge; null if
+    // the edge is not backed by a real line (parameterization would not be
+    // arclength and the analytic fast path below would be unsound).
+    static Handle(Geom_Line) underlyingLine(const EdgeInfo& info)
+    {
+        Handle(Geom_Line) line = Handle(Geom_Line)::DownCast(info.curve);
+        if (line.IsNull()) {
+            Handle(Geom_TrimmedCurve) trimmed = Handle(Geom_TrimmedCurve)::DownCast(info.curve);
+            if (!trimmed.IsNull()) {
+                line = Handle(Geom_Line)::DownCast(trimmed->BasisCurve());
+            }
+        }
+        return line;
+    }
+
+    // Analytic line/line intersection. The generic path below builds a wire, a
+    // face and a ShapeAnalysis_Wire PER PAIR, which dominates the whole
+    // WireJoiner on dense line sketches (every pair of corner-touching edges
+    // pays it). Two straight segments intersect in at most one point, computed
+    // exactly by Extrema_ExtElC. Returns false (caller falls back to the
+    // generic path) for non-line curves and for near-parallel pairs, whose
+    // collinear-overlap semantics stay with the generic code.
+    bool checkIntersectionLinear(
+        const EdgeInfo& info,
+        const EdgeInfo& other,
+        std::set<IntersectInfo>& params1,
+        std::set<IntersectInfo>& params2
+    )
+    {
+        Handle(Geom_Line) line1 = underlyingLine(info);
+        Handle(Geom_Line) line2 = underlyingLine(other);
+        if (line1.IsNull() || line2.IsNull()) {
+            return false;
+        }
+
+        Extrema_ExtElC extrema(line1->Lin(), line2->Lin(), Precision::Angular());
+        if (!extrema.IsDone() || extrema.IsParallel() || extrema.NbExt() < 1) {
+            return false;
+        }
+
+        Extrema_POnCurv pointOn1;
+        Extrema_POnCurv pointOn2;
+        extrema.Points(1, pointOn1, pointOn2);
+
+        if (pointOn1.Value().SquareDistance(pointOn2.Value()) >= myTol2) {
+            return true;  // the lines pass each other: no intersection
+        }
+
+        // gp_Lin parameters equal the Geom_Line curve parameters (arclength),
+        // so they compare directly against the edges' parameter ranges; myTol
+        // maps 1:1 onto the parameter space of a line.
+        const double u1 = pointOn1.Parameter();
+        const double u2 = pointOn2.Parameter();
+        if (u1 < info.firstParam - myTol || u1 > info.lastParam + myTol
+            || u2 < other.firstParam - myTol || u2 > other.lastParam + myTol) {
+            return true;  // intersection lies outside the bounded segments
+        }
+
+        const gp_Pnt point((pointOn1.Value().XYZ() + pointOn2.Value().XYZ()) * 0.5);
+
+        // The generic path joins corner-touching edges into one wire and by
+        // design reports no intersection at their shared vertex; reproduce
+        // that. Two non-parallel straight lines intersect at most once, so if
+        // that point is a shared corner there is nothing else to report.
+        const bool atEndpoint1 = point.SquareDistance(info.p1) < myTol2
+            || point.SquareDistance(info.p2) < myTol2;
+        const bool atEndpoint2 = point.SquareDistance(other.p1) < myTol2
+            || point.SquareDistance(other.p2) < myTol2;
+        if (atEndpoint1 && atEndpoint2) {
+            return true;
+        }
+
+        pushIntersection(params1, u1, point, other.edge);
+        pushIntersection(params2, u2, point, info.edge);
+        return true;
+    }
+
+    void checkIntersectionGeneric(
         const EdgeInfo& info,
         const EdgeInfo& other,
         std::set<IntersectInfo>& params1,
@@ -1259,6 +1341,24 @@ public:
             pushIntersection(params1, points2d(i).ParamOnFirst(), points3d(i), other.edge);
             pushIntersection(params2, points2d(i).ParamOnSecond(), points3d(i), info.edge);
         }
+    }
+
+    void checkIntersection(
+        const EdgeInfo& info,
+        const EdgeInfo& other,
+        std::set<IntersectInfo>& params1,
+        std::set<IntersectInfo>& params2
+    )
+    {
+        // Two straight segments intersect in at most one point; use the
+        // analytic line/line fast path and fall back to the generic path
+        // when it declines.
+        if (info.isLinear && other.isLinear
+            && checkIntersectionLinear(info, other, params1, params2)) {
+            return;
+        }
+
+        checkIntersectionGeneric(info, other, params1, params2);
     }
 
     void pushIntersection(
