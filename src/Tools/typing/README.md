@@ -30,7 +30,8 @@ classifications that are not derivable yet.
 The Python API pipeline has one semantic model for both public stubs and API
 documentation. `python_api/extract.py` combines binding discovery with curated
 source-adjacent stubs into `ApiModel`; the stub generator and documentation
-renderers consume that model independently. Imports, `TYPE_CHECKING` blocks,
+renderers consume that model independently, including complete model-rendered
+class declarations. Imports, `TYPE_CHECKING` blocks,
 helper protocols, and other support declarations remain source-AST merge input
 rather than becoming public API model symbols.
 

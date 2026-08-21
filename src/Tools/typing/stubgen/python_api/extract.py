@@ -253,6 +253,22 @@ def class_methods(
     return tuple(methods)
 
 
+def class_support_body(body: list[ast.stmt]) -> tuple[str, ...]:
+    """Keep non-API class declarations as a separate support layer."""
+
+    support: list[str] = []
+    for node in body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.Assign, ast.AnnAssign)):
+            continue
+        if isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant):
+            if isinstance(node.value.value, str):
+                continue
+        rendered = ast.unparse(node).strip()
+        if rendered and rendered != "pass":
+            support.append(rendered)
+    return tuple(support)
+
+
 def class_from_node(
     root: Path,
     path: Path,
@@ -268,6 +284,8 @@ def class_from_node(
         bases=tuple(ast.unparse(base) for base in node.bases),
         methods=class_methods(root, path, node.name, node.body, origin=origin),
         attributes=class_attributes(root, path, node.body, origin=origin),
+        decorators=tuple(ast.unparse(decorator) for decorator in node.decorator_list),
+        support_body=class_support_body(node.body),
         origin=origin,
         location=source_location(root, path, node.lineno),
     )
@@ -429,6 +447,8 @@ def binding_class_from_source(
         bases=source_class.bases,
         methods=source_class.methods,
         attributes=source_class.attributes,
+        decorators=source_class.decorators,
+        support_body=source_class.support_body,
         origin=source_class.origin,
         location=source_class.location,
     )
@@ -447,6 +467,9 @@ def merge_class_piece(builder: ApiModuleBuilder, piece: ApiClass) -> None:
         methods=existing.methods or piece.methods,
         attributes=existing.attributes or piece.attributes,
         aliases=existing.aliases or piece.aliases,
+        decorators=existing.decorators or piece.decorators,
+        support_imports=existing.support_imports or piece.support_imports,
+        support_body=existing.support_body or piece.support_body,
         origin=existing.origin,
         location=existing.location or piece.location,
     )

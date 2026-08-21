@@ -19,7 +19,7 @@ import ast
 from pathlib import Path
 import re
 
-from .model import BindingMethod, PublicTypeGroup, StubSignatureGroup, StubSignatureOverrides
+from .model import BindingMethod, StubSignatureGroup, StubSignatureOverrides
 from .python_api.model import ApiCallableGroup, ApiModule
 from .naming import valid_identifier
 
@@ -392,37 +392,3 @@ def write_stub_file(
         )
 
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
-def type_stub_lines(
-    type_groups: list[PublicTypeGroup],
-    stub_signature_overrides: StubSignatureOverrides,
-    include_future_import: bool = True,
-) -> list[str]:
-    methods = [method for type_group in type_groups for method in type_group.methods]
-    lines = [
-        "# Generated public type stubs from PyCXX binding method tables.",
-    ]
-    if include_future_import:
-        lines.append("from __future__ import annotations")
-    lines.extend([*typing_import_lines(methods, stub_signature_overrides), ""])
-
-    for type_group in type_groups:
-        base_clause = f"({', '.join(type_group.base_symbols)})" if type_group.base_symbols else ""
-        lines.append(f"class {type_group.class_symbol}{base_clause}:")
-        class_lines = rendered_method_blocks(
-            type_group.methods,
-            class_method=True,
-            class_symbol=type_group.class_symbol,
-            stub_signature_overrides=stub_signature_overrides,
-            indent="    ",
-        )
-        if class_lines:
-            lines.extend(class_lines)
-        else:
-            lines.append("    pass")
-        if type_group.variable_symbol:
-            lines.extend(["", f"{type_group.variable_symbol}: {type_group.class_symbol}"])
-        lines.append("")
-
-    return lines

@@ -9,7 +9,8 @@ modules:
 - ``source_inputs`` reads curated binding, module, and type stub inputs
 - ``render`` turns normalized bindings into textual stub fragments
 - ``module_merge`` assembles module bodies and support nodes
-- ``class_merge`` appends public class stubs and alias exports
+- ``class_merge`` normalizes binding classes and materializes model classes
+  plus alias exports
 
 Keep the command-facing pipeline wiring here. Discovery heuristics, source-input
 parsing, and AST merge behavior should live in the specialized modules instead
@@ -23,11 +24,7 @@ from pathlib import Path
 import shutil
 
 from .class_merge import (
-    append_class_stubs,
     append_api_model_class_stubs,
-    merge_api_class_headers_into_stubs,
-    merge_api_class_attributes_into_stubs,
-    merge_api_class_methods_into_stubs,
     normalize_api_model_binding_class_headers,
     validate_public_class_aliases,
 )
@@ -161,12 +158,8 @@ def write_outputs(
     )
     copy_module_support_stubs(root, source_dir, out_dir / "stubs", module_names)
     merge_api_module_attributes_into_stubs(out_dir / "stubs", api_model, module_names)
-    append_class_stubs(out_dir / "stubs", root, classes, module_names)
     append_api_model_class_stubs(out_dir / "stubs", api_model, module_names)
-    merge_api_class_headers_into_stubs(out_dir / "stubs", api_model, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
-    merge_api_class_methods_into_stubs(out_dir / "stubs", api_model, module_names)
-    merge_api_class_attributes_into_stubs(out_dir / "stubs", api_model, module_names)
     merge_api_module_aliases_into_stubs(out_dir / "stubs", api_model, module_names)
     if diagnostics is not None:
         diagnostics.extend(generated_output_diagnostics(out_dir / "stubs", api_model, module_names))

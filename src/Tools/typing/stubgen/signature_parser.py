@@ -67,6 +67,7 @@ class CallableSignature:
     display_signature: str
     runtime_signature: str
     has_keywords: bool
+    decorators: tuple[str, ...] = ()
 
 
 def annotation_text(node: ast.AST | None) -> str | None:
@@ -229,6 +230,7 @@ def parse_callable_signature(node: ast.FunctionDef | ast.AsyncFunctionDef) -> Ca
         display_signature=display_signature(node, return_annotation),
         runtime_signature=runtime_signature(node),
         has_keywords=has_keyword_arguments(node.args),
+        decorators=tuple(ast.unparse(decorator) for decorator in node.decorator_list),
     )
 
 

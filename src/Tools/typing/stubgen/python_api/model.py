@@ -77,7 +77,11 @@ class ApiCallableGroup:
 
     @property
     def overload(self) -> bool:
-        return len(self.signatures) > 1
+        return len(self.signatures) > 1 and not any(
+            ".setter" in decorator
+            for signature in self.signatures
+            for decorator in signature.decorators
+        )
 
 
 @dataclass(frozen=True)
@@ -91,6 +95,9 @@ class ApiClass:
     methods: tuple[ApiCallableGroup, ...] = ()
     attributes: tuple[ApiAttribute, ...] = ()
     aliases: tuple[str, ...] = ()
+    decorators: tuple[str, ...] = ()
+    support_imports: tuple[str, ...] = ()
+    support_body: tuple[str, ...] = ()
     origin: ApiOrigin = ApiOrigin.GENERATED
     location: ApiSourceLocation | None = None
 

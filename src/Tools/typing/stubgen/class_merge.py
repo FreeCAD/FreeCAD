@@ -6,7 +6,8 @@ This module owns the class-shaped half of the merge stage:
 - map binding classes onto canonical public module/symbol targets
 - plan alias exports for multiply-exposed classes
 - rewrite binding class ASTs into public import-shaped class definitions
-- append generated class stubs into the final public module tree
+- preserve binding-specific support imports and declarations in ``ApiClass``
+- render complete model classes into the final public module tree
 
 In the overall pipeline this sits on top of the generic module merge helpers in
 ``module_merge``. That module handles package paths and module-body merges;
@@ -34,7 +35,6 @@ from .module_merge import (
     api_attribute_source,
     class_body_defined_symbols,
     import_stmt_line,
-    module_names_from_classes,
     module_stub_path,
     public_stub_symbols,
     merged_module_source,
@@ -44,11 +44,10 @@ from .module_merge import (
 from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
 from .python_api.extract import class_from_node
-from .python_api.model import ApiCallableGroup, ApiClass, ApiModel, ApiModule, ApiOrigin
+from .python_api.model import ApiClass, ApiModel, ApiModule, ApiOrigin
 from .render import render_docstring_lines
 from .signature_parser import CallableSignature
 
-TYPE_CHECKING_IMPORT_LINE = "from typing import TYPE_CHECKING"
 DEPRECATED_IMPORT_LINE = "from typing_extensions import deprecated"
 
 
@@ -728,47 +727,6 @@ def class_public_symbol(klass: BindingClass, module_name: str) -> str | None:
     )
 
 
-def class_alias_stub_line(
-    module_name: str,
-    symbol: str,
-    target_module_name: str,
-    target_symbol: str,
-) -> str:
-    if module_name == target_module_name:
-        return f"{symbol} = {target_symbol}"
-    if target_module_name.startswith(f"{module_name}."):
-        relative_module = target_module_name.removeprefix(module_name)
-        return f"from {relative_module} import {target_symbol} as {symbol}"
-    return f"from {target_module_name} import {target_symbol} as {symbol}"
-
-
-def class_public_alias_targets(
-    klass: BindingClass,
-) -> list[tuple[str, str, str, str]]:
-    targets = class_public_targets(klass)
-    canonical_target = canonical_target_from_targets(klass, targets)
-    if not canonical_target:
-        return []
-    target_module_name, target_symbol = canonical_target
-    return [
-        (module_name, symbol, target_module_name, target_symbol)
-        for module_name, symbol in targets
-        if (module_name, symbol) != canonical_target
-    ]
-
-
-def class_public_alias_line(klass: BindingClass, module_name: str) -> tuple[str, str] | None:
-    for public_module_name, symbol, target_module_name, target_symbol in class_public_alias_targets(
-        klass
-    ):
-        if public_module_name == module_name:
-            return (
-                symbol,
-                class_alias_stub_line(module_name, symbol, target_module_name, target_symbol),
-            )
-    return None
-
-
 def validate_public_class_aliases(classes: list[BindingClass]) -> None:
     errors: list[str] = []
     for klass in classes:
@@ -884,83 +842,6 @@ def public_class_stub_source(
     )
 
 
-def class_stub_lines(
-    root: Path,
-    module_classes: list[BindingClass],
-    module_name: str,
-    all_classes: list[BindingClass] | None = None,
-    include_future_import: bool = True,
-    skip_symbols: set[str] | None = None,
-    existing_source: str = "",
-) -> list[str]:
-    all_classes = all_classes or module_classes
-    header = [
-        "# Generated public class stubs from binding .pyi specs.",
-    ]
-    if include_future_import:
-        header.append("from __future__ import annotations")
-    body: list[str] = []
-    extra_import_lines: list[str] = []
-    seen: set[str] = set()
-    skip_symbols = skip_symbols or set()
-    renames = module_symbol_renames(module_classes, module_name)
-    module_symbols = {
-        symbol
-        for klass in module_classes
-        if (symbol := class_public_symbol(klass, module_name)) is not None
-    }
-    import_targets = public_import_target_index(all_classes)
-    internal_roots = known_stub_module_roots(all_classes)
-    alias_lines: list[str] = []
-    for klass in module_classes:
-        alias = class_public_alias_line(klass, module_name)
-        if not alias:
-            continue
-        symbol, line = alias
-        if symbol in seen or symbol in skip_symbols:
-            continue
-        alias_lines.append(line)
-        seen.add(symbol)
-    body.extend(alias_lines)
-    if alias_lines:
-        body.append("")
-    for klass in module_classes:
-        symbol = class_public_symbol(klass, module_name)
-        if not symbol or symbol in seen or symbol in skip_symbols:
-            continue
-        stub = public_class_stub_source(
-            root,
-            klass,
-            module_name,
-            renames,
-            module_symbols,
-            import_targets,
-            internal_roots,
-        )
-        if stub:
-            for line in stub.import_lines:
-                if line not in existing_source and line not in extra_import_lines:
-                    extra_import_lines.append(line)
-            body.append(f"# {klass.source}:{klass.line}")
-            body.append(stub.source)
-        else:
-            body.append(f"class {symbol}:  # {klass.source}:{klass.line}")
-            body.append("    ...")
-        body.append("")
-        seen.add(symbol)
-    if not body:
-        return []
-    type_checking_lines = type_checking_import_lines(root, module_classes, existing_source)
-    if type_checking_lines and TYPE_CHECKING_IMPORT_LINE not in existing_source:
-        if TYPE_CHECKING_IMPORT_LINE not in extra_import_lines:
-            extra_import_lines.append(TYPE_CHECKING_IMPORT_LINE)
-    header.extend(extra_import_lines)
-    if extra_import_lines:
-        header.append("")
-    header.extend(type_checking_lines)
-    return header + body
-
-
 def normalize_api_model_binding_class_headers(
     root: Path,
     classes: list[BindingClass],
@@ -1022,6 +903,7 @@ def normalize_api_model_binding_class_headers(
                 module.name,
                 class_node,
                 api_class,
+                stub.import_lines,
             )
             api_classes.append(normalized_class)
         model_modules.append(replace(module, classes=tuple(api_classes)))
@@ -1034,6 +916,7 @@ def ast_class_api_model(
     module_name: str,
     node: ast.ClassDef,
     existing: ApiClass,
+    transformed_imports: tuple[str, ...],
 ) -> ApiClass:
     """Build normalized callable and attribute data from a transformed class AST."""
 
@@ -1055,12 +938,19 @@ def ast_class_api_model(
         replace(attribute, location=raw_attributes.get(attribute.name, attribute).location)
         for attribute in transformed.attributes
     )
+    support_imports = list(transformed_imports)
+    type_checking_lines = type_checking_import_lines(root, [binding_class])
+    if type_checking_lines:
+        support_imports.append("\n".join(type_checking_lines).rstrip())
     return replace(
         existing,
         doc=transformed.doc,
         bases=tuple(ast.unparse(base) for base in node.bases),
         methods=methods,
         attributes=attributes,
+        decorators=transformed.decorators,
+        support_imports=tuple(support_imports),
+        support_body=transformed.support_body,
     )
 
 
@@ -1070,116 +960,36 @@ def render_api_class_header(api_class: ApiClass) -> str:
     return f"class {api_class.name}({', '.join(api_class.bases)}):"
 
 
-def merge_api_class_header(target_source: str, api_class: ApiClass) -> str:
-    """Replace one top-level class header from the normalized API model."""
-
-    tree = ast.parse(target_source)
-    target_class = next(
-        (
-            node
-            for node in tree.body
-            if isinstance(node, ast.ClassDef) and node.name == api_class.name
-        ),
-        None,
-    )
-    if target_class is None:
-        return target_source
-    current_bases = tuple(ast.unparse(base) for base in target_class.bases)
-    if current_bases == api_class.bases:
-        return target_source
-
-    lines = target_source.splitlines(keepends=True)
-    line_index = target_class.lineno - 1
-    line = lines[line_index]
-    class_start = target_class.col_offset
-    colon = line.rfind(":")
-    if colon < class_start:
-        return target_source
-    lines[line_index] = line[:class_start] + render_api_class_header(api_class) + line[colon + 1 :]
-    return "".join(lines)
-
-
-def merge_api_class_headers_into_stubs(
-    target_dir: Path,
-    api_model: ApiModel,
-    module_names: set[str],
-) -> int:
-    count = 0
-    for module in api_model.modules:
-        path = module_stub_path(target_dir, module.name, module_names)
-        if not path.exists():
-            continue
-        original = path.read_text(encoding="utf-8")
-        merged = original
-        for api_class in module.classes:
-            if api_class.origin != ApiOrigin.BINDING_SPEC:
-                continue
-            merged = merge_api_class_header(merged, api_class)
-        if merged == original:
-            continue
-        path.write_text(merged, encoding="utf-8")
-        count += 1
-    return count
-
-
-def append_class_stubs(
-    out_dir: Path,
-    root: Path,
-    classes: list[BindingClass],
-    module_names: set[str] | None = None,
-) -> int:
-    module_names = module_names or module_names_from_classes(classes)
-    suppressed = 0
-    for module_name, group in sorted(group_classes_by_module(classes).items()):
-        path = module_stub_path(out_dir, module_name, module_names)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        existing = path.read_text(encoding="utf-8") if path.exists() else ""
-        existing_symbols = public_stub_symbols(existing)
-        suppressed += sum(
-            1
-            for klass in group
-            if (symbol := class_public_symbol(klass, module_name)) and symbol in existing_symbols
-        )
-        class_lines = "\n".join(
-            class_stub_lines(
-                root,
-                group,
-                module_name,
-                all_classes=classes,
-                include_future_import=not existing.strip(),
-                skip_symbols=existing_symbols,
-                existing_source=existing,
-            )
-        ).rstrip()
-        if not class_lines:
-            continue
-        separator = "\n\n" if existing else ""
-        path.write_text(existing.rstrip() + separator + class_lines + "\n", encoding="utf-8")
-    return suppressed
-
-
 def render_api_model_class(api_class: ApiClass) -> str:
-    """Render a class that has no legacy binding declaration to start from."""
+    """Render one complete public class from the semantic API model."""
 
-    lines = [render_api_class_header(api_class)]
+    lines = [f"@{decorator}" for decorator in api_class.decorators]
+    lines.append(render_api_class_header(api_class))
     body: list[str] = []
     if api_class.doc:
         body.extend(render_docstring_lines(api_class.doc))
-    body.extend(api_attribute_source(attribute) for attribute in api_class.attributes)
+    body.extend(f"    {api_attribute_source(attribute)}" for attribute in api_class.attributes)
     for group in api_class.methods:
         for index, signature in enumerate(group.signatures):
-            if group.overload:
-                body.append("    @overload")
-            if signature.flags.classmethod:
-                body.append("    @classmethod")
-            elif signature.flags.staticmethod:
-                body.append("    @staticmethod")
+            decorators = list(signature.decorators)
+            decorator_names = {
+                decorator.split("(", 1)[0].split(".", 1)[-1] for decorator in decorators
+            }
+            if group.overload and "overload" not in decorator_names:
+                decorators.insert(0, "overload")
+            if signature.flags.classmethod and "classmethod" not in decorator_names:
+                decorators.insert(0, "classmethod")
+            elif signature.flags.staticmethod and "staticmethod" not in decorator_names:
+                decorators.insert(0, "staticmethod")
+            body.extend(f"    @{decorator}" for decorator in decorators)
             display = class_method_display_signature(signature)
             body.append(f"    def {display}:")
             doc = signature.docstring or (group.doc if index == 0 else None)
             if doc:
                 body.extend(f"    {line}" for line in render_docstring_lines(doc))
             body.append("        ...")
+    for support in api_class.support_body:
+        body.extend(f"    {line}" for line in support.splitlines())
     if not body:
         body.append("    ...")
     lines.extend(body)
@@ -1191,7 +1001,7 @@ def append_api_model_class_stubs(
     api_model: ApiModel,
     module_names: set[str],
 ) -> int:
-    """Materialize model classes absent from the legacy generated output."""
+    """Materialize model classes absent from the existing generated output."""
 
     count = 0
     for module in api_model.modules:
@@ -1209,10 +1019,20 @@ def append_api_model_class_stubs(
         prefix = existing.rstrip()
         if not prefix:
             prefix = "from __future__ import annotations"
-        needs_overload = any(group.overload for api_class in missing for group in api_class.methods)
-        if needs_overload and "from typing import overload" not in prefix:
-            prefix = f"{prefix}\nfrom typing import overload"
         class_source = "\n\n".join(render_api_model_class(api_class) for api_class in missing)
+        required_imports = {
+            import_line
+            for api_class in missing
+            for import_line in api_class.support_imports
+            if import_line.strip()
+        }
+        if "Any" in class_source:
+            required_imports.add("from typing import Any")
+        if any(group.overload for api_class in missing for group in api_class.methods):
+            required_imports.add("from typing import overload")
+        for import_line in sorted(required_imports):
+            if import_line not in prefix:
+                prefix = f"{prefix}\n{import_line}"
         path.write_text(f"{prefix}\n\n{class_source}\n", encoding="utf-8")
         count += len(missing)
     return count
@@ -1230,383 +1050,3 @@ def class_method_display_signature(
     if display[opening] == ")":
         return f"{display[:opening]}{receiver}{display[opening:]}"
     return f"{display[:opening]}{receiver}, {display[opening:]}"
-
-
-def api_method_decorators(
-    existing: ast.FunctionDef | ast.AsyncFunctionDef,
-    signature: CallableSignature,
-    overloaded: bool,
-) -> list[ast.expr]:
-    decorators = copy.deepcopy(existing.decorator_list)
-    names = {decorator_name(decorator).split(".", 1)[-1] for decorator in decorators}
-    required: list[str] = []
-    if signature.flags.classmethod:
-        required.append("classmethod")
-    if signature.flags.staticmethod:
-        required.append("staticmethod")
-    if overloaded:
-        required.append("overload")
-    for name in required:
-        if name not in names:
-            decorators.insert(0, ast.Name(id=name, ctx=ast.Load()))
-    return decorators
-
-
-def rewritten_api_method(
-    existing: ast.FunctionDef | ast.AsyncFunctionDef,
-    group: ApiCallableGroup,
-    signature: CallableSignature,
-) -> ast.FunctionDef | ast.AsyncFunctionDef:
-    method = ast.parse(
-        f"{'async ' if isinstance(existing, ast.AsyncFunctionDef) else ''}"
-        f"def {class_method_display_signature(signature)}: ..."
-    ).body[0]
-    if not isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)):
-        raise TypeError("parsed API method is not a function")
-    doc = signature.docstring
-    method.body = []
-    if doc:
-        method.body.append(ast.Expr(value=ast.Constant(value=doc)))
-    method.body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
-    method.decorator_list = api_method_decorators(existing, signature, group.overload)
-    method.type_comment = existing.type_comment
-    return method
-
-
-def new_api_method_node(
-    group: ApiCallableGroup,
-    signature: CallableSignature,
-) -> ast.FunctionDef:
-    """Create a class method node when the target class lacks the declaration."""
-
-    parsed = ast.parse(f"def {class_method_display_signature(signature)}: ...").body[0]
-    if not isinstance(parsed, ast.FunctionDef):
-        raise TypeError("generated API method is not a function")
-    decorators: list[ast.expr] = []
-    if signature.flags.classmethod:
-        decorators.append(ast.Name(id="classmethod", ctx=ast.Load()))
-    elif signature.flags.staticmethod:
-        decorators.append(ast.Name(id="staticmethod", ctx=ast.Load()))
-    if group.overload:
-        decorators.append(ast.Name(id="overload", ctx=ast.Load()))
-    parsed.decorator_list = decorators
-    parsed.body = []
-    if signature.docstring:
-        parsed.body.append(ast.Expr(value=ast.Constant(value=signature.docstring)))
-    parsed.body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
-    return parsed
-
-
-def append_source_class_members(
-    source: str,
-    target_class: ast.ClassDef,
-    members: list[ast.stmt],
-) -> str:
-    """Append missing members without reformatting the authored class body."""
-
-    lines = source.splitlines(keepends=True)
-    end_line = target_class.end_lineno
-    if end_line is None:
-        raise ValueError("class AST node has no source end location")
-    member_source = ast.unparse(ast.Module(body=members, type_ignores=[])).rstrip()
-    indented = "\n".join(f"    {line}" for line in member_source.splitlines())
-    return "".join(lines[:end_line]) + indented + "\n" + "".join(lines[end_line:])
-
-
-def callable_declaration_shape(
-    node: ast.FunctionDef | ast.AsyncFunctionDef,
-) -> tuple[object, ...]:
-    """Return the signature/decorator shape without implementation or doc text."""
-
-    return (
-        type(node),
-        node.name,
-        ast.dump(node.args, include_attributes=False),
-        ast.dump(node.returns, include_attributes=False) if node.returns else None,
-        tuple(ast.dump(decorator, include_attributes=False) for decorator in node.decorator_list),
-        node.type_comment,
-    )
-
-
-def source_node_start(node: ast.stmt) -> tuple[int, int]:
-    if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.decorator_list:
-        decorator = node.decorator_list[0]
-        return decorator.lineno, max(0, decorator.col_offset - 1)
-    return node.lineno, node.col_offset
-
-
-def replace_source_node(
-    source: str,
-    node: ast.stmt,
-    replacement: ast.stmt,
-) -> str:
-    lines = source.splitlines(keepends=True)
-    start_line, start_col = source_node_start(node)
-    end_line = node.end_lineno
-    end_col = node.end_col_offset
-    if end_line is None or end_col is None:
-        raise ValueError("AST node has no source end location")
-    prefix = "".join(lines[: start_line - 1]) + lines[start_line - 1][:start_col]
-    suffix = lines[end_line - 1][end_col:] + "".join(lines[end_line:])
-    replacement_source = ast.unparse(replacement)
-    indentation = " " * start_col
-    replacement_source = replacement_source.replace("\n", f"\n{indentation}")
-    return prefix + replacement_source + suffix
-
-
-def replace_source_callable_declaration(
-    source: str,
-    node: ast.FunctionDef | ast.AsyncFunctionDef,
-    replacement: ast.FunctionDef | ast.AsyncFunctionDef,
-) -> str:
-    """Replace a callable declaration while preserving its existing body text."""
-
-    if not node.body or not replacement.body:
-        return replace_source_node(source, node, replacement)
-
-    lines = source.splitlines(keepends=True)
-    start_line, start_col = source_node_start(node)
-    body_line = node.body[0].lineno - 1
-    body_col = node.body[0].col_offset
-    replacement_source = ast.unparse(replacement)
-    replacement_lines = replacement_source.splitlines()
-    replacement_tree = ast.parse(replacement_source)
-    replacement_node = replacement_tree.body[0]
-    if not isinstance(replacement_node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-        return replace_source_node(source, node, replacement)
-    replacement_body_line = replacement_node.body[0].lineno - 1
-    declaration_lines = replacement_lines[:replacement_body_line]
-    definition_line = next(
-        (
-            index
-            for index, line in enumerate(replacement_lines)
-            if line.lstrip().startswith(("def ", "async def "))
-        ),
-        None,
-    )
-    if definition_line == replacement_body_line:
-        declaration_lines.append(
-            replacement_lines[replacement_body_line][: replacement_node.body[0].col_offset].rstrip()
-        )
-    if not declaration_lines:
-        return replace_source_node(source, node, replacement)
-
-    indentation = " " * start_col
-    declaration = declaration_lines[0]
-    declaration += (
-        "\n" + "\n".join(f"{indentation}{line}" for line in declaration_lines[1:])
-        if len(declaration_lines) > 1
-        else ""
-    )
-    prefix = "".join(lines[: start_line - 1]) + lines[start_line - 1][:start_col]
-    if body_line == start_line - 1:
-        suffix = lines[body_line][body_col:]
-        return prefix + declaration + " " + suffix + "".join(lines[body_line + 1 :])
-
-    body_prefix = lines[body_line][:body_col]
-    suffix = body_prefix + lines[body_line][body_col:] + "".join(lines[body_line + 1 :])
-    return prefix + declaration + "\n" + suffix
-
-
-def merge_api_class_methods(
-    target_source: str,
-    api_class: ApiClass,
-) -> str:
-    """Replace curated class methods with their normalized API-model form."""
-
-    if not api_class.methods:
-        return target_source
-
-    target_tree = ast.parse(target_source)
-    target_class = next(
-        (
-            node
-            for node in target_tree.body
-            if isinstance(node, ast.ClassDef) and node.name == api_class.name
-        ),
-        None,
-    )
-    if target_class is None:
-        return target_source
-
-    groups = {group.name: group for group in api_class.methods}
-    indices: dict[str, int] = {}
-    replacements: list[
-        tuple[
-            ast.FunctionDef | ast.AsyncFunctionDef,
-            ast.FunctionDef | ast.AsyncFunctionDef,
-            bool,
-        ]
-    ] = []
-    existing_counts: dict[str, int] = {}
-    for node in target_class.body:
-        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-            continue
-        group = groups.get(node.name)
-        if group is None:
-            continue
-        signature_index = indices.get(node.name, 0)
-        indices[node.name] = signature_index + 1
-        existing_counts[node.name] = signature_index + 1
-        if signature_index >= len(group.signatures):
-            continue
-        signature = group.signatures[signature_index]
-        replacement = rewritten_api_method(
-            node,
-            group,
-            signature,
-        )
-        if callable_declaration_shape(node) == callable_declaration_shape(replacement):
-            continue
-        preserve_body = (
-            api_class.origin == ApiOrigin.BINDING_SPEC
-            and ast.get_docstring(node, clean=True) == signature.docstring
-        )
-        replacements.append((node, replacement, preserve_body))
-
-    missing_nodes: list[ast.stmt] = []
-    for group in api_class.methods:
-        start = existing_counts.get(group.name, 0)
-        missing_nodes.extend(
-            new_api_method_node(group, signature) for signature in group.signatures[start:]
-        )
-
-    if missing_nodes:
-        if any(preserve_body for _, _, preserve_body in replacements):
-            merged = append_source_class_members(target_source, target_class, missing_nodes)
-            for original, replacement, preserve_body in reversed(replacements):
-                if preserve_body:
-                    merged = replace_source_callable_declaration(merged, original, replacement)
-                else:
-                    merged = replace_source_node(merged, original, replacement)
-            return merged
-        replacement_by_id = {id(original): replacement for original, replacement, _ in replacements}
-        target_class.body = [replacement_by_id.get(id(node), node) for node in target_class.body]
-        target_class.body = [
-            node
-            for node in target_class.body
-            if not (
-                isinstance(node, ast.Expr)
-                and isinstance(node.value, ast.Constant)
-                and node.value.value is Ellipsis
-            )
-        ]
-        target_class.body.extend(missing_nodes)
-        return merged_module_source(target_source, target_tree)
-
-    if not replacements:
-        return target_source
-    merged = target_source
-    for original, replacement, preserve_body in reversed(replacements):
-        if preserve_body:
-            merged = replace_source_callable_declaration(merged, original, replacement)
-        else:
-            merged = replace_source_node(merged, original, replacement)
-    return merged
-
-
-def merge_api_class_attributes(
-    target_source: str,
-    api_class: ApiClass,
-) -> str:
-    """Replace curated class assignments with their normalized API-model form."""
-
-    if not api_class.attributes:
-        return target_source
-
-    target_tree = ast.parse(target_source)
-    target_class = next(
-        (
-            node
-            for node in target_tree.body
-            if isinstance(node, ast.ClassDef) and node.name == api_class.name
-        ),
-        None,
-    )
-    if target_class is None:
-        return target_source
-
-    attributes = {attribute.name: attribute for attribute in api_class.attributes}
-    existing_symbols = class_body_defined_symbols(target_class.body)
-    replacements: list[tuple[ast.stmt, ast.stmt]] = []
-    for node in target_class.body:
-        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
-            continue
-        names = top_level_symbol_names(node)
-        if len(names) != 1:
-            continue
-        attribute = attributes.get(next(iter(names)))
-        if attribute is None:
-            continue
-        replacement = ast.parse(api_attribute_source(attribute)).body[0]
-        if ast.dump(node, include_attributes=False) == ast.dump(
-            replacement,
-            include_attributes=False,
-        ):
-            continue
-        replacements.append((node, replacement))
-
-    missing_nodes = [
-        ast.parse(api_attribute_source(attribute)).body[0]
-        for attribute in api_class.attributes
-        if attribute.name not in existing_symbols
-    ]
-    if missing_nodes:
-        target_class.body = [
-            node
-            for node in target_class.body
-            if not (
-                isinstance(node, ast.Expr)
-                and isinstance(node.value, ast.Constant)
-                and node.value.value is Ellipsis
-            )
-        ]
-        target_class.body.extend(missing_nodes)
-        return merged_module_source(target_source, target_tree)
-
-    merged = target_source
-    for original, replacement in reversed(replacements):
-        merged = replace_source_node(merged, original, replacement)
-    return merged
-
-
-def merge_api_class_methods_into_stubs(
-    target_dir: Path,
-    api_model: ApiModel,
-    module_names: set[str],
-) -> int:
-    count = 0
-    for api_module in api_model.modules:
-        path = module_stub_path(target_dir, api_module.name, module_names)
-        if not path.exists():
-            continue
-        original = path.read_text(encoding="utf-8")
-        merged = original
-        for api_class in api_module.classes:
-            merged = merge_api_class_methods(merged, api_class)
-        if merged == original:
-            continue
-        path.write_text(merged, encoding="utf-8")
-        count += 1
-    return count
-
-
-def merge_api_class_attributes_into_stubs(
-    target_dir: Path,
-    api_model: ApiModel,
-    module_names: set[str],
-) -> int:
-    count = 0
-    for api_module in api_model.modules:
-        path = module_stub_path(target_dir, api_module.name, module_names)
-        if not path.exists():
-            continue
-        original = path.read_text(encoding="utf-8")
-        merged = original
-        for api_class in api_module.classes:
-            merged = merge_api_class_attributes(merged, api_class)
-        if merged == original:
-            continue
-        path.write_text(merged, encoding="utf-8")
-        count += 1
-    return count
