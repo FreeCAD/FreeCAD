@@ -1127,7 +1127,7 @@ PythonBaseWorkbench::~PythonBaseWorkbench()
     delete _commandBar;
     if (_workbenchPy) {
         auto* object = static_cast<Base::PyObjectBase*>(_workbenchPy.get());
-        object->setInvalid();
+        object->setInvalidWithoutPython();
     }
     _workbenchPy.reset();
 }

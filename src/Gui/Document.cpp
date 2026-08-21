@@ -615,9 +615,9 @@ Document::~Document()
         delete va.second;
     }
 
-    // remove the reference from the object
-    Base::PyGILStateLocker lock;
-    static_cast<Base::PyObjectBase*>(_pcDocPy.get())->setInvalid();
+    // Invalidate the retained wrapper without touching Python-owned
+    // attributes from this native destructor.
+    static_cast<Base::PyObjectBase*>(_pcDocPy.get())->setInvalidWithoutPython();
     _pcDocPy.reset();
     delete d;
 }

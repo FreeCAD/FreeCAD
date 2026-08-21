@@ -1070,12 +1070,11 @@ Document::~Document()
 
     d->clearDocument();
 
-    // Keep retained Python wrappers usable as invalidated objects, then release
-    // the native-owned reference while the interpreter is still running.
+    // Keep retained Python wrappers usable as invalidated objects without
+    // touching Python-owned attributes from this native destructor.
     if (d->DocumentPythonObject) {
-        Base::PyGILStateLocker lock;
         auto* doc = static_cast<Base::PyObjectBase*>(d->DocumentPythonObject.get());
-        doc->setInvalid();
+        doc->setInvalidWithoutPython();
     }
     d->DocumentPythonObject.reset();
 
