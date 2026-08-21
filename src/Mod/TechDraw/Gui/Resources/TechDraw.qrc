@@ -57,6 +57,7 @@
         <file>icons/actions/TechDraw_SurfaceFinishSymbols.svg</file>
         <file>icons/actions/TechDraw_ComplexSection.svg</file>
         <file>icons/actions/TechDraw_CosmeticCircle.svg</file>
+        <file>icons/actions/TechDraw_CosmeticCircle_Pointer.svg</file>
         <file>icons/actions/TechDraw_BrokenView.svg</file>
         <file>icons/arrow-ccw.svg</file>
         <file>icons/arrow-cw.svg</file>
@@ -112,8 +113,10 @@
         <file>icons/TechDraw_ExtensionCustomizeFormat.svg</file>
         <file>icons/TechDraw_ExtensionDecreaseDecimal.svg</file>
         <file>icons/TechDraw_ExtensionDrawCosmArc.svg</file>
+        <file>icons/TechDraw_CosmeticArc_Pointer.svg</file>
         <file>icons/TechDraw_ExtensionDrawCosmCircle.svg</file>
         <file>icons/TechDraw_ExtensionDrawCosmCircle3Points.svg</file>
+        <file>icons/TechDraw_Cosmetic3PtCircle_Pointer.svg</file>
         <file>icons/TechDraw_ExtensionExtendLine.svg</file>
         <file>icons/TechDraw_ExtensionHoleCircle.svg</file>
         <file>icons/TechDraw_ExtensionIncreaseDecimal.svg</file>
