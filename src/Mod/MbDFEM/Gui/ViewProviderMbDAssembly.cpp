@@ -12,7 +12,7 @@
 #include <Inventor/nodes/SoSwitch.h>
 
 #include <App/Document.h>
-#include <Gui/ActionFunction.h>
+#include <Base/Matrix.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Mod/MbDFEM/App/MbDAssembly.h>
@@ -20,7 +20,6 @@
 #include <Mod/MbDFEM/App/MbDPart.h>
 #include <Mod/Part/App/PartFeature.h>
 
-#include "ViewProviderAxisTriad.h"
 #include "ViewProviderUtils.h"
 
 using namespace MbDFEMGui;
@@ -62,17 +61,6 @@ PROPERTY_SOURCE(MbDFEMGui::ViewProviderMbDAssembly, Gui::ViewProviderPart)
 ViewProviderMbDAssembly::ViewProviderMbDAssembly()
 {
     sPixmap = "Document";
-
-    ADD_PROPERTY_TYPE(
-        AxisTriad,
-        (false),
-        "Display Options",
-        App::Prop_None,
-        "Show an RGB axis triad at the assembly coordinate system"
-    );
-
-    axisTriadSwitch = createAxisTriadSwitch(AxisTriad.getValue());
-    pcRoot->addChild(axisTriadSwitch);
 }
 
 void ViewProviderMbDAssembly::attach(App::DocumentObject* object)
@@ -152,9 +140,11 @@ void ViewProviderMbDAssembly::dropObject(App::DocumentObject* obj)
         std::string name = std::string(feature->getNameInDocument()) + "_MbDPart";
         auto* part = static_cast<MbDFEM::MbDPart*>(
             document->addObject("MbDFEM::MbDPart", name.c_str()));
+        auto shape = feature->Shape.getShape();
+        shape.setTransform(Base::Matrix4D());
         part->Label.setValue(feature->Label.getValue());
         part->Placement.setValue(feature->Placement.getValue());
-        part->Shape.setValue(feature->Shape.getShape());
+        part->Shape.setValue(shape);
         assembly->addPart(part);
         document->commitTransaction();
         document->recompute();
@@ -200,28 +190,9 @@ bool ViewProviderMbDAssembly::getElementPicked(const SoPickedPoint* pp, std::str
 
 void ViewProviderMbDAssembly::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    auto* func = new Gui::ActionFunction(menu);
-    addAxisTriadContextMenuAction(
-        menu, func, AxisTriad.getValue(), [this](bool visible) { setAxisTriadVisible(visible); });
+    addMbDFEMContextMenuCommands(menu, {"MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"});
 
-    Gui::ViewProviderPart::setupContextMenu(menu, receiver, member);
-}
-
-void ViewProviderMbDAssembly::onChanged(const App::Property* prop)
-{
-    if (prop == &AxisTriad) {
-        updateAxisTriad();
+    if (auto* otherMenu = addOtherContextMenu(menu)) {
+        Gui::ViewProviderPart::setupContextMenu(otherMenu, receiver, member);
     }
-
-    Gui::ViewProviderPart::onChanged(prop);
-}
-
-void ViewProviderMbDAssembly::setAxisTriadVisible(bool visible)
-{
-    AxisTriad.setValue(visible);
-}
-
-void ViewProviderMbDAssembly::updateAxisTriad()
-{
-    updateAxisTriadSwitch(axisTriadSwitch, AxisTriad.getValue());
 }

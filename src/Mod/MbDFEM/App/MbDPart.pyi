@@ -23,6 +23,18 @@ class MbDPart(PartFeature):
         """Remove an MbDMarker from markers without deleting it."""
         ...
 
+    def getMassMarker(self) -> DocumentObject:
+        """Return the part center-of-mass/principal-axes marker."""
+        ...
+
+    def ensureMassMarker(self) -> DocumentObject:
+        """Create and return the part center-of-mass/principal-axes marker."""
+        ...
+
+    def populateMassMarkerFromShape(self) -> DocumentObject:
+        """Populate massMarker from this part's shape center of mass and principal axes."""
+        ...
+
     def getMarkersFolder(self) -> DocumentObject:
         """Return the lightweight Markers tree folder."""
         ...

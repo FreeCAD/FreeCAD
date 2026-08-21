@@ -13,6 +13,7 @@ namespace MbDFEM
 {
 
 class MbDMarker;
+class MbDMassMarker;
 
 class MbDFEMExport MbDPart: public Part::Feature, public App::OriginGroupExtension
 {
@@ -22,7 +23,10 @@ public:
     MbDPart();
     ~MbDPart() override = default;
 
+    const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
+
     App::PropertyLinkList markers;
+    App::PropertyLink massMarker;
     App::PropertyFloatList xs;
     App::PropertyFloatList ys;
     App::PropertyFloatList zs;
@@ -44,6 +48,8 @@ public:
 
     void addMarker(MbDMarker* marker);
     void removeMarker(MbDMarker* marker);
+    void setMassMarker(MbDMassMarker* marker);
+    MbDMassMarker* populateMassMarkerFromShape();
 
     int setElementVisible(const char* element, bool visible) override;
     int isElementVisible(const char* element) const override;
@@ -52,10 +58,14 @@ public:
                                       Base::Matrix4D* mat = nullptr,
                                       bool transform = true,
                                       int depth = 0) const override;
+    void onChanged(const App::Property* prop) override;
+    void onDocumentRestored() override;
     void unsetupObject() override;
     PyObject* getPyObject() override;
 
     App::DocumentObjectGroup* getMarkersFolder() const;
+    MbDMassMarker* getMassMarker() const;
+    MbDMassMarker* ensureMassMarker();
 
     const char* getViewProviderName() const override
     {

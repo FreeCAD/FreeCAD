@@ -36,6 +36,24 @@ class FreeCADMbDProcessBackend:
         self.timeout = timeout
 
     def solve(self, assembly, asmt_file=None):
+        asmt_path = Path(asmt_file) if asmt_file else default_asmt_path(assembly)
+        FreeCADMbDExporter.export_assembly(assembly, asmt_path)
+
+        solved_asmt_path, completed = self.simulate_asmt(asmt_path)
+
+        if solved_asmt_path.exists():
+            FreeCADMbDResults.import_results(assembly, solved_asmt_path)
+
+        return SolveResult(
+            asmt_file=str(asmt_path),
+            result_file=str(solved_asmt_path) if solved_asmt_path.exists() else None,
+            return_code=completed.returncode,
+            stdout=completed.stdout,
+            stderr=completed.stderr,
+        )
+
+    def simulate_asmt(self, asmt_file, solved_asmt_file=None):
+        """Run FreeCADMbD on an existing ASMT file without importing results."""
         if not self.executable_path:
             raise RuntimeError(
                 "FreeCADMbD executable is not configured. Set the MbDFEM "
@@ -46,10 +64,8 @@ class FreeCADMbDProcessBackend:
         if not executable.exists():
             raise RuntimeError(f"FreeCADMbD executable does not exist: {executable}")
 
-        asmt_path = Path(asmt_file) if asmt_file else default_asmt_path(assembly)
-        FreeCADMbDExporter.export_assembly(assembly, asmt_path)
-
-        solved_asmt_path = asmt_path.with_suffix(".solved.asmt")
+        asmt_path = Path(asmt_file)
+        solved_asmt_path = Path(solved_asmt_file) if solved_asmt_file else asmt_path.with_suffix(".solved.asmt")
         command = [str(executable), str(asmt_path), str(solved_asmt_path)]
         completed = subprocess.run(
             command,
@@ -71,16 +87,7 @@ class FreeCADMbDProcessBackend:
                 f"stderr:\n{completed.stderr.strip()}"
             )
 
-        if solved_asmt_path.exists():
-            FreeCADMbDResults.import_results(assembly, solved_asmt_path)
-
-        return SolveResult(
-            asmt_file=str(asmt_path),
-            result_file=str(solved_asmt_path) if solved_asmt_path.exists() else None,
-            return_code=completed.returncode,
-            stdout=completed.stdout,
-            stderr=completed.stderr,
-        )
+        return solved_asmt_path, completed
 
 
 def configured_executable():

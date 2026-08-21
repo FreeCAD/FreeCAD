@@ -34,25 +34,53 @@ class AnimationController:
     @property
     def times(self):
         frames = self._playback_frames()
-        if frames:
-            return [time for _, time in frames]
+        return [time for _, time in frames]
 
-        count = self.frame_count
-        frame_rate = self.frame_rate
-        return [index / frame_rate for index in range(count)]
+    @property
+    def result_times(self):
+        frames = self._result_frames()
+        return [time for _, time in frames]
 
     @property
     def frame_count(self):
+        return len(self._playback_frames())
+
+    @property
+    def source_frame_count(self):
         counts = []
         for target in self._targets:
             for name in _POSITION_PROPERTIES:
                 values = list(getattr(target, name, []))
                 if values:
-                    counts.append(max(len(values) - 1, 0))
-        assembly_times = self._playback_frames()
-        if assembly_times:
-            counts.append(len(assembly_times))
+                    counts.append(len(values))
+        raw_times = list(getattr(self.assembly, "times", []))
+        if raw_times:
+            counts.append(len(raw_times))
         return min(counts) if counts else 0
+
+    @property
+    def start_frame(self):
+        return self.frame_bounds[0]
+
+    @property
+    def end_frame(self):
+        return self.frame_bounds[1]
+
+    @property
+    def frame_bounds(self):
+        count = self.source_frame_count
+        if count == 0:
+            return 0, 0
+
+        parameters = self._animation_parameters()
+        start = int(getattr(parameters, "startFrame", 1)) if parameters else 0
+        end = int(getattr(parameters, "endFrame", -1)) if parameters else -1
+
+        start = max(0, min(start, count - 1))
+        if end < 0:
+            end = count - 1
+        end = max(start, min(end, count - 1))
+        return start, end
 
     @property
     def duration(self):
@@ -60,9 +88,9 @@ class AnimationController:
         return times[-1] if times else 0.0
 
     @property
-    def frame_rate(self):
+    def update_rate(self):
         parameters = self._animation_parameters()
-        value = getattr(parameters, "frameRate", 30) if parameters else 30
+        value = getattr(parameters, "updateRate", 30) if parameters else 30
         return max(float(value), 1.0)
 
     @property
@@ -97,14 +125,17 @@ class AnimationController:
 
     def setFrame(self, index):
         """Apply the animation state at frame *index*."""
-        times = self.times
-        if not times:
+        frames = self._result_frames()
+        if not frames:
             self.current_frame = 0
             self.current_time = 0.0
             return self.current_frame
 
-        self.current_frame = max(0, min(int(index), len(times) - 1))
-        self.setTime(times[self.current_frame])
+        frame = max(frames[0][0], min(int(index), frames[-1][0]))
+        self.current_frame = frame
+        self.current_time = frames[frame - frames[0][0]][1]
+        self._apply_sample((frame, frame, 0.0, frame))
+        self._recompute_document()
         return self.current_frame
 
     def stepForward(self):
@@ -123,7 +154,7 @@ class AnimationController:
             self.is_playing = True
             return False
 
-        interval = max(int(1000.0 / self.frame_rate), 1)
+        interval = max(int(1000.0 / self.update_rate), 1)
         self.is_playing = True
         timer.start(interval)
         return True
@@ -135,12 +166,12 @@ class AnimationController:
 
     def stop(self):
         self.pause()
-        self.setFrame(0)
+        self.setFrame(self.start_frame)
 
     def tick(self, delta_seconds=None):
         """Advance playback by one tick; useful for tests and non-Qt callers."""
         if delta_seconds is None:
-            delta_seconds = 1.0 / self.frame_rate
+            delta_seconds = 1.0 / self.update_rate
 
         next_time = self.current_time + float(delta_seconds) * self.playback_speed
         duration = self.duration
@@ -174,8 +205,24 @@ class AnimationController:
         return any(list(getattr(obj, name, [])) for name in _POSITION_PROPERTIES)
 
     def _playback_frames(self):
+        frames = self._result_frames()
+        if not frames:
+            return []
+
+        start, end = self.frame_bounds
+        return frames[start : end + 1]
+
+    def _result_frames(self):
         raw_times = list(getattr(self.assembly, "times", []))
-        return [(index, time) for index, time in enumerate(raw_times) if index > 0]
+        count = self.source_frame_count
+        if count == 0:
+            return []
+
+        if raw_times:
+            return [(index, float(raw_times[index])) for index in range(count)]
+
+        update_rate = self.update_rate
+        return [(index, index / update_rate) for index in range(count)]
 
     def _bounded_time(self, seconds):
         times = self.times
@@ -188,22 +235,22 @@ class AnimationController:
     def _sample_for_time(self, seconds):
         frames = self._playback_frames()
         if not frames:
-            frames = [(index + 1, time) for index, time in enumerate(self.times)]
+            return 0, 0, 0.0, 0
         times = [time for _, time in frames]
         if len(frames) == 1:
-            return frames[0][0], frames[0][0], 0.0, 0
+            return frames[0][0], frames[0][0], 0.0, frames[0][0]
         upper = bisect_right(times, seconds)
         if upper <= 0:
-            return frames[0][0], frames[0][0], 0.0, 0
+            return frames[0][0], frames[0][0], 0.0, frames[0][0]
         if upper >= len(frames):
             index = len(frames) - 1
-            return frames[index][0], frames[index][0], 0.0, index
+            return frames[index][0], frames[index][0], 0.0, frames[index][0]
 
         lower = upper - 1
         span = times[upper] - times[lower]
         if span <= 0.0 or not self.interpolate_frames:
-            return frames[lower][0], frames[lower][0], 0.0, lower
-        return frames[lower][0], frames[upper][0], (seconds - times[lower]) / span, lower
+            return frames[lower][0], frames[lower][0], 0.0, frames[lower][0]
+        return frames[lower][0], frames[upper][0], (seconds - times[lower]) / span, frames[lower][0]
 
     def _apply_sample(self, sample):
         for target in self._targets:
@@ -226,7 +273,22 @@ class AnimationController:
         if not all(series):
             return None
 
-        x_angle, y_angle, z_angle = [degrees(self._sample_value(values, sample)) for values in series]
+        lower, upper, ratio = sample[:3]
+        lower_rotation = self._rotation_at_index(series, lower)
+        if lower == upper:
+            return lower_rotation
+
+        upper_rotation = self._rotation_at_index(series, upper)
+        return lower_rotation.slerp(upper_rotation, ratio)
+
+    @staticmethod
+    def _rotation_at_index(series, index):
+        angles = []
+        for values in series:
+            clamped_index = max(0, min(index, len(values) - 1))
+            angles.append(degrees(float(values[clamped_index])))
+
+        x_angle, y_angle, z_angle = angles
         x_rotation = App.Rotation(App.Vector(1, 0, 0), x_angle)
         y_rotation = App.Rotation(App.Vector(0, 1, 0), y_angle)
         z_rotation = App.Rotation(App.Vector(0, 0, 1), z_angle)

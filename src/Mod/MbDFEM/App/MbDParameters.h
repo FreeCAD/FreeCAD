@@ -36,20 +36,16 @@ public:
 
     App::PropertyFloat startTime;
     App::PropertyFloat endTime;
-    App::PropertyFloat maxStepSize;
+    App::PropertyFloat outputInterval;
     App::PropertyFloat minStepSize;
-    App::PropertyEnumeration solverType;
+    App::PropertyFloat maxStepSize;
     App::PropertyInteger significantDigits;
     App::PropertyInteger maxIterations;
-    App::PropertyFloat outputInterval;
 
     const char* getViewProviderName() const override
     {
-        return "Gui::ViewProviderDocumentObject";
+        return "MbDFEMGui::ViewProviderMbDSimulationParameters";
     }
-
-private:
-    static const char* SolverTypeEnums[];
 };
 
 class MbDFEMExport MbDAnimationParameters: public App::DocumentObject
@@ -60,11 +56,13 @@ public:
     MbDAnimationParameters();
     ~MbDAnimationParameters() override = default;
 
-    App::PropertyInteger frameRate;
+    App::PropertyInteger updateRate;
+    App::PropertyInteger startFrame;
+    App::PropertyInteger endFrame;
     App::PropertyFloat playbackSpeed;
-    App::PropertyBool loop;
     App::PropertyBool showTrails;
     App::PropertyInteger trailLength;
+    App::PropertyBool loop;
     App::PropertyBool interpolateFrames;
 
     const char* getViewProviderName() const override

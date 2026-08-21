@@ -1,0 +1,127 @@
+FreeCADMbD
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray new))
+	Name
+		MbDAssembly
+	Position3D
+		0	0	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						Ground_Pin_MbDPart_MbDMarker001
+					Position3D
+						0	0	0.192	
+					RotationMatrix
+						-1	0	0	
+						0	0	1	
+						0	1	0	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				LongPendulum_MbDPart
+			Position3D
+				0.179	0	0	
+			RotationMatrix
+				0.0174524064372832	0	-0.999847695156391	
+				0	1	0	
+				0.999847695156391	0	0.0174524064372832	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					LongPendulum_MbDPart_MassMarker
+				Position3D
+					0	0	0.0953891309750688	
+				RotationMatrix
+					0	1	0	
+					0	0	1	
+					1	0	0	
+				Mass
+					4.31058377202057e-05
+				MomentOfInertias
+					6.43493940221052e-09	1.74448297190155e-07	1.80249285963696e-07	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								MbDMarker
+							Position3D
+								0	0	0.192	
+							RotationMatrix
+								-0.0163656975831654	-0.999866073003088	0	
+								0	0	1	
+								-0.999866073003088	0.0163656975831654	0	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			RevoluteJoint
+				Name
+					MbDJoint
+				MarkerI
+					/MbDAssembly/Ground_Pin_MbDPart_MbDMarker001
+				MarkerJ
+					/MbDAssembly/LongPendulum_MbDPart/MbDMarker
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	-9.81	
+	SimulationParameters
+		tstart
+			0
+		tend
+			1
+		hmin
+			1e-09
+		hmax
+			1
+		hout
+			0.01
+		errorTol
+			1e-12
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			2
+		istart
+			2
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30

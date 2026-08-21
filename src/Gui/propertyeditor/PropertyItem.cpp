@@ -28,6 +28,7 @@
 #include <QApplication>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QDoubleValidator>
 #include <QFontDatabase>
 #include <QLocale>
 #include <QMessageBox>
@@ -103,6 +104,35 @@ QString scientificQuantity(const Base::Quantity& value)
     const QString number = scientificNumber(value.getValue());
     const QString unit = QString::fromStdString(value.getUnit().getString());
     return unit.isEmpty() ? number : QStringLiteral("%1 %2").arg(number, unit);
+}
+
+QLineEdit* createHighPrecisionFloatEditor(
+    QWidget* parent,
+    const std::function<void()>& method,
+    FrameOption frameOption
+)
+{
+    auto le = new QLineEdit(parent);
+    le->setFrame(static_cast<bool>(frameOption));
+    QObject::connect(le, &QLineEdit::editingFinished, method);
+    return le;
+}
+
+void setFloatLineEditRange(QLineEdit* editor, double minimum, double maximum)
+{
+    auto validator = new QDoubleValidator(minimum, maximum, highPrec, editor);
+    validator->setNotation(QDoubleValidator::ScientificNotation);
+    editor->setValidator(validator);
+}
+
+QVariant floatLineEditData(QLineEdit* editor)
+{
+    bool ok = false;
+    const double value = editor->locale().toDouble(editor->text(), &ok);
+    if (ok) {
+        return {value};
+    }
+    return {editor->text().toDouble(&ok)};
 }
 }  // namespace
 
@@ -1189,6 +1219,10 @@ QWidget* PropertyFloatItem::createEditor(
     FrameOption frameOption
 ) const
 {
+    if (decimals() >= highPrec) {
+        return createHighPrecisionFloatEditor(parent, method, frameOption);
+    }
+
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setFrame(static_cast<bool>(frameOption));
     sb->setDecimals(highPrec);  // let users type in the full number, not just 2 decimals. Dont
@@ -1205,6 +1239,14 @@ QWidget* PropertyFloatItem::createEditor(
 
 void PropertyFloatItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
+    if (auto le = qobject_cast<QLineEdit*>(editor)) {
+        setFloatLineEditRange(le,
+                              static_cast<double>(std::numeric_limits<int>::min()),
+                              static_cast<double>(std::numeric_limits<int>::max()));
+        le->setText(scientificNumber(data.toDouble()));
+        return;
+    }
+
     auto sb = qobject_cast<QDoubleSpinBox*>(editor);
     sb->setRange(
         static_cast<double>(std::numeric_limits<int>::min()),
@@ -1215,6 +1257,10 @@ void PropertyFloatItem::setEditorData(QWidget* editor, const QVariant& data) con
 
 QVariant PropertyFloatItem::editorData(QWidget* editor) const
 {
+    if (auto le = qobject_cast<QLineEdit*>(editor)) {
+        return floatLineEditData(le);
+    }
+
     auto sb = qobject_cast<QDoubleSpinBox*>(editor);
     return {sb->value()};
 }
@@ -1361,6 +1407,10 @@ QWidget* PropertyFloatConstraintItem::createEditor(
     FrameOption frameOption
 ) const
 {
+    if (decimals() >= highPrec) {
+        return createHighPrecisionFloatEditor(parent, method, frameOption);
+    }
+
     auto sb = new Gui::DoubleSpinBox(parent);
     sb->setDecimals(highPrec);  // let users type in the full number, not just 2 decimals. Dont
                                 // truncate what they type.
@@ -1384,6 +1434,17 @@ void PropertyFloatConstraintItem::setEditorData(QWidget* editor, const QVariant&
         c = prop->getConstraints();
     }
 
+    if (auto le = qobject_cast<QLineEdit*>(editor)) {
+        if (c) {
+            setFloatLineEditRange(le, c->LowerBound, c->UpperBound);
+        }
+        else {
+            setFloatLineEditRange(le, min, max);
+        }
+        le->setText(scientificNumber(data.toDouble()));
+        return;
+    }
+
     auto sb = qobject_cast<QDoubleSpinBox*>(editor);
     if (c) {
         sb->setMinimum(c->LowerBound);
@@ -1401,6 +1462,10 @@ void PropertyFloatConstraintItem::setEditorData(QWidget* editor, const QVariant&
 
 QVariant PropertyFloatConstraintItem::editorData(QWidget* editor) const
 {
+    if (auto le = qobject_cast<QLineEdit*>(editor)) {
+        return floatLineEditData(le);
+    }
+
     auto sb = qobject_cast<QDoubleSpinBox*>(editor);
     return {sb->value()};
 }

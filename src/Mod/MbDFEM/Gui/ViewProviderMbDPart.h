@@ -2,11 +2,9 @@
 
 #pragma once
 
-#include <App/PropertyStandard.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
 
-class SoSwitch;
 class SoGroup;
 class SoDetail;
 class SoFullPath;
@@ -22,8 +20,6 @@ class MbDFEMGuiExport ViewProviderMbDPart: public PartGui::ViewProviderPart
 public:
     ViewProviderMbDPart();
     ~ViewProviderMbDPart() override;
-
-    App::PropertyBool AxisTriad;
 
     void attach(App::DocumentObject* object) override;
     bool canAddToSceneGraph() const override;
@@ -41,12 +37,8 @@ protected:
     void onChanged(const App::Property* prop) override;
 
 private:
-    void beGrounded();
-    void setAxisTriadVisible(bool visible);
-    void updateAxisTriad();
     void updateMarkerVisibility();
 
-    SoSwitch* axisTriadSwitch {nullptr};
     SoGroup* markerChildRoot {nullptr};
 };
 

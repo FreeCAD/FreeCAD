@@ -2,19 +2,24 @@
 
 #include "ViewProviderMbDMarker.h"
 
+#include <QMenu>
+
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/GeoFeatureGroupExtension.h>
 
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Selection/SoFCSelection.h>
 
 #include <Inventor/nodes/SoSwitch.h>
 
+#include <Mod/MbDFEM/App/MbDMassMarker.h>
 #include <Mod/MbDFEM/App/MbDMarker.h>
 #include <Mod/MbDFEM/App/MbDPart.h>
 
 #include "ViewProviderAxisTriad.h"
+#include "ViewProviderUtils.h"
 
 using namespace MbDFEMGui;
 
@@ -39,7 +44,10 @@ void ViewProviderMbDMarker::attach(App::DocumentObject* object)
     axisTriadSelection->documentName = object->getDocument()->getName();
     axisTriadSelection->style = Gui::SoFCSelection::EMISSIVE_DIFFUSE;
 
-    axisTriadSelection->addChild(createAxisTriad());
+    axisTriadSelection->addChild(
+        object->isDerivedFrom<MbDFEM::MbDMassMarker>() ? createMassMarkerAxisTriad()
+                                                       : createAxisTriad()
+    );
 
     axisTriadSwitch = new SoSwitch;
     axisTriadSwitch->whichChild = effectiveVisibility() ? SO_SWITCH_ALL : SO_SWITCH_NONE;
@@ -50,6 +58,36 @@ void ViewProviderMbDMarker::attach(App::DocumentObject* object)
 bool ViewProviderMbDMarker::canAddToSceneGraph() const
 {
     return Visibility.getValue() && PartGui::ViewProviderPart::canAddToSceneGraph();
+}
+
+bool ViewProviderMbDMarker::doubleClicked()
+{
+    auto* object = getObject();
+    auto* document = object ? object->getDocument() : nullptr;
+    if (!object || !document || !object->isDerivedFrom<MbDFEM::MbDMassMarker>()) {
+        return PartGui::ViewProviderPart::doubleClicked();
+    }
+
+    const std::string documentName = document->getName();
+    const std::string objectName = object->getNameInDocument();
+    const std::string command = "import FreeCAD as App\n"
+                                "import FreeCADMbDMassMarkerPanel\n"
+                                "obj = App.getDocument('"
+        + documentName + "').getObject('" + objectName
+        + "')\n"
+          "FreeCADMbDMassMarkerPanel.show_mass_marker_task_panel(obj)";
+
+    Gui::Command::runCommand(Gui::Command::App, command.c_str());
+    return true;
+}
+
+void ViewProviderMbDMarker::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addMbDFEMContextMenuCommands(menu, {"MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"});
+
+    if (auto* otherMenu = addOtherContextMenu(menu)) {
+        PartGui::ViewProviderPart::setupContextMenu(otherMenu, receiver, member);
+    }
 }
 
 void ViewProviderMbDMarker::onChanged(const App::Property* prop)

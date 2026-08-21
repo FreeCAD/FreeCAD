@@ -6,6 +6,7 @@
 #include <Mod/Part/Gui/ViewProvider.h>
 
 class SoSwitch;
+class QMenu;
 
 namespace Gui
 {
@@ -25,6 +26,8 @@ public:
 
     void attach(App::DocumentObject* object) override;
     bool canAddToSceneGraph() const override;
+    bool doubleClicked() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     void updateTriadVisibility();
 
 protected:

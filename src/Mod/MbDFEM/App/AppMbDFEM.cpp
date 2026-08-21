@@ -12,6 +12,7 @@
 #include "MbDFolders.h"
 #include "MbDItemIJ.h"
 #include "MbDJoint.h"
+#include "MbDMassMarker.h"
 #include "MbDMarker.h"
 #include "MbDMotion.h"
 #include "MbDParameters.h"
@@ -126,6 +127,7 @@ PyMOD_INIT_FUNC(MbDFEM)
     MbDFEM::MbDAssembly::init();
     MbDFEM::MbDPart::init();
     MbDFEM::MbDMarker::init();
+    MbDFEM::MbDMassMarker::init();
     MbDFEM::MbDItemIJ::init();
     MbDFEM::MbDJoint::init();
     MbDFEM::MbDMotion::init();

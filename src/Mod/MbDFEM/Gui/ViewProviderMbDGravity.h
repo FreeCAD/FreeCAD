@@ -6,6 +6,8 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
 
+class QMenu;
+
 namespace MbDFEMGui
 {
 
@@ -21,6 +23,7 @@ public:
 
     void attach(App::DocumentObject* object) override;
     void finishRestoring() override;
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     void updateData(const App::Property* prop) override;
 
 protected:

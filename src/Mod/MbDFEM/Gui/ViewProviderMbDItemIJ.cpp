@@ -2,7 +2,11 @@
 
 #include "ViewProviderMbDItemIJ.h"
 
+#include <QMenu>
+
 #include <Mod/MbDFEM/App/MbDItemIJ.h>
+
+#include "ViewProviderUtils.h"
 
 using namespace MbDFEMGui;
 
@@ -11,6 +15,15 @@ PROPERTY_SOURCE(MbDFEMGui::ViewProviderMbDItemIJ, Gui::ViewProviderDocumentObjec
 ViewProviderMbDItemIJ::ViewProviderMbDItemIJ()
 {
     sPixmap = "Document";
+}
+
+void ViewProviderMbDItemIJ::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addMbDFEMContextMenuCommands(menu, {"MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"});
+
+    if (auto* otherMenu = addOtherContextMenu(menu)) {
+        Gui::ViewProviderDocumentObject::setupContextMenu(otherMenu, receiver, member);
+    }
 }
 
 std::vector<App::DocumentObject*> ViewProviderMbDItemIJ::claimChildren() const

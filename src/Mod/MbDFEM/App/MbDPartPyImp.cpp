@@ -5,6 +5,7 @@
 
 #include <App/DocumentObjectPy.h>
 
+#include "MbDMassMarker.h"
 #include "MbDMarker.h"
 
 std::string MbDFEM::MbDPartPy::representation() const
@@ -68,4 +69,46 @@ PyObject* MbDFEM::MbDPartPy::getMarkersFolder(PyObject* args)
     }
 
     return Py::new_reference_to(Py::asObject(folder->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDPartPy::getMassMarker(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* marker = getMbDPartPtr()->getMassMarker();
+    if (!marker) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(marker->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDPartPy::ensureMassMarker(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* marker = getMbDPartPtr()->ensureMassMarker();
+    if (!marker) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(marker->getPyObject()));
+}
+
+PyObject* MbDFEM::MbDPartPy::populateMassMarkerFromShape(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    auto* marker = getMbDPartPtr()->populateMassMarkerFromShape();
+    if (!marker) {
+        Py_Return;
+    }
+
+    return Py::new_reference_to(Py::asObject(marker->getPyObject()));
 }

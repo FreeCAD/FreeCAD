@@ -14,6 +14,7 @@
 #include "ViewProviderMbDMotion.h"
 #include "ViewProviderMbDPart.h"
 #include "ViewProviderMbDGravity.h"
+#include "ViewProviderMbDSimulationParameters.h"
 
 namespace MbDFEMGui
 {
@@ -59,6 +60,7 @@ PyMOD_INIT_FUNC(MbDFEMGui)
     MbDFEMGui::ViewProviderMbDMotion::init();
     MbDFEMGui::ViewProviderMbDAction::init();
     MbDFEMGui::ViewProviderMbDAnimationParameters::init();
+    MbDFEMGui::ViewProviderMbDSimulationParameters::init();
     MbDFEMGui::ViewProviderMbDGravity::init();
 
     PyObject* module = MbDFEMGui::initModule();

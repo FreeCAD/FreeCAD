@@ -2,11 +2,9 @@
 
 #pragma once
 
-#include <App/PropertyStandard.h>
 #include <Gui/ViewProviderPart.h>
 #include <Mod/MbDFEM/MbDFEMGlobal.h>
 
-class SoSwitch;
 class SoDetail;
 class SoFullPath;
 class SoPickedPoint;
@@ -21,8 +19,6 @@ class MbDFEMGuiExport ViewProviderMbDAssembly: public Gui::ViewProviderPart
 public:
     ViewProviderMbDAssembly();
     ~ViewProviderMbDAssembly() override = default;
-
-    App::PropertyBool AxisTriad;
 
     void attach(App::DocumentObject* object) override;
     void finishRestoring() override;
@@ -39,14 +35,6 @@ public:
 
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
 
-protected:
-    void onChanged(const App::Property* prop) override;
-
-private:
-    void setAxisTriadVisible(bool visible);
-    void updateAxisTriad();
-
-    SoSwitch* axisTriadSwitch {nullptr};
 };
 
 }  // namespace MbDFEMGui

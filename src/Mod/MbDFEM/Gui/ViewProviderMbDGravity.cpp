@@ -10,10 +10,13 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 
+#include <QMenu>
 #include <QTimer>
 
 #include <Mod/MbDFEM/App/MbDAssembly.h>
 #include <Mod/MbDFEM/App/MbDParameters.h>
+
+#include "ViewProviderUtils.h"
 
 using namespace MbDFEMGui;
 
@@ -147,6 +150,15 @@ void ViewProviderMbDGravity::finishRestoring()
     Gui::ViewProviderDocumentObject::finishRestoring();
     updateCornerGravityIndicator();
     scheduleGravityIndicatorUpdates(getObject());
+}
+
+void ViewProviderMbDGravity::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+{
+    addMbDFEMContextMenuCommands(menu, {"MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"});
+
+    if (auto* otherMenu = addOtherContextMenu(menu)) {
+        Gui::ViewProviderDocumentObject::setupContextMenu(otherMenu, receiver, member);
+    }
 }
 
 void ViewProviderMbDGravity::updateData(const App::Property* prop)

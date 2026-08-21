@@ -23,6 +23,7 @@
 
 #include "MbDAssembly.h"
 #include "MbDJoint.h"
+#include "MbDMassMarker.h"
 #include "MbDMarker.h"
 #include "MbDParameters.h"
 #include "MbDPart.h"
@@ -172,18 +173,18 @@ void writeReferences(Writer& writer, int level, const std::vector<MarkerRef>& ma
     writer.line(level, "RefSurfaces");
 }
 
-void writePrincipalMassMarker(Writer& writer, int level)
+void writePrincipalMassMarker(Writer& writer, int level, const MbDFEM::MbDPart* part)
 {
     writer.line(level, "PrincipalMassMarker");
-    writer.keyValue(level + 1, "Name", "MassMarker");
-    writer.line(level + 1, "Position3D");
-    writer.vector(level + 2, {0.0, 0.0, 0.0});
-    writer.line(level + 1, "RotationMatrix");
-    writer.matrix(level + 2, {{{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}}});
-    writer.keyValue(level + 1, "Mass", "1");
+    auto* massMarker = part ? part->getMassMarker() : nullptr;
+    writer.keyValue(level + 1, "Name", massMarker ? safeName(massMarker) : "MassMarker");
+    writePlacement(writer, level + 1, placementOf(massMarker));
+    writer.keyValue(level + 1, "Mass", number(massMarker ? massMarker->mass.getValue() : 1.0));
     writer.line(level + 1, "MomentOfInertias");
-    writer.vector(level + 2, {1.0, 1.0, 1.0});
-    writer.keyValue(level + 1, "Density", "1");
+    const Base::Vector3d inertias =
+        massMarker ? massMarker->principalInertias.getValue() : Base::Vector3d(1.0, 1.0, 1.0);
+    writer.vector(level + 2, {inertias.x, inertias.y, inertias.z});
+    writer.keyValue(level + 1, "Density", number(massMarker ? massMarker->densityInKgPerM3() : 1.0e9));
 }
 
 std::vector<App::DocumentObject*> uniqueObjects(const std::vector<App::DocumentObject*>& objects)
@@ -249,7 +250,7 @@ void writePart(Writer& writer, int level, MbDFEM::MbDPart* part)
     writer.keyValue(level + 1, "Name", safeName(part));
     writeSpatialKinematics(writer, level + 1, part);
     writer.line(level + 1, "FeatureOrder");
-    writePrincipalMassMarker(writer, level + 1);
+    writePrincipalMassMarker(writer, level + 1, part);
     writeReferences(writer, level + 1, markerRefs(part));
 }
 
@@ -395,15 +396,17 @@ void writeSimulationParameters(Writer& writer, MbDFEM::MbDAssembly* assembly)
 void writeAnimationParameters(Writer& writer, MbDFEM::MbDAssembly* assembly)
 {
     auto* parameters = assembly->getAnimationParameters();
-    const int frameRate = parameters ? parameters->frameRate.getValue() : 30;
+    const int updateRate = parameters ? parameters->updateRate.getValue() : 30;
+    const int startFrame = parameters ? parameters->startFrame.getValue() : 1;
+    const int endFrame = parameters ? parameters->endFrame.getValue() : -1;
 
     writer.line(1, "AnimationParameters");
     writer.keyValue(2, "nframe", "1000000");
-    writer.keyValue(2, "icurrent", "1");
-    writer.keyValue(2, "istart", "1");
-    writer.keyValue(2, "iend", "1000000");
+    writer.keyValue(2, "icurrent", std::to_string(std::max(startFrame, 0) + 1));
+    writer.keyValue(2, "istart", std::to_string(std::max(startFrame, 0) + 1));
+    writer.keyValue(2, "iend", endFrame >= 0 ? std::to_string(endFrame + 1) : "1000000");
     writer.keyValue(2, "isForward", "true");
-    writer.keyValue(2, "framesPerSecond", std::to_string(frameRate));
+    writer.keyValue(2, "framesPerSecond", std::to_string(updateRate));
 }
 
 std::vector<std::string> fields(const std::string& line)

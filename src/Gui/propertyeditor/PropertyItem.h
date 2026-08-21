@@ -429,6 +429,10 @@ class GuiExport PropertyFloatItem: public PropertyItem
     ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
+    bool commitOnEditorClose() const override
+    {
+        return decimals() >= 16;
+    }
 
 protected:
     QString toString(const QVariant&) const override;
@@ -511,6 +515,10 @@ class GuiExport PropertyFloatConstraintItem: public PropertyItem
     ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
+    bool commitOnEditorClose() const override
+    {
+        return decimals() >= 16;
+    }
 
     void setRange(double min, double max)
     {

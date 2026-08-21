@@ -2,11 +2,6 @@
 
 #include "ViewProviderAxisTriad.h"
 
-#include <QAction>
-#include <QMenu>
-
-#include <Gui/ActionFunction.h>
-
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
@@ -20,13 +15,19 @@
 namespace
 {
 
-SoSeparator* createAxis(float x, float y, float z, float red, float green, float blue)
+SoSeparator* createAxis(float x,
+                        float y,
+                        float z,
+                        float red,
+                        float green,
+                        float blue,
+                        float lineWidth)
 {
     auto* axis = new SoAnnotation;
 
     auto* style = new SoDrawStyle;
     style->style = SoDrawStyle::LINES;
-    style->lineWidth = 3.0F;
+    style->lineWidth = lineWidth;
     axis->addChild(style);
 
     auto* material = new SoMaterial;
@@ -46,48 +47,58 @@ SoSeparator* createAxis(float x, float y, float z, float red, float green, float
     return axis;
 }
 
-SoSeparator* createOriginHub()
+SoSeparator* createOriginHub(float radius,
+                             float red,
+                             float green,
+                             float blue,
+                             float transparency)
 {
     auto* hub = new SoSeparator;
 
     auto* material = new SoMaterial;
-    material->diffuseColor.setValue(0.8F, 0.8F, 0.8F);
-    material->emissiveColor.setValue(0.8F, 0.8F, 0.8F);
-    material->transparency.setValue(0.35F);
+    material->diffuseColor.setValue(red, green, blue);
+    material->emissiveColor.setValue(red, green, blue);
+    material->transparency.setValue(transparency);
     hub->addChild(material);
 
     auto* sphere = new SoSphere;
-    sphere->radius = 1.5F;
+    sphere->radius = radius;
     hub->addChild(sphere);
 
     return hub;
 }
 
-}  // namespace
-
-SoSeparator* MbDFEMGui::createAxisTriad()
+SoSeparator* createAxisTriad(float axisLength,
+                             float lineWidth,
+                             float hubRadius,
+                             float hubRed,
+                             float hubGreen,
+                             float hubBlue,
+                             float hubTransparency)
 {
-    constexpr float axisLength = 10.0F;
-
     auto* triad = new SoAnnotation;
 
     auto* pickStyle = new SoPickStyle;
     pickStyle->style = SoPickStyle::SHAPE_ON_TOP;
     triad->addChild(pickStyle);
 
-    triad->addChild(createAxis(axisLength, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F));
-    triad->addChild(createAxis(0.0F, axisLength, 0.0F, 0.0F, 0.75F, 0.0F));
-    triad->addChild(createAxis(0.0F, 0.0F, axisLength, 0.0F, 0.25F, 1.0F));
-    triad->addChild(createOriginHub());
+    triad->addChild(createAxis(axisLength, 0.0F, 0.0F, 1.0F, 0.0F, 0.0F, lineWidth));
+    triad->addChild(createAxis(0.0F, axisLength, 0.0F, 0.0F, 0.75F, 0.0F, lineWidth));
+    triad->addChild(createAxis(0.0F, 0.0F, axisLength, 0.0F, 0.25F, 1.0F, lineWidth));
+    triad->addChild(createOriginHub(hubRadius, hubRed, hubGreen, hubBlue, hubTransparency));
     return triad;
 }
 
-SoSwitch* MbDFEMGui::createAxisTriadSwitch(bool visible)
+}  // namespace
+
+SoSeparator* MbDFEMGui::createAxisTriad()
 {
-    auto* axisTriadSwitch = new SoSwitch;
-    axisTriadSwitch->whichChild = visible ? SO_SWITCH_ALL : SO_SWITCH_NONE;
-    axisTriadSwitch->addChild(createAxisTriad());
-    return axisTriadSwitch;
+    return ::createAxisTriad(10.0F, 3.0F, 1.5F, 0.8F, 0.8F, 0.8F, 0.35F);
+}
+
+SoSeparator* MbDFEMGui::createMassMarkerAxisTriad()
+{
+    return ::createAxisTriad(14.0F, 5.0F, 2.8F, 1.0F, 0.75F, 0.05F, 0.1F);
 }
 
 void MbDFEMGui::updateAxisTriadSwitch(SoSwitch* axisTriadSwitch, bool visible)
@@ -95,20 +106,4 @@ void MbDFEMGui::updateAxisTriadSwitch(SoSwitch* axisTriadSwitch, bool visible)
     if (axisTriadSwitch) {
         axisTriadSwitch->whichChild = visible ? SO_SWITCH_ALL : SO_SWITCH_NONE;
     }
-}
-
-QAction* MbDFEMGui::addAxisTriadContextMenuAction(QMenu* menu,
-                                                  Gui::ActionFunction* actionFunction,
-                                                  bool checked,
-                                                  std::function<void(bool)> setVisible)
-{
-    if (!menu || !actionFunction) {
-        return nullptr;
-    }
-
-    QAction* action = menu->addAction(QObject::tr("Axis Triad"));
-    action->setCheckable(true);
-    action->setChecked(checked);
-    actionFunction->toggle(action, std::move(setVisible));
-    return action;
 }

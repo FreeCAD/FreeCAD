@@ -10,13 +10,13 @@ class QMenu;
 namespace MbDFEMGui
 {
 
-class MbDFEMGuiExport ViewProviderMbDAnimationParameters: public Gui::ViewProviderDocumentObject
+class MbDFEMGuiExport ViewProviderMbDSimulationParameters: public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER_WITH_OVERRIDE(MbDFEMGui::ViewProviderMbDAnimationParameters);
+    PROPERTY_HEADER_WITH_OVERRIDE(MbDFEMGui::ViewProviderMbDSimulationParameters);
 
 public:
-    ViewProviderMbDAnimationParameters();
-    ~ViewProviderMbDAnimationParameters() override = default;
+    ViewProviderMbDSimulationParameters();
+    ~ViewProviderMbDSimulationParameters() override = default;
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;

@@ -2,6 +2,7 @@
 
 set(MbDFEM_LIBS
     FreeCADApp
+    Materials
     Part
 )
 
@@ -30,6 +31,8 @@ set(MbDFEM_SRCS
     MbDItemIJPyImp.cpp
     MbDJoint.cpp
     MbDJoint.h
+    MbDMassMarker.cpp
+    MbDMassMarker.h
     MbDMarker.cpp
     MbDMarker.h
     MbDMotion.cpp

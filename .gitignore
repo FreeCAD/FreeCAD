@@ -17,6 +17,7 @@
 *.DS_Store
 *.dep
 *.exp
+*.FCBak
 *.kdev4
 *.lib
 *.manifest

@@ -1,37 +1,37 @@
-OndselSolver
+FreeCADMbD
 Assembly
 	Notes
 		(Text string: '' runs: (Core.RunArray new))
 	Name
 		MbDAssembly
 	Position3D
-		0	0	0
+		0	0	0	
 	RotationMatrix
-		1	0	0
-		0	1	0
-		0	0	1
+		1	0	0	
+		0	1	0	
+		0	0	1	
 	Velocity3D
-		0	0	0
+		0	0	0	
 	Omega3D
-		0	0	0
+		0	0	0	
 	RefPoints
 		RefPoint
 			Position3D
-				0	0	0
+				0	0	0	
 			RotationMatrix
-				1	0	0
-				0	1	0
-				0	0	1
+				1	0	0	
+				0	1	0	
+				0	0	1	
 			Markers
 				Marker
 					Name
 						Ground_Pin_MbDPart_MbDMarker001
 					Position3D
-						0	0	0.192
+						0	0	0.192	
 					RotationMatrix
-						-1	0	0
-						0	0	1
-						0	1	0
+						-1	0	0	
+						0	0	1	
+						0	1	0	
 	RefCurves
 	RefSurfaces
 	Parts
@@ -39,49 +39,49 @@ Assembly
 			Name
 				LongPendulum_MbDPart
 			Position3D
-				0.17900000000000002	-1.6547376485547828e-19	-8.6736173798840355e-19
+				0.179	0	0	
 			RotationMatrix
-				0.017452406437283154	-1.7347234759768019e-18	-0.99984769515639127
-				1.9877962145980965e-16	1	1.7347234759768019e-18
-				0.99984769515639127	-1.9877962145980965e-16	0.017452406437283154
+				0.0174524064372832	0	-0.999847695156391	
+				0	1	0	
+				0.999847695156391	0	0.0174524064372832	
 			Velocity3D
-				0	0	0
+				0	0	0	
 			Omega3D
-				0	0	0
+				0	0	0	
 			FeatureOrder
 			PrincipalMassMarker
 				Name
 					LongPendulum_MbDPart_MassMarker
 				Position3D
-					0	0	0.095389130975068806
+					0	0	0.0953891309750688	
 				RotationMatrix
-					0	1	0
-					0	0	1
-					1	0	0
+					0	1	0	
+					0	0	1	
+					1	0	0	
 				Mass
-					4.3105837720205699e-05
+					4.31058377202057e-05
 				MomentOfInertias
-					6.4349394022105202e-09	1.74448297190155e-07	1.80249285963696e-07
+					6.43493940221052e-09	1.74448297190155e-07	1.80249285963696e-07	
 				Density
 					1
 			RefPoints
 				RefPoint
 					Position3D
-						0	0	0
+						0	0	0	
 					RotationMatrix
-						1	0	0
-						0	1	0
-						0	0	1
+						1	0	0	
+						0	1	0	
+						0	0	1	
 					Markers
 						Marker
 							Name
 								MbDMarker
 							Position3D
-								0	0	0.192
+								0	0	0.192	
 							RotationMatrix
-								-0.0163656975831654	-0.99986607300308805	0
-								0	0	1
-								-0.99986607300308805	0.0163656975831654	0
+								-0.0163656975831654	-0.999866073003088	0	
+								0	0	1	
+								-0.999866073003088	0.0163656975831654	0	
 			RefCurves
 			RefSurfaces
 	KinematicIJs
@@ -98,20 +98,20 @@ Assembly
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity
-		0	0	-9.8100000000000005
+		0	0	-9.81	
 	SimulationParameters
 		tstart
 			0
 		tend
 			1
 		hmin
-			1.0000000000000001e-09
+			1e-09
 		hmax
 			1
 		hout
 			0.01
 		errorTol
-			9.9999999999999998e-13
+			1e-12
 	AnimationParameters
 		nframe
 			1000000

@@ -21,7 +21,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 #include <limits>
+#include <string_view>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Tools.h>
@@ -36,6 +38,35 @@ using namespace Gui::PropertyEditor;
 
 
 /* TRANSLATOR Gui::PropertyEditor::PropertyModel */
+
+namespace
+{
+constexpr int MbDFEMDoublePrecisionDecimals = 16;
+
+bool isMbDFEMProperty(const App::Property* prop)
+{
+    const auto* container = prop ? prop->getContainer() : nullptr;
+    if (!container) {
+        return false;
+    }
+
+    const std::string_view typeName = container->getTypeId().getName();
+    return typeName.starts_with("MbDFEM::")
+        || typeName.starts_with("MbDFEMGui::");
+}
+
+void setDecimalsRecursive(PropertyItem* item, int decimals)
+{
+    if (!item) {
+        return;
+    }
+
+    item->setDecimals(decimals);
+    for (int row = 0; row < item->childCount(); ++row) {
+        setDecimalsRecursive(item->child(row), decimals);
+    }
+}
+}  // namespace
 
 PropertyModel::PropertyModel(QObject* parent)
     : QAbstractItemModel(parent)
@@ -388,6 +419,10 @@ void PropertyModel::findOrCreateChildren(const PropertyModel::PropertyList& prop
         }
         else {
             item->updateData();
+        }
+
+        if (std::ranges::any_of(jt.second, isMbDFEMProperty)) {
+            setDecimalsRecursive(item, MbDFEMDoublePrecisionDecimals);
         }
     }
 }

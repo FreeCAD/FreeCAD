@@ -246,6 +246,13 @@ void addToAssemblyGeoGroup(App::DocumentObject* owner, App::DocumentObject* chil
     }
 }
 
+void removeDocumentObject(App::Document* document, App::DocumentObject* object)
+{
+    if (document && object && object->isAttachedToDocument() && !object->isRemoving()) {
+        document->removeObject(object->getNameInDocument());
+    }
+}
+
 }  // namespace
 
 MbDFEM::MbDAssembly::MbDAssembly()
@@ -689,6 +696,24 @@ void MbDFEM::MbDAssembly::onDocumentRestored()
         animationParameters.setValue(_animationParameters.getValue());
     }
     synchronizePartCategories();
+}
+
+void MbDFEM::MbDAssembly::unsetupObject()
+{
+    auto* document = getDocument();
+    if (document) {
+        const auto parameters = getParameterObjects();
+        for (auto* parameter : parameters) {
+            removeDocumentObject(document, parameter);
+        }
+
+        const auto folders = getCategoryFolders();
+        for (auto* folder : folders) {
+            removeDocumentObject(document, folder);
+        }
+    }
+
+    App::Part::unsetupObject();
 }
 
 App::DocumentObjectGroup* MbDFEM::MbDAssembly::ensurePartsFolder()

@@ -77,6 +77,7 @@ public:
                                       int depth = 0) const override;
     PyObject* getPyObject() override;
     void onChanged(const App::Property* prop) override;
+    void unsetupObject() override;
 
     App::DocumentObjectGroup* getAssembliesFolder() const;
     App::DocumentObjectGroup* getPartsFolder() const;

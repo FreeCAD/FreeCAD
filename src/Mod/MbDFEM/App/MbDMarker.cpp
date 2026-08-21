@@ -15,6 +15,11 @@ MbDFEM::MbDMarker::MbDMarker()
                       "Circular edge or cylindrical face referenced by this marker");
 }
 
+App::DocumentObjectExecReturn* MbDFEM::MbDMarker::execute()
+{
+    return App::DocumentObject::execute();
+}
+
 void MbDFEM::MbDMarker::handleChangedPropertyName(Base::XMLReader& reader,
                                                   const char* typeName,
                                                   const char* propName)

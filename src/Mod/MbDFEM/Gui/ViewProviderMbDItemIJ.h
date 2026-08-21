@@ -7,6 +7,8 @@
 
 #include <vector>
 
+class QMenu;
+
 namespace App
 {
 class DocumentObject;
@@ -23,6 +25,7 @@ public:
     ViewProviderMbDItemIJ();
     ~ViewProviderMbDItemIJ() override = default;
 
+    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     std::vector<App::DocumentObject*> claimChildren() const override;
 };
 

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 import os
+import math
 import sys
 import tempfile
 import unittest
@@ -156,15 +157,17 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 animation_parameters = assembly.ensureAnimationParameters()
                 gravity.gravity = App.Vector(0, -9.81, 0)
                 simulation_parameters.endTime = 2.5
+                self.assertEqual(animation_parameters.startFrame, 1)
                 self.assertEqual(simulation_parameters.maxStepSize, 1.0)
                 self.assertEqual(simulation_parameters.minStepSize, 1.0e-09)
                 simulation_parameters.maxStepSize = 0.002
                 simulation_parameters.minStepSize = 1.0e-10
-                simulation_parameters.solverType = "DASSL"
                 simulation_parameters.significantDigits = 8
                 simulation_parameters.maxIterations = 250
                 simulation_parameters.outputInterval = 0.02
-                animation_parameters.frameRate = 60
+                animation_parameters.updateRate = 60
+                animation_parameters.startFrame = 2
+                animation_parameters.endFrame = 10
                 animation_parameters.playbackSpeed = 0.5
                 animation_parameters.loop = False
                 animation_parameters.showTrails = True
@@ -303,11 +306,12 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertEqual(simulation_parameters.endTime, 2.5)
                 self.assertEqual(simulation_parameters.maxStepSize, 0.002)
                 self.assertEqual(simulation_parameters.minStepSize, 1.0e-10)
-                self.assertEqual(simulation_parameters.solverType, "DASSL")
                 self.assertEqual(simulation_parameters.significantDigits, 8)
                 self.assertEqual(simulation_parameters.maxIterations, 250)
                 self.assertEqual(simulation_parameters.outputInterval, 0.02)
-                self.assertEqual(animation_parameters.frameRate, 60)
+                self.assertEqual(animation_parameters.updateRate, 60)
+                self.assertEqual(animation_parameters.startFrame, 2)
+                self.assertEqual(animation_parameters.endFrame, 10)
                 self.assertEqual(animation_parameters.playbackSpeed, 0.5)
                 self.assertFalse(animation_parameters.loop)
                 self.assertTrue(animation_parameters.showTrails)
@@ -341,6 +345,276 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertEqual(assembly_folders["Actions"].Group, [action])
                 self.assertEqual(self._part_markers_folder(part).Group, [part_marker])
 
+            finally:
+                App.closeDocument(reopened.Name)
+
+    def test_removing_assembly_removes_owned_parameters(self):
+        document = App.newDocument("MbDFEMAssemblyDeleteTest")
+
+        try:
+            assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+            gravity = assembly.ensureGravity()
+            simulation_parameters = assembly.ensureSimulationParameters()
+            animation_parameters = assembly.ensureAnimationParameters()
+            parameter_names = [
+                gravity.Name,
+                simulation_parameters.Name,
+                animation_parameters.Name,
+            ]
+
+            document.removeObject(assembly.Name)
+
+            self.assertIsNone(document.getObject("Assembly"))
+            for name in parameter_names:
+                self.assertIsNone(document.getObject(name))
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_part_owns_mass_marker(self):
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "MbDFEMMassMarker.FCStd")
+            document = App.newDocument("MbDFEMMassMarkerTest")
+
+            try:
+                part = document.addObject("MbDFEM::MbDPart", "Part")
+                mass_marker = part.ensureMassMarker()
+                mass_marker.Placement = App.Placement(
+                    App.Vector(10, 20, 30),
+                    App.Rotation(App.Vector(0, 0, 1), 90),
+                )
+
+                self.assertEqual(mass_marker.TypeId, "MbDFEM::MbDMassMarker")
+                self.assertTrue(mass_marker.isDerivedFrom("MbDFEM::MbDMarker"))
+                self.assertIn("material", mass_marker.PropertiesList)
+                self.assertIs(part.getMassMarker(), mass_marker)
+                self.assertIs(part.massMarker, mass_marker)
+                self.assertEqual(part.markers, [])
+                self.assertEqual(part.Group, [mass_marker])
+                self.assertEqual(self._part_markers_folder(part).Group, [])
+                self.assertEqual(mass_marker.getParentGeoFeatureGroup(), part)
+                self.assertIs(part.ensureMassMarker(), mass_marker)
+
+                document.saveAs(filename)
+            finally:
+                App.closeDocument(document.Name)
+
+            reopened = App.openDocument(filename)
+            try:
+                part = reopened.getObject("Part")
+                mass_marker = reopened.getObject("Part_MassMarker")
+
+                self.assertEqual(mass_marker.TypeId, "MbDFEM::MbDMassMarker")
+                self.assertIn("material", mass_marker.PropertiesList)
+                self.assertIs(part.getMassMarker(), mass_marker)
+                self.assertEqual(part.markers, [])
+                self.assertEqual(part.Group, [mass_marker])
+                self.assertEqual(self._part_markers_folder(part).Group, [])
+                self.assertEqual(mass_marker.Placement.Base, App.Vector(10, 20, 30))
+                self.assertTrue(
+                    mass_marker.Placement.Rotation.isSame(
+                        App.Rotation(App.Vector(0, 0, 1), 90),
+                        1.0e-7,
+                    )
+                )
+            finally:
+                App.closeDocument(reopened.Name)
+
+    def test_part_populates_mass_marker_from_shape(self):
+        document = App.newDocument("MbDFEMMassMarkerShapeTest")
+
+        try:
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            part.Shape = Part.makeBox(10, 20, 30)
+
+            marker = part.populateMassMarkerFromShape()
+
+            self.assertEqual(marker.TypeId, "MbDFEM::MbDMassMarker")
+            self.assertIs(part.getMassMarker(), marker)
+            self.assertTrue(marker.massMarkerFromShape)
+            self.assertEqual(part.markers, [])
+            self.assertEqual(part.Group, [marker])
+            self.assertEqual(self._part_markers_folder(part).Group, [])
+            self.assertEqual(marker.Placement.Base, App.Vector(5, 10, 15))
+            self.assertAlmostEqual(marker.mass, 6.0e-6)
+            self.assertAlmostEqual(marker.principalInertias.x, 2.5e-10)
+            self.assertAlmostEqual(marker.principalInertias.y, 5.0e-10)
+            self.assertAlmostEqual(marker.principalInertias.z, 6.5e-10)
+
+            matrix = marker.Placement.Rotation.toMatrix()
+            columns = [
+                App.Vector(matrix.A11, matrix.A21, matrix.A31),
+                App.Vector(matrix.A12, matrix.A22, matrix.A32),
+                App.Vector(matrix.A13, matrix.A23, matrix.A33),
+            ]
+            self.assertEqual(
+                columns,
+                [App.Vector(0, 0, 1), App.Vector(0, 1, 0), App.Vector(-1, 0, 0)],
+            )
+            self.assertGreater(columns[0].cross(columns[1]).dot(columns[2]), 0.0)
+
+            marker.mass = 42.0
+            self.assertFalse(marker.massMarkerFromShape)
+
+            part.populateMassMarkerFromShape()
+            self.assertTrue(marker.massMarkerFromShape)
+            marker.principalInertias = App.Vector(1, 2, 3)
+            self.assertFalse(marker.massMarkerFromShape)
+
+            part.populateMassMarkerFromShape()
+            material = marker.material
+            material.setPhysicalValue("Density", "2e-09 kg/mm^3")
+            marker.material = material
+            self.assertTrue(marker.massMarkerFromShape)
+            self.assertAlmostEqual(marker.mass, 1.2e-5)
+            self.assertAlmostEqual(marker.principalInertias.x, 5.0e-10)
+            self.assertAlmostEqual(marker.principalInertias.y, 1.0e-9)
+            self.assertAlmostEqual(marker.principalInertias.z, 1.3e-9)
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_part_auto_populates_mass_marker_when_shape_is_first_assigned(self):
+        document = App.newDocument("MbDFEMMassMarkerAutoShapeTest")
+
+        try:
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            self.assertIsNone(part.getMassMarker())
+
+            part.Shape = Part.makeBox(10, 20, 30)
+
+            marker = part.getMassMarker()
+            self.assertIsNotNone(marker)
+            self.assertEqual(marker.TypeId, "MbDFEM::MbDMassMarker")
+            self.assertTrue(marker.massMarkerFromShape)
+            self.assertEqual(marker.Placement.Base, App.Vector(5, 10, 15))
+            self.assertAlmostEqual(marker.mass, 6.0e-6)
+            self.assertAlmostEqual(marker.principalInertias.x, 2.5e-10)
+            self.assertAlmostEqual(marker.principalInertias.y, 5.0e-10)
+            self.assertAlmostEqual(marker.principalInertias.z, 6.5e-10)
+            self.assertEqual(part.markers, [])
+            self.assertEqual(part.Group, [marker])
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_transformed_part_auto_populates_mass_marker_in_local_coordinates(self):
+        document = App.newDocument("MbDFEMMassMarkerTransformedPartTest")
+
+        try:
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            part.Placement = App.Placement(
+                App.Vector(10, 0, 0),
+                App.Rotation(App.Vector(0, 1, 0), 40),
+            )
+            part.Shape = Part.makeBox(10, 20, 30)
+
+            marker = part.getMassMarker()
+
+            self.assertIsNotNone(marker)
+            self.assertTrue(marker.massMarkerFromShape)
+            self.assertLess((marker.Placement.Base - App.Vector(5, 10, 15)).Length, 1e-9)
+            self.assertEqual(part.Placement.multVec(marker.Placement.Base),
+                             part.Placement.multVec(App.Vector(5, 10, 15)))
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_restored_default_mass_marker_properties_repopulate_from_shape(self):
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "MbDFEMDefaultMassMarker.FCStd")
+            document = App.newDocument("MbDFEMDefaultMassMarkerRestoreTest")
+
+            try:
+                part = document.addObject("MbDFEM::MbDPart", "Part")
+                part.Shape = Part.makeBox(10, 20, 30)
+                marker = part.getMassMarker()
+                marker.mass = 1.0
+                marker.principalInertias = App.Vector(1, 1, 1)
+                self.assertFalse(marker.massMarkerFromShape)
+                document.saveAs(filename)
+            finally:
+                App.closeDocument(document.Name)
+
+            reopened = App.openDocument(filename)
+            try:
+                part = reopened.getObject("Part")
+                marker = part.getMassMarker()
+
+                self.assertTrue(marker.massMarkerFromShape)
+                self.assertAlmostEqual(marker.mass, 6.0e-6)
+                self.assertAlmostEqual(marker.principalInertias.x, 2.5e-10)
+                self.assertAlmostEqual(marker.principalInertias.y, 5.0e-10)
+                self.assertAlmostEqual(marker.principalInertias.z, 6.5e-10)
+            finally:
+                App.closeDocument(reopened.Name)
+
+    def test_part_populates_mass_marker_in_part_coordinates(self):
+        document = App.newDocument("MbDFEMMassMarkerLocalFrameTest")
+
+        try:
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            shape = Part.makeBox(10, 20, 30)
+            shape.Placement = App.Placement(
+                App.Vector(100, 200, 300),
+                App.Rotation(App.Vector(0, 0, 1), 90),
+            )
+
+            part.Shape = shape
+            marker = part.getMassMarker()
+
+            self.assertIsNotNone(marker)
+            self.assertTrue(marker.massMarkerFromShape)
+            self.assertTrue(
+                part.Placement.isSame(
+                    App.Placement(
+                        App.Vector(100, 200, 300),
+                        App.Rotation(App.Vector(0, 0, 1), 90),
+                    ),
+                    1.0e-7,
+                )
+            )
+            self.assertEqual(marker.Placement.Base, App.Vector(5, 10, 15))
+            self.assertEqual(part.Placement.multVec(marker.Placement.Base), shape.CenterOfMass)
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_restored_part_with_placed_shape_keeps_mass_marker_local(self):
+        with tempfile.TemporaryDirectory() as directory:
+            filename = os.path.join(directory, "MbDFEMPlacedShapeMassMarker.FCStd")
+            document = App.newDocument("MbDFEMPlacedShapeMassMarkerTest")
+
+            placement = App.Placement(
+                App.Vector(100, 200, 300),
+                App.Rotation(App.Vector(0, 0, 1), 90),
+            )
+
+            try:
+                part = document.addObject("MbDFEM::MbDPart", "Part")
+                part.Placement = placement
+                shape = Part.makeBox(10, 20, 30)
+                shape.Placement = placement
+                part.Shape = shape
+
+                marker = part.getMassMarker()
+                self.assertIsNotNone(marker)
+                self.assertTrue(marker.massMarkerFromShape)
+                self.assertLess((marker.Placement.Base - App.Vector(5, 10, 15)).Length, 1e-9)
+
+                document.saveAs(filename)
+            finally:
+                App.closeDocument(document.Name)
+
+            reopened = App.openDocument(filename)
+            try:
+                part = reopened.getObject("Part")
+                marker = part.getMassMarker()
+
+                self.assertIsNotNone(marker)
+                self.assertTrue(marker.massMarkerFromShape)
+                self.assertTrue(part.Placement.isSame(placement, 1.0e-7))
+                self.assertLess((marker.Placement.Base - App.Vector(5, 10, 15)).Length, 1e-9)
+                self.assertLess(
+                    (part.Placement.multVec(marker.Placement.Base)
+                     - part.Shape.BoundBox.Center).Length,
+                    1e-9,
+                )
             finally:
                 App.closeDocument(reopened.Name)
 
@@ -574,6 +848,25 @@ class MbDFEMAssemblyTest(unittest.TestCase):
         finally:
             App.closeDocument(document.Name)
 
+    def test_part_placement_does_not_transform_shape_coordinates(self):
+        document = App.newDocument("MbDFEMPartShapePlacementTest")
+
+        try:
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            part.Shape = Part.makeCylinder(8, 20)
+            document.recompute()
+
+            part.Placement = App.Placement(
+                App.Vector(10, 0, 0),
+                App.Rotation(App.Vector(0, 1, 0), 40),
+            )
+            document.recompute()
+
+            self.assertLess(part.Shape.Placement.Base.Length, 1e-9)
+            self.assertLess(abs(part.Shape.Placement.Rotation.Angle), 1e-9)
+        finally:
+            App.closeDocument(document.Name)
+
     def test_reparent_part_between_assemblies_removes_old_semantic_links(self):
         document = App.newDocument("MbDFEMPartReparentTest")
 
@@ -683,6 +976,13 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                     App.Vector(7, 8, 9),
                     App.Rotation(App.Vector(0, 0, 1), 90),
                 )
+                mass_marker = part.ensureMassMarker()
+                mass_marker.Placement = App.Placement(
+                    App.Vector(13, 14, 15),
+                    App.Rotation(App.Vector(0, 0, 1), 180),
+                )
+                mass_marker.mass = 2.5
+                mass_marker.principalInertias = App.Vector(0.1, 0.2, 0.3)
                 marker_j.Placement.Base = App.Vector(10, 11, 12)
 
                 assembly.addPart(part)
@@ -694,6 +994,9 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 assembly.addJoint(joint)
                 assembly.ensureGravity()
                 assembly.ensureSimulationParameters()
+                animation_parameters = assembly.ensureAnimationParameters()
+                animation_parameters.startFrame = 2
+                animation_parameters.endFrame = 4
 
                 filename = os.path.join(directory, "assembly.asmt")
                 FreeCADMbDExporter.export_assembly(assembly, filename)
@@ -732,6 +1035,26 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                     ["1\t0\t0", "0\t1\t0", "0\t0\t1"],
                 )
 
+                mass_marker_index = stripped_lines.index("PrincipalMassMarker", part_index)
+                mass_marker_position_index = stripped_lines.index("Position3D", mass_marker_index)
+                self.assertEqual(
+                    stripped_lines[mass_marker_position_index + 1],
+                    "0.013\t0.014\t0.015",
+                )
+                mass_marker_rotation_index = stripped_lines.index(
+                    "RotationMatrix",
+                    mass_marker_position_index,
+                )
+                self.assertEqual(
+                    stripped_lines[
+                        mass_marker_rotation_index + 1 : mass_marker_rotation_index + 4
+                    ],
+                    ["-1\t0\t0", "0\t-1\t0", "0\t0\t1"],
+                )
+                self.assertEqual(stripped_lines[mass_marker_rotation_index + 5], "2.5")
+                self.assertEqual(stripped_lines[mass_marker_rotation_index + 7], "0.1\t0.2\t0.3")
+                self.assertEqual(stripped_lines[mass_marker_rotation_index + 9], "1")
+
                 marker_index = find_sequence(["Name", "MarkerI"], refpoint_index)
                 marker_position_index = stripped_lines.index("Position3D", marker_index)
                 self.assertEqual(
@@ -756,6 +1079,8 @@ class MbDFEMAssemblyTest(unittest.TestCase):
                 self.assertIn("/Assembly/Ground_FixedPart_MarkerJ", exported)
                 self.assertNotIn("/Assembly/FixedPart/MarkerJ", exported)
                 self.assertIn("\tConstantGravity\n\t\t0\t0\t-9.81", exported)
+                self.assertIn("\t\tistart\n\t\t\t3\n", exported)
+                self.assertIn("\t\tiend\n\t\t\t5\n", exported)
             finally:
                 App.closeDocument(document.Name)
 
@@ -941,10 +1266,10 @@ class MbDFEMAssemblyTest(unittest.TestCase):
             assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
             part = document.addObject("MbDFEM::MbDPart", "Part")
             assembly.addPart(part)
-            assembly.times = [99.0, 0.0, 0.5, 1.0]
-            part.xs = [99.0, 0.0, 0.5, 1.0]
-            part.ys = [99.0, 1.0, 1.5, 2.0]
-            part.zs = [99.0, 2.0, 2.5, 3.0]
+            assembly.times = [0.0, 0.5, 1.0]
+            part.xs = [0.0, 0.5, 1.0]
+            part.ys = [1.0, 1.5, 2.0]
+            part.zs = [2.0, 2.5, 3.0]
 
             controller = FreeCADMbDAnimation.AnimationController(assembly)
 
@@ -966,6 +1291,65 @@ class MbDFEMAssemblyTest(unittest.TestCase):
         finally:
             App.closeDocument(document.Name)
 
+    def test_freecadmbd_animation_controller_uses_frame_range(self):
+        document = App.newDocument("MbDFEMAnimationRangeTest")
+
+        try:
+            assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            assembly.addPart(part)
+            parameters = assembly.ensureAnimationParameters()
+            parameters.startFrame = 1
+            parameters.endFrame = 2
+            assembly.times = [0.0, 0.5, 1.0, 1.5]
+            part.xs = [0.0, 1.0, 2.0, 3.0]
+            part.ys = [0.0, 0.0, 0.0, 0.0]
+            part.zs = [0.0, 0.0, 0.0, 0.0]
+
+            controller = FreeCADMbDAnimation.AnimationController(assembly)
+
+            self.assertEqual(controller.source_frame_count, 4)
+            self.assertEqual(controller.frame_count, 2)
+            self.assertEqual(controller.start_frame, 1)
+            self.assertEqual(controller.end_frame, 2)
+            self.assertEqual(controller.times, [0.5, 1.0])
+            self.assertEqual(controller.result_times, [0.0, 0.5, 1.0, 1.5])
+
+            controller.setFrame(0)
+            self.assertEqual(controller.current_frame, 0)
+            self.assertAlmostEqual(part.Placement.Base.x, 0.0)
+
+            controller.setFrame(3)
+            self.assertEqual(controller.current_frame, 3)
+            self.assertAlmostEqual(part.Placement.Base.x, 3000.0)
+        finally:
+            App.closeDocument(document.Name)
+
+    def test_freecadmbd_animation_controller_slerps_rotations(self):
+        document = App.newDocument("MbDFEMAnimationRotationTest")
+
+        try:
+            assembly = document.addObject("MbDFEM::MbDAssembly", "Assembly")
+            part = document.addObject("MbDFEM::MbDPart", "Part")
+            assembly.addPart(part)
+            assembly.times = [0.0, 1.0]
+            part.xs = [0.0, 0.0]
+            part.ys = [0.0, 0.0]
+            part.zs = [0.0, 0.0]
+            part.bryxs = [0.0, 0.0]
+            part.bryys = [0.0, 0.0]
+            part.bryzs = [math.radians(350), math.radians(10)]
+
+            controller = FreeCADMbDAnimation.AnimationController(assembly)
+            controller.setTime(0.5)
+
+            expected = App.Rotation(App.Vector(0, 0, 1), 0)
+            long_way = App.Rotation(App.Vector(0, 0, 1), 180)
+            self.assertTrue(part.Placement.Rotation.isSame(expected, 1.0e-7))
+            self.assertFalse(part.Placement.Rotation.isSame(long_way, 1.0e-7))
+        finally:
+            App.closeDocument(document.Name)
+
     def test_freecadmbd_animation_controller_uses_animation_parameters_for_tick(self):
         document = App.newDocument("MbDFEMAnimationTickTest")
 
@@ -974,17 +1358,18 @@ class MbDFEMAssemblyTest(unittest.TestCase):
             part = document.addObject("MbDFEM::MbDPart", "Part")
             assembly.addPart(part)
             parameters = assembly.ensureAnimationParameters()
-            parameters.frameRate = 10
+            parameters.updateRate = 10
+            parameters.startFrame = 0
             parameters.playbackSpeed = 2.0
             parameters.loop = True
-            assembly.times = [99.0, 0.0, 1.0]
-            part.xs = [99.0, 0.0, 1.0]
-            part.ys = [99.0, 0.0, 0.0]
-            part.zs = [99.0, 0.0, 0.0]
+            assembly.times = [0.0, 1.0]
+            part.xs = [0.0, 1.0]
+            part.ys = [0.0, 0.0]
+            part.zs = [0.0, 0.0]
 
             controller = FreeCADMbDAnimation.AnimationController(assembly)
 
-            self.assertEqual(controller.frame_rate, 10.0)
+            self.assertEqual(controller.update_rate, 10.0)
             self.assertEqual(controller.playback_speed, 2.0)
             controller.tick(0.25)
             self.assertAlmostEqual(controller.current_time, 0.5)

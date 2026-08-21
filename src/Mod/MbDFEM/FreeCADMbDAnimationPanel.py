@@ -41,6 +41,7 @@ class AnimationTaskPanel:
         self.controller = (
             FreeCADMbDAnimation.AnimationController(self.assembly) if self.assembly is not None else None
         )
+        self._original_parameters = self._parameter_values()
         self._updating = False
         self._timer = QtCore.QTimer()
         self._timer.timeout.connect(self._tick)
@@ -86,32 +87,43 @@ class AnimationTaskPanel:
         layout.addWidget(self.slider)
 
         frame_layout = QtWidgets.QHBoxLayout()
-        frame_layout.addWidget(QtWidgets.QLabel("Frame:"))
+        frame_layout.addWidget(QtWidgets.QLabel("Result frame:"))
         self.frame_spin = QtWidgets.QSpinBox()
+        self.frame_spin.setToolTip("Result-series frame index")
         frame_layout.addWidget(self.frame_spin)
         self.frame_count_label = QtWidgets.QLabel()
         frame_layout.addWidget(self.frame_count_label)
         frame_layout.addStretch()
+        frame_layout.addWidget(QtWidgets.QLabel("Simulation time:"))
         self.time_label = QtWidgets.QLabel()
         frame_layout.addWidget(self.time_label)
         layout.addLayout(frame_layout)
 
         settings = QtWidgets.QFormLayout()
-        self.frame_rate_spin = QtWidgets.QSpinBox()
-        self.frame_rate_spin.setRange(1, 240)
+        self.update_rate_spin = QtWidgets.QSpinBox()
+        self.update_rate_spin.setRange(1, 240)
+        self.update_rate_spin.setSuffix(" updates/sec")
+        self.update_rate_spin.setToolTip("Real-time UI ticks per second")
+        self.start_frame_spin = QtWidgets.QSpinBox()
+        self.start_frame_spin.setToolTip("First result-series frame index used for playback")
+        self.end_frame_spin = QtWidgets.QSpinBox()
+        self.end_frame_spin.setToolTip("Last result-series frame index used for playback")
         self.speed_spin = QtWidgets.QDoubleSpinBox()
         self.speed_spin.setRange(0.01, 100.0)
         self.speed_spin.setDecimals(2)
         self.speed_spin.setSingleStep(0.25)
         self.speed_spin.setSuffix("x")
+        self.speed_spin.setToolTip("Simulation seconds per real second multiplier")
         self.scale_spin = QtWidgets.QDoubleSpinBox()
         self.scale_spin.setRange(0.001, 1000000.0)
         self.scale_spin.setDecimals(3)
         self.scale_spin.setSingleStep(100.0)
         self.loop_check = QtWidgets.QCheckBox()
         self.interpolate_check = QtWidgets.QCheckBox()
-        settings.addRow("Frame rate:", self.frame_rate_spin)
-        settings.addRow("Speed:", self.speed_spin)
+        settings.addRow("Update rate:", self.update_rate_spin)
+        settings.addRow("Start frame:", self.start_frame_spin)
+        settings.addRow("End frame:", self.end_frame_spin)
+        settings.addRow("Playback speed:", self.speed_spin)
         settings.addRow("Position scale:", self.scale_spin)
         settings.addRow("Loop:", self.loop_check)
         settings.addRow("Interpolate:", self.interpolate_check)
@@ -124,7 +136,9 @@ class AnimationTaskPanel:
         self.step_forward_button.clicked.connect(self._step_forward)
         self.slider.valueChanged.connect(self._set_frame)
         self.frame_spin.valueChanged.connect(self._set_frame)
-        self.frame_rate_spin.valueChanged.connect(self._set_frame_rate)
+        self.update_rate_spin.valueChanged.connect(self._set_update_rate)
+        self.start_frame_spin.valueChanged.connect(self._set_start_frame)
+        self.end_frame_spin.valueChanged.connect(self._set_end_frame)
         self.speed_spin.valueChanged.connect(self._set_speed)
         self.scale_spin.valueChanged.connect(self._set_scale)
         self.loop_check.toggled.connect(self._set_loop)
@@ -137,7 +151,7 @@ class AnimationTaskPanel:
     def getStandardButtons(self):
         from PySide import QtGui
 
-        return QtGui.QDialogButtonBox.Close
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def accept(self):
         self._pause()
@@ -145,12 +159,47 @@ class AnimationTaskPanel:
 
     def reject(self):
         self._pause()
+        self._restore_parameters(self._original_parameters)
         return True
+
+    def _parameter_values(self):
+        return {
+            "updateRate": getattr(self.animation_parameters, "updateRate", 30),
+            "startFrame": getattr(self.animation_parameters, "startFrame", 1),
+            "endFrame": getattr(self.animation_parameters, "endFrame", -1),
+            "playbackSpeed": getattr(self.animation_parameters, "playbackSpeed", 1.0),
+            "showTrails": getattr(self.animation_parameters, "showTrails", False),
+            "trailLength": getattr(self.animation_parameters, "trailLength", 60),
+            "loop": getattr(self.animation_parameters, "loop", True),
+            "interpolateFrames": getattr(self.animation_parameters, "interpolateFrames", True),
+            "lengthScale": getattr(self.controller, "length_scale", None),
+        }
+
+    def _restore_parameters(self, values):
+        self.animation_parameters.updateRate = values["updateRate"]
+        self.animation_parameters.startFrame = values["startFrame"]
+        self.animation_parameters.endFrame = values["endFrame"]
+        self.animation_parameters.playbackSpeed = values["playbackSpeed"]
+        self.animation_parameters.showTrails = values["showTrails"]
+        self.animation_parameters.trailLength = values["trailLength"]
+        self.animation_parameters.loop = values["loop"]
+        self.animation_parameters.interpolateFrames = values["interpolateFrames"]
+        if self.controller is not None and values["lengthScale"] is not None:
+            self.controller.length_scale = values["lengthScale"]
+            self.controller.setFrame(self.controller.current_frame)
 
     def _load_parameters(self):
         self._updating = True
         try:
-            self.frame_rate_spin.setValue(int(getattr(self.animation_parameters, "frameRate", 30)))
+            self.update_rate_spin.setValue(
+                int(
+                    getattr(
+                        self.animation_parameters,
+                        "updateRate",
+                        30,
+                    )
+                )
+            )
             self.speed_spin.setValue(float(getattr(self.animation_parameters, "playbackSpeed", 1.0)))
             self.scale_spin.setValue(float(getattr(self.controller, "length_scale", 1000.0)))
             self.loop_check.setChecked(bool(getattr(self.animation_parameters, "loop", True)))
@@ -161,11 +210,23 @@ class AnimationTaskPanel:
             self._updating = False
 
     def _configure_frame_controls(self):
-        frame_count = self.controller.frame_count if self.controller is not None else 0
-        maximum = max(frame_count - 1, 0)
-        self.slider.setRange(0, maximum)
-        self.frame_spin.setRange(0, maximum)
-        enabled = frame_count > 0
+        source_frame_count = self.controller.source_frame_count if self.controller is not None else 0
+        maximum = max(source_frame_count - 1, 0)
+        start_frame = self.controller.start_frame if self.controller is not None else 0
+        end_frame = self.controller.end_frame if self.controller is not None else 0
+
+        self._updating = True
+        try:
+            self.start_frame_spin.setRange(0, maximum)
+            self.end_frame_spin.setRange(0, maximum)
+            self.start_frame_spin.setValue(start_frame)
+            self.end_frame_spin.setValue(end_frame)
+            self.slider.setRange(0, maximum)
+            self.frame_spin.setRange(0, maximum)
+        finally:
+            self._updating = False
+
+        enabled = source_frame_count > 0
         for widget in (
             self.step_back_button,
             self.play_button,
@@ -174,14 +235,16 @@ class AnimationTaskPanel:
             self.step_forward_button,
             self.slider,
             self.frame_spin,
+            self.start_frame_spin,
+            self.end_frame_spin,
         ):
             widget.setEnabled(enabled)
 
     def _refresh(self):
-        frame_count = self.controller.frame_count if self.controller is not None else 0
+        source_frame_count = self.controller.source_frame_count if self.controller is not None else 0
         if self.assembly is None:
             self.status_label.setText("No owning MbDAssembly found.")
-        elif frame_count == 0:
+        elif source_frame_count == 0:
             self.status_label.setText("No solved MbDFEM result series.")
         else:
             self.status_label.setText(self.assembly.Label)
@@ -194,13 +257,16 @@ class AnimationTaskPanel:
             self.frame_spin.setValue(current_frame)
         finally:
             self._updating = False
-        self.frame_count_label.setText(f"/ {max(frame_count - 1, 0)}")
+        maximum = max(source_frame_count - 1, 0)
+        self.frame_count_label.setText(f"/ {maximum}")
         self.time_label.setText(f"{current_time:.6g} s")
 
     def _play(self):
         if self.controller is None or self.controller.frame_count == 0:
             return
-        interval = max(int(1000.0 / self.controller.frame_rate), 1)
+        if self.controller.current_frame < self.controller.start_frame or self.controller.current_frame > self.controller.end_frame:
+            self.controller.setFrame(self.controller.start_frame)
+        interval = max(int(1000.0 / self.controller.update_rate), 1)
         self.controller.is_playing = True
         self._timer.start(interval)
 
@@ -240,12 +306,28 @@ class AnimationTaskPanel:
         self.controller.setFrame(frame)
         self._refresh()
 
-    def _set_frame_rate(self, value):
+    def _set_update_rate(self, value):
         if self._updating:
             return
-        self.animation_parameters.frameRate = int(value)
+        self.animation_parameters.updateRate = int(value)
         if self._timer.isActive():
             self._play()
+
+    def _set_start_frame(self, value):
+        if self._updating or self.controller is None:
+            return
+        self.animation_parameters.startFrame = int(value)
+        if int(getattr(self.animation_parameters, "endFrame", -1)) >= 0:
+            self.animation_parameters.endFrame = max(int(self.animation_parameters.endFrame), int(value))
+        self._configure_frame_controls()
+        self._refresh()
+
+    def _set_end_frame(self, value):
+        if self._updating or self.controller is None:
+            return
+        self.animation_parameters.endFrame = max(int(value), self.controller.start_frame)
+        self._configure_frame_controls()
+        self._refresh()
 
     def _set_speed(self, value):
         if self._updating:

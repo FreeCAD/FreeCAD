@@ -2,10 +2,8 @@
 
 #include "ViewProviderMbDPart.h"
 
-#include <QAction>
 #include <QMenu>
 
-#include <algorithm>
 #include <cstring>
 
 #include <Inventor/SoPickedPoint.h>
@@ -13,17 +11,12 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoGroup.h>
 
-#include <App/Document.h>
 #include <App/GeoFeatureGroupExtension.h>
-#include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
-#include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Mod/MbDFEM/App/MbDAssembly.h>
+#include <Mod/MbDFEM/App/MbDMassMarker.h>
 #include <Mod/MbDFEM/App/MbDMarker.h>
 #include <Mod/MbDFEM/App/MbDPart.h>
 
-#include "ViewProviderAxisTriad.h"
 #include "ViewProviderMbDMarker.h"
 #include "ViewProviderUtils.h"
 
@@ -46,17 +39,6 @@ PROPERTY_SOURCE(MbDFEMGui::ViewProviderMbDPart, PartGui::ViewProviderPart)
 ViewProviderMbDPart::ViewProviderMbDPart()
 {
     sPixmap = "Document";
-
-    ADD_PROPERTY_TYPE(
-        AxisTriad,
-        (false),
-        "Display Options",
-        App::Prop_None,
-        "Show an RGB axis triad at the part coordinate system"
-    );
-
-    axisTriadSwitch = createAxisTriadSwitch(AxisTriad.getValue());
-    pcRoot->addChild(axisTriadSwitch);
 
     markerChildRoot = new SoGroup;
     markerChildRoot->ref();
@@ -101,6 +83,9 @@ std::vector<App::DocumentObject*> ViewProviderMbDPart::claimChildren() const
     if (auto* origin = getOriginObject(part)) {
         children.push_back(origin);
     }
+    if (auto* massMarker = part->getMassMarker()) {
+        children.push_back(massMarker);
+    }
     if (auto* markersFolder = part->getMarkersFolder()) {
         children.push_back(markersFolder);
     }
@@ -123,6 +108,9 @@ std::vector<App::DocumentObject*> ViewProviderMbDPart::claimChildren3D() const
     // marker-only visuals, such as the axis triad, inherit the part/assembly transform.
     auto markerChildren = part->markers.getValues();
     children.insert(children.end(), markerChildren.begin(), markerChildren.end());
+    if (auto* massMarker = part->getMassMarker()) {
+        children.push_back(massMarker);
+    }
     return children;
 }
 
@@ -145,6 +133,12 @@ bool ViewProviderMbDPart::getElementPicked(const SoPickedPoint* pp, std::string&
 {
     auto* part = getObject<MbDFEM::MbDPart>();
     if (part) {
+        if (auto* massMarker = part->getMassMarker()) {
+            if (pickedPathContainsObjectRoot(pp, massMarker)) {
+                subname = std::string(massMarker->getNameInDocument()) + ".";
+                return true;
+            }
+        }
         for (auto* object : part->markers.getValues()) {
             auto* marker = freecad_cast<MbDFEM::MbDMarker*>(object);
             if (marker && pickedPathContainsObjectRoot(pp, marker)) {
@@ -159,82 +153,20 @@ bool ViewProviderMbDPart::getElementPicked(const SoPickedPoint* pp, std::string&
 
 void ViewProviderMbDPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    auto* func = new Gui::ActionFunction(menu);
-    QAction* action = menu->addAction(QObject::tr("Be Grounded"));
-    action->setEnabled(getObject<MbDFEM::MbDPart>() != nullptr);
-    func->trigger(action, [this]() { beGrounded(); });
+    addMbDFEMContextMenuCommands(menu, {"MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"});
 
-    addAxisTriadContextMenuAction(
-        menu, func, AxisTriad.getValue(), [this](bool visible) { setAxisTriadVisible(visible); });
-
-    if (auto* command =
-            Gui::Application::Instance->commandManager().getCommandByName("MbDFEM_CreateMbDMarker")) {
-        command->addTo(menu);
-        command->testActive();
+    if (auto* otherMenu = addOtherContextMenu(menu)) {
+        PartGui::ViewProviderPart::setupContextMenu(otherMenu, receiver, member);
     }
-
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 void ViewProviderMbDPart::onChanged(const App::Property* prop)
 {
     PartGui::ViewProviderPart::onChanged(prop);
 
-    if (prop == &AxisTriad) {
-        updateAxisTriad();
-    }
-    else if (prop == &Visibility) {
+    if (prop == &Visibility) {
         updateMarkerVisibility();
     }
-}
-
-void ViewProviderMbDPart::beGrounded()
-{
-    auto* part = getObject<MbDFEM::MbDPart>();
-    if (!part || !part->getDocument()) {
-        return;
-    }
-
-    MbDFEM::MbDAssembly* assembly = nullptr;
-    for (auto* object : part->getDocument()->getObjects()) {
-        auto* candidate = freecad_cast<MbDFEM::MbDAssembly*>(object);
-        if (!candidate) {
-            continue;
-        }
-        const auto parts = candidate->parts.getValues();
-        if (std::find(parts.begin(), parts.end(), part) != parts.end()) {
-            assembly = candidate;
-            break;
-        }
-    }
-    if (!assembly) {
-        return;
-    }
-
-    App::Document* document = part->getDocument();
-    document->openTransaction("Ground MbDPart");
-    try {
-        assembly->groundPart(part);
-        document->commitTransaction();
-        document->recompute();
-        if (auto* guiDocument = Gui::Application::Instance->getDocument(document)) {
-            guiDocument->setShow(assembly->getNameInDocument());
-        }
-    }
-    catch (...) {
-        document->abortTransaction();
-        throw;
-    }
-}
-
-void ViewProviderMbDPart::setAxisTriadVisible(bool visible)
-{
-    AxisTriad.setValue(visible);
-}
-
-void ViewProviderMbDPart::updateAxisTriad()
-{
-    updateAxisTriadSwitch(axisTriadSwitch, AxisTriad.getValue());
 }
 
 void ViewProviderMbDPart::updateMarkerVisibility()
@@ -251,5 +183,11 @@ void ViewProviderMbDPart::updateMarkerVisibility()
         if (markerViewProvider) {
             markerViewProvider->updateTriadVisibility();
         }
+    }
+    auto* massMarker = part->getMassMarker();
+    auto* viewProvider = massMarker ? Gui::Application::Instance->getViewProvider(massMarker) : nullptr;
+    auto* markerViewProvider = freecad_cast<ViewProviderMbDMarker*>(viewProvider);
+    if (markerViewProvider) {
+        markerViewProvider->updateTriadVisibility();
     }
 }

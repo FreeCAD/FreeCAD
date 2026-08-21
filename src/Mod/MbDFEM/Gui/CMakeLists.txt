@@ -30,6 +30,8 @@ set(MbDFEMGui_SRCS
     ViewProviderMbDMotion.h
     ViewProviderMbDPart.cpp
     ViewProviderMbDPart.h
+    ViewProviderMbDSimulationParameters.cpp
+    ViewProviderMbDSimulationParameters.h
 )
 
 add_library(MbDFEMGui SHARED ${MbDFEMGui_SRCS})

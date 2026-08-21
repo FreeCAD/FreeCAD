@@ -25,6 +25,8 @@ public:
         return "MbDFEMGui::ViewProviderMbDMarker";
     }
 
+    App::DocumentObjectExecReturn* execute() override;
+
 protected:
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* typeName,

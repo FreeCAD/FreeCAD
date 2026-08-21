@@ -67,6 +67,9 @@ void removeFromPart(MbDFEM::MbDPart* part, App::DocumentObject* child, bool remo
     }
 
     MbDFEM::removeAll(part->markers, child);
+    if (part->massMarker.getValue() == child) {
+        part->massMarker.setValue(nullptr);
+    }
     removeFromFolder(part->getMarkersFolder(), child);
 
     if (removeGeoGroup) {

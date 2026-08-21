@@ -3,9 +3,11 @@
 import FreeCADGui as Gui
 
 import FreeCAD
+import MatGui  # noqa: F401
 import PartGui  # noqa: F401
 import MbDFEMGui  # noqa: F401
 import FreeCADMbDAnimationPanel
+import FreeCADMbDSimulationPanel
 
 FreeCAD.__unit_test__ += ["TestMbDFEMGui"]
 
@@ -17,6 +19,15 @@ _animation_parameters_selection_observer = (
     FreeCADMbDAnimationPanel.AnimationParametersSelectionObserver()
 )
 Gui.Selection.addObserver(_animation_parameters_selection_observer)
+
+try:
+    Gui.Selection.removeObserver(_simulation_parameters_selection_observer)
+except Exception:
+    pass
+_simulation_parameters_selection_observer = (
+    FreeCADMbDSimulationPanel.SimulationParametersSelectionObserver()
+)
+Gui.Selection.addObserver(_simulation_parameters_selection_observer)
 
 def _normalize(vector):
     import FreeCAD as App
@@ -216,19 +227,6 @@ class CreateMbDMarkerCommand:
         except Exception:
             pass
 
-        try:
-            sub_objects = selected.SubObjects
-        except RuntimeError:
-            sub_objects = []
-
-        if len(sub_objects) == 1:
-            sub_object = sub_objects[0]
-            try:
-                if getattr(sub_object, "ShapeType", None) in ("Edge", "Face"):
-                    element = sub_object
-            except RuntimeError:
-                pass
-
         if element is None:
             return None
 
@@ -341,6 +339,13 @@ def _is_mbd_marker(object_):
         return False
 
 
+def _is_mbd_mass_marker(object_):
+    try:
+        return object_ is not None and object_.isDerivedFrom("MbDFEM::MbDMassMarker")
+    except Exception:
+        return False
+
+
 def _marker_from_document_reference(document_name, object_name, sub_name=""):
     import FreeCAD as App
 
@@ -402,14 +407,21 @@ def _selected_markers():
     return markers
 
 
+def _selected_mass_markers():
+    return [marker for marker in _selected_markers() if _is_mbd_mass_marker(marker)]
+
+
 def _part_containing_marker(marker):
     if marker is None or marker.Document is None:
         return None
 
     for object_ in marker.Document.Objects:
         try:
-            if object_.isDerivedFrom("MbDFEM::MbDPart") and marker in object_.markers:
-                return object_
+            if object_.isDerivedFrom("MbDFEM::MbDPart"):
+                if marker in object_.markers:
+                    return object_
+                if hasattr(object_, "getMassMarker") and object_.getMassMarker() is marker:
+                    return object_
         except Exception:
             pass
 
@@ -678,8 +690,11 @@ class CreateMbDJointTaskPanel:
 
         for object_ in marker.Document.Objects:
             try:
-                if object_.isDerivedFrom("MbDFEM::MbDPart") and marker in object_.markers:
-                    return object_
+                if object_.isDerivedFrom("MbDFEM::MbDPart"):
+                    if marker in object_.markers:
+                        return object_
+                    if hasattr(object_, "getMassMarker") and object_.getMassMarker() is marker:
+                        return object_
             except Exception:
                 pass
 
@@ -743,13 +758,424 @@ class CreateMbDJointCommand:
 Gui.addCommand("MbDFEM_CreateMbDJoint", CreateMbDJointCommand(CreateMbDJointTaskPanel))
 
 
+class SetMassMarkerMaterialTaskPanel:
+    """Task panel that assigns a physical material to selected MbDMassMarker objects."""
+
+    def __init__(self, markers):
+        import FreeCADGui as Gui
+        import MatGui
+        import Materials
+        from PySide import QtCore, QtWidgets
+
+        self.markers = markers
+        self.material_manager = Materials.MaterialManager()
+        self.form = QtWidgets.QWidget()
+        self.form.setWindowTitle("Set Mass Marker Material")
+
+        self.material_widget = Gui.UiLoader().createWidget("MatGui::MaterialTreeWidget")
+        self.material_tree = MatGui.MaterialTreeWidget(self.material_widget)
+        self.material_tree.expanded = True
+        self.material_tree.IncludeEmptyFolders = False
+        self.material_tree.IncludeEmptyLibraries = False
+
+        material_filter = Materials.MaterialFilter()
+        try:
+            material_filter.requirePhysical(True)
+        except AttributeError:
+            pass
+        try:
+            self.material_tree.setFilter(material_filter)
+        except Exception:
+            pass
+
+        if len(markers) == 1:
+            try:
+                self.material_tree.UUID = markers[0].material.UUID
+            except Exception:
+                pass
+
+        self.uuid = self.material_tree.UUID
+        QtCore.QObject.connect(
+            self.material_widget,
+            QtCore.SIGNAL("onMaterial(QString)"),
+            self._on_material,
+        )
+
+        layout = QtWidgets.QVBoxLayout(self.form)
+        layout.addWidget(self.material_widget)
+
+    def getStandardButtons(self):
+        from PySide import QtGui
+
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+
+    def accept(self):
+        import FreeCAD as App
+        import FreeCADGui as Gui
+
+        self.uuid = self.material_tree.UUID
+        if not self.uuid:
+            App.Console.PrintError("No material selected.\n")
+            return False
+
+        try:
+            material = self.material_manager.getMaterial(self.uuid)
+        except Exception as exc:
+            App.Console.PrintError(f"Selected material could not be loaded: {exc}\n")
+            return False
+
+        document = self.markers[0].Document if self.markers else App.ActiveDocument
+        if document is None:
+            return False
+
+        document.openTransaction("Set Mass Marker Material")
+        try:
+            for marker in self.markers:
+                marker.material = material
+                part = self._part_containing_marker(marker)
+                if part is not None and marker.massMarkerFromShape:
+                    part.populateMassMarkerFromShape()
+            document.commitTransaction()
+        except Exception:
+            document.abortTransaction()
+            raise
+
+        document.recompute()
+        Gui.Control.closeDialog()
+        return True
+
+    def reject(self):
+        import FreeCADGui as Gui
+
+        Gui.Control.closeDialog()
+        return True
+
+    def _on_material(self, uuid):
+        self.uuid = uuid
+
+    @staticmethod
+    def _part_containing_marker(marker):
+        if marker is None or marker.Document is None:
+            return None
+
+        for object_ in marker.Document.Objects:
+            try:
+                if object_.isDerivedFrom("MbDFEM::MbDPart"):
+                    if marker in object_.markers:
+                        return object_
+                    if hasattr(object_, "getMassMarker") and object_.getMassMarker() is marker:
+                        return object_
+            except Exception:
+                pass
+
+        return None
+
+
+class SetMassMarkerMaterialCommand:
+    """Command that assigns material to selected MbDMassMarker objects."""
+
+    def __init__(self, panel_class):
+        self.panel_class = panel_class
+
+    def GetResources(self):
+        return {
+            "MenuText": "Set Mass Marker Material",
+            "ToolTip": "Assign material density for selected MbDMassMarker objects",
+        }
+
+    def IsActive(self):
+        import FreeCAD as App
+
+        return App.ActiveDocument is not None
+
+    def Activated(self):
+        import FreeCAD as App
+        import FreeCADGui as Gui
+
+        markers = self._selected_mass_markers()
+        if not markers:
+            App.Console.PrintError("Select one or more MbDMassMarker objects.\n")
+            return
+
+        Gui.Control.showDialog(self.panel_class(markers))
+
+    @staticmethod
+    def _marker_from_document_reference(document_name, object_name, sub_name=""):
+        import FreeCAD as App
+
+        document = App.getDocument(document_name)
+        if document is None:
+            return None
+
+        root = document.getObject(object_name)
+        if root is None:
+            return None
+
+        try:
+            if root.isDerivedFrom("MbDFEM::MbDMassMarker"):
+                return root
+        except Exception:
+            pass
+
+        if sub_name:
+            try:
+                resolved = root.getSubObject(sub_name)
+                if resolved is not None and resolved.isDerivedFrom("MbDFEM::MbDMassMarker"):
+                    return resolved
+            except Exception:
+                pass
+
+            marker_name = sub_name.rstrip(".").rsplit(".", 1)[-1]
+            marker = document.getObject(marker_name)
+            try:
+                if marker is not None and marker.isDerivedFrom("MbDFEM::MbDMassMarker"):
+                    return marker
+            except Exception:
+                pass
+
+        return None
+
+    @classmethod
+    def _selected_mass_markers(cls):
+        import FreeCAD as App
+        import FreeCADGui as Gui
+
+        markers = []
+        seen = set()
+        document_name = App.ActiveDocument.Name if App.ActiveDocument else "*"
+
+        try:
+            selection = Gui.Selection.getSelectionEx(document_name)
+        except Exception:
+            selection = []
+
+        for selected in selection:
+            marker = None
+            try:
+                obj = selected.Object
+                if obj is not None and obj.isDerivedFrom("MbDFEM::MbDMassMarker"):
+                    marker = obj
+                elif selected.SubElementNames:
+                    marker = cls._marker_from_document_reference(
+                        obj.Document.Name, obj.Name, selected.SubElementNames[0]
+                    )
+            except Exception:
+                marker = None
+
+            if marker is not None and marker.Name not in seen:
+                markers.append(marker)
+                seen.add(marker.Name)
+
+        return markers
+
+
+Gui.addCommand(
+    "MbDFEM_SetMassMarkerMaterial",
+    SetMassMarkerMaterialCommand(SetMassMarkerMaterialTaskPanel),
+)
+
+
+class SolveMbDAssemblyTaskPanel:
+    """Task panel for simulation parameters and ASMT operations."""
+
+    def __init__(self, assembly):
+        import FreeCAD as App
+        import FreeCADMbDBackend
+        from PySide import QtWidgets
+
+        self.assembly = assembly
+        self.parameters = assembly.ensureSimulationParameters()
+        self.form = QtWidgets.QWidget()
+        self.form.setWindowTitle("Solve MbDAssembly")
+
+        asmt_path = FreeCADMbDBackend.default_asmt_path(assembly)
+        solved_path = asmt_path.with_suffix(".solved.asmt")
+
+        layout = QtWidgets.QVBoxLayout(self.form)
+
+        parameters_group = QtWidgets.QGroupBox("Simulation Parameters")
+        form_layout = QtWidgets.QFormLayout(parameters_group)
+
+        self.start_time = self._double_spinbox(self.parameters.startTime, -1.0e12, 1.0e12)
+        self.end_time = self._double_spinbox(self.parameters.endTime, -1.0e12, 1.0e12)
+        self.min_step_size = self._double_spinbox(self.parameters.minStepSize, 0.0, 1.0e12)
+        self.max_step_size = self._double_spinbox(self.parameters.maxStepSize, 1.0e-12, 1.0e12)
+        self.output_interval = self._double_spinbox(self.parameters.outputInterval, 0.0, 1.0e12)
+        self.significant_digits = self._integer_spinbox(
+            self.parameters.significantDigits, 1, 16
+        )
+        self.max_iterations = self._integer_spinbox(self.parameters.maxIterations, 1, 1000000)
+
+        form_layout.addRow("startTime", self.start_time)
+        form_layout.addRow("endTime", self.end_time)
+        form_layout.addRow("outputInterval", self.output_interval)
+        form_layout.addRow("minStepSize", self.min_step_size)
+        form_layout.addRow("maxStepSize", self.max_step_size)
+        form_layout.addRow("significantDigits", self.significant_digits)
+        form_layout.addRow("maxIterations", self.max_iterations)
+        layout.addWidget(parameters_group)
+
+        files_group = QtWidgets.QGroupBox("ASMT Files")
+        files_layout = QtWidgets.QFormLayout(files_group)
+        self.asmt_file = QtWidgets.QLineEdit(str(asmt_path))
+        self.solved_asmt_file = QtWidgets.QLineEdit(str(solved_path))
+        files_layout.addRow("ASMT", self.asmt_file)
+        files_layout.addRow("Solved ASMT", self.solved_asmt_file)
+        layout.addWidget(files_group)
+
+        actions_layout = QtWidgets.QHBoxLayout()
+        self.export_button = QtWidgets.QPushButton("Export ASMT")
+        self.simulate_button = QtWidgets.QPushButton("Simulate ASMT")
+        self.import_button = QtWidgets.QPushButton("Import ASMT")
+        self.solve_button = QtWidgets.QPushButton("Solve MbDAssembly")
+        actions_layout.addWidget(self.export_button)
+        actions_layout.addWidget(self.simulate_button)
+        actions_layout.addWidget(self.import_button)
+        actions_layout.addWidget(self.solve_button)
+        layout.addLayout(actions_layout)
+
+        self.status_label = QtWidgets.QLabel()
+        self.status_label.setWordWrap(True)
+        layout.addWidget(self.status_label)
+
+        self.export_button.clicked.connect(self.export_asmt)
+        self.simulate_button.clicked.connect(self.simulate_asmt)
+        self.import_button.clicked.connect(self.import_asmt)
+        self.solve_button.clicked.connect(self.solve_assembly)
+
+        App.Console.PrintMessage(f"Solving assembly: {assembly.Label}\n")
+
+    @staticmethod
+    def _double_spinbox(value, minimum, maximum):
+        from PySide import QtWidgets
+
+        field = QtWidgets.QDoubleSpinBox()
+        field.setDecimals(12)
+        field.setRange(minimum, maximum)
+        field.setValue(float(value))
+        return field
+
+    @staticmethod
+    def _integer_spinbox(value, minimum, maximum):
+        from PySide import QtWidgets
+
+        field = QtWidgets.QSpinBox()
+        field.setRange(minimum, maximum)
+        field.setValue(int(value))
+        return field
+
+    def getStandardButtons(self):
+        from PySide import QtGui
+
+        return QtGui.QDialogButtonBox.Close
+
+    def accept(self):
+        self._apply_parameters()
+        return True
+
+    def reject(self):
+        return True
+
+    def export_asmt(self):
+        import FreeCAD as App
+        import FreeCADMbDExporter
+        from pathlib import Path
+
+        try:
+            self._apply_parameters()
+            asmt_path = Path(self.asmt_file.text())
+            FreeCADMbDExporter.export_assembly(self.assembly, asmt_path)
+            self._set_status(f"Exported ASMT: {asmt_path}")
+            App.Console.PrintMessage(f"Exported FreeCADMbD input: {asmt_path}\n")
+            return True
+        except Exception as exc:
+            self._report_error("ASMT export failed", exc)
+            return False
+
+    def simulate_asmt(self):
+        import FreeCAD as App
+        import FreeCADMbDBackend
+        from pathlib import Path
+
+        try:
+            self._apply_parameters()
+            asmt_path = Path(self.asmt_file.text())
+            solved_path = Path(self.solved_asmt_file.text())
+            backend = FreeCADMbDBackend.FreeCADMbDProcessBackend()
+            solved_path, completed = backend.simulate_asmt(asmt_path, solved_path)
+            self.solved_asmt_file.setText(str(solved_path))
+            self._set_status(f"Simulated ASMT: {solved_path}")
+            App.Console.PrintMessage(f"Wrote FreeCADMbD solved assembly: {solved_path}\n")
+            if completed.stdout:
+                App.Console.PrintMessage(completed.stdout)
+            if completed.stderr:
+                App.Console.PrintWarning(completed.stderr)
+            return True
+        except Exception as exc:
+            self._report_error("ASMT simulation failed", exc)
+            return False
+
+    def import_asmt(self):
+        import FreeCAD as App
+        import FreeCADGui as Gui
+        import FreeCADMbDResults
+        from pathlib import Path
+
+        try:
+            self._apply_parameters()
+            solved_path = Path(self.solved_asmt_file.text())
+            imported = FreeCADMbDResults.import_results(self.assembly, solved_path)
+            self._set_status(f"Imported ASMT results: {solved_path}")
+            App.Console.PrintMessage(
+                f"Imported FreeCADMbD results from: {solved_path}\n"
+            )
+            Gui.Selection.clearSelection()
+            Gui.Selection.addSelection(self.assembly)
+            self.assembly.Document.recompute()
+            App.Console.PrintMessage(f"Updated {len(imported)} result objects.\n")
+            return True
+        except Exception as exc:
+            self._report_error("ASMT import failed", exc)
+            return False
+
+    def solve_assembly(self):
+        if self.export_asmt():
+            if self.simulate_asmt():
+                self.import_asmt()
+
+    def _apply_parameters(self):
+        self.parameters.startTime = self.start_time.value()
+        self.parameters.endTime = self.end_time.value()
+        self.parameters.maxStepSize = self.max_step_size.value()
+        self.parameters.minStepSize = self.min_step_size.value()
+        self.parameters.significantDigits = self.significant_digits.value()
+        self.parameters.maxIterations = self.max_iterations.value()
+        self.parameters.outputInterval = self.output_interval.value()
+
+    def _set_status(self, message):
+        import FreeCAD as App
+
+        self.status_label.setText(message)
+        App.Console.PrintMessage(message + "\n")
+
+    def _report_error(self, action, exc):
+        import FreeCAD as App
+
+        message = f"{action}: {exc}"
+        self.status_label.setText(message)
+        App.Console.PrintError(message + "\n")
+
+
 class SolveMbDAssemblyCommand:
-    """Command that exports an MbDAssembly and solves it with FreeCADMbD."""
+    """Command that opens the MbDAssembly solve task panel."""
+
+    def __init__(self, panel_class=None):
+        self.panel_class = panel_class or FreeCADMbDSimulationPanel.SimulationTaskPanel
 
     def GetResources(self):
         return {
             "MenuText": "Solve MbDAssembly",
-            "ToolTip": "Export the active MbDAssembly and run FreeCADMbD",
+            "ToolTip": "Open ASMT export, simulation, and import controls",
         }
 
     def IsActive(self):
@@ -792,33 +1218,18 @@ class SolveMbDAssemblyCommand:
         import FreeCAD as App
         import FreeCADGui as Gui
 
-        import FreeCADMbDBackend
-
         assembly = self.activeAssembly()
         if assembly is None:
             App.Console.PrintError("No MbDAssembly is active or selected.\n")
             return
 
-        document = assembly.Document
-        document.openTransaction("Solve MbDAssembly")
-        try:
-            result = FreeCADMbDBackend.FreeCADMbDProcessBackend().solve(assembly)
-            document.commitTransaction()
-        except Exception as exc:
-            document.abortTransaction()
-            App.Console.PrintError(f"FreeCADMbD solve failed: {exc}\n")
-            raise
-
-        App.Console.PrintMessage(f"Exported FreeCADMbD input: {result.asmt_file}\n")
-        if result.result_file:
-            App.Console.PrintMessage(f"Wrote FreeCADMbD solved assembly: {result.result_file}\n")
-        else:
-            App.Console.PrintWarning("FreeCADMbD produced no solved assembly file.\n")
-        Gui.Selection.clearSelection()
-        Gui.Selection.addSelection(assembly)
+        Gui.Control.showDialog(self.panel_class(assembly))
 
 
-Gui.addCommand("MbDFEM_SolveMbDAssembly", SolveMbDAssemblyCommand())
+Gui.addCommand(
+    "MbDFEM_SolveMbDAssembly",
+    SolveMbDAssemblyCommand(FreeCADMbDSimulationPanel.SimulationTaskPanel),
+)
 
 
 class MbDFEMWorkbench(Gui.Workbench):
@@ -833,17 +1244,16 @@ class MbDFEMWorkbench(Gui.Workbench):
         import MbDFEM  # noqa: F401
         import MbDFEMGui  # noqa: F401
 
-        commands = [
+        toolbar_commands = [
             "MbDFEM_CreateMbDAssembly",
             "MbDFEM_CreateMbDMarker",
             "MbDFEM_CreateMbDJoint",
-            "MbDFEM_SolveMbDAssembly",
         ]
-        self.appendToolbar("MbDFEM", commands)
-        self.appendMenu("MbDFEM", commands)
-
-    def ContextMenu(self, recipient):
-        self.appendContextMenu("", ["MbDFEM_CreateMbDMarker", "MbDFEM_CreateMbDJoint"])
+        menu_commands = [
+            *toolbar_commands,
+        ]
+        self.appendToolbar("MbDFEM", toolbar_commands)
+        self.appendMenu("MbDFEM", menu_commands)
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"

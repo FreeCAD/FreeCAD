@@ -10,7 +10,9 @@ set(MbDFEM_Scripts
     FreeCADMbDAnimationPanel.py
     FreeCADMbDBackend.py
     FreeCADMbDExporter.py
+    FreeCADMbDMassMarkerPanel.py
     FreeCADMbDResults.py
+    FreeCADMbDSimulationPanel.py
     Init.py
     TestMbDFEMApp.py
 )
