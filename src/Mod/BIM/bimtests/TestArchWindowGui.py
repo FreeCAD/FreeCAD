@@ -65,6 +65,56 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
         self.assertNotAlmostEqual(self.window.PreviewShape.Volume, volumeBefore, places=3)
 
+    def testPreviewHasTwoNodes(self):
+        self.assertEqual(self.window.ViewObject.PreviewRootNode.getNumChildren(), 2)
+
+    def testHoleNodeIsMoreTransparentThanWindowNode(self):
+        windowNode = self.window.ViewObject.PreviewShapeNode
+        holeNode = self.window.ViewObject.PreviewRootNode.getChild(1)
+
+        self.assertGreater(holeNode.transparency.getValue(), windowNode.transparency.getValue())
+
+    def _holeNodeCoordinateCount(self, viewObject):
+        from pivy import coin
+
+        holeNode = viewObject.PreviewRootNode.getChild(1)
+
+        # coords is a plain child rather than a registered field, so it has to be
+        # searched for; a freshly-constructed SoCoordinate3 already reports 1.
+        search = coin.SoSearchAction()
+        search.setType(coin.SoCoordinate3.getClassTypeId())
+        search.apply(holeNode)
+        return search.getPath().getTail().point.getNum()
+
+    def testHolePreviewNodeIsEmptyForUnhostedWindow(self):
+        self.window.ViewObject.updatePreview()
+
+        self.assertEqual(self._holeNodeCoordinateCount(self.window.ViewObject), 1)
+
+    def testHolePreviewNodeGetsGeometryForHostedWindow(self):
+        _, win = self._makeHostedWindow()
+        win.ViewObject.updatePreview()
+
+        self.assertGreaterEqual(self._holeNodeCoordinateCount(win.ViewObject), 8)
+
+    def testHolePreviewNodeCombinesAllHosts(self):
+        """A window spanning a junction must show the volume removed from every
+        host, since each host is cut by its own subvolume."""
+        wall1, win = self._makeHostedWindow()
+        win.ViewObject.updatePreview()
+        singleHostCount = self._holeNodeCoordinateCount(win.ViewObject)
+
+        points2 = [App.Vector(0.0, 500.0, 0.0), App.Vector(2000.0, 500.0, 0.0)]
+        line2 = Draft.make_wire(points2)
+        # a width distinct from wall1's default, so the second subvolume is not
+        # a duplicate of the first
+        wall2 = Arch.makeWall(line2, height=2000, width=800)
+        win.Hosts = win.Hosts + [wall2]
+        App.ActiveDocument.recompute()
+        win.ViewObject.updatePreview()
+
+        self.assertGreater(self._holeNodeCoordinateCount(win.ViewObject), singleHostCount)
+
     def _makeHostedWindow(self):
         """Wall hosting a window, recomputed once so both have settled geometry."""
         points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
