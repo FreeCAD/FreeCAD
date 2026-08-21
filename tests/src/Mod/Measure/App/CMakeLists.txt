@@ -4,6 +4,7 @@ add_executable(Measure_tests_run
         MeasureAngle.cpp
         MeasureDistance.cpp
         MeasurePosition.cpp
+        QuickMeasure.cpp
 )
 
 target_include_directories(Measure_tests_run PUBLIC
