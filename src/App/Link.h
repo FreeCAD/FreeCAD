@@ -35,6 +35,7 @@
 #include "FeaturePython.h"
 #include "GroupExtension.h"
 #include "PropertyLinks.h"
+#include "SuppressibleExtension.h"
 
 
 // FIXME: ISO C++11 requires at least one argument for the "..." in a variadic macro
@@ -1040,7 +1041,9 @@ using LinkPython = App::FeaturePythonT<Link>;
  * link pointing to the same linked object, but its element list will contain
  * references to the element links.
  */
-class AppExport LinkElement: public App::DocumentObject, public App::LinkBaseExtension
+class AppExport LinkElement: public App::DocumentObject,
+                             public App::LinkBaseExtension,
+                             public App::SuppressibleExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkElement);
     using inherited = App::DocumentObject;
@@ -1091,6 +1094,9 @@ public:
     App::Link* getLinkGroup() const;
 
     Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr) override;
+
+protected:
+    void onChanged(const Property* prop) override;
 };
 
 using LinkElementPython = App::FeaturePythonT<LinkElement>;
