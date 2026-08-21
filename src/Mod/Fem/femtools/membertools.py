@@ -263,6 +263,7 @@ class AnalysisMember:
         self.geos_beamrotation = self.get_several_member("Fem::ElementRotation1D")
         self.geos_fluidsection = self.get_several_member("Fem::ElementFluid1D")
         self.geos_shellthickness = self.get_several_member("Fem::ElementGeometry2D")
+        self.geos_shelllaminate = self.get_several_member("Fem::ElementGeometryLaminate")
 
         # constraints
         self.cons_centrif = self.get_several_member("Fem::ConstraintCentrif")
