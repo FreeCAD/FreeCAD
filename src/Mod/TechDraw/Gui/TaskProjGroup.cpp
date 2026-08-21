@@ -21,10 +21,15 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <array>
+
 # include <QMessageBox>
 # include <QGroupBox>
 # include <QLabel>
 # include <QScreen>
+# include <QSignalBlocker>
+# include <QToolButton>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -64,6 +69,7 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 TaskProjGroup::TaskProjGroup(TechDraw::DrawView* featView, bool mode) :
+    Gui::SelectionObserver(true, Gui::ResolveMode::NoResolve),
     ui(new Ui_TaskProjGroup),
     view(featView),
     multiView(dynamic_cast<TechDraw::DrawProjGroup*>(view)),
@@ -117,6 +123,19 @@ void TaskProjGroup::connectWidgets()
     connect(ui->cbAutoDistribute, &QPushButton::clicked, this, &TaskProjGroup::AutoDistributeClicked);
     connect(ui->sbXSpacing, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskProjGroup::spacingChanged);
     connect(ui->sbYSpacing, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskProjGroup::spacingChanged);
+
+    const std::array<QToolButton*, 5> styleButtons {
+        ui->tbAllEdges,
+        ui->tbHiddenEdges,
+        ui->tbVisibleEdges,
+        ui->tbShadedWithEdges,
+        ui->tbShaded
+    };
+    for (size_t i = 0; i < styleButtons.size(); ++i) {
+        connect(styleButtons.at(i), &QToolButton::clicked, this, [this, i]() {
+            displayStyleChanged(static_cast<int>(i));
+        });
+    }
 }
 
 void TaskProjGroup::initializeUi()
@@ -166,6 +185,131 @@ void TaskProjGroup::initializeUi()
         ui->butFront->setChecked(true);
     }
 
+    ui->tbAllEdges->setIcon(Gui::BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
+    ui->tbHiddenEdges->setIcon(Gui::BitmapFactory().iconFromTheme("view-axonometric"));
+    ui->tbVisibleEdges->setIcon(Gui::BitmapFactory().iconFromTheme("DrawStyleNoShading"));
+    ui->tbShadedWithEdges->setIcon(Gui::BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
+    ui->tbShaded->setIcon(Gui::BitmapFactory().iconFromTheme("DrawStyleShaded"));
+    updateDisplayStyleUi();
+}
+
+std::vector<TechDraw::DrawViewPart*> TaskProjGroup::displayStyleTargets(
+    bool* hasSelectedTargets) const
+{
+    if (hasSelectedTargets) {
+        *hasSelectedTargets = false;
+    }
+    if (!multiView) {
+        auto* partView = dynamic_cast<TechDraw::DrawViewPart*>(view);
+        return partView ? std::vector<TechDraw::DrawViewPart*> {partView}
+                        : std::vector<TechDraw::DrawViewPart*> {};
+    }
+
+    const auto allViews = multiView->getViewsAsDPGI();
+    std::vector<TechDraw::DrawViewPart*> selectedViews;
+    const auto selections = Gui::Selection().getSelectionEx(
+        view->getDocument()->getName(), App::DocumentObject::getClassTypeId(),
+        Gui::ResolveMode::NoResolve);
+    for (const auto& selection : selections) {
+        auto* selected = selection.getObject();
+        const auto found = std::find(allViews.begin(), allViews.end(), selected);
+        if (found != allViews.end()
+            && std::find(selectedViews.begin(), selectedViews.end(), selected)
+                == selectedViews.end()) {
+            selectedViews.push_back(static_cast<TechDraw::DrawViewPart*>(*found));
+        }
+    }
+
+    if (!selectedViews.empty()) {
+        if (hasSelectedTargets) {
+            *hasSelectedTargets = true;
+        }
+        return selectedViews;
+    }
+
+    return {allViews.begin(), allViews.end()};
+}
+
+QString TaskProjGroup::displayStyleTargetDescription(
+    const std::vector<TechDraw::DrawViewPart*>& targets,
+    bool hasSelectedTargets) const
+{
+    if (!multiView || !hasSelectedTargets) {
+        return tr("all");
+    }
+
+    const auto nameOf = [](const TechDraw::DrawViewPart* target) {
+        return QString::fromUtf8(target->Label.getValue());
+    };
+    if (targets.size() == 1) {
+        return nameOf(targets.front());
+    }
+    if (targets.size() == 2) {
+        return tr("%1 and %2").arg(nameOf(targets.at(0)), nameOf(targets.at(1)));
+    }
+    return tr("%1, %2 and %n more", nullptr, static_cast<int>(targets.size() - 2))
+        .arg(nameOf(targets.at(0)), nameOf(targets.at(1)));
+}
+
+void TaskProjGroup::updateDisplayStyleUi()
+{
+    bool hasSelectedTargets = false;
+    const auto targets = displayStyleTargets(&hasSelectedTargets);
+    ui->displayStyleGroupBox->setTitle(
+        tr("Display Style of: %1")
+            .arg(displayStyleTargetDescription(targets, hasSelectedTargets)));
+
+    const std::array<QToolButton*, 5> styleButtons {
+        ui->tbAllEdges,
+        ui->tbHiddenEdges,
+        ui->tbVisibleEdges,
+        ui->tbShadedWithEdges,
+        ui->tbShaded
+    };
+    int commonStyle = -1;
+    if (!targets.empty()) {
+        commonStyle = targets.front()->DisplayStyle.getValue();
+        if (std::any_of(targets.begin() + 1, targets.end(), [commonStyle](const auto* target) {
+                return target->DisplayStyle.getValue() != commonStyle;
+            })) {
+            commonStyle = -1;
+        }
+    }
+
+    for (auto* button : styleButtons) {
+        button->setAutoExclusive(false);
+        button->setChecked(false);
+        button->setAutoExclusive(true);
+    }
+    if (commonStyle >= 0 && commonStyle < static_cast<int>(styleButtons.size())) {
+        const QSignalBlocker blocker(styleButtons.at(commonStyle));
+        styleButtons.at(commonStyle)->setChecked(true);
+    }
+}
+
+void TaskProjGroup::displayStyleChanged(int style)
+{
+    const auto targets = displayStyleTargets();
+    for (auto* target : targets) {
+        target->DisplayStyle.setValue(style);
+    }
+    if (multiView) {
+        multiView->recomputeChildren();
+    }
+    else if (view) {
+        view->recomputeFeature();
+    }
+    updateDisplayStyleUi();
+}
+
+void TaskProjGroup::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (msg.Type == Gui::SelectionChanges::AddSelection
+        || msg.Type == Gui::SelectionChanges::RmvSelection
+        || msg.Type == Gui::SelectionChanges::SetSelection
+        || msg.Type == Gui::SelectionChanges::ClrSelection) {
+        updateDisplayStyleUi();
+    }
 }
 
 
