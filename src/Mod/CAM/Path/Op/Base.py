@@ -1200,7 +1200,7 @@ class ObjectOp(object):
             last_feed_index = None
 
             for i, cmd in enumerate(self.commandlist):
-                if cmd.Name in Path.Geom.CmdMove + Constants.GCODE_DRILL_EXTENDED:
+                if cmd.Name in Constants.GCODE_MOVE:
                     if first_feed_index is None:
                         first_feed_index = i
                     last_feed_index = i
