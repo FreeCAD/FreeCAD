@@ -28,6 +28,7 @@
 #include <QDir>
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QStandardPaths>
 
 #include <App/Application.h>
 #include <App/Transactions.h>
@@ -1026,12 +1027,20 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
 
 #if defined(Q_OS_WIN)
     fontPaths << QString::fromUtf8("C:/Windows/Fonts");
+    // Also scan per-user installed fonts (Windows 10 1803+)
+    QString localAppData = QDir::toNativeSeparators(
+        QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation)
+    );
+    if (!localAppData.isEmpty()) {
+        fontPaths << localAppData + QString::fromUtf8("/Microsoft/Windows/Fonts");
+    }
 #elif defined(Q_OS_MACOS)
     fontPaths << QString::fromUtf8("/System/Library/Fonts") << QString::fromUtf8("/Library/Fonts")
               << QDir::homePath() + QString::fromUtf8("/Library/Fonts");
 #else  // Linux and other Unix-like systems
     fontPaths << QString::fromUtf8("/usr/share/fonts") << QString::fromUtf8("/usr/local/share/fonts")
-              << QDir::homePath() + QString::fromUtf8("/.fonts");
+              << QDir::homePath() + QString::fromUtf8("/.fonts")
+              << QDir::homePath() + QString::fromUtf8("/.local/share/fonts");
 #endif
 
     for (const QString& path : fontPaths) {
