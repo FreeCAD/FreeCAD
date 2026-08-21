@@ -24,6 +24,7 @@ import shutil
 
 from .class_merge import (
     append_class_stubs,
+    append_api_model_class_stubs,
     merge_api_class_headers_into_stubs,
     merge_api_class_attributes_into_stubs,
     merge_api_class_methods_into_stubs,
@@ -212,6 +213,7 @@ def write_outputs(
         module_names,
     )
     append_class_stubs(out_dir / "stubs", root, classes, module_names)
+    append_api_model_class_stubs(out_dir / "stubs", api_model, module_names)
     merge_api_class_headers_into_stubs(out_dir / "stubs", api_model, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
     merge_api_class_methods_into_stubs(out_dir / "stubs", api_model, module_names)

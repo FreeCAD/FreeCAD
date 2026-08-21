@@ -26,6 +26,7 @@ from stubgen.python_api.model import (
 )
 from stubgen.python_api.extract import binding_class_aliases
 from stubgen.class_merge import (
+    append_api_model_class_stubs,
     merge_api_class_attributes,
     merge_api_class_header,
     merge_api_class_methods,
@@ -323,6 +324,34 @@ def outside() -> None:
             stub_source = generated.read_text(encoding="utf-8")
 
         self.assertIn("Ready: bool", stub_source)
+
+    def test_curated_class_renders_without_discovered_binding(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "stubs"
+            model = ApiModel(
+                modules=(
+                    ApiModule(
+                        name="FreeCAD.Constants",
+                        classes=(
+                            ApiClass(
+                                name="Settings",
+                                module_name="FreeCAD.Constants",
+                                doc="Application settings.",
+                                bases=("BaseSettings",),
+                                methods=api_module().functions,
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            append_api_model_class_stubs(output, model, {"FreeCAD.Constants"})
+            generated = output / "FreeCAD" / "Constants.pyi"
+            stub_source = generated.read_text(encoding="utf-8")
+
+        self.assertIn("class Settings(BaseSettings):", stub_source)
+        self.assertIn('    """Application settings."""', stub_source)
+        self.assertIn("from typing import overload", stub_source)
+        self.assertIn("def open(self, path: str, /) -> object:", stub_source)
 
     def test_deprecation_metadata_can_follow_discovered_registration_sources(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

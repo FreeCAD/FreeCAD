@@ -43,6 +43,7 @@ from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
 from .python_api.extract import class_from_node
 from .python_api.model import ApiCallableGroup, ApiClass, ApiModel, ApiModule, ApiOrigin
+from .render import render_docstring_lines
 from .signature_parser import CallableSignature
 
 TYPE_CHECKING_IMPORT_LINE = "from typing import TYPE_CHECKING"
@@ -1147,6 +1148,66 @@ def append_class_stubs(
         separator = "\n\n" if existing else ""
         path.write_text(existing.rstrip() + separator + class_lines + "\n", encoding="utf-8")
     return suppressed
+
+
+def render_api_model_class(api_class: ApiClass) -> str:
+    """Render a class that has no legacy binding declaration to start from."""
+
+    lines = [render_api_class_header(api_class)]
+    body: list[str] = []
+    if api_class.doc:
+        body.extend(render_docstring_lines(api_class.doc))
+    body.extend(api_attribute_source(attribute) for attribute in api_class.attributes)
+    for group in api_class.methods:
+        for index, signature in enumerate(group.signatures):
+            if group.overload:
+                body.append("    @overload")
+            if signature.flags.classmethod:
+                body.append("    @classmethod")
+            elif signature.flags.staticmethod:
+                body.append("    @staticmethod")
+            display = class_method_display_signature(signature)
+            body.append(f"    def {display}:")
+            doc = signature.docstring or (group.doc if index == 0 else None)
+            if doc:
+                body.extend(f"    {line}" for line in render_docstring_lines(doc))
+            body.append("        ...")
+    if not body:
+        body.append("    ...")
+    lines.extend(body)
+    return "\n".join(lines)
+
+
+def append_api_model_class_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    """Materialize model classes absent from the legacy generated output."""
+
+    count = 0
+    for module in api_model.modules:
+        if not module.classes:
+            continue
+        path = module_stub_path(target_dir, module.name, module_names)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        existing = path.read_text(encoding="utf-8") if path.exists() else ""
+        existing_symbols = public_stub_symbols(existing)
+        missing = [
+            api_class for api_class in module.classes if api_class.name not in existing_symbols
+        ]
+        if not missing:
+            continue
+        prefix = existing.rstrip()
+        if not prefix:
+            prefix = "from __future__ import annotations"
+        needs_overload = any(group.overload for api_class in missing for group in api_class.methods)
+        if needs_overload and "from typing import overload" not in prefix:
+            prefix = f"{prefix}\nfrom typing import overload"
+        class_source = "\n\n".join(render_api_model_class(api_class) for api_class in missing)
+        path.write_text(f"{prefix}\n\n{class_source}\n", encoding="utf-8")
+        count += len(missing)
+    return count
 
 
 def class_method_display_signature(
