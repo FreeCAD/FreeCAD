@@ -31,12 +31,11 @@ import pathlib
 from abc import ABC
 from itertools import chain
 from lazy_loader.lazy_loader import LazyLoader
-from typing import Any, List, Optional, Tuple, Type, Union, Mapping, cast
+from typing import Any, List, Optional, Tuple, Type, Union, Mapping
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from Path.Base.Generator import toolchange
 from ...docobject import DetachedDocumentObject
 from ...assets.asset import Asset
-from ...camassets import cam_assets
 from ...shape import ToolBitShape, ToolBitShapeCustom, ToolBitShapeIcon
 from ..util import to_json, format_value
 from ..migration import ParameterAccessor, migrate_parameters
@@ -161,11 +160,10 @@ class ToolBit(Asset, ABC):
 
         # Create a ToolBitShape instance.
         if not shallow:  # Shallow means: skip loading of child assets
-            shape_asset_uri = ToolBitShape.resolve_name(shape_id)
             try:
-                tool_bit_shape = cast(ToolBitShape, cam_assets.get(shape_asset_uri))
+                tool_bit_shape = ToolBitShape.resolve_asset(shape_id)
             except FileNotFoundError:
-                Path.Log.debug(f"ToolBit.from_dict: Shape asset {shape_asset_uri} not found.")
+                Path.Log.debug(f"ToolBit.from_dict: Shape asset '{shape_id}' not found.")
                 # Rely on the fallback below
             else:
                 toolbit = cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
@@ -528,16 +526,22 @@ class ToolBit(Asset, ABC):
         self._create_base_properties()
         self._promote_toolbit()
 
-        # Get the shape instance based on the ShapeType. We try two approaches
-        # to find the shape and shape class:
-        #   1. If the asset with the given type exists, use that.
+        # Get the shape instance based on ShapeID/ShapeType. We try two
+        # approaches to find the shape and shape class:
+        #   1. If the asset with the given ID exists, use that.
         #   2. Otherwise create a new empty instance
-        shape_uri = ToolBitShape.resolve_name(self.obj.ShapeType)
         try:
             # Best case: we directly find the shape file in our assets.
-            self._tool_bit_shape = cast(ToolBitShape, cam_assets.get(shape_uri))
+            # ShapeID is the real asset id (e.g. "thread-mill"), unlike
+            # ShapeType which is always the shape class name (e.g.
+            # "ThreadMill") and doesn't necessarily match the asset
+            # filename.
+            self._tool_bit_shape = ToolBitShape.resolve_asset(self.obj.ShapeID)
         except FileNotFoundError:
             # Otherwise, try to at least identify the type of the shape.
+            # A custom shape's ShapeID is an embedded filename with no
+            # matching class, so identify the class from ShapeType instead.
+            shape_uri = ToolBitShape.resolve_name(self.obj.ShapeType)
             shape_class = ToolBitShape.get_subclass_by_name(shape_uri.asset_id)
             if not shape_class:
                 raise ValueError(

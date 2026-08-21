@@ -560,6 +560,53 @@ class ToolBitShape(Asset):
         )
 
     @classmethod
+    def resolve_asset(cls, identifier: str, assets=None) -> "ToolBitShape":
+        """
+        Resolves an identifier (name, filename, or URI) to a loaded
+        ToolBitShape asset.
+
+        Some built-in shapes have an asset filename that doesn't match their
+        class name, even case-insensitively (e.g. the "ThreadMill" class is
+        stored as "thread-mill.fcstd"). If the identifier doesn't resolve
+        directly, retry using the identified shape class's own canonical
+        name and its known aliases (see Tools/Shape/shape_aliases.json)
+        before giving up, so callers only need to fall back to an empty
+        placeholder shape when the shape genuinely isn't a known/available
+        asset. This doesn't rely on case-insensitive filename matching, so
+        it works the same regardless of the underlying asset store.
+
+        Args:
+            identifier: a shape name, filename, alias, or asset URI.
+            assets: the AssetManager to resolve against. Defaults to the
+                global cam_assets (accepts an injectable manager so tests
+                can use an isolated asset store).
+
+        Raises FileNotFoundError if no candidate identifier resolves.
+        """
+        if assets is None:
+            assets = cam_assets
+
+        uri = cls.resolve_name(identifier)
+        try:
+            return cast("ToolBitShape", assets.get(uri))
+        except FileNotFoundError:
+            pass
+
+        shape_class = cls.get_subclass_by_name(uri.asset_id)
+        if shape_class:
+            candidates = [shape_class.name.lower(), *shape_class.aliases]
+            for candidate in candidates:
+                try:
+                    return cast("ToolBitShape", assets.get(cls.resolve_name(candidate)))
+                except FileNotFoundError:
+                    continue
+
+        raise FileNotFoundError(
+            f"No shape asset found for '{identifier}' (tried canonical name "
+            f"and aliases of {shape_class.__name__ if shape_class else 'unknown class'})"
+        )
+
+    @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:
         """
         Subclasses must define the dictionary mapping parameter names to
