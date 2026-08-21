@@ -22,6 +22,8 @@
  ***************************************************************************/
 
 #include <QInputDialog>
+#include <QContextMenuEvent>
+#include <QCoreApplication>
 #include <QGraphicsProxyWidget>
 
 #include "ZoomableView.h"
@@ -199,6 +201,42 @@ void ZoomableView::updateView(void)
     setSceneRect(new_geometry_f);
     scale(scale_factor, scale_factor);
     centerOn(new_geometry_f.center());
+}
+
+void ZoomableView::contextMenuEvent(QContextMenuEvent* event)
+{
+    if (!event || !stv || event->reason() != QContextMenuEvent::Mouse) {
+        QGraphicsView::contextMenuEvent(event);
+        return;
+    }
+
+    // In floating/fullscreen MDI modes on Windows, context menu events can stop at the
+    // QGraphicsView. Forward them explicitly to the embedded table widgets.
+    const QPoint globalPos = event->globalPos();
+
+    auto forwardContextMenu = [&](QWidget* target) {
+        if (!target) {
+            return false;
+        }
+
+        const QPoint targetPos = target->mapFromGlobal(globalPos);
+        if (!target->rect().contains(targetPos)) {
+            return false;
+        }
+
+        QContextMenuEvent forwarded(QContextMenuEvent::Mouse, targetPos, globalPos, event->modifiers());
+        QCoreApplication::sendEvent(target, &forwarded);
+        return true;
+    };
+
+    if (forwardContextMenu(stv->horizontalHeader()->viewport())
+        || forwardContextMenu(stv->verticalHeader()->viewport())
+        || forwardContextMenu(stv->viewport())) {
+        event->accept();
+        return;
+    }
+
+    QGraphicsView::contextMenuEvent(event);
 }
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
