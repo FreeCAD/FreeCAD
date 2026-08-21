@@ -88,6 +88,10 @@ public:
     Part::TopoShape getPreviewShape() const override;
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
+    /// Applies PartDesign preview visibility preferences to a feature view provider.
+    static void applyPreviewDisplayPreferences(App::DocumentObject* obj, bool refreshPreview = false);
+    /// Applies PartDesign preview visibility preferences to this feature.
+    void applyPreviewDisplayPreferences(bool refreshPreview = false);
 
     PyObject* getPyObject() override;
 
@@ -123,6 +127,8 @@ protected:
     bool isSetTipIcon {false};
 
 private:
+    void restoreDefaultEditVisibility();
+
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
 };
 

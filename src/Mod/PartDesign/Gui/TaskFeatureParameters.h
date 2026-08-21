@@ -52,10 +52,6 @@ public Q_SLOTS:
 private:
     ViewProvider* vp;
     std::unique_ptr<Ui_TaskPreviewParameters> ui;
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/PartDesign/Preview"
-    );
 };
 
 /// Convenience class to collect common methods for all SketchBased features
