@@ -52,12 +52,29 @@ int main(int argc, char** argv)
         Py_DECREF(wrapper);
         Py_DECREF(navigationWrapper);
         viewer.reset();
+
+        if (result == 0) {
+            PyObject* retained
+                = PyDict_GetItemString(mainDict, "_freecad_navigation_style_lifetime_test");
+            PyObject* access = PyObject_CallMethod(retained, "isRotationEnabled", nullptr);
+            if (access) {
+                Py_DECREF(access);
+                result = 2;
+            }
+            else if (!PyErr_ExceptionMatches(PyExc_ReferenceError)) {
+                PyErr_Print();
+                result = 3;
+            }
+            else {
+                PyErr_Clear();
+            }
+        }
         PyGILState_Release(gilState);
     }
 
     Base::Interpreter().finalize();
     if (Py_IsInitialized() != 0) {
-        result = 2;
+        result = 4;
     }
     return result;
 }
