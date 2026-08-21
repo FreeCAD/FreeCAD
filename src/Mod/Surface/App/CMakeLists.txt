@@ -45,6 +45,8 @@ SET(Surface_SRCS
   FeatureSewing.h
   FeatureCut.cpp
   FeatureCut.h
+  ShapeUtils.cpp
+  ShapeUtils.h
   Measure.cpp
   Measure.h
 )
