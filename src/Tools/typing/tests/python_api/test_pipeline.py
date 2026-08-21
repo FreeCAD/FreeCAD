@@ -35,6 +35,7 @@ class PythonApiPipelineTests(unittest.TestCase):
                 (output / "python-api/freecad/types/ApplicationDirectories.mdx").exists()
             )
             self.assertTrue(sidebar_path.exists())
+            self.assertEqual(result.diagnostics.items, ())
 
 
 if __name__ == "__main__":

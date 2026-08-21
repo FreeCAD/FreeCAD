@@ -369,6 +369,10 @@ def run_generate_docs(args: argparse.Namespace) -> int:
             sidebar_out=sidebar_out,
         )
     )
+    if result.diagnostics.items:
+        print_stderr(result.diagnostics.render() + "\n")
+    if result.diagnostics.errors:
+        return 1
     print(f"Wrote {result.page_count} MDX API docs and {display_path(root, result.sidebar_path)}")
     return 0
 

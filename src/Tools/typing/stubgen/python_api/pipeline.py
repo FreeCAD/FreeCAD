@@ -7,7 +7,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from .extract import extract_curated_api_model
+from ..diagnostics import MergeDiagnostics
+from .extract import extract_curated_api_model_with_diagnostics
 from .markdown import write_api_markdown_docs
 from .starlight import write_starlight_sidebar_fragment
 from ..class_merge import normalize_api_model_binding_class_headers
@@ -32,17 +33,19 @@ class PythonDocsResult:
     page_count: int
     docs_dir: Path
     sidebar_path: Path
+    diagnostics: MergeDiagnostics
 
 
 def generate_python_docs(options: PythonDocsOptions) -> PythonDocsResult:
     """Generate Python API pages and a Starlight sidebar."""
 
     classes = collect_binding_classes(options.root, options.source_dir)
-    model = extract_curated_api_model(
+    model, diagnostic_items = extract_curated_api_model_with_diagnostics(
         options.root,
         options.source_dir,
         binding_classes=classes,
     )
+    diagnostics = MergeDiagnostics(diagnostic_items)
     model = normalize_api_model_binding_class_headers(options.root, classes, model)
     page_count = write_api_markdown_docs(
         options.out_dir,
@@ -54,4 +57,5 @@ def generate_python_docs(options: PythonDocsOptions) -> PythonDocsResult:
         page_count=page_count,
         docs_dir=options.out_dir,
         sidebar_path=sidebar_path,
+        diagnostics=diagnostics,
     )
