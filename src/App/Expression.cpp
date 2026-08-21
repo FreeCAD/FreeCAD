@@ -350,7 +350,7 @@ static inline int essentiallyInteger(double a, long &l, int &i) {
             return 1;
         }
         else if (intpart <= static_cast<double>(std::numeric_limits<long>::max())) {
-            l = static_cast<int>(intpart);
+            l = static_cast<long>(intpart);
             return 2;
         }
     }
