@@ -82,6 +82,12 @@ WindowOpeningModes = [
 ]
 WindowPresets = ArchWindowPresets.WindowPresets
 
+WindowPartFieldCount = 5
+
+
+def hasCompleteWindowParts(windowParts):
+    return bool(windowParts) and len(windowParts) % WindowPartFieldCount == 0
+
 
 def recolorize(attr):  # names is [docname,objname]
     """Recolorizes an object or a [documentname,objectname] list
@@ -653,14 +659,36 @@ class _Window(ArchComponent.Component):
         return shapes
 
     def recomputePreview(self, ext):
-        """Build the preview shape from the window solids."""
+        """Build the preview shape from the window solids.
+
+        Computes the geometry directly with buildShapes() rather than reading
+        obj.Shape, so the preview follows every property - WindowParts included -
+        without waiting for a full document recompute.
+        """
 
         import Part
 
         obj = ext.ExtendedObject
-        has_shape = hasattr(obj, "Shape") and obj.Shape and not obj.Shape.isNull()
 
-        obj.PreviewShape = obj.Shape if has_shape else Part.Shape()
+        if not self.ensureBase(obj):
+            obj.PreviewShape = Part.Shape()
+            return
+
+        shapes = None
+        if obj.Base and hasCompleteWindowParts(obj.WindowParts):
+            shapes = self.buildShapes(obj)
+
+        if not shapes:
+            obj.PreviewShape = obj.Shape if not obj.Shape.isNull() else Part.Shape()
+            return
+
+        preview = Part.makeCompound(shapes)
+        # PreviewShape is the extension's own property, so it gets none of the
+        # automatic Placement sync Part::Feature applies to Shape - it has to be
+        # positioned explicitly.
+        preview.Placement = obj.Placement
+
+        obj.PreviewShape = preview
 
     def execute(self, obj):
 
@@ -687,7 +715,7 @@ class _Window(ArchComponent.Component):
         if obj.Base:
             if hasattr(obj, "Shape"):
                 if hasattr(obj, "WindowParts"):
-                    if obj.WindowParts and (len(obj.WindowParts) % 5 == 0):
+                    if hasCompleteWindowParts(obj.WindowParts):
                         shapes = self.buildShapes(obj)
                         if shapes:
                             base = Part.makeCompound(shapes)
