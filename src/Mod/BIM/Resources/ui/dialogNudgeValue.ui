@@ -22,9 +22,9 @@
     </widget>
    </item>
    <item>
-    <widget class="Gui::InputField" name="inputField">
+    <widget class="Gui::QuantitySpinBox" name="spinBox">
      <property name="unit" stdset="0">
-      <string notr="true"/>
+      <string notr="true">mm</string>
      </property>
     </widget>
    </item>
@@ -40,13 +40,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::InputField</class>
-   <extends>QLineEdit</extends>
-   <header>Gui/InputField.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>
