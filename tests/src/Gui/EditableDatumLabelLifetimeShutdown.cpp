@@ -58,6 +58,8 @@ int main(int argc, char** argv)
         }
 
         viewer.reset();
+        guiApplication->prepareForShutdown();
+        App::GetApplication().prepareForShutdown();
         PyGILState_Release(gilState);
     }
 

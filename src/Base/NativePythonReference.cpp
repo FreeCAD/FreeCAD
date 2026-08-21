@@ -16,6 +16,7 @@
 #include <mutex>
 #include <utility>
 
+#include "Interpreter.h"
 #include "NativePythonReference.h"
 #include "Console.h"
 
@@ -97,9 +98,7 @@ public:
             return;
         }
 
-        bool releaseDirectly = false;
-        bool releaseGIL = false;
-        PyGILState_STATE gstate = PyGILState_UNLOCKED;
+        bool releaseReference = false;
         bool leak = false;
         {
             std::lock_guard<std::mutex> lock(_mutex);
@@ -120,17 +119,12 @@ public:
                     // The interpreter began finalization without going through
                     // this lifecycle barrier. Do not attach to it.
                 }
-                else if (PyGILState_Check()) {
-                    ++_activeReleases;
-                    releaseDirectly = true;
-                }
                 else {
                     // beginFinalization() cannot transition to Finalizing until
-                    // this active release completes, so attaching outside the mutex cannot
-                    // race with interpreter finalization.
+                    // this active release completes, so acquiring the thread state outside
+                    // the mutex cannot race with interpreter finalization.
                     ++_activeReleases;
-                    releaseDirectly = true;
-                    releaseGIL = true;
+                    releaseReference = true;
                 }
             }
             else {
@@ -145,16 +139,13 @@ public:
             );
         }
 
-        if (!releaseDirectly) {
+        if (!releaseReference) {
             return;
         }
 
-        if (releaseGIL) {
-            gstate = PyGILState_Ensure();  // NOLINT
-        }
-        Py_DECREF(object);
-        if (releaseGIL) {
-            PyGILState_Release(gstate);
+        {
+            PyGILStateLocker lock;
+            Py_DECREF(object);
         }
         finishRelease();
     }

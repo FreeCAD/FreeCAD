@@ -42,6 +42,8 @@ int main(int argc, char** argv)
             taskDialog->closed();
             pyDialog = Py::None();
         }
+        guiApplication->prepareForShutdown();
+        App::GetApplication().prepareForShutdown();
         PyGILState_Release(gilState);
     }
 

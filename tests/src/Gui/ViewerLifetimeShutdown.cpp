@@ -69,6 +69,9 @@ int main(int argc, char** argv)
                 PyErr_Clear();
             }
         }
+
+        guiApplication->prepareForShutdown();
+        App::GetApplication().prepareForShutdown();
         PyGILState_Release(gilState);
     }
 

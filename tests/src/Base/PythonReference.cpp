@@ -80,6 +80,44 @@ TEST(PythonReference, ReleasesSynchronouslyFromDetachedThread)
     PyGILState_Release(gilState);
 }
 
+TEST(PythonReference, ReleasesFromDetachedMainThreadState)
+{
+    ensurePython();
+    PyGILState_STATE gilState = PyGILState_Ensure();
+
+    PyObject* object = PyList_New(0);
+    ASSERT_NE(object, nullptr);
+    Py_INCREF(object);
+
+    Base::NativePythonReference reference(object);
+    PyThreadState* threadState = PyEval_SaveThread();
+
+    reference.reset();
+
+    PyEval_RestoreThread(threadState);
+    EXPECT_EQ(Py_REFCNT(object), 1);
+    Py_DECREF(object);
+    PyGILState_Release(gilState);
+}
+
+TEST(PythonReference, LockerRestoresDetachedMainThreadState)
+{
+    ensurePython();
+    PyGILState_STATE gilState = PyGILState_Ensure();
+    PyThreadState* threadState = PyEval_SaveThread();
+
+    PyObject* object = nullptr;
+    {
+        Base::PyGILStateLocker lock;
+        object = PyList_New(0);
+    }
+
+    PyEval_RestoreThread(threadState);
+    ASSERT_NE(object, nullptr);
+    Py_DECREF(object);
+    PyGILState_Release(gilState);
+}
+
 TEST(PythonReference, SmartPtrRetainsBorrowedObject)
 {
     ensurePython();

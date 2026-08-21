@@ -30,6 +30,8 @@ int main(int /*argc*/, char** /*argv*/)
         PyErr_Print();
         result = 1;
     }
+
+    App::GetApplication().prepareForShutdown();
     PyGILState_Release(gilState);
 
     Base::Interpreter().finalize();
