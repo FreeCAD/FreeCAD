@@ -46,6 +46,7 @@
 
 #include "DrawGuiUtil.h"
 #include "QGIView.h"
+#include "QGVPage.h"
 #include "TaskCenterLine.h"
 #include "TaskCosmeticLine.h"
 #include "TaskCosVertex.h"
@@ -56,6 +57,7 @@
 #include "TaskWeldingSymbol.h"
 #include "ViewProviderViewPart.h"
 #include "CommandHelpers.h"
+#include "TechDrawVertexHandler.h"
 
 
 using namespace TechDrawGui;
@@ -65,9 +67,6 @@ using namespace CommandHelpers;
 
 //internal functions
 
-void execCosmeticVertex(Gui::Command* cmd);
-void execMidpoints(Gui::Command* cmd);
-void execQuadrants(Gui::Command* cmd);
 void execCenterLine(Gui::Command* cmd);
 void exec2LineCenterLine(Gui::Command* cmd);
 void exec2PointCenterLine(Gui::Command* cmd);
@@ -188,194 +187,8 @@ bool CmdTechDrawRichTextAnnotation::isActive()
 
 
 //===========================================================================
-// TechDraw_CosmeticVertexGroup
-//===========================================================================
-
-DEF_STD_CMD_ACL(CmdTechDrawCosmeticVertexGroup)
-
-CmdTechDrawCosmeticVertexGroup::CmdTechDrawCosmeticVertexGroup()
-  : Command("TechDraw_CosmeticVertexGroup")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Cosmetic Vertex");
-    sToolTipText    = QT_TR_NOOP("Inserts a cosmetic vertex");
-    sWhatsThis      = "TechDraw_CosmeticVertexGroup";
-    sStatusTip      = sToolTipText;
-//    eType           = ForEdit;
-}
-
-void CmdTechDrawCosmeticVertexGroup::activated(int iMsg)
-{
-//    Base::Console().message("CMD::CosmeticVertexGroup - activated(%d)\n", iMsg);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
-    switch(iMsg) {
-        case 0:
-            execCosmeticVertex(this);
-            break;
-        case 1:
-            execMidpoints(this);
-            break;
-        case 2:
-            execQuadrants(this);
-            break;
-        default:
-            Base::Console().message("CMD::CVGrp - invalid iMsg: %d\n", iMsg);
-    };
-    updateActive();
-}
-
-Gui::Action * CmdTechDrawCosmeticVertexGroup::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* p1 = pcAction->addAction(QString());
-    p1->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_CosmeticVertex"));
-    p1->setObjectName(QStringLiteral("TechDraw_CosmeticVertex"));
-    p1->setWhatsThis(QStringLiteral("TechDraw_CosmeticVertex"));
-    QAction* p2 = pcAction->addAction(QString());
-    p2->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Midpoints"));
-    p2->setObjectName(QStringLiteral("TechDraw_Midpoints"));
-    p2->setWhatsThis(QStringLiteral("TechDraw_Midpoints"));
-    QAction* p3 = pcAction->addAction(QString());
-    p3->setIcon(Gui::BitmapFactory().iconFromTheme("actions/TechDraw_Quadrants"));
-    p3->setObjectName(QStringLiteral("TechDraw_Quadrants"));
-    p3->setWhatsThis(QStringLiteral("TechDraw_Quadrants"));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(p1->icon());
-    int defaultId = 0;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void CmdTechDrawCosmeticVertexGroup::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCosmeticVertexGroup", "Cosmetic Vertex"));
-    arc1->setToolTip(QApplication::translate("TechDraw_CosmeticVertex", "Inserts a cosmetic vertex into a view"));
-    arc1->setStatusTip(arc1->toolTip());
-    QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("CmdMidpoints", "Midpoint Vertices"));
-    arc2->setToolTip(QApplication::translate("TechDraw_Midpoints", "Inserts cosmetic vertices at the midpoint of the selected edges"));
-    arc2->setStatusTip(arc2->toolTip());
-    QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("CmdQuadrants", "Quadrant Vertices"));
-    arc3->setToolTip(QApplication::translate("TechDraw_Quadrants", "Inserts cosmetic vertices at the quadrant points of the selected circles"));
-    arc3->setStatusTip(arc3->toolTip());
-}
-
-bool CmdTechDrawCosmeticVertexGroup::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, true);
-    return (havePage && haveView);
-}
-
-
-//===========================================================================
 // TechDraw_CosmeticVertex
 //===========================================================================
-
-void execCosmeticVertex(Gui::Command* cmd)
-{
-//    Base::Console().message("execCosmeticVertex()\n");
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(cmd);
-    if (!page) {
-        return;
-    }
-
-    std::vector<App::DocumentObject*> shapes = cmd->getSelection().
-                                       getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (shapes.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No DrawViewPart objects in this selection"));
-        return;
-    }
-
-    //shapes not empty and only contains dvp
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart*>((*shapes.begin()));
-
-    Gui::Control().showDialog(new TaskDlgCosVertex(baseFeat,
-                                                   page));
-}
-
-void execMidpoints(Gui::Command* cmd)
-{
-//    Base::Console().message("execMidpoints()\n");
-    TechDraw::DrawViewPart * dvp = nullptr;
-    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
-
-    if (!dvp || selectedEdges.empty())
-        return;
-
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Add midpoint vertices"));
-
-    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
-    for (auto& s: selectedEdges) {
-        int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDraw::BaseGeomPtr geom = edges.at(GeoId);
-        Base::Vector3d mid = geom->getMidPoint();
-        // invert the point so the math works correctly
-        mid = DrawUtil::invertY(mid);
-        mid = CosmeticVertex::makeCanonicalPoint(dvp, mid);
-        dvp->addCosmeticVertex(mid);
-    }
-
-    cmd->commitCommand();
-
-    dvp->recomputeFeature();
-}
-
-void execQuadrants(Gui::Command* cmd)
-{
-//    Base::Console().message("execQuadrants()\n");
-    TechDraw::DrawViewPart* dvp = nullptr;
-    std::vector<std::string> selectedEdges = CommandHelpers::getSelectedSubElements(cmd, dvp, "Edge");
-
-    if (!dvp || selectedEdges.empty())
-        return;
-
-    cmd->openCommand(QT_TRANSLATE_NOOP("Command", "Add Quadrant vertices"));
-
-    const TechDraw::BaseGeomPtrVector edges = dvp->getEdgeGeometry();
-    for (auto& s: selectedEdges) {
-        int GeoId(TechDraw::DrawUtil::getIndexFromName(s));
-        TechDraw::BaseGeomPtr geom = edges.at(GeoId);
-        std::vector<Base::Vector3d> quads = geom->getQuads();
-        for (auto& q: quads) {
-            // invert the point so the math works correctly
-            Base::Vector3d iq = DrawUtil::invertY(q);
-            iq = CosmeticVertex::makeCanonicalPoint(dvp, iq);
-            dvp->addCosmeticVertex(iq);
-        }
-    }
-
-    cmd->commitCommand();
-
-    dvp->recomputeFeature();
-}
 
 DEF_STD_CMD_A(CmdTechDrawCosmeticVertex)
 
@@ -394,118 +207,31 @@ CmdTechDrawCosmeticVertex::CmdTechDrawCosmeticVertex()
 void CmdTechDrawCosmeticVertex::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
+
+    auto* mdi = dynamic_cast<MDIViewPage*>(Gui::getMainWindow()->activeWindow());
+    if (!mdi) {
         return;
     }
 
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
+    ViewProviderPage* pageVP = mdi->getViewProviderPage();
+    if (!pageVP) {
         return;
     }
 
-    std::vector<App::DocumentObject*> shapes = getSelection().
-                                       getObjectsOfType(TechDraw::DrawViewPart::getClassTypeId());
-    if (shapes.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No DrawViewPart objects in this selection"));
+    QGVPage* viewPage = pageVP->getQGVPage();
+    if (!viewPage) {
         return;
     }
 
-    TechDraw::DrawViewPart* baseFeat = nullptr;
-    baseFeat =  dynamic_cast<TechDraw::DrawViewPart*>((*shapes.begin()));
-    if (!baseFeat) {
-        Base::Console().message("CMD::CosmeticVertex - 1st shape is not DVP.\n");
-        return;
-    }
+    TechDrawVertexHandler* handler = new TechDrawVertexHandler();
 
-    Gui::Control().showDialog(new TaskDlgCosVertex(baseFeat,
-                                                   page));
-    updateActive();
-    Gui::Selection().clearSelection();
+    // Post selection handler
+    viewPage->activateHandler(handler);
+
+    handler->addPreselected();
 }
 
 bool CmdTechDrawCosmeticVertex::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, true);
-    return (havePage && haveView);
-}
-
-//===========================================================================
-// TechDraw_Midpoints
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawMidpoints)
-
-CmdTechDrawMidpoints::CmdTechDrawMidpoints()
-  : Command("TechDraw_Midpoints")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Midpoint Vertices");
-    sToolTipText    = QT_TR_NOOP("Adds cosmetic vertices at the midpoint of the selected edges");
-    sWhatsThis      = "TechDraw_Midpoints";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_Midpoints";
-}
-
-void CmdTechDrawMidpoints::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-    execMidpoints(this);
-    updateActive();
-    Gui::Selection().clearSelection();
-}
-
-bool CmdTechDrawMidpoints::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, true);
-    return (havePage && haveView);
-}
-
-//===========================================================================
-// TechDraw_Quadrants
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawQuadrants)
-
-CmdTechDrawQuadrants::CmdTechDrawQuadrants()
-  : Command("TechDraw_Quadrants")
-{
-    sAppModule      = "TechDraw";
-    sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Quadrant Vertices");
-    sToolTipText    = QT_TR_NOOP("Adds cosmetic vertices at the quadrant points of the selected circles");
-    sWhatsThis      = "TechDraw_Quadrants";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "actions/TechDraw_Quadrants";
-}
-
-void CmdTechDrawQuadrants::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    if (dlg) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Task in progress"),
-            QObject::tr("Close active task dialog and try again"));
-        return;
-    }
-    execQuadrants(this);
-    updateActive();
-    Gui::Selection().clearSelection();
-}
-
-bool CmdTechDrawQuadrants::isActive()
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this, true);
@@ -1515,10 +1241,7 @@ void CreateTechDrawCommandsAnnotate()
 
     rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
     rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
-    rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertexGroup());
     rcCmdMgr.addCommand(new CmdTechDrawCosmeticVertex());
-    rcCmdMgr.addCommand(new CmdTechDrawMidpoints());
-    rcCmdMgr.addCommand(new CmdTechDrawQuadrants());
     rcCmdMgr.addCommand(new CmdTechDrawCenterLineGroup());
     rcCmdMgr.addCommand(new CmdTechDrawFaceCenterLine());
     rcCmdMgr.addCommand(new CmdTechDraw2LineCenterLine());
