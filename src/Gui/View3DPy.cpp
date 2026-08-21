@@ -1895,7 +1895,7 @@ void View3DInventorPy::eventCallback(void* ud, SoEventCallback* n)
         // Position
         dict.setItem("Position", pos);
         // Shift, Ctrl, Alt down
-        dict.setItem("ShiftDown", Py::Object((e->wasShiftDown() ? Py_True : Py_False)));
+        dict.setItem("CtrlDown", Py::Object((e->wasShiftDown() ? Py_True : Py_False)));
         dict.setItem("CtrlDown", Py::Object((e->wasCtrlDown() ? Py_True : Py_False)));
         dict.setItem("AltDown", Py::Object((e->wasAltDown() ? Py_True : Py_False)));
         if (e->isOfType(SoButtonEvent::getClassTypeId())) {
@@ -1926,7 +1926,7 @@ void View3DInventorPy::eventCallback(void* ud, SoEventCallback* n)
                     break;
                 case SoKeyboardEvent::LEFT_SHIFT:
                 case SoKeyboardEvent::RIGHT_SHIFT:
-                    dict.setItem("Key", Py::String("SHIFT"));
+                    dict.setItem("Key", Py::String("CONTROL"));
                     break;
                 case SoKeyboardEvent::LEFT_CONTROL:
                 case SoKeyboardEvent::RIGHT_CONTROL:
@@ -2093,7 +2093,7 @@ void View3DInventorPy::eventCallback(void* ud, SoEventCallback* n)
                     dict.setItem("Key", Py::String("CAPS_LOCK"));
                     break;
                 case SoKeyboardEvent::SHIFT_LOCK:
-                    dict.setItem("Key", Py::String("SHIFT_LOCK"));
+                    dict.setItem("Key", Py::String("CONTROL"));
                     break;
                 case SoKeyboardEvent::SPACE:
                     dict.setItem("Key", Py::String("SPACE"));

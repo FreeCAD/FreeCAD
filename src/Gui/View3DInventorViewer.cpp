@@ -280,6 +280,7 @@ public:
                 currentViewer = static_cast<View3DInventorViewer*>(obj);
                 pressPosition = mouseEvent->pos();
                 bool ctrlPressed = (mouseEvent->modifiers() & Qt::ControlModifier) != 0;
+                ctrlPressed = (mouseEvent->modifiers() & Qt::ShiftModifier) != 0;
 
                 if (shouldEnableLongPress(currentViewer, pressPosition, ctrlPressed)) {
                     double longPressTimeout = App::GetApplication()
@@ -2933,6 +2934,7 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
 
 bool View3DInventorViewer::processSoEventBase(const SoEvent* const ev)
 {
+    Base::Console().message("processSoEventBase in View3DInventorViewer\n");
     return inherited::processSoEvent(ev);
 }
 
