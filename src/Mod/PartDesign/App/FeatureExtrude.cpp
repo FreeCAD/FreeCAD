@@ -322,9 +322,10 @@ void FeatureExtrude::updateProperties()
     UpToShape2.setReadOnly(!isUpToShape2Enabled);
     Offset2.setReadOnly(!isOffset2Enabled);
 
-    const bool isStartOffsetEnabled = std::strcmp(StartType.getValueAsString(), "Profile plane") != 0;
+    const char* startType = StartType.getValueAsString();
+    const bool isStartOffsetEnabled = std::strcmp(startType, "Profile plane") != 0;
     StartOffset.setReadOnly(!isStartOffsetEnabled);
-    StartReference.setReadOnly(std::strcmp(StartType.getValueAsString(), "Reference") != 0);
+    StartReference.setReadOnly(std::strcmp(startType, "Reference") != 0);
 
     AlongSketchNormal.setReadOnly(!currentAlongSketchNormalEnabled);
 }
@@ -348,7 +349,6 @@ double FeatureExtrude::getStartOffset() const
     if (std::strcmp(startType, "Offset") == 0) {
         return StartOffset.getValue();
     }
-
     TopLoc_Location identity;
     return getStartReferenceOffset(
         getTopoShapeVerifiedFace(),
@@ -521,30 +521,146 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         sketchshape.move(invObjLoc);
 
         const char* startType = StartType.getValueAsString();
-        const double startOffset = std::strcmp(startType, "Profile plane") == 0 ? 0.0
-            : std::strcmp(startType, "Offset") == 0
-            ? StartOffset.getValue()
-            : getStartReferenceOffset(sketchshape, StartReference, dir, StartOffset.getValue(), invObjLoc);
+        bool fromSurface = false;
+        if (std::strcmp(startType, "Reference") == 0 && StartReference.getValue()) {
+            TopoShape referenceShape;
+            if (StartReference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
+                referenceShape = getTopoShapeVerifiedFace(
+                    false,
+                    false,
+                    StartReference.getValue(),
+                    StartReference.getSubValues()
+                );
+            }
+            else {
+                getUpToFaceFromLinkSub(referenceShape, StartReference);
+            }
+            referenceShape.move(invObjLoc);
+            if (referenceShape.shapeType(true) != TopAbs_FACE) {
+                referenceShape = referenceShape.getSubTopoShape(TopAbs_FACE, 1);
+            }
+            BRepAdaptor_Surface surface(TopoDS::Face(referenceShape.getShape()));
+            fromSurface = surface.GetType() != GeomAbs_Plane;
+        }
+        if (fromSurface && Sidemethod != "One side") {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "A non-planar start reference is only supported for one-sided extrusions"
+            ));
+        }
+        if (fromSurface && (method == "Length" || method == "ThroughAll")
+            && std::fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "A non-planar start reference does not support taper angles"
+            ));
+        }
+
+        double startOffset = 0.0;
+        if (std::strcmp(startType, "Offset") == 0) {
+            startOffset = StartOffset.getValue();
+        }
+        else if (std::strcmp(startType, "Reference") == 0 && !fromSurface) {
+            startOffset = getStartReferenceOffset(
+                sketchshape,
+                StartReference,
+                dir,
+                StartOffset.getValue(),
+                invObjLoc
+            );
+        }
         TopoShape startSketch = moveProfileToStart(sketchshape, dir, startOffset);
+
+        TopoShape startSurfacePrism(0, getDocument()->getStringHasher());
+        double surfaceStartOffset = 0.0;
+        if (fromSurface) {
+            surfaceStartOffset = getStartReferenceOffset(
+                sketchshape,
+                StartReference,
+                dir,
+                StartOffset.getValue(),
+                invObjLoc
+            );
+            startSurfacePrism = generateSingleExtrusionSide(
+                sketchshape,
+                "UpToFace",
+                0.0,
+                0.0,
+                StartReference,
+                UpToShape,
+                dir,
+                StartOffset.getValue(),
+                makeface,
+                base,
+                invObjLoc
+            );
+        }
 
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
         double taper1 = TaperAngle.getValue();
         double offset1 = Offset.getValue();
 
         if (Sidemethod == "One side") {
-            TopoShape prism1 = generateSingleExtrusionSide(
-                startSketch,
-                method,
-                L,
-                taper1,
-                UpToFace,
-                UpToShape,
-                dir,
-                offset1,
-                makeface,
-                base,
-                invObjLoc
-            );
+            TopoShape prism1;
+            if (fromSurface && method == "Length" && L < 0.0) {
+                TopoShape surfaceStartSketch = moveProfileToStart(sketchshape, dir, surfaceStartOffset);
+                prism1 = generateSingleExtrusionSide(
+                    surfaceStartSketch,
+                    method,
+                    L,
+                    taper1,
+                    UpToFace,
+                    UpToShape,
+                    dir,
+                    offset1,
+                    makeface,
+                    base,
+                    invObjLoc
+                );
+            }
+            else if (fromSurface && method == "Length") {
+                const double endOffset = getStartReferenceOffset(
+                    sketchshape,
+                    StartReference,
+                    dir,
+                    StartOffset.getValue() + L,
+                    invObjLoc
+                );
+                gp_Dir endDir = dir;
+                double surfaceOffset = StartOffset.getValue() + L;
+                if (endOffset < 0.0) {
+                    endDir.Reverse();
+                    surfaceOffset = -surfaceOffset;
+                }
+                prism1 = generateSingleExtrusionSide(
+                    sketchshape,
+                    "UpToFace",
+                    0.0,
+                    0.0,
+                    StartReference,
+                    UpToShape,
+                    endDir,
+                    surfaceOffset,
+                    makeface,
+                    base,
+                    invObjLoc
+                );
+            }
+            else {
+                prism1 = generateSingleExtrusionSide(
+                    startSketch,
+                    method,
+                    L,
+                    taper1,
+                    UpToFace,
+                    UpToShape,
+                    dir,
+                    offset1,
+                    makeface,
+                    base,
+                    invObjLoc
+                );
+            }
             prisms.push_back(prism1);
         }
         else if (Sidemethod == "Symmetric") {
@@ -778,6 +894,33 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             );
         }
 
+        if (fromSurface) {
+            try {
+                if (method == "Length" && L < 0.0) {
+                    prism.makeElementFuse({prism, startSurfacePrism}, Part::OpCodes::Extrude);
+                }
+                else {
+                    prism.makeElementXor({prism, startSurfacePrism}, Part::OpCodes::Extrude);
+                }
+            }
+            catch (const Standard_Failure& e) {
+                return new App::DocumentObjectExecReturn(
+                    std::string("Failed to combine extrusion from surface (OCC): ")
+                    + e.GetMessageString()
+                );
+            }
+            catch (const Base::Exception& e) {
+                return new App::DocumentObjectExecReturn(
+                    std::string("Failed to combine extrusion from surface: ") + e.what()
+                );
+            }
+            if (prism.isNull()) {
+                return new App::DocumentObjectExecReturn(
+                    QT_TRANSLATE_NOOP("Exception", "Extrusion does not reach the start surface")
+                );
+            }
+        }
+
         // store shape before refinement
         this->rawShape = prism;
         prism = refineShapeIfActive(prism);
@@ -891,9 +1034,19 @@ double FeatureExtrude::getStartReferenceOffset(
     }
 
     TopoShape referenceShape;
+    const auto& subValues = reference.getSubValues();
     if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        referenceShape
-            = getTopoShapeVerifiedFace(false, false, reference.getValue(), reference.getSubValues());
+        if (!subValues.empty()) {
+            referenceShape = Part::Feature::getTopoShape(
+                reference.getValue(),
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+                    | Part::ShapeOption::Transform,
+                subValues.front().c_str()
+            );
+        }
+        if (!referenceShape.hasSubShape(TopAbs_FACE)) {
+            referenceShape = getTopoShapeVerifiedFace(false, false, reference.getValue(), subValues);
+        }
     }
     else {
         getUpToFaceFromLinkSub(referenceShape, reference);

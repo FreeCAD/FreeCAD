@@ -103,6 +103,66 @@ class TestPad(unittest.TestCase):
         self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMin, 13.0)
         self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMax, 16.0)
 
+    def testStartFromNonPlanarReference(self):
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (-0.5, -0.5), (0.5, 0.5))
+        self.Doc.recompute()
+
+        reference = self.Doc.addObject("Part::Feature", "Reference")
+        reference.Shape = Part.makeSphere(2, Base.Vector(0, 0, 3))
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 1
+        self.Pad.StartReference = (reference, ["Face1"])
+        self.Pad.StartType = "Reference"
+        self.Doc.recompute()
+
+        self.assertGreater(self.Pad.Shape.BoundBox.ZMin, 0.9)
+        self.assertGreater(self.Pad.Shape.BoundBox.ZMax, 2.1)
+
+        self.Pad.Length = -2
+        self.Doc.recompute()
+        self.assertLess(self.Pad.Shape.BoundBox.ZMin, -0.9)
+        self.assertGreater(self.Pad.Shape.BoundBox.ZMax, 1.1)
+
+    def testStartReferenceCylinderParallelToDirectionFails(self):
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (-0.5, -0.5), (0.5, 0.5))
+        self.Doc.recompute()
+
+        reference = self.Doc.addObject("Part::Feature", "Reference")
+        reference.Shape = Part.makeCylinder(2, 4, Base.Vector(0, 0, -2))
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Pad.StartReference = (reference, ["Face1"])
+        self.Pad.StartType = "Reference"
+        self.Doc.recompute()
+
+        self.assertIn("Invalid", self.Pad.State)
+
+    def testStartReferenceInternalSketchFace(self):
+        self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
+        TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (1, 1))
+        self.Doc.recompute()
+
+        reference = self.Doc.addObject("Sketcher::SketchObject", "Reference")
+        reference.MakeInternals = True
+        reference.Placement.Base = Base.Vector(0, 0, 10)
+        TestSketcherApp.CreateRectangleSketch(reference, (0, 0), (1, 1))
+        self.Doc.recompute()
+
+        self.Pad = self.Doc.addObject("PartDesign::Pad", "Pad")
+        self.Pad.Profile = self.PadSketch
+        self.Pad.Length = 3
+        self.Pad.StartReference = (reference, ["InternalFace1"])
+        self.Pad.StartType = "Reference"
+        self.Pad.StartOffset = 2
+        self.Doc.recompute()
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMin, 12.0)
+        self.assertAlmostEqual(self.Pad.Shape.BoundBox.ZMax, 15.0)
+
     def testStartOffsetForTwoSidedAndSymmetricPad(self):
         self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")
         TestSketcherApp.CreateRectangleSketch(self.PadSketch, (0, 0), (1, 1))

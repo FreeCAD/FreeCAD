@@ -75,15 +75,15 @@ Pad::Pad()
         App::Prop_None,
         "Measure pad length along the sketch normal direction"
     );
-    ADD_PROPERTY_TYPE(StartType, (0L), "Start", App::Prop_None, "How to define the start plane");
+    ADD_PROPERTY_TYPE(StartType, (0L), "Start", App::Prop_None, "How to define the pad start");
     StartType.setEnums(StartTypesEnums);
-    ADD_PROPERTY_TYPE(StartOffset, (0.0), "Start", App::Prop_None, "Offset from the start plane");
+    ADD_PROPERTY_TYPE(StartOffset, (0.0), "Start", App::Prop_None, "Offset from the pad start");
     ADD_PROPERTY_TYPE(
         StartReference,
         (nullptr),
         "Start",
         App::Prop_None,
-        "Face, plane or sketch used as the start reference"
+        "Face, plane or sketch used as the pad start reference"
     );
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", App::Prop_None, "Face where pad will end");
     ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Side1", App::Prop_None, "Faces or shape(s) where pad will end");
