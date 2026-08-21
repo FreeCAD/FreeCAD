@@ -19,7 +19,8 @@ import ast
 from pathlib import Path
 import re
 
-from .model import BindingMethod, PublicTypeGroup, StubSignatureOverrides
+from .model import BindingMethod, PublicTypeGroup, StubSignatureGroup, StubSignatureOverrides
+from .python_api.model import ApiCallableGroup, ApiModule
 from .naming import valid_identifier
 
 
@@ -145,16 +146,41 @@ def methods_need_deprecated_import(
     )
 
 
+def api_groups_need_overload_import(api_module: ApiModule | None) -> bool:
+    return bool(api_module and any(group.overload for group in api_module.functions))
+
+
+def api_groups_need_deprecated_import(
+    api_module: ApiModule | None,
+    module_name: str | None,
+    stub_signature_overrides: StubSignatureOverrides | None,
+) -> bool:
+    if api_module is None or module_name is None:
+        return False
+    overrides = stub_signature_overrides or {}
+    return any(
+        message is not None
+        for group in api_module.functions
+        for message in api_group_deprecated_messages(group, module_name, overrides)
+    )
+
+
 def typing_import_lines(
     methods: list[BindingMethod],
     stub_signature_overrides: StubSignatureOverrides | None,
+    api_module: ApiModule | None = None,
+    module_name: str | None = None,
 ) -> list[str]:
     lines: list[str] = []
-    if methods_need_overload_import(methods, stub_signature_overrides):
+    if methods_need_overload_import(
+        methods, stub_signature_overrides
+    ) or api_groups_need_overload_import(api_module):
         lines.append("from typing import Any, overload")
     else:
         lines.append("from typing import Any")
-    if methods_need_deprecated_import(methods, stub_signature_overrides):
+    if methods_need_deprecated_import(
+        methods, stub_signature_overrides
+    ) or api_groups_need_deprecated_import(api_module, module_name, stub_signature_overrides):
         lines.append("from typing_extensions import deprecated")
     return lines
 
@@ -186,16 +212,156 @@ def rendered_method_blocks(
     return rendered_lines
 
 
+def api_group_stub_signatures(
+    group: ApiCallableGroup,
+    module_name: str,
+    stub_signature_overrides: StubSignatureOverrides,
+) -> StubSignatureGroup | None:
+    if group.location is None:
+        return None
+    overrides = stub_signature_overrides.get(
+        (group.location.path, module_name, group.name),
+    )
+    if overrides is None:
+        candidates = [
+            candidate
+            for (
+                _source,
+                context_name,
+                function_name,
+            ), candidate in stub_signature_overrides.items()
+            if context_name == module_name and function_name == group.name
+        ]
+        if candidates and all(candidate == candidates[0] for candidate in candidates[1:]):
+            overrides = candidates[0]
+    if overrides is not None and len(overrides) == len(group.signatures):
+        return overrides
+    return None
+
+
+def api_group_deprecated_messages(
+    group: ApiCallableGroup,
+    module_name: str,
+    stub_signature_overrides: StubSignatureOverrides,
+) -> tuple[str | None, ...]:
+    overrides = api_group_stub_signatures(group, module_name, stub_signature_overrides)
+    if overrides is None:
+        return (None,) * len(group.signatures)
+    return tuple(signature.deprecated_message for signature in overrides)
+
+
+def rendered_api_callable_group(
+    group: ApiCallableGroup,
+    module_name: str,
+    stub_signature_overrides: StubSignatureOverrides,
+    *,
+    indent: str = "",
+) -> list[str]:
+    """Render a module-level callable from the canonical public API model."""
+
+    rendered: list[str] = []
+    source_signatures = api_group_stub_signatures(
+        group,
+        module_name,
+        stub_signature_overrides,
+    )
+    use_overload = group.overload if source_signatures is None else len(source_signatures) > 1
+    for index, signature_data in enumerate(group.signatures):
+        if use_overload:
+            rendered.append(f"{indent}@overload")
+        source_signature = source_signatures[index] if source_signatures is not None else None
+        deprecated_message = (
+            source_signature.deprecated_message if source_signature is not None else None
+        )
+        if deprecated_message is not None:
+            rendered.append(f"{indent}{deprecated_decorator_line(deprecated_message)}")
+        if source_signature is not None:
+            display_signature = (
+                f"{group.name}({source_signature.parameters}) -> {source_signature.returns}"
+            )
+            doc = source_signature.doc
+        else:
+            display_signature = signature_data.display_signature
+            doc = signature_data.docstring or group.doc
+        rendered.append(f"{indent}def {display_signature}:")
+        if doc:
+            rendered.extend(f"{indent}{line}" for line in render_docstring_lines(doc))
+            rendered.append(f"{indent}    ...")
+        else:
+            rendered[-1] += " ..."
+    return rendered
+
+
+def rendered_module_blocks(
+    methods: list[BindingMethod],
+    module_name: str,
+    api_module: ApiModule | None,
+    stub_signature_overrides: StubSignatureOverrides,
+) -> list[str]:
+    api_groups = {group.name: group for group in api_module.functions} if api_module else {}
+    rendered_lines: list[str] = []
+    rendered_api_names: set[str] = set()
+    rendered_legacy: set[tuple[str, ...]] = set()
+
+    for method in methods:
+        api_group = api_groups.get(method.python_name)
+        if api_group is not None:
+            if method.python_name in rendered_api_names:
+                continue
+            rendered_lines.extend(
+                rendered_api_callable_group(
+                    api_group,
+                    module_name,
+                    stub_signature_overrides,
+                )
+            )
+            rendered_api_names.add(method.python_name)
+            continue
+
+        rendered = tuple(
+            render_stub_lines(
+                method,
+                stub_signature_overrides=stub_signature_overrides,
+            )
+        )
+        if rendered in rendered_legacy:
+            continue
+        rendered_lines.extend(rendered)
+        rendered_legacy.add(rendered)
+
+    for api_group in api_module.functions if api_module else ():
+        if api_group.name in rendered_api_names:
+            continue
+        rendered_lines.extend(
+            rendered_api_callable_group(
+                api_group,
+                module_name,
+                stub_signature_overrides,
+            )
+        )
+    return rendered_lines
+
+
 def write_stub_file(
     path: Path,
     methods: list[BindingMethod],
     class_name: str | None = None,
     stub_signature_overrides: StubSignatureOverrides | None = None,
+    api_module: ApiModule | None = None,
+    module_name: str | None = None,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    logical_module_name = module_name or (
+        path.stem if path.name != "__init__.pyi" else path.parent.name
+    )
     lines = [
         "from __future__ import annotations",
-        *typing_import_lines(methods, stub_signature_overrides),
+        *typing_import_lines(
+            methods,
+            stub_signature_overrides,
+            api_module,
+            logical_module_name,
+        ),
         "",
     ]
 
@@ -217,9 +383,11 @@ def write_stub_file(
             lines.append("    pass")
     else:
         lines.extend(
-            rendered_method_blocks(
+            rendered_module_blocks(
                 methods,
-                stub_signature_overrides=stub_signature_overrides,
+                logical_module_name,
+                api_module,
+                stub_signature_overrides or {},
             )
         )
 

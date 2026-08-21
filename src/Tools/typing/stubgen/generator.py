@@ -41,6 +41,8 @@ from .discovery import (
     module_names_from_type_methods,
 )
 from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
+from .python_api.extract import extract_curated_api_model
+from .python_api.model import ApiModel
 from .render import type_stub_lines, write_stub_file
 
 
@@ -49,14 +51,18 @@ def write_public_module_stubs(
     methods: list[BindingMethod],
     module_names: set[str],
     stub_signature_overrides: StubSignatureOverrides,
+    api_model: ApiModel,
 ) -> None:
     module_methods, _, _ = group_methods(methods)
+    api_modules = {module.name: module for module in api_model.modules}
     ensure_parent_package_stubs(out_dir, module_names)
     for module_name, group in sorted(module_methods.items()):
         write_stub_file(
             module_stub_path(out_dir, module_name, module_names),
             group,
             stub_signature_overrides=stub_signature_overrides,
+            api_module=api_modules.get(module_name),
+            module_name=module_name,
         )
 
 
@@ -165,7 +171,14 @@ def write_outputs(
         shutil.rmtree(out_dir / generated_dir, ignore_errors=True)
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
-    write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
+    api_model = extract_curated_api_model(root, source_dir)
+    write_public_module_stubs(
+        out_dir / "stubs",
+        methods,
+        module_names,
+        stub_signature_overrides,
+        api_model,
+    )
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )
