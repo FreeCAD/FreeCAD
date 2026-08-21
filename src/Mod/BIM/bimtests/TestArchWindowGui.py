@@ -71,6 +71,60 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
         self.assertNotAlmostEqual(self.window.PreviewShape.Volume, volumeBefore, places=3)
 
+    def testPreviewHasTwoNodes(self):
+        self.assertEqual(self.window.ViewObject.PreviewRootNode.getNumChildren(), 2)
+
+    def testHoleNodeIsMoreTransparentThanWindowNode(self):
+        windowNode = self.window.ViewObject.PreviewShapeNode
+        holeNode = self.window.ViewObject.PreviewRootNode.getChild(1)
+
+        self.assertGreater(holeNode.transparency.getValue(), windowNode.transparency.getValue())
+
+    def _holeNodeCoordinateCount(self, viewObject):
+        from pivy import coin
+
+        holeNode = viewObject.PreviewRootNode.getChild(1)
+
+        # coords is a plain child, not a registered field, so it is not reachable
+        # as node.coords; search the scene graph for it instead.
+        search = coin.SoSearchAction()
+        search.setType(coin.SoCoordinate3.getClassTypeId())
+        search.apply(holeNode)
+        return search.getPath().getTail().point.getNum()
+
+    def testHolePreviewNodeIsEmptyForUnhostedWindow(self):
+        self.window.ViewObject.updatePreview()
+
+        # A freshly-constructed SoCoordinate3 already reports getNum() == 1
+        # (Coin's default single-value state); an unhosted window's empty
+        # Part.Shape() leaves it untouched rather than tessellating anything.
+        self.assertEqual(self._holeNodeCoordinateCount(self.window.ViewObject), 1)
+
+    def testHolePreviewNodeGetsGeometryForHostedWindow(self):
+        _, win = self._makeHostedWindow()
+        win.ViewObject.updatePreview()
+
+        self.assertGreaterEqual(self._holeNodeCoordinateCount(win.ViewObject), 8)
+
+    def testHolePreviewNodeCombinesAllHosts(self):
+        """A window Added to two walls (e.g. spanning a junction) must show both
+        hosts' removed volumes, not just Hosts[0] - ArchComponent.py cuts each
+        host by its own subvolume during that host's own recompute."""
+        wall1, win = self._makeHostedWindow()
+        win.ViewObject.updatePreview()
+        singleHostCount = self._holeNodeCoordinateCount(win.ViewObject)
+
+        points2 = [App.Vector(0.0, 500.0, 0.0), App.Vector(2000.0, 500.0, 0.0)]
+        line2 = Draft.make_wire(points2)
+        # A width distinct from wall1's default so the second host's subvolume
+        # is not merely a duplicate of the first at the same size.
+        wall2 = Arch.makeWall(line2, height=2000, width=800)
+        win.Hosts = win.Hosts + [wall2]
+        App.ActiveDocument.recompute()
+        win.ViewObject.updatePreview()
+
+        self.assertGreater(self._holeNodeCoordinateCount(win.ViewObject), singleHostCount)
+
     def _makeHostedWindow(self):
         """Wall hosting a window, recomputed once so both have settled geometry."""
         points = [App.Vector(0.0, 0.0, 0.0), App.Vector(2000.0, 0.0, 0.0)]
@@ -132,7 +186,11 @@ class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
         Instantiating the task panel directly bypasses Tree.cpp's double-click handler, which
         is what books the edit transaction in real usage, so this test books one explicitly.
-        abortTransaction()'s revert does not depend on who opened the transaction.
+        abortTransaction()'s revert does not depend on who opened the transaction. This is a
+        faithful stand-in, not a weaker one: Document.openTransaction() from Python forwards to
+        the same Document::openTransaction() primitive Tree.cpp calls, so the booking itself is
+        mechanically identical - what remains untested here is only the
+        Tree.cpp -> doubleClicked -> setEdit plumbing that calls it.
         """
         _, win = self._makeHostedWindow()
         originalWidth = win.Width.Value
