@@ -254,3 +254,161 @@ TEST_F(FileInfoPathConversionTest, NaivePathStringLosesNonAscii)
     EXPECT_NE(naive, safe);
 }
 #endif
+
+// Regression tests for GHSA-9vjf-h8f4-c229: a crafted archive entry name must not be able to
+// escape the directory it is being extracted into.
+
+TEST(FileInfoSafeArchiveEntryPathTest, AcceptsNamesWrittenByFreeCAD)
+{
+    // PropertyPostDataObject::SaveDocFile creates its names by removing the extraction directory
+    // name from the front of an absolute path, so *every* name it writes starts with a separator.
+    // Make sure we didn't break those, and they normalize to the expected separator-less name.
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("/datafile.vtm"), "datafile.vtm");
+    EXPECT_EQ(
+        Base::FileInfo::safeArchiveEntryPath("/datafile/datafile_0_0.vtu"),
+        "datafile/datafile_0_0.vtu"
+    );
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("dummy"), "dummy");
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, RejectsParentDirectoryTraversal)
+{
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("/../../../etc/passwd").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("../evil").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("datafile/../../evil").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("..").has_value());
+    // Tricksy: starting with a separator shouldn't hide the traversal
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("//..//evil").has_value());
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, LeadingDoubleSeparatorDoesNotEatAComponent)
+{
+    // On Windows a name starting with two separators parses as a filesystem root name, so naive
+    // decomposition would drop "server" here (and, above, the ".." in "//..//evil"). The result
+    // has to be identical on every platform.
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("//server/share/evil"), "server/share/evil");
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("\\\\server\\share\\evil"), "server/share/evil");
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, RejectsBackslashTraversal)
+{
+    // A backslash is an ordinary filename character on Linux and macOS, so these names look
+    // harmless there. They are *not*: every path ultimately goes through FileInfo, and
+    // setFile() rewrites '\' to '/'. So they *would* have been harmless, but are now real path seps
+    // when the file is opened. So on Windows this test isn't that useful, but on Linux and macOS it
+    // ensures that even though that happens, we still handle it as expected.
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("..\\..\\evil").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("datafile\\..\\..\\evil").has_value());
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("datafile\\sub.vtu"), "datafile/sub.vtu");
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, RejectsColonNames)
+{
+    // Drive-relative paths and NTFS alternate data streams both escape via a colon, so the
+    // sanitizer rejects colons wholesale -- any colon anywhere is treated as an invalid path.
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("C:/Windows/System32/evil.dll").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("C:evil").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("datafile.vtu:stream").has_value());
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, RejectsNamesThatNormalizeToNothing)
+{
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("/").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath(".").has_value());
+    EXPECT_FALSE(Base::FileInfo::safeArchiveEntryPath("./").has_value());
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, NormalizesRedundantComponents)
+{
+    // Not really security, but the method does do this cleanup
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("./datafile.vtm"), "datafile.vtm");
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("datafile//./sub.vtu"), "datafile/sub.vtu");
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, ContainedDotsAreAllowed)
+{
+    // A name that just *contains* dots is allowed, and must not get eaten
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("/datafile..vtu"), "datafile..vtu");
+    EXPECT_EQ(Base::FileInfo::safeArchiveEntryPath("/a..b/c.vtu"), "a..b/c.vtu");
+}
+
+TEST(FileInfoSafeArchiveEntryPathTest, HostileNamesCannotEscapeWhenJoined)
+{
+    // Integration test for the above: **whatever** an archive holds, the path finally opened
+    // is inside the extraction directory.
+    const std::string extractionDir = "/tmp/FreeCAD_xxx/vtk_extract_datadir";
+    const std::filesystem::path extractionPath
+        = std::filesystem::path(extractionDir).lexically_normal();
+
+    std::vector<std::string> hostile = {
+        // Plain parent directory steps
+        "/../evil",
+        "../evil",
+        "../../../etc/passwd",
+        "a/../../evil",
+        "a/b/../../../../evil",
+        // Steps hidden behind redundant or empty components
+        "..//evil",
+        "//../evil",
+        "/./../evil",
+        ".././evil",
+        "a/./../../evil",
+        // Steps written with the separator FileInfo::setFile rewrites, including mixed forms
+        "..\\evil",
+        "a\\..\\..\\evil",
+        "\\..\\..\\evil",
+        "/..\\../evil",
+        // Names that are nothing but a step
+        "..",
+        "../",
+        "/..",
+        "..\\",
+        "./..",
+        // Absolute and rooted names that try to ignore the extraction directory entirely
+        "/etc/passwd",
+        "//server/share/evil",
+        "\\\\server\\share\\evil",
+        "C:/Windows/System32/evil.dll",
+        "C:evil",
+        "evil.vtu:stream",
+    };
+    // A run long enough to climb past the filesystem root, which clamps rather than wrapping
+    hostile.push_back("/" + [] {
+        std::string steps;
+        constexpr int soManySubdirs = 40;
+        for (int i = 0; i < soManySubdirs; ++i) {
+            steps += "../";
+        }
+        return steps;
+    }() + "evil");
+
+    std::size_t rejected = 0;
+    std::size_t contained = 0;
+    for (const auto& name : hostile) {
+        auto safe = Base::FileInfo::safeArchiveEntryPath(name);
+        if (!safe) {
+            ++rejected;
+            continue;
+        }
+
+        std::filesystem::path joined
+            = std::filesystem::path(extractionDir + "/" + *safe).lexically_normal();
+        std::filesystem::path relative = joined.lexically_relative(extractionPath);
+
+        // An empty relative path means the two are unrelated, and a leading ".." means the
+        // result climbed out. Either way the name escaped.
+        EXPECT_FALSE(relative.empty()) << name << " -> " << joined.string();
+        if (!relative.empty()) {
+            EXPECT_NE(*relative.begin(), std::filesystem::path(".."))
+                << name << " -> " << joined.string();
+        }
+        ++contained;
+    }
+
+    // Every single one of these should have tripped one test or the other, and both paths must
+    // have been taken: a sanitizer that gave up and rejected everything would otherwise satisfy
+    // the loop above without a single containment check ever running.
+    EXPECT_EQ(rejected + contained, hostile.size());
+    EXPECT_GT(contained, 0U);
+}
