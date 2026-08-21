@@ -34,6 +34,7 @@ import Path
 import Path.Preferences as PathPref
 from Path.Main.Gui.Editor import CodeEditor
 from PySide import QtCore, QtGui
+import os
 
 translate = FreeCAD.Qt.translate
 
@@ -160,6 +161,7 @@ class PostProcessDialog:
         self._populate_fixtures()
         self._populate_job_details()
         self._populate_operations()
+        self._populate_output()
         self._populate_warnings()  # must be last — updates tab badge
 
     def _populate_title(self):
@@ -587,6 +589,21 @@ class PostProcessDialog:
         tree.resizeColumnToContents(0)
         tree.blockSignals(False)
         self._update_ops_tab_label()
+
+    def _populate_output(self):
+        """Set fields of Output tab while init dialog"""
+        from Path.Post.Utils import FilenameGenerator
+
+        # set Output folder
+        generator = FilenameGenerator(job=self.job)
+        gen_filenames = generator.generate_filenames()
+        resolved_dir = os.path.dirname(next(gen_filenames))
+        self.dialog.lineEditOutputLocation.setText(resolved_dir)
+
+        # set Filename template
+        jobPostProcessorOutputFile = getattr(self.job, "PostProcessorOutputFile", "") or ""
+        default_template = os.path.basename(jobPostProcessorOutputFile)
+        self.dialog.lineEditFilenameTemplate.setText(default_template)
 
     def _get_dialog_overrides(self):
         """Collect current dialog widget values as an overrides dict.
@@ -1276,7 +1293,9 @@ class PostProcessDialog:
 
     def _browse_output_location(self):
         dlg = self.dialog
-        current = dlg.lineEditOutputLocation.text().strip() or ""
+        current = dlg.lineEditOutputLocation.text().strip()
+        if not os.path.exists(os.path.dirname(current)) and not os.path.exists(current):
+            current = os.path.dirname(FreeCAD.activeDocument().FileName)
         folder = QtGui.QFileDialog.getExistingDirectory(
             dlg,
             translate("CAM_Post", "Select Output Folder"),

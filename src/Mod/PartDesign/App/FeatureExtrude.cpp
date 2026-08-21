@@ -143,24 +143,25 @@ bool FeatureExtrude::hasTaperedAngle() const
 
 void FeatureExtrude::onChanged(const App::Property* prop)
 {
-    if (!isRestoring() && prop == &Midplane) {
+    if (prop == &Midplane && !isRestoring() && !migratingDeprecatedProperties) {
         // Deprecation notice: Midplane property is deprecated and has been replaced by SideType in
         // FreeCAD 1.1 when FeatureExtrude was refactored.
-        App::DocumentObject* obj = Profile.getValue();
-        auto baseName = obj ? obj->getNameInDocument() : "";
-        Base::Console().warning(
-            "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
-            "been replaced by the 'SideType' property in FeatureExtrude. Please update your script,"
-            " this property will be removed in a future version.\n",
-            baseName
-        );
-        if (Midplane.getValue()) {
-            SideType.setValue("Symmetric");
-        }
-        else {
-            Base::Console()
-                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
-            SideType.setValue("One side");
+        const char* impliedSideType = Midplane.getValue() ? "Symmetric" : "One side";
+
+        // Scripts routinely assign every property, so only scream when the write actually
+        // asks for something SideType is not already saying.
+        if (SideType.getValueAsString() != std::string(impliedSideType)) {
+            App::DocumentObject* obj = Profile.getValue();
+            auto baseName = obj ? obj->getNameInDocument() : "";
+            Base::Console().warning(
+                "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+                "been replaced by the 'SideType' property in FeatureExtrude; assuming "
+                "SideType='%s'. Please update your script, this property will be removed in a"
+                " future version.\n",
+                baseName,
+                impliedSideType
+            );
+            SideType.setValue(impliedSideType);
         }
     }
     ProfileBased::onChanged(prop);
@@ -1083,6 +1084,8 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
 void FeatureExtrude::onDocumentRestored()
 {
+    Base::StateLocker migrating(migratingDeprecatedProperties);
+
     // property Type no longer has TwoLengths.
     if (strcmp(Type.getValueAsString(), "?TwoLengths") == 0) {
         Type.setValue("Length");

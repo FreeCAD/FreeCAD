@@ -47,6 +47,7 @@ from Path.Tool.toolbit.ui.selector import ToolBitSelector
 from Machine.models import MachineFactory
 from Machine.ui.editor import MachineEditorDialog
 import math
+import os
 import traceback
 from PySide import QtWidgets
 
@@ -1147,15 +1148,31 @@ class TaskPanel:
         self.populateMachineCombo()
 
     def setPostProcessorOutputFile(self):
+        from Path.Post.Utils import FilenameGenerator
+
+        generator = FilenameGenerator(job=self.vobj.Object)
+        gen_filenames = generator.generate_filenames()
+        resolved_path = next(gen_filenames)
+        if not os.path.exists(resolved_path) and not os.path.exists(os.path.dirname(resolved_path)):
+            resolved_path = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getSaveFileName(
             self.form,
             translate("CAM_Job", "Select Output File"),
-            None,
-            translate("CAM_Job", "All Files (*.*)"),
+            resolved_path,
+            translate("CAM_Job", "All Files (*)"),
         )
         if filename and filename[0]:
-            self.obj.PostProcessorOutputFile = str(filename[0])
-            self.setFields()
+            msgBox = QtGui.QMessageBox()
+            msgBox.setWindowTitle("Warning")
+            msgBox.setText("<p align='center'>This will replace filename template</p>")
+            msgBox.setInformativeText("<p align='center'>Are you sure?</p>")
+            msgBox.findChild(QtGui.QGridLayout).setColumnMinimumWidth(1, 250)
+            btn1 = msgBox.addButton("Ok", QtGui.QMessageBox.ButtonRole.YesRole)
+            btn2 = msgBox.addButton("Cancel", QtGui.QMessageBox.ButtonRole.RejectRole)
+            msgBox.exec()
+            if msgBox.clickedButton() == btn1:
+                self.obj.PostProcessorOutputFile = str(filename[0])
+                self.setFields()
 
     def operationSelect(self):
         if self.form.operationsList.selectedItems():
