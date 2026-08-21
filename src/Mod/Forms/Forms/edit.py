@@ -154,6 +154,7 @@ class FormEditSession(FormEditToolsMixin):
         self.dragger_callbacks = []
         self.last_added_edge = None
         self.range_selection_anchors = {}
+        self.range_selection_generation = 0
         self.dimension_gizmos = {}
         self.dimension_gizmo_switches = {}
         self.dimension_gizmo_callbacks = []
@@ -1571,13 +1572,35 @@ class FormEditSession(FormEditToolsMixin):
             by_id = dict(zip(face_ids, faces))
             selected_faces.update(frozenset(by_id[face_id]) for face_id in selected_range)
         self.last_added_edge = None
-        self._restore_control_selection(
-            vertices,
-            edges,
-            selected_faces,
-            defer_dragger=True,
-        )
+        # Selection observers run while FreeCAD is still publishing the click
+        # that triggered them. Clearing and rebuilding the selection from this
+        # callback can re-enter the selection machinery and deadlock the GUI.
+        # Apply the completed range after the current selection event returns.
+        self.range_selection_generation += 1
+        generation = self.range_selection_generation
+        self._schedule_shift_range(vertices, edges, selected_faces, generation)
         return True
+
+    def _schedule_shift_range(self, vertices, edges, faces, generation):
+        """Apply a completed range on the next Qt event-loop turn."""
+        self._defer_shift_range(
+            lambda: self._apply_shift_range(
+                vertices,
+                edges,
+                faces,
+                generation,
+            ),
+        )
+
+    @staticmethod
+    def _defer_shift_range(callback):
+        QtCore.QTimer.singleShot(0, callback)
+
+    def _apply_shift_range(self, vertices, edges, faces, generation):
+        """Replace a Shift-click selection outside the observer callback."""
+        if self.cleaned or generation != self.range_selection_generation:
+            return
+        self._restore_control_selection(vertices, edges, faces, defer_dragger=True)
 
     def addSelection(self, document, object_name, subelement, _position):
         if self.suppress_selection_observer or self.cleaned:
@@ -1605,6 +1628,7 @@ class FormEditSession(FormEditToolsMixin):
         ):
             return
         if form_subelement is not None and not modifiers & QtCore.Qt.ShiftModifier:
+            self.range_selection_generation += 1
             target = self._range_selection_target(form_subelement)
             if target is not None:
                 kind, stable_id, _mapper = target
@@ -1667,6 +1691,7 @@ class FormEditSession(FormEditToolsMixin):
             return
         self.last_added_edge = None
         if not QtWidgets.QApplication.keyboardModifiers() & QtCore.Qt.ShiftModifier:
+            self.range_selection_generation += 1
             self.range_selection_anchors = {}
         self._queue_selection_sync()
 
@@ -1739,6 +1764,7 @@ class FormEditSession(FormEditToolsMixin):
             not self.suppress_selection_observer
             and not QtWidgets.QApplication.keyboardModifiers() & QtCore.Qt.ShiftModifier
         ):
+            self.range_selection_generation += 1
             self.range_selection_anchors = {}
         if not self.suppress_selection_observer and self.last_added_edge is not None:
             (
@@ -2646,6 +2672,7 @@ class FormEditSession(FormEditToolsMixin):
             setattr(self, attribute, False)
         self._cancel_pending_updates()
         self.selection_sync_generation += 1
+        self.range_selection_generation += 1
         if self.selection_observer_added:
             safely(lambda: Gui.Selection.removeObserver(self), "selection observer")
             self.selection_observer_added = False
