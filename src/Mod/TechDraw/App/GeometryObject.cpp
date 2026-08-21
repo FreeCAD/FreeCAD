@@ -563,8 +563,9 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass ca
         TechDraw::VertexPtr v1 = std::make_shared<TechDraw::Vertex>(lastAdded->getStartPoint());
         TechDraw::VertexPtr v2 = std::make_shared<TechDraw::Vertex>(lastAdded->getEndPoint());
         TechDraw::CirclePtr circle = std::dynamic_pointer_cast<TechDraw::Circle>(lastAdded);
+        TechDraw::AOCPtr arc = std::dynamic_pointer_cast<TechDraw::AOC>(lastAdded);
         TechDraw::VertexPtr c1;
-        if (circle) {
+        if (circle && !arc) {
             c1 = std::make_shared<TechDraw::Vertex>(circle->center);
             c1->isCenter(true);
             c1->setHlrVisible(hlrVisible);
@@ -578,7 +579,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass ca
             if ((*itVertex)->isEqual(*v2, Precision::Confusion())) {
                 v2Add = false;
             }
-            if (circle) {
+            if (circle && !arc) {
                 if ((*itVertex)->isEqual(*c1, Precision::Confusion())) {
                     c1Add = false;
                 }
@@ -599,7 +600,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, EdgeClass ca
             //    delete v2;
         }
 
-        if (circle) {
+        if (circle && !arc) {
             if (c1Add) {
                 vertexGeom.push_back(c1);
                 c1->setHlrVisible(hlrVisible);
