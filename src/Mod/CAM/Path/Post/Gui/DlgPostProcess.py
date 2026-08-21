@@ -567,15 +567,23 @@ class PostProcessDialog:
         dlg.plainTextEditComment.setPlainText(getattr(self.job, "Description", "") or "")
 
     def _populate_operations(self):
+        from Path.Base.Util import toolControllerForOp, coolantModeForOp
+
+        col_num = 0
+        col_op_label = 1
+        col_tool_number = 2
+        col_tc = 3
+        col_coolant = 4
+        col_time = 5
         dlg = self.dialog
         tree = dlg.treeWidgetOperations
         tree.blockSignals(True)
+        tree.setTextElideMode(QtCore.Qt.ElideMiddle)
+        tree.setWordWrap(False)
         tree.clear()
-        tree.setHeaderHidden(True)
 
-        for op in self._get_active_operations():
+        for index, op in enumerate(self._get_active_operations(), 1):
             item = QtGui.QTreeWidgetItem(tree)
-            item.setText(0, op.Label)
             if not self.operations or op in self.operations["operations"]:
                 item.setCheckState(0, QtCore.Qt.CheckState.Checked)
             else:
@@ -585,6 +593,25 @@ class PostProcessDialog:
                 | QtCore.Qt.ItemFlag.ItemIsUserCheckable
                 | QtCore.Qt.ItemFlag.ItemIsEnabled
             )
+
+            item.setText(col_num, str(index))
+            item.setText(col_op_label, op.Label)
+            if tc := toolControllerForOp(op):
+                tcLabel = tc.Label
+                toolNumber = str(tc.ToolNumber)
+            else:
+                tcLabel = "???"
+                toolNumber = ""
+            item.setText(col_tool_number, toolNumber)
+            item.setTextAlignment(col_tool_number, QtCore.Qt.AlignCenter)
+            item.setText(col_tc, tcLabel)
+            coolant = coolantModeForOp(op)
+            coolantString = coolant if coolant != "None" else ""
+            item.setText(col_coolant, coolantString)
+            item.setText(col_time, getattr(op, "CycleTime", ""))
+
+        for column in range(tree.columnCount()):
+            tree.resizeColumnToContents(column)
 
         tree.resizeColumnToContents(0)
         tree.blockSignals(False)
