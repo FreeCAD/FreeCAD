@@ -21,6 +21,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+import math
+
 import FreeCAD
 import Path
 from CAMTests.PathTestUtils import PathTestBase
@@ -139,3 +141,24 @@ G0 Z0.500000
         path = Path.Path(commands)
 
         self.assertEqual(path.Length, 2)
+
+    def test51(self):
+        """Test Path arc length and cycle time calculations"""
+        path = Path.Path(
+            [
+                Path.Command("G0 X2 Y0"),
+                Path.Command("G3 X3 Y1 I0 J1"),
+            ]
+        )
+        expected_length = 2 + math.pi / 2
+        self.assertAlmostEqual(path.Length, expected_length, places=12)
+        self.assertAlmostEqual(path.getCycleTime(1, 1, 1, 1), expected_length, places=12)
+
+        absolute_center_path = Path.Path(
+            [
+                Path.Command("G0 X2 Y0"),
+                Path.Command("G90.1"),
+                Path.Command("G3 X3 Y1 I2 J1"),
+            ]
+        )
+        self.assertAlmostEqual(absolute_center_path.Length, expected_length, places=12)

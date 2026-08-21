@@ -3911,8 +3911,8 @@ static inline void addG1(
 {
     addGCode(verbose, path, last, next, "G1");
     if (f > Precision::Confusion()) {
-        Command* cmd = path.getCommands().back();
-        addParameter(verbose, *cmd, "F", last_f, f);
+        Command& cmd = path.getCommand(path.getSize() - 1);
+        addParameter(verbose, cmd, "F", last_f, f);
         last_f = f;
     }
     return;
