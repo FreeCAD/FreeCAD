@@ -14,7 +14,11 @@ add_executable(Gui_tests_run
         StyleParameters/ParameterManagerTest.cpp
         StyleParameters/YamlParameterSourceTest.cpp
         InputHintTest.cpp
+        NativeGesturePinchTest.cpp
+        NavigationStylePinchTest.cpp
+        NavigationStyleWheelTest.cpp
         SelectionTest.cpp
+        SoMouseWheelEventTest.cpp
 )
 
 # Qt tests
@@ -26,3 +30,7 @@ target_link_libraries(Gui_tests_run PRIVATE
     FreeCADApp
     FreeCADGui
 )
+
+if(WIN32)
+    target_compile_definitions(Gui_tests_run PRIVATE QUARTER_DLL)
+endif()

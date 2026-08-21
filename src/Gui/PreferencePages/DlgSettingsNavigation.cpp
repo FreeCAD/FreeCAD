@@ -66,6 +66,7 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     ui->comboOrbitStyle->setItemData(4, int(NavigationStyle::Turntable));
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
+    ui->checkBoxTouchpadScrollPans->setChecked(NavigationStyle::touchpadScrollPansByDefault());
     retranslate();
 #if !defined(_USE_3DCONNEXION_SDK) && !defined(SPNAV_FOUND)
     ui->legacySpaceMouseDevices->setDisabled(true);
@@ -102,6 +103,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->checkBoxZoomAtCursor->onSave();
     ui->checkBoxInvertZoom->onSave();
     ui->checkBoxDisableTilt->onSave();
+    ui->checkBoxTouchpadScrollPans->onSave();
     ui->rotationCenterSize->onSave();
     ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
@@ -153,6 +155,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->checkBoxZoomAtCursor->onRestore();
     ui->checkBoxInvertZoom->onRestore();
     ui->checkBoxDisableTilt->onRestore();
+    ui->checkBoxTouchpadScrollPans->onRestore();
     ui->rotationCenterSize->onRestore();
     ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
