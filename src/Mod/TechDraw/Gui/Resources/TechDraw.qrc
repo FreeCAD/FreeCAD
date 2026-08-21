@@ -196,5 +196,9 @@
 
         <!-- bitmap images -->
 
+        <!-- Welding symbols -->
+        <file>../../Symbols/Welding/UI_Symbols/AllAround.svg</file>
+        <file>../../Symbols/Welding/UI_Symbols/FieldWeld.svg</file>
+        <file>../../Symbols/Welding/UI_Symbols/AlternateISO.svg</file>
     </qresource>
 </RCC>
