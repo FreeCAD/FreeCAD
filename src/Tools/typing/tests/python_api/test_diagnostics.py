@@ -6,7 +6,8 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from stubgen.diagnostics import generated_output_diagnostics
+from stubgen.diagnostics import discovered_model_diagnostics, generated_output_diagnostics
+from stubgen.model import BindingClass
 from stubgen.python_api.extract import extract_curated_api_model_with_diagnostics
 from stubgen.python_api.model import ApiAlias, ApiModel, ApiModule
 
@@ -89,6 +90,27 @@ class MergeDiagnosticsTest(unittest.TestCase):
 
         self.assertEqual(len(diagnostics), 1)
         self.assertEqual(diagnostics[0].code, "unresolved-alias")
+
+    def test_discovered_class_missing_from_model_is_reported(self) -> None:
+        diagnostics = discovered_model_diagnostics(
+            [
+                BindingClass(
+                    source="src/App/ParameterGrp.pyi",
+                    line=10,
+                    class_name="ParameterGrp",
+                    export_name="ParameterGrp",
+                    python_name=None,
+                    public_names=["FreeCAD.ParameterGrp"],
+                    base_class=None,
+                    explicit_export=False,
+                )
+            ],
+            ApiModel(modules=(ApiModule(name="FreeCAD"),)),
+        )
+
+        self.assertEqual(len(diagnostics), 1)
+        self.assertEqual(diagnostics[0].code, "unmodeled-discovered-symbol")
+        self.assertEqual(diagnostics[0].severity, "warning")
 
 
 if __name__ == "__main__":

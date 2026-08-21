@@ -31,7 +31,11 @@ from .class_merge import (
     normalize_api_model_binding_class_headers,
     validate_public_class_aliases,
 )
-from .diagnostics import MergeDiagnostic, generated_output_diagnostics
+from .diagnostics import (
+    MergeDiagnostic,
+    discovered_model_diagnostics,
+    generated_output_diagnostics,
+)
 from .module_merge import (
     copy_module_support_stubs,
     copy_overlay_stubs,
@@ -194,6 +198,7 @@ def write_outputs(
     module_names.update(module.name for module in api_model.modules)
     if diagnostics is not None:
         diagnostics.extend(model_diagnostics)
+        diagnostics.extend(discovered_model_diagnostics(classes, api_model))
     api_model = normalize_api_model_binding_class_headers(root, classes, api_model)
     write_public_module_stubs(
         out_dir / "stubs",

@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
 
+from .model import BindingClass
 from .python_api.model import ApiModel, ApiOrigin, ApiSourceLocation
 
 DiagnosticSeverity = Literal["warning", "error"]
@@ -130,6 +131,34 @@ def generated_output_diagnostics(
                     message=f"alias {alias.public_path} targets missing {alias.target_path}",
                     symbol=alias.public_path,
                     location=alias.location,
+                )
+            )
+    return tuple(findings)
+
+
+def discovered_model_diagnostics(
+    classes: list[BindingClass],
+    model: ApiModel,
+) -> tuple[MergeDiagnostic, ...]:
+    """Report public binding classes not yet represented by the API model."""
+
+    model_symbols: set[str] = set()
+    for module in model.modules:
+        model_symbols.update(f"{module.name}.{api_class.name}" for api_class in module.classes)
+        model_symbols.update(alias.public_path for alias in module.aliases)
+
+    findings: list[MergeDiagnostic] = []
+    for binding_class in classes:
+        for public_name in binding_class.public_names:
+            if "." not in public_name or public_name in model_symbols:
+                continue
+            findings.append(
+                MergeDiagnostic(
+                    code="unmodeled-discovered-symbol",
+                    severity="warning",
+                    message=f"discovered public class {public_name} is not represented by ApiModel",
+                    symbol=public_name,
+                    location=ApiSourceLocation(binding_class.source, binding_class.line),
                 )
             )
     return tuple(findings)
