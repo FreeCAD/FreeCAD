@@ -1194,8 +1194,7 @@ class ObjectOp(object):
         # move in the command list.
         # Add the command to turn it off right after the last non-rapid move in the command list.
         if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
-            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
-            # Extended drilling cycles include the G74/G84 tapping commands.
+            # Find the first and last cutting moves (includes G1, G2, G3, and drill cycles)
             first_feed_index = None
             last_feed_index = None
 
