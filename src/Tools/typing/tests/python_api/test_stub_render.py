@@ -16,6 +16,7 @@ from stubgen.python_api.model import (
     ApiCallableGroup,
     ApiClass,
     ApiModule,
+    ApiOrigin,
     ApiSourceLocation,
 )
 from stubgen.python_api.extract import binding_class_aliases
@@ -185,6 +186,43 @@ def outside() -> None:
         self.assertIn("# Generated header", output)
         self.assertIn("class Other:\n    pass", output)
         self.assertIn("def outside() -> None:\n    ...", output)
+
+    def test_binding_method_merge_preserves_equivalent_docstring_formatting(self) -> None:
+        source = '''class Example:
+    def run(self, value: int) -> int:
+        """
+        Keep this existing multiline formatting.
+
+        It is part of the authored stub surface.
+        """
+        ...
+'''
+        tree = ast.parse(source)
+        class_node = tree.body[0]
+        assert isinstance(class_node, ast.ClassDef)
+        method_node = next(node for node in class_node.body if isinstance(node, ast.FunctionDef))
+        group = ApiCallableGroup(
+            name="run",
+            signatures=parse_callable_group([method_node, method_node]),
+            doc="Keep this existing multiline formatting.\n\nIt is part of the authored stub surface.",
+            is_method=True,
+            origin=ApiOrigin.BINDING_SPEC,
+        )
+        api_class = ApiClass(
+            name="Example",
+            module_name="Example",
+            methods=(group,),
+            origin=ApiOrigin.BINDING_SPEC,
+        )
+
+        output = merge_api_class_methods(source, api_class)
+
+        self.assertIn("    @overload\n    def run", output)
+        self.assertIn(
+            '        """\n        Keep this existing multiline formatting.\n\n'
+            '        It is part of the authored stub surface.\n        """',
+            output,
+        )
 
     def test_curated_class_attributes_replace_merged_assignments(self) -> None:
         source = """class Example:

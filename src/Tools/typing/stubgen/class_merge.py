@@ -41,6 +41,7 @@ from .module_merge import (
 )
 from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
+from .python_api.extract import class_from_node
 from .python_api.model import ApiCallableGroup, ApiClass, ApiModel, ApiModule, ApiOrigin
 from .signature_parser import CallableSignature
 
@@ -1006,11 +1007,52 @@ def normalize_api_model_binding_class_headers(
             if class_node is None:
                 api_classes.append(api_class)
                 continue
-            api_classes.append(
-                replace(api_class, bases=tuple(ast.unparse(base) for base in class_node.bases))
+            normalized_class = ast_class_api_model(
+                root,
+                binding_class,
+                module.name,
+                class_node,
+                api_class,
             )
+            api_classes.append(normalized_class)
         model_modules.append(replace(module, classes=tuple(api_classes)))
     return replace(api_model, modules=tuple(model_modules))
+
+
+def ast_class_api_model(
+    root: Path,
+    binding_class: BindingClass,
+    module_name: str,
+    node: ast.ClassDef,
+    existing: ApiClass,
+) -> ApiClass:
+    """Build normalized callable and attribute data from a transformed class AST."""
+
+    path = root / binding_class.source
+    transformed = class_from_node(
+        root,
+        path,
+        module_name,
+        node,
+        origin=ApiOrigin.BINDING_SPEC,
+    )
+    raw_methods = {group.name: group for group in existing.methods}
+    methods = tuple(
+        replace(group, location=raw_methods.get(group.name, group).location)
+        for group in transformed.methods
+    )
+    raw_attributes = {attribute.name: attribute for attribute in existing.attributes}
+    attributes = tuple(
+        replace(attribute, location=raw_attributes.get(attribute.name, attribute).location)
+        for attribute in transformed.attributes
+    )
+    return replace(
+        existing,
+        doc=transformed.doc,
+        bases=tuple(ast.unparse(base) for base in node.bases),
+        methods=methods,
+        attributes=attributes,
+    )
 
 
 def render_api_class_header(api_class: ApiClass) -> str:
@@ -1162,6 +1204,21 @@ def rewritten_api_method(
     return method
 
 
+def callable_declaration_shape(
+    node: ast.FunctionDef | ast.AsyncFunctionDef,
+) -> tuple[object, ...]:
+    """Return the signature/decorator shape without implementation or doc text."""
+
+    return (
+        type(node),
+        node.name,
+        ast.dump(node.args, include_attributes=False),
+        ast.dump(node.returns, include_attributes=False) if node.returns else None,
+        tuple(ast.dump(decorator, include_attributes=False) for decorator in node.decorator_list),
+        node.type_comment,
+    )
+
+
 def source_node_start(node: ast.stmt) -> tuple[int, int]:
     if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and node.decorator_list:
         decorator = node.decorator_list[0]
@@ -1188,13 +1245,67 @@ def replace_source_node(
     return prefix + replacement_source + suffix
 
 
+def replace_source_callable_declaration(
+    source: str,
+    node: ast.FunctionDef | ast.AsyncFunctionDef,
+    replacement: ast.FunctionDef | ast.AsyncFunctionDef,
+) -> str:
+    """Replace a callable declaration while preserving its existing body text."""
+
+    if not node.body or not replacement.body:
+        return replace_source_node(source, node, replacement)
+
+    lines = source.splitlines(keepends=True)
+    start_line, start_col = source_node_start(node)
+    body_line = node.body[0].lineno - 1
+    body_col = node.body[0].col_offset
+    replacement_source = ast.unparse(replacement)
+    replacement_lines = replacement_source.splitlines()
+    replacement_tree = ast.parse(replacement_source)
+    replacement_node = replacement_tree.body[0]
+    if not isinstance(replacement_node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        return replace_source_node(source, node, replacement)
+    replacement_body_line = replacement_node.body[0].lineno - 1
+    declaration_lines = replacement_lines[:replacement_body_line]
+    definition_line = next(
+        (
+            index
+            for index, line in enumerate(replacement_lines)
+            if line.lstrip().startswith(("def ", "async def "))
+        ),
+        None,
+    )
+    if definition_line == replacement_body_line:
+        declaration_lines.append(
+            replacement_lines[replacement_body_line][: replacement_node.body[0].col_offset].rstrip()
+        )
+    if not declaration_lines:
+        return replace_source_node(source, node, replacement)
+
+    indentation = " " * start_col
+    declaration = declaration_lines[0]
+    declaration += (
+        "\n" + "\n".join(f"{indentation}{line}" for line in declaration_lines[1:])
+        if len(declaration_lines) > 1
+        else ""
+    )
+    prefix = "".join(lines[: start_line - 1]) + lines[start_line - 1][:start_col]
+    if body_line == start_line - 1:
+        suffix = lines[body_line][body_col:]
+        return prefix + declaration + " " + suffix + "".join(lines[body_line + 1 :])
+
+    body_prefix = lines[body_line][:body_col]
+    suffix = body_prefix + lines[body_line][body_col:] + "".join(lines[body_line + 1 :])
+    return prefix + declaration + "\n" + suffix
+
+
 def merge_api_class_methods(
     target_source: str,
     api_class: ApiClass,
 ) -> str:
     """Replace curated class methods with their normalized API-model form."""
 
-    if not api_class.methods or api_class.origin == ApiOrigin.BINDING_SPEC:
+    if not api_class.methods:
         return target_source
 
     target_tree = ast.parse(target_source)
@@ -1212,7 +1323,11 @@ def merge_api_class_methods(
     groups = {group.name: group for group in api_class.methods}
     indices: dict[str, int] = {}
     replacements: list[
-        tuple[ast.FunctionDef | ast.AsyncFunctionDef, ast.FunctionDef | ast.AsyncFunctionDef]
+        tuple[
+            ast.FunctionDef | ast.AsyncFunctionDef,
+            ast.FunctionDef | ast.AsyncFunctionDef,
+            bool,
+        ]
     ] = []
     for node in target_class.body:
         if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
@@ -1224,28 +1339,28 @@ def merge_api_class_methods(
         indices[node.name] = signature_index + 1
         if signature_index >= len(group.signatures):
             continue
+        signature = group.signatures[signature_index]
         replacement = rewritten_api_method(
             node,
             group,
-            group.signatures[signature_index],
+            signature,
         )
-        if ast.dump(node, include_attributes=False) == ast.dump(
-            replacement,
-            include_attributes=False,
-        ):
+        if callable_declaration_shape(node) == callable_declaration_shape(replacement):
             continue
-        replacements.append(
-            (
-                node,
-                replacement,
-            )
+        preserve_body = (
+            api_class.origin == ApiOrigin.BINDING_SPEC
+            and ast.get_docstring(node, clean=True) == signature.docstring
         )
+        replacements.append((node, replacement, preserve_body))
 
     if not replacements:
         return target_source
     merged = target_source
-    for original, replacement in reversed(replacements):
-        merged = replace_source_node(merged, original, replacement)
+    for original, replacement, preserve_body in reversed(replacements):
+        if preserve_body:
+            merged = replace_source_callable_declaration(merged, original, replacement)
+        else:
+            merged = replace_source_node(merged, original, replacement)
     return merged
 
 
@@ -1255,7 +1370,7 @@ def merge_api_class_attributes(
 ) -> str:
     """Replace curated class assignments with their normalized API-model form."""
 
-    if not api_class.attributes or api_class.origin == ApiOrigin.BINDING_SPEC:
+    if not api_class.attributes:
         return target_source
 
     target_tree = ast.parse(target_source)
