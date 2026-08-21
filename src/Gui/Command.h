@@ -1010,6 +1010,12 @@ public:
      */
     Command* getCommandByName(const char* sName) const;
 
+    /** Returns true if the command exists and is active.
+     *  If the command doesn't exist or is inactive false
+     *  is returned.
+     */
+    bool isActive(const char* sName) const;
+
     /**
      * Runs the command
      */
