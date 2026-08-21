@@ -214,6 +214,17 @@ public:
         NoToggleVisibility = false
     };
 
+    /**
+     * Defines how an object participates in the alternate visible space.
+     * The mode is evaluated after the normal scene has been restored.
+     */
+    enum class VisibleSpaceMode
+    {
+        Complement,
+        Show,
+        Hide
+    };
+
     /// constructor.
     ViewProvider();
 
@@ -623,6 +634,27 @@ public:
     virtual void show();
     /// checks whether the view provider is visible or not
     virtual bool isShow() const;
+    /**
+     * Checks whether the view provider is visible in the active 3D scene.
+     *
+     * Unlike isShow(), this accounts for visibility switches owned by parent
+     * view providers and by the view provider's scene graph.
+     */
+    bool isVisibleInScene() const;
+    /// Returns this object's participation mode in the alternate visible space.
+    virtual VisibleSpaceMode getVisibleSpaceMode() const
+    {
+        return VisibleSpaceMode::Complement;
+    }
+    /**
+     * Sets visibility in the current scene without changing view object
+     * properties. This is intended for temporary GUI presentation states.
+     */
+    void setSceneVisible(bool visible);
+    /// Returns the raw scene visibility switch state.
+    int getSceneVisibilityState() const;
+    /// Sets a state obtained from getSceneVisibilityState().
+    void setSceneVisibilityState(int state);
     void setVisible(bool);
     bool isVisible() const;
     void setLinkVisible(bool);
