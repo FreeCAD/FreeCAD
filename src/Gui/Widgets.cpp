@@ -24,7 +24,6 @@
 #include <QCollator>
 #include <QColorDialog>
 #include <QDebug>
-#include <QDesktopServices>
 #include <QDialogButtonBox>
 #include <QDrag>
 #include <QEventLoop>
@@ -57,6 +56,7 @@
 #include "Tools.h"
 #include "Dialogs/ui_DlgTreeWidget.h"
 #include "MainWindow.h"
+#include "OnlineDocumentation.h"
 
 using namespace Gui;
 using namespace App;
@@ -825,7 +825,8 @@ void Gui::UrlLabel::setLaunchExternal(bool l)
 void UrlLabel::mouseReleaseEvent(QMouseEvent*)
 {
     if (_launchExternal) {
-        QDesktopServices::openUrl(this->_url);
+        const auto url = this->_url.toUtf8();
+        OpenURLInBrowser(url.constData());
     }
     else {
         // Someone else will deal with it...
