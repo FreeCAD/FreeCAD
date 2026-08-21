@@ -89,6 +89,19 @@ def fenced_python(lines: list[str]) -> str:
     return f"```python\n{body}\n```"
 
 
+def escape_mdx_text(text: str) -> str:
+    """Escape syntax-looking prose so docstrings cannot become MDX code."""
+
+    escaped_lines: list[str] = []
+    escaped = text.replace("{", r"\{").replace("}", r"\}").replace("<", "&lt;").replace(">", "&gt;")
+    for line in escaped.splitlines():
+        stripped = line.lstrip()
+        if stripped.startswith(("import ", "export ")):
+            line = line[: len(line) - len(stripped)] + "&#105;" + stripped[1:]
+        escaped_lines.append(line)
+    return "\n".join(escaped_lines)
+
+
 def summary_text(text: str | None) -> str | None:
     if not text:
         return None
@@ -119,7 +132,7 @@ def render_attribute(attribute: ApiAttribute) -> str:
         parts.append(f" = {attribute.value}")
     line = f"- `{''.join(parts)}`"
     if attribute.doc:
-        line += f": {attribute.doc}"
+        line += f": {escape_mdx_text(attribute.doc)}"
     return line
 
 
@@ -150,7 +163,7 @@ def render_callable_group(
 ) -> list[str]:
     lines = [f"#### `{group.name}`", ""]
     if group.doc:
-        lines.append(group.doc)
+        lines.append(escape_mdx_text(group.doc))
         lines.append("")
     if group.overload:
         for signature in group.signatures:
@@ -170,7 +183,7 @@ def render_class_summary(klass: ApiClass) -> str:
     summary = f"- [`{klass.name}`]({link})"
     doc = summary_text(klass.doc)
     if doc:
-        summary += f": {doc}"
+        summary += f": {escape_mdx_text(doc)}"
     return summary
 
 
@@ -179,7 +192,7 @@ def render_module_summary(module: ApiModule) -> str:
     summary = f"- [`{module.name}`]({link})"
     doc = summary_text(module.doc)
     if doc:
-        summary += f": {doc}"
+        summary += f": {escape_mdx_text(doc)}"
     return summary
 
 
@@ -244,7 +257,7 @@ def render_module_page(
     lines.append(f"# {module.name}")
     lines.append("")
     if module.doc:
-        lines.append(module.doc)
+        lines.append(escape_mdx_text(module.doc))
         lines.append("")
 
     render_page_metadata(
@@ -311,7 +324,7 @@ def render_class_page(
     lines.append(f"# {klass.name}")
     lines.append("")
     if klass.doc:
-        lines.append(klass.doc)
+        lines.append(escape_mdx_text(klass.doc))
         lines.append("")
 
     render_page_metadata(
