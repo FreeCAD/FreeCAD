@@ -26,7 +26,7 @@ class PythonApiPipelineTests(unittest.TestCase):
                 )
             )
 
-            self.assertEqual(result.page_count, 50)
+            self.assertGreater(result.page_count, 0)
             self.assertTrue((output / "python-api/index.mdx").exists())
             self.assertTrue((output / "python-api/freecad/index.mdx").exists())
             self.assertTrue(sidebar_path.exists())

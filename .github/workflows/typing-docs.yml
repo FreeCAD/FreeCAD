@@ -12,22 +12,14 @@ on:
       - ".github/workflows/typing-docs.yml"
       - "pixi.lock"
       - "pixi.toml"
-      - "src/App/**"
-      - "src/Base/**"
-      - "src/Gui/**"
-      - "src/Mod/Part/App/**"
-      - "src/Tools/typing/**"
+      - "src/**"
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - ".github/workflows/typing-docs.yml"
       - "pixi.lock"
       - "pixi.toml"
-      - "src/App/**"
-      - "src/Base/**"
-      - "src/Gui/**"
-      - "src/Mod/Part/App/**"
-      - "src/Tools/typing/**"
+      - "src/**"
 
 permissions:
   contents: read
@@ -61,7 +53,7 @@ jobs:
         working-directory: src/Tools/typing/site
         run: npm ci
 
-      - name: Run C++ API contract tests
+      - name: Run typing API contract tests
         run: pixi run python -m unittest discover -s src/Tools/typing/tests -v
 
       - name: Generate API documentation
