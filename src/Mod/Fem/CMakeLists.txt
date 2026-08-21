@@ -1,3 +1,6 @@
+if(OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+    add_definitions(-DOCCT_NO_DEPRECATED)
+endif()
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)

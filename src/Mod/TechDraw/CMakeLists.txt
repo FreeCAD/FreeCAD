@@ -1,3 +1,6 @@
+if(OCC_VERSION_STRING VERSION_GREATER_EQUAL "8.0.0")
+    add_definitions(-DOCCT_NO_DEPRECATED)
+endif()
 
 add_definitions(-DMOD_TECHDRAW_HANDLE_FACES=1)
 
