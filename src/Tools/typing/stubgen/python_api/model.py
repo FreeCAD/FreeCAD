@@ -20,7 +20,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 
-from .signature_parser import CallableSignature
+from ..signature_parser import CallableSignature
 
 
 class ApiOrigin(str, Enum):

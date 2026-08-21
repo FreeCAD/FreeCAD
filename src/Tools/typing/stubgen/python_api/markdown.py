@@ -10,11 +10,10 @@ page structure and leaves Astro configuration to the docs site.
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 import shutil
 
-from .api_model import (
+from .model import (
     ApiAttribute,
     ApiCallableGroup,
     ApiClass,
@@ -208,8 +207,10 @@ def frontmatter(
 ) -> str:
     lines = ["---", f"title: {title}"]
     if description:
-        escaped = summary_text(description).replace('"', '\\"')
-        lines.append(f'description: "{escaped}"')
+        summary = summary_text(description)
+        if summary is not None:
+            escaped = summary.replace('"', '\\"')
+            lines.append(f'description: "{escaped}"')
     if slug is not None:
         lines.append(f"slug: {slug}")
     if sidebar_label is not None or sidebar_order is not None or sidebar_hidden:

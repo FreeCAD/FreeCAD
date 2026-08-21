@@ -20,9 +20,6 @@ from pathlib import Path
 import subprocess
 import sys
 
-from .api_extract import extract_curated_api_model
-from .api_markdown import write_api_markdown_docs
-from .api_starlight import write_starlight_sidebar_fragment
 from .cpp_api.pipeline import CppDocsOptions, generate_cpp_docs
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
@@ -38,6 +35,7 @@ from .model import (
     DEFAULT_STUBS_OUT_DIR,
 )
 from .parsing import iter_source_files
+from .python_api.pipeline import PythonDocsOptions, generate_python_docs
 from .source_inputs import (
     collect_binding_classes,
     load_stub_signature_overrides,
@@ -350,15 +348,17 @@ def run_generate_docs(args: argparse.Namespace) -> int:
         return 2
 
     out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
-    model = extract_curated_api_model(root, source_dir)
-    page_count = write_api_markdown_docs(
-        out_dir,
-        model,
-        source_base_url=args.source_base_url,
-    )
     sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
-    sidebar_path = write_starlight_sidebar_fragment(sidebar_out, model)
-    print(f"Wrote {page_count} MDX API docs and {display_path(root, sidebar_path)}")
+    result = generate_python_docs(
+        PythonDocsOptions(
+            root=root,
+            source_dir=source_dir,
+            out_dir=out_dir,
+            source_base_url=args.source_base_url,
+            sidebar_out=sidebar_out,
+        )
+    )
+    print(f"Wrote {result.page_count} MDX API docs and {display_path(root, result.sidebar_path)}")
     return 0
 
 

@@ -16,8 +16,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .api_markdown import PYTHON_API_ROOT, child_modules, module_slug_parts
-from .api_model import ApiClass, ApiModel, ApiModule
+from .markdown import PYTHON_API_ROOT, child_modules, module_slug_parts
+from .model import ApiClass, ApiModel, ApiModule
 
 
 def module_slug(module_name: str) -> str:

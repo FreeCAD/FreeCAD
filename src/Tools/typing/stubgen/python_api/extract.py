@@ -20,7 +20,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .api_model import (
+from .model import (
     ApiAttribute,
     ApiCallableGroup,
     ApiClass,
@@ -29,13 +29,13 @@ from .api_model import (
     ApiOrigin,
     ApiSourceLocation,
 )
-from .parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
-from .signature_parser import (
+from ..parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
+from ..signature_parser import (
     CallableSignature,
     group_callable_definitions,
     parse_callable_group,
 )
-from .source_inputs import parse_type_stub_target
+from ..source_inputs import parse_type_stub_target
 
 
 @dataclass
@@ -46,9 +46,11 @@ class ApiModuleBuilder:
     doc: str | None = None
     origin: ApiOrigin = ApiOrigin.GENERATED
     location: ApiSourceLocation | None = None
-    functions: dict[str, ApiCallableGroup] = field(default_factory=dict)
-    classes: dict[str, ApiClass] = field(default_factory=dict)
-    attributes: dict[str, ApiAttribute] = field(default_factory=dict)
+    functions: dict[str, ApiCallableGroup] = field(
+        default_factory=lambda: dict[str, ApiCallableGroup]()
+    )
+    classes: dict[str, ApiClass] = field(default_factory=lambda: dict[str, ApiClass]())
+    attributes: dict[str, ApiAttribute] = field(default_factory=lambda: dict[str, ApiAttribute]())
 
 
 def module_stub_name(path: Path) -> str:
@@ -106,7 +108,7 @@ def annotation_value_text(node: ast.Assign | ast.AnnAssign) -> tuple[str | None,
         annotation = ast.unparse(node.annotation)
         if node.value is not None:
             value = ast.unparse(node.value)
-    elif node.value is not None:
+    else:
         value = ast.unparse(node.value)
     return annotation, value
 
