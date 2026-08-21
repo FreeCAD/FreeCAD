@@ -60,7 +60,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="695"/>
       <source>Modify Knot Multiplicity</source>
-      <translation type="unfinished">Modify Knot Multiplicity</translation>
+      <translation>Modificar a multiplicidade do nó</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="696"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="116"/>
       <source>Geometry to B-Spline</source>
-      <translation type="unfinished">Geometry to B-Spline</translation>
+      <translation>Geometria para B-Spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="117"/>
       <source>Converts the selected geometry to B-splines</source>
-      <translation type="unfinished">Converts the selected geometry to B-splines</translation>
+      <translation>Converte a geometria selecionada para B-splines</translation>
     </message>
   </context>
   <context>
@@ -109,7 +109,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="271"/>
       <source>Decrease B-Spline Degree</source>
-      <translation type="unfinished">Decrease B-Spline Degree</translation>
+      <translation>Diminuir grau da B-Spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="272"/>
@@ -122,7 +122,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="550"/>
       <source>Decrease Knot Multiplicity</source>
-      <translation type="unfinished">Decrease Knot Multiplicity</translation>
+      <translation>Diminuir multiplicidade do nó</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="551"/>
@@ -135,7 +135,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="194"/>
       <source>Increase B-Spline Degree</source>
-      <translation type="unfinished">Increase B-Spline Degree</translation>
+      <translation>Aumentar grau da B-Spline</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="195"/>
@@ -148,7 +148,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="393"/>
       <source>Increase Knot Multiplicity</source>
-      <translation type="unfinished">Increase Knot Multiplicity</translation>
+      <translation>Aumentar multiplicidade do nó</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="394"/>
@@ -161,12 +161,12 @@
     <message>
       <location filename="../../Command.cpp" line="653"/>
       <source>Attach Sketch</source>
-      <translation type="unfinished">Attach Sketch</translation>
+      <translation>Anexar esboço</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="654"/>
       <source>Attaches a sketch to the selected geometry element</source>
-      <translation type="unfinished">Attaches a sketch to the selected geometry element</translation>
+      <translation>Anexa um esboço ao elemento geométrico selecionado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="745"/>
@@ -180,25 +180,23 @@
       <location filename="../../Command.cpp" line="1162"/>
       <source>Skipping external geometry #%1
 </source>
-      <translation type="unfinished">Skipping external geometry #%1
-</translation>
+      <translation>Ignorando geometria externa #%1</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1205"/>
       <source>External geometry '%1' is out of scope:
 </source>
-      <translation type="unfinished">External geometry '%1' is out of scope:
-</translation>
+      <translation>A geometria externa '%1' está fora do escopo:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1256"/>
       <source>Merge Sketches</source>
-      <translation type="unfinished">Merge Sketches</translation>
+      <translation>Mesclar esboços</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Creates a new sketch by merging at least 2 selected sketches</source>
-      <translation type="unfinished">Creates a new sketch by merging at least 2 selected sketches</translation>
+      <translation>Cria um novo esboço mesclando pelo menos 2 esboços selecionados</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1272"/>
@@ -208,21 +206,19 @@
     <message>
       <location filename="../../Command.cpp" line="1273"/>
       <source>Select at least 2 sketches</source>
-      <translation type="unfinished">Select at least 2 sketches</translation>
+      <translation>Selecione pelo menos 2 esboços</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1362"/>
       <source>Copied %1 of %2 constraints from '%3'. Some were skipped.
 </source>
-      <translation type="unfinished">Copied %1 of %2 constraints from '%3'. Some were skipped.
-</translation>
+      <translation>Copiadas %1 de %2 restrições de '%3'. Algumas foram ignoradas.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1378"/>
       <source>Skipping constraint #%1 of '%2': references unmerged geometry.
 </source>
-      <translation type="unfinished">Skipping constraint #%1 of '%2': references unmerged geometry.
-</translation>
+      <translation>Ignorando restrição #%1 de '%2': referencia geometria não mesclada.</translation>
     </message>
   </context>
   <context>
@@ -230,16 +226,15 @@
     <message>
       <location filename="../../Command.cpp" line="949"/>
       <source>Mirror Sketch</source>
-      <translation type="unfinished">Mirror Sketch</translation>
+      <translation>Espelhar esboço</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="950"/>
       <source>Creates a new mirrored sketch for each selected sketch
 by using the X or Y axes, or the origin point,
 as mirroring reference</source>
-      <translation type="unfinished">Creates a new mirrored sketch for each selected sketch
-by using the X or Y axes, or the origin point,
-as mirroring reference</translation>
+      <translation>Cria um novo esboço espelhado para cada esboço
+selecionado usando os eixos X ou Y, ou o ponto de origem, como referência de espelhamento</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="967"/>
@@ -249,7 +244,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="968"/>
       <source>Select at least 1 sketch</source>
-      <translation type="unfinished">Select at least 1 sketch</translation>
+      <translation>Selecione pelo menos 1 esboço</translation>
     </message>
   </context>
   <context>
@@ -270,7 +265,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2025"/>
       <source>Rectangular Array</source>
-      <translation type="unfinished">Rectangular Array</translation>
+      <translation>Matriz retangular</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2026"/>
@@ -283,7 +278,7 @@ as mirroring reference</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="89"/>
       <source>Switch Virtual Space</source>
-      <translation type="unfinished">Switch Virtual Space</translation>
+      <translation>Alternar espaço virtual</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="90"/>
@@ -296,14 +291,13 @@ as mirroring reference</translation>
     <message>
       <location filename="../../Command.cpp" line="909"/>
       <source>Validate Sketch</source>
-      <translation type="unfinished">Validate Sketch</translation>
+      <translation>Validar esboço</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="910"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
-      <translation type="unfinished">Validates a sketch by checking for missing coincidences,
-invalid constraints, and degenerate geometry</translation>
+      <translation>Valida um esboço verificando coincidências ausentes, restrições inválidas e geometria degenerada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="926"/>
@@ -313,7 +307,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="927"/>
       <source>Select only 1 sketch.</source>
-      <translation type="unfinished">Select only 1 sketch.</translation>
+      <translation>Selecione apenas 1 esboço</translation>
     </message>
   </context>
   <context>
@@ -482,7 +476,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11085"/>
       <source>Add Group constraint</source>
-      <translation type="unfinished">Add Group constraint</translation>
+      <translation>Adicionar restrição de grupo</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11509"/>
@@ -526,12 +520,12 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="5442"/>
       <location filename="../../CommandConstraints.cpp" line="5819"/>
       <source>Add point to line distance constraint</source>
-      <translation type="unfinished">Add point to line distance constraint</translation>
+      <translation>Adicionar restrição de distância de ponto a linha</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5472"/>
       <source>Add point to circle distance constraint</source>
-      <translation type="unfinished">Add point to circle distance constraint</translation>
+      <translation>Adicionar restrição de distância de ponto a círculo</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6060"/>
@@ -881,7 +875,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1250"/>
       <source>Delete constraints</source>
-      <translation type="unfinished">Delete constraints</translation>
+      <translation>Excluir restrições</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1370"/>
@@ -969,7 +963,7 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../DrawSketchHandlerLineSet.h" line="940"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1271"/>
       <source>Add sketch polyline</source>
-      <translation type="unfinished">Add sketch polyline</translation>
+      <translation>Adicionar polilinha no esboço</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="249"/>
@@ -980,29 +974,29 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../DrawSketchHandler.cpp" line="1596"/>
       <location filename="../../DrawSketchDefaultHandler.h" line="717"/>
       <source>Add Auto-Constraints</source>
-      <translation type="unfinished">Add Auto-Constraints</translation>
+      <translation>Adicionar restrições automáticas</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="96"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="633"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="780"/>
       <source>Add Sketch B-Spline</source>
-      <translation type="unfinished">Add Sketch B-Spline</translation>
+      <translation>Adicionar B-Spline no esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="170"/>
       <source>Add sketch arc of parabola</source>
-      <translation type="unfinished">Add sketch arc of parabola</translation>
+      <translation>Adicionar arco de parábola no esboço</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="130"/>
       <source>Add sketch Text</source>
-      <translation type="unfinished">Add sketch Text</translation>
+      <translation>Adicionar texto no esboço</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.cpp" line="114"/>
       <source>Modify sketch text constraint</source>
-      <translation type="unfinished">Modify sketch text constraint</translation>
+      <translation>Modificar restrição de texto no esboço</translation>
     </message>
   </context>
   <context>
@@ -1164,7 +1158,7 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="178"/>
       <source>Invalid Selection</source>
-      <translation type="unfinished">Invalid Selection</translation>
+      <translation>Seleção inválida</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="179"/>
@@ -1179,13 +1173,13 @@ invalid constraints, and degenerate geometry</translation>
     <message>
       <location filename="../../Command.cpp" line="198"/>
       <source>Cannot map the sketch to the selected object. %1.</source>
-      <translation type="unfinished">Cannot map the sketch to the selected object. %1.</translation>
+      <translation>Não é possível mapear o esboço para o objeto selecionado. %1.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="205"/>
       <location filename="../../Command.cpp" line="774"/>
       <source>Do not attach</source>
-      <translation type="unfinished">Do not attach</translation>
+      <translation>Não anexar</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="453"/>
@@ -1350,7 +1344,7 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandAlterGeometry.cpp" line="232"/>
       <location filename="../../CommandAlterGeometry.cpp" line="243"/>
       <source>Select edges from the sketch</source>
-      <translation type="unfinished">Select edges from the sketch</translation>
+      <translation>Selecionar arestas do esboço</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="111"/>
@@ -1480,31 +1474,31 @@ invalid constraints, and degenerate geometry</translation>
       <location filename="../../CommandConstraints.cpp" line="10584"/>
       <location filename="../../CommandConstraints.cpp" line="10695"/>
       <source>Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</source>
-      <translation type="unfinished">Select two points and a symmetry line, two points and a symmetry point, an element and a symmetry line or an element and a symmetry point from the sketch.</translation>
+      <translation>Selecione dois pontos e uma linha de simetria, dois pontos e um ponto de simetria, um elemento e uma linha de simetria ou um elemento e um ponto de simetria do esboço.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10451"/>
       <location filename="../../CommandConstraints.cpp" line="10630"/>
       <location filename="../../CommandConstraints.cpp" line="10770"/>
       <source>Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint because the first selected element has no endpoints. Select a line or an open curve instead.</translation>
+      <translation>Não é possível adicionar uma restrição de simetria porque o primeiro elemento selecionado não possui pontos de extremidade. Em vez disso, selecione uma linha ou uma curva aberta.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10462"/>
       <location filename="../../CommandConstraints.cpp" line="10780"/>
       <source>Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint because the second selected element is not a line. Select a line or an axis instead.</translation>
+      <translation>Não é possível adicionar uma restrição de simetria porque o segundo elemento selecionado não é uma linha. Em vez disso, selecione uma linha ou um eixo.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10475"/>
       <location filename="../../CommandConstraints.cpp" line="10615"/>
       <source>Cannot add a symmetry constraint between an element and its end points!</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between an element and its end points!</translation>
+      <translation>Não é possível adicionar uma restrição de simetria entre um elemento e seus próprios pontos de extremidade!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10760"/>
       <source>Cannot add a symmetry constraint between an element and itself.</source>
-      <translation type="unfinished">Cannot add a symmetry constraint between an element and itself.</translation>
+      <translation>Não é possível adicionar uma restrição de simetria entre um elemento e ele mesmo.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10840"/>
@@ -1747,49 +1741,49 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../CommandConstraints.cpp" line="509"/>
       <source>One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</source>
-      <translation type="unfinished">One or two point-on-object constraints were deleted, since the latest constraint being applied internally applies point-on-object as well.</translation>
+      <translation>Uma ou duas restrições de ponto em objeto foram excluídas, pois a última restrição aplicada já inclui a restrição de ponto em objeto internamente.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1039"/>
       <source>Keep notifying about constraint substitutions</source>
-      <translation type="unfinished">Keep notifying about constraint substitutions</translation>
+      <translation>Continuar notificando sobre substituições de restrições</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1063"/>
       <source>Unexpected error. More information may be available in the report view.</source>
-      <translation type="unfinished">Unexpected error. More information may be available in the report view.</translation>
+      <translation>Erro inesperado. Mais informações podem estar disponíveis na visualização do relatório.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1113"/>
       <source>Only the sketch and its support are allowed to be selected</source>
-      <translation type="unfinished">Only the sketch and its support are allowed to be selected</translation>
+      <translation>Apenas o esboço e seu suporte podem ser selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1124"/>
       <source>Only the sketch and its support may be selected</source>
-      <translation type="unfinished">Only the sketch and its support may be selected</translation>
+      <translation>Apenas o esboço e seu suporte podem ser selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1136"/>
       <source>Only the sketch and its support  may be selected</source>
-      <translation type="unfinished">Only the sketch and its support  may be selected</translation>
+      <translation>Apenas o esboço e seu suporte podem ser selecionados</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3790"/>
       <location filename="../../CommandConstraints.cpp" line="4559"/>
       <location filename="../../CommandConstraints.cpp" line="4611"/>
       <source>The selected edge already has a block constraint!</source>
-      <translation type="unfinished">The selected edge already has a block constraint!</translation>
+      <translation>A aresta selecionada já possui uma restrição de bloco!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3866"/>
       <source>The selected items cannot be constrained horizontally or vertically!</source>
-      <translation type="unfinished">The selected items cannot be constrained horizontally or vertically!</translation>
+      <translation>Os itens selecionados não podem ser restringidos horizontalmente ou verticalmente!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4523"/>
       <source>A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</source>
-      <translation type="unfinished">A block constraint cannot be added if the sketch is unsolved or there are redundant and conflicting constraints.</translation>
+      <translation>Uma restrição de bloco não pode ser adicionada se o esboço não estiver resolvido ou se houver restrições redundantes e conflitantes.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4793"/>
@@ -1811,7 +1805,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../CommandConstraints.cpp" line="8065"/>
       <source>Geometry cannot be tangent to itself</source>
-      <translation type="unfinished">Geometry cannot be tangent to itself</translation>
+      <translation>A geometria não pode ser tangente a si mesma</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8457"/>
@@ -1910,7 +1904,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../CommandConstraints.cpp" line="11057"/>
       <source>No geometries selected</source>
-      <translation type="unfinished">No geometries selected</translation>
+      <translation>Nenhuma geometria selecionada</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11293"/>
@@ -1968,22 +1962,22 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location filename="../../CommandSketcherBSpline.cpp" line="424"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="581"/>
       <source>The selection comprises more than one item. Select just one knot.</source>
-      <translation type="unfinished">The selection comprises more than one item. Select just one knot.</translation>
+      <translation>A seleção contém mais de um item. Selecione apenas um nó.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1003"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation type="unfinished">Nothing is selected. Select a B-spline.</translation>
+      <translation>Nada selecionado. Selecione uma B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1024"/>
       <source>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</source>
-      <translation type="unfinished">Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</translation>
+      <translation>Selecione uma B-spline para inserir um nó (não um nó nela). Se a curva não for uma B-spline, converta-a em uma primeiro.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1082"/>
       <source>Nothing is selected. Select end points of curves.</source>
-      <translation type="unfinished">Nothing is selected. Select end points of curves.</translation>
+      <translation>Nada selecionado. Selecione os pontos finais das curvas.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1110"/>
@@ -2054,12 +2048,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2194"/>
       <source>Delete all geometry and constraints?</source>
-      <translation type="unfinished">Delete all geometry and constraints?</translation>
+      <translation>Excluir toda a geometria e restrições?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2258"/>
       <source>Delete all the constraints in the sketch?</source>
-      <translation type="unfinished">Delete all the constraints in the sketch?</translation>
+      <translation>Excluir todas as restrições do esboço?</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2387"/>
@@ -2076,12 +2070,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location filename="../../TaskSketcherElements.cpp" line="675"/>
       <location filename="../../TaskSketcherElements.cpp" line="725"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation/>
+      <translation>Atualmente não há suporte para mover geometria externa para outra camada visual. A geometria externa será omitida.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1056"/>
       <source>Polyline Parameters</source>
-      <translation type="unfinished">Polyline Parameters</translation>
+      <translation>Parâmetros da polilinha</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="91"/>
@@ -2091,28 +2085,28 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="244"/>
       <source>Text parameters</source>
-      <translation type="unfinished">Text parameters</translation>
+      <translation>Parâmetros do texto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="725"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="735"/>
       <location filename="../../DrawSketchHandlerText.h" line="743"/>
       <source>%1 pick bottom-left point</source>
-      <translation type="unfinished">%1 pick bottom-left point</translation>
+      <translation>%1 Escolher ponto inferior esquerdo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="739"/>
       <source>%1 pick top-left point</source>
-      <translation type="unfinished">%1 pick top-left point</translation>
+      <translation>%1 Escolher ponto superior esquerdo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="747"/>
       <source>%1 pick bottom-right point</source>
-      <translation type="unfinished">%1 pick bottom-right point</translation>
+      <translation>%1 Escolher ponto superior esquerdo</translation>
     </message>
   </context>
   <context>
@@ -2311,7 +2305,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="661"/>
       <source>Toggle Driving/Reference</source>
-      <translation type="unfinished">Toggle Driving/Reference</translation>
+      <translation>Alternar restrição de Condução/Referência</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="665"/>
@@ -2326,22 +2320,22 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="669"/>
       <source>Show Constraints</source>
-      <translation type="unfinished">Show Constraints</translation>
+      <translation>Mostrar restrições</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="671"/>
       <source>Hide Constraints</source>
-      <translation type="unfinished">Hide Constraints</translation>
+      <translation>Ocultar restrições</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="688"/>
       <source>Center Sketch</source>
-      <translation type="unfinished">Center Sketch</translation>
+      <translation>Centralizar esboço</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="699"/>
       <source>Swap Constraint Names</source>
-      <translation type="unfinished">Swap Constraint Names</translation>
+      <translation>Trocar nomes das restrições</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="681"/>
@@ -2386,7 +2380,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="146"/>
       <source>Equal</source>
-      <translation type="unfinished">Equal</translation>
+      <translation>Igual</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="149"/>
@@ -2406,12 +2400,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="158"/>
       <source>DistanceX</source>
-      <translation type="unfinished">DistanceX</translation>
+      <translation>Distância X</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="161"/>
       <source>DistanceY</source>
-      <translation type="unfinished">DistanceY</translation>
+      <translation>Distância Y</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="164"/>
@@ -2436,7 +2430,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="176"/>
       <source>Snell</source>
-      <translation type="unfinished">Snell</translation>
+      <translation>Snell</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="179"/>
@@ -2446,12 +2440,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="188"/>
       <source>Constraint</source>
-      <translation type="unfinished">Constraint</translation>
+      <translation>Restrição</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="656"/>
       <source>Edit Value</source>
-      <translation type="unfinished">Edit Value</translation>
+      <translation>Editar valor</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="691"/>
@@ -2466,7 +2460,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
       <source>Delete by Filter</source>
-      <translation type="unfinished">Delete by Filter</translation>
+      <translation>Excluir por filtro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="811"/>
@@ -2484,7 +2478,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../EditDatumDialog.cpp" line="136"/>
       <source>Insert Angle</source>
-      <translation type="unfinished">Insert Angle</translation>
+      <translation>Inserir ângulo</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="138"/>
@@ -2495,7 +2489,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location filename="../../EditDatumDialog.cpp" line="144"/>
       <location filename="../../EditDatumDialog.cpp" line="247"/>
       <source>Insert Radius</source>
-      <translation type="unfinished">Insert Radius</translation>
+      <translation>Inserir raio</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="146"/>
@@ -2507,7 +2501,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location filename="../../EditDatumDialog.cpp" line="153"/>
       <location filename="../../EditDatumDialog.cpp" line="253"/>
       <source>Insert Diameter</source>
-      <translation type="unfinished">Insert Diameter</translation>
+      <translation>Inserir diâmetro</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="155"/>
@@ -2518,7 +2512,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../EditDatumDialog.cpp" line="162"/>
       <source>Insert Weight</source>
-      <translation type="unfinished">Insert Weight</translation>
+      <translation>Inserir peso</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="163"/>
@@ -2529,12 +2523,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location filename="../../EditDatumDialog.cpp" line="169"/>
       <source>Refractive Index Ratio</source>
       <comment>Constraint_SnellsLaw</comment>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>Razão do índice de refração</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="177"/>
       <source>Insert Length</source>
-      <translation type="unfinished">Insert Length</translation>
+      <translation>Inserir comprimento</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="179"/>
@@ -2550,7 +2544,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../CommandConstraints.cpp" line="10930"/>
       <source>Refractive Index Ratio</source>
-      <translation type="unfinished">Refractive Index Ratio</translation>
+      <translation>Razão do índice de refração</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10931"/>
@@ -2666,57 +2660,57 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>Restrição de igualdade</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>Restrição de coincidência</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Point-On-Object Constraint</source>
-      <translation type="unfinished">Point-On-Object Constraint</translation>
+      <translation>Restrição de ponto sobre objeto</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="85"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>Restrição de simetria</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="91"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>Travar posição</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="93"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Dimensão horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="95"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Dimensão vertical</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="99"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Dimensão de raio</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="101"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Dimensão de diâmetro</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="97"/>
       <source>Distance Dimension</source>
-      <translation type="unfinished">Distance Dimension</translation>
+      <translation>Dimensão de distância</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="89"/>
       <source>Group Constraint</source>
-      <translation type="unfinished">Group Constraint</translation>
+      <translation>Restrição de grupo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="103"/>
@@ -2726,12 +2720,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="105"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Dimensão de ângulo</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="107"/>
       <source>Toggle Construction Geometry</source>
-      <translation type="unfinished">Toggle Construction Geometry</translation>
+      <translation>Alternar geometria de construção</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="109"/>
@@ -2756,7 +2750,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="763"/>
       <source>Convert to geometries</source>
-      <translation type="unfinished">Convert to geometries</translation>
+      <translation>Converter em geometrias</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="888"/>
@@ -2812,12 +2806,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../InsertDatum.ui" line="23"/>
       <source>Insert Datum</source>
-      <translation type="unfinished">Insert Datum</translation>
+      <translation>Inserir elemento de referência</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="31"/>
       <source>Datum</source>
-      <translation type="unfinished">Datum</translation>
+      <translation>Elemento de referência</translation>
     </message>
     <message>
       <location filename="../../InsertDatum.ui" line="48"/>
@@ -2865,7 +2859,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
       <location filename="../../SketchMirrorDialog.ui" line="14"/>
       <location filename="../../SketchMirrorDialog.ui" line="20"/>
       <source>Select Mirror Axis or Point</source>
-      <translation type="unfinished">Select Mirror Axis or Point</translation>
+      <translation>Selecionar eixo ou ponto de espelhamento</translation>
     </message>
     <message>
       <location filename="../../SketchMirrorDialog.ui" line="26"/>
@@ -2888,12 +2882,12 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>Escolher orientação</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="20"/>
       <source>Sketch Orientation</source>
-      <translation type="unfinished">Sketch Orientation</translation>
+      <translation>Orientação do esboço</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
@@ -2931,7 +2925,7 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="17"/>
       <source>Create Array</source>
-      <translation type="unfinished">Create Array</translation>
+      <translation>Criar matriz</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="25"/>
@@ -2961,14 +2955,13 @@ Combinações possíveis: duas curvas; um ponto de extremidade e uma curva; dois
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>Constrains each element in the array with respect to the others using construction lines</source>
-      <translation type="unfinished">Constrains each element in the array with respect to the others using construction lines</translation>
+      <translation>Restringir cada elemento do padrão em relação aos outros usando linhas de construção</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="115"/>
       <source>Substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is reflected on copies</source>
-      <translation type="unfinished">Substitutes dimensional constraints by geometric constraints
-in the copies, so that a change in the original element is reflected on copies</translation>
+      <translation>Substitui restrições dimensionais por restrições geométricas nas cópias, de modo que uma alteração no elemento original seja refletida nas cópias</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
@@ -2986,7 +2979,7 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="17"/>
       <source>Create Regular Polygon</source>
-      <translation type="unfinished">Create Regular Polygon</translation>
+      <translation>Criar polígono regular</translation>
     </message>
     <message>
       <location filename="../../SketcherRegularPolygonDialog.ui" line="25"/>
@@ -3015,12 +3008,12 @@ in the copies, so that a change in the original element is reflected on copies</
     <message>
       <location filename="../../SketcherSettings.ui" line="20"/>
       <source>Task Panel Widgets</source>
-      <translation type="unfinished">Task Panel Widgets</translation>
+      <translation>Widgets do Painel de Tarefas</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
       <source>Dragging Performance</source>
-      <translation type="unfinished">Dragging Performance</translation>
+      <translation>Desempenho de arraste</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="51"/>
@@ -3037,27 +3030,27 @@ Necessita sair e reentrar no modo de edição para ter efeito.</translation>
     <message>
       <location filename="../../SketcherSettings.ui" line="107"/>
       <source>Automatically removes newly added redundant constraints</source>
-      <translation type="unfinished">Automatically removes newly added redundant constraints</translation>
+      <translation>Remove automaticamente novas restrições redundantes adicionadas</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="110"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>Remover automaticamente restrições redundantes</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="126"/>
       <source>Allows to leave the sketch edit mode by pressing the Esc key</source>
-      <translation type="unfinished">Allows to leave the sketch edit mode by pressing the Esc key</translation>
+      <translation>Permite sair do modo de edição de esboço pressionando a tecla Esc</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="129"/>
       <source>Esc key can leave sketch edit mode</source>
-      <translation type="unfinished">Esc key can leave sketch edit mode</translation>
+      <translation>Esc para sair do modo de edição do esboço</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="148"/>
       <source>Notify about automatic constraint substitutions</source>
-      <translation type="unfinished">Notify about automatic constraint substitutions</translation>
+      <translation>Notificar sobre substituições automáticas de restrições</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="164"/>
@@ -3346,7 +3339,7 @@ Suporta todos os sistemas de unidades, exceto 'US customary' e 'Building US/Euro
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="379"/>
       <source>Keeps the current Sketcher tool active after creating geometry</source>
-      <translation type="unfinished">Keeps the current Sketcher tool active after creating geometry</translation>
+      <translation>Mantém a ferramenta atual ativa após criar geometrias</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="68"/>
@@ -3356,12 +3349,12 @@ Suporta todos os sistemas de unidades, exceto 'US customary' e 'Building US/Euro
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="398"/>
       <source>Keeps the current Sketcher constraint tool active after creating geometry</source>
-      <translation type="unfinished">Keeps the current Sketcher constraint tool active after creating geometry</translation>
+      <translation>Mantém a ferramenta de restrição atual ativa após criar geometrias</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="360"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
-      <translation type="unfinished">Opens a dialog to input a value for new dimensional constraints after creation</translation>
+      <translation>Abre uma caixa de diálogo para inserir um valor em novas restrições dimensionais após a criação</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="26"/>
@@ -3623,11 +3616,11 @@ O padrão é: %N = %V
 %2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
+      <translation>Foi encontrado %1 arco de geometria externa invertido. Seus pontos finais estão circulados na visualização 3D.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
+%2 restrições estão vinculadas a esses pontos finais. As restrições foram listadas na visualização de relatório (menu Exibir -&gt; Painéis -&gt; Visualização de relatório).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Clique no botão "Inverter pontos finais nas restrições" para reatribuir os pontos. Faça isso apenas uma vez em esboços criados no FreeCAD anteriores à versão v0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="306"/>
@@ -3745,7 +3738,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="970"/>
       <source>Auto remove redundant constraints</source>
-      <translation type="unfinished">Auto remove redundant constraints</translation>
+      <translation>Remover automaticamente restrições redundantes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="971"/>
@@ -5128,7 +5121,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="507"/>
       <source>Cannot create a rectangle with zero length or width</source>
-      <translation type="unfinished">Cannot create a rectangle with zero length or width</translation>
+      <translation>Não é possível criar um retângulo com comprimento ou largura igual a zero</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="524"/>
@@ -5180,7 +5173,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="423"/>
       <source>Offset could not be created.</source>
-      <translation type="unfinished">Offset could not be created.</translation>
+      <translation>Não foi possível criar o deslocamento.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1239"/>
@@ -5398,7 +5391,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1202"/>
       <source>Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</source>
-      <translation type="unfinished">Deletes the original geometry. If creating a single copy, this effectively performs a 'Move' operation.</translation>
+      <translation>Exclui a geometria original. Se uma única cópia for criada, esta opção executa efetivamente uma operação de "Mover".</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="560"/>
@@ -5968,7 +5961,7 @@ Em vez disso, restrições de igualdade são aplicadas entre os objetos originai
     <message>
       <location filename="../../Command.cpp" line="160"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>Cria um novo esboço</translation>
     </message>
   </context>
   <context>
@@ -6191,7 +6184,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="103"/>
       <source>Toggle Construction Geometry</source>
-      <translation type="unfinished">Toggle Construction Geometry</translation>
+      <translation>Alternar geometria de construção</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="104"/>
@@ -6269,7 +6262,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="4191"/>
       <source>Lock Position</source>
-      <translation type="unfinished">Lock Position</translation>
+      <translation>Travar posição</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4192"/>
@@ -6295,7 +6288,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="4678"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>Restrição de coincidência</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4679"/>
@@ -6308,7 +6301,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="5193"/>
       <source>Coincident Constraint</source>
-      <translation type="unfinished">Coincident Constraint</translation>
+      <translation>Restrição de coincidência</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5194"/>
@@ -6321,7 +6314,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="5243"/>
       <source>Point-On-Object Constraint</source>
-      <translation type="unfinished">Point-On-Object Constraint</translation>
+      <translation>Restrição de ponto sobre objeto</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5244"/>
@@ -6334,7 +6327,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="5295"/>
       <source>Distance Dimension</source>
-      <translation type="unfinished">Distance Dimension</translation>
+      <translation>Dimensão de distância</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5296"/>
@@ -6347,7 +6340,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="5949"/>
       <source>Horizontal Dimension</source>
-      <translation type="unfinished">Horizontal Dimension</translation>
+      <translation>Dimensão horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5950"/>
@@ -6360,7 +6353,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="6250"/>
       <source>Vertical Dimension</source>
-      <translation type="unfinished">Vertical Dimension</translation>
+      <translation>Dimensão vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6251"/>
@@ -6412,7 +6405,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="8412"/>
       <source>Radius Dimension</source>
-      <translation type="unfinished">Radius Dimension</translation>
+      <translation>Dimensão de raio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8413"/>
@@ -6425,7 +6418,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="8775"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Dimensão de diâmetro</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8776"/>
@@ -6451,7 +6444,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="9621"/>
       <source>Angle Dimension</source>
-      <translation type="unfinished">Angle Dimension</translation>
+      <translation>Dimensão de ângulo</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9622"/>
@@ -6464,7 +6457,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="10109"/>
       <source>Equal Constraint</source>
-      <translation type="unfinished">Equal Constraint</translation>
+      <translation>Restrição de igualdade</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10111"/>
@@ -6477,7 +6470,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="10359"/>
       <source>Symmetric Constraint</source>
-      <translation type="unfinished">Symmetric Constraint</translation>
+      <translation>Restrição de simetria</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10360"/>
@@ -6503,7 +6496,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="11257"/>
       <source>Edit Value</source>
-      <translation type="unfinished">Edit Value</translation>
+      <translation>Editar valor</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11258"/>
@@ -6547,7 +6540,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="110"/>
       <source>Creates a point</source>
-      <translation type="unfinished">Creates a point</translation>
+      <translation>Cria um ponto</translation>
     </message>
   </context>
   <context>
@@ -6560,7 +6553,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="141"/>
       <source>Creates a continuous polyline</source>
-      <translation type="unfinished">Creates a continuous polyline</translation>
+      <translation>Cria uma polilinha contínua</translation>
     </message>
   </context>
   <context>
@@ -6573,7 +6566,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="197"/>
       <source>Creates a line</source>
-      <translation type="unfinished">Creates a line</translation>
+      <translation>Cria uma linha</translation>
     </message>
   </context>
   <context>
@@ -6586,7 +6579,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="259"/>
       <source>Creates a polyline in the sketch. M key cycles through segment modes.</source>
-      <translation type="unfinished">Creates a polyline in the sketch. M key cycles through segment modes.</translation>
+      <translation>Cria uma polilinha no esboço. A tecla M alterna entre os modos de segmento.</translation>
     </message>
   </context>
   <context>
@@ -6599,7 +6592,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="292"/>
       <source>Creates an arc</source>
-      <translation type="unfinished">Creates an arc</translation>
+      <translation>Cria um arco</translation>
     </message>
   </context>
   <context>
@@ -6607,12 +6600,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="361"/>
       <source>Arc From Center</source>
-      <translation type="unfinished">Arc From Center</translation>
+      <translation>Arco a partir do centro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="362"/>
       <source>Creates an arc defined by a center point and an end point</source>
-      <translation type="unfinished">Creates an arc defined by a center point and an end point</translation>
+      <translation>Cria um arco definido por um ponto central e um ponto final</translation>
     </message>
   </context>
   <context>
@@ -6620,12 +6613,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="393"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Arco por 3 pontos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="394"/>
       <source>Creates an arc defined by 2 end points and 1 point on the arc</source>
-      <translation type="unfinished">Creates an arc defined by 2 end points and 1 point on the arc</translation>
+      <translation>Cria um arco definido por 2 pontos de extremidade e 1 ponto no arco</translation>
     </message>
   </context>
   <context>
@@ -6638,7 +6631,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="430"/>
       <source>Creates an elliptical arc</source>
-      <translation type="unfinished">Creates an elliptical arc</translation>
+      <translation>Cria um arco elíptico</translation>
     </message>
   </context>
   <context>
@@ -6651,7 +6644,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="461"/>
       <source>Creates a hyperbolic arc</source>
-      <translation type="unfinished">Creates a hyperbolic arc</translation>
+      <translation>Cria um arco hiperbólico</translation>
     </message>
   </context>
   <context>
@@ -6664,7 +6657,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="491"/>
       <source>Creates a parabolic arc</source>
-      <translation type="unfinished">Creates a parabolic arc</translation>
+      <translation>Cria um arco parabólico</translation>
     </message>
   </context>
   <context>
@@ -6677,7 +6670,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="523"/>
       <source>Creates a conic</source>
-      <translation type="unfinished">Creates a conic</translation>
+      <translation>Cria uma cônica</translation>
     </message>
   </context>
   <context>
@@ -6685,12 +6678,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="589"/>
       <source>Circle From Center</source>
-      <translation type="unfinished">Circle From Center</translation>
+      <translation>Círculo a partir do centro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="590"/>
       <source>Creates a circle from a center and rim point</source>
-      <translation type="unfinished">Creates a circle from a center and rim point</translation>
+      <translation>Cria um círculo a partir do centro e de um ponto da borda</translation>
     </message>
   </context>
   <context>
@@ -6698,12 +6691,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="620"/>
       <source>Circle From 3 Points</source>
-      <translation type="unfinished">Circle From 3 Points</translation>
+      <translation>Círculo por 3 pontos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="621"/>
       <source>Creates a circle from 3 perimeter points</source>
-      <translation type="unfinished">Creates a circle from 3 perimeter points</translation>
+      <translation>Cria um círculo a partir de 3 pontos do perímetro</translation>
     </message>
   </context>
   <context>
@@ -6711,12 +6704,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="660"/>
       <source>Ellipse From Center</source>
-      <translation type="unfinished">Ellipse From Center</translation>
+      <translation>Elipse a partir do centro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="661"/>
       <source>Creates an ellipse from a center and rim point</source>
-      <translation type="unfinished">Creates an ellipse from a center and rim point</translation>
+      <translation>Cria uma elipse a partir do centro e de um ponto da borda</translation>
     </message>
   </context>
   <context>
@@ -6724,12 +6717,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="695"/>
       <source>Ellipse From 3 Points</source>
-      <translation type="unfinished">Ellipse From 3 Points</translation>
+      <translation>Elipse por 3 pontos</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="696"/>
       <source>Creates an ellipse from 3 points on its perimeter</source>
-      <translation type="unfinished">Creates an ellipse from 3 points on its perimeter</translation>
+      <translation>Cria uma elipse a partir de 3 pontos do seu perímetro</translation>
     </message>
   </context>
   <context>
@@ -6742,7 +6735,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="734"/>
       <source>Creates a rectangle</source>
-      <translation type="unfinished">Creates a rectangle</translation>
+      <translation>Cria um retângulo</translation>
     </message>
   </context>
   <context>
@@ -6755,7 +6748,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="794"/>
       <source>Creates a rectangle from 2 corner points</source>
-      <translation type="unfinished">Creates a rectangle from 2 corner points</translation>
+      <translation>Cria um retângulo a partir de 2 pontos de canto</translation>
     </message>
   </context>
   <context>
@@ -6763,12 +6756,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="829"/>
       <source>Centered Rectangle</source>
-      <translation type="unfinished">Centered Rectangle</translation>
+      <translation>Retângulo centralizado</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="830"/>
       <source>Creates a centered rectangle from a center and a corner point</source>
-      <translation type="unfinished">Creates a centered rectangle from a center and a corner point</translation>
+      <translation>Cria um retângulo centralizado a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6776,12 +6769,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="866"/>
       <source>Rounded Rectangle</source>
-      <translation type="unfinished">Rounded Rectangle</translation>
+      <translation>Retângulo arredondado</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="867"/>
       <source>Creates a rounded rectangle from 2 corner points</source>
-      <translation type="unfinished">Creates a rounded rectangle from 2 corner points</translation>
+      <translation>Cria um retângulo arredondado a partir de 2 pontos de canto</translation>
     </message>
   </context>
   <context>
@@ -6794,7 +6787,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="906"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation type="unfinished">Creates a regular polygon from a center and corner point</translation>
+      <translation>Cria um polígono regular a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6807,7 +6800,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="978"/>
       <source>Creates an equilateral triangle from a center and corner point</source>
-      <translation type="unfinished">Creates an equilateral triangle from a center and corner point</translation>
+      <translation>Cria um triângulo equilátero a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6820,7 +6813,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1009"/>
       <source>Creates a square from a center and corner point</source>
-      <translation type="unfinished">Creates a square from a center and corner point</translation>
+      <translation>Cria um quadrado a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6828,12 +6821,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1039"/>
       <source>Pentagon</source>
-      <translation type="unfinished">Pentagon</translation>
+      <translation>Pentágono</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1040"/>
       <source>Creates a pentagon from a center and corner point</source>
-      <translation type="unfinished">Creates a pentagon from a center and corner point</translation>
+      <translation>Cria um pentágono a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6846,7 +6839,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1071"/>
       <source>Creates a hexagon from a center and corner point</source>
-      <translation type="unfinished">Creates a hexagon from a center and corner point</translation>
+      <translation>Cria um hexágono a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6854,12 +6847,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1101"/>
       <source>Heptagon</source>
-      <translation type="unfinished">Heptagon</translation>
+      <translation>Heptágono</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1102"/>
       <source>Creates a heptagon from a center and corner point</source>
-      <translation type="unfinished">Creates a heptagon from a center and corner point</translation>
+      <translation>Cria um heptágono a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6867,12 +6860,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1132"/>
       <source>Octagon</source>
-      <translation type="unfinished">Octagon</translation>
+      <translation>Octógono</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1133"/>
       <source>Creates an octagon from a center and corner point</source>
-      <translation type="unfinished">Creates an octagon from a center and corner point</translation>
+      <translation>Cria um octógono a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6885,7 +6878,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1164"/>
       <source>Creates a regular polygon from a center and corner point</source>
-      <translation type="unfinished">Creates a regular polygon from a center and corner point</translation>
+      <translation>Cria um polígono regular a partir do centro e de um ponto de canto</translation>
     </message>
   </context>
   <context>
@@ -6898,7 +6891,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1202"/>
       <source>Slot tools</source>
-      <translation type="unfinished">Slot tools</translation>
+      <translation>Ferramentas de rasgo</translation>
     </message>
   </context>
   <context>
@@ -6911,7 +6904,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1258"/>
       <source>Creates a slot</source>
-      <translation type="unfinished">Creates a slot</translation>
+      <translation>Cria um rasgo</translation>
     </message>
   </context>
   <context>
@@ -6919,12 +6912,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1288"/>
       <source>Arc Slot</source>
-      <translation type="unfinished">Arc Slot</translation>
+      <translation>Rasgo em arco</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1289"/>
       <source>Creates an arc slot</source>
-      <translation type="unfinished">Creates an arc slot</translation>
+      <translation>Cria um rasgo em arco</translation>
     </message>
   </context>
   <context>
@@ -6937,7 +6930,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1322"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a B-spline curve defined by control points</translation>
+      <translation>Cria uma curva B-spline definida por pontos de controle</translation>
     </message>
   </context>
   <context>
@@ -6950,7 +6943,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1431"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a B-spline curve defined by control points</translation>
+      <translation>Cria uma curva B-spline definida por pontos de controle</translation>
     </message>
   </context>
   <context>
@@ -6958,12 +6951,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1470"/>
       <source>Periodic B-Spline</source>
-      <translation type="unfinished">Periodic B-Spline</translation>
+      <translation>B-Spline periódica</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1471"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
-      <translation type="unfinished">Creates a periodic B-spline curve defined by control points</translation>
+      <translation>Cria uma curva B-spline periódica definida por pontos de controle</translation>
     </message>
   </context>
   <context>
@@ -6971,12 +6964,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1509"/>
       <source>B-Spline From Knots</source>
-      <translation type="unfinished">B-Spline From Knots</translation>
+      <translation>B-Spline por nós</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1510"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
-      <translation type="unfinished">Creates a B-spline from knots, i.e. from interpolation</translation>
+      <translation>Cria uma curva B-spline a partir de nós, ou seja, por interpolação</translation>
     </message>
   </context>
   <context>
@@ -6984,12 +6977,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1546"/>
       <source>Periodic B-Spline From Knots</source>
-      <translation type="unfinished">Periodic B-Spline From Knots</translation>
+      <translation>B-Spline periódica por nós</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1547"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
-      <translation type="unfinished">Creates a periodic B-spline defined by knots using interpolation</translation>
+      <translation>Cria uma curva B-spline periódica definida por nós usando interpolação</translation>
     </message>
   </context>
   <context>
@@ -6997,12 +6990,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1589"/>
       <source>Fillet/Chamfer</source>
-      <translation type="unfinished">Fillet/Chamfer</translation>
+      <translation>Arredondamento/Chanfro</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1590"/>
       <source>Creates a fillet or chamfer between 2 lines</source>
-      <translation type="unfinished">Creates a fillet or chamfer between 2 lines</translation>
+      <translation>Cria um arredondamento ou chanfro entre 2 linhas</translation>
     </message>
   </context>
   <context>
@@ -7015,7 +7008,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1624"/>
       <source>Creates a fillet between 2 selected lines or at coincident points</source>
-      <translation type="unfinished">Creates a fillet between 2 selected lines or at coincident points</translation>
+      <translation>Cria um arredondamento entre 2 linhas selecionadas ou em pontos coincidentes</translation>
     </message>
   </context>
   <context>
@@ -7028,7 +7021,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1656"/>
       <source>Creates a chamfer between 2 selected lines or at coincident points</source>
-      <translation type="unfinished">Creates a chamfer between 2 selected lines or at coincident points</translation>
+      <translation>Cria um chanfro entre 2 linhas selecionadas ou em pontos coincidentes</translation>
     </message>
   </context>
   <context>
@@ -7093,7 +7086,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1815"/>
       <source>Creates sketch elements linked to geometry defined outside the sketch</source>
-      <translation type="unfinished">Creates sketch elements linked to geometry defined outside the sketch</translation>
+      <translation>Cria elementos de esboço vinculados a geometrias definidas fora do esboço</translation>
     </message>
   </context>
   <context>
@@ -7106,7 +7099,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1873"/>
       <source>Creates the projection of external geometry in the sketch plane</source>
-      <translation type="unfinished">Creates the projection of external geometry in the sketch plane</translation>
+      <translation>Cria a projeção de geometria externa no plano de esboço</translation>
     </message>
   </context>
   <context>
@@ -7119,7 +7112,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1910"/>
       <source>Creates the intersection of external geometry with the sketch plane</source>
-      <translation type="unfinished">Creates the intersection of external geometry with the sketch plane</translation>
+      <translation>Cria a interseção de geometria externa com o plano de esboço</translation>
     </message>
   </context>
   <context>
@@ -7514,7 +7507,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1205"/>
       <source>Creates a mirrored copy of the selected geometry</source>
-      <translation type="unfinished">Creates a mirrored copy of the selected geometry</translation>
+      <translation>Cria uma cópia espelhada da geometria selecionada</translation>
     </message>
   </context>
   <context>
@@ -7540,7 +7533,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2243"/>
       <source>Deletes all constraints in the sketch</source>
-      <translation type="unfinished">Deletes all constraints in the sketch</translation>
+      <translation>Exclui todas as restrições do esboço</translation>
     </message>
   </context>
   <context>
@@ -7579,7 +7572,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2513"/>
       <source>Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</source>
-      <translation type="unfinished">Rotates the selected geometry by creating 'n' total elements, enabling circular pattern creation</translation>
+      <translation>Rotaciona a geometria selecionada ou cria 'n' elementos no total distribuídos em um padrão circular ou em arco</translation>
     </message>
   </context>
   <context>
@@ -7613,7 +7606,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="97"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="106"/>
@@ -7725,7 +7718,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="101"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="108"/>
@@ -7822,7 +7815,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="87"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="96"/>
@@ -7860,7 +7853,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="93"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="102"/>
@@ -7870,32 +7863,32 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="108"/>
       <source>%1 pick axis endpoint</source>
-      <translation type="unfinished">%1 pick axis endpoint</translation>
+      <translation>%1 Selecionar ponto final do eixo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="114"/>
       <source>%1 pick minor axis endpoint</source>
-      <translation type="unfinished">%1 pick minor axis endpoint</translation>
+      <translation>%1 Selecionar ponto final do eixo menor</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="122"/>
       <source>%1 pick first rim point</source>
-      <translation type="unfinished">%1 pick first rim point</translation>
+      <translation>%1 Selecionar primeiro ponto da borda</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="128"/>
       <source>%1 pick second rim point</source>
-      <translation type="unfinished">%1 pick second rim point</translation>
+      <translation>%1 Selecionar segundo ponto da borda</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="134"/>
       <source>%1 pick third rim point</source>
-      <translation type="unfinished">%1 pick third rim point</translation>
+      <translation>%1 Selecionar terceiro ponto da borda</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="340"/>
       <source>Ellipse Parameters</source>
-      <translation type="unfinished">Ellipse Parameters</translation>
+      <translation>Parâmetros da elipse</translation>
     </message>
   </context>
   <context>
@@ -7904,13 +7897,13 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../DrawSketchHandlerExtend.h" line="391"/>
       <source>%1 pick edge to extend</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation type="unfinished">%1 pick edge to extend</translation>
+      <translation>%1 Selecionar aresta para estender</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerExtend.h" line="396"/>
       <source>%1 set extension length</source>
       <comment>Sketcher Extend: hint</comment>
-      <translation type="unfinished">%1 set extension length</translation>
+      <translation>%1 Definir comprimento da extensão</translation>
     </message>
   </context>
   <context>
@@ -7919,7 +7912,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../DrawSketchHandlerExternal.h" line="259"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
-      <translation type="unfinished">%1 pick external geometry</translation>
+      <translation>%1 Selecionar geometria externa</translation>
     </message>
   </context>
   <context>
@@ -7937,32 +7930,32 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="357"/>
       <source>Fillet/Chamfer Parameters</source>
-      <translation type="unfinished">Fillet/Chamfer Parameters</translation>
+      <translation>Parâmetros de filete/chanfro</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="427"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="429"/>
       <source>%1 toggle preserve corner</source>
-      <translation type="unfinished">%1 toggle preserve corner</translation>
+      <translation>%1 Alternar preservar canto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="438"/>
       <source>%1 pick first edge or point</source>
-      <translation type="unfinished">%1 pick first edge or point</translation>
+      <translation>%1 Selecionar primeira aresta ou ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="443"/>
       <source>%1 pick second edge</source>
-      <translation type="unfinished">%1 pick second edge</translation>
+      <translation>%1 Selecionar segunda aresta</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="445"/>
       <source>%1 create fillet</source>
-      <translation type="unfinished">%1 create fillet</translation>
+      <translation>%1 Criar filete</translation>
     </message>
   </context>
   <context>
@@ -7970,26 +7963,26 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="226"/>
       <source>Line Parameters</source>
-      <translation type="unfinished">Line Parameters</translation>
+      <translation>Parâmetros da linha</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="293"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Modo de alteração</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="302"/>
       <location filename="../../DrawSketchHandlerLine.h" line="316"/>
       <location filename="../../DrawSketchHandlerLine.h" line="330"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 Selecionar primeiro ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="308"/>
       <location filename="../../DrawSketchHandlerLine.h" line="322"/>
       <location filename="../../DrawSketchHandlerLine.h" line="336"/>
       <source>%1 pick second point</source>
-      <translation type="unfinished">%1 pick second point</translation>
+      <translation>%1 Selecionar segundo ponto</translation>
     </message>
   </context>
   <context>
@@ -7997,22 +7990,22 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 Selecionar primeiro ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="810"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>%1 Selecionar próximo ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="811"/>
       <source>%1 finish</source>
-      <translation type="unfinished">%1 finish</translation>
+      <translation>%1 Concluir</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="812"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Alternar modo</translation>
     </message>
   </context>
   <context>
@@ -8020,13 +8013,13 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="189"/>
       <source>Offset Parameters</source>
-      <translation type="unfinished">Offset Parameters</translation>
+      <translation>Parâmetros de deslocamento</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="207"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
-      <translation type="unfinished">%1 set offset direction and distance</translation>
+      <translation>%1 Definir direção e distância de deslocamento</translation>
     </message>
   </context>
   <context>
@@ -8035,7 +8028,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../DrawSketchHandlerPoint.h" line="71"/>
       <source>%1 place a point</source>
       <comment>Sketcher Point: hint</comment>
-      <translation type="unfinished">%1 place a point</translation>
+      <translation>%1 Posicionar um ponto</translation>
     </message>
   </context>
   <context>
@@ -8043,28 +8036,28 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
       <source>Polygon Parameters</source>
-      <translation type="unfinished">Polygon Parameters</translation>
+      <translation>Parâmetros do polígono</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
       <source>%1 pick polygon center</source>
-      <translation type="unfinished">%1 pick polygon center</translation>
+      <translation>%1 Selecionar o centro do polígono</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
       <source>%1/%2 increase/decrease number of sides</source>
-      <translation type="unfinished">%1/%2 increase/decrease number of sides</translation>
+      <translation>%1/%2 Aumentar/diminuir o número de lados</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
       <source>%1 pick rotation and size</source>
-      <translation type="unfinished">%1 pick rotation and size</translation>
+      <translation>%1 Selecionar a rotação e o tamanho</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
       <source>%1 confirm</source>
-      <translation type="unfinished">%1 confirm</translation>
+      <translation>%1 Confirmar</translation>
     </message>
   </context>
   <context>
@@ -8072,29 +8065,29 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="124"/>
       <source>%1 switch mode</source>
-      <translation type="unfinished">%1 switch mode</translation>
+      <translation>%1 Alternar modo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
       <source>%1 toggle rounded corners</source>
-      <translation type="unfinished">%1 toggle rounded corners</translation>
+      <translation>%1 Alternar cantos arredondados</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="129"/>
       <source>%1 toggle frame</source>
-      <translation type="unfinished">%1 toggle frame</translation>
+      <translation>%1 Alternar moldura</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="138"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="206"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="248"/>
       <source>%1 pick first corner</source>
-      <translation type="unfinished">%1 pick first corner</translation>
+      <translation>%1 Selecionar o primeiro canto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="146"/>
       <source>%1 pick opposite corner</source>
-      <translation type="unfinished">%1 pick opposite corner</translation>
+      <translation>%1 Selecionar o canto oposto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="154"/>
@@ -8102,13 +8095,13 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../DrawSketchHandlerRectangle.h" line="230"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="264"/>
       <source>%1 set corner radius or frame thickness</source>
-      <translation type="unfinished">%1 set corner radius or frame thickness</translation>
+      <translation>%1 Definir o raio do canto ou a espessura da moldura</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="162"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="196"/>
       <source>%1 set frame thickness</source>
-      <translation type="unfinished">%1 set frame thickness</translation>
+      <translation>%1 Definir a espessura da moldura</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="172"/>
@@ -8119,23 +8112,23 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="180"/>
       <source>%1 pick corner</source>
-      <translation type="unfinished">%1 pick corner</translation>
+      <translation>%1 Selecionar o canto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="214"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="256"/>
       <source>%1 pick second corner</source>
-      <translation type="unfinished">%1 pick second corner</translation>
+      <translation>%1 Selecionar o segundo canto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="222"/>
       <source>%1 pick third corner</source>
-      <translation type="unfinished">%1 pick third corner</translation>
+      <translation>%1 Selecionar o terceiro canto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="804"/>
       <source>Rectangle Parameters</source>
-      <translation type="unfinished">Rectangle Parameters</translation>
+      <translation>Parâmetros do retângulo</translation>
     </message>
   </context>
   <context>
@@ -8144,30 +8137,30 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../DrawSketchHandlerRotate.h" line="98"/>
       <source>%1/%2 increase/decrease number of elements</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+      <translation>%1/%2 Aumentar/diminuir o número de elementos</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="108"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 pick center point</translation>
+      <translation>%1 Selecionar o ponto central</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="114"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 set start angle</translation>
+      <translation>%1 Definir o ângulo inicial</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="120"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
-      <translation type="unfinished">%1 set rotation angle</translation>
+      <translation>%1 Definir o ângulo de rotação</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="285"/>
       <source>Rotate Parameters</source>
-      <translation type="unfinished">Rotate Parameters</translation>
+      <translation>Parâmetros de rotação</translation>
     </message>
   </context>
   <context>
@@ -8175,17 +8168,17 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="179"/>
       <source>%1 pick reference point</source>
-      <translation type="unfinished">%1 pick reference point</translation>
+      <translation>%1 Selecionar o ponto de referência</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="184"/>
       <source>%1 set scale factor</source>
-      <translation type="unfinished">%1 set scale factor</translation>
+      <translation>%1 Definir o fator de escala</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="247"/>
       <source>Scale Parameters</source>
-      <translation type="unfinished">Scale Parameters</translation>
+      <translation>Parâmetros de escala</translation>
     </message>
   </context>
   <context>
@@ -8193,17 +8186,17 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="93"/>
       <source>%1 pick slot start point</source>
-      <translation type="unfinished">%1 pick slot start point</translation>
+      <translation>%1 Selecionar o ponto inicial do rasgo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="98"/>
       <source>%1 pick slot end point</source>
-      <translation type="unfinished">%1 pick slot end point</translation>
+      <translation>%1 Selecionar o ponto final do rasgo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="103"/>
       <source>%1 pick slot width</source>
-      <translation type="unfinished">%1 pick slot width</translation>
+      <translation>%1 Selecionar a largura do rasgo</translation>
     </message>
   </context>
   <context>
@@ -8212,7 +8205,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../DrawSketchHandlerSplitting.h" line="209"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
-      <translation type="unfinished">%1 pick location on edge to split</translation>
+      <translation>%1 Selecionar o local na aresta a ser dividida</translation>
     </message>
   </context>
   <context>
@@ -8220,13 +8213,13 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="202"/>
       <source>Symmetry Parameters</source>
-      <translation type="unfinished">Symmetry Parameters</translation>
+      <translation>Parâmetros de simetria</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="232"/>
       <source>%1 pick axis, edge, or point</source>
       <comment>Sketcher Symmetry: hint</comment>
-      <translation type="unfinished">%1 pick axis, edge, or point</translation>
+      <translation>%1 Selecionar o eixo, a aresta ou o ponto</translation>
     </message>
   </context>
   <context>
@@ -8234,37 +8227,37 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="202"/>
       <source>Translate Parameters</source>
-      <translation type="unfinished">Translate Parameters</translation>
+      <translation>Parâmetros de translação</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="513"/>
       <source>%1/%2 increase/decrease number of elements</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1/%2 increase/decrease number of elements</translation>
+      <translation>%1/%2 Aumentar/diminuir o número de elementos</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="517"/>
       <source>%1/%2 increase/decrease number of rows</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1/%2 increase/decrease number of rows</translation>
+      <translation>%1/%2 Aumentar/diminuir número de linhas</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="527"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 pick reference point</translation>
+      <translation>%1 Selecionar o ponto de referência</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="532"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 set translation vector</translation>
+      <translation>%1 Definir vetor de translação</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="539"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
-      <translation type="unfinished">%1 set second translation vector</translation>
+      <translation>%1 Definir segundo vetor de translação</translation>
     </message>
   </context>
   <context>
@@ -8272,18 +8265,18 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="251"/>
       <source>Trimming Parameters</source>
-      <translation type="unfinished">Trimming Parameters</translation>
+      <translation>Parâmetros de recorte</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="270"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
-      <translation type="unfinished">%1 pick edge to trim</translation>
+      <translation>%1 Selecionar aresta para recortar</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="271"/>
       <source>%1 toggle include axes as trim boundaries</source>
-      <translation type="unfinished">%1 toggle include axes as trim boundaries</translation>
+      <translation>%1 Alternar o uso dos eixos como limites de recorte</translation>
     </message>
   </context>
   <context>
@@ -8291,7 +8284,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.cpp" line="57"/>
       <source>Advanced Solver Controls</source>
-      <translation type="unfinished">Advanced Solver Controls</translation>
+      <translation>Controles avançados do resolvedor</translation>
     </message>
   </context>
   <context>
@@ -8299,7 +8292,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="944"/>
       <source>From control points</source>
-      <translation type="unfinished">From control points</translation>
+      <translation>A partir dos pontos de controle</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
@@ -8312,12 +8305,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="292"/>
       <source>Create symmetry constraints (J)</source>
-      <translation type="unfinished">Create symmetry constraints (J)</translation>
+      <translation>Criar restrições de simetria (J)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="296"/>
       <source>Create symmetry constraints between the original and mirrored geometries</source>
-      <translation type="unfinished">Create symmetry constraints between the original and mirrored geometries</translation>
+      <translation>Criar restrições de simetria entre as geometrias originais e espelhadas</translation>
     </message>
   </context>
   <context>
@@ -8325,7 +8318,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../TaskSketcherTool.cpp" line="45"/>
       <source>Tool Parameters</source>
-      <translation type="unfinished">Tool Parameters</translation>
+      <translation>Parâmetros da ferramenta</translation>
     </message>
   </context>
   <context>
@@ -8343,7 +8336,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../EditTextDialog.ui" line="32"/>
       <source>Font</source>
-      <translation type="unfinished">Font</translation>
+      <translation>Fonte</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.ui" line="44"/>
@@ -8361,37 +8354,37 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1012"/>
       <source>%1 switch to arc</source>
-      <translation type="unfinished">%1 switch to arc</translation>
+      <translation>%1 Alternar para arco</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1013"/>
       <source>%1 switch to line</source>
-      <translation type="unfinished">%1 switch to line</translation>
+      <translation>%1 Alternar para linha</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1016"/>
       <source>%1 toggle fillet</source>
-      <translation type="unfinished">%1 toggle fillet</translation>
+      <translation>%1 Alternar filete</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1017"/>
       <source>%1 undo last point</source>
-      <translation type="unfinished">%1 undo last point</translation>
+      <translation>%1 Desfazer último ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1025"/>
       <source>%1 pick first point</source>
-      <translation type="unfinished">%1 pick first point</translation>
+      <translation>%1 Selecionar primeiro ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1030"/>
       <source>%1 pick next point</source>
-      <translation type="unfinished">%1 pick next point</translation>
+      <translation>%1 Selecionar próximo ponto</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1031"/>
       <source>%1 finish</source>
-      <translation type="unfinished">%1 finish</translation>
+      <translation>%1 Concluir</translation>
     </message>
   </context>
   <context>
@@ -8412,12 +8405,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1736"/>
       <source>Fillet (F)</source>
-      <translation type="unfinished">Fillet (F)</translation>
+      <translation>Filete (F)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="1740"/>
       <source>Adds a fillet between the current and previous line</source>
-      <translation type="unfinished">Adds a fillet between the current and previous line</translation>
+      <translation>Adiciona um filete entre a linha atual e a anterior</translation>
     </message>
   </context>
   <context>
@@ -8430,12 +8423,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../CommandConstraints.cpp" line="2392"/>
       <location filename="../../CommandConstraints.cpp" line="2411"/>
       <source>%1 switch to distance</source>
-      <translation type="unfinished">%1 switch to distance</translation>
+      <translation>%1 Alternar para distância</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2344"/>
       <source>%1 switch to lock</source>
-      <translation type="unfinished">%1 switch to lock</translation>
+      <translation>%1 Alternar para bloqueio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2349"/>
@@ -8443,7 +8436,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../CommandConstraints.cpp" line="2376"/>
       <location filename="../../CommandConstraints.cpp" line="2492"/>
       <source>%1 switch to horizontal</source>
-      <translation type="unfinished">%1 switch to horizontal</translation>
+      <translation>%1 Alternar para horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2350"/>
@@ -8451,72 +8444,72 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
       <location filename="../../CommandConstraints.cpp" line="2377"/>
       <location filename="../../CommandConstraints.cpp" line="2493"/>
       <source>%1 switch to vertical</source>
-      <translation type="unfinished">%1 switch to vertical</translation>
+      <translation>%1 Alternar para vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2355"/>
       <location filename="../../CommandConstraints.cpp" line="2361"/>
       <location filename="../../CommandConstraints.cpp" line="2368"/>
       <source>%1 switch to symmetry</source>
-      <translation type="unfinished">%1 switch to symmetry</translation>
+      <translation>%1 Alternar para simetria</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2375"/>
       <source>%1 switch to length</source>
-      <translation type="unfinished">%1 switch to length</translation>
+      <translation>%1 Alternar para comprimento</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2378"/>
       <source>%1 switch to block</source>
-      <translation type="unfinished">%1 switch to block</translation>
+      <translation>%1 Alternar para bloco</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2383"/>
       <source>%1 switch to equal length</source>
-      <translation type="unfinished">%1 switch to equal length</translation>
+      <translation>%1 Alternar para comprimento igual</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2394"/>
       <location filename="../../CommandConstraints.cpp" line="2428"/>
       <source>%1 switch to equal radius</source>
-      <translation type="unfinished">%1 switch to equal radius</translation>
+      <translation>%1 Alternar para raio igual</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2414"/>
       <source>%1 switch to angle</source>
-      <translation type="unfinished">%1 switch to angle</translation>
+      <translation>%1 Alternar para ângulo</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2431"/>
       <source>%1 switch to concentric distance</source>
-      <translation type="unfinished">%1 switch to concentric distance</translation>
+      <translation>%1 Alternar para distância concêntrica</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2443"/>
       <location filename="../../CommandConstraints.cpp" line="2453"/>
       <source>%1 switch to arc angle</source>
-      <translation type="unfinished">%1 switch to arc angle</translation>
+      <translation>%1 Alternar para ângulo do arco</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2444"/>
       <location filename="../../CommandConstraints.cpp" line="2454"/>
       <source>%1 switch to arc length</source>
-      <translation type="unfinished">%1 switch to arc length</translation>
+      <translation>%1 Alternar para comprimento do arco</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2471"/>
       <source>%1 switch to weight</source>
-      <translation type="unfinished">%1 switch to weight</translation>
+      <translation>%1 Alternar para peso</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2484"/>
       <source>%1 switch to radius</source>
-      <translation type="unfinished">%1 switch to radius</translation>
+      <translation>%1 Alternar para raio</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2487"/>
       <source>%1 switch to diameter</source>
-      <translation type="unfinished">%1 switch to diameter</translation>
+      <translation>%1 Alternar para diâmetro</translation>
     </message>
   </context>
   <context>
@@ -8524,12 +8517,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandConstraints.cpp" line="11018"/>
       <source>Group Constraint</source>
-      <translation type="unfinished">Group Constraint</translation>
+      <translation>Restrição de grupo</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="11019"/>
       <source>Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</source>
-      <translation type="unfinished">Constrains the selected geometries together as a single entity.The position and size of the grouped geometries can be defined by constraining the construction line that is generated.Constraints applied to grouped edges are ignored as long as the Group constraint is here.</translation>
+      <translation>Restringe as geometrias selecionadas juntas como uma única entidade. A posição e o tamanho das geometrias agrupadas podem ser definidos restringindo a linha de construção gerada. Restrições aplicadas a arestas agrupadas são ignoradas enquanto a restrição de Grupo estiver presente.</translation>
     </message>
   </context>
   <context>
@@ -8550,12 +8543,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../Command.cpp" line="411"/>
       <source>Cancel Editing</source>
-      <translation type="unfinished">Cancel Editing</translation>
+      <translation>Cancelar edição</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Leaves 'edit' mode and reverts any changes</source>
-      <translation type="unfinished">Leaves 'edit' mode and reverts any changes</translation>
+      <translation>Sai do modo 'edição' e reverte todas as alterações</translation>
     </message>
   </context>
   <context>
@@ -8563,12 +8556,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../Command.cpp" line="456"/>
       <source>Leave</source>
-      <translation type="unfinished">Leave</translation>
+      <translation>Sair</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="457"/>
       <source>Leaves the sketch editing mode</source>
-      <translation type="unfinished">Leaves the sketch editing mode</translation>
+      <translation>Sai do modo de edição do esboço</translation>
     </message>
   </context>
   <context>
@@ -8581,7 +8574,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="625"/>
       <source>Distribute the elements symmetrically around the original position.</source>
-      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+      <translation>Distribui os elementos simetricamente em torno da posição original.</translation>
     </message>
   </context>
   <context>
@@ -8623,7 +8616,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerText.h" line="374"/>
       <source>Font</source>
-      <translation type="unfinished">Font</translation>
+      <translation>Fonte</translation>
     </message>
   </context>
   <context>
@@ -8631,12 +8624,12 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="282"/>
       <source>Include axes (U)</source>
-      <translation type="unfinished">Include axes (U)</translation>
+      <translation>Incluir eixos (U)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerTrimming.h" line="286"/>
       <source>Include axes as trim boundaries</source>
-      <translation type="unfinished">Include axes as trim boundaries</translation>
+      <translation>Incluir eixos como limites de corte</translation>
     </message>
   </context>
   <context>
@@ -8649,7 +8642,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="580"/>
       <source>Distribute the elements symmetrically around the original position.</source>
-      <translation type="unfinished">Distribute the elements symmetrically around the original position.</translation>
+      <translation>Distribui os elementos simetricamente em torno da posição original.</translation>
     </message>
   </context>
   <context>
@@ -8670,7 +8663,7 @@ Os pontos devem ser definidos a uma distância menor que um quinto do espaçamen
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="228"/>
       <source>Creates a continuous polyline. Press the 'M' key to switch segment modes</source>
-      <translation type="unfinished">Creates a continuous polyline. Press the 'M' key to switch segment modes</translation>
+      <translation>Cria uma polilinha contínua. Pressione a tecla 'M' para alternar os modos de segmento</translation>
     </message>
   </context>
   <context>
@@ -8687,10 +8680,10 @@ To Edit: Double-click the Text constraint to change the text content and font.
 To Position/Size: Apply constraints to the group's construction line.
 Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
 </source>
-      <translation type="unfinished">Creates text geometries controlled by a Text constraint.
-To Edit: Double-click the Text constraint to change the text content and font.
-To Position/Size: Apply constraints to the group's construction line.
-Note: While the Text constraint is active, any constraints applied directly to the text geometries will be ignored.
+      <translation>Cria geometrias de texto controladas por uma restrição de Texto.
+Para editar: Clique duas vezes na restrição de Texto para alterar o conteúdo do texto e a fonte.
+Para Posicionar/Dimensionar: Aplique restrições à linha de construção do grupo.
+Nota: Enquanto a restrição de Texto estiver ativa, quaisquer restrições aplicadas diretamente às geometrias do texto serão ignoradas.
 </translation>
     </message>
   </context>
@@ -8699,12 +8692,12 @@ Note: While the Text constraint is active, any constraints applied directly to t
     <message>
       <location filename="../../EditTextDialog.cpp" line="72"/>
       <source>Font not found</source>
-      <translation type="unfinished">Font not found</translation>
+      <translation>Fonte não encontrada</translation>
     </message>
     <message>
       <location filename="../../EditTextDialog.cpp" line="73"/>
       <source>The original font '%1' is not found on your system. A default font has been selected.</source>
-      <translation type="unfinished">The original font '%1' is not found on your system. A default font has been selected.</translation>
+      <translation>A fonte original '%1' não foi encontrada no seu sistema. Uma fonte padrão foi selecionada.</translation>
     </message>
   </context>
 </TS>

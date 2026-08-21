@@ -1787,12 +1787,12 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
       <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
       <source>No start reference selected</source>
-      <translation type="unfinished">No start reference selected</translation>
+      <translation>Nie wybrano odniesienia początku</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="68"/>
       <source>Offset from the profile or selected start reference</source>
-      <translation type="unfinished">Offset from the profile or selected start reference</translation>
+      <translation>Odsunięcie od profilu lub wybrane odniesienie początku</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="789"/>
@@ -1818,7 +1818,7 @@ Jeśli wartość wynosi zero, jest równa wartości promienia 2</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
       <source>Select face, plane...</source>
-      <translation type="unfinished">Select face, plane...</translation>
+      <translation>Wybierz ścianę, płaszczyznę...</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1195"/>
@@ -2547,7 +2547,7 @@ mierzona wzdłuż podanego kierunku</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Profile plane</source>
-      <translation type="unfinished">Profile plane</translation>
+      <translation>Płaszczyzna profilu</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="35"/>
@@ -3541,7 +3541,7 @@ Może to prowadzić do nieoczekiwanych rezultatów.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="167"/>
       <source>Base feature (%1) has an empty shape.</source>
-      <translation type="unfinished">Base feature (%1) has an empty shape.</translation>
+      <translation>Cecha podstawowa (%1) ma pusty kształt.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="428"/>

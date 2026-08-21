@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>&amp;New Spreadsheet</source>
-      <translation>&amp;Nytt kalkylblad</translation>
+      <translation>&amp;Nytt kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="957"/>
       <source>Creates a new spreadsheet</source>
-      <translation>Skapar ett nytt kalkylblad</translation>
+      <translation>Skapar ett nytt kalkylark</translation>
     </message>
   </context>
   <context>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="514"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="515"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="344"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="286"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="287"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="400"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="401"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="457"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="458"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="571"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="572"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="186"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="187"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="61"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="62"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="883"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="884"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="123"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="628"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="629"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="713"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="714"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>Spreadsheet</source>
-      <translation>Kalkylblad</translation>
+      <translation>Kalkylark</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="799"/>

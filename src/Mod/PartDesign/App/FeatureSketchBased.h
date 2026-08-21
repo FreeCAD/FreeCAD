@@ -158,6 +158,10 @@ public:
     double getThroughAllLength() const;
 
 protected:
+    /// Set while onDocumentRestored() rewrites deprecated properties, so that the deprecation
+    /// notices in onChanged() stay quiet for the migration's own writes.
+    bool migratingDeprecatedProperties = false;
+
     TopoDS_Face getSupportFace(const Part::Part2DObject*) const;
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 

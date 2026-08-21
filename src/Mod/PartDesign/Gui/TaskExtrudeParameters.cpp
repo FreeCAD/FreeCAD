@@ -1487,7 +1487,7 @@ void TaskExtrudeParameters::translateSidesList(int index)
 
 void TaskExtrudeParameters::handleLineFaceNameClick(QLineEdit* lineEdit)
 {
-    lineEdit->setPlaceholderText(tr("Click on a face in the model"));
+    lineEdit->setPlaceholderText(tr("Face selection active"));
 }
 
 void TaskExtrudeParameters::handleLineFaceNameNo(QLineEdit* lineEdit)

@@ -121,6 +121,7 @@ SET(PathPythonTools_SRCS
     Path/Tool/__init__.py
     Path/Tool/camassets.py
     Path/Tool/Controller.py
+    Path/Tool/UpdateDocumentTools.py
 )
 
 SET(PathPythonToolsAssets_SRCS
@@ -170,6 +171,7 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
     Path/Tool/Gui/FeedsSpeedsDialog.py
+    Path/Tool/Gui/UpdateDocumentToolsDlg.py
     Path/Tool/Gui/MaterialPicker.py
 )
 
@@ -547,6 +549,7 @@ SET(Tests_SRCS
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestAreaOperations.py
+    CAMTests/TestSlicer.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
@@ -643,6 +646,7 @@ SET(Tests_SRCS
     CAMTests/TestFeedsSpeedsResolver.py
     CAMTests/TestFeedsSpeedsToolBitPresets.py
     CAMTests/TestFeedsSpeedsToolController.py
+    CAMTests/TestUpdateDocumentTools.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
@@ -651,6 +655,8 @@ SET(Tests_SRCS
 
 SET(Tests_Fixtures
     CAMTests/Fixtures/OpHelix_v0-21.FCStd
+    CAMTests/Fixtures/test_17748_cam_profile.FCStd
+    CAMTests/Fixtures/test_28534_truncated_pocket.FCStd
 )
 
 SET(PathImages_Ops

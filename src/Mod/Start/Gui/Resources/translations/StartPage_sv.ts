@@ -145,7 +145,7 @@
     <message>
       <location filename="../../StartView.cpp" line="540"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation>Visa inte denna startsida igen (börja med en tom skärm)</translation>
+      <translation>Visa inte startsidan igen (börja med en tom skärm)</translation>
     </message>
   </context>
   <context>
