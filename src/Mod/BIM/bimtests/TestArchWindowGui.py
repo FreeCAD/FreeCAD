@@ -29,6 +29,41 @@ from bimtests import TestArchBaseGui
 
 class TestArchWindowGui(TestArchBaseGui.TestArchBaseGui):
 
+    def setUp(self):
+        super().setUp()
+        self.rectangle = Draft.make_rectangle(length=1000, height=1000)
+        # makeWindow() derives its default WindowParts from baseobj.Shape.Wires,
+        # which only exist once the rectangle has been recomputed.
+        App.ActiveDocument.recompute()
+        self.window = Arch.makeWindow(self.rectangle)
+        App.ActiveDocument.recompute()
+
+    def testWindowHasPreviewExtensions(self):
+        self.assertTrue(self.window.hasExtension("Part::PreviewExtensionPython"))
+        self.assertTrue(
+            self.window.ViewObject.hasExtension("PartGui::ViewProviderPreviewExtensionPython")
+        )
+
+    def testRecomputePreviewPublishesShape(self):
+        self.window.invalidatePreview()
+        self.window.updatePreview()
+
+        self.assertFalse(self.window.PreviewShape.isNull())
+
+    def testPreviewFollowsWindowPartsWithoutDocumentRecompute(self):
+        self.window.invalidatePreview()
+        self.window.updatePreview()
+        volumeBefore = self.window.PreviewShape.Volume
+
+        firstComponentThickness = 3
+        parts = self.window.WindowParts
+        parts[firstComponentThickness] = str(float(parts[firstComponentThickness]) * 2.0)
+        self.window.WindowParts = parts
+
+        self.window.updatePreview()  # deliberately without a document recompute
+
+        self.assertNotAlmostEqual(self.window.PreviewShape.Volume, volumeBefore, places=3)
+
     def test_change_window_opening(self):
         """Tests if changes to a window opening touches the window's chain of hosts"""
 
