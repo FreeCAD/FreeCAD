@@ -36,6 +36,7 @@ from .module_merge import (
     module_names_from_classes,
     module_stub_path,
     public_stub_symbols,
+    merged_module_source,
     top_level_symbol_names,
     type_checking_test,
 )
@@ -1265,6 +1266,46 @@ def rewritten_api_method(
     return method
 
 
+def new_api_method_node(
+    group: ApiCallableGroup,
+    signature: CallableSignature,
+) -> ast.FunctionDef:
+    """Create a class method node when the target class lacks the declaration."""
+
+    parsed = ast.parse(f"def {class_method_display_signature(signature)}: ...").body[0]
+    if not isinstance(parsed, ast.FunctionDef):
+        raise TypeError("generated API method is not a function")
+    decorators: list[ast.expr] = []
+    if signature.flags.classmethod:
+        decorators.append(ast.Name(id="classmethod", ctx=ast.Load()))
+    elif signature.flags.staticmethod:
+        decorators.append(ast.Name(id="staticmethod", ctx=ast.Load()))
+    if group.overload:
+        decorators.append(ast.Name(id="overload", ctx=ast.Load()))
+    parsed.decorator_list = decorators
+    parsed.body = []
+    if signature.docstring:
+        parsed.body.append(ast.Expr(value=ast.Constant(value=signature.docstring)))
+    parsed.body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
+    return parsed
+
+
+def append_source_class_members(
+    source: str,
+    target_class: ast.ClassDef,
+    members: list[ast.FunctionDef],
+) -> str:
+    """Append missing members without reformatting the authored class body."""
+
+    lines = source.splitlines(keepends=True)
+    end_line = target_class.end_lineno
+    if end_line is None:
+        raise ValueError("class AST node has no source end location")
+    member_source = ast.unparse(ast.Module(body=members, type_ignores=[])).rstrip()
+    indented = "\n".join(f"    {line}" for line in member_source.splitlines())
+    return "".join(lines[:end_line]) + indented + "\n" + "".join(lines[end_line:])
+
+
 def callable_declaration_shape(
     node: ast.FunctionDef | ast.AsyncFunctionDef,
 ) -> tuple[object, ...]:
@@ -1390,6 +1431,7 @@ def merge_api_class_methods(
             bool,
         ]
     ] = []
+    existing_counts: dict[str, int] = {}
     for node in target_class.body:
         if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             continue
@@ -1398,6 +1440,7 @@ def merge_api_class_methods(
             continue
         signature_index = indices.get(node.name, 0)
         indices[node.name] = signature_index + 1
+        existing_counts[node.name] = signature_index + 1
         if signature_index >= len(group.signatures):
             continue
         signature = group.signatures[signature_index]
@@ -1413,6 +1456,36 @@ def merge_api_class_methods(
             and ast.get_docstring(node, clean=True) == signature.docstring
         )
         replacements.append((node, replacement, preserve_body))
+
+    missing_nodes: list[ast.FunctionDef] = []
+    for group in api_class.methods:
+        start = existing_counts.get(group.name, 0)
+        missing_nodes.extend(
+            new_api_method_node(group, signature) for signature in group.signatures[start:]
+        )
+
+    if missing_nodes:
+        if any(preserve_body for _, _, preserve_body in replacements):
+            merged = append_source_class_members(target_source, target_class, missing_nodes)
+            for original, replacement, preserve_body in reversed(replacements):
+                if preserve_body:
+                    merged = replace_source_callable_declaration(merged, original, replacement)
+                else:
+                    merged = replace_source_node(merged, original, replacement)
+            return merged
+        replacement_by_id = {id(original): replacement for original, replacement, _ in replacements}
+        target_class.body = [replacement_by_id.get(id(node), node) for node in target_class.body]
+        target_class.body = [
+            node
+            for node in target_class.body
+            if not (
+                isinstance(node, ast.Expr)
+                and isinstance(node.value, ast.Constant)
+                and node.value.value is Ellipsis
+            )
+        ]
+        target_class.body.extend(missing_nodes)
+        return merged_module_source(target_source, target_tree)
 
     if not replacements:
         return target_source
@@ -1447,6 +1520,7 @@ def merge_api_class_attributes(
         return target_source
 
     attributes = {attribute.name: attribute for attribute in api_class.attributes}
+    existing_symbols = class_body_defined_symbols(target_class.body)
     replacements: list[tuple[ast.stmt, ast.stmt]] = []
     for node in target_class.body:
         if not isinstance(node, (ast.Assign, ast.AnnAssign)):
@@ -1464,6 +1538,24 @@ def merge_api_class_attributes(
         ):
             continue
         replacements.append((node, replacement))
+
+    missing_nodes = [
+        ast.parse(api_attribute_source(attribute)).body[0]
+        for attribute in api_class.attributes
+        if attribute.name not in existing_symbols
+    ]
+    if missing_nodes:
+        target_class.body = [
+            node
+            for node in target_class.body
+            if not (
+                isinstance(node, ast.Expr)
+                and isinstance(node.value, ast.Constant)
+                and node.value.value is Ellipsis
+            )
+        ]
+        target_class.body.extend(missing_nodes)
+        return merged_module_source(target_source, target_tree)
 
     merged = target_source
     for original, replacement in reversed(replacements):

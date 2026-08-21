@@ -66,7 +66,9 @@ def write_public_module_stubs(
     ensure_parent_package_stubs(out_dir, module_names)
     module_names_to_write = set(module_methods)
     module_names_to_write.update(
-        module.name for module in api_model.modules if module.functions or module.attributes
+        module.name
+        for module in api_model.modules
+        if module.functions or module.attributes or module.aliases
     )
     for module_name in sorted(module_names_to_write):
         write_stub_file(

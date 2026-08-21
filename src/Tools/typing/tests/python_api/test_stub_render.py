@@ -10,6 +10,7 @@ import unittest
 from stubgen.model import BindingMethod, StubSignature
 from stubgen.module_merge import (
     merge_api_module_aliases,
+    merge_api_module_aliases_into_stubs,
     merge_api_module_attributes,
     merge_api_module_attributes_into_stubs,
 )
@@ -209,6 +210,19 @@ def outside() -> None:
         self.assertIn("class Other:\n    pass", output)
         self.assertIn("def outside() -> None:\n    ...", output)
 
+    def test_curated_class_methods_add_missing_methods(self) -> None:
+        source = "class Example:\n    ...\n"
+        api_class = ApiClass(
+            name="Example",
+            module_name="Example",
+            methods=api_module().functions,
+        )
+
+        output = merge_api_class_methods(source, api_class)
+
+        self.assertIn("def open(self, path: str, /) -> object:", output)
+        self.assertEqual(output.count("def open("), 2)
+
     def test_binding_method_merge_preserves_equivalent_docstring_formatting(self) -> None:
         source = '''class Example:
     def run(self, value: int) -> int:
@@ -264,6 +278,19 @@ def outside() -> None:
 
         self.assertIn("state: str = 'ready'", output)
         self.assertIn("label = 'new'", output)
+
+    def test_curated_class_attributes_add_missing_assignments(self) -> None:
+        source = "class Example:\n    ...\n"
+        api_class = ApiClass(
+            name="Example",
+            module_name="Example",
+            attributes=(ApiAttribute(name="ready", annotation="bool"),),
+        )
+
+        output = merge_api_class_attributes(source, api_class)
+
+        self.assertIn("ready: bool", output)
+        self.assertNotIn("class Example:\n    ...", output)
 
     def test_curated_module_functions_render_with_api_model_signatures(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -324,6 +351,29 @@ def outside() -> None:
             stub_source = generated.read_text(encoding="utf-8")
 
         self.assertIn("Ready: bool", stub_source)
+
+    def test_curated_module_aliases_render_without_discovered_methods(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "stubs"
+            model = ApiModel(
+                modules=(
+                    ApiModule(
+                        name="FreeCAD.Exports",
+                        aliases=(
+                            ApiAlias(
+                                public_path="FreeCAD.Exports.Axis",
+                                target_path="FreeCAD.Base.Axis",
+                            ),
+                        ),
+                    ),
+                ),
+            )
+            write_public_module_stubs(output, [], {"FreeCAD.Exports"}, {}, model)
+            merge_api_module_aliases_into_stubs(output, model, {"FreeCAD.Exports"})
+            generated = output / "FreeCAD" / "Exports.pyi"
+            stub_source = generated.read_text(encoding="utf-8")
+
+        self.assertIn("from FreeCAD.Base import Axis as Axis", stub_source)
 
     def test_curated_class_renders_without_discovered_binding(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
