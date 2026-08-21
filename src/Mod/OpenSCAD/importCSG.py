@@ -661,6 +661,7 @@ def p_intersection_action(p):
         mycommon.Tool = p[5][1]
         checkObjShape(mycommon.Base)
         checkObjShape(mycommon.Tool)
+        mycommon.Shape = mycommon.Base.Shape.common(mycommon.Tool.Shape)
         if gui:
             mycommon.Base.ViewObject.hide()
             mycommon.Tool.ViewObject.hide()
@@ -668,7 +669,6 @@ def p_intersection_action(p):
         mycommon = p[5][0]
     else : # 1 child
         mycommon = placeholder('group',[],'{}')
-    mycommon.Shape = mycommon.Base.Shape.common(mycommon.Tool.Shape)
     p[0] = [mycommon]
     if printverbose: print("End Intersection")
 
