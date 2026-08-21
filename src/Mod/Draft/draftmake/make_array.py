@@ -143,7 +143,7 @@ def make_array(base_object, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None, u
 def makeArray(
     baseobject, arg1, arg2, arg3, arg4=None, arg5=None, arg6=None, name="Array", use_link=False
 ):
-    """Create an Array. DEPRECATED. Use 'make_array'."""
+    """DEPRECATED. Use 'make_array'."""
     _wrn(
         "Do not use this function directly; instead, use "
         "'make_ortho_array', 'make_polar_array', "

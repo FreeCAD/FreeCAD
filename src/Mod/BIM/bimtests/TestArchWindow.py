@@ -234,7 +234,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         wall_thickness = 200.0
         wall_height = 2400.0
 
-        line = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(wall_length, 0, 0))
+        line = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(wall_length, 0, 0))
         self.document.recompute()
 
         wall = Arch.makeWall(
@@ -491,7 +491,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
     def test_custom_subvolume_creates_opening(self):
         """Test that a custom Subvolume shape correctly creates an opening in a host wall."""
         # Create a wall and store its initial state
-        wall_base = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(4000, 0, 0))
+        wall_base = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(4000, 0, 0))
         wall = Arch.makeWall(wall_base, width=200, height=3000, align="Left")
         self.document.recompute()
         initial_wall_volume = wall.Shape.Volume
@@ -554,7 +554,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         wall_length = 3000.0
         wall_thickness = 200.0
         wall_height = 2500.0
-        wall_base = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(wall_length, 0, 0))
+        wall_base = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(wall_length, 0, 0))
         wall = Arch.makeWall(
             wall_base, width=wall_thickness, height=wall_height, name="WallForClonedWindow"
         )
@@ -584,7 +584,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         )
 
         # Create the clone
-        cloned_window = Draft.clone(original_window)
+        cloned_window = Draft.make_clone(original_window)
         cloned_window.Label = "ClonedWindow"
 
         # Position the clone inside the wall
@@ -634,7 +634,7 @@ class TestArchWindow(TestArchBase.TestArchBase):
         self.printTestMessage("Testing Arch.addComponents for window-wall hosting...")
 
         # Create the wall and window
-        wall_base = Draft.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(3000, 0, 0))
+        wall_base = Draft.make_line(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(3000, 0, 0))
         wall = Arch.makeWall(wall_base, width=200, height=2500, name="HostWall")
         self.document.recompute()
         initial_wall_volume = wall.Shape.Volume
