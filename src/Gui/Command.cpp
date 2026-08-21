@@ -262,7 +262,7 @@ void Command::setShortcut(const QString& shortcut)
 QString Command::getShortcut() const
 {
     if (_pcAction) {
-        return _pcAction->shortcut().toString();
+        return Gui::ShortcutManager::asString(_pcAction->shortcut());
     }
     return ShortcutManager::instance()->getShortcut(getName());
 }
@@ -1065,7 +1065,7 @@ const char* Command::keySequenceToAccel(int sk) const
 
     auto type = static_cast<QKeySequence::StandardKey>(sk);
     QKeySequence ks(type);
-    QString qs = ks.toString();
+    QString qs = Gui::ShortcutManager::asString(ks);
     QByteArray data = qs.toLatin1();
 
     return (strings[sk] = static_cast<const char*>(data)).c_str();
@@ -1887,7 +1887,7 @@ void PythonGroupCommand::languageChange()
                 tip,
                 _pcAction->text(),
                 _pcAction->action()->font(),
-                _pcAction->shortcut().toString(),
+                Gui::ShortcutManager::asString(_pcAction->shortcut()),
                 cmd
             );
             _pcAction->setToolTip(newTip);
@@ -1911,7 +1911,7 @@ void PythonGroupCommand::languageChange()
             QString text = QApplication::translate(context, cmd->getMenuText());
             it->setText(text);
             QString helpText = QApplication::translate(context, tooltip);
-            QString shortCut = it->shortcut().toString();
+            QString shortCut = Gui::ShortcutManager::asString(it->shortcut());
             QFont font = it->font();
             QString newTip = Gui::Action::createToolTip(helpText, text, font, shortCut, cmd);
             it->setToolTip(newTip);
