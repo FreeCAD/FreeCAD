@@ -28,6 +28,8 @@
 #include <Base/Vector3D.h>
 #include <optional>
 
+#include "Utilities.h"
+
 class SoFont;
 class SoText2;
 class SoAsciiText;
@@ -37,6 +39,7 @@ class SoTransform;
 class SoRotationXYZ;
 class SoImage;
 class SoCoordinate3;
+class SoDragger;
 
 namespace Gui
 {
@@ -112,6 +115,12 @@ public:
 protected:
     void onChanged(const App::Property* prop) override;
     void drawImage(const std::vector<std::string>&);
+    virtual void labelDoubleClicked()
+    {}
+    SoTranslation* getBaseTranslation()
+    {
+        return pBaseTranslation;
+    }
 
 private:
     static void dragStartCallback(void* data, SoDragger* d);
@@ -138,6 +147,7 @@ private:
     SoTranslation* pBaseTranslation;
     TranslateManip* pTextTranslation;
     std::optional<DragState> dragState;
+    DoubleClick doubleClickData;
 
     static const char* JustificationEnums[];
 };
