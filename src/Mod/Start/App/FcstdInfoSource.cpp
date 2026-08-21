@@ -53,7 +53,10 @@ static QByteArray loadFCStdThumbnail(const App::ProjectFile& proj, const QString
         }
         else {
             const auto pathToThumbnail = QString(defaultThumbnailPath).toStdString();
-            if (proj.containsFile(pathToThumbnail)) {
+            bool fileContainsThumbnail = proj.containsFile(pathToThumbnail);
+            bool docCacheContainsThumbnail = proj.containsFileInDocumentCache(pathToThumbnail);
+
+            if (fileContainsThumbnail || docCacheContainsThumbnail) {
                 createThumbnailsDir();
 
                 // Read the thumbnail into a buffer
@@ -65,7 +68,12 @@ static QByteArray loadFCStdThumbnail(const App::ProjectFile& proj, const QString
                 Base::BufferStreambuf dataStreambuf({data.data(), size_t(data.size())});
                 std::ostream dataStream(&dataStreambuf);
 #endif
-                proj.readInputFileDirect(pathToThumbnail, dataStream);
+                if (fileContainsThumbnail) {
+                    proj.readInputFileDirect(pathToThumbnail, dataStream);
+                }
+                else if (docCacheContainsThumbnail) {
+                    proj.readInputFileFromDocumentCache(pathToThumbnail, dataStream);
+                }
 
                 // Save that buffer to the thumbnail cache
                 const Base::FileInfo thumbnailFileInfo(pathToCachedThumbnail.toStdString());
