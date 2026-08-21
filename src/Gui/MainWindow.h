@@ -411,6 +411,10 @@ private Q_SLOTS:
     /**
      * \internal
      */
+    void runInternalScripts();
+    /**
+     * \internal
+     */
     void delayedStartup();
 #ifdef Q_OS_MAC
     /**

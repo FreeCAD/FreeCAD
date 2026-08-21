@@ -449,7 +449,7 @@ class DocumentObject;
 namespace Gui
 {
 
-[[nodiscard]] GuiExport bool isInternalGuiTestRun();
+[[nodiscard]] GuiExport bool isInternalGuiRun();
 
 /**
  */

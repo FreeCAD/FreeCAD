@@ -37,7 +37,7 @@
 using namespace Gui;
 
 
-bool Gui::isInternalGuiTestRun()
+bool Gui::isInternalGuiRun()
 {
     return App::Application::Config()["RunMode"] == "Internal";
 }

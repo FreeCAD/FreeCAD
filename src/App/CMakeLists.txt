@@ -124,6 +124,7 @@ generate_module_from_py(
 
 generate_embed_from_py(FreeCADInit InitScript.h)
 generate_embed_from_py(FreeCADTest TestScript.h)
+generate_embed_from_py(FreeCADDiff DiffScript.h)
 
 SET(FreeCADApp_Pyi_SRCS
     ApplicationDirectories.pyi
@@ -383,6 +384,7 @@ SET(FreeCADApp_SRCS
     ${FreeCADApp_Pyi_SRCS}
     FreeCADInit.py
     FreeCADTest.py
+    FreeCADDiff.py
     PreCompiled.h
 )
 
