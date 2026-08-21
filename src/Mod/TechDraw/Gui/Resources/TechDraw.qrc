@@ -100,6 +100,7 @@
         <file>icons/TechDraw_ExtensionCascadeVertDimension.svg</file>
         <file>icons/TechDraw_ExtensionChangeLineAttributes.svg</file>
         <file>icons/TechDraw_ExtensionCircleCenterLines.svg</file>
+        <file>icons/TechDraw_ExtensionCircleCenterLines_Pointer.svg</file>
         <file>icons/TechDraw_ExtensionCreateHorizChainDimension.svg</file>
         <file>icons/TechDraw_ExtensionCreateHorizChamferDimension.svg</file>
         <file>icons/TechDraw_ExtensionCreateHorizCoordDimension.svg</file>
@@ -116,6 +117,7 @@
         <file>icons/TechDraw_ExtensionDrawCosmCircle3Points.svg</file>
         <file>icons/TechDraw_ExtensionExtendLine.svg</file>
         <file>icons/TechDraw_ExtensionHoleCircle.svg</file>
+        <file>icons/TechDraw_ExtensionHoleCircle_Pointer.svg</file>
         <file>icons/TechDraw_ExtensionIncreaseDecimal.svg</file>
         <file>icons/TechDraw_ExtensionInsertDiameter.svg</file>
         <file>icons/TechDraw_ExtensionInsertRepetition.svg</file>

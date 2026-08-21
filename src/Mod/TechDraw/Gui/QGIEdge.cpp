@@ -23,6 +23,9 @@
 
 # include <QPainterPath>
 # include <QPainterPathStroker>
+# include <QStyleOptionGraphicsItem>
+
+# include <cmath>
 
 
 #include <App/Application.h>
@@ -111,5 +114,43 @@ void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 void QGIEdge::setLinePen(const QPen& linePen)
 {
     m_pen = linePen;
+}
+
+void QGIEdge::paint(QPainter* painter, const QStyleOptionGraphicsItem* option, QWidget* widget)
+{
+    QStyleOptionGraphicsItem myOption(*option);
+    myOption.state &= ~QStyle::State_Selected;
+    QPen pen(m_pen);
+
+    if (m_source == TechDraw::SourceType::COSMETICEDGE ||
+        m_source == TechDraw::SourceType::CENTERLINE) {
+        
+        QVector<qreal> pattern = pen.dashPattern();
+
+        if (!pattern.isEmpty() && !path().isEmpty() && pen.widthF() > 0.0) {
+            
+            qreal length = 0.0;
+            for (qreal line : pattern) {
+                length += line;
+            }
+
+            if (length > 0.0) {
+                qreal firstLineCenter = pattern.front() / 2.0;
+
+                // The pattern is in terms of pen widths, so we also need to divide by the pen width
+                qreal halfLength = path().length() / (2.0 * pen.widthF());
+
+                qreal dashOffset = firstLineCenter - std::fmod(halfLength, length);
+                
+                if (dashOffset < 0.0) dashOffset += length;
+
+                pen.setDashOffset(dashOffset);
+            }
+        }
+    }
+
+    setPen(pen);
+    setBrush(m_brush);
+    QGraphicsPathItem::paint(painter, &myOption, widget);
 }
 
