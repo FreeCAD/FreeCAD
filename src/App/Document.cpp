@@ -2220,6 +2220,81 @@ void Document::restore(const char* filename,
     }
 }
 
+void Document::canonicalizeAliasedExpressions(const std::vector<DocumentObject*>& objArray)
+{
+    // Accumulate every alias-to-canonical-name rewrite across all objects into a single
+    // combined map first, so the document is scanned exactly once below. ObjectIdentifier
+    // keys are owner-scoped, so entries from different owning objects cannot collide.
+    std::map<ObjectIdentifier, ObjectIdentifier> paths;
+    for (auto obj : objArray) {
+        auto aliases = obj->getPropertyAliases();
+        if (aliases.empty()) {
+            continue;
+        }
+
+        try {
+            for (const auto& [alias, entry] : aliases) {
+                // Skip aliases shadowed by a real property of the same name; those are not
+                // stale references.
+                if (obj->getPropertyByName(alias.c_str(), PropertyLookupMode::WithoutAliases)) {
+                    continue;
+                }
+                // A dangling alias (typo, or an add-on registering a bad canonical name) must
+                // not rewrite anything: if the canonical name does not resolve to a real
+                // property, rewriting would permanently corrupt user expressions that reference
+                // the alias, since the rewrite gets written back to the file on next save.
+                if (!obj->getPropertyByName(entry.canonicalName.c_str(),
+                                             PropertyLookupMode::WithoutAliases)) {
+                    continue;
+                }
+                paths.emplace(ObjectIdentifier(obj, std::string(alias)),
+                              ObjectIdentifier(obj, entry.canonicalName));
+            }
+        }
+        catch (const Base::Exception& e) {
+            FC_ERR("Failed to canonicalize aliased expressions of " << obj->getFullName() << ": "
+                                                                     << e.what());
+        }
+    }
+
+    if (paths.empty()) {
+        return;
+    }
+
+    for (auto target : d->objectArray) {
+        try {
+            int renamed = target->ExpressionEngine.renameObjectIdentifiers(paths);
+            if (renamed > 0) {
+                FC_MSG(target->getFullName()
+                       << ".ExpressionEngine: canonicalized " << renamed
+                       << " expression reference(s) to renamed properties");
+            }
+        }
+        catch (const Base::Exception& e) {
+            FC_ERR("Failed to canonicalize aliased expressions of " << target->getFullName()
+                                                                     << ": " << e.what());
+        }
+        catch (std::exception& e) {
+            FC_ERR("Failed to canonicalize aliased expressions of " << target->getFullName()
+                                                                     << ": " << e.what());
+        }
+        catch (...) {
+
+            // If a Python exception occurred, it must be cleared immediately.
+            // Otherwise, the interpreter remains in a dirty state, causing
+            // Segfaults later when FreeCAD interacts with Python.
+            if (PyErr_Occurred()) {
+                Base::Console().error("Python error while canonicalizing aliased expressions:\n");
+                PyErr_Print(); // Print the traceback to stderr/Console
+                PyErr_Clear(); // Reset the interpreter state
+            }
+
+            FC_ERR("Failed to canonicalize aliased expressions of "
+                   << target->getFullName() << ": " << "unknown exception");
+        }
+    }
+}
+
 bool Document::afterRestore(const bool checkPartial)
 {
     Base::FlagToggler<> flag(globalIsRestoring, false);
@@ -2260,6 +2335,16 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             }
         }
     }
+
+    // Must run before onDocumentRestored() below (Python's chance to register runtime
+    // aliases) and before the dependency loop's final `if (!d->touchedObjs.contains(obj))
+    // obj->purgeTouched();`. The rewrite itself touches objects (ExpressionModifier::
+    // aboutToChange -> Property::hasSetValue -> DocumentObject::onChanged), so that purge
+    // is what keeps merely opening a document from marking it modified. Moving this call
+    // later without compensating for that purge would break that invariant; see
+    // core-app.dox's PropertyRenamingLimits section for why Python aliases are not covered
+    // by this rewrite either way.
+    canonicalizeAliasedExpressions(objArray.empty() ? d->objectArray : objArray);
 
     if (checkPartial && !d->touchedObjs.empty()) {
         // partial document touched, signal full reload
