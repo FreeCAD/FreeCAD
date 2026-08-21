@@ -3263,7 +3263,7 @@ static void doSelect(void* ud, SoEventCallback* cb)
 
         const SoEvent* ev = cb->getEvent();
         if (ev && !(ev->wasCtrlDown() || ev->wasShiftDown() ) ) {
-            Gui::Selection().clearSelection(doc->getName());
+            //Gui::Selection().clearSelection(doc->getName()); TODO UNCOMMENT OUT THIS LINE
         }
 
         const std::vector<App::DocumentObject*> objects = doc->getObjects();
@@ -3514,7 +3514,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
         return;
     }
     Selection().selStackPush();
-    Selection().clearCompleteSelection();
+    //Selection().clearCompleteSelection(); TODO UNCOMMENT
     const auto trees = getMainWindow()->findChildren<TreeWidget*>();
     for (auto tree : trees) {
         tree->selectAllInstances(*vpd);
