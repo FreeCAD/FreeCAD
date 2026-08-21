@@ -1439,7 +1439,7 @@ def get_ifctype(obj):
     if hasattr(obj, "IfcType") and obj.IfcType != "Undefined":
         return "Ifc" + obj.IfcType.replace(" ", "")
     dtype = Draft.getType(obj)
-    if dtype in ["App::Part", "Part::Compound", "Array"]:
+    if dtype in ["App::Part", "Array"]:
         return "IfcElementAssembly"
     if dtype in ["App::DocumentObjectGroup"]:
         return "IfcGroup"
