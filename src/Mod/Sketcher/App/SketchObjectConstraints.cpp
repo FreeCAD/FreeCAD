@@ -2001,7 +2001,7 @@ int SketchObject::getSingleScaleDefiningConstraint() const
     return found;
 }
 
-const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups()
+const std::vector<std::map<int, Sketcher::PointPos>> SketchObject::getCoincidenceGroups() const
 {
     // this function is different from that in getCoincidentPoints in that:
     // - getCoincidentPoints only considers direct coincidence (the points that are linked via a
@@ -2171,7 +2171,7 @@ void SketchObject::getDirectlyCoincidentPoints(int VertexId, std::vector<int>& G
     getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
 }
 
-bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2)
+bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2) const
 {
     if (GeoId1 == GeoId2 && PosId1 == PosId2)
         return true;
@@ -2195,6 +2195,53 @@ bool SketchObject::arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, 
 
     return false;
 }
+
+int SketchObject::getDirectlyCoincidentPoints(
+    const int GeoId1,
+    const int GeoId2,
+    std::vector<int>& GeoId3,
+    std::vector<PointPos>& PosId3
+) const
+{
+    std::vector<int> constraints;
+    int found = 0;
+    getConstraintIndices(GeoId1, constraints);
+    for (auto idx : constraints) {
+        const auto* con = Constraints.getValues()[idx];
+        if (!con->involvesGeoId(GeoId2)) {
+            continue;
+        }
+
+        if (con->Type == Sketcher::ConstraintType::PointOnObject) {
+            if (con->getElement(0).Pos != Sketcher::PointPos::none) {
+                GeoId3.push_back(con->getElement(0).GeoId);
+                PosId3.push_back(con->getElement(0).Pos);
+            }
+            else {
+                GeoId3.push_back(con->getElement(1).GeoId);
+                PosId3.push_back(con->getElement(1).Pos);
+            }
+        }
+        else if (con->Type == Sketcher::ConstraintType::Coincident) {
+            if (con->getElement(0).GeoId == GeoId1) {
+                GeoId3.push_back(con->getElement(0).GeoId);
+                PosId3.push_back(con->getElement(0).Pos);
+            }
+            else {
+                GeoId3.push_back(con->getElement(1).GeoId);
+                PosId3.push_back(con->getElement(1).Pos);
+            }
+        }
+        else {
+            continue;
+        }
+
+        found++;
+    }
+    return found;
+}
+
+
 bool SketchObject::hasBlockConstraint() const
 {
     return std::ranges::any_of(Constraints.getValues(), [](auto& c) {
@@ -2202,7 +2249,7 @@ bool SketchObject::hasBlockConstraint() const
     });
 }
 
-void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList)
+void SketchObject::getConstraintIndices(int GeoId, std::vector<int>& constraintList) const
 {
     const std::vector<Constraint*>& constraints = this->Constraints.getValues();
     int i = 0;

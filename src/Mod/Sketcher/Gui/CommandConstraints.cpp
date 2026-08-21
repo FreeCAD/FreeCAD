@@ -6992,11 +6992,46 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 return;
             }
 
-            if (! isLineSegment(*geo1) && ! isLineSegment(*geo2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("One of the selected edges should be a line."));
+            if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
+                std::vector<int> nGeoId3;
+                std::vector<PointPos> nPosId3;
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3);
+
+                if (found > 1) {  // too many intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Too many intersection points found.")
+                    );
+                    return;
+                }
+                else if (found == 0) {  // no intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("No intersection points found.")
+                    );
+                    return;
+                }
+
+                GeoId3 = nGeoId3[0];
+                PosId3 = nPosId3[0];
+
+                // edge, edge, vertex perpendicularity
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add perpendicular constraint"));
+                Gui::cmdAppObjectArgs(
+                    selection[0].getObject(),
+                    "addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
+                    GeoId1,
+                    GeoId2,
+                    GeoId3,
+                    static_cast<int>(PosId3)
+                );
+
+                removeRedundantPointOnObject(Obj, GeoId1, GeoId2, GeoId3);
+                commitCommand();
+                tryAutoRecompute(Obj);
+                getSelection().clearSelection();
                 return;
             }
 
@@ -7191,12 +7226,32 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair>& 
                 return;
             }
 
-            if (! isLineSegment(*geo1) && ! isLineSegment(*geo2)) {
-                Gui::TranslatedUserWarning(
-                    Obj,
-                    QObject::tr("Wrong selection"),
-                    QObject::tr("One of the selected edges should be a line."));
-                return;
+            if (!isLineSegment(*geo1) && !isLineSegment(*geo2)) {
+                std::vector<int> nGeoId3;
+                std::vector<PointPos> nPosId3;
+                const int found = Obj->getDirectlyCoincidentPoints(GeoId1, GeoId2, nGeoId3, nPosId3);
+
+                if (found > 1) {  // too many intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("Too many intersection points found.")
+                    );
+                    return;
+                }
+                else if (found == 0) {  // no intersection points
+                    Gui::TranslatedUserWarning(
+                        Obj,
+                        QObject::tr("Wrong selection"),
+                        QObject::tr("No intersection points found.")
+                    );
+                    return;
+                }
+
+                GeoId3 = nGeoId3[0];
+                PosId3 = nPosId3[0];
+
+                break;
             }
 
             // if (isBSplineCurve(*geo1) || isBSplineCurve(*geo2)) {
