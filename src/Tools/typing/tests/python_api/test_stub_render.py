@@ -8,7 +8,13 @@ import tempfile
 import unittest
 
 from stubgen.model import BindingMethod, StubSignature
-from stubgen.python_api.model import ApiCallableGroup, ApiModule, ApiSourceLocation
+from stubgen.module_merge import merge_api_module_attributes
+from stubgen.python_api.model import (
+    ApiAttribute,
+    ApiCallableGroup,
+    ApiModule,
+    ApiSourceLocation,
+)
 from stubgen.render import write_stub_file
 from stubgen.signature_parser import group_callable_definitions, parse_callable_group
 
@@ -52,6 +58,28 @@ def binding_method() -> BindingMethod:
 
 
 class PythonApiStubRenderTests(unittest.TestCase):
+    def test_curated_module_attributes_replace_merged_assignments(self) -> None:
+        target = """from __future__ import annotations
+
+Original: int = 1
+Alias = list[str]
+
+def run() -> None: ...
+"""
+        api_module = ApiModule(
+            name="Example",
+            attributes=(
+                ApiAttribute(name="Original", annotation="str", value='"value"'),
+                ApiAttribute(name="Alias", value="tuple[str, ...]"),
+            ),
+        )
+
+        output = merge_api_module_attributes(target, api_module)
+
+        self.assertIn("Original: str = 'value'", output)
+        self.assertIn("Alias = tuple[str, ...]", output)
+        self.assertIn("def run() -> None:\n    ...", output)
+
     def test_curated_module_functions_render_with_api_model_signatures(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "FreeCAD" / "Console.pyi"

@@ -31,6 +31,7 @@ from .module_merge import (
     copy_overlay_stubs,
     copy_type_support_stubs,
     ensure_parent_package_stubs,
+    merge_api_module_attributes_into_stubs,
     module_stub_path,
     public_module_names,
     public_stub_symbols,
@@ -183,6 +184,7 @@ def write_outputs(
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )
     copy_module_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    merge_api_module_attributes_into_stubs(out_dir / "stubs", api_model, module_names)
     append_type_stubs(
         out_dir / "stubs",
         methods,

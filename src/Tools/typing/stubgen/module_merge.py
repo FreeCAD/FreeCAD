@@ -23,6 +23,7 @@ from pathlib import Path
 from .discovery import module_names_from_methods, module_names_from_type_methods
 from .model import BindingClass
 from .parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
+from .python_api.model import ApiAttribute, ApiModel, ApiModule
 from .source_inputs import parse_type_stub_target
 
 
@@ -486,6 +487,64 @@ def merge_module_support_nodes(target_source: str, support_source: str) -> str:
         target_body[:insertion_index] + support_nodes + target_body[insertion_index:]
     )
     return merged_module_source(target_source, target_tree)
+
+
+def api_attribute_source(attribute: ApiAttribute) -> str:
+    declaration = attribute.name
+    if attribute.annotation is not None:
+        declaration += f": {attribute.annotation}"
+    if attribute.value is not None:
+        declaration += f" = {attribute.value}"
+    return declaration
+
+
+def merge_api_module_attributes(
+    target_source: str,
+    api_module: ApiModule,
+) -> str:
+    """Replace curated module assignments with their normalized API-model form."""
+
+    if not api_module.attributes:
+        return target_source
+
+    target_tree = ast.parse(target_source)
+    attributes = {attribute.name: attribute for attribute in api_module.attributes}
+    changed = False
+    for index, node in enumerate(target_tree.body):
+        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+            continue
+        names = top_level_symbol_names(node)
+        if len(names) != 1:
+            continue
+        attribute = attributes.get(next(iter(names)))
+        if attribute is None:
+            continue
+        replacement = ast.parse(api_attribute_source(attribute)).body[0]
+        target_tree.body[index] = replacement
+        changed = True
+
+    if not changed:
+        return target_source
+    return merged_module_source(target_source, target_tree)
+
+
+def merge_api_module_attributes_into_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    count = 0
+    for api_module in api_model.modules:
+        path = module_stub_path(target_dir, api_module.name, module_names)
+        if not path.exists():
+            continue
+        original = path.read_text(encoding="utf-8")
+        merged = merge_api_module_attributes(original, api_module)
+        if merged == original:
+            continue
+        path.write_text(merged, encoding="utf-8")
+        count += 1
+    return count
 
 
 def merge_type_class_support_nodes(
