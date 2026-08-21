@@ -38,6 +38,8 @@ from .module_merge import (
 )
 from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
+from .python_api.model import ApiCallableGroup, ApiClass, ApiModel
+from .signature_parser import CallableSignature
 
 TYPE_CHECKING_IMPORT_LINE = "from typing import TYPE_CHECKING"
 DEPRECATED_IMPORT_LINE = "from typing_extensions import deprecated"
@@ -980,3 +982,166 @@ def append_class_stubs(
         separator = "\n\n" if existing else ""
         path.write_text(existing.rstrip() + separator + class_lines + "\n", encoding="utf-8")
     return suppressed
+
+
+def class_method_display_signature(
+    signature: CallableSignature,
+) -> str:
+    display = signature.display_signature
+    if signature.flags.staticmethod:
+        return display
+
+    receiver = "cls" if signature.flags.classmethod else "self"
+    opening = display.index("(") + 1
+    if display[opening] == ")":
+        return f"{display[:opening]}{receiver}{display[opening:]}"
+    return f"{display[:opening]}{receiver}, {display[opening:]}"
+
+
+def api_method_decorators(
+    existing: ast.FunctionDef | ast.AsyncFunctionDef,
+    signature: CallableSignature,
+    overloaded: bool,
+) -> list[ast.expr]:
+    decorators = copy.deepcopy(existing.decorator_list)
+    names = {decorator_name(decorator).split(".", 1)[-1] for decorator in decorators}
+    required: list[str] = []
+    if signature.flags.classmethod:
+        required.append("classmethod")
+    if signature.flags.staticmethod:
+        required.append("staticmethod")
+    if overloaded:
+        required.append("overload")
+    for name in required:
+        if name not in names:
+            decorators.insert(0, ast.Name(id=name, ctx=ast.Load()))
+    return decorators
+
+
+def rewritten_api_method(
+    existing: ast.FunctionDef | ast.AsyncFunctionDef,
+    group: ApiCallableGroup,
+    signature: CallableSignature,
+) -> ast.FunctionDef | ast.AsyncFunctionDef:
+    method = ast.parse(
+        f"{'async ' if isinstance(existing, ast.AsyncFunctionDef) else ''}"
+        f"def {class_method_display_signature(signature)}: ..."
+    ).body[0]
+    if not isinstance(method, (ast.FunctionDef, ast.AsyncFunctionDef)):
+        raise TypeError("parsed API method is not a function")
+    doc = signature.docstring
+    method.body = []
+    if doc:
+        method.body.append(ast.Expr(value=ast.Constant(value=doc)))
+    method.body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
+    method.decorator_list = api_method_decorators(existing, signature, group.overload)
+    method.type_comment = existing.type_comment
+    return method
+
+
+def source_node_start(node: ast.FunctionDef | ast.AsyncFunctionDef) -> tuple[int, int]:
+    if node.decorator_list:
+        decorator = node.decorator_list[0]
+        return decorator.lineno, max(0, decorator.col_offset - 1)
+    return node.lineno, node.col_offset
+
+
+def replace_source_node(
+    source: str,
+    node: ast.FunctionDef | ast.AsyncFunctionDef,
+    replacement: ast.FunctionDef | ast.AsyncFunctionDef,
+) -> str:
+    lines = source.splitlines(keepends=True)
+    start_line, start_col = source_node_start(node)
+    end_line = node.end_lineno
+    end_col = node.end_col_offset
+    if end_line is None or end_col is None:
+        raise ValueError("AST node has no source end location")
+    prefix = "".join(lines[: start_line - 1]) + lines[start_line - 1][:start_col]
+    suffix = lines[end_line - 1][end_col:] + "".join(lines[end_line:])
+    replacement_source = ast.unparse(replacement)
+    indentation = " " * start_col
+    replacement_source = replacement_source.replace("\n", f"\n{indentation}")
+    return prefix + replacement_source + suffix
+
+
+def merge_api_class_methods(
+    target_source: str,
+    api_class: ApiClass,
+) -> str:
+    """Replace curated class methods with their normalized API-model form."""
+
+    if not api_class.methods:
+        return target_source
+
+    target_tree = ast.parse(target_source)
+    target_class = next(
+        (
+            node
+            for node in target_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == api_class.name
+        ),
+        None,
+    )
+    if target_class is None:
+        return target_source
+
+    groups = {group.name: group for group in api_class.methods}
+    indices: dict[str, int] = {}
+    replacements: list[
+        tuple[ast.FunctionDef | ast.AsyncFunctionDef, ast.FunctionDef | ast.AsyncFunctionDef]
+    ] = []
+    for node in target_class.body:
+        if not isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            continue
+        group = groups.get(node.name)
+        if group is None:
+            continue
+        signature_index = indices.get(node.name, 0)
+        indices[node.name] = signature_index + 1
+        if signature_index >= len(group.signatures):
+            continue
+        replacement = rewritten_api_method(
+            node,
+            group,
+            group.signatures[signature_index],
+        )
+        if ast.dump(node, include_attributes=False) == ast.dump(
+            replacement,
+            include_attributes=False,
+        ):
+            continue
+        replacements.append(
+            (
+                node,
+                replacement,
+            )
+        )
+
+    if not replacements:
+        return target_source
+    merged = target_source
+    for original, replacement in reversed(replacements):
+        merged = replace_source_node(merged, original, replacement)
+    return merged
+
+
+def merge_api_class_methods_into_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    count = 0
+    for api_module in api_model.modules:
+        path = module_stub_path(target_dir, api_module.name, module_names)
+        if not path.exists():
+            continue
+        original = path.read_text(encoding="utf-8")
+        merged = original
+        for api_class in api_module.classes:
+            merged = merge_api_class_methods(merged, api_class)
+        if merged == original:
+            continue
+        path.write_text(merged, encoding="utf-8")
+        count += 1
+    return count

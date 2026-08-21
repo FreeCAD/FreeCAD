@@ -24,6 +24,7 @@ import shutil
 
 from .class_merge import (
     append_class_stubs,
+    merge_api_class_methods_into_stubs,
     validate_public_class_aliases,
 )
 from .module_merge import (
@@ -194,4 +195,5 @@ def write_outputs(
     )
     append_class_stubs(out_dir / "stubs", root, classes, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    merge_api_class_methods_into_stubs(out_dir / "stubs", api_model, module_names)
     return overlay_count

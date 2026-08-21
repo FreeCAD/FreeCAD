@@ -12,9 +12,11 @@ from stubgen.module_merge import merge_api_module_attributes
 from stubgen.python_api.model import (
     ApiAttribute,
     ApiCallableGroup,
+    ApiClass,
     ApiModule,
     ApiSourceLocation,
 )
+from stubgen.class_merge import merge_api_class_methods
 from stubgen.render import write_stub_file
 from stubgen.signature_parser import group_callable_definitions, parse_callable_group
 
@@ -79,6 +81,43 @@ def run() -> None: ...
         self.assertIn("Original: str = 'value'", output)
         self.assertIn("Alias = tuple[str, ...]", output)
         self.assertIn("def run() -> None:\n    ...", output)
+
+    def test_curated_class_methods_replace_merged_methods(self) -> None:
+        source = '''# Generated header
+class Other:
+    pass
+
+class Example:
+    @property
+    def value(self) -> int:
+        """Return the current value."""
+        return 1
+
+def outside() -> None:
+    ...
+'''
+        tree = ast.parse(source)
+        class_node = tree.body[1]
+        assert isinstance(class_node, ast.ClassDef)
+        method_nodes: list[ast.FunctionDef | ast.AsyncFunctionDef] = [
+            node for node in class_node.body if isinstance(node, ast.FunctionDef)
+        ]
+        group = ApiCallableGroup(
+            name="value",
+            signatures=parse_callable_group(method_nodes),
+            doc="Return the current value.",
+            is_method=True,
+        )
+        api_class = ApiClass(name="Example", module_name="Example", methods=(group,))
+
+        output = merge_api_class_methods(source, api_class)
+
+        self.assertIn("@property", output)
+        self.assertIn('"""Return the current value."""', output)
+        self.assertIn("def value(self) -> int:", output)
+        self.assertIn("# Generated header", output)
+        self.assertIn("class Other:\n    pass", output)
+        self.assertIn("def outside() -> None:\n    ...", output)
 
     def test_curated_module_functions_render_with_api_model_signatures(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
