@@ -316,3 +316,8 @@ ViewFrameMode PreferencesGui::getViewFrameMode()
     return static_cast<ViewFrameMode>(temp);
 }
 
+PreferencesGui::ViewSizeMode PreferencesGui::screenMode()
+{
+    int temp = Preferences::getPreferenceGroup("General")->GetInt("ScreenMode", 0);
+    return static_cast<ViewSizeMode>(temp);
+}

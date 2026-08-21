@@ -23,6 +23,7 @@
 # include <cassert>
 
 # include <QGraphicsScene>
+#include <QGraphicsView>
 # include <QGraphicsSceneHoverEvent>
 # include <QPainter>
 # include <QStyleOptionGraphicsItem>
@@ -282,13 +283,19 @@ void QGIPrimPath::setFillColor(QColor c)
     m_colNormalFill = c;
 }
 
-void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+void QGIPrimPath::paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    setPen(m_pen);
+    QPen displayPen = m_pen;
+    auto* parentView = dynamic_cast<QGIView*>(parentItem());
+    bool exporting = parentView ? parentView->isExporting() : false;
+    if (PreferencesGui::screenMode() == PreferencesGui::ViewSizeMode::Screen && !exporting) {
+        displayPen.setCosmetic(true);
+    }
+    setPen(displayPen);
     setBrush(m_brush);
 
-    QGraphicsPathItem::paint (painter, &myOption, widget);
+    QGraphicsPathItem::paint(painter, &myOption, widget);
 }
 
