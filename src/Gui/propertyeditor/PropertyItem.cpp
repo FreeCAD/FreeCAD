@@ -1240,9 +1240,11 @@ QWidget* PropertyFloatItem::createEditor(
 void PropertyFloatItem::setEditorData(QWidget* editor, const QVariant& data) const
 {
     if (auto le = qobject_cast<QLineEdit*>(editor)) {
-        setFloatLineEditRange(le,
-                              static_cast<double>(std::numeric_limits<int>::min()),
-                              static_cast<double>(std::numeric_limits<int>::max()));
+        setFloatLineEditRange(
+            le,
+            static_cast<double>(std::numeric_limits<int>::min()),
+            static_cast<double>(std::numeric_limits<int>::max())
+        );
         le->setText(scientificNumber(data.toDouble()));
         return;
     }
@@ -1568,9 +1570,11 @@ public:
                 const Base::Vector3d& value = data.value<Base::Vector3d>();
 
                 QString str = QStringLiteral("(%1, %2, %3)")
-                                  .arg(scientificNumber(value.x),
-                                       scientificNumber(value.y),
-                                       scientificNumber(value.z));
+                                  .arg(
+                                      scientificNumber(value.x),
+                                      scientificNumber(value.y),
+                                      scientificNumber(value.z)
+                                  );
 
                 Gui::Command::doCommand(
                     Gui::Command::Doc,
@@ -1610,12 +1614,9 @@ PropertyVectorItem::PropertyVectorItem()
 QString PropertyVectorItem::toString(const QVariant& prop) const
 {
     const Base::Vector3d& value = prop.value<Base::Vector3d>();
-    QString data = QStringLiteral("[%1 %2 %3]")
-                       .arg(
-                           scientificNumber(value.x),
-                           scientificNumber(value.y),
-                           scientificNumber(value.z)
-                       );
+    QString data
+        = QStringLiteral("[%1 %2 %3]")
+              .arg(scientificNumber(value.x), scientificNumber(value.y), scientificNumber(value.z));
     if (hasExpression()) {
         data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
     }
@@ -1665,12 +1666,9 @@ void PropertyVectorItem::setEditorData(QWidget* editor, const QVariant& data) co
 {
     auto le = qobject_cast<QLineEdit*>(editor);
     const Base::Vector3d& value = data.value<Base::Vector3d>();
-    QString text = QStringLiteral("[%1 %2 %3]")
-                       .arg(
-                           scientificNumber(value.x),
-                           scientificNumber(value.y),
-                           scientificNumber(value.z)
-                       );
+    QString text
+        = QStringLiteral("[%1 %2 %3]")
+              .arg(scientificNumber(value.x), scientificNumber(value.y), scientificNumber(value.z));
     le->setProperty("coords", data);
     le->setText(text);
 }
@@ -2647,17 +2645,16 @@ QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
     p.getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
 
-    QString data
-        = QStringLiteral(
-              "Axis: (%1 %2 %3)\n"
-              "Angle: %4"
-        )
-              .arg(
-                  scientificNumber(dir.x),
-                  scientificNumber(dir.y),
-                  scientificNumber(dir.z),
-                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle))
-              );
+    QString data = QStringLiteral(
+                       "Axis: (%1 %2 %3)\n"
+                       "Angle: %4"
+    )
+                       .arg(
+                           scientificNumber(dir.x),
+                           scientificNumber(dir.y),
+                           scientificNumber(dir.z),
+                           scientificQuantity(Base::Quantity(angle, Base::Unit::Angle))
+                       );
     return {data};
 }
 
@@ -2669,14 +2666,13 @@ QString PropertyRotationItem::toString(const QVariant& prop) const
     p.getRawValue(dir, angle);
     angle = Base::toDegrees<double>(angle);
 
-    QString data
-        = QStringLiteral("[(%1 %2 %3); %4]")
-              .arg(
-                  scientificNumber(dir.x),
-                  scientificNumber(dir.y),
-                  scientificNumber(dir.z),
-                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle))
-              );
+    QString data = QStringLiteral("[(%1 %2 %3); %4]")
+                       .arg(
+                           scientificNumber(dir.x),
+                           scientificNumber(dir.y),
+                           scientificNumber(dir.z),
+                           scientificQuantity(Base::Quantity(angle, Base::Unit::Angle))
+                       );
     return data;
 }
 
@@ -2967,21 +2963,20 @@ QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
-    QString data
-        = QStringLiteral(
-              "Axis: (%1 %2 %3)\n"
-              "Angle: %4\n"
-              "Position: (%5  %6  %7)"
-        )
-              .arg(
-                  scientificNumber(dir.x),
-                  scientificNumber(dir.y),
-                  scientificNumber(dir.z),
-                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle)),
-                  scientificQuantity(Base::Quantity(pos.x, Base::Unit::Length)),
-                  scientificQuantity(Base::Quantity(pos.y, Base::Unit::Length)),
-                  scientificQuantity(Base::Quantity(pos.z, Base::Unit::Length))
-              );
+    QString data = QStringLiteral(
+                       "Axis: (%1 %2 %3)\n"
+                       "Angle: %4\n"
+                       "Position: (%5  %6  %7)"
+    )
+                       .arg(
+                           scientificNumber(dir.x),
+                           scientificNumber(dir.y),
+                           scientificNumber(dir.z),
+                           scientificQuantity(Base::Quantity(angle, Base::Unit::Angle)),
+                           scientificQuantity(Base::Quantity(pos.x, Base::Unit::Length)),
+                           scientificQuantity(Base::Quantity(pos.y, Base::Unit::Length)),
+                           scientificQuantity(Base::Quantity(pos.z, Base::Unit::Length))
+                       );
     return {data};
 }
 
@@ -2995,17 +2990,16 @@ QString PropertyPlacementItem::toString(const QVariant& prop) const
     angle = Base::toDegrees<double>(angle);
     pos = p.getPosition();
 
-    QString data
-        = QStringLiteral("[(%1 %2 %3); %4; (%5  %6  %7)]")
-              .arg(
-                  scientificNumber(dir.x),
-                  scientificNumber(dir.y),
-                  scientificNumber(dir.z),
-                  scientificQuantity(Base::Quantity(angle, Base::Unit::Angle)),
-                  scientificQuantity(Base::Quantity(pos.x, Base::Unit::Length)),
-                  scientificQuantity(Base::Quantity(pos.y, Base::Unit::Length)),
-                  scientificQuantity(Base::Quantity(pos.z, Base::Unit::Length))
-              );
+    QString data = QStringLiteral("[(%1 %2 %3); %4; (%5  %6  %7)]")
+                       .arg(
+                           scientificNumber(dir.x),
+                           scientificNumber(dir.y),
+                           scientificNumber(dir.z),
+                           scientificQuantity(Base::Quantity(angle, Base::Unit::Angle)),
+                           scientificQuantity(Base::Quantity(pos.x, Base::Unit::Length)),
+                           scientificQuantity(Base::Quantity(pos.y, Base::Unit::Length)),
+                           scientificQuantity(Base::Quantity(pos.z, Base::Unit::Length))
+                       );
     return data;
 }
 

@@ -51,8 +51,7 @@ bool isMbDFEMProperty(const App::Property* prop)
     }
 
     const std::string_view typeName = container->getTypeId().getName();
-    return typeName.starts_with("MbDFEM::")
-        || typeName.starts_with("MbDFEMGui::");
+    return typeName.starts_with("MbDFEM::") || typeName.starts_with("MbDFEMGui::");
 }
 
 void setDecimalsRecursive(PropertyItem* item, int decimals)
