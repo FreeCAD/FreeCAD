@@ -990,8 +990,8 @@ class TaskPanel:
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
             self.obj.Operations.Group = [
-                self.form.operationsList.item(i).data(self.DataObject)
-                for i in range(self.form.operationsList.count())
+                self.form.operationsList.invisibleRootItem().child(i).data(self.DataObject, 0)
+                for i in range(self.form.operationsList.topLevelItemCount())
             ]
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
@@ -1126,11 +1126,43 @@ class TaskPanel:
         # self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
-        self.form.operationsList.clear()
-        for child in self.obj.Operations.Group:
-            item = QtGui.QListWidgetItem(child.Label)
-            item.setData(self.DataObject, child)
-            self.form.operationsList.addItem(item)
+        col_num = 0
+        col_op_label = 1
+        col_tool_number = 2
+        col_tc = 3
+        col_coolant = 4
+        col_time = 5
+
+        tree = self.form.operationsList
+        tree.blockSignals(True)
+        tree.setTextElideMode(QtCore.Qt.ElideMiddle)
+        tree.setWordWrap(False)
+        tree.clear()
+
+        for index, op in enumerate(self.obj.Operations.Group):
+            item = QtGui.QTreeWidgetItem(tree)
+            item.setData(self.DataObject, 0, op)
+            item.setText(col_num, str(index))
+            item.setText(col_op_label, op.Label)
+            if tc := PathUtil.toolControllerForOp(op):
+                tcLabel = tc.Label
+                toolNumber = str(tc.ToolNumber)
+            else:
+                tcLabel = "???"
+                toolNumber = ""
+            item.setText(col_tool_number, toolNumber)
+            item.setTextAlignment(col_tool_number, QtCore.Qt.AlignCenter)
+            item.setText(col_tc, tcLabel)
+            coolant = PathUtil.coolantModeForOp(op)
+            coolantString = coolant if coolant != "None" else ""
+            item.setText(col_coolant, coolantString)
+            item.setText(col_time, getattr(op, "CycleTime", ""))
+
+        for column in range(tree.columnCount()):
+            tree.resizeColumnToContents(column)
+
+        tree.resizeColumnToContents(0)
+        tree.blockSignals(False)
 
         self.form.jobModel.clear()
         for name, count in Counter(
@@ -1175,19 +1207,23 @@ class TaskPanel:
                 self.setFields()
 
     def operationSelect(self):
-        if self.form.operationsList.selectedItems():
+        tree = self.form.operationsList
+        if tree.selectedItems():
             self.form.operationModify.setEnabled(True)
             self.form.operationMove.setEnabled(True)
-            row = self.form.operationsList.currentRow()
-            self.form.operationUp.setEnabled(row > 0)
-            self.form.operationDown.setEnabled(row < self.form.operationsList.count() - 1)
+            selected_item = tree.currentItem()
+            if selected_item:
+                row = tree.indexOfTopLevelItem(selected_item)
+                # row = tree.currentItem()
+                self.form.operationUp.setEnabled(row > 0)
+                self.form.operationDown.setEnabled(row < tree.topLevelItemCount() - 1)
         else:
             self.form.operationModify.setEnabled(False)
             self.form.operationMove.setEnabled(False)
 
     def objectDelete(self, widget):
         for item in widget.selectedItems():
-            obj = item.data(self.DataObject)
+            obj = item.data(self.DataObject, 0)
             if (
                 obj.ViewObject
                 and hasattr(obj.ViewObject, "Proxy")
@@ -1201,19 +1237,21 @@ class TaskPanel:
         self.objectDelete(self.form.operationsList)
 
     def operationMoveUp(self):
-        row = self.form.operationsList.currentRow()
+        selected_item = self.form.operationsList.currentItem()
+        row = self.form.operationsList.indexOfTopLevelItem(selected_item)
         if row > 0:
-            item = self.form.operationsList.takeItem(row)
-            self.form.operationsList.insertItem(row - 1, item)
-            self.form.operationsList.setCurrentRow(row - 1)
+            item = self.form.operationsList.takeTopLevelItem(row)
+            self.form.operationsList.insertTopLevelItem(row - 1, item)
+            self.form.operationsList.setCurrentItem(item)
             self.getFields()
 
     def operationMoveDown(self):
-        row = self.form.operationsList.currentRow()
-        if row < self.form.operationsList.count() - 1:
-            item = self.form.operationsList.takeItem(row)
-            self.form.operationsList.insertItem(row + 1, item)
-            self.form.operationsList.setCurrentRow(row + 1)
+        selected_item = self.form.operationsList.currentItem()
+        row = self.form.operationsList.indexOfTopLevelItem(selected_item)
+        if row < self.form.operationsList.topLevelItemCount() - 1:
+            item = self.form.operationsList.takeTopLevelItem(row)
+            self.form.operationsList.insertTopLevelItem(row + 1, item)
+            self.form.operationsList.setCurrentItem(item)
             self.getFields()
 
     def toolControllerSelect(self):
@@ -1753,7 +1791,7 @@ class TaskPanel:
 
         # Workplan
         self.form.operationsList.itemSelectionChanged.connect(self.operationSelect)
-        self.form.operationsList.indexesMoved.connect(self.getFields)
+        self.form.operationsList.itemChanged.connect(self.getFields)
         self.form.operationDelete.clicked.connect(self.operationDelete)
         self.form.operationUp.clicked.connect(self.operationMoveUp)
         self.form.operationDown.clicked.connect(self.operationMoveDown)
