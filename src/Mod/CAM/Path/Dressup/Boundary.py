@@ -21,7 +21,6 @@
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
-import Part
 import Path
 import Path.Base.Util as PathUtil
 import Path.Dressup.Utils as PathDressup
@@ -195,12 +194,8 @@ class DressupPathBoundary(object):
             offset = obj.Offset
             if obj.Inside:
                 offset = -offset
-            stock = obj.Stock.Shape
-            if isinstance(stock, Part.Compound):
-                shapes = [sh for sh in stock.SubShapes]
-            else:
-                shapes = [stock]
-            shape = [sh.makeOffsetShape(offset, tolerance=0.1, join=2) for sh in shapes]
+            stock = Path.Geom.uncompound(obj.Stock.Shape)
+            shape = [sh.makeOffsetShape(offset, tolerance=0.1, join=2) for sh in stock]
         else:
             shape = obj.Stock.Shape
 
