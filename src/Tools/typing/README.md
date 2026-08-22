@@ -66,6 +66,21 @@ For example, configure an editor or type checker with:
 The `FreeCADPythonStubsCheck` target stages the install component and performs
 a lightweight layout check for the installed tree.
 
+Weekly releases also publish a standalone, platform-independent archive named
+`FreeCAD-PythonStubs-<release-tag>.tar.gz`. Extract it and add the extraction
+directory to a type checker's search path:
+
+```json
+{
+    "extraPaths": [
+        "/path/to/extracted"
+    ]
+}
+```
+
+Use the directory containing `FreeCAD.pyi` and the `FreeCAD/` package after
+extraction.
+
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
 `src/Gui/FreeCADGui._MainWindow.pyi` when curated type signatures should live
