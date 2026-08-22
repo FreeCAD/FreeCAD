@@ -16,7 +16,7 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <widget class="QWidget" name="widget">
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QGridLayout" name="formLayout">
       <item row="0" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
@@ -65,14 +65,14 @@
         </item>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_4">
         <property name="text">
          <string>Cut mode</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="3" column="1">
        <widget class="QComboBox" name="cutMode">
         <property name="toolTip">
          <string>The direction of the circular cuts</string>
@@ -172,6 +172,110 @@
         </property>
         <property name="toolTip">
          <string>How much stock to leave on the outer wall for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Radial stock to leave (inner)</string>
+        </property>
+        <property name="toolTip">
+         <string>How much stock to leave on the inner wall for this operation</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="Gui::QuantitySpinBox" name="radialStockToLeaveInner">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Offset inner radius
+Default inner radius for Internal profile is Tool radius and can not be less than -ToolRadius
+Default inner radius for External profile - profile radius</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Cone angle</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::QuantitySpinBox" name="coneAngle">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string>Cone angle of the Helix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="2">
+       <widget class="QToolButton" name="autoConeAngle">
+        <property name="toolTip">
+         <string>Define cone angle automatically. Allowed only for cone faces with identical angle.</string>
+        </property>
+        <property name="text">
+         <string notr="true">…</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>:/icons/button_left.svg</normaloff>:/icons/button_left.svg
+         </iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QCheckBox" name="spiralMill">
+        <property name="toolTip">
+         <string>Create single helix and spiral mill</string>
+        </property>
+        <property name="text">
+         <string>Spiral mill</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QCheckBox" name="singleHelix">
+        <property name="toolTip">
+         <string>Create only one Helix</string>
+        </property>
+        <property name="text">
+         <string>Single helix</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QCheckBox" name="overrideArcFeed">
+        <property name="toolTip">
+         <string>Override arcs feed rate to get constant tool cutting speed</string>
+        </property>
+        <property name="text">
+         <string>Override arc feed rate</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QCheckBox" name="startBottom">
+        <property name="toolTip">
+         <string>Process cone helix from bottom to top</string>
+        </property>
+        <property name="text">
+         <string>Start from bottom</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QCheckBox" name="retractFromWall">
+        <property name="toolTip">
+         <string>Move from wall while retract if there is free space</string>
+        </property>
+        <property name="text">
+         <string>Retract from wall</string>
         </property>
        </widget>
       </item>
