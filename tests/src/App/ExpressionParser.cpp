@@ -3,6 +3,8 @@
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
+#include <cmath>
+
 #include "Base/Quantity.h"
 #include "Base/NumericFormatting.h"
 
@@ -241,7 +243,7 @@ TEST_F(ExpressionParserTest, simpleExpressionsParse)
 
 TEST_F(ExpressionParserTest, expressionUserInputKeepsGroupingSeparateFromDecimals)
 {
-    const Base::NumericLocaleContext deDe {"de_DE", ",", ".", "+", "-", 3, 3};
+    const Base::NumericLocaleContext deDe {"de_DE", ",", ".", "+", "-", 3, 3, "0"};
 
     EXPECT_EQ(parse_user_input_as_quantity("1.234 mm", deDe), mm(1.234));
     EXPECT_EQ(parse_user_input_as_quantity("1,234 mm", deDe), mm(1.234));
@@ -249,8 +251,8 @@ TEST_F(ExpressionParserTest, expressionUserInputKeepsGroupingSeparateFromDecimal
 
 TEST_F(ExpressionParserTest, groupedExpressionUsesLocaleGroupingPattern)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
-    const Base::NumericLocaleContext enIn {"en_IN", ".", ",", "+", "-", 3, 2};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
+    const Base::NumericLocaleContext enIn {"en_IN", ".", ",", "+", "-", 3, 2, "0"};
 
     EXPECT_EQ(parse_user_input_as_quantity("12,345.67 mm", enUs), mm(12345.67));
     EXPECT_THROW(parse_user_input_as_quantity("12,34,567 mm", enUs), Base::ParserError);
@@ -259,7 +261,7 @@ TEST_F(ExpressionParserTest, groupedExpressionUsesLocaleGroupingPattern)
 
 TEST_F(ExpressionParserTest, functionArgumentsTakePrecedenceOverGrouping)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
     const auto expression = parseUserInput(this_obj(), "pow(1,234)", enUs);
     const auto simplified = expression->simplify();
 
@@ -268,10 +270,14 @@ TEST_F(ExpressionParserTest, functionArgumentsTakePrecedenceOverGrouping)
 
 TEST_F(ExpressionParserTest, commaDecimalLocalesUseSemicolonsForArguments)
 {
-    const Base::NumericLocaleContext deDe {"de_DE", ",", ".", "+", "-", 3, 3};
-    const auto decimalExpression = parseUserInput(this_obj(), "pow(1,234)", deDe);
+    const Base::NumericLocaleContext deDe {"de_DE", ",", ".", "+", "-", 3, 3, "0"};
+    const auto decimalExpression = parseUserInput(this_obj(), "sqrt(1,234)", deDe);
     const auto decimal = decimalExpression->simplify();
-    EXPECT_THAT(decimal->getValueAsAny(), IsDouble(1.234));
+    EXPECT_DOUBLE_EQ(App::any_cast<double>(decimal->getValueAsAny()), std::sqrt(1.234));
+
+    const auto decimalThenArgument = parseUserInput(this_obj(), "pow(1,234;2)", deDe);
+    const auto decimalPower = decimalThenArgument->simplify();
+    EXPECT_DOUBLE_EQ(App::any_cast<double>(decimalPower->getValueAsAny()), 1.234 * 1.234);
 
     const auto argumentsExpression = parseUserInput(this_obj(), "pow(1;234)", deDe);
     const auto arguments = argumentsExpression->simplify();
@@ -281,7 +287,7 @@ TEST_F(ExpressionParserTest, commaDecimalLocalesUseSemicolonsForArguments)
     const auto spacedArguments = spacedArgumentsExpression->simplify();
     EXPECT_THAT(spacedArguments->getValueAsAny(), IsLong(1));
 
-    const Base::NumericLocaleContext frFr {"fr_FR", ",", "\xE2\x80\xAF", "+", "-", 3, 3};
+    const Base::NumericLocaleContext frFr {"fr_FR", ",", "\xE2\x80\xAF", "+", "-", 3, 3, "0"};
     const auto groupedDecimal = parseUserInput(
                                     this_obj(),
                                     "pow(1\xE2\x80\xAF"
@@ -294,7 +300,7 @@ TEST_F(ExpressionParserTest, commaDecimalLocalesUseSemicolonsForArguments)
 
 TEST_F(ExpressionParserTest, groupedParenthesizedExpressionsUseTheLocalePattern)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
 
     EXPECT_EQ(parse_user_input_as_quantity("(12,345.67 mm)", enUs), mm(12345.67));
     const auto nested = parseUserInput(this_obj(), "pow((1,234.5), 2)", enUs)->simplify();
@@ -303,14 +309,15 @@ TEST_F(ExpressionParserTest, groupedParenthesizedExpressionsUseTheLocalePattern)
 
 TEST_F(ExpressionParserTest, spaceGroupingAndSemicolonArgumentsRemainDistinct)
 {
-    const Base::NumericLocaleContext spaceGrouped {"space", ".", " ", "+", "-", 3, 3};
+    const Base::NumericLocaleContext spaceGrouped {"space", ".", " ", "+", "-", 3, 3, "0"};
 
-    EXPECT_EQ(parse_user_input_as_quantity("pow(1 234; 2) mm", spaceGrouped), mm(1522756.0));
+    const auto expression = parseUserInput(this_obj(), "pow(1 234; 2)", spaceGrouped)->simplify();
+    EXPECT_THAT(expression->getValueAsAny(), IsLong(1522756));
 }
 
 TEST_F(ExpressionParserTest, commaFunctionArgumentsRemainArgumentsWithDecimalText)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
     const auto expression = parseUserInput(this_obj(), "pow(1,234.5)", enUs);
     const auto simplified = expression->simplify();
 
@@ -319,7 +326,7 @@ TEST_F(ExpressionParserTest, commaFunctionArgumentsRemainArgumentsWithDecimalTex
 
 TEST_F(ExpressionParserTest, userInputPreservesOpaqueStringLiterals)
 {
-    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
     const auto expression = parseUserInput(this_obj(), "<<(12,345.67 mm)>>", enUs);
     const auto value = expression->simplify()->getValueAsAny();
 

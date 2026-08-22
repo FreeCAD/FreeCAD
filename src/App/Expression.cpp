@@ -3898,6 +3898,33 @@ bool isFunctionOpening(std::string_view input, const std::size_t position)
             || input[previous - 1] == '_');
 }
 
+std::size_t functionArgumentSeparatorLength(
+    const std::string_view input,
+    const std::size_t position,
+    const NumericLocaleContext& locale
+)
+{
+    const auto policy = Base::numericGrammarPolicy(locale, NumericSyntaxContext::FunctionArgument);
+    if (expressionStartsAt(input, position, policy.argumentSeparator)) {
+        return policy.argumentSeparator.size();
+    }
+
+    // A comma-decimal locale uses a comma as the decimal separator when it is immediately
+    // followed by a digit. Whitespace or any other following character makes it punctuation.
+    if (policy.decimalSeparator == "," && expressionStartsAt(input, position, ",")) {
+        int digit = 0;
+        std::size_t digitLength = 0;
+        const auto afterComma = position + 1;
+        if (afterComma == input.size()
+            || std::isspace(static_cast<unsigned char>(input[afterComma]))
+            || !Base::localizedDigitAt(input, afterComma, locale, digit, digitLength)) {
+            return 1;
+        }
+    }
+
+    return 0;
+}
+
 std::string normalizeExpressionUserInput(
     std::string_view input,
     const NumericLocaleContext& locale
@@ -3939,6 +3966,19 @@ std::string normalizeExpressionUserInput(
         const bool inFunction = !functionParentheses.empty() && functionParentheses.back();
         const auto syntax = inFunction ? NumericSyntaxContext::FunctionArgument
                                        : NumericSyntaxContext::Expression;
+
+        if (inFunction) {
+            const auto separatorLength = functionArgumentSeparatorLength(input, position, locale);
+            if (separatorLength != 0) {
+                // The legacy lexer has comma-decimal rules of its own. Emit the canonical
+                // argument separator so it cannot be absorbed into a neighboring numeric
+                // literal before the grammar sees it.
+                normalized.push_back(';');
+                position += separatorLength;
+                continue;
+            }
+        }
+
         if (startsExpressionNumber(input, position, locale)) {
             const auto result = scanLocalizedNumber(input.substr(position), locale, syntax);
             if (result.status != LocalizedNumberResult::Status::Complete) {

@@ -74,6 +74,43 @@ bool startsNumericInput(
     return false;
 }
 
+class AdditiveOperatorDetector final : public App::ExpressionVisitor
+{
+public:
+    void visit(App::Expression& expression) override
+    {
+        const auto* operation = freecad_cast<const App::OperatorExpression*>(&expression);
+        if (operation
+            && (operation->getOperator() == App::OperatorExpression::ADD
+                || operation->getOperator() == App::OperatorExpression::SUB)) {
+            additive = true;
+        }
+    }
+
+    bool additive {false};
+};
+
+bool hasAdditiveOperator(
+    const std::string_view input,
+    const App::ObjectIdentifier& path,
+    const Base::NumericLocaleContext& locale
+)
+{
+    try {
+        const auto* owner = path.getDocumentObject();
+        const std::string inputString(input);
+        auto expression = App::ExpressionParser::parseUserInput(owner, inputString.c_str(), locale);
+        AdditiveOperatorDetector detector;
+        expression->visit(detector);
+        return detector.additive;
+    }
+    catch (const Base::Exception&) {
+        // The quantity parser remains authoritative for quantity-only syntax, including
+        // bracketed comments and juxtaposed quantities that are not expression syntax.
+        return false;
+    }
+}
+
 App::InputDiagnosticKind inputDiagnosticKind(Base::NumericDiagnosticKind kind)
 {
     switch (kind) {
@@ -92,6 +129,61 @@ App::InputDiagnosticKind inputDiagnosticKind(Base::NumericDiagnosticKind kind)
             return App::InputDiagnosticKind::OutOfRange;
     }
     return App::InputDiagnosticKind::InvalidNumber;
+}
+
+std::unique_ptr<App::Expression> rewriteOwnerlessQuantityExpression(
+    const App::Expression& expression,
+    const App::DocumentObject* owner
+)
+{
+    const auto* operation = freecad_cast<const App::OperatorExpression*>(&expression);
+    if (!operation) {
+        return expression.copy();
+    }
+
+    auto left = operation->getLeft()
+        ? rewriteOwnerlessQuantityExpression(*operation->getLeft(), owner)
+        : nullptr;
+    auto right = operation->getRight()
+        ? rewriteOwnerlessQuantityExpression(*operation->getRight(), owner)
+        : nullptr;
+
+    // In a quantity field, `1/2 mm` has historically meant `(1/2) mm`, just as
+    // `1/2"` means half an inch. The expression parser's normal precedence reads
+    // this as the inverse of a length. Preserve the quantity-field rule structurally
+    // by moving the explicit unit outside the denominator before evaluation.
+    auto* rewrittenUnitOperation = right
+        ? freecad_cast<App::OperatorExpression*>(right.get())
+        : nullptr;
+    if (operation->getOperator() == App::OperatorExpression::DIV
+        && rewrittenUnitOperation
+        && rewrittenUnitOperation->getOperator() == App::OperatorExpression::UNIT
+        && rewrittenUnitOperation->getLeft()
+        && rewrittenUnitOperation->getRight()) {
+        auto denominator = rewrittenUnitOperation->getLeft()->copy();
+        auto unit = rewrittenUnitOperation->getRight()->copy();
+        if (unit && denominator) {
+            auto quotient = std::make_unique<App::OperatorExpression>(
+                owner,
+                left.release(),
+                App::OperatorExpression::DIV,
+                denominator.release()
+            );
+            return std::make_unique<App::OperatorExpression>(
+                owner,
+                quotient.release(),
+                App::OperatorExpression::MUL,
+                unit.release()
+            );
+        }
+    }
+
+    return std::make_unique<App::OperatorExpression>(
+        owner,
+        left.release(),
+        operation->getOperator(),
+        right.release()
+    );
 }
 
 App::QuantityInputResult invalid(
@@ -156,8 +248,8 @@ App::Expression* applyDefaultUnitToDimensionlessTerm(
 
     try {
         auto evaluated = expression->eval();
-        auto* number = freecad_cast<App::NumberExpression*>(evaluated.get());
-        if (number && number->getUnit() == Base::Unit::One) {
+        auto* value = freecad_cast<App::NumberExpression*>(evaluated.get());
+        if (value && value->getQuantity().isDimensionless()) {
             // Keep the original subtree intact. In particular, replacing a variable
             // expression with its current value would silently remove its dependency.
             auto unit = std::make_unique<App::UnitExpression>(
@@ -178,35 +270,49 @@ App::Expression* applyDefaultUnitToDimensionlessTerm(
     return nullptr;
 }
 
-class DefaultUnitForAdditiveTerms final: public App::ExpressionVisitor
+void applyDefaultUnitPolicyToExpression(
+    App::Expression& expression,
+    const Base::Unit& defaultUnit
+)
 {
-public:
-    explicit DefaultUnitForAdditiveTerms(const Base::Unit& defaultUnit)
-        : defaultUnit(defaultUnit)
-    {}
+    auto* operation = freecad_cast<App::OperatorExpression*>(&expression);
+    if (!operation) {
+        return;
+    }
 
-    void visit(App::Expression& expression) override
-    {
-        auto* operation = freecad_cast<App::OperatorExpression*>(&expression);
-        if (!operation
-            || (operation->getOperator() != App::OperatorExpression::ADD
-                && operation->getOperator() != App::OperatorExpression::SUB)) {
-            return;
-        }
+    // An explicit unit operator owns the complete subtree below it. Applying the field's default
+    // unit inside that subtree would turn `(1 + 2) mm` into `(1 mm + 2 mm) mm`.
+    if (operation->getOperator() == App::OperatorExpression::UNIT) {
+        return;
+    }
 
+    if (operation->getOperator() == App::OperatorExpression::ADD
+        || operation->getOperator() == App::OperatorExpression::SUB) {
         if (auto* replacement
             = applyDefaultUnitToDimensionlessTerm(operation->getLeft(), defaultUnit)) {
             operation->setLeft(replacement);
         }
+        else if (operation->getLeft()) {
+            applyDefaultUnitPolicyToExpression(*operation->getLeft(), defaultUnit);
+        }
+
         if (auto* replacement
             = applyDefaultUnitToDimensionlessTerm(operation->getRight(), defaultUnit)) {
             operation->setRight(replacement);
         }
+        else if (operation->getRight()) {
+            applyDefaultUnitPolicyToExpression(*operation->getRight(), defaultUnit);
+        }
+        return;
     }
 
-private:
-    const Base::Unit& defaultUnit;
-};
+    if (operation->getLeft()) {
+        applyDefaultUnitPolicyToExpression(*operation->getLeft(), defaultUnit);
+    }
+    if (operation->getRight()) {
+        applyDefaultUnitPolicyToExpression(*operation->getRight(), defaultUnit);
+    }
+}
 
 void applyDefaultUnitPolicy(App::Expression& expression, const Base::Unit& defaultUnit)
 {
@@ -214,8 +320,7 @@ void applyDefaultUnitPolicy(App::Expression& expression, const Base::Unit& defau
         return;
     }
 
-    DefaultUnitForAdditiveTerms visitor(defaultUnit);
-    expression.visit(visitor);
+    applyDefaultUnitPolicyToExpression(expression, defaultUnit);
 }
 
 }  // namespace
@@ -260,19 +365,23 @@ App::QuantityInputResult App::interpretQuantityInput(
         }
     }
 
+    if (grammar == QuantityInputGrammar::Quantity && hasAdditiveOperator(input, path, locale)) {
+        return invalid(InputDiagnosticKind::ExpressionSyntax, first);
+    }
+
     Base::Quantity quantity;
     std::shared_ptr<Expression> parsedExpression;
     try {
         if (grammar == QuantityInputGrammar::Expression) {
             const auto* owner = path.getDocumentObject();
-            if (!owner) {
-                return invalid(InputDiagnosticKind::ExpressionSyntax);
-            }
             const std::string inputString(input);
-            auto parsed = App::ExpressionParser::parseUserInput(
-                owner, inputString.c_str(), locale
-            );
+            auto parsed = App::ExpressionParser::parseUserInput(owner, inputString.c_str(), locale);
             parsedExpression = std::shared_ptr<Expression>(std::move(parsed));
+            if (!owner) {
+                parsedExpression = std::shared_ptr<Expression>(
+                    rewriteOwnerlessQuantityExpression(*parsedExpression, owner).release()
+                );
+            }
             // Apply the field-unit policy before evaluation. Dimensionless additive terms are
             // replaced as complete expressions; explicit units and multiplicative terms remain
             // untouched.
@@ -283,6 +392,9 @@ App::QuantityInputResult App::interpretQuantityInput(
                 return invalid(InputDiagnosticKind::Evaluation);
             }
             quantity = number->getQuantity();
+            if (!owner) {
+                parsedExpression.reset();
+            }
         }
         else {
             quantity = Base::Quantity::parseUserInput(std::string(input), locale);

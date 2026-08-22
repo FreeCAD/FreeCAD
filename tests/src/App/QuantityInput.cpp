@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
@@ -53,7 +54,7 @@ private:
 namespace App::QuantityInputTest
 {
 
-const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3, "0"};
 
 TEST(QuantityInput, EditingAndCommitDistinguishIncompleteNumbers)
 {
@@ -350,6 +351,19 @@ TEST(QuantityInput, GrammarSelectionIsExplicit)
     ASSERT_EQ(expression.status, InputStatus::Acceptable);
     ASSERT_TRUE(expression.quantity);
     EXPECT_DOUBLE_EQ(expression.quantity->getValue(), 3.0);
+
+    const auto comment = interpretQuantityInput(
+        "1 mm [original input 12,34,567]",
+        QuantityInputGrammar::Quantity,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        constraints
+    );
+    ASSERT_EQ(comment.status, InputStatus::Acceptable);
+    ASSERT_TRUE(comment.quantity);
+    EXPECT_DOUBLE_EQ(comment.quantity->getValue(), 1.0);
 }
 
 TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
@@ -386,7 +400,7 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
     EXPECT_DOUBLE_EQ(compact.quantity->getValue(), 3.0);
     EXPECT_EQ(compact.quantity->getUnit(), Base::Unit::Length);
 
-    const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3};
+    const Base::NumericLocaleContext custom {"custom", ".", ",", "plus", "minus", 3, 3, "0"};
     const auto localizedPlus = interpretQuantityInput(
         "plus1 mm",
         QuantityInputGrammar::Expression,
@@ -427,7 +441,7 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
     ASSERT_TRUE(localizedCompact.quantity);
     EXPECT_DOUBLE_EQ(localizedCompact.quantity->getValue(), 3.0);
 
-    for (const auto [input, expected] :
+    for (const auto& [input, expected] :
          {std::pair {"1-2 mm", -1.0},
           std::pair {"1+-2 mm", -1.0},
           std::pair {"1e+2 mm", 100.0},
@@ -446,7 +460,7 @@ TEST(QuantityInput, PositiveSignsAndCompactAdditionRemainExpressionSyntax)
         EXPECT_DOUBLE_EQ(result.quantity->getValue(), expected);
     }
 
-    for (const auto [input, expected] :
+    for (const auto& [input, expected] :
          {std::pair {"-(1 mm)", -1.0},
           std::pair {"+(1 mm)", 1.0},
           std::pair {"-sqrt(4) * 1 mm", -2.0},
@@ -509,22 +523,36 @@ TEST(QuantityInput, DefaultUnitAppliesToBareAdditiveTerms)
     EXPECT_DOUBLE_EQ(multiplied.quantity->getValue(), 6.0);
     EXPECT_EQ(multiplied.quantity->getUnit(), Base::Unit::Length);
 
-    // A unit written in a divisor is explicit expression syntax. The field's default unit is
-    // applied to dimensionless additive operands, not used to reinterpret an explicit denominator.
-    for (const auto input : {"1 / 2 mm", "1 / (2 mm)"}) {
-        const auto result = interpretQuantityInput(
-            input,
-            QuantityInputGrammar::Expression,
-            path,
-            Base::Unit::Length,
-            enUs,
-            InputPhase::Commit,
-            constraints
-        );
-        EXPECT_EQ(result.status, InputStatus::Invalid) << input;
-        ASSERT_TRUE(result.diagnostic);
-        EXPECT_EQ(result.diagnostic->kind, InputDiagnosticKind::IncompatibleUnit);
-    }
+    // A unit-bearing denominator is explicit expression syntax. Both forms are inverse length
+    // and therefore incompatible with this length field.
+    QuantityConstraints lengthConstraints;
+    lengthConstraints.requiredUnit = Base::Unit::Length;
+
+    const auto dividedNumber = interpretQuantityInput(
+        "1 / 2 mm",
+        QuantityInputGrammar::Expression,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        lengthConstraints
+    );
+    EXPECT_EQ(dividedNumber.status, InputStatus::Invalid);
+    ASSERT_TRUE(dividedNumber.diagnostic);
+    EXPECT_EQ(dividedNumber.diagnostic->kind, InputDiagnosticKind::IncompatibleUnit);
+
+    const auto dividedQuantity = interpretQuantityInput(
+        "1 / (2 mm)",
+        QuantityInputGrammar::Expression,
+        path,
+        Base::Unit::Length,
+        enUs,
+        InputPhase::Commit,
+        lengthConstraints
+    );
+    EXPECT_EQ(dividedQuantity.status, InputStatus::Invalid);
+    ASSERT_TRUE(dividedQuantity.diagnostic);
+    EXPECT_EQ(dividedQuantity.diagnostic->kind, InputDiagnosticKind::IncompatibleUnit);
 
     const auto parenthesized = interpretQuantityInput(
         "(1 + 2) mm",
@@ -533,7 +561,7 @@ TEST(QuantityInput, DefaultUnitAppliesToBareAdditiveTerms)
         Base::Unit::Length,
         enUs,
         InputPhase::Commit,
-        constraints
+        lengthConstraints
     );
     ASSERT_EQ(parenthesized.status, InputStatus::Acceptable);
     ASSERT_TRUE(parenthesized.quantity);
@@ -585,7 +613,7 @@ TEST(QuantityInput, DefaultUnitPreservesExpressionDependencies)
 
     owner.setValue(4.0);
     const auto reevaluated = result.expression->eval();
-    const auto* quantity = freecad_cast<App::UnitExpression*>(reevaluated.get());
+    const auto* quantity = freecad_cast<App::NumberExpression*>(reevaluated.get());
     ASSERT_NE(quantity, nullptr);
     EXPECT_DOUBLE_EQ(quantity->getValue(), 7.0);
     EXPECT_EQ(quantity->getUnit(), Base::Unit::Length);
@@ -622,12 +650,12 @@ TEST(QuantityInput, DefaultUnitExpressionsRoundTripThroughSerialization)
         const auto reparsed
             = App::ExpressionParser::parse(path.getDocumentObject(), serialized.c_str());
         const auto evaluated = reparsed->eval();
-        const auto* quantity = freecad_cast<App::UnitExpression*>(evaluated.get());
+        const auto* quantity = freecad_cast<App::NumberExpression*>(evaluated.get());
         ASSERT_NE(quantity, nullptr) << serialized;
         EXPECT_DOUBLE_EQ(quantity->getValue(), expected) << serialized;
         EXPECT_EQ(quantity->getUnit(), Base::Unit::Length) << serialized;
 
-        if (input == "Value + 3 mm") {
+        if (std::string_view {input} == "Value + 3 mm") {
             const auto dependencies = reparsed->getDeps();
             const auto objectDependencies = dependencies.find(path.getDocumentObject());
             ASSERT_NE(objectDependencies, dependencies.end());
