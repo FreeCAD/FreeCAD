@@ -32,6 +32,8 @@
 #include <fmt/format.h>
 
 #include "Exception.h"
+#include "NumericFormatting.h"
+#include "NumericInput.h"
 #include "Quantity.h"
 #include "Tools.h"
 #include "UnitsApi.h"
@@ -299,7 +301,7 @@ std::string Quantity::getSafeUserString() const
     if (myValue != 0.0) {
         bool useFallback {false};
         try {
-            useFallback = (parse(userStr).getValue() == 0);
+            useFallback = (parseUserInput(userStr, currentNumericLocaleContext()).getValue() == 0);
         }
         catch (const Base::ParserError&) {
             useFallback = true;
@@ -587,6 +589,7 @@ public:
     {
         // free the scan buffer
         yy_delete_buffer(my_string_buffer);
+        BEGIN(INITIAL);
     }
 
     StringBufferCleaner(const StringBufferCleaner&) = delete;
@@ -605,6 +608,103 @@ private:
 #elif defined(__GNUC__)
 # pragma GCC diagnostic pop
 #endif
+
+namespace
+{
+bool startsAt(std::string_view input, std::size_t position, std::string_view value)
+{
+    return !value.empty() && position + value.size() <= input.size()
+        && input.substr(position, value.size()) == value;
+}
+
+bool startsNumericToken(
+    std::string_view input,
+    const std::size_t position,
+    const Base::NumericLocaleContext& locale
+)
+{
+    if (position >= input.size()) {
+        return false;
+    }
+
+    int digit = 0;
+    std::size_t digitLength = 0;
+    if (Base::localizedDigitAt(input, position, locale, digit, digitLength)) {
+        return true;
+    }
+
+    const auto digitAfter = [&](const std::size_t offset) {
+        int nextDigit = 0;
+        std::size_t nextDigitLength = 0;
+        return Base::localizedDigitAt(input, offset, locale, nextDigit, nextDigitLength);
+    };
+
+    if (input[position] == '.') {
+        return digitAfter(position + 1);
+    }
+    if (startsAt(input, position, locale.decimalSeparator)) {
+        return digitAfter(position + locale.decimalSeparator.size());
+    }
+    const std::string_view positiveSign {locale.positiveSign.data(), locale.positiveSign.size()};
+    const std::string_view negativeSign {locale.negativeSign.data(), locale.negativeSign.size()};
+    for (const auto sign :
+         {std::string_view {"+"}, std::string_view {"-"}, positiveSign, negativeSign}) {
+        if (startsAt(input, position, sign)) {
+            const auto next = position + sign.size();
+            return digitAfter(next) || (next < input.size() && input[next] == '.')
+                || startsAt(input, next, locale.decimalSeparator);
+        }
+    }
+    return false;
+}
+
+std::string normalizeQuantityInput(std::string_view input, const Base::NumericLocaleContext& locale)
+{
+    std::string normalized;
+    normalized.reserve(input.size());
+
+    std::size_t position = 0;
+    while (position < input.size()) {
+        // The quantity lexer treats bracketed comments as opaque. Copy the source bytes without
+        // scanning them, including malformed-looking localized numbers.
+        if (input[position] == '[') {
+            const auto end = input.find(']', position + 1);
+            if (end == std::string_view::npos) {
+                normalized.append(input.substr(position));
+                break;
+            }
+            const auto length = end + 1 - position;
+            normalized.append(input.substr(position, length));
+            position += length;
+            continue;
+        }
+
+        if (!startsNumericToken(input, position, locale)) {
+            normalized.push_back(input[position++]);
+            continue;
+        }
+
+        const auto result = scanLocalizedNumber(
+            input.substr(position),
+            locale,
+            Base::NumericSyntaxContext::Standalone
+        );
+        if (result.status != Base::LocalizedNumberResult::Status::Complete) {
+            throw Base::ParserError("Invalid localized number");
+        }
+
+        normalized += result.canonicalText;
+        position += result.consumedBytes;
+    }
+
+    return normalized;
+}
+}  // namespace
+
+Quantity Quantity::parseUserInput(const std::string& string, const NumericLocaleContext& locale)
+{
+    return Quantity::parse(normalizeQuantityInput(string, locale));
+}
 
 Quantity Quantity::parse(const std::string& string)
 {

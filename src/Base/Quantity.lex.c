@@ -943,6 +943,9 @@ case 3:
 YY_RULE_SETUP
 { ;}
 	YY_BREAK
+case YY_STATE_EOF(C_COMMENT):
+{ Quantity_yyerror("Unterminated quantity comment"); }
+	YY_BREAK
 case 4:
 YY_RULE_SETUP
 ;
@@ -1589,7 +1592,6 @@ YY_RULE_SETUP
 ECHO;
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
 
 	case YY_END_OF_BUFFER:
