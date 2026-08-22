@@ -56,6 +56,9 @@ jobs:
       - name: Run typing API contract tests
         run: PYTHONPATH=src/Tools/typing pixi run python -m unittest discover -s src/Tools/typing/tests -v
 
+      - name: Validate curated API documentation
+        run: pixi run python src/Tools/typing/generate_stubs.py lint-docs --root .
+
       - name: Validate generated Python stubs
         run: |
           pixi run python src/Tools/typing/generate_stubs.py check \
