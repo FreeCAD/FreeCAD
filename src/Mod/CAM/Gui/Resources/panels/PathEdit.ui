@@ -298,6 +298,19 @@
               </widget>
              </item>
              <item>
+              <spacer name="materialSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>16</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
               <widget class="QLabel" name="materialLabel">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -322,35 +335,22 @@
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="modelAlignGroup">
+         <widget class="QGroupBox" name="pickTargetGroup">
           <property name="title">
-           <string>Alignment</string>
+           <string>Select From</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0">
-            <widget class="QPushButton" name="moveToOrigin">
+          <layout class="QHBoxLayout" name="chooseRefLayout">
+           <item>
+            <widget class="QPushButton" name="pickTargetModel">
              <property name="text">
-              <string>Move to Origin</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="setOrigin">
-             <property name="text">
-              <string>Set Origin</string>
+              <string>Model</string>
              </property>
              <property name="toolTip">
-              <string>Sets the model origin to a selected point, either a vertex or the center of the selected face. The picking button controls whether selection targets the stock or the model.</string>
+              <string>Set selection target to Model (default): origin/axis picks target the Model object.</string>
              </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="2">
-            <widget class="QPushButton" name="pickTargetToggle">
-             <property name="text">
-              <string>Picking: Model</string>
-             </property>
-             <property name="toolTip">
-              <string>Toggle whether origin/axis picks target the Model (default) or the Stock. Useful when Stock and Model overlap and the desired vertex is hidden.</string>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/model.svg</normaloff>:/icons/model.svg</iconset>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -360,33 +360,117 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="centerInStock">
+           <item>
+            <widget class="QPushButton" name="pickTargetStock">
              <property name="text">
-              <string>Center in Stock</string>
+              <string>Stock</string>
+             </property>
+             <property name="toolTip">
+              <string>Set selection target to Stock: origin/axis picks target the Stock object.</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/stock.svg</normaloff>:/icons/stock.svg</iconset>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QPushButton" name="centerInStockXY">
-             <property name="text">
-              <string>XY in Stock</string>
+           <item>
+            <spacer name="pickTargetSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
-            </widget>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="modelSetGroup">
+         <widget class="QGroupBox" name="modelAlignGroup">
           <property name="title">
-           <string>Origin &amp;&amp; Orientation</string>
+           <string>Origin &amp;&amp; Alignment</string>
           </property>
-          <property name="toolTip">
-           <string>Positions the model so a picked edge defines an axis and a picked vertex zeros the model on that axis. The G54-G59 fixture is set on the output tab.</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="0" colspan="3">
+            <widget class="QPushButton" name="moveToOrigin">
+             <property name="text">
+              <string>Move to Origin</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/move-to-origin.svg</normaloff>:/icons/move-to-origin.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3" colspan="3">
+            <widget class="QPushButton" name="setOrigin">
+             <property name="text">
+              <string>Set Origin</string>
+             </property>
+             <property name="toolTip">
+              <string>Sets the model origin to a selected point, either a vertex or the center of the selected face. The picking button controls whether selection targets the stock or the model.</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/set-origin.svg</normaloff>:/icons/set-origin.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="3">
+            <widget class="QPushButton" name="centerInStock">
+             <property name="text">
+              <string>Center XYZ in Stock</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/center-in-stock.svg</normaloff>:/icons/center-in-stock.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" colspan="3">
+            <widget class="QPushButton" name="centerInStockXY">
+             <property name="text">
+              <string>Center XY in Stock</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/xy-in-stock.svg</normaloff>:/icons/xy-in-stock.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0" colspan="2">
             <widget class="QPushButton" name="modelSetXAxis">
              <property name="text">
               <string>X-Axis</string>
@@ -394,9 +478,19 @@
              <property name="toolTip">
               <string>Rotates the model so a picked edge becomes the X-axis</string>
              </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/origin-x.svg</normaloff>:/icons/origin-x.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
             </widget>
            </item>
-           <item row="0" column="1">
+           <item row="2" column="2" colspan="2">
             <widget class="QPushButton" name="modelSetYAxis">
              <property name="text">
               <string>Y-Axis</string>
@@ -404,9 +498,19 @@
              <property name="toolTip">
               <string>Rotates the model so a picked edge becomes the Y-axis</string>
              </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/origin-y.svg</normaloff>:/icons/origin-y.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
             </widget>
            </item>
-           <item row="0" column="2">
+           <item row="2" column="4" colspan="2">
             <widget class="QPushButton" name="modelSetZAxis">
              <property name="text">
               <string>Z-Axis</string>
@@ -414,9 +518,19 @@
              <property name="toolTip">
               <string>Rotates the model so a picked edge becomes the Z-axis</string>
              </property>
+             <property name="icon">
+              <iconset resource="../Path.qrc">
+               <normaloff>:/icons/origin-z.svg</normaloff>:/icons/origin-z.svg</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>16</width>
+               <height>16</height>
+              </size>
+             </property>
             </widget>
            </item>
-           <item row="1" column="0">
+           <item row="3" column="0" colspan="2">
             <widget class="QPushButton" name="modelSetX0">
              <property name="text">
               <string>X=0</string>
@@ -426,7 +540,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
+           <item row="3" column="2" colspan="2">
             <widget class="QPushButton" name="modelSetY0">
              <property name="text">
               <string>Y=0</string>
@@ -436,7 +550,7 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="2">
+           <item row="3" column="4" colspan="2">
             <widget class="QPushButton" name="modelSetZ0">
              <property name="text">
               <string>Z=0</string>
@@ -446,7 +560,7 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="4" column="0" colspan="6">
             <widget class="QCheckBox" name="linkStockAndModel">
              <property name="text">
               <string>Link stock and model</string>
@@ -462,257 +576,519 @@
         <item>
          <widget class="QGroupBox" name="modelMoveGroup">
           <property name="title">
-           <string>Move - XY</string>
+           <string>Transform</string>
           </property>
-          <layout class="QGridLayout" name="gridLayout_3">
-           <item row="0" column="0">
-            <widget class="QPushButton" name="modelMoveLeftUp">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left-up.svg</normaloff>:/icons/arrow-left-up.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QPushButton" name="modelMoveUp">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-up.svg</normaloff>:/icons/arrow-up.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="modelMoveRightUp">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-right-up.svg</normaloff>:/icons/arrow-right-up.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="modelMoveLeft">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left.svg</normaloff>:/icons/arrow-left.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QDoubleSpinBox" name="modelMoveValue">
-             <property name="minimum">
-              <double>-1000.000000000000000</double>
-             </property>
-             <property name="maximum">
-              <double>1000.000000000000000</double>
-             </property>
-             <property name="value">
-              <double>1.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QPushButton" name="modelMoveRight">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-right.svg</normaloff>:/icons/arrow-right.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="0">
-            <widget class="QPushButton" name="modelMoveLeftDown">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-left-down.svg</normaloff>:/icons/arrow-left-down.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QPushButton" name="modelMoveDown">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-down.svg</normaloff>:/icons/arrow-down.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="QPushButton" name="modelMoveRightDown">
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-right-down.svg</normaloff>:/icons/arrow-right-down.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="modelRotateGroup">
-          <property name="title">
-           <string>Rotate around Z</string>
-          </property>
-          <property name="toolTip">
-           <string>Rotates the model about the Z-axis. When the compound checkbox is enabled, rotations stack cumulatively.</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0">
-            <widget class="QPushButton" name="modelRotateLeft">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <layout class="QVBoxLayout" name="verticalLayout_18">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
+          <layout class="QVBoxLayout" name="verticalLayout_modelMove">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="leftMargin">
+            <number>8</number>
+           </property>
+           <property name="topMargin">
+            <number>6</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>4</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_transform">
+             <property name="spacing">
               <number>0</number>
              </property>
              <item>
-              <widget class="QDoubleSpinBox" name="modelRotateValue">
-               <property name="minimum">
-                <double>-180.000000000000000</double>
+              <spacer name="transformLeftSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="maximum">
-                <double>360.000000000000000</double>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
                </property>
-               <property name="value">
-                <double>90.000000000000000</double>
-               </property>
-              </widget>
+              </spacer>
              </item>
              <item>
-              <widget class="QCheckBox" name="modelRotateCompound">
-               <property name="text">
-                <string>Compound</string>
+              <layout class="QVBoxLayout" name="verticalLayout_transformInner">
+               <property name="spacing">
+                <number>6</number>
                </property>
-               <property name="toolTip">
-                <string>When checked, rotations stack: each press rotates by the value above relative to the current orientation. When unchecked, each press resets and rotates from the original orientation.</string>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_3">
+                 <property name="horizontalSpacing">
+                  <number>6</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>6</number>
+                 </property>
+                 <property name="columnStretch">
+                  <string notr="true">0,0,0,0,0,1</string>
+                 </property>
+                 <item row="0" column="0" alignment="Qt::AlignLeft|Qt::AlignTop">
+                  <widget class="QLabel" name="modelMoveLabel">
+                   <property name="text">
+                    <string>X/Y</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4" alignment="Qt::AlignHCenter|Qt::AlignTop">
+                  <widget class="QLabel" name="modelMoveZLabel">
+                   <property name="text">
+                    <string>Z</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4" rowspan="3">
+                  <layout class="QVBoxLayout" name="verticalLayout_modelMoveZ">
+                   <property name="spacing">
+                    <number>6</number>
+                   </property>
+                   <item>
+                   <spacer name="modelMoveZTopSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                   </item>
+                   <item>
+                   <widget class="QPushButton" name="modelMoveZUp">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>40</width>
+                      <height>28</height>
+                     </size>
+                    </property>
+                    <property name="toolTip">
+                     <string>Moves the selection along the +Z axis by the step distance</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../Path.qrc">
+                      <normaloff>:/icons/arrow-up-z.svg</normaloff>:/icons/arrow-up-z.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>18</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                   </widget>
+                   </item>
+                   <item>
+                   <widget class="QPushButton" name="modelMoveZDown">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>40</width>
+                      <height>28</height>
+                     </size>
+                    </property>
+                    <property name="toolTip">
+                     <string>Moves the selection along the -Z axis by the step distance</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="../Path.qrc">
+                      <normaloff>:/icons/arrow-down-z.svg</normaloff>:/icons/arrow-down-z.svg</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>18</width>
+                      <height>18</height>
+                     </size>
+                    </property>
+                   </widget>
+                   </item>
+                   <item>
+                   <spacer name="modelMoveZBottomSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>0</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                   </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                 <item row="0" column="1" alignment="Qt::AlignHCenter">
+                  <widget class="QPushButton" name="modelMoveUp">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Moves the selection along the +Y axis by the step distance</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../Path.qrc">
+                     <normaloff>:/icons/arrow-up-y.svg</normaloff>:/icons/arrow-up-y.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                              <item row="1" column="0">
+                  <widget class="QPushButton" name="modelMoveLeft">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Moves the selection along the -X axis by the step distance</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../Path.qrc">
+                     <normaloff>:/icons/arrow-left-x.svg</normaloff>:/icons/arrow-left-x.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1" alignment="Qt::AlignHCenter">
+                  <widget class="Gui::QuantitySpinBox" name="modelMoveValue">
+                   <property name="maximumSize">
+                    <size>
+                     <width>90</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Step distance for model move buttons (in document units)</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QPushButton" name="modelMoveRight">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Moves the selection along the +X axis by the step distance</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../Path.qrc">
+                     <normaloff>:/icons/arrow-right-x.svg</normaloff>:/icons/arrow-right-x.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                              <item row="2" column="1" alignment="Qt::AlignHCenter">
+                  <widget class="QPushButton" name="modelMoveDown">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Moves the selection along the -Y axis by the step distance</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../Path.qrc">
+                     <normaloff>:/icons/arrow-down-y.svg</normaloff>:/icons/arrow-down-y.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <spacer name="modelMoveZSpacer">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeType">
+                    <enum>QSizePolicy::Fixed</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>16</width>
+                     <height>4</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="modelTransformLine">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::HLine</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                 <property name="lineWidth">
+                  <number>1</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                  <widget class="QLabel" name="modelRotateLabel">
+                   <property name="text">
+                    <string>Rotate</string>
+                   </property>
+                  </widget>
+               </item>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_6">
+                 <property name="horizontalSpacing">
+                  <number>6</number>
+                 </property>
+                 <property name="verticalSpacing">
+                  <number>6</number>
+                 </property>
+                 <property name="columnStretch">
+                  <string notr="true">0,0,0,0,1</string>
+                 </property>
+                 <item row="0" column="0">
+                  <widget class="QPushButton" name="modelRotateLeft">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Rotates the selection counter-clockwise around the selected axis</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../Path.qrc">
+                     <normaloff>:/icons/arrow-ccw.svg</normaloff>:/icons/arrow-ccw.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QComboBox" name="modelRotateAxis">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>90</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Axis the model is rotated around</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>X Axis</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Y Axis</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>Z Axis</string>
+                    </property>
+                   </item>
+                   <property name="currentIndex">
+                    <number>2</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QDoubleSpinBox" name="modelRotateValue">
+                   <property name="maximumSize">
+                    <size>
+                     <width>90</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Rotation angle applied by each press of the rotate buttons</string>
+                   </property>
+                   <property name="suffix">
+                    <string>°</string>
+                   </property>
+                   <property name="minimum">
+                    <double>-180.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>360.000000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>90.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QPushButton" name="modelRotateRight">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>40</width>
+                     <height>28</height>
+                    </size>
+                   </property>
+                   <property name="toolTip">
+                    <string>Rotates the selection clockwise around the selected axis</string>
+                   </property>
+                   <property name="text">
+                    <string/>
+                   </property>
+                   <property name="icon">
+                    <iconset resource="../Path.qrc">
+                     <normaloff>:/icons/arrow-cw.svg</normaloff>:/icons/arrow-cw.svg</iconset>
+                   </property>
+                   <property name="iconSize">
+                    <size>
+                     <width>18</width>
+                     <height>18</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" colspan="4">
+                  <widget class="QCheckBox" name="modelRotateCompound">
+                   <property name="text">
+                    <string>Compound</string>
+                   </property>
+                   <property name="toolTip">
+                    <string>Only has an effect when more than one object is selected. When checked, all selected objects rotate together around the center of their combined bounding box. When unchecked, each object rotates around its own center.</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <spacer name="transformRightSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="checked">
-                <bool>true</bool>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>0</width>
+                 <height>0</height>
+                </size>
                </property>
-              </widget>
+              </spacer>
              </item>
             </layout>
-           </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="modelRotateRight">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="icon">
-              <iconset resource="../Path.qrc">
-               <normaloff>:/icons/arrow-cw.svg</normaloff>:/icons/arrow-cw.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>32</width>
-               <height>32</height>
-              </size>
-             </property>
-            </widget>
            </item>
           </layout>
          </widget>
