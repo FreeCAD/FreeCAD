@@ -23,6 +23,7 @@
 
 from Path.Op.Util import getCycleTimeEstimate
 from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
+from PathScripts import PathUtils as PathUtils
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -232,6 +233,12 @@ class ObjectJob:
             ),
         )
         obj.PostProcessorPropertyOverrides = "{}"
+        obj.addProperty(
+            "App::PropertyBool",
+            "ShowCombinedPath",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Show combined path from all operations"),
+        )
 
         obj.Fixtures = ["G54"]
 
@@ -599,6 +606,14 @@ class ObjectJob:
             )
             obj.PostProcessorPropertyOverrides = "{}"
 
+        if not hasattr(obj, "ShowCombinedPath"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "ShowCombinedPath",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Show combined path from all operations"),
+            )
+
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
@@ -740,8 +755,12 @@ class ObjectJob:
         if not obj.GeometryTolerance:
             obj.GeometryTolerance = Path.Preferences.defaultGeometryTolerance()
 
+        obj.Path = Path.Path()
         if getattr(obj, "Operations", None):
-            # obj.Path = obj.Operations.Path
+            if obj.ShowCombinedPath:
+                for op in obj.Operations.Group:
+                    op.Visibility = False
+                    obj.Path.addCommands(PathUtils.getPathWithPlacement(op).Commands)
             self.getCycleTime()
             if hasattr(obj, "PathChanged"):
                 obj.PathChanged = True
