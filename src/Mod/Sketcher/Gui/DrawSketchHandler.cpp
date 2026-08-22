@@ -767,6 +767,77 @@ void DrawSketchHandler::resetTangentAutoConstraintHint()
     tangentAutoConstraintHint = TangentAutoConstraintHint();
 }
 
+void DrawSketchHandler::seekPointAlignmentAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    AutoConstraint::TargetType type
+)
+{
+    if (type != AutoConstraint::VERTEX && type != AutoConstraint::VERTEX_NO_TANGENCY) {
+        return;
+    }
+
+    for (const auto& constraint : suggestedConstraints) {
+        if (constraint.Type == Coincident || constraint.Type == PointOnObject
+            || constraint.Type == Symmetric) {
+            return;
+        }
+    }
+
+    SketchObject* obj = sketchgui->getSketchObject();
+    if (!obj) {
+        return;
+    }
+
+    Base::Vector2d segmentStart;
+    const bool hasSegmentStart = getStartPointOfCurrentSegment(segmentStart);
+    double bestDeviation = getAutoConstraintSearchDistance();
+    AutoConstraint bestConstraint {Sketcher::None, GeoEnum::GeoUndef, PointPos::none};
+    LineExtensionAutoConstraintHint bestHint;
+
+    auto considerPoint = [&](int geoId, PointPos posId, const Base::Vector2d& anchor) {
+        const Base::Vector2d cursorOffset = Pos - anchor;
+        if (cursorOffset.Sqr() < Precision::SquareConfusion()
+            || (hasSegmentStart && (anchor - segmentStart).Sqr() < Precision::SquareConfusion())) {
+            return;
+        }
+
+        auto considerAlignment =
+            [&](ConstraintType constraintType, double deviation, const Base::Vector2d& position) {
+                if (deviation > bestDeviation) {
+                    return;
+                }
+
+                bestDeviation = deviation;
+                bestConstraint = {constraintType, geoId, posId};
+                bestHint.isValid = true;
+                bestHint.start = anchor;
+                bestHint.end = position;
+            };
+
+        considerAlignment(Horizontal, std::abs(cursorOffset.y), {Pos.x, anchor.y});
+        considerAlignment(Vertical, std::abs(cursorOffset.x), {anchor.x, Pos.y});
+    };
+
+    const int highestVertex = getHighestVertexIndex();
+    for (int vertexIndex = 0; vertexIndex <= highestVertex; ++vertexIndex) {
+        int geoId = GeoEnum::GeoUndef;
+        PointPos posId = PointPos::none;
+        obj->getGeoVertexIndex(vertexIndex, geoId, posId);
+        if (geoId == GeoEnum::GeoUndef) {
+            continue;
+        }
+        considerPoint(geoId, posId, toVector2d(obj->getPoint(geoId, posId)));
+    }
+
+    if (!bestHint.isValid || !isLineExtensionAutoConstraintHintVisible(bestHint.start, bestHint.end)) {
+        return;
+    }
+
+    suggestedConstraints.push_back(bestConstraint);
+    lineExtensionAutoConstraintHint = bestHint;
+}
+
 bool DrawSketchHandler::updateTangentAutoConstraintHint()
 {
     resetTangentAutoConstraintHint();
@@ -1262,6 +1333,7 @@ int DrawSketchHandler::seekAutoConstraint(
 
     seekPreselectionAutoConstraint(suggestedConstraints, Pos, Dir, type);
     seekLineExtensionAutoConstraint(suggestedConstraints, Pos, type);
+    seekPointAlignmentAutoConstraint(suggestedConstraints, Pos, type);
 
     if (Dir.Length() > 1e-8 && type != AutoConstraint::CURVE) {
         bool tangentCreated = false;
@@ -1376,7 +1448,16 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
         case Sketcher::Vertical: {
             auto c = std::make_unique<Sketcher::Constraint>();
             c->Type = ac.Type;
-            c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+            if (posId1 != Sketcher::PointPos::none && posId2 != Sketcher::PointPos::none
+                && geoId2 != Sketcher::GeoEnum::GeoUndef) {
+                c->First = geoId1;
+                c->FirstPos = posId1;
+                c->Second = geoId2;
+                c->SecondPos = posId2;
+            }
+            else {
+                c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+            }
             autoConstraints.push_back(std::move(c));
         } break;
         case Sketcher::Perpendicular: {
@@ -1648,18 +1729,44 @@ void DrawSketchHandler::createAutoConstraints(
                 // case the caller as to set geoId2, then it will be used as target instead of
                 // geoId2
             case Sketcher::Horizontal: {
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
-                );
+                if (posId1 != Sketcher::PointPos::none && cstr.PosId != Sketcher::PointPos::none
+                    && geoId2 != GeoEnum::GeoUndef) {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) ",
+                        geoId1,
+                        static_cast<int>(posId1),
+                        geoId2,
+                        static_cast<int>(cstr.PosId)
+                    );
+                }
+                else {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                    );
+                }
             } break;
             case Sketcher::Vertical: {
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
-                );
+                if (posId1 != Sketcher::PointPos::none && cstr.PosId != Sketcher::PointPos::none
+                    && geoId2 != GeoEnum::GeoUndef) {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) ",
+                        geoId1,
+                        static_cast<int>(posId1),
+                        geoId2,
+                        static_cast<int>(cstr.PosId)
+                    );
+                }
+                else {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
+                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                    );
+                }
             } break;
             case Sketcher::Perpendicular: {
                 Gui::cmdAppObjectArgs(
