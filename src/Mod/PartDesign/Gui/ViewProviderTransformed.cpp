@@ -189,6 +189,13 @@ void ViewProviderTransformed::recomputeFeature(bool recompute)
     handleTransformedResult(pcTransformed);
 }
 
+void ViewProviderTransformed::refreshPreviewResult()
+{
+    auto* pcTransformed = getObject<PartDesign::Transformed>();
+    updatePreview();
+    handleTransformedResult(pcTransformed);
+}
+
 
 Gui::View3DInventorViewer* ViewProviderTransformed::getViewer()
 {

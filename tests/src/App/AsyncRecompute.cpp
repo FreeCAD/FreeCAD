@@ -20,8 +20,11 @@
  ******************************************************************************/
 
 #include <chrono>
+#include <condition_variable>
 #include <future>
+#include <mutex>
 #include <thread>
+#include <vector>
 
 #include <boost/scope_exit.hpp>
 #include <gtest/gtest.h>
@@ -116,4 +119,184 @@ TEST_F(AsyncRecomputeTest, WorkerSafetyIsCheckedFromRequest)
     EXPECT_FALSE(
         App::GetApplication().canRecomputeRequestOnWorker(App::RecomputeRequest::fromDocument(*_doc))
     );
+}
+
+namespace
+{
+
+struct CallbackResults
+{
+    void add(App::RecomputeFailure failure)
+    {
+        {
+            std::lock_guard<std::mutex> lock(mutex);
+            failures.push_back(failure);
+        }
+        changed.notify_all();
+    }
+
+    bool waitForCount(std::size_t count)
+    {
+        std::unique_lock<std::mutex> lock(mutex);
+        return changed.wait_for(lock, 2s, [&] { return failures.size() == count; });
+    }
+
+    std::mutex mutex;
+    std::condition_variable changed;
+    std::vector<App::RecomputeFailure> failures;
+};
+
+}  // namespace
+
+TEST_F(AsyncRecomputeTest, CloseDocumentCancelsActiveRequest)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    CallbackResults callbacks;
+    auto request = App::RecomputeRequest::fromDocumentObject(*blocker);
+    request.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    App::GetApplication().queueRecomputeRequest(std::move(request));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    auto closeFuture = std::async(std::launch::async, [this] {
+        return App::GetApplication().closeDocument(_docName.c_str());
+    });
+    EXPECT_EQ(closeFuture.wait_for(50ms), std::future_status::timeout);
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+    ASSERT_EQ(closeFuture.wait_for(2s), std::future_status::ready);
+    EXPECT_TRUE(closeFuture.get());
+    ASSERT_TRUE(callbacks.waitForCount(1));
+
+    std::lock_guard<std::mutex> lock(callbacks.mutex);
+    ASSERT_EQ(callbacks.failures.size(), 1U);
+    EXPECT_EQ(callbacks.failures.front(), App::RecomputeFailure::Canceled);
+    _doc = nullptr;
+}
+
+TEST_F(AsyncRecomputeTest, CancelQueuedRequestBeforeItStarts)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    CallbackResults callbacks;
+    auto firstRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    firstRequest.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    App::GetApplication().queueRecomputeRequest(firstRequest);
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    auto queuedRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    queuedRequest.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    const auto queuedCancellation = queuedRequest.cancellation;
+    App::GetApplication().queueRecomputeRequest(std::move(queuedRequest));
+
+    EXPECT_TRUE(App::GetApplication().cancelRecomputeRequest(queuedCancellation));
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    ASSERT_TRUE(callbacks.waitForCount(2));
+    std::lock_guard<std::mutex> lock(callbacks.mutex);
+    ASSERT_EQ(callbacks.failures.size(), 2U);
+    EXPECT_EQ(callbacks.failures[0], App::RecomputeFailure::None);
+    EXPECT_EQ(callbacks.failures[1], App::RecomputeFailure::Canceled);
+}
+
+TEST_F(AsyncRecomputeTest, CancelRunningRequestReportsCanceled)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    CallbackResults callbacks;
+    auto request = App::RecomputeRequest::fromDocumentObject(*blocker);
+    request.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    const auto cancellation = request.cancellation;
+    App::GetApplication().queueRecomputeRequest(std::move(request));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    EXPECT_TRUE(App::GetApplication().cancelRecomputeRequest(cancellation));
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    ASSERT_TRUE(callbacks.waitForCount(1));
+    std::lock_guard<std::mutex> lock(callbacks.mutex);
+    ASSERT_EQ(callbacks.failures.size(), 1U);
+    EXPECT_EQ(callbacks.failures.front(), App::RecomputeFailure::Canceled);
+}
+
+TEST_F(AsyncRecomputeTest, SameObjectRequestsUseIndependentCancellationTokens)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+
+    CallbackResults callbacks;
+    auto firstRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    firstRequest.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    const auto firstCancellation = firstRequest.cancellation;
+    App::GetApplication().queueRecomputeRequest(std::move(firstRequest));
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+
+    auto secondRequest = App::RecomputeRequest::fromDocumentObject(*blocker);
+    secondRequest.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    const auto secondCancellation = secondRequest.cancellation;
+    App::GetApplication().queueRecomputeRequest(std::move(secondRequest));
+
+    EXPECT_TRUE(App::GetApplication().cancelRecomputeRequest(firstCancellation));
+    EXPECT_FALSE(
+        App::GetApplication().cancelRecomputeRequest(
+            std::make_shared<App::RecomputeCancellationState>()
+        )
+    );
+    EXPECT_TRUE(secondCancellation);
+    EXPECT_FALSE(secondCancellation->isCanceled());
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+
+    ASSERT_TRUE(callbacks.waitForCount(2));
+    std::lock_guard<std::mutex> lock(callbacks.mutex);
+    ASSERT_EQ(callbacks.failures.size(), 2U);
+    EXPECT_EQ(callbacks.failures[0], App::RecomputeFailure::Canceled);
+    EXPECT_EQ(callbacks.failures[1], App::RecomputeFailure::None);
 }

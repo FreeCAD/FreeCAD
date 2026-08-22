@@ -30,13 +30,16 @@
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncTaskRecompute.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
 #include <Mod/Part/App/GizmoHelper.h>
@@ -56,6 +59,9 @@ public:
     QString text;
     std::string selection;
     Part::Thickness* thickness {nullptr};
+    std::unique_ptr<Gui::AsyncTaskRecompute> recompute;
+    bool acceptRequested {false};
+    bool rejectRequested {false};
 
     class FaceSelection: public Gui::SelectionFilterGate
     {
@@ -90,6 +96,8 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
     Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->thickness = thickness;
+    d->recompute = std::make_unique<Gui::AsyncTaskRecompute>(this);
+    d->recompute->setRunningChanged([this](bool running) { setEnabled(!running); });
     d->ui.setupUi(this);
     setupConnections();
 
@@ -154,44 +162,92 @@ Part::Thickness* ThicknessWidget::getObject() const
     return d->thickness;
 }
 
+void ThicknessWidget::schedulePreview()
+{
+    if (!d->ui.updateView->isChecked()) {
+        d->recompute->cancel();
+        return;
+    }
+
+    auto request = App::RecomputeRequest::fromDocumentObject(*d->thickness, true);
+    d->recompute->schedule(std::move(request), 150, [this](App::RecomputeResult&) {
+        completeDeferredAction();
+    });
+}
+
+void ThicknessWidget::applyUiState()
+{
+    if (!d->selection.empty()) {
+        Gui::cmdAppObjectArgs(d->thickness, "Faces = %s", d->selection.c_str());
+    }
+    Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
+    Gui::cmdAppObjectArgs(d->thickness, "Mode = %d", d->ui.modeType->currentIndex());
+    Gui::cmdAppObjectArgs(d->thickness, "Join = %d", d->ui.joinType->currentIndex());
+    Gui::cmdAppObjectArgs(
+        d->thickness,
+        "Intersection = %s",
+        d->ui.intersection->isChecked() ? "True" : "False"
+    );
+    Gui::cmdAppObjectArgs(
+        d->thickness,
+        "SelfIntersection = %s",
+        d->ui.selfIntersection->isChecked() ? "True" : "False"
+    );
+}
+
+void ThicknessWidget::completeDeferredAction()
+{
+    if (d->rejectRequested) {
+        if (d->recompute->isSettling()) {
+            return;
+        }
+
+        d->rejectRequested = false;
+        Gui::Control().reject(d->thickness->getDocument());
+        return;
+    }
+
+    if (!d->acceptRequested || d->recompute->isSettling()) {
+        return;
+    }
+
+    if (!d->recompute->hasCurrentSuccessfulPreview() || !d->thickness->isValid()) {
+        d->acceptRequested = false;
+        return;
+    }
+
+    d->acceptRequested = false;
+    Gui::Control().accept(d->thickness->getDocument());
+}
+
 void ThicknessWidget::onSpinOffsetValueChanged(double val)
 {
     d->thickness->Value.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreview();
 }
 
 void ThicknessWidget::onModeTypeActivated(int val)
 {
     d->thickness->Mode.setValue(val);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreview();
 }
 
 void ThicknessWidget::onJoinTypeActivated(int val)
 {
     d->thickness->Join.setValue((long)val);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreview();
 }
 
 void ThicknessWidget::onIntersectionToggled(bool on)
 {
     d->thickness->Intersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreview();
 }
 
 void ThicknessWidget::onSelfIntersectionToggled(bool on)
 {
     d->thickness->SelfIntersection.setValue(on);
-    if (d->ui.updateView->isChecked()) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
-    }
+    schedulePreview();
 }
 
 void ThicknessWidget::onFacesButtonToggled(bool on)
@@ -240,9 +296,7 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
         Gui::Selection().rmvSelectionGate();
         Gui::Application::Instance->showViewProvider(d->thickness);
         Gui::Application::Instance->hideViewProvider(d->thickness->Faces.getValue());
-        if (d->ui.updateView->isChecked()) {
-            d->thickness->getDocument()->recomputeFeature(d->thickness);
-        }
+        schedulePreview();
 
         if (gizmoContainer) {
             gizmoContainer->visible = true;
@@ -254,7 +308,10 @@ void ThicknessWidget::onFacesButtonToggled(bool on)
 void ThicknessWidget::onUpdateViewToggled(bool on)
 {
     if (on) {
-        d->thickness->getDocument()->recomputeFeature(d->thickness);
+        schedulePreview();
+    }
+    else {
+        d->recompute->cancel();
     }
 }
 
@@ -265,27 +322,40 @@ bool ThicknessWidget::accept()
     }
 
     try {
-        if (!d->selection.empty()) {
-            Gui::cmdAppObjectArgs(d->thickness, "Faces = %s", d->selection.c_str());
+        if (d->recompute->isSettling()) {
+            d->acceptRequested = true;
+            return false;
         }
-        Gui::cmdAppObjectArgs(d->thickness, "Value = %f", d->ui.spinOffset->value().getValue());
-        Gui::cmdAppObjectArgs(d->thickness, "Mode = %d", d->ui.modeType->currentIndex());
-        Gui::cmdAppObjectArgs(d->thickness, "Join = %d", d->ui.joinType->currentIndex());
-        Gui::cmdAppObjectArgs(
-            d->thickness,
-            "Intersection = %s",
-            d->ui.intersection->isChecked() ? "True" : "False"
-        );
-        Gui::cmdAppObjectArgs(
-            d->thickness,
-            "SelfIntersection = %s",
-            d->ui.selfIntersection->isChecked() ? "True" : "False"
-        );
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        applyUiState();
+
+        if (d->recompute->isPending()) {
+            d->acceptRequested = true;
+            d->recompute->flushPending();
+            return false;
+        }
+
+        if (!d->recompute->hasCurrentSuccessfulPreview() || !d->thickness->isValid()) {
+            d->acceptRequested = true;
+            auto request = App::RecomputeRequest::fromDocument(*d->thickness->getDocument());
+            d->recompute->schedule(std::move(request), 0, [this](App::RecomputeResult&) {
+                completeDeferredAction();
+            });
+            return false;
+        }
+
+        // The expensive Thickness feature has already been computed by the
+        // accepted preview. Clear its touched state and settle only its
+        // dependents so accepting does not execute Thickness a second time.
+        d->thickness->purgeTouched();
         if (!d->thickness->isValid()) {
             throw Base::CADKernelError(d->thickness->getStatusString());
         }
+        for (auto* obj : d->thickness->getInList()) {
+            obj->touch();
+        }
+        d->thickness->getDocument()->recompute();
+
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         d->thickness->getDocument()->commitTransaction();  // Opened in
                                                            // ViewProviderDocumentObject::startDefaultEditMode()
@@ -307,6 +377,16 @@ bool ThicknessWidget::reject()
 {
     if (d->ui.facesButton->isChecked()) {
         return false;
+    }
+
+    if (d->recompute->isSettling()) {
+        d->rejectRequested = true;
+        d->recompute->cancel();
+        return false;
+    }
+
+    if (d->recompute->isPending()) {
+        d->recompute->cancel();
     }
 
     // save this and check if the object is still there after the

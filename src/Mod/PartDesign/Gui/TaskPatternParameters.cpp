@@ -40,10 +40,13 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncTaskRecompute.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/TaskView/TaskView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderCoordinateSystem.h>
@@ -72,6 +75,8 @@ TaskPatternParameters::TaskPatternParameters(ViewProviderTransformed* Transforme
     , ui(new Ui_TaskPatternParameters)
 {
     setupUI();
+    asyncRecompute = std::make_unique<Gui::AsyncTaskRecompute>(this);
+    asyncRecompute->setRunningChanged([this](bool running) { setEditingEnabled(!running); });
     updateSpacingLabels();
 }
 
@@ -285,15 +290,92 @@ void TaskPatternParameters::exitReferenceSelectionMode()
 
 // --- SLOTS ---
 
+void TaskPatternParameters::recomputeFeature()
+{
+    if (asyncRecompute && !blockUpdate) {
+        kickUpdateViewTimer();
+    }
+    else {
+        TaskTransformedParameters::recomputeFeature();
+    }
+}
+
 void TaskPatternParameters::onUpdateViewTimer()
 {
     // Recompute is triggered when parameters change and this timer fires
-    setupTransaction();  // Group potential property changes
-    recomputeFeature();
+    if (asyncRecompute) {
+        startAsyncPreview();
+    }
+    else {
+        setupTransaction();  // Group potential property changes
+        recomputeFeature();
+        updateSpacingLabels();
+        updateUI();
+    }
+}
 
-    updateSpacingLabels();
+void TaskPatternParameters::startAsyncPreview()
+{
+    auto* pattern = getObject();
+    if (!pattern || !asyncRecompute) {
+        return;
+    }
 
-    updateUI();
+    setupTransaction();
+    auto request = App::RecomputeRequest::fromDocumentObject(*pattern, true);
+    asyncRecompute->schedule(std::move(request), 0, [this](App::RecomputeResult& result) {
+        const bool succeeded = result.success && result.failure == App::RecomputeFailure::None;
+        if (succeeded) {
+            getTopTransformedView()->refreshPreviewResult();
+            updateSpacingLabels();
+            updateUI();
+        }
+        finishDeferredAction(succeeded);
+    });
+}
+
+void TaskPatternParameters::finishDeferredAction(bool previewSucceeded)
+{
+    if (asyncRecompute && asyncRecompute->isSettling()) {
+        return;
+    }
+
+    if (rejectRequested) {
+        rejectRequested = false;
+        Gui::Control().reject(getObject()->getDocument());
+        return;
+    }
+
+    if (acceptRequested) {
+        acceptRequested = false;
+        if (previewSucceeded && getObject()->isValid()) {
+            Gui::Control().accept(getObject()->getDocument());
+        }
+    }
+}
+
+bool TaskPatternParameters::hasPendingAsyncAccept() const
+{
+    return acceptRequested;
+}
+
+bool TaskPatternParameters::deferAsyncReject()
+{
+    if (!asyncRecompute) {
+        return false;
+    }
+
+    if (asyncRecompute->isSettling()) {
+        rejectRequested = true;
+        asyncRecompute->cancel();
+        return true;
+    }
+
+    if (asyncRecompute->isPending()) {
+        asyncRecompute->cancel();
+    }
+
+    return false;
 }
 
 void TaskPatternParameters::onParameterWidgetRequestReferenceSelection()
@@ -327,6 +409,10 @@ void TaskPatternParameters::onUpdateView(bool on)
     blockUpdate = !on;
     if (on) {
         kickUpdateViewTimer();
+    }
+    else if (asyncRecompute) {
+        updateViewTimer->stop();
+        asyncRecompute->cancel();
     }
 }
 
@@ -380,7 +466,9 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             polarPattern->Axis.setValue(selObj, directions);
         }
         recomputeFeature();
-        updateUI();
+        if (!asyncRecompute) {
+            updateUI();
+        }
     }
     exitReferenceSelectionMode();
 }
@@ -397,6 +485,11 @@ void TaskPatternParameters::apply()
 {
     auto pattern = getObject();
     if (!pattern || !parametersWidget) {
+        return;
+    }
+
+    if (asyncRecompute && asyncRecompute->isSettling()) {
+        acceptRequested = true;
         return;
     }
 
@@ -433,9 +526,22 @@ void TaskPatternParameters::apply()
     // pending.
     if (updateViewTimer && updateViewTimer->isActive()) {
         updateViewTimer->stop();
-        recomputeFeature();
+        if (asyncRecompute) {
+            acceptRequested = true;
+            startAsyncPreview();
+            return;
+        }
+        else {
+            recomputeFeature();
+        }
+    }
+
+    if (asyncRecompute && !asyncRecompute->hasCurrentSuccessfulPreview()) {
+        acceptRequested = true;
+        startAsyncPreview();
     }
 }
+
 
 void TaskPatternParameters::updateSpacingLabels()
 {

@@ -57,6 +57,8 @@ public:
     std::string featureIcon() const;
 
     void recomputeFeature(bool recompute = true);
+    /// Refresh the GUI representation after a worker-side feature recompute.
+    void refreshPreviewResult();
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
     /// signals if the transformation contains errors

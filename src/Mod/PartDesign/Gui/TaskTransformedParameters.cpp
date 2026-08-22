@@ -285,6 +285,13 @@ void TaskTransformedParameters::setEnabledTransaction(bool on)
     enableTransaction = on;
 }
 
+void TaskTransformedParameters::setEditingEnabled(bool enabled)
+{
+    if (proxy) {
+        proxy->setEnabled(enabled);
+    }
+}
+
 bool TaskTransformedParameters::isEnabledTransaction() const
 {
     return enableTransaction;
@@ -596,6 +603,10 @@ bool TaskDlgTransformedParameters::accept()
     parameter->exitSelectionMode();
     parameter->apply();
 
+    if (parameter->hasPendingAsyncAccept()) {
+        return false;
+    }
+
     return TaskDlgFeatureParameters::accept();
 }
 
@@ -603,6 +614,11 @@ bool TaskDlgTransformedParameters::reject()
 {
     // ensure that we are not in selection mode
     parameter->exitSelectionMode();
+
+    if (parameter->deferAsyncReject()) {
+        return false;
+    }
+
     return TaskDlgFeatureParameters::reject();
 }
 

@@ -36,6 +36,11 @@ namespace PartGui
 class PatternParametersWidget;
 }
 
+namespace Gui
+{
+class AsyncTaskRecompute;
+}
+
 namespace PartDesignGui
 {
 
@@ -53,8 +58,11 @@ public:
     ~TaskPatternParameters() override;
 
     void apply() override;
+    bool hasPendingAsyncAccept() const override;
+    bool deferAsyncReject() override;
 
 protected:
+    void recomputeFeature() override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private Q_SLOTS:
@@ -75,6 +83,8 @@ private:
     void updateUI();
     void kickUpdateViewTimer() const;
     void updateSpacingLabels();
+    void startAsyncPreview();
+    void finishDeferredAction(bool previewSucceeded);
 
     void bindProperties();
 
@@ -92,6 +102,9 @@ private:
 
     std::unique_ptr<Ui_TaskPatternParameters> ui;
     QTimer* updateViewTimer = nullptr;
+    std::unique_ptr<Gui::AsyncTaskRecompute> asyncRecompute;
+    bool acceptRequested {false};
+    bool rejectRequested {false};
 };
 
 
