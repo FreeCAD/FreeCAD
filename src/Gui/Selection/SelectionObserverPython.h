@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <CXX/Objects.hxx>
 #include "Selection.h"
 
@@ -36,7 +38,7 @@ class GuiExport SelectionObserverPythonHandler
 public:
     /// Constructor
     explicit SelectionObserverPythonHandler() = default;
-    virtual ~SelectionObserverPythonHandler();
+    virtual ~SelectionObserverPythonHandler() = default;
 
     void init(PyObject* obj);
     void handleSelectionChanged(const SelectionChanges& msg);
@@ -62,7 +64,7 @@ private:
     FC_PY_ELEMENT(pickedListChanged)
 
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) Py::Object py_##_name;
+#define FC_PY_ELEMENT(_name) Base::NativePythonReference py_##_name;
 
     FC_PY_SEL_OBSERVER
 };
@@ -88,11 +90,12 @@ public:
 
     static void addObserver(const Py::Object& obj, ResolveMode resolve = ResolveMode::OldStyleElement);
     static void removeObserver(const Py::Object& obj);
+    static void clearObservers();
 
 private:
     void onSelectionChanged(const SelectionChanges& msg) override;
 
-    Py::Object inst;
+    Base::NativePythonReference inst;
     static std::vector<SelectionObserverPython*> _instances;
 };
 

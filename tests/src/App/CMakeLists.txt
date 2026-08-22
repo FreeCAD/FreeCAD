@@ -37,3 +37,17 @@ target_link_libraries(App_tests_run PRIVATE
     ${Python3_LIBRARIES}
     FreeCADApp
 )
+
+add_executable(ExtensionLifetimeShutdown ExtensionLifetimeShutdown.cpp)
+target_link_libraries(ExtensionLifetimeShutdown PRIVATE
+    FreeCADApp
+    ${Python3_LIBRARIES}
+)
+add_test(NAME ExtensionLifetimeShutdown COMMAND ExtensionLifetimeShutdown)
+
+add_executable(FeaturePythonLifetimeShutdown FeaturePythonLifetimeShutdown.cpp)
+target_link_libraries(FeaturePythonLifetimeShutdown PRIVATE
+    FreeCADApp
+    ${Python3_LIBRARIES}
+)
+add_test(NAME FeaturePythonLifetimeShutdown COMMAND FeaturePythonLifetimeShutdown)

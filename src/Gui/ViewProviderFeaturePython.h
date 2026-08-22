@@ -25,6 +25,7 @@
 #include <App/AutoTransaction.h>
 #include <App/PropertyPythonObject.h>
 #include <App/FeaturePython.h>
+#include <Base/NativePythonReference.h>
 #include <Gui/Selection/SelectionObserverPython.h>
 
 #include "ViewProviderGeometryObject.h"
@@ -194,13 +195,38 @@ private:
     FC_PY_ELEMENT(getLinkedViewProvider) \
     FC_PY_ELEMENT(editProperty)
 
+#define FC_PY_GUI_ELEMENT_DEFINE(_name) Base::NativePythonReference py_##_name;
+
+#define FC_PY_GUI_ELEMENT_INIT(_name) \
+    Base::setNativePythonCallable(pyobj, #_name, py_##_name); \
+    if (py_##_name.get()) { \
+        PyObject* pyRecursive = PyObject_GetAttrString(pyobj, "__allow_recursive_" #_name); \
+        if (!pyRecursive) { \
+            PyErr_Clear(); \
+            _Flags.set(FlagAllowRecursive_##_name, false); \
+        } \
+        else { \
+            _Flags.set(FlagAllowRecursive_##_name, PyObject_IsTrue(pyRecursive)); \
+            Py_DECREF(pyRecursive); \
+        } \
+    }
+
+#define FC_PY_GUI_ELEMENT_FLAG(_name) FlagCalling_##_name, FlagAllowRecursive_##_name,
+
+#define _FC_PY_GUI_CALL_CHECK(_name, _ret) \
+    if ((!_Flags.test(FlagAllowRecursive_##_name) && _Flags.test(FlagCalling_##_name)) \
+        || !py_##_name.get()) { \
+        _ret; \
+    } \
+    Base::BitsetLocker<Flags> guard(_Flags, FlagCalling_##_name);
+
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_DEFINE(_name)
+#define FC_PY_ELEMENT(_name) FC_PY_GUI_ELEMENT_DEFINE(_name)
 
     FC_PY_VIEW_OBJECT
 
 #undef FC_PY_ELEMENT
-#define FC_PY_ELEMENT(_name) FC_PY_ELEMENT_FLAG(_name)
+#define FC_PY_ELEMENT(_name) FC_PY_GUI_ELEMENT_FLAG(_name)
 
     enum Flag
     {

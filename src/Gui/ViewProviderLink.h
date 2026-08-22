@@ -23,6 +23,8 @@
 #pragma once
 
 #include <App/Link.h>
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <unordered_map>
 #include <map>
 #include <string>
@@ -215,7 +217,7 @@ protected:
     std::vector<std::unique_ptr<Element>> nodeArray;
     std::unordered_map<SoNode*, int> nodeMap;
 
-    Py::Object PythonObject;
+    Base::NativePythonReference PythonObject;
 };
 
 class GuiExport ViewProviderLink: public ViewProviderDragger

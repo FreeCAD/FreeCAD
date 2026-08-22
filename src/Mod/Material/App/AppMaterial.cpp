@@ -32,6 +32,7 @@
 #include "ModelManagerLocal.h"
 #include "PropertyMaterial.h"
 #if defined(BUILD_MATERIAL_EXTERNAL)
+#include "ExternalManager.h"
 #include "ModelManagerExternal.h"
 #include "MaterialManagerExternal.h"
 #endif
@@ -75,6 +76,9 @@ PyObject* initModule()
 
 PyMOD_INIT_FUNC(Materials)
 {
+#if defined(BUILD_MATERIAL_EXTERNAL)
+    App::CleanupProcess::registerCleanup([]() { Materials::ExternalManager::cleanup(); });
+#endif
 #ifdef FC_DEBUG
     App::CleanupProcess::registerCleanup([]() {
         Materials::MaterialManager::cleanup();

@@ -474,11 +474,11 @@ void MDIViewPage::printAll(QPrinter* printer, App::Document* doc)
 PyObject* MDIViewPage::getPyObject()
 {
     if (!pythonObject) {
-        pythonObject = new MDIViewPagePy(this);
+        pythonObject.reset(new MDIViewPagePy(this));
     }
 
-    Py_INCREF(pythonObject);
-    return pythonObject;
+    Py_INCREF(pythonObject.get());
+    return pythonObject.get();
 }
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)

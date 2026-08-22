@@ -230,11 +230,11 @@ CosmeticVertex* CosmeticVertex::clone() const
 
 PyObject* CosmeticVertex::getPyObject()
 {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new CosmeticVertexPy(this), true);
+    if (!PythonObject) {
+        PythonObject.reset(new CosmeticVertexPy(this));
     }
-    return Py::new_reference_to(PythonObject);
+    Py_INCREF(PythonObject.get());
+    return PythonObject.get();
 }
 
 // To do: make const

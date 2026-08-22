@@ -43,7 +43,7 @@ void WorkbenchManipulatorPython::removeManipulator(const Py::Object& obj)
     auto manip = getManipulators();
     for (const auto& it : manip) {
         auto ptr = std::dynamic_pointer_cast<WorkbenchManipulatorPython>(it);
-        if (ptr && ptr->object == obj) {
+        if (ptr && ptr->object.get() == obj.ptr()) {
             WorkbenchManipulator::removeManipulator(ptr);
             break;
         }
@@ -51,14 +51,11 @@ void WorkbenchManipulatorPython::removeManipulator(const Py::Object& obj)
 }
 
 WorkbenchManipulatorPython::WorkbenchManipulatorPython(const Py::Object& obj)
-    : object(obj)
-{}
-
-WorkbenchManipulatorPython::~WorkbenchManipulatorPython()
 {
-    Base::PyGILStateLocker lock;
-    object = Py::None();
+    object.reset(obj);
 }
+
+WorkbenchManipulatorPython::~WorkbenchManipulatorPython() = default;
 
 /*!
  * \brief WorkbenchManipulatorPython::modifyMenuBar
@@ -93,8 +90,8 @@ void WorkbenchManipulatorPython::modifyMenuBar(MenuItem* menuBar)
 
 void WorkbenchManipulatorPython::tryModifyMenuBar(MenuItem* menuBar)
 {
-    if (object.hasAttr(std::string("modifyMenuBar"))) {
-        Py::Callable method(object.getAttr(std::string("modifyMenuBar")));
+    if (pythonObject().hasAttr(std::string("modifyMenuBar"))) {
+        Py::Callable method(pythonObject().getAttr(std::string("modifyMenuBar")));
         Py::Tuple args;
         Py::Object result = method.apply(args);
         if (result.isDict()) {
@@ -197,8 +194,8 @@ void WorkbenchManipulatorPython::modifyContextMenu(const char* recipient, MenuIt
 
 void WorkbenchManipulatorPython::tryModifyContextMenu(const char* recipient, MenuItem* menuBar)
 {
-    if (object.hasAttr(std::string("modifyContextMenu"))) {
-        Py::Callable method(object.getAttr(std::string("modifyContextMenu")));
+    if (pythonObject().hasAttr(std::string("modifyContextMenu"))) {
+        Py::Callable method(pythonObject().getAttr(std::string("modifyContextMenu")));
         Py::Tuple args(1);
         args.setItem(0, Py::String(recipient));
         Py::Object result = method.apply(args);
@@ -253,8 +250,8 @@ void WorkbenchManipulatorPython::modifyToolBars(ToolBarItem* toolBar)
  */
 void WorkbenchManipulatorPython::tryModifyToolBar(ToolBarItem* toolBar)
 {
-    if (object.hasAttr(std::string("modifyToolBars"))) {
-        Py::Callable method(object.getAttr(std::string("modifyToolBars")));
+    if (pythonObject().hasAttr(std::string("modifyToolBars"))) {
+        Py::Callable method(pythonObject().getAttr(std::string("modifyToolBars")));
         Py::Tuple args;
         Py::Object result = method.apply(args);
         if (result.isDict()) {
@@ -343,8 +340,8 @@ void WorkbenchManipulatorPython::modifyDockWindows(DockWindowItems* dockWindow)
 
 void WorkbenchManipulatorPython::tryModifyDockWindows(DockWindowItems* dockWindow)
 {
-    if (object.hasAttr(std::string("modifyDockWindows"))) {
-        Py::Callable method(object.getAttr(std::string("modifyDockWindows")));
+    if (pythonObject().hasAttr(std::string("modifyDockWindows"))) {
+        Py::Callable method(pythonObject().getAttr(std::string("modifyDockWindows")));
         Py::Tuple args;
         Py::Object result = method.apply(args);
         if (result.isDict()) {

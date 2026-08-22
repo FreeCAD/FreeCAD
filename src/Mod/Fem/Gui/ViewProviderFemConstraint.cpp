@@ -305,10 +305,10 @@ void ViewProviderFemConstraint::unsetEdit(int ModNum)
 PyObject* ViewProviderFemConstraint::getPyObject()
 {
     if (!pyViewObject) {
-        pyViewObject = new ViewProviderFemConstraintPy(this);
+        pyViewObject.reset(new ViewProviderFemConstraintPy(this));
     }
-    pyViewObject->IncRef();
-    return pyViewObject;
+    Py_INCREF(pyViewObject.get());
+    return pyViewObject.get();
 }
 
 

@@ -220,21 +220,18 @@ QUiLoader::QUiLoader(QObject* parent)
         Py::Tuple args(1);
         args[0] = wrap.fromQObject(parent);
         Py::Module mod(module, true);
-        uiloader = mod.callMemberFunction("QUiLoader", args);
+        Py::Object loader = mod.callMemberFunction("QUiLoader", args);
+        uiloader.reset(loader);
     }
 }
 
-QUiLoader::~QUiLoader()
-{
-    Base::PyGILStateLocker lock;
-    uiloader = Py::None();
-}
+QUiLoader::~QUiLoader() = default;
 
 QStringList QUiLoader::pluginPaths() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::List list(uiloader.callMemberFunction("pluginPaths"));
+        Py::List list(pythonUiLoader().callMemberFunction("pluginPaths"));
         QStringList paths;
         for (const auto& it : list) {
             paths << QString::fromStdString(Py::String(it).as_std_string());
@@ -251,7 +248,7 @@ void QUiLoader::clearPluginPaths()
 {
     Base::PyGILStateLocker lock;
     try {
-        uiloader.callMemberFunction("clearPluginPaths");
+        pythonUiLoader().callMemberFunction("clearPluginPaths");
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -264,7 +261,7 @@ void QUiLoader::addPluginPath(const QString& path)
     try {
         Py::Tuple args(1);
         args[0] = Py::String(path.toStdString());
-        uiloader.callMemberFunction("addPluginPath", args);
+        pythonUiLoader().callMemberFunction("addPluginPath", args);
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -279,7 +276,7 @@ QWidget* QUiLoader::load(QIODevice* device, QWidget* parentWidget)
         Py::Tuple args(2);
         args[0] = wrap.fromQObject(device);
         args[1] = wrap.fromQObject(parentWidget);
-        Py::Object form(uiloader.callMemberFunction("load", args));
+        Py::Object form(pythonUiLoader().callMemberFunction("load", args));
         return qobject_cast<QWidget*>(wrap.toQObject(form));
     }
     catch (Py::Exception& e) {
@@ -292,7 +289,7 @@ QStringList QUiLoader::availableWidgets() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::List list(uiloader.callMemberFunction("availableWidgets"));
+        Py::List list(pythonUiLoader().callMemberFunction("availableWidgets"));
         QStringList widgets;
         for (const auto& it : list) {
             widgets << QString::fromStdString(Py::String(it).as_std_string());
@@ -309,7 +306,7 @@ QStringList QUiLoader::availableLayouts() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::List list(uiloader.callMemberFunction("availableLayouts"));
+        Py::List list(pythonUiLoader().callMemberFunction("availableLayouts"));
         QStringList layouts;
         for (const auto& it : list) {
             layouts << QString::fromStdString(Py::String(it).as_std_string());
@@ -331,7 +328,7 @@ QWidget* QUiLoader::createWidget(const QString& className, QWidget* parent, cons
         args[0] = Py::String(className.toStdString());
         args[1] = wrap.fromQObject(parent);
         args[2] = Py::String(name.toStdString());
-        Py::Object form(uiloader.callMemberFunction("createWidget", args));
+        Py::Object form(pythonUiLoader().callMemberFunction("createWidget", args));
         return qobject_cast<QWidget*>(wrap.toQObject(form));
     }
     catch (Py::Exception& e) {
@@ -349,7 +346,7 @@ QLayout* QUiLoader::createLayout(const QString& className, QObject* parent, cons
         args[0] = Py::String(className.toStdString());
         args[1] = wrap.fromQObject(parent);
         args[2] = Py::String(name.toStdString());
-        Py::Object form(uiloader.callMemberFunction("createLayout", args));
+        Py::Object form(pythonUiLoader().callMemberFunction("createLayout", args));
         return qobject_cast<QLayout*>(wrap.toQObject(form));
     }
     catch (Py::Exception& e) {
@@ -366,7 +363,7 @@ QActionGroup* QUiLoader::createActionGroup(QObject* parent, const QString& name)
         Py::Tuple args(2);
         args[0] = wrap.fromQObject(parent);
         args[1] = Py::String(name.toStdString());
-        Py::Object action(uiloader.callMemberFunction("createActionGroup", args));
+        Py::Object action(pythonUiLoader().callMemberFunction("createActionGroup", args));
         return qobject_cast<QActionGroup*>(wrap.toQObject(action));
     }
     catch (Py::Exception& e) {
@@ -383,7 +380,7 @@ QAction* QUiLoader::createAction(QObject* parent, const QString& name)
         Py::Tuple args(2);
         args[0] = wrap.fromQObject(parent);
         args[1] = Py::String(name.toStdString());
-        Py::Object action(uiloader.callMemberFunction("createAction", args));
+        Py::Object action(pythonUiLoader().callMemberFunction("createAction", args));
         return qobject_cast<QAction*>(wrap.toQObject(action));
     }
     catch (Py::Exception& e) {
@@ -399,7 +396,7 @@ void QUiLoader::setWorkingDirectory(const QDir& dir)
         PythonWrapper wrap;
         Py::Tuple args(1);
         args[0] = wrap.fromQDir(dir);
-        uiloader.callMemberFunction("setWorkingDirectory", args);
+        pythonUiLoader().callMemberFunction("setWorkingDirectory", args);
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -411,7 +408,7 @@ QDir QUiLoader::workingDirectory() const
     Base::PyGILStateLocker lock;
     try {
         PythonWrapper wrap;
-        Py::Object dir((uiloader.callMemberFunction("workingDirectory")));
+        Py::Object dir((pythonUiLoader().callMemberFunction("workingDirectory")));
         QDir* d = wrap.toQDir(dir.ptr());
         if (d) {
             return *d;
@@ -430,7 +427,7 @@ void QUiLoader::setLanguageChangeEnabled(bool enabled)
     try {
         Py::Tuple args(1);
         args[0] = Py::Boolean(enabled);
-        uiloader.callMemberFunction("setLanguageChangeEnabled", args);
+        pythonUiLoader().callMemberFunction("setLanguageChangeEnabled", args);
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -441,7 +438,7 @@ bool QUiLoader::isLanguageChangeEnabled() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::Boolean ok((uiloader.callMemberFunction("isLanguageChangeEnabled")));
+        Py::Boolean ok((pythonUiLoader().callMemberFunction("isLanguageChangeEnabled")));
         return static_cast<bool>(ok);
     }
     catch (Py::Exception& e) {
@@ -456,7 +453,7 @@ void QUiLoader::setTranslationEnabled(bool enabled)
     try {
         Py::Tuple args(1);
         args[0] = Py::Boolean(enabled);
-        uiloader.callMemberFunction("setTranslationEnabled", args);
+        pythonUiLoader().callMemberFunction("setTranslationEnabled", args);
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -467,7 +464,7 @@ bool QUiLoader::isTranslationEnabled() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::Boolean ok((uiloader.callMemberFunction("isTranslationEnabled")));
+        Py::Boolean ok((pythonUiLoader().callMemberFunction("isTranslationEnabled")));
         return static_cast<bool>(ok);
     }
     catch (Py::Exception& e) {
@@ -480,7 +477,7 @@ QString QUiLoader::errorString() const
 {
     Base::PyGILStateLocker lock;
     try {
-        Py::String error((uiloader.callMemberFunction("errorString")));
+        Py::String error((pythonUiLoader().callMemberFunction("errorString")));
         return QString::fromStdString(error.as_std_string());
     }
     catch (Py::Exception& e) {

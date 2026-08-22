@@ -32,38 +32,37 @@ namespace Py
 {
 void SmartPtr::set(PyObject* pyob, bool owned)
 {
-    release();
-    p = pyob;
-    if (!owned) {
-        Py::_XINCREF(p);
+    if (owned) {
+        p.reset(pyob);
+    }
+    else {
+        p.resetBorrowed(pyob);
     }
 }
 
 void SmartPtr::release()
 {
-    Base::PyGILStateLocker lock;
-    Py::_XDECREF(p);
-    p = nullptr;
+    p.reset();
 }
 
 SmartPtr::SmartPtr()
-    : p(Py::_None())
 {
-    Py::_XINCREF(p);
+    p.resetBorrowed(Py::_None());
 }
 
 SmartPtr::SmartPtr(PyObject* pyob, bool owned)
-    : p(pyob)
 {
-    if (!owned) {
-        Py::_XINCREF(p);
+    if (owned) {
+        p.reset(pyob);
+    }
+    else {
+        p.resetBorrowed(pyob);
     }
 }
 
 SmartPtr::SmartPtr(const SmartPtr& ob)
-    : p(ob.p)
 {
-    Py::_XINCREF(p);
+    p.resetBorrowed(ob.ptr());
 }
 
 SmartPtr& SmartPtr::operator=(const SmartPtr& rhs)
@@ -94,27 +93,27 @@ SmartPtr::~SmartPtr()
 
 PyObject* SmartPtr::operator*() const
 {
-    return p;
+    return p.get();
 }
 
 PyObject* SmartPtr::ptr() const
 {
-    return p;
+    return p.get();
 }
 
 bool SmartPtr::is(PyObject* pother) const
 {  // identity test
-    return p == pother;
+    return p.get() == pother;
 }
 
 bool SmartPtr::is(const SmartPtr& other) const
 {  // identity test
-    return p == other.p;
+    return p.get() == other.p.get();
 }
 
 bool SmartPtr::isNull() const
 {
-    return p == nullptr;
+    return p.get() == nullptr;
 }
 
 BaseExport PyObject* new_reference_to(const SmartPtr& ptr)

@@ -25,6 +25,8 @@
 
 #pragma once
 
+#include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <FCGlobal.h>
 #include <fastsignals/signal.h>
 #include <CXX/Objects.hxx>
@@ -56,6 +58,7 @@ public:
 
     static void addObserver(const Py::Object& obj);
     static void removeObserver(const Py::Object& obj);
+    static void clearObservers();
 
 private:
     /** Checks if a new document was created */
@@ -119,16 +122,16 @@ private:
 
 
 private:
-    Py::Object inst;
+    Base::NativePythonReference inst;
     static std::vector<DocumentObserverPython*> _instances;
 
     using Connection = struct PythonObject
     {
         fastsignals::scoped_connection slot;
-        Py::Object py;
-        PyObject* ptr()
+        Base::NativePythonReference py;
+        PyObject* get()
         {
-            return py.ptr();
+            return py.get();
         }
     };
 

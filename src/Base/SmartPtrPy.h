@@ -26,6 +26,7 @@
 #pragma once
 
 #include <FCGlobal.h>
+#include "NativePythonReference.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -45,7 +46,7 @@ class Object;
 class BaseExport SmartPtr  // NOLINT
 {
 private:
-    PyObject* p;
+    Base::NativePythonReference p;
 
 protected:
     void set(PyObject* pyob, bool owned = false);
