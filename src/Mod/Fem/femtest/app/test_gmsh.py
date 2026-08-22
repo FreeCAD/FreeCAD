@@ -101,7 +101,7 @@ class TestGMSHBase(unittest.TestCase):
         if FreeCAD.GuiUp:
             import FreeCADGui
 
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def get_gmsh_objects(self):
         result = []
