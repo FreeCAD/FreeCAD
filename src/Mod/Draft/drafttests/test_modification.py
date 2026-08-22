@@ -100,8 +100,8 @@ class DraftModification(test_base.DraftTestCaseDoc):
         self.doc.recompute()
         self.assertTrue(obj.Start.isEqual(c, 1e-6), "'{}' failed".format(operation))
 
-    def test_process_subselection_skips_objects_without_points(self):
-        """Subelement modifiers skip objects that do not expose Points."""
+    def test_process_subselection_accepts_only_wires(self):
+        """Subelement modifiers process Draft wires and skip other objects."""
 
         class SelectionObject:
             def __init__(self, target, name):
@@ -116,10 +116,8 @@ class DraftModification(test_base.DraftTestCaseDoc):
                 self.Object = SelectionObject(target, name)
                 self.SubElementNames = [sub]
 
-        unsupported = self.doc.addObject("Part::FeaturePython", "Unsupported")
-        supported = self.doc.addObject("Part::FeaturePython", "Supported")
-        supported.addProperty("App::PropertyVectorList", "Points")
-        supported.Points = [Vector(), Vector(1, 0, 0)]
+        unsupported = Draft.make_rectangle(10, 10)
+        supported = Draft.make_wire([Vector(), Vector(1, 0, 0)])
         selections = [
             Selection(unsupported, unsupported.Name, "Edge1"),
             Selection(supported, supported.Name, "Vertex1"),
