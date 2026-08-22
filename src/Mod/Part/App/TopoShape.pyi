@@ -31,32 +31,32 @@ class TopoShape(ComplexGeoData):
     Orientation: str = ""
     """Returns the orientation of the shape."""
 
-    Faces: Final[List["Face"]] = []
-    """List of faces in this shape."""
+    Faces: Final[object] = []
+    """Faces of this shape, as a lazy Part.ShapeList."""
 
-    Vertexes: Final[List["Vertex"]] = []
-    """List of vertexes in this shape."""
+    Vertexes: Final[object] = []
+    """Vertexes of this shape, as a lazy Part.ShapeList."""
 
-    Shells: Final[List["Shell"]] = []
-    """List of subsequent shapes in this shape."""
+    Shells: Final[object] = []
+    """Shells of this shape, as a lazy Part.ShapeList."""
 
-    Solids: Final[List["Solid"]] = []
-    """List of subsequent shapes in this shape."""
+    Solids: Final[object] = []
+    """Solids of this shape, as a lazy Part.ShapeList."""
 
-    CompSolids: Final[List["CompSolid"]] = []
-    """List of compound solids in this shape."""
+    CompSolids: Final[object] = []
+    """CompSolids of this shape, as a lazy Part.ShapeList."""
 
-    Edges: Final[List["Edge"]] = []
-    """List of Edges in this shape."""
+    Edges: Final[object] = []
+    """Edges of this shape, as a lazy Part.ShapeList."""
 
-    Wires: Final[List["Wire"]] = []
-    """List of wires in this shape."""
+    Wires: Final[object] = []
+    """Wires of this shape, as a lazy Part.ShapeList."""
 
-    Compounds: Final[List["Compound"]] = []
-    """List of compounds in this shape."""
+    Compounds: Final[object] = []
+    """Compounds of this shape, as a lazy Part.ShapeList."""
 
-    SubShapes: Final[List["TopoShape"]] = []
-    """List of sub-shapes in this shape."""
+    SubShapes: Final[object] = []
+    """Direct sub-shapes of this shape, as a lazy Part.ShapeList."""
 
     Length: Final[float] = 0.0
     """Total length of the edges of the shape."""
@@ -1241,11 +1241,11 @@ class TopoShape(ComplexGeoData):
         ...
 
     @constmethod
-    def getChildShapes(self, shapetype: str, avoidtype: str = "", /) -> List[TopoShape]:
+    def getChildShapes(self, shapetype: str, avoidtype: str = "", /) -> object:
         """
-        getChildShapes(shapetype, avoidtype='') -> list(Shape)
+        getChildShapes(shapetype, avoidtype='') -> Part.ShapeList
 
-        Return a list of child sub-shapes of given type.
+        Return child sub-shapes of the given type as a lazy Part.ShapeList.
 
         shapetype: the type of requesting sub shapes
         avoidtype: optional shape type to skip when exploring

@@ -90,6 +90,7 @@ generate_from_py(AttachExtension)
 generate_from_py(PreviewExtension)
 generate_from_py(Part2DObject)
 generate_from_py(AttachEngine)
+generate_from_py(ShapeList)
 generate_from_py(TopoShape)
 generate_from_py(TopoShapeCompound)
 generate_from_py(TopoShapeCompSolid)
@@ -101,7 +102,6 @@ generate_from_py(TopoShapeVertex)
 generate_from_py(TopoShapeWire)
 generate_from_py(BRepOffsetAPI_MakePipeShell)
 generate_from_py(BRepOffsetAPI_MakeFilling)
-
 
 # make sure to create the directory at configure time
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/BRepFeat)
@@ -365,6 +365,8 @@ SET(Python_SRCS
     Part2DObjectPyImp.cpp
     AttachEngine.pyi
     AttachEnginePyImp.cpp
+    ShapeList.pyi
+    ShapeListPyImp.cpp
     TopoShape.pyi
     TopoShapePyImp.cpp
     TopoShapeCompSolid.pyi
@@ -586,6 +588,8 @@ SET(Part_SRCS
     Services.h
     SignalException.cpp
     SignalException.h
+    ShapeList.cpp
+    ShapeList.h
     TopoShape.cpp
     TopoShape.h
     TopoShapeCache.cpp

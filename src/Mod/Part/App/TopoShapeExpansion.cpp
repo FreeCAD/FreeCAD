@@ -158,7 +158,7 @@ Data::ElementMapPtr TopoShape::resetElementMap(Data::ElementMapPtr elementMap)
             info.clear();
         }
     }
-    else {
+    else if (elementMap) {
         initCache();
     }
     if (elementMap) {
@@ -293,13 +293,16 @@ TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const gp_Trsf& transfer
 void TopoShape::operator=(const TopoShape& sh)
 {
     if (this != &sh) {
-        this->setShape(sh._Shape, true);
+        // Copy the source state directly. Going through setShape() and
+        // resetElementMap() constructs throwaway caches and can clear the
+        // cache that is adopted below when the source has an element map.
+        this->_Shape = sh._Shape;
         this->Tag = sh.Tag;
         this->Hasher = sh.Hasher;
         this->_cache = sh._cache;
         this->_parentCache = sh._parentCache;
         this->_subLocation = sh._subLocation;
-        resetElementMap(sh.elementMap(false));
+        Data::ComplexGeoData::resetElementMap(sh.elementMap(false));
     }
 }
 
