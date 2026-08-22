@@ -4,11 +4,52 @@
 
 #include <cmath>
 #include <numbers>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include <src/App/InitApplication.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <App/Document.h>
+#include <App/PropertyLinks.h>
 #include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
+
+
+class TestablePlane: public Part::Plane
+{
+public:
+    bool restoreLegacySupport(Base::XMLReader& reader, const char* typeName)
+    {
+        return extensionHandleChangedPropertyName(reader, typeName, "Support");
+    }
+};
+
+
+template<typename PropertyT>
+void restoreLegacySupport(TestablePlane& plane, PropertyT& property)
+{
+    const std::string typeName(property.getTypeId().getName());
+    Base::StringWriter writer;
+    property.Save(writer);
+
+    std::stringstream data;
+    data << "<?xml version='1.0' encoding='utf-8'?>\n"
+         << "<Property name='Support' type='" << typeName << "'>\n"
+         << writer.getString() << "</Property>\n";
+    Base::XMLReader reader("Document.xml", data);
+
+    EXPECT_TRUE(plane.restoreLegacySupport(reader, typeName.c_str()));
+}
+
+
+template<typename PropertyT>
+void restoreEmptyLegacySupport(TestablePlane& plane)
+{
+    PropertyT property;
+    restoreLegacySupport(plane, property);
+}
 
 
 class AttachExtensionTest: public ::testing::Test
@@ -33,6 +74,13 @@ protected:
     App::Document* getDocument() const
     {
         return _doc;
+    }
+
+    TestablePlane* createTestablePlane(const char* name)
+    {
+        auto plane = new TestablePlane();
+        getDocument()->addObject(plane, name);
+        return plane;
     }
 
 private:
@@ -246,4 +294,63 @@ TEST_F(AttachExtensionTest, testAttacherTypeEngine)
     plane->AttacherType.setValue("Attacher::AttachEngine3D");
     plane->onExtendedDocumentRestored();
     EXPECT_STREQ(plane->AttacherEngine.getValueAsString(), "Engine 3D");
+}
+
+TEST_F(AttachExtensionTest, testEmptyLegacySupportDoesNotClearAttachmentSupport)
+{
+    auto object = createTestablePlane("Object");
+    auto support = getDocument()->addObject<Part::Plane>("Support");
+    ASSERT_TRUE(object);
+    ASSERT_TRUE(support);
+
+    object->AttachmentSupport.setValue(support, "Face1");
+    object->MapMode.setValue("Deactivated");
+
+    restoreEmptyLegacySupport<App::PropertyLinkSub>(*object);
+    restoreEmptyLegacySupport<App::PropertyLinkSubList>(*object);
+
+    ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getValues().front(), support);
+    ASSERT_EQ(object->AttachmentSupport.getSubValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getSubValues().front(), "Face1");
+    EXPECT_STREQ(object->MapMode.getValueAsString(), "Deactivated");
+}
+
+TEST_F(AttachExtensionTest, testNonEmptyLegacySupportReplacesAttachmentSupport)
+{
+    auto object = createTestablePlane("Object");
+    auto currentSupport = getDocument()->addObject<Part::Plane>("CurrentSupport");
+    auto legacySupport = getDocument()->addObject<Part::Plane>("LegacySupport");
+    ASSERT_TRUE(object);
+    ASSERT_TRUE(currentSupport);
+    ASSERT_TRUE(legacySupport);
+
+    object->AttachmentSupport.setValue(currentSupport, "Face1");
+    object->MapMode.setValue("Deactivated");
+
+    App::PropertyLinkSub oldLinkSub;
+    oldLinkSub.setContainer(object);
+    oldLinkSub.setValue(legacySupport, std::vector<std::string> {"Face2"});
+    restoreLegacySupport(*object, oldLinkSub);
+
+    ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getValues().front(), legacySupport);
+    EXPECT_STREQ(object->MapMode.getValueAsString(), "FlatFace");
+
+    object->AttachmentSupport.setValue(currentSupport, "Face1");
+    object->MapMode.setValue("Deactivated");
+
+    App::PropertyLinkSubList oldLinkSubList;
+    oldLinkSubList.setContainer(object);
+    oldLinkSubList.setValues(
+        std::vector<App::DocumentObject*> {legacySupport},
+        std::vector<std::string> {"Face2"}
+    );
+    restoreLegacySupport(*object, oldLinkSubList);
+
+    ASSERT_EQ(object->AttachmentSupport.getValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getValues().front(), legacySupport);
+    ASSERT_EQ(object->AttachmentSupport.getSubValues().size(), 1);
+    EXPECT_EQ(object->AttachmentSupport.getSubValues().front(), "Face2");
+    EXPECT_STREQ(object->MapMode.getValueAsString(), "Deactivated");
 }
