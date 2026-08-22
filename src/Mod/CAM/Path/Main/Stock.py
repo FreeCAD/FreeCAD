@@ -321,9 +321,17 @@ class StockCreateCylinder(Stock):
             "Stock",
             QT_TRANSLATE_NOOP("App::Property", "Height of this stock cylinder"),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Axis",
+            "Stock",
+            QT_TRANSLATE_NOOP("App::Property", "Axis of this stock cylinder"),
+        )
 
         obj.Radius = 2
         obj.Height = 10
+        obj.Axis = ("X", "Y", "Z")
+        obj.Axis = "Z"
 
         obj.Proxy = self
 
@@ -339,13 +347,29 @@ class StockCreateCylinder(Stock):
         if obj.Height < self.MinExtent:
             obj.Height = self.MinExtent
 
-        shape = Part.makeCylinder(obj.Radius, obj.Height)
+        if obj.Axis == "X":  # along X
+            axisVec = FreeCAD.Vector(1, 0, 0)
+        elif obj.Axis == "Y":  # along Y
+            axisVec = FreeCAD.Vector(0, 1, 0)
+        else:  # along Z
+            axisVec = FreeCAD.Vector(0, 0, 1)
+
+        shape = Part.makeCylinder(obj.Radius, obj.Height, FreeCAD.Vector(0, 0, 0), axisVec, 360)
         shape.Placement = obj.Placement
         obj.Shape = shape
 
     def onChanged(self, obj, prop):
-        if prop in ["Radius", "Height"] and "Restore" not in obj.State:
+        if prop in ("Axis", "Radius", "Height") and "Restore" not in obj.State:
             self.execute(obj)
+
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, "Axis"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "Axis",
+                "Stock",
+                QT_TRANSLATE_NOOP("App::Property", "Axis of this stock cylinder"),
+            )
 
 
 def SetupStockObject(obj, stockType):
@@ -441,10 +465,13 @@ def CreateBox(job, extent=None, placement=None):
     return obj
 
 
-def CreateCylinder(job, radius=None, height=None, placement=None):
+def CreateCylinder(job, radius=None, height=None, placement=None, axis=None):
     base = _getBase(job)
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "Stock")
     obj.Proxy = StockCreateCylinder(obj)
+
+    if axis:
+        obj.Axis = axis
 
     if radius:
         obj.Radius = radius
@@ -453,15 +480,29 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
         obj.Height = height
     elif base:
         bb = shapeBoundBox(base.Group)
-        obj.Radius = math.sqrt(bb.XLength**2 + bb.YLength**2) / 2.0
-        obj.Height = max(bb.ZLength, 1)
+        if axis == "X":  # along X
+            obj.Height = max(bb.XLength, 1)
+            obj.Radius = math.hypot(bb.YLength, bb.ZLength) / 2
+        elif axis == "Y":  # along Y
+            obj.Height = max(bb.YLength, 1)
+            obj.Radius = math.hypot(bb.XLength, bb.ZLength) / 2
+        else:  # along Z
+            obj.Height = max(bb.ZLength, 1)
+            obj.Radius = math.hypot(bb.XLength, bb.YLength) / 2
 
     if placement:
         obj.Placement = placement
     elif base:
         bb = shapeBoundBox(base.Group)
-        origin = FreeCAD.Vector((bb.XMin + bb.XMax) / 2, (bb.YMin + bb.YMax) / 2, bb.ZMin)
-        obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(), 0)
+        if axis == "X":  # along X
+            origin = FreeCAD.Vector(bb.XMin, bb.Center.y, bb.Center.z)
+            obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(0, 0, 1), 0)
+        elif axis == "Y":  # along Y
+            origin = FreeCAD.Vector(bb.Center.x, bb.YMin, bb.Center.z)
+            obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(0, 0, 1), 0)
+        else:  # along Z
+            origin = FreeCAD.Vector(bb.Center.x, bb.Center.y, bb.ZMin)
+            obj.Placement = FreeCAD.Placement(origin, FreeCAD.Vector(0, 0, 1), 0)
 
     SetupStockObject(obj, StockType.CreateCylinder)
     return obj
