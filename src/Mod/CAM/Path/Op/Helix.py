@@ -90,8 +90,8 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
                 (translate("CAM_Helix", "CCW"), "CCW"),
             ],  # this is the direction that the profile runs
             "StartAt": [
-                (translate("PathProfile", "Inside"), "Inside"),
-                (translate("PathProfile", "Outside"), "Outside"),
+                (translate("CAM_Helix", "Inside"), "Inside"),
+                (translate("CAM_Helix", "Outside"), "Outside"),
             ],  # side of profile that cutter is on in relation to direction of profile
             "CutMode": [
                 (translate("CAM_Helix", "Climb"), "Climb"),
