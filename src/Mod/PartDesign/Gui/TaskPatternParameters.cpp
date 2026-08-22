@@ -40,6 +40,7 @@
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewStatus.h>
 #include <Gui/AsyncTaskRecompute.h>
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
@@ -75,8 +76,14 @@ TaskPatternParameters::TaskPatternParameters(ViewProviderTransformed* Transforme
     , ui(new Ui_TaskPatternParameters)
 {
     setupUI();
+    previewStatus = new Gui::AsyncPreviewStatus(this);
+    groupLayout()->addWidget(previewStatus);
     asyncRecompute = std::make_unique<Gui::AsyncTaskRecompute>(this);
-    asyncRecompute->setRunningChanged([this](bool running) { setEditingEnabled(!running); });
+    previewStatus->setCancelCallback([this] { asyncRecompute->cancel(); });
+    asyncRecompute->setRunningChanged([this](bool running) {
+        setEditingEnabled(!running);
+        previewStatus->setBusy(running);
+    });
     updateSpacingLabels();
 }
 

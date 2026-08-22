@@ -12,6 +12,7 @@
 #include <QMetaObject>
 #include <QThread>
 
+#include <boost/scope_exit.hpp>
 #include <gtest/gtest.h>
 
 #include <App/Application.h>
@@ -36,6 +37,16 @@ std::mutex testSignalMutex;
 std::condition_variable testSignalChanged;
 bool testSignalInvocationPending = false;
 
+class TestMainThreadInvoker final: public QObject
+{
+};
+
+TestMainThreadInvoker* testMainThreadInvoker()
+{
+    static auto* invoker = new TestMainThreadInvoker();
+    return invoker;
+}
+
 void testInvokeOnMain(std::function<void()>&& function, bool blocking)
 {
     auto* app = QCoreApplication::instance();
@@ -51,7 +62,7 @@ void testInvokeOnMain(std::function<void()>&& function, bool blocking)
     testSignalChanged.notify_all();
 
     QMetaObject::invokeMethod(
-        app,
+        testMainThreadInvoker(),
         [function = std::move(function)]() mutable { function(); },
         blocking ? Qt::BlockingQueuedConnection : Qt::QueuedConnection
     );
@@ -59,7 +70,7 @@ void testInvokeOnMain(std::function<void()>&& function, bool blocking)
 
 void testPumpMainThreadDispatches()
 {
-    QCoreApplication::sendPostedEvents(nullptr, QEvent::MetaCall);
+    QCoreApplication::sendPostedEvents(testMainThreadInvoker(), QEvent::MetaCall);
 }
 
 class ScopedMainThreadSignalHooks
@@ -93,6 +104,7 @@ protected:
             static char* argv[] = {appName, nullptr};
             new QCoreApplication(argc, argv);
         }
+        testMainThreadInvoker();
         tests::initApplication();
     }
 
@@ -175,6 +187,83 @@ TEST_F(AsyncTaskRecomputeTest, CancellationInvalidatesCurrentPreview)
     EXPECT_FALSE(task.hasCurrentSuccessfulPreview());
 }
 
+TEST_F(AsyncTaskRecomputeTest, LateCancellationInvalidatesQueuedSuccess)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    Gui::AsyncTaskRecompute task;
+    bool callbackDone = false;
+    App::RecomputeFailure failure = App::RecomputeFailure::None;
+    auto request = App::RecomputeRequest::fromDocumentObject(*blocker);
+    task.schedule(std::move(request), 0, [&](App::RecomputeResult& result) {
+        callbackDone = true;
+        failure = result.failure;
+    });
+
+    ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+    std::this_thread::sleep_for(50ms);
+
+    task.cancel();
+    EXPECT_FALSE(callbackDone);
+    EXPECT_TRUE(processUntil([&] { return callbackDone; }));
+    EXPECT_EQ(failure, App::RecomputeFailure::Canceled);
+    EXPECT_FALSE(task.hasCurrentSuccessfulPreview());
+}
+
+TEST_F(AsyncTaskRecomputeTest, DebouncedBurstRunsOnlyLatestPreview)
+{
+    auto* feature = dynamic_cast<App::FeatureTest*>(
+        _doc->addObject("App::FeatureTest", "PreviewFeature")
+    );
+    ASSERT_NE(feature, nullptr);
+    feature->touch();
+
+    Gui::AsyncTaskRecompute task;
+    int callbackCount = 0;
+    auto completion = [&](App::RecomputeResult& result) {
+        ++callbackCount;
+        EXPECT_TRUE(result.success);
+    };
+    for (int i = 0; i < 5; ++i) {
+        task.schedule(App::RecomputeRequest::fromDocumentObject(*feature), 25, completion);
+    }
+
+    EXPECT_TRUE(processUntil([&] { return callbackCount == 1; }));
+    EXPECT_EQ(feature->ExecCount.getValue(), 1);
+    EXPECT_TRUE(task.hasCurrentSuccessfulPreview());
+}
+
+TEST_F(AsyncTaskRecomputeTest, DestructionCancelsOutstandingCompletionSafely)
+{
+    auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
+        _doc->addObject("App::FeatureTestAsyncBlocker", "BlockingFeature")
+    );
+    ASSERT_NE(blocker, nullptr);
+
+    App::FeatureTestAsyncBlocker::resetBlocker();
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        App::FeatureTestAsyncBlocker::releaseBlocker();
+    };
+    bool callbackDone = false;
+    {
+        auto task = std::make_unique<Gui::AsyncTaskRecompute>();
+        auto request = App::RecomputeRequest::fromDocumentObject(*blocker);
+        task->schedule(std::move(request), 0, [&](App::RecomputeResult&) { callbackDone = true; });
+        ASSERT_TRUE(App::FeatureTestAsyncBlocker::waitUntilStarted(2s));
+    }
+
+    App::FeatureTestAsyncBlocker::releaseBlocker();
+    std::this_thread::sleep_for(50ms);
+    QCoreApplication::processEvents();
+    EXPECT_FALSE(callbackDone);
+}
+
 TEST_F(AsyncTaskRecomputeTest, CloseDocumentPumpsBlockingMainThreadSignal)
 {
     ScopedMainThreadSignalHooks hooks;
@@ -203,7 +292,18 @@ TEST_F(AsyncTaskRecomputeTest, CloseDocumentPumpsBlockingMainThreadSignal)
         App::FeatureTestAsyncBlocker::releaseBlocker();
     });
 
+    QObject unrelated;
+    bool unrelatedCallRan = false;
+    QMetaObject::invokeMethod(
+        &unrelated,
+        [&unrelatedCallRan] { unrelatedCallRan = true; },
+        Qt::QueuedConnection
+    );
+
     EXPECT_TRUE(App::GetApplication().closeDocument(_docName.c_str()));
     releaser.join();
+    EXPECT_FALSE(unrelatedCallRan);
+    QCoreApplication::processEvents();
+    EXPECT_TRUE(unrelatedCallRan);
     _doc = nullptr;
 }

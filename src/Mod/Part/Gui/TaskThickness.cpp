@@ -30,6 +30,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Tools.h>
 #include <Gui/Application.h>
+#include <Gui/AsyncPreviewStatus.h>
 #include <Gui/AsyncTaskRecompute.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -60,6 +61,7 @@ public:
     std::string selection;
     Part::Thickness* thickness {nullptr};
     std::unique_ptr<Gui::AsyncTaskRecompute> recompute;
+    Gui::AsyncPreviewStatus* previewStatus {nullptr};
     bool acceptRequested {false};
     bool rejectRequested {false};
 
@@ -97,8 +99,15 @@ ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
 
     d->thickness = thickness;
     d->recompute = std::make_unique<Gui::AsyncTaskRecompute>(this);
-    d->recompute->setRunningChanged([this](bool running) { setEnabled(!running); });
     d->ui.setupUi(this);
+
+    d->previewStatus = new Gui::AsyncPreviewStatus(this);
+    d->ui.gridLayout->addWidget(d->previewStatus, 10, 0, 1, 3);
+    d->previewStatus->setCancelCallback([this] { d->recompute->cancel(); });
+    d->recompute->setRunningChanged([this](bool running) {
+        setEditingEnabled(!running);
+        d->previewStatus->setBusy(running);
+    });
     setupConnections();
 
     d->ui.labelOffset->setText(tr("Thickness"));
@@ -160,6 +169,17 @@ void ThicknessWidget::setupConnections()
 Part::Thickness* ThicknessWidget::getObject() const
 {
     return d->thickness;
+}
+
+void ThicknessWidget::setEditingEnabled(bool enabled)
+{
+    d->ui.spinOffset->setEnabled(enabled);
+    d->ui.modeType->setEnabled(enabled);
+    d->ui.joinType->setEnabled(enabled);
+    d->ui.intersection->setEnabled(enabled);
+    d->ui.selfIntersection->setEnabled(enabled);
+    d->ui.facesButton->setEnabled(enabled);
+    d->ui.updateView->setEnabled(enabled);
 }
 
 void ThicknessWidget::schedulePreview()

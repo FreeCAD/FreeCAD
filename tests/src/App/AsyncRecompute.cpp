@@ -252,6 +252,40 @@ TEST_F(AsyncRecomputeTest, CancelRunningRequestReportsCanceled)
     std::lock_guard<std::mutex> lock(callbacks.mutex);
     ASSERT_EQ(callbacks.failures.size(), 1U);
     EXPECT_EQ(callbacks.failures.front(), App::RecomputeFailure::Canceled);
+    EXPECT_FALSE(blocker->isError());
+    EXPECT_EQ(_doc->getErrorDescription(blocker), nullptr);
+}
+
+TEST_F(AsyncRecomputeTest, ObjectRequestDoesNotRecomputeUnrelatedObjects)
+{
+    auto* requested = dynamic_cast<App::FeatureTest*>(
+        _doc->addObject("App::FeatureTest", "RequestedFeature")
+    );
+    auto* unrelated = dynamic_cast<App::FeatureTest*>(
+        _doc->addObject("App::FeatureTest", "UnrelatedFeature")
+    );
+    ASSERT_NE(requested, nullptr);
+    ASSERT_NE(unrelated, nullptr);
+
+    requested->touch();
+    unrelated->touch();
+
+    CallbackResults callbacks;
+    auto request = App::RecomputeRequest::fromDocumentObject(*requested);
+    request.callback = [&callbacks](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbacks.add(result.failure);
+    };
+    App::GetApplication().queueRecomputeRequest(std::move(request));
+
+    ASSERT_TRUE(callbacks.waitForCount(1));
+    {
+        std::lock_guard<std::mutex> lock(callbacks.mutex);
+        ASSERT_EQ(callbacks.failures.size(), 1U);
+        EXPECT_EQ(callbacks.failures.front(), App::RecomputeFailure::None);
+    }
+    EXPECT_EQ(requested->ExecCount.getValue(), 1);
+    EXPECT_EQ(unrelated->ExecCount.getValue(), 0);
+    EXPECT_TRUE(unrelated->mustRecompute());
 }
 
 TEST_F(AsyncRecomputeTest, SameObjectRequestsUseIndependentCancellationTokens)

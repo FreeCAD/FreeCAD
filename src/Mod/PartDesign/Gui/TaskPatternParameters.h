@@ -38,8 +38,9 @@ class PatternParametersWidget;
 
 namespace Gui
 {
+class AsyncPreviewStatus;
 class AsyncTaskRecompute;
-}
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -103,6 +104,7 @@ private:
     std::unique_ptr<Ui_TaskPatternParameters> ui;
     QTimer* updateViewTimer = nullptr;
     std::unique_ptr<Gui::AsyncTaskRecompute> asyncRecompute;
+    Gui::AsyncPreviewStatus* previewStatus = nullptr;
     bool acceptRequested {false};
     bool rejectRequested {false};
 };

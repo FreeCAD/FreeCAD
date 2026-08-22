@@ -170,6 +170,12 @@ void AsyncTaskRecompute::finish(std::uint64_t serial, CompletionData result)
         return;
     }
 
+    if (_activeCancellation && _activeCancellation->isCanceled()) {
+        result->success = false;
+        result->failure = App::RecomputeFailure::Canceled;
+        result->exception.reset();
+    }
+
     _activeCancellation.reset();
     _running = false;
     if (_runningChanged) {

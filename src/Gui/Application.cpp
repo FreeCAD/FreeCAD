@@ -437,7 +437,7 @@ void qtInvokeOnMain(std::function<void()>&& fn, bool blocking)
 void qtPumpMainThreadDispatches()
 {
     if (qApp) {
-        QCoreApplication::sendPostedEvents(nullptr, QEvent::MetaCall);
+        QCoreApplication::sendPostedEvents(MainThreadInvoker::instance(), QEvent::MetaCall);
     }
 }
 
