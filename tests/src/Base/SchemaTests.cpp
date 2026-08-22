@@ -568,38 +568,38 @@ TEST_F(SchemaTest, imperial_building_special_function_length_neg)
     EXPECT_EQ(result, expect);
 }
 
-TEST_F(SchemaTest, imperial_civil_special_function_angle_degrees)
+TEST_F(SchemaTest, imperial_civil_angle_whole_degree)
 {
-    constexpr auto val {180};
-    const auto result = set("ImperialCivil", Unit::Angle, val);
-    const auto expect {"180°"};
+    constexpr auto val {180.0};
+    const auto result = setWithPrecision("ImperialCivil", val, Unit::Angle, 2);
+    const auto expect {"180.00°"};
 
     EXPECT_EQ(result, expect);
 }
 
-TEST_F(SchemaTest, imperial_civil_special_function_angle_minutes)
+TEST_F(SchemaTest, imperial_civil_angle_half_degree)
 {
     constexpr auto val {180.5};
-    const auto result = set("ImperialCivil", Unit::Angle, val);
-    const auto expect {"180°30′"};
+    const auto result = setWithPrecision("ImperialCivil", val, Unit::Angle, 2);
+    const auto expect {"180.50°"};
 
     EXPECT_EQ(result, expect);
 }
 
-TEST_F(SchemaTest, imperial_civil_special_function_angle_seconds)
+TEST_F(SchemaTest, imperial_civil_angle_fractional_degree)
 {
     constexpr auto val {180.11};
-    const auto result = set("ImperialCivil", Unit::Angle, val);
-    const auto expect {"180°6′36″"};
+    const auto result = setWithPrecision("ImperialCivil", val, Unit::Angle, 2);
+    const auto expect {"180.11°"};
 
     EXPECT_EQ(result, expect);
 }
 
-TEST_F(SchemaTest, imperial_civil_special_function_angle_no_degrees)
+TEST_F(SchemaTest, imperial_civil_angle_below_one_degree)
 {
     constexpr auto val {0.11};
-    const auto result = set("ImperialCivil", Unit::Angle, val);
-    const auto expect {"0°6′36″"};
+    const auto result = setWithPrecision("ImperialCivil", val, Unit::Angle, 2);
+    const auto expect {"0.11°"};
 
     EXPECT_EQ(result, expect);
 }
@@ -1378,8 +1378,8 @@ TEST_F(SchemaTest, sweep_imperial_civil)
         {"1 lb*ft^2", "10 lb*ft^2", "100 lb*ft^2"},
         {"1 psi", "10 psi", "100 psi"},
         {"1 mph", "10 mph", "100 mph"},
-        // Angle (toDMS)
-        {"1°", "1°30′", "10°", "10°6′36″", "45°", "45°30′", "90°", "180°", "360°"},
+        // Angle (decimal degrees)
+        {"1°", "1.5°", "10°", "10.11°", "45°", "45.5°", "90°", "180°", "360°"},
     });
 }
 
