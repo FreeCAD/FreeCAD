@@ -26,6 +26,8 @@
 #include "FeatureDressUp.h"
 #include "ThreadUtils.h"
 
+#include <Mod/Part/App/TopoShapeOpCode.h>
+
 namespace PartDesign
 {
 
@@ -33,6 +35,8 @@ PROPERTY_SOURCE(PartDesign::Thread, PartDesign::DressUp)
 
 Thread::Thread()
 {
+    addSubType = FeatureAddSub::Additive;
+
     threadUtils.executeReadThreadDefinitions();
 
     addThreadType();
@@ -82,28 +86,20 @@ Thread::Thread()
     );
 
     ADD_PROPERTY_TYPE(ThreadDesignation, ("---"), "Thread", App::Prop_None, "Name");
+
+    ADD_PROPERTY_TYPE(LateralFace, (nullptr), "Thread", (App::PropertyType)(App::Prop_None), "LateralFace");
 }
 
 App::DocumentObjectExecReturn* Thread::execute()
 {
-    // Base::Console().message("Executando thread definitions\n");
-    const auto& definitions = threadUtils.getThreadDefinitions();
-
-    for (const auto& definition : definitions) {
-        Base::Console().message(
-            "Thread: %s\n",
-            definition.name.c_str()
-        );
-    }
-
-    Part::TopoShape TopShape;
+    Part::TopoShape base;
     try {
-        TopShape = getBaseTopoShape();
+        base = getBaseTopoShape();
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-    TopShape.setTransform(Base::Matrix4D());
+    base.setTransform(Base::Matrix4D());
 
     // Faces where thread should be applied
     bool isThreadEmpty = (LateralFace.getValue() == nullptr);
@@ -111,7 +107,7 @@ App::DocumentObjectExecReturn* Thread::execute()
     // If no element is selected, then we use a copy of previous feature.
     if (isThreadEmpty) {
         this->positionByBaseFeature();
-        this->Shape.setValue(TopShape);
+        this->Shape.setValue(base);
         return App::DocumentObject::StdReturn;
     }
 
@@ -123,6 +119,12 @@ App::DocumentObjectExecReturn* Thread::execute()
 
         return res;
     }
+
+    bool isInternal = threadUtils.isInternalFace(LateralFace, base.getShape());
+    addSubType = isInternal ? FeatureAddSub::Subtractive : FeatureAddSub::Additive;
+    Base::Console().message("isInternal?: %d\n", isInternal);
+    // double diameter = threadUtils.getLateralFaceDiameter(LateralFace);
+    // Base::Console().message("diameter: %lf\n", diameter);
 
     try {
         gp_Vec emptyXDir;
@@ -159,23 +161,108 @@ App::DocumentObjectExecReturn* Thread::execute()
             );
         }
 
+        if(!isInternal){
+            Base::Console().message("Lowering cylinder\n");
+            
+            double majorDiameter =
+                threadUtils.getLateralFaceDiameter(LateralFace);
+
+            double minorDiameter =
+                threadUtils.getMinorDiameter(
+                    ThreadType.getValue(),
+                    ThreadSize.getValue()//,
+                    // ThreadClass
+                );
+
+            Base::Console().message("minorDiameter: %lf\n", minorDiameter);
+
+            Part::TopoShape reducedBase =
+                threadUtils.reduceExternalThreadBase(
+                    base,
+                    LateralFace,
+                    majorDiameter,
+                    minorDiameter,
+                    length
+                );
+
+            base = reducedBase;
+        }
+
+        std::cout << "before makeThread\n";
         TopoDS_Shape thread = threadUtils.makeThread(
-                emptyXDir, 
-                emptyZDir, 
+                xDir, 
+                zDir, 
                 testLength, 
                 ThreadType.getValue(),
                 ThreadSize.getValue(),
-                ThreadDirection.getValue());
+                ThreadDirection.getValue(),
+                ThreadClass,
+                true
+        );
+        std::cout << "after makeThread\n";
+
+        if (thread.IsNull()) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Thread error: Resulting shape is empty")
+            );
+        }
+
+        Part::TopoShape protoThread(thread);
+
+        if (base.isNull()) {
+            Shape.setValue(protoThread);
+            return App::DocumentObject::StdReturn;
+        }
+
+        const char* maker;
+        switch (getAddSubType()) {
+            case Additive:
+                maker = Part::OpCodes::Fuse;
+                break;
+            default:
+                maker = Part::OpCodes::Cut;
+        }
+
+        Part::TopoShape result;
+        try {
+            result.makeElementBoolean(maker, {base, protoThread}, nullptr, FuzzyTolerance.getValue());
+            result = getSolid(result);
+        }
+        catch (Standard_Failure& e) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Thread error: boolean operation failed")
+            );
+        }
+        catch (Base::Exception& e) {
+            return new App::DocumentObjectExecReturn(e.what());
+        }
+
+        result = refineShapeIfActive(result);
+
+        if (!isSingleSolidRuleSatisfied(result.getShape())) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP(
+                "Exception",
+                "Result has multiple solids: enable 'Allow Compound' in the active body."
+            ));
+        }
+
+        this->Shape.setValue(result);
+
+        return App::DocumentObject::StdReturn;
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(e.GetMessageString());
     }
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-
+    
     return App::DocumentObject::StdReturn;
 }
 
 void Thread::onChanged(const App::Property* prop)
 {
+    // Base::Console().message("onChangedObject: %s\n", prop->getName());
     if (prop == &ThreadType) {
         std::string type;
 
@@ -240,6 +327,57 @@ void Thread::onChanged(const App::Property* prop)
             ThreadSize.getValue(),
             ThreadSizePitch.getValue()
         ));
+    } 
+    else if (prop == &LateralFace) {
+        if (this->testStatus(App::ObjectStatus::Restore)
+            || this->testStatus(App::ObjectStatus::Remove)
+            || this->isRestoring()) {
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        App::DocumentObject* faceObj = LateralFace.getValue();
+
+        if (!faceObj) {
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        if (!faceObj->getNameInDocument()) {
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        if (faceObj->isError() || !faceObj->isValid()) {
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        double diameter = 0.0;
+        try {
+            diameter = threadUtils.getLateralFaceDiameter(LateralFace);
+        }
+        catch (const Standard_Failure& e) {
+            Base::Console().warning("Thread::onChanged: OCCT exception ao calcular diâmetro: %s\n", e.GetMessageString());
+            DressUp::onChanged(prop);
+            return;
+        }
+        catch (const Base::Exception& e) {
+            Base::Console().warning("Thread::onChanged: erro ao calcular diâmetro: %s\n", e.what());
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        if (diameter <= 0.0) {
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        int nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
+
+        if (nearestSize >= 0 && nearestSize != ThreadSize.getValue()) {
+            ThreadSize.setValue(nearestSize);
+        }
     }
 
     DressUp::onChanged(prop);

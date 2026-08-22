@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Geom_ConicalSurface.hxx>
 #include <Geom_CylindricalSurface.hxx>
@@ -40,6 +41,8 @@
 #include <GC_MakeArcOfCircle.hxx>
 #include <BRepBuilderAPI_MakeSolid.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepPrimAPI_MakeCylinder.hxx>
 
 #include <App/VarSet.h>
 #include <App/PropertyLinks.h>
@@ -53,7 +56,7 @@
 #include <QObject>
 #include "Feature.h"
 
-
+#include <numbers>
 #include <iostream>
 
 #include "ThreadUtils.h"
@@ -371,8 +374,8 @@ const char* ThreadUtils::DepthTypeEnums[]
     = {"Dimension", "ThroughAll", "UpToGeometry", /*, "UpToFirst", */ nullptr};
 
 const char* ThreadUtils::ThreadTypeEnums[] = {
-    "None", //0
-    "ISOMetricProfile", //1
+    "None",              // 0
+    "ISOMetricProfile",  // 1
     "ISOMetricFineProfile",
     "UNC",
     "UNF",
@@ -415,7 +418,7 @@ const char* ThreadTypeName2Enums[] = {
     nullptr
 };
 
-//TODO: maybe change to lib for finding name in array
+// TODO: maybe change to lib for finding name in array
 int threadTypeFromString(const std::string& type)
 {
     for (int i = 0; ThreadUtils::ThreadTypeNameEnums[i] != nullptr; ++i) {
@@ -424,16 +427,16 @@ int threadTypeFromString(const std::string& type)
         }
     }
 
-    return 0; // None, if it is not in the enum
+    return 0;  // None, if it is not in the enum
 }
 
-//TODO: it should be efficient
+// TODO: it should be efficient
 std::vector<std::string> ThreadUtils::getThreadTypeEnums()
 {
     std::vector<std::string> result;
 
     // for (int i = 0; ThreadUtils::ThreadTypeEnums[i] != nullptr; ++i) {
-        // result.push_back(std::string(ThreadUtils::ThreadTypeEnums[i]));
+    // result.push_back(std::string(ThreadUtils::ThreadTypeEnums[i]));
     // }
 
     const auto& definitions = getThreadDefinitions();
@@ -484,22 +487,22 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
     std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
     std::string currentThread = currentThreads[threadType];
     int currentThreadTypeIndex = threadTypeFromString(currentThread);
-    Base::Console().message("real int: %d\n", currentThreadTypeIndex);
+    // Base::Console().message("real int: %d\n", currentThreadTypeIndex);
 
-    std::vector<std::string> sizes; //diameters
+    std::vector<std::string> sizes;  // diameters
     const auto& definitions = getThreadDefinitions();
     for (const auto& definition : definitions) {
-        if(definition.name == currentThread){
+        if (definition.name == currentThread) {
             sizes = definition.sizes;
             break;
         }
     }
-    if(sizes.empty()){
+    if (sizes.empty()) {
         return {"6.0"};
     }
-    
+
     std::set<double> uniqueDiameters;
-    
+
     // for (const auto& thread : ThreadUtils::threadDescription[currentThreadTypeIndex]) {
     for (const auto& size : sizes) {
         uniqueDiameters.insert(std::stod(size));
@@ -510,7 +513,7 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
     designations.reserve(uniqueDiameters.size());
 
     for (double diameter : uniqueDiameters) {
-    std::ostringstream oss;
+        std::ostringstream oss;
 
         oss << std::noshowpoint << diameter << " mm";
         designations.push_back(oss.str());
@@ -518,33 +521,56 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
     return designations;
 }
 
+// TODO: return with threadclass in account
+double ThreadUtils::getMinorDiameter(const int threadType, const int size)  // const int threadclass)
+{
+    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
+    std::string currentThread = currentThreads[threadType];
+    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+
+    std::vector<std::string> minorDiameters;
+    const auto& definitions = getThreadDefinitions();
+    for (const auto& definition : definitions) {
+        if (definition.name == currentThread) {
+            minorDiameters = definition.minorDiameters;
+            break;
+        }
+    }
+    if (minorDiameters.empty()) {
+        return 0.0;
+    }
+
+    // TODO: protect this against invalid access
+    return std::abs(std::stod(minorDiameters[size]));
+}
+
 std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, const int threadDiameter)
 {
-    
+
     std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
     std::string currentThread = currentThreads[threadType];
     int currentThreadTypeIndex = threadTypeFromString(currentThread);
     std::vector<std::string> pitches;
-    
+
     std::vector<std::string> diameters = getThreadDiameters(threadType);
     std::string targetDiameter = diameters[threadDiameter];
 
     double targeDiameterDouble = std::stod(targetDiameter);
 
     std::vector<std::string> pitchesDefinitions;
-    std::vector<std::string> sizes; //diameters
+    std::vector<std::string> sizes;  // diameters
     const auto& definitions = getThreadDefinitions();
     for (const auto& definition : definitions) {
-        if(definition.name == currentThread){
+        if (definition.name == currentThread) {
             sizes = definition.sizes;
             pitchesDefinitions = definition.pitches;
             break;
         }
     }
-    if(sizes.empty()){
+    if (sizes.empty()) {
         return {"0.0"};
     }
-    if(pitchesDefinitions.empty()){
+    if (pitchesDefinitions.empty()) {
         return {"0.0"};
     }
 
@@ -557,7 +583,7 @@ std::vector<std::string> ThreadUtils::getThreadPitches(const int threadType, con
     //     }
     // }
 
-    //TODO: change the manual index
+    // TODO: change the manual index
     size_t index = 0;
     for (const auto& size : sizes) {
         if (std::abs(std::stod(size) - targeDiameterDouble) < 0.001) {
@@ -591,24 +617,24 @@ std::string ThreadUtils::getThreadDesignations(
     double targetPitchDouble = std::stod(targetPitch);
 
     std::vector<std::string> pitchesDefinitions;
-    std::vector<std::string> sizes; //diameters
+    std::vector<std::string> sizes;  // diameters
     std::vector<std::string> designations;
     const auto& definitions = getThreadDefinitions();
     for (const auto& definition : definitions) {
-        if(definition.name == currentThread){
+        if (definition.name == currentThread) {
             sizes = definition.sizes;
             pitchesDefinitions = definition.pitches;
             designations = definition.designations;
             break;
         }
     }
-    if(sizes.empty()){
+    if (sizes.empty()) {
         return "---";
     }
-    if(pitchesDefinitions.empty()){
+    if (pitchesDefinitions.empty()) {
         return "---";
     }
-    if(designations.empty()){
+    if (designations.empty()) {
         return "---";
     }
 
@@ -620,7 +646,7 @@ std::string ThreadUtils::getThreadDesignations(
     //     }
     // }
 
-    //TODO: change the manual index
+    // TODO: change the manual index
     size_t index = 0;
     for (const auto& size : sizes) {
         if (std::abs(std::stod(size) - targeDiameterDouble) < 0.001) {
@@ -666,18 +692,84 @@ static gp_Pnt toPnt(gp_Vec dir)
     return {dir.X(), dir.Y(), dir.Z()};
 }
 
+double ThreadUtils::getThreadClassClearance(
+    int threadType,
+    int threadSize,
+    App::PropertyEnumeration& ThreadClass
+) const
+{
+    double pitch = threadDescription[threadType][threadSize].pitch;
+
+    // Calculate how much clearance to add based on Thread tolerance class and pitch
+    if (ThreadClass.getValueAsString()[1] == 'G') {
+        for (auto it : ThreadClass_ISOmetric_data) {
+            double p = it[0];
+            if (pitch <= p) {
+                return it[1];
+            }
+        }
+    }
+
+    return 0.0;
+}
+
+void ThreadUtils::rotateToNormal(
+    const gp_Dir& helixAxis,
+    const gp_Dir& normalAxis,
+    TopoDS_Shape& helixShape
+) const
+{
+    auto getRotationAxis = [](const gp_Dir& dir1, const gp_Dir& dir2, gp_Dir& dir3, double& angle) {
+        if (dir1.IsEqual(dir2, Precision::Angular())) {
+            return false;
+        }
+
+        angle = acos(dir1 * dir2);
+        if (dir1.IsOpposite(dir2, Precision::Angular())) {
+            // Create a vector that is not parallel to dir1
+            gp_XYZ xyz(dir1.XYZ());
+            if (fabs(xyz.X()) <= fabs(xyz.Y()) && fabs(xyz.X()) <= fabs(xyz.Z())) {
+                xyz.SetX(1.0);
+            }
+            else if (fabs(xyz.Y()) <= fabs(xyz.X()) && fabs(xyz.Y()) <= fabs(xyz.Z())) {
+                xyz.SetY(1.0);
+            }
+            else {
+                xyz.SetZ(1.0);
+            }
+            dir3 = dir1.Crossed(gp_Dir(xyz));
+        }
+        else {
+            dir3 = dir1.Crossed(dir2);
+        }
+        return true;
+    };
+    // rotate the helixAxis so that it is pointing in the normalAxis.
+    double angle;
+    gp_Dir rotAxis;
+    if (getRotationAxis(helixAxis, normalAxis, rotAxis, angle)) {
+        gp_Pnt origo(0.0, 0.0, 0.0);
+        gp_Trsf mov = helixShape.Location().Transformation();
+        mov.SetRotation(gp_Ax1(origo, rotAxis), angle);
+        TopLoc_Location loc2(mov);
+        helixShape.Move(loc2);
+    }
+}
+
+
 TopoDS_Shape ThreadUtils::makeThread(
     const gp_Vec& xDir,
     const gp_Vec& zDir,
     double length,
     // const App::PropertyEnumeration& ThreadType,
     // const App::PropertyEnumeration& ThreadSize
-    const int threadType, //TODO: change to ThreadTypeIndex
-    const int threadSize, //TODO: change to ThreadDiameterIndex
-    const int leftHanded
+    const int threadType,  // TODO: change to ThreadTypeIndex
+    const int threadSize,  // TODO: change to ThreadDiameterIndex
+    const int leftHanded,
+    App::PropertyEnumeration& ThreadClass,
+    const bool internalThread
 )
 {
-
     // int threadType = ThreadType.getValue();
     // int threadSize = ThreadSize.getValue();
     if (threadType < 0) {
@@ -687,208 +779,219 @@ TopoDS_Shape ThreadUtils::makeThread(
         throw Base::IndexError(QT_TRANSLATE_NOOP("Exception", "Thread size out of range"));
     }
 
+    // if (xDir.Magnitude() <= Precision::Confusion()) {
+    // throw Base::ValueError("Invalid xDir");
+    // }
+
+    // if (zDir.Magnitude() <= Precision::Confusion()) {
+    // throw Base::ValueError("Invalid zDir");
+    // }
+
     // bool leftHanded = (bool)ThreadDirection.getValue();
     // bool leftHanded = false;
 
-    
     // Nomenclature and formulae according to Figure 1 of ISO 68-1
     // this is the same for all metric and UTS threads as stated here:
     // https://en.wikipedia.org/wiki/File:ISO_and_UTS_Thread_Dimensions.svg
     // Rmaj is half of the major diameter
-    double Rmaj = threadDescription[threadType][threadSize].diameter / 2;
+    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
+    std::string currentThread = currentThreads[threadType];
+    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+    double Rmaj = threadDescription[currentThreadTypeIndex][threadSize].diameter / 2;
     // double Pitch = getThreadPitch();
-    double Pitch = threadDescription[threadType][threadSize].pitch;
+    double Pitch = threadDescription[currentThreadTypeIndex][threadSize].pitch;
 
 
     double clearance;  // clearance to be added on the diameter
-    // if (UseCustomThreadClearance.getValue()) {
-        // clearance = CustomThreadClearance.getValue() / 2;
+                       // if (UseCustomThreadClearance.getValue()) {
+    // clearance = CustomThreadClearance.getValue() / 2;
     // }
     // else {
-        // clearance = getThreadClassClearance() / 2;
+    clearance = getThreadClassClearance(threadType, threadSize, ThreadClass) / 2;
     // }
-    clearance = 2;
     double RmajC = Rmaj + clearance;
     double marginZ = 0.001;
 
     // start of comment
-    // BRepBuilderAPI_MakeWire mkThreadWire;
-    // double H;
+    BRepBuilderAPI_MakeWire mkThreadWire;
+    double H;
+
     // std::string threadTypeStr = ThreadType.getValueAsString();
-    // if (threadTypeStr == "BSP" || threadTypeStr == "BSW" || threadTypeStr == "BSF") {
-    //     H = 0.960491 * Pitch;              // Height of Sharp V
-    //     double radius = 0.137329 * Pitch;  // radius of the crest
-    //     // construct the cross section going counter-clockwise
-    //     // --------------
-    //     // P    | p4
-    //     // 5/8P |                p3
-    //     //      |                         crest
-    //     // 3/8P |                p2
-    //     // 0    | p1
-    //     // --------------
-    //     //      | base-sharpV             Rmaj     H
+    std::vector<std::string> threadTypes = ThreadUtils::getThreadTypeEnums();
+    std::string threadTypeStr = threadTypes[currentThreadTypeIndex];
 
-    //     // the little adjustment of p1 and p4 is here to prevent coincidencies
-    //     double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
+    if (threadTypeStr == "BSP" || threadTypeStr == "BSW" || threadTypeStr == "BSF") {
+        H = 0.960491 * Pitch;              // Height of Sharp V
+        double radius = 0.137329 * Pitch;  // radius of the crest
+        // construct the cross section going counter-clockwise
+        // --------------
+        // P    | p4
+        // 5/8P |                p3
+        //      |                         crest
+        // 3/8P |                p2
+        // 0    | p1
+        // --------------
+        //      | base-sharpV             Rmaj     H
 
-    //     gp_Pnt p1 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + marginZ * zDir);
-    //     gp_Pnt p4 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + (Pitch - marginZ) * zDir);
+        // the little adjustment of p1 and p4 is here to prevent coincidencies
+        double marginX = std::tan(Base::toRadians(62.5)) * marginZ;
 
-    //     // Calculate positions for p2 and p3
-    //     double p23x = RmajC - radius * 0.58284013094;
+        gp_Pnt p1 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + marginZ * zDir);
+        gp_Pnt p4 = toPnt((RmajC - 5 * H / 6 + marginX) * xDir + (Pitch - marginZ) * zDir);
 
-    //     gp_Pnt p2 = toPnt(p23x * xDir + 3 * Pitch / 8 * zDir);
-    //     gp_Pnt p3 = toPnt(p23x * xDir + 5 * Pitch / 8 * zDir);
-    //     gp_Pnt crest = toPnt((RmajC)*xDir + Pitch / 2 * zDir);
+        //     // Calculate positions for p2 and p3
+        double p23x = RmajC - radius * 0.58284013094;
 
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-    //     Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
-    // }
-    // else {
-    //     H = sqrt(3) / 2 * Pitch;  // height of fundamental triangle
-    //     double h = 7 * H / 8;     // distance from Rmaj to the base
-    //     // construct the cross section going counter-clockwise
-    //     // pitch
-    //     // --------------
-    //     // P     | p4
-    //     // 9/16P |                p3
-    //     // 7/16P |                p2
-    //     // 0     | p1
-    //     // --------------
-    //     //       | base-sharpV    Rmaj
+        gp_Pnt p2 = toPnt(p23x * xDir + 3 * Pitch / 8 * zDir);
+        gp_Pnt p3 = toPnt(p23x * xDir + 5 * Pitch / 8 * zDir);
+        gp_Pnt crest = toPnt((RmajC)*xDir + Pitch / 2 * zDir);
 
-    //     // the little adjustment of p1 and p4 is here to prevent coincidencies
-    //     double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
-    //     gp_Pnt p1 = toPnt((RmajC - h + marginX) * xDir + marginZ * zDir);
-    //     gp_Pnt p2 = toPnt((RmajC)*xDir + 7 * Pitch / 16 * zDir);
-    //     gp_Pnt p3 = toPnt((RmajC)*xDir + 9 * Pitch / 16 * zDir);
-    //     gp_Pnt p4 = toPnt((RmajC - h + marginX) * xDir + (Pitch - marginZ) * zDir);
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+        Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
+    }
+    else {
+        H = sqrt(3) / 2 * Pitch;  // height of fundamental triangle
+        double h = 7 * H / 8;     // distance from Rmaj to the base
+        // construct the cross section going counter-clockwise
+        // pitch
+        // --------------
+        // P     | p4
+        // 9/16P |                p3
+        // 7/16P |                p2
+        // 0     | p1
+        // --------------
+        //       | base-sharpV    Rmaj
 
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
-    //     if (threadTypeStr == "ISOTyre") {
-    //         gp_Pnt crest = toPnt((RmajC + (Pitch / 32)) * xDir + Pitch / 2 * zDir);
-    //         Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
-    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
-    //     }
-    //     else {
-    //         mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
-    //     }
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
-    //     mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
-    // }
+        // the little adjustment of p1 and p4 is here to prevent coincidencies
+        double marginX = std::tan(Base::toRadians(60.0)) * marginZ;
+        gp_Pnt p1 = toPnt((RmajC - h + marginX) * xDir + marginZ * zDir);
+        gp_Pnt p2 = toPnt((RmajC)*xDir + 7 * Pitch / 16 * zDir);
+        gp_Pnt p3 = toPnt((RmajC)*xDir + 9 * Pitch / 16 * zDir);
+        gp_Pnt p4 = toPnt((RmajC - h + marginX) * xDir + (Pitch - marginZ) * zDir);
 
-    // mkThreadWire.Build();
-    // TopoDS_Wire threadWire = mkThreadWire.Wire();
+        std::cout << "before mkThreadWire.add\n";
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p1, p2).Edge());
+        std::cout << "after mkThreadWire.add\n";
+        if (threadTypeStr == "ISOTyre") {
+            gp_Pnt crest = toPnt((RmajC + (Pitch / 32)) * xDir + Pitch / 2 * zDir);
+            Handle(Geom_TrimmedCurve) arc1 = GC_MakeArcOfCircle(p2, crest, p3).Value();
+            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(arc1).Edge());
+        }
+        else {
+            mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p2, p3).Edge());
+        }
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p3, p4).Edge());
+        mkThreadWire.Add(BRepBuilderAPI_MakeEdge(p4, p1).Edge());
+    }
 
-    // // create the helix path
-    // // double threadDepth = ThreadDepth.getValue();
-    // double threadDepth = 3;
-    // double helixLength = threadDepth + Pitch / 2;
-    // // double holeDepth = Depth.getValue();
-    // double holeDepth = 4;
-    // // std::string threadDepthMethod(ThreadDepthType.getValueAsString());
-    // std::string threadDepthMethod("Dimension");
-    // // std::string depthMethod(DepthType.getValueAsString());
-    // std::string depthMethod("");
+    mkThreadWire.Build();
+    TopoDS_Wire threadWire = mkThreadWire.Wire();
 
+    // create the helix path
+    // double threadDepth = ThreadDepth.getValue();
+    double threadDepth = 30;
+    double helixLength = threadDepth + Pitch / 2;
+    // double holeDepth = Depth.getValue();
+    double holeDepth = 4;
+    // std::string threadDepthMethod(ThreadDepthType.getValueAsString());
+    std::string threadDepthMethod("Dimension");
+    // std::string depthMethod(DepthType.getValueAsString());
+    std::string depthMethod("");
+    if (threadDepthMethod != "Dimension") {
+        if (depthMethod == "ThroughAll") {
+            threadDepth = length;
+            // ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + 2 * Pitch;
+        }
+        else if (threadDepthMethod == "Tapped (DIN76)") {
+            // threadDepth = holeDepth - getThreadRunout();
+            // ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + Pitch / 2;
+        }
+        else {  // Hole depth
+            threadDepth = holeDepth;
+            // ThreadDepth.setValue(threadDepth);
+            helixLength = threadDepth + Pitch / 8;
+        }
+    }
+    else {
+        if (depthMethod == "Dimension") {
+            // the thread must not be deeper than the hole
+            // thus the max helixLength is holeDepth + P / 8;
+            if (threadDepth > (holeDepth - Pitch / 2)) {
+                helixLength = holeDepth + Pitch / 8;
+            }
+        }
+    }
+    // double helixAngle = Tapered.getValue() ? TaperedAngle.getValue() - 90 : 0.0;
+    double helixAngle = 0.0;
+    TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Rmaj, helixAngle, leftHanded);
 
+    gp_Pnt origo(0.0, 0.0, 0.0);
+    gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
+    gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
 
-    // if (threadDepthMethod != "Dimension") {
-    //     if (depthMethod == "ThroughAll") {
-    //         threadDepth = length;
-    //         // ThreadDepth.setValue(threadDepth);
-    //         helixLength = threadDepth + 2 * Pitch;
-    //     }
-    //     else if (threadDepthMethod == "Tapped (DIN76)") {
-    //         // threadDepth = holeDepth - getThreadRunout();
-    //         // ThreadDepth.setValue(threadDepth);
-    //         helixLength = threadDepth + Pitch / 2;
-    //     }
-    //     else {  // Hole depth
-    //         threadDepth = holeDepth;
-    //         // ThreadDepth.setValue(threadDepth);
-    //         helixLength = threadDepth + Pitch / 8;
-    //     }
-    // }
-    // else {
-    //     if (depthMethod == "Dimension") {
-    //         // the thread must not be deeper than the hole
-    //         // thus the max helixLength is holeDepth + P / 8;
-    //         if (threadDepth > (holeDepth - Pitch / 2)) {
-    //             helixLength = holeDepth + Pitch / 8;
-    //         }
-    //     }
-    // }
-    // // double helixAngle = Tapered.getValue() ? TaperedAngle.getValue() - 90 : 0.0;
-    // double helixAngle = 8;
-    // TopoDS_Shape helix = TopoShape().makeLongHelix(Pitch, helixLength, Rmaj, helixAngle, leftHanded);
+    // Reverse the direction of the helix. So that it goes into the material
+    gp_Trsf mov;
+    mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
+    TopLoc_Location loc1(mov);
+    helix.Move(loc1);
 
-    // gp_Pnt origo(0.0, 0.0, 0.0);
-    // gp_Dir dir_axis1(0.0, 0.0, 1.0);  // pointing along the helix axis, as created.
-    // gp_Dir dir_axis2(1.0, 0.0, 0.0);  // pointing towards the helix start point, as created.
+    // rotate the helix so that it is pointing in the zdir.
+    rotateToNormal(dir_axis1, zDir, helix);
 
-    // // Reverse the direction of the helix. So that it goes into the material
-    // gp_Trsf mov;
-    // // mov.SetRotation(gp_Ax1(origo, dir_axis2), std::numbers::pi);
-    // TopLoc_Location loc1(mov);
-    // // helix.Move(loc1);
+    // create the pipe shell
+    BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
+    mkPS.SetTolerance(Precision::Confusion());
+    mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+    mkPS.SetMode(true);  // This is for frenet
+    mkPS.Add(threadWire);
+    if (!mkPS.IsReady()) {
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be built"));
+    }
+    TopoDS_Shape shell = mkPS.Shape();
 
-    // // rotate the helix so that it is pointing in the zdir.
-    // // rotateToNormal(dir_axis1, zDir, helix);
+    // create faces at the ends of the pipe shell
+    TopTools_ListOfShape sim;
+    mkPS.Simulate(2, sim);
+    std::vector<TopoDS_Wire> frontwires, backwires;
+    frontwires.push_back(TopoDS::Wire(sim.First()));
+    backwires.push_back(TopoDS::Wire(sim.Last()));
+    // build the end faces
+    TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+    TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
 
-    // // create the pipe shell
-    // BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(helix));
-    // mkPS.SetTolerance(Precision::Confusion());
-    // mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-    // mkPS.SetMode(true);  // This is for frenet
-    // mkPS.Add(threadWire);
-    // if (!mkPS.IsReady()) {
-    //     throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Thread could not be built"));
-    // }
-    // TopoDS_Shape shell = mkPS.Shape();
+    // sew the shell and end faces
+    BRepBuilderAPI_Sewing sewer;
+    sewer.SetTolerance(Precision::Confusion());
+    sewer.Add(front);
+    sewer.Add(back);
+    sewer.Add(shell);
+    sewer.Perform();
 
-    // // create faces at the ends of the pipe shell
-    // TopTools_ListOfShape sim;
-    // mkPS.Simulate(2, sim);
-    // std::vector<TopoDS_Wire> frontwires, backwires;
-    // frontwires.push_back(TopoDS::Wire(sim.First()));
-    // backwires.push_back(TopoDS::Wire(sim.Last()));
-    // // build the end faces
-    // TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-    // TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+    // make the closed off shell into a solid
+    BRepBuilderAPI_MakeSolid mkSolid;
+    mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+    if (!mkSolid.IsDone()) {
+        throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+    }
+    TopoDS_Shape result = mkSolid.Shape();
 
-    // // sew the shell and end faces
-    // BRepBuilderAPI_Sewing sewer;
-    // sewer.SetTolerance(Precision::Confusion());
-    // sewer.Add(front);
-    // sewer.Add(back);
-    // sewer.Add(shell);
-    // sewer.Perform();
-
-    // // make the closed off shell into a solid
-    // BRepBuilderAPI_MakeSolid mkSolid;
-    // mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-    // if (!mkSolid.IsDone()) {
-    //     throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-    // }
-    // TopoDS_Shape result = mkSolid.Shape();
-
-    // // check if the algorithm has confused the inside and outside of the solid
-    // BRepClass3d_SolidClassifier SC(result);
-    // SC.PerformInfinitePoint(Precision::Confusion());
-    // if (SC.State() == TopAbs_IN) {
-    //     result.Reverse();
-    // }
-    //end of comment
+    // check if the algorithm has confused the inside and outside of the solid
+    BRepClass3d_SolidClassifier SC(result);
+    SC.PerformInfinitePoint(Precision::Confusion());
+    if (SC.State() == TopAbs_IN) {
+        result.Reverse();
+    }
 
     // we are done
-    // return result;
+    return result;
 
-    TopoDS_Shape emptyTopoDS_Shape;
-    return emptyTopoDS_Shape;
+    // TopoDS_Shape emptyTopoDS_Shape;
+    // return emptyTopoDS_Shape;
 }
 
 
@@ -906,7 +1009,7 @@ static bool isCylindricalFace(const TopoDS_Face& face)
 static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
 {
     App::DocumentObject* obj = faceProp.getValue();
-    if (!obj) {
+    if (!obj || !obj->getNameInDocument()) {
         return TopoDS_Face();
     }
 
@@ -922,13 +1025,205 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
 
     const Part::TopoShape& topoShape = feature->Shape.getShape();
 
-    TopoDS_Shape subShape = topoShape.getSubShape(subs.front().c_str());
+    if (topoShape.isNull()) {
+        return TopoDS_Face();
+    }
+
+    TopoDS_Shape subShape;
+    try {
+        subShape = topoShape.getSubShape(subs.front().c_str());
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().warning("getSelectedFace: OCCT exception: %s\n", e.GetMessageString());
+        return TopoDS_Face();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("getSelectedFace: %s\n", e.what());
+        return TopoDS_Face();
+    }
 
     if (subShape.IsNull() || subShape.ShapeType() != TopAbs_FACE) {
         return TopoDS_Face();
     }
 
     return TopoDS::Face(subShape);
+}
+
+double ThreadUtils::getCylinderDiameter(const TopoDS_Face& face)
+{
+    Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
+
+    Handle(Geom_CylindricalSurface) cylinder = Handle(Geom_CylindricalSurface)::DownCast(surface);
+
+    if (cylinder.IsNull()) {
+        return -1.0;
+    }
+
+    return 2.0 * cylinder->Radius();
+}
+
+double ThreadUtils::getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace)
+{
+    TopoDS_Face face = getSelectedFace(lateralFace);
+
+    return getCylinderDiameter(face);
+}
+
+int ThreadUtils::findNearestThreadSize(const int threadType, const double diameter)
+{
+    std::vector<std::string> threadDiameters = getThreadDiameters(threadType);
+
+    if (threadDiameters.empty()) {
+        return -1;
+    }
+
+    int bestIndex = 0;
+    double bestDistance = std::abs(std::stod(threadDiameters[0]) - diameter);
+
+    for (size_t i = 1; i < threadDiameters.size(); ++i) {
+
+        double currentDiameter = std::stod(threadDiameters[i]);
+
+        double distance = std::abs(currentDiameter - diameter);
+
+        if (distance < bestDistance) {
+            bestDistance = distance;
+            bestIndex = static_cast<int>(i);
+        }
+    }
+
+    return bestIndex;
+}
+bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const TopoDS_Shape& solid)
+{
+    if (solid.IsNull()) {
+        return false;
+    }
+
+    TopoDS_Face face = getSelectedFace(faceProp);
+
+    if (face.IsNull()) {
+        return false;
+    }
+
+    BRepAdaptor_Surface surface(face);
+
+    GeomAbs_SurfaceType surfaceType = surface.GetType();
+
+    // -------------------------------------------------
+    // Only cylindrical and conical surfaces are
+    // currently supported.
+    // -------------------------------------------------
+
+    if (surfaceType != GeomAbs_Cylinder && surfaceType != GeomAbs_Cone) {
+
+        return false;
+    }
+
+    // -------------------------------------------------
+    // Get surface axis
+    // -------------------------------------------------
+
+    gp_Ax1 axis;
+
+    if (surfaceType == GeomAbs_Cylinder) {
+
+        gp_Cylinder cylinder = surface.Cylinder();
+
+        axis = cylinder.Axis();
+    }
+    else if (surfaceType == GeomAbs_Cone) {
+
+        gp_Cone cone = surface.Cone();
+
+        axis = cone.Axis();
+    }
+
+    // -------------------------------------------------
+    // Get a point in the middle of the face
+    // -------------------------------------------------
+
+    Standard_Real u1, u2, v1, v2;
+
+    BRepTools::UVBounds(face, u1, u2, v1, v2);
+
+    Standard_Real u = (u1 + u2) * 0.5;
+
+    Standard_Real v = (v1 + v2) * 0.5;
+
+    gp_Pnt point;
+    gp_Vec du;
+    gp_Vec dv;
+
+    surface.D1(u, v, point, du, dv);
+
+    // -------------------------------------------------
+    // Calculate surface normal
+    // -------------------------------------------------
+
+    gp_Vec normal = du.Crossed(dv);
+
+    if (normal.Magnitude() < Precision::Confusion()) {
+
+        return false;
+    }
+
+    normal.Normalize();
+
+    /*
+     * D1() gives the geometric orientation of the
+     * underlying surface. The topological face can
+     * reverse that orientation.
+     */
+    if (face.Orientation() == TopAbs_REVERSED) {
+
+        normal.Reverse();
+    }
+
+    // -------------------------------------------------
+    // Calculate radial direction
+    //
+    // Project the point onto the surface axis and
+    // construct the vector from the axis to the point.
+    // -------------------------------------------------
+
+    gp_Vec axisDirection = axis.Direction();
+
+    axisDirection.Normalize();
+
+    gp_Vec axisToPoint(axis.Location(), point);
+
+    Standard_Real axialDistance = axisToPoint.Dot(axisDirection);
+
+    gp_Pnt axisPoint = axis.Location().Translated(axisDirection * axialDistance);
+
+    gp_Vec radial(axisPoint, point);
+
+    if (radial.Magnitude() < Precision::Confusion()) {
+
+        return false;
+    }
+
+    radial.Normalize();
+
+    // -------------------------------------------------
+    // Compare normal with radial direction
+    // -------------------------------------------------
+
+    double dot = normal.Dot(radial);
+
+    constexpr double tolerance = 1e-9;
+
+    if (dot < -tolerance) {
+        return true;
+    }
+
+    if (dot > tolerance) {
+        return false;
+    }
+
+    // Ambiguous / degenerate case.
+    return false;
 }
 
 App::DocumentObjectExecReturn* ThreadUtils::validateParameters(const App::PropertyLinkSub& LateralFace)
@@ -1004,9 +1299,7 @@ double ThreadUtils::getThroughAllLength() const
 }
 
 ThreadUtils::ThreadLibrary::ThreadLibrary()
-{
-
-}
+{}
 
 void ThreadUtils::ThreadLibrary::readThreadDefinitions()
 {
@@ -1027,9 +1320,7 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
     definitions.clear();
 
     for (const auto& dir : dirs) {
-        std::vector<Base::FileInfo> files {
-            Base::FileInfo(dir).getDirectoryContent()
-        };
+        std::vector<Base::FileInfo> files {Base::FileInfo(dir).getDirectoryContent()};
 
         Base::FileInfo fi(dir);
         Base::Console().message("dir exists: %d\n", fi.exists());
@@ -1053,45 +1344,34 @@ void ThreadUtils::ThreadLibrary::readThreadDefinitions()
                     definitions.push_back(std::move(*definition));
                 }
                 catch (const Base::Exception& e) {
-                    std::cerr << "Failed reading '" << file.filePath()
-                              << "': " << e.what() << '\n';
+                    std::cerr << "Failed reading '" << file.filePath() << "': " << e.what() << '\n';
                 }
                 catch (const std::exception& e) {
-                    std::cerr << "Failed reading '" << file.filePath()
-                              << "': " << e.what() << '\n';
+                    std::cerr << "Failed reading '" << file.filePath() << "': " << e.what() << '\n';
                 }
             }
         }
     }
 }
 
-std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDefinition(const Base::FileInfo& file)
+std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDefinition(
+    const Base::FileInfo& file
+)
 {
-    auto* oldDoc =
-    App::GetApplication().getActiveDocument();
+    auto* oldDoc = App::GetApplication().getActiveDocument();
 
-    Base::Console().message(
-        "Before: %s\n",
-        oldDoc ? oldDoc->getName() : "<none>"
-    );
+    Base::Console().message("Before: %s\n", oldDoc ? oldDoc->getName() : "<none>");
 
     Base::Console().message("Reading a thread file!\n");
-    auto* doc = App::GetApplication().openDocument(
-        file.filePath().c_str(),
-        {false, true} 
-    );
+    auto* doc = App::GetApplication().openDocument(file.filePath().c_str(), {false, true});
 
     if (!doc) {
         throw Base::RuntimeError("Unable to open thread definition.");
     }
 
-    auto* currentDoc =
-    App::GetApplication().getActiveDocument();
+    auto* currentDoc = App::GetApplication().getActiveDocument();
 
-    Base::Console().message(
-        "After open: %s\n",
-        currentDoc ? currentDoc->getName() : "<none>"
-    );
+    Base::Console().message("After open: %s\n", currentDoc ? currentDoc->getName() : "<none>");
 
     try {
         auto definition = readThreadDocument(doc);
@@ -1100,9 +1380,7 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
         App::GetApplication().closeDocument(doc->getName());
 
         if (oldDoc) {
-            App::GetApplication().setActiveDocument(
-                oldDoc->getName()
-            );
+            App::GetApplication().setActiveDocument(oldDoc->getName());
         }
 
         if (!definition) {
@@ -1118,25 +1396,25 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
         App::GetApplication().closeDocument(doc->getName());
 
         if (oldDoc) {
-            App::GetApplication().setActiveDocument(
-                oldDoc->getName()
-            );
+            App::GetApplication().setActiveDocument(oldDoc->getName());
         }
 
         throw;
     }
 }
 
-std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDocument(App::Document* doc)
+std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThreadDocument(
+    App::Document* doc
+)
 {
     Base::Console().message("Handling data!\n");
     if (!doc) {
         return std::nullopt;
     }
-    
+
     auto metadata = ThreadUtils::findMetadata(doc);
 
-     if (!metadata) {
+    if (!metadata) {
         return std::nullopt;
     }
 
@@ -1146,9 +1424,9 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::ThreadLibrary::readThr
 
     // localizar spreadsheets
     findSpreadsheets(doc, definition);
-    
+
     // registrar ThreadDefinition
-    
+
     return definition;
 }
 
@@ -1179,69 +1457,53 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Docu
     // id
     auto* propId = varset->getPropertyByName("id");
     if (!propId) {
-        Base::Console().error(
-            "Property 'id' was not found in VarSet.\n"
-        );
+        Base::Console().error("Property 'id' was not found in VarSet.\n");
         return std::nullopt;
     }
 
     auto* idProp = dynamic_cast<App::PropertyString*>(propId);
     if (!idProp) {
-        Base::Console().error(
-            "Property 'id' is not string.\n"
-        );
+        Base::Console().error("Property 'id' is not string.\n");
         return std::nullopt;
     }
 
     definition.id = idProp->getValue();
 
     if (definition.id.empty()) {
-        Base::Console().error(
-            "Thread resource property 'id' is empty.\n"
-        );
+        Base::Console().error("Thread resource property 'id' is empty.\n");
         return std::nullopt;
     }
 
     // name
     auto* propName = varset->getPropertyByName("name");
     if (!propName) {
-        Base::Console().error(
-            "Property 'name' was not found in VarSet.\n"
-        );
+        Base::Console().error("Property 'name' was not found in VarSet.\n");
         return std::nullopt;
     }
 
     auto* nameProp = dynamic_cast<App::PropertyString*>(propName);
     if (!nameProp) {
-        Base::Console().error(
-            "Property 'name' is not string.\n"
-        );
+        Base::Console().error("Property 'name' is not string.\n");
         return std::nullopt;
     }
 
     definition.name = nameProp->getValue();
 
     if (definition.name.empty()) {
-        Base::Console().error(
-            "Thread resource property 'name' is empty.\n"
-        );
+        Base::Console().error("Thread resource property 'name' is empty.\n");
         return std::nullopt;
     }
 
     // depth
     auto* propDepth = varset->getPropertyByName("Depth");
     if (!propDepth) {
-        Base::Console().error(
-            "Property 'Depth' was not found in VarSet.\n"
-        );
+        Base::Console().error("Property 'Depth' was not found in VarSet.\n");
         return std::nullopt;
     }
 
     auto* depthProp = dynamic_cast<App::PropertyInteger*>(propDepth);
     if (!depthProp) {
-        Base::Console().error(
-            "Property 'Depth' is not integer.\n"
-        );
+        Base::Console().error("Property 'Depth' is not integer.\n");
         return std::nullopt;
     }
 
@@ -1254,12 +1516,11 @@ std::optional<ThreadUtils::ThreadDefinition> ThreadUtils::findMetadata(App::Docu
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 
-void ThreadUtils::ThreadLibrary::findSpreadsheets(
-    App::Document* doc,
-    ThreadDefinition& definition)
+void ThreadUtils::ThreadLibrary::findSpreadsheets(App::Document* doc, ThreadDefinition& definition)
 {
     Base::Console().message("Reading spreadsheets\n");
     std::vector<std::string> sizes;
+    std::vector<std::string> minorDiameters;
     std::vector<std::string> pitches;
     std::vector<std::string> designations;
     std::vector<std::string> tapDrills;
@@ -1273,12 +1534,10 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(
             // usar sheet
             auto [start, end] = sheet->getUsedRange();
 
-            Base::Console().message("Start: %s | End: %s\n", 
-                            start.toString().c_str(), 
-                            end.toString().c_str());
+            Base::Console()
+                .message("Start: %s | End: %s\n", start.toString().c_str(), end.toString().c_str());
 
             for (int row = 1; row <= end.row(); ++row) {
-
                 // Column A - Designation
                 if (auto* cell = sheet->getCell(App::CellAddress(row, 0))) {
                     std::string value;
@@ -1295,16 +1554,24 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(
                     }
                 }
 
-                // Column C - Pitch
+                // Column C - minorDiameter
                 if (auto* cell = sheet->getCell(App::CellAddress(row, 2))) {
+                    std::string value;
+                    if (cell->getStringContent(value) && !value.empty()) {
+                        minorDiameters.push_back(value);
+                    }
+                }
+
+                // Column D - Pitch
+                if (auto* cell = sheet->getCell(App::CellAddress(row, 3))) {
                     std::string value;
                     if (cell->getStringContent(value) && !value.empty()) {
                         pitches.push_back(value);
                     }
                 }
 
-                // Column D - Tap Drill
-                if (auto* cell = sheet->getCell(App::CellAddress(row, 3))) {
+                // Column E - Tap Drill
+                if (auto* cell = sheet->getCell(App::CellAddress(row, 4))) {
                     std::string value;
                     if (cell->getStringContent(value) && !value.empty()) {
                         tapDrills.push_back(value);
@@ -1324,6 +1591,107 @@ void ThreadUtils::ThreadLibrary::findSpreadsheets(
     Base::Console().message("tapDrills.size: %d\n", tapDrills.size());
     definition.designations = std::move(designations);
     definition.sizes = std::move(sizes);
+    definition.minorDiameters = std::move(minorDiameters);
     definition.pitches = std::move(pitches);
     definition.tapDrills = std::move(tapDrills);
+}
+
+gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir)
+{
+    TopoDS_Face face = getSelectedFace(lateralFace);
+
+    if (face.IsNull()) {
+        throw Base::RuntimeError("Thread error: selected face is null");
+    }
+
+    // Get the true cylindrical axis from the surface geometry
+    BRepAdaptor_Surface surfAdapt(face);
+    if (surfAdapt.GetType() != GeomAbs_Cylinder) {
+        throw Base::RuntimeError("Thread error: selected face is not cylindrical");
+    }
+
+    gp_Ax1 cylAxis = surfAdapt.Cylinder().Axis();
+    const gp_Pnt axisOrigin = cylAxis.Location();
+    const gp_Dir axisDir = cylAxis.Direction();
+
+    // Collect vertices belonging to the selected face, to find
+    // the extremity along zDir (start of the thread)
+    TopTools_IndexedMapOfShape vertices;
+    TopExp::MapShapes(face, TopAbs_VERTEX, vertices);
+
+    if (vertices.IsEmpty()) {
+        throw Base::RuntimeError("Thread error: selected face has no vertices");
+    }
+
+    double minProjection = std::numeric_limits<double>::max();
+    bool found = false;
+
+    for (int i = 1; i <= vertices.Extent(); ++i) {
+        const TopoDS_Vertex vertex = TopoDS::Vertex(vertices(i));
+        gp_Pnt point = BRep_Tool::Pnt(vertex);
+
+        // Project the vertex onto the axis direction, relative to axisOrigin
+        // (not the world origin!) so we get the correct along-axis coordinate
+        gp_Vec toPoint(axisOrigin, point);
+        double projection = toPoint.Dot(gp_Vec(zDir));
+
+        if (projection < minProjection) {
+            minProjection = projection;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        throw Base::RuntimeError("Thread error: could not determine thread start point");
+    }
+
+    // Build the start point ON the axis, at the extremity found above
+    gp_Pnt startPoint = axisOrigin.Translated(minProjection * gp_Vec(zDir));
+
+    return startPoint;
+}
+
+Part::TopoShape ThreadUtils::reduceExternalThreadBase(
+    Part::TopoShape base,
+    const App::PropertyLinkSub& lateralFace,
+    double majorDiameter,
+    double minorDiameter,
+    double length
+)
+{
+    gp_Vec zDir = getThreadZAxis(lateralFace);
+    zDir.Normalize();
+
+    gp_Pnt startPoint = getThreadStartPoint(lateralFace, gp_Dir(zDir));
+
+    gp_Ax2 axis(startPoint, gp_Dir(zDir));
+
+    double majorRadius = majorDiameter / 2.0;
+    double minorRadius = minorDiameter / 2.0;
+
+    BRepPrimAPI_MakeCylinder outer(axis, majorRadius, length);
+    BRepPrimAPI_MakeCylinder inner(axis, minorRadius, length);
+    if (outer.Shape().IsNull() || inner.Shape().IsNull()) {
+        throw Base::RuntimeError("Thread error: failed to create thread reduction cylinders");
+    }
+
+    // Builds the ring
+    BRepAlgoAPI_Cut ring(outer.Shape(), inner.Shape());
+
+    ring.Build();
+
+    if (!ring.IsDone()) {
+        throw Base::RuntimeError("Thread error: failed to create thread reduction volume");
+    }
+
+    // Removes the ring
+    BRepAlgoAPI_Cut result(base.getShape(), ring.Shape());
+
+    result.Build();
+
+    if (!result.IsDone() || result.Shape().IsNull()) {
+        throw Base::RuntimeError("Thread error: failed to reduce external thread base");
+    }
+
+    return Part::TopoShape(result.Shape());
 }

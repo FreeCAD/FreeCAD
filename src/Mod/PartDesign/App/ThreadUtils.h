@@ -39,9 +39,12 @@ public:
         double length,
         const int threadType,
         const int threadSize,
-        const int leftHanded
+        const int leftHanded,
+        App::PropertyEnumeration& ThreadClass,
+        const bool internalThread
     );
     App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
+    bool isInternalFace(const App::PropertyLinkSub& faceProp, const TopoDS_Shape& solid);
     gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace);
     gp_Vec computePerpendicular(const gp_Vec&) const;
 
@@ -65,6 +68,9 @@ public:
     std::vector<std::string> getThreadClass_BSF_Enums();
     std::vector<std::string> getThreadDirectionEnums();
     std::vector<std::string> getThreadDiameters(const int threadType);
+    double getMinorDiameter(const int threadType, const int size);
+    gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir);
+    Part::TopoShape reduceExternalThreadBase(Part::TopoShape base, const App::PropertyLinkSub& lateralFace, double majorDiameter, double minorDiameter, double length);
     std::vector<std::string> getThreadPitches(const int threadType, const int threadDiameter);
     std::string getThreadDesignations(
         const int threadType,
@@ -124,18 +130,16 @@ public:
         std::vector<std::string> sketches;
         std::vector<std::string> spreadsheets;
         std::vector<std::string> sizes; //diameters
+        std::vector<std::string> minorDiameters;
         std::vector<std::string> pitches;
         std::vector<std::string> designations;
         std::vector<std::string> tapDrills;
 
-        // Construtor padrão
         ThreadDefinition() : depthType(0) {}
 
-        // Construtor com parâmetros
         ThreadDefinition(const std::string& n, const std::string& desc)
             : name(n), description(desc), depthType(0) {}
 
-        // Construtor com todos os parâmetros (opcional)
         ThreadDefinition(
             const std::string& n, 
             const std::string& desc, 
@@ -154,7 +158,12 @@ public:
         return library.getDefinitions();
     }
     std::vector<std::string> getThreadTypeName2Enums();
+    double getCylinderDiameter(const TopoDS_Face& face);
+    double getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace);
+    int findNearestThreadSize(const int threadType, const double size);
 private:
+    double getThreadClassClearance(int threadType, int threadSize, App::PropertyEnumeration& ThreadClass) const;
+    void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;
     static const char* ThreadDepthTypeEnums[];
 
     //TODO: ThreadLibrary should be static member or singleton to improve performance

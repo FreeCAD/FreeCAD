@@ -555,6 +555,7 @@ void TaskThreadParameters::changedObject(const App::Document&, const App::Proper
         ui->designationEdit->setText(thread->ThreadDesignation.getValue());
     }
     else if (&Prop == &thread->ThreadSize) {
+        updateComboBox(ui->diameterCombo, thread->ThreadSize.getValue());
         // Thread size also updates related properties
         auto updateComboBoxItems = [&](QComboBox* widget, const auto& values, int selected) {
             QSignalBlocker blocker(widget);
