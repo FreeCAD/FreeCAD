@@ -28,12 +28,11 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
 
     CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 
-    # Use MACOS_DEPLOYMENT_TARGET from environment, default to 11.0 for backwards compat.
-    # Note that CI sets this per target: 10.13 (Intel), 11.0 (ARM legacy), 15.0 (ARM modern)
+    # Use MACOS_DEPLOYMENT_TARGET from environment, default to 15.0 for ARM builds.
+    # CI sets this per target: 10.13 (Intel) or 15.0 (ARM).
     # - macOS 10.13+ Intel: legacy QuickLook generator (.qlgenerator)
-    # - macOS 11-14 ARM: legacy QuickLook generator (.qlgenerator)
     # - macOS 15+ ARM: modern QuickLook App Extensions (.appex)
-    DEPLOY_TARGET="${MACOS_DEPLOYMENT_TARGET:-11.0}"
+    DEPLOY_TARGET="${MACOS_DEPLOYMENT_TARGET:-15.0}"
     CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_DEPLOYMENT_TARGET=${DEPLOY_TARGET})
 
     # Patch Qt6's FindWrapOpenGL.cmake to not link AGL on macOS 10.15+
