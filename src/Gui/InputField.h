@@ -24,6 +24,7 @@
 #pragma once
 
 #include <QValidator>
+#include <App/QuantityInput.h>
 #include <Base/Parameter.h>
 
 #include "ExpressionBinding.h"
@@ -161,8 +162,6 @@ public:
     /// set the number portion selected (use after setValue())
     void selectNumber();
     /// input validation
-    void fixup(QString& input) const;
-    /// input validation
     QValidator::State validate(QString& input, int& pos) const;
 
     /** @name history and default management */
@@ -221,8 +220,10 @@ protected:
 
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;
+    App::QuantityInputResult interpretInput(const QString&, App::InputPhase) const;
     void updateText(const Base::Quantity&);
     void notifyValueChanged();
+    void commitInput();
 
 private:
     QByteArray m_sPrefGrp;
