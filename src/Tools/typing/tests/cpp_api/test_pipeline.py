@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -35,6 +36,19 @@ class CppApiPipelineTests(unittest.TestCase):
             self.assertTrue((docs_dir / "cpp-api/app/index.mdx").exists())
             self.assertTrue((docs_dir / "cpp-api/app/types/Widget.mdx").exists())
             self.assertTrue(sidebar_path.exists())
+            self.assertEqual(result.manifest_path, docs_dir / "cpp-api-manifest.json")
+            self.assertEqual(
+                json.loads(result.manifest_path.read_text()),
+                {
+                    "classes": 1,
+                    "enums": 0,
+                    "functions": 3,
+                    "generator": "cpp-api",
+                    "namespaces": 1,
+                    "pages": 3,
+                    "schemaVersion": 1,
+                },
+            )
 
     def test_doxygen_config_is_standalone(self) -> None:
         config = render_doxygen_config(Path("/repo"), Path("/repo/build/cpp-api"))

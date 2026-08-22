@@ -29,6 +29,8 @@ The generated API content is written to:
 - `src/content/docs/cpp-api/`
 - `src/generated/python-api-sidebar.ts`
 - `src/generated/cpp-api-sidebar.ts`
+- `src/content/docs/python-api-manifest.json`
+- `src/content/docs/cpp-api-manifest.json`
 
 These files are disposable generated artifacts and are not edited by hand.
 

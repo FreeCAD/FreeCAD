@@ -15,6 +15,7 @@ Module layout:
 - ``discovery`` inventories C++ registrations and PyCXX contexts.
 - ``source_inputs`` reads binding specs plus curated source-adjacent stub files.
 - ``render`` formats individual stub fragments and inventory skeletons.
+- ``manifest`` writes deterministic API-surface counts for CI observability.
 - ``module_merge`` owns package paths plus module-body and support-node merges.
 - ``class_merge`` owns class alias planning and public class stub assembly.
 - ``type_context_rules`` holds the small manual escape hatch for PyCXX

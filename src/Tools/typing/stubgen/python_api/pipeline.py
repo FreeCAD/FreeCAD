@@ -9,6 +9,7 @@ from pathlib import Path
 
 from ..diagnostics import MergeDiagnostics
 from ..discovery import collect_methods, collect_type_registrations
+from ..manifest import write_api_manifest
 from ..parsing import iter_source_files
 from ..source_inputs import (
     collect_binding_classes,
@@ -40,6 +41,7 @@ class PythonDocsResult:
     page_count: int
     docs_dir: Path
     sidebar_path: Path
+    manifest_path: Path
     diagnostics: MergeDiagnostics
 
 
@@ -83,10 +85,25 @@ def generate_python_docs(options: PythonDocsOptions) -> PythonDocsResult:
         model,
         source_base_url=options.source_base_url,
     )
+    manifest_path = options.out_dir / "python-api-manifest.json"
+    write_api_manifest(
+        manifest_path,
+        generator="python-api",
+        pages=page_count,
+        counts={
+            "classes": sum(len(module.classes) for module in model.modules),
+            "functions": sum(
+                len(module.functions) + sum(len(klass.methods) for klass in module.classes)
+                for module in model.modules
+            ),
+            "modules": len(model.modules),
+        },
+    )
     sidebar_path = write_starlight_sidebar_fragment(options.sidebar_out, model)
     return PythonDocsResult(
         page_count=page_count,
         docs_dir=options.out_dir,
         sidebar_path=sidebar_path,
+        manifest_path=manifest_path,
         diagnostics=diagnostics,
     )

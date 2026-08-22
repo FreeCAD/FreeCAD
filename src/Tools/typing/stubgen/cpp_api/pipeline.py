@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
+from ..manifest import write_api_manifest
 from .doxygen import run_doxygen_xml
 from .extract import extract_cpp_api_model
 from .markdown import write_cpp_api_markdown_docs
@@ -34,6 +35,7 @@ class CppDocsResult:
     xml_dir: Path
     docs_dir: Path
     sidebar_path: Path
+    manifest_path: Path
 
 
 def resolve_xml_dir(options: CppDocsOptions) -> Path:
@@ -59,10 +61,30 @@ def generate_cpp_docs(options: CppDocsOptions) -> CppDocsResult:
         model,
         source_base_url=options.source_base_url,
     )
+    manifest_path = options.out_dir / "cpp-api-manifest.json"
+    write_api_manifest(
+        manifest_path,
+        generator="cpp-api",
+        pages=page_count,
+        counts={
+            "classes": len(model.classes),
+            "enums": sum(len(namespace.enums) for namespace in model.namespaces)
+            + sum(len(klass.enums) for klass in model.classes),
+            "functions": sum(len(namespace.functions) for namespace in model.namespaces)
+            + sum(
+                len(klass.constructors)
+                + (1 if klass.destructor is not None else 0)
+                + len(klass.methods)
+                for klass in model.classes
+            ),
+            "namespaces": len(model.namespaces),
+        },
+    )
     sidebar_path = write_cpp_starlight_sidebar_fragment(options.sidebar_out, model)
     return CppDocsResult(
         page_count=page_count,
         xml_dir=xml_dir,
         docs_dir=options.out_dir,
         sidebar_path=sidebar_path,
+        manifest_path=manifest_path,
     )

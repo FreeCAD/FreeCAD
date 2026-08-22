@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -35,6 +36,14 @@ class PythonApiPipelineTests(unittest.TestCase):
                 (output / "python-api/freecad/types/ApplicationDirectories.mdx").exists()
             )
             self.assertTrue(sidebar_path.exists())
+            self.assertEqual(result.manifest_path, output / "python-api-manifest.json")
+            manifest = json.loads(result.manifest_path.read_text())
+            self.assertEqual(manifest["generator"], "python-api")
+            self.assertEqual(manifest["pages"], result.page_count)
+            self.assertGreater(manifest["modules"], 0)
+            self.assertGreater(manifest["classes"], 0)
+            self.assertGreater(manifest["functions"], 0)
+            self.assertEqual(manifest["schemaVersion"], 1)
             self.assertEqual(result.diagnostics.items, ())
 
 
