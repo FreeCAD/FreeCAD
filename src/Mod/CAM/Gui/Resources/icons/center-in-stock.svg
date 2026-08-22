@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg1820"
+   sodipodi:docname="center-in-stock.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1824" />
+  <sodipodi:namedview
+     id="namedview1822"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="5.9445817"
+     inkscape:cx="-9.0839024"
+     inkscape:cy="73.09177"
+     inkscape:window-width="1872"
+     inkscape:window-height="1163"
+     inkscape:window-x="1728"
+     inkscape:window-y="1050"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1820" />
+  <g
+     fill="none"
+     stroke="#111111"
+     stroke-width="4"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="g1816"
+     style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1">
+    <path
+       d="M12 12h10"
+       id="path1792"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M42 12h10"
+       id="path1794"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M12 52h10"
+       id="path1796"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M42 52h10"
+       id="path1798"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M12 12v10"
+       id="path1800"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M52 12v10"
+       id="path1802"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M12 42v10"
+       id="path1804"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M52 42v10"
+       id="path1806"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M32 8v14"
+       id="path1808"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M32 42v14"
+       id="path1810"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M8 32h14"
+       id="path1812"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+    <path
+       d="M42 32h14"
+       id="path1814"
+       style="stroke-width:3.8;stroke-dasharray:none;stroke:#111111;stroke-opacity:1" />
+  </g>
+  <path
+     id="circle1818"
+     style="fill:#111111;fill-opacity:1"
+     d="m 37,32 a 5,5 0 0 1 -5,5 5,5 0 0 1 -5,-5 5,5 0 0 1 5,-5 5,5 0 0 1 5,5 z" />
+</svg>
