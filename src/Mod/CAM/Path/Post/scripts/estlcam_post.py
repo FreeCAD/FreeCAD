@@ -19,7 +19,7 @@
 #                                                                              #
 ################################################################################
 
-'''
+"""
 This post processor inherits from the base post processor class with the following changes:
 - Adds a Use Alternative Tool Change parameter that lets the user decide to use M0 instead of M6 for tool changes
     for compatibility for some older machines
@@ -27,7 +27,8 @@ This post processor inherits from the base post processor class with the followi
 - Converts M9 to M11 when mist coolant is being used
 - Strips G21 commands
 
-'''
+"""
+
 from typing import Any, Dict
 from Path.Post.Processor import PostProcessor
 import Path
@@ -80,7 +81,7 @@ class Estlcam(PostProcessor):
             values["TOOL_CHANGE_USE_ALTCMD"] = props.get("TOOL_CHANGE_USE_ALTCMD", False)
         else:
             values["TOOL_CHANGE_USE_ALTCMD"] = False
-            
+
         # Set any values here that need to override the default values set
         # in the parent routine.
         #
