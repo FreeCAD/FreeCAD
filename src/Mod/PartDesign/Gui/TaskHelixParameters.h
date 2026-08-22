@@ -74,17 +74,21 @@ private:
     int addCurrentLink();
     void assignToolTipsFromPropertyDocs();
     void adaptVisibilityToMode();
+    void translateSidesList(int index);
 
 private Q_SLOTS:
     void onPitchChanged(double);
     void onHeightChanged(double);
+    void onHeight2Changed(double);
     void onTurnsChanged(double);
+    void onTurns2Changed(double);
     void onAngleChanged(double);
     void onGrowthChanged(double);
     void onAxisChanged(int);
     void onLeftHandedChanged(bool);
     void onReversedChanged(bool);
     void onModeChanged(int);
+    void onSidesModeChanged(int);
     void onOutsideChanged(bool);
 
 
@@ -99,13 +103,16 @@ protected:
     // mirrors of helixes's properties
     App::PropertyLength* propPitch;
     App::PropertyLength* propHeight;
+    App::PropertyLength* propHeight2;
     App::PropertyFloatConstraint* propTurns;
+    App::PropertyFloatConstraint* propTurns2;
     App::PropertyBool* propLeftHanded;
     App::PropertyBool* propReversed;
     App::PropertyLinkSub* propReferenceAxis;
     App::PropertyAngle* propAngle;
     App::PropertyDistance* propGrowth;
     App::PropertyEnumeration* propMode;
+    App::PropertyEnumeration* propSideType;
     App::PropertyBool* propOutside;
 
 
@@ -135,6 +142,7 @@ private:
 
     std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
     Gui::LinearGizmo* heightGizmo = nullptr;
+    Gui::LinearGizmo* heightGizmo2 = nullptr;
     void setupGizmos(ViewProviderHelix* vp);
     void setGizmoPositions();
 };
