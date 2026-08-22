@@ -124,11 +124,19 @@ ViewProviderAssembly::ViewProviderAssembly()
     m_preTransactionConn = App::GetApplication().signalBeforeOpenTransaction.connect(
         std::bind(&ViewProviderAssembly::slotAboutToOpenTransaction, this, std::placeholders::_1)
     );
+    m_startSaveConn = App::GetApplication().signalStartSaveDocument.connect(
+        std::bind(&ViewProviderAssembly::slotStartSave, this, std::placeholders::_1, std::placeholders::_2)
+    );
+    m_deletedObjectConn = App::GetApplication().signalDeletedObject.connect(
+        std::bind(&ViewProviderAssembly::slotDeletedObject, this, std::placeholders::_1)
+    );
 }
 
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+    m_startSaveConn.disconnect();
+    m_deletedObjectConn.disconnect();
     QObject::disconnect(workbenchConnection);
 
     updateTaskPanel(false);
@@ -518,6 +526,12 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
 
+        // Cursor deltas are world-space but the placements written below are in the
+        // assembly's local frame, so rotate them into it. Identity for an unrotated
+        // assembly. Mirrors the asmPlc correction in draggerMotionCallback.
+        Base::Rotation asmInvRot
+            = App::GeoFeature::getGlobalPlacement(getObject<AssemblyObject>()).getRotation().inverse();
+
         for (auto& objToMove : docsToMove) {
             App::DocumentObject* obj = objToMove.obj;
             auto* propPlacement = obj->getPlacementProperty();
@@ -592,8 +606,8 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                     Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
                     plc.setPosition(pos);
                 }
-                else {  // DragMode::Translation
-                    Base::Vector3d delta = newPos - prevPosition;
+                else {  // DragMode::Translation / TranslationNoSolve
+                    Base::Vector3d delta = asmInvRot.multVec(newPos - prevPosition);
 
                     Base::Vector3d pos = propPlacement->getValue().getPosition() + delta;
                     plc.setPosition(pos);
@@ -1652,6 +1666,41 @@ void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName
     Q_UNUSED(cmdName);
     this->clearIsolate();
     this->clearTemporaryExplosion();
+}
+
+void ViewProviderAssembly::slotStartSave(const App::Document& doc, const std::string& filename)
+{
+    Q_UNUSED(filename);
+
+    // Isolation and temporary explosion mutate persisted state (Selectable,
+    // Visibility, Placements) and hold their restore data only in memory, so clear
+    // both before serialization rather than writing the transient state to file.
+    Gui::Document* guiDoc = getDocument();
+    if (!guiDoc || guiDoc->getDocument() != &doc) {
+        return;  // not our document
+    }
+    this->clearIsolate();
+    this->clearTemporaryExplosion();
+}
+
+void ViewProviderAssembly::slotDeletedObject(const App::DocumentObject& obj)
+{
+    // Isolation and temporary explosion hold raw DocumentObject restore targets, and
+    // objects can be deleted without a transaction opening (undo/redo, removeObject,
+    // document close). Drop stale references so a later clear does not dereference
+    // freed memory. Pointer identity only -- obj may already be half-destroyed.
+    auto* deleted = const_cast<App::DocumentObject*>(&obj);
+
+    stateBackup.erase(deleted);
+
+    if (isolatedJoint == deleted) {
+        clearJointElementHighlight();
+        isolatedJoint = nullptr;
+    }
+
+    if (temporaryExplosion == deleted) {
+        temporaryExplosion = nullptr;
+    }
 }
 
 bool ViewProviderAssembly::explodeTemporarily(App::DocumentObject* explodedView)
