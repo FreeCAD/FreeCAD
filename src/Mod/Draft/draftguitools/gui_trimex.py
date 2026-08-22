@@ -71,6 +71,24 @@ def _get_global_shape(obj, subname=""):
     return shape
 
 
+def _resolve_selection(sel):
+    """Return the selected object, its global placement, and its shape."""
+    subname = sel.SubElementNames[0] if sel.SubElementNames else ""
+    component = subname.rpartition(".")[2]
+    if component.startswith(("Edge", "Face", "Vertex")):
+        subname = subname.rpartition(".")[0]
+        if subname:
+            subname += "."
+    obj = sel.Object.getSubObject(subname, 1) if subname else sel.Object
+    if subname:
+        placement = sel.Object.getSubObject(subname, 3)
+        shape = _get_global_shape(sel.Object, subname)
+    else:
+        placement = obj.getGlobalPlacement() if hasattr(obj, "getGlobalPlacement") else obj.Placement
+        shape = _get_global_shape(obj)
+    return obj, placement, shape
+
+
 class Trimex(gui_base_original.Modifier):
     """Gui Command for the Trimex tool.
 
@@ -114,13 +132,13 @@ class Trimex(gui_base_original.Modifier):
         """Proceed with execution of the command after proper selection."""
         if self.call:
             self.view.removeEventCallback("SoEvent", self.call)
-        sel = Gui.Selection.getSelection()
-        if len(sel) == 2:
-            self.trimObjects(sel)
+        selection = Gui.Selection.getSelection()
+        if len(selection) == 2:
+            self.trimObjects(selection)
             self.finish()
             return
-        self.obj = sel[0]
         sel = Gui.Selection.getSelectionEx("", 0)[0]
+        self.obj, self.placement, selected_shape = _resolve_selection(sel)
 
         import Part
 
@@ -132,9 +150,7 @@ class Trimex(gui_base_original.Modifier):
             return
         self.ui.trimUi(title=translate("draft", self.featureName))
         self.linetrack = trackers.lineTracker()
-        if hasattr(self.obj, "Placement"):
-            self.placement = self.obj.getGlobalPlacement()
-        if self.obj.Shape.Faces:
+        if selected_shape.Faces:
             self.obj = sel.Object
             if len(self.obj.Shape.Faces) == 1:
                 # simple extrude mode, the object itself is extruded
@@ -156,7 +172,7 @@ class Trimex(gui_base_original.Modifier):
             # normal wire trimex mode
             self.color = self.obj.ViewObject.LineColor
             self.width = self.obj.ViewObject.LineWidth
-            shape = _get_global_shape(self.obj)
+            shape = selected_shape
             if shape.Wires:
                 self.edges = shape.Wires[0].Edges
                 self.edges = Part.__sortEdges__(self.edges)
