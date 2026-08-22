@@ -371,7 +371,7 @@ class _TaskPanel:
                 "MaxShear",
                 self.result_obj.MaxShear,
                 "MPa",
-                translate("FEM", "Maximum shear stress (Tresca)"),
+                translate("FEM", "Tresca stress"),
             )
         else:
             self.result_widget.rb_none.setChecked(True)

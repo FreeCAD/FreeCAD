@@ -120,7 +120,7 @@
         <item row="4" column="1">
          <widget class="QRadioButton" name="rb_max_shear_stress">
           <property name="text">
-           <string>Maximum shear stress (Tresca)</string>
+           <string>Tresca stress</string>
           </property>
          </widget>
         </item>

@@ -79,7 +79,7 @@ class Proxy(linear.Proxy, equationbase.ElasticityProxy):
             "App::PropertyBool",
             "CalculateStresses",
             "Elasticity",
-            "Compute stress tensor and vanMises",
+            "Compute stress tensor and von Mises stress",
             locked=True,
         )
         obj.addProperty(
