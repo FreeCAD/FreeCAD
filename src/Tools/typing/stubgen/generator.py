@@ -67,7 +67,6 @@ def write_public_module_stubs(
     for module_name in sorted(module_names_to_write):
         write_stub_file(
             module_stub_path(out_dir, module_name, module_names),
-            [],
             stub_signature_overrides=stub_signature_overrides,
             api_module=api_modules.get(module_name),
             module_name=module_name,

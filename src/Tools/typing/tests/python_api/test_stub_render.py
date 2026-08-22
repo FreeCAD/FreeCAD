@@ -7,7 +7,7 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from stubgen.model import BindingMethod, StubSignature
+from stubgen.model import StubSignature
 from stubgen.module_merge import (
     merge_api_module_aliases,
     merge_api_module_aliases_into_stubs,
@@ -51,24 +51,6 @@ def open(path: str, mode: str, /) -> object: ...
         location=ApiSourceLocation("src/Mod/Part/App/Part.module.pyi", 4),
     )
     return ApiModule(name="FreeCAD.Console", functions=(group,))
-
-
-def binding_method() -> BindingMethod:
-    return BindingMethod(
-        family="module_stub",
-        source="src/Mod/Part/App/Part.module.pyi",
-        line=4,
-        table=None,
-        context_kind="pycxx_module",
-        context_name="FreeCAD.Console",
-        inferred_module="FreeCAD.Console",
-        method_kind="varargs",
-        python_name="open",
-        cxx_callable="open",
-        flags="",
-        doc="",
-        generated_source=False,
-    )
 
 
 class PythonApiStubRenderTests(unittest.TestCase):
@@ -155,7 +137,7 @@ def run() -> None: ...
             path = Path(directory) / "FreeCAD" / "Console.pyi"
             write_stub_file(
                 path,
-                [binding_method()],
+                stub_signature_overrides={},
                 api_module=api_module(),
                 module_name="FreeCAD.Console",
             )
@@ -273,7 +255,6 @@ def run() -> None: ...
             path = Path(directory) / "FreeCAD" / "Console.pyi"
             write_stub_file(
                 path,
-                [binding_method()],
                 api_module=api_module(),
                 module_name="FreeCAD.Console",
                 stub_signature_overrides={
