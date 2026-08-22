@@ -356,6 +356,9 @@ void QGIViewBalloon::select(bool state)
 
 void QGIViewBalloon::hover(bool state)
 {
+    if (hasHover == state) {
+        return;
+    }
     hasHover = state;
     draw();
 }
