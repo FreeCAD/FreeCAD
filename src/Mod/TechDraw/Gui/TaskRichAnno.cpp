@@ -50,6 +50,7 @@
 #include "QGVPage.h"
 #include "QGSPage.h"
 #include "Rez.h"
+#include "TechDrawLeaderLineHandler.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderRichAnno.h"
 
@@ -255,6 +256,11 @@ void TaskRichAnno::finishSetup()
             qOverload<int>(&QComboBox::currentIndexChanged),
             this,
             &TaskRichAnno::onFrameStyleChanged);
+    connect(ui->gbLeader, &QGroupBox::toggled, this, &TaskRichAnno::onLeaderLineToggled);
+    connect(ui->cboxLeaderType,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskRichAnno::onLeaderTypeChanged);
 
     // Panning is detected by scroll bar value changes.
     connect(graphicsView->horizontalScrollBar(),
@@ -425,6 +431,12 @@ void TaskRichAnno::setUiEdit()
         m_toolbar->setText(QString::fromUtf8(m_annoFeat->AnnoText.getValue()));
         ui->dsbMaxWidth->setValue(m_annoFeat->MaxWidth.getValue());
         ui->gbFrame->setChecked(m_annoFeat->ShowFrame.getValue());
+
+        auto leaderFeat = dynamic_cast<TechDraw::DrawLeaderLine*>(m_annoFeat->LeaderLine.getValue());
+        ui->gbLeader->setChecked(leaderFeat != nullptr);
+        if (leaderFeat) {
+            ui->cboxLeaderType->setCurrentIndex(leaderFeat->Type.getValue());
+        }
     }
 
     if (m_annoVP) {
@@ -494,6 +506,130 @@ void TaskRichAnno::onFrameStyleChanged(int index)
     if (m_inProgressLock || !m_annoVP) return;
     m_annoVP->LineStyle.setValue(index);
     if (m_annoFeat) m_annoFeat->requestPaint();
+}
+
+void TaskRichAnno::onLeaderLineToggled(bool checked)
+{
+    if (m_inProgressLock) return;
+
+    if (!checked) {
+        if (m_leaderHandler) {
+            stopLeaderLinePlacement();
+        }
+        else {
+            removeExistingLeaderLine();
+        }
+        return;
+    }
+
+    startLeaderLinePlacement();
+}
+
+void TaskRichAnno::startLeaderLinePlacement()
+{
+    createAnnoIfNotAlready();
+
+    m_leaderHandler = new TechDrawLeaderLineHandler();
+    m_leaderHandler->currentLeaderType =
+        static_cast<TechDrawLeaderLineHandler::LeaderType>(ui->cboxLeaderType->currentIndex());
+
+    m_leaderHandler->onFinished = [this]() {
+        if (m_annoFeat) {
+            m_annoFeat->LeaderLine.setValue(m_leaderHandler->getLeaderLine());
+        }
+        m_leaderHandler = nullptr;
+        if (m_qgiAnno) {
+            m_qgiAnno->positionChanged();
+        }
+    };
+
+    m_vpp->getQGVPage()->activateHandler(m_leaderHandler);
+    m_leaderHandler->createLeaderLineObject();
+    m_leaderHandler->attached = true;
+
+    updateLeaderPoints();
+}
+
+void TaskRichAnno::updateLeaderPoints() {
+    int type = static_cast<int>(m_leaderHandler->currentLeaderType);
+    
+    if (!m_qgiAnno) {
+        return;
+    }
+
+    // Normal or ComplexWithKink
+    if (type == 0 || type == 3) {
+        QRectF annoRect = m_qgiAnno->mapToScene(m_qgiAnno->frameRect()).boundingRect();
+        QPointF kinkPoint1 = annoRect.bottomLeft();
+        QPointF kinkPoint2 = annoRect.bottomRight();
+        m_leaderHandler->sceneClickPoints = std::vector<QPointF>{kinkPoint1, kinkPoint2};
+    }
+    // Straight or Complex
+    else if (type == 1 || type == 2) {
+        QRectF annoRect = m_qgiAnno->mapToScene(m_qgiAnno->frameRect()).boundingRect();
+        QPointF startPoint = annoRect.bottomLeft() + ((annoRect.topLeft() - annoRect.bottomLeft()) / 2.0);
+        m_leaderHandler->sceneClickPoints = std::vector<QPointF>{startPoint};
+    }
+    else {
+        m_leaderHandler->sceneClickPoints = std::vector<QPointF>{};
+    }
+}
+
+void TaskRichAnno::onLeaderTypeChanged(int index)
+{
+    if (m_leaderHandler) {
+        m_leaderHandler->currentLeaderType = static_cast<TechDrawLeaderLineHandler::LeaderType>(index);
+        m_leaderHandler->updateLeader();
+
+        if (!m_leaderHandler->getLeaderLine()) {
+            m_leaderHandler->createLeaderLineObject();
+        }
+
+        updateLeaderPoints();
+        return;
+    }
+
+    if (m_annoFeat && m_annoFeat->LeaderLine.getValue()) {
+        removeExistingLeaderLine();
+        startLeaderLinePlacement();
+    }
+}
+
+void TaskRichAnno::stopLeaderLinePlacement()
+{
+    if (!m_leaderHandler) return;
+
+    if (m_annoFeat) {
+        m_annoFeat->LeaderLine.setValue(m_leaderHandler->getLeaderLine());
+    }
+
+    m_vpp->getQGVPage()->deactivateHandler();
+
+    m_leaderHandler = nullptr;
+}
+
+void TaskRichAnno::removeExistingLeaderLine()
+{
+    if (!m_annoFeat) return;
+
+    auto* leaderFeat = dynamic_cast<TechDraw::DrawLeaderLine*>(m_annoFeat->LeaderLine.getValue());
+    
+    if (!leaderFeat) return;
+
+    TechDraw::DrawPage* page = leaderFeat->findParentPage();
+    std::string leaderName = leaderFeat->getNameInDocument();
+
+    m_annoFeat->LeaderLine.setValue(nullptr);
+
+
+    std::string pageName = page->getNameInDocument();
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.removeView(App.activeDocument().%s)",
+                            pageName.c_str(), leaderName.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", leaderName.c_str());
+
+    if (m_qgiAnno) {
+        m_qgiAnno->positionChanged();
+    }
 }
 
 void TaskRichAnno::createAnnoIfNotAlready()
@@ -567,6 +703,12 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
                 auto mouseEvent = static_cast<QMouseEvent*>(event);
                 QPointF scenePos = graphicsView->mapToScene(mouseEvent->pos());
                 createAndSetupAnnotation(&scenePos);
+                return QWidget::eventFilter(watched, event);
+            }
+
+            if (m_leaderHandler) {
+                // A leader line is being placed. Let the handler see the click
+                // instead of treating it as "clicked outside the annotation".
                 return QWidget::eventFilter(watched, event);
             }
 

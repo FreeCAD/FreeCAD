@@ -161,15 +161,162 @@ QVariant QGILeaderLine::itemChange(GraphicsItemChange change, const QVariant& va
     return QGIView::itemChange(change, value);
 }
 
-//QGILL isn't draggable so skip QGIV::mousePress have event
 void QGILeaderLine::mousePressEvent(QGraphicsSceneMouseEvent* event)
 {
+    m_dragActive = true;
+    m_dragPointIndex = -1;
+
+    // Length from mouse to feature where dragging is considered to be "on" the feature
+    // 5 seems to be a good value for this 
+    int dragLength = Rez::guiX(5.0);
+    
+    int pointNum = 0;
+    for (auto point : m_pathPoints) {
+        if (QVector2D(point - event->pos()).length() < dragLength) {
+            m_dragDelta = event->pos() - point;
+            m_dragPointIndex = pointNum;
+            break;
+        }
+        pointNum++;
+    }
+
+    auto featLeader = getLeaderFeature();
+    if (featLeader && m_dragPointIndex < 0) {
+        // Normal, and complex with kink
+        if(featLeader->Type.getValue() == 0 || featLeader->Type.getValue() == 3) {
+            // Length formula for distance from point to line segment
+            QPointF kinkStart = m_pathPoints[m_pathPoints.size() - 2];
+            QPointF kinkEnd = m_pathPoints[m_pathPoints.size() - 1];
+            QPointF mousePoint = event->pos();
+
+            QVector2D kinkVector(kinkEnd - kinkStart);
+            float t = QVector2D::dotProduct(QVector2D(mousePoint - kinkStart), kinkVector) / kinkVector.lengthSquared();
+            t = qBound(0.0f, t, 1.0f);
+
+            QPointF closestPoint = kinkStart + t * (kinkEnd - kinkStart);
+            double distanceToSegment = QVector2D(mousePoint - closestPoint).length();
+
+            // If the user is dragging the kink segment, then set the drag point to the start of the kink
+            if (distanceToSegment < dragLength) {
+                m_dragDelta = event->pos() - kinkStart;
+                m_dragPointIndex = m_pathPoints.size() - 2;
+            }
+        }
+    }
+
     QGraphicsItem::mousePressEvent(event);
 }
 
-//QGILL isn't draggable so skip QGIV::Release
+void QGILeaderLine::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
+{
+    if (!m_dragActive || m_dragPointIndex < 1) {
+        QGraphicsItem::mouseMoveEvent(event);
+        return;
+    }
+
+    auto featLeader = getLeaderFeature();
+    if (featLeader) {
+        long leaderType = featLeader->Type.getValue();
+        switch (leaderType) {
+            // Normal
+            case 0: {
+                QPointF oldPosition = m_pathPoints[m_dragPointIndex];
+                int otherPointIndex = (m_dragPointIndex == 1) ? 2 : 1;
+                
+                m_pathPoints[m_dragPointIndex] = event->pos() - m_dragDelta;
+                QPointF delta = m_pathPoints[m_dragPointIndex] - oldPosition;
+                m_pathPoints[otherPointIndex] += delta;
+
+                QPointF referencePoint = m_pathPoints.front();
+                QPointF firstPoint = m_pathPoints[1];
+                QPointF secondPoint = m_pathPoints[2];
+
+                double distA = std::hypot(firstPoint.x() - referencePoint.x(), firstPoint.y() - referencePoint.y());
+                double distB = std::hypot(secondPoint.x() - referencePoint.x(), secondPoint.y() - referencePoint.y());
+
+                if (distB < distA) {
+                    std::swap(m_pathPoints[1], m_pathPoints[2]);
+                }
+
+                m_line->setPath(makeLeaderPath(m_pathPoints));
+                setArrows(m_pathPoints);
+                update(boundingRect());
+                break;
+            }
+            // Straight
+            case 1: {
+                m_pathPoints[m_dragPointIndex] = event->pos() - m_dragDelta;
+                m_line->setPath(makeLeaderPath(m_pathPoints));
+                setArrows(m_pathPoints);
+                update(boundingRect());
+                break;
+            }
+            // Complex
+            case 2: {
+                m_pathPoints[m_dragPointIndex] = event->pos() - m_dragDelta;
+                m_line->setPath(makeLeaderPath(m_pathPoints));
+                setArrows(m_pathPoints);
+                update(boundingRect());
+                break;
+            }
+            // Complex with kink
+            case 3: {
+                // If dragging a random point
+                if (m_dragPointIndex != m_pathPoints.size() - 2 && m_dragPointIndex != m_pathPoints.size() - 1) {
+                    m_pathPoints[m_dragPointIndex] = event->pos() - m_dragDelta;
+                }
+                // Dragging the kink
+                else {
+                    int kinkStartIndex = m_pathPoints.size() - 2;
+                    int kinkEndIndex = m_pathPoints.size() - 1;
+
+                    QPointF oldPosition = m_pathPoints[m_dragPointIndex];
+                    int otherPointIndex = (m_dragPointIndex == kinkStartIndex) ? kinkEndIndex : kinkStartIndex;
+                    
+                    m_pathPoints[m_dragPointIndex] = event->pos() - m_dragDelta;
+                    QPointF delta = m_pathPoints[m_dragPointIndex] - oldPosition;
+                    m_pathPoints[otherPointIndex] += delta;
+
+                    QPointF referencePoint = m_pathPoints[m_pathPoints.size() - 3];
+                    QPointF firstPoint = m_pathPoints[kinkStartIndex];
+                    QPointF secondPoint = m_pathPoints[kinkEndIndex];
+
+                    double distA = std::hypot(firstPoint.x() - referencePoint.x(), firstPoint.y() - referencePoint.y());
+                    double distB = std::hypot(secondPoint.x() - referencePoint.x(), secondPoint.y() - referencePoint.y());
+
+                    if (distB < distA) {
+                        std::swap(m_pathPoints[kinkStartIndex], m_pathPoints[kinkEndIndex]);
+                    }
+                }
+
+                m_line->setPath(makeLeaderPath(m_pathPoints));
+                setArrows(m_pathPoints);
+                update(boundingRect());
+                break;
+            }
+            
+            default:
+                break;
+        }
+    }
+
+    QGraphicsItem::mouseMoveEvent(event);
+}
+
 void QGILeaderLine::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
 {
+    if (!m_dragActive) {
+        return;
+    }
+    m_dragActive = false;
+
+    if (m_dragPointIndex >= 0) {
+        QPointF tipDisplace(0.0, 0.0);
+        onLineEditFinished(tipDisplace, m_pathPoints);
+    }
+
+    m_dragPointIndex = -1;
+    m_dragDelta = QPointF(0.0, 0.0);
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
@@ -387,13 +534,7 @@ void QGILeaderLine::draw()
         return;
     }
 
-    //********
-    if (featLeader->isLocked()) {
-        setFlag(QGraphicsItem::ItemIsMovable, false);
-    }
-    else {
-        setFlag(QGraphicsItem::ItemIsMovable, true);
-    }
+    setFlag(QGraphicsItem::ItemIsMovable, false);
 
     // set the leader's Qt position from feature's X,Y and scale.
     // the feature's x,y is unscaled, unrotated and conventional Y
@@ -419,6 +560,7 @@ void QGILeaderLine::draw()
     setNormalColorAll();
     m_line->setPath(makeLeaderPath(qPoints));
     setArrows(qPoints);
+    m_pathPoints = qPoints;
 
     if (isSelected()) {
         setPrettySel();
