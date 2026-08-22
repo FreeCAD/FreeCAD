@@ -495,12 +495,13 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
     menu.exec(event->globalPos());
 }
 
-static bool hasWholeViewPartSelected()
+template<typename T>
+static bool hasWholeSelectionOf()
 {
     for (auto& sel : Gui::Selection().getSelectionEx()) {
         auto* obj = sel.getObject();
         if (obj
-            && obj->isDerivedFrom<TechDraw::DrawViewPart>()
+            && obj->isDerivedFrom<T>()
             && sel.getSubNames().empty()) {
             return true;
         }
@@ -508,17 +509,10 @@ static bool hasWholeViewPartSelected()
     return false;
 }
 
-static bool hasWholeDrawViewSelected()
+template<typename T>
+static bool hasSelectionOfType()
 {
-    for (auto& sel : Gui::Selection().getSelectionEx()) {
-        auto* obj = sel.getObject();
-        if (obj
-            && obj->isDerivedFrom<TechDraw::DrawView>()
-            && sel.getSubNames().empty()) {
-            return true;
-        }
-    }
-    return false;
+    return !Gui::Selection().getObjectsOfType(T::getClassTypeId()).empty();
 }
 
 bool MDIViewPage::addSelectionGroups(QMenu& menu)
@@ -526,8 +520,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
     bool added = false;
     auto ctx = getSelectionContext();
 
-    if (!Gui::Selection().getObjectsOfType(
-            TechDraw::DrawViewDimension::getClassTypeId()).empty()) {
+    if (hasSelectionOfType<TechDraw::DrawViewDimension>()) {
         addCommandsByName(menu, {
             "TechDraw_ExtensionIncreaseDecimal",
             "TechDraw_ExtensionDecreaseDecimal",
@@ -548,8 +541,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
         added = true;
     }
 
-    if (!Gui::Selection().getObjectsOfType(
-            TechDraw::DrawViewBalloon::getClassTypeId()).empty()) {
+    if (hasSelectionOfType<TechDraw::DrawViewBalloon>()) {
         if (addCommandsByName(menu, {
                 "TechDraw_ExtensionCustomizeFormat",
             }) > 0) {
@@ -558,8 +550,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
         }
     }
 
-    if (!Gui::Selection().getObjectsOfType(
-            TechDraw::DrawLeaderLine::getClassTypeId()).empty()) {
+    if (hasSelectionOfType<TechDraw::DrawLeaderLine>()) {
         if (addCommandsByName(menu, {
                 "TechDraw_WeldSymbol",
             }) > 0) {
@@ -603,9 +594,8 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
         added = true;
     }
 
-    if (hasWholeViewPartSelected()) {
-        if (!Gui::Selection().getObjectsOfType(
-                TechDraw::DrawViewSection::getClassTypeId()).empty()) {
+    if (hasWholeSelectionOf<TechDraw::DrawViewPart>()) {
+        if (hasSelectionOfType<TechDraw::DrawViewSection>()) {
             if (addCommandsByName(menu, {
                     "TechDraw_ExtensionPositionSectionView",
                 }) > 0) {
@@ -622,7 +612,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
         }
     }
 
-    if (hasWholeDrawViewSelected()) {
+    if (hasWholeSelectionOf<TechDraw::DrawView>()) {
         if (addCommandsByName(menu, {
                 "TechDraw_StackTop",
                 "TechDraw_StackBottom",
@@ -679,6 +669,27 @@ int MDIViewPage::addCommandsByName(QMenu& menu,
 MDIViewPage::SelectionContext MDIViewPage::getSelectionContext()
 {
     SelectionContext ctx;
+
+    auto fillContextForEdge = [&ctx](TechDraw::DrawViewPart* dvp, const std::string& sub) {
+        if (dvp && dvp->isCosmeticEdge(sub)) {
+            ctx.hasCosmeticEdge = true;
+            return;
+        }
+
+        ctx.hasGeomEdge = true;
+        if (!dvp) {
+            return;
+        }
+
+        int idx = TechDraw::DrawUtil::getIndexFromName(sub);
+        TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(idx);
+        if (geom
+            && (geom->getGeomType() == TechDraw::GeomType::CIRCLE
+                || geom->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
+            ctx.hasCircleEdge = true;
+        }
+    };
+
     for (auto& sel : Gui::Selection().getSelectionEx()) {
         auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(sel.getObject());
         for (auto& sub : sel.getSubNames()) {
@@ -687,22 +698,11 @@ MDIViewPage::SelectionContext MDIViewPage::getSelectionContext()
                 ctx.hasFace = true;
             }
             else if (geomType == "Edge") {
-                if (dvp && dvp->isCosmeticEdge(sub)) {
-                    ctx.hasCosmeticEdge = true;
-                } else {
-                    ctx.hasGeomEdge = true;
-                    if (dvp) {
-                        int idx = TechDraw::DrawUtil::getIndexFromName(sub);
-                        TechDraw::BaseGeomPtr geom = dvp->getGeomByIndex(idx);
-                        if (geom && (geom->getGeomType() == TechDraw::GeomType::CIRCLE
-                                  || geom->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
-                            ctx.hasCircleEdge = true;
-                        }
-                    }
-                }
+                fillContextForEdge(dvp, sub);
             }
         }
     }
+
     return ctx;
 }
 
