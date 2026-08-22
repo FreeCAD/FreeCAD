@@ -43,8 +43,8 @@ from .parsing import (
     extract_balanced,
     iter_binding_pyi_files,
     iter_module_stub_pyi_files,
-    iter_source_files,
     iter_type_stub_pyi_files,
+    load_source_files,
     parse_python_source,
 )
 
@@ -191,7 +191,7 @@ def collect_binding_classes(
     type_registrations: dict[str, list[str]] | None = None,
 ) -> list[BindingClass]:
     if type_registrations is None:
-        source_files = list(iter_source_files(root, source_dir))
+        source_files = load_source_files(root, source_dir)
         type_registrations = collect_type_registrations(root, source_files)
 
     classes: list[BindingClass] = []
