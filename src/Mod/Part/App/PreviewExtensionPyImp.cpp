@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
- *   Copyright (c) 2026 Kacper Donat <kacper@kadet.net>                     *
+ *   Copyright (c) 2025 Kacper Donat <kacper@kadet.net>                     *
  *                                                                          *
  *   This file is part of FreeCAD.                                          *
  *                                                                          *
@@ -21,61 +21,59 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreviewUpdateScheduler.h"
+#include "PreviewExtensionPy.h"
+#include "PreviewExtensionPy.cpp"
 
-#include <Base/Console.h>
-#include <Base/Exception.h>
+using namespace Part;
 
-#include <Standard_Failure.hxx>
-
-FC_LOG_LEVEL_INIT("Part", true, true);
-
-using namespace PartGui;
-
-QtPreviewUpdateScheduler::QtPreviewUpdateScheduler(QObject* parent)
-    : QObject(parent)
-{}
-
-void QtPreviewUpdateScheduler::schedulePreviewRecompute(App::DocumentObject* object)
+std::string PreviewExtensionPy::representation() const
 {
-    if (!object) {
-        return;
-    }
-
-    toBeUpdated.emplace(object);
-
-    // if method call was already scheduled there is no need to queue another one
-    if (scheduled) {
-        return;
-    }
-
-    scheduled = true;
-
-    QMetaObject::invokeMethod(this, &QtPreviewUpdateScheduler::flush, Qt::QueuedConnection);
+    return {"<PreviewExtension>"};
 }
 
-void QtPreviewUpdateScheduler::flush()
+PyObject* PreviewExtensionPy::updatePreview(PyObject* args)
 {
-    scheduled = false;
-
-    // use std::exchange to prevent race conditions on updates that could occur during a flush
-    for (auto objects = std::exchange(this->toBeUpdated, {}); auto& object : objects) {
-        if (object.expired()) {
-            continue;
-        }
-
-        if (auto* previewExtension = object->getExtensionByType<Part::PreviewExtension>(true)) {
-            try {
-                previewExtension->updatePreview();
-            }
-            catch (Standard_Failure& e) {
-                FC_ERR("Preview update failed: " << e.GetMessageString());
-            }
-            catch (Base::Exception& e) {
-                FC_ERR("Preview update failed: " << e.what());
-            }
-        }
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
     }
+
+    try {
+        getPreviewExtensionPtr()->updatePreview();
+    }
+    catch (Base::Exception& exception) {
+        exception.setPyException();
+        return nullptr;
+    }
+
+    Py_RETURN_NONE;
 }
 
-#include "moc_PreviewUpdateScheduler.cpp"
+PyObject* PreviewExtensionPy::invalidatePreview(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    getPreviewExtensionPtr()->invalidatePreview();
+
+    Py_RETURN_NONE;
+}
+
+PyObject* PreviewExtensionPy::isPreviewFresh(PyObject* args) const
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    return Py::new_reference_to(Py::Boolean(getPreviewExtensionPtr()->isPreviewFresh()));
+}
+
+PyObject* PreviewExtensionPy::getCustomAttributes(const char* /*attr*/) const
+{
+    return nullptr;
+}
+
+int PreviewExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+{
+    return 0;
+}
