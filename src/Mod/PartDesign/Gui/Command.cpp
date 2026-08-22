@@ -545,6 +545,15 @@ void CmdPartDesignClone::activated(int iMsg)
             obj,
             std::stringstream() << "addObject('PartDesign::Body','" << bodyName << "')"
         );
+
+        App::Part* actPart = PartDesignGui::getActivePart();
+        if (actPart && actPart->getDocument() == obj->getDocument()) {
+            Gui::cmdAppDocument(
+                obj,
+                std::stringstream() << actPart->getNameInDocument() << ".addObject(App.getDocument('"
+                                    << obj->getDocument()->getName() << "')." << bodyName << ")"
+            );
+        }
         Gui::cmdAppDocument(
             obj,
             std::stringstream() << "addObject('PartDesign::FeatureBase','" << cloneName << "')"
