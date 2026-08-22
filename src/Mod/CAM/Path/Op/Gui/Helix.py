@@ -21,14 +21,12 @@
 
 import FreeCAD
 import FreeCADGui
-import Part
 import Path
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui
 import Path.Op.Gui.CircularHoleBase as PathCircularHoleBaseGui
 import Path.Op.Helix as PathHelix
 from PySide.QtCore import QT_TRANSLATE_NOOP
-import math
 
 translate = FreeCAD.Qt.translate
 
@@ -170,22 +168,11 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         self.form.autoConeAngle.clicked.connect(self.autoConeAngle)
 
     def autoConeAngle(self):
-        subs = [base.Shape.getElement(n) for base, names in self.obj.Base for n in names]
-        if all(isinstance(sub, Part.Face) and isinstance(sub.Surface, Part.Cone) for sub in subs):
-            angles = [round(sub.Surface.SemiAngle, Path.Geom.Decimal) for sub in subs]
-            if len(set(angles)) == 1:
-                angle = angles[0] if subs[0].Surface.Axis.z > 0 else -angles[0]
-                self.obj.HelixConeAngle = math.degrees(angle)
-                self.updateQuantitySpinBoxes()
-                self.setDirty()
-            else:
-                Path.Log.warning(translate("PathHelix", "Faces Cone angle is not identical"))
-        else:
-            Path.Log.warning(
-                translate(
-                    "PathHelix", "Automatic cone angle defination allowed only for cone faces"
-                )
-            )
+        angle = self.obj.Proxy.coneAngle(self.obj, verbose=True)
+        if angle is not None:
+            self.obj.HelixConeAngle = angle
+            self.updateQuantitySpinBoxes()
+            self.setDirty()
         self.updateVisibility()
 
 
