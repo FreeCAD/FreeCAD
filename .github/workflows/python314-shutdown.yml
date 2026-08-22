@@ -110,9 +110,11 @@ jobs:
             TypePyLifetimeShutdown \
             ParameterLifetimeShutdown \
             ExtensionLifetimeShutdown \
+            FeaturePythonLifetimeShutdown \
             ViewerLifetimeShutdown_Tests_run \
             EditableDatumLabelLifetimeShutdown_Tests_run \
             TaskDialogLifetimeShutdown_Tests_run \
+            MDIViewLifetimeShutdown_Tests_run \
             PyResourceLifetimeShutdown \
             GeneratedWrapperLifetimeShutdown
 
@@ -121,4 +123,4 @@ jobs:
           pixi run --manifest-path "$PIXI_MANIFEST" xvfb-run -a ctest \
             --test-dir "$builddir" \
             --output-on-failure \
-            -R 'PythonReferenceShutdown|PythonReferenceFinalizationRefusal|TypePyLifetimeShutdown|ParameterLifetimeShutdown|ExtensionLifetimeShutdown|ViewerLifetimeShutdown_Tests_run|EditableDatumLabelLifetimeShutdown_Tests_run|TaskDialogLifetimeShutdown_Tests_run|PyResourceLifetimeShutdown|GeneratedWrapperLifetimeShutdown'
+            -R 'PythonReferenceShutdown|PythonReferenceFinalizationRefusal|TypePyLifetimeShutdown|ParameterLifetimeShutdown|ExtensionLifetimeShutdown|FeaturePythonLifetimeShutdown|ViewerLifetimeShutdown_Tests_run|EditableDatumLabelLifetimeShutdown_Tests_run|TaskDialogLifetimeShutdown_Tests_run|MDIViewLifetimeShutdown_Tests_run|PyResourceLifetimeShutdown|GeneratedWrapperLifetimeShutdown'
