@@ -38,6 +38,24 @@ from .model import (
     ScannerState,
 )
 
+DISCOVERY_MARKERS = (
+    "addType",
+    "PyMethodDef",
+    "add_varargs_method",
+    "add_keyword_method",
+    "add_noargs_method",
+    "Py::ExtensionModule",
+    "behaviors",
+    "sequence_length",
+    "sequence_item",
+    "PyModule_",
+    "PyImport_",
+    "initModule",
+    "Py::Object",
+    "getAttr",
+    "::Methods",
+)
+
 
 @dataclass(frozen=True)
 class SourceFile:
@@ -296,14 +314,17 @@ def iter_source_files(root: Path, source_dir: Path) -> Iterable[Path]:
         yield path
 
 
+@lru_cache(maxsize=None)
 def load_source_files(root: Path, source_dir: Path) -> tuple[SourceFile, ...]:
     source_files: list[SourceFile] = []
     for path in iter_source_files(root, source_dir):
         try:
-            source = strip_comments(path.read_text(encoding="utf-8", errors="replace"))
+            source = path.read_text(encoding="utf-8", errors="replace")
         except OSError:
             continue
-        source_files.append(SourceFile(path=path, source=source))
+        if not any(marker in source for marker in DISCOVERY_MARKERS):
+            continue
+        source_files.append(SourceFile(path=path, source=strip_comments(source)))
     return tuple(source_files)
 
 
