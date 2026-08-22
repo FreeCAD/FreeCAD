@@ -19,6 +19,15 @@
 #                                                                              #
 ################################################################################
 
+'''
+This post processor inherits from the base post processor class with the following changes:
+- Adds a Use Alternative Tool Change parameter that lets the user decide to use M0 instead of M6 for tool changes
+    for compatibility for some older machines
+- Converts M7 to M10 for mist coolant on
+- Converts M9 to M11 when mist coolant is being used
+- Strips G21 commands
+
+'''
 from typing import Any, Dict
 from Path.Post.Processor import PostProcessor
 import Path
@@ -37,13 +46,6 @@ class Estlcam(PostProcessor):
     coolant_End_Command = ""
 
     @classmethod
-    def get_common_property_schema(cls):
-        """Return common properties with Estlcam defaults (uses base defaults)"""
-        """Override common properties with Estlcam-specific defaults"""
-
-        return super().get_common_property_schema()
-
-    @classmethod
     def get_property_schema(cls):
         return [
             {
@@ -53,34 +55,6 @@ class Estlcam(PostProcessor):
                 "label": translate("CAM", "Use Alternative Tool Change"),
                 "default": False,
                 "help": translate("CAM", "Use alternative tool change command"),
-            },
-            {
-                "name": "min_feed_rate",
-                "type": "float",
-                "label": translate("CAM", "Minimum Feed Rate"),
-                "default": 5.0,
-                "min": 0.0,
-                "max": 100000.0,
-                "decimals": 2,
-                "help": translate(
-                    "CAM",
-                    "Feed rates (in the current output units/min) below this value "
-                    "abort posting - this usually indicates a missing feed rate",
-                ),
-            },
-            {
-                "name": "min_spindle_speed",
-                "type": "float",
-                "label": translate("CAM", "Minimum Spindle Speed"),
-                "default": 5.0,
-                "min": 0.0,
-                "max": 20000.0,
-                "decimals": 0,
-                "help": translate(
-                    "CAM",
-                    "Spindle speeds (in RPM) below this value abort posting - this "
-                    "usually indicates a missing spindle speed",
-                ),
             },
         ]
 
@@ -104,13 +78,9 @@ class Estlcam(PostProcessor):
         if self._machine and hasattr(self._machine, "postprocessor_properties"):
             props = self._machine.postprocessor_properties
             values["TOOL_CHANGE_USE_ALTCMD"] = props.get("TOOL_CHANGE_USE_ALTCMD", False)
-            values["MIN_FEED_RATE"] = props.get("min_feed_rate", 5.0)
-            values["MIN_SPINDLE_SPEED"] = props.get("min_spindle_speed", 5.0)
         else:
             values["TOOL_CHANGE_USE_ALTCMD"] = False
-            values["MIN_FEED_RATE"] = 5.0
-            values["MIN_SPINDLE_SPEED"] = 5.0
-
+            
         # Set any values here that need to override the default values set
         # in the parent routine.
         #
@@ -148,21 +118,10 @@ class Estlcam(PostProcessor):
         tooltip = """
         Generate G-code from a Path that is compatible with the Estlcam CNC controller.
         Have a look at https://www.estlcam.de/steuerung_cnc_programme_en.php
+        This post processor inherits from the base post processor class with the following changes:
+        - Adds a Use Alternative Tool Change parameter that lets the user decide to use M0 instead of M6 for tool changes for compatibility for some older machines
+        - Converts M7 to M10 for mist coolant on
+        - Converts M9 to M11 when mist coolant is being used
+        - Strips G21 commands
         """
         return tooltip
-
-    @property
-    def tooltipArgs(self):
-        argtooltip = super().tooltipArgs
-
-        # One could add additional arguments here.
-        # argtooltip += '''
-        # --arg1: This is the first argument
-        # --arg2: This is the second argument
-
-        # '''
-        return argtooltip
-
-    @property
-    def units(self):
-        return self._units
