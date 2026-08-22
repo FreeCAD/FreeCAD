@@ -321,13 +321,23 @@ class ObjectHelix(PathCircularHoleBase.ObjectOp):
         obj.HelixConeAngle = self.coneAngle(obj)
         obj.Side = Path.Op.Util.getOpSide(obj, default="Inside")
 
-    def coneAngle(self, obj):
+    def coneAngle(self, obj, verbose=False):
         subs = [base.Shape.getElement(n) for base, names in self.baseShapes(obj) for n in names]
         if all(isinstance(sub, Part.Face) and isinstance(sub.Surface, Part.Cone) for sub in subs):
             angles = [round(sub.Surface.SemiAngle, Path.Geom.Decimal) for sub in subs]
             if len(set(angles)) == 1:
                 angle = angles[0] if subs[0].Surface.Axis.z > 0 else -angles[0]
                 return math.degrees(angle)
+            elif verbose:
+                Path.Log.warning(translate("PathHelix", "Faces Cone angle is not identical"))
+                return None
+        elif verbose:
+            Path.Log.warning(
+                translate(
+                    "PathHelix", "Automatic cone angle defination allowed only for cone faces"
+                )
+            )
+            return None
         return 0
 
     def opSetEditorModes(self, obj):
