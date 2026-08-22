@@ -1,172 +1,77 @@
-# cadx
+# cad-x
 
-**prompt-native cad.**
+An early prototype for an AI interface to FreeCAD.
 
-cadx is an ai-native cad harness that turns design intent into validated parametric models.
+The goal is to let a language model work with a real parametric CAD system
+through a small, inspectable tool layer. This repository is a technical
+prototype and demonstration for engineers. It is not a customer product yet.
 
-Autodesk Fusion is the first geometry backend and visual environment, accessed through its official MCP server and Python API. cadx maintains its own backend-neutral representation of design intent so the system can eventually support—or become—a standalone cad runtime.
+## Design
 
-## why cadx?
+The planned system has three parts:
 
-traditional cad systems are designed around direct manipulation: selecting faces, opening dialogs, and editing feature timelines by hand.
+1. **Exposed FreeCAD tools** — operations the model can call to create,
+   inspect, modify, and validate a FreeCAD document.
+2. **An in-memory model graph** — a queryable representation of the current
+   FreeCAD model, including objects, relationships, parameters, and useful
+   geometric or semantic information. The graph is exposed through tools so the
+   model can inspect context before changing the document.
+3. **A language model** — initially `gpt-luna` as the planning and interaction
+   layer. The longer-term direction is a custom post-trained Qwen 27B model,
+   using the Markov AI CAD dataset on Hugging Face as one training resource.
 
-ai-native cad needs a different control layer:
-
-- structured design intent
-- semantic references to parts and features
-- deterministic operations
-- geometric validation
-- revision and recovery mechanisms
-- iterative inspect–modify–verify loops
-- portability across geometry backends
-
-cadx provides that layer.
-
-## architecture
-
-```mermaid
-flowchart TD
-    P["natural-language prompt"] --> H["cadx agent harness"]
-    H --> G["design-intent graph"]
-    G --> D["backend-neutral design patch"]
-    D --> A["Fusion adapter"]
-    A --> M["Autodesk Fusion MCP"]
-    M --> API["Fusion Python API"]
-    API --> F["parametric Fusion model"]
-    F --> V["inspection and validation"]
-    V --> G
+```text
+                         query graph
+                    ┌──────────────────┐
+                    │                  ▼
+             ┌──────────────┐   ┌──────────────┐
+             │ Language     │   │ In-memory    │
+             │ model        │◄──│ model graph  │
+             └──────┬───────┘   └──────┬───────┘
+                    │ call tools       │ sync/inspect
+                    ▼                  ▲
+             ┌─────────────────────────┴┐
+             │ Exposed FreeCAD tools    │
+             └────────────┬─────────────┘
+                          │
+                          ▼
+                    FreeCAD document
 ```
 
-Fusion owns evaluated geometry, rendering, the feature timeline, assemblies, and exported artifacts.
+The model proposes actions. FreeCAD evaluates the parametric document, and
+deterministic checks validate the result. The graph is a reasoning and
+interaction layer. It is not a replacement for the FreeCAD document or its
+parametric history.
 
-cadx owns requirements, semantic design intent, operation history, validation rules, and backend-independent modeling plans.
+## Example interaction
 
-STEP ingestion follows a stricter path because imported parts must remain useful
-outside Fusion:
+A model could receive a request such as:
 
-```mermaid
-flowchart LR
-    S["STEP artifact"] --> P["lossless Part 21 document"]
-    P --> G["typed cadx graph"]
-    G --> IR["neutral analytic B-rep IR"]
-    IR --> DP["dependency-ordered construction plan"]
-    S --> O["mandatory OpenCascade transfer"]
-    O --> X["graph/source topology baseline"]
-    DP --> X
-    X --> FP["Fusion reconstruction program or STEP-import plan"]
-    FP --> MCP["Fusion MCP"]
-    MCP --> OBS["observations and mappings"]
-    OBS --> E["evidence bundle"]
-```
+> Create an 80 × 50 × 6 mm mounting plate with four M4 clearance holes and
+> 8 mm edge offsets.
 
-The Part 21 graph preserves products, occurrences, topology, source spans, and
-unsupported entities. A versioned neutral reconstruction IR is decoded from the
-serialized graph alone and dependency-ordered from points through solids.
-OpenCascade independently proves that the source can be transferred into B-rep
-topology and provides the current parity baseline. Fusion is an adapter after
-those checks, not the owner of the imported representation. The current live
-path still uses STEP import; the graph-derived Fusion program is emitted as
-debug evidence until its `BRepBodyDefinition` script emitter is complete.
+It would query the graph, call typed FreeCAD tools, inspect the updated model,
+and validate the resulting dimensions and constraints.
 
-## example
+## Prototype goals
 
-a request such as:
+- expose a small, understandable set of FreeCAD operations;
+- keep the model’s view of the document queryable and synchronized;
+- support inspect → act → validate loops;
+- preserve parametric, editable FreeCAD models;
+- make tool calls and failures easy to inspect and reproduce.
 
-> create an 80 × 50 × 6 mm mounting plate with four M4 clearance holes, preserving 8 mm edge offsets.
+## Current status
 
-becomes a structured design patch describing:
+This is an early-stage plan and prototype. Tool schemas, graph structure, and
+model choices will change as the first workflows are built. The custom Qwen
+training path is future work; this repository does not claim that model has
+already been trained or evaluated.
 
-- named parameters
-- sketch geometry
-- dimensional constraints
-- feature operations
-- semantic entities
-- expected measurements
-- validation conditions
+## Non-goals for now
 
-the Fusion adapter compiles that patch into Python API operations, executes it through Fusion’s MCP server, inspects the result, and either commits the revision or repairs the design.
-
-## design principles
-
-- **intent is persistent.** designs retain requirements and relationships, not just final geometry.
-- **geometry is verified.** every meaningful operation should produce machine-checkable evidence.
-- **references are semantic.** agents refer to `mounting_face` and `bolt_pattern`, not fragile face indices.
-- **operations are recoverable.** changes are revisioned, validated, and reversible.
-- **backends are replaceable.** Fusion-specific identifiers and API calls remain inside the Fusion adapter.
-- **prompts are the primary interface.** the system does not depend on manual cad editing.
-
-## initial scope
-
-the first cadx runtime will:
-
-- connect to the official Autodesk Fusion MCP server
-- inspect the active Fusion document
-- maintain a normalized design-intent graph
-- generate and execute Fusion Python scripts
-- create and modify parametric parts
-- resolve semantic references to Fusion entities
-- measure and validate resulting geometry
-- capture visual verification
-- record revisions and recover from failures
-
-## long-term direction
-
-cadx will gradually separate ai-driven design from any single cad application.
-
-future backends may provide their own:
-
-- geometry kernel
-- sketch constraint solver
-- parametric feature evaluator
-- assembly system
-- renderer
-- import and export pipeline
-
-designs expressed through the portable cadx representation should remain reproducible as those backends evolve.
-
-## status
-
-cadx is in early development. interfaces, schemas, and modeling conventions will change rapidly while the first end-to-end workflows are established.
-
-## development
-
-- [testing strategy](docs/testing.md)
-- [architecture and crate boundaries](docs/architecture.md)
-- [debugging ingestion failures](docs/debugging.md)
-- [STEP fixture corpus](tests/fixtures/step/README.md)
-
-The first native build compiles OpenCascade and requires Rust plus CMake. On
-macOS with Homebrew:
-
-```sh
-brew install rust cmake
-cargo test --workspace
-```
-
-Compile a plan and evidence bundle without changing Fusion:
-
-```sh
-cargo run -p cadx-cli -- ingest \
-  tests/fixtures/step/valid/ap214-simple-solid.stp \
-  --fusion plan
-```
-
-Exercise the complete protocol against the deterministic mock:
-
-```sh
-cargo run -p cadx-cli -- ingest \
-  tests/fixtures/step/valid/ap214-simple-solid.stp \
-  --fusion mock
-```
-
-Live Fusion execution is explicit:
-
-```sh
-cargo run -p cadx-cli -- ingest part.step \
-  --fusion live \
-  --endpoint http://127.0.0.1:27182/mcp
-```
-
-On Fusion 2704, an untagged source is imported into a new unsaved design because
-the existing-component STEP APIs currently return an internal validation error.
-An already tagged imported design is reused and reconciled without duplication.
+- supporting every CAD workflow;
+- replacing FreeCAD’s geometry kernel or parametric system;
+- claiming production reliability or customer adoption;
+- training a custom foundation model before the tool and graph interfaces are
+  useful.
