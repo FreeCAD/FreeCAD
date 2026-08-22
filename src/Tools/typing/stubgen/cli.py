@@ -50,9 +50,6 @@ binding .pyi class specs and curated overlays, and writes public import-shaped
 stubs for type-checker use.
 """
 
-# Keep the smoke checker pinned so CI and local runs resolve the same tool version.
-PYREFLY_VERSION = "0.60.2"
-
 
 def resolve_optional_dir(root: Path, path: Path | None, default: Path | None = None) -> Path | None:
     if path is not None:
@@ -337,9 +334,6 @@ def run_check(args: argparse.Namespace) -> int:
     pyrefly_code, _ = run_logged_command(
         "python-stubs-pyrefly",
         [
-            "uvx",
-            "--from",
-            f"pyrefly=={PYREFLY_VERSION}",
             "pyrefly",
             "check",
             "--config",
