@@ -818,6 +818,12 @@ MenuItem* StdWorkbench::setupMenuBar() const
            << "Std_DlgMacroExecuteDirect"
            << "Std_MacroAttachDebugger";
 
+#if defined(BUILD_QTTESTING)
+    auto qtTesting = new MenuItem(menuBar);
+    qtTesting->setCommand("QtTesting");
+    *qtTesting << "Std_QtTestRecord" << "Std_QtTestPlayback";
+#endif
+
     // Windows
     auto wnd = new MenuItem(menuBar);
     wnd->setCommand("&Windows");

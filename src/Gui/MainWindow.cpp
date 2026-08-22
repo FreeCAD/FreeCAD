@@ -66,6 +66,10 @@
 # endif
 #endif
 
+#if defined(BUILD_QTTESTING)
+# include "QtTesting/QtTestUtility.h"
+#endif
+
 #include <algorithm>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
@@ -630,6 +634,10 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
+
+#if defined(BUILD_QTTESTING)
+    qtTestUtility = std::make_unique<QtTesting::QtTestUtility>(this);
+#endif
 
     statusBar()->showMessage(tr("Ready"), 2001);
 }
