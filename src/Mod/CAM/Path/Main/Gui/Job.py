@@ -43,6 +43,7 @@ import Path.Tool.Gui.Controller as PathToolControllerGui
 # tool updates on open, which must happen before any document opens.
 import Path.Tool.Gui.UpdateDocumentToolsDlg as PathUpdateToolsGui
 import PathScripts.PathUtils as PathUtils
+from Path.Tool.docobject.ui.docobject import _get_label_text as _format_label
 from Path.Tool.toolbit.ui.selector import ToolBitSelector
 from Machine.models import MachineFactory
 from Machine.ui.editor import MachineEditorDialog
@@ -427,7 +428,6 @@ class MaterialDialog(QtWidgets.QDialog):
 
     def onMaterial(self, uuid):
         try:
-            print("Selected '{0}'".format(uuid))
             self.uuid = uuid
         except Exception as e:
             print(e)
@@ -896,7 +896,7 @@ class TaskPanel:
             return
         _, name = self._currentStockMaterial()
         if name:
-            label.setText(name)
+            label.setText(_format_label(name, keep_case=True))
             label.setStyleSheet("")
         else:
             label.setText(translate("CAM_Job", "(none assigned)"))
@@ -918,12 +918,15 @@ class TaskPanel:
         Path.Log.track()
         FreeCADGui.Selection.removeObserver(self)
         # Restore natural selectability: model selectable, stock non-selectable
+        # and reset transparency after leaving the task panel.
         stock = self.obj.Stock
         if stock and stock.ViewObject:
             stock.ViewObject.Selectable = False
+            stock.ViewObject.Transparency = 85
         for base in self.obj.Model.Group:
             if base and base.ViewObject:
                 base.ViewObject.Selectable = True
+                # base.ViewObject.Transparency = 0
         self.vproxy.resetEditVisibility(self.obj)
         self.vproxy.resetTaskPanel()
 
@@ -1468,13 +1471,26 @@ class TaskPanel:
                                 Draft.move(self.obj.Stock, offset)
 
     def modelMove(self, axis):
-        scale = self.form.modelMoveValue.value()
+        scale = self.form.modelMoveValue.property("rawValue")
         with selectionEx() as selection:
             for sel in selection:
                 offset = axis * scale
                 Draft.move(sel.Object, offset)
 
-    def modelRotate(self, axis):
+    def modelRotateAxis(self):
+        """Returns the unit vector of the rotation axis selected in the axis combo."""
+        axes = [
+            FreeCAD.Vector(1, 0, 0),
+            FreeCAD.Vector(0, 1, 0),
+            FreeCAD.Vector(0, 0, 1),
+        ]
+        index = self.form.modelRotateAxis.currentIndex()
+        if index < 0 or index >= len(axes):
+            index = 2  # default to Z
+        return axes[index]
+
+    def modelRotate(self, direction):
+        axis = self.modelRotateAxis() * direction
         angle = self.form.modelRotateValue.value()
         with selectionEx() as selection:
             if self.form.modelRotateCompound.isChecked() and len(selection) > 1:
@@ -1525,20 +1541,27 @@ class TaskPanel:
         except Exception as e:
             Path.Log.error("Failed to open Machine Editor: %s" % e)
 
-    def togglePickTarget(self, checked):
-        """Toggle whether origin/axis picks target the Stock or the Model.
-        When checked (Picking: Model): model selectable, stock non-selectable.
-        When unchecked (Picking: Stock): stock selectable, model non-selectable."""
+    def togglePickTarget(self, modelTarget):
+        """Set whether origin/axis picks target the Model or the Stock.
+        When modelTarget is True: model selectable, stock non-selectable.
+        When modelTarget is False: stock selectable, model non-selectable."""
         stock = self.obj.Stock
         if stock and stock.ViewObject:
-            stock.ViewObject.Selectable = not checked
+            stock.ViewObject.Selectable = not modelTarget
+            stock.ViewObject.Transparency = 95 if modelTarget else 85
         for base in self.obj.Model.Group:
             if base and base.ViewObject:
-                base.ViewObject.Selectable = checked
-        if checked:
-            self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Model"))
-        else:
-            self.form.pickTargetToggle.setText(translate("CAM_Job", "Picking: Stock"))
+                base.ViewObject.Selectable = modelTarget
+                # base.ViewObject.Transparency = 0 if modelTarget else 95
+        self.form.pickTargetModel.setChecked(modelTarget)
+        self.form.pickTargetStock.setChecked(not modelTarget)
+        # Apply explicit highlight so the active button is visible regardless of theme.
+        pal = self.form.pickTargetModel.palette()
+        hl_color = pal.highlight().color().name()
+        hl_text = pal.highlightedText().color().name()
+        active_style = f"background-color: {hl_color}; color: {hl_text};"
+        self.form.pickTargetModel.setStyleSheet(active_style if modelTarget else "")
+        self.form.pickTargetStock.setStyleSheet("" if modelTarget else active_style)
 
     def alignSetOrigin(self):
         obj, by = self.alignMoveToOrigin()
@@ -1567,7 +1590,11 @@ class TaskPanel:
                 if "Vertex" == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.Point
                 if "Edge" == sub.ShapeType:
-                    p = FreeCAD.Vector() - sub.Curve.Location
+                    if isinstance(sub.Curve, Part.Circle):
+                        p = FreeCAD.Vector() - sub.Curve.Location
+                    else:
+                        mid = sub.valueAt((sub.FirstParameter + sub.LastParameter) / 2)
+                        p = FreeCAD.Vector() - mid
                 if "Face" == sub.ShapeType:
                     p = FreeCAD.Vector() - sub.BoundBox.Center
 
@@ -1640,6 +1667,7 @@ class TaskPanel:
 
     def refreshStock(self):
         self.updateStockEditor(self.form.stock.currentIndex(), True)
+        self.togglePickTarget(self.form.pickTargetModel.isChecked())
 
     def alignCenterInStock(self):
         bbs = self.obj.Stock.Shape.BoundBox
@@ -1658,8 +1686,6 @@ class TaskPanel:
 
     def isValidDatumSelection(self, sel):
         if sel.ShapeType in ["Vertex", "Edge", "Face"]:
-            if hasattr(sel, "Curve") and not isinstance(sel.Curve, Part.Circle):
-                return False
             return True
 
         # no valid selection
@@ -1711,14 +1737,16 @@ class TaskPanel:
             self.form.modelSetY0.setEnabled(True)
             self.form.modelSetZ0.setEnabled(True)
             self.form.modelMoveGroup.setEnabled(True)
-            self.form.modelRotateGroup.setEnabled(True)
-            self.form.modelRotateCompound.setEnabled(len(sel) > 1)
+            # self.form.modelRotateGroup.setEnabled(True)
+            # Compound only has an effect with multiple objects selected, but keep it
+            # clickable so the setting can be made before the selection is complete.
+            self.form.modelRotateCompound.setEnabled(True)
         else:
             self.form.modelSetX0.setEnabled(False)
             self.form.modelSetY0.setEnabled(False)
             self.form.modelSetZ0.setEnabled(False)
             self.form.modelMoveGroup.setEnabled(False)
-            self.form.modelRotateGroup.setEnabled(False)
+            # self.form.modelRotateGroup.setEnabled(False)
 
     def jobModelEdit(self):
         dialog = PathJobDlg.JobCreate()
@@ -1827,28 +1855,36 @@ class TaskPanel:
 
         self.form.setOrigin.clicked.connect(self.alignSetOrigin)
         self.form.moveToOrigin.clicked.connect(self.alignMoveToOrigin)
-        self.form.pickTargetToggle.toggled.connect(self.togglePickTarget)
-        self.togglePickTarget(self.form.pickTargetToggle.isChecked())
+        self.form.pickTargetModel.clicked.connect(lambda: self.togglePickTarget(True))
+        self.form.pickTargetStock.clicked.connect(lambda: self.togglePickTarget(False))
+        self.togglePickTarget(True)  # default: Model
 
-        self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
+        _moveUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
+        if _moveUnit in ("in", '"'):
+            self.form.modelMoveValue.setProperty("unit", "in")
+            self.form.modelMoveValue.setProperty("rawValue", 2.54)  # 0.100"
+        else:
+            self.form.modelMoveValue.setProperty("unit", "mm")
+            self.form.modelMoveValue.setProperty("rawValue", 1.0)
+
+        # self.form.modelMoveLeftUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 1, 0)))
         self.form.modelMoveLeft.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(-1, 0, 0)))
-        self.form.modelMoveLeftDown.clicked.connect(
-            lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0))
-        )
+        # self.form.modelMoveLeftDown.clicked.connect(
+        #    lambda: self.modelMove(FreeCAD.Vector(-1, -1, 0))
+        # )
 
         self.form.modelMoveUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 1, 0)))
         self.form.modelMoveDown.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, -1, 0)))
 
-        self.form.modelMoveRightUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(1, 1, 0)))
+        self.form.modelMoveZUp.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 0, 1)))
         self.form.modelMoveRight.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(1, 0, 0)))
-        self.form.modelMoveRightDown.clicked.connect(
-            lambda: self.modelMove(FreeCAD.Vector(1, -1, 0))
-        )
+        self.form.modelMoveZDown.clicked.connect(lambda: self.modelMove(FreeCAD.Vector(0, 0, -1)))
 
-        self.form.modelRotateLeft.clicked.connect(lambda: self.modelRotate(FreeCAD.Vector(0, 0, 1)))
-        self.form.modelRotateRight.clicked.connect(
-            lambda: self.modelRotate(FreeCAD.Vector(0, 0, -1))
-        )
+        self.form.modelRotateAxis.setCurrentIndex(2)  # default: Z
+        self.form.modelRotateAxis.currentIndexChanged.connect(self._updateRotateIcons)
+        self._updateRotateIcons()
+        self.form.modelRotateLeft.clicked.connect(lambda: self.modelRotate(1))
+        self.form.modelRotateRight.clicked.connect(lambda: self.modelRotate(-1))
 
         self.updateSelection()
 
@@ -1865,6 +1901,69 @@ class TaskPanel:
             self.form.setCurrentIndex(4)
 
         self.form.currentChanged.connect(self.tabPageChanged)
+
+        self._applyButtonIcons()
+
+    def _updateRotateIcons(self):
+        """Color the rotate arrows to match the axis selected in the axis combo."""
+        axis = ["x", "y", "z"][max(0, min(2, self.form.modelRotateAxis.currentIndex()))]
+        self.form.modelRotateLeft.setIcon(QtGui.QIcon(":/icons/arrow-ccw-%s.svg" % axis))
+        self.form.modelRotateRight.setIcon(QtGui.QIcon(":/icons/arrow-cw-%s.svg" % axis))
+
+    def _applyButtonIcons(self):
+        """Set button icons with original SVG colors, adapting monochrome icons to the
+        current theme (white on dark, black on light).  The XYZ axis buttons always
+        keep their fixed Red / Green / Blue stroke colors."""
+
+        theme = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
+            "Theme", ""
+        )
+        is_dark = "dark" in theme.lower() if theme else False
+
+        def _adaptive_icon(resource_path, size=16):
+            """Load a monochrome SVG icon (#111111 stroke/fill) and invert to white
+            when running under a dark theme. Also sets a proper disabled pixmap for button tinting.
+            """
+
+            from PySide import QtSvg
+
+            f = QtCore.QFile(resource_path)
+            if not f.open(QtCore.QFile.ReadOnly):
+                return QtGui.QIcon(resource_path)
+            content = bytes(f.readAll())
+            f.close()
+
+            if is_dark:
+                # #d33d3d is a placehole color to avoid #111111 -> #ffffff replacement affecting the original black strokes in the SVG
+                content = content.replace(b"#111111", b"#d33d3d")
+                content = content.replace(b"#ffffff", b"#111111")
+                content = content.replace(b"#d33d3d", b"#ffffff")
+
+            ba = QtCore.QByteArray(content)
+            renderer = QtSvg.QSvgRenderer(ba)
+            pixmap = QtGui.QPixmap(size, size)
+            pixmap.fill(QtCore.Qt.transparent)
+            painter = QtGui.QPainter(pixmap)
+            renderer.render(painter)
+            painter.end()
+
+            icon = QtGui.QIcon(pixmap)
+            # Disabled pixmap: faded version of the already-correct color
+            disabled_pixmap = pixmap.copy()
+            painter = QtGui.QPainter(disabled_pixmap)
+            painter.setCompositionMode(QtGui.QPainter.CompositionMode_DestinationIn)
+            painter.fillRect(disabled_pixmap.rect(), QtGui.QColor(0, 0, 0, 100))
+            painter.end()
+            icon.addPixmap(disabled_pixmap, QtGui.QIcon.Disabled, QtGui.QIcon.Off)
+            return icon
+
+        # Monochrome (theme-adaptive) icons
+        self.form.moveToOrigin.setIcon(_adaptive_icon(":/icons/move-to-origin.svg"))
+        self.form.setOrigin.setIcon(_adaptive_icon(":/icons/set-origin.svg"))
+        self.form.pickTargetModel.setIcon(_adaptive_icon(":/icons/model.svg"))
+        self.form.pickTargetStock.setIcon(_adaptive_icon(":/icons/stock.svg"))
+        self.form.centerInStock.setIcon(_adaptive_icon(":/icons/center-in-stock.svg"))
+        self.form.centerInStockXY.setIcon(_adaptive_icon(":/icons/xy-in-stock.svg"))
 
     def open(self):
         FreeCADGui.Selection.addObserver(self)
