@@ -30,6 +30,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+from Path import Command
 import argparse
 import datetime
 import shlex
@@ -180,8 +181,6 @@ def processArguments(argstring):
         if args.no_show_editor:
             SHOW_EDITOR = False
             print("Show editor = %r" % (SHOW_EDITOR))
-        if args.precision is not None:
-            PRECISION = int(args.precision)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
@@ -191,6 +190,8 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 3
+        if args.precision is not None:
+            PRECISION = int(args.precision)
         if args.modal:
             MODAL = True
             print("Command duplicates suppressed")
@@ -224,13 +225,15 @@ def export(objectslist, filename, argstring):
 
     # write header
     if OUTPUT_HEADER:
-        gcode += "(%s)\n" % str.upper(
-            obj.Document.Label[0:8]
-        )  # Added program name entry and limited to 8 chars as first line in program.
-        # Insert "T" in front of comments to signify "textfield" (comment).
-        gcode += linenumber() + "(T)" + "EXPORTED BY FREECAD$\n"
-        gcode += linenumber() + "(T)" + str.upper("Post Processor: " + __name__) + "$\n"
-        gcode += linenumber() + "(T)" + str.upper("Output Time:") + str(now) + "$\n"
+        gcode += "(%s)\n" % str.upper(obj.Document.Label[0:8])
+        gcode += linenumber() + "(T)EXPORTED BY FREECAD$\n"
+        gcode += linenumber() + "(T)POST PROCESSOR: " + str.upper(__name__) + "$\n"
+        gcode += linenumber() + "(T)OUTPUT TIME: " + str(now) + "$\n"
+
+        # --- THE UNIVERSAL MASTER NOTES ---
+        gcode += linenumber() + "(T)DYNAPATH 4060 UNIVERSAL MASTER V1.0$\n"
+        gcode += linenumber() + "(T)UNITS: G70 INCH / G71 MM BRIDGE ACTIVE$\n"
+        gcode += linenumber() + "(T)G82/G84 DWELL (L) IS SECONDS$\n"
 
     # Write the preamble
     if OUTPUT_COMMENTS:
@@ -293,6 +296,7 @@ def export(objectslist, filename, argstring):
         gcode += linenumber() + "(T)" + "BEGIN POSTAMBLE$\n"
     for line in POSTAMBLE.splitlines():
         gcode += linenumber() + line + "\n"
+
     # Following is required by Dynapath Controls to signify "EOF" when loading in to control
     # from external media. The control strips the "E" off as part of the load process.
     gcode += "E\n"
@@ -300,22 +304,27 @@ def export(objectslist, filename, argstring):
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
-        result = dia.exec_()
-        if result:
+        if dia.exec_():
             final = dia.editor.toPlainText()
         else:
             final = gcode
     else:
         final = gcode
 
-    print("done postprocessing.")
+    # Handshake for FreeCAD 1.2dev internal preview
+    if filename == "-":
+        return final
 
-    if not filename == "-":
-        gfile = pyopen(filename, "w")
-        gfile.write(final)
-        gfile.close()
-
-    return final
+    # Standard file writing
+    try:
+        with pyopen(filename, "w") as gfile:
+            gfile.write(final)
+        print("Done postprocessing.")
+        # CRITICAL: Return True to clear the 'must re-save' status
+        return True
+    except Exception as e:
+        print("Error saving: " + str(e))
+        return False
 
 
 # Modified for Dynapath to Include a 4 digit field that begins with an "N".
@@ -336,6 +345,7 @@ def parse(pathobj):
     global RETRACT_MODE
     global DWELL_TIME
     global clearanceHeight
+    global NEEDS_XOYO_FIX
 
     lastX = 0
     lastY = 0
@@ -344,6 +354,16 @@ def parse(pathobj):
     lastcommand = None
     precision_string = "." + str(PRECISION) + "f"
     currLocation = {}  # keep track for no doubles
+
+    # 1. DEFINE op_clearance AT THE VERY START
+    try:
+        import FreeCAD as App
+
+        # Pull from the operation directly to avoid the "re-save" requirement
+        op_clearance = float(pathobj.ClearanceHeight.Value)
+    except:
+        # Fallback to the global or a hardcoded default
+        op_clearance = clearanceHeight if "clearanceHeight" in locals() else 0.1968
 
     # the order of parameters
     # Added O and L since these are needed by Dynapath.
@@ -369,7 +389,7 @@ def parse(pathobj):
         "P",
     ]
 
-    firstmove = Path.Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
+    firstmove = Command("G0", {"X": -1, "Y": -1, "Z": -1, "F": 0.0})
     currLocation.update(firstmove.Parameters)  # set first location parameters
 
     if hasattr(pathobj, "Group"):  # We have a compound or project.
@@ -387,6 +407,15 @@ def parse(pathobj):
         for c in PathUtils.getPathWithPlacement(pathobj).Commands:
             outstring = []
             command = c.Name
+
+            # --- THE TAPPING CLEANUP ---
+            if command in ("G84", "G74"):
+                # Delete S and F so the standard loop skips them
+                if "S" in c.Parameters:
+                    c.Parameters.pop("S")
+                if "F" in c.Parameters:
+                    c.Parameters.pop("F")
+
             # Convert G54-G59 Fixture offsets to E01-E06 for Dynapath Delta Control
             if command in GCODE_MAP:
                 command = GCODE_MAP[command]
@@ -405,64 +434,104 @@ def parse(pathobj):
 
             if c.Name.startswith("(") and not OUTPUT_COMMENTS:  # command is a comment
                 continue
-            # Handle G84/G74 tapping cycles
-            if command in ("G84", "G74") and "F" in c.Parameters:
-                pitch_mm = float(c.Parameters["F"])
-                c.Parameters.pop("F")  # Remove F from output, we'll handle it
 
-                # Get spindle speed (from S param or last known value)
-                spindle_speed = None
-                if "S" in c.Parameters:
-                    spindle_speed = float(c.Parameters["S"])
-                    c.Parameters.pop("S")
+            # Needed for Z param logic below.
+            g80_buffer = ""
+            outstring = [command]
 
-                # Convert pitch to inches if needed
-                if UNITS == "G70":  # imperial
-                    pitch = pitch_mm / 25.4
-                else:
-                    pitch = pitch_mm
-
-                # Calculate feed rate
-                if spindle_speed is not None:
-                    feed_rate = pitch * spindle_speed
-                    speed = Units.Quantity(feed_rate, UNIT_SPEED_FORMAT)
-                    outstring.append(
-                        "F" + format(float(speed.getValueAs(UNIT_SPEED_FORMAT)), precision_string)
-                    )
-                else:
-                    # No spindle speed found, output pitch as F
-                    outstring.append("F" + format(pitch, precision_string))
             # Now add the remaining parameters in order
             for param in params:
                 if param in c.Parameters:
-                    if param == "F" and (
-                        currLocation[param] != c.Parameters[param] or OUTPUT_DOUBLES
-                    ):
-                        speed = Units.Quantity(c.Parameters["F"], FreeCAD.Units.Velocity)
-                        if speed.getValueAs(UNIT_SPEED_FORMAT) > 0.0:
-                            outstring.append(
-                                param
-                                + format(
-                                    float(speed.getValueAs(UNIT_SPEED_FORMAT)),
-                                    precision_string,
+                    if param == "F":
+                        if command in ("G84", "G74"):
+                            tc = pathobj.ToolController
+                            # RPM * Pitch math
+                            s_attr = getattr(tc, "SpindleSpeed", 100)
+                            rpm = float(getattr(s_attr, "Value", s_attr))
+                            p_attr = getattr(
+                                tc,
+                                "Pitch",
+                                getattr(getattr(tc, "Tool", None), "Pitch", 0.03125),
+                            )
+                            pitch = float(getattr(p_attr, "Value", p_attr))
+                            if UNITS == "G70" and pitch > 0.5:
+                                pitch /= 25.4
+                            f_val = rpm * pitch
+                        else:
+                            # Your original Golden Logic
+                            f_raw = float(c.Parameters.get("F", 20.0))
+                            f_val = float(
+                                Units.Quantity(f_raw, FreeCAD.Units.Velocity).getValueAs(
+                                    UNIT_SPEED_FORMAT
                                 )
                             )
-                    # Inserts "X0 Y0" in front of a G0 Z + clearanceHeight movement.
-                    # This fixes an error thrown by Dynapath due to missing and
-                    # required XYZ move after Tool change.
-                    elif param == "Z" and (
-                        c.Parameters["Z"] == clearanceHeight and command in ["G0", "G00"]
-                    ):
-                        x = 0
-                        y = 0
-                        outstring.insert(
-                            1,
-                            "X"
-                            + PostUtils.fmt(x, PRECISION, UNITS)
-                            + "Y"
-                            + PostUtils.fmt(y, PRECISION, UNITS),
-                        )
-                        outstring.append(param + PostUtils.fmt(c.Parameters["Z"], PRECISION, UNITS))
+
+                        f_out = format(f_val, ".2f")
+
+                        # FORCE the output for Tapping
+                        if command in ("G84", "G74") or currLocation.get(param) != f_out:
+                            outstring.append(param + f_out)
+                            currLocation[param] = f_out
+
+                    elif param == "Z":
+                        z_val = float(c.Parameters["Z"])
+                        z_fmt = PostUtils.fmt(z_val, PRECISION, UNITS)
+
+                        # --- 1. THE CATCH-ALL FEEDRATE GRAB ---
+                        f_raw = 20.0  # Safe fallback
+
+                        if (
+                            hasattr(pathobj, "ToolController")
+                            and pathobj.ToolController is not None
+                        ):
+                            tc = pathobj.ToolController
+                            # Search all properties for the Vertical Rapid value
+                            for p in tc.PropertiesList:
+                                if "Rapid" in p and ("Vert" in p or "Z" in p):
+                                    val = getattr(tc, p)
+                                    # Get the numerical value (Inches or MM)
+                                    temp_f = val.Value if hasattr(val, "Value") else float(val)
+                                    if temp_f > 0:
+                                        f_raw = temp_f
+                                        break
+
+                        # If the search failed, use the command's F-parameter
+                        if f_raw == 20.0:
+                            f_raw = float(c.Parameters.get("F", 20.0))
+
+                        # Convert and Ghost-Bust (1200mm -> 20.00)
+                        speed_qty = Units.Quantity(f_raw, FreeCAD.Units.Velocity)
+                        f_val = float(speed_qty.getValueAs(UNIT_SPEED_FORMAT))
+
+                        # Catch the 1200mm default (47.24) OR any value that feels like a metric rapid
+                        if abs(f_val - 47.24) < 0.1 or f_val > 100.0:
+                            f_val = 25.0  # Force to your preferred safe vertical speed
+
+                        f_out = format(f_val, ".2f")
+
+                        # --- 2. THE SURGICAL RESET (First Move Only) ---
+                        if NEEDS_XOYO_FIX:
+                            NEEDS_XOYO_FIX = False
+                            outstring[:] = [
+                                command,
+                                "X0.0000",
+                                "Y0.0000",
+                                "Z" + z_fmt,
+                                "F" + f_out,
+                            ]
+                            currLocation.update({"X": 0.0, "Y": 0.0, "Z": z_val})
+                            c.Parameters.clear()
+                            break
+
+                        # --- 3. THE G80 INJECTOR (Post-Drill Retract) ---
+                        if lastcommand in QCYCLE_RANGE and z_val > 0:
+                            g80_buffer = (linenumber()) + "G80\n"
+
+                        # --- 4. NORMAL Z HANDLING ---
+                        if abs(z_val - currLocation.get("Z", -999.0)) > 0.0001:
+                            outstring.append(param + z_fmt)
+                            currLocation.update({"Z": z_val})
+
                     elif param == "X" and (command in QCYCLE_RANGE):
                         pos = Units.Quantity(c.Parameters["X"], FreeCAD.Units.Length)
                         outstring.append(
@@ -473,11 +542,7 @@ def parse(pathobj):
                         outstring.append(
                             param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                         )
-                    # Remove X and Y between QCYCLE's since we already included them.
-                    # This is needed to prevent Path of inserting additional XY codes between
-                    # Canned cycle holes.
-                    elif lastcommand in QCYCLE_RANGE and (param == "X" or "Y"):
-                        outstring = []
+
                     elif param == "S":
                         SPINDLE_SPEED = c.Parameters["S"]
                         outstring.append(
@@ -487,28 +552,32 @@ def parse(pathobj):
                         outstring.append(
                             param + "{:.0f}".format(c.Parameters["T"])
                         )  # Added formatting to strip trailing .000 from Tool number (needed by dynapath)
-                    elif param == "I" and (command == "G2" or command == "G3"):
-                        # Convert incremental arc center to absolute in I and J
-                        # Dynapath requires "absolute" arcs in (G2,G3)
-                        i = c.Parameters["I"]
+
+                    elif param in ["I", "J", "K"] and command in [
+                        "G2",
+                        "G3",
+                        "G02",
+                        "G03",
+                    ]:
+                        val = float(c.Parameters[param])
+
+                        # Add the last position to get the Absolute Center
                         if ABSOLUTE_CIRCLE_CENTER:
-                            i += lastX
-                            outstring.append(param + PostUtils.fmt(i, PRECISION, UNITS))
-                    elif param == "J" and (command == "G2" or command == "G3"):
-                        # Convert incremental arc center to absolute in I and J
-                        j = c.Parameters["J"]
-                        if ABSOLUTE_CIRCLE_CENTER:
-                            j += lastY
-                            outstring.append(param + PostUtils.fmt(j, PRECISION, UNITS))
-                    elif param == "K" and (command == "G2" or command == "G3"):
-                        # Convert incremental arc center to absolute in K (Z axis arc)
-                        k = c.Parameters["K"]
-                        if ABSOLUTE_CIRCLE_CENTER:
-                            k += lastZ
-                        if command == (
-                            "G18" or "G19"
-                        ):  # Dynapath supports G18/G19 for Z axis arcs in Y or X.
-                            outstring.append(param + PostUtils.fmt(k, PRECISION, UNITS))
+                            if param == "I":
+                                val += lastX
+                            elif param == "J":
+                                val += lastY
+                            elif param == "K":
+                                val += lastZ
+
+                        # I and J always post for standard G17 (XY) arcs
+                        if param in ["I", "J"]:
+                            outstring.append(param + PostUtils.fmt(val, PRECISION, UNITS))
+
+                        # K ONLY posts if we are in G18 or G19 (Vertical Arcs)
+                        elif param == "K" and command in ["G18", "G19"]:
+                            outstring.append(param + PostUtils.fmt(val, PRECISION, UNITS))
+
                     # Converts "Q" to "K" as needed by Dynapath.
                     elif param == "Q":
                         pos = Units.Quantity(c.Parameters["Q"], FreeCAD.Units.Length)
@@ -519,16 +588,40 @@ def parse(pathobj):
                     # This provides the ability to manually go in and bump up the "O" offset in
                     # order to avoid obstacles. The "O" overrides "R", so set them both equal if you
                     # don't need the 2nd reference plane.
-                    elif (param == "R") and ((command in QCYCLE_RANGE)):
-                        pos = Units.Quantity(pathobj.ClearanceHeight.Value, FreeCAD.Units.Length)
-                        outstring.insert(
-                            6,
-                            "O" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string),
-                        )  # Insert "O" param for 2nd reference plane (Clearance Height)
-                        pos = Units.Quantity(c.Parameters["R"], FreeCAD.Units.Length)
-                        outstring.append(
-                            param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
-                        )  # First Reference plan (Safe Height)
+
+                    elif (param == "R") and (command in QCYCLE_RANGE):
+                        # --- 1. CLEARANCE HEIGHT (O) ---
+                        o_val = float(pathobj.ClearanceHeight.Value)
+                        if UNITS == "G70" and o_val > 0.5:  # Lower threshold for 1.2dev
+                            o_val /= 25.4
+                        outstring.insert(6, "O" + format(o_val, precision_string))
+
+                        # --- 2. THE R-VALUE TRAP (1.0mm = 0.0394") ---
+                        r_raw = float(c.Parameters.get("R", 0.0))
+
+                        # If R is 1.0 (exactly 1mm) or 0.0 (missing), hunt for the truth
+                        if r_raw == 0.0 or abs(r_raw - 1.0) < 0.001:
+                            tc = pathobj.ToolController
+                            r_attr = getattr(
+                                tc,
+                                "StartDepth",
+                                getattr(
+                                    tc,
+                                    "SafeHeight",
+                                    getattr(tc, "RetractHeight", 0.1500),
+                                ),
+                            )
+                            r_raw = float(getattr(r_attr, "Value", r_attr))
+                            if r_raw == 0.0:
+                                r_raw == 00.1500
+
+                        # THE UNIT SCALER: If we are in G70 and value is 0.5 or higher,
+                        # it's likely a metric value (1mm, 3.81mm, etc.)
+                        if UNITS == "G70" and r_raw >= 1.0:
+                            r_raw /= 25.4
+
+                        outstring.append("R" + format(r_raw, precision_string))
+
                     elif param == "P":
                         outstring.append(
                             "L" + format(c.Parameters[param], ".1f")
@@ -559,6 +652,10 @@ def parse(pathobj):
 
             # Check for Tool Change:
             if command == "M6":
+                # Inject a M5 line before the tool change starts
+                out += (linenumber()) + "M05\n"
+
+                NEEDS_XOYO_FIX = True
                 if OUTPUT_COMMENTS:
                     out += linenumber() + "(T)" + "BEGIN TOOLCHANGE$\n"
 
@@ -571,8 +668,48 @@ def parse(pathobj):
             if c.Name == "G98" or (c.Name == "G99" and pathobj.Label == "Drilling"):
                 outstring = []
 
+            # If we have a G80 in the buffer, write it as a standalone line now
+            if g80_buffer:
+                out += g80_buffer
+                # Reset the buffer so it doesn't repeat
+                g80_buffer = ""
+
+            # --- THE GOLDEN TAPPING FEED INJECTOR ---
+            if command in ("G84", "G74"):
+                tc = pathobj.ToolController
+                # 1. Get RPM and Pitch (Bridge 1.1rc3 and 1.2dev)
+                s_attr = getattr(tc, "SpindleSpeed", 100)
+                rpm = float(getattr(s_attr, "Value", s_attr))
+
+                # Hunt for Pitch or Stepover inside the Tool object
+                p_attr = getattr(tc, "Pitch", getattr(getattr(tc, "Tool", None), "Pitch", 0.03125))
+                pitch = float(getattr(p_attr, "Value", p_attr))
+
+                # 2. Metric-to-Inch Safety
+                if UNITS == "G70" and pitch > 0.5:
+                    pitch /= 25.4
+
+                # 3. Calculate and Append Feedrate to the END of the line
+                f_val = rpm * pitch
+                f_out = format(f_val, ".2f")
+                outstring.append("F" + f_out)
+
+                # Update brain so the retract move knows the previous speed
+                currLocation["F"] = f_out
+
+            # If it's just a G-code and an F-code with no X, Y, or Z, skip it.
+            has_move = any(
+                item.startswith(("X", "Y", "Z", "O", "R", "L", "K")) for item in outstring
+            )
+            if (
+                not has_move
+                and any(item.startswith("G") for item in outstring)
+                and any(item.startswith("F") for item in outstring)
+            ):
+                outstring = []
+
             # prepend a line number and append a newline
-            if len(outstring) >= 1:
+            if len(outstring) > 1 or any(item.startswith(("E", "G80")) for item in outstring):
                 if OUTPUT_LINE_NUMBERS:
                     outstring.insert(0, (linenumber()))
 
