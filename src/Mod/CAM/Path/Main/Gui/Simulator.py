@@ -151,9 +151,13 @@ class PathSimulation:
         self.ioperation = 0
         for i in range(form.listOperations.count()):
             if form.listOperations.item(i).checkState() == QtCore.Qt.CheckState.Checked:
+                if getattr(self.operations[i], "ArrayGroup", None):
+                    self.activeOps.extend(self.operations[i].ArrayGroup)
+                    self.numCommands += sum(op.Path.Size for op in self.operations[i].ArrayGroup)
+                else:
+                    self.activeOps.append(self.operations[i])
+                    self.numCommands += self.operations[i].Path.Size
                 self.firstDrill = True
-                self.activeOps.append(self.operations[i])
-                self.numCommands += len(self.operations[i].Path.Commands)
 
         self.stock = self.job.Stock.Shape
         if self.isVoxel:
