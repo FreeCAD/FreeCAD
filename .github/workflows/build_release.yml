@@ -236,6 +236,20 @@ jobs:
           cd package/rattler-build
           pixi install --frozen
 
+      - name: Check installed Python stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          stubs_dir="$(find package/rattler-build/.pixi/envs/default \
+              -type d -name python-stubs -print -quit)"
+          if [[ -z "${stubs_dir}" ]]; then
+            echo "Could not find the installed Python stubs directory" >&2
+            exit 1
+          fi
+          cmake \
+              "-DFREECAD_PYTHON_STUBS_LAYOUT_ROOT=${stubs_dir}" \
+              -P src/Tools/typing/CheckStubLayout.cmake
+
       - name: Azure login for Windows build code signing
         id: azure_login
         if: runner.os == 'Windows'
