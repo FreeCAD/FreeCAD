@@ -522,7 +522,7 @@ bool AttachExtension::extensionHandleChangedPropertyName(
             tmp.setContainer(this->getExtendedContainer());
             tmp.Restore(reader);
             if (!tmp.getValues().empty()) {
-                AttachmentSupport.setValues(tmp.getValues(), tmp.getSubValues());
+                AttachmentSupport.Paste(tmp);
             }
             return true;
         }
