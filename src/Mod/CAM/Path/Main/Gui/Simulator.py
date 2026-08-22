@@ -19,6 +19,7 @@
 #                                                                              #
 ################################################################################
 
+import Constants
 import FreeCAD
 import Path
 import Path.Base.Util as PathUtil
@@ -243,19 +244,19 @@ class PathSimulation:
         cmd = self.opCommands[self.icmd]
         pathSolid = None
 
-        if cmd.Name in ("G0", "G00"):
+        if cmd.Name in Constants.GCODE_MOVE_RAPID:
             self.firstDrill = True
             self.curpos = self.RapidMove(cmd, self.curpos)
-        if cmd.Name in ("G1", "G01", "G2", "G02", "G3", "G03"):
+        if cmd.Name in Constants.GCODE_MOVE_MILL:
             self.firstDrill = True
             if self.skipStep:
                 self.curpos = self.RapidMove(cmd, self.curpos)
             else:
                 pathSolid, self.curpos = self.GetPathSolid(self.tool, cmd, self.curpos)
 
-        if cmd.Name == "G80":
+        if cmd.Name == Constants.GCODE_CYCLE_CANCEL:
             self.firstDrill = True
-        if cmd.Name in ("G73", "G81", "G82", "G83", "G84", "G85"):
+        if cmd.Name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
             if self.firstDrill:
                 extendcommand = Path.Command("G0", {"Z": cmd.r})
                 self.curpos = self.RapidMove(extendcommand, self.curpos)
@@ -304,9 +305,9 @@ class PathSimulation:
 
         cmd = self.opCommands[self.icmd]
         # for cmd in job.Path.Commands:
-        if cmd.Name in ("G0", "G00", "G1", "G01", "G2", "G02", "G3", "G03"):
+        if cmd.Name in Constants.GCODE_MOVE_RAPID + Constants.GCODE_MOVE_MILL:
             index = self.icmd
-            if cmd.Name in ("G2", "G02", "G3", "G03"):
+            if cmd.Name in Constants.GCODE_MOVE_ARC:
                 while cmd.z is None:
                     index -= 1
                     if index < 0:
@@ -315,13 +316,13 @@ class PathSimulation:
                     cmd.z = self.opCommands[index].z
 
             self.firstDrill = True
-            if cmd.Name in ("G2", "G02", "G3", "G03") and (cmd.k or 0) == 0:
+            if cmd.Name in Constants.GCODE_MOVE_ARC and (cmd.k or 0) == 0:
                 cx = self.curpos.Base.x + (cmd.i or 0)
                 cy = self.curpos.Base.y + (cmd.j or 0)
                 a0 = math.atan2(self.curpos.Base.y - cy, self.curpos.Base.x - cx)
                 a1 = math.atan2(cmd.y - cy, cmd.x - cx)
                 da = a1 - a0
-                if cmd.Name in ("G3", "G03"):
+                if cmd.Name in Constants.GCODE_MOVE_CCW:
                     da = da % (2 * math.pi)
                 else:
                     da = -((-da) % (2 * math.pi))
@@ -341,9 +342,9 @@ class PathSimulation:
             if not self.disableAnim:
                 self.cutTool.Placement = self.curpos
                 self.cutMaterial.Mesh, self.cutMaterialIn.Mesh = self.voxSim.GetResultMesh()
-        if cmd.Name == "G80":
+        if cmd.Name == Constants.GCODE_CYCLE_CANCEL:
             self.firstDrill = True
-        if cmd.Name in ("G73", "G81", "G82", "G83", "G84", "G85"):
+        if cmd.Name in Constants.GCODE_MOVE_DRILL + Constants.GCODE_DRILL_EXTENDED:
             extendcommands = []
             if self.firstDrill:
                 extendcommands.append(Path.Command("G0", {"Z": cmd.r}))

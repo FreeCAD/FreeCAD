@@ -191,7 +191,10 @@ bool GCodeParser::ParseLine(const char* ptr)
                 else if (cmd == 3) {
                     newState.cmd = eRotateCCW;
                 }
-                else if (cmd == 73 || cmd == 81 || cmd == 82 || cmd == 83 || cmd == 84 || cmd == 85) {
+                else if (
+                    cmd == 73 || cmd == 74 || cmd == 81 || cmd == 82 || cmd == 83 || cmd == 84
+                    || cmd == 85 || cmd == 88 || cmd == 89
+                ) {
                     newState.cmd = eDril;
                     newState.retract_z = lastState.z;
                 }
