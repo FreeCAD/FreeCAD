@@ -92,6 +92,7 @@
 #include "FeaturePartImportStep.h"
 #include "FeaturePartPolygon.h"
 #include "FeaturePartSection.h"
+#include "FeatureSectionAnalysis.h"
 #include "FeaturePartSpline.h"
 #include "FeatureProjectOnSurface.h"
 #include "FeatureRevolution.h"
@@ -470,6 +471,7 @@ PyMOD_INIT_FUNC(Part)
     Part::Fuse                  ::init();
     Part::MultiFuse             ::init();
     Part::Section               ::init();
+    Part::SectionAnalysis       ::init();
     Part::FilletBase            ::init();
     Part::Fillet                ::init();
     Part::Chamfer               ::init();
