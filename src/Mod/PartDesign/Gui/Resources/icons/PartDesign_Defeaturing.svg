@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64px"
+   height="64px"
+   id="svg2816"
+   version="1.1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2818" />
+  <metadata
+     id="metadata2821">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[jmaustpc]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:date>2013-03-17</dc:date>
+        <dc:relation>https://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/PartDesign/Gui/Resources/icons/PartDesign_Hole.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path
+     d="M 55.874048,36.921842 38.39683,54.28592 v 5.726641 L 55.874048,42.648447 Z"
+     style="fill:#3465a4;fill-rule:evenodd;stroke:#081221;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path102" />
+  <path
+     d="M 31.657724,5.9926846 14.180501,23.356785 C 27.554699,27.786345 38.39683,41.633792 38.39683,54.28592 L 55.874046,36.921842 c 0,-12.652129 -10.842131,-26.499597 -24.216322,-30.9291574 z"
+     style="fill:#729fcf;fill-rule:evenodd;stroke:#081221;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path101" />
+  <path
+     d="M 25.603172,3.9874633 8.1259518,21.351561 14.180511,23.356785 31.657724,5.9926846 Z"
+     style="fill:#729fcf;fill-rule:evenodd;stroke:#081221;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path100" />
+  <path
+     d="M 38.39683,60.012561 V 54.28592 c 0,-12.652128 -10.842131,-26.499575 -24.216329,-30.929135 L 8.1259518,21.351561 v 28.636697 z"
+     style="fill:#729fcf;fill-rule:evenodd;stroke:#081221;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path99" />
+  <path
+     d="m 31.657724,5.9926846 -17.19336,17.0800784 23.931641,7.925782 11.375,-11.302735 6.101562,-6.0625 z"
+     style="fill:#fce94f;fill-rule:evenodd;stroke:#292100;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1;stroke-opacity:1"
+     id="path8" />
+  <path
+     d="m 55.872567,13.63331 -6.101562,6.0625 -11.375,11.302735 V 54.285654 L 55.872567,36.92042 Z"
+     style="fill:#edd400;fill-rule:evenodd;stroke:#292100;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1;stroke-opacity:1"
+     id="path7" />
+  <path
+     d="M 38.396005,54.285654 V 30.998545 l -23.931641,-7.925782 -0.285156,0.283203 c 13.374198,4.42956 24.216797,18.27756 24.216797,30.929688 z"
+     style="fill:#fce94f;fill-rule:evenodd;stroke:#292100;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill-opacity:1;stroke-opacity:1"
+     id="path6" />
+  <path
+     d="m 10.134766,24.134766 v 24.402343 l 26.251953,8.691407 v -2.94336 c 0,-5.751888 -2.510211,-12.001283 -6.666016,-17.308594 -4.155805,-5.30731 -9.926205,-9.641712 -16.173828,-11.710937 z"
+     style="fill:#3465a4;fill-rule:evenodd;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+     id="path9" />
+  <path
+     d="M 53.863281,18.462891 51.1875,21.121094 40.40625,31.833984 V 49.455078 L 53.863281,36.083984 Z"
+     style="fill:#c4a000;fill-opacity:1;fill-rule:evenodd;stroke:#edd400;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+     id="path10" />
+  <path
+     d="m 32.212891,8.2734375 -14.011719,13.9179685 19.65625,6.509766 10.498047,-10.431641 3.74414,-3.720703 z"
+     style="fill:#edd400;fill-opacity:1;fill-rule:evenodd;stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+     id="path11" />
+</svg>

@@ -2379,6 +2379,44 @@ public:
             .makeElementChamfer(*this, edges, chamferType, radius1, radius2, op, flipDirection);
     }
 
+    /** Make a defeatured shape by removing faces from the source shape.
+     *
+     * @param source: the source shape
+     * @param faces: the faces of the source shape to remove
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a self reference so that multiple operations can be carried out
+     *         for the same shape in the same line of code.
+     */
+    TopoShape& makeElementDefeaturing(
+        const TopoShape& source,
+        const std::vector<TopoShape>& faces,
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    );
+
+    /** Make a defeatured shape by removing faces from this shape.
+     *
+     * @param faces: the faces of this shape to remove
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param elementMapPolicy: whether to propagate or drop mapped element names
+     *
+     * @return Return the new shape. The TopoShape itself is not modified.
+     */
+    TopoShape makeElementDefeaturing(
+        const std::vector<TopoShape>& faces,
+        const char* op = nullptr,
+        ElementMapPolicy elementMapPolicy = ElementMapPolicy::Propagate
+    ) const
+    {
+        return TopoShape(0, Hasher).makeElementDefeaturing(*this, faces, op, elementMapPolicy);
+    }
+
     /** Make a new shape with transformation
      *
      * @param source: input shape
