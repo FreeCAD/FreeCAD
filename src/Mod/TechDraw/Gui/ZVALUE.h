@@ -11,7 +11,7 @@ namespace ZVALUE {
     const int HIGHLIGHT = 50;
     const int HIDEDGE = 60;
     const int EDGE = 70;
-    const int VERTEX = 80;
+    const int VERTEX = 65;
     const int SECTIONLINE = 90;
     const int MATTING = 100;
     const int DIMENSION = 110;
