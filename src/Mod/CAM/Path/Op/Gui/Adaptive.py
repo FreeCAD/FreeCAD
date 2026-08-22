@@ -84,12 +84,10 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.StockToLeave.valueChanged)
         if hasattr(self.form.ForceInsideOut, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.ForceInsideOut.checkStateChanged)
-            signals.append(self.form.FinishingProfile.checkStateChanged)
             signals.append(self.form.useOutline.checkStateChanged)
             signals.append(self.form.useRestMachining.checkStateChanged)
         else:  # Qt version < 6.7.0
             signals.append(self.form.ForceInsideOut.stateChanged)
-            signals.append(self.form.FinishingProfile.stateChanged)
             signals.append(self.form.useOutline.stateChanged)
             signals.append(self.form.useRestMachining.stateChanged)
         signals.append(self.form.StopButton.toggled)
@@ -150,7 +148,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             self.form.StockToLeave.setProperty("rawValue", obj.StockToLeave.Value)
 
         self.form.ForceInsideOut.setChecked(obj.ForceInsideOut)
-        self.form.FinishingProfile.setChecked(obj.FinishingProfile)
         self.form.useOutline.setChecked(obj.UseOutline)
         self.form.useRestMachining.setChecked(obj.UseRestMachining)
         self.form.StopButton.setChecked(obj.Stopped)
@@ -188,7 +185,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             PathGuiUtil.updateInputField(obj, "StockToLeave", self.form.StockToLeave)
 
         obj.ForceInsideOut = self.form.ForceInsideOut.isChecked()
-        obj.FinishingProfile = self.form.FinishingProfile.isChecked()
         obj.UseOutline = self.form.useOutline.isChecked()
         obj.UseRestMachining = self.form.useRestMachining.isChecked()
         obj.Stopped = self.form.StopButton.isChecked()

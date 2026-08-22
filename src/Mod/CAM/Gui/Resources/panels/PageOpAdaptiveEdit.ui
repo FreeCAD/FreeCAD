@@ -90,13 +90,6 @@ Larger values (further to the right) will calculate faster; smaller values (furt
         </property>
        </widget>
       </item>
-      <item row="24" column="0">
-       <widget class="QCheckBox" name="FinishingProfile">
-        <property name="text">
-         <string>Finishing profile</string>
-        </property>
-       </widget>
-      </item>
       <item row="20" column="1">
        <widget class="Gui::QuantitySpinBox" name="StockToLeave" native="true">
         <property name="toolTip">
