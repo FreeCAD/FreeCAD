@@ -1519,6 +1519,10 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
         //else if (!isCommutative())
         //    needsParens = true;
     }
+    if (op == UNIT && !freecad_cast<NumberExpression*>(left)) {
+        needsParens = true;
+    }
+
     switch (op) {
     case NEG:
         s << "-" << (needsParens ? "(" : "") << left->toString(persistent) << (needsParens ? ")" : "");
