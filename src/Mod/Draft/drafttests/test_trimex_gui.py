@@ -79,6 +79,41 @@ class DraftTrimexGui(DraftTestCaseDoc):
             [App.Vector(20, 30, 0), App.Vector(30, 30, 0)],
         )
 
+    def test_extend_object_through_link(self):
+        """Trimex should write linked-instance geometry back locally."""
+        part = self.doc.addObject("App::Part", "Part")
+        horizontal = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+        vertical = Draft.make_line(App.Vector(20, -5, 0), App.Vector(20, 5, 0))
+        part.addObject(horizontal)
+        part.addObject(vertical)
+        link = self.doc.addObject("App::Link", "Link")
+        link.LinkedObject = part
+        link.Placement.Base = App.Vector(100, 100, 0)
+        self.doc.recompute()
+        selection = mock.Mock(Object=link, SubElementNames=(f"{horizontal.Name}.Edge1",))
+
+        obj, placement, shape = gui_trimex._resolve_selection(selection)
+        command = gui_trimex.Trimex()
+        command.obj = obj
+        command.placement = placement
+        command.edges = shape.Edges
+        command.ghost = [mock.Mock()]
+        command.activePoint = 0
+        command.force = None
+        command.doc = self.doc
+        command.extrudeMode = False
+        command.point = App.Vector(120, 100, 0)
+        command.snapped = {
+            "ParentObject": link,
+            "SubName": f"{vertical.Name}.Edge1",
+        }
+        command.shift = False
+        command.alt = False
+
+        command.trimObject()
+
+        self.assertEqual(horizontal.Points, [App.Vector(20, 0, 0), App.Vector(0, 0, 0)])
+
     def test_extend_to_object_in_translated_part(self):
         """Trimex should extend between world-space shapes in an App Part."""
         part = self.doc.addObject("App::Part", "Part")
