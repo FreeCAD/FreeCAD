@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doxygen version="1.0">
+  <compounddef kind="class">
+    <compoundname>App::Widget</compoundname>
+    <location file="src/App/Widget.h" line="10"/>
+    <briefdescription><para>A documented widget.</para></briefdescription>
+    <sectiondef kind="public-func">
+      <memberdef kind="function">
+        <name>Widget</name>
+        <argsstring>()</argsstring>
+        <location file="src/App/Widget.h" line="12"/>
+      </memberdef>
+      <memberdef kind="function">
+        <type>void</type>
+        <definition>void App::Widget::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <location file="src/App/Widget.h" line="14"/>
+      </memberdef>
+    </sectiondef>
+  </compounddef>
+</doxygen>

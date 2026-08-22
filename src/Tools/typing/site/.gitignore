@@ -1,0 +1,9 @@
+.astro/
+node_modules/
+dist/
+src/content/docs/python-api/
+src/content/docs/cpp-api/
+src/content/docs/python-api-manifest.json
+src/content/docs/cpp-api-manifest.json
+src/generated/python-api-sidebar.ts
+src/generated/cpp-api-sidebar.ts

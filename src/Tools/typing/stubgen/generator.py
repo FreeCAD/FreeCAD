@@ -9,7 +9,8 @@ modules:
 - ``source_inputs`` reads curated binding, module, and type stub inputs
 - ``render`` turns normalized bindings into textual stub fragments
 - ``module_merge`` assembles module bodies and support nodes
-- ``class_merge`` appends public class stubs and alias exports
+- ``class_merge`` normalizes binding classes and materializes model classes
+  plus alias exports
 
 Keep the command-facing pipeline wiring here. Discovery heuristics, source-input
 parsing, and AST merge behavior should live in the specialized modules instead
@@ -23,92 +24,53 @@ from pathlib import Path
 import shutil
 
 from .class_merge import (
-    append_class_stubs,
+    append_api_model_class_stubs,
+    normalize_api_model_binding_class_headers,
     validate_public_class_aliases,
+)
+from .diagnostics import (
+    MergeDiagnostic,
+    discovered_model_diagnostics,
+    generated_output_diagnostics,
 )
 from .module_merge import (
     copy_module_support_stubs,
     copy_overlay_stubs,
     copy_type_support_stubs,
     ensure_parent_package_stubs,
+    merge_api_module_aliases_into_stubs,
+    merge_api_module_attributes_into_stubs,
     module_stub_path,
     public_module_names,
-    public_stub_symbols,
 )
-from .discovery import (
-    group_methods,
-    group_type_methods_by_public_module,
-    module_names_from_type_methods,
-)
-from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
-from .render import type_stub_lines, write_stub_file
+from .model import BindingClass, BindingMethod, StubSignatureOverrides
+from .python_api.extract import extract_curated_api_model_with_diagnostics
+from .python_api.adapters import merge_discovered_bindings
+from .python_api.model import ApiModel
+from .render import write_stub_file
 
 
 def write_public_module_stubs(
     out_dir: Path,
-    methods: list[BindingMethod],
     module_names: set[str],
     stub_signature_overrides: StubSignatureOverrides,
+    api_model: ApiModel,
 ) -> None:
-    module_methods, _, _ = group_methods(methods)
+    api_modules = {module.name: module for module in api_model.modules}
     ensure_parent_package_stubs(out_dir, module_names)
-    for module_name, group in sorted(module_methods.items()):
+    module_names_to_write: set[str] = set()
+    module_names_to_write.update(
+        module.name
+        for module in api_model.modules
+        if module.functions or module.attributes or module.aliases
+    )
+    for module_name in sorted(module_names_to_write):
         write_stub_file(
             module_stub_path(out_dir, module_name, module_names),
-            group,
             stub_signature_overrides=stub_signature_overrides,
+            api_module=api_modules.get(module_name),
+            module_name=module_name,
         )
-
-
-def append_type_stubs(
-    out_dir: Path,
-    methods: list[BindingMethod],
-    type_registrations: dict[str, list[str]],
-    stub_signature_overrides: StubSignatureOverrides,
-    module_names: set[str] | None = None,
-    supplemental_groups: dict[str, list[PublicTypeGroup]] | None = None,
-) -> int:
-    module_names = module_names or module_names_from_type_methods(methods, type_registrations)
-    grouped = group_type_methods_by_public_module(methods, type_registrations)
-    seen = {
-        (module_name, type_group.class_symbol, type_group.variable_symbol)
-        for module_name, type_groups in grouped.items()
-        for type_group in type_groups
-    }
-    for module_name, type_groups in (supplemental_groups or {}).items():
-        for type_group in type_groups:
-            key = (module_name, type_group.class_symbol, type_group.variable_symbol)
-            if key in seen:
-                continue
-            seen.add(key)
-            grouped.setdefault(module_name, []).append(type_group)
-    count = 0
-    for module_name, type_groups in sorted(grouped.items()):
-        path = module_stub_path(out_dir, module_name, module_names)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        existing = path.read_text(encoding="utf-8") if path.exists() else ""
-        existing_symbols = public_stub_symbols(existing)
-        type_groups = [
-            type_group
-            for type_group in type_groups
-            if type_group.class_symbol not in existing_symbols
-            and (
-                not type_group.variable_symbol or type_group.variable_symbol not in existing_symbols
-            )
-        ]
-        if not type_groups:
-            continue
-        lines = "\n".join(
-            type_stub_lines(
-                type_groups,
-                stub_signature_overrides,
-                include_future_import=not existing.strip(),
-            )
-        ).rstrip()
-        separator = "\n\n" if existing else ""
-        path.write_text(existing.rstrip() + separator + lines + "\n", encoding="utf-8")
-        count += len(type_groups)
-    return count
 
 
 def markdown_report(methods: list[BindingMethod]) -> str:
@@ -158,6 +120,7 @@ def write_outputs(
     type_registrations: dict[str, list[str]],
     stub_signature_overrides: StubSignatureOverrides,
     overlay_dir: Path | None = None,
+    diagnostics: list[MergeDiagnostic] | None = None,
 ) -> int:
     validate_public_class_aliases(classes)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -165,18 +128,38 @@ def write_outputs(
         shutil.rmtree(out_dir / generated_dir, ignore_errors=True)
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
-    write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
+    api_model, model_diagnostics = extract_curated_api_model_with_diagnostics(
+        root,
+        source_dir,
+        binding_classes=classes,
+    )
+    module_names.update(module.name for module in api_model.modules)
+    if diagnostics is not None:
+        diagnostics.extend(model_diagnostics)
+    api_model = normalize_api_model_binding_class_headers(root, classes, api_model)
+    api_model = merge_discovered_bindings(
+        api_model,
+        methods,
+        type_registrations,
+        stub_signature_overrides,
+    )
+    module_names.update(module.name for module in api_model.modules)
+    if diagnostics is not None:
+        diagnostics.extend(discovered_model_diagnostics(classes, api_model))
+    write_public_module_stubs(
+        out_dir / "stubs",
+        module_names,
+        stub_signature_overrides,
+        api_model,
+    )
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )
     copy_module_support_stubs(root, source_dir, out_dir / "stubs", module_names)
-    append_type_stubs(
-        out_dir / "stubs",
-        methods,
-        type_registrations,
-        stub_signature_overrides,
-        module_names,
-    )
-    append_class_stubs(out_dir / "stubs", root, classes, module_names)
+    merge_api_module_attributes_into_stubs(out_dir / "stubs", api_model, module_names)
+    append_api_model_class_stubs(out_dir / "stubs", api_model, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    merge_api_module_aliases_into_stubs(out_dir / "stubs", api_model, module_names)
+    if diagnostics is not None:
+        diagnostics.extend(generated_output_diagnostics(out_dir / "stubs", api_model, module_names))
     return overlay_count

@@ -166,6 +166,7 @@ pthreads-win32 = "*"
 
 [pypi-dependencies]
 freecad-stubs = "*"
+pyrefly = "==0.60.2"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]

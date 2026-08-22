@@ -21,8 +21,9 @@ import copy
 from pathlib import Path
 
 from .discovery import module_names_from_methods, module_names_from_type_methods
-from .model import BindingClass
+from .model import BindingClass, BindingMethod
 from .parsing import iter_module_stub_pyi_files, iter_type_stub_pyi_files
+from .python_api.model import ApiAlias, ApiAttribute, ApiModel, ApiModule
 from .source_inputs import parse_type_stub_target
 
 
@@ -55,7 +56,7 @@ def module_names_from_overlays(overlay_dir: Path | None) -> set[str]:
 
 
 def public_module_names(
-    methods,
+    methods: list[BindingMethod],
     classes: list[BindingClass],
     type_registrations: dict[str, list[str]],
     overlay_dir: Path | None,
@@ -486,6 +487,140 @@ def merge_module_support_nodes(target_source: str, support_source: str) -> str:
         target_body[:insertion_index] + support_nodes + target_body[insertion_index:]
     )
     return merged_module_source(target_source, target_tree)
+
+
+def api_attribute_source(attribute: ApiAttribute) -> str:
+    declaration = attribute.name
+    if attribute.annotation is not None:
+        declaration += f": {attribute.annotation}"
+    if attribute.value is not None:
+        declaration += f" = {attribute.value}"
+    return declaration
+
+
+def merge_api_module_attributes(
+    target_source: str,
+    api_module: ApiModule,
+) -> str:
+    """Add or replace curated module assignments from the API model."""
+
+    if not api_module.attributes:
+        return target_source
+
+    target_tree = ast.parse(target_source)
+    attributes = {attribute.name: attribute for attribute in api_module.attributes}
+    existing_symbols = top_level_defined_symbols(target_tree.body)
+    missing_nodes: list[ast.stmt] = []
+    changed = False
+    for index, node in enumerate(target_tree.body):
+        if not isinstance(node, (ast.Assign, ast.AnnAssign)):
+            continue
+        names = top_level_symbol_names(node)
+        if len(names) != 1:
+            continue
+        attribute = attributes.get(next(iter(names)))
+        if attribute is None:
+            continue
+        replacement = ast.parse(api_attribute_source(attribute)).body[0]
+        target_tree.body[index] = replacement
+        changed = True
+
+    for attribute in api_module.attributes:
+        if attribute.name in existing_symbols:
+            continue
+        missing_nodes.append(ast.parse(api_attribute_source(attribute)).body[0])
+
+    if missing_nodes:
+        insertion_index = overlay_insertion_index(target_tree.body)
+        target_tree.body = normalize_future_imports(
+            target_tree.body[:insertion_index] + missing_nodes + target_tree.body[insertion_index:]
+        )
+        changed = True
+
+    if not changed:
+        return target_source
+    return merged_module_source(target_source, target_tree)
+
+
+def merge_api_module_attributes_into_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    count = 0
+    for api_module in api_model.modules:
+        path = module_stub_path(target_dir, api_module.name, module_names)
+        if not path.exists():
+            continue
+        original = path.read_text(encoding="utf-8")
+        merged = merge_api_module_attributes(original, api_module)
+        if merged == original:
+            continue
+        path.write_text(merged, encoding="utf-8")
+        count += 1
+    return count
+
+
+def api_alias_import_line(module_name: str, alias: ApiAlias) -> str:
+    """Render one semantic alias using the target module's shortest import."""
+
+    public_module, public_symbol = alias.public_path.rsplit(".", 1)
+    target_module, target_symbol = alias.target_path.rsplit(".", 1)
+    if public_module != module_name:
+        raise ValueError(f"alias {alias.public_path!r} does not belong to module {module_name!r}")
+    if public_module == target_module:
+        return f"{public_symbol} = {target_symbol}"
+    if target_module.startswith(f"{module_name}."):
+        relative_module = target_module.removeprefix(module_name)
+        return f"from {relative_module} import {target_symbol} as {public_symbol}"
+    return f"from {target_module} import {target_symbol} as {public_symbol}"
+
+
+def merge_api_module_aliases(
+    target_source: str,
+    api_module: ApiModule,
+) -> str:
+    """Add semantic re-exports that are absent from a generated module stub."""
+
+    if not api_module.aliases:
+        return target_source
+
+    target_tree = ast.parse(target_source)
+    existing_symbols = top_level_defined_symbols(target_tree.body)
+    alias_nodes: list[ast.stmt] = []
+    for alias in api_module.aliases:
+        public_symbol = alias.public_path.rsplit(".", 1)[-1]
+        if public_symbol in existing_symbols:
+            continue
+        alias_nodes.append(ast.parse(api_alias_import_line(api_module.name, alias)).body[0])
+        existing_symbols.add(public_symbol)
+    if not alias_nodes:
+        return target_source
+
+    insertion_index = overlay_insertion_index(target_tree.body)
+    target_tree.body = normalize_future_imports(
+        target_tree.body[:insertion_index] + alias_nodes + target_tree.body[insertion_index:]
+    )
+    return merged_module_source(target_source, target_tree)
+
+
+def merge_api_module_aliases_into_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
+) -> int:
+    count = 0
+    for api_module in api_model.modules:
+        path = module_stub_path(target_dir, api_module.name, module_names)
+        if not path.exists():
+            continue
+        original = path.read_text(encoding="utf-8")
+        merged = merge_api_module_aliases(original, api_module)
+        if merged == original:
+            continue
+        path.write_text(merged, encoding="utf-8")
+        count += 1
+    return count
 
 
 def merge_type_class_support_nodes(
