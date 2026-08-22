@@ -1,113 +1,172 @@
-<a href="https://freecad.org"><img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px"></a>
+# cadx
 
-### Your own 3D Parametric Modeler
+**prompt-native cad.**
 
-[Website](https://www.freecad.org) •
-[Documentation](https://wiki.freecad.org) •
-[Forum](https://forum.freecad.org/) •
-[Bug tracker](https://github.com/FreeCAD/FreeCAD/issues) •
-[Git repository](https://github.com/FreeCAD/FreeCAD) •
-[Blog](https://blog.freecad.org)
+cadx is an ai-native cad harness that turns design intent into validated parametric models.
 
+Autodesk Fusion is the first geometry backend and visual environment, accessed through its official MCP server and Python API. cadx maintains its own backend-neutral representation of design intent so the system can eventually support—or become—a standalone cad runtime.
 
-[![Release](https://img.shields.io/github/release/freecad/freecad.svg)](https://github.com/freecad/freecad/releases/latest) [![Crowdin](https://d322cqt584bo4o.cloudfront.net/freecad/localized.svg)](https://crowdin.com/project/freecad)
+## why cadx?
 
-<img src="/.github/images/partdesign.png" width="800"/>
+traditional cad systems are designed around direct manipulation: selecting faces, opening dialogs, and editing feature timelines by hand.
 
-Overview
---------
+ai-native cad needs a different control layer:
 
-* **Freedom to build what you want**  FreeCAD is an open-source parametric 3D 
-modeler made primarily to design real-life objects of any size. 
-Parametric modeling allows you to easily modify your design by going back into 
-your model history to change its parameters. 
+- structured design intent
+- semantic references to parts and features
+- deterministic operations
+- geometric validation
+- revision and recovery mechanisms
+- iterative inspect–modify–verify loops
+- portability across geometry backends
 
-* **Create 3D from 2D and back** FreeCAD lets you sketch geometry-constrained
- 2D shapes and use them as a base to build other objects.
- It contains many components to adjust dimensions or extract design details from 
- 3D models to create high quality production-ready drawings.
+cadx provides that layer.
 
-* **Designed for your needs** FreeCAD is designed to fit a wide range of uses
-including product design, mechanical engineering and architecture,
-whether you are a hobbyist, programmer, experienced CAD user, student or teacher.
+## architecture
 
-* **Cross platform** FreeCAD runs on Windows, macOS and Linux operating systems.
+```mermaid
+flowchart TD
+    P["natural-language prompt"] --> H["cadx agent harness"]
+    H --> G["design-intent graph"]
+    G --> D["backend-neutral design patch"]
+    D --> A["Fusion adapter"]
+    A --> M["Autodesk Fusion MCP"]
+    M --> API["Fusion Python API"]
+    API --> F["parametric Fusion model"]
+    F --> V["inspection and validation"]
+    V --> G
+```
 
-* **Underlying technology**
-    * **OpenCASCADE** A powerful geometry kernel, the most important component of FreeCAD
-    * **Coin3D library** Open Inventor-compliant 3D scene representation model
-    * **Python** FreeCAD offers a broad Python API
-    * **Qt** Graphical user interface built with Qt
+Fusion owns evaluated geometry, rendering, the feature timeline, assemblies, and exported artifacts.
 
+cadx owns requirements, semantic design intent, operation history, validation rules, and backend-independent modeling plans.
 
-Installing
-----------
+STEP ingestion follows a stricter path because imported parts must remain useful
+outside Fusion:
 
-Precompiled packages for stable releases are available for Windows, macOS and Linux on the
-[latest releases page](https://github.com/FreeCAD/FreeCAD/releases/latest).
+```mermaid
+flowchart LR
+    S["STEP artifact"] --> P["lossless Part 21 document"]
+    P --> G["typed cadx graph"]
+    G --> IR["neutral analytic B-rep IR"]
+    IR --> DP["dependency-ordered construction plan"]
+    S --> O["mandatory OpenCascade transfer"]
+    O --> X["graph/source topology baseline"]
+    DP --> X
+    X --> FP["Fusion reconstruction program or STEP-import plan"]
+    FP --> MCP["Fusion MCP"]
+    MCP --> OBS["observations and mappings"]
+    OBS --> E["evidence bundle"]
+```
 
-On most Linux distributions, FreeCAD is also directly installable from the 
-software center application.
+The Part 21 graph preserves products, occurrences, topology, source spans, and
+unsupported entities. A versioned neutral reconstruction IR is decoded from the
+serialized graph alone and dependency-ordered from points through solids.
+OpenCascade independently proves that the source can be transferred into B-rep
+topology and provides the current parity baseline. Fusion is an adapter after
+those checks, not the owner of the imported representation. The current live
+path still uses STEP import; the graph-derived Fusion program is emitted as
+debug evidence until its `BRepBodyDefinition` script emitter is complete.
 
-For weekly development releases visit the [releases page](https://github.com/FreeCAD/FreeCAD/releases/).
+## example
 
-Other options are described on the [wiki Download page](https://wiki.freecad.org/Download).
+a request such as:
 
-Compiling
----------
+> create an 80 × 50 × 6 mm mounting plate with four M4 clearance holes, preserving 8 mm edge offsets.
 
-See the [Developers Handbook – Getting Started](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
-for build instructions.
+becomes a structured design patch describing:
 
+- named parameters
+- sketch geometry
+- dimensional constraints
+- feature operations
+- semantic entities
+- expected measurements
+- validation conditions
 
-Reporting Issues
----------
+the Fusion adapter compiles that patch into Python API operations, executes it through Fusion’s MCP server, inspects the result, and either commits the revision or repairs the design.
 
-To report an issue please:
+## design principles
 
-- Consider posting to the [Forum](https://forum.freecad.org), [Discord](https://discord.com/invite/w2cTKGzccC) channel, or [Reddit](https://www.reddit.com/r/FreeCAD) to verify the issue; 
-- Search the existing [issues](https://github.com/FreeCAD/FreeCAD/issues) for potential duplicates; 
-- Use the most updated stable or [development versions](https://github.com/FreeCAD/FreeCAD/releases/) of FreeCAD; 
-- Post version info from `Help > About FreeCAD > Copy to clipboard`; 
-- Restart FreeCAD in safe mode `Help > Restart in safe mode` and try to reproduce the issue again. If the issue is resolved it can be fixed by deleting the FreeCAD config files.
-- Start recording a macro `Macro > Macro recording...` and repeat all steps. Stop recording after the issue occurs and upload the saved macro or copy the macro code in the issue; 
-- Post a Step-By-Step explanation on how to recreate the issue; 
-- Upload an example file (FCStd as ZIP file) to demonstrate the problem; 
+- **intent is persistent.** designs retain requirements and relationships, not just final geometry.
+- **geometry is verified.** every meaningful operation should produce machine-checkable evidence.
+- **references are semantic.** agents refer to `mounting_face` and `bolt_pattern`, not fragile face indices.
+- **operations are recoverable.** changes are revisioned, validated, and reversible.
+- **backends are replaceable.** Fusion-specific identifiers and API calls remain inside the Fusion adapter.
+- **prompts are the primary interface.** the system does not depend on manual cad editing.
 
-For more details see:
+## initial scope
 
-- [Bug Tracker](https://github.com/FreeCAD/FreeCAD/issues)
-- [Reporting Issues and Requesting Features](https://github.com/FreeCAD/FreeCAD/issues/new/choose)
-- [Contributing](https://github.com/FreeCAD/FreeCAD/blob/main/CONTRIBUTING.md)
-- [Help Forum](https://forum.freecad.org/viewforum.php?f=3)
+the first cadx runtime will:
 
-> [!NOTE]
-The [FPA](https://fpa.freecad.org) offers developers the opportunity
-to apply for a grant to work on projects of their choosing. Check
-[jobs and funding](https://blog.freecad.org/jobs/) to know more.
+- connect to the official Autodesk Fusion MCP server
+- inspect the active Fusion document
+- maintain a normalized design-intent graph
+- generate and execute Fusion Python scripts
+- create and modify parametric parts
+- resolve semantic references to Fusion entities
+- measure and validate resulting geometry
+- capture visual verification
+- record revisions and recover from failures
 
+## long-term direction
 
-Usage & Getting Help
---------------------
+cadx will gradually separate ai-driven design from any single cad application.
 
-The FreeCAD wiki contains documentation on 
-general FreeCAD usage, Python scripting, and development.
-View these pages for more information:
+future backends may provide their own:
 
-- [Getting started](https://wiki.freecad.org/Getting_started)
-- [Features list](https://wiki.freecad.org/Feature_list)
-- [Frequent questions](https://wiki.freecad.org/FAQ/en)
-- [Workbenches](https://wiki.freecad.org/Workbenches)
-- [Scripting](https://wiki.freecad.org/Power_users_hub)
-- [Developers Handbook](https://freecad.github.io/DevelopersHandbook/)
+- geometry kernel
+- sketch constraint solver
+- parametric feature evaluator
+- assembly system
+- renderer
+- import and export pipeline
 
-The [FreeCAD forum](https://forum.freecad.org) is a great place
-to find help and solve specific problems when learning to use FreeCAD.
+designs expressed through the portable cadx representation should remain reproducible as those backends evolve.
 
----
+## status
 
-<p>This project receives generous infrastructure support from
-  <a href="https://www.digitalocean.com/">
-    <img src="https://opensource.nyc3.cdn.digitaloceanspaces.com/attribution/assets/SVG/DO_Logo_horizontal_blue.svg" width="91px">
-  </a> and <a href="https://www.kipro-pcb.com/">KiCad Services Corp.</a>
-</p>
+cadx is in early development. interfaces, schemas, and modeling conventions will change rapidly while the first end-to-end workflows are established.
+
+## development
+
+- [testing strategy](docs/testing.md)
+- [architecture and crate boundaries](docs/architecture.md)
+- [debugging ingestion failures](docs/debugging.md)
+- [STEP fixture corpus](tests/fixtures/step/README.md)
+
+The first native build compiles OpenCascade and requires Rust plus CMake. On
+macOS with Homebrew:
+
+```sh
+brew install rust cmake
+cargo test --workspace
+```
+
+Compile a plan and evidence bundle without changing Fusion:
+
+```sh
+cargo run -p cadx-cli -- ingest \
+  tests/fixtures/step/valid/ap214-simple-solid.stp \
+  --fusion plan
+```
+
+Exercise the complete protocol against the deterministic mock:
+
+```sh
+cargo run -p cadx-cli -- ingest \
+  tests/fixtures/step/valid/ap214-simple-solid.stp \
+  --fusion mock
+```
+
+Live Fusion execution is explicit:
+
+```sh
+cargo run -p cadx-cli -- ingest part.step \
+  --fusion live \
+  --endpoint http://127.0.0.1:27182/mcp
+```
+
+On Fusion 2704, an untagged source is imported into a new unsaved design because
+the existing-component STEP APIs currently return an internal validation error.
+An already tagged imported design is reused and reconciled without duplication.
