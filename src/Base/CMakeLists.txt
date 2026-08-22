@@ -269,6 +269,7 @@ SET(FreeCADBase_CPP_SRCS
     Stream.cpp
     StringUtils.cpp
     Swap.cpp
+    NumericFormatting.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
     Tools.cpp
@@ -320,6 +321,7 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
+    NumericFormatting.h
     Observer.h
     Parameter.h
     ParameterObserver.h
