@@ -1,25 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileCopyrightText: 2017 sliptonic shopinthewoods@gmail.com
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# ***************************************************************************
-# *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import FreeCAD
 import FreeCADGui
@@ -55,11 +53,20 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         # add editor with lines enumeration
         self.editor = CodeEditor()
         toolTip = (
-            "Form to enter G-code"
-            "\n\nTo add an expression, surround string with characters '{{expression}}'"
+            "Post processing can reformat G-code added in custom operations."
+            "\nThis includes reordering parameters, stripping unsupported parameters, "
+            "\nchanging the number of decimals behind numbers, "
+            "\nand converting feed rate from an internal system to the current units."
+            "\n\nPost processing the commands is useful for freecad macros "
+            "and using similar code on multiple machines."
+            "\n\nSurround expressing characters with {{expression}}"
             "\nExample:"
             "\nG0 Z{{VarSet.HeightZ.Value+5}}"
-            "\nG0 X{{Profile.Path.Commands[3].x}} Y{{Profile.Path.Commands[3].y}}"
+            "\nG0 X{{Profile.PathCommands[3].x}} Y{{Profile.Path.Commands[3].y}}"
+            "\n\nUse ! at the start of the line to individually disable post processing "
+            "on a given line when 'Post Process Output' is enabled"
+            "\nExample:"
+            "\n!#101 = 2"
         )
         self.editor.setToolTip(toolTip)
         form.txtGCodeBox.layout().removeWidget(form.txtGCode)
@@ -76,12 +83,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             obj.GcodeFile = str(self.form.fileName.text())
         if obj.Gcode != str(self.editor.toPlainText().split("\n")):
             obj.Gcode = self.editor.toPlainText().split("\n")
+        if obj.PostProcessOutput != self.form.chkAsIs.isChecked():
+            obj.PostProcessOutput = self.form.chkAsIs.isChecked()
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.selectInComboBox(obj.Source, self.form.source)
         self.form.fileName.setText(obj.GcodeFile)
         self.editor.setText("\n".join(obj.Gcode))
+        self.form.chkAsIs.setChecked(obj.PostProcessOutput)
 
         self.updateVisibility()
 
@@ -91,6 +101,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.source.currentIndexChanged)
         signals.append(self.form.fileName.editingFinished)
         signals.append(self.editor.textChanged)
+        signals.append(self.form.chkAsIs.checkStateChanged)
 
         return signals
 
