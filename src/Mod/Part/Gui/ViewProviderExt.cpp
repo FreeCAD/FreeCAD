@@ -83,7 +83,6 @@
 #include <Gui/ViewParams.h>
 #include <Gui/Utilities.h>
 
-#include <Mod/Part/App/ShapeMapHasher.h>
 #include <Mod/Part/App/Tools.h>
 
 #include "ViewProviderExt.h"
@@ -1060,7 +1059,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     int numTriangles = 0,
         numNodes = 0, numNorms = 0, numFaces = 0, numEdges = 0, numLines = 0;
 
-    std::set<int> faceEdges;
+    std::unordered_set<TopoDS_Shape> faceEdges;
 
     // calculating the deflection value
     Standard_Real deflection = Part::Tools::getDeflection(shape, deviation);
@@ -1117,9 +1116,8 @@ void ViewProviderPartExt::setupCoinGeometry(
             numNorms += mesh->NbNodes();
         }
 
-        TopExp_Explorer xp;
-        for (xp.Init(faceMap(i), TopAbs_EDGE); xp.More(); xp.Next()) {
-            faceEdges.insert(Part::ShapeMapHasher {}(xp.Current()));
+        for (TopExp_Explorer xp(faceMap(i), TopAbs_EDGE); xp.More(); xp.Next()) {
+            faceEdges.insert(xp.Current());
         }
         numFaces++;
     }
@@ -1149,8 +1147,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         // So, we have to store the hashes of the edges associated to a face.
         // If the hash of a given edge is not in this list we know it's really
         // a free edge.
-        int hash = Part::ShapeMapHasher {}(aEdge);
-        if (faceEdges.find(hash) == faceEdges.end()) {
+        if (!faceEdges.contains(aEdge)) {
             Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
             if (!aPoly.IsNull()) {
                 int nbNodesInEdge = aPoly->NbNodes();
@@ -1354,8 +1351,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         TopLoc_Location aLoc;
 
         // handling of the free edge that are not associated to a face
-        int hash = Part::ShapeMapHasher {}(aEdge);
-        if (faceEdges.find(hash) == faceEdges.end()) {
+        if (!faceEdges.contains(aEdge)) {
             Handle(Poly_Polygon3D) aPoly = Part::Tools::polygonOfEdge(aEdge, aLoc);
             if (!aPoly.IsNull()) {
                 if (!aLoc.IsIdentity()) {
