@@ -84,7 +84,9 @@ def _resolve_selection(sel):
         placement = sel.Object.getSubObject(subname, 3)
         shape = _get_global_shape(sel.Object, subname)
     else:
-        placement = obj.getGlobalPlacement() if hasattr(obj, "getGlobalPlacement") else obj.Placement
+        placement = (
+            obj.getGlobalPlacement() if hasattr(obj, "getGlobalPlacement") else obj.Placement
+        )
         shape = _get_global_shape(obj)
     return obj, placement, shape
 
