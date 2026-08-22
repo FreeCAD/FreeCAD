@@ -19,6 +19,7 @@
 #include <App/Document.h>
 #include <App/FeatureTest.h>
 #include <App/MainThreadSignal.h>
+#include <Base/Parameter.h>
 #include <Gui/AsyncTaskRecompute.h>
 #include <src/App/InitApplication.h>
 
@@ -161,6 +162,25 @@ TEST_F(AsyncTaskRecomputeTest, CompletionIsDeliveredOnMainThread)
     EXPECT_TRUE(task.hasCurrentSuccessfulPreview());
 }
 
+TEST_F(AsyncTaskRecomputeTest, AsyncRecomputePreferenceIsRespected)
+{
+    auto preferences = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Document"
+    );
+    const bool previous = preferences->GetBool("EnableAsyncRecompute", true);
+    BOOST_SCOPE_EXIT_ALL(&)
+    {
+        preferences->SetBool("EnableAsyncRecompute", previous);
+    };
+
+    Gui::AsyncTaskRecompute task;
+    preferences->SetBool("EnableAsyncRecompute", false);
+    EXPECT_FALSE(task.isAsyncRecomputeEnabled());
+
+    preferences->SetBool("EnableAsyncRecompute", true);
+    EXPECT_TRUE(task.isAsyncRecomputeEnabled());
+}
+
 TEST_F(AsyncTaskRecomputeTest, CancellationInvalidatesCurrentPreview)
 {
     auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(
@@ -236,6 +256,35 @@ TEST_F(AsyncTaskRecomputeTest, DebouncedBurstRunsOnlyLatestPreview)
     EXPECT_TRUE(processUntil([&] { return callbackCount == 1; }));
     EXPECT_EQ(feature->ExecCount.getValue(), 1);
     EXPECT_TRUE(task.hasCurrentSuccessfulPreview());
+}
+
+TEST_F(AsyncTaskRecomputeTest, SuccessfulPreviewCanBeSettledWithoutReexecution)
+{
+    auto* feature = dynamic_cast<App::FeatureTest*>(
+        _doc->addObject("App::FeatureTest", "PreviewFeature")
+    );
+    ASSERT_NE(feature, nullptr);
+    feature->touch();
+
+    Gui::AsyncTaskRecompute task;
+    bool callbackDone = false;
+    task.schedule(
+        App::RecomputeRequest::fromDocumentObject(*feature),
+        0,
+        [&](App::RecomputeResult& result) {
+            callbackDone = true;
+            EXPECT_TRUE(result.success);
+        }
+    );
+
+    ASSERT_TRUE(processUntil([&] { return callbackDone; }));
+    ASSERT_TRUE(task.hasCurrentSuccessfulPreview());
+    EXPECT_EQ(feature->ExecCount.getValue(), 1);
+
+    // This is the acceptance-side settlement used by the task integrations.
+    feature->purgeTouched();
+    EXPECT_FALSE(feature->mustRecompute());
+    EXPECT_EQ(feature->ExecCount.getValue(), 1);
 }
 
 TEST_F(AsyncTaskRecomputeTest, DestructionCancelsOutstandingCompletionSafely)

@@ -189,8 +189,18 @@ void ThicknessWidget::schedulePreview()
         return;
     }
 
-    auto request = App::RecomputeRequest::fromDocumentObject(*d->thickness, true);
-    d->recompute->schedule(std::move(request), 150, [this](App::RecomputeResult&) {
+    if (!d->recompute->isAsyncRecomputeEnabled()) {
+        d->recompute->cancel();
+        d->thickness->getDocument()->recomputeFeature(d->thickness);
+        return;
+    }
+
+    auto request = App::RecomputeRequest::fromDocumentObject(*d->thickness);
+    d->recompute->schedule(std::move(request), 150, [this](App::RecomputeResult& result) {
+        if (result.success && result.failure == App::RecomputeFailure::None
+            && d->thickness->isValid()) {
+            d->thickness->purgeTouched();
+        }
         completeDeferredAction();
     });
 }
@@ -231,7 +241,8 @@ void ThicknessWidget::completeDeferredAction()
         return;
     }
 
-    if (!d->recompute->hasCurrentSuccessfulPreview() || !d->thickness->isValid()) {
+    if (!d->recompute->hasCurrentSuccessfulPreview() || !d->thickness->isValid()
+        || d->thickness->mustRecompute()) {
         d->acceptRequested = false;
         return;
     }
@@ -355,18 +366,29 @@ bool ThicknessWidget::accept()
             return false;
         }
 
-        if (!d->recompute->hasCurrentSuccessfulPreview() || !d->thickness->isValid()) {
-            d->acceptRequested = true;
-            auto request = App::RecomputeRequest::fromDocument(*d->thickness->getDocument());
-            d->recompute->schedule(std::move(request), 0, [this](App::RecomputeResult&) {
-                completeDeferredAction();
-            });
-            return false;
+        const bool canReusePreview = d->recompute->hasCurrentSuccessfulPreview()
+            && d->thickness->isValid() && !d->thickness->mustRecompute();
+        if (!canReusePreview) {
+            if (d->recompute->isAsyncRecomputeEnabled()) {
+                d->acceptRequested = true;
+                auto request = App::RecomputeRequest::fromDocumentObject(*d->thickness);
+                d->recompute->schedule(std::move(request), 0, [this](App::RecomputeResult& result) {
+                    if (result.success && result.failure == App::RecomputeFailure::None
+                        && d->thickness->isValid()) {
+                        d->thickness->purgeTouched();
+                    }
+                    completeDeferredAction();
+                });
+                return false;
+            }
+
+            d->recompute->cancel();
+            d->thickness->getDocument()->recomputeFeature(d->thickness);
         }
 
-        // The expensive Thickness feature has already been computed by the
-        // accepted preview. Clear its touched state and settle only its
-        // dependents so accepting does not execute Thickness a second time.
+        // Keep the feature clean after a preview or final recompute, then
+        // settle only its dependents so accepting does not execute Thickness
+        // a second time.
         d->thickness->purgeTouched();
         if (!d->thickness->isValid()) {
             throw Base::CADKernelError(d->thickness->getStatusString());

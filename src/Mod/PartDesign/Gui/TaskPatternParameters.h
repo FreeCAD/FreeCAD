@@ -86,6 +86,7 @@ private:
     void updateSpacingLabels();
     void startAsyncPreview();
     void finishDeferredAction(bool previewSucceeded);
+    bool isAsyncPreviewEnabled() const;
 
     void bindProperties();
 

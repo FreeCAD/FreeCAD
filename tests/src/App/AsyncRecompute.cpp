@@ -148,6 +148,37 @@ struct CallbackResults
 
 }  // namespace
 
+TEST_F(AsyncRecomputeTest, RecursiveRequestChecksDependentWorkerSafety)
+{
+    auto* safeObject = dynamic_cast<App::FeatureTest*>(
+        _doc->addObject("App::FeatureTest", "SafeFeature")
+    );
+    auto* unsafeDependency = dynamic_cast<App::FeatureTestAttribute*>(
+        _doc->addObject("App::FeatureTestAttribute", "UnsafeDependency")
+    );
+    ASSERT_NE(safeObject, nullptr);
+    ASSERT_NE(unsafeDependency, nullptr);
+
+    safeObject->Link.setValue(unsafeDependency);
+    safeObject->touch();
+    unsafeDependency->touch();
+
+    auto request = App::RecomputeRequest::fromDocumentObject(*safeObject, true);
+    EXPECT_FALSE(App::GetApplication().canRecomputeRequestOnWorker(request));
+
+    const auto callerThread = std::this_thread::get_id();
+    std::thread::id callbackThread;
+    CallbackResults callbacks;
+    request.callback = [&](App::RecomputeRequest&, App::RecomputeResult& result) {
+        callbackThread = std::this_thread::get_id();
+        callbacks.add(result.failure);
+    };
+    App::GetApplication().queueRecomputeRequest(std::move(request));
+
+    ASSERT_TRUE(callbacks.waitForCount(1));
+    EXPECT_EQ(callbackThread, callerThread);
+}
+
 TEST_F(AsyncRecomputeTest, CloseDocumentCancelsActiveRequest)
 {
     auto* blocker = dynamic_cast<App::FeatureTestAsyncBlocker*>(

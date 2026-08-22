@@ -297,9 +297,14 @@ void TaskPatternParameters::exitReferenceSelectionMode()
 
 // --- SLOTS ---
 
+bool TaskPatternParameters::isAsyncPreviewEnabled() const
+{
+    return asyncRecompute && asyncRecompute->isAsyncRecomputeEnabled();
+}
+
 void TaskPatternParameters::recomputeFeature()
 {
-    if (asyncRecompute && !blockUpdate) {
+    if (isAsyncPreviewEnabled() && !blockUpdate) {
         kickUpdateViewTimer();
     }
     else {
@@ -310,7 +315,7 @@ void TaskPatternParameters::recomputeFeature()
 void TaskPatternParameters::onUpdateViewTimer()
 {
     // Recompute is triggered when parameters change and this timer fires
-    if (asyncRecompute) {
+    if (isAsyncPreviewEnabled()) {
         startAsyncPreview();
     }
     else {
@@ -329,10 +334,11 @@ void TaskPatternParameters::startAsyncPreview()
     }
 
     setupTransaction();
-    auto request = App::RecomputeRequest::fromDocumentObject(*pattern, true);
+    auto request = App::RecomputeRequest::fromDocumentObject(*pattern);
     asyncRecompute->schedule(std::move(request), 0, [this](App::RecomputeResult& result) {
         const bool succeeded = result.success && result.failure == App::RecomputeFailure::None;
-        if (succeeded) {
+        if (succeeded && getObject()->isValid()) {
+            getObject()->purgeTouched();
             getTopTransformedView()->refreshPreviewResult();
             updateSpacingLabels();
             updateUI();
@@ -473,7 +479,7 @@ void TaskPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             polarPattern->Axis.setValue(selObj, directions);
         }
         recomputeFeature();
-        if (!asyncRecompute) {
+        if (!isAsyncPreviewEnabled()) {
             updateUI();
         }
     }
@@ -533,17 +539,22 @@ void TaskPatternParameters::apply()
     // pending.
     if (updateViewTimer && updateViewTimer->isActive()) {
         updateViewTimer->stop();
-        if (asyncRecompute) {
+        if (isAsyncPreviewEnabled()) {
             acceptRequested = true;
             startAsyncPreview();
             return;
         }
         else {
+            asyncRecompute->cancel();
             recomputeFeature();
+            updateSpacingLabels();
+            updateUI();
         }
     }
 
-    if (asyncRecompute && !asyncRecompute->hasCurrentSuccessfulPreview()) {
+    if (isAsyncPreviewEnabled()
+        && (!asyncRecompute->hasCurrentSuccessfulPreview() || !pattern->isValid()
+            || pattern->mustRecompute())) {
         acceptRequested = true;
         startAsyncPreview();
     }

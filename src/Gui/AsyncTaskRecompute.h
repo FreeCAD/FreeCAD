@@ -50,6 +50,9 @@ public:
     bool isRunning() const;
     bool isSettling() const;
 
+    /// Whether callers should use the asynchronous recompute path.
+    bool isAsyncRecomputeEnabled() const;
+
     /// True only when the latest edit has a successfully completed request.
     bool hasCurrentSuccessfulPreview() const;
     std::uint64_t editSerial() const;

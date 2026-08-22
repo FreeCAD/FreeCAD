@@ -103,6 +103,11 @@ bool AsyncTaskRecompute::isSettling() const
     return static_cast<bool>(_activeCancellation);
 }
 
+bool AsyncTaskRecompute::isAsyncRecomputeEnabled() const
+{
+    return App::GetApplication().isAsyncRecomputeEnabled();
+}
+
 bool AsyncTaskRecompute::hasCurrentSuccessfulPreview() const
 {
     return !_pendingRequest && !_activeCancellation && _completedSerial == _editSerial

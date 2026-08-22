@@ -291,6 +291,24 @@ void markCanceledRecomputeResult(RecomputeResult& result)
     }
 }
 
+bool documentObjectCanRecomputeOnWorker(const DocumentObject& documentObject, bool recursive)
+{
+    if (!recursive) {
+        return documentObject.canRecomputeOnWorker();
+    }
+
+    try {
+        std::vector<DocumentObject*> roots {const_cast<DocumentObject*>(&documentObject)};
+        const auto recomputeObjects = Document::getDependencyList(roots, Document::DepSort);
+        return std::ranges::all_of(recomputeObjects, [](const DocumentObject* object) {
+            return object && object->canRecomputeOnWorker();
+        });
+    }
+    catch (const Base::BadGraphError&) {
+        return false;
+    }
+}
+
 RecomputeResult processRecomputeRequest(RecomputeRequest& request)
 {
     RecomputeResult result;
@@ -897,7 +915,7 @@ bool Application::isFineGrainedRecomputeEnabled()
 bool Application::canRecomputeRequestOnWorker(const RecomputeRequest& req) const
 {
     if (DocumentObject* documentObject = req.resolveDocumentObject()) {
-        return documentObject->canRecomputeOnWorker();
+        return documentObjectCanRecomputeOnWorker(*documentObject, req.recursive);
     }
 
     Document* document = req.resolveDocument();
