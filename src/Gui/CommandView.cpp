@@ -1424,7 +1424,7 @@ StdCmdViewHome::StdCmdViewHome()
 void StdCmdViewHome::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewHome\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewHome\")");
 }
 
 //===========================================================================
@@ -1448,7 +1448,7 @@ StdCmdViewBottom::StdCmdViewBottom()
 void StdCmdViewBottom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewBottom\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewBottom\")");
 }
 
 bool StdCmdViewBottom::isActive()
@@ -1477,7 +1477,7 @@ StdCmdViewFront::StdCmdViewFront()
 void StdCmdViewFront::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFront\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFront\")");
 }
 
 bool StdCmdViewFront::isActive()
@@ -1506,7 +1506,7 @@ StdCmdViewLeft::StdCmdViewLeft()
 void StdCmdViewLeft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewLeft\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewLeft\")");
 }
 
 bool StdCmdViewLeft::isActive()
@@ -1535,7 +1535,7 @@ StdCmdViewRear::StdCmdViewRear()
 void StdCmdViewRear::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRear\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewRear\")");
 }
 
 bool StdCmdViewRear::isActive()
@@ -1564,7 +1564,7 @@ StdCmdViewRight::StdCmdViewRight()
 void StdCmdViewRight::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRight\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewRight\")");
 }
 
 bool StdCmdViewRight::isActive()
@@ -1593,7 +1593,7 @@ StdCmdViewTop::StdCmdViewTop()
 void StdCmdViewTop::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTop\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewTop\")");
 }
 
 bool StdCmdViewTop::isActive()
@@ -1623,7 +1623,7 @@ StdCmdViewIsometric::StdCmdViewIsometric()
 void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewAxo\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewAxo\")");
 }
 
 bool StdCmdViewIsometric::isActive()
@@ -1651,7 +1651,7 @@ StdCmdViewDimetric::StdCmdViewDimetric()
 void StdCmdViewDimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewDimetric\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewDimetric\")");
 }
 
 bool StdCmdViewDimetric::isActive()
@@ -1679,7 +1679,7 @@ StdCmdViewTrimetric::StdCmdViewTrimetric()
 void StdCmdViewTrimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTrimetric\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewTrimetric\")");
 }
 
 bool StdCmdViewTrimetric::isActive()
@@ -1758,7 +1758,7 @@ StdCmdViewFitAll::StdCmdViewFitAll()
 void StdCmdViewFitAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFit\")");
 }
 
 bool StdCmdViewFitAll::isActive()
@@ -1787,7 +1787,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
 void StdCmdViewFitSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewSelection\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewSelection\")");
 }
 
 bool StdCmdViewFitSelection::isActive()
@@ -2094,7 +2094,7 @@ StdCmdViewVR::StdCmdViewVR()
 void StdCmdViewVR::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewVR\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewVR\")");
 }
 
 bool StdCmdViewVR::isActive()
@@ -2496,7 +2496,7 @@ StdCmdViewExample1::StdCmdViewExample1()
 void StdCmdViewExample1::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example1\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example1\")");
 }
 
 bool StdCmdViewExample1::isActive()
@@ -2524,7 +2524,7 @@ StdCmdViewExample2::StdCmdViewExample2()
 void StdCmdViewExample2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example2\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example2\")");
 }
 
 bool StdCmdViewExample2::isActive()
@@ -2552,7 +2552,7 @@ StdCmdViewExample3::StdCmdViewExample3()
 void StdCmdViewExample3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example3\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example3\")");
 }
 
 bool StdCmdViewExample3::isActive()
@@ -3996,7 +3996,7 @@ StdStoreWorkingView::StdStoreWorkingView()
 void StdStoreWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"StoreWorkingView\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"StoreWorkingView\")");
 }
 
 bool StdStoreWorkingView::isActive()
@@ -4024,7 +4024,7 @@ StdRecallWorkingView::StdRecallWorkingView()
 void StdRecallWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"RecallWorkingView\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"RecallWorkingView\")");
 }
 
 bool StdRecallWorkingView::isActive()
