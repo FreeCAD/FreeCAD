@@ -210,3 +210,6 @@ ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
 
 # G0 moves which can be replaced by G1 with No-Engagement Feed
 ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
+
+# Moves from linking generator
+ANNOT_LINKING = {"type": "linking"}
