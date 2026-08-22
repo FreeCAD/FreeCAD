@@ -56,6 +56,9 @@ public:
     /// Marks the preview as stale so the next updatePreview() recomputes it.
     void invalidatePreview();
 
+    /// Decides whether a property change left the preview stale. Follows the object's
+    /// own recompute by default, so overriding it is how a feature keeps its preview
+    /// through changes it does not depend on.
     virtual bool mustRecomputePreview();
 
     PyObject* getExtensionPyObject() override;
