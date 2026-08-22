@@ -112,7 +112,7 @@
          <string>%</string>
         </property>
         <property name="decimals">
-         <number>1</number>
+         <number>0</number>
         </property>
         <property name="minimum">
          <double>1.000000000000000</double>

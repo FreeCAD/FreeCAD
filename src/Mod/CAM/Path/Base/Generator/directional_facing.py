@@ -1,26 +1,24 @@
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *                                                                         *
-# *   Copyright (c) 2025 sliptonic sliptonic@freecad.org                    *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
-# *                                                                         *
-# *   FreeCAD is free software: you can redistribute it and/or modify it    *
-# *   under the terms of the GNU Lesser General Public License as           *
-# *   published by the Free Software Foundation, either version 2.1 of the  *
-# *   License, or (at your option) any later version.                       *
-# *                                                                         *
-# *   FreeCAD is distributed in the hope that it will be useful, but        *
-# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
-# *   Lesser General Public License for more details.                       *
-# *                                                                         *
-# *   You should have received a copy of the GNU Lesser General Public      *
-# *   License along with FreeCAD. If not, see                               *
-# *   <https://www.gnu.org/licenses/>.                                      *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2025 sliptonic sliptonic@freecad.org
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
+
 """
 Directional (unidirectional) facing toolpath generator.
 
@@ -37,6 +35,7 @@ This strategy always maintains either climb or conventional milling direction.
 
 import FreeCAD
 import Path
+import math
 from . import facing_common
 
 if False:
@@ -56,11 +55,6 @@ def directional(
     reverse=False,
     angle_degrees=None,
 ):
-
-    import math
-    import Path
-    import FreeCAD
-    from . import facing_common
 
     if pass_extension is None:
         pass_extension = tool_diameter * 0.5
@@ -85,21 +79,6 @@ def directional(
     )
 
     tool_radius = tool_diameter / 2.0
-    stepover_distance = tool_diameter * (stepover_percent / 100.0)
-
-    if stepover_percent >= 99.9 and step_positions:
-        min_covered = min(step_positions) - tool_radius
-        max_covered = max(step_positions) + tool_radius
-
-        added = False
-        if max_covered < max_t - 1e-4:
-            step_positions.append(step_positions[-1] + stepover_distance)
-            added = True
-        if min_covered > min_t + 1e-4:
-            step_positions.insert(0, step_positions[0] - stepover_distance)
-            added = True
-        if added:
-            Path.Log.info("Directional: Added extra pass(es) for full coverage at high stepover")
 
     # Reverse = mirror positions around center (exactly like bidirectional) to preserve engagement offset on the starting side
     if reverse:
@@ -109,14 +88,13 @@ def directional(
     Path.Log.debug(f"Directional (fixed): {len(step_positions)} passes")
 
     # Use full-length passes exactly like bidirectional (no slice_wire_segments)
-    total_extension = (
-        pass_extension
-        + tool_radius
-        + facing_common.calculate_engagement_offset(tool_diameter, stepover_percent)
-    )
-
+    total_extension = pass_extension + tool_radius
     start_s = min_s - total_extension
     end_s = max_s + total_extension
+
+    s_mid = (min_s + max_s) / 2.0
+    if start_s > s_mid or end_s < s_mid:
+        step_positions = []
 
     commands = []
     kept_segments = 0
@@ -155,47 +133,5 @@ def directional(
         kept_segments += 1
 
     Path.Log.debug(f"Directional: generated {kept_segments} segments")
-    # Fallback: if nothing kept due to numeric guards, emit a single mid-line pass across bbox
-    if kept_segments == 0:
-        t_candidates = []
-        # mid, min, max t positions
-        t_candidates.append(0.5 * (min_t + max_t))
-        t_candidates.append(min_t)
-        t_candidates.append(max_t)
-        for t in t_candidates:
-            intervals = facing_common.slice_wire_segments(polygon, primary_vec, step_vec, t, origin)
-            if not intervals:
-                continue
-            s0, s1 = intervals[0]
-            start_s = max(s0 - pass_extension, min_s - s_margin)
-            end_s = min(s1 + pass_extension, max_s + s_margin)
-            if end_s <= start_s:
-                continue
-            if milling_direction == "climb":
-                p_start, p_end = start_s, end_s
-            else:
-                p_start, p_end = end_s, start_s
-            if reverse:
-                p_start, p_end = p_end, p_start
-            sp = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_start))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            ep = (
-                FreeCAD.Vector(origin)
-                .add(FreeCAD.Vector(primary_vec).multiply(p_end))
-                .add(FreeCAD.Vector(step_vec).multiply(t))
-            )
-            sp.z = z
-            ep.z = z
-            # Minimal preamble
-            if retract_height is not None:
-                commands.append(Path.Command("G0", {"Z": retract_height}))
-                commands.append(Path.Command("G0", {"X": sp.x, "Y": sp.y}))
-                commands.append(Path.Command("G0", {"Z": z}))
-            else:
-                commands.append(Path.Command("G1", {"X": sp.x, "Y": sp.y, "Z": z}))
-            commands.append(Path.Command("G1", {"X": ep.x, "Y": ep.y, "Z": z}))
-            break
+
     return commands
