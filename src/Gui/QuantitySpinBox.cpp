@@ -65,6 +65,7 @@ public:
     QuantitySpinBoxPrivate(QuantitySpinBox* q)
         : validInput(true)
         , pendingEmit(false)
+        , updatingText(false)
         , normalize(true)
         , checkRangeInExpression(false)
         , adjustableWidth(false)
@@ -106,6 +107,7 @@ public:
     QLocale locale;
     bool validInput;
     bool pendingEmit;
+    bool updatingText;
     bool normalize;
     bool checkRangeInExpression;
     bool adjustableWidth;
@@ -342,14 +344,14 @@ void QuantitySpinBox::validateInput()
 
     const QString text = lineEdit()->text();
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
+    constexpr auto grammar = App::QuantityInputGrammar::Expression;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
     if (result.status == App::InputStatus::Acceptable) {
         auto quantity = *result.quantity;
         quantity.setFormat(d->quantity.getFormat());
+        const bool needsEmit = !d->validInput || d->validStr != text || d->pendingEmit;
         d->cached = quantity;
-        d->pendingEmit = true;
+        d->pendingEmit = needsEmit;
         d->validInput = true;
         d->validStr = text;
         d->lastRejectedText.clear();
@@ -475,7 +477,7 @@ bool QuantitySpinBox::isNormalized()
             return true;
         }
     }
-    catch (Base::Exception) {
+    catch (const Base::Exception&) {
         // The exception is intentionally ignored here and should be handled,
         // when the value is assigned
         return false;
@@ -569,9 +571,12 @@ bool QuantitySpinBox::hasValidInput() const
 void QuantitySpinBox::userInput(const QString& text)
 {
     Q_D(QuantitySpinBox);
+    if (d->updatingText) {
+        return;
+    }
+
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
+    constexpr auto grammar = App::QuantityInputGrammar::Expression;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Editing);
     d->lastRejectedText.clear();
     QToolTip::hideText();
@@ -647,7 +652,14 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
             d->pendingEmit = false;
             Q_EMIT valueChanged(res);
             Q_EMIT valueChanged(res.getValue());
-            Q_EMIT textChanged(text);
+            // While keyboard tracking is active, keep the user's exact text in the line edit.
+            // Re-emitting a schema-formatted string here can switch units at a threshold and
+            // feed a rounded display value back through the parser on the next keystroke.
+            if (updateUnit) {
+                d->updatingText = true;
+                Q_EMIT textChanged(text);
+                d->updatingText = false;
+            }
         }
     }
 }
@@ -1015,8 +1027,7 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
     Q_D(const QuantitySpinBox);
 
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
+    constexpr auto grammar = App::QuantityInputGrammar::Expression;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
     return result.quantity.value_or(Base::Quantity());
 }
@@ -1027,8 +1038,7 @@ QValidator::State QuantitySpinBox::validate(QString& text, int& pos) const
     Q_UNUSED(pos)
 
     const App::ObjectIdentifier& path = getPath();
-    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
-                                   : App::QuantityInputGrammar::Quantity;
+    constexpr auto grammar = App::QuantityInputGrammar::Expression;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Editing);
     return result.status == App::InputStatus::Acceptable ? QValidator::Acceptable
                                                          : QValidator::Intermediate;

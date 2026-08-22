@@ -283,7 +283,7 @@ void InputField::newInput(const QString& text)
     constraints.maximum = Maximum;
     const auto result = App::interpretQuantityInput(
         text.toUtf8().toStdString(),
-        isBound() ? App::QuantityInputGrammar::Expression : App::QuantityInputGrammar::Quantity,
+        App::QuantityInputGrammar::Expression,
         getPath(),
         actUnit,
         formatting,
@@ -336,7 +336,7 @@ void InputField::commitInput()
     constraints.maximum = Maximum;
     const auto result = App::interpretQuantityInput(
         text().toUtf8().toStdString(),
-        isBound() ? App::QuantityInputGrammar::Expression : App::QuantityInputGrammar::Quantity,
+        App::QuantityInputGrammar::Expression,
         getPath(),
         actUnit,
         formatting,
@@ -802,7 +802,7 @@ QValidator::State InputField::validate(QString& input, int& pos) const
     constraints.maximum = Maximum;
     const auto result = App::interpretQuantityInput(
         input.toUtf8().toStdString(),
-        isBound() ? App::QuantityInputGrammar::Expression : App::QuantityInputGrammar::Quantity,
+        App::QuantityInputGrammar::Expression,
         getPath(),
         actUnit,
         Gui::numericLocaleContextFor(locale()),

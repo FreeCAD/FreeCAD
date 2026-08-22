@@ -75,13 +75,18 @@ public:
 
 private Q_SLOTS:
 
+    void initTestCase()
+    {
+        Base::UnitsApi::setSchema("Internal");
+    }
+
     void init()
     {}
 
     void cleanup()
     {
         // some tests switch the unit schema, the next one has to start from the default again
-        Base::UnitsApi::setSchema(Base::UnitsApi::getDefSchemaNum());
+        Base::UnitsApi::setSchema("Internal");
     }
 
     void test_SimpleBaseUnit()  // NOLINT
@@ -470,6 +475,7 @@ private Q_SLOTS:
              .icuLocale = "en_US",
              .useQtSeparators = true}
         };
+        Base::UnitsApi::setSchema("FEM");
 
         ScopedExpressionOwner owner;
 
@@ -497,7 +503,9 @@ private Q_SLOTS:
             //
             // The widget still displays and accepts US-style text, but the
             // current implementation parses through the stale shared state.
-            tests::ScopedNumericLocaleContext staleFormatting {{"en_US", ",", ".", "+", "-", 3, 3}};
+            tests::ScopedNumericLocaleContext staleFormatting {
+                {"en_US", ",", ".", "+", "-", 3, 3, "0"}
+            };
 
             QTest::keyClicks(&spinBox, "12,345.67");
             QTest::keyClick(&spinBox, Qt::Key_Return);
@@ -516,6 +524,7 @@ private Q_SLOTS:
              .icuLocale = "en_US",
              .useQtSeparators = true}
         };
+        Base::UnitsApi::setSchema("FEM");
         ScopedExpressionOwner owner;
 
         Gui::QuantitySpinBox spinBox;
@@ -878,6 +887,7 @@ private Q_SLOTS:
              .icuLocale = "en_US",
              .useQtSeparators = true}
         };
+        Base::UnitsApi::setSchema("FEM");
 
         Gui::QuantitySpinBox spinBox;
         Base::Quantity quantity(10.0, "mm");

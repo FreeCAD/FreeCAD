@@ -11,6 +11,7 @@
 #include <App/DocumentObject.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Property.h>
+#include <Base/UnitsApi.h>
 
 #include "Gui/InputField.h"
 #include <src/LocaleTestHelpers.h>
@@ -70,6 +71,11 @@ public:
     }
 
 private Q_SLOTS:
+    void initTestCase()
+    {
+        Base::UnitsApi::setSchema("Internal");
+    }
+
     void test_MismatchedFormatterAndWidgetLocaleEditPreservesEnteredValue()  // NOLINT
     {
         tests::ScopedLocaleEnvironment localeState {
