@@ -35,7 +35,12 @@
 // actual drawing routines in Gui
 
 
+#include <algorithm>
+#include <limits>
+#include <vector>
+
 #include <BRepAlgo_NormalProjection.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
@@ -44,6 +49,7 @@
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepPrimAPI_MakeHalfSpace.hxx>
 #include <Bnd_Box.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <QtConcurrentRun>
@@ -51,6 +57,7 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Compound.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
@@ -96,6 +103,185 @@ using DU = DrawUtil;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(TechDraw::DrawViewPart, TechDraw::DrawView)
 
+const char* DrawViewPart::DisplayStyleEnums[] = {
+    "All Edges",
+    "Hidden Edges",
+    "Visible Edges",
+    "Shaded with Edges",
+    "Shaded",
+    nullptr
+};
+
+const char* DrawViewPart::BreakTypeEnums[] = {
+    QT_TRANSLATE_NOOP("DrawBrokenView", "None"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "ZigZag"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "Simple"),
+    QT_TRANSLATE_NOOP("DrawBrokenView", "Sinusoid"),
+    nullptr
+};
+
+namespace
+{
+
+constexpr double defaultBreakGap = 10.0;
+
+struct ViewBreakDefinition
+{
+    Base::Vector3d first;
+    Base::Vector3d second;
+    Base::Vector3d direction;
+    double low{0.0};
+    double high{0.0};
+    double gap{defaultBreakGap};
+    DrawViewPart::BreakType type{DrawViewPart::BreakType::ZIGZAG};
+};
+
+std::vector<ViewBreakDefinition> viewBreakDefinitions(const DrawViewPart& view)
+{
+    const auto& points = view.BreakPoints.getValues();
+    const auto& directions = view.BreakDirections.getValues();
+    const auto& gaps = view.BreakGaps.getValues();
+    const auto& types = view.BreakLineTypes.getValues();
+    const std::size_t count = points.size() / 2;
+
+    std::vector<ViewBreakDefinition> result;
+    result.reserve(count);
+    for (std::size_t index = 0; index < count; ++index) {
+        ViewBreakDefinition item;
+        item.first = points[index * 2];
+        item.second = points[index * 2 + 1];
+        item.direction = index < directions.size()
+            ? directions[index]
+            : item.second - item.first;
+        if (item.direction.Sqr() <= std::numeric_limits<double>::epsilon()) {
+            continue;
+        }
+        item.direction.Normalize();
+        const double firstLimit = item.first.Dot(item.direction);
+        const double secondLimit = item.second.Dot(item.direction);
+        item.low = std::min(firstLimit, secondLimit);
+        item.high = std::max(firstLimit, secondLimit);
+        if (item.high - item.low <= EWTOLERANCE) {
+            continue;
+        }
+        if (index < gaps.size()) {
+            item.gap = std::max(0.0, gaps[index]);
+        }
+        if (index < types.size()
+            && types[index] >= static_cast<long>(DrawViewPart::BreakType::NONE)
+            && types[index] <= static_cast<long>(DrawViewPart::BreakType::SINUSOID)) {
+            item.type = static_cast<DrawViewPart::BreakType>(types[index]);
+        }
+        result.push_back(item);
+    }
+    return result;
+}
+
+TopoDS_Shape makeHalfSpace(const Base::Vector3d& planePoint,
+                           const Base::Vector3d& planeNormal,
+                           const Base::Vector3d& pointInSpace)
+{
+    gp_Pln plane(Base::convertTo<gp_Pnt>(planePoint),
+                 Base::convertTo<gp_Dir>(planeNormal));
+    BRepBuilderAPI_MakeFace face(plane);
+    BRepPrimAPI_MakeHalfSpace halfSpace(
+        face.Face(), Base::convertTo<gp_Pnt>(pointInSpace));
+    return halfSpace.Solid();
+}
+
+TopoDS_Shape applyCut(const TopoDS_Shape& input,
+                      const ViewBreakDefinition& item)
+{
+    const Base::Vector3d lowPoint =
+        item.first.Dot(item.direction) <= item.second.Dot(item.direction)
+        ? item.first : item.second;
+    const Base::Vector3d highPoint =
+        item.first.Dot(item.direction) <= item.second.Dot(item.direction)
+        ? item.second : item.first;
+    const Base::Vector3d insideHigh =
+        lowPoint + item.direction * ((item.high - item.low) * 0.5);
+    const Base::Vector3d insideLow =
+        highPoint - item.direction * ((item.high - item.low) * 0.5);
+
+    BRepAlgoAPI_Cut lowCut(
+        input, makeHalfSpace(lowPoint, item.direction, insideHigh));
+    if (!lowCut.IsDone() || lowCut.Shape().IsNull()) {
+        return {};
+    }
+    BRepAlgoAPI_Cut highCut(
+        input, makeHalfSpace(highPoint, item.direction * -1.0, insideLow));
+    if (!highCut.IsDone() || highCut.Shape().IsNull()) {
+        return {};
+    }
+
+    BRep_Builder builder;
+    TopoDS_Compound result;
+    builder.MakeCompound(result);
+    builder.Add(result, lowCut.Shape());
+    builder.Add(result, highCut.Shape());
+    return result;
+}
+
+void appendPieces(const TopoDS_Shape& shape,
+                  TopAbs_ShapeEnum wanted,
+                  TopAbs_ShapeEnum avoid,
+                  std::vector<TopoDS_Shape>& result)
+{
+    TopExp_Explorer explorer(shape, wanted, avoid);
+    for (; explorer.More(); explorer.Next()) {
+        result.push_back(explorer.Current());
+    }
+}
+
+std::vector<TopoDS_Shape> breakPieces(const TopoDS_Shape& shape)
+{
+    std::vector<TopoDS_Shape> result;
+    appendPieces(shape, TopAbs_SOLID, TopAbs_SHAPE, result);
+    appendPieces(shape, TopAbs_SHELL, TopAbs_SOLID, result);
+    appendPieces(shape, TopAbs_FACE, TopAbs_SHELL, result);
+    appendPieces(shape, TopAbs_WIRE, TopAbs_FACE, result);
+    appendPieces(shape, TopAbs_EDGE, TopAbs_WIRE, result);
+    return result;
+}
+
+std::pair<double, double> limitsAlong(const TopoDS_Shape& shape,
+                                      const Base::Vector3d& direction)
+{
+    double low = std::numeric_limits<double>::max();
+    double high = std::numeric_limits<double>::lowest();
+    TopExp_Explorer vertices(shape, TopAbs_VERTEX);
+    for (; vertices.More(); vertices.Next()) {
+        const gp_Pnt point = BRep_Tool::Pnt(TopoDS::Vertex(vertices.Current()));
+        const double value =
+            Base::convertTo<Base::Vector3d>(point).Dot(direction);
+        low = std::min(low, value);
+        high = std::max(high, value);
+    }
+    return {low, high};
+}
+
+Base::Vector3d breakShift(const Base::Vector3d& point,
+                          const std::vector<ViewBreakDefinition>& breaks)
+{
+    Base::Vector3d result;
+    for (const auto& item : breaks) {
+        const double removed = item.high - item.low;
+        const double netRemoved = removed - item.gap;
+        const double coordinate = point.Dot(item.direction);
+        double factor = 0.0;
+        if (coordinate <= item.low) {
+            factor = 1.0;
+        }
+        else if (coordinate < item.high) {
+            factor = (item.high - coordinate) / removed;
+        }
+        result += item.direction * (netRemoved * factor);
+    }
+    return result;
+}
+
+} // namespace
+
 DrawViewPart::DrawViewPart()
     : geometryObject(nullptr),
       m_tempGeometryObject(nullptr),
@@ -106,6 +292,7 @@ DrawViewPart::DrawViewPart()
 {
     static const char* group = "Projection";
     static const char* sgroup = "HLR Parameters";
+    static const char* breakGroup = "Broken View";
 
     CosmeticExtension::initExtension(this);
 
@@ -147,6 +334,22 @@ DrawViewPart::DrawViewPart()
 
     ADD_PROPERTY_TYPE(ScrubCount, (Preferences::scrubCount()), sgroup, App::Prop_None,
                       "The number of times FreeCAD should try to clean the HLR result.");
+
+    ADD_PROPERTY_TYPE(BreakPoints, (Base::Vector3d()), breakGroup, App::Prop_None,
+                      "Pairs of 3D model points defining the two cut planes of each break.");
+    BreakPoints.setValues({});
+    ADD_PROPERTY_TYPE(BreakDirections, (Base::Vector3d()), breakGroup, App::Prop_None,
+                      "One 3D compression direction for each break.");
+    BreakDirections.setValues({});
+    ADD_PROPERTY_TYPE(BreakGaps, (defaultBreakGap), breakGroup, App::Prop_None,
+                      "One final gap size in millimetres for each break.");
+    BreakGaps.setValues({});
+    ADD_PROPERTY_TYPE(BreakLineTypes,
+                      (static_cast<long>(BreakType::ZIGZAG)),
+                      breakGroup,
+                      App::Prop_None,
+                      "One break-line style value for each break.");
+    BreakLineTypes.setValues({});
 
     //initialize bbox to non-garbage
     bbox = Base::BoundBox3d(Base::Vector3d(0.0, 0.0, 0.0), 0.0);
@@ -203,6 +406,184 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
     return result;
 }
 
+std::size_t DrawViewPart::getBreakCount() const
+{
+    return BreakPoints.getValues().size() / 2;
+}
+
+void DrawViewPart::addBreak(
+    const Base::Vector3d& firstPoint,
+    const Base::Vector3d& secondPoint,
+    const Base::Vector3d& direction,
+    double gap,
+    BreakType lineType
+)
+{
+    auto points = BreakPoints.getValues();
+    auto directions = BreakDirections.getValues();
+    auto gaps = BreakGaps.getValues();
+    auto types = BreakLineTypes.getValues();
+    points.push_back(firstPoint);
+    points.push_back(secondPoint);
+    directions.push_back(direction);
+    gaps.push_back(std::max(0.0, gap));
+    types.push_back(static_cast<long>(lineType));
+    BreakPoints.setValues(points);
+    BreakDirections.setValues(directions);
+    BreakGaps.setValues(gaps);
+    BreakLineTypes.setValues(types);
+}
+
+bool DrawViewPart::removeBreak(std::size_t index)
+{
+    auto points = BreakPoints.getValues();
+    if (index >= points.size() / 2) {
+        return false;
+    }
+    auto directions = BreakDirections.getValues();
+    auto gaps = BreakGaps.getValues();
+    auto types = BreakLineTypes.getValues();
+    points.erase(
+        points.begin() + static_cast<std::ptrdiff_t>(index * 2),
+        points.begin() + static_cast<std::ptrdiff_t>(index * 2 + 2)
+    );
+    if (index < directions.size()) {
+        directions.erase(directions.begin() + static_cast<std::ptrdiff_t>(index));
+    }
+    if (index < gaps.size()) {
+        gaps.erase(gaps.begin() + static_cast<std::ptrdiff_t>(index));
+    }
+    if (index < types.size()) {
+        types.erase(types.begin() + static_cast<std::ptrdiff_t>(index));
+    }
+    BreakPoints.setValues(points);
+    BreakDirections.setValues(directions);
+    BreakGaps.setValues(gaps);
+    BreakLineTypes.setValues(types);
+    return true;
+}
+
+DrawViewPart::BreakType DrawViewPart::getBreakType(std::size_t index) const
+{
+    const auto& values = BreakLineTypes.getValues();
+    if (index >= values.size() || values[index] < static_cast<long>(BreakType::NONE)
+        || values[index] > static_cast<long>(BreakType::SINUSOID)) {
+        return BreakType::ZIGZAG;
+    }
+    return static_cast<BreakType>(values[index]);
+}
+
+double DrawViewPart::getBreakGap(std::size_t index) const
+{
+    const auto& values = BreakGaps.getValues();
+    return index < values.size() ? std::max(0.0, values[index]) : defaultBreakGap;
+}
+
+void DrawViewPart::setBreakSourceCentroid(const Base::Vector3d& centroid)
+{
+    m_breakSourceCentroid = centroid;
+    m_breakResultCentroid = centroid;
+}
+
+TopoDS_Shape DrawViewPart::applyViewBreaks(const TopoDS_Shape& shape)
+{
+    const auto breaks = viewBreakDefinitions(*this);
+    if (breaks.empty()) {
+        m_breakResultCentroid = m_breakSourceCentroid;
+        return shape;
+    }
+
+    TopoDS_Shape cutShape = shape;
+    for (const auto& item : breaks) {
+        const TopoDS_Shape previous = cutShape;
+        cutShape = applyCut(cutShape, item);
+        if (cutShape.IsNull()) {
+            Base::Console().warning("%s: failed to apply an interactive break.\n", getNameInDocument());
+            cutShape = previous;
+        }
+    }
+
+    const auto pieces = breakPieces(cutShape);
+    if (pieces.empty()) {
+        return shape;
+    }
+
+    BRep_Builder builder;
+    TopoDS_Compound result;
+    builder.MakeCompound(result);
+    for (const auto& piece : pieces) {
+        Base::Vector3d shift;
+        for (const auto& item : breaks) {
+            const auto limits = limitsAlong(piece, item.direction);
+            if (limits.first != std::numeric_limits<double>::max()
+                && limits.second <= item.low + EWTOLERANCE) {
+                shift += item.direction * ((item.high - item.low) - item.gap);
+            }
+        }
+        builder.Add(result, ShapeUtils::moveShape(piece, shift));
+    }
+
+    m_breakResultCentroid = Base::convertTo<Base::Vector3d>(
+        ShapeUtils::findCentroid(result, getProjectionCS())
+    );
+    return result;
+}
+
+std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getBreakLinePoints(std::size_t index) const
+{
+    const auto& points = BreakPoints.getValues();
+    const auto breaks = viewBreakDefinitions(*this);
+    if (index >= points.size() / 2 || index >= breaks.size()) {
+        return {Base::Vector3d(), Base::Vector3d()};
+    }
+    const gp_Ax2 axes = getRotatedCS(m_breakResultCentroid);
+    const Base::Vector3d xAxis = Base::convertTo<Base::Vector3d>(axes.XDirection());
+    const Base::Vector3d yAxis = Base::convertTo<Base::Vector3d>(axes.YDirection());
+    auto project = [&](const Base::Vector3d& point) {
+        const Base::Vector3d compressed = point + breakShift(point, breaks);
+        const Base::Vector3d relative = compressed - m_breakResultCentroid;
+        return Base::Vector3d(relative.Dot(xAxis) * getScale(), relative.Dot(yAxis) * getScale(), 0.0);
+    };
+    return {project(points[index * 2]), project(points[index * 2 + 1])};
+}
+
+Base::Vector3d DrawViewPart::getBreakLineDirection(std::size_t index) const
+{
+    const auto breaks = viewBreakDefinitions(*this);
+    if (index >= breaks.size()) {
+        return Base::Vector3d();
+    }
+    const gp_Ax2 axes = getRotatedCS(m_breakResultCentroid);
+    const Base::Vector3d xAxis = Base::convertTo<Base::Vector3d>(axes.XDirection());
+    const Base::Vector3d yAxis = Base::convertTo<Base::Vector3d>(axes.YDirection());
+    const double normalX = breaks[index].direction.Dot(xAxis);
+    const double normalY = breaks[index].direction.Dot(yAxis);
+    Base::Vector3d tangent(-normalY, normalX, 0.0);
+    if (tangent.Sqr() > std::numeric_limits<double>::epsilon()) {
+        tangent.Normalize();
+    }
+    return tangent;
+}
+
+Base::Vector3d DrawViewPart::mapPointFromBrokenView(const Base::Vector3d& point2d) const
+{
+    const gp_Ax2 axes = getRotatedCS(m_breakResultCentroid);
+    const Base::Vector3d xAxis = Base::convertTo<Base::Vector3d>(axes.XDirection());
+    const Base::Vector3d yAxis = Base::convertTo<Base::Vector3d>(axes.YDirection());
+    const Base::Vector3d compressed = m_breakResultCentroid + xAxis * point2d.x + yAxis * point2d.y;
+    const auto breaks = viewBreakDefinitions(*this);
+    Base::Vector3d candidate = compressed;
+    for (int iteration = 0; iteration < 64; ++iteration) {
+        const Base::Vector3d next = compressed - breakShift(candidate, breaks);
+        if ((next - candidate).Sqr() < 1.0e-18) {
+            candidate = next;
+            break;
+        }
+        candidate = next;
+    }
+    return candidate;
+}
+
 //! pick vertex objects out of the Source properties and
 //! add them directly to the geometry without going through HLR
 void DrawViewPart::addPoints()
@@ -249,6 +630,13 @@ App::DocumentObjectExecReturn* DrawViewPart::execute()
         XDirection.purgeTouched();//don't trigger updates!
     }
 
+    setBreakSourceCentroid(Base::convertTo<Base::Vector3d>(
+        ShapeUtils::findCentroid(shape, getProjectionCS())));
+    if (getBreakCount() > 0) {
+        BRepBuilderAPI_Copy copy(shape);
+        shape = applyViewBreaks(copy.Shape());
+    }
+
     partExec(shape);
 
     return DrawView::execute();
@@ -265,7 +653,9 @@ short DrawViewPart::mustExecute() const
         || SmoothVisible.isTouched() || SeamVisible.isTouched() || IsoVisible.isTouched()
         || HardHidden.isTouched() || SmoothHidden.isTouched() || SeamHidden.isTouched()
         || IsoHidden.isTouched() || IsoCount.isTouched() || CoarseView.isTouched()
-        || CosmeticVertexes.isTouched() || CosmeticEdges.isTouched() || CenterLines.isTouched()) {
+        || CosmeticVertexes.isTouched() || CosmeticEdges.isTouched() || CenterLines.isTouched()
+        || BreakPoints.isTouched() || BreakDirections.isTouched()
+        || BreakGaps.isTouched() || BreakLineTypes.isTouched()) {
         return 1;
     }
 
