@@ -59,6 +59,26 @@ class DraftTrimexGui(DraftTestCaseDoc):
             [App.Vector(20, 30, 0), App.Vector(30, 30, 0)],
         )
 
+    def test_resolve_selection_through_link(self):
+        """Trimex should use the selected link instance coordinates."""
+        part = self.doc.addObject("App::Part", "Part")
+        line = Draft.make_line(App.Vector(0, 0, 0), App.Vector(10, 0, 0))
+        part.addObject(line)
+        link = self.doc.addObject("App::Link", "Link")
+        link.LinkedObject = part
+        link.Placement.Base = App.Vector(20, 30, 0)
+        self.doc.recompute()
+        selection = mock.Mock(Object=link, SubElementNames=(f"{line.Name}.Edge1",))
+
+        obj, placement, shape = gui_trimex._resolve_selection(selection)
+
+        self.assertEqual(obj, line)
+        self.assertEqual(placement.Base, App.Vector(20, 30, 0))
+        self.assertEqual(
+            [vertex.Point for vertex in shape.Vertexes],
+            [App.Vector(20, 30, 0), App.Vector(30, 30, 0)],
+        )
+
     def test_extend_to_object_in_translated_part(self):
         """Trimex should extend between world-space shapes in an App Part."""
         part = self.doc.addObject("App::Part", "Part")
