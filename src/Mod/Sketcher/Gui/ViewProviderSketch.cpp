@@ -1756,6 +1756,8 @@ void ViewProviderSketch::toggleWireSelection(int clickedGeoId)
         }
     }
 
+    Gui::SelectionHistoryBatcher historyBatch;
+
     for (const auto& edge : connectedEdges) {
         std::string selName = getSelectionName(edge.geoId);
         if (!selecting && isSelected(selName)) {
@@ -3422,6 +3424,7 @@ bool ViewProviderSketch::selectAll()
         return false;
     }
 
+    Gui::SelectionHistoryBatcher historyBatch;
     Gui::Selection().clearSelection();
 
     std::vector<std::string> batchSelection;
@@ -5597,9 +5600,11 @@ void ViewProviderSketch::generateContextMenu()
 }
 
 void ViewProviderSketch::preselectToSelection(const std::stringstream& ss,
-                                              const Base::Vector3d& pickedPoint,
-                                              bool toggle)
+                                               const Base::Vector3d& pickedPoint,
+                                               bool toggle)
 {
+    Gui::SelectionHistoryBatcher historyBatch;
+
     // If toggle true and preselection already selected remove from selection
     if (toggle && isSelected(ss.str())) {
         rmvSelection(ss.str());

@@ -1083,6 +1083,7 @@ void MDIViewPage::sceneSelectionChanged()
 
     bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
+    Gui::SelectionHistoryBatcher historyBatch;
 
     if (sceneSel.empty()) {
         if (!treeSel.empty()) {
@@ -1109,6 +1110,7 @@ void MDIViewPage::setTreeToSceneSelect()
 {
     bool saveBlock = blockSelection(true);// block selectionChanged signal from Tree/Observer
     blockSceneSelection(true);
+    Gui::SelectionHistoryBatcher historyBatch;
     Gui::Selection().clearSelection();
 
     for (auto* scene : m_orderedSceneSelection) {

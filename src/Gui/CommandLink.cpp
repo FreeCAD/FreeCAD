@@ -146,7 +146,7 @@ void StdCmdLinkMakeGroup::activated(int option)
         }
     }
 
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
 
     Command::openCommand(QT_TRANSLATE_NOOP("Command", "Make link group"));
@@ -160,7 +160,6 @@ void StdCmdLinkMakeGroup::activated(int option)
         );
         if (objs.empty()) {
             Selection().addSelection(doc->getName(), groupName.c_str());
-            Selection().selStackPush();
         }
         else {
             Command::doCommand(Command::Doc, "__objs__ = []");
@@ -226,7 +225,6 @@ void StdCmdLinkMakeGroup::activated(int option)
                 auto name = std::to_string(i) + ".";
                 Selection().addSelection(doc->getName(), groupName.c_str(), name.c_str());
             }
-            Selection().selStackPush();
         }
         if (option != 0) {
             Command::doCommand(
@@ -283,6 +281,7 @@ void StdCmdLinkMake::activated(int)
     }
 
     auto exec = [=](std::vector<App::DocumentObject*> objs) {
+        SelectionHistoryBatcher historyBatch;
         doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Make link"));
         try {
             if (objs.empty()) {
@@ -312,7 +311,6 @@ void StdCmdLinkMake::activated(int)
                     Selection().addSelection(doc->getName(), name.c_str());
                 }
             }
-            Selection().selStackPush();
             doc->commitTransaction();
         }
         catch (const Base::Exception& e) {
@@ -338,7 +336,7 @@ void StdCmdLinkMake::activated(int)
         Gui::Control().showDialog(new TaskCommandLinkDialog(exec));
     }
     else {
-        Selection().selStackPush();
+        SelectionHistoryBatcher historyBatch;
         Selection().clearCompleteSelection();
         exec(std::vector<App::DocumentObject*>(objs.begin(), objs.end()));
     }
@@ -391,7 +389,7 @@ void StdCmdLinkMakeRelative::activated(int)
             }
         }
 
-        Selection().selStackPush();
+        SelectionHistoryBatcher historyBatch;
         Selection().clearCompleteSelection();
 
         for (auto& v : linkInfo) {
@@ -417,7 +415,6 @@ void StdCmdLinkMakeRelative::activated(int)
 
             Selection().addSelection(doc->getName(), name.c_str());
         }
-        Selection().selStackPush();
         Command::commitCommand();
     }
     catch (const Base::Exception& e) {
@@ -483,7 +480,7 @@ static void linkConvert(bool unlink)
         return;
     }
 
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
 
     // now, do actual operation
@@ -898,7 +895,7 @@ void StdCmdLinkSelectLinked::activated(int)
         FC_WARN("invalid selection");
         return;
     }
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
     if (!subname.empty()) {
         Selection().addSelection(
@@ -920,7 +917,6 @@ void StdCmdLinkSelectLinked::activated(int)
             tree->selectLinkedObject(linked);
         }
     }
-    Selection().selStackPush();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -954,13 +950,12 @@ void StdCmdLinkSelectLinkedFinal::activated(int)
         FC_WARN("invalid selection");
         return;
     }
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
     const auto trees = getMainWindow()->findChildren<TreeWidget*>();
     for (auto tree : trees) {
         tree->selectLinkedObject(linked);
     }
-    Selection().selStackPush();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -994,13 +989,12 @@ void StdCmdLinkSelectAllLinks::activated(int)
     if (sels.empty()) {
         return;
     }
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
     const auto trees = getMainWindow()->findChildren<TreeWidget*>();
     for (auto tree : trees) {
         tree->selectAllLinks(sels[0].pObject);
     }
-    Selection().selStackPush();
 }
 
 

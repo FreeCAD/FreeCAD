@@ -369,7 +369,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum)
                 break;
             }
 
-            Gui::Selection().selStackPush();
+            Gui::SelectionHistoryBatcher historyBatch;
             Gui::Selection().clearSelection();
             for (auto& link : self->Support.getSubListValues()) {
                 auto obj = link.getValue();
@@ -391,7 +391,6 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum)
                     );
                 }
             }
-            Gui::Selection().selStackPush();
             break;
         }
         default:

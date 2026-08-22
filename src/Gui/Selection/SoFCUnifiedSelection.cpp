@@ -867,7 +867,10 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo>& infos, bo
     static char buf[513];
     auto subName = info.element;
     std::string objectName = objname;
+    Gui::SelectionHistoryBatcher historyBatch;
 
+    // Keep both the previous and resulting states in the selection history;
+    // the current selection is expected to be the top stack entry.
     if (ctrlDown) {
         if (Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve)) {
             Gui::Selection().rmvSelection(docname, objname, info.element.c_str(), &sels);

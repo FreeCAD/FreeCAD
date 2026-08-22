@@ -540,6 +540,7 @@ void TaskFeaturePick::onItemSelectionChanged()
         return;
     }
     doSelection = true;
+    Gui::SelectionHistoryBatcher historyBatch;
     ui->listWidget->blockSignals(true);
     Gui::Selection().clearSelection();
     for (int row = 0; row < ui->listWidget->count(); row++) {
