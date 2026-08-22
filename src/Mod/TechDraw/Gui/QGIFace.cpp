@@ -237,6 +237,8 @@ void QGIFace::lineSetToFillItems(LineSet& ls)
 QPen QGIFace::setGeomPen()
 {
     QPen result;
+    result.setWidthF(m_patMaker->getPen().widthF());
+    result.setColor(m_patMaker->getPen().color());
     result.setStyle(Qt::SolidLine);
     return result;
 }

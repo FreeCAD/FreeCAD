@@ -341,8 +341,15 @@ DrawDimHelper::minMax3d(DrawViewPart* dvp, ReferenceVector references, int direc
         builder.Add(comp, tempGeom);
     }
     Base::Vector3d centroid = dvp->getOriginalCentroid();
-    TopoDS_Shape centeredShape =//this result is a throw away. We will work with comp.
-        DrawViewPart::centerScaleRotate(dvp, comp, centroid);
+
+    try {
+        TopoDS_Shape shape = dvp->scaleAndRotate(ShapeUtils::centerShape(comp, centroid));
+        comp = TopoDS::Compound(shape);
+    }
+    catch (const Standard_TypeMismatch &e) {
+        Base::Console().error("DDH::minMax3d - Could not make compound from centered/scaled/rotated shape\n");
+        return result;
+    }
 
     //project the selected 3d shapes in the dvp's coord system
     TechDraw::GeometryObjectPtr go(
