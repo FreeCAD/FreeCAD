@@ -40,6 +40,7 @@ import Draft
 from FreeCAD import Vector
 from drafttests import auxiliary as aux
 from drafttests import test_base
+from draftutils import utils
 from draftutils.messages import _msg
 
 
@@ -98,6 +99,35 @@ class DraftModification(test_base.DraftTestCaseDoc):
         Draft.rotate(obj, rot)
         self.doc.recompute()
         self.assertTrue(obj.Start.isEqual(c, 1e-6), "'{}' failed".format(operation))
+
+    def test_process_subselection_accepts_only_wires(self):
+        """Subelement modifiers process Draft wires and skip other objects."""
+
+        class SelectionObject:
+            def __init__(self, target, name):
+                self.target = target
+                self.Name = name
+
+            def getSubObject(self, sub, mode):
+                return self.target if mode == 1 else App.Placement()
+
+        class Selection:
+            def __init__(self, target, name, sub):
+                self.Object = SelectionObject(target, name)
+                self.SubElementNames = [sub]
+
+        unsupported = Draft.make_rectangle(10, 10)
+        supported = Draft.make_wire([Vector(), Vector(1, 0, 0)])
+        selections = [
+            Selection(unsupported, unsupported.Name, "Edge1"),
+            Selection(supported, supported.Name, "Vertex1"),
+        ]
+
+        data_list, selection_info = utils._modifiers_process_subselection(selections, False)
+
+        self.assertEqual(len(data_list), 1)
+        self.assertIs(data_list[0][0], supported)
+        self.assertEqual(selection_info, [("", supported.Name, "Vertex1")])
 
     def test_offset_open(self):
         """Create an open wire, then produce an offset copy."""
