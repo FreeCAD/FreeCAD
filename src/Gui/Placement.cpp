@@ -378,9 +378,9 @@ QString PlacementHandler::getSimplePlacement(const App::DocumentObject* obj, con
         );
 }
 
-Base::Vector3d PlacementHandler::computeCenterOfMass() const
+bool PlacementHandler::computeCenterOfMass(Base::Vector3d& centerOfMass) const
 {
-    Base::Vector3d centerOfMass;
+    centerOfMass = Base::Vector3d();
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType(
         App::GeoFeature::getClassTypeId()
     );
@@ -390,11 +390,19 @@ Base::Vector3d PlacementHandler::computeCenterOfMass() const
                 = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
             const Data::ComplexGeoData* geodata = propgeo ? propgeo->getComplexData() : nullptr;
             if (geodata && geodata->getCenterOfGravity(centerOfMass)) {
-                break;
+                return true;
             }
         }
     }
-    return centerOfMass;
+    return false;
+}
+
+Base::Vector3d PlacementHandler::relativeCenter(
+    const Base::Vector3d& globalCenter,
+    const Base::Vector3d& objectPosition
+)
+{
+    return globalCenter - objectPosition;
 }
 
 void PlacementHandler::setCenterOfMass(const Base::Vector3d& pnt)
@@ -619,7 +627,10 @@ void Placement::onCenterOfMassToggled(bool on)
     ui->zCnt->setDisabled(on);
 
     if (on) {
-        Base::Vector3d pnt = handler.computeCenterOfMass();
+        Base::Vector3d pnt;
+        if (handler.computeCenterOfMass(pnt)) {
+            pnt = PlacementHandler::relativeCenter(pnt, getPositionData());
+        }
         handler.setCenterOfMass(pnt);
         ui->xCnt->setValue(pnt.x);
         ui->yCnt->setValue(pnt.y);
@@ -741,23 +752,24 @@ void Placement::onSelectedVertexClicked()
         success = true;
     }
 
+    if (success) {
+        center = PlacementHandler::relativeCenter(center, getPositionData());
+    }
+
     handler.setCenterOfMass(center);
     ui->xCnt->setValue(center.x);
     ui->yCnt->setValue(center.y);
     ui->zCnt->setValue(center.z);
 
     if (!success) {
-        Base::Console().warning("Placement selection error.  Select either 1 or 2 points.\n");
+        Base::Console().warning("Placement selection error. Select 1, 2, or 3 points.\n");
         QMessageBox msgBox(this);
         msgBox.setText(
-            tr("Select 1, 2, or 3 points before clicking this button. A point may be on a vertex, \
-face, or edge.  If on a face or edge the point used will be the point at the mouse position along \
-face or edge.  If 1 point is selected it will be used as the center of rotation.  If 2 points are \
-selected the midpoint between them will be the center of rotation and a new custom axis will be \
-created, if needed.  If 3 points are selected the first point becomes the center of rotation and \
-lies on the vector that is normal to the plane defined by the 3 points.  Some distance and angle \
-information is provided in the report view, which can be useful when aligning objects.  For your \
-convenience when Shift + click is used the appropriate distance or angle is copied to the clipboard.")
+            tr("Select 1-3 points before clicking.\n\n"
+               "1 point: rotate around it.\n"
+               "2 points: rotate around their midpoint and create a custom rotation axis.\n"
+               "3 points: rotate around the first point about the normal to their plane.\n\n"
+               "Shift + click copies the distance or angle.")
         );
         msgBox.exec();
     }
