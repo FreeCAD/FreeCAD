@@ -29,15 +29,7 @@ bool boundary(const char ch)
         || ch == '^' || ch == ';';
 }
 
-struct NumericGrammarPolicy
-{
-    std::string_view decimalSeparator;
-    std::string_view groupingSeparator;
-    std::string_view argumentSeparator;
-    bool allowGrouping {true};
-};
-
-NumericGrammarPolicy grammarPolicy(
+Base::NumericGrammarPolicy grammarPolicy(
     const Base::NumericLocaleContext& locale,
     const Base::NumericSyntaxContext syntax
 )
@@ -124,7 +116,7 @@ CanonicalNumberStatus parseCanonicalDouble(std::string_view text, double& value)
 bool decimalAt(
     std::string_view input,
     const std::size_t position,
-    const NumericGrammarPolicy& policy,
+    const Base::NumericGrammarPolicy& policy,
     std::size_t& length
 )
 {
@@ -156,7 +148,7 @@ bool groupingAt(
     std::string_view input,
     const std::size_t position,
     const Base::NumericLocaleContext& locale,
-    const NumericGrammarPolicy& policy,
+    const Base::NumericGrammarPolicy& policy,
     const bool alreadyGrouped,
     std::size_t& length
 )
@@ -251,13 +243,21 @@ bool signAt(
 
 }  // namespace
 
+Base::NumericGrammarPolicy Base::numericGrammarPolicy(
+    const NumericLocaleContext& locale,
+    const NumericSyntaxContext syntax
+)
+{
+    return grammarPolicy(locale, syntax);
+}
+
 Base::LocalizedNumberResult Base::scanLocalizedNumber(
     const std::string_view input,
     const NumericLocaleContext& locale,
     const NumericSyntaxContext syntax
 )
 {
-    const auto policy = grammarPolicy(locale, syntax);
+    const auto policy = Base::numericGrammarPolicy(locale, syntax);
     if (input.empty()) {
         return incomplete(NumericDiagnosticKind::ExpectedDigit, 0, 0, {});
     }

@@ -19,6 +19,14 @@ enum class NumericSyntaxContext
     FunctionArgument
 };
 
+struct BaseExport NumericGrammarPolicy
+{
+    std::string_view decimalSeparator;
+    std::string_view groupingSeparator;
+    std::string_view argumentSeparator;
+    bool allowGrouping {true};
+};
+
 enum class NumericDiagnosticKind
 {
     ExpectedDigit,
@@ -54,6 +62,10 @@ struct BaseExport LocalizedNumberResult
     std::size_t consumedBytes {};
     std::optional<NumericDiagnostic> diagnostic;
 };
+
+/** Return the separator policy used by the localized number scanner. */
+BaseExport NumericGrammarPolicy
+numericGrammarPolicy(const NumericLocaleContext& locale, NumericSyntaxContext syntax);
 
 /** Return the localized decimal digit at @p position, and its UTF-8 width. */
 BaseExport bool localizedDigitAt(
