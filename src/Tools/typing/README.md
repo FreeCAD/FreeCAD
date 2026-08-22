@@ -35,6 +35,43 @@ That command writes under `src/Tools/typing/generated/`:
   repository only keeps `generated/.gitignore`, so regenerate it instead of
   editing it directly.
 
+## Build and install stubs
+
+Python stubs are generated as part of a normal build when the
+`BUILD_PYTHON_STUBS` CMake option is enabled (the default). To generate only
+the stubs, run:
+
+```sh
+cmake --build <build-dir> --target FreeCADPythonStubs
+```
+
+The generated import tree is written to:
+
+```text
+<build-dir>/python-stubs/stubs
+```
+
+Set `BUILD_PYTHON_STUBS=OFF` to skip generating and installing the stubs.
+Run the build before `cmake --install`; installation copies the generated
+tree rather than regenerating it.
+
+The generated `stubs/` tree is installed under:
+
+```text
+<prefix>/<datadir>/python-stubs
+```
+
+For example, Pyright (and editors such as VS Code that use it) can be pointed
+at the installed tree with:
+
+```json
+{
+    "extraPaths": [
+        "<prefix>/<datadir>/python-stubs"
+    ]
+}
+```
+
 Keep residual hand-written public overlays under `src/Tools/typing/inputs/overlays/`. Keep
 source-adjacent PyCXX type signature inputs in plain `.pyi` files such as
 `src/Gui/FreeCADGui._MainWindow.pyi` when curated type signatures should live
