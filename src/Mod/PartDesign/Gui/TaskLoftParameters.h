@@ -29,6 +29,7 @@
 
 
 class Ui_TaskLoftParameters;
+class Ui_TaskLoftAdvancedParameters;
 class QListWidget;
 
 namespace App
@@ -57,12 +58,17 @@ public:
     );
     ~TaskLoftParameters() override;
 
+Q_SIGNALS:
+    void algorithmChanged(int);
+    void updateViewChanged(bool);
+
 private Q_SLOTS:
     void onProfileButton(bool);
     void onRefButtonAdd(bool);
     void onRefButtonRemove(bool);
     void onClosed(bool);
-    void onRuled(bool);
+    void onAdaptive(bool);
+    void onModeChanged(int);
     void onDeleteSection();
     void indexesMoved();
 
@@ -93,6 +99,35 @@ private:
     selectionModes selectionMode = none;
 };
 
+class TaskLoftAdvancedParameters: public TaskSketchBasedParameters
+{
+    Q_OBJECT
+
+public:
+    explicit TaskLoftAdvancedParameters(
+        ViewProviderLoft* LoftView,
+        bool newObj = false,
+        QWidget* parent = nullptr
+    );
+    ~TaskLoftAdvancedParameters() override;
+
+public Q_SLOTS:
+    void updateAlgorithmOptions(int mode);
+    void setUpdateView(bool enabled);
+
+private Q_SLOTS:
+    void onMaxDegreeChanged(int);
+    void onParametrizationChanged(int);
+    void onContinuityChanged(int);
+    void onCheckCompatibility(bool);
+
+private:
+    void onSelectionChanged(const Gui::SelectionChanges&) override;
+
+    QWidget* proxy;
+    std::unique_ptr<Ui_TaskLoftAdvancedParameters> ui;
+};
+
 /// simulation dialog for the TaskView
 class TaskDlgLoftParameters: public TaskDlgSketchBasedParameters
 {
@@ -107,6 +142,7 @@ public:
 
 protected:
     TaskLoftParameters* parameter;
+    TaskLoftAdvancedParameters* advanced;
 };
 
 }  // namespace PartDesignGui

@@ -53,9 +53,35 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.AdditiveLoft = self.Doc.addObject("PartDesign::AdditiveLoft", "AdditiveLoft")
         self.Body.addObject(self.AdditiveLoft)
+        self.assertEqual(self.AdditiveLoft.LoftType, "Standard B-Spline")
+        self.assertFalse(self.AdditiveLoft.Ruled)
+        self.AdditiveLoft.Ruled = True
+        self.assertEqual(self.AdditiveLoft.LoftType, "Ruled Surface")
+        self.AdditiveLoft.Ruled = False
+        self.assertEqual(self.AdditiveLoft.LoftType, "Standard B-Spline")
+        self.AdditiveLoft.LoftType = "Ruled Surface"
+        self.assertTrue(self.AdditiveLoft.Ruled)
+        self.AdditiveLoft.LoftType = "Variational B-Spline"
+        self.assertFalse(self.AdditiveLoft.Ruled)
+        self.AdditiveLoft.LoftType = "Standard B-Spline"
+        self.assertEqual(self.AdditiveLoft.MaxDegree, 5)
+        self.assertEqual(self.AdditiveLoft.Parametrization, "Chord length")
+        self.assertEqual(self.AdditiveLoft.Continuity, "C2")
+        self.assertTrue(self.AdditiveLoft.CheckCompatibility)
+        self.assertTrue(self.AdditiveLoft.Adaptive)
+        self.AdditiveLoft.MaxDegree = 3
+        self.AdditiveLoft.Parametrization = "Uniform"
+        self.AdditiveLoft.Continuity = "C1"
+        self.AdditiveLoft.CheckCompatibility = False
+        self.AdditiveLoft.Adaptive = False
         self.AdditiveLoft.Profile = self.ProfileSketch
         self.AdditiveLoft.Sections = [self.LoftSketch]
         self.Doc.recompute()
+        self.assertEqual(self.AdditiveLoft.MaxDegree, 3)
+        self.assertEqual(self.AdditiveLoft.Parametrization, "Uniform")
+        self.assertEqual(self.AdditiveLoft.Continuity, "C1")
+        self.assertFalse(self.AdditiveLoft.CheckCompatibility)
+        self.assertFalse(self.AdditiveLoft.Adaptive)
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
     def testSimpleSubtractiveLoftCase(self):

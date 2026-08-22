@@ -24,13 +24,16 @@
 
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 
 
 #include <boost/core/ignore_unused.hpp>
 
+#include <App/Application.h>
 #include <App/Document.h>
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Mod/Part/App/FaceMakerCheese.h>
@@ -42,12 +45,94 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Loft, PartDesign::ProfileBased)
 
+namespace
+{
+Part::Smoothing loftSmoothing(long loftType)
+{
+    switch (loftType) {
+        case 0:
+            return Part::Smoothing::bspline;
+        case 1:
+            return Part::Smoothing::ruled;
+        case 2:
+            return Part::Smoothing::variational;
+        default:
+            return Part::Smoothing::bspline;
+    }
+}
+}  // namespace
+
+App::PropertyIntegerConstraint::Constraints Loft::Degrees = {2, Geom_BSplineSurface::MaxDegree(), 1};
+const char* Loft::LoftTypeEnums[]
+    = {"Standard B-Spline", "Ruled Surface", "Variational B-Spline", nullptr};
+const char* Loft::ParametrizationEnums[] = {"Chord length", "Centripetal", "Uniform", nullptr};
+const char* Loft::ContinuityEnums[] = {"C0", "C1", "C2", nullptr};
+
 Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setValue(nullptr);
-    ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Create ruled surface");
+    ADD_PROPERTY_TYPE(LoftType, (long(0)), "Loft", App::Prop_None, "Loft surface generation algorithm");
+    ADD_PROPERTY_TYPE(Ruled, (false), "Compatibility", App::Prop_Hidden, "Deprecated: use LoftType instead");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
+    ADD_PROPERTY_TYPE(MaxDegree, (5), "Loft", App::Prop_None, "Maximum B-Spline degree");
+    ADD_PROPERTY_TYPE(Parametrization, (long(0)), "Loft", App::Prop_None, "B-Spline parametrization type");
+    ADD_PROPERTY_TYPE(Continuity, (long(2)), "Loft", App::Prop_None, "B-Spline continuity");
+    ADD_PROPERTY_TYPE(
+        CheckCompatibility,
+        (true),
+        "Loft",
+        App::Prop_None,
+        "Align profile origins, orientations, and edge counts"
+    );
+    ADD_PROPERTY_TYPE(
+        Adaptive,
+        (App::GetApplication().isRestoring() ? false : true),
+        "Loft",
+        App::Prop_None,
+        "Retry failed selected settings with deterministic loft alternatives"
+    );
+    MaxDegree.setConstraints(&Degrees);
+    LoftType.setEnums(LoftTypeEnums);
+    Parametrization.setEnums(ParametrizationEnums);
+    Continuity.setEnums(ContinuityEnums);
+    synchronizingLoftType = false;
+}
+
+void Loft::onChanged(const App::Property* prop)
+{
+    if (!isRestoring() && !synchronizingLoftType) {
+        if (prop == &Ruled) {
+            Base::Console().warning(
+                "The 'Ruled' property of PartDesign lofts is deprecated; use LoftType = "
+                "'Standard B-Spline', 'Ruled Surface', or 'Variational B-Spline' instead.\n"
+            );
+            synchronizingLoftType = true;
+            LoftType.setValue(Ruled.getValue() ? 1 : 0);
+            synchronizingLoftType = false;
+        }
+        else if (prop == &LoftType) {
+            synchronizingLoftType = true;
+            Ruled.setValue(LoftType.getValue() == 1);
+            synchronizingLoftType = false;
+        }
+    }
+
+    ProfileBased::onChanged(prop);
+}
+
+void Loft::onDocumentRestored()
+{
+    // Saved documents store only Ruled true/false
+    // This provides backwards compatability
+    synchronizingLoftType = true;
+    if (Ruled.getValue()) {
+        LoftType.setValue(1);
+    }
+    Ruled.setValue(LoftType.getValue() == 1);
+    synchronizingLoftType = false;
+
+    ProfileBased::onDocumentRestored();
 }
 
 short Loft::mustExecute() const
@@ -55,10 +140,25 @@ short Loft::mustExecute() const
     if (Sections.isTouched()) {
         return 1;
     }
-    if (Ruled.isTouched()) {
+    if (LoftType.isTouched()) {
         return 1;
     }
     if (Closed.isTouched()) {
+        return 1;
+    }
+    if (MaxDegree.isTouched()) {
+        return 1;
+    }
+    if (Parametrization.isTouched()) {
+        return 1;
+    }
+    if (Continuity.isTouched()) {
+        return 1;
+    }
+    if (CheckCompatibility.isTouched()) {
+        return 1;
+    }
+    if (Adaptive.isTouched()) {
         return 1;
     }
 
@@ -223,11 +323,18 @@ App::DocumentObjectExecReturn* Loft::execute()
             for (auto& wire : sectionWires) {
                 wire.move(invObjLoc);
             }
+            const auto smoothing = loftSmoothing(LoftType.getValue());
             shells.push_back(TopoShape(0, hasher).makeElementLoft(
                 sectionWires,
                 Part::IsSolid::notSolid,
-                Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
-                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
+                smoothing,
+                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed,
+                MaxDegree.getValue(),
+                nullptr,
+                static_cast<Part::LoftParametrization>(Parametrization.getValue()),
+                static_cast<Part::LoftContinuity>(Continuity.getValue()),
+                CheckCompatibility.getValue(),
+                Adaptive.getValue()
             ));
         }
 
@@ -337,6 +444,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 ));
             }
             Shape.setValue(getSolid(result));
+            Base::Console().message("%s: Loft created successfully.\n", getNameInDocument());
             return App::DocumentObject::StdReturn;
         }
 
@@ -382,6 +490,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         }
         boolOp = getSolid(boolOp);
         Shape.setValue(boolOp);
+        Base::Console().message("%s: Loft created successfully.\n", getNameInDocument());
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure& e) {

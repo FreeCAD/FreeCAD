@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <array>
+
+#include <BRepCheck_Analyzer.hxx>
 #include <TColgp_Array2OfPnt.hxx>
+#include <TColStd_Array1OfInteger.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <gtest/gtest.h>
 #include "src/App/InitApplication.h"
 #include <Mod/Part/App/TopoShape.h>
@@ -1787,13 +1792,15 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
                                     // resulting name.
     std::vector<TopoShape> shapes = {wire1ts, wire2ts};
     // Act
-    auto& topoShape = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
-    auto& topoShape2 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::notRuled);
-    auto& topoShape3 = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled);
-    auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, IsRuled::ruled);
+    auto& topoShape = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::bspline);
+    auto& topoShape2 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, Smoothing::bspline);
+    auto& topoShape3 = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::ruled);
+    auto& topoShape4 = (new TopoShape())->makeElementLoft(shapes, IsSolid::solid, Smoothing::ruled);
     auto& topoShape5
+        = (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::variational);
+    auto& topoShape6
         = (new TopoShape())
-              ->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled, IsClosed::closed);
+              ->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::bspline, IsClosed::closed);
     auto elements = elementMap((topoShape));
     // Assert that we haven't broken the basic Loft functionality
     EXPECT_EQ(topoShape.countSubElements("Wire"), 4);
@@ -1802,7 +1809,8 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
     EXPECT_DOUBLE_EQ(getVolume(topoShape2.getShape()), 250);
     EXPECT_NEAR(getVolume(topoShape3.getShape()), 166.66667, 1e-5);
     EXPECT_DOUBLE_EQ(getVolume(topoShape4.getShape()), 250);
-    EXPECT_NEAR(getVolume(topoShape5.getShape()), 0, 1e-07);
+    EXPECT_FALSE(topoShape5.isNull());
+    EXPECT_NEAR(getVolume(topoShape6.getShape()), 0, 1e-07);
     // Assert that we're creating a correct element map
     EXPECT_TRUE(topoShape.getMappedChildElements().empty());
     EXPECT_EQ(elements.size(), 24);
@@ -1819,6 +1827,399 @@ TEST_F(TopoShapeExpansionTest, makeElementLoft)
             "Vertex4;:G(Vertex4;K-1;:H2:4,V);LFT;:H1:1c,E", "Vertex4;:H1,V", "Vertex4;:H2,V",
         }
     ));
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftReportsMismatchedTopology)
+{
+    auto [face, closedWire, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    boost::ignore_unused(face, edge1, edge2, edge3, edge4);
+    BRepBuilderAPI_MakePolygon openPolygon;
+    openPolygon.Add(gp_Pnt(0, 0, 10));
+    openPolygon.Add(gp_Pnt(5, 0, 10));
+    openPolygon.Add(gp_Pnt(5, 5, 10));
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {TopoShape(closedWire), TopoShape(openPolygon.Wire())},
+            IsSolid::notSolid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected mismatched loft topology to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "Loft profiles 1 and 2 have different topology; profiles must be either all open or "
+            "all "
+            "closed"
+        );
+    }
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftReportsPunctualMiddleProfile)
+{
+    auto [face, firstWire, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    boost::ignore_unused(face, edge1, edge2, edge3, edge4);
+    auto transform {gp_Trsf()};
+    transform.SetTranslation(gp_Vec(0, 0, 10));
+    auto lastWire = TopoDS::Wire(firstWire.Moved(TopLoc_Location(transform)));
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {
+                TopoShape(firstWire),
+                TopoShape(BRepBuilderAPI_MakeVertex(gp_Pnt(2.5, 2.5, 5)).Vertex()),
+                TopoShape(lastWire),
+            },
+            IsSolid::notSolid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected a punctual middle loft profile to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "Loft profile 2 is punctual; punctual profiles are only supported as the first or last "
+            "profile"
+        );
+    }
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftReportsEdgeWithout3dCurve)
+{
+    auto [face, validWire, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    boost::ignore_unused(face, edge1, edge2, edge3, edge4);
+    BRep_Builder builder;
+    TopoDS_Edge edgeWithoutCurve;
+    builder.MakeEdge(edgeWithoutCurve);
+    TopoDS_Wire invalidWire;
+    builder.MakeWire(invalidWire);
+    builder.Add(invalidWire, edgeWithoutCurve);
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {TopoShape(validWire), TopoShape(invalidWire)},
+            IsSolid::notSolid,
+            Smoothing::bspline
+        );
+        FAIL() << "Expected an edge without a 3D curve to fail loft preflight";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(error.what(), "Loft profile 2, edge 1 has no 3D curve");
+    }
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementLoftSuggestsSuccessfulAlternatives)
+{
+    // Reduced construction of profiles A-D-E from lever2.FCStd. Each adjacent pair lofts, but
+    // OCCT cannot construct a standard B-spline loft through all three profiles.
+    auto makeProfile = [](const std::array<gp_Pnt, 4>& corners,
+                          const gp_Pnt& curvePole,
+                          double curvePoleWeight,
+                          double planePosition) {
+        TColgp_Array1OfPnt poles(1, 3);
+        poles.SetValue(1, corners[0]);
+        poles.SetValue(2, curvePole);
+        poles.SetValue(3, corners[1]);
+        TColStd_Array1OfReal weights(1, 3);
+        weights.SetValue(1, 1.0);
+        weights.SetValue(2, curvePoleWeight);
+        weights.SetValue(3, 1.0);
+        TColStd_Array1OfReal knots(1, 2);
+        knots.SetValue(1, 0.0);
+        knots.SetValue(2, 1.0);
+        TColStd_Array1OfInteger multiplicities(1, 2);
+        multiplicities.SetValue(1, 3);
+        multiplicities.SetValue(2, 3);
+        Handle(Geom_BSplineCurve)
+            curve = new Geom_BSplineCurve(poles, weights, knots, multiplicities, 2, false);
+
+        BRepBuilderAPI_MakeWire wire;
+        wire.Add(BRepBuilderAPI_MakeEdge(curve).Edge());
+        wire.Add(BRepBuilderAPI_MakeEdge(corners[1], corners[2]).Edge());
+        wire.Add(BRepBuilderAPI_MakeEdge(corners[2], corners[3]).Edge());
+        wire.Add(BRepBuilderAPI_MakeEdge(corners[3], corners[0]).Edge());
+        gp_Trsf location;
+        location.SetValues(0, 0, -1, planePosition, -1, 0, 0, 0, 0, 1, 0, 0);
+        return TopoShape(BRepBuilderAPI_Transform(wire.Wire(), location, true).Shape());
+    };
+
+    auto profileA = makeProfile(
+        {gp_Pnt(0, -1.57, 0), gp_Pnt(2.13, -3.559, 0), gp_Pnt(2.13, -8.929, 0), gp_Pnt(0, -8.96, 0)},
+        gp_Pnt(2.13, -1.57, 0),
+        1.0,
+        50.0
+    );
+    auto profileD = makeProfile(
+        {gp_Pnt(0, 5.25, 0), gp_Pnt(6.07, 2.79, 0), gp_Pnt(6.07, 0.79, 0), gp_Pnt(0, 1.1, 0)},
+        gp_Pnt(6.07, 5.25, 0),
+        0.88560975361611738,
+        13.0
+    );
+    auto profileE = makeProfile(
+        {gp_Pnt(9.65, 3.76, 0), gp_Pnt(0, 6.87, 0), gp_Pnt(0, 1.2, 0), gp_Pnt(9.65, 1.2, 0)},
+        gp_Pnt(9.65, 6.87, 0),
+        1.75,
+        6.0
+    );
+
+    TopoShape result;
+    try {
+        result.makeElementLoft(
+            {profileA, profileD, profileE},
+            IsSolid::solid,
+            Smoothing::bspline,
+            IsClosed::notClosed,
+            5,
+            nullptr,
+            LoftParametrization::chordLength,
+            LoftContinuity::C2,
+            true,
+            false
+        );
+        FAIL() << "Expected the complete A-D-E profile sequence to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "OCCT failed to construct the loft; the failure occurs when trying the complete "
+            "sequence of 3 profiles (may succeed for subsets of profiles); try Centripetal "
+            "parameterization, which succeeds for these profiles"
+        );
+    }
+
+    TopoShape suggestedResult;
+    EXPECT_NO_THROW(suggestedResult.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::centripetal
+    ));
+    EXPECT_FALSE(suggestedResult.isNull());
+
+    TopoShape adaptiveParametrizationResult;
+    EXPECT_NO_THROW(adaptiveParametrizationResult.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::chordLength,
+        LoftContinuity::C2,
+        true,
+        true
+    ));
+    EXPECT_FALSE(adaptiveParametrizationResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(adaptiveParametrizationResult.getShape()).IsValid());
+
+    TopoShape adaptiveFromSelectedUniform;
+    EXPECT_NO_THROW(adaptiveFromSelectedUniform.makeElementLoft(
+        {profileA, profileD, profileE},
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::uniform,
+        LoftContinuity::C2,
+        true,
+        true
+    ));
+    EXPECT_FALSE(adaptiveFromSelectedUniform.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(adaptiveFromSelectedUniform.getShape()).IsValid());
+
+    // This sequence fails with every standard B-spline parameterization, but the variational
+    // solver constructs a valid solid.
+    std::vector<TopoShape> variationalProfiles {
+        makeProfile(
+            {gp_Pnt(0, 17.732158388647292, 0),
+             gp_Pnt(5.91256580453193, 10.368825818265051, 0),
+             gp_Pnt(5.91256580453193, 7.444724193179219, 0),
+             gp_Pnt(0, 7.444724193179219, 0)},
+            gp_Pnt(5.91256580453193, 17.732158388647292, 0),
+            3.3653696498054475,
+            60.0
+        ),
+        makeProfile(
+            {gp_Pnt(0, 1.2206759746700233, 0),
+             gp_Pnt(5.857175555046922, 0.9311818112458989, 0),
+             gp_Pnt(5.857175555046922, -1.9530022125581752, 0),
+             gp_Pnt(0, -1.9530022125581752, 0)},
+            gp_Pnt(5.857175555046922, 1.2206759746700233, 0),
+            3.7549019607843137,
+            45.23052567330434
+        ),
+        makeProfile(
+            {gp_Pnt(0, -4.107042038605325, 0),
+             gp_Pnt(5.688258182650492, 2.993713282978562, 0),
+             gp_Pnt(5.688258182650492, -5.818417639429312, 0),
+             gp_Pnt(0, -5.818417639429312, 0)},
+            gp_Pnt(5.688258182650492, -4.107042038605325, 0),
+            1.5047455558098726,
+            28.108873121232932
+        ),
+        makeProfile(
+            {gp_Pnt(0, 5.5303120469977864, 0),
+             gp_Pnt(8.89219501029984, 0.5561760891126877, 0),
+             gp_Pnt(8.89219501029984, -3.7218280308232243, 0),
+             gp_Pnt(0, -3.7218280308232243, 0)},
+            gp_Pnt(8.89219501029984, 5.5303120469977864, 0),
+            1.4196612497138934,
+            13.731555657282371
+        ),
+        makeProfile(
+            {gp_Pnt(0, 13.663736934462502, 0),
+             gp_Pnt(15.439688715953308, 13.618875410086213, 0),
+             gp_Pnt(15.439688715953308, 3.8289463645380337, 0),
+             gp_Pnt(0, 3.8289463645380337, 0)},
+            gp_Pnt(15.439688715953308, 13.663736934462502, 0),
+            0.36678873884184027,
+            -8.186007476920725
+        ),
+    };
+
+    try {
+        TopoShape standardResult;
+        standardResult.makeElementLoft(
+            variationalProfiles,
+            IsSolid::solid,
+            Smoothing::bspline,
+            IsClosed::notClosed,
+            5,
+            nullptr,
+            LoftParametrization::chordLength,
+            LoftContinuity::C2,
+            true,
+            false
+        );
+        FAIL() << "Expected all standard B-spline parameterizations to fail";
+    }
+    catch (const Base::CADKernelError& error) {
+        EXPECT_STREQ(
+            error.what(),
+            "OCCT failed to construct the loft; the failure occurs when trying the complete "
+            "sequence of 5 profiles (may succeed for subsets of profiles); standard B-spline "
+            "lofting failed with all available parameterizations; try Variational B-Spline, whose "
+            "variational solver succeeds for these profiles"
+        );
+    }
+
+    TopoShape variationalResult;
+    EXPECT_NO_THROW(
+        variationalResult.makeElementLoft(variationalProfiles, IsSolid::solid, Smoothing::variational)
+    );
+    EXPECT_FALSE(variationalResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(variationalResult.getShape()).IsValid());
+
+    TopoShape adaptiveVariationalResult;
+    EXPECT_NO_THROW(adaptiveVariationalResult.makeElementLoft(
+        variationalProfiles,
+        IsSolid::solid,
+        Smoothing::bspline,
+        IsClosed::notClosed,
+        5,
+        nullptr,
+        LoftParametrization::chordLength,
+        LoftContinuity::C2,
+        true,
+        true
+    ));
+    EXPECT_FALSE(adaptiveVariationalResult.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(adaptiveVariationalResult.getShape()).IsValid());
+
+    auto makeIssueCurve = [](const std::array<gp_Pnt, 3>& curvePoles,
+                             const std::array<double, 3>& curveWeights,
+                             bool reversed = false) {
+        TColgp_Array1OfPnt poles(1, 3);
+        TColStd_Array1OfReal weights(1, 3);
+        TColStd_Array1OfReal knots(1, 2);
+        TColStd_Array1OfInteger multiplicities(1, 2);
+        for (int i = 0; i < 3; ++i) {
+            poles.SetValue(i + 1, curvePoles[i]);
+            weights.SetValue(i + 1, curveWeights[i]);
+        }
+        knots.SetValue(1, 0.0);
+        knots.SetValue(2, 1.0);
+        multiplicities.SetValue(1, 3);
+        multiplicities.SetValue(2, 3);
+        Handle(Geom_BSplineCurve)
+            curve = new Geom_BSplineCurve(poles, weights, knots, multiplicities, 2, false);
+        auto edge = BRepBuilderAPI_MakeEdge(curve).Edge();
+        return reversed ? TopoDS::Edge(edge.Reversed()) : edge;
+    };
+    auto makeIssueWire = [](const std::vector<TopoDS_Edge>& edges) {
+        BRepBuilderAPI_MakeWire wire;
+        for (const auto& edge : edges) {
+            wire.Add(edge);
+        }
+        return TopoShape(wire.Wire());
+    };
+    auto line = [](const gp_Pnt& first, const gp_Pnt& second) {
+        return BRepBuilderAPI_MakeEdge(first, second).Edge();
+    };
+
+    const std::vector<TopoShape> issueProfiles {
+        makeIssueWire(
+            {line(gp_Pnt(50, 0, -8.96), gp_Pnt(50, 0, -1.57)),
+             makeIssueCurve(
+                 {gp_Pnt(50, 0, -1.57), gp_Pnt(50, -2.13, -1.57), gp_Pnt(50, -2.13, -3.559)},
+                 {1, 1, 1}
+             ),
+             line(gp_Pnt(50, -2.13, -3.559), gp_Pnt(50, -2.13, -8.929)),
+             line(gp_Pnt(50, -2.13, -8.929), gp_Pnt(50, 0, -8.96))}
+        ),
+        makeIssueWire(
+            {line(gp_Pnt(43, 0, -6.75), gp_Pnt(43, 0, -1.38)),
+             makeIssueCurve(
+                 {gp_Pnt(43, 0, -1.38), gp_Pnt(43, -2.43, -1.38), gp_Pnt(43, -2.43, -3.38)},
+                 {1, 1, 1}
+             ),
+             line(gp_Pnt(43, -2.43, -3.38), gp_Pnt(43, -2.43, -6.75)),
+             line(gp_Pnt(43, -2.43, -6.75), gp_Pnt(43, 0, -6.75))}
+        ),
+        makeIssueWire(
+            {line(gp_Pnt(24, 0, -0.75), gp_Pnt(24, -3.43, -0.75)),
+             line(gp_Pnt(24, -3.43, -0.75), gp_Pnt(24, -3.43, 0.6)),
+             makeIssueCurve(
+                 {gp_Pnt(24, 0, 2.5), gp_Pnt(24, -3.43, 2.5), gp_Pnt(24, -3.43, 0.6)},
+                 {1, 1.1376407018914187, 1},
+                 true
+             ),
+             line(gp_Pnt(24, 0, 2.5), gp_Pnt(24, 0, -0.75))}
+        ),
+        makeIssueWire(
+            {makeIssueCurve(
+                 {gp_Pnt(13, 0, 5.25), gp_Pnt(13, -6.07, 5.25), gp_Pnt(13, -6.07, 2.79)},
+                 {1, 0.8856097536161174, 1}
+             ),
+             line(gp_Pnt(13, -6.07, 2.79), gp_Pnt(13, -6.07, 0.79)),
+             line(gp_Pnt(13, -6.07, 0.79), gp_Pnt(13, 0, 1.1)),
+             line(gp_Pnt(13, 0, 1.1), gp_Pnt(13, 0, 5.25))}
+        ),
+        makeIssueWire(
+            {makeIssueCurve(
+                 {gp_Pnt(6, -9.65, 3.76), gp_Pnt(6, -9.65, 6.87), gp_Pnt(6, 0, 6.87)},
+                 {1, 1.75, 1}
+             ),
+             line(gp_Pnt(6, 0, 6.87), gp_Pnt(6, 0, 1.2)),
+             line(gp_Pnt(6, 0, 1.2), gp_Pnt(6, -9.65, 1.2)),
+             line(gp_Pnt(6, -9.65, 1.2), gp_Pnt(6, -9.65, 3.76))}
+        ),
+    };
+
+    TopoShape variationalIssueShell;
+    EXPECT_NO_THROW(
+        variationalIssueShell.makeElementLoft(issueProfiles, IsSolid::notSolid, Smoothing::variational)
+    );
+    EXPECT_FALSE(variationalIssueShell.isNull());
+    EXPECT_TRUE(BRepCheck_Analyzer(variationalIssueShell.getShape()).IsValid());
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCenter)  // NOLINT
@@ -1842,7 +2243,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftAllowsDistinctProfilesWithSameCent
 
     // Act: the previous code raised Base::CADKernelError here because the centers of gravity match.
     auto* loft = new TopoShape();
-    ASSERT_NO_THROW(loft->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::ruled));  // NOLINT
+    ASSERT_NO_THROW(loft->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::ruled));  // NOLINT
 
     // Assert: the result is the flat frame between the 5x5 and the 10x10 square.
     EXPECT_FALSE(loft->isNull());
@@ -1864,7 +2265,7 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftRejectsCoincidentProfiles)  // NOL
 
     // Act / Assert
     EXPECT_THROW(  // NOLINT
-        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled),
+        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, Smoothing::bspline),
         Base::CADKernelError
     );
 }
