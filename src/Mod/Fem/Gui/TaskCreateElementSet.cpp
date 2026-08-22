@@ -479,7 +479,9 @@ void writeToFile(
 
 TaskCreateElementSet::TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObject, QWidget* parent)
     : TaskBox(Gui::BitmapFactory().pixmap("FEM_CreateElementsSet"), tr("Elements set"), true, parent)
+    , MeshViewProvider(nullptr)
     , pcObject(pcObject)
+    , selectionViewer(nullptr)
     , selectionMode(none)
 {
     proxy = new QWidget(this);
@@ -522,18 +524,68 @@ TaskCreateElementSet::TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObje
 void TaskCreateElementSet::Poly(void)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    if (!doc) {
+        return;
+    }
+
     Gui::MDIView* view = doc->getActiveView();
+    if (!view) {
+        return;
+    }
+
     if (view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
+        cancelPolygonSelection();
+
+        if (viewer->isSelecting()) {
+            return;
+        }
+
         viewer->setEditing(true);
         viewer->startSelection(Gui::View3DInventorViewer::Clip);
+
+        if (!viewer->isSelecting()) {
+            viewer->setEditing(false);
+            return;
+        }
+
+        selectionViewer = viewer;
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineElementsCallback, this);
+    }
+}
+
+void TaskCreateElementSet::removePolygonSelectionCallback()
+{
+    if (selectionViewer) {
+        selectionViewer->removeEventCallback(
+            SoMouseButtonEvent::getClassTypeId(),
+            DefineElementsCallback,
+            this
+        );
+        selectionViewer = nullptr;
+    }
+}
+
+void TaskCreateElementSet::cancelPolygonSelection()
+{
+    Gui::View3DInventorViewer* viewer = selectionViewer.data();
+    removePolygonSelectionCallback();
+
+    if (viewer) {
+        viewer->setEditing(false);
+        if (viewer->isSelecting()) {
+            viewer->abortSelection();
+        }
     }
 }
 
 void TaskCreateElementSet::CopyResultsMesh(void)
 {
     std::vector<Gui::SelectionSingleton::SelObj> selection = Gui::Selection().getSelection();  // [0];
+    if (selection.empty()) {
+        return;
+    }
+
     highLightMesh = selection[0].FeatName;
     myCopyResultsMesh(highLightMesh, actualResultMesh);
     Gui::Command::doCommand(Gui::Command::Doc, "Gui.activeDocument().resetEdit()");
@@ -627,8 +679,12 @@ void TaskCreateElementSet::DefineElementsCallback(void* ud, SoEventCallback* n)
     TaskCreateElementSet* taskBox = static_cast<TaskCreateElementSet*>(ud);
     // When this callback function is invoked we must in either case leave the edit mode
     Gui::View3DInventorViewer* view = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());
+    if (!taskBox || !view) {
+        return;
+    }
+
     view->setEditing(false);
-    view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), DefineElementsCallback, ud);
+    taskBox->removePolygonSelectionCallback();
     n->setHandled();
 
     Gui::SelectionRole role;
@@ -657,13 +713,35 @@ void TaskCreateElementSet::DefineNodes(
     bool inner
 )
 {
-    const SMESHDS_Mesh* srcMeshDS
-        = const_cast<SMESH_Mesh*>(
-              pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSMesh()
-        )
-              ->GetMeshDS();
+    if (!pcObject) {
+        Base::Console().warning("Cannot create element set: FEM object is no longer available.\n");
+        return;
+    }
+
+    Fem::FemMeshObject* femMeshObject = pcObject->FemMesh.getValue<Fem::FemMeshObject*>();
+    if (!femMeshObject) {
+        Base::Console().warning("Cannot create element set: no FEM mesh is linked.\n");
+        return;
+    }
+
+    const SMESH_Mesh* smesh = femMeshObject->FemMesh.getValue().getSMesh();
+    if (!smesh) {
+        Base::Console().warning("Cannot create element set: FEM mesh data is unavailable.\n");
+        return;
+    }
+
+    const SMESHDS_Mesh* srcMeshDS = const_cast<SMESH_Mesh*>(smesh)->GetMeshDS();
+    if (!srcMeshDS) {
+        Base::Console().warning("Cannot create element set: FEM mesh data is invalid.\n");
+        return;
+    }
 
     std::vector<Gui::SelectionSingleton::SelObj> selection = Gui::Selection().getSelection();  // [0];
+    if (selection.empty()) {
+        Base::Console().warning("Cannot create element set: no mesh is selected.\n");
+        return;
+    }
+
     highLightMesh = selection[0].FeatName;
 
     meshType = "NULL";
@@ -851,6 +929,8 @@ void TaskCreateElementSet::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 TaskCreateElementSet::~TaskCreateElementSet()
 {
+    cancelPolygonSelection();
+
     // delete last elementsset
     if (strcmp(lastName.c_str(), "") != 0) {
         Gui::Command::doCommand(

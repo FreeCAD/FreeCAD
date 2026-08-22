@@ -31,6 +31,7 @@
 #include <FCConfig.h>
 
 #include "MouseSelection.h"
+#include "PolygonOverlay.h"
 #include "RubberbandOverlay.h"
 #include "Selection/BoxSelection.h"
 #include "Selection/SelectionColors.h"
@@ -165,12 +166,25 @@ PolyPickerSelection::PolyPickerSelection()
 
 void PolyPickerSelection::setColor(float r, float g, float b, float a)
 {
-    polyline.setColor(r, g, b, a);
+    polygonColor = QColor::fromRgbF(r, g, b, a);
+    if (polygonOverlay) {
+        polygonOverlay->setColor(polygonColor);
+    }
 }
 
 void PolyPickerSelection::setLineWidth(float l)
 {
-    polyline.setLineWidth(l);
+    polygonLineWidth = l;
+    if (polygonOverlay) {
+        polygonOverlay->setLineWidth(polygonLineWidth);
+    }
+}
+
+QPointF PolyPickerSelection::toLogicalPoint(const QPoint& point) const
+{
+    const qreal dpr = _pcView3D ? _pcView3D->devicePixelRatio() : 1.0;
+    const qreal scale = dpr > 0.0 ? dpr : 1.0;
+    return {point.x() / scale, point.y() / scale};
 }
 
 void PolyPickerSelection::initialize()
@@ -179,13 +193,16 @@ void PolyPickerSelection::initialize()
     QCursor cursor(p, 4, 4);
     _pcView3D->getWidget()->setCursor(cursor);
 
-    polyline.setViewer(_pcView3D);
-
-    _pcView3D->addGraphicsItem(&polyline);
-    _pcView3D->redraw();  // needed to get an up-to-date image
-    _pcView3D->setRenderType(View3DInventorViewer::Image);
+    polygonOverlay = &_pcView3D->polygonOverlay();
+    polygonOverlay->setColor(polygonColor);
+    polygonOverlay->setLineWidth(polygonLineWidth);
+    polygonOverlay->setClosed(polygonClosed);
+    polygonOverlay->setCloseStippled(polygonCloseStippled);
+    polygonOverlay->clearPoints();
+    polygonOverlay->setVisible(false);
     _pcView3D->redraw();
 
+    polygonWorking = false;
     lastConfirmed = false;
 }
 
@@ -193,8 +210,12 @@ void PolyPickerSelection::terminate(bool abort)
 {
     Q_UNUSED(abort)
 
-    _pcView3D->removeGraphicsItem(&polyline);
-    _pcView3D->setRenderType(View3DInventorViewer::Native);
+    if (polygonOverlay) {
+        polygonOverlay->setVisible(false);
+        polygonOverlay->clearPoints();
+        polygonOverlay = nullptr;
+    }
+    polygonWorking = false;
     _pcView3D->redraw();
 }
 
@@ -237,11 +258,12 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
     if (press) {
         switch (button) {
             case SoMouseButtonEvent::BUTTON1: {
-                if (!polyline.isWorking()) {
-                    polyline.setWorking(true);
-                    polyline.clear();
+                if (!polygonWorking) {
+                    polygonWorking = true;
+                    polygonOverlay->clearPoints();
+                    polygonOverlay->setVisible(true);
                 };
-                polyline.addNode(pos);
+                polygonOverlay->addPoint(toLogicalPoint(pos));
                 lastConfirmed = true;
                 m_iXnew = pos.x();
                 m_iYnew = pos.y();
@@ -250,7 +272,7 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
             } break;
 
             case SoMouseButtonEvent::BUTTON2: {
-                polyline.addNode(pos);
+                polygonOverlay->addPoint(toLogicalPoint(pos));
                 m_iXnew = pos.x();
                 m_iYnew = pos.y();
                 m_iXold = pos.x();
@@ -273,6 +295,10 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
                 // an inconsistent state.
                 int id = popupMenu();
 
+                polygonOverlay->setVisible(false);
+                polygonWorking = false;
+                _pcView3D->redraw();
+
                 if (id == Finish || id == Cancel) {
                     releaseMouseModel();
                 }
@@ -280,7 +306,6 @@ int PolyPickerSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, con
                     _pcView3D->getWidget()->setCursor(cur);
                 }
 
-                polyline.setWorking(false);
                 return id;
             } break;
 
@@ -297,7 +322,7 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
     // do all the drawing stuff for us
     QPoint clPoint = pos;
 
-    if (polyline.isWorking()) {
+    if (polygonWorking) {
         // check the position
         qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
         QRect r = _pcView3D->getGLWidget()->rect();
@@ -330,9 +355,9 @@ int PolyPickerSelection::locationEvent(const SoLocation2Event* const, const QPoi
         }
 
         if (!lastConfirmed) {
-            polyline.popNode();
+            polygonOverlay->popPoint();
         }
-        polyline.addNode(clPoint);
+        polygonOverlay->addPoint(toLogicalPoint(clPoint));
         lastConfirmed = false;
 
         draw();
@@ -408,8 +433,12 @@ FreehandSelection::~FreehandSelection() = default;
 
 void FreehandSelection::setClosed(bool on)
 {
-    polyline.setClosed(on);
-    polyline.setCloseStippled(true);
+    polygonClosed = on;
+    polygonCloseStippled = true;
+    if (polygonOverlay) {
+        polygonOverlay->setClosed(polygonClosed);
+        polygonOverlay->setCloseStippled(polygonCloseStippled);
+    }
 }
 
 int FreehandSelection::popupMenu()
@@ -443,13 +472,13 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
     if (press) {
         switch (button) {
             case SoMouseButtonEvent::BUTTON1: {
-                if (!polyline.isWorking()) {
-                    polyline.setWorking(true);
-                    polyline.clear();
+                if (!polygonWorking) {
+                    polygonWorking = true;
+                    polygonOverlay->clearPoints();
+                    polygonOverlay->setVisible(true);
                 }
 
-                polyline.addNode(pos);
-                polyline.setCoords(pos.x(), pos.y());
+                polygonOverlay->addPoint(toLogicalPoint(pos));
                 m_iXnew = pos.x();
                 m_iYnew = pos.y();
                 m_iXold = pos.x();
@@ -457,7 +486,7 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
             } break;
 
             case SoMouseButtonEvent::BUTTON2: {
-                polyline.addNode(pos);
+                polygonOverlay->addPoint(toLogicalPoint(pos));
                 m_iXnew = pos.x();
                 m_iYnew = pos.y();
                 m_iXold = pos.x();
@@ -472,7 +501,9 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
     else {
         switch (button) {
             case SoMouseButtonEvent::BUTTON1:
-                if (polyline.isWorking()) {
+                if (polygonWorking) {
+                    polygonOverlay->setVisible(false);
+                    polygonWorking = false;
                     releaseMouseModel();
                     return Finish;
                 }
@@ -486,6 +517,10 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
                 // an inconsistent state.
                 int id = popupMenu();
 
+                polygonOverlay->setVisible(false);
+                polygonWorking = false;
+                _pcView3D->redraw();
+
                 if (id == Finish || id == Cancel) {
                     releaseMouseModel();
                 }
@@ -493,7 +528,6 @@ int FreehandSelection::mouseButtonEvent(const SoMouseButtonEvent* const e, const
                     _pcView3D->getWidget()->setCursor(cur);
                 }
 
-                polyline.setWorking(false);
                 return id;
             } break;
 
@@ -510,7 +544,7 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
     // do all the drawing stuff for us
     QPoint clPoint = pos;
 
-    if (polyline.isWorking()) {
+    if (polygonWorking) {
         // check the position
         qreal dpr = _pcView3D->getGLWidget()->devicePixelRatioF();
         QRect r = _pcView3D->getGLWidget()->rect();
@@ -544,8 +578,7 @@ int FreehandSelection::locationEvent(const SoLocation2Event* const e, const QPoi
             _clPoly.push_back(curr);
         }
 
-        polyline.addNode(clPoint);
-        polyline.setCoords(clPoint.x(), clPoint.y());
+        polygonOverlay->addPoint(toLogicalPoint(clPoint));
     }
 
     m_iXnew = clPoint.x();

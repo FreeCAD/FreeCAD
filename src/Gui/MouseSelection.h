@@ -27,7 +27,7 @@
 
 #include <QColor>
 #include <QCursor>
-#include <Gui/GLPainter.h>
+#include <QPointF>
 #include <Gui/Namespace.h>
 
 
@@ -47,6 +47,7 @@ class SoKeyboardEvent;
 namespace Gui
 {
 class View3DInventorViewer;
+class PolygonOverlay;
 
 /**
  * The mouse selection base class
@@ -159,7 +160,14 @@ protected:
     virtual int popupMenu();
 
 protected:
-    Gui::Polyline polyline;
+    QPointF toLogicalPoint(const QPoint& point) const;
+
+    PolygonOverlay* polygonOverlay {nullptr};
+    QColor polygonColor {Qt::white};
+    float polygonLineWidth {2.0F};
+    bool polygonClosed {true};
+    bool polygonCloseStippled {false};
+    bool polygonWorking {false};
     bool lastConfirmed;
 };
 
