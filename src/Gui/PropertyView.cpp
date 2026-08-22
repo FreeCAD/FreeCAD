@@ -153,6 +153,7 @@ PropertyView::~PropertyView()
     this->connectPropView.disconnect();
     this->connectPropAppend.disconnect();
     this->connectPropRemove.disconnect();
+    this->connectPropRename.disconnect();
     this->connectPropChange.disconnect();
     this->connectUndoDocument.disconnect();
     this->connectRedoDocument.disconnect();

@@ -35,14 +35,14 @@ function(setup_qt_test)
                 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
             set_tests_properties(${_testname}_Tests_run PROPERTIES
                 LABELS "Qt"
-                ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+                ENVIRONMENT "${_qt_test_environment}"
                 ENVIRONMENT_MODIFICATION "${_test_env_mod}")
         else()
             set_target_properties(${_testname}_Tests_run PROPERTIES
                 RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests)
             set_tests_properties(${_testname}_Tests_run PROPERTIES
                 LABELS "Qt"
-                ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
+                ENVIRONMENT "${_qt_test_environment}")
         endif()
     endforeach()
 endfunction()
@@ -118,6 +118,72 @@ if(WIN32)
             list(APPEND _test_env_mod "PATH=path_list_prepend:${_mod_dir}")
         endif()
     endforeach()
+endif()
+
+# Qt tests must obtain their runtime plugin path from the Qt installation used
+# by CMake. Do not rely on a caller's PATH or on a CI-specific directory layout.
+set(_qt_test_environment "QT_QPA_PLATFORM=offscreen")
+
+if(WIN32)
+    set(_qt_core_target "Qt${FREECAD_QT_MAJOR_VERSION}::Core")
+    if(NOT TARGET "${_qt_core_target}")
+        message(FATAL_ERROR
+            "Cannot configure Qt tests: imported target ${_qt_core_target} is unavailable")
+    endif()
+
+    set(_qt_core_location "")
+    foreach(_qt_config RELEASE RELWITHDEBINFO MINSIZEREL DEBUG)
+        get_target_property(
+            _qt_core_candidate
+            "${_qt_core_target}"
+            "IMPORTED_LOCATION_${_qt_config}"
+        )
+        if(_qt_core_candidate AND EXISTS "${_qt_core_candidate}")
+            set(_qt_core_location "${_qt_core_candidate}")
+            break()
+        endif()
+    endforeach()
+
+    if(NOT _qt_core_location)
+        get_target_property(_qt_core_location "${_qt_core_target}" IMPORTED_LOCATION)
+    endif()
+
+    if(NOT _qt_core_location OR NOT EXISTS "${_qt_core_location}")
+        message(FATAL_ERROR
+            "Cannot configure Qt tests: no runtime location is available for "
+            "${_qt_core_target}")
+    endif()
+
+    get_filename_component(_qt_bin_dir "${_qt_core_location}" DIRECTORY)
+    get_filename_component(_qt_install_prefix "${_qt_bin_dir}" DIRECTORY)
+    set(_qt_plugin_dir "${_qt_install_prefix}/plugins")
+    set(_qt_platform_plugin_dir "${_qt_plugin_dir}/platforms")
+
+    if(EXISTS "${_qt_platform_plugin_dir}/qoffscreen.dll"
+       OR EXISTS "${_qt_platform_plugin_dir}/qoffscreend.dll")
+        set(_qt_test_platform "offscreen")
+    elseif(EXISTS "${_qt_platform_plugin_dir}/qminimal.dll"
+           OR EXISTS "${_qt_platform_plugin_dir}/qminimald.dll")
+        set(_qt_test_platform "minimal")
+    else()
+        file(GLOB _available_qt_platform_plugins
+            RELATIVE "${_qt_platform_plugin_dir}"
+            "${_qt_platform_plugin_dir}/*.dll")
+        list(JOIN _available_qt_platform_plugins ", " _available_qt_platform_plugins_text)
+        message(FATAL_ERROR
+            "Cannot configure headless Qt tests. Neither qoffscreen nor qminimal "
+            "exists in ${_qt_platform_plugin_dir}. Available platform plugins: "
+            "${_available_qt_platform_plugins_text}")
+    endif()
+
+    set(_qt_test_environment
+        "QT_QPA_PLATFORM=${_qt_test_platform}"
+        "QT_PLUGIN_PATH=${_qt_plugin_dir}"
+        "QT_QPA_PLATFORM_PLUGIN_PATH=${_qt_platform_plugin_dir}"
+    )
+
+    message(STATUS
+        "Qt tests: platform=${_qt_test_platform}, plugins=${_qt_plugin_dir}")
 endif()
 
 add_subdirectory(src)

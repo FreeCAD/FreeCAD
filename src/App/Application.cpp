@@ -845,9 +845,8 @@ void Application::queueRecomputeRequest(RecomputeRequest req)
         // worker" guarantee without inventing a synthetic main thread.
         if (App::MainThreadSignalConfig::hasHooks()
             && !App::MainThreadSignalConfig::isMainThread()) {
-            App::MainThreadSignalConfig::invoke(
-                [&req, &result]() { result = processRecomputeRequest(req); },
-                /*blocking=*/true
+            result = App::MainThreadSignalConfig::callOnMainThreadSync(
+                [&req]() { return processRecomputeRequest(req); }
             );
         }
         else {

@@ -58,8 +58,6 @@ PropertyExpressionContainer::PropertyExpressionContainer()
         inited = true;
         GetApplication().signalRelabelDocument.connect(
             PropertyExpressionContainer::slotRelabelDocument);
-        GetApplication().signalRenameDynamicProperty.connect(
-            PropertyExpressionContainer::slotRenameDynamicProperty);
         GetApplication().signalMoveDynamicProperty.connect(
             PropertyExpressionContainer::slotMoveDynamicProperty);
     }
@@ -84,7 +82,7 @@ void PropertyExpressionContainer::slotRelabelDocument(const App::Document& doc)
     }
 }
 
-void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property& prop, const char* oldName)
+void PropertyExpressionContainer::handleDynamicPropertyRename(const App::Property& prop, const char* oldName)
 {
     for (auto container : _ExprContainers) {
         container->onRenameDynamicProperty(prop, oldName);
