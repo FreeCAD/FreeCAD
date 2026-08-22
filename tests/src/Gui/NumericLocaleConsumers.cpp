@@ -2,7 +2,7 @@
 
 #include <QLineEdit>
 #include <QLocale>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QTest>
 
 #include <memory>
@@ -80,7 +80,7 @@ private Q_SLOTS:
         std::shared_ptr<const App::Expression> initialExpression(std::move(initial));
         Gui::Dialog::DlgExpressionInput dialog(owner.path(), initialExpression, Base::Unit::Length);
 
-        auto* editor = dialog.findChild<QTextEdit*>(QStringLiteral("expression"));
+        auto* editor = dialog.findChild<QPlainTextEdit*>(QStringLiteral("expression"));
         QVERIFY(editor != nullptr);
         if (!editor) {
             return;

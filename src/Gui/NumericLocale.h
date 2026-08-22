@@ -18,6 +18,18 @@ namespace Gui
 /** Build a complete numeric-locale context from this widget's QLocale. */
 GuiExport Base::NumericLocaleContext numericLocaleContextFor(const QLocale& locale);
 
+/**
+ * Return the format safe for displaying a quantity in an editable field.
+ *
+ * A dot grouping separator is ambiguous in a locale whose decimal separator is not a dot:
+ * `1.234` can be either a grouped integer or a canonical decimal. Editable displays must not
+ * emit that ambiguous form.
+ */
+GuiExport Base::QuantityFormat editableQuantityFormat(
+    const Base::QuantityFormat& format,
+    const Base::NumericLocaleContext& locale
+);
+
 /** Return the UTF-16 code-unit length of the numeric token at the start of a line edit. */
 GuiExport int numericInputSelectionLengthUtf16(
     const QString& text,
