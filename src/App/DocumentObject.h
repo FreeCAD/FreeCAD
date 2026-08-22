@@ -310,6 +310,14 @@ public:
     void touch(bool noRecompute = false);
 
     /**
+     * @brief Touch dependents linked through presentation-aware properties.
+     *
+     * Only incoming links whose property has the PresentationDependency
+     * status are touched.
+     */
+    void touchPresentationDependents();
+
+    /**
      * @brief Check whether the document object is touched or not.
      *
      * @return true if document object is touched, false if not.
