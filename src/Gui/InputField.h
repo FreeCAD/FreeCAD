@@ -210,6 +210,7 @@ protected Q_SLOTS:
 
 protected:
     void showEvent(QShowEvent* event) override;
+    void changeEvent(QEvent* event) override;
     void focusInEvent(QFocusEvent* event) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
