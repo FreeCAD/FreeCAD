@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <Base/Exception.h>
+#include <Base/NumericFormatting.h>
 #include <Base/Quantity.h>
 #include "Base/UnitsApi.h"
 #include <QLocale>
@@ -26,6 +27,32 @@ TEST(BaseQuantity, TestParse)
     constexpr auto val {1.2340};
     EXPECT_EQ(q1, Quantity(val, Unit::Mass));
     EXPECT_THROW(auto rew [[maybe_unused]] = Quantity::parse("1,234,500.12 kg"), ParserError);
+}
+
+TEST(BaseQuantity, TestLocalizedUserInput)
+{
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+    const Base::NumericLocaleContext enIn {"en_IN", ".", ",", "+", "-", 3, 2};
+
+    EXPECT_EQ(Quantity::parseUserInput("12,345.67 mm", enUs), Quantity(12345.67, Unit::Length));
+    EXPECT_THROW(Quantity::parseUserInput("12,34,567 mm", enUs), ParserError);
+    EXPECT_EQ(Quantity::parseUserInput("12,34,567 mm", enIn), Quantity(1234567, Unit::Length));
+}
+
+TEST(BaseQuantity, TestLocalizedUserInputPreservesComments)
+{
+    const Base::NumericLocaleContext enUs {"en_US", ".", ",", "+", "-", 3, 3};
+
+    EXPECT_EQ(
+        Quantity::parseUserInput("1 mm [original input 12,34,567]", enUs),
+        Quantity(1, Unit::Length)
+    );
+    EXPECT_EQ(Quantity::parseUserInput("1 mm [original input 12 345]", enUs), Quantity(1, Unit::Length));
+    EXPECT_EQ(
+        Quantity::parseUserInput("1 mm [original input 1.234,5]", enUs),
+        Quantity(1, Unit::Length)
+    );
+    EXPECT_THROW(Quantity::parseUserInput("1 mm [original input 12,34", enUs), ParserError);
 }
 
 TEST(BaseQuantity, TestNoDim)

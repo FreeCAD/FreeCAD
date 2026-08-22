@@ -2,6 +2,23 @@
 
 add_library(FreeCADBase SHARED)
 
+check_cxx_source_compiles(
+    "#include <charconv>
+int main()
+{
+    double value {};
+    const auto result = std::from_chars(\"\", \"\", value, std::chars_format::general);
+    return result.ec == std::errc {};
+}"
+    FREECAD_HAS_FLOATING_POINT_FROM_CHARS
+)
+
+if(FREECAD_HAS_FLOATING_POINT_FROM_CHARS)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=1)
+else()
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAS_FLOATING_POINT_FROM_CHARS=0)
+endif()
+
 if(WIN32)
     add_definitions(-DFCBase)
     add_definitions(-DPYCXX_DLL)
@@ -180,6 +197,10 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemas.h
     UnitsSchemasData.h
     UnitsSchemasSpecs.h
+    NumericInput.h
+    NumericInput.cpp
+    NumericInputLocale.h
+    NumericInputLocale.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp
@@ -246,6 +267,7 @@ SET(FreeCADBase_CPP_SRCS
     Stream.cpp
     StringUtils.cpp
     Swap.cpp
+    NumericFormatting.cpp
     ${SWIG_SRCS}
     SystemHandler.cpp
     Tools.cpp
@@ -296,6 +318,7 @@ SET(FreeCADBase_HPP_SRCS
     InputSource.h
     Interpreter.h
     Matrix.h
+    NumericFormatting.h
     Observer.h
     Parameter.h
     ParameterObserver.h

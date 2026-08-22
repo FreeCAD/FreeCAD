@@ -1,12 +1,16 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <QDebug>
+#include <QLineEdit>
 #include <QtTest/QTest>
 
 #include <App/Application.h>
+#include <Base/Quantity.h>
 
+#include "Gui/QuantitySpinBox.h"
 #include "Gui/propertyeditor/PropertyItem.h"
 #include <src/App/InitApplication.h>
+#include <src/LocaleTestHelpers.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -37,6 +41,14 @@ protected:
 private:
     QVariant testValue;
     QVariant storedSetValue;
+};
+
+class TestPropertyUnitItem final: public Gui::PropertyEditor::PropertyUnitItem
+{
+public:
+    TestPropertyUnitItem()
+        : PropertyUnitItem()
+    {}
 };
 
 class testPropertyItem: public QObject
@@ -98,6 +110,38 @@ private Q_SLOTS:
     {
         item->setPropertyName(QLatin1String("Box_Length"));
         QCOMPARE(item->propertyName(), QLatin1String("Box_Length"));
+    }
+
+    void test_quantityEditorUsesItsWidgetLocale()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "da_DK", .formattingLocale = "de_DE", .icuLocale = "fr_FR"}
+        };
+
+        TestPropertyUnitItem unitItem;
+        QWidget parent;
+        auto* editor = unitItem.createEditor(&parent, [] {});
+        auto* spinBox = qobject_cast<Gui::QuantitySpinBox*>(editor);
+        QVERIFY(spinBox != nullptr);
+        if (!spinBox) {
+            return;
+        }
+
+        spinBox->setLocale(QLocale(QStringLiteral("en_US")));
+        unitItem.setEditorData(spinBox, QVariant::fromValue<Base::Quantity>(Base::Quantity(10.0, "mm")));
+        spinBox->show();
+        spinBox->setFocus();
+
+        auto* lineEdit = spinBox->findChild<QLineEdit*>();
+        QVERIFY(lineEdit != nullptr);
+        if (!lineEdit) {
+            return;
+        }
+        lineEdit->setText(QStringLiteral("12,345.67 mm"));
+        QTest::keyClick(spinBox, Qt::Key_Return);
+
+        QCOMPARE(spinBox->rawValue(), 12345.67);
+        QVERIFY(spinBox->hasValidInput());
     }
 
 private:
