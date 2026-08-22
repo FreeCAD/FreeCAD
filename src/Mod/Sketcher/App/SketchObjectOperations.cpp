@@ -1231,7 +1231,7 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         delete cons;
     }
 
-    return 0;  // newIds.size();
+    return 0;
 }
 // clang-format off
 
