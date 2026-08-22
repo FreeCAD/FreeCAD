@@ -236,6 +236,49 @@ jobs:
           cd package/rattler-build
           pixi install --frozen
 
+      - name: Check installed Python stubs
+        shell: bash
+        run: |
+          set -euo pipefail
+          stubs_dir="$(find package/rattler-build/.pixi/envs/default \
+              -type d -name python-stubs -print -quit)"
+          if [[ -z "${stubs_dir}" ]]; then
+            echo "Could not find the installed Python stubs directory" >&2
+            exit 1
+          fi
+          cmake \
+              "-DFREECAD_PYTHON_STUBS_LAYOUT_ROOT=${stubs_dir}" \
+              -P src/Tools/typing/CheckStubLayout.cmake
+
+      - name: Publish standalone Python stubs
+        if: matrix.target == 'linux-64'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
+        run: |
+          set -euo pipefail
+          stubs_dir="$(find package/rattler-build/.pixi/envs/default \
+              -type d -name python-stubs -print -quit)"
+          if [[ -z "${stubs_dir}" ]]; then
+            echo "Could not find the installed Python stubs directory" >&2
+            exit 1
+          fi
+
+          archive="FreeCAD-PythonStubs-${BUILD_TAG}.tar.gz"
+          tar \
+              --sort=name \
+              --mtime='UTC 1970-01-01' \
+              --owner=0 \
+              --group=0 \
+              --numeric-owner \
+              -C "${stubs_dir}" \
+              -czf "${archive}" \
+              .
+          sha256sum "${archive}" > "${archive}-SHA256.txt"
+          gh release upload --clobber "${BUILD_TAG}" \
+              "${archive}" "${archive}-SHA256.txt"
+
       - name: Azure login for Windows build code signing
         id: azure_login
         if: runner.os == 'Windows'
