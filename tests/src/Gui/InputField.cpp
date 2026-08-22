@@ -154,12 +154,52 @@ private Q_SLOTS:
 
         input.setLocale(QLocale(QStringLiteral("de_DE")));
         QCoreApplication::processEvents();
-        QVERIFY(input.text().contains(QStringLiteral("1.234,5")));
+        QVERIFY(input.text().contains(QStringLiteral("1234,5")));
 
         input.setText(QStringLiteral("2.345,6 mm"));
         QTest::keyClick(&input, Qt::Key_Return);
         QCOMPARE(input.rawValue(), 2345.6);
         QVERIFY(input.hasValidInput());
+    }
+
+    void test_DotGroupingDoesNotCorruptEditableInteger()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "de_DE",
+             .formattingLocale = "de_DE",
+             .icuLocale = "de_DE",
+             .useQtSeparators = true}
+        };
+
+        Gui::InputField input;
+        input.setLocale(QLocale(QStringLiteral("de_DE")));
+        Base::Quantity quantity(1234.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 0);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+
+        input.setValue(quantity);
+
+        QCOMPARE(input.rawValue(), 1234.0);
+        QVERIFY(!input.text().contains(QStringLiteral("1.234")));
+        QCOMPARE(input.text(), QStringLiteral("1234 mm"));
+    }
+
+    void test_UnboundQuantityGrammarPreservesComments()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Gui::InputField input;
+        input.setUnit(Base::Unit::Length);
+        input.setText(QStringLiteral("1 mm [original input 12,34,567]"));
+
+        QVERIFY(input.hasValidInput());
+        QCOMPARE(input.rawValue(), 1.0);
     }
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT

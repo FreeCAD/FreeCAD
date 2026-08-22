@@ -362,12 +362,79 @@ private Q_SLOTS:
 
         spinBox.setLocale(QLocale(QStringLiteral("de_DE")));
         QCoreApplication::processEvents();
-        QVERIFY(spinBox.text().contains(QStringLiteral("1.234,5")));
+        QVERIFY(spinBox.text().contains(QStringLiteral("1234,5")));
 
         spinBox.findChild<QLineEdit*>()->setText(QStringLiteral("2.345,6 mm"));
         QTest::keyClick(&spinBox, Qt::Key_Return);
         QCOMPARE(spinBox.rawValue(), 2345.6);
         QVERIFY(spinBox.hasValidInput());
+    }
+
+    void test_DotGroupingDoesNotCorruptEditableInteger()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "de_DE",
+             .formattingLocale = "de_DE",
+             .icuLocale = "de_DE",
+             .useQtSeparators = true}
+        };
+
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setLocale(QLocale(QStringLiteral("de_DE")));
+        Base::Quantity quantity(1234.0, "mm");
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, 0);
+        format.option = Base::QuantityFormat::None;
+        quantity.setFormat(format);
+
+        spinBox.setValue(quantity);
+
+        QCOMPARE(spinBox.rawValue(), 1234.0);
+        QVERIFY(!spinBox.text().contains(QStringLiteral("1.234")));
+        QCOMPARE(spinBox.text(), QStringLiteral("1234 mm"));
+    }
+
+    void test_TextChangedIsEmittedForKeyboardTrackedEdits()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setValue(Base::Quantity(10.0, "mm"));
+        spinBox.show();
+        QSignalSpy textChanged(&spinBox, &Gui::QuantitySpinBox::textChanged);
+
+        auto* edit = spinBox.findChild<QLineEdit*>();
+        QVERIFY(edit != nullptr);
+        if (!edit) {
+            return;
+        }
+
+        edit->setText(QStringLiteral("11 mm"));
+
+        QCOMPARE(textChanged.count(), 1);
+        QCOMPARE(textChanged.at(0).at(0).toString(), QStringLiteral("11 mm"));
+    }
+
+    void test_UnboundQuantityGrammarPreservesComments()  // NOLINT
+    {
+        tests::ScopedLocaleEnvironment localeState {
+            {.qtLocale = "en_US",
+             .formattingLocale = "en_US",
+             .icuLocale = "en_US",
+             .useQtSeparators = true}
+        };
+
+        Gui::QuantitySpinBox spinBox;
+        spinBox.setUnit(Base::Unit::Length);
+
+        QCOMPARE(
+            spinBox.valueFromText(QStringLiteral("1 mm [original input 12,34,567]")),
+            Base::Quantity(1.0, "mm")
+        );
     }
 
     void test_GroupedLocaleNumberIsNormalizedBeforeParse()  // NOLINT

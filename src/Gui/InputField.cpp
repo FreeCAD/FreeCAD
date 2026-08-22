@@ -188,12 +188,49 @@ void InputField::updateText(const Base::Quantity& quant)
     double dFactor;
     std::string unitStr;
     const auto formatting = Gui::numericLocaleContextFor(locale());
-    std::string txt = Base::UnitsApi::schemaTranslate(quant, formatting, dFactor, unitStr);
+    auto displayQuantity = quant;
+    displayQuantity.setFormat(Gui::editableQuantityFormat(quant.getFormat(), formatting));
+    std::string txt = Base::UnitsApi::schemaTranslate(displayQuantity, formatting, dFactor, unitStr);
     actUnitValue = quant.getValue() / dFactor;
     // Block signals to prevent newInput from re-parsing the display text
     // and overwriting actQuantity with a precision-truncated value.
     QSignalBlocker blocker(this);
     setText(QString::fromStdString(txt));
+}
+
+App::QuantityInputResult InputField::interpretInput(const QString& input, const App::InputPhase phase) const
+{
+    const auto formatting = Gui::numericLocaleContextFor(locale());
+    App::QuantityConstraints constraints;
+    if (actUnit != Unit::One) {
+        constraints.requiredUnit = actUnit;
+    }
+    constraints.minimum = Minimum;
+    constraints.maximum = Maximum;
+
+    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
+                                   : App::QuantityInputGrammar::Quantity;
+    const auto parse = [&](const App::QuantityInputGrammar selectedGrammar) {
+        return App::interpretQuantityInput(
+            input.toUtf8().toStdString(),
+            selectedGrammar,
+            getPath(),
+            actUnit,
+            formatting,
+            phase,
+            constraints
+        );
+    };
+
+    auto result = parse(grammar);
+    // Keep quantity-only syntax on the quantity parser, but preserve the established arithmetic
+    // behavior of unbound fields when the quantity grammar reports a syntax failure.
+    if (grammar == App::QuantityInputGrammar::Quantity && result.status == App::InputStatus::Invalid
+        && result.diagnostic
+        && result.diagnostic->kind == App::InputDiagnosticKind::ExpressionSyntax) {
+        result = parse(App::QuantityInputGrammar::Expression);
+    }
+    return result;
 }
 
 void InputField::notifyValueChanged()
@@ -275,21 +312,7 @@ void InputField::contextMenuEvent(QContextMenuEvent* event)
 void InputField::newInput(const QString& text)
 {
     const auto formatting = Gui::numericLocaleContextFor(locale());
-    App::QuantityConstraints constraints;
-    if (actUnit != Unit::One) {
-        constraints.requiredUnit = actUnit;
-    }
-    constraints.minimum = Minimum;
-    constraints.maximum = Maximum;
-    const auto result = App::interpretQuantityInput(
-        text.toUtf8().toStdString(),
-        App::QuantityInputGrammar::Expression,
-        getPath(),
-        actUnit,
-        formatting,
-        App::InputPhase::Editing,
-        constraints
-    );
+    const auto result = interpretInput(text, App::InputPhase::Editing);
 
     if (result.status != App::InputStatus::Acceptable) {
         validInput = false;
@@ -327,22 +350,7 @@ void InputField::newInput(const QString& text)
 
 void InputField::commitInput()
 {
-    const auto formatting = Gui::numericLocaleContextFor(locale());
-    App::QuantityConstraints constraints;
-    if (actUnit != Unit::One) {
-        constraints.requiredUnit = actUnit;
-    }
-    constraints.minimum = Minimum;
-    constraints.maximum = Maximum;
-    const auto result = App::interpretQuantityInput(
-        text().toUtf8().toStdString(),
-        App::QuantityInputGrammar::Expression,
-        getPath(),
-        actUnit,
-        formatting,
-        App::InputPhase::Commit,
-        constraints
-    );
+    const auto result = interpretInput(text(), App::InputPhase::Commit);
     if (result.status != App::InputStatus::Acceptable) {
         validInput = false;
         if (result.diagnostic) {
@@ -794,21 +802,7 @@ void InputField::wheelEvent(QWheelEvent* event)
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
     Q_UNUSED(pos);
-    App::QuantityConstraints constraints;
-    if (actUnit != Unit::One) {
-        constraints.requiredUnit = actUnit;
-    }
-    constraints.minimum = Minimum;
-    constraints.maximum = Maximum;
-    const auto result = App::interpretQuantityInput(
-        input.toUtf8().toStdString(),
-        App::QuantityInputGrammar::Expression,
-        getPath(),
-        actUnit,
-        Gui::numericLocaleContextFor(locale()),
-        App::InputPhase::Editing,
-        constraints
-    );
+    const auto result = interpretInput(input, App::InputPhase::Editing);
     return result.status == App::InputStatus::Acceptable ? QValidator::Acceptable
                                                          : QValidator::Intermediate;
 }

@@ -97,7 +97,10 @@ bool hasAdditiveOperator(
 )
 {
     try {
-        const auto* owner = path.getDocumentObject();
+        // An unbound input has no owner to resolve. Avoid asking ObjectIdentifier to consult the
+        // application singleton in that case; quantity parsing is valid before application
+        // initialization as well.
+        const auto* owner = path.getOwner() ? path.getDocumentObject() : nullptr;
         const std::string inputString(input);
         auto expression = App::ExpressionParser::parseUserInput(owner, inputString.c_str(), locale);
         AdditiveOperatorDetector detector;

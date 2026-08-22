@@ -24,6 +24,7 @@
 #pragma once
 
 #include <QValidator>
+#include <App/QuantityInput.h>
 #include <Base/Parameter.h>
 
 #include "ExpressionBinding.h"
@@ -219,6 +220,7 @@ protected:
 
 private:
     QPixmap getValidationIcon(const char* name, const QSize& size) const;
+    App::QuantityInputResult interpretInput(const QString&, App::InputPhase) const;
     void updateText(const Base::Quantity&);
     void notifyValueChanged();
     void commitInput();

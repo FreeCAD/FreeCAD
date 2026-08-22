@@ -10,6 +10,7 @@
 #include <App/QuantityInput.h>
 #include <Base/NumericFormatting.h>
 #include <Base/NumericInput.h>
+#include <Base/Quantity.h>
 
 namespace
 {
@@ -49,6 +50,18 @@ Base::NumericLocaleContext Gui::numericLocaleContextFor(const QLocale& locale)
         secondary,
         toUtf8(QString(locale.zeroDigit()))
     };
+}
+
+Base::QuantityFormat Gui::editableQuantityFormat(
+    const Base::QuantityFormat& format,
+    const Base::NumericLocaleContext& locale
+)
+{
+    auto editable = format;
+    if (locale.decimalSeparator != "." && locale.groupingSeparator == ".") {
+        editable.option |= Base::QuantityFormat::OmitGroupSeparator;
+    }
+    return editable;
 }
 
 int Gui::numericInputSelectionLength(const QString& text, const Base::NumericLocaleContext& locale)

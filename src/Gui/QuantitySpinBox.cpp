@@ -93,15 +93,29 @@ public:
         }
         constraints.minimum = minimum;
         constraints.maximum = maximum;
-        return App::interpretQuantityInput(
-            input.toUtf8().toStdString(),
-            grammar,
-            path,
-            unit,
-            Gui::numericLocaleContextFor(q->locale()),
-            phase,
-            constraints
-        );
+        const auto parse = [&](const App::QuantityInputGrammar selectedGrammar) {
+            return App::interpretQuantityInput(
+                input.toUtf8().toStdString(),
+                selectedGrammar,
+                path,
+                unit,
+                Gui::numericLocaleContextFor(q->locale()),
+                phase,
+                constraints
+            );
+        };
+
+        auto result = parse(grammar);
+        // Preserve the quantity parser as the authority for quantity-only syntax, while keeping
+        // the established unbound-field support for arithmetic expressions. A parser failure is
+        // the only case that permits the expression grammar fallback; malformed numbers and
+        // incompatible units must retain their original diagnostics.
+        if (grammar == App::QuantityInputGrammar::Quantity
+            && result.status == App::InputStatus::Invalid && result.diagnostic
+            && result.diagnostic->kind == App::InputDiagnosticKind::ExpressionSyntax) {
+            result = parse(App::QuantityInputGrammar::Expression);
+        }
+        return result;
     }
 
     QLocale locale;
@@ -344,7 +358,8 @@ void QuantitySpinBox::validateInput()
 
     const QString text = lineEdit()->text();
     const App::ObjectIdentifier& path = getPath();
-    constexpr auto grammar = App::QuantityInputGrammar::Expression;
+    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
+                                   : App::QuantityInputGrammar::Quantity;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
     if (result.status == App::InputStatus::Acceptable) {
         auto quantity = *result.quantity;
@@ -576,7 +591,8 @@ void QuantitySpinBox::userInput(const QString& text)
     }
 
     const App::ObjectIdentifier& path = getPath();
-    constexpr auto grammar = App::QuantityInputGrammar::Expression;
+    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
+                                   : App::QuantityInputGrammar::Quantity;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Editing);
     d->lastRejectedText.clear();
     QToolTip::hideText();
@@ -655,11 +671,10 @@ void QuantitySpinBox::updateFromCache(bool notify, bool updateUnit /* = true */)
             // While keyboard tracking is active, keep the user's exact text in the line edit.
             // Re-emitting a schema-formatted string here can switch units at a threshold and
             // feed a rounded display value back through the parser on the next keystroke.
-            if (updateUnit) {
-                d->updatingText = true;
-                Q_EMIT textChanged(text);
-                d->updatingText = false;
-            }
+            const QString emittedText = updateUnit ? text : lineEdit()->text();
+            d->updatingText = true;
+            Q_EMIT textChanged(emittedText);
+            d->updatingText = false;
         }
     }
 }
@@ -787,10 +802,12 @@ QString QuantitySpinBox::getUserString(const Base::Quantity& val, double& factor
 {
     Q_D(const QuantitySpinBox);
     const auto formatting = Gui::numericLocaleContextFor(locale());
+    auto displayQuantity = val;
+    displayQuantity.setFormat(Gui::editableQuantityFormat(val.getFormat(), formatting));
     std::string unitStr;
     const std::string str = d->scheme
-        ? d->scheme->translate(val, formatting, factor, unitStr)
-        : Base::UnitsApi::schemaTranslate(val, formatting, factor, unitStr);
+        ? d->scheme->translate(displayQuantity, formatting, factor, unitStr)
+        : Base::UnitsApi::schemaTranslate(displayQuantity, formatting, factor, unitStr);
     unitString = QString::fromStdString(unitStr);
     return QString::fromStdString(str);
 }
@@ -1027,7 +1044,8 @@ Base::Quantity QuantitySpinBox::valueFromText(const QString& text) const
     Q_D(const QuantitySpinBox);
 
     const App::ObjectIdentifier& path = getPath();
-    constexpr auto grammar = App::QuantityInputGrammar::Expression;
+    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
+                                   : App::QuantityInputGrammar::Quantity;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Commit);
     return result.quantity.value_or(Base::Quantity());
 }
@@ -1038,7 +1056,8 @@ QValidator::State QuantitySpinBox::validate(QString& text, int& pos) const
     Q_UNUSED(pos)
 
     const App::ObjectIdentifier& path = getPath();
-    constexpr auto grammar = App::QuantityInputGrammar::Expression;
+    const auto grammar = isBound() ? App::QuantityInputGrammar::Expression
+                                   : App::QuantityInputGrammar::Quantity;
     const auto result = d->interpretInput(text, path, grammar, App::InputPhase::Editing);
     return result.status == App::InputStatus::Acceptable ? QValidator::Acceptable
                                                          : QValidator::Intermediate;
