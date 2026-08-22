@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 64 64"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="Forms_Pointer_InsertPoint.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs6" />
+  <sodipodi:namedview
+     id="namedview6"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="9.148194"
+     inkscape:cx="49.354004"
+     inkscape:cy="57.934932"
+     inkscape:window-width="3000"
+     inkscape:window-height="1960"
+     inkscape:window-x="-12"
+     inkscape:window-y="-12"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg6" />
+  <g
+     fill="none"
+     stroke-linecap="round"
+     id="g2">
+    <path
+       d="M16 3v9m0 8v9M3 16h9m8 0h9"
+       stroke="#2e3436"
+       stroke-width="4"
+       id="path1" />
+    <path
+       d="M16 3v9m0 8v9M3 16h9m8 0h9"
+       stroke="#fff"
+       stroke-width="2"
+       id="path2" />
+  </g>
+  <path
+     d="M29 29h30v26H29z"
+     fill="#d3d7cf"
+     stroke="#2e3436"
+     stroke-width="3"
+     id="path3" />
+  <path
+     d="M32 50l10-16 14 13"
+     fill="none"
+     stroke="#00a6d6"
+     stroke-width="4"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path4" />
+  <circle
+     cx="32"
+     cy="50"
+     r="3"
+     fill="#00d5ff"
+     stroke="#006b8c"
+     stroke-width="1.5"
+     id="circle4" />
+  <circle
+     cx="42"
+     cy="34"
+     r="3"
+     fill="#00d5ff"
+     stroke="#006b8c"
+     stroke-width="1.5"
+     id="circle5" />
+  <circle
+     cx="56"
+     cy="47"
+     r="3"
+     fill="#00d5ff"
+     stroke="#006b8c"
+     stroke-width="1.5"
+     id="circle6" />
+</svg>

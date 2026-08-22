@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFormWeld</class>
+ <widget class="QWidget" name="TaskFormWeld">
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0"><widget class="QPushButton" name="otherButton"><property name="text"><string>Select Form</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+   <item row="0" column="1"><widget class="QLineEdit" name="otherName"><property name="readOnly"><bool>true</bool></property><property name="placeholderText"><string>No Form selected</string></property></widget></item>
+   <item row="1" column="0"><widget class="QLabel" name="firstLabel"><property name="text"><string>Edited Form</string></property></widget></item>
+   <item row="1" column="1"><widget class="QLineEdit" name="firstEdge"><property name="readOnly"><bool>true</bool></property><property name="placeholderText"><string>Select an opening edge</string></property></widget></item>
+   <item row="2" column="0"><widget class="QLabel" name="secondLabel"><property name="text"><string>Other Form</string></property></widget></item>
+   <item row="2" column="1"><widget class="QLineEdit" name="secondEdge"><property name="readOnly"><bool>true</bool></property><property name="placeholderText"><string>Select an opening edge</string></property></widget></item>
+   <item row="3" column="0" colspan="2"><widget class="QLabel" name="status"><property name="wordWrap"><bool>true</bool></property><property name="text"><string>Select the other Form, then one edge on each opening.</string></property></widget></item>
+   <item row="4" column="0" colspan="2"><layout class="QHBoxLayout" name="buttonLayout">
+    <item><widget class="QPushButton" name="applyButton"><property name="text"><string>Apply</string></property><property name="enabled"><bool>false</bool></property></widget></item>
+    <item><widget class="QPushButton" name="cancelButton"><property name="text"><string>Cancel</string></property></widget></item>
+   </layout></item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

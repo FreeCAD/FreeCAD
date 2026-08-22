@@ -67,6 +67,8 @@ class PartDesignWorkbench(Workbench):
 
         FreeCADGui.addCommand("PartDesign_Sprocket", CommandSprocket())
 
+        import PartDesign.FormSurfaceFeature
+
     def GetClassName(self):
         return "PartDesignGui::Workbench"
 

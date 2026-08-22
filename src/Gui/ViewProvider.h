@@ -279,6 +279,16 @@ public:
     {
         return true;
     }
+    /** Allow ordinary LMB drag to start element box selection in edit mode.
+     *
+     * Edit providers opt in explicitly because editors such as Sketcher own
+     * the same drag stream. The default therefore preserves existing edit
+     * behavior.
+     */
+    virtual bool allowBoxElementSelection() const
+    {
+        return false;
+    }
     /// called when the selection changes for the view provider
     virtual void onSelectionChanged(const SelectionChanges&)
     {}
