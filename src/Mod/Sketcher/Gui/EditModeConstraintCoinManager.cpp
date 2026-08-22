@@ -1455,6 +1455,7 @@ Restart:
                     asciiText->param4 = endLineLength1;
                     asciiText->param5 = endLineLength2;
 
+                    p0[2] = zConstrH;
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
 
