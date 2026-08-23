@@ -18,7 +18,21 @@
 # include <windows.h>
 # include <cstdlib>  // IWYU pragma: keep
 # include <Base/CrashReporter/WindowsCrashReporter.h>
+#else
+# include <csignal>
+# include <sys/resource.h>
 #endif
+
+/// The fault code for a crash that has a faulting data address, on the platform this test
+/// binary was built for. These are the only codes for which the Writer can populate one.
+constexpr std::uint32_t addressCarryingFaultCode()
+{
+#ifdef FC_OS_WIN32
+    return EXCEPTION_ACCESS_VIOLATION;
+#else
+    return SIGSEGV;
+#endif
+}
 
 // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-non-const-global-variables,cert-err58-cpp)
 
@@ -425,6 +439,11 @@ static void installAndCrash(const std::string& crashDir)
 {
 #ifdef _MSC_VER
     SetErrorMode(SEM_NOGPFAULTERRORBOX | SEM_FAILCRITICALERRORS);
+#else
+    // These tests crash on purpose, several times per run on three platforms. Without this the
+    // build directory (and /cores on macOS) collects dumps nobody asked for.
+    const rlimit noCoreDumps {0, 0};
+    setrlimit(RLIMIT_CORE, &noCoreDumps);
 #endif
     Base::CrashReporter::Writer::prewarm();
     Base::CrashReporter::Writer::install(crashDir);
@@ -432,6 +451,44 @@ static void installAndCrash(const std::string& crashDir)
     Base::CrashReporter::WindowsCrashReporter::install(crashDir);
 #endif
     crashReporterFaultSite();
+}
+
+// Windows needs --gtest_catch_exceptions=0, because gtest's own SEH handler would otherwise eat
+// the fault before SetUnhandledExceptionFilter sees it. That flag cannot be assumed in CI, so the
+// assertion test runs automatically on POSIX only;
+#ifdef _MSC_VER
+# define FC_REAL_CAPTURE_TEST DISABLED_realCrashCapturesUsableFrames
+#else
+# define FC_REAL_CAPTURE_TEST realCrashCapturesUsableFrames
+#endif
+
+TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
+{
+    const std::string crashDir = resolveCrashDir(tempDir);
+    EXPECT_DEATH(installAndCrash(crashDir), "");  // NOLINT
+
+    const auto path = findSoleFcrashIn(crashDir);
+    ASSERT_FALSE(path.empty());
+    const auto report = Base::CrashReporter::parse(path);
+
+    // The point of the whole exercise: a real crash has to produce a real stack.
+    ASSERT_GT(report.stackFrames.size(), 0U);
+
+    // Every frame must carry a genuine instruction address.
+    for (const auto& frame : report.stackFrames) {
+        EXPECT_NE(frame.rawAddress, 0U);
+    }
+
+    // At least one frame must be attributed to a module. Not all of them: an unattributable frame
+    // is legitimate and is recorded with NoString
+    EXPECT_TRUE(std::ranges::any_of(report.stackFrames, [](const auto& frame) {
+        return !frame.modulePath.empty();
+    }));
+
+    // A null dereference: SIGBUS is accepted because some platforms report an unmapped access that
+    // way rather than as SIGSEGV.
+    EXPECT_TRUE(report.code == addressCarryingFaultCode() || report.code == SIGBUS);
+    EXPECT_FALSE(report.partialWrite);
 }
 
 // This test is always disabled in CI runs: to run it, use a direct manual call:
