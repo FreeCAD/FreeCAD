@@ -630,3 +630,133 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
         self.assertEqual(ultra["linear_deflection"], 0.005)  # Most precise
         self.assertEqual(ultra["sample_interval"], 0.05)  # Densest
         self.assertEqual(ultra["min_sample_interval"], 0.05)  # Densest
+
+    # -- 3+2 workplane rotation tests --
+
+    def _createRotatedJob(self, shape):
+        """Helper: job for *shape* on a machine with a single table A axis.
+
+        With Workplane=(0,-1,0) the solver yields A=-90 and the geometry
+        transform maps (x, y, z) -> (x, z, -y): the model's -Y side becomes
+        the Z-up top.
+        """
+        from Machine.models.machine import Machine, RotaryAxis, AxisRole
+
+        model = self.doc.addObject("Part::Feature", "TestModel")
+        model.Shape = shape
+        job = PathJob.Create("Job", [model])
+        toolbit = self.assets.get("toolbit://5mm_Endmill")
+        loaded_tool = toolbit.attach_to_doc(doc=self.doc)
+        job.Tools.Group[0].Tool = loaded_tool
+
+        machine = Machine(name="Test A-axis Machine")
+        machine.rotary_axes["A"] = RotaryAxis(
+            name="A",
+            rotation_vector=FreeCAD.Vector(1, 0, 0),
+            min_limit=-120,
+            max_limit=120,
+            role=AxisRole.TABLE_ROTARY,
+            parent=None,
+            sequence=0,
+        )
+        job.Proxy.getMachine = lambda: machine
+        self.doc.recompute()
+        return job
+
+    def _createRotatedOp(self, job, strategy):
+        """Helper: PlanarSurface op on *job* with a -Y workplane, not yet executed.
+
+        Execution is left to a document recompute: calling Proxy.execute()
+        directly re-enters execute() via the base class's obj.recompute(),
+        and the nested run strips the 3+2 transform state before the outer
+        run emits its path.
+        """
+        op = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PlanarSurface")
+        proxy = PathPlanarSurface.ObjectSurface(op, "PlanarSurface")
+        proxy.initOperation(op)
+        op.Strategy = strategy
+        op.Base = job.Model.Group
+        op.Workplane = FreeCAD.Vector(0, -1, 0)
+        job.Operations.addObject(op)
+        return op
+
+    @staticmethod
+    def _rotaryMoves(op):
+        return [c for c in op.Path.Commands if c.Name == "G0" and "A" in c.Parameters]
+
+    @staticmethod
+    def _cutValues(op, axis):
+        return [
+            c.Parameters[axis] for c in op.Path.Commands if c.Name == "G1" and axis in c.Parameters
+        ]
+
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
+    def test50(self):
+        """
+        Executes SurfaceScan with a non-Z-up Workplane and verifies the path is
+        computed against the rotated geometry.
+
+        INPUT:
+        - Function: ObjectOp.execute() 3+2 setup -> ObjectSurface.opExecute()
+        - Parameters: Workplane=(0,-1,0), Strategy=SurfaceScan, Line pattern
+        - Input data: 50x40x30 box on a single-A-axis machine; rotated the box
+          spans Y 0..30 and Z -40..0 with its top at Z=0
+
+        EXPECTED OUTPUT:
+        - The path contains the rotary positioning move G0 A-90
+        - Cutting moves sit on the rotated top face (Z ~ 0), not the unrotated
+          top (Z = 30)
+        - Cutting moves stay within the rotated Y extent (0..30), never
+          reaching the unrotated extent (up to 40)
+        """
+        job = self._createRotatedJob(Part.makeBox(50, 40, 30))
+        op = self._createRotatedOp(job, "SurfaceScan")
+        op.CutPattern = "Line"
+        op.StepOver = 50.0
+        op.SampleInterval = 5.0
+        self.doc.recompute()
+
+        rotary = self._rotaryMoves(op)
+        self.assertTrue(rotary, "Path should contain a rotary positioning move")
+        self.assertAlmostEqual(rotary[0].Parameters["A"], -90.0, places=3)
+
+        cut_z = self._cutValues(op, "Z")
+        self.assertTrue(cut_z, "SurfaceScan should produce cutting moves")
+        self.assertLess(max(cut_z), 10.0, "Cuts must not sit on the unrotated top (Z=30)")
+        self.assertGreater(min(cut_z), -10.0, "Cuts must stay near the rotated top (Z=0)")
+
+        cut_y = self._cutValues(op, "Y")
+        self.assertTrue(cut_y)
+        self.assertLessEqual(max(cut_y), 30.0 + 0.1, "Cuts must respect the rotated Y extent")
+
+    def test51(self):
+        """
+        Executes ZLevelHybrid with a non-Z-up Workplane (no OCL required) and
+        verifies depths and paths are in the rotated frame.
+
+        INPUT:
+        - Function: ObjectOp.execute() 3+2 setup -> ObjectSurface.opExecute()
+        - Parameters: Workplane=(0,-1,0), Strategy=ZLevelHybrid, BoundBox=Stock
+        - Input data: 15mm sphere centred at (25, 0, 15) on a single-A-axis
+          machine; unrotated it spans Z 0..30, rotated it spans Z -15..15
+
+        EXPECTED OUTPUT:
+        - The path contains the rotary positioning move G0 A-90
+        - OpFinalDepth is the rotated model floor (-15), not the unrotated one (0)
+        - Cutting moves descend below Z=0, impossible on the unrotated model
+        """
+        job = self._createRotatedJob(Part.makeSphere(15, FreeCAD.Vector(25, 0, 15)))
+        op = self._createRotatedOp(job, "ZLevelHybrid")
+        op.BoundBox = "Stock"
+        self.doc.recompute()
+
+        rotary = self._rotaryMoves(op)
+        self.assertTrue(rotary, "Path should contain a rotary positioning move")
+        self.assertAlmostEqual(rotary[0].Parameters["A"], -90.0, places=3)
+
+        self.assertAlmostEqual(op.OpFinalDepth.Value, -15.0, places=3)
+
+        cut_z = self._cutValues(op, "Z")
+        self.assertTrue(cut_z, "ZLevelHybrid should produce cutting moves")
+        self.assertLess(max(cut_z), 16.0, "Cuts must not use the unrotated Z range (0..30)")
+        self.assertLess(min(cut_z), -5.0, "Cuts must descend into the rotated Z range (-15..15)")

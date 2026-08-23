@@ -1034,10 +1034,28 @@ class ObjectSurface(PathOp.ObjectOp):
         if obj.VolumetricFeedPercent < 0.0:
             obj.VolumetricFeedPercent = 0.0
 
+    def _rotatedShape(self, shape):
+        """Return *shape* in the operation's working (Z-up) frame.
+
+        When a 3+2 workplane rotation is active the base class wraps
+        ``self.model`` / ``self.stock`` in transformed proxies for the duration
+        of ``opExecute()`` and ``baseShapes()`` yields transformed geometry.
+        ``updateDepths()`` runs before that wrapping, so depth calculations
+        apply the geometry transform here. With no rotation active this is the
+        identity.
+        """
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        if matrix is None:
+            return shape
+        return shape.copy().transformShape(matrix, False, False)
+
     def opUpdateDepths(self, obj):
+        # All Z values below are in the working frame: baseShapes() yields
+        # transformed geometry when a workplane rotation is active, and model /
+        # stock shapes are transformed explicitly via _rotatedShape().
         if hasattr(obj, "Base") and obj.Base:
             zmin = float("inf")
-            for base, sublist in obj.Base:
+            for base, sublist in self.baseShapes(obj):
                 for sub in sublist:
                     try:
                         fbb = base.Shape.getElement(sub).BoundBox
@@ -1049,13 +1067,12 @@ class ObjectSurface(PathOp.ObjectOp):
         elif self.job:
             if hasattr(obj, "BoundBox"):
                 if obj.BoundBox == "BaseBoundBox":
-                    models = self.job.Model.Group
-                    zmin = models[0].Shape.BoundBox.ZMin
-                    for M in models:
-                        zmin = min(zmin, M.Shape.BoundBox.ZMin)
+                    models = getattr(self, "model", None) or self.job.Model.Group
+                    zmin = min(self._rotatedShape(M.Shape).BoundBox.ZMin for M in models)
                     obj.OpFinalDepth = zmin
                 if obj.BoundBox == "Stock":
-                    obj.OpFinalDepth = self.job.Stock.Shape.BoundBox.ZMin
+                    stock = getattr(self, "stock", None) or self.job.Stock
+                    obj.OpFinalDepth = self._rotatedShape(stock.Shape).BoundBox.ZMin
 
     # ---- Strategy execution methods ----
 
@@ -1528,12 +1545,12 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # 3. Fill selected holes
         if fill_selected_holes:
-            base_prop = getattr(obj, "Base", [])
+            base_prop = list(self.baseShapes(obj))
             fill_holes_masks = surface_zlevel.fill_selected(base_prop)
 
         # 4. Boundary preparation
         buffer = tool_diam + obj.BoundaryAdjustment.Value
-        border_poly = surface_zlevel.extendedBoundBox(job.Stock.Shape.BoundBox, buffer, 0.0)
+        border_poly = surface_zlevel.extendedBoundBox(self.stock.Shape.BoundBox, buffer, 0.0)
         border_face = Part.makeFace(border_poly)
 
         trim_face = surface_zlevel.getTrimFace(border_face, bb_face, wpc)
@@ -1657,10 +1674,27 @@ class ObjectSurface(PathOp.ObjectOp):
             op_depth = obj.StartDepth.Value - obj.FinalDepth.Value
             tool_params["length_offset"] = op_depth + tool_params["edge_height"]
 
-        # Geometry preperation
-        base_objs = JOB.Model.Group
+        # Geometry preparation. self.model / self.stock are provided by the base
+        # class and are already in the working frame when a 3+2 workplane
+        # rotation is active (see ObjectOp.execute); never read JOB.Model or
+        # JOB.Stock directly here or the rotation would be silently bypassed.
+        base_objs = self.model
         if not base_objs:
             Path.Log.error("No models found in Job.")
+            return
+
+        if getattr(self, "_geom_transform_matrix", None) is not None and any(
+            not hasattr(b, "Shape") for b in base_objs
+        ):
+            # Mesh::Feature bases carry no .Shape, so the base class cannot
+            # rotate them. Refuse rather than cut an unrotated mesh on a
+            # rotated setup.
+            Path.Log.error(
+                translate(
+                    "CAM_PlanarSurface",
+                    "Mesh base objects are not supported with a rotated Workplane.",
+                )
+            )
             return
 
         valid_shapes = []
@@ -1684,7 +1718,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Split selected features
         if needs_face_selection:
-            base_prop = getattr(obj, "Base", [])
+            base_prop = list(self.baseShapes(obj))
             avoid_count = getattr(obj, "AvoidLastX_Faces", 0)
             cutting_faces, avoid_faces = surface_pattern.split_selected_features(
                 base_prop, avoid_count
@@ -1698,7 +1732,7 @@ class ObjectSurface(PathOp.ObjectOp):
             offset = obj.BoundaryAdjustment.Value - tool_radius - 0.01
 
             if obj.BoundBox == "Stock":
-                bb_face = surface_common.create_boundary_face(JOB.Stock.Shape.Faces, offset)
+                bb_face = surface_common.create_boundary_face(self.stock.Shape.Faces, offset)
             elif cutting_faces:
                 # Combine bounding boxes and explicitly convert to a 2D Part.Face
                 from functools import reduce
