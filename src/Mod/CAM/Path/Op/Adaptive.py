@@ -309,7 +309,7 @@ def GenerateGCode(op, obj, adaptiveResults):
                             op.commandlist.append(Path.Command("G0", {"Z": z}))
 
                         cmd = Path.Command("G0", {"X": x, "Y": y})
-                        cmd.Annotations = {Constants.ANNOT_NO_ENGAGEMENT_FEED: "True"}
+                        cmd.Annotations = {Constants.ANNOT_NO_ENGAGEMENT_FEED: str(op.horizFeed)}
                         op.commandlist.append(cmd)
 
                     elif motionType == area.AdaptiveMotionType.LinkNotClear:

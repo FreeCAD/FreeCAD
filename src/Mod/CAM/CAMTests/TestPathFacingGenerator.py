@@ -900,7 +900,7 @@ class TestPathFacingGenerator(PathTestBase):
         import Path
 
         p = Path.Path(commands)
-        print(p.toGCode())
+        # print(p.toGCode())
 
     def test_spiral_milling_direction(self):
         """Test spiral with different milling directions."""
@@ -968,8 +968,8 @@ class TestPathFacingGenerator(PathTestBase):
         import Path
 
         p = Path.Path(commands)
-        print("Centered on origin G-code:")
-        print(p.toGCode())
+        # print("Centered on origin G-code:")
+        # print(p.toGCode())
 
     def test_spiral_axis_preference_variations(self):
         """Test spiral with different axis preferences and milling directions."""
@@ -1011,8 +1011,8 @@ class TestPathFacingGenerator(PathTestBase):
                 import Path
 
                 p = Path.Path(commands)
-                print(f"\n{axis_pref} axis, {milling_dir} milling G-code:")
-                print(p.toGCode())
+                # print(f"\n{axis_pref} axis, {milling_dir} milling G-code:")
+                # print(p.toGCode())
 
     def test_spiral_angled_rectangle(self):
         """Test spiral with angled rectangle to verify it follows polygon shape, not bounding box."""
@@ -1057,8 +1057,8 @@ class TestPathFacingGenerator(PathTestBase):
                 import Path
 
                 p = Path.Path(commands)
-                print(f"\nAngled rectangle {axis_pref} axis G-code:")
-                print(p.toGCode())
+                # print(f"\nAngled rectangle {axis_pref} axis G-code:")
+                # print(p.toGCode())
 
     def test_spiral_continuous_cutting(self):
         """Test that spiral maintains continuous cutting motion throughout."""
