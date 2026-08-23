@@ -34,6 +34,7 @@
 #include <Base/Vector3D.h>
 #include <App/DocumentObserver.h>
 #include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 
 #include <FCGlobal.h>
 
@@ -87,7 +88,7 @@ struct MeasureType
     MeasurePrioritizeMethod prioritizeCb;
 
     bool isPython;
-    PyObject* pythonClass;
+    Base::NativePythonReference pythonClass;
 };
 
 struct MeasureHandler
@@ -118,6 +119,7 @@ public:
                                const char* measureObj,
                                MeasureValidateMethod validatorCb,
                                MeasurePrioritizeMethod prioritizeCb);
+    static void destruct();
     static const std::vector<MeasureType*> getMeasureTypes();
     static Py::Tuple getSelectionPy(const App::MeasureSelection& selection);
     static std::vector<MeasureType*> getValidMeasureTypes(App::MeasureSelection selection,

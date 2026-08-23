@@ -24,6 +24,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/NativePythonReference.h>
 #include <Base/VectorPy.h>
 #include <App/Document.h>
 #include <App/Link.h>
@@ -110,7 +111,13 @@ void MeasureManager::addMeasureType(std::string id,
                                     MeasurePrioritizeMethod prioritizeCb)
 {
     MeasureType* mType =
-        new MeasureType {id, label, measureObj, validatorCb, prioritizeCb, false, nullptr};
+        new MeasureType {id,
+                         label,
+                         measureObj,
+                         validatorCb,
+                         prioritizeCb,
+                         false,
+                         Base::NativePythonReference()};
     _mMeasureTypes.push_back(mType);
 }
 
@@ -125,6 +132,15 @@ void MeasureManager::addMeasureType(const char* id,
                    std::string(measureObj),
                    validatorCb,
                    prioritizeCb);
+}
+
+void MeasureManager::destruct()
+{
+    for (auto* measureType : _mMeasureTypes) {
+        delete measureType;
+    }
+    _mMeasureTypes.clear();
+    _mMeasureHandlers.clear();
 }
 
 const std::vector<MeasureType*> MeasureManager::getMeasureTypes()
@@ -177,7 +193,7 @@ std::vector<MeasureType*> MeasureManager::getValidMeasureTypes(App::MeasureSelec
 
         if (mType->isPython) {
             // Parse Python measure types
-            auto measurePyClass = Py::Object(mType->pythonClass);
+            auto measurePyClass = Py::Object(mType->pythonClass.get());
 
             Py::Tuple args(1);
             args.setItem(0, selectionPy);

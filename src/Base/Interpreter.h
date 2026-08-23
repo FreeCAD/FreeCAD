@@ -45,8 +45,10 @@
 #endif
 
 #include <CXX/Extensions.hxx>
+#include <cstddef>
 #include <list>
 #include <string>
+#include <utility>
 #include "Exception.h"
 
 
@@ -201,23 +203,47 @@ private:
     long _exitCode;
 };
 
-/** If the application starts we release immediately the global interpreter lock
- * (GIL) once the Python interpreter is initialized, i.e. no thread -- including
- * the main thread doesn't hold the GIL. Thus, every thread must instantiate an
- * object of PyGILStateLocker if it needs to access protected areas in Python or
- * areas where the lock is needed. It's best to create the instance on the stack,
- * not on the heap.
+/** Acquire the Python thread state for the current scope.
+ *
+ * FreeCAD releases the interpreter's main thread state with PyEval_SaveThread()
+ * during normal execution. That thread still has a valid PyThreadState, but it
+ * does not hold the GIL. PyGILState_Ensure() must not be used for that case: it
+ * is only the right fallback for a thread which has no Python thread state yet.
+ * This follows CPython's GILState model and assumes FreeCAD's current
+ * single-interpreter architecture. Supporting subinterpreters would require
+ * associating the guard with an explicit PyInterpreterState.
  */
 class BaseExport PyGILStateLocker
 {
 public:
     PyGILStateLocker()
     {
+        if (PyGILState_Check()) {
+            return;
+        }
+
+        if (auto* threadState = PyGILState_GetThisThreadState()) {
+            PyEval_RestoreThread(threadState);  // NOLINT
+            mode = Mode::Restored;
+            return;
+        }
+
         gstate = PyGILState_Ensure();  // NOLINT
+        mode = Mode::Ensured;
     }
+
     ~PyGILStateLocker()
     {
-        PyGILState_Release(gstate);
+        switch (mode) {
+            case Mode::Held:
+                break;
+            case Mode::Restored:
+                PyEval_SaveThread();  // NOLINT
+                break;
+            case Mode::Ensured:
+                PyGILState_Release(gstate);
+                break;
+        }
     }
 
     PyGILStateLocker(const PyGILStateLocker&) = delete;
@@ -226,7 +252,15 @@ public:
     PyGILStateLocker& operator=(PyGILStateLocker&&) = delete;
 
 private:
-    PyGILState_STATE gstate;
+    enum class Mode
+    {
+        Held,
+        Restored,
+        Ensured,
+    };
+
+    Mode mode = Mode::Held;
+    PyGILState_STATE gstate = PyGILState_UNLOCKED;
 };
 
 /**

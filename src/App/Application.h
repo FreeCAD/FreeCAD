@@ -746,6 +746,9 @@ public:
     /// Destroy the application.
     static void destruct();
 
+    /// Stop asynchronous native producers before Python finalization begins.
+    void prepareForShutdown();
+
     /// Detach from the console.
     static void destructObserver();
 
@@ -1059,6 +1062,7 @@ private:
     // Separate from the mutex-protected queue state so shutdown can request a
     // worker stop and wake waiters without first taking _recomputeMutex.
     std::atomic<bool> _stopRecomputeThread{false};
+    bool _preparedForShutdown{false};
 
     // Worker thread function that processes _recomputeRequests
     void recomputeWorker();
