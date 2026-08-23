@@ -24,6 +24,7 @@
 
 #include <algorithm>
 
+#include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
@@ -51,12 +52,14 @@
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 #include <Base/Vector3D.h>
+#include <Base/Profiler.h>
 #include <Mod/Part/App/PartPyCXX.h>
 #include <Mod/Part/App/GeometryMigrationExtension.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <Mod/Part/App/WireJoiner.h>
 
 #include <memory>
+#include <unordered_map>
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
@@ -265,8 +268,10 @@ static bool inline checkSmallEdge(const Part::TopoShape &s) {
 // clang-format on
 void SketchObject::buildShape()
 {
+    ZoneScoped;
     // We use the following instead to map element names
 
+    std::unordered_map<gp_Pnt, std::vector<std::string>> vertexHistoryMap;
     std::vector<Part::TopoShape> shapes;
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
@@ -301,10 +306,25 @@ void SketchObject::buildShape()
         vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
     };
 
-    auto addEdge = [this, &shapes](auto geo, auto indexedName) {
-        shapes.push_back(getEdge(geo, convertSubName(indexedName, false).c_str()));
+    auto addEdge = [this, &shapes, &vertexHistoryMap, &selectedHistoryVersion](auto geo, auto indexedName) {
+        std::string edgeName = convertSubName(indexedName, false);
+        Part::TopoShape edgeShape {getEdge(geo, edgeName.c_str())};
+        shapes.push_back(edgeShape);
         if (checkSmallEdge(shapes.back())) {
             FC_WARN("Edge too small: " << indexedName);
+        }
+
+        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+            TopTools_IndexedMapOfShape vertexMap;
+            TopExp::MapShapes(edgeShape.getShape(), TopAbs_VERTEX, vertexMap);
+
+            std::string vertexNamePrefix {edgeName + 'v'};
+
+            for (int vertexIdx = 1; vertexIdx <= vertexMap.Extent(); vertexIdx++) {
+                vertexHistoryMap[BRep_Tool::Pnt(TopoDS::Vertex(vertexMap(vertexIdx)))].push_back(
+                    vertexNamePrefix + std::to_string(vertexIdx)
+                );
+            }
         }
     };
 
@@ -383,6 +403,48 @@ void SketchObject::buildShape()
         result.makeElementCompound(results);
     }
     result.Tag = getID();
+
+    TopTools_IndexedMapOfShape resultVertexMap;
+    TopExp::MapShapes(result.getShape(), TopAbs_VERTEX, resultVertexMap);
+
+    for (int vertexIdx = 1; vertexIdx <= resultVertexMap.Extent(); vertexIdx++) {
+        std::vector<std::string> referenceIDs;
+        gp_Pnt mainVertexPoint = BRep_Tool::Pnt(TopoDS::Vertex(resultVertexMap(vertexIdx)));
+        
+        for (const auto& vertexHistoryEntry : vertexHistoryMap) {
+            if (vertexHistoryEntry.second.size() 
+                && vertexHistoryEntry.first.IsEqual(mainVertexPoint, Precision::Confusion()))
+            {
+                referenceIDs.insert(
+                    referenceIDs.end(),
+                    vertexHistoryEntry.second.begin(),
+                    vertexHistoryEntry.second.end()
+                );
+            }
+        }
+
+        if (referenceIDs.size()) {
+            result.setElementName(
+                Data::IndexedName::fromConst("Vertex", vertexIdx),
+                Data::MappedName(
+                    Data::MappedName::makeEncodedSection(
+                        referenceIDs,
+                        {},
+                        result.Tag,
+                        Part::OpCodes::Sketch,
+                        0,
+                        'V',
+                        0,
+                        {Data::MAPPER_FLAG_SOURCE}
+                    )
+                ),
+                0L,
+                nullptr,
+                true
+            );
+        }
+    }
+
     InternalShape.setValue(buildInternals(result.located(TopLoc_Location())));
     // Must set Shape property after InternalShape so that
     // GeoFeature::updateElementReference() can run properly on change of Shape

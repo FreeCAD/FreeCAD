@@ -1651,39 +1651,28 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     }
     shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
                           builtName,0L);
-    TopTools_IndexedMapOfShape vmap;
-    TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
-    std::ostringstream ss;
-    for(int i=1;i<=vmap.Extent();++i) {
-        auto gpt = BRep_Tool::Pnt(TopoDS::Vertex(vmap(i)));
-        Base::Vector3d pt(gpt.X(),gpt.Y(),gpt.Z());
-        PointPos pos[] = {PointPos::start,PointPos::end};
-        for(size_t j=0;j<sizeof(pos)/sizeof(pos[0]);++j) {
-            if(getPoint(geo,pos[j]) == pt) {
-                ss.str("");
-                ss << name << 'v' << static_cast<int>(pos[j]);
-                if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
-                    builtVertexName = ss.str();
-                } else if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-                    builtVertexName = Data::MappedName::makeEncodedSection(
-                        {ss.str()},
-                        {},
-                        getID(),
-                        Part::OpCodes::Sketch,
-                        0,
-                        'V',
-                        0,
-                        {Data::MAPPER_FLAG_SOURCE}
-                    );
+    
+    if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
+        TopTools_IndexedMapOfShape vmap;
+        TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
+        std::ostringstream ss;
+        for(int i=1;i<=vmap.Extent();++i) {
+            const TopoDS_Shape& currentShape = vmap(i);
+            auto gpt = BRep_Tool::Pnt(TopoDS::Vertex(currentShape));
+            Base::Vector3d pt(gpt.X(),gpt.Y(),gpt.Z());
+            PointPos pos[] = {PointPos::start,PointPos::end};
+            for(size_t j=0;j<sizeof(pos)/sizeof(pos[0]);++j) {
+                if(getPoint(geo,pos[j]) == pt) {
+                    ss.str("");
+                    ss << name << 'v' << static_cast<int>(pos[j]);
+                    shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
+                                         Data::MappedName::fromRawData(ss.str().c_str()),0L);
+                    break;
                 }
-                shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
-                                     builtVertexName,0L);
-                break;
             }
         }
     }
     return shape;
-
 }
 
 Data::IndexedName SketchObject::shapeTypeFromGeoId(int geoId, PointPos posId) const

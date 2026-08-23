@@ -304,7 +304,10 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
 
                     if (linkedNamePass && connectedElementPass
                         && (refIDInterference >= 2
-                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs)) {
+                            || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs
+                            || (refIDInterference == 1
+                                && mainCheckSection.elementType == 'V')))
+                    {
                         Data::DecodedMappedSection modifiedFirstSection(mainCheckSection);
                         Data::DecodedMappedSection modifiedSecondSection(loopCheckSection);
 

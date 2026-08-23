@@ -2578,9 +2578,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                             std::string encodedMappedSection = Data::MappedName::makeEncodedSection(
                                 namedGeneratedIterator->second
                             );
-                        }
 
-                        if (encodedMappedSection.size()) {
                             generatedConnectedElementMap[elementShape].push_back(encodedMappedSection);
                             allGeneratedConnectedElementNames.insert(encodedMappedSection);
 
