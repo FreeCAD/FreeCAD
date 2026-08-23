@@ -33,11 +33,14 @@ translate = FreeCAD.Qt.translate
 # OCL must be installed. The import itself is the availability probe: unlike
 # importlib.util.find_spec it also catches a present-but-broken binary install.
 try:
-    try:
-        import ocl
-    except ImportError:
-        import opencamlib as ocl  # noqa: F401
+    import ocl
 except ImportError:
+    try:
+        import opencamlib as ocl
+    except ImportError:
+        ocl = None
+
+if ocl is None:
     msg = translate("CAM_PlanarSurface", "This operation requires OpenCamLib to be installed.")
     FreeCAD.Console.PrintError(msg + "\n")
     raise ImportError(msg)
@@ -63,11 +66,7 @@ from Path.Base.Generator import (
 
 Part = LazyLoader("Part", globals(), "Part")
 
-if False:
-    Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
-    Path.Log.trackModule(Path.Log.thisModule())
-else:
-    Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
+Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 
 
 class ObjectSurface(PathOp.ObjectOp):
@@ -1141,7 +1140,7 @@ class ObjectSurface(PathOp.ObjectOp):
         scan_bb = surface_pattern.BBox.from_bbox(bb)
         if not boundary_face and not cutting_faces:
             Path.Log.error("Failed to generate a valid boundary mask for the selected faces.")
-            return
+            return []
 
         # 3. Generate Scan Lines (Main Logic)
         angle = obj.CutPatternAngle

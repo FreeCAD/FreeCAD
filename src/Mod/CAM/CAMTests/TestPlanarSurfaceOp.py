@@ -33,18 +33,15 @@ Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 # Check if OCL is available
-_ocl_available = False
 try:
-    try:
-        import ocl
-
-        _ocl_available = True
-    except ImportError:
-        import opencamlib as ocl
-
-        _ocl_available = True
+    import ocl
 except ImportError:
-    pass
+    try:
+        import opencamlib as ocl
+    except ImportError:
+        ocl = None
+
+_ocl_available = ocl is not None
 
 
 class TestPlanarSurfaceOp(PathTestWithAssets):
@@ -109,7 +106,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
         - Should have a Strategy property with default value "SurfaceScan"
         - Confirms the operation is properly registered and initialized
         """
-        job = self._createJobWithBox()
+        self._createJobWithBox()
 
         op = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PlanarSurface")
         proxy = PathPlanarSurface.ObjectSurface(op, "PlanarSurface")
@@ -484,7 +481,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
           should be hidden (editor mode 2) since it's Z-Level-specific
         - Ensures UI shows relevant properties for the selected strategy
         """
-        job = self._createJobWithBox()
+        self._createJobWithBox()
 
         op = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PlanarSurface")
         proxy = PathPlanarSurface.ObjectSurface(op, "PlanarSurface")
@@ -515,7 +512,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
           should be hidden (editor mode 2) since it's Z-Level-specific
         - Ensures UI adapts to the selected strategy
         """
-        job = self._createJobWithBox()
+        self._createJobWithBox()
 
         op = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PlanarSurface")
         proxy = PathPlanarSurface.ObjectSurface(op, "PlanarSurface")
