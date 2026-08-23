@@ -20,11 +20,11 @@
 #                                                                              #
 ################################################################################
 
+import FreeCAD
+import FreeCADGui
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-import FreeCAD
-import FreeCADGui
 import Path
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Op.Gui.Base as PathOpGui

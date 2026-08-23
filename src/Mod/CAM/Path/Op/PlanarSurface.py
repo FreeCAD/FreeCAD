@@ -42,22 +42,24 @@ except ImportError:
     FreeCAD.Console.PrintError(msg + "\n")
     raise ImportError(msg)
 
-from typing import Any, ClassVar
-
-from PySide.QtCore import QT_TRANSLATE_NOOP
-import Path
-import Path.Op.Base as PathOp
-import Path.Base.Generator.surface_common as surface_common
-import Path.Base.Generator.surface_mesh as surface_mesh
-import Path.Base.Generator.surface_pattern as surface_pattern
-import Path.Base.Generator.surface_dropcutter as surface_dropcutter
-import Path.Base.Generator.surface_waterline as surface_waterline
-import Path.Base.Generator.surface_postprocess as surface_postprocess
-import PathScripts.PathUtils as PathUtils
 import time
+from typing import Any, ClassVar
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
+from PathScripts import PathUtils
+from PySide.QtCore import QT_TRANSLATE_NOOP
+
+import Path
+import Path.Op.Base as PathOp
+from Path.Base.Generator import (
+    surface_common,
+    surface_dropcutter,
+    surface_mesh,
+    surface_pattern,
+    surface_postprocess,
+    surface_waterline,
+)
 
 Part = LazyLoader("Part", globals(), "Part")
 
@@ -933,14 +935,13 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.OpFinalDepth.Value = -10
             obj.OpStartDepth.Value = 10
 
-        Path.Log.debug("Default OpFinalDepth: {}".format(obj.OpFinalDepth.Value))
-        Path.Log.debug("Default OpStartDepth: {}".format(obj.OpStartDepth.Value))
+        Path.Log.debug(f"Default OpFinalDepth: {obj.OpFinalDepth.Value}")
+        Path.Log.debug(f"Default OpStartDepth: {obj.OpStartDepth.Value}")
 
     def opApplyPropertyLimits(self, obj):
         """opApplyPropertyLimits(obj) ... Apply necessary limits to user input property values."""
         # Limit Keep Tool Down threshold to positive values
-        if obj.KeepToolDownRatio < 0:
-            obj.KeepToolDownRatio = 0
+        obj.KeepToolDownRatio = max(obj.KeepToolDownRatio, 0)
 
         # Limit linear deflection
         if obj.LinearDeflection.Value < 0.001:
@@ -979,10 +980,8 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.CutPatternAngle = 0.0
 
         # Limit StepOver to natural number percentage
-        if obj.StepOver > 100.0:
-            obj.StepOver = 100.0
-        if obj.StepOver < 1.0:
-            obj.StepOver = 1.0
+        obj.StepOver = min(obj.StepOver, 100.0)
+        obj.StepOver = max(obj.StepOver, 1.0)
 
         # Limit AvoidLastX_Faces to zero and positive values
         if obj.AvoidLastX_Faces < 0:
@@ -997,42 +996,32 @@ class ObjectSurface(PathOp.ObjectOp):
             obj.AvoidFacesOverlap.Value = 0.0
 
         # Limit StockToLeave to positive values
-        if obj.StockToLeave < 0:
-            obj.StockToLeave = 0
+        obj.StockToLeave = max(obj.StockToLeave, 0)
 
         # Limit LeadFeed to natural number percentage
-        if obj.LeadFeed > 100.0:
-            obj.LeadFeed = 100.0
-        if obj.LeadFeed < 1.0:
-            obj.LeadFeed = 1.0
+        obj.LeadFeed = min(obj.LeadFeed, 100.0)
+        obj.LeadFeed = max(obj.LeadFeed, 1.0)
 
         # Limit LeadLiftDistance to positive values
-        if obj.LeadLiftDistance < 0:
-            obj.LeadLiftDistance = 0
+        obj.LeadLiftDistance = max(obj.LeadLiftDistance, 0)
 
         # Limit Adaptive Helix max ramp angle
         if obj.HelixMaxRampAngle < 0.0 or obj.HelixMaxRampAngle >= 90.0:
             obj.HelixMaxRampAngle = 3.0
 
         # Limit Adaptive Helix Max Diameter percentage
-        if obj.HelixMaxDiameterPercent > 100.0:
-            obj.HelixMaxDiameterPercent = 100.0
-        if obj.HelixMaxDiameterPercent < 10.0:
-            obj.HelixMaxDiameterPercent = 10.0
+        obj.HelixMaxDiameterPercent = min(obj.HelixMaxDiameterPercent, 100.0)
+        obj.HelixMaxDiameterPercent = max(obj.HelixMaxDiameterPercent, 10.0)
 
         # Limit Adaptive Lift Distance to positive values
-        if obj.LiftDistance < 0:
-            obj.LiftDistance = 0
+        obj.LiftDistance = max(obj.LiftDistance, 0)
 
         # Limit Adaptive Keep Tool Down Ratio to positive values
-        if obj.KeepToolDownThreshold < 0:
-            obj.KeepToolDownThreshold = 0
+        obj.KeepToolDownThreshold = max(obj.KeepToolDownThreshold, 0)
 
         # Limit Volumetric Feed Percent
-        if obj.VolumetricFeedPercent > 100.0:
-            obj.VolumetricFeedPercent = 100.0
-        if obj.VolumetricFeedPercent < 0.0:
-            obj.VolumetricFeedPercent = 0.0
+        obj.VolumetricFeedPercent = min(obj.VolumetricFeedPercent, 100.0)
+        obj.VolumetricFeedPercent = max(obj.VolumetricFeedPercent, 0.0)
 
     def _rotatedShape(self, shape):
         """Return *shape* in the operation's working (Z-up) frame.
@@ -1109,10 +1098,8 @@ class ObjectSurface(PathOp.ObjectOp):
             length_offset = float(tool.LengthOffset)
 
         Path.Log.debug(
-            "Surface tool: type={}, diameter={}, edge_height={}, "
-            "corner_radius={}, flat_radius={}, edge_angle={}".format(
-                tool_type, diameter, edge_height, corner_radius, flat_radius, edge_angle
-            )
+            f"Surface tool: type={tool_type}, diameter={diameter}, edge_height={edge_height}, "
+            f"corner_radius={corner_radius}, flat_radius={flat_radius}, edge_angle={edge_angle}"
         )
 
         return {
@@ -1466,7 +1453,7 @@ class ObjectSurface(PathOp.ObjectOp):
         6. Dispatch to surface_zlevel generator for C++ accelerated geometry stacking.
         7. Convert the resulting geometry stack into optimized G-code Path commands.
         """
-        import Path.Base.Generator.surface_zlevel as surface_zlevel
+        from Path.Base.Generator import surface_zlevel
 
         # 1. Extract and Validate Tool Parameters
         tool_diam = tool_params.get("diameter", 0.0)
@@ -1782,10 +1769,8 @@ class ObjectSurface(PathOp.ObjectOp):
 
             tool_diam = cutter.getDiameter()
             Path.Log.debug(
-                "Surface OCL cutter created: getDiameter()={}, StepOver={}%, "
-                "stepover_dist={}".format(
-                    tool_diam, obj.StepOver, tool_diam * (obj.StepOver / 100.0)
-                )
+                f"Surface OCL cutter created: getDiameter()={tool_diam}, StepOver={obj.StepOver}%, "
+                f"stepover_dist={tool_diam * (obj.StepOver / 100.0)}"
             )
 
         # Generate primary and secondary STL meshes
@@ -1819,7 +1804,7 @@ class ObjectSurface(PathOp.ObjectOp):
             )
             stl_time = time.time() - stl_start
 
-            Path.Log.info("STL creation took {:.3f}s".format(stl_time))
+            Path.Log.info(f"STL creation took {stl_time:.3f}s")
             if stl is None:
                 Path.Log.error(
                     "Failed to create a valid Mesh from the model (Check the Start and Final Depth)."
@@ -1828,17 +1813,17 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Begin GCode for operation with basic information
         if obj.Comment != "":
-            self.commandlist.append(Path.Command("N ({})".format(str(obj.Comment)), {}))
-        self.commandlist.append(Path.Command("N ({})".format(obj.Label), {}))
-        self.commandlist.append(Path.Command("N (Strategy: {})".format(strategy), {}))
+            self.commandlist.append(Path.Command(f"N ({obj.Comment!s})", {}))
+        self.commandlist.append(Path.Command(f"N ({obj.Label})", {}))
+        self.commandlist.append(Path.Command(f"N (Strategy: {strategy})", {}))
         self.commandlist.append(
             Path.Command("N (Tool diameter: {:.3f})".format(tool_params["diameter"]), {})
         )
         if not is_zlevel:
             self.commandlist.append(
-                Path.Command("N (Sample interval: {})".format(str(obj.SampleInterval.Value)), {})
+                Path.Command(f"N (Sample interval: {obj.SampleInterval.Value!s})", {})
             )
-        self.commandlist.append(Path.Command("N (Step over %: {})".format(str(obj.StepOver)), {}))
+        self.commandlist.append(Path.Command(f"N (Step over %: {obj.StepOver!s})", {}))
         self.commandlist.append(
             Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
         )
@@ -1871,9 +1856,7 @@ class ObjectSurface(PathOp.ObjectOp):
         minutes, seconds = divmod(remainder, 60)
 
         Path.Log.info(
-            "Surface operation completed in {:02.0f}h:{:02.0f}m:{:05.2f}s".format(
-                hours, minutes, seconds
-            )
+            f"Surface operation completed in {hours:02.0f}h:{minutes:02.0f}m:{seconds:05.2f}s"
         )
 
 
