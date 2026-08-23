@@ -84,7 +84,7 @@ class TestPathCustomConverted(PathTestUtils.PathTestBase):
         self.pp._machine = Machine()
         self.pp._machine.name = "TestMachine"
         self.pp._machine.output.units = OutputUnits.METRIC
-        self.pp._merge_machine_config()
+        self.pp.apply_configuration_bundle()
         self.pp.machine_state = MachineState()
 
     def test_supported(self):
