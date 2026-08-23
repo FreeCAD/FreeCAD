@@ -485,6 +485,24 @@ TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
         return !frame.modulePath.empty();
     }));
 
+    // A symbol is a function name. When a frame resolves from a symbol table rather than from
+    // debug information the symbolicator appends "+ <offset>", which would put a byte offset into
+    // the key consumers group crashes by, so the Reader trims it.
+    for (const auto& frame : report.stackFrames) {
+        const auto plus = frame.symbol.rfind(" + ");
+        const bool endsWithOffset = plus != std::string::npos
+            && frame.symbol.find_first_not_of("0123456789", plus + 3) == std::string::npos;
+        EXPECT_FALSE(endsWithOffset) << "symbol still carries an offset: " << frame.symbol;
+    }
+
+    // `file` is a source file. A frame with no debug information has none, and must not fall back
+    // to naming the object it resolved against.
+    for (const auto& frame : report.stackFrames) {
+        if (!frame.file.empty()) {
+            EXPECT_NE(frame.file, frame.modulePath);
+        }
+    }
+
     // A null dereference: SIGBUS is accepted because some platforms report an unmapped access that
     // way rather than as SIGSEGV.
     EXPECT_TRUE(report.code == addressCarryingFaultCode() || report.code == SIGBUS);
