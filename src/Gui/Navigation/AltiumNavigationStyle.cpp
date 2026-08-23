@@ -86,7 +86,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     const ViewerMode curmode = this->currentmode;
     ViewerMode newmode = curmode;
     //Base::Console().message("curmode init = %i\n", curmode);
-    Base::Console().message("curmode init: %u\n", static_cast<int>(curmode));
+    //Base::Console().message("curmode init: %u\n", static_cast<int>(curmode));
 
     // Mismatches in state of the modifier keys happens if the user
     // presses or releases them outside the viewer window.
@@ -162,7 +162,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         }
     }
 
-    Base::Console().message("curmode aftr mousebuttons: %u\n", static_cast<int>(curmode));
+    //Base::Console().message("curmode aftr mousebuttons: %u\n", static_cast<int>(curmode));
 
     // Mouse scroll wheel
     if (type.isDerivedFrom(SoMouseWheelEvent::getClassTypeId()))
@@ -206,7 +206,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             processed = true;
         }
     }
-    Base::Console().message("curmode aftr scroll: %u\n", static_cast<int>(curmode));
+    //Base::Console().message("curmode aftr scroll: %u\n", static_cast<int>(curmode));
 
     // Mouse Movement handling for zooming, dragging, panning
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId()))
@@ -243,7 +243,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             processed = true;
         }
     }
-    Base::Console().message("curmode aftr mouse move: %u\n", static_cast<int>(curmode));
+    //Base::Console().message("curmode aftr mouse move: %u\n", static_cast<int>(curmode));
 
     // Spaceball & Joystick handling
     if (type.isDerivedFrom(SoMotion3Event::getClassTypeId()))
@@ -289,8 +289,9 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         case BUTTON1DOWN | CTRLDOWN:
         case BUTTON1DOWN | SHIFTDOWN:
             // make sure not to change the selection when stopping spinning
+            /*
             if ( curmode == NavigationStyle::SPINNING
-                || (this->lockButton1 && curmode != NavigationStyle::SELECTION) // todo get rid of lockbutton1?
+                || (this->lockButton1 && curmode != NavigationStyle::SELECTION)
                 || (curmode == NavigationStyle::DRAGGING) )
             {
                 newmode = NavigationStyle::IDLE;
@@ -298,7 +299,8 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
             else
             {
                 newmode = NavigationStyle::SELECTION;
-            }
+            }*/
+            newmode = NavigationStyle::SELECTION;
             break;
 
         // BUTTON2 KEY COMBINATIONS
@@ -321,33 +323,28 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         // BUTTON3 KEY COMBINATIONS not here since all combos result in zooming
 
         // KEYBOARD KEYS ONLY
-        case SHIFTDOWN: //start of a drag, shift was pressed first
-                        //or panning across x-axis
-                        //or multi select
+        case SHIFTDOWN:
+            // start of a drag, shift was pressed first
+            // or panning across x-axis
+            // or multi select
 
             // TODO change the rotationcenter location only if starting a drag
             // shift down only locks and displays cursor position. need to also right click
             // to actually drag
-            if ((curmode == NavigationStyle::DRAGGING)
-                || (curmode == NavigationStyle::PANNING)
-                || (curmode == NavigationStyle::ZOOMING) )
-            {
-                newmode = NavigationStyle::IDLE;
-            }
+
+            newmode = NavigationStyle::IDLE;
             // Not processed as SHIFT is also used for multi-select
             break;
         case CTRLDOWN:
             // if only ctrl is down, then go to idle, for example if button2 was released
-            if (curmode == NavigationStyle::ZOOMING) {
-                newmode = NavigationStyle::IDLE;
-            }
+            newmode = NavigationStyle::IDLE;
             // Not processed as ctrl is also used for multi-select
             break;
         default:
             break;
     }
 
-    Base::Console().message("curmode aftr combo: %u\n", static_cast<int>(curmode));
+    //Base::Console().message("curmode aftr combo: %u\n", static_cast<int>(curmode));
 
     // If the selection button is pressed together with another button
     // and the other button is released, don't switch to selection mode.
@@ -380,7 +377,7 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
         hasZoomed = false;
     }
 
-    Base::Console().message("curmode b4 setviewmode: %u\n", static_cast<int>(curmode));
+    //Base::Console().message("curmode b4 setviewmode: %u\n", static_cast<int>(curmode));
     if (newmode != curmode)
     {
         this->setViewingMode(newmode);
@@ -390,9 +387,9 @@ SbBool AltiumNavigationStyle::processSoEvent(const SoEvent* const ev)
     // hierarchy.
     if (!processed)
     {
-        Base::Console().message("processSoEvent\n");
+        //Base::Console().message("processSoEvent\n");
         processed = inherited::processSoEvent(ev);  // this will handle zoom by scroll or other things
     }
-    Base::Console().message("After processSoEvent %i\n", processed);
+    //Base::Console().message("After processSoEvent %i\n", processed);
     return processed;
 }

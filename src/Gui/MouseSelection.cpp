@@ -100,7 +100,7 @@ int AbstractMouseSelection::handleEvent(const SoEvent* const ev, const SbViewpor
     }
 
     if (ret == Restart) {
-        //_clPoly.clear();
+        _clPoly.clear();
     }
 
     return ret;
