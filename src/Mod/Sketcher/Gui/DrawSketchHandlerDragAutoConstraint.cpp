@@ -315,7 +315,7 @@ void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
         CurveCandidate bestCurve;
 
         auto considerCurve = [&](int geoId, double distance, bool lineCenter = false) {
-            if (geoId == dragged.GeoId || distance >= snapDistance || distance >= bestCurve.distance) {
+            if (distance >= snapDistance || distance >= bestCurve.distance) {
                 return;
             }
 
@@ -326,7 +326,7 @@ void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
 
         for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); ++geoId) {
             const Part::Geometry* geo = getSolvedGeometry(geoId);
-            if (!geo) {
+            if (!geo || geoId == dragged.GeoId) {
                 continue;
             }
 
@@ -355,9 +355,16 @@ void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
                 const auto* curve = static_cast<const Part::GeomCurve*>(geo);
                 double parameter;
 
-                if (curve->closestParameter(toVector3d(actualPos), parameter)) {
-                    const Base::Vector2d closestPoint = toVector2d(curve->pointAtParameter(parameter));
-                    considerCurve(geoId, (actualPos - closestPoint).Length());
+                try {
+                    if (curve->closestParameter(toVector3d(actualPos), parameter)) {
+                        const Base::Vector2d closestPoint = toVector2d(
+                            curve->pointAtParameter(parameter)
+                        );
+                        considerCurve(geoId, (actualPos - closestPoint).Length());
+                    }
+                }
+                catch (const Base::CADKernelError&) {
+                    continue;
                 }
             }
         }
