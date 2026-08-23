@@ -30,6 +30,7 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepLib_FindSurface.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepTools.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Trsf.hxx>
 #include <Precision.hxx>
@@ -47,6 +48,7 @@
 #include "FeatureExtrusion.h"
 #include "ExtrusionHelper.h"
 #include "Part2DObject.h"
+#include "Tools.h"
 
 
 using namespace Part;
@@ -313,25 +315,27 @@ Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLin
         );
     }
 
-    // find plane
+    // find plane containing the shapes edges
     BRepLib_FindSurface planeFinder(sh, -1, /*OnlyPlane=*/true);
     if (!planeFinder.Found()) {
         throw Base::ValueError("Can't find normal direction, because the shape is not on a plane.");
     }
 
     // find plane normal and return result.
-    GeomAdaptor_Surface surf(planeFinder.Surface());
-    gp_Dir normal = surf.Plane().Axis().Direction();
+    GeomAdaptor_Surface edgeSurf(planeFinder.Surface());
+    gp_Dir normal = edgeSurf.Plane().Axis().Direction();
 
-    // now we know the plane. But if there are faces, the
-    // plane normal direction is not dependent on face orientation (because findPlane only uses
-    // edges). let's fix that.
-    TopExp_Explorer ex(sh, TopAbs_FACE);
-    if (ex.More()) {
-        BRepAdaptor_Surface surf(TopoDS::Face(ex.Current()));
-        normal = surf.Plane().Axis().Direction();
-        if (ex.Current().Orientation() == TopAbs_REVERSED) {
-            normal.Reverse();
+    // If shape contains a face, calculate normal from that, so extrusion won't flip if shape is rotated
+    if (TopExp_Explorer ex(sh, TopAbs_FACE); ex.More()) {
+        const auto& face = TopoDS::Face(ex.Current());
+        // Arbitrarily find normal from center of surface as shape is known to be planar
+        double u1, u2, v1, v2;
+        BRepTools::UVBounds(face, u1, u2, v1, v2);
+        gp_Dir faceNormal;
+        Standard_Boolean success = false;
+        Tools::getNormal(face, (u1 + u2) / 2, (v1 + v2) / 2, Precision::Confusion(), faceNormal, success);
+        if (success) {
+            normal = faceNormal;
         }
     }
 
