@@ -22,6 +22,7 @@
 
 
 #include <algorithm>
+#include <array>
 #include <sstream>
 #include <QAction>
 #include <QFileInfo>
@@ -35,6 +36,7 @@
 #include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTexture2.h>
 #include <Inventor/nodes/SoTextureCoordinate2.h>
 
@@ -75,6 +77,25 @@ ViewProviderImagePlane::ViewProviderImagePlane()
     shapeHints->vertexOrdering = SoShapeHints::COUNTERCLOCKWISE;
     shapeHints->ref();
 
+    cropPreviewSwitch = new SoSwitch;
+    cropPreviewSwitch->whichChild = SO_SWITCH_NONE;
+    cropPreviewSwitch->ref();
+
+    cropPreviewMaterial = new SoMaterial;
+    cropPreviewMaterial->diffuseColor.setValue(1.0F, 1.0F, 1.0F);
+    cropPreviewMaterial->transparency = 0.8F;
+    cropPreviewMaterial->ref();
+
+    cropPreviewCoords = new SoCoordinate3;
+    cropPreviewCoords->ref();
+
+    cropPreviewTexCoord = new SoTextureCoordinate2;
+    cropPreviewTexCoord->ref();
+
+    cropPreviewFaceSet = new SoFaceSet;
+    cropPreviewFaceSet->numVertices.setValues(0, 4, std::array<int32_t, 4> {4, 4, 4, 4}.data());
+    cropPreviewFaceSet->ref();
+
     sPixmap = "image-plane";
 
     ShapeAppearance.setDiffuseColor(1.0F, 1.0F, 1.0F);
@@ -86,11 +107,27 @@ ViewProviderImagePlane::~ViewProviderImagePlane()
     textCoord->unref();
     texture->unref();
     shapeHints->unref();
+    cropPreviewSwitch->unref();
+    cropPreviewMaterial->unref();
+    cropPreviewCoords->unref();
+    cropPreviewTexCoord->unref();
+    cropPreviewFaceSet->unref();
 }
 
 void ViewProviderImagePlane::attach(App::DocumentObject* pcObj)
 {
     ViewProviderGeometryObject::attach(pcObj);
+
+    // Own separator so the crop preview's material/texture-coordinate state doesn't leak
+    // into whatever is traversed after it.
+    SoSeparator* cropPreviewSep = new SoSeparator;
+    cropPreviewSep->addChild(cropPreviewMaterial);
+    cropPreviewSep->addChild(texture);
+    cropPreviewSep->addChild(cropPreviewTexCoord);
+    cropPreviewSep->addChild(cropPreviewCoords);
+    cropPreviewSep->addChild(shapeHints);
+    cropPreviewSep->addChild(cropPreviewFaceSet);
+    cropPreviewSwitch->addChild(cropPreviewSep);
 
     // NOTE: SoFCSelection node has beem removed because it led to
     // problems using the image as a construction plane with the
@@ -119,6 +156,7 @@ void ViewProviderImagePlane::attach(App::DocumentObject* pcObj)
     SoFaceSet* faceset = new SoFaceSet;
     faceset->numVertices.set1Value(0, 4);
     shading->addChild(faceset);
+    shading->addChild(cropPreviewSwitch);
 
     addDisplayMaskMode(shading, "Shading");
 
@@ -133,6 +171,7 @@ void ViewProviderImagePlane::attach(App::DocumentObject* pcObj)
     noshading->addChild(pcShapeMaterial);
     noshading->addChild(lightmodel);
     noshading->addChild(faceset);
+    noshading->addChild(cropPreviewSwitch);
 
     addDisplayMaskMode(noshading, "No shading");
 }
@@ -192,7 +231,7 @@ void ViewProviderImagePlane::manipulateImage()
     Gui::Control().showDialog(dialog, getDocument()->getDocument());
 }
 
-void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
+ViewProviderImagePlane::CropFractions ViewProviderImagePlane::getCropFractions() const
 {
     Image::ImagePlane* pcPlaneObj = static_cast<Image::ImagePlane*>(pcObject);
     // Crop is stored as a percentage of the image itself, not of the plane's physical
@@ -217,6 +256,13 @@ void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
         bottom = (bottom / total) * (1.0f - 0.001f);
     }
 
+    return {left, right, top, bottom};
+}
+
+void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
+{
+    auto [left, right, top, bottom] = getCropFractions();
+
     float leftMM = left * xsize;
     float rightMM = right * xsize;
     float topMM = top * ysize;
@@ -236,6 +282,70 @@ void ViewProviderImagePlane::resizePlane(float xsize, float ysize)
     textCoord->point.set1Value(1, u1, v0);
     textCoord->point.set1Value(2, u1, v1);
     textCoord->point.set1Value(3, u0, v1);
+}
+
+void ViewProviderImagePlane::updateCropPreview(float xsize, float ysize)
+{
+    auto [left, right, top, bottom] = getCropFractions();
+
+    float leftMM = left * xsize;
+    float rightMM = right * xsize;
+    float topMM = top * ysize;
+    float bottomMM = bottom * ysize;
+
+    float xMin = -(xsize / 2);
+    float xMax = +(xsize / 2);
+    float yMin = -(ysize / 2);
+    float yMax = +(ysize / 2);
+    float keptXMin = xMin + leftMM;
+    float keptXMax = xMax - rightMM;
+    float keptYMin = yMin + bottomMM;
+    float keptYMax = yMax - topMM;
+
+    // Non-overlapping "picture frame" decomposition of the cropped-out area: left/right
+    // strips span the full height (and cover the corners), top/bottom strips only span the
+    // kept x-range in between them. A strip with a zero-fraction crop degenerates to a
+    // zero-area quad, which is harmless to still emit.
+    struct Quad
+    {
+        float x0, y0, x1, y1;
+        float u0, v0, u1, v1;
+    };
+    std::array<Quad, 4> quads {
+        {// Left
+         {xMin, yMin, keptXMin, yMax, 0.0F, 0.0F, left, 1.0F},
+         // Right
+         {keptXMax, yMin, xMax, yMax, 1.0F - right, 0.0F, 1.0F, 1.0F},
+         // Top
+         {keptXMin, keptYMax, keptXMax, yMax, left, 1.0F - top, 1.0F - right, 1.0F},
+         // Bottom
+         {keptXMin, yMin, keptXMax, keptYMin, left, 0.0F, 1.0F - right, bottom}}
+    };
+
+    int idx = 0;
+    for (const Quad& quad : quads) {
+        cropPreviewCoords->point.set1Value(idx, quad.x0, quad.y0, 0.0);
+        cropPreviewCoords->point.set1Value(idx + 1, quad.x1, quad.y0, 0.0);
+        cropPreviewCoords->point.set1Value(idx + 2, quad.x1, quad.y1, 0.0);
+        cropPreviewCoords->point.set1Value(idx + 3, quad.x0, quad.y1, 0.0);
+
+        cropPreviewTexCoord->point.set1Value(idx, quad.u0, quad.v0);
+        cropPreviewTexCoord->point.set1Value(idx + 1, quad.u1, quad.v0);
+        cropPreviewTexCoord->point.set1Value(idx + 2, quad.u1, quad.v1);
+        cropPreviewTexCoord->point.set1Value(idx + 3, quad.u0, quad.v1);
+
+        idx += 4;
+    }
+}
+
+void ViewProviderImagePlane::setCropPreviewActive(bool active)
+{
+    cropPreviewSwitch->whichChild = active ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+}
+
+void ViewProviderImagePlane::setCropPreviewTransparency(float transparency)
+{
+    cropPreviewMaterial->transparency = std::clamp(transparency, 0.0F, 1.0F);
 }
 
 void ViewProviderImagePlane::loadImage()
@@ -377,6 +487,7 @@ void ViewProviderImagePlane::updateData(const App::Property* prop)
         float ysize = pcPlaneObj->YSize.getValue();
 
         resizePlane(xsize, ysize);
+        updateCropPreview(xsize, ysize);
         reloadIfSvg();
     }
     else if (prop == &pcPlaneObj->ImageFile) {

@@ -50,6 +50,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 
+#include "../ViewProviderImagePlane.h"
 #include "TaskImage.h"
 #include "ui_TaskImage.h"
 
@@ -73,6 +74,10 @@ TaskImage::TaskImage(Image::ImagePlane* obj, QWidget* parent)
     ui->spinBoxCropTop->setDecimals(decimals);
     ui->spinBoxCropBottom->setDecimals(decimals);
 
+    // Preference-backed default; see onSave() in accept() and cropPreviewTransparencyDefault().
+    ui->spinBoxCropPreview->setValue(cropPreviewTransparencyDefault());
+    ui->sliderCropPreview->setValue(ui->spinBoxCropPreview->value());
+
     initialiseTransparency();
 
     // NOLINTNEXTLINE
@@ -88,6 +93,10 @@ TaskImage::~TaskImage()
             scale->deactivate();
         }
         scale->deleteLater();
+    }
+
+    if (auto vp = getViewProvider()) {
+        vp->setCropPreviewActive(false);
     }
 }
 
@@ -133,6 +142,12 @@ void TaskImage::connectSignals()
         this, &TaskImage::changeCropTop);
     connect(ui->spinBoxCropBottom, qOverload<double>(&QDoubleSpinBox::valueChanged),
         this, &TaskImage::changeCropBottom);
+    connect(ui->sliderCropPreview, qOverload<int>(&QSlider::valueChanged),
+        this, &TaskImage::changeCropPreviewTransparency);
+    connect(ui->spinBoxCropPreview, qOverload<int>(&QSpinBox::valueChanged),
+        this, &TaskImage::changeCropPreviewTransparency);
+    connect(ui->pushButtonResetCrop, &QPushButton::clicked,
+        this, &TaskImage::resetCrop);
     // clang-format on
 }
 
@@ -227,6 +242,52 @@ void TaskImage::changeCropBottom()
     }
 }
 
+void TaskImage::changeCropPreviewTransparency(int val)
+{
+    QSignalBlocker blockSlider(ui->sliderCropPreview);
+    QSignalBlocker blockSpin(ui->spinBoxCropPreview);
+    ui->sliderCropPreview->setValue(val);
+    ui->spinBoxCropPreview->setValue(val);
+
+    if (auto vp = getViewProvider()) {
+        vp->setCropPreviewTransparency(float(val) / 100.0F);
+    }
+}
+
+void TaskImage::resetCrop()
+{
+    if (!feature.expired()) {
+        feature->CropLeft.setValue(0.0);
+        feature->CropRight.setValue(0.0);
+        feature->CropTop.setValue(0.0);
+        feature->CropBottom.setValue(0.0);
+
+        QSignalBlocker blockCL(ui->spinBoxCropLeft);
+        QSignalBlocker blockCR(ui->spinBoxCropRight);
+        QSignalBlocker blockCT(ui->spinBoxCropTop);
+        QSignalBlocker blockCB(ui->spinBoxCropBottom);
+        ui->spinBoxCropLeft->setValue(0.0);
+        ui->spinBoxCropRight->setValue(0.0);
+        ui->spinBoxCropTop->setValue(0.0);
+        ui->spinBoxCropBottom->setValue(0.0);
+
+        updateCropLimits();
+    }
+
+    ui->spinBoxCropPreview->setValue(cropPreviewTransparencyDefault());
+    changeCropPreviewTransparency(ui->spinBoxCropPreview->value());
+}
+
+int TaskImage::cropPreviewTransparencyDefault() const
+{
+    constexpr int fallback = 80;
+    auto param = ui->spinBoxCropPreview->getWindowParameter();
+    if (param.isValid()) {
+        return param->GetInt(ui->spinBoxCropPreview->entryName(), fallback);
+    }
+    return fallback;
+}
+
 View3DInventorViewer* TaskImage::getViewer() const
 {
     if (!feature.expired()) {
@@ -236,6 +297,15 @@ View3DInventorViewer* TaskImage::getViewer() const
         if (view) {
             return view->getViewer();
         }
+    }
+
+    return nullptr;
+}
+
+ViewProviderImagePlane* TaskImage::getViewProvider() const
+{
+    if (!feature.expired()) {
+        return static_cast<ViewProviderImagePlane*>(Application::Instance->getViewProvider(feature.get()));
     }
 
     return nullptr;
@@ -388,11 +458,21 @@ void TaskImage::open()
         App::Document* doc = feature->getDocument();
         doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Edit image"));
         restore(feature->Placement.getValue());
+
+        if (auto vp = getViewProvider()) {
+            vp->setCropPreviewTransparency(float(ui->spinBoxCropPreview->value()) / 100.0F);
+            vp->setCropPreviewActive(true);
+        }
     }
 }
 
 void TaskImage::accept()
 {
+    if (auto vp = getViewProvider()) {
+        vp->setCropPreviewActive(false);
+    }
+    ui->spinBoxCropPreview->onSave();
+
     if (!feature.expired()) {
         App::Document* doc = feature->getDocument();
         doc->commitTransaction();
@@ -402,6 +482,10 @@ void TaskImage::accept()
 
 void TaskImage::reject()
 {
+    if (auto vp = getViewProvider()) {
+        vp->setCropPreviewActive(false);
+    }
+
     if (!feature.expired()) {
         App::Document* doc = feature->getDocument();
         doc->abortTransaction();
@@ -955,10 +1039,18 @@ void TaskImage::updateCropLimits()
 
     // Each spin box already clamps itself to [0, 100]; here we additionally cap it so
     // that it can't push the opposite edge's crop past the far side of the image.
-    ui->spinBoxCropLeft->setMaximum(std::max(0.0, 100.0 - right));
-    ui->spinBoxCropRight->setMaximum(std::max(0.0, 100.0 - left));
-    ui->spinBoxCropTop->setMaximum(std::max(0.0, 100.0 - bottom));
-    ui->spinBoxCropBottom->setMaximum(std::max(0.0, 100.0 - top));
+    // Skip the call when the maximum isn't actually changing: setMaximum() on a spin box
+    // mid-press resets Qt's internal click-and-hold state, and a box's own maximum only
+    // depends on the *opposite* edge, so its own valueChanged never needs to touch it.
+    auto setMaximumIfChanged = [](QDoubleSpinBox* box, double newMax) {
+        if (box->maximum() != newMax) {
+            box->setMaximum(newMax);
+        }
+    };
+    setMaximumIfChanged(ui->spinBoxCropLeft, std::max(0.0, 100.0 - right));
+    setMaximumIfChanged(ui->spinBoxCropRight, std::max(0.0, 100.0 - left));
+    setMaximumIfChanged(ui->spinBoxCropTop, std::max(0.0, 100.0 - bottom));
+    setMaximumIfChanged(ui->spinBoxCropBottom, std::max(0.0, 100.0 - top));
 }
 
 #include "moc_TaskImage.cpp"
