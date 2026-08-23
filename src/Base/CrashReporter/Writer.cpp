@@ -186,6 +186,24 @@ static void crashHandler(int sig, siginfo_t* info, [[maybe_unused]] void* uconte
         return;
     }
 
+    // A fault inside this handler has to kill the process, not hang it. The earlier call to
+    // install() blocks all five signals while the handler runs. But a synchronous fault on a
+    // blocked signal *cannot* be delivered. However, it tries (forever). To resolve, both steps
+    // below are required:
+    // 1) Restore SIG_DFL for each signal process-wide so we terminate instead of hang
+    // 2) Unblock our five signals on this (the currently crashing) thread.
+    // Note that restoring SIG_DFL alone still hangs, and using SA_RESETHAND/SA_NODEFER doesn't
+    // work since we have an explicit sa_mask entry. The downside is that a crash in another thread
+    // truncates our write, but the file format was designed to let us handle that case reasonably
+    // gracefully.
+    sigset_t unblockAll {};
+    sigemptyset(&unblockAll);
+    for (int s : {SIGSEGV, SIGABRT, SIGBUS, SIGFPE, SIGILL}) {
+        std::signal(s, SIG_DFL);
+        sigaddset(&unblockAll, s);
+    }
+    pthread_sigmask(SIG_UNBLOCK, &unblockAll, nullptr);
+
     header.faultAddress = reinterpret_cast<std::uint64_t>(info->si_addr);
     header.code = static_cast<uint32_t>(sig);
     header.timestamp = std::time(nullptr);
