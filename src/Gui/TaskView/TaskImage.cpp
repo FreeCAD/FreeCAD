@@ -305,7 +305,9 @@ View3DInventorViewer* TaskImage::getViewer() const
 ViewProviderImagePlane* TaskImage::getViewProvider() const
 {
     if (!feature.expired()) {
-        return static_cast<ViewProviderImagePlane*>(Application::Instance->getViewProvider(feature.get()));
+        return static_cast<ViewProviderImagePlane*>(
+            Application::Instance->getViewProvider(feature.get())
+        );
     }
 
     return nullptr;

@@ -319,7 +319,8 @@ void ViewProviderImagePlane::updateCropPreview(float xsize, float ysize)
          // Top
          {keptXMin, keptYMax, keptXMax, yMax, left, 1.0F - top, 1.0F - right, 1.0F},
          // Bottom
-         {keptXMin, yMin, keptXMax, keptYMin, left, 0.0F, 1.0F - right, bottom}}
+         {keptXMin, yMin, keptXMax, keptYMin, left, 0.0F, 1.0F - right, bottom}
+        }
     };
 
     int idx = 0;
