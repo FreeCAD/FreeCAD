@@ -31,16 +31,19 @@ import FreeCAD
 
 translate = FreeCAD.Qt.translate
 
-# OCL must be installed
+# OCL must be installed. The import itself is the availability probe: unlike
+# importlib.util.find_spec it also catches a present-but-broken binary install.
 try:
     try:
         import ocl
     except ImportError:
-        import opencamlib as ocl
+        import opencamlib as ocl  # noqa: F401
 except ImportError:
     msg = translate("CAM_PlanarSurface", "This operation requires OpenCamLib to be installed.")
     FreeCAD.Console.PrintError(msg + "\n")
-    raise ImportError
+    raise ImportError(msg)
+
+from typing import Any, ClassVar
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
@@ -76,7 +79,7 @@ class ObjectSurface(PathOp.ObjectOp):
     """
 
     # Accuracy level presets for Speed vs Accuracy control
-    ACCURACY_PRESETS = {
+    ACCURACY_PRESETS: ClassVar[dict[int, dict[str, Any]]] = {
         1: {  # Fastest - Coarse, for quick prototyping/verification
             "name": "Fastest",
             "angular_deflection": 0.5,  # Coarse chordal deviation for minimal mesh density
@@ -865,16 +868,15 @@ class ObjectSurface(PathOp.ObjectOp):
         obj.setEditorMode("BoundBox", show if not is_waterline else hide)
 
     def opOnChanged(self, obj, prop):
-        if hasattr(self, "propertiesReady"):
-            if self.propertiesReady:
-                if prop in ["Strategy", "CutPattern", "CutPatternZLevel", "AdaptiveSampling"]:
-                    self.setEditorProperties(obj)
-                elif prop == "MeshSimplification":
-                    if hasattr(obj, "MeshSimplification"):
-                        if obj.MeshSimplification < 1:
-                            obj.MeshSimplification = 1
-                        elif obj.MeshSimplification > 7:
-                            obj.MeshSimplification = 7
+        if not getattr(self, "propertiesReady", False):
+            return
+        if prop in ["Strategy", "CutPattern", "CutPatternZLevel", "AdaptiveSampling"]:
+            self.setEditorProperties(obj)
+        elif prop == "MeshSimplification" and hasattr(obj, "MeshSimplification"):
+            if obj.MeshSimplification < 1:
+                obj.MeshSimplification = 1
+            elif obj.MeshSimplification > 7:
+                obj.MeshSimplification = 7
 
     def opOnDocumentRestored(self, obj):
         self.propertiesReady = False
@@ -903,12 +905,8 @@ class ObjectSurface(PathOp.ObjectOp):
             if n in propList:
                 prop = getattr(obj, n)
                 val = PROP_DFLTS[n]
-                setVal = False
-                if hasattr(prop, "Value"):
-                    if isinstance(val, int) or isinstance(val, float):
-                        setVal = True
-                if setVal:
-                    setattr(prop, "Value", val)
+                if hasattr(prop, "Value") and isinstance(val, (int, float)):
+                    prop.Value = val
                 else:
                     setattr(obj, n, val)
 
@@ -1205,7 +1203,6 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _project_scan_lines(self, obj, stl, cutter, raw_scan_lines):
         """Projects raw 2D scan lines onto the 3D STL mesh using the optimal OCL algorithm."""
-        import math
 
         scan_lines = []
 
@@ -1279,9 +1276,9 @@ class ObjectSurface(PathOp.ObjectOp):
         """
         all_final_cmds = []
 
-        is_whole_model_job = False if cutting_faces else True
+        is_whole_model_job = not cutting_faces
         sample_interval = obj.SampleInterval.Value
-        force_keep_down = True if obj.CutPattern in ("ZigZag", "CircularZigZag") else False
+        force_keep_down = obj.CutPattern in ("ZigZag", "CircularZigZag")
 
         options = {
             "depth_offset": obj.DepthOffset.Value,
@@ -1629,7 +1626,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Initialize geometric and OCL containers
         cutter = stl = safe_stl = stl_faces = None
-        cutting_faces = avoid_faces = bb_face = shape = None
+        cutting_faces = avoid_faces = bb_face = None
 
         # Base Strategy Flags
         is_surface_scan = strategy == "SurfaceScan"
@@ -1677,7 +1674,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 model_shape = valid_shapes[0].fuse(valid_shapes[1:])
                 if hasattr(model_shape, "removeSplitter"):
                     model_shape = model_shape.removeSplitter()
-            except Exception as e:
+            except (Part.OCCError, RuntimeError, ValueError) as e:
                 Path.Log.warning(f"Boolean fuse failed, falling back to Compound: {e}")
                 model_shape = Part.Compound(valid_shapes)
         elif len(valid_shapes) == 1:
