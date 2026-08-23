@@ -358,24 +358,31 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj = self.obj
         presets = PathPlanarSurface.ObjectSurface.ACCURACY_PRESETS
 
+        try:
+            angular = obj.AngularDeflection.Value
+            linear = obj.LinearDeflection.Value
+            simplification = obj.MeshSimplification
+            sample = obj.SampleInterval.Value
+            min_sample = obj.MinSampleInterval.Value
+        except AttributeError as e:
+            # Accuracy properties are not created yet (e.g. mid-restore); nothing to match.
+            Path.Log.debug(f"Accuracy properties unavailable, skipping preset sync: {e}")
+            self.form.accuracyDescription.setText("Custom accuracy settings**")
+            return
+
         for lvl, preset in presets.items():
-            try:
-                if (
-                    abs(obj.AngularDeflection.Value - preset["angular_deflection"]) < 1e-6
-                    and abs(obj.LinearDeflection.Value - preset["linear_deflection"]) < 1e-6
-                    and obj.MeshSimplification == preset["mesh_simplification"]
-                    and abs(obj.SampleInterval.Value - preset["sample_interval"]) < 0.001
-                    and abs(obj.MinSampleInterval.Value - preset["min_sample_interval"]) < 0.001
-                ):
-                    self.form.accuracySlider.blockSignals(True)
-                    self.form.accuracySlider.setValue(lvl)
-                    self.form.accuracySlider.blockSignals(False)
-                    self.form.accuracyDescription.setText(
-                        "{} - {}".format(preset["name"], preset["description"])
-                    )
-                    return
-            except Exception:
-                continue
+            if (
+                abs(angular - preset["angular_deflection"]) < 1e-6
+                and abs(linear - preset["linear_deflection"]) < 1e-6
+                and simplification == preset["mesh_simplification"]
+                and abs(sample - preset["sample_interval"]) < 0.001
+                and abs(min_sample - preset["min_sample_interval"]) < 0.001
+            ):
+                self.form.accuracySlider.blockSignals(True)
+                self.form.accuracySlider.setValue(lvl)
+                self.form.accuracySlider.blockSignals(False)
+                self.form.accuracyDescription.setText(f"{preset['name']} - {preset['description']}")
+                return
 
         self.form.accuracyDescription.setText("Custom accuracy settings**")
 
@@ -390,7 +397,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         try:
             sample_interval = FreeCAD.Units.Quantity(self.form.sampleInterval.text()).Value
-        except Exception:
+        except ValueError:
+            # Field holds an unparseable quantity while the user is still typing.
             sample_interval = 1.0  # Default to a safe value
 
         # Dispatch to helpers
