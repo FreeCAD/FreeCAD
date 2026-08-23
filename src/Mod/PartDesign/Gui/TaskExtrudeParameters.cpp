@@ -219,29 +219,11 @@ void TaskExtrudeParameters::updateStartUI()
 void TaskExtrudeParameters::updateStartReferenceName()
 {
     auto extrude = getObject<PartDesign::FeatureExtrude>();
-    App::DocumentObject* reference = extrude->StartReference.getValue();
-    const auto subValues = extrude->StartReference.getSubValues();
-    const std::string subName = subValues.empty() ? "" : subValues.front();
-
-    if (!reference) {
-        ui->lineStartReference->clear();
-        ui->lineStartReference->setProperty("FeatureName", QVariant());
-        ui->lineStartReference->setProperty("FaceName", QVariant());
-        ui->lineStartReference->setPlaceholderText(tr("No start reference selected"));
-        return;
-    }
-
-    QString text = QString::fromUtf8(reference->Label.getValue());
-    if (subName.rfind("Face", 0) == 0) {
-        text += QStringLiteral(":%1%2").arg(tr("Face"), QString::fromStdString(subName.substr(4)));
-    }
-    else if (!subName.empty()) {
-        text += QStringLiteral(":%1").arg(QString::fromStdString(subName));
-    }
-
-    ui->lineStartReference->setText(text);
-    ui->lineStartReference->setProperty("FeatureName", QByteArray(reference->getNameInDocument()));
-    ui->lineStartReference->setProperty("FaceName", QByteArray(subName.c_str()));
+    updateReferenceName(
+        ui->lineStartReference,
+        extrude->StartReference,
+        tr("No start reference selected")
+    );
 }
 
 void TaskExtrudeParameters::createSideControllers()
