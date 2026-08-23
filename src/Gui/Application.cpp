@@ -733,6 +733,9 @@ void Application::prepareForShutdown()
     _preparedForShutdown = true;
 
     shutdown();
+    // Python may retain _PyResource wrappers until Py_Finalize(). Release their
+    // QWidget and callback state while Qt and the GUI application are still alive.
+    PyResource::prepareForShutdown();
 
 #ifdef USE_3DCONNEXION_NAVLIB
     if (pNavlibInterface) {

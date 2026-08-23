@@ -134,7 +134,7 @@ ViewProvider::~ViewProvider()
 {
     if (pyViewObject) {
         auto* object = static_cast<Base::PyObjectBase*>(pyViewObject.get());
-        object->setInvalid();
+        object->setInvalidWithoutPython();
     }
     pyViewObject.reset();
 

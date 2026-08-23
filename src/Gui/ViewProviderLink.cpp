@@ -1080,7 +1080,7 @@ void LinkView::setInvalid()
 {
     if (PythonObject) {
         auto obj = static_cast<Base::PyObjectBase*>(PythonObject.get());
-        obj->setInvalid();
+        obj->setInvalidWithoutPython();
         PythonObject.reset();
     }
     else {

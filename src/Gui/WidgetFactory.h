@@ -340,6 +340,7 @@ class PyResource: public Py::PythonExtension<PyResource>
 {
 public:
     static void init_type();  // announce properties and methods
+    static void prepareForShutdown() noexcept;
 
     PyResource();
     ~PyResource() override;
@@ -355,6 +356,8 @@ public:
     Py::Object connect(const Py::Tuple&);
 
 private:
+    void clearResources() noexcept;
+
     std::vector<class SignalConnect*> mySignals;
     QDialog* myDlg;
 };

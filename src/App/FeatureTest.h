@@ -214,7 +214,7 @@ class FeatureTestAttribute: public DocumentObject
 
 public:
     FeatureTestAttribute();
-    ~FeatureTestAttribute() override;
+    ~FeatureTestAttribute() override = default;
     DocumentObjectExecReturn* execute() override;
     bool canRecomputeOnWorker() const override { return false; }
 

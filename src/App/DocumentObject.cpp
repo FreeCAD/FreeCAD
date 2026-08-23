@@ -86,15 +86,11 @@ DocumentObject::DocumentObject()
 DocumentObject::~DocumentObject()
 {
     if (!PythonObject.is(Py::_None())) {
-        Base::PyGILStateLocker lock;
-        // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
-        // Python object or not. In the constructor we forced the wrapper to own the object so we
-        // need not to dec'ref the Python object any more. But we must still invalidate the Python
-        // object because it need not to be destructed right now because the interpreter can own
-        // several references to it.
+        // The wrapper may outlive this native object. Invalidate only the
+        // native twin state; Python-owned attributes are released later by
+        // the wrapper deallocator.
         Base::PyObjectBase* obj = static_cast<Base::PyObjectBase*>(PythonObject.ptr());
-        // Call before decrementing the reference counter, otherwise a heap error can occur
-        obj->setInvalid();
+        obj->setInvalidWithoutPython();
     }
 }
 

@@ -147,7 +147,6 @@ InteractiveInterpreter::InteractiveInterpreter()
 
 InteractiveInterpreter::~InteractiveInterpreter()
 {
-    Base::PyGILStateLocker lock;
     delete d;
 }
 
@@ -506,7 +505,6 @@ PythonConsole::PythonConsole(QWidget* parent)
 PythonConsole::~PythonConsole()
 {
     saveHistory();
-    Base::PyGILStateLocker lock;
     d->hGrpSettings->Detach(this);
     delete d->interpreter;
     delete d;

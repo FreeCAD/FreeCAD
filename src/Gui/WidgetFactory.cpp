@@ -24,6 +24,9 @@
 #include <QApplication>
 #include <QVBoxLayout>
 
+#include <unordered_set>
+#include <utility>
+
 #include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
@@ -47,6 +50,15 @@
 
 
 using namespace Gui;
+
+namespace
+{
+std::unordered_set<PyResource*>& pyResources()
+{
+    static std::unordered_set<PyResource*> resources;
+    return resources;
+}
+}  // namespace
 
 Gui::WidgetFactoryInst* Gui::WidgetFactoryInst::_pcSingleton = nullptr;
 
@@ -404,15 +416,31 @@ void PyResource::init_type()
 
 PyResource::PyResource()
     : myDlg(nullptr)
-{}
+{
+    pyResources().insert(this);
+}
 
 PyResource::~PyResource()
 {
-    delete myDlg;
+    pyResources().erase(this);
+    clearResources();
+}
+
+void PyResource::prepareForShutdown() noexcept
+{
+    for (auto* resource : pyResources()) {
+        resource->clearResources();
+    }
+}
+
+void PyResource::clearResources() noexcept
+{
+    delete std::exchange(myDlg, nullptr);
     for (auto it : mySignals) {
         SignalConnect* sc = it;
         delete sc;
     }
+    mySignals.clear();
 }
 
 /**
