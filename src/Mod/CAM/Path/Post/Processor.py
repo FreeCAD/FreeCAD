@@ -488,16 +488,6 @@ class PostProcessor:
                 ),
             },
             {
-                "name": "translate_drill_cycles",
-                "type": "bool",
-                "label": translate("CAM", "Expand drill-cycles"),
-                "default": False,
-                "help": translate(
-                    "CAM",
-                    "Expand drill-cycles (cf. 'Drill Cycles to Translate') to moves",
-                ),
-            },
-            {
                 "name": "tool_change",
                 "type": "bool",
                 "label": translate("CAM", "Allow tool-change"),

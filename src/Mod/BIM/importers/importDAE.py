@@ -166,7 +166,7 @@ def read(filename):
     for e in col.errors:
         FreeCAD.Console.PrintWarning(str(e) + "\n")
     if FreeCAD.GuiUp:
-        FreeCAD.Gui.SendMsgToActiveView("ViewFit")
+        FreeCAD.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
 
 def get_global_placement(obj):
