@@ -312,6 +312,11 @@ bool documentObjectCanRecomputeOnWorker(const DocumentObject& documentObject, bo
 RecomputeResult processRecomputeRequest(RecomputeRequest& request)
 {
     RecomputeResult result;
+    // Object-targeted recomputeFeature() does not acquire the GIL itself,
+    // unlike Document::recompute(). Keep the same worker contract for both
+    // request forms because MainThreadSignal releases the GIL while it hops
+    // document notifications to the GUI thread.
+    Base::PyGILStateLocker gilLocker;
     ScopedCurrentRecomputeCancellation cancellationScope(request.cancellation);
 
     if (currentRecomputeWasCanceled()) {

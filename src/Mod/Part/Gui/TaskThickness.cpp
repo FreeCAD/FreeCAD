@@ -358,9 +358,8 @@ bool ThicknessWidget::accept()
             return false;
         }
 
-        applyUiState();
-
         if (d->recompute->isPending()) {
+            applyUiState();
             d->acceptRequested = true;
             d->recompute->flushPending();
             return false;
@@ -369,6 +368,7 @@ bool ThicknessWidget::accept()
         const bool canReusePreview = d->recompute->hasCurrentSuccessfulPreview()
             && d->thickness->isValid() && !d->thickness->mustRecompute();
         if (!canReusePreview) {
+            applyUiState();
             if (d->recompute->isAsyncRecomputeEnabled()) {
                 d->acceptRequested = true;
                 auto request = App::RecomputeRequest::fromDocumentObject(*d->thickness);
@@ -398,7 +398,9 @@ bool ThicknessWidget::accept()
         }
         d->thickness->getDocument()->recompute();
 
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+        if (Gui::Application::Instance->editDocument()) {
+            Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+        }
         d->thickness->getDocument()->commitTransaction();  // Opened in
                                                            // ViewProviderDocumentObject::startDefaultEditMode()
     }
