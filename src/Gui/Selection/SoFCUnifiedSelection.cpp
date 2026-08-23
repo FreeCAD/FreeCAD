@@ -928,6 +928,7 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
         event->isOfType(SoMouseButtonEvent::getClassTypeId())
         && selectionMode.getValue() == SoFCUnifiedSelection::ON
     ) {
+        //SOMEHWERE HERE IS THE SHIIIT
         const auto e = static_cast<const SoMouseButtonEvent*>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e, SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
