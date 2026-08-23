@@ -1298,11 +1298,14 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Ensure we have cutting faces (Fallback to whole model if none selected)
         if not cutting_faces:
-            if bb_face:
-                cutting_faces.append(bb_face)
-            else:
+            if not bb_face:
                 Path.Log.error("Could not determine source faces for pattern generation.")
                 return []
+            cutting_faces = [bb_face]
+
+        if bb_face is None:
+            Path.Log.error("Could not determine the operation boundary face.")
+            return []
 
         # Determine the bounding box
         group_bb = bb_face.BoundBox
@@ -1457,7 +1460,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # 1. Extract and Validate Tool Parameters
         tool_diam = tool_params.get("diameter", 0.0)
         radius = tool_diam / 2.0
-        shape_type = tool_params.get("tool_type", "")
+        shape_type = tool_params.get("tool_type") or ""
         c_rad = tool_params.get("corner_radius", 0.0)
         is_3d = shape_type in ("ballend", "bullnose")
 
@@ -1685,8 +1688,9 @@ class ObjectSurface(PathOp.ObjectOp):
 
         valid_shapes = []
         for b in base_objs:
-            if b.Shape and not b.Shape.isNull():
-                valid_shapes.append(b.Shape.copy())
+            shp = getattr(b, "Shape", None)
+            if shp is not None and not shp.isNull():
+                valid_shapes.append(shp.copy())
         if len(valid_shapes) > 1:
             try:
                 # Melt overlapping models into one clean continuous object

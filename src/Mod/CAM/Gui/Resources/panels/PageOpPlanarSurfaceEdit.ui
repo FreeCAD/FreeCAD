@@ -585,7 +585,7 @@ Does not affect the toolpath point spacing (Sample Interval).</string>
       <item row="2" column="0">
        <widget class="QLabel" name="keepToolDownThreshold_label">
         <property name="text">
-         <string>Keep tool down rario</string>
+         <string>Keep tool down ratio</string>
         </property>
        </widget>
       </item>

@@ -26,7 +26,6 @@ import Part
 import Path
 import unittest
 import Path.Main.Job as PathJob
-import Path.Op.PlanarSurface as PathPlanarSurface
 from CAMTests.PathTestUtils import PathTestWithAssets
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
@@ -43,7 +42,11 @@ except ImportError:
 
 _ocl_available = ocl is not None
 
+if _ocl_available:
+    import Path.Op.PlanarSurface as PathPlanarSurface
 
+
+@unittest.skipUnless(_ocl_available, "OpenCamLib not available")
 class TestPlanarSurfaceOp(PathTestWithAssets):
     """Integration tests for the unified Surface operation.
 
@@ -262,6 +265,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
         self.assertIn("G0", cmd_names, "Should contain rapid moves")
         self.assertIn("G1", cmd_names, "Should contain cutting moves")
 
+    @unittest.skipUnless(_ocl_available, "OpenCamLib not available")
     def test11(self):
         """
         Executes the SurfaceScan (Adaptive) strategy on a simple box and verifies G-code output.
@@ -431,7 +435,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
 
     def test30(self):
         """
-        Executes the Z-Level Hybrid strategy on a sphere (no OCL required).
+        Executes the Z-Level Hybrid strategy on a sphere.
 
         INPUT:
         - Function: ObjectSurface.opExecute()
@@ -441,7 +445,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
         EXPECTED OUTPUT:
         - Operation should execute without errors
         - Should produce G-code commands (non-empty path)
-        - Z-Level Hybrid uses FreeCAD shape slicing, no OCL dependency
+        - Operation should execute using the configured strategy
         """
         job = self._createJobWithSphere()
 
@@ -728,7 +732,7 @@ class TestPlanarSurfaceOp(PathTestWithAssets):
 
     def test51(self):
         """
-        Executes ZLevelHybrid with a non-Z-up Workplane (no OCL required) and
+        Executes ZLevelHybrid with a non-Z-up Workplane and
         verifies depths and paths are in the rotated frame.
 
         INPUT:
