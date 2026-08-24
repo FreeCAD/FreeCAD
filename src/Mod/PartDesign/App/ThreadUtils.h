@@ -41,12 +41,14 @@ public:
         const int threadSize,
         const int leftHanded,
         App::PropertyEnumeration& ThreadClass,
-        const bool internalThread
+        const bool isInternalThread
     );
     App::DocumentObjectExecReturn* validateParameters(const App::PropertyLinkSub& LateralFace);
     bool isInternalFace(const App::PropertyLinkSub& faceProp, const TopoDS_Shape& solid);
     gp_Vec getThreadZAxis(const App::PropertyLinkSub& LateralFace);
+    gp_Pnt getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace);
     gp_Vec computePerpendicular(const gp_Vec&) const;
+    gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const App::PropertyLinkSub& startPlane);
 
     using ThreadDescription = struct
     {
@@ -68,6 +70,7 @@ public:
     std::vector<std::string> getThreadClass_BSF_Enums();
     std::vector<std::string> getThreadDirectionEnums();
     std::vector<std::string> getThreadDiameters(const int threadType);
+    std::vector<std::string> getThreadMinorDiameters(const int threadType);
     double getMinorDiameter(const int threadType, const int size);
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir);
     Part::TopoShape reduceExternalThreadBase(Part::TopoShape base, const App::PropertyLinkSub& lateralFace, double majorDiameter, double minorDiameter, double length);
@@ -161,6 +164,7 @@ public:
     double getCylinderDiameter(const TopoDS_Face& face);
     double getLateralFaceDiameter(const App::PropertyLinkSub& lateralFace);
     int findNearestThreadSize(const int threadType, const double size);
+    int findNearestMinorThreadSize(const int threadType, const double diameter);
 private:
     double getThreadClassClearance(int threadType, int threadSize, App::PropertyEnumeration& ThreadClass) const;
     void rotateToNormal(const gp_Dir& helixAxis, const gp_Dir& normalAxis, TopoDS_Shape& helixShape) const;

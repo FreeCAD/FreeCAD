@@ -120,9 +120,12 @@ App::DocumentObjectExecReturn* Thread::execute()
         return res;
     }
 
-    bool isInternal = threadUtils.isInternalFace(LateralFace, base.getShape());
-    addSubType = isInternal ? FeatureAddSub::Subtractive : FeatureAddSub::Additive;
-    Base::Console().message("isInternal?: %d\n", isInternal);
+    IsInternal.setValue(threadUtils.isInternalFace(LateralFace, base.getShape()));
+
+    addSubType = IsInternal.getValue() ? FeatureAddSub::Subtractive : FeatureAddSub::Additive;
+    Base::Console().message("isInternal?: %d\n", IsInternal.getValue());
+
+    gp_Pnt startPoint = threadUtils.getThreadStartPoint(LateralFace, StartPlane);
     // double diameter = threadUtils.getLateralFaceDiameter(LateralFace);
     // Base::Console().message("diameter: %lf\n", diameter);
 
@@ -161,7 +164,7 @@ App::DocumentObjectExecReturn* Thread::execute()
             );
         }
 
-        if(!isInternal){
+        if(!IsInternal.getValue()){
             Base::Console().message("Lowering cylinder\n");
             
             double majorDiameter =
@@ -188,19 +191,32 @@ App::DocumentObjectExecReturn* Thread::execute()
             base = reducedBase;
         }
 
+        // gp_Vec zDirFixed = zDir.Reversed(); 
+
         std::cout << "before makeThread\n";
         TopoDS_Shape thread = threadUtils.makeThread(
                 xDir, 
                 zDir, 
-                testLength, 
+                length, 
                 ThreadType.getValue(),
                 ThreadSize.getValue(),
                 ThreadDirection.getValue(),
                 ThreadClass,
-                true
+                IsInternal.getValue()
         );
         std::cout << "after makeThread\n";
 
+        if(IsInternal.getValue()){
+            gp_Vec zDirUnit = zDir;
+            zDirUnit.Normalize();
+            gp_Pnt bottomPoint = startPoint.Translated(zDirUnit * length);
+            // gp_Pnt axisOrigin = threadUtils.getThreadAxisOrigin(LateralFace); // It's going to be used in getthreadstart
+            gp_Trsf translation;
+            translation.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), bottomPoint);
+            TopLoc_Location locTrans(translation);
+            thread.Move(locTrans);
+        }
+            
         if (thread.IsNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Thread error: Resulting shape is empty")
@@ -373,7 +389,38 @@ void Thread::onChanged(const App::Property* prop)
             return;
         }
 
-        int nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
+        Part::TopoShape base;
+        try {
+            base = getBaseTopoShape();
+        }
+        catch (Base::Exception& e) {
+            Base::Console().warning(
+                "Thread::onChanged: erro ao obter base: %s\n",
+                e.what()
+            );
+            DressUp::onChanged(prop);
+            return;
+        }
+
+        if (base.isNull()) {
+            DressUp::onChanged(prop);
+            return;
+        }
+        bool isInternal = threadUtils.isInternalFace(
+            LateralFace,
+            base.getShape()
+        );
+
+        IsInternal.setValue(isInternal);
+
+        int nearestSize = -1;
+        if(!IsInternal.getValue()){
+            nearestSize = threadUtils.findNearestThreadSize(ThreadType.getValue(), diameter);
+        } else {
+            Base::Console().message("Calculando o menor thread size...\n");
+            nearestSize = threadUtils.findNearestMinorThreadSize(ThreadType.getValue(), diameter);
+            Base::Console().message("Olha o thread size aqui: %d\n", nearestSize);
+        }
 
         if (nearestSize >= 0 && nearestSize != ThreadSize.getValue()) {
             ThreadSize.setValue(nearestSize);

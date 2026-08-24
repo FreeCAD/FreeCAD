@@ -521,6 +521,45 @@ std::vector<std::string> ThreadUtils::getThreadDiameters(const int threadType)
     return designations;
 }
 
+std::vector<std::string> ThreadUtils::getThreadMinorDiameters(const int threadType)
+{
+    std::vector<std::string> currentThreads = ThreadUtils::getThreadTypeNameEnums();
+    std::string currentThread = currentThreads[threadType];
+    int currentThreadTypeIndex = threadTypeFromString(currentThread);
+    // Base::Console().message("real int: %d\n", currentThreadTypeIndex);
+
+    std::vector<std::string> minorDiameters;  // diameters
+    const auto& definitions = getThreadDefinitions();
+    for (const auto& definition : definitions) {
+        if (definition.name == currentThread) {
+            minorDiameters = definition.minorDiameters;
+            break;
+        }
+    }
+    if (minorDiameters.empty()) {
+        return {"6.0"};
+    }
+
+    std::set<double> uniqueMinorDiameters;
+
+    // for (const auto& thread : ThreadUtils::threadDescription[currentThreadTypeIndex]) {
+    for (const auto& minorDiameter : minorDiameters) {
+        uniqueMinorDiameters.insert(std::stod(minorDiameter));
+        // uniqueDiameters.insert(thread.diameter);
+    }
+
+    std::vector<std::string> designations;
+    designations.reserve(uniqueMinorDiameters.size());
+
+    for (double diameter : uniqueMinorDiameters) {
+        std::ostringstream oss;
+
+        oss << std::noshowpoint << diameter << " mm";
+        designations.push_back(oss.str());
+    }
+    return designations;
+}
+
 // TODO: return with threadclass in account
 double ThreadUtils::getMinorDiameter(const int threadType, const int size)  // const int threadclass)
 {
@@ -767,9 +806,11 @@ TopoDS_Shape ThreadUtils::makeThread(
     const int threadSize,  // TODO: change to ThreadDiameterIndex
     const int leftHanded,
     App::PropertyEnumeration& ThreadClass,
-    const bool internalThread
+    const bool isInternalThread
 )
 {
+    // Base::Console().message("Rmaj: %lf | RmajC: %lf | Pitch: %lf | clearance: %lf\n", Rmaj, RmajC, Pitch, clearance);
+    // Base::Console().message("threadDepth: %lf | helixLength: %lf | holeDepth: %lf\n", threadDepth, helixLength, holeDepth);
     // int threadType = ThreadType.getValue();
     // int threadSize = ThreadSize.getValue();
     if (threadType < 0) {
@@ -801,9 +842,8 @@ TopoDS_Shape ThreadUtils::makeThread(
     // double Pitch = getThreadPitch();
     double Pitch = threadDescription[currentThreadTypeIndex][threadSize].pitch;
 
-
     double clearance;  // clearance to be added on the diameter
-                       // if (UseCustomThreadClearance.getValue()) {
+    // if (UseCustomThreadClearance.getValue()) {
     // clearance = CustomThreadClearance.getValue() / 2;
     // }
     // else {
@@ -892,7 +932,7 @@ TopoDS_Shape ThreadUtils::makeThread(
 
     // create the helix path
     // double threadDepth = ThreadDepth.getValue();
-    double threadDepth = 30;
+    double threadDepth = length;
     double helixLength = threadDepth + Pitch / 2;
     // double holeDepth = Depth.getValue();
     double holeDepth = 4;
@@ -1094,6 +1134,35 @@ int ThreadUtils::findNearestThreadSize(const int threadType, const double diamet
 
     return bestIndex;
 }
+int ThreadUtils::findNearestMinorThreadSize(const int threadType, const double diameter)
+{
+    std::vector<std::string> threadDiameters = getThreadMinorDiameters(threadType);
+
+    if (threadDiameters.empty()) {
+        return -1;
+    }
+
+    int bestIndex = 0;
+    double bestDistance = std::abs(std::stod(threadDiameters[0]) - diameter);
+
+    for (size_t i = 1; i < threadDiameters.size(); ++i) {
+        double currentDiameter = std::stod(threadDiameters[i]);
+        double distance = std::abs(currentDiameter - diameter);
+
+        Base::Console().message("i=%d\n", i);
+        Base::Console().message("value=%s\n", threadDiameters[i]);
+        Base::Console().message("distance=%lf\n", distance);
+        Base::Console().message("bestDistance=%lf\n", bestDistance);
+
+        if (distance < bestDistance) {
+            bestDistance = distance;
+            bestIndex = static_cast<int>(i);
+        }
+    }
+
+    return bestIndex;    
+}
+
 bool ThreadUtils::isInternalFace(const App::PropertyLinkSub& faceProp, const TopoDS_Shape& solid)
 {
     if (solid.IsNull()) {
@@ -1265,6 +1334,23 @@ gp_Vec ThreadUtils::computePerpendicular(const gp_Vec& zDir) const
     // a unit-length vector.
     xDir.Normalize();
     return xDir;
+}
+
+gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace)
+{
+    TopoDS_Face threadedFace = getSelectedFace(LateralFace);
+    Handle(Geom_Surface) surf = BRep_Tool::Surface(threadedFace);
+
+    if (getFaceType(threadedFace) == FaceType::Cylinder) {
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
+        return cyl->Position().Location();
+    }
+    else if (getFaceType(threadedFace) == FaceType::Cone) {
+        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(surf);
+        return cone->Position().Location();
+    }
+
+    throw Base::RuntimeError("Thread axis origin could not be calculated.");
 }
 
 gp_Vec ThreadUtils::getThreadZAxis(const App::PropertyLinkSub& LateralFace)
@@ -1694,4 +1780,76 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     }
 
     return Part::TopoShape(result.Shape());
+}
+
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <GeomAbs_SurfaceType.hxx>
+#include <IntCurvesFace_ShapeIntersector.hxx>
+#include <Standard_Failure.hxx>
+
+gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const App::PropertyLinkSub& startPlane)
+{
+    gp_Pnt axisOrigin = getThreadAxisOrigin(lateralFace);
+    // gp_Dir axisDir = getThreadAxisDir(lateralFace);
+    // gp_Ax1 threadAxis(axisOrigin, axisDir);
+    // gp_Lin axisLine(threadAxis);
+
+    auto* obj = startPlane.getValue();
+    if (obj == nullptr) {
+        return axisOrigin;
+    }
+
+    // if (shape.ShapeType() == TopAbs_VERTEX) {
+    //     return BRep_Tool::Pnt(TopoDS::Vertex(shape));
+    // }
+
+    // if (shape.ShapeType() == TopAbs_EDGE) {
+    //     BRepAdaptor_Curve curveAdaptor(TopoDS::Edge(shape));
+    //     gp_Pnt intersectionPnt;
+    //     if (findLineCurveIntersection(axisLine, curveAdaptor, intersectionPnt)) {
+    //         return intersectionPnt;
+    //     }
+    //     throw Base::ValueError("Selected edge does not intersect the thread axis.");
+    // }
+
+    // if (shape.ShapeType() == TopAbs_FACE) {
+    //     TopoDS_Face face = TopoDS::Face(shape);
+    //     BRepAdaptor_Surface surfAdaptor(face);
+
+    //     if (surfAdaptor.GetType() == GeomAbs_Plane) {
+    //         gp_Pln plane = surfAdaptor.Plane();
+    //         gp_Dir planeNormal = plane.Axis().Direction();
+
+    //         if (planeNormal.IsParallel(axisDir, Precision::Angular())) {
+    //             return getPlaneLineIntersection(plane, axisLine);
+    //         }
+    //     }
+
+    //     IntCurvesFace_ShapeIntersector intersector;
+    //     intersector.Load(face, Precision::Confusion());
+    //     intersector.Perform(axisLine, -1e5, 1e5);
+
+    //     if (!intersector.IsDone() || intersector.NbPnt() == 0) {
+    //         throw Base::ValueError("Selected face/surface does not intersect the thread axis.");
+    //     }
+
+    //     gp_Pnt bestPoint;
+    //     double minDistance = std::numeric_limits<double>::max();
+
+    //     for (int i = 1; i <= intersector.NbPnt(); ++i) {
+    //         gp_Pnt pnt = intersector.Pnt(i);
+    //         double dist = pnt.Distance(axisOrigin);
+            
+    //         if (dist < minDistance) {
+    //             minDistance = dist;
+    //             bestPoint = pnt;
+    //         }
+    //     }
+
+    //     return bestPoint;
+    // }
+
+    throw Base::ValueError("Invalid start object selected for thread calculation.");
 }

@@ -68,6 +68,7 @@ public:
     App::PropertyLength CustomThreadClearance;
     App::PropertyBool ModelThread;
     App::PropertyBool CosmeticThread;
+    App::PropertyBool IsInternal;
 
     /** @name methods override feature */
     //@{
