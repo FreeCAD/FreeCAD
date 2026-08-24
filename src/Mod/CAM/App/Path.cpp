@@ -202,10 +202,8 @@ double Toolpath::getLength()
     return l;
 }
 
-double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double vRapid)
+double Toolpath::getCycleTime(double hFeed, double vFeed, double rapid)
 {
-    (void)vRapid;
-
     // check the feedrates are set
     if ((hFeed == 0) || (vFeed == 0)) {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -217,8 +215,8 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         return 0;
     }
 
-    if (hRapid == 0) {
-        hRapid = hFeed;
+    if (rapid == 0) {
+        rapid = hFeed;
     }
 
     if (vpcCommands.empty()) {
@@ -226,7 +224,7 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
     }
 
     double time = 0;
-    double fG0 = hRapid;
+    double fG0 = rapid;
     double fG1 = hFeed;
     Vector3d last(0, 0, 0);
     bool absolute = true;

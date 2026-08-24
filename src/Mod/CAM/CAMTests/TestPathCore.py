@@ -152,7 +152,7 @@ G0 Z0.500000
         )
         expected_length = 2 + math.pi / 2
         self.assertAlmostEqual(path.Length, expected_length, places=12)
-        self.assertAlmostEqual(path.getCycleTime(1, 1, 1, 1), expected_length, places=12)
+        self.assertAlmostEqual(path.getCycleTime(1, 1, 1), expected_length, places=12)
 
         absolute_center_path = Path.Path(
             [
@@ -174,8 +174,7 @@ G0 Z0.500000
 
         h_feed = 600.0 / 60
         v_feed = 300.0 / 60
-        h_rapid = 3000.0 / 60
-        v_rapid = 1500.0 / 60
+        rapid = 3000.0 / 60
 
         g1_length = 5.0
         g0_length = 5.0
@@ -189,14 +188,14 @@ G0 Z0.500000
                 path = Path.Path(
                     [
                         Path.Command("G1", {"X": g1_length, "F": feed}),
-                        Path.Command("G0", {"Y": g0_length, "F": h_rapid}),
+                        Path.Command("G0", {"Y": g0_length, "F": rapid}),
                         Path.Command("G1", {"X": g1_length + dx, "Z": dz, "F": feed}),
                     ]
                 )
-                t = path.getCycleTime(h_feed, v_feed, h_rapid, v_rapid)
+                t = path.getCycleTime(h_feed, v_feed, rapid)
 
                 t_g1 = g1_length / feed
-                t_g0 = g0_length / h_rapid
+                t_g0 = g0_length / rapid
                 t_ramp = ramp_length / feed
                 t_expected = t_g1 + t_g0 + t_ramp
 
