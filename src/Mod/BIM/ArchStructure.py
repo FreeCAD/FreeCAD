@@ -1210,7 +1210,12 @@ class _Structure(ArchComponent.Component):
             # profile-based structures should use XY plane orientation
             use_profile_orientation = hasattr(obj, "Profile") and obj.Profile
 
-            if (length > height) and (IfcType in ["Beam", "Column"]):
+            # Prevent geometry breaking when IfcType changes
+            is_structural_frame = (IfcType in ["Beam", "Column"]) or use_profile_orientation
+            if hasattr(obj, "Proxy") and obj.Proxy.__class__.__name__ in ["Beam", "_Beam", "Column", "_Column"]:
+                is_structural_frame = True
+
+            if (length > height) and is_structural_frame:
                 h2 = height / 2 or 0.5
                 w2 = width / 2 or 0.5
                 if use_profile_orientation:
@@ -1301,7 +1306,7 @@ class _Structure(ArchComponent.Component):
                 if not normal.Length:
                     normal = Vector(0, 0, 1)
                 extrusion = normal
-                if (length > height) and (IfcType in ["Beam", "Column"]):
+                if (length > height) and is_structural_frame:
                     if length:
                         extrusion = normal.multiply(length)
                 else:
