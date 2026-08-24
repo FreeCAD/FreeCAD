@@ -410,9 +410,14 @@ std::string findSoleFcrashIn(const std::string& path)
 #else
 # define FC_NOINLINE __attribute__((noinline))
 #endif
+// The target is loaded through a volatile pointer so that the compiler cannot see a literal null.
+// Given one, GCC at -O2 proves the store is unreachable UB and deletes the call to this function,
+// leaving the release build with nothing to crash on.
+static int* volatile deliberateNullTarget = nullptr;
+
 extern "C" FC_NOINLINE void crashReporterFaultSite()
 {
-    volatile int* p = nullptr;
+    volatile int* p = deliberateNullTarget;
     *p = 13;
     std::atomic_signal_fence(std::memory_order_seq_cst);  // defeat tail-call/reorder
 }
