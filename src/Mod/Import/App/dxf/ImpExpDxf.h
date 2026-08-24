@@ -79,6 +79,12 @@ public:
         const std::string& text,
         double rotation
     ) override;
+    void OnReadSolid(
+        const Base::Vector3d& first,
+        const Base::Vector3d& second,
+        const Base::Vector3d& third,
+        const Base::Vector3d& fourth
+    ) override;
     void OnReadArc(
         const Base::Vector3d& start,
         const Base::Vector3d& end,
@@ -250,6 +256,7 @@ protected:
         const int Flags;
         std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>> GeometryBuilders;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Insert>> Inserts;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>> FeaturePythonBuilders;
     };
 
 private:
@@ -380,6 +387,70 @@ protected:
             link->ScaleVector.setValue(scale);
 
             this->AddObject(link, "Link");
+
+            // Instantiate text annotation objects from this block and any blocks it
+            // references via nested INSERTs. These cannot be part of the App::Link geometry.
+            {
+                Base::Matrix4D insertMatrix;
+                insertMatrix.scale(scale.x, scale.y, scale.z);
+                insertMatrix.rotZ(rotation);
+                insertMatrix.move(point.x, point.y, point.z);
+
+                CDxfRead::CommonEntityAttributes savedAttributes = Reader.m_entityAttributes;
+                std::set<std::string> expandingBlocks;
+                std::function<
+                    void(const std::string&, const Base::Matrix4D&, const CDxfRead::CommonEntityAttributes&)>
+                    expandBlockText = [&](const std::string& blockName,
+                                          const Base::Matrix4D& transform,
+                                          const CDxfRead::CommonEntityAttributes& parentAttributes) {
+                        if (!expandingBlocks.insert(blockName).second) {
+                            return;  // Circular reference guard
+                        }
+                        auto it = Reader.Blocks.find(blockName);
+                        if (it != Reader.Blocks.end()) {
+                            const Block& blk = it->second;
+                            for (const auto& [attributes, builders] : blk.FeaturePythonBuilders) {
+                                Reader.m_entityAttributes = attributes;
+                                Reader.m_entityAttributes.ResolveByBlockAttributes(parentAttributes);
+                                for (const auto& builder : builders) {
+                                    App::FeaturePython* feature = builder(transform);
+                                    if (feature != nullptr) {
+                                        Reader.MoveToLayer(feature);
+                                        Reader._addOriginalLayerProperty(feature);
+                                        Reader.ApplyGuiStyles(feature);
+                                        Reader.IncrementCreatedObjectCount();
+                                    }
+                                }
+                            }
+                            for (const auto& [attributes, inserts] : blk.Inserts) {
+                                CDxfRead::CommonEntityAttributes nestedAttrs = attributes;
+                                nestedAttrs.ResolveByBlockAttributes(parentAttributes);
+                                for (const auto& nestedInsert : inserts) {
+                                    Base::Matrix4D nestedMatrix;
+                                    nestedMatrix.scale(
+                                        nestedInsert.Scale.x,
+                                        nestedInsert.Scale.y,
+                                        nestedInsert.Scale.z
+                                    );
+                                    nestedMatrix.rotZ(nestedInsert.Rotation);
+                                    nestedMatrix.move(
+                                        nestedInsert.Point.x,
+                                        nestedInsert.Point.y,
+                                        nestedInsert.Point.z
+                                    );
+                                    expandBlockText(
+                                        nestedInsert.Name,
+                                        transform * nestedMatrix,
+                                        nestedAttrs
+                                    );
+                                }
+                            }
+                        }
+                        expandingBlocks.erase(blockName);
+                    };
+                expandBlockText(name, insertMatrix, savedAttributes);
+                Reader.m_entityAttributes = savedAttributes;
+            }
         }
     };
     class ShapeSavingEntityCollector: public DrawingEntityCollector
@@ -442,11 +513,13 @@ protected:
         BlockDefinitionCollector(
             ImpExpDxfRead& reader,
             std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& buildersList,
-            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList
+            std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& insertsList,
+            std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>& featurePythonBuildersList
         )
             : EntityCollector(reader)
             , BuildersList(buildersList)
             , InsertsList(insertsList)
+            , FeaturePythonBuildersList(featurePythonBuildersList)
         {}
 
         // TODO: We will want AddAttributeDefinition as well.
@@ -473,10 +546,9 @@ protected:
             );
         }
 
-        void AddObject(FeaturePythonBuilder /*shapeBuilder*/) override
+        void AddObject(FeaturePythonBuilder shapeBuilder) override
         {
-            // This path is for Draft/FeaturePython objects and is not used by the
-            // primitives or shapes modes.
+            FeaturePythonBuildersList[Reader.m_entityAttributes].push_back(shapeBuilder);
         }
 
         void AddInsert(
@@ -494,6 +566,7 @@ protected:
     private:
         std::map<CDxfRead::CommonEntityAttributes, std::list<GeometryBuilder>>& BuildersList;
         std::map<CDxfRead::CommonEntityAttributes, std::list<Block::Insert>>& InsertsList;
+        std::map<CDxfRead::CommonEntityAttributes, std::list<FeaturePythonBuilder>>& FeaturePythonBuildersList;
     };
 
 private:

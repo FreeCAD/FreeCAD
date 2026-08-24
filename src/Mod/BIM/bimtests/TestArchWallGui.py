@@ -288,21 +288,21 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.printTestMessage("Testing baseless wall creation on a rotated working plane...")
 
         # Arrange: Create a non-standard working plane (rotated and elevated)
-        wp = WorkingPlane.plane()
+        wp = WorkingPlane.get_working_plane()
         placement = FreeCAD.Placement(
             FreeCAD.Vector(0, 0, 1000), FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
         )
 
         # Apply the placement to the working plane, ensuring translation is included
-        wp.setFromPlacement(placement, rebase=True)
+        wp.align_to_placement(placement)
 
         # Define points in the local coordinate system of the working plane
         p1_local = FreeCAD.Vector(0, 0, 0)
         p2_local = FreeCAD.Vector(2000, 0, 0)
 
         # Convert local points to the global coordinates the command will receive
-        p1_global = wp.getGlobalCoords(p1_local)
-        p2_global = wp.getGlobalCoords(p2_local)
+        p1_global = wp.get_global_coords(p1_local)
+        p2_global = wp.get_global_coords(p2_local)
 
         self.params.SetInt("WallBaseline", 0)
 

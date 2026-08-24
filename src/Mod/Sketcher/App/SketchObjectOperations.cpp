@@ -408,6 +408,7 @@ int SketchObject::extend(int GeoId, double increment, PointPos endpoint)
 bool SketchObject::seekTrimPoints(
     int GeoId,
     const Base::Vector3d& point,
+    bool includeSketchAxes,
     int& GeoId1,
     Base::Vector3d& intersect1,
     int& GeoId2,
@@ -418,9 +419,25 @@ bool SketchObject::seekTrimPoints(
         return false;
     }
 
-    auto geos = getCompleteGeometry();  // this includes the axes too
+    auto geos = getCompleteGeometry();  // this includes the axes as GeomBoundedCurve
 
-    geos.resize(geos.size() - 2);  // remove the axes to avoid intersections with the axes
+    // remove the axes since they aren't infinite lines and not all intersections will count
+    geos.resize(geos.size() - 2);
+
+    Part::GeomLine hAxis;
+    Part::GeomLine vAxis;
+    int hAxisIndex = -1;
+    int vAxisIndex = -1;
+    if (includeSketchAxes) {
+        // re-add the axes as infinite lines
+        hAxisIndex = static_cast<int>(geos.size());
+        hAxis.setLine(Base::Vector3d(0, 0, 0), Base::Vector3d(1, 0, 0));
+        geos.push_back(&hAxis);
+
+        vAxisIndex = static_cast<int>(geos.size());
+        vAxis.setLine(Base::Vector3d(0, 0, 0), Base::Vector3d(0, 1, 0));
+        geos.push_back(&vAxis);
+    }
 
     int localindex1, localindex2;
 
@@ -433,8 +450,18 @@ bool SketchObject::seekTrimPoints(
     }
 
     // invalid complete geometry indices are mapped to GeoUndef
-    GeoId1 = getGeoIdFromCompleteGeometryIndex(localindex1);
-    GeoId2 = getGeoIdFromCompleteGeometryIndex(localindex2);
+    auto getGeoIdForIndex = [&](int index) {
+        if (includeSketchAxes && index == hAxisIndex) {
+            return Part::Part2DObject::H_Axis;
+        }
+        if (includeSketchAxes && index == vAxisIndex) {
+            return Part::Part2DObject::V_Axis;
+        }
+        return getGeoIdFromCompleteGeometryIndex(index);
+    };
+
+    GeoId1 = getGeoIdForIndex(localindex1);
+    GeoId2 = getGeoIdForIndex(localindex2);
 
     return true;
 }
@@ -665,11 +692,24 @@ void createNewConstraintsForTrim(
     bool isPoint1ConstrainedOnGeoId1 = false;
     bool isPoint2ConstrainedOnGeoId2 = false;
 
+    const auto* trimmedGeo = obj->getGeometry(GeoId);
+    const bool isTrimmedGeoConic = trimmedGeo
+        && (trimmedGeo->isDerivedFrom<Part::GeomConic>()
+            || trimmedGeo->isDerivedFrom<Part::GeomArcOfConic>());
+
     for (const auto& oldConstrId : idsOfOldConstraints) {
         // trim-specific changes first
         const Constraint* con = allConstraints[oldConstrId];
         if (con->Type == InternalAlignment) {
-            geoIdsToBeDeleted.insert(con->First);
+            if (isTrimmedGeoConic) {
+                auto* newCon = con->copy();
+                newCon->Second = newIds.front();
+                newConstraints.push_back(newCon);
+                newToOldConstraintMap[newConstraints.back()] = oldConstrId;
+            }
+            else {
+                geoIdsToBeDeleted.insert(con->First);
+            }
             continue;
         }
         if (auto newConstr = transformPreexistingConstraintForTrim(
@@ -734,7 +774,7 @@ void createNewConstraintsForTrim(
     }
 }
 
-int SketchObject::trim(int GeoId, const Base::Vector3d& point)
+int SketchObject::trim(int GeoId, const Base::Vector3d& point, bool includeSketchAxes)
 {
     if (!isGeoIdAllowedForTrim(this, GeoId)) {
         return -1;
@@ -771,13 +811,14 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     if (!SketchObject::seekTrimPoints(
             GeoId,
             point,
+            includeSketchAxes,
             cuttingGeoIds[0],
             cutPoints[0],
             cuttingGeoIds[1],
             cutPoints[1]
         )) {
         // If no suitable trim points are found, then trim defaults to deleting the geometry
-        delGeometry(GeoId);
+        delGeometry(GeoId, DeleteOption::IncludeInternalGeometry);
         return 0;
     }
 
@@ -797,7 +838,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
 
     switch (paramsOfNewGeos.size()) {
         case 0: {
-            delGeometry(GeoId);
+            delGeometry(GeoId, DeleteOption::IncludeInternalGeometry);
             return 0;
         }
         case 1: {
@@ -1028,9 +1069,11 @@ int SketchObject::split(int GeoId, const Base::Vector3d& point)
         return !allConstraints[i]->involvesGeoIdAndPosId(GeoId, PointPos::none);
     });
 
+    std::vector<const Part::Geometry*> newGeosConst(newGeos.begin(), newGeos.end());
+
     for (const auto& oldConstrId : idsOfOldConstraints) {
         Constraint* con = allConstraints[oldConstrId];
-        deriveConstraintsForPieces(GeoId, newIds, con, newConstraints);
+        deriveConstraintsForPieces(GeoId, newIds, newGeosConst, con, newConstraints);
     }
 
     // This also seems to reset SketchObject::Geometry.
@@ -1436,6 +1479,12 @@ int SketchObject::addSymmetric(
                 if ((constr->Type == Sketcher::Angle) && (refPosId == Sketcher::PointPos::none)) {
                     constNew->setValue(-constr->getValue());
                 }
+
+                // Signed constraints record which side of a line their subject sits on, and a
+                // symmetry about a *line* reverses that side while a symmetry about a *point* does
+                // not. For the new constraint, re-derive the sign from the updated geometry
+                // instead of trying to figure it out from the old one.
+                setOrientation(constNew, true);
 
                 newconstrVals.push_back(constNew);
                 continue;

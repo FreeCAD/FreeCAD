@@ -168,6 +168,23 @@ public:
         initialize("This module is the Path module.");  // register with Python
 
         PyModule_AddObject(m_module, "Voronoi", voronoi.module().ptr());
+
+        // Expose Clipper2 join types
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeRound",
+            static_cast<int>(Clipper2Lib::JoinType::Round)
+        );
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeSquare",
+            static_cast<int>(Clipper2Lib::JoinType::Square)
+        );
+        PyModule_AddIntConstant(
+            m_module,
+            "ClipperJoinTypeMiter",
+            static_cast<int>(Clipper2Lib::JoinType::Miter)
+        );
     }
 
     ~Module() override
@@ -283,6 +300,18 @@ private:
 
     Py::Object fromShape(const Py::Tuple& args)
     {
+        if (!Base::warnDeprecatedPythonApi(
+                "Method",
+                "PathApp.fromShape",
+                Base::PythonApiDeprecation {
+                    .deprecatedIn = "26.3",
+                    .removedIn = "27.2",
+                    .replacement = "fromShapes",
+                }
+            )) {
+            throw Py::Exception();
+        }
+
         PyObject* pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
             throw Py::Exception();

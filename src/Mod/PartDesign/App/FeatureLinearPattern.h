@@ -26,55 +26,25 @@
 #pragma once
 
 #include <App/PropertyUnits.h>
+#include <Mod/Part/App/LinearPatternExtension.h>
 #include "FeatureTransformed.h"
 
 class gp_Vec;
 
 namespace PartDesign
 {
-enum class LinearPatternMode
-{
-    Extent,
-    Spacing
-};
 
-enum class LinearPatternDirection : std::uint8_t
+class PartDesignExport LinearPattern: public PartDesign::Transformed,
+                                      public Part::LinearPatternExtension
 {
-    First,
-    Second
-};
-
-class PartDesignExport LinearPattern: public PartDesign::Transformed
-{
-    PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::LinearPattern);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::LinearPattern);
 
 public:
     LinearPattern();
 
-    App::PropertyLinkSub Direction;
-    App::PropertyBool Reversed;
-    App::PropertyEnumeration Mode;
-    App::PropertyLength Length;
-    App::PropertyLength Offset;
-    App::PropertyIntegerConstraint Occurrences;
-    App::PropertyFloatList Spacings;
-    App::PropertyFloatList SpacingPattern;
+    // Virtual override to support PartDesign datum objects
+    gp_Dir getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const override;
 
-    App::PropertyLinkSub Direction2;
-    App::PropertyBool Reversed2;
-    App::PropertyEnumeration Mode2;
-    App::PropertyLength Length2;
-    App::PropertyLength Offset2;
-    App::PropertyIntegerConstraint Occurrences2;
-    App::PropertyFloatList Spacings2;
-    App::PropertyFloatList SpacingPattern2;
-
-
-    /** @name methods override feature */
-    //@{
-    short mustExecute() const override;
-
-    /// returns the type name of the view provider
     const char* getViewProviderName() const override
     {
         return "PartDesignGui::ViewProviderLinearPattern";
@@ -106,23 +76,6 @@ protected:
         const char* TypeName,
         App::Property* prop
     ) override;
-    void onChanged(const App::Property* prop) override;
-
-    static const App::PropertyIntegerConstraint::Constraints intOccurrences;
-
-private:
-    static const char* ModeEnums[];
-
-    gp_Dir getDirectionFromProperty(const App::PropertyLinkSub& dirProp) const;
-
-    void setReadWriteStatusForMode(LinearPatternDirection dir);
-    void syncLengthAndOffset(LinearPatternDirection dir);
-
-    void updateSpacings();
-    void updateSpacings(LinearPatternDirection dir);
-
-    gp_Vec calculateOffsetVector(LinearPatternDirection dir) const;
-    std::vector<gp_Vec> calculateSteps(LinearPatternDirection dir, const gp_Vec& offsetVector) const;
 };
 
 }  // namespace PartDesign

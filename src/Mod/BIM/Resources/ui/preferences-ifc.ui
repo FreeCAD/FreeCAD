@@ -233,7 +233,7 @@ if crashes occur when multiple cores are set.</string>
         <item>
          <widget class="QLabel" name="label_2">
           <property name="text">
-           <string>Root element:</string>
+           <string>Root element</string>
           </property>
          </widget>
         </item>

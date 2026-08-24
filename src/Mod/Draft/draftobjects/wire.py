@@ -34,8 +34,9 @@ import math
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import DraftGeomUtils
 import DraftVecUtils
+from draftgeoutils import faces as geo_faces
+from draftgeoutils import fillets as geo_fillets
 from draftobjects.base import DraftObject
 from draftutils import gui_utils
 from draftutils import params
@@ -145,8 +146,8 @@ class Wire(DraftObject):
                     sh1 = obj.Base.Shape.copy()
                     sh2 = obj.Tool.Shape.copy()
                     shape = sh1.fuse(sh2)
-                    if DraftGeomUtils.isCoplanar(shape.Faces):
-                        shape = DraftGeomUtils.concatenate(shape)
+                    if geo_faces.is_coplanar(shape.Faces):
+                        shape = geo_faces.concatenate(shape)
                         obj.Shape = shape
                         p = []
                         for v in shape.Vertexes:
@@ -177,12 +178,12 @@ class Wire(DraftObject):
                 shape = Part.makePolygon(pts + [pts[0]])
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
+                        w = geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                         if w:
                             shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape, obj.FilletRadius.Value)
+                        w = geo_fillets.filletWire(shape, obj.FilletRadius.Value)
                         if w:
                             shape = w
                 try:
@@ -215,12 +216,12 @@ class Wire(DraftObject):
                     shape = None
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
+                        w = geo_fillets.filletWire(shape, obj.ChamferSize.Value, chamfer=True)
                         if w:
                             shape = w
                 if "FilletRadius" in obj.PropertiesList:
                     if obj.FilletRadius.Value != 0:
-                        w = DraftGeomUtils.filletWire(shape, obj.FilletRadius.Value)
+                        w = geo_fillets.filletWire(shape, obj.FilletRadius.Value)
                         if w:
                             shape = w
             if shape:

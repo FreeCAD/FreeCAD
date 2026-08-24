@@ -25,6 +25,7 @@
 
 #include <boost/algorithm/string/predicate.hpp>
 
+#include <QDateTime>
 #include <QThreadPool>
 
 #include <App/Application.h>
@@ -234,7 +235,7 @@ void DisplayedFilesModel::processNewFcstdInfo(
         return;
     }
 
-    QList<int> changedRoles;
+    QVector<int> changedRoles;
     auto& info = _fileInfoCache[index];
     for (auto stat : stats) {
         info.insert(stat);

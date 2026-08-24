@@ -111,7 +111,7 @@ class FemMesh(ComplexGeoData):
         highest: Export highest mesh elements only when true (default), all mesh elements if false
 
         vtk_cell_group_array: When writing a VTK file the cell groups will be stored in a array with this name.
-                              By default it is a sring array with the group name written for each group element.
+                              By default it is a string array with the group name written for each group element.
         vtk_group_id_map:     When writing VTK with groups, the groupname can be mapped to a integer ID under
                               which it will be stored (lessmemory usage then string). When reloading the group
                               name is equal to the int ID as string.
@@ -119,7 +119,7 @@ class FemMesh(ComplexGeoData):
         Note on VTK group saving: The following limitations apply
             1. Only element/cell groups are supported, no node groups and no mixed groups
             2. Elements can only be in a single group, groups can not overlap
-            3. Element IDs in the mesh need to be continious and start with ID 1
+            3. Element IDs in the mesh need to be continuous and start with ID 1
         """
         ...
 

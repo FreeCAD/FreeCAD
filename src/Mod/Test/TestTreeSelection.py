@@ -36,8 +36,10 @@ import FreeCADGui
 from FreeCADGui import Selection
 
 import Draft
+import Part
 
 from PySide6 import QtWidgets
+from PySide6.QtCore import QModelIndex, QItemSelectionModel
 
 
 class TestSelectAllInstances(unittest.TestCase):
@@ -244,4 +246,86 @@ class TestSelectAllInstances(unittest.TestCase):
         count = self._count_tree_selections_by_name("Box")
         self.assertGreaterEqual(
             count, 1, f"Expected at least 1 'Box' instance selected, got {count}."
+        )
+
+    def test_subelement_selection_preserved_on_tree_click(self):
+        """Issue #30161: selecting an Origin plane in the tree must not
+        replace an existing sub-element selection with a whole-object one."""
+
+        # Create Body with Sketch on XZ plane containing a rectangle
+        body = self.doc.addObject("PartDesign::Body", "Body")
+        sketch = body.newObject("Sketcher::SketchObject", "Sketch")
+        sketch.AttachmentSupport = (body.Origin.OutList[2], "")  # XZ
+
+        sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 0, 0)))
+        sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(10, 0, 0), FreeCAD.Vector(10, 10, 0)))
+        sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(10, 10, 0), FreeCAD.Vector(0, 10, 0)))
+        sketch.addGeometry(Part.LineSegment(FreeCAD.Vector(0, 10, 0), FreeCAD.Vector(0, 0, 0)))
+        self.doc.recompute()
+        FreeCADGui.updateGui()
+
+        # step 1:
+        # Select vertex via Selection API (mimics 3D-view selection effect on Gui::Selection)
+        Selection.clearSelection()
+        Selection.addSelection(self.doc.Name, body.Name, "Sketch.Vertex1")
+        FreeCADGui.updateGui()
+
+        # step 2:
+        # re-fetch tree references AFTER selection observers have run.
+        # The selection observers may have recreated DocumentObjectItem nodes,
+        # so any references obtained earlier could be dangling.
+        tree = self._get_tree_widget()
+        self.assertIsNotNone(tree, "Could not find tree widget")
+
+        def find_index(parent_index, label):
+            """Find the QModelIndex of an item with matching label, recursively."""
+            model = tree.model()
+            if parent_index.isValid():
+                rows = model.rowCount(parent_index)
+            else:
+                rows = tree.topLevelItemCount()
+            for i in range(rows):
+                if parent_index.isValid():
+                    idx = model.index(i, 0, parent_index)
+                else:
+                    idx = model.index(i, 0)
+                text = model.data(idx)
+                if text and (text == label or label in text):
+                    return idx
+                found = find_index(idx, label)
+                if found.isValid():
+                    return found
+            return QModelIndex()
+
+        xy_index = find_index(QModelIndex(), "XY-plane")
+        self.assertTrue(xy_index.isValid(), "Could not locate XY-plane tree item")
+
+        # Step 3:
+        # trigger the bug. Qt-selecting the XY-plane item fires
+        # QTreeWidget::itemSelectionChanged → DocumentItem::updateItemSelection.
+        # Before the #30161 fix, this would push the whole Sketch into Gui::Selection.
+        tree.selectionModel().select(xy_index, QItemSelectionModel.Select)
+        FreeCADGui.updateGui()
+
+        # The fix: selection must still contain the vertex sub-element, not whole Sketch
+        sels = Selection.getSelectionEx(self.doc.Name, 0)  # ResolveMode::NoResolve
+        sub_names = []
+        for sel in sels:
+            for sub in sel.SubElementNames or [""]:
+                sub_names.append(sub)
+
+        # No bare "Sketch." (whole-object) entry should appear
+        self.assertNotIn(
+            "Sketch.",
+            sub_names,
+            f"Issue #30161 regression: whole Sketch was selected. Got: {sub_names}",
+        )
+        # The vertex sub-element entry must survive
+        self.assertTrue(
+            any("Vertex" in s for s in sub_names),
+            f"Vertex sub-element selection was lost. Got: {sub_names}",
+        )
+        # XY_Plane should now also be selected (internal name in SubElementNames)
+        self.assertTrue(
+            any("XY_Plane" in s for s in sub_names), f"XY_Plane was not added. Got: {sub_names}"
         )

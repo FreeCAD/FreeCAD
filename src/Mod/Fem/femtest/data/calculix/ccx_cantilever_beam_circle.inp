@@ -41,8 +41,8 @@ Eedges
 
 ***********************************************************
 ** constraints fixed node sets
-** ConstraintFixed
-*NSET,NSET=ConstraintFixed
+** Fixed
+*NSET,NSET=Fixed
 1,
 
 ** Physical constants for SI(mm) unit system with Kelvins
@@ -73,19 +73,19 @@ Eedges
 
 ***********************************************************
 ** Fixed Constraints
-** ConstraintFixed
+** Fixed
 *BOUNDARY
-ConstraintFixed,1
-ConstraintFixed,2
-ConstraintFixed,3
-ConstraintFixed,4
-ConstraintFixed,5
-ConstraintFixed,6
+Fixed,1
+Fixed,2
+Fixed,3
+Fixed,4
+Fixed,5
+Fixed,6
 
 
 ***********************************************************
 ** constraints force node loads
-** ConstraintForce
+** Force
 *CLOAD
 ** node load on shape: CantileverLine:Vertex2
 2,3,-9000000
@@ -100,7 +100,7 @@ U
 S, E
 ** outputs --> dat file
 ** reaction forces for Constraint fixed
-*NODE PRINT, NSET=ConstraintFixed, TOTALS=ONLY
+*NODE PRINT, NSET=Fixed, TOTALS=ONLY
 RF
 
 *OUTPUT, FREQUENCY=1

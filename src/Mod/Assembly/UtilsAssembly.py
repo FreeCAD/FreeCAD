@@ -687,6 +687,20 @@ def getSimulationGroup(assembly):
     return sim_group
 
 
+def getSnapshotGroup(assembly):
+    snapshot_group = None
+
+    for obj in assembly.OutList:
+        if obj.TypeId == "Assembly::SnapshotGroup":
+            snapshot_group = obj
+            break
+
+    if not snapshot_group:
+        snapshot_group = assembly.newObject("Assembly::SnapshotGroup", "Snapshots")
+
+    return snapshot_group
+
+
 def isAssemblyGrounded():
     assembly = activeAssembly()
     if not assembly:
@@ -891,7 +905,7 @@ def findCylindersIntersection(obj, surface, edge, elt_index):
     return surface.Center
 
 
-def openEditingPlacementDialog(obj, propName):
+def openEditingPlacementDialog(obj, propName, onChanged=None):
     task_placement = Gui.TaskPlacement()
     dialog = task_placement.form
 
@@ -901,6 +915,9 @@ def openEditingPlacementDialog(obj, propName):
     task_placement.setPropertyName(propName)
     task_placement.bindObject()
     task_placement.setIgnoreTransactions(True)
+
+    if onChanged is not None:
+        dialog.accepted.connect(onChanged)
 
     dialog.findChild(QtWidgets.QPushButton, "selectedVertex").hide()
     dialog.exec_()
@@ -1225,6 +1242,12 @@ def getComponentReference(assembly, root_obj, sub_string):
 
     doc = assembly.Document
 
+    # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
+    # instead we need : "Part.Body.Pad.Face6"
+    resolved = root_obj.resolveSubElement(sub_string, True)
+    sub_string = resolved[2]
+    sub_string = fixBodyExtraFeatureInSub(doc.Name, sub_string)
+
     # 1. Reconstruct full path
     # e.g. ['Part', 'Assembly', 'Cylinder', 'Face1']
     names = [root_obj.Name] + sub_string.split(".")
@@ -1259,7 +1282,11 @@ def getComponentReference(assembly, root_obj, sub_string):
 
         if isLink(obj):
             linkedObj = obj.getLinkedObject()
-            if linkedObj and not linkedObj.isDerivedFrom("App::GeoFeature"):
+            if (
+                linkedObj
+                and not isLink(linkedObj)
+                and not linkedObj.isDerivedFrom("App::GeoFeature")
+            ):
                 continue
         elif not obj.isDerivedFrom("App::GeoFeature"):
             continue

@@ -39,7 +39,6 @@
 #include "DrawSketchControllableHandler.h"
 #include "SketcherTransformationExpressionHelper.h"
 
-#include "GeometryCreationMode.h"
 #include "Utils.h"
 
 #include <memory>
@@ -48,8 +47,6 @@ using namespace Sketcher;
 
 namespace SketcherGui
 {
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerScale;
 

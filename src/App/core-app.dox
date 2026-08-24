@@ -170,7 +170,7 @@
  *
  * @section SecUndoRedo Undo Redo and Transactions
  *
- * Another important responsbility of documents is to manage undo and redo
+ * Another important responsibility of documents is to manage undo and redo
  * actions.  The information to support undo and redo is captured in
  * transactions.  It is important to understand that transactions are a feature
  * of document objects and not of documents.  This means that a change of a
@@ -320,7 +320,7 @@
  * what the type of the class of the view provider is, allowing the Gui to
  * retrieve the type and construct a view provider.
  *
- * Another intresting aspect of the separation is that the property @ref
+ * Another interesting aspect of the separation is that the property @ref
  * App::DocumentObject::Visibility "Visibility" is defined both in
  * App::DocumentObject and in @ref Gui::ViewProviderDocumentObject::Visibility
  * "Gui::ViewProviderDocumentObject".

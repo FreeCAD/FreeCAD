@@ -26,6 +26,7 @@
 
 namespace py = pybind11;
 
+using namespace heeks;
 
 std::list<CVertex> getVertices(const CCurve& curve)
 {
@@ -420,6 +421,7 @@ void init_pyarea(py::module& m)
         .def_readwrite("AdaptivePaths", &AdaptiveOutput::AdaptivePaths)
         .def_readwrite("ReturnMotionType", &AdaptiveOutput::ReturnMotionType)
         .def_readwrite("ClearedArea", &AdaptiveOutput::ClearedArea)
+        .def_readwrite("clipperScale", &AdaptiveOutput::clipperScale)
         .def_readwrite("StartPointNotFound", &AdaptiveOutput::StartPointNotFound)
         .def_readwrite("LeadPathFailed", &AdaptiveOutput::LeadPathFailed)
         .def_readwrite("UnexpectedRotateIterations", &AdaptiveOutput::UnexpectedRotateIterations)

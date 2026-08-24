@@ -652,7 +652,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
     // get vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Empty selection"), tr("Select an edge or a face."));
+        QMessageBox::warning(this, tr("Empty Selection"), tr("Select an edge or a face."));
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint
@@ -663,7 +663,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
 
     // we can only handle part objects
     if (!selectionElement.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-        QMessageBox::warning(this, tr("Wrong selection"), tr("Selected object is not a part object!"));
+        QMessageBox::warning(this, tr("Wrong Selection"), tr("Selected object is not a part object!"));
         return;
     }
     // get the names of the subobjects
@@ -672,7 +672,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
     if (subNames.size() != 1) {
         QMessageBox::warning(
             this,
-            tr("Wrong selection"),
+            tr("Wrong Selection"),
             tr("Only one planar face or edge can be selected!")
         );
         return;
@@ -690,7 +690,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
         if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
             QMessageBox::warning(
                 this,
-                tr("Wrong selection"),
+                tr("Wrong Selection"),
                 tr("Only planar faces can be picked for 3D")
             );
             return;
@@ -700,7 +700,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
         if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
             QMessageBox::warning(
                 this,
-                tr("Wrong selection"),
+                tr("Wrong Selection"),
                 tr("Only planar edges can be picked for 2D")
             );
             return;
@@ -709,7 +709,7 @@ void TaskFemConstraintFluidBoundary::onButtonDirection(const bool pressed)
     else {
         QMessageBox::warning(
             this,
-            tr("Wrong selection"),
+            tr("Wrong Selection"),
             tr("Only faces for 3D part or edges for 2D can be picked")
         );
         return;
@@ -846,7 +846,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint
@@ -856,7 +856,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -864,7 +864,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -906,7 +906,7 @@ void TaskFemConstraintFluidBoundary::addToSelection()
                         "Only one type of selection (vertex, face or edge) per "
                         "analysis feature allowed!"
                     );
-                    QMessageBox::warning(this, tr("Selection error"), msg);
+                    QMessageBox::warning(this, tr("Selection Error"), msg);
                     addMe = false;
                     break;
                 }
@@ -929,7 +929,7 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintFluidBoundary* pcConstraint
@@ -939,7 +939,7 @@ void TaskFemConstraintFluidBoundary::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -1156,7 +1156,7 @@ bool TaskDlgFemConstraintFluidBoundary::accept()
         }
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

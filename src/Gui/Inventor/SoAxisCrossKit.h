@@ -1,26 +1,25 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2010 Werner Mayer <wmayer[at]users.sourceforge.net>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-/***************************************************************************
- *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -29,14 +28,23 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodekits/SoBaseKit.h>
+#include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoShape.h>
 #include <FCGlobal.h>
 
 
 class SbViewport;
+class SoAction;
 class SoState;
 class SbColor;
 class SbVec2s;
+class SoBaseColor;
+class SoCoordinate3;
+class SoDrawStyle;
+class SoLineSet;
+class SoPointSet;
+class SoText2;
+class SoTranslation;
 
 namespace Gui
 {
@@ -58,6 +66,8 @@ public:
     SoSFFloat scaleFactor;
 
 protected:
+    void doAction(SoAction* action) override;
+    void updateScale(SoState* state);
     void GLRender(SoGLRenderAction* action) override;
     ~SoShapeScale() override;
 };
@@ -92,9 +102,9 @@ private:
     ~SoAxisCrossKit() override;
 };
 
-class GuiExport SoRegPoint: public SoShape
+class GuiExport SoRegPoint: public SoSeparator
 {
-    using inherited = SoShape;
+    using inherited = SoSeparator;
 
     SO_NODE_HEADER(SoRegPoint);
 
@@ -112,12 +122,21 @@ public:
 
 protected:
     ~SoRegPoint() override;
-    void GLRender(SoGLRenderAction* action) override;
-    void computeBBox(SoAction* action, SbBox3f& box, SbVec3f& center) override;
-    void generatePrimitives(SoAction* action) override;
 
 private:
-    SoSeparator* root;
+    SoSeparator* geometryRoot {nullptr};
+    SoBaseColor* geometryColor {nullptr};
+    SoCoordinate3* lineCoordinates {nullptr};
+    SoLineSet* lineSet {nullptr};
+    SoCoordinate3* basePointCoordinates {nullptr};
+    SoPointSet* basePointSet {nullptr};
+    SoCoordinate3* tipPointCoordinates {nullptr};
+    SoPointSet* tipPointSet {nullptr};
+
+    SoSeparator* textRoot {nullptr};
+    SoTranslation* move {nullptr};
+    SoBaseColor* textColor {nullptr};
+    SoText2* label {nullptr};
 };
 
 }  // namespace Gui

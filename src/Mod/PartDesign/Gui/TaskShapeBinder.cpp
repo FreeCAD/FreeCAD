@@ -440,7 +440,7 @@ bool TaskDlgShapeBinder::accept()
         vp->getDocument()->abortCommand();
         QMessageBox::warning(
             parameter,
-            tr("Input error"),
+            tr("Input Error"),
             QApplication::translate("Exception", e.what())
         );
         return false;

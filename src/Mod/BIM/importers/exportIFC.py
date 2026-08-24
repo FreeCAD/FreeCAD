@@ -3,6 +3,7 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
+# *   Copyright (c) 2026 Manfred Moitzi                                     *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -563,7 +564,12 @@ def export(exportList, filename, colors=None, preferences=None):
                     products[obj.Base.Name] = subproduct
                     assemblyElements.append(subproduct)
                     exportIFCHelper.writeQuantities(
-                        ifcfile, obj.Base, subproduct, history, preferences["SCALE_FACTOR"]
+                        ifcfile,
+                        obj.Base,
+                        subproduct,
+                        history,
+                        preferences["SCALE_FACTOR"],
+                        getIfcTypeFromObj(obj.Base),
                     )
 
         elif ifctype in assemblyTypes or is_nested_group:
@@ -972,7 +978,14 @@ def export(exportList, filename, colors=None, preferences=None):
 
         # Quantities
 
-        exportIFCHelper.writeQuantities(ifcfile, obj, product, history, preferences["SCALE_FACTOR"])
+        exportIFCHelper.writeQuantities(
+            ifcfile,
+            obj,
+            product,
+            history,
+            preferences["SCALE_FACTOR"],
+            ifctype,
+        )
 
         if preferences["FULL_PARAMETRIC"]:
 
@@ -2400,47 +2413,30 @@ def getRepresentation(
                             for fcface in fcsolid.Faces:
                                 loops = []
                                 verts = [v.Point for v in fcface.OuterWire.OrderedVertexes]
-                                c = fcface.CenterOfMass
                                 if len(verts) < 1:
                                     print(
                                         "Warning: OuterWire returned no ordered Vertexes in ",
                                         obj.Label,
                                     )
-                                    # Part.show(fcface)
-                                    # Part.show(fcsolid)
                                     continue
-                                v1 = verts[0].sub(c)
-                                v2 = verts[1].sub(c)
-                                try:
-                                    n = fcface.normalAt(0, 0)
-                                except Part.OCCError:
-                                    continue  # this is a very wrong face, it probably shouldn't be here...
-                                if DraftVecUtils.angle(v2, v1, n) >= 0:
-                                    verts.reverse()  # inverting verts order if the direction is couterclockwise
                                 pts = [ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts]
                                 loop = ifcbin.createIfcPolyLoop(pts)
                                 bound = ifcfile.createIfcFaceOuterBound(loop, True)
                                 loops.append(bound)
+                                outerhash = fcface.OuterWire.hashCode()
                                 for wire in fcface.Wires:
-                                    if wire.hashCode() != fcface.OuterWire.hashCode():
-                                        verts = [v.Point for v in wire.OrderedVertexes]
-                                        if len(verts) > 1:
-                                            v1 = verts[0].sub(c)
-                                            v2 = verts[1].sub(c)
-                                            if (
-                                                DraftVecUtils.angle(v2, v1, DraftVecUtils.neg(n))
-                                                >= 0
-                                            ):
-                                                verts.reverse()
-                                            pts = [
-                                                ifcbin.createIfcCartesianPoint(tuple(v))
-                                                for v in verts
-                                            ]
-                                            loop = ifcbin.createIfcPolyLoop(pts)
-                                            bound = ifcfile.createIfcFaceBound(loop, True)
-                                            loops.append(bound)
-                                        else:
-                                            print("Warning: wire with one/no vertex in ", obj.Label)
+                                    if wire.hashCode() == outerhash:
+                                        continue
+                                    verts = [v.Point for v in wire.OrderedVertexes]
+                                    if len(verts) > 1:
+                                        pts = [
+                                            ifcbin.createIfcCartesianPoint(tuple(v)) for v in verts
+                                        ]
+                                        loop = ifcbin.createIfcPolyLoop(pts)
+                                        bound = ifcfile.createIfcFaceBound(loop, True)
+                                        loops.append(bound)
+                                    else:
+                                        print("Warning: wire with one/no vertex in ", obj.Label)
                                 face = ifcfile.createIfcFace(loops)
                                 faces.append(face)
 
@@ -2587,6 +2583,8 @@ def createProduct(
         kwargs = exportIFC2X3Attributes(obj, kwargs, preferences["SCALE_FACTOR"])
     else:
         kwargs = exportIfcAttributes(obj, kwargs, preferences["SCALE_FACTOR"])
+    if (ifctype == "IfcBuildingStorey") and ("Elevation" not in kwargs):
+        kwargs["Elevation"] = obj.Placement.Base.z * preferences["SCALE_FACTOR"]
     # in some cases object have wrong ifctypes, thus set it
     # https://forum.freecad.org/viewtopic.php?f=39&t=50085
     if ifctype not in ArchIFCSchema.IfcProducts:

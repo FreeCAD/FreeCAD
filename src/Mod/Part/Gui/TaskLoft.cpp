@@ -23,10 +23,11 @@
  ***************************************************************************/
 
 
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTreeWidget>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Iterator.hxx>
@@ -136,7 +137,7 @@ void LoftWidget::findShapes()
             }
             // or all children are edges
             else if (hEdges->Length() == numChilds) {
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+                Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                     hEdges,
                     Precision::Confusion(),
                     Standard_False,
@@ -196,7 +197,7 @@ bool LoftWidget::accept()
     if (count < 2) {
         QMessageBox::critical(
             this,
-            tr("Too few elements"),
+            tr("Too Few Elements"),
             tr("At least 2 vertices, edges, wires, or faces are required.")
         );
         return false;
@@ -216,14 +217,14 @@ bool LoftWidget::accept()
                   "App.getDocument('%5').ActiveObject.Ruled=%3\n"
                   "App.getDocument('%5').ActiveObject.Closed=%4\n"
         )
-                  .arg(list, solid, ruled, closed, QString::fromLatin1(d->document.c_str()));
+                  .arg(list, solid, ruled, closed, d->document.c_str());
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {
             throw Base::RuntimeError("Document doesn't exist anymore");
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Loft"));
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {

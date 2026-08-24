@@ -34,7 +34,6 @@
 
 #include "AutoConstraint.h"
 #include "ViewProviderSketchGeometryExtension.h"
-#include "GeometryCreationMode.h"
 
 namespace App
 {
@@ -168,23 +167,6 @@ inline bool isVertex(int GeoId, Sketcher::PointPos PosId)
 inline bool isEdge(int GeoId, Sketcher::PointPos PosId)
 {
     return (GeoId != Sketcher::GeoEnum::GeoUndef && PosId == Sketcher::PointPos::none);
-}
-
-extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
-
-inline GeometryCreationMode currentGeometryCreationMode()
-{
-    return geometryCreationMode;
-}
-
-inline bool isConstructionMode()
-{
-    return geometryCreationMode == GeometryCreationMode::Construction;
-}
-
-inline const char* constructionModeAsBooleanText()
-{
-    return geometryCreationMode == GeometryCreationMode::Construction ? "True" : "False";
 }
 
 /* helper functions ======================================================*/

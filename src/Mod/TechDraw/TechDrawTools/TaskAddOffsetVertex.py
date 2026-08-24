@@ -30,39 +30,54 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import TechDraw
 
-from functools import partial
-
 import os
 
 translate = App.Qt.translate
 
-class TaskAddOffsetVertex():
-    '''Provides the TechDraw AddOffsetVertex Task Dialog.'''
-    def __init__(self,view,vertex):
+
+class TaskAddOffsetVertex:
+    """Provides the TechDraw AddOffsetVertex Task Dialog."""
+
+    def __init__(self, view, vertex):
         self._uiPath = App.getHomePath()
-        self._uiPath = os.path.join(self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskAddOffsetVertex.ui")
+        self._uiPath = os.path.join(
+            self._uiPath, "Mod/TechDraw/TechDrawTools/Gui/TaskAddOffsetVertex.ui"
+        )
         self.form = Gui.PySideUic.loadUi(self._uiPath)
         self.form.setWindowTitle(translate("TechDraw_AddOffsetVertex", "Offset Vertex"))
         self.view = view
         self.vertex = vertex
+        self._previewTag = None
+        self.form.dSpinBoxX.valueChanged.connect(self.onOffsetChanged)
+        self.form.dSpinBoxY.valueChanged.connect(self.onOffsetChanged)
+
+        sel = Gui.Selection.getSelectionEx()
+        if sel and sel[0].SubElementNames:
+            sub = sel[0].SubElementNames[0]
+            self.form.le_SourceVertex.setText(f"{view.Label}.{sub}")
 
         App.ActiveDocument.openTransaction("Add offset vertex")
 
+    def onOffsetChanged(self):
+        point = TechDraw.makeCanonicalPoint(self.view, self.vertex.Point, False)
+        offset = App.Vector(self.form.dSpinBoxX.value(), self.form.dSpinBoxY.value(), 0)
+        if self._previewTag:
+            self.view.removeCosmeticVertex(self._previewTag)
+        self._previewTag = self.view.makeCosmeticVertex(point + offset)
+        self.view.requestPaint()
+
     def accept(self):
-        '''slot: OK pressed'''
-        point = self.vertex.Point   # this is unscaled and inverted, but is also rotated.
-        # unrotate point. Note that since this is already unscaled, we need to set the
-        # third parameter to False to avoid an extra descaling.
-        point = TechDraw.makeCanonicalPoint(self.view, point, False)
-        xOffset = self.form.dSpinBoxX.value()
-        yOffset = self.form.dSpinBoxY.value()
-        offset = App.Vector(xOffset,yOffset,0)  # the offset is applied to the canonical
-                                                # point.  it is an unscaled, unrotated,
-                                                # uninverted relative value.
-        self.view.makeCosmeticVertex(point+offset)
+        if not self._previewTag:
+            point = TechDraw.makeCanonicalPoint(self.view, self.vertex.Point, False)
+            offset = App.Vector(self.form.dSpinBoxX.value(), self.form.dSpinBoxY.value(), 0)
+            self.view.makeCosmeticVertex(point + offset)
+        self.view.requestPaint()
         Gui.Control.closeDialog()
         App.ActiveDocument.commitTransaction()
 
     def reject(self):
+        if self._previewTag:
+            self.view.removeCosmeticVertex(self._previewTag)
+            self.view.requestPaint()
         App.ActiveDocument.abortTransaction()
         return True

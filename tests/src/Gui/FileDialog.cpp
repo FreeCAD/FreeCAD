@@ -9,10 +9,17 @@
 using namespace Gui;
 using Filter = FileDialog::Filter;
 
+QT_BEGIN_NAMESPACE
+static inline void PrintTo(const QString& qString, ::std::ostream* os)
+{
+    *os << qUtf8Printable(qString);
+}
+QT_END_NAMESPACE
+
 TEST(FileDialog, testNormalizeSavePath)
 {
     const auto filt = FileDialog::Filter::fromFilterString(
-        QStringLiteral("Whatever files (what ev.er *.abc *.xyz)")
+        QStringLiteral("Whatever files (what ev.er *.abc *.xyz *.MXcs)")
     );
     const auto test = [filt](QString path, const QString& desired) {
         FileDialogInternal::normalizeSavePath(path, filt);
@@ -61,6 +68,26 @@ TEST(FileDialog, testNormalizeSavePath)
         test(root + "what.", root + "what.abc");
         test(root + ".what", root + ".what.abc");
         test(root + ".what.", root + ".what.abc");
+
+        // Mixed casing
+        test(root + "whAt", root + "whAt");
+        test(root + "What", root + "What");
+        test(root + "WHAT", root + "WHAT");
+        test(root + "Ev.Er", root + "Ev.Er");
+        test(root + "ev.ER", root + "ev.ER");
+        test(root + "EV.er", root + "EV.er");
+        test(root + "ext.mxcs", root + "ext.mxcs");
+        test(root + "ext.MXcs", root + "ext.MXcs");
+        test(root + "ext.MXCS", root + "ext.MXCS");
+        test(root + ".hidden.mxcs", root + ".hidden.mxcs");
+        test(root + ".hidden.MXcs", root + ".hidden.MXcs");
+        test(root + ".hidden.MXCS", root + ".hidden.MXCS");
+        test(root + "double.mxcs.mxcs", root + "double.mxcs.mxcs");
+        test(root + "double.mxcs.MXcs", root + "double.mxcs.MXcs");
+        test(root + "double.mxcs.MXCS", root + "double.mxcs.MXCS");
+        test(root + "double.MXcs.mxcs", root + "double.MXcs.mxcs");
+        test(root + "double.MXcs.MXcs", root + "double.MXcs.MXcs");
+        test(root + "double.MXcs.MXCS", root + "double.MXcs.MXCS");
 
         // Non-wildcard pattern with ext
         test(root + "ev.er", root + "ev.er");

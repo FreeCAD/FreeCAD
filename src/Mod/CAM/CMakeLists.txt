@@ -121,6 +121,7 @@ SET(PathPythonTools_SRCS
     Path/Tool/__init__.py
     Path/Tool/camassets.py
     Path/Tool/Controller.py
+    Path/Tool/UpdateDocumentTools.py
 )
 
 SET(PathPythonToolsAssets_SRCS
@@ -169,6 +170,17 @@ SET(PathPythonToolsDocObjectUi_SRCS
 SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
+    Path/Tool/Gui/FeedsSpeedsDialog.py
+    Path/Tool/Gui/UpdateDocumentToolsDlg.py
+    Path/Tool/Gui/MaterialPicker.py
+)
+
+SET(PathPythonToolsFeedsSpeeds_SRCS
+    Path/Tool/FeedsSpeeds/__init__.py
+    Path/Tool/FeedsSpeeds/types.py
+    Path/Tool/FeedsSpeeds/resolver.py
+    Path/Tool/FeedsSpeeds/providers.py
+    Path/Tool/FeedsSpeeds/presets.py
 )
 
 SET(PathPythonMachineUi_SRCS
@@ -233,6 +245,7 @@ SET(PathPythonToolsToolBitUi_SRCS
     Path/Tool/toolbit/ui/browser.py
     Path/Tool/toolbit/ui/file.py
     Path/Tool/toolbit/ui/panel.py
+    Path/Tool/toolbit/ui/presets_tab.py
     Path/Tool/toolbit/ui/selector.py
     Path/Tool/toolbit/ui/tablecell.py
     Path/Tool/toolbit/ui/toollist.py
@@ -305,6 +318,7 @@ SET(PathPythonToolsShapeUi_SRCS
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
+    Path/Post/CAMErrors.py
     Path/Post/GcodeProcessingUtils.py
     Path/Post/PostList.py
     Path/Post/Processor.py
@@ -382,6 +396,7 @@ SET(PathPythonOp_SRCS
     Path/Op/PocketShape.py
     Path/Op/Probe.py
     Path/Op/Profile.py
+    Path/Op/RotarySurface.py
     Path/Op/Slot.py
     Path/Op/Surface.py
     Path/Op/SurfaceSupport.py
@@ -408,12 +423,13 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
     Path/Op/Gui/MillFacing.py
-    Path/Op/Gui/PathShapeTC.py
+    Path/Op/Gui/PathShape.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
     Path/Op/Gui/PocketShape.py
     Path/Op/Gui/Probe.py
     Path/Op/Gui/Profile.py
+    Path/Op/Gui/RotarySurface.py
     Path/Op/Gui/Selection.py
     Path/Op/Gui/SimpleCopy.py
     Path/Op/Gui/Slot.py
@@ -434,6 +450,7 @@ SET(PathScripts_SRCS
 )
 
 SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/adaptive_common.py
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
     Path/Base/Generator/facing_common.py
@@ -442,12 +459,26 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/directional_facing.py
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
+    Path/Base/Generator/leadinout.py
     Path/Base/Generator/linking.py
+    Path/Base/Generator/ramp_entry.py
+    Path/Base/Generator/rotary_dropcutter.py
+    Path/Base/Generator/rotary_parallel.py
+    Path/Base/Generator/rotary_rings.py
+    Path/Base/Generator/rotary_spiral.py
+    Path/Base/Generator/rotary_wrap.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/spiral.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
+    Path/Base/Generator/surface_common.py
+    Path/Base/Generator/surface_dropcutter.py
+    Path/Base/Generator/surface_pattern.py
+    Path/Base/Generator/surface_mesh.py
+    Path/Base/Generator/surface_waterline.py
+    Path/Base/Generator/surface_postprocess.py
+    Path/Base/Generator/surface_zlevel.py
 )
 
 SET(PathPythonGui_SRCS
@@ -525,6 +556,8 @@ SET(Tests_SRCS
     CAMTests/test_profile.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
+    CAMTests/TestAreaOperations.py
+    CAMTests/TestSlicer.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
@@ -534,15 +567,18 @@ SET(Tests_SRCS
     CAMTests/TestGenericPlasma.py
     CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMach3Mach4Post.py
     CAMTests/TestMassoG3Post.py
     CAMTests/TestMarlinPost.py
+    CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
+    CAMTests/TestPathCustom.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
     CAMTests/TestPathDressupDogboneII.py
@@ -550,14 +586,17 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestDrillCycleExpander.py
     CAMTests/TestPathDrillable.py
+    CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py
     CAMTests/TestPathHelpers.py
     CAMTests/TestPathHelixGenerator.py
+    CAMTests/TestPathLeadInOutGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
+    CAMTests/TestPathLogNew.py
     CAMTests/TestPathOpDeburr.py
     CAMTests/TestPathOpUtil.py
     CAMTests/TestPostCore.py
@@ -567,6 +606,13 @@ SET(Tests_SRCS
     CAMTests/TestPathPreferences.py
     CAMTests/TestPathProfile.py
     CAMTests/TestPathPropertyBag.py
+    CAMTests/TestPathRampEntryGenerator.py
+    CAMTests/TestPathRotaryGenerators.py
+    CAMTests/TestPathRotaryParallel.py
+    CAMTests/TestPathRotaryRings.py
+    CAMTests/TestPathRotarySurface.py
+    CAMTests/TestPathRotaryPostRegression.py
+    CAMTests/TestPathRotaryWrap.py
     CAMTests/TestPathRotationGenerator.py
     CAMTests/TestPathSetupSheet.py
     CAMTests/TestPathSpiralGenerator.py
@@ -606,14 +652,29 @@ SET(Tests_SRCS
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
     CAMTests/TestGcodeProcessingUtils.py
+    CAMTests/TestFeedsSpeedsResolver.py
+    CAMTests/TestFeedsSpeedsToolBitPresets.py
+    CAMTests/TestFeedsSpeedsToolController.py
+    CAMTests/TestUpdateDocumentTools.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
+    CAMTests/TestAdaptiveCommonGenerator.py
+    CAMTests/TestSurfaceGenerator.py
+    CAMTests/TestSurfaceCommonGenerator.py
+    CAMTests/TestSurfacePostprocessGenerator.py
+    CAMTests/TestSurfacePatternGenerator.py
+    CAMTests/TestSurfaceDropCutterGenerator.py
+    CAMTests/TestSurfaceMeshGenerator.py
+    CAMTests/TestSurfaceWaterlineGenerator.py
+    CAMTests/TestSurfaceZLevelGenerator.py
 )
 
 SET(Tests_Fixtures
     CAMTests/Fixtures/OpHelix_v0-21.FCStd
+    CAMTests/Fixtures/test_17748_cam_profile.FCStd
+    CAMTests/Fixtures/test_28534_truncated_pocket.FCStd
 )
 
 SET(PathImages_Ops
@@ -662,6 +723,7 @@ SET(all_files
     ${PathPythonToolsDocObject_SRCS}
     ${PathPythonToolsDocObjectModels_SRCS}
     ${PathPythonToolsDocObjectUi_SRCS}
+    ${PathPythonToolsFeedsSpeeds_SRCS}
     ${PathPythonToolsGui_SRCS}
     ${PathPythonToolsShape_SRCS}
     ${PathPythonToolsShapeModels_SRCS}
@@ -851,6 +913,13 @@ INSTALL(
         ${PathPythonToolsGui_SRCS}
     DESTINATION
         Mod/CAM/Path/Tool/Gui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonToolsFeedsSpeeds_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Tool/FeedsSpeeds
 )
 
 INSTALL(

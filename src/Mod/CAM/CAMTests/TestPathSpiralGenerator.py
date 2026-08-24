@@ -177,7 +177,7 @@ class TestPathSpiralGenerator(PathTestUtils.PathTestBase):
             dist = pointsPathSpiral[i].distanceToPoint(pointsPartSpiral[i])
             self.assertLess(dist, 0.1)
 
-        # not checked here, but for spiral with inner radius less than or equel 5 mm,
+        # not checked here, but for spiral with inner radius less than or equal 5 mm,
         # deviation should be less than 0.01 mm
 
         FreeCAD.closeDocument(doc.Name)

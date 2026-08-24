@@ -73,6 +73,58 @@ FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
 
+DEF_STD_CMD_C(StdCmdOpenGroup)
+
+StdCmdOpenGroup::StdCmdOpenGroup()
+    : Command("Std_OpenGroup")
+{
+    sGroup = "File";
+    sMenuText = QT_TR_NOOP("&Open…");
+    sToolTipText = QT_TR_NOOP("Opens a document or imports files");
+    sWhatsThis = "Std_OpenGroup";
+    sStatusTip = sToolTipText;
+    sPixmap = "document-open";
+    eType = NoTransaction;
+}
+
+/**
+ * Opens the recent file at position \a iMsg in the menu.
+ * If the file does not exist or cannot be loaded this item is removed
+ * from the list.
+ */
+void StdCmdOpenGroup::activated(int iMsg)
+{
+    auto act = qobject_cast<RecentFilesAction*>(_pcAction);
+    if (act) {
+        if (iMsg == 0) {
+            CommandManager& rcCmdMgr = Application::Instance->commandManager();
+            rcCmdMgr.runCommandByName("Std_Open");
+        }
+        else if (iMsg == 1) {
+            return;  // should not happen it's the separator.
+        }
+        else {
+            act->activateFile(iMsg - 2);
+        }
+        _pcAction->setProperty("defaultAction", QVariant(0));
+        _pcAction->setToolTip(QString::fromLatin1(sToolTipText));
+        _pcAction->setStatusTip(QString::fromLatin1(sToolTipText));
+        _pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    }
+}
+
+/**
+ * Creates the QAction object containing the recent files.
+ */
+Action* StdCmdOpenGroup::createAction()
+{
+    auto pcAction = new RecentFilesAction(this, getMainWindow(), true);
+    pcAction->setObjectName(QLatin1String("openGroup"));
+    pcAction->setDropDownMenu(true);
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
+    applyCommandData(this->className(), pcAction);
+    return pcAction;
+}
 
 //===========================================================================
 // Std_Open
@@ -268,7 +320,7 @@ void StdCmdImport::activated(int iMsg)
     );
     if (!fileList.isEmpty()) {
         const auto& selectedFilter = formatList[selectedFilterIndex];
-        hPath->SetASCII("FileImportFilter", selectedFilter.name.toLatin1().constData());
+        hPath->SetASCII("FileImportFilter", selectedFilter.name.toUtf8());
         SelectModule::Dict dict
             = SelectModule::importHandler(fileList, selectedFilter.toFilterString());
 
@@ -793,7 +845,7 @@ void StdCmdSave::activated(int iMsg)
         }
     }
 
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Save\")");
+    doCommand(Command::Gui, "Gui.activeView().sendMessage(\"Save\")");
 }
 
 bool StdCmdSave::isActive()
@@ -822,7 +874,7 @@ StdCmdSaveAs::StdCmdSaveAs()
 void StdCmdSaveAs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"SaveAs\")");
+    doCommand(Command::Gui, "Gui.activeView().sendMessage(\"SaveAs\")");
 }
 
 bool StdCmdSaveAs::isActive()
@@ -853,7 +905,7 @@ StdCmdSaveCopy::StdCmdSaveCopy()
 void StdCmdSaveCopy::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"SaveCopy\")");
+    doCommand(Command::Gui, "Gui.activeView().sendMessage(\"SaveCopy\")");
 }
 
 bool StdCmdSaveCopy::isActive()
@@ -888,6 +940,39 @@ bool StdCmdSaveAll::isActive()
     return (getActiveGuiDocument() ? true : false);
 }
 
+
+//===========================================================================
+// Std_SaveGroup
+//===========================================================================
+class StdCmdSaveGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdSaveGroup()
+        : GroupCommand("Std_SaveGroup")
+    {
+        sGroup = "File";
+        sMenuText = QT_TR_NOOP("Save");
+        sToolTipText = QT_TR_NOOP("Saves the active document");
+        sWhatsThis = "Std_SaveGroup";
+        sPixmap = "document-save";
+        sStatusTip = sToolTipText;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Std_Save");
+        addCommand("Std_SaveAs");
+        addCommand("Std_SaveCopy");
+        addCommand("Std_SaveAll");
+        addCommand();  // separator
+        addCommand("Std_Export");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdSaveGroup";
+    }
+};
 
 //===========================================================================
 // Std_Revert
@@ -1497,6 +1582,19 @@ void StdCmdDelete::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     int tid = 0;
+    QPointer<QWidget> focusBefore;
+
+    // Restore focus to the widget the user was working in before the
+    // command opened any modal popup. Using a scope guard ensures the
+    // restore runs on every exit path: normal return, early return,
+    // and exception unwinding.
+    // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+    auto focusGuard = qScopeGuard([&focusBefore]() {
+        if (focusBefore && focusBefore->isVisible() && focusBefore->isEnabled()) {
+            focusBefore->setFocus(Qt::OtherFocusReason);
+        }
+    });
+
     try {
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
@@ -1511,6 +1609,13 @@ void StdCmdDelete::activated(int iMsg)
             // commitCommand();
             return;
         }
+
+        // Snapshot focus before any popup can steal it. After the delete
+        // completes and any modal dialogs close, restore focus so keyboard
+        // navigation continues from where the user was working.
+        // Fixes https://github.com/FreeCAD/FreeCAD/issues/23798
+        focusBefore = QApplication::focusWidget();
+
         // Ensure that the document from which we send the command
         // can undo it (e.g delete a subobject of an assembly
         // from the assembly file)
@@ -2349,6 +2454,7 @@ void CreateDocCommands()
 
     rcCmdMgr.addCommand(new StdCmdNew());
     rcCmdMgr.addCommand(new StdCmdOpen());
+    rcCmdMgr.addCommand(new StdCmdOpenGroup());
     rcCmdMgr.addCommand(new StdCmdImport());
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
@@ -2359,6 +2465,7 @@ void CreateDocCommands()
     rcCmdMgr.addCommand(new StdCmdSaveAs());
     rcCmdMgr.addCommand(new StdCmdSaveCopy());
     rcCmdMgr.addCommand(new StdCmdSaveAll());
+    rcCmdMgr.addCommand(new StdCmdSaveGroup());
     rcCmdMgr.addCommand(new StdCmdRevert());
     rcCmdMgr.addCommand(new StdCmdProjectInfo());
     rcCmdMgr.addCommand(new StdCmdProjectUtil());

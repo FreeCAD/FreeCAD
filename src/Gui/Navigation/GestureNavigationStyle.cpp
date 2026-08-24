@@ -504,6 +504,15 @@ public:
         if (ev.isLocation2Event()) {
             auto mv = ev.inventor_event->getPosition() - this->base_pos;
             if (SbVec2f(mv).length() > ns.mouseMoveThreshold) {
+                if (ev.mbstate() == NS::Event::BUTTON1DOWN && (ev.modifiers & NS::Event::SHIFTDOWN)) {
+                    auto event = static_cast<const SoLocation2Event*>(ev.inventor_event);
+                    if (
+                        ns.tryStartBoxSelection(this->base_pos, event, ev.modifiers & NS::Event::CTRLDOWN)
+                    ) {
+                        ev.flags->processed = true;
+                        return transit<NS::IdleState>();
+                    }
+                }
                 // mouse moved while buttons are held. decide how to navigate...
                 switch (ev.mbstate()) {
                     case 0x100: {
@@ -957,6 +966,11 @@ GestureNavigationStyle::GestureNavigationStyle()
 }
 
 GestureNavigationStyle::~GestureNavigationStyle() = default;
+
+int GestureNavigationStyle::selectionMoveThreshold() const
+{
+    return mouseMoveThreshold;
+}
 
 const char* GestureNavigationStyle::mouseButtons(ViewerMode mode)
 {

@@ -28,6 +28,8 @@ __url__ = "https://www.freecad.org"
 ## \addtogroup FEM
 #  @{
 
+import math
+
 from FreeCAD import Console
 from FreeCAD import Units
 
@@ -65,7 +67,8 @@ class MgDyn2Dwriter:
         s["Exec Solver"] = "Always"
         s["Procedure"] = sifio.FileAttr("MagnetoDynamics/MagnetoDynamicsCalcFields")
         if equation.IsHarmonic:
-            s["Angular Frequency"] = equation.AngularFrequency.getValueAs("Hz")
+            frequency = equation.Frequency.getValueAs("Hz")
+            s["Angular Frequency"] = frequency * 2 * math.pi
         s["Potential Variable"] = "Potential"
         if equation.CalculateCurrentDensity is True:
             s["Calculate Current Density"] = True
@@ -199,6 +202,10 @@ class MgDyn2Dwriter:
                     )
             self.write.handled(obj)
 
+        for name in bodies:
+            if equation.CalculateJouleHeating:
+                self.write.bodyForce(name, "Joule Heat", True)
+
     def handleMagnetodynamic2DBndConditions(self, equation):
         for obj in self.write.getMember("Fem::ConstraintElectromagnetic"):
             if obj.References:
@@ -237,12 +244,12 @@ class MgDyn2Dwriter:
 
     def handleMagnetodynamic2DEquation(self, bodies, equation):
         for b in bodies:
-            if equation.IsHarmonic and (equation.AngularFrequency == 0):
+            if equation.IsHarmonic and (equation.Frequency == 0):
                 raise general_writer.WriteError("The angular frequency must not be zero.\n\n")
             self.write.equation(b, "Name", equation.Name)
             if equation.IsHarmonic:
-                frequency = equation.AngularFrequency.getValueAs("Hz")
-                self.write.equation(b, "Angular Frequency", frequency)
+                frequency = equation.Frequency.getValueAs("Hz")
+                self.write.equation(b, "Angular Frequency", frequency * 2 * math.pi)
 
 
 ##  @}

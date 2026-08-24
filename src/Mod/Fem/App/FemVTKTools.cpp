@@ -356,8 +356,8 @@ void FemVTKTools::importVTKCellGroup(vtkSmartPointer<vtkDataSet> grid, FemMesh* 
         // extract the groups with the respective elements
         for (int i = 0; i < intarray->GetNumberOfTuples(); i++) {
 
-            // remember: element ids in SMESH are continious from nodes to cells.
-            // in VTK nodes and cells have seperated 0 started indexes
+            // remember: element ids in SMESH are continuous from nodes to cells.
+            // in VTK nodes and cells have separated 0 started indexes
             vtkTypeInt64 value = intarray->GetValue(i);
             if (value < 0) {
                 // -1 means no group
@@ -748,7 +748,7 @@ void FemVTKTools::writeVTKMeshWithGroups(
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid, highest);
 
-    // add the groupes array!
+    // add the groups array!
     vtkSmartPointer<vtkAbstractArray> cell_array;
     if (index_map.empty()) {
         auto cell_sarray = vtkNew<vtkStringArray>();
@@ -781,7 +781,7 @@ void FemVTKTools::writeVTKMeshWithGroups(
                 const SMDS_MeshElement* aElem = aElemIter->next();
                 if (aElem->GetID() > grid->GetNumberOfCells()) {
                     throw std::runtime_error(
-                        "VTK group export: Cells ids need to be continious and start with index 1."
+                        "VTK group export: Cells ids need to be continuous and start with index 1."
                     );
                 }
                 cell_sarray->SetValue(aElem->GetID() - 1, name);
@@ -823,7 +823,7 @@ void FemVTKTools::writeVTKMeshWithGroups(
                 const SMDS_MeshElement* aElem = aElemIter->next();
                 if (aElem->GetID() > grid->GetNumberOfCells()) {
                     throw std::runtime_error(
-                        "VTK group export: Cells ids need to be continious and start with index 1."
+                        "VTK group export: Cells ids need to be continuous and start with index 1."
                     );
                 }
                 cell_iarray->SetValue(aElem->GetID() - 1, id);

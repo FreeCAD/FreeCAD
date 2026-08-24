@@ -253,7 +253,7 @@ void MRichTextEdit::textSource() {
     pte->setPlainText( f_textedit->toHtml() );
     QGridLayout *gl = new QGridLayout(dialog);
     gl->addWidget(pte, 0,0, 1,1);
-    dialog->setWindowTitle(tr("Document source"));
+    dialog->setWindowTitle(tr("Document Source"));
     dialog->setMinimumWidth (400);
     dialog->setMinimumHeight(600);
     dialog->exec();

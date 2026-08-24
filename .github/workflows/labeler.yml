@@ -17,15 +17,125 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      issues: read
       pull-requests: write
 
     steps:
     - name: Harden the runner (Audit all outbound calls)
-      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
         egress-policy: audit
 
-    - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
+    - name: 'Add "Status: Needs triage" label'
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      with:
+        script: |
+          await github.rest.issues.addLabels({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.payload.pull_request.number,
+            labels: ['Status: Needs triage']
+          });
+
+    - name: 'Add issue type label'
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      with:
+        script: |
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+          const pr = context.payload.pull_request;
+          const typeLabels = ['Type: Bug', 'Type: Feature', 'Type: Other'];
+          const issueNumbers = new Set();
+
+          const escapedOwner = owner.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const escapedRepo = repo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const issueUrlPattern = new RegExp(`https://github\\.com/${escapedOwner}/${escapedRepo}/issues/(\\d+)`, 'gi');
+          const qualifiedIssueRefPattern = new RegExp(`(?:^|[^\\w.-])${escapedOwner}/${escapedRepo}#(\\d+)\\b`, 'gi');
+          const issueRefPattern = /(?:^|[^\w.-])#(\d+)\b/g;
+
+          const body = (pr.body || '')
+            .replace(/<!--[\s\S]*?-->/g, '')
+            .replace(/```[\s\S]*?```/g, '');
+
+          for (const match of body.matchAll(issueUrlPattern)) {
+            issueNumbers.add(Number(match[1]));
+          }
+
+          for (const match of body.matchAll(qualifiedIssueRefPattern)) {
+            issueNumbers.add(Number(match[1]));
+          }
+
+          for (const match of body.matchAll(issueRefPattern)) {
+            issueNumbers.add(Number(match[1]));
+          }
+
+          if (issueNumbers.size === 0) {
+            core.info('No same-repository issue references found in the pull request body.');
+            return;
+          }
+
+          const linkedIssueTypes = new Set();
+
+          for (const issue_number of issueNumbers) {
+            try {
+              const { data: issue } = await github.rest.issues.get({
+                owner,
+                repo,
+                issue_number
+              });
+
+              if (issue.pull_request) {
+                core.info(`#${issue_number} is a pull request, not an issue; skipping.`);
+                continue;
+              }
+
+              linkedIssueTypes.add(issue.type?.name || 'Other');
+            } catch (error) {
+              core.warning(`Could not read issue #${issue_number}: ${error.message}`);
+            }
+          }
+
+          if (linkedIssueTypes.size === 0) {
+            core.info('No valid same-repository issues found.');
+            return;
+          }
+
+          const targetLabel = linkedIssueTypes.has('Bug')
+            ? 'Type: Bug'
+            : linkedIssueTypes.has('Feature')
+              ? 'Type: Feature'
+              : 'Type: Other';
+
+          const currentLabels = new Set(pr.labels.map(label => label.name));
+          for (const label of typeLabels) {
+            if (label !== targetLabel && currentLabels.has(label)) {
+              try {
+                await github.rest.issues.removeLabel({
+                  owner,
+                  repo,
+                  issue_number: pr.number,
+                  name: label
+                });
+              } catch (error) {
+                if (error.status !== 404) {
+                  throw error;
+                }
+              }
+            }
+          }
+
+          if (!currentLabels.has(targetLabel)) {
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: pr.number,
+              labels: [targetLabel]
+            });
+          }
+
+          core.info(`Applied ${targetLabel} based on linked issue types: ${[...linkedIssueTypes].join(', ')}`);
+
+    - uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: ".github/labels.yml"

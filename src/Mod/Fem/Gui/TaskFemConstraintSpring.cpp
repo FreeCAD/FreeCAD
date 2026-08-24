@@ -130,7 +130,7 @@ void TaskFemConstraintSpring::addToSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintSpring* pcConstraint = ConstraintView->getObject<Fem::ConstraintSpring>();
@@ -139,7 +139,7 @@ void TaskFemConstraintSpring::addToSelection()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -147,7 +147,7 @@ void TaskFemConstraintSpring::addToSelection()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -157,7 +157,7 @@ void TaskFemConstraintSpring::addToSelection()
         for (const auto& subName : subNames) {  // for every selected sub element
             bool addMe = true;
             if (subName.substr(0, 4) != "Face") {
-                QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+                QMessageBox::warning(this, tr("Selection Error"), tr("Only faces can be picked"));
                 return;
             }
             for (auto itr = std::ranges::find(SubElements, subName); itr != SubElements.end(); itr
@@ -192,7 +192,7 @@ void TaskFemConstraintSpring::removeFromSelection()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintSpring* pcConstraint = ConstraintView->getObject<Fem::ConstraintSpring>();
@@ -201,7 +201,7 @@ void TaskFemConstraintSpring::removeFromSelection()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -331,7 +331,7 @@ bool TaskDlgFemConstraintSpring::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
     /* */

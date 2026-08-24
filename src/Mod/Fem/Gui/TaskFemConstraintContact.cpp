@@ -90,6 +90,8 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     bool friction = pcConstraint->Friction.getValue();
+    auto revMaster = pcConstraint->ReversedMaster.getValues();
+    auto revSlave = pcConstraint->ReversedSlave.getValues();
 
     // Fill data into dialog elements
     ui->spbSlope->setUnit(pcConstraint->Slope.getUnit());
@@ -105,6 +107,9 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     ui->spbAdjust->bind(pcConstraint->Adjust);
 
     ui->ckbFriction->setChecked(friction);
+
+    ui->ckbRevMaster->setChecked(revMaster.empty() ? false : revMaster.at(0));
+    ui->ckbRevSlave->setChecked(revSlave.empty() ? false : revSlave.at(0));
 
     ui->spbFrictionCoeff->setMinimum(0);
     ui->spbFrictionCoeff->setMaximum(std::numeric_limits<float>::max());
@@ -127,7 +132,7 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     if (Objects.size() == 1) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one face in object! - moved to master face")
         );
         ui->lw_referencesMaster->addItem(makeRefText(Objects[0], SubElements[0]));
@@ -139,12 +144,12 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     }
 
     ui->lbl_info->setText(
-        tr("Select slave geometry of type: ") + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
-        + tr("click Add or Remove")
+        tr("Select slave geometry of type: ")
+        + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face")) + tr("click Add or Remove")
     );
     ui->lbl_info_2->setText(
-        tr("Select master geometry of type: ") + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
-        + tr("click Add or Remove")
+        tr("Select master geometry of type: ")
+        + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face")) + tr("click Add or Remove")
     );
 
     // Selection buttons
@@ -193,20 +198,20 @@ void TaskFemConstraintContact::addToSelectionSlave()
     if (rows == 1) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one master face and one slave face for a contact constraint!")
         );
         Gui::Selection().clearSelection();
         return;
     }
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     if ((rows == 0) && (selection.size() >= 2)) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one slave face for a contact constraint!")
         );
         Gui::Selection().clearSelection();
@@ -218,7 +223,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -226,7 +231,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -236,7 +241,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
         if (subNames.size() != 1) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("Only one slave face for a contact constraint!")
             );
             Gui::Selection().clearSelection();
@@ -247,7 +252,7 @@ void TaskFemConstraintContact::addToSelectionSlave()
             if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only faces can be picked (edges in 2D models)")
                 );
                 return;
@@ -284,7 +289,7 @@ void TaskFemConstraintContact::removeFromSelectionSlave()
     // gets vector of selected objects of active document
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
@@ -293,7 +298,7 @@ void TaskFemConstraintContact::removeFromSelectionSlave()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
 
@@ -339,20 +344,20 @@ void TaskFemConstraintContact::addToSelectionMaster()
     if (rows == 1) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one master face and one slave face for a contact constraint!")
         );
         Gui::Selection().clearSelection();
         return;
     }
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     if ((rows == 0) && (selection.size() >= 2)) {
         QMessageBox::warning(
             this,
-            tr("Selection error"),
+            tr("Selection Error"),
             tr("Only one master for a contact constraint!")
         );
         Gui::Selection().clearSelection();
@@ -364,14 +369,14 @@ void TaskFemConstraintContact::addToSelectionMaster()
 
     for (auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         App::DocumentObject* obj = it.getObject();
         if (obj->getDocument() != pcConstraint->getDocument()) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("External object selection is not supported")
             );
             return;
@@ -381,7 +386,7 @@ void TaskFemConstraintContact::addToSelectionMaster()
         if (subNames.size() != 1) {
             QMessageBox::warning(
                 this,
-                tr("Selection error"),
+                tr("Selection Error"),
                 tr("Only one master face for a contact constraint!")
             );
             Gui::Selection().clearSelection();
@@ -392,7 +397,7 @@ void TaskFemConstraintContact::addToSelectionMaster()
             if ((subName.substr(0, 4) != "Face") && (subName.substr(0, 4) != "Edge")) {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only faces can be picked (edges in 2D models)")
                 );
                 return;
@@ -432,7 +437,7 @@ void TaskFemConstraintContact::removeFromSelectionMaster()
     std::vector<Gui::SelectionObject> selection
         = Gui::Selection().getSelectionEx();  // gets vector of selected objects of active document
     if (selection.empty()) {
-        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        QMessageBox::warning(this, tr("Selection Error"), tr("Nothing selected!"));
         return;
     }
     Fem::ConstraintContact* pcConstraint = ConstraintView->getObject<Fem::ConstraintContact>();
@@ -441,7 +446,7 @@ void TaskFemConstraintContact::removeFromSelectionMaster()
     std::vector<size_t> itemsToDel;
     for (const auto& it : selection) {  // for every selected object
         if (!it.isObjectTypeOf(Part::Feature::getClassTypeId())) {
-            QMessageBox::warning(this, tr("Selection error"), tr("Selected object is not a part!"));
+            QMessageBox::warning(this, tr("Selection Error"), tr("Selected object is not a part!"));
             return;
         }
         const std::vector<std::string>& subNames = it.getSubNames();
@@ -535,6 +540,21 @@ const std::string TaskFemConstraintContact::getStickSlope() const
     return ui->spbStickSlope->value().getSafeUserString();
 }
 
+const std::vector<bool> TaskFemConstraintContact::getRevMaster() const
+{
+    int count = ui->lw_referencesMaster->model()->rowCount();
+    std::vector<bool> rev(count, ui->ckbRevMaster->isChecked());
+    return rev;
+}
+
+const std::vector<bool> TaskFemConstraintContact::getRevSlave() const
+{
+    int count = ui->lw_referencesSlave->model()->rowCount();
+    std::vector<bool> rev(count, ui->ckbRevSlave->isChecked());
+    return rev;
+}
+
+
 void TaskFemConstraintContact::changeEvent(QEvent*)
 {}
 
@@ -594,9 +614,33 @@ bool TaskDlgFemConstraintContact::accept()
             name.c_str(),
             parameterContact->getStickSlope().c_str()
         );
+
+        auto rev_master = parameterContact->getRevMaster();
+        std::string rev_master_str {""};
+        for (bool b : rev_master) {
+            rev_master_str.append(b ? "True," : "False,");
+        }
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ReversedMaster = [%s]",
+            name.c_str(),
+            rev_master_str.c_str()
+        );
+
+        auto rev_slave = parameterContact->getRevSlave();
+        std::string rev_slave_str {""};
+        for (bool b : rev_slave) {
+            rev_slave_str.append(b ? "True," : "False,");
+        }
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ReversedSlave = [%s]",
+            name.c_str(),
+            rev_slave_str.c_str()
+        );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
     /* */

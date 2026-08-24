@@ -152,7 +152,7 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
                 if (!Fem::Tools::isPlanar(TopoDS::Face(ref))) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Only planar faces can be picked")
                     );
                     return;
@@ -162,7 +162,7 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
                 if (!Fem::Tools::isLinear(TopoDS::Edge(ref))) {
                     QMessageBox::warning(
                         this,
-                        tr("Selection error"),
+                        tr("Selection Error"),
                         tr("Only linear edges can be picked")
                     );
                     return;
@@ -171,7 +171,7 @@ void TaskFemConstraintGear::onSelectionChanged(const Gui::SelectionChanges& msg)
             else {
                 QMessageBox::warning(
                     this,
-                    tr("Selection error"),
+                    tr("Selection Error"),
                     tr("Only faces and edges can be picked")
                 );
                 return;
@@ -352,7 +352,7 @@ bool TaskDlgFemConstraintGear::accept()
         );
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
+        QMessageBox::warning(parameter, tr("Input Error"), QString::fromLatin1(e.what()));
         return false;
     }
 

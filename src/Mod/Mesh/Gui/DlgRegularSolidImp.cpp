@@ -119,7 +119,7 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
         std::string cmd, name;
         App::Document* doc = App::GetApplication().getActiveDocument();
         if (!doc) {
-            QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()), tr("No active document"));
+            QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()), tr("No Active Document"));
             return;
         }
         switch (ui->comboBox1->currentIndex()) {
@@ -204,8 +204,8 @@ void DlgRegularSolidImp::onCreateSolidButtonClicked()
         Gui::Application::Instance->activeDocument()->openCommand(solid.toUtf8());
         Gui::Command::doCommand(Gui::Command::Doc, cmd.c_str());
         Gui::Application::Instance->activeDocument()->commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().recompute()");
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.ActiveView.sendMessage(\"ViewFit\")");
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create %1").arg(ui->comboBox1->currentText()),

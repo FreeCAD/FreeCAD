@@ -174,7 +174,7 @@ void ViewProviderPreviewExtension::showPreview(bool enable)
 
     _isPreviewEnabled = enable;
 
-    auto annotationRoot = getExtendedViewProvider()->getAnnotation();
+    auto annotationRoot = getExtendedViewProvider()->getOrCreateAnnotation();
     if (enable) {
         previewExtension->updatePreview();
 
