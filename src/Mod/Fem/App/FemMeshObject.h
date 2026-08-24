@@ -27,7 +27,7 @@
 #include <App/SuppressibleExtension.h>
 
 #include "FemMesh.h"
-#include "FemMeshProperty.h"
+#include "PropertyFemMesh.h"
 
 
 namespace Fem
