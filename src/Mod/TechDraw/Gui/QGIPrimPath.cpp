@@ -113,12 +113,12 @@ void QGIPrimPath::setPrettyNormal() {
 
 void QGIPrimPath::setPrettyPre() {
     m_pen.setColor(getPreColor());
-    m_brush.setColor(getPreColor());
+    m_brush.setColor(m_highlightFill ? getPreColor() : m_colNormalFill);
 }
 
 void QGIPrimPath::setPrettySel() {
     m_pen.setColor(getSelectColor());
-    m_brush.setColor(getSelectColor());
+    m_brush.setColor(m_highlightFill ? getSelectColor() : m_colNormalFill);
 }
 
 //wf: why would a face use its parent's normal colour?

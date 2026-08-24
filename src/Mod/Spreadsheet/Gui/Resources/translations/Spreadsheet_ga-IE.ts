@@ -382,11 +382,6 @@
       <translation>Dath cúlra soiléir</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="226"/>
-      <source>Recompute Cells</source>
-      <translation>Athríomh Cealla</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="327"/>
       <source>Insert Rows</source>
       <translation>Cuir Sraitheanna Isteach</translation>
@@ -397,18 +392,23 @@
       <translation>Bain Sraitheanna</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="367"/>
-      <source>Remove Columns</source>
-      <translation>Bain Colúin</translation>
-    </message>
-    <message>
       <location filename="../../SheetTableView.cpp" line="340"/>
       <source>Insert Columns</source>
       <translation>Cuir Colúin Isteach</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="179"/>
+      <location filename="../../SheetTableView.cpp" line="226"/>
+      <source>Recompute Cells</source>
+      <translation>Athríomh Cealla</translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="367"/>
+      <source>Remove Columns</source>
+      <translation>Bain Colúin</translation>
+    </message>
+    <message>
       <location filename="../../SheetTableView.cpp" line="582"/>
+      <location filename="../../SpreadsheetView.cpp" line="179"/>
       <source>Clear Cells</source>
       <translation>Cealla Glan</translation>
     </message>

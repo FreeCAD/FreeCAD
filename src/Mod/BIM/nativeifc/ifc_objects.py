@@ -155,7 +155,7 @@ class ifc_object:
         """Fits the view"""
 
         if FreeCAD.GuiUp:
-            FreeCADGui.SendMsgToActiveView("ViewFit")
+            FreeCADGui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def rebuild_classlist(self, obj, setprops=False):
         """rebuilds the list of Class enum property according to current class"""

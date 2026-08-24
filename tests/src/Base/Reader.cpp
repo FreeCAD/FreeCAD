@@ -442,7 +442,7 @@ TEST_F(ReaderTest, validDefaults)
 
     // Assert
     EXPECT_THROW({ xml.Reader()->getAttribute<const char*>("missing"); }, Base::XMLBaseException);
-    EXPECT_EQ(value2, "expected value");
+    EXPECT_STREQ(value2, "expected value");
     EXPECT_THROW({ xml.Reader()->getAttribute<long>("missing"); }, Base::XMLBaseException);
     EXPECT_EQ(value4, -123);
     EXPECT_THROW({ xml.Reader()->getAttribute<unsigned long>("missing"); }, Base::XMLBaseException);

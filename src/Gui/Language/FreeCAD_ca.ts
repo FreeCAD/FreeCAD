@@ -9,24 +9,24 @@
       <translation>&lt;empty&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2445"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2734"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
       <source>Axis</source>
       <translation>Eix</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
       <source>Position</source>
       <translation>Posició</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enumerador</translation>
@@ -63,12 +63,12 @@
       <translation>Importa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1518"/>
+      <location filename="../CommandDoc.cpp" line="1603"/>
       <source>Delete</source>
       <translation>Elimina</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2310"/>
+      <location filename="../CommandDoc.cpp" line="2395"/>
       <source>Paste expressions</source>
       <translation>Enganxa expressions</translation>
     </message>
@@ -98,12 +98,12 @@
       <translation>Importa tots els enllaços</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="798"/>
+      <location filename="../CommandStd.cpp" line="839"/>
       <source>Insert text document</source>
       <translation>Afegeix document de text</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="1030"/>
+      <location filename="../CommandStd.cpp" line="1071"/>
       <source>Create Annotation Label</source>
       <translation type="unfinished">Create Annotation Label</translation>
     </message>
@@ -133,8 +133,8 @@
       <translation>Posició</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
@@ -146,8 +146,8 @@
       <translation>Commuta els elements de la matriu</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>Edita la imatge</translation>
     </message>
@@ -2483,44 +2483,9 @@ Specify another directory.</source>
   <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
     <message>
-      <location filename="../Dialogs/DlgPropertyLink.ui" line="14"/>
+      <location filename="../Dialogs/DlgPropertyLink.cpp" line="182"/>
       <source>Link</source>
       <translation>Enllaç</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.ui" line="46"/>
-      <source>Filter by type</source>
-      <translation>Filtra per tipus</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.ui" line="53"/>
-      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
-      <translation>Sincronitza la selecció de la vista 3D amb la jerarquia completa d'objectes</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.ui" line="56"/>
-      <source>Sync sub-object selection</source>
-      <translation>Sincronitza la selecció dels subobjectes</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.ui" line="88"/>
-      <source>Search</source>
-      <translation>Cerca</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.ui" line="95"/>
-      <source>A search pattern to filter the results above</source>
-      <translation>Un patró de cerca per filtrar els resultats anteriors</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.cpp" line="118"/>
-      <source>Reset</source>
-      <translation>Reinicia</translation>
-    </message>
-    <message>
-      <location filename="../Dialogs/DlgPropertyLink.cpp" line="119"/>
-      <source>Clear</source>
-      <translation>Neteja</translation>
     </message>
   </context>
   <context>
@@ -2864,27 +2829,53 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translat
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="545"/>
+      <source>Maximum frame rate</source>
+      <translation type="unfinished">Maximum frame rate</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="558"/>
+      <source>Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</source>
+      <translation type="unfinished">Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="564"/>
+      <source>Automatic</source>
+      <translation>Automàtica</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="567"/>
+      <source> FPS</source>
+      <translation type="unfinished"> FPS</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="594"/>
       <source>Camera Type</source>
       <translation>Tipus de càmera</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="587"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="631"/>
       <source>Objects will be in orthographic projection</source>
       <translation>Els objectes es projectaran en projecció ortogràfica</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="571"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="615"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>Els objectes apareixeran en una projecció en perspectiva</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="618"/>
       <source>Perspective renderin&amp;g</source>
       <translation>&amp;Renderització en perspectiva</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="634"/>
       <source>Or&amp;thographic rendering</source>
       <translation>Renderització or&amp;togràfica</translation>
     </message>
@@ -2896,57 +2887,57 @@ mida de la caixa contenidora de l'objecte 3D que es mostra actualment.</translat
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
       <source>20px</source>
       <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="192"/>
       <source>25px</source>
       <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="193"/>
       <source>30px</source>
       <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="246"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="248"/>
       <source>Anti-aliasing</source>
       <translation>Antialiàsing</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="247"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="249"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Obriu un visualitzador nou o reinicieu %1 perquè s'apliquin els canvis d'antialiàsing.</translation>
     </message>
@@ -5928,7 +5919,7 @@ Voleu desar tots els canvis?</translation>
       <translation type="unfinished">Export graph</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="710"/>
+      <location filename="../CommandDoc.cpp" line="762"/>
       <location filename="../GraphvizView.cpp" line="517"/>
       <source>Export Graph</source>
       <translation type="unfinished">Export Graph</translation>
@@ -5981,66 +5972,66 @@ Voleu desar tots els canvis?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Definit per l'usuari…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Direcció incorrecta</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>La direcció no pot ser un vector nul.</translation>
     </message>
@@ -6461,12 +6452,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Error</source>
       <translation>Error</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Object not found</source>
       <translation>No s'ha trobat l'objecte.</translation>
     </message>
@@ -6474,147 +6465,152 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::PropertyEditor</name>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="393"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="394"/>
       <source>Edit</source>
       <translation>Edita</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="404"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="405"/>
       <source>property</source>
       <translation>propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="870"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="931"/>
       <source>Expand/Collapse Properties</source>
       <translation>Expandeix/Replega les propietats</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="872"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="933"/>
       <source>Expand to Default</source>
       <translation>Expandeix a predeterminat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="874"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="935"/>
       <source>Expand All</source>
       <translation>Expandeix-ho tot</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="876"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="937"/>
       <source>Collapse All</source>
       <translation>Replega-ho tot</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="882"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="943"/>
       <source>Default Expand</source>
       <translation>Expansió predeterminada</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="885"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="946"/>
       <source>Auto Expand</source>
       <translation>Expansió automàtica</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="888"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="949"/>
       <source>Auto Collapse</source>
       <translation>Replegament automàtic</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="978"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1039"/>
       <source>object %1 (%2):
 </source>
       <translation type="unfinished">object %1 (%2):
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="985"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1046"/>
       <source>property %1
 </source>
       <translation type="unfinished">property %1
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="997"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1058"/>
       <source>document %1:
 </source>
       <translation type="unfinished">document %1:
 </translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1022"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1083"/>
       <source>The property %1 in object %2 (%3) in document %4 is referenced by:</source>
       <translation type="unfinished">The property %1 in object %2 (%3) in document %4 is referenced by:</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1038"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1099"/>
       <source>(No references found.)</source>
       <translation type="unfinished">(No references found.)</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1056"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1144"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1117"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1205"/>
       <source>Property Uses</source>
       <translation type="unfinished">Property Uses</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1086"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1147"/>
       <source>Copy</source>
       <translation>Copia</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1094"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1155"/>
       <source>Add Property</source>
       <translation>Afegir Propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1101"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1374"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1162"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1445"/>
       <source>Rename Property Group</source>
       <translation>Reanomena el nom del grup de propietats</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1112"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1173"/>
       <source>Cannot rename group: one or more properties have names that start with the group name</source>
       <translation type="unfinished">Cannot rename group: one or more properties have names that start with the group name</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1121"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1344"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1182"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1415"/>
       <source>Rename Property</source>
       <translation>Reanomena la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1122"/>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1314"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1183"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1385"/>
       <source>Edit Property Tooltip</source>
       <translation>Editar propietats eina de punta</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1139"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1200"/>
       <source>Delete Property</source>
       <translation>Eliminar Propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1315"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1215"/>
+      <source>Move Property</source>
+      <translation type="unfinished">Move Property</translation>
+    </message>
+    <message>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1386"/>
       <source>Tooltip</source>
       <translation>Consell</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1154"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1225"/>
       <source>Show Hidden</source>
       <translation>Mostrar ocults</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1242"/>
       <source>Expression</source>
       <translation>Expressió</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1345"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1416"/>
       <source>Property name</source>
       <translation>Nom de la propietat</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyEditor.cpp" line="1375"/>
+      <location filename="../propertyeditor/PropertyEditor.cpp" line="1446"/>
       <source>Group name:</source>
       <translation>Nom del grup:</translation>
     </message>
@@ -6777,14 +6773,25 @@ Voleu sortir sense desar les dades?</translation>
   <context>
     <name>Gui::RecentFilesAction</name>
     <message>
-      <location filename="../Action.cpp" line="882"/>
-      <location filename="../Action.cpp" line="891"/>
+      <location filename="../Action.cpp" line="877"/>
+      <source>Open...</source>
+      <translation>Obre...</translation>
+    </message>
+    <message>
+      <location filename="../Action.cpp" line="878"/>
+      <location filename="../Action.cpp" line="879"/>
+      <source>Open a document or import files.</source>
+      <translation type="unfinished">Open a document or import files.</translation>
+    </message>
+    <message>
+      <location filename="../Action.cpp" line="894"/>
+      <location filename="../Action.cpp" line="903"/>
       <source>Clear Recent Files</source>
       <extracomment>Empties the list of recent files</extracomment>
       <translation>Neteja els fitxers recents</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="892"/>
+      <location filename="../Action.cpp" line="904"/>
       <source>Clear the list of recent files?</source>
       <translation type="unfinished">Clear the list of recent files?</translation>
     </message>
@@ -6797,12 +6804,12 @@ Voleu sortir sense desar les dades?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1153"/>
+      <location filename="../Action.cpp" line="1154"/>
       <source>none</source>
       <translation>cap</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1171"/>
+      <location filename="../Action.cpp" line="1172"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Corre la macro %1 (Maj+clic per editar) drecera de teclat: %2</translation>
     </message>
@@ -8054,104 +8061,97 @@ Comproveu la vista d'informes per a veure més detalls.</translation>
       <translation>Hi ha hagut errors greus en carregar el fitxer. Pot ser que s'hagin modificat dades o no s'hagin recuperat. Desar el projecte probablement provocarà la pèrdua de dades.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="104"/>
-      <location filename="../CommandDoc.cpp" line="230"/>
+      <location filename="../CommandDoc.cpp" line="156"/>
+      <location filename="../CommandDoc.cpp" line="282"/>
       <source>Supported formats</source>
       <translation>Formats admesos</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="138"/>
+      <location filename="../CommandDoc.cpp" line="190"/>
       <source>Open Document</source>
       <translation type="unfinished">Open Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="264"/>
+      <location filename="../CommandDoc.cpp" line="316"/>
       <source>Import File</source>
       <translation type="unfinished">Import File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="551"/>
+      <location filename="../CommandDoc.cpp" line="603"/>
       <source>Export File</source>
       <translation>Exportar fitxer</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="619"/>
-      <location filename="../CommandDoc.cpp" line="631"/>
+      <location filename="../CommandDoc.cpp" line="671"/>
+      <location filename="../CommandDoc.cpp" line="683"/>
       <source>Merge Document</source>
       <translation type="unfinished">Merge Document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="621"/>
-      <location filename="../Document.cpp" line="1711"/>
-      <location filename="../Document.cpp" line="1841"/>
-      <source>%1 document</source>
-      <translation type="unfinished">%1 document</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="632"/>
+      <location filename="../CommandDoc.cpp" line="684"/>
       <source>Cannot merge document with itself.</source>
       <translation>No es pot fusionar un document amb sí mateix.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1017"/>
+      <location filename="../CommandDoc.cpp" line="1102"/>
       <source>Printing…</source>
       <translation>S'està imprimint…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1080"/>
+      <location filename="../CommandDoc.cpp" line="1165"/>
       <source>Exporting PDF…</source>
       <translation>Exportant a PDF…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1370"/>
+      <location filename="../CommandDoc.cpp" line="1455"/>
       <source>The exported object contains an external link. Save the document.at least once before exporting.</source>
       <translation>L’objecte exportat conté un enllaç extern. Deseu el documenta almenys una vegada abans d’exportar-lo.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1670"/>
-      <location filename="../CommandDoc.cpp" line="1680"/>
+      <location filename="../CommandDoc.cpp" line="1755"/>
+      <location filename="../CommandDoc.cpp" line="1765"/>
       <source>Delete Failed</source>
       <translation type="unfinished">Delete Failed</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2178"/>
+      <location filename="../CommandDoc.cpp" line="2263"/>
       <source>Copy Selected</source>
       <translation>Copia la selecció</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2179"/>
+      <location filename="../CommandDoc.cpp" line="2264"/>
       <source>Copy Active Document</source>
       <translation>Copia el document actiu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2180"/>
+      <location filename="../CommandDoc.cpp" line="2265"/>
       <source>Copy All Documents</source>
       <translation>Copia tots el documents</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2298"/>
+      <location filename="../CommandDoc.cpp" line="2383"/>
       <source>Expression Error</source>
       <translation type="unfinished">Expression Error</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2299"/>
+      <location filename="../CommandDoc.cpp" line="2384"/>
       <source>Failed to parse some of the expressions.
 Check the report view for more details.</source>
       <translation>No s'han pogut analitzar algunes de les expressions.
 Consulteu la vista d'informe per obtenir més detalls.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1734"/>
+      <location filename="../CommandDoc.cpp" line="1819"/>
       <source>Dependency error</source>
       <translation type="unfinished">Dependency error</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2181"/>
+      <location filename="../CommandDoc.cpp" line="2266"/>
       <source>Paste</source>
       <translation>Enganxa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2333"/>
+      <location filename="../CommandDoc.cpp" line="2418"/>
       <source>Failed to paste expressions</source>
       <translation>No s'han pogut enganxar les expressions</translation>
     </message>
@@ -8171,17 +8171,17 @@ Consulteu la vista d'informe per obtenir més detalls.</translation>
       <translation>S'ha produït un error mentre es carregava el banc de treball.</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="359"/>
+      <location filename="../CommandStd.cpp" line="400"/>
       <source>Restart in Safe Mode</source>
       <translation>Reiniciar en mode segur</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="360"/>
+      <location filename="../CommandStd.cpp" line="401"/>
       <source>Restart FreeCAD and enter safe mode?</source>
       <translation>Reiniciar FreeCAD i entrar en mode segur?</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="362"/>
+      <location filename="../CommandStd.cpp" line="403"/>
       <source>Safe mode temporarily disables the configuration and addons.</source>
       <translation>El mode segur deshabilita temporalment les teves preferències i els complements.</translation>
     </message>
@@ -8403,7 +8403,7 @@ Continue?</source>
       <translation>Massa notificacions no intrusives obertes. S'ometran les notificacions!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1415"/>
+      <location filename="../Document.cpp" line="1451"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8412,44 +8412,44 @@ Continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1416"/>
+      <location filename="../Document.cpp" line="1452"/>
       <source>Are you sure you want to continue?</source>
       <translation>Segur que voleu continuar?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1442"/>
+      <location filename="../Document.cpp" line="1478"/>
       <source>Check report view for more…</source>
       <translation>Comproveu la vista d'informe per obtenir més informació…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1446"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Physical path:</source>
       <translation>Ruta física:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1447"/>
-      <location filename="../Document.cpp" line="1454"/>
+      <location filename="../Document.cpp" line="1483"/>
+      <location filename="../Document.cpp" line="1490"/>
       <source>Document:</source>
       <translation>Document:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1448"/>
-      <location filename="../Document.cpp" line="1455"/>
+      <location filename="../Document.cpp" line="1484"/>
+      <location filename="../Document.cpp" line="1491"/>
       <source>Path:</source>
       <translation>Camí:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1466"/>
+      <location filename="../Document.cpp" line="1502"/>
       <source>Identical physical path</source>
       <translation>Ruta física idèntica</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1478"/>
+      <location filename="../Document.cpp" line="1514"/>
       <source>Could not save document</source>
       <translation>No s'ha pogut desar el document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1479"/>
+      <location filename="../Document.cpp" line="1515"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8462,19 +8462,19 @@ Would you like to save the file with a different name?</source>
 Voleu desar-lo amb un nom diferent?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1493"/>
-      <location filename="../Document.cpp" line="1750"/>
-      <location filename="../Document.cpp" line="1859"/>
+      <location filename="../Document.cpp" line="1529"/>
+      <location filename="../Document.cpp" line="1786"/>
+      <location filename="../Document.cpp" line="1895"/>
       <source>Saving aborted</source>
       <translation>S'ha interromput el desament</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1544"/>
+      <location filename="../Document.cpp" line="1580"/>
       <source>File Created with Older FreeCAD Version</source>
       <translation type="unfinished">File Created with Older FreeCAD Version</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1547"/>
+      <location filename="../Document.cpp" line="1583"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
@@ -8489,115 +8489,122 @@ Use 'Save As…' to preserve the original file.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1556"/>
+      <location filename="../Document.cpp" line="1592"/>
       <source>an unknown older version of FreeCAD</source>
       <translation type="unfinished">an unknown older version of FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1557"/>
+      <location filename="../Document.cpp" line="1593"/>
       <source>FreeCAD version %1</source>
       <translation type="unfinished">FreeCAD version %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1562"/>
+      <location filename="../Document.cpp" line="1598"/>
       <source>Save</source>
       <translation>Desa</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1563"/>
+      <location filename="../Document.cpp" line="1599"/>
       <source>Save As…</source>
       <translation>Desa com…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1567"/>
+      <location filename="../Document.cpp" line="1603"/>
       <source>Do not show this warning again</source>
       <translation type="unfinished">Do not show this warning again</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1632"/>
+      <location filename="../Document.cpp" line="1668"/>
       <source>Save dependent files</source>
       <translation>Desa els fitxers dependents</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1633"/>
+      <location filename="../Document.cpp" line="1669"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>El fitxer conté dependències externes. Voleu desar també els fitxers dependents?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1679"/>
-      <location filename="../Document.cpp" line="1743"/>
+      <location filename="../Document.cpp" line="1715"/>
+      <location filename="../Document.cpp" line="1779"/>
       <source>Saving document failed</source>
       <translation>No s'ha pogut desar el document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1694"/>
+      <location filename="../Document.cpp" line="1730"/>
       <source>Save document under new filename…</source>
       <translation>Desa el document amb un altre nom…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1827"/>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <source>%1 document</source>
+      <translation type="unfinished">%1 document</translation>
+    </message>
+    <message>
+      <location filename="../Document.cpp" line="1863"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Desa una còpia del document amb un altre nom…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1709"/>
-      <location filename="../Document.cpp" line="1839"/>
+      <location filename="../Document.cpp" line="1745"/>
+      <location filename="../Document.cpp" line="1875"/>
       <source>Save %1 Document</source>
       <translation>Desa el document %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1765"/>
-      <location filename="../Document.cpp" line="1815"/>
+      <location filename="../Document.cpp" line="1801"/>
+      <location filename="../Document.cpp" line="1851"/>
       <source>Failed to save document</source>
       <translation>No s'ha pogut desar el document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1766"/>
+      <location filename="../Document.cpp" line="1802"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Els documents contenen dependències cícliques. Encara voleu desar-los?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2504"/>
+      <location filename="../Document.cpp" line="2540"/>
       <source>Document not closable</source>
       <translation>No es pot tancar el document.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2505"/>
+      <location filename="../Document.cpp" line="2541"/>
       <source>The document is not closable for the moment.</source>
       <translation>De moment el document no es pot tancar.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2545"/>
+      <location filename="../Document.cpp" line="2581"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>No s'ha pogut desar el document '%1'. Voleu cancel·lar el tancament?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2547"/>
+      <location filename="../Document.cpp" line="2583"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>No s'ha pogut desar el document. Voleu cancel·lar el tancament?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2552"/>
+      <location filename="../Document.cpp" line="2588"/>
       <source>Unable to save document</source>
       <translation>No puc desar el document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2922"/>
+      <location filename="../Document.cpp" line="2958"/>
       <source>Undo</source>
       <translation>Desfés</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2922"/>
+      <location filename="../Document.cpp" line="2958"/>
       <source>Redo</source>
       <translation>Refés</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2925"/>
+      <location filename="../Document.cpp" line="2961"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Hi ha transaccions agrupades en els documents següents amb altres transaccions anteriors</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2930"/>
+      <location filename="../Document.cpp" line="2966"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8686,13 +8693,13 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No s'ha trobat el fitxer %1 ni en %2 ni en %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2588"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2647"/>
       <source>Clarify Selection</source>
       <translation>Aclarir la selecció</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1369"/>
       <location filename="../MainWindow.cpp" line="1001"/>
+      <location filename="../CommandDoc.cpp" line="1454"/>
       <source>Unsaved Document</source>
       <translation>Document no desat</translation>
     </message>
@@ -8816,8 +8823,8 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>S'ha produït un error en arrossegar i deixar anar</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <source>Apply to all</source>
       <translation>Aplicar a tot</translation>
     </message>
@@ -8928,8 +8935,8 @@ la còpia actual es perdrà.
       <translation>Alterna la superposició</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
+      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <source>Toggle floating window</source>
       <translation>Alterna la finestra flotant</translation>
     </message>
@@ -9115,9 +9122,9 @@ la còpia actual es perdrà.
       <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
-      <source>Edit Image Plane</source>
-      <translation type="unfinished">Edit Image Plane</translation>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Peça</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="301"/>
@@ -9125,9 +9132,9 @@ la còpia actual es perdrà.
       <translation>Tots els fitxers</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Peça</translation>
+      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
+      <source>Edit Image Plane</source>
+      <translation type="unfinished">Edit Image Plane</translation>
     </message>
   </context>
   <context>
@@ -9237,12 +9244,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1251"/>
+      <location filename="../CommandDoc.cpp" line="1336"/>
       <source>&amp;Copy</source>
       <translation>&amp;Copia</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1252"/>
+      <location filename="../CommandDoc.cpp" line="1337"/>
       <source>Copies the selection to the clipboard</source>
       <translation>Copia la selecció al porta-retalls</translation>
     </message>
@@ -9250,12 +9257,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdCut</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1223"/>
+      <location filename="../CommandDoc.cpp" line="1308"/>
       <source>Cu&amp;t</source>
       <translation>Re&amp;talla</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1224"/>
+      <location filename="../CommandDoc.cpp" line="1309"/>
       <source>Removes the selection and copies it to the clipboard</source>
       <translation>Elimina la selecció i la copia al porta-retalls</translation>
     </message>
@@ -9263,12 +9270,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdDelete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1486"/>
+      <location filename="../CommandDoc.cpp" line="1571"/>
       <source>&amp;Delete</source>
       <translation>&amp;Elimina</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1487"/>
+      <location filename="../CommandDoc.cpp" line="1572"/>
       <source>Deletes the selected objects</source>
       <translation>Elimina els objectes seleccionats</translation>
     </message>
@@ -9312,12 +9319,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdEdit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2046"/>
+      <location filename="../CommandDoc.cpp" line="2131"/>
       <source>Toggle &amp;Edit Mode</source>
       <translation>Commuta el mode d'&amp;edició</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2047"/>
+      <location filename="../CommandDoc.cpp" line="2132"/>
       <source>Toggles the selected object's edit mode</source>
       <translation>Commuta el mode d'edició de l'objecte seleccionat</translation>
     </message>
@@ -9325,22 +9332,22 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdExport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="315"/>
+      <location filename="../CommandDoc.cpp" line="367"/>
       <source>&amp;Export…</source>
       <translation>&amp;Exportar…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="316"/>
+      <location filename="../CommandDoc.cpp" line="368"/>
       <source>Exports an object in the active document</source>
       <translation>Exporta un objecte en el document actiu</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="464"/>
+      <location filename="../CommandDoc.cpp" line="516"/>
       <source>No Selection</source>
       <translation>Sense selecció</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="465"/>
+      <location filename="../CommandDoc.cpp" line="517"/>
       <source>Select objects to export before using the Export command.</source>
       <translation>Seleccioneu els objectes que voleu exportar abans d'utilitzar l'ordre Exportar.</translation>
     </message>
@@ -9348,12 +9355,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdExpression</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2128"/>
+      <location filename="../CommandDoc.cpp" line="2213"/>
       <source>Expression Actions</source>
       <translation>Accions d’expressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2129"/>
+      <location filename="../CommandDoc.cpp" line="2214"/>
       <source>Actions that apply to expressions</source>
       <translation>Accions que s'apliquen a expressions</translation>
     </message>
@@ -9374,12 +9381,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdFreeCADForum</name>
     <message>
-      <location filename="../CommandStd.cpp" line="726"/>
+      <location filename="../CommandStd.cpp" line="767"/>
       <source>FreeCAD &amp;Forum</source>
       <translation>Fòrum del FreeCAD</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="727"/>
+      <location filename="../CommandStd.cpp" line="768"/>
       <source>Opens the FreeCAD forum to find help from other users</source>
       <translation type="unfinished">Opens the FreeCAD forum to find help from other users</translation>
     </message>
@@ -9400,12 +9407,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdImport</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="215"/>
+      <location filename="../CommandDoc.cpp" line="267"/>
       <source>&amp;Import…</source>
       <translation>&amp;Importa…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="216"/>
+      <location filename="../CommandDoc.cpp" line="268"/>
       <source>Imports a file into the active document</source>
       <translation>Importa un fitxer en el document actiu</translation>
     </message>
@@ -9439,12 +9446,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdMergeProjects</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="603"/>
+      <location filename="../CommandDoc.cpp" line="655"/>
       <source>&amp;Merge Document</source>
       <translation>Fusiona un docu&amp;ment</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="605"/>
+      <location filename="../CommandDoc.cpp" line="657"/>
       <source>Merges another FreeCAD document into the active one</source>
       <translation>Fusiona un altre document de FreeCAD amb l'actiu</translation>
     </message>
@@ -9458,12 +9465,12 @@ la còpia actual es perdrà.
       <translation>Sense nom</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="741"/>
+      <location filename="../CommandDoc.cpp" line="793"/>
       <source>&amp;New Document</source>
       <translation>Document &amp;nou</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="742"/>
+      <location filename="../CommandDoc.cpp" line="794"/>
       <source>Creates a new empty document</source>
       <translation>Crea un document buit nou</translation>
     </message>
@@ -9471,12 +9478,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdOnlineHelpWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="568"/>
+      <location filename="../CommandStd.cpp" line="609"/>
       <source>Help Website</source>
       <translation>Lloc web de l'ajuda</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="569"/>
+      <location filename="../CommandStd.cpp" line="610"/>
       <source>Opens the help documentation</source>
       <translation>Obre la documentació d'ajuda</translation>
     </message>
@@ -9484,22 +9491,22 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdOpen</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="88"/>
+      <location filename="../CommandDoc.cpp" line="140"/>
       <source>&amp;Open…</source>
       <translation>&amp;Obrir…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="89"/>
+      <location filename="../CommandDoc.cpp" line="141"/>
       <source>Opens a document or imports files</source>
       <translation>Obre un document o importa fitxers</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="182"/>
+      <location filename="../CommandDoc.cpp" line="234"/>
       <source>Cannot Open File</source>
       <translation type="unfinished">Cannot Open File</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="183"/>
+      <location filename="../CommandDoc.cpp" line="235"/>
       <source>Loading the file %1 is not supported</source>
       <translation>La càrrega del fitxer %1 no és compatible.</translation>
     </message>
@@ -9507,12 +9514,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdPaste</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1287"/>
+      <location filename="../CommandDoc.cpp" line="1372"/>
       <source>&amp;Paste</source>
       <translation>A&amp;pega</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1288"/>
+      <location filename="../CommandDoc.cpp" line="1373"/>
       <source>Pastes the contents of the clipboard</source>
       <translation>Enganxa el contingut del porta-retalls</translation>
     </message>
@@ -9520,12 +9527,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdQuit</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1100"/>
+      <location filename="../CommandDoc.cpp" line="1185"/>
       <source>E&amp;xit</source>
       <translation>S&amp;urt</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1101"/>
+      <location filename="../CommandDoc.cpp" line="1186"/>
       <source>Quits the application</source>
       <translation>Surt de l'aplicació</translation>
     </message>
@@ -9546,12 +9553,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdRedo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1179"/>
+      <location filename="../CommandDoc.cpp" line="1264"/>
       <source>&amp;Redo</source>
       <translation>&amp;Refés</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1180"/>
+      <location filename="../CommandDoc.cpp" line="1265"/>
       <source>Redoes a previously undone action</source>
       <translation>Refà l'acció prèviament desfeta</translation>
     </message>
@@ -9559,12 +9566,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdRevert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="901"/>
+      <location filename="../CommandDoc.cpp" line="986"/>
       <source>Rever&amp;t</source>
       <translation>Restablei&amp;x</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="902"/>
+      <location filename="../CommandDoc.cpp" line="987"/>
       <source>Reverts to the saved version of this file</source>
       <translation>Torna a la versió guardada d'aquest fitxer</translation>
     </message>
@@ -9572,12 +9579,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdSave</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="775"/>
+      <location filename="../CommandDoc.cpp" line="827"/>
       <source>&amp;Save</source>
       <translation>&amp;Desa</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="776"/>
+      <location filename="../CommandDoc.cpp" line="828"/>
       <source>Saves the active document</source>
       <translation>Desa el document actiu</translation>
     </message>
@@ -9585,12 +9592,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdSaveAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="873"/>
+      <location filename="../CommandDoc.cpp" line="925"/>
       <source>Sa&amp;ve All</source>
       <translation>D&amp;esa'ls tots</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="874"/>
+      <location filename="../CommandDoc.cpp" line="926"/>
       <source>Saves all open documents</source>
       <translation>Desa tots els documents oberts</translation>
     </message>
@@ -9598,12 +9605,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdSelectAll</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1432"/>
+      <location filename="../CommandDoc.cpp" line="1517"/>
       <source>Select &amp;All</source>
       <translation>Seleccion&amp;a-ho tot</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1433"/>
+      <location filename="../CommandDoc.cpp" line="1518"/>
       <source>Selects all objects in the active document</source>
       <translation>Selecciona tots els objectes del document actiu</translation>
     </message>
@@ -9663,12 +9670,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdUndo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1134"/>
+      <location filename="../CommandDoc.cpp" line="1219"/>
       <source>&amp;Undo</source>
       <translation>&amp;Desfés</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1135"/>
+      <location filename="../CommandDoc.cpp" line="1220"/>
       <source>Undoes the previous action</source>
       <translation>Desfà l'acció anterior</translation>
     </message>
@@ -9845,12 +9852,12 @@ la còpia actual es perdrà.
   <context>
     <name>StdCmdWhatsThis</name>
     <message>
-      <location filename="../CommandStd.cpp" line="321"/>
+      <location filename="../CommandStd.cpp" line="362"/>
       <source>&amp;What's This?</source>
       <translation>&amp;Què és això?</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="322"/>
+      <location filename="../CommandStd.cpp" line="363"/>
       <source>Opens the documentation for the selected command</source>
       <translation>Obre la documentació de l'ordre seleccionada</translation>
     </message>
@@ -10027,7 +10034,7 @@ la còpia actual es perdrà.
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1610"/>
+      <location filename="../CommandDoc.cpp" line="1695"/>
       <source>The following referencing objects might break.
 
 Continue?
@@ -10036,7 +10043,7 @@ Continue?
 </translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1624"/>
+      <location filename="../CommandDoc.cpp" line="1709"/>
       <source>Object Dependencies</source>
       <translation type="unfinished">Object Dependencies</translation>
     </message>
@@ -10117,12 +10124,12 @@ Continue?
   <context>
     <name>Std_DuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1391"/>
+      <location filename="../CommandDoc.cpp" line="1476"/>
       <source>Object Dependencies</source>
       <translation type="unfinished">Object Dependencies</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1392"/>
+      <location filename="../CommandDoc.cpp" line="1477"/>
       <source>To link to external objects, the document must be saved at least once.
 Save the document now?</source>
       <translation>Per a enllaçar amb objectes externs, el document s’ha de desar almenys una vegada.
@@ -10906,32 +10913,32 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="660"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>FRONT</source>
       <translation>FRONT</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="662"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>TOP</source>
       <translation>DALT</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>RIGHT</source>
       <translation>DRETA</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="672"/>
       <source>REAR</source>
       <translation>DARRERA</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="674"/>
       <source>BOTTOM</source>
       <translation>BAIX</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="676"/>
       <source>LEFT</source>
       <translation>ESQUERRA</translation>
     </message>
@@ -11925,12 +11932,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProperties</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="2088"/>
+      <location filename="../CommandDoc.cpp" line="2173"/>
       <source>Propert&amp;ies</source>
       <translation>Propi&amp;etats</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="2089"/>
+      <location filename="../CommandDoc.cpp" line="2174"/>
       <source>Shows the property view, which displays the properties of the selected object.</source>
       <translation>Mostra la vista de propietats, que mostra les propietats de l'objecte seleccionat.</translation>
     </message>
@@ -11959,12 +11966,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdReloadStyleSheet</name>
     <message>
-      <location filename="../CommandStd.cpp" line="961"/>
+      <location filename="../CommandStd.cpp" line="1002"/>
       <source>&amp;Reload Stylesheet</source>
       <translation>&amp;Recarrega el full d'estils</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="962"/>
+      <location filename="../CommandStd.cpp" line="1003"/>
       <source>Reloads the current stylesheet</source>
       <translation>Recarrega el full d'estils actual</translation>
     </message>
@@ -12236,12 +12243,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdRestartInSafeMode</name>
     <message>
-      <location filename="../CommandStd.cpp" line="345"/>
+      <location filename="../CommandStd.cpp" line="386"/>
       <source>Restart in Safe Mode</source>
       <translation>Reiniciar en mode segur</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="346"/>
+      <location filename="../CommandStd.cpp" line="387"/>
       <source>Starts FreeCAD without any modules or plugins loaded</source>
       <translation>Inicia FreeCAD sense cap mòdul ni complement carregat</translation>
     </message>
@@ -12249,12 +12256,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdOnlineHelp</name>
     <message>
-      <location filename="../CommandStd.cpp" line="543"/>
+      <location filename="../CommandStd.cpp" line="584"/>
       <source>&amp;Help</source>
       <translation>&amp;Ajuda</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="544"/>
+      <location filename="../CommandStd.cpp" line="585"/>
       <source>Opens the Help documentation</source>
       <translation>Obre la documentació d'ajuda</translation>
     </message>
@@ -12262,12 +12269,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdFreeCADWebsite</name>
     <message>
-      <location filename="../CommandStd.cpp" line="663"/>
+      <location filename="../CommandStd.cpp" line="704"/>
       <source>FreeCAD W&amp;ebsite</source>
       <translation>Lloc &amp;web de FreeCAD</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="664"/>
+      <location filename="../CommandStd.cpp" line="705"/>
       <source>Navigates to the official FreeCAD website</source>
       <translation>Adreça a la pàgina web oficial de FreeCAD</translation>
     </message>
@@ -12275,12 +12282,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdFreeCADUserHub</name>
     <message>
-      <location filename="../CommandStd.cpp" line="694"/>
+      <location filename="../CommandStd.cpp" line="735"/>
       <source>&amp;User Documentation</source>
       <translation>Documentació d'&amp;usuari</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="695"/>
+      <location filename="../CommandStd.cpp" line="736"/>
       <source>Opens the documentation for users</source>
       <translation>Obre la documentació pels usuaris</translation>
     </message>
@@ -12288,12 +12295,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdReportBug</name>
     <message>
-      <location filename="../CommandStd.cpp" line="757"/>
+      <location filename="../CommandStd.cpp" line="798"/>
       <source>Report an &amp;Issue</source>
       <translation>&amp;Informar d'un problema</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="758"/>
+      <location filename="../CommandStd.cpp" line="799"/>
       <source>Opens the bugtracker to report an issue</source>
       <translation>Obre el seguiment d'errors per informar d'un problema</translation>
     </message>
@@ -12301,12 +12308,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdTransformManip</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1925"/>
+      <location filename="../CommandDoc.cpp" line="2010"/>
       <source>Trans&amp;form</source>
       <translation>Trans&amp;formar</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1926"/>
+      <location filename="../CommandDoc.cpp" line="2011"/>
       <source>Transforms the selected object in the 3D view</source>
       <translation>Transforma l'objecte seleccionat en la vista 3D</translation>
     </message>
@@ -12575,181 +12582,181 @@ la regió no són opacs.</translation>
   <context>
     <name>Gui::InputHintWidget</name>
     <message>
-      <location filename="../InputHintWidget.cpp" line="253"/>
+      <location filename="../InputHintWidget.cpp" line="263"/>
       <source>Backtab</source>
       <extracomment>Keyboard key for Backtab</extracomment>
       <translation>Tab enrere</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="257"/>
+      <location filename="../InputHintWidget.cpp" line="267"/>
       <source>Enter</source>
       <extracomment>Keyboard key for numpad Enter</extracomment>
       <translation>Introduïr</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="259"/>
+      <location filename="../InputHintWidget.cpp" line="269"/>
       <source>Insert</source>
       <extracomment>Keyboard key for Insert</extracomment>
       <translation>Insereix</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="249"/>
+      <location filename="../InputHintWidget.cpp" line="259"/>
       <source>Esc</source>
       <extracomment>Keyboard key for Escape</extracomment>
       <translation>Esc</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="251"/>
+      <location filename="../InputHintWidget.cpp" line="261"/>
       <source>Tab ⭾</source>
       <extracomment>Keyboard key for Tab</extracomment>
       <translation>Tab ⭾</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="261"/>
+      <location filename="../InputHintWidget.cpp" line="271"/>
       <source>Del</source>
       <extracomment>Keyboard key for Delete</extracomment>
       <translation>Supr</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="263"/>
+      <location filename="../InputHintWidget.cpp" line="273"/>
       <source>Pause</source>
       <extracomment>Keyboard key for Pause</extracomment>
       <translation>Pausa</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="265"/>
+      <location filename="../InputHintWidget.cpp" line="275"/>
       <source>Print</source>
       <extracomment>Keyboard key for Print</extracomment>
       <translation>Imprimir</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="267"/>
+      <location filename="../InputHintWidget.cpp" line="277"/>
       <source>SysReq</source>
       <extracomment>Keyboard key for SysReq</extracomment>
       <translation>SysReq</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="269"/>
+      <location filename="../InputHintWidget.cpp" line="279"/>
       <source>Clear</source>
       <extracomment>Keyboard key for Clear</extracomment>
       <translation>Neteja</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="273"/>
+      <location filename="../InputHintWidget.cpp" line="283"/>
       <source>Home</source>
       <extracomment>Keyboard key for Home</extracomment>
       <translation>Inici</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="275"/>
+      <location filename="../InputHintWidget.cpp" line="285"/>
       <source>End</source>
       <extracomment>Keyboard key for End</extracomment>
       <translation>Fi</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="281"/>
+      <location filename="../InputHintWidget.cpp" line="291"/>
       <source>PgDown</source>
       <extracomment>Keyboard key for Page Down</extracomment>
       <translation>AvPag</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="283"/>
+      <location filename="../InputHintWidget.cpp" line="293"/>
       <source>PgUp</source>
       <extracomment>Keyboard key for Page Up</extracomment>
       <translation>RePag</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="293"/>
+      <location filename="../InputHintWidget.cpp" line="303"/>
       <source>⇧ Shift</source>
       <extracomment>Keyboard key for Shift on Windows &amp; Linux</extracomment>
       <translation>⇧ Shift</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="350"/>
+      <location filename="../InputHintWidget.cpp" line="360"/>
       <source>Num0</source>
       <extracomment>Keyboard key for numpad 0</extracomment>
       <translation>Num0</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="352"/>
+      <location filename="../InputHintWidget.cpp" line="362"/>
       <source>Num1</source>
       <extracomment>Keyboard key for numpad 1</extracomment>
       <translation>Num1</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="354"/>
+      <location filename="../InputHintWidget.cpp" line="364"/>
       <source>Num2</source>
       <extracomment>Keyboard key for numpad 2</extracomment>
       <translation>Num2</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="356"/>
+      <location filename="../InputHintWidget.cpp" line="366"/>
       <source>Num3</source>
       <extracomment>Keyboard key for numpad 3</extracomment>
       <translation>Num3</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="358"/>
+      <location filename="../InputHintWidget.cpp" line="368"/>
       <source>Num4</source>
       <extracomment>Keyboard key for numpad 4</extracomment>
       <translation>Num4</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="360"/>
+      <location filename="../InputHintWidget.cpp" line="370"/>
       <source>Num5</source>
       <extracomment>Keyboard key for numpad 5</extracomment>
       <translation>Num5</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="362"/>
+      <location filename="../InputHintWidget.cpp" line="372"/>
       <source>Num6</source>
       <extracomment>Keyboard key for numpad 6</extracomment>
       <translation>Num6</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="364"/>
+      <location filename="../InputHintWidget.cpp" line="374"/>
       <source>Num7</source>
       <extracomment>Keyboard key for numpad 7</extracomment>
       <translation>Num7</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="366"/>
+      <location filename="../InputHintWidget.cpp" line="376"/>
       <source>Num8</source>
       <extracomment>Keyboard key for numpad 8</extracomment>
       <translation>Num8</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="368"/>
+      <location filename="../InputHintWidget.cpp" line="378"/>
       <source>Num9</source>
       <extracomment>Keyboard key for numpad 9</extracomment>
       <translation>Num9</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="295"/>
+      <location filename="../InputHintWidget.cpp" line="305"/>
       <source>Ctrl</source>
       <extracomment>Keyboard key for Control on Windows &amp; Linux</extracomment>
       <translation>Ctrl</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="302"/>
+      <location filename="../InputHintWidget.cpp" line="312"/>
       <source>Alt</source>
       <extracomment>Keyboard key for Alt on Windows &amp; Linux</extracomment>
       <translation>Alt</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="305"/>
+      <location filename="../InputHintWidget.cpp" line="315"/>
       <source>Caps Lock</source>
       <extracomment>Keyboard key for Caps Lock</extracomment>
       <translation>Bloq Majús</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="307"/>
+      <location filename="../InputHintWidget.cpp" line="317"/>
       <source>Num Lock</source>
       <extracomment>Keyboard key for Num Lock</extracomment>
       <translation>Bloqu. Num</translation>
     </message>
     <message>
-      <location filename="../InputHintWidget.cpp" line="309"/>
+      <location filename="../InputHintWidget.cpp" line="319"/>
       <source>Scroll Lock</source>
       <extracomment>Keyboard key for Scroll Lock</extracomment>
       <translation>Bloq Despl</translation>
@@ -12906,12 +12913,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="663"/>
+      <location filename="../CommandDoc.cpp" line="715"/>
       <source>Dependency Gra&amp;ph</source>
       <translation>Gràfic de de&amp;pendència</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="665"/>
+      <location filename="../CommandDoc.cpp" line="717"/>
       <source>Shows the dependency graph of the objects in the active document</source>
       <translation>Mostra el gràfic de dependències dels objectes en el document actiu</translation>
     </message>
@@ -12919,7 +12926,7 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_DependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="677"/>
+      <location filename="../CommandDoc.cpp" line="729"/>
       <source>Dependency Graph</source>
       <translation>Gràfic de de&amp;pendència</translation>
     </message>
@@ -12927,12 +12934,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdExportDependencyGraph</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="696"/>
+      <location filename="../CommandDoc.cpp" line="748"/>
       <source>Export Dependency &amp;Graph…</source>
       <translation type="unfinished">Export Dependency &amp;Graph…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="697"/>
+      <location filename="../CommandDoc.cpp" line="749"/>
       <source>Exports the dependency graph as a Graphviz (.gv) file</source>
       <translation>Exporta el graph de dependència com a fitxer Graphviz (.gv)</translation>
     </message>
@@ -12940,12 +12947,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdSaveAs</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="813"/>
+      <location filename="../CommandDoc.cpp" line="865"/>
       <source>Save &amp;As…</source>
       <translation>Des&amp;a com…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="814"/>
+      <location filename="../CommandDoc.cpp" line="866"/>
       <source>Saves the active document under a new file name</source>
       <translation>Desa el document actiu amb un altre nom</translation>
     </message>
@@ -12953,12 +12960,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdSaveCopy</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="843"/>
+      <location filename="../CommandDoc.cpp" line="895"/>
       <source>Save a Cop&amp;y…</source>
       <translation type="unfinished">Save a Cop&amp;y…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="845"/>
+      <location filename="../CommandDoc.cpp" line="897"/>
       <source>Saves a copy of the active document under a new file name</source>
       <translation>Desa una còpia del document actiu amb un altre nom</translation>
     </message>
@@ -12966,17 +12973,17 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_Revert</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="914"/>
+      <location filename="../CommandDoc.cpp" line="999"/>
       <source>Revert Document</source>
       <translation>Torneu a la versió anterior del document</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="916"/>
+      <location filename="../CommandDoc.cpp" line="1001"/>
       <source>This will discard all the changes since the last file save.</source>
       <translation>Això descartarà tots els canvis des de l'última acció de desar el fitxer.</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="918"/>
+      <location filename="../CommandDoc.cpp" line="1003"/>
       <source>Continue?</source>
       <translation>Continuar?</translation>
     </message>
@@ -12984,12 +12991,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProjectInfo</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="943"/>
+      <location filename="../CommandDoc.cpp" line="1028"/>
       <source>Doc&amp;ument Information</source>
       <translation>Informació del doc&amp;ument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="945"/>
+      <location filename="../CommandDoc.cpp" line="1030"/>
       <source>Shows information about the active document</source>
       <translation>Mostra informació sobre el document actiu</translation>
     </message>
@@ -12997,12 +13004,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdProjectUtil</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="975"/>
+      <location filename="../CommandDoc.cpp" line="1060"/>
       <source>Do&amp;cument Utility</source>
       <translation>Utilitat del do&amp;cument</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="977"/>
+      <location filename="../CommandDoc.cpp" line="1062"/>
       <source>Extracts or creates document files</source>
       <translation>Extreu o crea fitxers de documents</translation>
     </message>
@@ -13010,12 +13017,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdPrint</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1003"/>
+      <location filename="../CommandDoc.cpp" line="1088"/>
       <source>&amp;Print</source>
       <translation>Im&amp;primir</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1005"/>
+      <location filename="../CommandDoc.cpp" line="1090"/>
       <source>Prints the active document</source>
       <translation>Imprimeix el document actiu</translation>
     </message>
@@ -13023,12 +13030,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdPrintPreview</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1036"/>
+      <location filename="../CommandDoc.cpp" line="1121"/>
       <source>Print Previe&amp;w</source>
       <translation>&amp;Vista prèvia d'impressió</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1038"/>
+      <location filename="../CommandDoc.cpp" line="1123"/>
       <source>Previews the active document before printing</source>
       <translation>Previsualitza el document actiu abans d'imprimir</translation>
     </message>
@@ -13036,12 +13043,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdPrintPdf</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1067"/>
+      <location filename="../CommandDoc.cpp" line="1152"/>
       <source>Export P&amp;DF</source>
       <translation>Exporta com a P&amp;DF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1069"/>
+      <location filename="../CommandDoc.cpp" line="1154"/>
       <source>Exports the active document as a PDF file</source>
       <translation>Exporta el document actiu com a fitxer PDF</translation>
     </message>
@@ -13049,12 +13056,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdDuplicateSelection</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1329"/>
+      <location filename="../CommandDoc.cpp" line="1414"/>
       <source>Duplicate Selecti&amp;on</source>
       <translation>Duplica la selecci&amp;ó</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1330"/>
+      <location filename="../CommandDoc.cpp" line="1415"/>
       <source>Duplicates the selected objects to the active document</source>
       <translation>Duplica els objectes seleccionats i els l'afegeix al document actiu</translation>
     </message>
@@ -13062,12 +13069,12 @@ la regió no són opacs.</translation>
   <context>
     <name>StdCmdRefresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1706"/>
+      <location filename="../CommandDoc.cpp" line="1791"/>
       <source>Recompute</source>
       <translation>Recalcula</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1707"/>
+      <location filename="../CommandDoc.cpp" line="1792"/>
       <source>Recomputes the active document</source>
       <translation>Recalcula el document actiu</translation>
     </message>
@@ -13075,7 +13082,7 @@ la regió no són opacs.</translation>
   <context>
     <name>Std_Refresh</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1735"/>
+      <location filename="../CommandDoc.cpp" line="1820"/>
       <source>The document contains dependency cycles.
 Check the report view for more details.
 
@@ -13089,12 +13096,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdTransform</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1835"/>
+      <location filename="../CommandDoc.cpp" line="1920"/>
       <source>Transform</source>
       <translation>Transforma</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1837"/>
+      <location filename="../CommandDoc.cpp" line="1922"/>
       <source>Transforms the selected object</source>
       <translation>Transforma l'objecte seleccionat</translation>
     </message>
@@ -13102,12 +13109,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdPlacement</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1862"/>
+      <location filename="../CommandDoc.cpp" line="1947"/>
       <source>P&amp;lacement</source>
       <translation>&amp;Ubicació</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1864"/>
+      <location filename="../CommandDoc.cpp" line="1949"/>
       <source>Opens the placement editor to adjust the placement of the selected object</source>
       <translation>Obre l'editor de col·locació per ajustar la col·locació de l'objecte seleccionat</translation>
     </message>
@@ -13115,12 +13122,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdAlignment</name>
     <message>
-      <location filename="../CommandDoc.cpp" line="1973"/>
+      <location filename="../CommandDoc.cpp" line="2058"/>
       <source>Ali&amp;gn To…</source>
       <translation>Alinea a…</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1975"/>
+      <location filename="../CommandDoc.cpp" line="2060"/>
       <source>Aligns the selected objects</source>
       <translation>Alinea els objectes seleccionats</translation>
     </message>
@@ -13349,12 +13356,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdDlgParameter</name>
     <message>
-      <location filename="../CommandStd.cpp" line="393"/>
+      <location filename="../CommandStd.cpp" line="434"/>
       <source>E&amp;dit Parameters</source>
       <translation>E&amp;dita els paràmetres</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="395"/>
+      <location filename="../CommandStd.cpp" line="436"/>
       <source>Opens a dialog to edit the parameters</source>
       <translation>Obri un quadre de diàleg per a editar els paràmetres</translation>
     </message>
@@ -13362,12 +13369,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdDlgPreferences</name>
     <message>
-      <location filename="../CommandStd.cpp" line="419"/>
+      <location filename="../CommandStd.cpp" line="460"/>
       <source>Prefere&amp;nces</source>
       <translation>Preferè&amp;ncies</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="421"/>
+      <location filename="../CommandStd.cpp" line="462"/>
       <source>Opens a dialog to edit the preferences</source>
       <translation>Obri un quadre de diàleg per a editar les preferències</translation>
     </message>
@@ -13375,12 +13382,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdDlgCustomize</name>
     <message>
-      <location filename="../CommandStd.cpp" line="466"/>
+      <location filename="../CommandStd.cpp" line="507"/>
       <source>Cu&amp;stomize</source>
       <translation type="unfinished">Cu&amp;stomize</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="467"/>
+      <location filename="../CommandStd.cpp" line="508"/>
       <source>Opens a dialog to edit toolbars, shortcuts, and macros</source>
       <translation>Obre un diàleg per editar barres d'eines, dreceres i macros</translation>
     </message>
@@ -13388,12 +13395,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdCommandLine</name>
     <message>
-      <location filename="../CommandStd.cpp" line="494"/>
+      <location filename="../CommandStd.cpp" line="535"/>
       <source>Command &amp;Line</source>
       <translation>&amp;Línia d’ordres</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="496"/>
+      <location filename="../CommandStd.cpp" line="537"/>
       <source>Opens a command line interface in the console</source>
       <translation>Obre una interfície de línia d'ordres a la consola</translation>
     </message>
@@ -13401,12 +13408,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdFreeCADDonation</name>
     <message>
-      <location filename="../CommandStd.cpp" line="599"/>
+      <location filename="../CommandStd.cpp" line="640"/>
       <source>Donate to FreeCA&amp;D</source>
       <translation>Dona a FreeCA&amp;D</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="600"/>
+      <location filename="../CommandStd.cpp" line="641"/>
       <source>Opens the FreeCAD donation page</source>
       <translation type="unfinished">Opens the FreeCAD donation page</translation>
     </message>
@@ -13414,12 +13421,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdDevHandbook</name>
     <message>
-      <location filename="../CommandStd.cpp" line="630"/>
+      <location filename="../CommandStd.cpp" line="671"/>
       <source>Developers Handbook</source>
       <translation>Manual per a desenvolupadors</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="632"/>
+      <location filename="../CommandStd.cpp" line="673"/>
       <source>Opens the FreeCAD developers handbook</source>
       <translation type="unfinished">Opens the FreeCAD developers handbook</translation>
     </message>
@@ -13427,12 +13434,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdTextDocument</name>
     <message>
-      <location filename="../CommandStd.cpp" line="786"/>
+      <location filename="../CommandStd.cpp" line="827"/>
       <source>Te&amp;xt Document</source>
       <translation>Document de te&amp;xt</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="787"/>
+      <location filename="../CommandStd.cpp" line="828"/>
       <source>Adds a text document to the active document</source>
       <translation>Afegeix un document de text al document actiu</translation>
     </message>
@@ -13440,12 +13447,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdUnitsCalculator</name>
     <message>
-      <location filename="../CommandStd.cpp" line="824"/>
+      <location filename="../CommandStd.cpp" line="865"/>
       <source>&amp;Units Converter</source>
       <translation>&amp;Convertidor d'unitats</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="826"/>
+      <location filename="../CommandStd.cpp" line="867"/>
       <source>Starts the units converter</source>
       <translation>Inicia el convertidor d'unitats</translation>
     </message>
@@ -13453,12 +13460,12 @@ Voleu continuar?</translation>
   <context>
     <name>StdCmdUserEditMode</name>
     <message>
-      <location filename="../CommandStd.cpp" line="865"/>
+      <location filename="../CommandStd.cpp" line="906"/>
       <source>Edit &amp;Mode</source>
       <translation>&amp;Mode d'edició</translation>
     </message>
     <message>
-      <location filename="../CommandStd.cpp" line="866"/>
+      <location filename="../CommandStd.cpp" line="907"/>
       <source>Defines behavior when editing an object from the tree view</source>
       <translation>Defineix el comportament en editar un objecte de l'arbre</translation>
     </message>
@@ -14501,7 +14508,7 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4699"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
       <source>Changes the linked object</source>
       <translation>Canvia l'objecte enllaçat</translation>
     </message>
@@ -14540,12 +14547,12 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
   <context>
     <name>StdCmdClarifySelection</name>
     <message>
-      <location filename="../CommandView.cpp" line="4072"/>
+      <location filename="../CommandView.cpp" line="4078"/>
       <source>Clarify Selection</source>
       <translation>Aclarir la selecció</translation>
     </message>
     <message>
-      <location filename="../CommandView.cpp" line="4073"/>
+      <location filename="../CommandView.cpp" line="4079"/>
       <source>Displays a context menu at the mouse cursor to select overlapping or obstructed geometry in the 3D view.
 </source>
       <translation>Mostra un menú contextual al cursor del ratolí per a seleccionar geometria sobreposada o obstruïda a la vista 3D.
@@ -14659,6 +14666,49 @@ Això fa que les finestres acoblables siguin sempre transparents.</translation>
     </message>
   </context>
   <context>
+    <name>Gui::Dialog::DlgDocumentObject</name>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="14"/>
+      <source>Object</source>
+      <translation>Objecte</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="46"/>
+      <source>Filter by type</source>
+      <translation>Filtra per tipus</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="53"/>
+      <source>Synchronizes the 3D view selection with the full object hierarchy</source>
+      <translation>Sincronitza la selecció de la vista 3D amb la jerarquia completa d'objectes</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="56"/>
+      <source>Sync sub-object selection</source>
+      <translation>Sincronitza la selecció dels subobjectes</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="88"/>
+      <source>Search</source>
+      <translation>Cerca</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.ui" line="95"/>
+      <source>A search pattern to filter the results above</source>
+      <translation>Un patró de cerca per filtrar els resultats anteriors</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="117"/>
+      <source>Reset</source>
+      <translation>Reinicia</translation>
+    </message>
+    <message>
+      <location filename="../Dialogs/DlgDocumentObject.cpp" line="118"/>
+      <source>Clear</source>
+      <translation>Neteja</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::Dialog::DlgSettingsKeyboard</name>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="14"/>
@@ -14759,29 +14809,34 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdToggleSuppress</name>
+    <name>StdCmdHelpGroup</name>
     <message>
-      <location filename="../CommandFeat.cpp" line="240"/>
-      <source>Toggle Suppressed</source>
-      <translation type="unfinished">Toggle Suppressed</translation>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>Ajuda</translation>
     </message>
     <message>
-      <location filename="../CommandFeat.cpp" line="242"/>
-      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
-      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
     </message>
   </context>
   <context>
-    <name>Gui::PropertyMapEditor</name>
+    <name>StdCmdAnnotationLabel</name>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
-      <source>Key</source>
-      <translation>Clau</translation>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>Eines</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
-      <source>Value</source>
-      <translation>Valor</translation>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation type="unfinished">Annotation Label</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation type="unfinished">Creates a new annotation label at the picked location in the 3D view</translation>
     </message>
   </context>
   <context>
@@ -14799,24 +14854,6 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="983"/>
-      <source>Tools</source>
-      <translation>Eines</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="984"/>
-      <source>Annotation Label</source>
-      <translation type="unfinished">Annotation Label</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="985"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation type="unfinished">Creates a new annotation label at the picked location in the 3D view</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdToggleBottomPanels</name>
     <message>
       <location filename="../CommandView.cpp" line="3890"/>
@@ -14830,34 +14867,86 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdToggleSuppress</name>
+    <message>
+      <location filename="../CommandFeat.cpp" line="240"/>
+      <source>Toggle Suppressed</source>
+      <translation type="unfinished">Toggle Suppressed</translation>
+    </message>
+    <message>
+      <location filename="../CommandFeat.cpp" line="242"/>
+      <source>Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</source>
+      <translation type="unfinished">Toggles suppressed state of the selected objects. A suppressed object behaves like it was deleted.</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdOpenGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="82"/>
+      <source>&amp;Open…</source>
+      <translation>&amp;Obrir…</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="83"/>
+      <source>Opens a document or imports files</source>
+      <translation>Obre un document o importa fitxers</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdSaveGroup</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="954"/>
+      <source>Save</source>
+      <translation>Desa</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="955"/>
+      <source>Saves the active document</source>
+      <translation>Desa el document actiu</translation>
+    </message>
+  </context>
+  <context>
+    <name>Gui::PropertyMapEditor</name>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Key</source>
+      <translation>Clau</translation>
+    </message>
+    <message>
+      <location filename="../Widgets.cpp" line="1905"/>
+      <source>Value</source>
+      <translation>Valor</translation>
+    </message>
+  </context>
+  <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Defineix el color base d'una superfície quan està il·luminada per llum. Representa com l'objecte dispersa la llum uniformement en totes direccions, independentment de l'angle de l'espectador. Aquesta propietat influirà més en el color del material.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Defineix el color d'una superfície sota una il·luminació indirecta i uniforme, representant com apareix quan està il·luminada només per llum d'ambient en una escena, sense llum direccional, ombres ni reflexos</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Defineix el color i la intensitat dels reflexos brillants i semblants a miralls, que apareixen a les superfícies brillants o reflectants quan la llum hi incideix directament. Estableix colors brillants per a objectes brillants.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Defineix el color d'una superfície que sembla emetre com si fos una font de llum, independent de la il·luminació externa, fent que l'objecte sembli autoil·luminat. Estableix-ho a negre per no tenir cap color emissor.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Defineix la mida i la nitidesa dels reflexos especulars en una superfície. Els valors més alts produeixen reflexos petits i nítids, mentre que els valors més baixos creen reflexos amplis i suaus. Tingueu en compte que la intensitat del reflex es defineix mitjançant el color especular.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Defineix quanta llum passa a través d'un objecte, fent-lo parcialment o totalment transparent</translation>
     </message>
@@ -14865,32 +14954,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Defineix el color base d'una superfície quan està il·luminada per llum. Representa com l'objecte dispersa la llum uniformement en totes direccions, independentment de l'angle de l'espectador. Aquesta propietat influirà més en el color del material.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Defineix el color d'una superfície sota una il·luminació indirecta i uniforme, representant com apareix quan està il·luminada només per llum d'ambient en una escena, sense llum direccional, ombres ni reflexos</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Defineix el color i la intensitat dels reflexos brillants i semblants a miralls, que apareixen a les superfícies brillants o reflectants quan la llum hi incideix directament. Estableix colors brillants per a objectes brillants.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Defineix el color d'una superfície que sembla emetre com si fos una font de llum, independent de la il·luminació externa, fent que l'objecte sembli autoil·luminat. Estableix-ho a negre per no tenir cap color emissor.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Defineix la mida i la nitidesa dels reflexos especulars en una superfície. Els valors més alts produeixen reflexos petits i nítids, mentre que els valors més baixos creen reflexos amplis i suaus. Tingueu en compte que la intensitat del reflex es defineix mitjançant el color especular.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Defineix quanta llum passa a través d'un objecte, fent-lo parcialment o totalment transparent</translation>
     </message>
@@ -14898,7 +14987,7 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>Mapa</translation>
     </message>

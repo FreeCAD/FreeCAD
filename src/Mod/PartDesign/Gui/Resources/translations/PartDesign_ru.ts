@@ -931,8 +931,8 @@ so that self intersection is avoided.</source>
       <translation>Булева операция</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="225"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="225"/>
       <source>Add a Body</source>
       <translation>Добавить тело</translation>
     </message>
@@ -3328,11 +3328,11 @@ measured along the specified direction</source>
       <translation>В документе нет подходящих плоскостей</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
@@ -3382,11 +3382,11 @@ measured along the specified direction</source>
       <translation type="unfinished">Select only one feature in an active body.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>Закрыть диалоговое окно?</translation>
     </message>
@@ -3614,14 +3614,14 @@ This may lead to unexpected results.</source>
       <translation>Невозможно создать субтрактивный элемент без базового элемента</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>Вертикальная ось эскиза</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>Горизонтальная ось эскиза</translation>
     </message>
@@ -3675,10 +3675,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Для использования этой операции/функции, она должна применяться к объекту Деталь в документе.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
       <translation>Редактировать %1</translation>
     </message>
@@ -3727,7 +3727,7 @@ This feature is broken and cannot be edited.</source>
       <translation>%1 не имеет базовый элемент. Этот элемент нарушен и не может быть изменён.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="222"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
       <source>Edit Shape Binder</source>
       <translation>Редактировать связующую форму</translation>
     </message>
@@ -4610,23 +4610,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>Невозможно выполнить логическую операцию с недопустимой базовой формой</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Результат содержит несколько твёрдых тел: включите параметр "Разрешить составные объекты" в активном теле.</translation>
     </message>
@@ -4662,9 +4662,9 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <source>Resulting shape is not a solid</source>
       <translation>Полученная форма не является твёрдотельной</translation>
     </message>
@@ -4743,8 +4743,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>Создание не удалось, поскольку направление ортогонально вектору нормали эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>Не удалось создать грань из эскиза</translation>
     </message>
@@ -4964,8 +4964,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Операция по сечениям: Не удалось создать грань из эскиза</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="304"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>Операция по сечениям: Не удалось создать оболочку</translation>
     </message>

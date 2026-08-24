@@ -55,15 +55,16 @@ App::DocumentObjectExecReturn* FeatureCompound::execute()
 
     for (std::vector<DocumentObject*>::const_iterator it = Paths.begin(); it != Paths.end(); ++it) {
         if ((*it)->isDerivedFrom<Path::Feature>()) {
-            const std::vector<Command*>& cmds
+            const std::vector<Command>& cmds
                 = static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
             const Base::Placement pl = static_cast<Path::Feature*>(*it)->Placement.getValue();
-            for (std::vector<Command*>::const_iterator it2 = cmds.begin(); it2 != cmds.end(); ++it2) {
+            for (std::vector<Command>::const_iterator it2 = cmds.begin(); it2 != cmds.end(); ++it2) {
                 if (UsePlacements.getValue()) {
-                    result.addCommand((*it2)->transform(pl));
+                    Command command(*it2);
+                    result.addCommand(command.transform(pl));
                 }
                 else {
-                    result.addCommand(**it2);
+                    result.addCommand(*it2);
                 }
             }
         }

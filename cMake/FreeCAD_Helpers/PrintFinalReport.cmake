@@ -238,6 +238,7 @@ macro(PrintFinalReport)
         conditional(PyAV av_FOUND "not found" "${av_VERSION}")
         conditional(PIL pillow_FOUND "not found" "${pillow_VERSION}")
     endif()
+    conditional(cpptrace cpptrace_FOUND "not found" "${cpptrace_VERSION}")
 
     section_end()
 

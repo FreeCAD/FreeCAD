@@ -20,14 +20,17 @@
 ################################################################################
 
 """
-Round-trip test for ToolBit feeds & speeds presets through the FCTB
-serializer. Confirms:
+Tests for Path.Tool.FeedsSpeeds.presets: preset_key (the identity used to
+tell two presets apart, or recognize a collision, by name plus the
+material/op-type combination they target), and a round-trip of ToolBit
+presets through the FCTB serializer. Confirms:
 - Lazy-add: a tool with no presets serializes byte-identical to before.
 - The "presets" key appears only when presets exist.
 - A round-trip preserves all preset fields.
 """
 
 import json
+import unittest
 from typing import cast
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.toolbit import ToolBit, ToolBitEndmill
@@ -38,8 +41,37 @@ from Path.Tool.FeedsSpeeds import (
     PRESETS_PROPERTY,
     get_presets,
     make_preset,
+    preset_key,
     set_presets,
 )
+
+
+class TestPresetKey(unittest.TestCase):
+    """Pure-function tests; no FreeCAD document needed."""
+
+    def test_key_derivation_includes_material_and_op(self):
+        named = make_preset(name="Roughing", surface_speed=1, chipload=1)
+        unnamed = make_preset(
+            material_uuid="uuid-1",
+            material_name="Aluminum",
+            op_type="pocket",
+            surface_speed=1,
+            chipload=1,
+        )
+        self.assertEqual(preset_key(named), ("Roughing", None, None))
+        self.assertEqual(preset_key(unnamed), (None, "uuid-1", "pocket"))
+
+    def test_same_name_different_material_is_not_a_collision(self):
+        hard = make_preset(name="Default", material_uuid="hard", surface_speed=100, chipload=0.01)
+        soft = make_preset(name="Default", material_uuid="soft", surface_speed=200, chipload=0.02)
+        self.assertNotEqual(preset_key(hard), preset_key(soft))
+
+    def test_two_unnamed_presets_with_same_hint_collide(self):
+        # Same material/op hint, different numbers - an inherent limitation
+        # of hint-based keys for anonymous presets.
+        a = make_preset(material_uuid="uuid-1", op_type="pocket", surface_speed=100, chipload=0.01)
+        b = make_preset(material_uuid="uuid-1", op_type="pocket", surface_speed=200, chipload=0.02)
+        self.assertEqual(preset_key(a), preset_key(b))
 
 
 class TestFeedsSpeedsToolBitPresets(PathTestWithAssets):

@@ -9,24 +9,24 @@
       <translation>&lt;空&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2445"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2734"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
       <source>Axis</source>
       <translation>軸</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
       <source>Position</source>
       <translation>位置</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>列挙型</translation>
@@ -133,8 +133,8 @@
       <translation>配置</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
@@ -146,8 +146,8 @@
       <translation>整列要素の切り替え</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>画像の編集</translation>
     </message>
@@ -2819,27 +2819,53 @@ bounding box size of the 3D object that is currently displayed.</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="545"/>
+      <source>Maximum frame rate</source>
+      <translation type="unfinished">Maximum frame rate</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="558"/>
+      <source>Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</source>
+      <translation type="unfinished">Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="564"/>
+      <source>Automatic</source>
+      <translation>自動</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="567"/>
+      <source> FPS</source>
+      <translation type="unfinished"> FPS</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="594"/>
       <source>Camera Type</source>
       <translation>カメラのタイプ</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="587"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="631"/>
       <source>Objects will be in orthographic projection</source>
       <translation>オブジェクトは正射投影されます</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="571"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="615"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>オブジェクトは透視投影で表示されます</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="618"/>
       <source>Perspective renderin&amp;g</source>
       <translation>透視投影レンダリング(&amp;g)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="634"/>
       <source>Or&amp;thographic rendering</source>
       <translation>正射投影レンダリング(&amp;t)</translation>
     </message>
@@ -2851,57 +2877,57 @@ bounding box size of the 3D object that is currently displayed.</source>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
       <source>20px</source>
       <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="192"/>
       <source>25px</source>
       <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="193"/>
       <source>30px</source>
       <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="246"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="248"/>
       <source>Anti-aliasing</source>
       <translation>アンチエイリアス</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="247"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="249"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>アンチ・エイリアスの変更を適用するには、新しいビューアーを開くまたは %1 を再起動してください。</translation>
     </message>
@@ -5928,66 +5954,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>ユーザー定義…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>間違った方向</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>方向はnullのベクトルであってはならない</translation>
     </message>
@@ -6408,12 +6434,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Object not found</source>
       <translation>オブジェクトが見つかりません</translation>
     </message>
@@ -8047,13 +8073,6 @@ Check the report view for more details.</source>
       <translation>ドキュメントを統合</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <location filename="../Document.cpp" line="1747"/>
-      <location filename="../Document.cpp" line="1877"/>
-      <source>%1 document</source>
-      <translation>%1 ドキュメント</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="684"/>
       <source>Cannot merge document with itself.</source>
       <translation>ドキュメントを自身に統合することはできません。</translation>
@@ -8502,6 +8521,13 @@ Use 'Save As…' to preserve the original file.
       <translation>新しいファイル名でドキュメントを保存…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <source>%1 document</source>
+      <translation>%1 ドキュメント</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1863"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>新しいファイル名でドキュメントのコピーを保存…</translation>
@@ -8653,13 +8679,13 @@ Choose 'Abort' to abort</source>
       <translation>%2 にも %3 にもファイル %1 が見つかりません。</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2588"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2647"/>
       <source>Clarify Selection</source>
       <translation>選択対象の明確化</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1454"/>
       <location filename="../MainWindow.cpp" line="1001"/>
+      <location filename="../CommandDoc.cpp" line="1454"/>
       <source>Unsaved Document</source>
       <translation>未保存のドキュメント</translation>
     </message>
@@ -8783,8 +8809,8 @@ Choose 'Abort' to abort</source>
       <translation>ドラッグ&amp;ドロップ失敗</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <source>Apply to all</source>
       <translation>すべてに適用</translation>
     </message>
@@ -8892,8 +8918,8 @@ the current copy will be lost.
       <translation>オーバーレイの切り替え</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
+      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <source>Toggle floating window</source>
       <translation>フローティングウィンドウの切り替え</translation>
     </message>
@@ -9079,9 +9105,9 @@ the current copy will be lost.
       <translation>選択したすべてのオブジェクト (%1) とその子要素に適用</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
-      <source>Edit Image Plane</source>
-      <translation>画像平面を編集</translation>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>部品</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="301"/>
@@ -9089,9 +9115,9 @@ the current copy will be lost.
       <translation>すべてのファイル</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>部品</translation>
+      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
+      <source>Edit Image Plane</source>
+      <translation>画像平面を編集</translation>
     </message>
   </context>
   <context>
@@ -10871,32 +10897,32 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="660"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>FRONT</source>
       <translation>前</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="662"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>TOP</source>
       <translation>上</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>RIGHT</source>
       <translation>右</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="672"/>
       <source>REAR</source>
       <translation>後</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="674"/>
       <source>BOTTOM</source>
       <translation>下</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="676"/>
       <source>LEFT</source>
       <translation>左</translation>
     </message>
@@ -14457,7 +14483,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4699"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
       <source>Changes the linked object</source>
       <translation>リンクされたオブジェクトを変更</translation>
     </message>
@@ -14760,6 +14786,64 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdHelpGroup</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>ヘルプ</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>ツール</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation>注釈ラベル</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>3Dビュー内の選択位置に新しい注釈ラベルを作成</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>名前をつけて保存</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>開く</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>下部パネルを切り替え</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3891"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>下部ドックパネルを切り替え</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdToggleSuppress</name>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
@@ -14812,92 +14896,34 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>名前をつけて保存</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>開く</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdHelpGroup</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="322"/>
-      <source>Help</source>
-      <translation>ヘルプ</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="323"/>
-      <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="1024"/>
-      <source>Tools</source>
-      <translation>ツール</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1025"/>
-      <source>Annotation Label</source>
-      <translation>注釈ラベル</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1026"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation>3Dビュー内の選択位置に新しい注釈ラベルを作成</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>下部パネルを切り替え</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>下部ドックパネルを切り替え</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>光で照らされた表面の基本色を定義します。表示方向には関係無く、どのようにオブジェクトが全方向に均等に光を散乱するかを表します。このプロパティはマテリアルの色に最も影響します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>間接的な均一の照明下の表面の色を定義し、環境光のみに照らされた時にどのように表示されるかを表現します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>光が直接あたった時に　光沢または反射のある面に表示される鏡面的なハイライトの色と強度を定義します。 光沢のあるオブジェクトの明るい色を設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>光源として発光しているように表示される表面の色を定義し、外部の照明とは無関係に物体が自ら発光しているように見せます。発光色が無い場合は黒に設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>表面上の鏡面ハイライトの大きさとシャープさを定義します。 値が大きいほど小さくシャープな表示になり、値が小さいほど広範囲なぼんやりとした表示になります。ハイライトの強度は鏡面反射色で定義されることに注意してください。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>オブジェクトを通過する光の量を定義し、部分的または完全に光を透過させます。</translation>
     </message>
@@ -14905,32 +14931,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>光で照らされた表面の基本色を定義します。表示方向には関係無く、どのようにオブジェクトが全方向に均等に光を散乱するかを表します。このプロパティはマテリアルの色に最も影響します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>間接的な均一の照明下の表面の色を定義し、直接光やシェーディング、ハイライト無しの、環境光のみに照らされた時にどのように表示されるかを表現します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>光が直接あたった時に　光沢または反射のある面に表示される鏡面的なハイライトの色と強度を定義します。 光沢のあるオブジェクトの明るい色を設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>光源として発光しているように表示される表面の色を定義し、外部の照明とは無関係に物体が自ら発光しているように見せます。発光色が無い場合は黒に設定します。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>表面上の鏡面ハイライトの大きさとシャープさを定義します。 値が大きいほど小さくシャープな表示になり、値が小さいほど広範囲なぼんやりとした表示になります。ハイライトの強度は鏡面反射色で定義されることに注意してください。</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>オブジェクトを通過する光の量を定義し、部分的または完全に光を透過させます。</translation>
     </message>
@@ -14938,7 +14964,7 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>マップ</translation>
     </message>
