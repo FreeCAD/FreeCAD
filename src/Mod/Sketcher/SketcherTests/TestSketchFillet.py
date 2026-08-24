@@ -214,14 +214,12 @@ class TestSketchFillet(unittest.TestCase):
         found_horizontal = False
         found_vertical = False
         for c in SketchFeature.Constraints:
-            if (
-                c.Type == "Horizontal"
-                and (SketchFeature.getConstruction(c.First) or SketchFeature.getConstruction(c.Second))
+            if c.Type == "Horizontal" and (
+                SketchFeature.getConstruction(c.First) or SketchFeature.getConstruction(c.Second)
             ):
                 found_horizontal = True
-            elif (
-                c.Type == "Vertical"
-                and (SketchFeature.getConstruction(c.First) or SketchFeature.getConstruction(c.Second))
+            elif c.Type == "Vertical" and (
+                SketchFeature.getConstruction(c.First) or SketchFeature.getConstruction(c.Second)
             ):
                 found_vertical = True
 
@@ -277,7 +275,9 @@ class TestSketchFillet(unittest.TestCase):
         second_line = int(SketchFeature.GeometryCount)
         SketchFeature.addGeometry(Part.LineSegment(App.Vector(1, 1, 0), App.Vector(2, 0, 0)))
         SketchFeature.addConstraint(Sketcher.Constraint("DistanceX", second_line, 2, -1, 1, -2))
-        SketchFeature.addConstraint(Sketcher.Constraint("Coincident", first_line, 2, second_line, 1))
+        SketchFeature.addConstraint(
+            Sketcher.Constraint("Coincident", first_line, 2, second_line, 1)
+        )
         tangent_line = int(SketchFeature.GeometryCount)
         SketchFeature.addGeometry(Part.LineSegment(App.Vector(2, 2, 0), App.Vector(3, 3, 0)))
         SketchFeature.addConstraint(Sketcher.Constraint("Tangent", tangent_line, first_line))
@@ -300,10 +300,9 @@ class TestSketchFillet(unittest.TestCase):
             if constraint.Type != "Tangent":
                 continue
 
-            if (
-                not SketchFeature.getConstruction(constraint.First)
-                and not SketchFeature.getConstruction(constraint.Second)
-            ):
+            if not SketchFeature.getConstruction(
+                constraint.First
+            ) and not SketchFeature.getConstruction(constraint.Second):
                 tangent_constraint_found = True
                 break
 
