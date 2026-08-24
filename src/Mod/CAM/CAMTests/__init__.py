@@ -8,7 +8,7 @@ import unittest
 # This replaces a previous implementation that used globbing to find test files. The
 # CMake-generated version is an improvement because it ignores stale python files that
 # globbing would detect and execute as if they were current tests.
-from . import cam_test_modules
+import CAMTests.cam_test_modules
 
 _EXCLUDE_MODULES = {
     "TestLinuxCNCLegacyPost",
@@ -29,7 +29,7 @@ _EXCLUDE_MEMBERS = {
 
 
 def _load_cam_tests():
-    for module_name in cam_test_modules.MODULES:
+    for module_name in CAMTests.cam_test_modules.MODULES:
         if module_name in _EXCLUDE_MODULES:
             continue
         module = importlib.import_module(f"{__name__}.{module_name}")
