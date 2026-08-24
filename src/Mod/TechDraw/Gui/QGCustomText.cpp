@@ -185,15 +185,16 @@ QRectF QGCustomText::tightBoundingRect() const
     QFontMetrics qfm(font());
     QRectF result = QGraphicsTextItem::boundingRect();
     QRectF tight = qfm.tightBoundingRect(toPlainText());
-    qreal x_adj = (result.width() - tight.width())/4.0;
-    qreal y_adj = (result.height() - tight.height())/4.0;
 
-    // Adjust the bounding box 50% towards the Qt tightBoundingRect(),
-    // except chomp some extra empty space above the font (1.75*y_adj)
-    // wf: this does not work with all fonts.  it depends on where the glyph is located within
-    //     the em square.  see https://github.com/FreeCAD/FreeCAD/issues/11452
-    // TODO: how to know where the glyph is going to be placed?
-    result.adjust(x_adj, 1.75*y_adj, -x_adj, -y_adj);
+    double baselineY = document()->documentMargin() + qfm.ascent();
+    double inkTop = baselineY + tight.top();
+    double inkBottom = baselineY + tight.bottom();
+
+    double x_adj = (result.width() - tight.width()) / 2.0;
+    result.setLeft(result.left() + x_adj);
+    result.setRight(result.right() - x_adj);
+    result.setTop(inkTop);
+    result.setBottom(inkBottom);
 
     return result;
 }
