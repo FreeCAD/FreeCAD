@@ -53,7 +53,12 @@ public:
 
     void updatePreview();
 
-    virtual bool mustRecomputePreview() const;
+    /// Marks the preview as stale so the next updatePreview() recomputes it.
+    void invalidatePreview();
+
+    virtual bool mustRecomputePreview();
+
+    PyObject* getExtensionPyObject() override;
 
 protected:
     void extensionOnChanged(const App::Property* prop) override;
@@ -102,6 +107,10 @@ class PreviewExtensionPythonT: public ExtensionT
 public:
     PreviewExtensionPythonT() = default;
     ~PreviewExtensionPythonT() override = default;
+
+protected:
+    App::DocumentObjectExecReturn* recomputePreview() override;
+    bool mustRecomputePreview() override;
 };
 
 using PreviewExtensionPython = App::ExtensionPythonT<PreviewExtensionPythonT<PreviewExtension>>;

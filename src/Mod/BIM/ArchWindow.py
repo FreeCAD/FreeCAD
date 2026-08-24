@@ -65,6 +65,16 @@ else:
 
     # \endcond
 
+# Preview appearance, mirroring the style parameters PartDesign resolves for its
+# own previews (PreviewAdditiveColor, PreviewSubtractiveColor, PreviewShapeOpacity
+# and PreviewToolOpacity in Mod/PartDesign/Gui/StyleParameters.h). Those live in
+# PartDesign and are not reachable from Python, so the values are restated here;
+# promoting them to Part and exposing them would let this follow the theme.
+PreviewAdditiveColor = (0.0, 1.0, 0.6)
+PreviewSubtractiveColor = (1.0, 0.0, 0.0)
+PreviewShapeOpacity = 0.2
+PreviewToolOpacity = 0.05
+
 # presets
 WindowPartTypes = ["Frame", "Solid panel", "Glass panel", "Louvre"]
 WindowOpeningModes = [
@@ -291,6 +301,9 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("VerticalArea", 2)
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
+
+        if not obj.hasExtension("Part::PreviewExtensionPython"):
+            obj.addExtension("Part::PreviewExtensionPython")
 
     def onDocumentRestored(self, obj):
 
@@ -649,6 +662,38 @@ class _Window(ArchComponent.Component):
                 self.vshapes.extend(vsymbols)
         return shapes
 
+    def recomputePreview(self, ext):
+        """Build the preview shape from the window solids.
+
+        Computes the geometry directly with buildShapes() rather than reading
+        obj.Shape, so the preview follows every property - WindowParts included -
+        without waiting for a full document recompute.
+        """
+
+        import Part
+
+        obj = ext.ExtendedObject
+
+        if not self.ensureBase(obj):
+            obj.PreviewShape = Part.Shape()
+            return
+
+        shapes = None
+        if obj.Base and obj.WindowParts and (len(obj.WindowParts) % 5 == 0):
+            shapes = self.buildShapes(obj)
+
+        if not shapes:
+            obj.PreviewShape = obj.Shape if not obj.Shape.isNull() else Part.Shape()
+            return
+
+        preview = Part.makeCompound(shapes)
+        # PreviewShape is the extension's own property, so it gets none of the
+        # automatic Placement sync Part::Feature applies to Shape - it has to be
+        # positioned explicitly.
+        preview.Placement = obj.Placement
+
+        obj.PreviewShape = preview
+
     def execute(self, obj):
 
         if self.clone(obj):
@@ -692,7 +737,7 @@ class _Window(ArchComponent.Component):
             if not base.isNull():
                 b = []
                 if self.sshapes:
-                    if hasattr(obj, "SymbolPlan"):
+                    if hasattr(obj, "SymbolPlan"):  # ensure that object gets updated
                         if obj.SymbolPlan:
                             b.extend(self.sshapes)
                     else:
@@ -887,6 +932,65 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
+    def attach(self, vobj):
+
+        ArchComponent.ViewProviderComponent.attach(self, vobj)
+        if not vobj.hasExtension("PartGui::ViewProviderPreviewExtensionPython"):
+            vobj.addExtension("PartGui::ViewProviderPreviewExtensionPython")
+
+    def attachPreview(self, vext):
+        """Add a second, fainter node showing the volume this window removes
+        from its host wall(s), alongside the primary node's window solids.
+
+        The two nodes read as additive and subtractive respectively, matching
+        how PartDesign colours its previews.
+        """
+
+        from pivy import coin
+
+        vext.ExtendedObject.PreviewColor = PreviewAdditiveColor
+        vext.PreviewShapeNode.transparency.setValue(1.0 - PreviewShapeOpacity)
+
+        self.holePreviewNode = coin.SoType.fromName("SoPreviewShape").createInstance()
+        self.holePreviewNode.color.setValue(*PreviewSubtractiveColor)
+        self.holePreviewNode.lineWidth.connectFrom(vext.PreviewShapeNode.lineWidth)
+        self.holePreviewNode.transparency.setValue(1.0 - PreviewToolOpacity)
+
+        vext.PreviewRootNode.addChild(self.holePreviewNode)
+
+    def updatePreview(self, vext):
+        """Refresh the removed-volume node from the window's current hosts.
+
+        A window can be Added to more than one host (e.g. spanning a wall
+        junction), and production cuts each host by its own subvolume
+        (ArchComponent.py's per-host recompute), so all hosts are combined
+        here rather than only the first.
+        """
+
+        import Part
+
+        node = getattr(self, "holePreviewNode", None)
+        if node is None:
+            return
+
+        obj = self.Object
+        holes = []
+        for host in obj.Hosts:
+            try:
+                hole = obj.Proxy.getSubVolume(obj, host=host)
+            except Exception:
+                # getSubVolume can raise on malformed geometry (e.g. a window
+                # with no Base). Swallowed rather than logged, since this runs
+                # on every live-preview keystroke while editing and would
+                # otherwise spam the Report view for a state that is normal
+                # mid-edit, not an error.
+                hole = None
+            if hole:
+                holes.append(hole)
+
+        shape = Part.makeCompound(holes) if holes else Part.Shape()
+        vext.updatePreviewShape(shape, node)
+
     def getIcon(self):
 
         import Arch_rc
@@ -1068,6 +1172,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         vobj.Transparency = 80
         if self.Object.Base:
             self.Object.Base.ViewObject.show()
+        if hasattr(vobj, "showPreview"):
+            vobj.showPreview(True)
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
@@ -1081,6 +1187,8 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         vobj.DiffuseColor = vobj.DiffuseColor  # reset face colors
         if self.Object.Base:
             self.Object.Base.ViewObject.hide()
+        if hasattr(vobj, "showPreview"):
+            vobj.showPreview(False)
         FreeCADGui.Control.closeDialog()
         return True
 
@@ -1183,6 +1291,7 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
+        self._suppressLiveUpdate = False
 
         # Window options task box
         self.optionsform = QtGui.QWidget()
@@ -1353,6 +1462,10 @@ class _ArchWindowTaskPanel:
         QtCore.QObject.connect(self.field6, QtCore.SIGNAL("clicked()"), self.addEdge)
         self.update()
 
+        self.widthWidget.valueChanged.connect(self.updateObjectData)
+        self.heightWidget.valueChanged.connect(self.updateObjectData)
+        self.openingWidget.valueChanged.connect(self.updateObjectData)
+
         FreeCADGui.Selection.clearSelection()
 
     def isAllowedAlterSelection(self):
@@ -1443,22 +1556,25 @@ class _ArchWindowTaskPanel:
         self.wiretree.clear()
         self.comptree.clear()
         if self.obj:
+            self._suppressLiveUpdate = True
+            try:
+                FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
+                self.widthWidget.setProperty("value", self.obj.Width)
 
-            FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
-            self.widthWidget.setProperty("value", self.obj.Width)
+                FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
+                self.heightWidget.setProperty("value", self.obj.Height)
 
-            FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
-            self.heightWidget.setProperty("value", self.obj.Height)
-
-            FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
-            # Opening is a scalar property, as opposed to a quantity property. It appears to have
-            # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
-            # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
-            # the property to these, so it must be reading them from metadata, but they might not
-            # be queryable via Python.
-            self.openingWidget.setProperty("minimum", 0)
-            self.openingWidget.setProperty("maximum", 100)
-            self.openingWidget.setProperty("value", self.obj.Opening)
+                FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+                # Opening is a scalar property, as opposed to a quantity property. It appears to
+                # have no "preferred unit" metadata. We cannot set the suffix manually either, but
+                # at least we can set some safe limits. These limits are hardcoded: the Property
+                # Editor clamps the property to these, so it must be reading them from metadata,
+                # but they might not be queryable via Python.
+                self.openingWidget.setProperty("minimum", 0)
+                self.openingWidget.setProperty("maximum", 100)
+                self.openingWidget.setProperty("value", self.obj.Opening)
+            finally:
+                self._suppressLiveUpdate = False
 
             if self.obj.Base:
                 item = QtGui.QTreeWidgetItem(self.tree)
@@ -1687,6 +1803,11 @@ class _ArchWindowTaskPanel:
 
     def reject(self):
 
+        if self.obj:
+            # The edit writes properties as the user types so the preview can
+            # follow, so cancelling has real changes to roll back. Without this
+            # the C++ layer would commit them during resetEdit below.
+            self.obj.Document.abortTransaction()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
@@ -1755,11 +1876,31 @@ class _ArchWindowTaskPanel:
                 i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None)
             )
 
+    def updateObjectData(self):
+        if not self.obj or self._suppressLiveUpdate:
+            return
+
+        width = self.widthWidget.property("value")
+        if self.obj.Width != width:
+            self.obj.Width = width
+
+        height = self.heightWidget.property("value")
+        if self.obj.Height != height:
+            self.obj.Height = height
+
+        opening = self.openingWidget.property("value")
+        if self.obj.Opening != opening:
+            self.obj.Opening = opening
+
     def accept(self):
         if self.obj:
-            self.obj.Width = self.widthWidget.property("value")
-            self.obj.Height = self.heightWidget.property("value")
-            self.obj.Opening = self.openingWidget.property("value")
+            self._suppressLiveUpdate = False  # ensure that object gets updated
+            self.updateObjectData()
+            # setEditDocument() does not change the active document, so the edited
+            # object's own document - not necessarily FreeCAD.ActiveDocument, which
+            # basepanel.accept() recomputes below - may otherwise stay stale.
+            self.obj.Document.recompute()
+
         self.basepanel.obj = self.obj
         return self.basepanel.accept()
 
