@@ -1212,7 +1212,12 @@ class _Structure(ArchComponent.Component):
 
             # Prevent geometry breaking when IfcType changes
             is_structural_frame = (IfcType in ["Beam", "Column"]) or use_profile_orientation
-            if hasattr(obj, "Proxy") and obj.Proxy.__class__.__name__ in ["Beam", "_Beam", "Column", "_Column"]:
+            if hasattr(obj, "Proxy") and obj.Proxy.__class__.__name__ in [
+                "Beam",
+                "_Beam",
+                "Column",
+                "_Column",
+            ]:
                 is_structural_frame = True
 
             if (length > height) and is_structural_frame:
