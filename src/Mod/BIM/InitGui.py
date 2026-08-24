@@ -145,6 +145,7 @@ class BIMWorkbench(Workbench):
             "Draft_Split",
             "Draft_Stretch",
             "Draft_Draft2Sketch",
+            "Draft_Edit",
         ]
         self.modify_obj = [
             "Draft_Upgrade",
@@ -192,12 +193,10 @@ class BIMWorkbench(Workbench):
             "Arch_Check",
             "Arch_ToggleIfcBrepFlag",
             "Arch_ToggleSubs",
-            "Arch_Survey",
             "BIM_Diff",
             "BIM_IfcExplorer",
             "Arch_IfcSpreadsheet",
             "BIM_ImagePlane",
-            "BIM_Unclone",
             "BIM_Rewire",
             "BIM_Glue",
             "BIM_Reextrude",
@@ -330,7 +329,7 @@ class BIMWorkbench(Workbench):
 
         class BIM_ReportTools:
             def GetCommands(self):
-                return ("BIM_Report", "Arch_Schedule")
+                return ("BIM_Report", "Arch_Schedule", "Arch_Survey")
 
             def GetResources(self):
                 label = QT_TRANSLATE_NOOP("BIM_ReportTools", "Report Tools")
@@ -342,7 +341,7 @@ class BIMWorkbench(Workbench):
 
         class BIM_CloneTools:
             def GetCommands(self):
-                return ("BIM_Clone", "BIM_LinkMake")
+                return ("BIM_Clone", "BIM_LinkMake", "BIM_Unclone")
 
             def GetResources(self):
                 label = QT_TRANSLATE_NOOP("BIM_CloneTools", "Cloning Tools")

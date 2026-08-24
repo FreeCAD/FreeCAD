@@ -37,6 +37,7 @@
 
 #include <QEvent>
 #include <QAction>
+#include <QObject>
 #include <Base/BaseClass.h>
 #include <Base/SmartPtrPy.h>
 #include <Gui/Namespace.h>
@@ -61,6 +62,21 @@ class View3DInventorViewer;
 class NavigationAnimator;
 class AbstractMouseSelection;
 class NavigationAnimation;
+class ViewProviderDocumentObject;
+
+class NavigationStyleContextMenuReceiver: public QObject
+{
+    Q_OBJECT
+
+public:
+    NavigationStyleContextMenuReceiver(ViewProviderDocumentObject* viewProvider, QObject* parent);
+
+public Q_SLOTS:
+    void startEditing();
+
+private:
+    ViewProviderDocumentObject* viewProvider {nullptr};
+};
 
 /**
  * @author Werner Mayer
@@ -346,6 +362,12 @@ private:
     bool getObjectBoundingSphere(SbSphere& sphere) const;
     bool getObjectBoundingBoxCenter(SbVec3f& center) const;
     void applyOrbitDragCameraConstraints(const OrbitDragState& state);
+    bool isDoubleClickCandidate(const SoMouseButtonEvent* event) const;
+    void deferMouseDownEvent(const SoMouseButtonEvent* event);
+    void clearDeferredMouseDownEvent();
+    void replayDeferredMouseDownEvent();
+    void recordClickCandidate(const SoMouseButtonEvent* event);
+    void clearClickCandidateState();
 
 protected:
     void clearLog();
@@ -383,7 +405,9 @@ protected:
     NavigationAnimator* animator;
     SbBool animationEnabled;
     ViewerMode currentmode;
-    SoMouseButtonEvent mouseDownConsumedEvent;
+    SoMouseButtonEvent deferredMouseDownEvent;
+    bool hasDeferredMouseDownEvent {false};
+    SbTime lastClickCandidateTime;
     SbVec2f lastmouseposition;
     SbVec2s globalPos;
     SbVec2s localPos;

@@ -90,6 +90,8 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
 
     bool friction = pcConstraint->Friction.getValue();
+    auto revMaster = pcConstraint->ReversedMaster.getValues();
+    auto revSlave = pcConstraint->ReversedSlave.getValues();
 
     // Fill data into dialog elements
     ui->spbSlope->setUnit(pcConstraint->Slope.getUnit());
@@ -105,6 +107,9 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     ui->spbAdjust->bind(pcConstraint->Adjust);
 
     ui->ckbFriction->setChecked(friction);
+
+    ui->ckbRevMaster->setChecked(revMaster.empty() ? false : revMaster.at(0));
+    ui->ckbRevSlave->setChecked(revSlave.empty() ? false : revSlave.at(0));
 
     ui->spbFrictionCoeff->setMinimum(0);
     ui->spbFrictionCoeff->setMaximum(std::numeric_limits<float>::max());
@@ -139,12 +144,12 @@ TaskFemConstraintContact::TaskFemConstraintContact(
     }
 
     ui->lbl_info->setText(
-        tr("Select slave geometry of type: ") + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
-        + tr("click Add or Remove")
+        tr("Select slave geometry of type: ")
+        + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face")) + tr("click Add or Remove")
     );
     ui->lbl_info_2->setText(
-        tr("Select master geometry of type: ") + QString::fromUtf8("<b>%1</b>; ").arg(tr("Face"))
-        + tr("click Add or Remove")
+        tr("Select master geometry of type: ")
+        + QString::fromUtf8("<b>%1</b>; ").arg(tr("Edge, Face")) + tr("click Add or Remove")
     );
 
     // Selection buttons
@@ -535,6 +540,21 @@ const std::string TaskFemConstraintContact::getStickSlope() const
     return ui->spbStickSlope->value().getSafeUserString();
 }
 
+const std::vector<bool> TaskFemConstraintContact::getRevMaster() const
+{
+    int count = ui->lw_referencesMaster->model()->rowCount();
+    std::vector<bool> rev(count, ui->ckbRevMaster->isChecked());
+    return rev;
+}
+
+const std::vector<bool> TaskFemConstraintContact::getRevSlave() const
+{
+    int count = ui->lw_referencesSlave->model()->rowCount();
+    std::vector<bool> rev(count, ui->ckbRevSlave->isChecked());
+    return rev;
+}
+
+
 void TaskFemConstraintContact::changeEvent(QEvent*)
 {}
 
@@ -593,6 +613,30 @@ bool TaskDlgFemConstraintContact::accept()
             "App.ActiveDocument.%s.StickSlope = \"%s\"",
             name.c_str(),
             parameterContact->getStickSlope().c_str()
+        );
+
+        auto rev_master = parameterContact->getRevMaster();
+        std::string rev_master_str {""};
+        for (bool b : rev_master) {
+            rev_master_str.append(b ? "True," : "False,");
+        }
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ReversedMaster = [%s]",
+            name.c_str(),
+            rev_master_str.c_str()
+        );
+
+        auto rev_slave = parameterContact->getRevSlave();
+        std::string rev_slave_str {""};
+        for (bool b : rev_slave) {
+            rev_slave_str.append(b ? "True," : "False,");
+        }
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            "App.ActiveDocument.%s.ReversedSlave = [%s]",
+            name.c_str(),
+            rev_slave_str.c_str()
         );
     }
     catch (const Base::Exception& e) {

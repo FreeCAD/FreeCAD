@@ -59,6 +59,7 @@
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Tools.h>
 
 #include "Base/Tools2D.h"
 #include "Command.h"
@@ -1423,7 +1424,7 @@ StdCmdViewHome::StdCmdViewHome()
 void StdCmdViewHome::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewHome\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewHome\")");
 }
 
 //===========================================================================
@@ -1447,7 +1448,7 @@ StdCmdViewBottom::StdCmdViewBottom()
 void StdCmdViewBottom::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewBottom\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewBottom\")");
 }
 
 bool StdCmdViewBottom::isActive()
@@ -1476,7 +1477,7 @@ StdCmdViewFront::StdCmdViewFront()
 void StdCmdViewFront::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFront\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFront\")");
 }
 
 bool StdCmdViewFront::isActive()
@@ -1505,7 +1506,7 @@ StdCmdViewLeft::StdCmdViewLeft()
 void StdCmdViewLeft::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewLeft\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewLeft\")");
 }
 
 bool StdCmdViewLeft::isActive()
@@ -1534,7 +1535,7 @@ StdCmdViewRear::StdCmdViewRear()
 void StdCmdViewRear::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRear\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewRear\")");
 }
 
 bool StdCmdViewRear::isActive()
@@ -1563,7 +1564,7 @@ StdCmdViewRight::StdCmdViewRight()
 void StdCmdViewRight::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewRight\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewRight\")");
 }
 
 bool StdCmdViewRight::isActive()
@@ -1592,7 +1593,7 @@ StdCmdViewTop::StdCmdViewTop()
 void StdCmdViewTop::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTop\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewTop\")");
 }
 
 bool StdCmdViewTop::isActive()
@@ -1622,7 +1623,7 @@ StdCmdViewIsometric::StdCmdViewIsometric()
 void StdCmdViewIsometric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewAxo\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewAxo\")");
 }
 
 bool StdCmdViewIsometric::isActive()
@@ -1650,7 +1651,7 @@ StdCmdViewDimetric::StdCmdViewDimetric()
 void StdCmdViewDimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewDimetric\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewDimetric\")");
 }
 
 bool StdCmdViewDimetric::isActive()
@@ -1678,7 +1679,7 @@ StdCmdViewTrimetric::StdCmdViewTrimetric()
 void StdCmdViewTrimetric::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewTrimetric\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewTrimetric\")");
 }
 
 bool StdCmdViewTrimetric::isActive()
@@ -1757,7 +1758,7 @@ StdCmdViewFitAll::StdCmdViewFitAll()
 void StdCmdViewFitAll::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewFit\")");
 }
 
 bool StdCmdViewFitAll::isActive()
@@ -1786,7 +1787,7 @@ StdCmdViewFitSelection::StdCmdViewFitSelection()
 void StdCmdViewFitSelection::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewSelection\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewSelection\")");
 }
 
 bool StdCmdViewFitSelection::isActive()
@@ -2093,7 +2094,7 @@ StdCmdViewVR::StdCmdViewVR()
 void StdCmdViewVR::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewVR\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"ViewVR\")");
 }
 
 bool StdCmdViewVR::isActive()
@@ -2227,29 +2228,27 @@ void StdViewScreenShot::activated(int iMsg)
             }
             hExt->SetInt("OffscreenImageBackground", opt->backgroundType());
 
+            std::string imageFile = Base::Tools::escapeEncodeFilename(fn.toStdString());
             QString comment = opt->comment();
             if (!comment.isEmpty()) {
-                // Replace newline escape sequence through '\\n' string to build one big string,
-                // otherwise Python would interpret it as an invalid command.
-                // Python does the decoding for us.
-                QStringList lines = comment.split(QLatin1String("\n"), Qt::KeepEmptyParts);
-
-                comment = lines.join(QLatin1String("\\n"));
+                std::string escapedComment = Base::Tools::escapeEncodeString(
+                    comment.toUtf8().toStdString()
+                );
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s','%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background,
-                    comment.toUtf8().constData()
+                    escapedComment.c_str()
                 );
             }
             else {
                 doCommand(
                     Gui,
                     "Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
-                    fn.toUtf8().constData(),
+                    imageFile.c_str(),
                     w,
                     h,
                     background
@@ -2440,6 +2439,7 @@ StdCmdAxisCross::StdCmdAxisCross()
     sStatusTip = sToolTipText;
     sWhatsThis = "Std_AxisCross";
     sPixmap = "Std_AxisCross";
+    eType = Alter3DView;
     sAccel = "A,C";
 }
 
@@ -2496,7 +2496,7 @@ StdCmdViewExample1::StdCmdViewExample1()
 void StdCmdViewExample1::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example1\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example1\")");
 }
 
 bool StdCmdViewExample1::isActive()
@@ -2524,7 +2524,7 @@ StdCmdViewExample2::StdCmdViewExample2()
 void StdCmdViewExample2::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example2\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example2\")");
 }
 
 bool StdCmdViewExample2::isActive()
@@ -2552,7 +2552,7 @@ StdCmdViewExample3::StdCmdViewExample3()
 void StdCmdViewExample3::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"Example3\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"Example3\")");
 }
 
 bool StdCmdViewExample3::isActive()
@@ -3996,7 +3996,7 @@ StdStoreWorkingView::StdStoreWorkingView()
 void StdStoreWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"StoreWorkingView\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"StoreWorkingView\")");
 }
 
 bool StdStoreWorkingView::isActive()
@@ -4024,7 +4024,7 @@ StdRecallWorkingView::StdRecallWorkingView()
 void StdRecallWorkingView::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"RecallWorkingView\")");
+    doCommand(Command::Gui, "Gui.getMainWindow().getActiveWindow().sendMessage(\"RecallWorkingView\")");
 }
 
 bool StdRecallWorkingView::isActive()
@@ -4048,15 +4048,21 @@ StdCmdAlignToSelection::StdCmdAlignToSelection()
     eType = Alter3DView;
 }
 
-void StdCmdAlignToSelection::activated(int iMsg)
+void StdCmdAlignToSelection::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"AlignToSelection\")");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    if (view && view->getViewer()) {
+        view->getViewer()->alignToSelection();
+    }
+    else {
+        Base::Console().developerError("StdCmdAlignToSelection", "active view is not a 3D view");
+    }
 }
 
 bool StdCmdAlignToSelection::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("AlignToSelection");
+    auto view = freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
+    return view && view->getViewer();
 }
 
 //===========================================================================

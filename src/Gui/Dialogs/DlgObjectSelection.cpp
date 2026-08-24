@@ -455,6 +455,10 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem* objItem, int column)
         return;
     }
 
+    // setItemState() writes to the dependency lists too, so their signals have to be blocked as
+    // well or onDepItemChanged() re-enters and spreads the state to every selected row there
+    QSignalBlocker blocker(ui->depList);
+    QSignalBlocker blocker2(ui->inList);
     QSignalBlocker blocker3(ui->treeWidget);
     auto state = objItem->checkState(0);
     if (objItem == allItem) {
@@ -505,14 +509,22 @@ void DlgObjectSelection::onObjItemChanged(QTreeWidgetItem* objItem, int column)
         // We treat selected item in tree widget specially in case of checking
         // items in depList or inList. To simplify logic, we change selection
         // here if an unselected item has been checked.
-        itemChanged[qvariant_cast<App::SubObjectT>(objItem->data(0, Qt::UserRole))] = state;
+        auto objT = qvariant_cast<App::SubObjectT>(objItem->data(0, Qt::UserRole));
+        if (auto obj = objT.getObject()) {
+            setItemState(obj, state, true);
+            itemChanged[objT] = state;
+        }
+
         onItemSelectionChanged();
     }
     else {
         const auto items = ui->treeWidget->selectedItems();
         for (auto item : items) {
-            setCheckState(item, state);
-            itemChanged[qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole))] = state;
+            auto objT = qvariant_cast<App::SubObjectT>(item->data(0, Qt::UserRole));
+            if (auto obj = objT.getObject()) {
+                setItemState(obj, state, true);
+                itemChanged[objT] = state;
+            }
         }
     }
     timer.start(10);

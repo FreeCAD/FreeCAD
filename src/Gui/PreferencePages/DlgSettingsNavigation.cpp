@@ -59,6 +59,11 @@ DlgSettingsNavigation::DlgSettingsNavigation(QWidget* parent)
     , q3(1)
 {
     ui->setupUi(this);
+    ui->comboOrbitStyle->setItemData(0, int(NavigationStyle::RoundedArcball));
+    ui->comboOrbitStyle->setItemData(1, int(NavigationStyle::Trackball));
+    ui->comboOrbitStyle->setItemData(2, int(NavigationStyle::TrackballClassic));
+    ui->comboOrbitStyle->setItemData(3, int(NavigationStyle::FreeTurntable));
+    ui->comboOrbitStyle->setItemData(4, int(NavigationStyle::Turntable));
     ui->naviCubeBaseColor->setAllowTransparency(true);
     ui->rotationCenterColor->setAllowTransparency(true);
     retranslate();
@@ -89,9 +94,9 @@ void DlgSettingsNavigation::saveSettings()
         = ui->comboNavigationStyle->itemData(ui->comboNavigationStyle->currentIndex(), Qt::UserRole);
     hGrp->SetASCII("NavigationStyle", (const char*)data.toByteArray());
 
-    int index = ui->comboOrbitStyle->currentIndex();
-    hGrp->SetInt("OrbitStyle", index);
-    index = ui->comboRotationMode->currentIndex();
+    int orbitStyle = ui->comboOrbitStyle->currentData().toInt();
+    hGrp->SetInt("OrbitStyle", orbitStyle);
+    int index = ui->comboRotationMode->currentIndex();
     hGrp->SetInt("RotationMode", index);
 
     ui->checkBoxZoomAtCursor->onSave();
@@ -177,9 +182,9 @@ void DlgSettingsNavigation::loadSettings()
         ui->comboNavigationStyle->setCurrentIndex(index);
     }
 
-    index = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
-    index = Base::clamp(index, 0, ui->comboOrbitStyle->count() - 1);
-    ui->comboOrbitStyle->setCurrentIndex(index);
+    int orbitStyle = hGrp->GetInt("OrbitStyle", int(NavigationStyle::RoundedArcball));
+    orbitStyle = Base::clamp(orbitStyle, 0, ui->comboOrbitStyle->count() - 1);
+    ui->comboOrbitStyle->setCurrentIndex(ui->comboOrbitStyle->findData(orbitStyle));
 
     index = hGrp->GetInt("RotationMode", 0);
     ui->comboRotationMode->setCurrentIndex(index);

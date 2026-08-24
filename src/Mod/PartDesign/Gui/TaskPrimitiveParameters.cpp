@@ -48,9 +48,86 @@
 
 using namespace PartDesignGui;
 
+namespace
+{
+bool isSubtractivePrimitive(PartDesign::FeaturePrimitive* primitive)
+{
+    return primitive->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+}
+
+const char* primitiveTypeName(PartDesign::FeaturePrimitive::Type type)
+{
+    switch (type) {
+        case PartDesign::FeaturePrimitive::Box:
+            return "Box";
+        case PartDesign::FeaturePrimitive::Cylinder:
+            return "Cylinder";
+        case PartDesign::FeaturePrimitive::Sphere:
+            return "Sphere";
+        case PartDesign::FeaturePrimitive::Cone:
+            return "Cone";
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            return "Ellipsoid";
+        case PartDesign::FeaturePrimitive::Torus:
+            return "Torus";
+        case PartDesign::FeaturePrimitive::Prism:
+            return "Prism";
+        case PartDesign::FeaturePrimitive::Wedge:
+            return "Wedge";
+    }
+
+    return "Primitive";
+}
+
+std::string primitiveTaskIconName(ViewProviderPrimitive* vp)
+{
+    auto* primitive = vp->getObject<PartDesign::FeaturePrimitive>();
+    std::string iconName = "PartDesign_";
+    iconName += isSubtractivePrimitive(primitive) ? "Subtractive" : "Additive";
+    iconName += primitiveTypeName(primitive->getPrimitiveType());
+    return iconName;
+}
+
+QString primitiveTaskTitle(ViewProviderPrimitive* vp)
+{
+    auto* primitive = vp->getObject<PartDesign::FeaturePrimitive>();
+    const bool subtractive = isSubtractivePrimitive(primitive);
+
+    switch (primitive->getPrimitiveType()) {
+        case PartDesign::FeaturePrimitive::Box:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Box Parameters")
+                               : TaskBoxPrimitives::tr("Additive Box Parameters");
+        case PartDesign::FeaturePrimitive::Cylinder:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Cylinder Parameters")
+                               : TaskBoxPrimitives::tr("Additive Cylinder Parameters");
+        case PartDesign::FeaturePrimitive::Sphere:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Sphere Parameters")
+                               : TaskBoxPrimitives::tr("Additive Sphere Parameters");
+        case PartDesign::FeaturePrimitive::Cone:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Cone Parameters")
+                               : TaskBoxPrimitives::tr("Additive Cone Parameters");
+        case PartDesign::FeaturePrimitive::Ellipsoid:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Ellipsoid Parameters")
+                               : TaskBoxPrimitives::tr("Additive Ellipsoid Parameters");
+        case PartDesign::FeaturePrimitive::Torus:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Torus Parameters")
+                               : TaskBoxPrimitives::tr("Additive Torus Parameters");
+        case PartDesign::FeaturePrimitive::Prism:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Prism Parameters")
+                               : TaskBoxPrimitives::tr("Additive Prism Parameters");
+        case PartDesign::FeaturePrimitive::Wedge:
+            return subtractive ? TaskBoxPrimitives::tr("Subtractive Wedge Parameters")
+                               : TaskBoxPrimitives::tr("Additive Wedge Parameters");
+    }
+
+    return subtractive ? TaskBoxPrimitives::tr("Subtractive Primitive Parameters")
+                       : TaskBoxPrimitives::tr("Additive Primitive Parameters");
+}
+}  // namespace
+
 // clang-format off
 TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
-  : TaskBox(QPixmap(),tr("Primitive Parameters"), true, parent)
+  : TaskBox(Gui::BitmapFactory().pixmap(primitiveTaskIconName(vp).c_str()), primitiveTaskTitle(vp), true, parent)
   , ui(new Ui_DlgPrimitives)
   , vp(vp)
 {

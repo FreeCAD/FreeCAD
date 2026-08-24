@@ -4,9 +4,13 @@
 
 from __future__ import annotations
 
-from typing import Literal, overload
+from typing import Literal, TypeAlias, overload
 
+from Base.Metadata import deprecated
 from FreeCAD import DocumentObject
+
+_ActiveObjectReference: TypeAlias = tuple[DocumentObject, DocumentObject, str]
+_EmptyActiveObjectReference: TypeAlias = tuple[None, None, str]
 
 class _MDIView:
     """Base MDI view wrapper for FreeCAD GUI view types."""
@@ -31,6 +35,7 @@ class _MDIView:
         """Return the redo actions exposed by the view."""
         ...
 
+    @deprecated(deprecated_in="26.3", removed_in="27.2", replacement="sendMessage")
     def message(self, message: str, /) -> bool:
         """Handle one generic message in the view."""
         ...
@@ -65,7 +70,7 @@ class _MDIView:
     @overload
     def getActiveObject(
         self, name: str, resolve: Literal[False], /
-    ) -> tuple[DocumentObject | None, DocumentObject | None, str]: ...
+    ) -> _ActiveObjectReference | _EmptyActiveObjectReference: ...
     def cast_to_base(self) -> _MDIView:
         """Return this view as the base MDI view wrapper."""
         ...

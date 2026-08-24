@@ -58,6 +58,7 @@
 #include <HLRBRep_HLRToShape.hxx>
 #include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeFix_Wire.hxx>
@@ -1150,7 +1151,22 @@ struct WireJoiner
 
                     BRepExtrema_DistShapeShape extss(BRepBuilderAPI_MakeVertex(p), info.edge);
                     if (extss.IsDone() && extss.NbSolution()) {
-                        const gp_Pnt& pp = extss.PointOnShape2(1);
+                        gp_Pnt pp = extss.PointOnShape2(1);
+
+                        // DistShapeShape allows the parameter to be out of the edge bounds by some
+                        // tolerance (typically 1e-7 in parameter space), but we don't want that.
+                        // Check if that happened, and coerce the point if needed
+                        if (extss.SupportTypeShape2(1) == BRepExtrema_IsOnEdge) {
+                            Standard_Real par, first, last;
+                            extss.ParOnEdgeS2(1, par);
+                            Handle(Geom_Curve) curve = BRep_Tool::Curve(info.edge, first, last);
+
+                            if (par < first || par > last) {
+                                Standard_Real clamped = std::max(first, std::min(last, par));
+                                pp = curve->Value(clamped);
+                            }
+                        }
+
                         if (pp.SquareDistance(p) <= Precision::SquareConfusion()) {
                             pt = pp;
                             intersects = true;
@@ -1928,19 +1944,16 @@ std::vector<shared_ptr<Area>> Area::makeSections(
                 builder.MakeCompound(comp);
 
                 for (TopExp_Explorer xp(s.shape.Moved(loc), TopAbs_SOLID); xp.More(); xp.Next()) {
-                    TopoDS_Shape shape(xp.Current());
-                    ShapeFix_ShapeTolerance sTol;
-                    sTol.SetTolerance(shape, Precision::Confusion());
-
-                    showShape(shape, nullptr, "section_%zu_shape", i);
+                    showShape(xp.Current(), nullptr, "section_%zu_shape", i);
                     std::list<TopoDS_Wire> wires;
-                    Part::CrossSection section(a, b, c, shape);
+                    Part::CrossSection section(-a, -b, -c, xp.Current());
                     Part::FuzzyHelper::withBooleanFuzzy(.0, [&]() {
-                        // Workaround for https://github.com/FreeCAD/FreeCAD/issues/17748
-                        // needed to make finish pass work.
-                        // This fix might be better to move into Part::CrossSection but it is kept
-                        // here for now to be on the safe side.
-                        wires = section.slice(-d);
+                        // Disable the (default FreeCAD/Part) boolean fuzziness -- slicing already
+                        // handles boolean tolerances correctly.
+                        //
+                        // It might be desirable to move this override into Part::CrossSection to
+                        // avoid slicing with unnecessary fuzziness at other call sites.
+                        wires = section.slice(d);
                     });
                     showShapes(wires, nullptr, "section_%zu_wire", i);
                     if (wires.empty()) {
@@ -2835,7 +2848,12 @@ TopoDS_Shape Area::toShape(const CCurve& _c, const gp_Trsf* trsf, int reorient)
         pt = pnext;
     }
 
-    ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_False, hWires);
+    Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
+        hEdges,
+        Precision::Confusion(),
+        Standard_False,
+        hWires
+    );
     if (!hWires->Length()) {
         return shape;
     }
@@ -3893,8 +3911,8 @@ static inline void addG1(
 {
     addGCode(verbose, path, last, next, "G1");
     if (f > Precision::Confusion()) {
-        Command* cmd = path.getCommands().back();
-        addParameter(verbose, *cmd, "F", last_f, f);
+        Command& cmd = path.getCommand(path.getSize() - 1);
+        addParameter(verbose, cmd, "F", last_f, f);
         last_f = f;
     }
     return;

@@ -6,9 +6,11 @@ from dataclasses import dataclass
 from enum import Enum
 import ast
 import re
+import textwrap
 from typing import List
 from model.typedModel import (
     GenerateModel,
+    DeprecationLifecycle,
     PythonExport,
     PythonModuleExport,
     Method,
@@ -24,6 +26,76 @@ SIGNATURE_SEP = re.compile(r"\s+--\s+", re.DOTALL)
 SELF_CLS_ARG = re.compile(r"\(\s*(self|cls)(\s*,\s*)?")
 CTOR_SELF_CLS_ARG = re.compile(r"^__init__\(\$?(?:self|cls)(?:,\s*)?")
 CTOR_NAME = re.compile(r"^__init__\(")
+DEPRECATION_FIELDS = {"deprecated_in", "removed_in", "replacement", "details"}
+RELEASE_RE = re.compile(r"^\d+\.\d+(?:\.\d+)?$")
+
+
+def _release_key(value: str) -> tuple[int, int, int]:
+    parts = [int(part) for part in value.split(".")]
+    normalized = [*parts, *([0] * (3 - len(parts)))]
+    return normalized[0], normalized[1], normalized[2]
+
+
+def _literal_decorator_kwargs(decorator: ast.Call) -> dict[str, object]:
+    values: dict[str, object] = {}
+    for keyword in decorator.keywords:
+        if keyword.arg is None:
+            raise ValueError("deprecation metadata does not support keyword unpacking")
+        try:
+            values[keyword.arg] = ast.literal_eval(keyword.value)
+        except (ValueError, SyntaxError) as error:
+            raise ValueError(
+                f"deprecation metadata '{keyword.arg}' must be a literal value"
+            ) from error
+    return values
+
+
+def _deprecation_lifecycle(values: dict[str, object]) -> DeprecationLifecycle:
+    unknown = values.keys() - DEPRECATION_FIELDS
+    if unknown:
+        raise ValueError(f"deprecated() got unknown keyword '{sorted(unknown)[0]}'")
+
+    deprecated_in = values.get("deprecated_in")
+    removed_in = values.get("removed_in")
+    if not isinstance(deprecated_in, str) or not deprecated_in:
+        raise ValueError("deprecated() requires a non-empty deprecated_in string")
+    if not isinstance(removed_in, str) or not removed_in:
+        raise ValueError("deprecated() requires a non-empty removed_in string")
+    for field, value in (("deprecated_in", deprecated_in), ("removed_in", removed_in)):
+        if not RELEASE_RE.fullmatch(value):
+            raise ValueError(f"deprecated() {field} must be a release such as '26.3'")
+    if _release_key(removed_in) <= _release_key(deprecated_in):
+        raise ValueError("deprecated() removed_in must be later than deprecated_in")
+
+    replacement = values.get("replacement")
+    if replacement is not None and not isinstance(replacement, str):
+        raise ValueError("deprecated() replacement must be a string or None")
+    details = values.get("details")
+    if details is not None and not isinstance(details, str):
+        raise ValueError("deprecated() details must be a string or None")
+    return DeprecationLifecycle(
+        DeprecatedIn=deprecated_in,
+        RemovedIn=removed_in,
+        Replacement=replacement or None,
+        Details=details.rstrip() if details else None,
+    )
+
+
+def _deprecation_lifecycle_from_decorator(decorator: ast.Call) -> DeprecationLifecycle:
+    if decorator.args:
+        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
+    return _deprecation_lifecycle(_literal_decorator_kwargs(decorator))
+
+
+def _extract_deprecation_from_decorator(
+    decorator: ast.expr,
+) -> DeprecationLifecycle | None:
+    if _decorator_name(decorator) != "deprecated":
+        return None
+
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with structured lifecycle metadata")
+    return _deprecation_lifecycle_from_decorator(decorator)
 
 
 class ArgumentKind(Enum):
@@ -57,6 +129,8 @@ class FunctionSignature:
     class_flag: bool = False
     noargs_flag: bool = False
     is_overload: bool = False
+    callback: str | None = None
+    deprecation: DeprecationLifecycle | None = None
 
     def __init__(self, func: ast.FunctionDef):
         self.args = []
@@ -139,6 +213,7 @@ class FunctionSignature:
         for item in all_args:
             if item:
                 item.annotation = None
+        _sanitize_text_signature_defaults(args)
         parameters = ast.unparse(args)
         self.text = SELF_CLS_ARG.sub(r"($\1\2", f"{func.name}({parameters})", 1)
 
@@ -149,14 +224,11 @@ class FunctionSignature:
 
     def update_flags(self, func: ast.FunctionDef) -> None:
         self.typing_only_flag = False
+        self.bootstrap_export_flag = False
         for deco in func.decorator_list:
-            match deco:
-                case ast.Name(id, _):
-                    name = id
-                case ast.Attribute(_, attr, _):
-                    name = attr
-                case _:
-                    continue
+            name = _decorator_name(deco)
+            if name is None:
+                continue
 
             match name:
                 case "constmethod":
@@ -171,6 +243,15 @@ class FunctionSignature:
                     self.is_overload = True
                 case "typing_only":
                     self.typing_only_flag = True
+                case "bootstrap_export":
+                    self.bootstrap_export_flag = True
+                case "callback":
+                    if not isinstance(deco, ast.Call):
+                        raise ValueError("callback decorator requires a string callback symbol")
+                    callback = _extract_single_string_argument(deco, "callback")
+                    self.callback = callback
+                case "deprecated":
+                    self.deprecation = _extract_deprecation_from_decorator(deco)
 
 
 class Function:
@@ -209,6 +290,10 @@ class Function:
         return None
 
     @property
+    def parse_signature(self) -> FunctionSignature | None:
+        return self.signature or next(iter(self.public_signatures), None)
+
+    @property
     def doc_signatures(self) -> list[FunctionSignature]:
         signatures = self.public_signatures
         if len(signatures) == 1:
@@ -242,6 +327,29 @@ class Function:
     def typing_only_flag(self) -> bool:
         return bool(self.signatures) and not self.public_signatures
 
+    @property
+    def callback(self) -> str | None:
+        callback = None
+        for sig in self.public_signatures:
+            if not sig.callback:
+                continue
+            if callback is None:
+                callback = sig.callback
+            elif callback != sig.callback:
+                raise ValueError(f"Function '{self.name}' declares multiple callback symbols")
+        return callback
+
+    @property
+    def bootstrap_export_flag(self) -> bool:
+        return any(sig.bootstrap_export_flag for sig in self.public_signatures)
+
+    @property
+    def deprecation(self) -> DeprecationLifecycle | None:
+        signature = self.signature
+        if signature is None:
+            return None
+        return signature.deprecation
+
     def add_signature_docs(self, doc: Documentation) -> None:
         _compose_signature_docs(
             doc,
@@ -259,6 +367,52 @@ def _decorator_name(node: ast.AST) -> str | None:
         case ast.Call(func=func):
             return _decorator_name(func)
     return None
+
+
+def _is_text_signature_default_supported(node: ast.AST | None) -> bool:
+    if node is None:
+        return True
+
+    if isinstance(node, ast.Constant):
+        value = node.value
+        return (
+            value is None
+            or value is Ellipsis
+            or isinstance(value, (bool, int, float, complex, str, bytes))
+        )
+
+    if (
+        isinstance(node, ast.UnaryOp)
+        and isinstance(node.op, (ast.UAdd, ast.USub))
+        and isinstance(node.operand, ast.Constant)
+    ):
+        return isinstance(node.operand.value, (int, float, complex))
+
+    if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
+        return all(_is_text_signature_default_supported(item) for item in node.elts)
+
+    if isinstance(node, ast.Dict):
+        return all(
+            key is not None
+            and _is_text_signature_default_supported(key)
+            and _is_text_signature_default_supported(value)
+            for key, value in zip(node.keys, node.values)
+        )
+
+    return False
+
+
+def _text_signature_default(node: ast.expr | None) -> ast.expr | None:
+    if _is_text_signature_default_supported(node):
+        return node
+    return ast.copy_location(ast.Constant(value=Ellipsis), node)
+
+
+def _sanitize_text_signature_defaults(args: ast.arguments) -> None:
+    # CPython __text_signature__ accepts only a subset of Python defaults.
+    # Keep rich defaults in annotated_text and project unsupported text defaults to "...".
+    args.defaults = [_text_signature_default(default) for default in args.defaults]
+    args.kw_defaults = [_text_signature_default(default) for default in args.kw_defaults]
 
 
 def _compose_signature_docs(doc: Documentation, docstring: list[str], signature: list[str]) -> None:
@@ -298,12 +452,13 @@ def _constructor_user_doc(func: Function, class_name: str) -> str:
 def _append_user_doc(doc: Documentation, extra_user_doc: str) -> None:
     extra_user_doc = extra_user_doc.strip()
     if not extra_user_doc:
-        return
+        return None
 
     if doc.UserDocu:
         doc.UserDocu = f"{doc.UserDocu.rstrip()}\n\n{extra_user_doc}"
     else:
         doc.UserDocu = extra_user_doc
+    return None
 
 
 def _get_module_docstring(tree: ast.Module) -> str:
@@ -335,6 +490,42 @@ def _extract_decorator_kwargs(decorator: ast.expr) -> dict:
     return result
 
 
+def _extract_single_string_argument(call: ast.Call, decorator_name: str) -> str:
+    if len(call.args) != 1 or call.keywords:
+        raise ValueError(f"{decorator_name} decorator requires a single string argument")
+
+    match call.args[0]:
+        case ast.Constant(value=str() as value):
+            return value
+        case _:
+            raise ValueError(f"{decorator_name} decorator requires a single string argument")
+
+
+def _capitalize_callback_basename(name: str) -> str:
+    if not name:
+        return name
+    return f"{name[0].upper()}{name[1:]}"
+
+
+def _apply_module_callback_defaults(methods: list[Method], metadata: dict) -> None:
+    owner = metadata.get("CallbackOwner", "") or ""
+    prefix = metadata.get("CallbackPrefix", "") or ""
+
+    if prefix and not owner:
+        raise ValueError("module CallbackPrefix requires CallbackOwner")
+
+    if not owner:
+        return
+
+    if not isinstance(owner, str) or not isinstance(prefix, str):
+        raise ValueError("module CallbackOwner and CallbackPrefix must be strings")
+
+    for method in methods:
+        if method.Callback:
+            continue
+        method.Callback = f"{owner}::{prefix}{_capitalize_callback_basename(method.Name)}"
+
+
 def _parse_docstring_for_documentation(docstring: str) -> Documentation:
     """
     Given a docstring, parse out DeveloperDocu, UserDocu, Author, Licence, etc.
@@ -348,8 +539,6 @@ def _parse_docstring_for_documentation(docstring: str) -> Documentation:
 
     if not docstring:
         return Documentation()
-
-    import textwrap
 
     # Remove common indentation
     dedented_docstring = textwrap.dedent(docstring).strip()
@@ -507,6 +696,7 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
                 Parameter=param,
                 Name=name,
                 ReadOnly=readonly,
+                Deprecated=None,
             )
             attributes.append(attr)
 
@@ -539,6 +729,7 @@ def _parse_methods(
     *,
     skip_bound_argument: bool,
     allow_bound_decorators: bool,
+    allow_overload_signatures: bool = False,
 ) -> List[Method]:
     """
     Parse methods from collected class functions, extracting:
@@ -551,6 +742,8 @@ def _parse_methods(
     for func in functions.values():
         if func.typing_only_flag:
             continue
+        if allow_bound_decorators and func.bootstrap_export_flag:
+            raise ValueError(f"Class method '{func.name}' cannot use bootstrap_export decorator")
         if not allow_bound_decorators and (func.static_flag or func.class_flag or func.const_flag):
             raise ValueError(
                 f"Module-level function '{func.name}' cannot use bound-method decorators"
@@ -559,9 +752,11 @@ def _parse_methods(
         func.add_signature_docs(doc_obj)
         method_params = []
 
-        signature = func.signature
+        signature = func.parse_signature if allow_overload_signatures else func.signature
         if signature is None:
             continue
+
+        deprecation = func.deprecation
 
         # Process positional parameters (skipping self/cls)
         for arg_i, arg in enumerate(signature.args):
@@ -575,11 +770,14 @@ def _parse_methods(
             Name=func.name,
             Documentation=doc_obj,
             Parameter=method_params,
+            Callback=func.callback,
             Const=func.const_flag if allow_bound_decorators else False,
             Static=func.static_flag if allow_bound_decorators else False,
             Class=func.class_flag if allow_bound_decorators else False,
             Keyword=func.has_keywords,
             NoArgs=func.noargs_flag,
+            Bootstrap=func.bootstrap_export_flag if not allow_bound_decorators else False,
+            Deprecated=deprecation,
         )
 
         methods.append(method)
@@ -721,6 +919,28 @@ def _extract_base_class_name(base: ast.expr) -> str:
     return base_str
 
 
+def _apply_deprecated_attributes(
+    class_attributes: list[Attribute], deprecated_attributes: dict[str, object], class_name: str
+) -> None:
+    if not deprecated_attributes:
+        return
+
+    attributes_by_name = {attribute.Name: attribute for attribute in class_attributes}
+    unknown_attributes = sorted(
+        name for name in deprecated_attributes.keys() if name not in attributes_by_name
+    )
+    if unknown_attributes:
+        joined = ", ".join(unknown_attributes)
+        raise Exception(f"Unknown deprecated attribute metadata for class '{class_name}': {joined}")
+
+    for name, metadata in deprecated_attributes.items():
+        if not isinstance(metadata, dict) or not all(isinstance(key, str) for key in metadata):
+            raise ValueError(
+                f"deprecated attribute '{class_name}.{name}' metadata must be a structured mapping"
+            )
+        attributes_by_name[name].Deprecated = _deprecation_lifecycle(metadata)
+
+
 def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict) -> PythonExport:
     base_class_name = None
     for base in class_node.bases:
@@ -734,6 +954,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
     forward_declarations_text = ""
     class_declarations_text = ""
     sequence_protocol_kwargs = None
+    deprecated_attributes_kwargs = {}
 
     for decorator in class_node.decorator_list:
         match decorator:
@@ -755,6 +976,8 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
                             class_declarations_text = val
             case ast.Call(func=ast.Name(id="sequence_protocol"), keywords=_, args=_):
                 sequence_protocol_kwargs = _extract_decorator_kwargs(decorator)
+            case ast.Call(func=ast.Name(id="deprecated_attributes"), keywords=_, args=_):
+                deprecated_attributes_kwargs = _literal_decorator_kwargs(decorator)
             case _:
                 pass
 
@@ -771,6 +994,7 @@ def _parse_class(class_node, source_code: str, path: str, imports_mapping: dict)
         if constructor.signature is None and constructor.docstring.strip():
             _append_user_doc(doc_obj, _constructor_user_doc(constructor, class_node.name))
     class_attributes = _parse_class_attributes(class_node, source_code)
+    _apply_deprecated_attributes(class_attributes, deprecated_attributes_kwargs, class_node.name)
     class_methods = _parse_methods(
         functions,
         skip_bound_argument=True,
@@ -847,15 +1071,32 @@ def _module_export_name_from_path(path: str) -> str:
     return os.path.splitext(filename)[0]
 
 
+def _validate_module_runtime_metadata(metadata: dict) -> tuple[str, str]:
+    runtime = metadata.get("Runtime", "") or "PyMethodDef"
+    module_class = metadata.get("ModuleClass", "") or ""
+
+    if not isinstance(runtime, str):
+        raise ValueError("module Runtime must be a string")
+    if not isinstance(module_class, str):
+        raise ValueError("module ModuleClass must be a string")
+
+    if runtime not in {"PyMethodDef", "ExtensionModule"}:
+        raise ValueError(f"unsupported module Runtime '{runtime}'")
+
+    if runtime == "ExtensionModule":
+        if not module_class:
+            raise ValueError("module Runtime='ExtensionModule' requires ModuleClass")
+        if not (metadata.get("Include", "") or ""):
+            raise ValueError("module Runtime='ExtensionModule' requires Include")
+
+    return runtime, module_class
+
+
 def parse_module_python_code(path: str) -> GenerateModel:
     with open(path, "r", encoding="utf-8") as file:
         source_code = file.read()
 
     tree = ast.parse(source_code)
-
-    class_defs = [node for node in tree.body if isinstance(node, ast.ClassDef)]
-    if class_defs:
-        raise ValueError(".module.pyi files cannot contain exported classes")
 
     functions = _collect_functions(tree)
     if not functions:
@@ -865,8 +1106,11 @@ def parse_module_python_code(path: str) -> GenerateModel:
         functions,
         skip_bound_argument=False,
         allow_bound_decorators=False,
+        allow_overload_signatures=True,
     )
     metadata, explicit_export = _extract_module_kwargs(tree)
+    runtime, module_class = _validate_module_runtime_metadata(metadata)
+    _apply_module_callback_defaults(methods, metadata)
 
     module_name = _get_module_from_path(path)
     export_name = metadata.get("Name", "") or _module_export_name_from_path(path)
@@ -881,6 +1125,9 @@ def parse_module_python_code(path: str) -> GenerateModel:
             ModuleName=module_name or "",
             Name=export_name,
             Namespace=namespace,
+            Include=metadata.get("Include", "") or "",
+            Runtime=runtime,
+            ModuleClass=module_class,
             IsExplicitlyExported=explicit_export,
         )
     )

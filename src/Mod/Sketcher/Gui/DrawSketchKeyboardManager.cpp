@@ -58,6 +58,11 @@ DrawSketchKeyboardManager::KeyboardEventHandlingMode DrawSketchKeyboardManager::
     return keyMode;
 }
 
+void DrawSketchKeyboardManager::resetMode()
+{
+    keyMode = KeyboardEventHandlingMode::ViewProvider;
+}
+
 bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 {
     Q_UNUSED(object);

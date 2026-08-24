@@ -65,5 +65,7 @@
         <file>translations/OpenSCAD_ta.qm</file>
         <file>translations/OpenSCAD_ga-IE.qm</file>
         <file>translations/OpenSCAD_sv.qm</file>
+        <file>translations/OpenSCAD_lo.qm</file>
+        <file>translations/OpenSCAD_he.qm</file>
     </qresource>
 </RCC>

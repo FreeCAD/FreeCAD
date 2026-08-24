@@ -40,7 +40,7 @@ SoFCColorBarNotifier::SoFCColorBarNotifier()
     group->Attach(this);
 }
 
-void SoFCColorBarNotifier::attach(SoFCColorBarBase* bar)
+void SoFCColorBarNotifier::attach(SoFCColorBar* bar)
 {
     if (bars.insert(bar).second) {
         bar->ref();
@@ -48,7 +48,7 @@ void SoFCColorBarNotifier::attach(SoFCColorBarBase* bar)
     }
 }
 
-void SoFCColorBarNotifier::detach(SoFCColorBarBase* bar)
+void SoFCColorBarNotifier::detach(SoFCColorBar* bar)
 {
     auto pos = bars.find(bar);
     if (pos != bars.end()) {

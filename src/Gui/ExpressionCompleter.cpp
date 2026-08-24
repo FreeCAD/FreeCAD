@@ -293,8 +293,34 @@ public:
     ) const
     {
         if (!this->namedPropsCache.contains(obj)) {
-            this->namedPropsCache[obj];
-            obj->getPropertyNamedList(this->namedPropsCache[obj]);
+            auto& list = this->namedPropsCache[obj];
+            obj->getPropertyNamedList(list);
+
+            // If this object is a link-like object (App::Link, LinkGroup, a linked
+            // VarSet, etc.), also pull in the linked object's properties so that
+            // expressions like <<Link>>.SomeLinkedProp complete correctly.
+            App::DocumentObject* linked = obj->getLinkedObject(true);
+            if (linked && linked != obj) {
+                std::vector<std::pair<const char*, App::Property*>> linkedProps;
+                linked->getPropertyNamedList(linkedProps);
+
+                std::set<std::string> existingNames;
+                for (auto& p : list) {
+                    existingNames.insert(p.first);
+                }
+                for (auto& p : linkedProps) {
+                    // don't clobber a same-named property that already exists
+                    // directly on obj
+                    if (existingNames.insert(p.first).second) {
+                        list.push_back(p);
+                    }
+                }
+            }
+
+            FC_TRACE(
+                "Cached properties for " << obj->getNameInDocument() << " ("
+                                         << this->namedPropsCache[obj].size() << " props)"
+            );
         }
         return this->namedPropsCache[obj];
     }

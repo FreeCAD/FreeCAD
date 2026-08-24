@@ -232,7 +232,13 @@ macro(PrintFinalReport)
     conditional(Vtk VTK_FOUND "not found" ${VTK_VERSION})
     if(BUILD_BIM)
         conditional(Lark LARK_FOUND "not found" "${LARK_VERSION}")
+        conditional(IfcOpenShell ifcopenshell_FOUND "not found" "${ifcopenshell_VERSION}")
     endif()
+    if(BUILD_ASSEMBLY)
+        conditional(PyAV av_FOUND "not found" "${av_VERSION}")
+        conditional(PIL pillow_FOUND "not found" "${pillow_VERSION}")
+    endif()
+    conditional(cpptrace cpptrace_FOUND "not found" "${cpptrace_VERSION}")
 
     section_end()
 

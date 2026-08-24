@@ -519,6 +519,7 @@ void DSHArcOfEllipseController::doEnforceControlParameters(Base::Vector2d& onSke
 
             if (secondRadiusParam->isSet) {
                 secondRadius = secondRadiusParam->getValue();
+                handler->secondRadius = secondRadius;
                 handler->secondRadiusSet = true;
                 if (secondRadius < Precision::Confusion() && secondRadiusParam->hasFinishedEditing) {
                     handler->secondRadiusSet = false;
@@ -548,6 +549,9 @@ void DSHArcOfEllipseController::doEnforceControlParameters(Base::Vector2d& onSke
                 unsetOnViewParameter(arcAngleParam.get());
                 return;
             }
+            // Help it to not flip on changes over pi radians,
+            // since then the other direction is shorter and will be used instead
+            handler->arcAngle = arcAngle;
 
             double endAngle = handler->startAngle + arcAngle;
 
@@ -712,6 +716,8 @@ void DSHArcOfEllipseController::addConstraints()
     int majorLine = firstCurve + 1;
     int minorLine = firstCurve + 2;
 
+    bool isFirstMajor = handler->firstRadius() > handler->secondRadius;
+
     double majorRadius = std::max(handler->firstRadius(), handler->secondRadius);
     double minorRadius = std::min(handler->firstRadius(), handler->secondRadius);
 
@@ -719,9 +725,11 @@ void DSHArcOfEllipseController::addConstraints()
 
     bool x0set = onViewParameters[OnViewParameter::First]->isSet;
     bool y0set = onViewParameters[OnViewParameter::Second]->isSet;
-    bool majorRadiusSet = onViewParameters[OnViewParameter::Third]->isSet;
     bool firstAxisSet = onViewParameters[OnViewParameter::Fourth]->isSet;
-    bool minorRadiusSet = onViewParameters[OnViewParameter::Fifth]->isSet;
+    bool majorRadiusSet = isFirstMajor ? onViewParameters[OnViewParameter::Third]->isSet
+                                       : onViewParameters[OnViewParameter::Fifth]->isSet;
+    bool minorRadiusSet = isFirstMajor ? onViewParameters[OnViewParameter::Fifth]->isSet
+                                       : onViewParameters[OnViewParameter::Third]->isSet;
     // cant constrain the angles
 
     auto constraintx0 = [&]() {

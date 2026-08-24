@@ -187,7 +187,6 @@ def spiral(
     in the limiting direction. This eliminates any uncleared areas in the center regardless of stepover% value.
     First engagement is preserved exactly at the requested percentage.
     """
-    import math
     import Path
     import FreeCAD
     from . import facing_common
@@ -220,7 +219,7 @@ def spiral(
     if total_radial_distance <= 0:
         actual_stepover = stepover_dist
     else:
-        number_of_intervals = math.ceil(total_radial_distance / stepover_dist)
+        number_of_intervals = Path.Geom.ceil(total_radial_distance / stepover_dist)
         actual_stepover = total_radial_distance / number_of_intervals
 
     Path.Log.debug(

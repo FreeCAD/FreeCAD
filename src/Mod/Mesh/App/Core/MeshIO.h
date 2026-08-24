@@ -119,6 +119,10 @@ public:
     {
         return _groupNames;
     }
+    const std::string& GetObjectName() const
+    {
+        return _objectName;
+    }
 
     /// Loads the file, decided by extension
     bool LoadAny(const char* FileName);
@@ -161,6 +165,7 @@ public:
 private:
     MeshKernel& _rclMesh; /**< reference to mesh data structure */
     Material* _material;
+    std::string _objectName;
     std::vector<std::string> _groupNames;
 };
 

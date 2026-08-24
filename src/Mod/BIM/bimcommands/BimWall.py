@@ -217,7 +217,7 @@ class Arch_Wall:
         length = line_vector.Length
         midpoint = (p0 + p1) * 0.5
         direction = line_vector.normalize()
-        rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), direction)
+        rotation = FreeCAD.Rotation(direction, FreeCAD.Vector(), FreeCAD.Vector(0, 0, 1), "XZY")
 
         # This placement is local to the working plane.
         local_placement = FreeCAD.Placement(midpoint, rotation)

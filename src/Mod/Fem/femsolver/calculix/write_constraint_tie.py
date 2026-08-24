@@ -58,25 +58,36 @@ def get_after_write_constraint():
 
 
 def write_meshdata_constraint(f, femobj, tie_obj, ccxwriter):
+    # use False as default for reversed values
+    rev_slave = [False] * len(femobj["TieSlaveFaces"])
+    for i, v in enumerate(tie_obj.ReversedSlave[: len(rev_slave)]):
+        rev_slave[i] = v
+
+    rev_master = [False] * len(femobj["TieMasterFaces"])
+    for i, v in enumerate(tie_obj.ReversedMaster[: len(rev_master)]):
+        rev_master[i] = v
+
     # slave DEP
     f.write(f"*SURFACE, NAME=TIE_DEP{tie_obj.Name}\n")
-    for refs, surf, is_sub_el in femobj["TieSlaveFaces"]:
+    for (refs, surf, is_sub_el), rev in zip(femobj["TieSlaveFaces"], rev_slave):
         if is_sub_el:
             for elem, fno in surf:
                 f.write(f"{elem},S{fno}\n")
         else:
+            fno = 1 if rev else 2
             for elem in surf:
-                f.write(f"{elem},S2\n")
+                f.write(f"{elem},S{fno}\n")
 
     # master IND
     f.write(f"*SURFACE, NAME=TIE_IND{tie_obj.Name}\n")
-    for refs, surf, is_sub_el in femobj["TieMasterFaces"]:
+    for (refs, surf, is_sub_el), rev in zip(femobj["TieMasterFaces"], rev_master):
         if is_sub_el:
             for elem, fno in surf:
                 f.write(f"{elem},S{fno}\n")
         else:
+            fno = 1 if rev else 2
             for elem in surf:
-                f.write(f"{elem},S2\n")
+                f.write(f"{elem},S{fno}\n")
 
 
 def write_constraint(f, femobj, tie_obj, ccxwriter):

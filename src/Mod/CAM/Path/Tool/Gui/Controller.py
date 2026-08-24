@@ -208,6 +208,7 @@ class ToolControllerEditor(object):
         self.form.tc_layout.addWidget(self.controller)
         if not asDialog:
             self.form.buttonBox.hide()
+        self.controller.tcOperationCountLabel.setTextFormat(QtCore.Qt.RichText)
         if not showCountLabel:
             self.controller.tcOperationCountLabel.hide()
         self.obj = obj
@@ -223,6 +224,9 @@ class ToolControllerEditor(object):
             self.controller.leadOutFeed, obj, "LeadOutFeed"
         )
         self.rampFeed = PathGuiUtil.QuantitySpinBox(self.controller.rampFeed, obj, "RampFeed")
+        self.noEngagementFeed = PathGuiUtil.QuantitySpinBox(
+            self.controller.noEngagementFeed, obj, "NoEngagementFeed"
+        )
         self.vertRapid = PathGuiUtil.QuantitySpinBox(self.controller.vertRapid, obj, "VertRapid")
         self.horizRapid = PathGuiUtil.QuantitySpinBox(self.controller.horizRapid, obj, "HorizRapid")
 
@@ -231,7 +235,37 @@ class ToolControllerEditor(object):
         self.controller.spindleDirection.installEventFilter(self.blockScrollWheel)
         self.controller.tcNumber.setReadOnly(disableToolNumber)
 
+        self._injectFeedsSpeedsButton()
+
         self.editor = None
+
+    def _injectFeedsSpeedsButton(self):
+        from PySide import QtCore, QtGui, QtWidgets
+
+        self.feedsSpeedsButton = None
+        layout = self.controller.layout()
+        if layout is None:
+            return
+        row = QtWidgets.QHBoxLayout()
+        row.addStretch()
+        self.feedsSpeedsButton = QtWidgets.QPushButton()
+        self.feedsSpeedsButton.setIcon(QtGui.QIcon(":/icons/CAM_FeedsSpeeds.svg"))
+        self.feedsSpeedsButton.setIconSize(QtCore.QSize(24, 24))
+        self.feedsSpeedsButton.setToolTip(
+            translate("CAM_ToolController", "Feeds and Speeds Wizard")
+        )
+        self.feedsSpeedsButton.clicked.connect(self._onFeedsSpeedsClicked)
+        row.addWidget(self.feedsSpeedsButton)
+        layout.addLayout(row)
+
+    def _onFeedsSpeedsClicked(self):
+        from Path.Tool.Gui.FeedsSpeedsDialog import open_for
+
+        open_for(self.obj, parent=self.form)
+        # The F&S dialog may have written HorizFeed/VertFeed/SpindleSpeed
+        # directly to the TC. Re-sync the editor's spinboxes from the
+        # underlying property values so the user sees the new numbers.
+        self.updateUi()
 
     def selectInComboBox(self, name, combo):
         """selectInComboBox(name, combo) ...
@@ -268,6 +302,7 @@ class ToolControllerEditor(object):
             self.leadInFeed.widget,
             self.leadOutFeed.widget,
             self.rampFeed.widget,
+            self.noEngagementFeed.widget,
             self.vertFeed.widget,
             self.vertRapid.widget,
             self.controller.spindleSpeed,
@@ -278,12 +313,15 @@ class ToolControllerEditor(object):
                 obj.blockSignals(True)
 
             self.controller.tcName.setText(tc.Label)
+            if not self.controller.tcName.hasFocus():
+                self.controller.tcName.setCursorPosition(0)
             self.controller.tcNumber.setValue(tc.ToolNumber)
             self.horizFeed.updateWidget()
             self.horizRapid.updateWidget()
             self.leadInFeed.updateWidget()
             self.leadOutFeed.updateWidget()
             self.rampFeed.updateWidget()
+            self.noEngagementFeed.updateWidget()
             self.vertFeed.updateWidget()
             self.vertRapid.updateWidget()
             self.controller.spindleSpeed.setValue(tc.SpindleSpeed)
@@ -308,6 +346,7 @@ class ToolControllerEditor(object):
             self.leadInFeed.updateProperty()
             self.leadOutFeed.updateProperty()
             self.rampFeed.updateProperty()
+            self.noEngagementFeed.updateProperty()
             self.horizRapid.updateProperty()
             self.vertRapid.updateProperty()
             if tc.SpindleSpeed != self.controller.spindleSpeed.value():
@@ -339,12 +378,16 @@ class ToolControllerEditor(object):
             self.editor.setupUI()
 
         self.controller.tcName.textChanged.connect(self.changed)
+        self.controller.tcName.editingFinished.connect(
+            lambda: self.controller.tcName.setCursorPosition(0)
+        )
         self.controller.tcNumber.editingFinished.connect(self.changed)
         self.vertFeed.widget.textChanged.connect(self.changed)
         self.horizFeed.widget.textChanged.connect(self.changed)
         self.leadInFeed.widget.textChanged.connect(self.changed)
         self.leadOutFeed.widget.textChanged.connect(self.changed)
         self.rampFeed.widget.textChanged.connect(self.changed)
+        self.noEngagementFeed.widget.textChanged.connect(self.changed)
         self.vertRapid.widget.textChanged.connect(self.changed)
         self.horizRapid.widget.textChanged.connect(self.changed)
         self.controller.spindleSpeed.editingFinished.connect(self.changed)

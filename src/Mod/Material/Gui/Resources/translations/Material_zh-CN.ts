@@ -994,7 +994,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ModelSelect.ui" line="49"/>
       <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
-      <translation>URL</translation>
+      <translation>超级链接URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
@@ -1196,14 +1196,14 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
       <location filename="../../MaterialSave.cpp" line="568"/>
-      <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
+      <location filename="../../Array2D.cpp" line="170"/>
       <source>Confirm Delete</source>
       <translation>确认删除</translation>
     </message>
     <message>
-      <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
+      <location filename="../../Array2D.cpp" line="172"/>
       <source>Delete the row?</source>
       <translation>删除该行？</translation>
     </message>

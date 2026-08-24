@@ -28,6 +28,7 @@
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFUShort.h>
 #include <Inventor/fields/SoSFImage.h>
 #include <Inventor/fields/SoSFInt32.h>
 #include <Inventor/fields/SoSFName.h>
@@ -103,6 +104,7 @@ public:
     SoSFImage image;
     SoSFFloat lineWidth;
     SoSFFloat sampling;
+    SoSFUShort linePattern;
     bool useAntialiasing;
 
 protected:
@@ -237,6 +239,7 @@ private:
 
 private:
     void drawImage();
+    bool prepareRenderScene(SoState* state);
     void ensureCoinGeometry(const SbVec3f* points, int numPoints);
     void ensureCoinText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset);
     void setVertexZ(SbVec3f& point, float z) const;

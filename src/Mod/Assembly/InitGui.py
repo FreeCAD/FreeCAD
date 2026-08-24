@@ -21,8 +21,6 @@
 #                                                                           *
 # **************************************************************************/
 
-import Assembly_rc
-
 
 class AssemblyCommandGroup:
     def __init__(self, cmdlist, menu, tooltip=None):
@@ -102,6 +100,7 @@ class AssemblyWorkbench(Workbench):
 
         cmdListJoints = [
             "Assembly_ToggleGrounded",
+            "Assembly_CreateJointRigidGroup",
             "Separator",
             "Assembly_CreateJointFixed",
             "Assembly_CreateJointRevolute",

@@ -19,6 +19,7 @@ import ast
 import copy
 from pathlib import Path
 
+from .deprecation import literal_keyword_values, structured_deprecation_message
 from .model import (
     BindingClass,
     HELPER_PYI_FILES,
@@ -39,6 +40,26 @@ from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
 
 TYPE_CHECKING_IMPORT_LINE = "from typing import TYPE_CHECKING"
+DEPRECATED_IMPORT_LINE = "from typing_extensions import deprecated"
+
+
+def normalized_deprecated_decorator(decorator: ast.expr) -> ast.expr:
+    if decorator_name(decorator).split(".", 1)[-1] != "deprecated":
+        return decorator
+    if not isinstance(decorator, ast.Call):
+        raise ValueError("deprecated must be called with structured lifecycle metadata")
+    if decorator.args:
+        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
+
+    kwargs = literal_keyword_values(decorator, "deprecated() metadata")
+    message = structured_deprecation_message(kwargs)
+    if message is None:
+        raise ValueError("deprecated() requires structured lifecycle metadata")
+    return ast.Call(
+        func=ast.Name(id="deprecated", ctx=ast.Load()),
+        args=[ast.Constant(value=message)],
+        keywords=[],
+    )
 
 
 def keep_public_stub_decorator(decorator: ast.expr) -> bool:
@@ -63,6 +84,185 @@ class PublicClassStubTransformer(ast.NodeTransformer):
         self.class_depth = 0
         self.shadowed_annotation_names: set[str] = set()
         self.annotation_module_roots_needed: set[str] = set()
+        self.current_deprecated_attributes: dict[str, str] = {}
+        self.needs_deprecated_import = False
+
+    def public_decorators(self, decorators: list[ast.expr]) -> list[ast.expr]:
+        normalized = [
+            normalized_deprecated_decorator(decorator)
+            for decorator in decorators
+            if keep_public_stub_decorator(decorator)
+        ]
+        if any(
+            decorator_name(decorator).split(".", 1)[-1] == "deprecated" for decorator in normalized
+        ):
+            self.needs_deprecated_import = True
+        return normalized
+
+    @staticmethod
+    def deprecated_attributes(node: ast.ClassDef) -> dict[str, str]:
+        deprecated_attributes: dict[str, str] = {}
+        for decorator in node.decorator_list:
+            if decorator_name(decorator).split(".", 1)[-1] != "deprecated_attributes":
+                continue
+            if not isinstance(decorator, ast.Call):
+                continue
+            values = literal_keyword_values(decorator, "deprecated_attributes() metadata")
+            for name, value in values.items():
+                if not isinstance(value, dict):
+                    raise ValueError(
+                        f"deprecated attribute '{name}' metadata must be a structured mapping"
+                    )
+                message = structured_deprecation_message(value)
+                if message is None:
+                    raise ValueError(
+                        f"deprecated attribute '{name}' metadata requires lifecycle fields"
+                    )
+                deprecated_attributes[name] = message
+        return deprecated_attributes
+
+    @staticmethod
+    def docstring_expr(node: ast.stmt) -> str | None:
+        if (
+            isinstance(node, ast.Expr)
+            and isinstance(node.value, ast.Constant)
+            and isinstance(node.value.value, str)
+        ):
+            return node.value.value
+        return None
+
+    @staticmethod
+    def is_final_annotation(annotation: ast.expr) -> bool:
+        if isinstance(annotation, ast.Name):
+            return annotation.id == "Final"
+        if isinstance(annotation, ast.Attribute):
+            return annotation.attr == "Final"
+        if isinstance(annotation, ast.Subscript):
+            return PublicClassStubTransformer.is_final_annotation(annotation.value)
+        return False
+
+    @staticmethod
+    def property_annotation(annotation: ast.expr) -> ast.expr:
+        if isinstance(annotation, ast.Subscript) and PublicClassStubTransformer.is_final_annotation(
+            annotation
+        ):
+            return copy.deepcopy(annotation.slice)
+        return copy.deepcopy(annotation)
+
+    @staticmethod
+    def ellipsis_body(doc: str | None = None) -> list[ast.stmt]:
+        body: list[ast.stmt] = []
+        if doc:
+            body.append(ast.Expr(value=ast.Constant(value=doc)))
+        body.append(ast.Expr(value=ast.Constant(value=Ellipsis)))
+        return body
+
+    def deprecated_property_nodes(
+        self,
+        node: ast.AnnAssign,
+        doc: str | None,
+    ) -> list[ast.stmt] | None:
+        if not isinstance(node.target, ast.Name):
+            return None
+        message = self.current_deprecated_attributes.get(node.target.id)
+        if message is None:
+            return None
+
+        annotation = self.rewrite_annotation(node.annotation)
+        if annotation is None:
+            raise ValueError("annotated assignment must keep an annotation")
+        property_annotation = self.property_annotation(annotation)
+        self.needs_deprecated_import = True
+
+        getter = ast.FunctionDef(
+            name=node.target.id,
+            args=ast.arguments(
+                posonlyargs=[],
+                args=[ast.arg(arg="self")],
+                vararg=None,
+                kwonlyargs=[],
+                kw_defaults=[],
+                kwarg=None,
+                defaults=[],
+            ),
+            body=self.ellipsis_body(doc),
+            decorator_list=[
+                ast.Name(id="property", ctx=ast.Load()),
+                ast.Call(
+                    func=ast.Name(id="deprecated", ctx=ast.Load()),
+                    args=[ast.Constant(value=message)],
+                    keywords=[],
+                ),
+            ],
+            returns=property_annotation,
+            type_comment=None,
+            type_params=[],
+        )
+        nodes: list[ast.stmt] = [getter]
+
+        if self.is_final_annotation(annotation):
+            return nodes
+
+        setter = ast.FunctionDef(
+            name=node.target.id,
+            args=ast.arguments(
+                posonlyargs=[],
+                args=[
+                    ast.arg(arg="self"),
+                    ast.arg(arg="value", annotation=copy.deepcopy(property_annotation)),
+                ],
+                vararg=None,
+                kwonlyargs=[],
+                kw_defaults=[],
+                kwarg=None,
+                defaults=[],
+            ),
+            body=self.ellipsis_body(),
+            decorator_list=[
+                ast.Attribute(
+                    value=ast.Name(id=node.target.id, ctx=ast.Load()),
+                    attr="setter",
+                    ctx=ast.Load(),
+                ),
+                ast.Call(
+                    func=ast.Name(id="deprecated", ctx=ast.Load()),
+                    args=[ast.Constant(value=message)],
+                    keywords=[],
+                ),
+            ],
+            returns=ast.Constant(value=None),
+            type_comment=None,
+            type_params=[],
+        )
+        nodes.append(setter)
+        return nodes
+
+    def transform_class_body(self, body: list[ast.stmt]) -> list[ast.stmt]:
+        transformed: list[ast.stmt] = []
+        index = 0
+        while index < len(body):
+            item = body[index]
+            attribute_doc: str | None = None
+            doc_index: int | None = None
+            if isinstance(item, ast.AnnAssign) and index + 1 < len(body):
+                attribute_doc = self.docstring_expr(body[index + 1])
+                if attribute_doc is not None:
+                    doc_index = index + 1
+
+            if isinstance(item, ast.AnnAssign):
+                deprecated_nodes = self.deprecated_property_nodes(item, attribute_doc)
+                if deprecated_nodes is not None:
+                    transformed.extend(deprecated_nodes)
+                    index += 2 if doc_index is not None else 1
+                    continue
+
+            visited = self.visit(item)
+            if isinstance(visited, list):
+                transformed.extend(visited)
+            else:
+                transformed.append(visited)
+            index += 1
+        return transformed
 
     def rewrite_annotation(self, annotation: ast.expr | None) -> ast.expr | None:
         if annotation is None:
@@ -87,11 +287,10 @@ class PublicClassStubTransformer(ast.NodeTransformer):
 
     def visit_ClassDef(self, node: ast.ClassDef) -> ast.ClassDef:
         is_public_class = self.class_depth == 0
+        deprecated_attributes = self.deprecated_attributes(node) if is_public_class else {}
         if is_public_class:
             node.name = self.public_symbol
-        node.decorator_list = [
-            decorator for decorator in node.decorator_list if keep_public_stub_decorator(decorator)
-        ]
+        node.decorator_list = self.public_decorators(node.decorator_list)
         node.bases = [self.visit(base) for base in node.bases]
         if is_public_class:
             node.bases = [
@@ -108,9 +307,11 @@ class PublicClassStubTransformer(ast.NodeTransformer):
             ]
             node.keywords = []
             self.shadowed_annotation_names = self.top_level_class_member_names(node.body)
+        previous_deprecated_attributes = self.current_deprecated_attributes
+        self.current_deprecated_attributes = deprecated_attributes
         self.class_depth += 1
         try:
-            node.body = [self.visit(item) for item in node.body]
+            node.body = self.transform_class_body(node.body)
             flattened: list[ast.stmt] = []
             for item in node.body:
                 if isinstance(item, ast.If) and type_checking_test(item.test) and not item.orelse:
@@ -120,21 +321,18 @@ class PublicClassStubTransformer(ast.NodeTransformer):
             node.body = flattened
         finally:
             self.class_depth -= 1
+            self.current_deprecated_attributes = previous_deprecated_attributes
         return node
 
     def visit_FunctionDef(self, node: ast.FunctionDef) -> ast.FunctionDef:
-        node.decorator_list = [
-            decorator for decorator in node.decorator_list if keep_public_stub_decorator(decorator)
-        ]
+        node.decorator_list = self.public_decorators(node.decorator_list)
         node.args = self.visit(node.args)
         node.returns = self.rewrite_annotation(node.returns)
         node.body = [self.visit(item) for item in node.body]
         return node
 
     def visit_AsyncFunctionDef(self, node: ast.AsyncFunctionDef) -> ast.AsyncFunctionDef:
-        node.decorator_list = [
-            decorator for decorator in node.decorator_list if keep_public_stub_decorator(decorator)
-        ]
+        node.decorator_list = self.public_decorators(node.decorator_list)
         node.args = self.visit(node.args)
         node.returns = self.rewrite_annotation(node.returns)
         node.body = [self.visit(item) for item in node.body]
@@ -659,6 +857,8 @@ def public_class_stub_source(
             internal_roots,
         )
     )
+    if transformer.needs_deprecated_import and DEPRECATED_IMPORT_LINE not in import_lines:
+        import_lines.append(DEPRECATED_IMPORT_LINE)
     for root_name in sorted(transformer.annotation_module_roots_needed):
         line = f"import {root_name}"
         if line not in import_lines:
