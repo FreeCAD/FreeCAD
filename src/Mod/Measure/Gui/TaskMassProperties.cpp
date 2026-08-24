@@ -424,10 +424,7 @@ void TaskMassProperties::removeTemporaryObjects()
         return;
     }
 
-    int savedMode = doc->getUndoMode();
-    doc->setUndoMode(0);
     doc->removeObject("MassPropertiesPreview");
-    doc->setUndoMode(savedMode);
 }
 
 
@@ -1163,9 +1160,6 @@ void TaskMassProperties::tryUpdate()
             }
 
 
-            int savedMode = doc->getUndoMode();
-            doc->setUndoMode(0);
-
             App::DocumentObject* obj = doc->getObject("MassPropertiesPreview");
             if (!obj) {
                 obj = doc->addObject("Measure::Result", "MassPropertiesPreview");
@@ -1174,28 +1168,28 @@ void TaskMassProperties::tryUpdate()
             obj->Visibility.setValue(true);
 
             auto* guiDoc = Gui::Application::Instance->activeDocument();
-            if (guiDoc) {
-                auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(
-                    guiDoc->getViewProvider(obj)
-                );
-                if (view) {
-                    if (auto* resultView = dynamic_cast<ViewProviderMassPropertiesResult*>(view)) {
-                        resultView->setCenters(infoSnapshot.cog, infoSnapshot.cov);
-                        resultView->setPrincipalAxes(
-                            infoSnapshot.cog,
-                            infoSnapshot.principalAxis1,
-                            infoSnapshot.principalAxis2,
-                            infoSnapshot.principalAxis3,
-                            !hasAxisSelection
-                        );
-                    }
-                    view->setShowable(true);
-                    view->ShowInTree.setValue(false);
-                    view->show();
-                }
+            if (!guiDoc) {
+                return;
             }
 
-            doc->setUndoMode(savedMode);
+            auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(guiDoc->getViewProvider(obj));
+            if (!view) {
+                return;
+            }
+
+            if (auto* resultView = dynamic_cast<ViewProviderMassPropertiesResult*>(view)) {
+                resultView->setCenters(infoSnapshot.cog, infoSnapshot.cov);
+                resultView->setPrincipalAxes(
+                    infoSnapshot.cog,
+                    infoSnapshot.principalAxis1,
+                    infoSnapshot.principalAxis2,
+                    infoSnapshot.principalAxis3,
+                    !hasAxisSelection
+                );
+            }
+            view->setShowable(true);
+            view->ShowInTree.setValue(false);
+            view->show();
         });
     }
 }
