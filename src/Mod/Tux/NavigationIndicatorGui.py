@@ -81,7 +81,9 @@ def RePopulateIcons():
     a10.setIcon(QtGui.QIcon(":/icons/NavigationSolidWorks_" + StyleSheetType + ".svg"))
     a11.setIcon(QtGui.QIcon(":/icons/NavigationTinkerCAD_" + StyleSheetType + ".svg"))
     a12.setIcon(QtGui.QIcon(":/icons/NavigationTouchpad_" + StyleSheetType + ".svg"))
-    a13.setIcon(QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg"))  # TODO update with correct vector graphics
+    a13.setIcon(
+        QtGui.QIcon(":/icons/NavigationCAD_" + StyleSheetType + ".svg")
+    )  # TODO update with correct vector graphics
 
 
 def retranslateUi():

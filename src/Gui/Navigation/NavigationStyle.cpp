@@ -2242,7 +2242,7 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
     // appropriate mouse model.
     if (mouseSelection) {
         int hd = mouseSelection->handleEvent(ev, viewer->getSoRenderManager()->getViewportRegion());
-        if (hd == AbstractMouseSelection::Continue || hd == AbstractMouseSelection::Restart) { 
+        if (hd == AbstractMouseSelection::Continue || hd == AbstractMouseSelection::Restart) {
             return true;
         }
         else if (hd == AbstractMouseSelection::Finish) {
@@ -2283,13 +2283,12 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
         if (SoMouseButtonEvent::isButtonReleaseEvent(ev, SoMouseButtonEvent::BUTTON1)) {
             // Fetch the active navigation style directly from FreeCAD's user preferences
             Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/View");
+                "User parameter:BaseApp/Preferences/View"
+            );
             std::string activeStyle = hGrp->GetASCII("NavigationStyle", "CADNavigationStyle");
             bool isAltiumMode = (activeStyle == "Gui::AltiumNavigationStyle");
 
-            if ( !(ev->wasCtrlDown()
-                || (ev->wasShiftDown() && isAltiumMode)
-                ) ) {
+            if (!(ev->wasCtrlDown() || (ev->wasShiftDown() && isAltiumMode))) {
                 Gui::Selection().clearSelection();
             }
         }
