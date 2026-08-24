@@ -37,6 +37,9 @@ GCODE_MOVE_DRILL = ["G73", "G81", "G82", "G83", "G85"]
 # Additional drilling cycles
 GCODE_DRILL_EXTENDED = ["G74", "G84", "G88", "G89"]
 
+# Tapping cycles (F is the thread pitch, not a feed rate)
+GCODE_MOVE_TAP = ["G74", "G84"]
+
 # Cutting moves (feed moves and arcs)
 GCODE_MOVE_MILL = GCODE_MOVE_STRAIGHT + GCODE_MOVE_ARC
 
