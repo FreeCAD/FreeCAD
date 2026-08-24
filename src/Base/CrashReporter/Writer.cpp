@@ -419,7 +419,7 @@ void Writer::install(const std::string& crashReportDirectory)
 #elif defined(FC_OS_LINUX)
     header.osID = OS::Linux;
 #elif defined(FC_OS_BSD)
-    header.osID = OS::BSD;
+    header.osID = OS::BSDFamily;
 #else
     // Cygwin has no enumerator, so it keeps the initialized OS::None.
 #endif
