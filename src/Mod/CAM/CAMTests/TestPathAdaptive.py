@@ -26,8 +26,12 @@ import Path.Op.Adaptive as PathAdaptive
 import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
 import area
+import json
 import math
+import os
 import time
+
+_GOLDEN_DIR = "/home/david/Documents/projects/freecad/adaptive_clipper2/golden_files"
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
@@ -114,6 +118,8 @@ class TestPathAdaptive(PathTestBase):
 
         # Start timing this test
         self._test_start_time = time.time()
+        self._executeAdaptive_count = 0
+        self._path_commands_count = 0
 
     def tearDown(self):
         """tearDown()...
@@ -194,6 +200,46 @@ class TestPathAdaptive(PathTestBase):
 
         return stockPath2d, path2d, dimensions
 
+    _NUMERIC_PARAMS = {"X", "Y", "Z", "I", "J", "K", "F", "P", "Q", "R"}
+
+    def _assertPathCommandsUnchanged(self, adaptive):
+        """Golden file comparison for PathAdaptive.Create-based tests."""
+        self._path_commands_count += 1
+        test_name = self.id().split(".")[-1]
+        golden_path = os.path.join(_GOLDEN_DIR, f"{test_name}_{self._path_commands_count}.json")
+        commands_data = [
+            {"name": cmd.Name, "params": dict(cmd.Parameters)} for cmd in adaptive.Path.Commands
+        ]
+        if os.path.exists(golden_path):
+            with open(golden_path) as f:
+                saved_data = json.load(f)
+            self.assertEqual(len(commands_data), len(saved_data), "Command count changed")
+            for ci, (cmd, saved_cmd) in enumerate(zip(commands_data, saved_data)):
+                self.assertEqual(cmd["name"], saved_cmd["name"], f"Command[{ci}]: name changed")
+                self.assertEqual(
+                    set(cmd["params"].keys()),
+                    set(saved_cmd["params"].keys()),
+                    f"Command[{ci}] {cmd['name']}: parameter keys changed",
+                )
+                for key, saved_val in saved_cmd["params"].items():
+                    if key in self._NUMERIC_PARAMS:
+                        self.assertAlmostEqual(
+                            cmd["params"][key],
+                            saved_val,
+                            delta=1e-3,
+                            msg=f"Command[{ci}] {cmd['name']}: param {key} changed",
+                        )
+                    else:
+                        self.assertEqual(
+                            cmd["params"][key],
+                            saved_val,
+                            f"Command[{ci}] {cmd['name']}: param {key} changed",
+                        )
+        else:
+            os.makedirs(_GOLDEN_DIR, exist_ok=True)
+            with open(golden_path, "w") as f:
+                json.dump(commands_data, f, indent=2)
+
     def _executeAdaptive(self, opType, stockPath2d, path2d, clearedArea=None, **kwargs):
         """Create, configure, execute Adaptive2d and return total cleared area."""
         if clearedArea is None:
@@ -224,6 +270,54 @@ class TestPathAdaptive(PathTestBase):
         self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
         for result in results:
             self.checkAdaptiveErrors(result)
+
+        # Golden file comparison: assert path data is unchanged, or write it on first run
+        self._executeAdaptive_count += 1
+        test_name = self.id().split(".")[-1]
+        golden_path = os.path.join(_GOLDEN_DIR, f"{test_name}_{self._executeAdaptive_count}.json")
+        path_data = [
+            [
+                {"motionType": mt, "points": [[p[0], p[1]] for p in path]}
+                for mt, path in result.AdaptivePaths
+            ]
+            for result in results
+        ]
+        if os.path.exists(golden_path):
+            with open(golden_path) as f:
+                saved_data = json.load(f)
+            self.assertEqual(len(path_data), len(saved_data), "Result count changed")
+            for ri, (result, saved_result) in enumerate(zip(path_data, saved_data)):
+                self.assertEqual(
+                    len(result), len(saved_result), f"Result[{ri}]: path count changed"
+                )
+                for pi, (seg, saved_seg) in enumerate(zip(result, saved_result)):
+                    self.assertEqual(
+                        seg["motionType"],
+                        saved_seg["motionType"],
+                        f"Result[{ri}] path[{pi}]: motionType changed",
+                    )
+                    self.assertEqual(
+                        len(seg["points"]),
+                        len(saved_seg["points"]),
+                        f"Result[{ri}] path[{pi}]: point count changed",
+                    )
+                    for pti, (pt, saved_pt) in enumerate(zip(seg["points"], saved_seg["points"])):
+                        self.assertAlmostEqual(
+                            pt[0],
+                            saved_pt[0],
+                            delta=1e-3,
+                            msg=f"Result[{ri}] path[{pi}] point[{pti}]: X changed",
+                        )
+                        self.assertAlmostEqual(
+                            pt[1],
+                            saved_pt[1],
+                            delta=1e-3,
+                            msg=f"Result[{ri}] path[{pi}] point[{pti}]: Y changed",
+                        )
+        else:
+            os.makedirs(_GOLDEN_DIR, exist_ok=True)
+            with open(golden_path, "w") as f:
+                json.dump(path_data, f, indent=2)
 
         # Return total cleared area, the configured instance, and raw results
         total_cleared = sum(r.ClearedArea for r in results)
@@ -487,6 +581,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # moves = getGcodeMoves(adaptive.Path.Commands, includeRapids=False)
         # operationMoves = ";  ".join(moves)
@@ -519,6 +614,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
@@ -545,6 +641,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
@@ -584,6 +681,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
@@ -625,6 +723,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
@@ -666,6 +765,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # Check command count
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
@@ -707,6 +807,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         self.assertTrue(len(adaptive.Path.Commands) > 100, "Command count not greater than 100.")
 
@@ -728,6 +829,7 @@ class TestPathAdaptive(PathTestBase):
         # Set Adaptive op to only use the outline of the face.
         adaptive.UseOutline = True
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # Check if any paths originate inside inner hole of donut.  They should not.
         isInBox = False
@@ -767,6 +869,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # Check:
         # - Bounding box at Z=10 stays within Face3 and Face10- so -X for Face3,
@@ -833,6 +936,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # Check:
         # - No feed path at depth Z=10 touchs Face3
@@ -894,6 +998,7 @@ class TestPathAdaptive(PathTestBase):
 
         _addViewProvider(adaptive)
         self.doc.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # Check:
         # - Bounding box at Z=0 goes outside the model box + tool diameter
@@ -977,6 +1082,7 @@ class TestPathAdaptive(PathTestBase):
         _addViewProvider(adaptive)
         # NOTE: Do NOT recompute entire doc, which will undo our stock change!
         adaptive.recompute()
+        self._assertPathCommandsUnchanged(adaptive)
 
         # Check:
         # - Bounding box at Z=10 does not cut the region to the right
