@@ -1,0 +1,15 @@
+{
+  "file": "CLIP_D_B_R1.03.json",
+  "faces": [
+    {
+      "index": 1,
+      "label": 2,
+      "type": "CONTACT"
+    },
+    {
+      "index": 2,
+      "label": 4,
+      "type": "CHAMFER"
+    }
+  ]
+}

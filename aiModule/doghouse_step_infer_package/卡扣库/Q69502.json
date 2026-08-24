@@ -1,0 +1,55 @@
+{
+  "file": "Q69502.json",
+  "faces": [
+    {
+      "index": 1,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 2,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 3,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 4,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 5,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 6,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 7,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 8,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 9,
+      "label": 2,
+      "type": "CONTACT"
+    },
+    {
+      "index": 10,
+      "label": 3,
+      "type": "OTHER"
+    }
+  ]
+}

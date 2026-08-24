@@ -1,0 +1,861 @@
+{
+  "gallery": "checkpoints/doghouse_instance_similarity_gallery_7_plus_B126302301001.npz",
+  "threshold": 0.2,
+  "models": [
+    {
+      "model": "B pillar trim lower-0612",
+      "prediction": "compare_8_mixed_pmae_train301_min2/B pillar trim lower-0612/B pillar trim lower-0612_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/B pillar trim lower-0612/B pillar trim lower-0612_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 2,
+            "pred": 1,
+            "iou": 1.0
+          },
+          {
+            "gt": 1,
+            "pred": 5,
+            "iou": 1.0
+          },
+          {
+            "gt": 5,
+            "pred": 2,
+            "iou": 0.988764
+          },
+          {
+            "gt": 4,
+            "pred": 3,
+            "iou": 0.977273
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 2,
+            "pred": 1,
+            "iou": 1.0
+          },
+          {
+            "gt": 1,
+            "pred": 5,
+            "iou": 1.0
+          },
+          {
+            "gt": 5,
+            "pred": 2,
+            "iou": 0.988764
+          },
+          {
+            "gt": 4,
+            "pred": 3,
+            "iou": 0.977273
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.388914,
+          "keep_score": 0.708314
+        },
+        {
+          "pos_sim": 0.965913,
+          "neg_sim": 0.441423,
+          "keep_score": 0.634846
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.601814,
+          "keep_score": 0.54864
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.601978,
+          "keep_score": 0.548517
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.595269,
+          "keep_score": 0.553548
+        }
+      ],
+      "rejected_scores": []
+    },
+    {
+      "model": "M5-5402231",
+      "prediction": "compare_8_mixed_pmae_train301_min2/M5-5402231/M5-5402231_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/M5-5402231/M5-5402231_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "matched_instances": 4,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.957611,
+        "precision": 0.957611,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 4,
+            "pred": 3,
+            "iou": 0.971014
+          },
+          {
+            "gt": 1,
+            "pred": 1,
+            "iou": 0.943038
+          },
+          {
+            "gt": 2,
+            "pred": 2,
+            "iou": 0.939189
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "matched_instances": 4,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.957611,
+        "precision": 0.957611,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 4,
+            "pred": 3,
+            "iou": 0.971014
+          },
+          {
+            "gt": 1,
+            "pred": 1,
+            "iou": 0.943038
+          },
+          {
+            "gt": 2,
+            "pred": 2,
+            "iou": 0.939189
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 0.901016,
+          "neg_sim": 0.241688,
+          "keep_score": 0.71975
+        },
+        {
+          "pos_sim": 0.941927,
+          "neg_sim": 0.244776,
+          "keep_score": 0.758345
+        },
+        {
+          "pos_sim": 0.952555,
+          "neg_sim": 0.254323,
+          "keep_score": 0.761813
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.20927,
+          "keep_score": 0.843047
+        }
+      ],
+      "rejected_scores": []
+    },
+    {
+      "model": "pillar",
+      "prediction": "compare_8_mixed_pmae_train301_min2/pillar/pillar_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/pillar/pillar_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.976744,
+        "precision": 0.976744,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 3,
+            "iou": 0.986486
+          },
+          {
+            "gt": 4,
+            "pred": 4,
+            "iou": 0.986301
+          },
+          {
+            "gt": 5,
+            "pred": 2,
+            "iou": 0.982759
+          },
+          {
+            "gt": 2,
+            "pred": 1,
+            "iou": 0.971292
+          },
+          {
+            "gt": 1,
+            "pred": 5,
+            "iou": 0.958333
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.976744,
+        "precision": 0.976744,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 3,
+            "iou": 0.986486
+          },
+          {
+            "gt": 4,
+            "pred": 4,
+            "iou": 0.986301
+          },
+          {
+            "gt": 5,
+            "pred": 2,
+            "iou": 0.982759
+          },
+          {
+            "gt": 2,
+            "pred": 1,
+            "iou": 0.971292
+          },
+          {
+            "gt": 1,
+            "pred": 5,
+            "iou": 0.958333
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 0.946811,
+          "neg_sim": 0.206877,
+          "keep_score": 0.791653
+        },
+        {
+          "pos_sim": 0.972672,
+          "neg_sim": 0.244863,
+          "keep_score": 0.789025
+        },
+        {
+          "pos_sim": 0.984067,
+          "neg_sim": 0.369367,
+          "keep_score": 0.707041
+        },
+        {
+          "pos_sim": 0.986434,
+          "neg_sim": 0.368022,
+          "keep_score": 0.710417
+        },
+        {
+          "pos_sim": 0.949975,
+          "neg_sim": 0.361593,
+          "keep_score": 0.67878
+        }
+      ],
+      "rejected_scores": []
+    },
+    {
+      "model": "未命名-0981535409815353",
+      "prediction": "compare_8_mixed_pmae_train301_min2/未命名-0981535409815353/未命名-0981535409815353_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/未命名-0981535409815353/未命名-0981535409815353_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.930836,
+        "precision": 0.930836,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 1,
+            "pred": 5,
+            "iou": 1.0
+          },
+          {
+            "gt": 2,
+            "pred": 3,
+            "iou": 0.955882
+          },
+          {
+            "gt": 3,
+            "pred": 2,
+            "iou": 0.915493
+          },
+          {
+            "gt": 4,
+            "pred": 4,
+            "iou": 0.910448
+          },
+          {
+            "gt": 5,
+            "pred": 1,
+            "iou": 0.88
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.930836,
+        "precision": 0.930836,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 1,
+            "pred": 5,
+            "iou": 1.0
+          },
+          {
+            "gt": 2,
+            "pred": 3,
+            "iou": 0.955882
+          },
+          {
+            "gt": 3,
+            "pred": 2,
+            "iou": 0.915493
+          },
+          {
+            "gt": 4,
+            "pred": 4,
+            "iou": 0.910448
+          },
+          {
+            "gt": 5,
+            "pred": 1,
+            "iou": 0.88
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 0.902583,
+          "neg_sim": 0.476073,
+          "keep_score": 0.545528
+        },
+        {
+          "pos_sim": 0.933733,
+          "neg_sim": 0.507706,
+          "keep_score": 0.552953
+        },
+        {
+          "pos_sim": 0.964892,
+          "neg_sim": 0.510034,
+          "keep_score": 0.582366
+        },
+        {
+          "pos_sim": 0.838287,
+          "neg_sim": 0.335917,
+          "keep_score": 0.586349
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.482183,
+          "keep_score": 0.638363
+        }
+      ],
+      "rejected_scores": []
+    },
+    {
+      "model": "未命名-1031001001-B121031101001-B001",
+      "prediction": "compare_8_mixed_pmae_train301_min2/未命名-1031001001-B121031101001-B001/未命名-1031001001-B121031101001-B001_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/未命名-1031001001-B121031101001-B001/未命名-1031001001-B121031101001-B001_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "matched_instances": 4,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.976744,
+        "precision": 0.976744,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 2,
+            "iou": 1.0
+          },
+          {
+            "gt": 4,
+            "pred": 4,
+            "iou": 0.985915
+          },
+          {
+            "gt": 2,
+            "pred": 3,
+            "iou": 0.972603
+          },
+          {
+            "gt": 1,
+            "pred": 1,
+            "iou": 0.95122
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "matched_instances": 4,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.976744,
+        "precision": 0.976744,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 3,
+            "pred": 2,
+            "iou": 1.0
+          },
+          {
+            "gt": 4,
+            "pred": 4,
+            "iou": 0.985915
+          },
+          {
+            "gt": 2,
+            "pred": 3,
+            "iou": 0.972603
+          },
+          {
+            "gt": 1,
+            "pred": 1,
+            "iou": 0.95122
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 0.972969,
+          "neg_sim": 0.430297,
+          "keep_score": 0.650246
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.456567,
+          "keep_score": 0.657574
+        },
+        {
+          "pos_sim": 0.97925,
+          "neg_sim": 0.461894,
+          "keep_score": 0.632829
+        },
+        {
+          "pos_sim": 0.965398,
+          "neg_sim": 0.494667,
+          "keep_score": 0.594398
+        }
+      ],
+      "rejected_scores": []
+    },
+    {
+      "model": "未命名-1031010003-B11COMPOUND009",
+      "prediction": "compare_8_mixed_pmae_train301_min2/未命名-1031010003-B11COMPOUND009/未命名-1031010003-B11COMPOUND009_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/未命名-1031010003-B11COMPOUND009/未命名-1031010003-B11COMPOUND009_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "matched_instances": 4,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.964286,
+        "precision": 0.964286,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 2,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 3,
+            "pred": 2,
+            "iou": 0.983607
+          },
+          {
+            "gt": 4,
+            "pred": 1,
+            "iou": 0.951613
+          },
+          {
+            "gt": 1,
+            "pred": 3,
+            "iou": 0.921053
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "matched_instances": 4,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.964286,
+        "precision": 0.964286,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 2,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 3,
+            "pred": 2,
+            "iou": 0.983607
+          },
+          {
+            "gt": 4,
+            "pred": 1,
+            "iou": 0.951613
+          },
+          {
+            "gt": 1,
+            "pred": 3,
+            "iou": 0.921053
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 0.934526,
+          "neg_sim": 0.161699,
+          "keep_score": 0.813252
+        },
+        {
+          "pos_sim": 0.983062,
+          "neg_sim": 0.231033,
+          "keep_score": 0.809787
+        },
+        {
+          "pos_sim": 0.922935,
+          "neg_sim": 0.56976,
+          "keep_score": 0.495615
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.579836,
+          "keep_score": 0.565123
+        }
+      ],
+      "rejected_scores": []
+    },
+    {
+      "model": "未命名-6302001001-B126302102001-B12",
+      "prediction": "compare_8_mixed_pmae_train301_min2/未命名-6302001001-B126302102001-B12/未命名-6302001001-B126302102001-B12_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/未命名-6302001001-B126302102001-B12/未命名-6302001001-B126302102001-B12_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 2,
+        "pred_instances": 6,
+        "matched_instances": 2,
+        "missing_gt": [],
+        "extra_pred": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "extra_count": 4,
+        "face_iou": 0.586207,
+        "precision": 0.782895,
+        "recall": 0.7,
+        "matches": [
+          {
+            "gt": 1,
+            "pred": 1,
+            "iou": 0.793478
+          },
+          {
+            "gt": 2,
+            "pred": 2,
+            "iou": 0.52439
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 2,
+        "pred_instances": 3,
+        "matched_instances": 2,
+        "missing_gt": [],
+        "extra_pred": [
+          3
+        ],
+        "extra_count": 1,
+        "face_iou": 0.60733,
+        "precision": 0.846715,
+        "recall": 0.682353,
+        "matches": [
+          {
+            "gt": 1,
+            "pred": 1,
+            "iou": 0.793478
+          },
+          {
+            "gt": 2,
+            "pred": 2,
+            "iou": 0.52439
+          }
+        ]
+      },
+      "rejected_instances": 3,
+      "rejected_faces": [
+        [
+          776,
+          777,
+          778,
+          779,
+          780,
+          781,
+          782,
+          783,
+          784
+        ],
+        [
+          127,
+          128,
+          129
+        ],
+        [
+          308,
+          558,
+          564
+        ]
+      ],
+      "kept_scores": [
+        {
+          "pos_sim": 0.747644,
+          "neg_sim": 0.593922,
+          "keep_score": 0.302202
+        },
+        {
+          "pos_sim": 0.873234,
+          "neg_sim": 0.625414,
+          "keep_score": 0.404173
+        },
+        {
+          "pos_sim": 0.601203,
+          "neg_sim": 0.375992,
+          "keep_score": 0.319209
+        }
+      ],
+      "rejected_scores": [
+        {
+          "pos_sim": 0.083676,
+          "neg_sim": 0.024368,
+          "keep_score": 0.065399
+        },
+        {
+          "pos_sim": 0.37162,
+          "neg_sim": 0.832275,
+          "keep_score": -0.252586
+        },
+        {
+          "pos_sim": 0.698971,
+          "neg_sim": 0.697569,
+          "keep_score": 0.175795
+        }
+      ]
+    },
+    {
+      "model": "未命名-6302001001-B126302301001-B12",
+      "prediction": "compare_8_mixed_pmae_train301_min2/未命名-6302001001-B126302301001-B12/未命名-6302001001-B126302301001-B12_doghouse_pred_faces.json",
+      "simfilter_prediction": "compare_8_mixed_pmae_train301_min2/未命名-6302001001-B126302301001-B12/未命名-6302001001-B126302301001-B12_doghouse_pred_faces_simfilter.json",
+      "before": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.993691,
+        "precision": 0.993691,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 5,
+            "pred": 5,
+            "iou": 1.0
+          },
+          {
+            "gt": 4,
+            "pred": 2,
+            "iou": 1.0
+          },
+          {
+            "gt": 2,
+            "pred": 3,
+            "iou": 1.0
+          },
+          {
+            "gt": 1,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 3,
+            "pred": 1,
+            "iou": 0.970588
+          }
+        ]
+      },
+      "after": {
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "matched_instances": 5,
+        "missing_gt": [],
+        "extra_pred": [],
+        "extra_count": 0,
+        "face_iou": 0.993691,
+        "precision": 0.993691,
+        "recall": 1.0,
+        "matches": [
+          {
+            "gt": 5,
+            "pred": 5,
+            "iou": 1.0
+          },
+          {
+            "gt": 4,
+            "pred": 2,
+            "iou": 1.0
+          },
+          {
+            "gt": 2,
+            "pred": 3,
+            "iou": 1.0
+          },
+          {
+            "gt": 1,
+            "pred": 4,
+            "iou": 1.0
+          },
+          {
+            "gt": 3,
+            "pred": 1,
+            "iou": 0.970588
+          }
+        ]
+      },
+      "rejected_instances": 0,
+      "rejected_faces": [],
+      "kept_scores": [
+        {
+          "pos_sim": 0.979979,
+          "neg_sim": 0.493827,
+          "keep_score": 0.609608
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.492041,
+          "keep_score": 0.63097
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.493747,
+          "keep_score": 0.62969
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.507015,
+          "keep_score": 0.619739
+        },
+        {
+          "pos_sim": 1.0,
+          "neg_sim": 0.50722,
+          "keep_score": 0.619585
+        }
+      ],
+      "rejected_scores": []
+    }
+  ],
+  "mean_before_face_iou": 0.923265,
+  "mean_after_face_iou": 0.925905,
+  "mean_before_recall": 0.9625,
+  "mean_after_recall": 0.960294,
+  "total_before_extra": 4,
+  "total_after_extra": 1,
+  "total_rejected_instances": 3
+}

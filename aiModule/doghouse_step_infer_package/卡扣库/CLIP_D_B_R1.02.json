@@ -1,0 +1,705 @@
+{
+  "file": "CLIP_D_B_R1.02.json",
+  "faces": [
+    {
+      "index": 1,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 2,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 3,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 4,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 5,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 6,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 7,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 8,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 9,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 10,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 11,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 12,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 13,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 14,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 15,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 16,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 17,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 18,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 19,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 20,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 21,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 22,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 23,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 24,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 25,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 26,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 27,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 28,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 29,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 30,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 31,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 32,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 33,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 34,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 35,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 36,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 37,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 38,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 39,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 40,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 41,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 42,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 43,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 44,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 45,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 46,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 47,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 48,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 49,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 50,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 51,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 52,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 53,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 54,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 55,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 56,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 57,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 58,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 59,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 60,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 61,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 62,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 63,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 64,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 65,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 66,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 67,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 68,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 69,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 70,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 71,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 72,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 73,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 74,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 75,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 76,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 77,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 78,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 79,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 80,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 81,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 82,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 83,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 84,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 85,
+      "label": 2,
+      "type": "CONTACT"
+    },
+    {
+      "index": 86,
+      "label": 2,
+      "type": "CONTACT"
+    },
+    {
+      "index": 87,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 88,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 89,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 90,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 91,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 92,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 93,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 94,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 95,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 96,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 97,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 98,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 99,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 100,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 101,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 102,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 103,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 104,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 105,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 106,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 107,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 108,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 109,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 110,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 111,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 112,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 113,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 114,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 115,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 116,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 117,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 118,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 119,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 120,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 121,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 122,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 123,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 124,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 125,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 126,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 127,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 128,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 129,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 130,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 131,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 132,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 133,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 134,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 135,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 136,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 137,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 138,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 139,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 140,
+      "label": 3,
+      "type": "OTHER"
+    }
+  ]
+}

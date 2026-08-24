@@ -1,0 +1,7 @@
+easydict
+matplotlib
+numpy
+pyyaml
+termcolor
+timm==0.4.5
+torch

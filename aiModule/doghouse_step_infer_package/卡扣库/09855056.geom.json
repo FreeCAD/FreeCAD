@@ -1,0 +1,2150 @@
+{
+  "source": "09855056.step",
+  "num_faces": 134,
+  "faces": [
+    {
+      "face_idx": 0,
+      "face_name": "Face1",
+      "face_type": "other",
+      "area": 7.75,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.393,
+        -739.871,
+        649.301
+      ]
+    },
+    {
+      "face_idx": 1,
+      "face_name": "Face2",
+      "face_type": "plane",
+      "area": 99.28,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -739.859,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 2,
+      "face_name": "Face3",
+      "face_type": "other",
+      "area": 7.75,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.6,
+        -739.871,
+        645.364
+      ]
+    },
+    {
+      "face_idx": 3,
+      "face_name": "Face4",
+      "face_type": "cone",
+      "area": 31.89,
+      "radius": 6.6383,
+      "depth": 1.387,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 79.0459,
+      "centroid": [
+        2557.896,
+        -740.031,
+        649.573
+      ]
+    },
+    {
+      "face_idx": 4,
+      "face_name": "Face5",
+      "face_type": "cylinder",
+      "area": 19.87,
+      "radius": 2.75,
+      "depth": 2.3,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.533,
+        -738.709,
+        646.493
+      ]
+    },
+    {
+      "face_idx": 5,
+      "face_name": "Face6",
+      "face_type": "cylinder",
+      "area": 19.87,
+      "radius": 2.75,
+      "depth": 2.3,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.46,
+        -738.709,
+        648.172
+      ]
+    },
+    {
+      "face_idx": 6,
+      "face_name": "Face7",
+      "face_type": "cone",
+      "area": 31.89,
+      "radius": 6.6383,
+      "depth": 1.387,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 79.0459,
+      "centroid": [
+        2566.097,
+        -740.031,
+        645.092
+      ]
+    },
+    {
+      "face_idx": 7,
+      "face_name": "Face8",
+      "face_type": "cylinder",
+      "area": 7.54,
+      "radius": 8.0,
+      "depth": 0.3,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.527,
+        -740.309,
+        649.774
+      ]
+    },
+    {
+      "face_idx": 8,
+      "face_name": "Face9",
+      "face_type": "other",
+      "area": 7.23,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.639,
+        -737.233,
+        646.435
+      ]
+    },
+    {
+      "face_idx": 9,
+      "face_name": "Face10",
+      "face_type": "other",
+      "area": 7.23,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.354,
+        -737.233,
+        648.23
+      ]
+    },
+    {
+      "face_idx": 10,
+      "face_name": "Face11",
+      "face_type": "cylinder",
+      "area": 7.54,
+      "radius": 8.0,
+      "depth": 0.3,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2566.466,
+        -740.309,
+        644.891
+      ]
+    },
+    {
+      "face_idx": 11,
+      "face_name": "Face12",
+      "face_type": "plane",
+      "area": 68.33,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.996,
+        -740.459,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 12,
+      "face_name": "Face13",
+      "face_type": "plane",
+      "area": 99.55,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -737.059,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 13,
+      "face_name": "Face14",
+      "face_type": "cone",
+      "area": 29.38,
+      "radius": 4.8538,
+      "depth": 1.6475,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 87.7094,
+      "centroid": [
+        2558.803,
+        -740.49,
+        649.077
+      ]
+    },
+    {
+      "face_idx": 14,
+      "face_name": "Face15",
+      "face_type": "cone",
+      "area": 29.38,
+      "radius": 4.8538,
+      "depth": 1.6475,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 87.7094,
+      "centroid": [
+        2565.19,
+        -740.49,
+        645.588
+      ]
+    },
+    {
+      "face_idx": 15,
+      "face_name": "Face16",
+      "face_type": "cylinder",
+      "area": 6.86,
+      "radius": 6.5,
+      "depth": 0.336,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.628,
+        -736.891,
+        645.349
+      ]
+    },
+    {
+      "face_idx": 16,
+      "face_name": "Face17",
+      "face_type": "cylinder",
+      "area": 6.86,
+      "radius": 6.5,
+      "depth": 0.336,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.365,
+        -736.891,
+        649.316
+      ]
+    },
+    {
+      "face_idx": 17,
+      "face_name": "Face18",
+      "face_type": "other",
+      "area": 5.65,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.37,
+        -740.616,
+        648.768
+      ]
+    },
+    {
+      "face_idx": 18,
+      "face_name": "Face19",
+      "face_type": "other",
+      "area": 5.65,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.623,
+        -740.616,
+        645.897
+      ]
+    },
+    {
+      "face_idx": 19,
+      "face_name": "Face20",
+      "face_type": "other",
+      "area": 5.56,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.596,
+        -736.606,
+        645.366
+      ]
+    },
+    {
+      "face_idx": 20,
+      "face_name": "Face21",
+      "face_type": "other",
+      "area": 5.56,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.397,
+        -736.606,
+        649.299
+      ]
+    },
+    {
+      "face_idx": 21,
+      "face_name": "Face22",
+      "face_type": "other",
+      "area": 3.91,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.394,
+        -740.896,
+        648.755
+      ]
+    },
+    {
+      "face_idx": 22,
+      "face_name": "Face23",
+      "face_type": "other",
+      "area": 3.91,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.599,
+        -740.896,
+        645.911
+      ]
+    },
+    {
+      "face_idx": 23,
+      "face_name": "Face24",
+      "face_type": "cone",
+      "area": 36.19,
+      "radius": 4.1942,
+      "depth": 2.1875,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 78.6901,
+      "centroid": [
+        2564.98,
+        -736.326,
+        645.703
+      ]
+    },
+    {
+      "face_idx": 24,
+      "face_name": "Face25",
+      "face_type": "cone",
+      "area": 36.19,
+      "radius": 4.1942,
+      "depth": 2.1875,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 78.6901,
+      "centroid": [
+        2559.013,
+        -736.326,
+        648.962
+      ]
+    },
+    {
+      "face_idx": 25,
+      "face_name": "Face26",
+      "face_type": "cone",
+      "area": 56.25,
+      "radius": 4.7433,
+      "depth": 2.9635,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 61.1912,
+      "centroid": [
+        2558.569,
+        -741.758,
+        649.205
+      ]
+    },
+    {
+      "face_idx": 26,
+      "face_name": "Face27",
+      "face_type": "cone",
+      "area": 56.25,
+      "radius": 4.7433,
+      "depth": 2.9635,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 61.1912,
+      "centroid": [
+        2565.424,
+        -741.758,
+        645.46
+      ]
+    },
+    {
+      "face_idx": 27,
+      "face_name": "Face28",
+      "face_type": "other",
+      "area": 4.96,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.232,
+        -736.072,
+        646.111
+      ]
+    },
+    {
+      "face_idx": 28,
+      "face_name": "Face29",
+      "face_type": "other",
+      "area": 4.96,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.761,
+        -736.072,
+        648.554
+      ]
+    },
+    {
+      "face_idx": 29,
+      "face_name": "Face30",
+      "face_type": "cylinder",
+      "area": 5.76,
+      "radius": 7.34,
+      "depth": 0.25,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.896,
+        -742.546,
+        649.573
+      ]
+    },
+    {
+      "face_idx": 30,
+      "face_name": "Face31",
+      "face_type": "cylinder",
+      "area": 5.76,
+      "radius": 7.34,
+      "depth": 0.25,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2566.097,
+        -742.546,
+        645.092
+      ]
+    },
+    {
+      "face_idx": 31,
+      "face_name": "Face32",
+      "face_type": "plane",
+      "area": 24.98,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -736.059,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 32,
+      "face_name": "Face33",
+      "face_type": "cone",
+      "area": 58.5,
+      "radius": 4.5007,
+      "depth": 3.1452,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 64.5208,
+      "centroid": [
+        2558.626,
+        -742.049,
+        649.174
+      ]
+    },
+    {
+      "face_idx": 33,
+      "face_name": "Face34",
+      "face_type": "cone",
+      "area": 58.5,
+      "radius": 4.5007,
+      "depth": 3.1452,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 64.5208,
+      "centroid": [
+        2565.368,
+        -742.049,
+        645.491
+      ]
+    },
+    {
+      "face_idx": 34,
+      "face_name": "Face35",
+      "face_type": "other",
+      "area": 9.44,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.093,
+        -736.376,
+        646.733
+      ]
+    },
+    {
+      "face_idx": 35,
+      "face_name": "Face36",
+      "face_type": "other",
+      "area": 9.44,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.9,
+        -736.376,
+        647.932
+      ]
+    },
+    {
+      "face_idx": 36,
+      "face_name": "Face37",
+      "face_type": "other",
+      "area": 7.65,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.582,
+        -741.358,
+        648.508
+      ]
+    },
+    {
+      "face_idx": 37,
+      "face_name": "Face38",
+      "face_type": "other",
+      "area": 7.65,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.411,
+        -741.358,
+        646.157
+      ]
+    },
+    {
+      "face_idx": 38,
+      "face_name": "Face39",
+      "face_type": "cylinder",
+      "area": 16.07,
+      "radius": 1.55,
+      "depth": 3.3,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2562.862,
+        -738.709,
+        646.859
+      ]
+    },
+    {
+      "face_idx": 39,
+      "face_name": "Face40",
+      "face_type": "cylinder",
+      "area": 16.07,
+      "radius": 1.55,
+      "depth": 3.3,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.131,
+        -738.709,
+        647.806
+      ]
+    },
+    {
+      "face_idx": 40,
+      "face_name": "Face41",
+      "face_type": "cylinder",
+      "area": 1.03,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.2507,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -742.148,
+        651.322
+      ]
+    },
+    {
+      "face_idx": 41,
+      "face_name": "Face42",
+      "face_type": "plane",
+      "area": 36.72,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2562.497,
+        -746.132,
+        649.723
+      ]
+    },
+    {
+      "face_idx": 42,
+      "face_name": "Face43",
+      "face_type": "plane",
+      "area": 3.25,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.218,
+        -741.403,
+        650.12
+      ]
+    },
+    {
+      "face_idx": 43,
+      "face_name": "Face44",
+      "face_type": "plane",
+      "area": 3.25,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.775,
+        -741.403,
+        644.546
+      ]
+    },
+    {
+      "face_idx": 44,
+      "face_name": "Face45",
+      "face_type": "plane",
+      "area": 19.82,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.997,
+        -745.753,
+        644.417
+      ]
+    },
+    {
+      "face_idx": 45,
+      "face_name": "Face46",
+      "face_type": "cylinder",
+      "area": 2.5,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.6082,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.096,
+        -742.148,
+        644.668
+      ]
+    },
+    {
+      "face_idx": 46,
+      "face_name": "Face47",
+      "face_type": "plane",
+      "area": 22.98,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.1,
+        -746.668,
+        645.633
+      ]
+    },
+    {
+      "face_idx": 47,
+      "face_name": "Face48",
+      "face_type": "plane",
+      "area": 4.18,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.754,
+        -741.348,
+        646.242
+      ]
+    },
+    {
+      "face_idx": 48,
+      "face_name": "Face49",
+      "face_type": "plane",
+      "area": 40.49,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.58,
+        -746.512,
+        646.833
+      ]
+    },
+    {
+      "face_idx": 49,
+      "face_name": "Face50",
+      "face_type": "cylinder",
+      "area": 1.03,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.2507,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.007,
+        -742.148,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 50,
+      "face_name": "Face51",
+      "face_type": "plane",
+      "area": 40.49,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.58,
+        -746.512,
+        647.833
+      ]
+    },
+    {
+      "face_idx": 51,
+      "face_name": "Face52",
+      "face_type": "plane",
+      "area": 4.18,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.754,
+        -741.348,
+        648.423
+      ]
+    },
+    {
+      "face_idx": 52,
+      "face_name": "Face53",
+      "face_type": "plane",
+      "area": 22.98,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.1,
+        -746.668,
+        649.033
+      ]
+    },
+    {
+      "face_idx": 53,
+      "face_name": "Face54",
+      "face_type": "cylinder",
+      "area": 2.5,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.6082,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.096,
+        -742.148,
+        649.997
+      ]
+    },
+    {
+      "face_idx": 54,
+      "face_name": "Face55",
+      "face_type": "plane",
+      "area": 19.82,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.997,
+        -745.753,
+        650.248
+      ]
+    },
+    {
+      "face_idx": 55,
+      "face_name": "Face56",
+      "face_type": "plane",
+      "area": 3.25,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.775,
+        -741.403,
+        650.12
+      ]
+    },
+    {
+      "face_idx": 56,
+      "face_name": "Face57",
+      "face_type": "plane",
+      "area": 36.77,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.497,
+        -746.136,
+        649.724
+      ]
+    },
+    {
+      "face_idx": 57,
+      "face_name": "Face58",
+      "face_type": "plane",
+      "area": 36.72,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2562.497,
+        -746.132,
+        644.942
+      ]
+    },
+    {
+      "face_idx": 58,
+      "face_name": "Face59",
+      "face_type": "cylinder",
+      "area": 1.03,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.2507,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -742.148,
+        643.343
+      ]
+    },
+    {
+      "face_idx": 59,
+      "face_name": "Face60",
+      "face_type": "plane",
+      "area": 36.77,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.497,
+        -746.136,
+        644.942
+      ]
+    },
+    {
+      "face_idx": 60,
+      "face_name": "Face61",
+      "face_type": "plane",
+      "area": 19.78,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.997,
+        -745.746,
+        650.248
+      ]
+    },
+    {
+      "face_idx": 61,
+      "face_name": "Face62",
+      "face_type": "cylinder",
+      "area": 2.5,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.6082,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.897,
+        -742.148,
+        649.997
+      ]
+    },
+    {
+      "face_idx": 62,
+      "face_name": "Face63",
+      "face_type": "plane",
+      "area": 23.01,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.892,
+        -746.672,
+        649.033
+      ]
+    },
+    {
+      "face_idx": 63,
+      "face_name": "Face64",
+      "face_type": "plane",
+      "area": 4.18,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.24,
+        -741.348,
+        648.423
+      ]
+    },
+    {
+      "face_idx": 64,
+      "face_name": "Face65",
+      "face_type": "plane",
+      "area": 40.49,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.413,
+        -746.512,
+        647.833
+      ]
+    },
+    {
+      "face_idx": 65,
+      "face_name": "Face66",
+      "face_type": "cylinder",
+      "area": 1.03,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.2507,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.986,
+        -742.148,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 66,
+      "face_name": "Face67",
+      "face_type": "plane",
+      "area": 40.49,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.413,
+        -746.512,
+        646.833
+      ]
+    },
+    {
+      "face_idx": 67,
+      "face_name": "Face68",
+      "face_type": "plane",
+      "area": 4.18,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.24,
+        -741.348,
+        646.242
+      ]
+    },
+    {
+      "face_idx": 68,
+      "face_name": "Face69",
+      "face_type": "plane",
+      "area": 23.01,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.892,
+        -746.672,
+        645.633
+      ]
+    },
+    {
+      "face_idx": 69,
+      "face_name": "Face70",
+      "face_type": "cylinder",
+      "area": 2.5,
+      "radius": 4.0,
+      "depth": 1.0265,
+      "has_radius": 1,
+      "u_range": 0.6082,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.897,
+        -742.148,
+        644.668
+      ]
+    },
+    {
+      "face_idx": 70,
+      "face_name": "Face71",
+      "face_type": "plane",
+      "area": 19.78,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.997,
+        -745.746,
+        644.417
+      ]
+    },
+    {
+      "face_idx": 71,
+      "face_name": "Face72",
+      "face_type": "plane",
+      "area": 3.25,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.218,
+        -741.403,
+        644.546
+      ]
+    },
+    {
+      "face_idx": 72,
+      "face_name": "Face73",
+      "face_type": "plane",
+      "area": 7.55,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.996,
+        -740.359,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 73,
+      "face_name": "Face74",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -742.754,
+        651.334
+      ]
+    },
+    {
+      "face_idx": 74,
+      "face_name": "Face75",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -742.927,
+        651.402
+      ]
+    },
+    {
+      "face_idx": 75,
+      "face_name": "Face76",
+      "face_type": "cone",
+      "area": 0.7,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.2424,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2561.997,
+        -743.259,
+        651.698
+      ]
+    },
+    {
+      "face_idx": 76,
+      "face_name": "Face77",
+      "face_type": "other",
+      "area": 0.38,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -743.677,
+        652.028
+      ]
+    },
+    {
+      "face_idx": 77,
+      "face_name": "Face78",
+      "face_type": "cylinder",
+      "area": 4.04,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.2109,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -745.874,
+        652.074
+      ]
+    },
+    {
+      "face_idx": 78,
+      "face_name": "Face79",
+      "face_type": "other",
+      "area": 18.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.236,
+        -749.685,
+        650.597
+      ]
+    },
+    {
+      "face_idx": 79,
+      "face_name": "Face80",
+      "face_type": "cylinder",
+      "area": 4.92,
+      "radius": 0.75,
+      "depth": 2.5948,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.203,
+        -750.152,
+        650.089
+      ]
+    },
+    {
+      "face_idx": 80,
+      "face_name": "Face81",
+      "face_type": "cone",
+      "area": 5.56,
+      "radius": 1.1896,
+      "depth": 2.2941,
+      "has_radius": 1,
+      "u_range": 1.4821,
+      "semi_angle_deg": 54.6946,
+      "centroid": [
+        2561.668,
+        -751.632,
+        649.53
+      ]
+    },
+    {
+      "face_idx": 81,
+      "face_name": "Face82",
+      "face_type": "other",
+      "area": 1.76,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.581,
+        -752.656,
+        647.655
+      ]
+    },
+    {
+      "face_idx": 82,
+      "face_name": "Face83",
+      "face_type": "other",
+      "area": 1.76,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2562.412,
+        -752.656,
+        647.01
+      ]
+    },
+    {
+      "face_idx": 83,
+      "face_name": "Face84",
+      "face_type": "cylinder",
+      "area": 4.89,
+      "radius": 0.75,
+      "depth": 2.5859,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.79,
+        -750.169,
+        644.582
+      ]
+    },
+    {
+      "face_idx": 84,
+      "face_name": "Face85",
+      "face_type": "other",
+      "area": 18.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.762,
+        -749.685,
+        644.068
+      ]
+    },
+    {
+      "face_idx": 85,
+      "face_name": "Face86",
+      "face_type": "cylinder",
+      "area": 1.25,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.0654,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.857,
+        -745.874,
+        643.093
+      ]
+    },
+    {
+      "face_idx": 86,
+      "face_name": "Face87",
+      "face_type": "other",
+      "area": 0.11,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.867,
+        -743.684,
+        643.135
+      ]
+    },
+    {
+      "face_idx": 87,
+      "face_name": "Face88",
+      "face_type": "cone",
+      "area": 0.08,
+      "radius": 4.1352,
+      "depth": 0.6479,
+      "has_radius": 1,
+      "u_range": 0.0517,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2559.926,
+        -743.356,
+        643.375
+      ]
+    },
+    {
+      "face_idx": 88,
+      "face_name": "Face89",
+      "face_type": "cone",
+      "area": 2.06,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.6935,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2558.805,
+        -743.266,
+        644.45
+      ]
+    },
+    {
+      "face_idx": 89,
+      "face_name": "Face90",
+      "face_type": "other",
+      "area": 0.94,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.066,
+        -742.843,
+        644.636
+      ]
+    },
+    {
+      "face_idx": 90,
+      "face_name": "Face91",
+      "face_type": "other",
+      "area": 1.24,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.532,
+        -743.678,
+        644.293
+      ]
+    },
+    {
+      "face_idx": 91,
+      "face_name": "Face92",
+      "face_type": "cylinder",
+      "area": 13.51,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.7048,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.494,
+        -745.874,
+        644.27
+      ]
+    },
+    {
+      "face_idx": 92,
+      "face_name": "Face93",
+      "face_type": "other",
+      "area": 10.35,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.899,
+        -749.471,
+        644.503
+      ]
+    },
+    {
+      "face_idx": 93,
+      "face_name": "Face94",
+      "face_type": "cone",
+      "area": 1.08,
+      "radius": 1.1896,
+      "depth": 1.378,
+      "has_radius": 1,
+      "u_range": 0.4821,
+      "semi_angle_deg": 54.6946,
+      "centroid": [
+        2560.311,
+        -751.433,
+        645.285
+      ]
+    },
+    {
+      "face_idx": 94,
+      "face_name": "Face95",
+      "face_type": "cone",
+      "area": 5.56,
+      "radius": 1.1896,
+      "depth": 2.2941,
+      "has_radius": 1,
+      "u_range": 1.4821,
+      "semi_angle_deg": 54.6946,
+      "centroid": [
+        2562.325,
+        -751.632,
+        645.135
+      ]
+    },
+    {
+      "face_idx": 95,
+      "face_name": "Face96",
+      "face_type": "cone",
+      "area": 2.32,
+      "radius": 1.1896,
+      "depth": 2.2941,
+      "has_radius": 1,
+      "u_range": 0.8676,
+      "semi_angle_deg": 54.6946,
+      "centroid": [
+        2559.896,
+        -751.822,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 96,
+      "face_name": "Face97",
+      "face_type": "other",
+      "area": 3.83,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.838,
+        -749.662,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 97,
+      "face_name": "Face98",
+      "face_type": "cylinder",
+      "area": 4.04,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.2109,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.255,
+        -745.874,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 98,
+      "face_name": "Face99",
+      "face_type": "other",
+      "area": 0.38,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.301,
+        -743.677,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 99,
+      "face_name": "Face100",
+      "face_type": "cone",
+      "area": 0.7,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.2424,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2557.631,
+        -743.259,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 100,
+      "face_name": "Face101",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.927,
+        -742.927,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 101,
+      "face_name": "Face102",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2557.995,
+        -742.754,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 102,
+      "face_name": "Face103",
+      "face_type": "cylinder",
+      "area": 4.89,
+      "radius": 0.75,
+      "depth": 2.5859,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2560.79,
+        -750.169,
+        650.083
+      ]
+    },
+    {
+      "face_idx": 103,
+      "face_name": "Face104",
+      "face_type": "cylinder",
+      "area": 14.77,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.7702,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.61,
+        -745.874,
+        650.495
+      ]
+    },
+    {
+      "face_idx": 104,
+      "face_name": "Face105",
+      "face_type": "other",
+      "area": 1.35,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2558.639,
+        -743.678,
+        650.465
+      ]
+    },
+    {
+      "face_idx": 105,
+      "face_name": "Face106",
+      "face_type": "cone",
+      "area": 2.14,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.7453,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2558.846,
+        -743.269,
+        650.254
+      ]
+    },
+    {
+      "face_idx": 106,
+      "face_name": "Face107",
+      "face_type": "other",
+      "area": 0.94,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2559.066,
+        -742.843,
+        650.029
+      ]
+    },
+    {
+      "face_idx": 107,
+      "face_name": "Face108",
+      "face_type": "cylinder",
+      "area": 4.92,
+      "radius": 0.75,
+      "depth": 2.5948,
+      "has_radius": 1,
+      "u_range": 3.1416,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2563.203,
+        -750.152,
+        644.576
+      ]
+    },
+    {
+      "face_idx": 108,
+      "face_name": "Face109",
+      "face_type": "cylinder",
+      "area": 4.04,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.2109,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -745.874,
+        642.591
+      ]
+    },
+    {
+      "face_idx": 109,
+      "face_name": "Face110",
+      "face_type": "other",
+      "area": 0.38,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -743.677,
+        642.637
+      ]
+    },
+    {
+      "face_idx": 110,
+      "face_name": "Face111",
+      "face_type": "cone",
+      "area": 0.7,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.2424,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2561.997,
+        -743.259,
+        642.967
+      ]
+    },
+    {
+      "face_idx": 111,
+      "face_name": "Face112",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -742.927,
+        643.263
+      ]
+    },
+    {
+      "face_idx": 112,
+      "face_name": "Face113",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -742.754,
+        643.331
+      ]
+    },
+    {
+      "face_idx": 113,
+      "face_name": "Face114",
+      "face_type": "cylinder",
+      "area": 1.25,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.0654,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.136,
+        -745.874,
+        651.573
+      ]
+    },
+    {
+      "face_idx": 114,
+      "face_name": "Face115",
+      "face_type": "other",
+      "area": 0.11,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.126,
+        -743.684,
+        651.53
+      ]
+    },
+    {
+      "face_idx": 115,
+      "face_name": "Face116",
+      "face_type": "cone",
+      "area": 0.08,
+      "radius": 4.1352,
+      "depth": 0.6479,
+      "has_radius": 1,
+      "u_range": 0.0517,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2564.068,
+        -743.356,
+        651.29
+      ]
+    },
+    {
+      "face_idx": 116,
+      "face_name": "Face117",
+      "face_type": "cone",
+      "area": 2.06,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.6935,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2565.188,
+        -743.266,
+        650.215
+      ]
+    },
+    {
+      "face_idx": 117,
+      "face_name": "Face118",
+      "face_type": "other",
+      "area": 0.94,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.928,
+        -742.843,
+        650.029
+      ]
+    },
+    {
+      "face_idx": 118,
+      "face_name": "Face119",
+      "face_type": "other",
+      "area": 1.24,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.461,
+        -743.678,
+        650.372
+      ]
+    },
+    {
+      "face_idx": 119,
+      "face_name": "Face120",
+      "face_type": "cylinder",
+      "area": 13.51,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.7048,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.499,
+        -745.874,
+        650.395
+      ]
+    },
+    {
+      "face_idx": 120,
+      "face_name": "Face121",
+      "face_type": "other",
+      "area": 10.35,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.094,
+        -749.471,
+        650.162
+      ]
+    },
+    {
+      "face_idx": 121,
+      "face_name": "Face122",
+      "face_type": "cone",
+      "area": 1.08,
+      "radius": 1.1896,
+      "depth": 1.378,
+      "has_radius": 1,
+      "u_range": 0.4821,
+      "semi_angle_deg": 54.6946,
+      "centroid": [
+        2563.682,
+        -751.433,
+        649.38
+      ]
+    },
+    {
+      "face_idx": 122,
+      "face_name": "Face123",
+      "face_type": "cone",
+      "area": 2.32,
+      "radius": 1.1896,
+      "depth": 2.2941,
+      "has_radius": 1,
+      "u_range": 0.8676,
+      "semi_angle_deg": 54.6946,
+      "centroid": [
+        2564.097,
+        -751.822,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 123,
+      "face_name": "Face124",
+      "face_type": "other",
+      "area": 3.83,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2566.156,
+        -749.662,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 124,
+      "face_name": "Face125",
+      "face_type": "cylinder",
+      "area": 4.04,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.2109,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2566.738,
+        -745.874,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 125,
+      "face_name": "Face126",
+      "face_type": "other",
+      "area": 0.38,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2566.692,
+        -743.677,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 126,
+      "face_name": "Face127",
+      "face_type": "cone",
+      "area": 0.7,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.2424,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2566.362,
+        -743.259,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 127,
+      "face_name": "Face128",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2566.066,
+        -742.927,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 128,
+      "face_name": "Face129",
+      "face_type": "other",
+      "area": 0.19,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.998,
+        -742.754,
+        647.333
+      ]
+    },
+    {
+      "face_idx": 129,
+      "face_name": "Face130",
+      "face_type": "cylinder",
+      "area": 14.77,
+      "radius": 4.75,
+      "depth": 4.0362,
+      "has_radius": 1,
+      "u_range": 0.7702,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.383,
+        -745.874,
+        644.17
+      ]
+    },
+    {
+      "face_idx": 130,
+      "face_name": "Face131",
+      "face_type": "other",
+      "area": 1.35,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2565.354,
+        -743.678,
+        644.2
+      ]
+    },
+    {
+      "face_idx": 131,
+      "face_name": "Face132",
+      "face_type": "cone",
+      "area": 2.14,
+      "radius": 4.1352,
+      "depth": 0.7011,
+      "has_radius": 1,
+      "u_range": 0.7453,
+      "semi_angle_deg": 43.1524,
+      "centroid": [
+        2565.147,
+        -743.269,
+        644.411
+      ]
+    },
+    {
+      "face_idx": 132,
+      "face_name": "Face133",
+      "face_type": "other",
+      "area": 0.94,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2564.928,
+        -742.843,
+        644.636
+      ]
+    },
+    {
+      "face_idx": 133,
+      "face_name": "Face134",
+      "face_type": "plane",
+      "area": 0.33,
+      "radius": 0.0,
+      "depth": 0.0,
+      "has_radius": 0,
+      "u_range": 0.0,
+      "semi_angle_deg": 0.0,
+      "centroid": [
+        2561.997,
+        -752.759,
+        647.333
+      ]
+    }
+  ]
+}

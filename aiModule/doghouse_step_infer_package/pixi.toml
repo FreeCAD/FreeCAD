@@ -1,0 +1,35 @@
+[workspace]
+name = "doghouse-ai"
+version = "0.1.0"
+description = "Isolated inference environment for STEP doghouse detection and clip placement"
+channels = ["pytorch", "nvidia", "conda-forge"]
+platforms = ["win-64"]
+
+[dependencies]
+python = ">=3.10,<3.11"
+numpy = ">=1.26,<2"
+scipy = ">=1.11,<2"
+h5py = ">=3.10,<4"
+matplotlib = ">=3.8,<4"
+pyyaml = ">=6,<7"
+tqdm = ">=4.66,<5"
+pythonocc-core = ">=7.8,<7.9"
+pytest = ">=8,<9"
+
+[pypi-dependencies]
+# Match the AutoMate CUDA runtime so the same RTX 2060 SUPER / RTX 5060
+# machines can run both isolated projects. PyTorch wheels carry CUDA runtime.
+torch = { version = "==2.7.1", index = "https://download.pytorch.org/whl/cu128" }
+torchvision = { version = "==0.22.1", index = "https://download.pytorch.org/whl/cu128" }
+timm = "==0.4.5"
+easydict = ">=1.13,<2"
+termcolor = ">=2.4,<4"
+tensorboardX = ">=2.6,<3"
+transforms3d = ">=0.4,<1"
+opencv-python-headless = ">=4.10,<5"
+
+[tasks]
+check = "python scripts/check_environment.py"
+test-core = "python -m unittest doghouse_ai.test_freecad_runner doghouse_ai.test_pipeline_defaults doghouse_ai.test_infer_graph doghouse_ai.test_pointnet2_ops_fallback -v"
+infer-help = "python doghouse_ai/infer_from_step.py --help"
+

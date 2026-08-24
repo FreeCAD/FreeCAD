@@ -1,0 +1,540 @@
+{
+  "file": "IX-05402112.json",
+  "faces": [
+    {
+      "index": 1,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 2,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 3,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 4,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 5,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 6,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 7,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 8,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 9,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 10,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 11,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 12,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 13,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 14,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 15,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 16,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 17,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 18,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 19,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 20,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 21,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 22,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 23,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 24,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 25,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 26,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 27,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 28,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 29,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 30,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 31,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 32,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 33,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 34,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 35,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 36,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 37,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 38,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 39,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 40,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 41,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 42,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 43,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 44,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 45,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 46,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 47,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 48,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 49,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 50,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 51,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 52,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 53,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 54,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 55,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 56,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 57,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 58,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 59,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 60,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 61,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 62,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 63,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 64,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 65,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 66,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 67,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 68,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 69,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 70,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 71,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 72,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 73,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 74,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 75,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 76,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 77,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 78,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 79,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 80,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 81,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 82,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 83,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 84,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 85,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 86,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 87,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 88,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 89,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 90,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 91,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 92,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 93,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 94,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 95,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 96,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 97,
+      "label": 2,
+      "type": "CONTACT"
+    },
+    {
+      "index": 98,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 99,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 100,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 101,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 102,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 103,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 104,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 105,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 106,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 107,
+      "label": 1,
+      "type": "BOLT_CYL"
+    }
+  ]
+}

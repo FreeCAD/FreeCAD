@@ -1,0 +1,280 @@
+{
+  "file": "5406019.json",
+  "faces": [
+    {
+      "index": 1,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 2,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 3,
+      "label": 1,
+      "type": "BOLT_CYL"
+    },
+    {
+      "index": 4,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 5,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 6,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 7,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 8,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 9,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 10,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 11,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 12,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 13,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 14,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 15,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 16,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 17,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 18,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 19,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 20,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 21,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 22,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 23,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 24,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 25,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 26,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 27,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 28,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 29,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 30,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 31,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 32,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 33,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 34,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 35,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 36,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 37,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 38,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 39,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 40,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 41,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 42,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 43,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 44,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 45,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 46,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 47,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 48,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 49,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 50,
+      "label": 2,
+      "type": "CONTACT"
+    },
+    {
+      "index": 51,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 52,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 53,
+      "label": 3,
+      "type": "OTHER"
+    },
+    {
+      "index": 54,
+      "label": 4,
+      "type": "CHAMFER"
+    },
+    {
+      "index": 55,
+      "label": 4,
+      "type": "CHAMFER"
+    }
+  ]
+}

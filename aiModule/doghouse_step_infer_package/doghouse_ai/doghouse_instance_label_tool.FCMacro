@@ -1,0 +1,24 @@
+# doghouse_instance_label_tool.FCMacro
+# Compatibility wrapper. The maintained macro lives one directory above this
+# file: nearest_hole_tool/doghouse_instance_label_tool.FCMacro
+
+import os
+
+import FreeCAD
+from PySide import QtGui
+
+
+macro_path = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), os.pardir, "doghouse_instance_label_tool.FCMacro")
+)
+
+try:
+    with open(macro_path, "r", encoding="utf-8") as f:
+        code = f.read()
+    exec(compile(code, macro_path, "exec"), globals())
+except Exception as exc:
+    QtGui.QMessageBox.critical(
+        None,
+        "doghouse 标注工具错误",
+        "无法加载新版标注宏:\n%s\n\n%s" % (macro_path, str(exc)),
+    )

@@ -1,0 +1,349 @@
+{
+  "checkpoint": "doghouse_graph_pmae_7_plus_B126302301001.pt",
+  "pipeline": "mixed PMAE GNN + min-instance-faces 2 + instance-sim-gallery threshold 0.2",
+  "models": [
+    {
+      "model": "B pillar trim lower-0612",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9932,
+        "pred_sizes": [
+          94,
+          89,
+          43,
+          43,
+          43
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9932,
+        "pred_sizes": [
+          94,
+          89,
+          43,
+          43,
+          43
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "M5-5402231",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 4,
+        "pred_inst": 4,
+        "inst_match": "4/4",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9576,
+        "precision": 0.9576,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9633,
+        "pred_sizes": [
+          158,
+          148,
+          138,
+          75
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 4,
+        "pred_inst": 4,
+        "inst_match": "4/4",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9576,
+        "precision": 0.9576,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9633,
+        "pred_sizes": [
+          158,
+          148,
+          138,
+          75
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "pillar",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "inst_iou_mean": 0.977,
+        "pred_sizes": [
+          209,
+          174,
+          74,
+          73,
+          72
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "inst_iou_mean": 0.977,
+        "pred_sizes": [
+          209,
+          174,
+          74,
+          73,
+          72
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "未命名-0981535409815353",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9308,
+        "precision": 0.9308,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9324,
+        "pred_sizes": [
+          75,
+          71,
+          68,
+          67,
+          66
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9308,
+        "precision": 0.9308,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9324,
+        "pred_sizes": [
+          75,
+          71,
+          68,
+          67,
+          66
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "未命名-1031001001-B121031101001-B001",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 4,
+        "pred_inst": 4,
+        "inst_match": "4/4",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9774,
+        "pred_sizes": [
+          82,
+          75,
+          73,
+          71
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 4,
+        "pred_inst": 4,
+        "inst_match": "4/4",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9774,
+        "pred_sizes": [
+          82,
+          75,
+          73,
+          71
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "未命名-1031010003-B11COMPOUND009",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 4,
+        "pred_inst": 4,
+        "inst_match": "4/4",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9643,
+        "precision": 0.9643,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9641,
+        "pred_sizes": [
+          62,
+          61,
+          38,
+          35
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 4,
+        "pred_inst": 4,
+        "inst_match": "4/4",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9643,
+        "precision": 0.9643,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9641,
+        "pred_sizes": [
+          62,
+          61,
+          38,
+          35
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "未命名-6302001001-B126302301001-B12",
+      "split": "train",
+      "gnn_min2": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9937,
+        "precision": 0.9937,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9941,
+        "pred_sizes": [
+          68,
+          68,
+          67,
+          57,
+          57
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 5,
+        "pred_inst": 5,
+        "inst_match": "5/5",
+        "extra": 0,
+        "missing": 0,
+        "face_iou": 0.9937,
+        "precision": 0.9937,
+        "recall": 1.0,
+        "inst_iou_mean": 0.9941,
+        "pred_sizes": [
+          68,
+          68,
+          67,
+          57,
+          57
+        ]
+      },
+      "rejected": 0,
+      "delta_face_iou": 0.0,
+      "delta_extra": 0
+    },
+    {
+      "model": "未命名-6302001001-B126302102001-B12",
+      "split": "atypical_test",
+      "gnn_min2": {
+        "gt_inst": 2,
+        "pred_inst": 6,
+        "inst_match": "2/2",
+        "extra": 4,
+        "missing": 0,
+        "face_iou": 0.5862,
+        "precision": 0.7829,
+        "recall": 0.7,
+        "inst_iou_mean": 0.6589,
+        "pred_sizes": [
+          73,
+          47,
+          17,
+          9,
+          3,
+          3
+        ]
+      },
+      "gnn_min2_simfilter": {
+        "gt_inst": 2,
+        "pred_inst": 3,
+        "inst_match": "2/2",
+        "extra": 1,
+        "missing": 0,
+        "face_iou": 0.6073,
+        "precision": 0.8467,
+        "recall": 0.6824,
+        "inst_iou_mean": 0.6589,
+        "pred_sizes": [
+          73,
+          47,
+          17
+        ]
+      },
+      "rejected": 3,
+      "delta_face_iou": 0.0211,
+      "delta_extra": -3
+    }
+  ],
+  "mean_face_iou_gnn_min2": 0.9232,
+  "mean_face_iou_simfilter": 0.9259,
+  "mean_recall_gnn_min2": 0.9625,
+  "mean_recall_simfilter": 0.9603,
+  "total_extra_gnn_min2": 4,
+  "total_extra_simfilter": 1
+}

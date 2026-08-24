@@ -1,0 +1,416 @@
+{
+  "schema": "doghouse_mixed_pmae_train301_min2_compare.v1",
+  "checkpoint": "/home/ps/3D相似性/Point-MAE/doghouse_ai/checkpoints/doghouse_graph_pmae_7_plus_B126302301001.pt",
+  "min_instance_faces": 2,
+  "old_output_dir": "/home/ps/3D相似性/Point-MAE/doghouse_ai/compare_8_mixed_pmae_train301",
+  "new_output_dir": "/home/ps/3D相似性/Point-MAE/doghouse_ai/compare_8_mixed_pmae_train301_min2",
+  "old_mean_face_iou": 0.9223,
+  "new_mean_face_iou": 0.9232,
+  "old_mean_precision": 0.9464,
+  "new_mean_precision": 0.9478,
+  "old_mean_recall": 0.9625,
+  "new_mean_recall": 0.9625,
+  "models": [
+    {
+      "model": "B pillar trim lower-0612",
+      "without_min2": {
+        "model": "B pillar trim lower-0612",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 312,
+        "pred_faces": 312,
+        "face_iou": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "pred_sizes": [
+          94,
+          89,
+          43,
+          43,
+          43
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "B pillar trim lower-0612",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 312,
+        "pred_faces": 312,
+        "face_iou": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "pred_sizes": [
+          94,
+          89,
+          43,
+          43,
+          43
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0
+    },
+    {
+      "model": "M5-5402231",
+      "without_min2": {
+        "model": "M5-5402231",
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "gt_faces": 497,
+        "pred_faces": 519,
+        "face_iou": 0.9576,
+        "precision": 0.9576,
+        "recall": 1.0,
+        "pred_sizes": [
+          158,
+          148,
+          138,
+          75
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "M5-5402231",
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "gt_faces": 497,
+        "pred_faces": 519,
+        "face_iou": 0.9576,
+        "precision": 0.9576,
+        "recall": 1.0,
+        "pred_sizes": [
+          158,
+          148,
+          138,
+          75
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0
+    },
+    {
+      "model": "pillar",
+      "without_min2": {
+        "model": "pillar",
+        "gt_instances": 5,
+        "pred_instances": 6,
+        "gt_faces": 588,
+        "pred_faces": 603,
+        "face_iou": 0.9751,
+        "precision": 0.9751,
+        "recall": 1.0,
+        "pred_sizes": [
+          209,
+          174,
+          74,
+          73,
+          72,
+          1
+        ],
+        "small_pred_lt8": 1,
+        "removed_small": [],
+        "extra_pred": [
+          6
+        ],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "pillar",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 588,
+        "pred_faces": 602,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "pred_sizes": [
+          209,
+          174,
+          74,
+          73,
+          72
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [
+          {
+            "instance_id": 6,
+            "faces": [
+              795
+            ]
+          }
+        ],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0016
+    },
+    {
+      "model": "未命名-0981535409815353",
+      "without_min2": {
+        "model": "未命名-0981535409815353",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 323,
+        "pred_faces": 347,
+        "face_iou": 0.9308,
+        "precision": 0.9308,
+        "recall": 1.0,
+        "pred_sizes": [
+          75,
+          71,
+          68,
+          67,
+          66
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "未命名-0981535409815353",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 323,
+        "pred_faces": 347,
+        "face_iou": 0.9308,
+        "precision": 0.9308,
+        "recall": 1.0,
+        "pred_sizes": [
+          75,
+          71,
+          68,
+          67,
+          66
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0
+    },
+    {
+      "model": "未命名-1031001001-B121031101001-B001",
+      "without_min2": {
+        "model": "未命名-1031001001-B121031101001-B001",
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "gt_faces": 294,
+        "pred_faces": 301,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "pred_sizes": [
+          82,
+          75,
+          73,
+          71
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "未命名-1031001001-B121031101001-B001",
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "gt_faces": 294,
+        "pred_faces": 301,
+        "face_iou": 0.9767,
+        "precision": 0.9767,
+        "recall": 1.0,
+        "pred_sizes": [
+          82,
+          75,
+          73,
+          71
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0
+    },
+    {
+      "model": "未命名-1031010003-B11COMPOUND009",
+      "without_min2": {
+        "model": "未命名-1031010003-B11COMPOUND009",
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "gt_faces": 189,
+        "pred_faces": 196,
+        "face_iou": 0.9643,
+        "precision": 0.9643,
+        "recall": 1.0,
+        "pred_sizes": [
+          62,
+          61,
+          38,
+          35
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "未命名-1031010003-B11COMPOUND009",
+        "gt_instances": 4,
+        "pred_instances": 4,
+        "gt_faces": 189,
+        "pred_faces": 196,
+        "face_iou": 0.9643,
+        "precision": 0.9643,
+        "recall": 1.0,
+        "pred_sizes": [
+          62,
+          61,
+          38,
+          35
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0
+    },
+    {
+      "model": "未命名-6302001001-B126302102001-B12",
+      "without_min2": {
+        "model": "未命名-6302001001-B126302102001-B12",
+        "gt_instances": 2,
+        "pred_instances": 8,
+        "gt_faces": 170,
+        "pred_faces": 154,
+        "face_iou": 0.5805,
+        "precision": 0.7727,
+        "recall": 0.7,
+        "pred_sizes": [
+          73,
+          47,
+          17,
+          9,
+          3,
+          3,
+          1,
+          1
+        ],
+        "small_pred_lt8": 4,
+        "removed_small": [],
+        "extra_pred": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "未命名-6302001001-B126302102001-B12",
+        "gt_instances": 2,
+        "pred_instances": 6,
+        "gt_faces": 170,
+        "pred_faces": 152,
+        "face_iou": 0.5862,
+        "precision": 0.7829,
+        "recall": 0.7,
+        "pred_sizes": [
+          73,
+          47,
+          17,
+          9,
+          3,
+          3
+        ],
+        "small_pred_lt8": 2,
+        "removed_small": [
+          {
+            "instance_id": 7,
+            "faces": [
+              77
+            ]
+          },
+          {
+            "instance_id": 8,
+            "faces": [
+              83
+            ]
+          }
+        ],
+        "extra_pred": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0057
+    },
+    {
+      "model": "未命名-6302001001-B126302301001-B12",
+      "without_min2": {
+        "model": "未命名-6302001001-B126302301001-B12",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 315,
+        "pred_faces": 317,
+        "face_iou": 0.9937,
+        "precision": 0.9937,
+        "recall": 1.0,
+        "pred_sizes": [
+          68,
+          68,
+          67,
+          57,
+          57
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "with_min2": {
+        "model": "未命名-6302001001-B126302301001-B12",
+        "gt_instances": 5,
+        "pred_instances": 5,
+        "gt_faces": 315,
+        "pred_faces": 317,
+        "face_iou": 0.9937,
+        "precision": 0.9937,
+        "recall": 1.0,
+        "pred_sizes": [
+          68,
+          68,
+          67,
+          57,
+          57
+        ],
+        "small_pred_lt8": 0,
+        "removed_small": [],
+        "extra_pred": [],
+        "missing_gt": []
+      },
+      "delta_face_iou": 0.0
+    }
+  ]
+}

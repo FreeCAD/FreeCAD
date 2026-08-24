@@ -74,3 +74,16 @@ tsupdate_stdout.log
 # pixi environments
 *.egg-info
 .pixi
+
+# Doghouse local packages and generated inference artifacts
+/aiModule/doghouse_step_infer_package/*.tar.gz
+/aiModule/doghouse_step_infer_package/doghouse_ai/ckpt-last.pth
+/aiModule/doghouse_step_infer_package/outputs/
+/aiModule/doghouse_step_infer_package/validation/**/input/
+/aiModule/doghouse_step_infer_package/validation/**/output*/
+/aiModule/doghouse_step_infer_package/validation/**/*.step
+/aiModule/doghouse_step_infer_package/validation/**/step_geometry.json
+/aiModule/doghouse_step_infer_package/doghouse_ai/pmae_face_emb/Assembly_pmae_face_emb.npy
+
+# Independent checkout; publish it from its own repository.
+/src/CADDesigner-Code/
