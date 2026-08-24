@@ -1574,10 +1574,40 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QListWidget" name="operationsList">
-        <property name="dragDropMode">
-         <enum>QAbstractItemView::InternalMove</enum>
-        </property>
+       <widget class="QTreeWidget" name="operationsList">
+        <column>
+         <property name="text">
+          <string>#</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Operation</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Tool</string>
+         </property>
+         <property name="textAlignment">
+          <set>AlignCenter</set>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Tool Controller</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Coolant</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Time</string>
+         </property>
+        </column>
        </widget>
       </item>
       <item>
