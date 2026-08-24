@@ -43,6 +43,7 @@ void TranslatePath(const ClipperLib::Path& input, ClipperLib::Path& output, Clip
 namespace AdaptivePath
 {
 using namespace std;
+using namespace Clipper2Lib;
 #define SAME_POINT_TOL_SQRD_SCALED 4.0
 #define UNUSED(expr) (void)(expr)
 
@@ -2151,9 +2152,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         // adaptive to clipper 2
 
         // Convert initialClearedPaths to Clipper2
-        Clipper2Lib::Paths64 initialClearedPaths2;
+        Paths64 initialClearedPaths2;
         for (const auto& clearedPath : initialClearedPaths) {
-            Clipper2Lib::Path64 p;
+            Path64 p;
             for (const auto& pt : clearedPath) {
                 p.emplace_back(pt.X, pt.Y, pt.Z);
             }
@@ -2161,9 +2162,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
 
         // Convert stockInputPaths to Clipper2
-        Clipper2Lib::Paths64 stockInputPaths2;
+        Paths64 stockInputPaths2;
         for (const auto& stockPath : stockInputPaths) {
-            Clipper2Lib::Path64 p;
+            Path64 p;
             for (const auto& pt : stockPath) {
                 p.emplace_back(pt.X, pt.Y, pt.Z);
             }
@@ -2171,13 +2172,13 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
 
         // Compute noncleared area = stock - cleared
-        Clipper2Lib::Clipper64 clipDiff;
+        Clipper64 clipDiff;
         clipDiff.AddSubject(stockInputPaths2);
         clipDiff.AddClip(initialClearedPaths2);
-        Clipper2Lib::Paths64 nonclearedPaths;
+        Paths64 nonclearedPaths;
         clipDiff.Execute(
-            Clipper2Lib::ClipType::Difference,
-            Clipper2Lib::FillRule::EvenOdd,
+            ClipType::Difference,
+            FillRule::EvenOdd,
             nonclearedPaths
         );
 
@@ -2186,7 +2187,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // Create a copy of the path with z value specifying the index. Points are initialized
             // with z=0 by default, so to make uninitialized-z bugs clear we skip z=0 and set z =
             // index + 1
-            Clipper2Lib::Path64 indexedPath;
+            Path64 indexedPath;
             for (size_t i = 0; i < path.size(); i++) {
                 indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
             }
@@ -2203,13 +2204,13 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             std::map<int, ClipperLib::cInt> newZNeedsFinishing;
 
             // Create a new clipper object to avoid overwriting the z callback of the main one
-            Clipper2Lib::Clipper64 clip2;
+            Clipper64 clip2;
             clip2.SetZCallback([&nextNewZ, &newZPosition, &newZNeedsFinishing, &path](
-                                   const Clipper2Lib::Point64& e1bot,
-                                   const Clipper2Lib::Point64& e1top,
-                                   const Clipper2Lib::Point64& e2bot,
-                                   const Clipper2Lib::Point64& e2top,
-                                   Clipper2Lib::Point64& pt
+                                   const Point64& e1bot,
+                                   const Point64& e1top,
+                                   const Point64& e2bot,
+                                   const Point64& e2top,
+                                   Point64& pt
                                ) {
                 (void)e2bot;
                 (void)e2top;
@@ -2274,10 +2275,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // Intersect the input boundary (i.e. open path intersection) with the noncleared area
             clip2.AddOpenSubject({indexedPath});
             clip2.AddClip(nonclearedPaths);
-            Clipper2Lib::Paths64 unusedClosedPaths, nonclearedInputs;
+            Paths64 unusedClosedPaths, nonclearedInputs;
             clip2.Execute(
-                Clipper2Lib::ClipType::Intersection,
-                Clipper2Lib::FillRule::EvenOdd,
+                ClipType::Intersection,
+                FillRule::EvenOdd,
                 unusedClosedPaths,
                 nonclearedInputs
             );
@@ -2378,10 +2379,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // Note: Clipper1 doesn't preserve Z values when performing offset operations, so we
     // convert to Clipper2 to perform the offset. This temporary conversion will be eliminated soon
     // when we convert the full operation to clipper 2.
-    Clipper2Lib::Paths64 inputPaths2;
+    Paths64 inputPaths2;
     inputPaths2.reserve(inputPaths.size());
     for (const auto& path : inputPaths) {
-        Clipper2Lib::Path64 p;
+        Path64 p;
         p.reserve(path.size());
         for (const auto& pt : path) {
             p.emplace_back(pt.X, pt.Y, pt.Z);  // ClipperLib::IntPoint -> Point64
@@ -2392,16 +2393,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // Use ClipperOffset with Z callback to preserve Z=1 marking
     // Note that PreserveCollinear must be set of ClipperOffset (it is already set by default on
     // Clipper64) to avoid accidentally optimizing out collinear points with differing z-values
-    Clipper2Lib::ClipperOffset clipof2;
+    ClipperOffset clipof2;
     clipof2.PreserveCollinear(true);
-    clipof2.AddPaths(inputPaths2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+    clipof2.AddPaths(inputPaths2, JoinType::Round, EndType::Polygon);
 
     // Z callback: output Z=1 if both vertices of either input edge have Z=1
-    clipof2.SetZCallback([](const Clipper2Lib::Point64& e1bot,
-                            const Clipper2Lib::Point64& e1top,
-                            const Clipper2Lib::Point64& e2bot,
-                            const Clipper2Lib::Point64& e2top,
-                            Clipper2Lib::Point64& pt) {
+    clipof2.SetZCallback([](const Point64& e1bot,
+                            const Point64& e1top,
+                            const Point64& e2bot,
+                            const Point64& e2top,
+                            Point64& pt) {
         // Check if both vertices of edge 1 have Z=1
         bool edge1HasZ1 = (e1bot.z == 1 && e1top.z == 1);
         // Check if both vertices of edge 2 have Z=1
@@ -2410,7 +2411,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         pt.z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
     });
 
-    Clipper2Lib::Paths64 toolBounds2;
+    Paths64 toolBounds2;
     clipof2.Execute(-(toolRadiusScaled + finishPassOffsetScaled), toolBounds2);
 
     /* Convert results back to clipper1 */
@@ -2485,10 +2486,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // operation to clipper 2.
 
             // Convert currentTBP to Clipper2 format
-            Clipper2Lib::Paths64 currentTBP2;
+            Paths64 currentTBP2;
             currentTBP2.reserve(currentTBP.size());
             for (const auto& path : currentTBP) {
-                Clipper2Lib::Path64 p;
+                Path64 p;
                 p.reserve(path.size());
                 for (const auto& pt : path) {
                     p.emplace_back(pt.X, pt.Y, pt.Z);  // ClipperLib::IntPoint -> Point64
@@ -2497,9 +2498,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             clipof2.Clear();
-            clipof2.AddPaths(currentTBP2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+            clipof2.AddPaths(currentTBP2, JoinType::Round, EndType::Polygon);
 
-            Clipper2Lib::Paths64 finishingPass2;
+            Paths64 finishingPass2;
             clipof2.Execute(finishPassOffsetScaled, finishingPass2);
 
             // Convert results back to Clipper1 format (preserving Z values)
