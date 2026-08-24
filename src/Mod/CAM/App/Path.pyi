@@ -64,9 +64,7 @@ class Path(Persistence):
         ...
 
     @constmethod
-    def getCycleTime(
-        self, h_feed: float, v_feed: float, h_rapid: float, v_rapid: float, /
-    ) -> float:
+    def getCycleTime(self, h_feed: float, v_feed: float, rapid: float, /) -> float:
         """Return the cycle time estimation for this path in s. Parameter F from command overrides feeds from arguments."""
         ...
     Length: Final[float]
