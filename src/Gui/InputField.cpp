@@ -78,7 +78,7 @@ InputField::InputField(QWidget* parent)
     setValidator(new InputValidator(this));
     if (!App::GetApplication()
              .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-             ->GetBool("ComboBoxWheelEventFilter", false)) {
+             ->GetBool("ComboBoxWheelEventFilter", true)) {
         setFocusPolicy(Qt::WheelFocus);
     }
     else {

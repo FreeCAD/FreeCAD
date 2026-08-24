@@ -291,12 +291,10 @@ void StartupPostProcess::setToolBarIconSize()
 
 void StartupPostProcess::setWheelEventFilter()
 {
-    // filter wheel events for combo boxes
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
-    if (hGrp->GetBool("ComboBoxWheelEventFilter", false)) {
-        auto filter = new WheelEventFilter(qtApp);
-        qtApp->installEventFilter(filter);
-    }
+    // filter wheel events for combo boxes; the filter itself honours the preference so that
+    // it can be toggled without a restart
+    auto filter = new WheelEventFilter(qtApp);
+    qtApp->installEventFilter(filter);
 }
 
 void StartupPostProcess::setLocale()
