@@ -157,73 +157,73 @@ private:
     ClipperLib::Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
     void ProcessPolyNode(
-        ClipperLib::Paths boundPaths,
-        ClipperLib::Paths toolBoundPaths,
-        ClipperLib::Paths finishingPaths,
-        const ClipperLib::Paths& initialClearedPaths,
+        Clipper2Lib::Paths64 boundPaths_p64,
+        Clipper2Lib::Paths64 toolBoundPaths_p64,
+        Clipper2Lib::Paths64 finishingPaths_p64,
+        const Clipper2Lib::Paths64& initialClearedPaths_p64,
         DebugSVGInfo* svgInfo = nullptr
     );
     bool FindEntryPoint(
         TPaths& progressPaths,
-        const ClipperLib::Paths& toolBoundPaths,
-        const ClipperLib::Paths& bound,
+        const Clipper2Lib::Paths64& toolBoundPaths_p64,
+        const Clipper2Lib::Paths64& boundPaths_p64,
         ClearedArea& cleared /*output*/,
-        ClipperLib::IntPoint& entryPoint /*output*/,
-        ClipperLib::IntPoint& toolPos,
-        ClipperLib::DoublePoint& toolDir,
+        Clipper2Lib::Point64& entryPoint_p64 /*output*/,
+        Clipper2Lib::Point64& toolPos_p64,
+        Clipper2Lib::PointD& toolDir_p64,
         long& helixRadiusScaled,
         AdaptiveOutput& adaptiveOutput
     );
-    std::pair<double, double> CalcCutArea(ClipperLib::IntPoint toolPos, ClipperLib::IntPoint newToolPos, ClearedArea& clearedArea);
+    std::pair<double, double> CalcCutArea(Clipper2Lib::Point64 c1_p64, Clipper2Lib::Point64 c2_p64, ClearedArea& clearedArea);
     std::optional<TPaths> FindLinkPath(
-        const std::optional<ClipperLib::IntPoint>& prevPoint,
-        const ClipperLib::IntPoint& pathStart,
-        const ClipperLib::DoublePoint& pathDir,
+        const std::optional<Clipper2Lib::Point64>& prevPoint_p64,
+        const Clipper2Lib::Point64& pathStart_p64,
+        const Clipper2Lib::PointD& pathDir_p64,
         ClearedArea& cleared,
-        const ClipperLib::Paths& toolBoundPaths,
+        const Clipper2Lib::Paths64& toolBoundPaths_p64,
         AdaptiveOutput& adaptiveOutput
     );
-    std::optional<std::pair<ClipperLib::IntPoint, ClipperLib::DoublePoint>> AppendToolPath(
+    std::optional<std::pair<Clipper2Lib::Point64, Clipper2Lib::PointD>> AppendToolPath(
         AdaptiveOutput& output,
-        const ClipperLib::Path& passToolPath,
+        const Clipper2Lib::Path64& passToolPath_p64,
         TPaths& linkPath,
         ClearedArea& cleared,
-        const ClipperLib::Paths& toolBoundPaths
+        const Clipper2Lib::Paths64& toolBoundPaths_p64
     );
-    bool IsClearPath(const ClipperLib::Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
+    bool IsClearPath(const Clipper2Lib::Path64& path_p64, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
     bool IsAllowedToCutTrough(
-        const ClipperLib::IntPoint& p1,
-        const ClipperLib::IntPoint& p2,
+        const Clipper2Lib::Point64& p1_p64,
+        const Clipper2Lib::Point64& p2_p64,
         ClearedArea& clearedArea,
-        const ClipperLib::Paths& toolBoundPaths,
+        const Clipper2Lib::Paths64& toolBoundPaths_p64,
         double areaFactor = 1.5,
         bool skipBoundsCheck = false
     );
     bool MakeLeadPath(
         bool leadIn,
-        const ClipperLib::IntPoint& startPoint,
-        const ClipperLib::DoublePoint& startDir,
-        ClipperLib::IntPoint beaconPoint,
+        const Clipper2Lib::Point64& startPoint_p64,
+        const Clipper2Lib::PointD& startDir_p64,
+        Clipper2Lib::Point64 beaconPoint_p64,
         ClearedArea& clearedArea,
-        const ClipperLib::Paths& toolBoundPaths,
-        ClipperLib::Path& output,
+        const Clipper2Lib::Paths64& toolBoundPaths_p64,
+        Clipper2Lib::Path64& output_p64,
         AdaptiveOutput& adaptiveOutput
     );
 
     bool ResolveLinkPath(
-        const ClipperLib::IntPoint& startPoint,
-        const ClipperLib::IntPoint& endPoint,
+        const Clipper2Lib::Point64& startPoint_p64,
+        const Clipper2Lib::Point64& endPoint_p64,
         ClearedArea& clearedArea,
-        ClipperLib::Path& output
+        Clipper2Lib::Path64& output_p64
     );
 
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
     void AddPathsToProgress(
         TPaths& progressPaths,
-        const ClipperLib::Paths paths,
+        const Clipper2Lib::Paths64 paths_p64,
         MotionType mt = MotionType::mtCutting
     );
-    void ApplyStockToLeave(ClipperLib::Paths& inputPaths);
+    void ApplyStockToLeave(Clipper2Lib::Paths64& inputPaths_p64);
 
 private:
     // Derivation for MIN_STEP_CLIPPPER (MSC for short in this derivation):
