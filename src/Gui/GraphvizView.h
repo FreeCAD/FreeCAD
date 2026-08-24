@@ -24,6 +24,7 @@
 
 #include <fastsignals/signal.h>
 
+#include "Gui/Document.h"
 #include "MDIView.h"
 
 class QGraphicsScene;
@@ -43,7 +44,7 @@ class GuiExport GraphvizView: public MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    explicit GraphvizView(App::Document& _doc, QWidget* parent = nullptr);
+    explicit GraphvizView(Gui::Document* _doc, QWidget* parent = nullptr);
     ~GraphvizView() override;
 
     QByteArray exportGraph(const QString& filter);
@@ -72,7 +73,7 @@ private:
     void updateSvgItem(const App::Document& doc);
     void disconnectSignals();
 
-    const App::Document& doc;
+    App::Document& doc;
     std::string graphCode;
     QGraphicsScene* scene;
     QGraphicsView* view;

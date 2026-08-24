@@ -724,8 +724,7 @@ StdCmdDependencyGraph::StdCmdDependencyGraph()
 void StdCmdDependencyGraph::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    auto view = new Gui::GraphvizView(*doc);
+    auto view = new Gui::GraphvizView(getActiveGuiDocument());
     view->setWindowTitle(qApp->translate("Std_DependencyGraph", "Dependency Graph"));
     getMainWindow()->addWindow(view);
 }
