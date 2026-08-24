@@ -967,7 +967,7 @@ void CmdCreateSpreadsheet::activated(int iMsg)
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Spreadsheet"));
     doCommand(Doc, "App.activeDocument().addObject('Spreadsheet::Sheet','%s\')", FeatName.c_str());
-    // doCommand(Gui, "Gui.Selection.clearSelection()\n"); TODO REVERT
+    doCommand(Gui, "Gui.Selection.clearSelection()\n");
     doCommand(Gui, "Gui.Selection.addSelection(App.activeDocument().Name,'%s\')", FeatName.c_str());
     commitCommand();
 }

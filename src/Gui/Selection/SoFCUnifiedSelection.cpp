@@ -928,14 +928,13 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
         event->isOfType(SoMouseButtonEvent::getClassTypeId())
         && selectionMode.getValue() == SoFCUnifiedSelection::ON
     ) {
-        //SOMEHWERE HERE IS THE SHIIIT
         const auto e = static_cast<const SoMouseButtonEvent*>(event);
         if (SoMouseButtonEvent::isButtonReleaseEvent(e, SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action, !Selection().needPickedList());
             bool greedySel = Gui::Selection().getSelectionStyle()
                 == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
-            greedySel = greedySel || event->wasCtrlDown();
+            greedySel = greedySel || event->wasCtrlDown() || event->wasShiftDown();
             if (setSelection(infos, greedySel) || greedySel) {
                 action->setHandled();
             }

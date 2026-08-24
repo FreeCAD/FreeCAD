@@ -1,6 +1,6 @@
 /*
 TODO Updates:
-  - Add support for multi-selection with shift + LMB
+  - Implement altium nav style for technical drawings, update QGVPage.cpp
   - Rotate and zoom on mouse cursor
  */
 

@@ -1779,14 +1779,12 @@ int NavigationStyle::getViewingMode() const
 
 SbBool NavigationStyle::processEvent(const SoEvent* const ev)
 {
-    // this gets executed by SoQTQuarterAdaptor????
     // If we're in picking mode then all events must be redirected to the
     // appropriate mouse model.
 
     if (mouseSelection) {
         int hd = mouseSelection->handleEvent(ev, viewer->getSoRenderManager()->getViewportRegion());
-        if (hd == AbstractMouseSelection::Continue || hd == AbstractMouseSelection::Restart) {
-            Base::Console().message("processEvent in NavigationStyle, hd = Continue or Restart\n");
+        if (hd == AbstractMouseSelection::Continue || hd == AbstractMouseSelection::Restart) { 
             return true;
         }
         else if (hd == AbstractMouseSelection::Finish) {
@@ -1795,7 +1793,6 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
             delete mouseSelection;
             mouseSelection = nullptr;
             syncWithEvent(ev);
-            Base::Console().message("processEvent in NavigationStyle, hd =  Finish\n");
             return NavigationStyle::processSoEvent(ev);
         }
         else if (hd == AbstractMouseSelection::Cancel) {
@@ -1803,7 +1800,6 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
             delete mouseSelection;
             mouseSelection = nullptr;
             syncWithEvent(ev);
-            Base::Console().message("processEvent in NavigationStyle, hd =  Cancel\n");
             return NavigationStyle::processSoEvent(ev);
         }
     }
@@ -1813,12 +1809,10 @@ SbBool NavigationStyle::processEvent(const SoEvent* const ev)
     SbBool processed = false;
     processed = this->processSoEvent(ev);
 
-    //Base::Console().message("processEvent in NavigationStyle\n");
     // check for left click without selecting something
     if ((curmode == NavigationStyle::SELECTION || curmode == NavigationStyle::IDLE) && !processed) {
         if (SoMouseButtonEvent::isButtonReleaseEvent(ev, SoMouseButtonEvent::BUTTON1)) {
             if ( !(ev->wasCtrlDown() || ev->wasShiftDown() ) ) {
-                //Base::Console().message("clearSelection in NavigationStyle\n");
                 Gui::Selection().clearSelection();
             }
         }

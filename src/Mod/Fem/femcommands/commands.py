@@ -618,7 +618,7 @@ class _MaterialMechanicalNonlinear(CommandManager):
 
         expandParentObject()
         FreeCAD.ActiveDocument.commitTransaction()
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -688,7 +688,7 @@ class _FEMMesh2Mesh(CommandManager):
             FreeCADGui.doCommand("Mesh.show(Mesh.Mesh(out_mesh))")
             FreeCADGui.doCommand("FreeCAD.ActiveDocument." + femmesh.Name + ".ViewObject.hide()")
         FreeCAD.ActiveDocument.commitTransaction()
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -722,7 +722,7 @@ class _MeshClear(CommandManager):
             "FreeCAD.ActiveDocument." + self.selobj.Name + ".FemMesh = Fem.FemMesh()"
         )
         FreeCAD.ActiveDocument.commitTransaction()
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -745,7 +745,7 @@ class _MeshClearGroups(CommandManager):
             f"Groups cleared: Now {self.selobj.Name} has {self.selobj.FemMesh.GroupCount} groups\n"
         )
         FreeCAD.ActiveDocument.commitTransaction()
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -769,7 +769,7 @@ class _MeshDisplayInfo(CommandManager):
             "PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)"
         )
         FreeCAD.ActiveDocument.commitTransaction()
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -820,7 +820,7 @@ class _MeshGmshFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        #FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
 
 
 class _MeshGroup(CommandManager):
@@ -884,7 +884,7 @@ class _MeshNetgenFromShape(CommandManager):
         FreeCADGui.doCommand(
             "FreeCADGui.ActiveDocument.setEdit(FreeCAD.ActiveDocument.ActiveObject.Name)"
         )
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         # a recompute immediately starts meshing when task panel is opened, this is not intended
 
 
@@ -1257,7 +1257,7 @@ class _SolverElmer(CommandManager):
             "FreeCAD.ActiveDocument.ActiveObject.SaveGeometryIndex = {}".format(save_id)
         )
 
-        #FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCADGui.doCommand(
             "FreeCADGui.Selection.addSelection(FreeCAD.ActiveDocument.ActiveObject)"
         )
@@ -1293,7 +1293,7 @@ class _SolverRun(CommandManager):
         from femsolver.run import run_fem_solver
 
         run_fem_solver(self.selobj)
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCAD.ActiveDocument.recompute()
 
 
@@ -1329,7 +1329,7 @@ class _SolverZ88(CommandManager):
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.MatrixMaximum = {maxgs}")
         FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.ActiveObject.VectorMaximum = {maxkoi}")
 
-        # FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearSelection()
         FreeCADGui.doCommand(
             "FreeCADGui.Selection.addSelection(FreeCAD.ActiveDocument.ActiveObject)"
         )

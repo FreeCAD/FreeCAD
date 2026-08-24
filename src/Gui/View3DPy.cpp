@@ -2093,7 +2093,7 @@ void View3DInventorPy::eventCallback(void* ud, SoEventCallback* n)
                     dict.setItem("Key", Py::String("CAPS_LOCK"));
                     break;
                 case SoKeyboardEvent::SHIFT_LOCK:
-                    dict.setItem("Key", Py::String("SHIFT"));
+                    dict.setItem("Key", Py::String("SHIFT_LOCK"));
                     break;
                 case SoKeyboardEvent::SPACE:
                     dict.setItem("Key", Py::String("SPACE"));

@@ -760,6 +760,7 @@ bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* eve
             }
         }
     }
+
     return SIM::Coin3D::Quarter::QuarterWidget::processSoEvent(event);
 }
 
