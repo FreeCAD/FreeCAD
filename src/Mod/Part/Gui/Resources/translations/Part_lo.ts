@@ -582,13 +582,13 @@
       <location filename="../../AttacherTexts.cpp" line="363"/>
       <source>Midplane between faces</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>ໜ້າພຽງເຄິ່ງກາງລະຫວ່າງໜ້າ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="364"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>ຈຸດກຳເນີດຂອງໜ້າພຽງແມ່ນຢູ່ເຄິ່ງກາງລະຫວ່າງຈຸດສູນກາງຂອງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນຈະແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="373"/>
@@ -895,13 +895,13 @@
       <location filename="../../AttacherTexts.cpp" line="111"/>
       <source>Midplane between faces</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">Midplane between faces</translation>
+      <translation>ໜ້າພຽງເຄິ່ງກາງລະຫວ່າງໜ້າ</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="112"/>
       <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+      <translation>ຈຸດກຳເນີດຂອງໜ້າພຽງແມ່ນຢູ່ເຄິ່ງກາງລະຫວ່າງຈຸດສູນກາງຂອງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນຈະແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
@@ -2250,7 +2250,7 @@ of the projection.</source>
       <translation>ປ່ຽນສີໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>ການລອບ (Loft)</translation>
     </message>
@@ -2281,12 +2281,12 @@ of the projection.</source>
       <translation>ຂອງແຂງ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>ສາຍລົງເທິງພື້ນຜິວ</translation>
     </message>
@@ -4152,17 +4152,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>ວັດຖຸສາຍພາບ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>ບໍ່ມີເອກະສານທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>ບໍ່ສາມາດສ້າງວັດຖຸສາຍພາບໄດ້</translation>
     </message>
@@ -4905,37 +4905,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ມີໃຫ້</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ຖືກເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation>ອົງປະກອບໜ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>ຕ້ອງການຢ່າງໜ້ອຍ 2 ຈຸດຍອດ, ຂອບ, ເສັ້ນໂຄງ ຫຼື ໜ້າພຽງ.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>ຈຸດຍອດ/ຂອບ/ເສັ້ນໂຄງ/ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>ການລອບ (Loft)</translation>
     </message>
@@ -5258,79 +5258,79 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ມີໃຫ້</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ຖືກເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>ຕ້ອງການຢ່າງໜ້ອຍໜຶ່ງຂອບ ຫຼື ເສັ້ນໂຄງ.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>ເລືອກຢ່າງໜ້ອຍ 1 ຂອບຈາກວັດຖຸດຽວ.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation>ອົງປະກອບໜ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation>ການເລືອກທີ່ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' ບໍ່ສາມາດໃຊ້ເປັນທັງໂປຣໄຟລ໌ ແລະ ເສັ້ນທາງໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>ເລືອກໜຶ່ງ ຫຼື ຫຼາຍຂອບທີ່ເຊື່ອມຕໍ່ກັນໃນມຸມມອງ 3D ແລ້ວກົດ 'ສຳເລັດ'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>ເສັ້ນທາງການກວາດທີ່ເລືອກບໍ່ຖືກຕ້ອງ.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>ເສັ້ນທາງການກວາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
@@ -5821,7 +5821,7 @@ Individual boolean operation checks:</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
       <source>%1 select and confirm</source>
-      <translation type="unfinished">%1 select and confirm</translation>
+      <translation>%1 ເລືອກ ແລະ ຢືນຢັນ</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -6009,7 +6009,7 @@ Individual boolean operation checks:</source>
       <translation>ເຟຣເນັດ (Frenet)</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>ເລືອກຢ່າງໜ້ອຍ 1 ໂປຣໄຟລ໌ ແລະ ຂອບ ຫຼື ເສັ້ນໂຄງ ໃນມຸມມອງ 3D ສຳລັບເສັ້ນທາງການກວາດ.</translation>
@@ -6718,10 +6718,10 @@ Continue?</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>ຕໍ່ໄປ</translation>
     </message>
