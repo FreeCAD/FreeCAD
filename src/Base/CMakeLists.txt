@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_library(FreeCADBase SHARED)
+add_dependencies(FreeCADBase fc_version)
 
 if(WIN32)
     add_definitions(-DFCBase)
