@@ -932,8 +932,8 @@ damit eine Selbstdurchdringung vermieden wird.</translation>
       <translation>Boolesche Verknüpfung erstellen</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="225"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="225"/>
       <source>Add a Body</source>
       <translation>Einen Körper hinzufügen</translation>
     </message>
@@ -3332,11 +3332,11 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Keine gültigen Ebenen in diesem Dokument</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Im Aufgaben-Fenster ist bereits ein Dialog geöffnet</translation>
     </message>
@@ -3386,11 +3386,11 @@ entlang der angegebenen Richtung gemessen</translation>
       <translation>Nur ein Element in einem aktiven Körper auswählen.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>Diesen Dialog schließen?</translation>
     </message>
@@ -3616,14 +3616,14 @@ This may lead to unexpected results.</source>
       <translation>Es ist nicht möglich, ein abziehendes Formelement ohne ein Basiselement zu erstellen</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>Vertikale Skizzenachse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>Horizontale Skizzenachse</translation>
     </message>
@@ -3677,10 +3677,10 @@ Für veraltete Dokumente mit Part Design Objekten ohne Körper wird in Part Desi
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
       <translation>%1 bearbeiten</translation>
     </message>
@@ -3730,7 +3730,7 @@ This feature is broken and cannot be edited.</source>
 Dieses Objekt ist beschädigt und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="222"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
       <source>Edit Shape Binder</source>
       <translation>Formbinder bearbeiten</translation>
     </message>
@@ -4612,23 +4612,23 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Die boolesche Verknüpfung kann mit einer ungültigen Basisform nicht ausgeführt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Ergebnis hat mehrere Festkörper: aktiviere 'Verbund erlauben' im aktiven Körper.</translation>
     </message>
@@ -4664,9 +4664,9 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <source>Resulting shape is not a solid</source>
       <translation>Die resultierende Form ist kein Festkörper</translation>
     </message>
@@ -4742,8 +4742,8 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Erstellen fehlgeschlagen, weil die Richtung senkrecht auf dem Normalvektor der Skizze steht</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
@@ -4963,8 +4963,8 @@ Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in de
       <translation>Ausormung: Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="304"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>Ausformung: Fehler beim Erstellen des Hüllkörpers</translation>
     </message>

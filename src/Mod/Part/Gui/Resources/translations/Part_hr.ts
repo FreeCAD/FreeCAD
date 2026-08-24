@@ -2251,7 +2251,7 @@ Pogled kamere određuje smjer projekcije.</translation>
       <translation>Promijeni boju lica</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>Tuba</translation>
     </message>
@@ -2282,12 +2282,12 @@ Pogled kamere određuje smjer projekcije.</translation>
       <translation>Čvrsto tijelo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>Zamah</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>Projekcija na površinu</translation>
     </message>
@@ -4166,17 +4166,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>Objekt projekcije</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>Nema aktivnog dokumenta</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>Ne mogu stvoriti projekcijski objekt</translation>
     </message>
@@ -4924,37 +4924,37 @@ u suprotnom koristit će se normalni vektor ravnine skice
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>Dostupni profili</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>Odabrani profili</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Najmanje su potrebna 2 vrha, ruba, žice, ili naličja.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Vrh/Rub/Žice/Naličja</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>Tuba</translation>
     </message>
@@ -5283,80 +5283,80 @@ bit će vidljivi samo stvoreni rezovi</translation>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>Dostupni profili</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>Odabrani profili</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>Potreban je barem jedan rub ili žica.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>Odaberite najmanje 1 rub sa jednog objekta.
 </translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' nije moguće koristiti kao profil i put.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>Gotovo</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>Odaberite jedan ili više povezanih rubova u 3D prikazu i pritisnite 'Gotovo'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Odabrani zamah puta je nevažeći.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>Staza Zamaha</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation>Vrh/Žica</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>Zamah</translation>
     </message>
@@ -6048,7 +6048,7 @@ Individual boolean operation checks:</source>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Odaberite barem 1 profil i rub ili žicu 
@@ -6770,10 +6770,10 @@ Nastaviti?</translation>
       <translation>Nevažeći Odabir</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Nastavi</translation>
     </message>

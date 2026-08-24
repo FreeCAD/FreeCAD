@@ -2250,7 +2250,7 @@ der Projektion.</translation>
       <translation>Flächenfarben ändern</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>Ausformung</translation>
     </message>
@@ -2281,12 +2281,12 @@ der Projektion.</translation>
       <translation>Festkörper</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>Austragung</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>Auf Oberfläche projizieren</translation>
     </message>
@@ -4163,17 +4163,17 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>Projektionsobjekt</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>Kein aktives Dokument</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>Projektions-Objekt kann nicht erstellt werden</translation>
     </message>
@@ -4917,37 +4917,37 @@ der Normalenvektor der Skizze verwendet</translation>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>Verfügbare Profile</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>Ausgewählte Profile</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation>Zu wenige Elemente</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Es werden mindestens 2 Knotenpunkte, Kanten, Kantenzüge oder Flächen benötigt.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Knoten/Kante/Kantenzug/Fläche</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>Ausformung</translation>
     </message>
@@ -5276,79 +5276,79 @@ nur die beschnittenen Objeke sichtbar</translation>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>Verfügbare Profile</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>Ausgewählte Profile</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>Mindestens eine Kante oder ein Kantenzug ist erforderlich.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>Mindestens eine Kante aus einem einzelnen Objekt auswählen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation>Zu wenige Elemente</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation>Ungültige Auswahl</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>Falsche Auswahl</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' kann nicht als Profil und Pfad verwendet werden.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>Eingabefehler</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>Fertig</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>Eine oder mehrere verbundene Kanten in der 3D-Ansicht auswählen und 'Fertig' drücken</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>Die ausgewählte Spine-Kurve ist ungültig.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>Spine-Kurve</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation>Knoten/Draht</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>Austragung</translation>
     </message>
@@ -6034,7 +6034,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Mindestens 1 Profil und eine Kante oder einen Kantenzug
@@ -6744,10 +6744,10 @@ Fortfahren?</translation>
       <translation>Schlechte Auswahl</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Fortsetzen</translation>
     </message>

@@ -9,24 +9,24 @@
       <translation>&lt;비어 있음&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2445"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2734"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
       <source>Angle</source>
       <translation>각도</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
       <source>Axis</source>
       <translation>축</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
       <source>Position</source>
       <translation>위치</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>열거형(Enum)</translation>
@@ -133,8 +133,8 @@
       <translation>배치</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
@@ -146,8 +146,8 @@
       <translation>배열 요소 전환하기</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>화상 편집</translation>
     </message>
@@ -2829,27 +2829,53 @@ bounding box size of the 3D object that is currently displayed.</source>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="545"/>
+      <source>Maximum frame rate</source>
+      <translation type="unfinished">Maximum frame rate</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="558"/>
+      <source>Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</source>
+      <translation type="unfinished">Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="564"/>
+      <source>Automatic</source>
+      <translation>자동</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="567"/>
+      <source> FPS</source>
+      <translation type="unfinished"> FPS</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="594"/>
       <source>Camera Type</source>
       <translation>카메라 유형</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="587"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="631"/>
       <source>Objects will be in orthographic projection</source>
       <translation>객체는 직교 투영으로 표시됩니다</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="571"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="615"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>객체가 투시도면에 나타납니다.</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="618"/>
       <source>Perspective renderin&amp;g</source>
       <translation>투시 렌더링(&amp;G)</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="634"/>
       <source>Or&amp;thographic rendering</source>
       <translation>직교 렌더링(&amp;T)</translation>
     </message>
@@ -2861,57 +2887,57 @@ bounding box size of the 3D object that is currently displayed.</source>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
       <source>20px</source>
       <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="192"/>
       <source>25px</source>
       <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="193"/>
       <source>30px</source>
       <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="246"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="248"/>
       <source>Anti-aliasing</source>
       <translation>앤티얼라이징</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="247"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="249"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>새 보기어를 열거나 %1을(를) 다시 시작하여 앤티에일리어싱 변경 내용을 적용합니다.</translation>
     </message>
@@ -5948,66 +5974,66 @@ Save all changes?</source>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>사용자 정의…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>잘못된 방향</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>방향은 null 벡터가 아니어야 합니다</translation>
     </message>
@@ -6431,12 +6457,12 @@ How do you want to proceed?</source>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Object not found</source>
       <translation>대상체를 찾을 수 없습니다</translation>
     </message>
@@ -8070,13 +8096,6 @@ Check the report view for more details.</source>
       <translation>문서 병합하기</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <location filename="../Document.cpp" line="1747"/>
-      <location filename="../Document.cpp" line="1877"/>
-      <source>%1 document</source>
-      <translation>%1 문서</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="684"/>
       <source>Cannot merge document with itself.</source>
       <translation>문서를 자기 자신과 병합할 수 없습니다.</translation>
@@ -8523,6 +8542,13 @@ Use 'Save As…' to preserve the original file.
       <translation>문서를 새 파일 이름으로 저장…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <source>%1 document</source>
+      <translation>%1 문서</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1863"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>문서 사본을 새 파일 이름으로 저장…</translation>
@@ -8674,13 +8700,13 @@ Choose 'Abort' to abort</source>
       <translation>%2 또는 %3에서 %1 파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2588"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2647"/>
       <source>Clarify Selection</source>
       <translation>선택 명확히 하기</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1454"/>
       <location filename="../MainWindow.cpp" line="1001"/>
+      <location filename="../CommandDoc.cpp" line="1454"/>
       <source>Unsaved Document</source>
       <translation>저장되지 않은 문서</translation>
     </message>
@@ -8804,8 +8830,8 @@ Choose 'Abort' to abort</source>
       <translation>드래그 및 드롭 실패(&amp;D)</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <source>Apply to all</source>
       <translation>모두에 적용하기</translation>
     </message>
@@ -8916,8 +8942,8 @@ the current copy will be lost.
       <translation>오버레이 전환</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
+      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <source>Toggle floating window</source>
       <translation>플로팅 창 전환</translation>
     </message>
@@ -9103,9 +9129,9 @@ the current copy will be lost.
       <translation type="unfinished">Apply to all selected objects (%1) and their children</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
-      <source>Edit Image Plane</source>
-      <translation>이미지 평면 편집하기</translation>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>부품</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="301"/>
@@ -9113,9 +9139,9 @@ the current copy will be lost.
       <translation>모든 파일</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>부품</translation>
+      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
+      <source>Edit Image Plane</source>
+      <translation>이미지 평면 편집하기</translation>
     </message>
   </context>
   <context>
@@ -10897,32 +10923,32 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="660"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>FRONT</source>
       <translation>전면</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="662"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>TOP</source>
       <translation>상단</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>RIGHT</source>
       <translation>오른쪽</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="672"/>
       <source>REAR</source>
       <translation>후면</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="674"/>
       <source>BOTTOM</source>
       <translation>하단</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="676"/>
       <source>LEFT</source>
       <translation>왼쪽</translation>
     </message>
@@ -14491,7 +14517,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4699"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
       <source>Changes the linked object</source>
       <translation>링크된 객체 변경</translation>
     </message>
@@ -14794,6 +14820,64 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
+    <name>StdCmdHelpGroup</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>도움말</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>도구</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation>주석 레이블</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>3D 보기에서 지정한 위치에 새 주석 레이블을 만듭니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>다른 이름으로 저장</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>열기</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>하단 패널 전환하기</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3891"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>하단 도킹 패널의 표시를 전환합니다</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdToggleSuppress</name>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
@@ -14846,92 +14930,34 @@ treated as shortcut key sequence 'F, F'.</source>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>다른 이름으로 저장</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>열기</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdHelpGroup</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="322"/>
-      <source>Help</source>
-      <translation>도움말</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="323"/>
-      <source>Opens the documentation corresponding to the selection</source>
-      <translation type="unfinished">Opens the documentation corresponding to the selection</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="1024"/>
-      <source>Tools</source>
-      <translation>도구</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1025"/>
-      <source>Annotation Label</source>
-      <translation>주석 레이블</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1026"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation>3D 보기에서 지정한 위치에 새 주석 레이블을 만듭니다</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>하단 패널 전환하기</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>하단 도킹 패널의 표시를 전환합니다</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>빛이 비추어질 때 표면의 기본 색상을 정의합니다. 이는 보는 사람의 각도와 관계없이 물체가 빛을 모든 방향으로 고르게 산란시키는 방식을 나타냅니다. 이 속성은 재질의 색상에 가장 큰 영향을 미칩니다.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>간접적이고 균일한 조명 아래에서 표면의 색상을 정의합니다. 이는 방향광, 음영 또는 하이라이트 없이 장면에서 주변광만으로 조명되었을 때 표면이 어떻게 보이는지를 나타냅니다</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>빛이 광택이 나거나 반사되는 표면에 직접 닿을 때 나타나는 밝고 거울처럼 반사되는 하이라이트의 색상과 강도를 정의합니다. 광택이 있는 물체에는 밝은 색상으로 설정하십시오.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>외부 조명과 관계없이 마치 광원처럼 빛을 발하는 표면의 색상을 정의하여 물체가 자체 발광하는 것처럼 보이게 합니다. 검은색으로 설정하면 발광 색상이 적용되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>표면의 반사광의 크기와 선명도를 정의합니다. 값이 높을수록 작고 선명한 반사광이 생성되고, 값이 낮을수록 넓고 부드러운 반사광이 생성됩니다. 반사광의 강도는 반사광의 색상에 따라 결정됩니다.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>물체를 통과하는 빛의 양을 정의하여 물체가 부분적으로 또는 완전히 투명하게 만듭니다</translation>
     </message>
@@ -14939,32 +14965,32 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>빛이 비추어질 때 표면의 기본 색상을 정의합니다. 이는 보는 사람의 각도와 관계없이 물체가 빛을 모든 방향으로 고르게 산란시키는 방식을 나타냅니다. 이 속성은 재질의 색상에 가장 큰 영향을 미칩니다.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>간접적이고 균일한 조명 아래에서 표면의 색상을 정의합니다. 이는 방향광, 음영 또는 하이라이트 없이 장면에서 주변광만으로 조명되었을 때 표면이 어떻게 보이는지를 나타냅니다</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>빛이 광택이 나거나 반사되는 표면에 직접 닿을 때 나타나는 밝고 거울처럼 반사되는 하이라이트의 색상과 강도를 정의합니다. 광택이 있는 물체에는 밝은 색상으로 설정하십시오.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>외부 조명과 관계없이 마치 광원처럼 빛을 발하는 표면의 색상을 정의하여 물체가 자체 발광하는 것처럼 보이게 합니다. 검은색으로 설정하면 발광 색상이 적용되지 않습니다.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>표면의 반사광의 크기와 선명도를 정의합니다. 값이 높을수록 작고 선명한 반사광이 생성되고, 값이 낮을수록 넓고 부드러운 반사광이 생성됩니다. 반사광의 강도는 반사광의 색상에 따라 결정됩니다.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>물체를 통과하는 빛의 양을 정의하여 물체가 부분적으로 또는 완전히 투명하게 만듭니다</translation>
     </message>
@@ -14972,7 +14998,7 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>투사</translation>
     </message>

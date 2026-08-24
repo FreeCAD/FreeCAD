@@ -930,8 +930,8 @@ so that self intersection is avoided.</source>
       <translation>부울 생성</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="225"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="225"/>
       <source>Add a Body</source>
       <translation>몸통 추가</translation>
     </message>
@@ -3327,11 +3327,11 @@ measured along the specified direction</source>
       <translation>이 문서에 유효한 평면이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>작업 패널에 이미 대화 상자가 열려 있습니다</translation>
     </message>
@@ -3381,11 +3381,11 @@ measured along the specified direction</source>
       <translation>활성화된 몸통에서 도형특징을 하나만 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>이 대화 상자를 닫으시겠습니까?</translation>
     </message>
@@ -3613,14 +3613,14 @@ This may lead to unexpected results.</source>
       <translation>사용 가능한 기준 피처 없이 제거 피처를 만들 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation>수직 스케치 축</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation>수평 스케치 축</translation>
     </message>
@@ -3674,10 +3674,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>이 피처를 사용하려면 문서의 파트 객체에 속해 있어야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
       <translation>%1 편집</translation>
     </message>
@@ -3727,7 +3727,7 @@ This feature is broken and cannot be edited.</source>
 이 피처는 손상되어 편집할 수 없습니다.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="222"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
       <source>Edit Shape Binder</source>
       <translation>형상 바인더 편집</translation>
     </message>
@@ -4610,23 +4610,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>유효하지 않은 기본 형상으로는 부울 연산을 할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>결과에 여러 솔리드가 있습니다. 활성 바디에서 '복합 허용'을 활성화하십시오.</translation>
     </message>
@@ -4662,9 +4662,9 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <source>Resulting shape is not a solid</source>
       <translation>결과 형상이 솔리드가 아닙니다</translation>
     </message>
@@ -4740,8 +4740,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>방향이 스케치의 법선 벡터에 직교하므로 생성에 실패했습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>스케치에서 면을 생성하는 데 실패했습니다</translation>
     </message>
@@ -4961,8 +4961,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>로프트: 스케치에서 면을 생성하는 데 실패했습니다</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="304"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>로프트: 셸 생성에 실패했습니다</translation>
     </message>

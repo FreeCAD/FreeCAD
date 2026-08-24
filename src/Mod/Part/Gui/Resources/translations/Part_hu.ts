@@ -2250,7 +2250,7 @@ irányát.</translation>
       <translation>Felületi színek megváltoztatása</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>Szint</translation>
     </message>
@@ -2281,12 +2281,12 @@ irányát.</translation>
       <translation>Szilárd test</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>Húzás</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>Felszínre vetít</translation>
     </message>
@@ -4162,17 +4162,17 @@ Válasszon ki egy vagy több élt.</translation>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>Vetítési objektum</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>Nincs aktív dokumentum</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>Vetítési objektumot nem lehet létrehozni</translation>
     </message>
@@ -4918,37 +4918,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>Rendelkezésre álló profilok</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>Kiválasztott profilok</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>Szükséges legalább 2 csúcspont, él, drótháló vagy felület.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>Csúcspont/Él/Drótváz/Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>Szint</translation>
     </message>
@@ -5273,79 +5273,79 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>Rendelkezésre álló profilok</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>Kiválasztott profilok</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>Szükséges legalább egy él vagy háló.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>Jelöljön ki legalább 1 élt egyetlen objektumból.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation type="unfinished">Too Few Elements</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation type="unfinished">Invalid Selection</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>Hibás kijelölés</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' profilként és elérési útként nem használható.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>Bemeneti hiba</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>Kész</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>Jelöljön ki egy vagy több összekapcsolt élt a 3D nézetben, majd nyomja meg a 'Kész' gombot</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>A kijelölt pásztázási (sweep) út érvénytelen.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>Pásztázás (Sweep) útvonala</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation>Végpont/Vonal</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>Húzás</translation>
     </message>
@@ -6028,7 +6028,7 @@ Egyedi logikai művelet ellenőrzés:</translation>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>Válasszon ki legalább 1 szelvényt és egy élt vagy dróthálót a segédgörbe útvonalához a 3D nézetben.</translation>
@@ -6737,10 +6737,10 @@ Folytassa?</translation>
       <translation>Rossz kiválasztás</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>Tovább</translation>
     </message>

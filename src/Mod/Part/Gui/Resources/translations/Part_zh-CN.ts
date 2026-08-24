@@ -2248,7 +2248,7 @@ of the projection.</source>
       <translation>更改面的颜色</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>放样</translation>
     </message>
@@ -2279,12 +2279,12 @@ of the projection.</source>
       <translation>实体</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>扫掠</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>投影到曲面</translation>
     </message>
@@ -4158,17 +4158,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>投影对象</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>没有活动文档</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>无法创建投影对象</translation>
     </message>
@@ -4913,37 +4913,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>可用的轮廓</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>选定的轮廓</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation>元素太少</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>至少需要2个顶点、边、线或面。</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>顶点/边/线/面</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>放样</translation>
     </message>
@@ -5269,79 +5269,79 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>可用的轮廓</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>选定的轮廓</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>至少需要一条边或线.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>从单个对象中选择至少1条边。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation>元素太少</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation>无效选区</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>错误选择。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>"%1" 不能用作轮廓和路径。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>输入错误</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>完成</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>在3D视图中选择一个或多个连接的边，然后按"完成"</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>选定的扫描路径无效。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>扫描路径</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation>顶点/线</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>扫掠</translation>
     </message>
@@ -6024,7 +6024,7 @@ Individual boolean operation checks:</source>
       <translation>Frenet</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>在3D视图中选择至少1个轮廓和1条边或线作为扫描路径。</translation>
@@ -6733,10 +6733,10 @@ Continue?</source>
       <translation>选择错误</translation>
     </message>
     <message>
+      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="198"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="402"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="644"/>
-      <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
       <source>Continue</source>
       <translation>继续</translation>
     </message>

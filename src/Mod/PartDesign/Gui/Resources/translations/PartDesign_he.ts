@@ -931,8 +931,8 @@ so that self intersection is avoided.</source>
       <translation>צור בוליאני</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="225"/>
       <location filename="../../DlgActiveBody.cpp" line="102"/>
+      <location filename="../../CommandBody.cpp" line="225"/>
       <source>Add a Body</source>
       <translation>הוסף גוף</translation>
     </message>
@@ -3328,11 +3328,11 @@ measured along the specified direction</source>
       <translation>אין מישורים חוקיים במסמך הזה</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="97"/>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderDatum.cpp" line="259"/>
       <location filename="../../ViewProvider.cpp" line="137"/>
       <location filename="../../SketchWorkflow.cpp" line="763"/>
-      <location filename="../../ViewProviderDatum.cpp" line="259"/>
+      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
       <source>A dialog is already open in the task panel</source>
       <translation>תיבת דו-שיח כבר פתוחה בחלונית המשימות</translation>
     </message>
@@ -3382,11 +3382,11 @@ measured along the specified direction</source>
       <translation>בחר רק תכונה אחת בגוף פעיל.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="98"/>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderDatum.cpp" line="260"/>
       <location filename="../../ViewProvider.cpp" line="138"/>
       <location filename="../../SketchWorkflow.cpp" line="764"/>
-      <location filename="../../ViewProviderDatum.cpp" line="260"/>
+      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="99"/>
       <source>Close this dialog?</source>
       <translation>לסגור את הדו-שיח הזה?</translation>
     </message>
@@ -3612,14 +3612,14 @@ This may lead to unexpected results.</source>
       <translation>לא ניתן ליצור תכונה חיסור ללא תכונת בסיס זמינה</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
       <source>Vertical sketch axis</source>
       <translation type="unfinished">Vertical sketch axis</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
       <source>Horizontal sketch axis</source>
       <translation type="unfinished">Horizontal sketch axis</translation>
     </message>
@@ -3673,10 +3673,10 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>על מנת להשתמש בתכונה זו הוא צריך להיות שייך לאובייקט חלק במסמך.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="227"/>
       <location filename="../../ViewProviderTransformed.cpp" line="67"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="64"/>
       <location filename="../../ViewProvider.cpp" line="94"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="228"/>
       <source>Edit %1</source>
       <translation>ערוך את %1</translation>
     </message>
@@ -3726,7 +3726,7 @@ This feature is broken and cannot be edited.</source>
 תכונה זו פגומה ולא ניתן לערוך אותה.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderShapeBinder.cpp" line="222"/>
+      <location filename="../../ViewProviderShapeBinder.cpp" line="223"/>
       <source>Edit Shape Binder</source>
       <translation>ערוך את קלסר הצורה</translation>
     </message>
@@ -4609,23 +4609,23 @@ over 90: larger hole radius at the bottom</source>
       <translation>לא ניתן לבצע פעולה בוליאנית עם צורת בסיס לא חוקית</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
-      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeatureFillet.cpp" line="142"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
       <location filename="../../../App/FeatureChamfer.cpp" line="196"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="822"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="838"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="851"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
+      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="420"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="442"/>
+      <location filename="../../../App/FeatureHelix.cpp" line="488"/>
       <location filename="../../../App/FeaturePipe.cpp" line="537"/>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="266"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="334"/>
-      <location filename="../../../App/FeatureLoft.cpp" line="378"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="335"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>לתוצאה יש מספר מוצקים: אפשר את 'אפשר תרכובת' בגוף הפעיל.</translation>
     </message>
@@ -4661,9 +4661,9 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="813"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <location filename="../../../App/FeatureLoft.cpp" line="371"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="141"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="592"/>
       <source>Resulting shape is not a solid</source>
       <translation>צורת התוצאה אינה מוצק</translation>
     </message>
@@ -4739,8 +4739,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>היצירה נכשלה מכיוון שהכיוון הוא אורתוגונלי לוקטור הרגיל של הסקיצה</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
       <source>Creating a face from sketch failed</source>
       <translation>יצירת פנים מתוך סקיצה נכשלה</translation>
     </message>
@@ -4960,8 +4960,8 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>לופט: יצירת פנים מתוך סקיצה נכשלה</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <location filename="../../../App/FeatureLoft.cpp" line="304"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="500"/>
       <source>Loft: Failed to create shell</source>
       <translation>לופט: יצירת מעטפת נכשלה</translation>
     </message>

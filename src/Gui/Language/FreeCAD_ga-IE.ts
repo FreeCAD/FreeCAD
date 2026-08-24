@@ -9,24 +9,24 @@
       <translation>&lt;folamh&gt;</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2445"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2734"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
       <source>Angle</source>
       <translation>Uillinn</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2449"/>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2738"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2453"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2742"/>
       <source>Axis</source>
       <translation>Ais</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="2743"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="2747"/>
       <source>Position</source>
       <translation>Seasamh</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3015"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3019"/>
       <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
@@ -133,8 +133,8 @@
       <translation>Socrúchán</translation>
     </message>
     <message>
-      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../Transform.cpp" line="108"/>
+      <location filename="../ViewProviderAnnotation.cpp" line="511"/>
       <location filename="../TaskTransform.cpp" line="152"/>
       <location filename="../TaskTransform.cpp" line="1069"/>
       <source>Transform</source>
@@ -146,8 +146,8 @@
       <translation>Scoránaigh eagar eilimintí</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
+      <location filename="../TaskView/TaskImage.cpp" line="342"/>
       <source>Edit image</source>
       <translation>Cuir íomhá in eagar</translation>
     </message>
@@ -2828,27 +2828,52 @@ teorann den réada 3T atá á thaispeáint faoi láthair.</translation>
       <translation>%</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="550"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="545"/>
+      <source>Maximum frame rate</source>
+      <translation>Uasráta fráma</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="558"/>
+      <source>Upper limit on how often the 3D view is redrawn.
+'Automatic' follows the refresh rate of the display, since drawing
+faster than the display can show only wastes graphics card work.
+Set to 0 to redraw as fast as the graphics driver allows.</source>
+      <translation>Uasteorainn ar cé chomh minic a aththarraingítear an radharc 3T.
+Leanann 'Uathoibríoch' ráta athnuachana an taispeántais, ós rud é nach gcuireann líníocht níos tapúla ná mar is féidir leis an taispeántas a thaispeáint ach amú oibre cárta grafaicí.
+Socraigh go 0 chun aththarraingt chomh tapa agus a cheadaíonn an tiománaí grafaicí.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="564"/>
+      <source>Automatic</source>
+      <translation>Uathoibríoch</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="567"/>
+      <source> FPS</source>
+      <translation> FPS</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="594"/>
       <source>Camera Type</source>
       <translation>Cineál Ceamara</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="587"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="631"/>
       <source>Objects will be in orthographic projection</source>
       <translation>Beidh réada i dteilgean ortagrafach</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="571"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="615"/>
       <source>Objects will appear in a perspective projection</source>
       <translation>Beidh rudaí le feiceáil i dteilgean peirspictíochta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="574"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="618"/>
       <source>Perspective renderin&amp;g</source>
       <translation>Rindreáil pheirspictíochta</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DView.ui" line="590"/>
+      <location filename="../PreferencePages/DlgSettings3DView.ui" line="634"/>
       <source>Or&amp;thographic rendering</source>
       <translation>Rindreáil ortagrafach</translation>
     </message>
@@ -2860,57 +2885,57 @@ teorann den réada 3T atá á thaispeáint faoi láthair.</translation>
   <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="183"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
       <source>5px</source>
       <translation>5px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="184"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
       <source>7px</source>
       <translation>7px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="185"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
       <source>9px</source>
       <translation>9px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="186"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
       <source>11px</source>
       <translation>11px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="187"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
       <source>13px</source>
       <translation>13px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="188"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
       <source>15px</source>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="189"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
       <source>20px</source>
       <translation>20px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="190"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="192"/>
       <source>25px</source>
       <translation>25px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="191"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="193"/>
       <source>30px</source>
       <translation>30px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="246"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="248"/>
       <source>Anti-aliasing</source>
       <translation>Frith-ailiasú</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="247"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="249"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Oscail breathnóir nua nó atosaigh %1 chun athruithe frith-ailiasála a chur i bhfeidhm.</translation>
     </message>
@@ -5946,66 +5971,66 @@ Sábháil na hathruithe go léir?</translation>
   <context>
     <name>Gui::LocationDialog</name>
     <message>
-      <location filename="../InputVector.cpp" line="104"/>
-      <location filename="../InputVector.cpp" line="118"/>
       <location filename="../InputVector.h" line="131"/>
       <location filename="../InputVector.h" line="154"/>
       <location filename="../InputVector.h" line="277"/>
       <location filename="../InputVector.h" line="300"/>
       <location filename="../InputVector.h" line="475"/>
       <location filename="../InputVector.h" line="489"/>
+      <location filename="../InputVector.cpp" line="104"/>
+      <location filename="../InputVector.cpp" line="118"/>
       <source>X</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="105"/>
-      <location filename="../InputVector.cpp" line="119"/>
       <location filename="../InputVector.h" line="132"/>
       <location filename="../InputVector.h" line="155"/>
       <location filename="../InputVector.h" line="278"/>
       <location filename="../InputVector.h" line="301"/>
       <location filename="../InputVector.h" line="476"/>
       <location filename="../InputVector.h" line="490"/>
+      <location filename="../InputVector.cpp" line="105"/>
+      <location filename="../InputVector.cpp" line="119"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="106"/>
-      <location filename="../InputVector.cpp" line="120"/>
       <location filename="../InputVector.h" line="133"/>
       <location filename="../InputVector.h" line="156"/>
       <location filename="../InputVector.h" line="279"/>
       <location filename="../InputVector.h" line="302"/>
       <location filename="../InputVector.h" line="477"/>
       <location filename="../InputVector.h" line="491"/>
+      <location filename="../InputVector.cpp" line="106"/>
+      <location filename="../InputVector.cpp" line="120"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="107"/>
-      <location filename="../InputVector.cpp" line="123"/>
       <location filename="../InputVector.h" line="134"/>
       <location filename="../InputVector.h" line="159"/>
       <location filename="../InputVector.h" line="280"/>
       <location filename="../InputVector.h" line="305"/>
       <location filename="../InputVector.h" line="478"/>
       <location filename="../InputVector.h" line="494"/>
+      <location filename="../InputVector.cpp" line="107"/>
+      <location filename="../InputVector.cpp" line="123"/>
       <source>User defined…</source>
       <translation>Sainmhínithe ag an úsáideoir…</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="215"/>
       <location filename="../InputVector.h" line="240"/>
       <location filename="../InputVector.h" line="375"/>
       <location filename="../InputVector.h" line="564"/>
+      <location filename="../InputVector.cpp" line="215"/>
       <source>Wrong direction</source>
       <translation>Treo mícheart</translation>
     </message>
     <message>
-      <location filename="../InputVector.cpp" line="216"/>
       <location filename="../InputVector.h" line="241"/>
       <location filename="../InputVector.h" line="376"/>
       <location filename="../InputVector.h" line="565"/>
+      <location filename="../InputVector.cpp" line="216"/>
       <source>Direction must not be the null vector</source>
       <translation>Ní féidir leis an treo a bheith ina veicteoir nialasach</translation>
     </message>
@@ -6429,12 +6454,12 @@ Conas is mian leat dul ar aghaidh?</translation>
   <context>
     <name>Gui::PropertyEditor::LinkSelection</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Error</source>
       <translation>Earráid</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4664"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4668"/>
       <source>Object not found</source>
       <translation>Níor aimsíodh an réad</translation>
     </message>
@@ -8072,13 +8097,6 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <translation>Doiciméad a Chumaisc</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="673"/>
-      <location filename="../Document.cpp" line="1747"/>
-      <location filename="../Document.cpp" line="1877"/>
-      <source>%1 document</source>
-      <translation>%1 doiciméad</translation>
-    </message>
-    <message>
       <location filename="../CommandDoc.cpp" line="684"/>
       <source>Cannot merge document with itself.</source>
       <translation>Ní féidir an doiciméad a chumasc leis féin.</translation>
@@ -8527,6 +8545,13 @@ Déanfaidh sábháil an fhormáid comhaid a uasghrádú. B’fhéidir nach mbeid
       <translation>Sábháil an doiciméad faoi ainm comhaid nua…</translation>
     </message>
     <message>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
+      <location filename="../CommandDoc.cpp" line="673"/>
+      <source>%1 document</source>
+      <translation>%1 doiciméad</translation>
+    </message>
+    <message>
       <location filename="../Document.cpp" line="1863"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Sábháil cóip den doiciméad faoin ainm comhaid nua…</translation>
@@ -8678,13 +8703,13 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Ní féidir comhad %1 a aimsiú i %2 ná i %3</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2588"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2647"/>
       <source>Clarify Selection</source>
       <translation>Soiligh an Roghnú</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1454"/>
       <location filename="../MainWindow.cpp" line="1001"/>
+      <location filename="../CommandDoc.cpp" line="1454"/>
       <source>Unsaved Document</source>
       <translation>Doiciméad Gan Sábháil</translation>
     </message>
@@ -8808,8 +8833,8 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Theip ar tharraingt agus scaoil</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1015"/>
       <location filename="../ViewProviderLink.cpp" line="3025"/>
+      <location filename="../MainWindow.cpp" line="1015"/>
       <source>Apply to all</source>
       <translation>Cuir i bhfeidhm ar gach duine</translation>
     </message>
@@ -8920,8 +8945,8 @@ dhéantar ar an gcóip reatha.
       <translation>Scoránaigh an forleagan</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <location filename="../OverlayManager.cpp" line="1080"/>
+      <location filename="../OverlayWidgets.cpp" line="2574"/>
       <source>Toggle floating window</source>
       <translation>Scoránaigh fuinneog snámhach</translation>
     </message>
@@ -9107,9 +9132,9 @@ dhéantar ar an gcóip reatha.
       <translation>Cuir i bhfeidhm ar na réad roghnaithe go léir (%1) agus a gcuid páistí</translation>
     </message>
     <message>
-      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
-      <source>Edit Image Plane</source>
-      <translation>Cuir Plána Íomhá in Eagar</translation>
+      <location filename="../CommandStructure.cpp" line="78"/>
+      <source>Part</source>
+      <translation>Cuid</translation>
     </message>
     <message>
       <location filename="../FileDialog.cpp" line="301"/>
@@ -9117,9 +9142,9 @@ dhéantar ar an gcóip reatha.
       <translation>Gach Comhad</translation>
     </message>
     <message>
-      <location filename="../CommandStructure.cpp" line="78"/>
-      <source>Part</source>
-      <translation>Cuid</translation>
+      <location filename="../ViewProviderImagePlane.cpp" line="171"/>
+      <source>Edit Image Plane</source>
+      <translation>Cuir Plána Íomhá in Eagar</translation>
     </message>
   </context>
   <context>
@@ -10900,32 +10925,32 @@ after FreeCAD launches</source>
   <context>
     <name>NaviCubeSettings</name>
     <message>
-      <location filename="../View3DSettings.cpp" line="660"/>
+      <location filename="../View3DSettings.cpp" line="666"/>
       <source>FRONT</source>
       <translation>TOSAIGH</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="662"/>
+      <location filename="../View3DSettings.cpp" line="668"/>
       <source>TOP</source>
       <translation>BARR</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="664"/>
+      <location filename="../View3DSettings.cpp" line="670"/>
       <source>RIGHT</source>
       <translation>AR DEIS</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="666"/>
+      <location filename="../View3DSettings.cpp" line="672"/>
       <source>REAR</source>
       <translation>CÚIL</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="668"/>
+      <location filename="../View3DSettings.cpp" line="674"/>
       <source>BOTTOM</source>
       <translation>BUN</translation>
     </message>
     <message>
-      <location filename="../View3DSettings.cpp" line="670"/>
+      <location filename="../View3DSettings.cpp" line="676"/>
       <source>LEFT</source>
       <translation>AR CLÉ</translation>
     </message>
@@ -14498,7 +14523,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
   <context>
     <name>Gui::PropertyEditor::LinkLabel</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4699"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4703"/>
       <source>Changes the linked object</source>
       <translation>Athraíonn an réad nasctha</translation>
     </message>
@@ -14801,6 +14826,64 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     </message>
   </context>
   <context>
+    <name>StdCmdHelpGroup</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="322"/>
+      <source>Help</source>
+      <translation>Cabhair</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="323"/>
+      <source>Opens the documentation corresponding to the selection</source>
+      <translation>Osclaíonn an doiciméadú a fhreagraíonn don rogha</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdAnnotationLabel</name>
+    <message>
+      <location filename="../CommandStd.cpp" line="1024"/>
+      <source>Tools</source>
+      <translation>Uirlisí</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1025"/>
+      <source>Annotation Label</source>
+      <translation>Lipéad Anótála</translation>
+    </message>
+    <message>
+      <location filename="../CommandStd.cpp" line="1026"/>
+      <source>Creates a new annotation label at the picked location in the 3D view</source>
+      <translation>Cruthaíonn sé lipéad anótála nua ag an suíomh roghnaithe sa radharc 3T</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileDialog</name>
+    <message>
+      <location filename="../FileDialog.cpp" line="578"/>
+      <source>Save As</source>
+      <translation>Sábháil Mar</translation>
+    </message>
+    <message>
+      <location filename="../FileDialog.cpp" line="713"/>
+      <location filename="../FileDialog.cpp" line="808"/>
+      <source>Open</source>
+      <translation>Oscail</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdToggleBottomPanels</name>
+    <message>
+      <location filename="../CommandView.cpp" line="3890"/>
+      <source>Toggle Bottom Panels</source>
+      <translation>Painéil Bhun a Athsholáthar</translation>
+    </message>
+    <message>
+      <location filename="../CommandView.cpp" line="3891"/>
+      <source>Toggles the bottom dock panels</source>
+      <translation>Athraíonn sé na painéil duga bun</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdToggleSuppress</name>
     <message>
       <location filename="../CommandFeat.cpp" line="240"/>
@@ -14853,92 +14936,34 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
     </message>
   </context>
   <context>
-    <name>FileDialog</name>
-    <message>
-      <location filename="../FileDialog.cpp" line="578"/>
-      <source>Save As</source>
-      <translation>Sábháil Mar</translation>
-    </message>
-    <message>
-      <location filename="../FileDialog.cpp" line="713"/>
-      <location filename="../FileDialog.cpp" line="808"/>
-      <source>Open</source>
-      <translation>Oscail</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdHelpGroup</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="322"/>
-      <source>Help</source>
-      <translation>Cabhair</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="323"/>
-      <source>Opens the documentation corresponding to the selection</source>
-      <translation>Osclaíonn an doiciméadú a fhreagraíonn don rogha</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdAnnotationLabel</name>
-    <message>
-      <location filename="../CommandStd.cpp" line="1024"/>
-      <source>Tools</source>
-      <translation>Uirlisí</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1025"/>
-      <source>Annotation Label</source>
-      <translation>Lipéad Anótála</translation>
-    </message>
-    <message>
-      <location filename="../CommandStd.cpp" line="1026"/>
-      <source>Creates a new annotation label at the picked location in the 3D view</source>
-      <translation>Cruthaíonn sé lipéad anótála nua ag an suíomh roghnaithe sa radharc 3T</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdToggleBottomPanels</name>
-    <message>
-      <location filename="../CommandView.cpp" line="3890"/>
-      <source>Toggle Bottom Panels</source>
-      <translation>Painéil Bhun a Athsholáthar</translation>
-    </message>
-    <message>
-      <location filename="../CommandView.cpp" line="3891"/>
-      <source>Toggles the bottom dock panels</source>
-      <translation>Athraíonn sé na painéil duga bun</translation>
-    </message>
-  </context>
-  <context>
     <name>Gui::PropertyEditor::PropertyMaterialItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3587"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3591"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3597"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3601"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Sainmhíníonn sé dath dromchla faoi shoilsiú indíreach, aonfhoirmeach, rud a léiríonn an chuma atá air nuair a bhíonn sé soilsithe ag solas comhthimpeallach amháin i radharc, gan solas treorach, scáthú ná buaicphointí</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3607"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3611"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Sainmhíníonn sé dath agus déine na mbuaicphointí geala, scáthánacha a thaispeántar ar dhromchlaí lonracha nó frithchaiteacha nuair a bhuaileann solas iad go díreach. Socraigh go dathanna geala le haghaidh rudaí lonracha.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3617"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3621"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Sainmhíníonn sé dath dromchla a bhfuil cuma air go n-astaíonn sé amhail is dá mba fhoinse solais é, neamhspleách ar shoilsiú seachtrach, rud a fhágann go bhfuil cuma féin-soilsithe ar an réad. Socraigh go dubh le nach mbeidh aon dath astaíochta ann.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3629"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3633"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Sainmhíníonn sé méid agus géire na mbuaicphointí lonracha ar dhromchla. Cruthaíonn luachanna níos airde buaicphointí beaga, géara, agus cruthaíonn luachanna níos ísle buaicphointí leathana, boga. Tabhair faoi deara go sainmhínítear déine na mbuaicphointí le dath lonrach.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3641"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3645"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Sainmhíníonn sé cé mhéad solais a théann trí réad, rud a fhágann go bhfuil sé trédhearcach go páirteach nó go hiomlán</translation>
     </message>
@@ -14946,32 +14971,32 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyMaterialListItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3953"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3957"/>
       <source>Defines the base color of a surface when illuminated by light. It represents how the object scatters light evenly in all directions, independent of the viewer’s angle. This property will influence the material color the most.</source>
       <translation>Sainmhíníonn sé bun-dath dromchla nuair a bhíonn solas air. Léiríonn sé an chaoi a scaipeann an réad solas go cothrom i ngach treo, beag beann ar uillinn an lucht féachana. Is é an airí seo a mbeidh an tionchar is mó aige ar dhath an ábhair.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3963"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3967"/>
       <source>Defines the color of a surface under indirect, uniform lighting, representing how it appears when illuminated only by ambient light in a scene, without directional light, shading, or highlights</source>
       <translation>Sainmhíníonn sé dath dromchla faoi shoilsiú indíreach, aonfhoirmeach, rud a léiríonn an chuma atá air nuair a bhíonn sé soilsithe ag solas comhthimpeallach amháin i radharc, gan solas treorach, scáthú ná buaicphointí</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3973"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3977"/>
       <source>Defines the color and intensity of the bright, mirror-like highlights that appear on shiny or reflective surfaces when light hits them directly. Set to bright colors for shiny objects.</source>
       <translation>Sainmhíníonn sé dath agus déine na mbuaicphointí geala, scáthánacha a thaispeántar ar dhromchlaí lonracha nó frithchaiteacha nuair a bhuaileann solas iad go díreach. Socraigh go dathanna geala le haghaidh rudaí lonracha.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3983"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3987"/>
       <source>Defines the color of a surface that appears to emit as if it were a light source, independent of external lighting, making the object look self-illuminated. Set to black to have no emissive color.</source>
       <translation>Sainmhíníonn sé dath dromchla a bhfuil cuma air go n-astaíonn sé amhail is dá mba fhoinse solais é, neamhspleách ar shoilsiú seachtrach, rud a fhágann go bhfuil cuma féin-soilsithe ar an réad. Socraigh go dubh le nach mbeidh aon dath astaíochta ann.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="3995"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="3999"/>
       <source>Defines the size and sharpness of specular highlights on a surface. Higher values produce small, sharp highlights, while lower values create broad, soft highlights. Note that the highlight intensity is defined by specular color.</source>
       <translation>Sainmhíníonn sé méid agus géire na mbuaicphointí lonracha ar dhromchla. Cruthaíonn luachanna níos airde buaicphointí beaga, géara, agus cruthaíonn luachanna níos ísle buaicphointí leathana, boga. Tabhair faoi deara go sainmhínítear déine na mbuaicphointí le dath lonrach.</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4007"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4011"/>
       <source>Defines how much light passes through an object, making it partially or fully see-through</source>
       <translation>Sainmhíníonn sé cé mhéad solais a théann trí réad, rud a fhágann go bhfuil sé trédhearcach go páirteach nó go hiomlán</translation>
     </message>
@@ -14979,7 +15004,7 @@ sheicheamh eochrach aicearra 'F, F'.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyMapItem</name>
     <message>
-      <location filename="../propertyeditor/PropertyItem.cpp" line="4929"/>
+      <location filename="../propertyeditor/PropertyItem.cpp" line="4933"/>
       <source>Map</source>
       <translation>Léarscáil</translation>
     </message>
