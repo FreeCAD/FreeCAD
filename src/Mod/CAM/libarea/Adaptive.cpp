@@ -2823,20 +2823,15 @@ bool Adaptive2d::ResolveLinkPath(
 
 bool Adaptive2d::MakeLeadPath(
     bool leadIn,
-    const Point64& startPoint_p64,
-    const PointD& startDir_p64,
-    Point64 beaconPoint_p64,
+    const Point64& startPoint,
+    const PointD& startDir,
+    Point64 beaconPoint,
     ClearedArea& clearedAreaOriginal,
-    const Paths64& toolBoundPaths_p64,
-    Path64& output_p64,
+    const Paths64& toolBoundPaths,
+    Path64& output,
     AdaptiveOutput& adaptiveOutput
 )
 {
-    ClipperLib::IntPoint startPoint = ToC1Point(startPoint_p64);
-    ClipperLib::DoublePoint startDir = ToC1PointD(startDir_p64);
-    ClipperLib::IntPoint beaconPoint = ToC1Point(beaconPoint_p64);
-    ClipperLib::Paths toolBoundPaths = ToC1Paths(toolBoundPaths_p64);
-    ClipperLib::Path output;
     output.push_back(startPoint);
     double stepSize = min(MIN_STEP_CLIPPER * 8, 0.2 * stepOverScaled + 1);
 
@@ -2845,99 +2840,67 @@ bool Adaptive2d::MakeLeadPath(
     clearedArea.SetClearedPaths(clearedAreaOriginal.GetCleared());
 
     // compute acceptable tool end locations
-    ClipperLib::ClipperOffset clipof;
-    clipof.Clear();
-    ClipperLib::Paths cleared;
-    clipof.AddPaths(
-        ToC1Paths(clearedArea.GetCleared()),
-        ClipperLib::JoinType::jtRound,
-        ClipperLib::EndType::etClosedPolygon
-    );
-    clipof.Execute(cleared, -(toolRadiusScaled + stepSize));
+    Paths64 cleared = OffsetPaths(clearedArea.GetCleared(), -(toolRadiusScaled + stepSize));
 
     // move the beacon to an acceptable location if necessary
     if (cleared.size() == 0) {
         return false;
     }
 
-    if (getPathNestingLevel(Path64 {ToPoint64(beaconPoint)}, ToPaths64(cleared)) % 2 == 0) {
+    if (getPathNestingLevel(Path64{beaconPoint}, cleared) % 2 == 0) {
         Point64 clp;  // to store closest point
         size_t clpPathIndex;
         size_t clpSegmentIndex;
         double clpParameter;
-        DistancePointToPathsSqrd(
-            ToPaths64(cleared),
-            ToPoint64(beaconPoint),
-            clp,
-            clpPathIndex,
-            clpSegmentIndex,
-            clpParameter
-        );
-        beaconPoint = ToC1Point(clp);
+        DistancePointToPathsSqrd(cleared, beaconPoint, clp, clpPathIndex, clpSegmentIndex, clpParameter);
+        beaconPoint = clp;
     }
 
-    ClipperLib::IntPoint currentPoint = startPoint;
-    ClipperLib::DoublePoint targetDir = ToC1PointD(
-        DirectionV(ToPoint64(currentPoint), ToPoint64(beaconPoint))
-    );
+    Point64 currentPoint = startPoint;
+    PointD targetDir = DirectionV(currentPoint, beaconPoint);
 
-    double distanceToBeacon = sqrt(DistanceSqrd(ToPoint64(startPoint), ToPoint64(beaconPoint)));
+    double distanceToBeacon = sqrt(DistanceSqrd(startPoint, beaconPoint));
     double minExitLength = min(toolRadiusScaled / 5., min(stepOverScaled, distanceToBeacon / 2));
     double maxLength = max(distanceToBeacon * 2, stepSize * 10);
     std::optional<double> clearedStartLen;
-    ClipperLib::DoublePoint nextDir = startDir;
-    ClipperLib::IntPoint nextPoint = ClipperLib::IntPoint(
-        currentPoint.X + nextDir.X * stepSize,
-        currentPoint.Y + nextDir.Y * stepSize
-    );
-    ClipperLib::Path checkPath;
+    PointD nextDir = startDir;
+    Point64 nextPoint
+        = Point64(currentPoint.x + nextDir.x * stepSize, currentPoint.y + nextDir.y * stepSize);
+    Path64 checkPath;
     double adaptFactor = 0.4;
     double alfa = std::numbers::pi / 64;
     double pathLen = 0;
     checkPath.push_back(currentPoint);
     for (int i = 0; i < 10000; i++) {
-        if (
-            IsAllowedToCutTrough(ToPoint64(currentPoint), ToPoint64(nextPoint), clearedArea, toolBoundPaths_p64)
-        ) {
+        if (IsAllowedToCutTrough(currentPoint, nextPoint, clearedArea, toolBoundPaths)) {
             if (!leadIn) {
                 // For lead out paths, update/recompute the cleared area
                 checkPath.push_back(nextPoint);
-                clearedArea.ExpandCleared(ToPath64(checkPath));
+                clearedArea.ExpandCleared(checkPath);
                 checkPath.clear();
                 checkPath.push_back(nextPoint);
 
-                clipof.Clear();
-                clipof.AddPaths(
-                    ToC1Paths(clearedArea.GetCleared()),
-                    ClipperLib::JoinType::jtRound,
-                    ClipperLib::EndType::etClosedPolygon
-                );
-                clipof.Execute(cleared, -(toolRadiusScaled + stepSize));
+                cleared = OffsetPaths(clearedArea.GetCleared(), -(toolRadiusScaled + stepSize));
             }
 
             output.push_back(nextPoint);
             currentPoint = nextPoint;
             pathLen += stepSize;
-            targetDir = ToC1PointD(DirectionV(ToPoint64(currentPoint), ToPoint64(beaconPoint)));
-            nextDir = ClipperLib::DoublePoint(
-                nextDir.X + adaptFactor * targetDir.X,
-                nextDir.Y + adaptFactor * targetDir.Y
+            targetDir = DirectionV(currentPoint, beaconPoint);
+            nextDir = PointD(
+                nextDir.x + adaptFactor * targetDir.x,
+                nextDir.y + adaptFactor * targetDir.y
             );
-            {
-                PointD tmp = ToPointD(nextDir);
-                NormalizeV(tmp);
-                nextDir = ToC1PointD(tmp);
-            }
+            NormalizeV(nextDir);
 
             // check if cleared
-            if (getPathNestingLevel(Path64 {ToPoint64(currentPoint)}, ToPaths64(cleared)) % 2 == 1) {
+            if (getPathNestingLevel(Path64{currentPoint}, cleared) % 2 == 1) {
                 if (!clearedStartLen) {
                     clearedStartLen = {pathLen};
                 }
 
                 // if the path is long enough, exit with success
                 if (pathLen > minExitLength && pathLen - *clearedStartLen > MIN_STEP_CLIPPER) {
-                    output_p64 = ToPath64(output);
                     return true;
                 }
             }
@@ -2947,9 +2910,7 @@ bool Adaptive2d::MakeLeadPath(
 
             // if traveled too far without getting to a clear area, exit with failure
             if (pathLen > maxLength) {
-                if (getPathNestingLevel(Path64 {ToPoint64(currentPoint)}, clearedArea.GetCleared()) % 2
-                    == 1) {
-                    output_p64 = ToPath64(output);
+                if (getPathNestingLevel(Path64{currentPoint}, clearedArea.GetCleared()) % 2 == 1) {
                     return true;
                 }
                 else {
@@ -2960,12 +2921,10 @@ bool Adaptive2d::MakeLeadPath(
             }
         }
         else {
-            nextDir = ToC1PointD(rotate(ToPointD(nextDir), leadIn ? -alfa : alfa));
+            nextDir = rotate(nextDir, leadIn ? -alfa : alfa);
         }
-        nextPoint = ClipperLib::IntPoint(
-            currentPoint.X + nextDir.X * stepSize,
-            currentPoint.Y + nextDir.Y * stepSize
-        );
+        nextPoint
+            = Point64(currentPoint.x + nextDir.x * stepSize, currentPoint.y + nextDir.y * stepSize);
     }
 
     return false;
