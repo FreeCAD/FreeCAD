@@ -2640,15 +2640,12 @@ bool Adaptive2d::IsAllowedToCutTrough(
 }
 
 bool Adaptive2d::ResolveLinkPath(
-    const Point64& startPoint_p64,
-    const Point64& endPoint_p64,
+    const Point64& startPoint,
+    const Point64& endPoint,
     ClearedArea& clearedArea,
-    Path64& output_p64
+    Path64& output
 )
 {
-    ClipperLib::IntPoint startPoint = ToC1Point(startPoint_p64);
-    ClipperLib::IntPoint endPoint = ToC1Point(endPoint_p64);
-    ClipperLib::Path output;
     // Future work: reimplement this function with a modified version of the
     // algorithm from https://annas-archive.li/scidb/10.1002/net.3230140304/
     // 1) offset cleared area by tool radius, to effectively reduce the tool to a point
@@ -2662,12 +2659,12 @@ bool Adaptive2d::ResolveLinkPath(
     // appropriate triangle strip), which should be an improvement in both run
     // time and result over our current algorithm
 
-    vector<pair<ClipperLib::IntPoint, ClipperLib::IntPoint>> queue;
+    vector<pair<Point64, Point64>> queue;
     queue.emplace_back(startPoint, endPoint);
-    ClipperLib::Path checkPath;
+    Path64 checkPath;
     double totalLength = 0;
-    double directDistance = sqrt(DistanceSqrd(ToPoint64(startPoint), ToPoint64(endPoint)));
-    ClipperLib::Paths linkPaths;
+    double directDistance = sqrt(DistanceSqrd(startPoint, endPoint));
+    Paths64 linkPaths;
 
     double scanStep = 2 * MIN_STEP_CLIPPER;
     if (scanStep > scaleFactor * 0.1) {
@@ -2710,11 +2707,11 @@ bool Adaptive2d::ResolveLinkPath(
 
         cnt++;
         if (cnt > limit) {
-            cout << "Unable to resolve tool down linking path @(" << endPoint.X / scaleFactor << ","
-                 << endPoint.Y / scaleFactor << ") (" << limit << " points limit reached)." << endl;
+            cout << "Unable to resolve tool down linking path @(" << endPoint.x / scaleFactor << ","
+                 << endPoint.y / scaleFactor << ") (" << limit << " points limit reached)." << endl;
             return false;
         }
-        pair<ClipperLib::IntPoint, ClipperLib::IntPoint> pointPair = queue.back();
+        pair<Point64, Point64> pointPair = queue.back();
         queue.pop_back();
 
         // check for self intersections - if found discard the link path
@@ -2722,10 +2719,10 @@ bool Adaptive2d::ResolveLinkPath(
             if (linkPaths[i].front() != pointPair.first && linkPaths[i].back() != pointPair.first
                 && linkPaths[i].front() != pointPair.second && linkPaths[i].back() != pointPair.second
                 && IntersectionPoint(
-                    ToPoint64(linkPaths[i].front()),
-                    ToPoint64(linkPaths[i].back()),
-                    ToPoint64(pointPair.first),
-                    ToPoint64(pointPair.second),
+                    linkPaths[i].front(),
+                    linkPaths[i].back(),
+                    pointPair.first,
+                    pointPair.second,
                     clp
                 )) {
                 cout << "Unable to resolve tool down linking path (self-intersects)." << endl;
@@ -2733,94 +2730,69 @@ bool Adaptive2d::ResolveLinkPath(
             }
         }
 
-        ClipperLib::DoublePoint direction = ToC1PointD(
-            DirectionV(ToPoint64(pointPair.first), ToPoint64(pointPair.second))
-        );
+        PointD direction = DirectionV(pointPair.first, pointPair.second);
         checkPath.clear();
         if (pointPair.first == startPoint) {
-            checkPath.push_back(
-                ClipperLib::IntPoint(
-                    pointPair.first.X + offClearance * direction.X,
-                    pointPair.first.Y + offClearance * direction.Y
-                )
-            );
+            checkPath.push_back(Point64(
+                pointPair.first.x + offClearance * direction.x,
+                pointPair.first.y + offClearance * direction.y
+            ));
         }
         else {
             checkPath.push_back(pointPair.first);
         }
         if (pointPair.second == endPoint) {
-            checkPath.push_back(
-                ClipperLib::IntPoint(
-                    pointPair.second.X - offClearance * direction.X,
-                    pointPair.second.Y - offClearance * direction.Y
-                )
-            );
+            checkPath.push_back(Point64(
+                pointPair.second.x - offClearance * direction.x,
+                pointPair.second.y - offClearance * direction.y
+            ));
         }
         else {
             checkPath.push_back(pointPair.second);
         }
 
-        if (IsClearPath(ToPath64(checkPath), clearedArea, clearance)) {
-            totalLength += sqrt(DistanceSqrd(ToPoint64(pointPair.first), ToPoint64(pointPair.second)));
+        if (IsClearPath(checkPath, clearedArea, clearance)) {
+            totalLength += sqrt(DistanceSqrd(pointPair.first, pointPair.second));
             if (totalLength > keepToolDownDistRatio * directDistance) {
                 return false;
             }
-            ClipperLib::Path link;
+            Path64 link;
             link.push_back(pointPair.first);
             link.push_back(pointPair.second);
             linkPaths.push_back(link);
         }
         else {
-            if (sqrt(DistanceSqrd(ToPoint64(pointPair.first), ToPoint64(pointPair.second))) < 4) {
+            if (sqrt(DistanceSqrd(pointPair.first, pointPair.second)) < 4) {
                 // segment became too short but still not clear
                 return false;
             }
-            ClipperLib::DoublePoint pDir(-direction.Y, direction.X);
+            PointD pDir(-direction.y, direction.x);
             // find mid point
-            ClipperLib::IntPoint midPoint(
-                0.5 * double(pointPair.first.X + pointPair.second.X),
-                0.5 * double(pointPair.first.Y + pointPair.second.Y)
+            Point64 midPoint(
+                0.5 * double(pointPair.first.x + pointPair.second.x),
+                0.5 * double(pointPair.first.y + pointPair.second.y)
             );
             for (long i = 1;; i++) {
                 if (stopProcessing) {
                     return false;
                 }
                 double offset = i * scanStep;
-                ClipperLib::IntPoint checkPoint1(
-                    midPoint.X + offset * pDir.X,
-                    midPoint.Y + offset * pDir.Y
-                );
-                ClipperLib::IntPoint checkPoint2(
-                    midPoint.X - offset * pDir.X,
-                    midPoint.Y - offset * pDir.Y
-                );
+                Point64 checkPoint1(midPoint.x + offset * pDir.x, midPoint.y + offset * pDir.y);
+                Point64 checkPoint2(midPoint.x - offset * pDir.x, midPoint.y - offset * pDir.y);
 
-                if (DistancePointToPathsSqrd(
-                        clearedArea.GetCleared(),
-                        ToPoint64(checkPoint1),
-                        clpDist_p64,
-                        pindex,
-                        sindex,
-                        par
-                    )
-                    < DistancePointToPathsSqrd(
-                        clearedArea.GetCleared(),
-                        ToPoint64(checkPoint2),
-                        clpDist_p64,
-                        pindex,
-                        sindex,
-                        par
-                    )) {
+                if (
+                    DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint1, clpDist_p64, pindex, sindex, par)
+                    < DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint2, clpDist_p64, pindex, sindex, par)
+                ) {
                     // exchange points
-                    ClipperLib::IntPoint tmp = checkPoint2;
+                    Point64 tmp = checkPoint2;
                     checkPoint2 = checkPoint1;
                     checkPoint1 = tmp;
                 }
 
                 checkPath.clear();
                 checkPath.push_back(checkPoint1);
-                if (IsClearPath(ToPath64(checkPath), clearedArea, clearance + 1)) {  // check if
-                                                                                     // point clear
+                if (IsClearPath(checkPath, clearedArea, clearance + 1)) {  // check if point clear
                     queue.emplace_back(pointPair.first, checkPoint1);
                     queue.emplace_back(checkPoint1, pointPair.second);
                     break;
@@ -2829,7 +2801,7 @@ bool Adaptive2d::ResolveLinkPath(
 
                     checkPath.clear();
                     checkPath.push_back(checkPoint2);
-                    if (IsClearPath(ToPath64(checkPath), clearedArea, clearance + 1)) {
+                    if (IsClearPath(checkPath, clearedArea, clearance + 1)) {
                         queue.emplace_back(pointPair.first, checkPoint2);
                         queue.emplace_back(checkPoint2, pointPair.second);
                         break;
@@ -2844,11 +2816,8 @@ bool Adaptive2d::ResolveLinkPath(
     if (linkPaths.empty()) {
         return false;
     }
-    Paths64 lp = ToPaths64(linkPaths);
-    ConnectPaths(lp, lp);
-    linkPaths = ToC1Paths(lp);
+    ConnectPaths(linkPaths, linkPaths);
     output = linkPaths[0];
-    output_p64 = ToPath64(output);
     return true;
 }
 
