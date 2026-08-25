@@ -138,7 +138,6 @@ protected:
     double calcOffset(TechDraw::BaseGeomPtr geom, TechDraw::LineSet ls);
 
 
-    QPen setGeomPen();
     std::vector<double> decodeDashSpec(TechDraw::DashSpec dash);
 
 
