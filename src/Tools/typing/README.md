@@ -18,13 +18,19 @@ The helper runs the stub generator:
 python3 src/Tools/typing/generate_stubs.py --root . --out-dir src/Tools/typing/generated
 ```
 
-The implementation now lives under `src/Tools/typing/stubgen/`:
-`model.py` for shared types and regexes, `parsing.py` for low-level source
-parsing, `generator.py` for pipeline orchestration, and `cli.py` for argument
-handling. The pipeline is further split across focused modules such as
-`discovery.py`, `source_inputs.py`, `class_merge.py`, `module_merge.py`, and
-`render.py`. `type_context_rules.py` holds the remaining manual PyCXX context
-classifications that are not derivable yet.
+The shared public API layer lives under `src/Tools/python_api_model/`:
+`model.py` defines normalized API declarations, `signatures.py` defines
+structured callable semantics, `normalize.py` canonicalizes source-side type
+spelling, and `resolve.py` applies deterministic precedence and diagnostics.
+This package has no dependency on StubGen.
+
+The source and binding pipeline lives under `src/Tools/typing/stubgen/`:
+`api_extract.py` reads curated `.pyi` inputs, `binding_adapter.py` converts
+discovered C++ registrations, `render.py` emits public stubs, and `generator.py`
+coordinates the output. `discovery.py`, `source_inputs.py`, `module_merge.py`,
+and `stub_support.py` provide the remaining input and output-specific helpers.
+`type_context_rules.py` holds manual PyCXX context classifications that are not
+derivable yet.
 
 That command writes under `src/Tools/typing/generated/`:
 

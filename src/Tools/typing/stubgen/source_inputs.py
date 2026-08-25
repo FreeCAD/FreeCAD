@@ -5,7 +5,7 @@
 This module parses source-adjacent Python inputs and binding declarations used
 by API extraction and binding discovery. It owns source-specific parsing and
 metadata interpretation; public API resolution belongs to
-``python_api.resolve`` and output formatting belongs to the renderer.
+``python_api_model.resolve`` and output formatting belongs to the renderer.
 """
 
 from __future__ import annotations

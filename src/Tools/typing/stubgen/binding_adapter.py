@@ -4,7 +4,7 @@
 
 The C++ registration scanner remains a discovery/input layer. This module
 converts its records into a generated ``PythonApiModel``; model precedence and
-conflict handling belong to ``python_api.resolve``.
+conflict handling belong to ``python_api_model.resolve``.
 """
 
 from __future__ import annotations
