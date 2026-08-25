@@ -854,7 +854,7 @@ protected:
     friend class ViewProviderPy;
 
 private:
-    // keep the mode switch's override fallback in sync with the active mode
+    /// Keep the mode switch's override fallback in sync with the active mode.
     void updateModeSwitchDefaultChild();
 
     int _iActualMode {-1};

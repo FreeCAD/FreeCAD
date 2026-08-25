@@ -29,10 +29,12 @@
 class SoPath;
 
 /**
- * SoSwitch that, while an OverrideScope is active, traverses defaultChild for
- * switches on the scoped path even when whichChild is SO_SWITCH_NONE. Lets a
- * hidden object render on top (e.g. tree preselection) without changing its
- * visibility, while leaving its hidden children untouched.
+ * @brief A %SoSwitch that can fall back to a default child while switched off.
+ *
+ * While an OverrideScope is active, switches that lie on the scoped path
+ * traverse #defaultChild even when `whichChild` is `SO_SWITCH_NONE`.  This lets
+ * a hidden object render on top (e.g. for tree view preselection) without
+ * changing its visibility, and leaves its hidden children untouched.
  */
 class GuiExport SoFCSwitch: public SoSwitch
 {
@@ -42,13 +44,13 @@ public:
     static void initClass();
     SoFCSwitch();
 
-    // Child traversed under override when whichChild is SO_SWITCH_NONE
+    /// Child traversed under an override when whichChild is SO_SWITCH_NONE.
     SoSFInt32 defaultChild;
 
     void doAction(SoAction* action) override;
     void getBoundingBox(SoGetBoundingBoxAction* action) override;
 
-    // RAII activation of the default-child override, scoped to the given path
+    /// RAII activation of the default-child override, scoped to the given path.
     struct GuiExport OverrideScope
     {
         explicit OverrideScope(const SoPath* path);
