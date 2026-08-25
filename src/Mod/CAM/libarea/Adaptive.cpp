@@ -103,6 +103,17 @@ inline ClipperLib::DoublePoint ToC1PointD(const PointD& p)
     return ClipperLib::DoublePoint(p.x, p.y);
 }
 
+// Wrappers that preserve Clipper1 default offset behavior (arc_tolerance=0.25 absolute)
+inline Paths64 OffsetPaths(const Paths64& paths, double delta, EndType et = EndType::Polygon, JoinType jt = JoinType::Round)
+{
+    return InflatePaths(paths, delta, jt, et, 2.0, 0.25);
+}
+
+inline Paths64 OffsetPath(const Path64& path, double delta, EndType et = EndType::Polygon, JoinType jt = JoinType::Round)
+{
+    return InflatePaths(Paths64{path}, delta, jt, et, 2.0, 0.25);
+}
+
 //*****************************************
 // Utils - inline
 //*****************************************
@@ -1734,24 +1745,24 @@ void Adaptive2d::ApplyStockToLeave(Paths64& inputPaths_p64)
 void writePreprocessingSVG(const DebugSVGInfo& svgInfo)
 {
     // Calculate overall bounding box
-    long long minX = LLONG_MAX, minY = LLONG_MAX, maxX = LLONG_MIN, maxY = LLONG_MIN;
+    int64_t minX = INT64_MAX, minY = INT64_MAX, maxX = INT64_MIN, maxY = INT64_MIN;
 
-    auto updateBBox = [&](const ClipperLib::Paths& paths) {
-        for (const ClipperLib::Path& path : paths) {
+    auto updateBBox = [&](const Paths64& paths) {
+        for (const Path64& path : paths) {
             for (const auto& pt : path) {
-                minX = std::min(minX, pt.X);
-                minY = std::min(minY, pt.Y);
-                maxX = std::max(maxX, pt.X);
-                maxY = std::max(maxY, pt.Y);
+                minX = std::min(minX, pt.x);
+                minY = std::min(minY, pt.y);
+                maxX = std::max(maxX, pt.x);
+                maxY = std::max(maxY, pt.y);
             }
         }
     };
 
     // Regional collections (need unwrapping)
-    for (const ClipperLib::Paths& regionPaths : svgInfo.allFinishingPaths) {
+    for (const Paths64& regionPaths : svgInfo.allFinishingPaths) {
         updateBBox(regionPaths);
     }
-    for (const ClipperLib::Paths& regionPaths : svgInfo.allToolBoundPaths) {
+    for (const Paths64& regionPaths : svgInfo.allToolBoundPaths) {
         updateBBox(regionPaths);
     }
 
@@ -1788,19 +1799,19 @@ void writePreprocessingSVG(const DebugSVGInfo& svgInfo)
     svg << "]]></script>\n";
 
     auto renderPathGroup =
-        [&](const std::string& groupId, const std::string& strokeColor, const ClipperLib::Paths& paths) {
+        [&](const std::string& groupId, const std::string& strokeColor, const Paths64& paths) {
             svg << "<g id=\"" << groupId << "\">\n";
             for (size_t i = 0; i < paths.size(); i++) {
-                const ClipperLib::Path& ip = paths[i];
+                const Path64& ip = paths[i];
                 if (!ip.empty()) {
                     // Merge consecutive edges of the same dashedness into one <path> so that
                     // stroke-dasharray renders continuously across short segments.
                     bool inPath = false;
                     bool curDash = false;
                     for (size_t j = 0; j < ip.size(); j++) {
-                        const ClipperLib::IntPoint& p1 = ip[j];
-                        const ClipperLib::IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
-                        bool edgeDash = !(p1.Z == 1 && p2.Z == 1);
+                        const Point64& p1 = ip[j];
+                        const Point64& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                        bool edgeDash = !(p1.z == 1 && p2.z == 1);
 
                         if (!inPath || edgeDash != curDash) {
                             if (inPath) {
@@ -1814,17 +1825,17 @@ void writePreprocessingSVG(const DebugSVGInfo& svgInfo)
                                 svg << " stroke-dasharray=\"" << (padding / 8) << ","
                                     << (padding / 8) << "\"";
                             }
-                            svg << " d=\"M" << p1.X << "," << -p1.Y;
+                            svg << " d=\"M" << p1.x << "," << -p1.y;
                         }
-                        svg << " L" << p2.X << "," << -p2.Y;
+                        svg << " L" << p2.x << "," << -p2.y;
                     }
                     if (inPath) {
                         svg << "\"/>\n";
                     }
                     // Add markers for Z=1 vertices
                     for (const auto& pt : ip) {
-                        if (pt.Z == 1) {
-                            svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                        if (pt.z == 1) {
+                            svg << "<circle cx=\"" << pt.x << "\" cy=\"" << -pt.y << "\" r=\""
                                 << (3 * padding / 50) << "\" fill=\"" << strokeColor << "\"/>\n";
                         }
                     }
@@ -1989,24 +2000,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // Debug variables for SVG visualization
     DebugSVGInfo svgInfo;
 
-    ClipperLib::ClipperOffset clipof;
-    ClipperLib::Clipper clip;
-
     // generate tool shape
-    clipof.Clear();
-    ClipperLib::Path p;
-    p << ClipperLib::IntPoint(0, 0);
-    clipof.AddPath(p, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etOpenRound);
-    ClipperLib::Paths toolGeometryPaths;
-    clipof.Execute(toolGeometryPaths, toolRadiusScaled);
-    toolGeometry = toolGeometryPaths[0];
+    Paths64 toolGeometryPaths = OffsetPath(Path64{{{0, 0}}}, toolRadiusScaled, EndType::Round);
+    Path64& toolGeometry = toolGeometryPaths[0];
     // calculate reference area
-    ClipperLib::Path slotCut = ToC1Path(TranslatePath(ToPath64(toolGeometryPaths[0]), (int64_t)(toolRadiusScaled / 2), (int64_t)0));
-    clip.Clear();
-    clip.AddPath(toolGeometryPaths[0], ClipperLib::PolyType::ptSubject, true);
-    clip.AddPath(slotCut, ClipperLib::PolyType::ptClip, true);
-    ClipperLib::Paths crossing;
-    clip.Execute(ClipperLib::ClipType::ctDifference, crossing);
+    Path64 slotCut = TranslatePath(toolGeometry, (int64_t)(toolRadiusScaled / 2), (int64_t)0);
+    Paths64 crossing = Difference(Paths64{toolGeometry}, Paths64{slotCut}, FillRule::EvenOdd);
     referenceCutArea = fabs(Area(crossing[0]));
     optimalCutAreaPD = 2 * stepOverFactor * referenceCutArea / toolRadiusScaled;
 #ifdef DEV_MODE
@@ -2017,47 +2016,39 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     //******************************
     // Convert input paths to clipper
     //******************************
-    ClipperLib::Paths converted;
+    Paths64 converted;
     for (size_t i = 0; i < paths.size(); i++) {
-        ClipperLib::Path cpth;
+        Path64 cpth;
         for (size_t j = 0; j < paths[i].size(); j++) {
             std::pair<double, double> pt = paths[i][j];
-            cpth.push_back(ClipperLib::IntPoint(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
+            cpth.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
         }
-        Path64 cpth2_p64;
-        CleanPath(ToPath64(cpth), cpth2_p64, FINISHING_CLEAN_PATH_TOLERANCE);
-        converted.push_back(ToC1Path(cpth2_p64));
+        Path64 cpth2;
+        CleanPath(cpth, cpth2, FINISHING_CLEAN_PATH_TOLERANCE);
+        converted.push_back(cpth2);
     }
-
-    Paths64 inputPaths_p64;
-    DeduplicatePaths(ToPaths64(converted), inputPaths_p64);
-    inputPaths = ToC1Paths(inputPaths_p64);
-    Paths64 ip = ToPaths64(inputPaths);
-    ConnectPaths(ip, ip);
-    inputPaths = ToC1Paths(ip);
-    SimplifyPolygons(inputPaths);
-    Paths64 tmp = ToPaths64(inputPaths);
-    ApplyStockToLeave(tmp);
-    inputPaths = ToC1Paths(tmp);
+    Paths64 inputPaths;
+    DeduplicatePaths(converted, inputPaths);
+    ConnectPaths(inputPaths, inputPaths);
+    inputPaths = Union(inputPaths, FillRule::EvenOdd);
+    ApplyStockToLeave(inputPaths);
 
     //*************************
     // convert stock paths
     //*************************
-    stockInputPaths.clear();
     for (size_t i = 0; i < stockPaths.size(); i++) {
-        ClipperLib::Path cpth;
+        Path64 cpth;
         for (size_t j = 0; j < stockPaths[i].size(); j++) {
             std::pair<double, double> pt = stockPaths[i][j];
-            cpth.push_back(ClipperLib::IntPoint(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
+            cpth.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
         }
-
         stockInputPaths.push_back(cpth);
     }
 
     // Convert cleared area
-    ClipperLib::Paths initialClearedPaths;
+    Paths64 initialClearedPaths;
     for (size_t i = 0; i < clearedPaths.size(); i++) {
-        ClipperLib::Path p;
+        Path64 p;
         for (size_t j = 0; j < clearedPaths[i].size(); j++) {
             long x = long(clearedPaths[i][j].first * scaleFactor);
             long y = long(clearedPaths[i][j].second * scaleFactor);
@@ -2065,9 +2056,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
         initialClearedPaths.push_back(p);
     }
-    SimplifyPolygons(initialClearedPaths);
+    initialClearedPaths = Union(initialClearedPaths, FillRule::EvenOdd);
 
-    SimplifyPolygons(stockInputPaths);
+    stockInputPaths = Union(stockInputPaths, FillRule::EvenOdd);
 
     // Handle different clearing modes (inside/outside, clearing/profiling) and invoke the core
     // adaptive algorithm
@@ -2084,17 +2075,17 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     // 1) If outer clearing: add stock path to inputs
     if (opType == OperationType::otClearingOutside) {
-        for (ClipperLib::Path p : stockInputPaths) {
+        for (const Path64& p : stockInputPaths) {
             inputPaths.push_back(p);
         }
     }
 
     // 2) Fix input path orientation
-    for (ClipperLib::Path& p : inputPaths) {
+    for (Path64& inputPath : inputPaths) {
         // nesting count includes self, so odd is positive orientation
-        int nesting = getPathNestingLevel(ToPath64(p), ToPaths64(inputPaths));
-        if ((nesting % 2 == 1) ^ Orientation(p)) {
-            ReversePath(p);
+        int nesting = getPathNestingLevel(inputPath, inputPaths);
+        if ((nesting % 2 == 1) ^ IsPositive(inputPath)) {
+            std::reverse(inputPath.begin(), inputPath.end());
         }
     }
 
@@ -2106,9 +2097,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // natively. From what I've seen this is good enough in practice, but if it becomes problematic
     // we can try to leverage vertex z-tagging to create a more complicated system for indirectly
     // tagging edges.
-    for (ClipperLib::Path& path : inputPaths) {
-        for (ClipperLib::IntPoint& p : path) {
-            p.Z = 1;
+    for (Path64& inputPath : inputPaths) {
+        for (Point64& p : inputPath) {
+            p.z = 1;
         }
     }
     svgInfo.step3Paths = inputPaths;
@@ -2126,30 +2117,25 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             offset = -offset;
         }
 
-        ClipperLib::Paths fullPaths;
-        ClipperLib::Paths offsetPaths;
+        Paths64 fullPaths;
 
-        for (ClipperLib::Path& path : inputPaths) {
-            clipof.Clear();
-            clipof.AddPath(path, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
-            clipof.Execute(offsetPaths, offset);
+        for (Path64& inputPath : inputPaths) {
+            Paths64 offsetPaths = OffsetPath(inputPath, offset);
 
-            if (Orientation(path) ^ (offset > 0)) {
-                ReversePath(path);
+            if (IsPositive(inputPath) ^ (offset > 0)) {
+                std::reverse(inputPath.begin(), inputPath.end());
             }
-            clip.Clear();
-            clip.AddPaths(fullPaths, ClipperLib::PolyType::ptSubject, true);
-            clip.AddPath(path, ClipperLib::PolyType::ptClip, true);
-            for (ClipperLib::Path& offsetPath : offsetPaths) {
-                for (ClipperLib::IntPoint& p : offsetPath) {
-                    p.Z = 0;
+            Paths64 clips = {inputPath};
+            for (Path64& offsetPath : offsetPaths) {
+                for (Point64& p : offsetPath) {
+                    p.z = 0;
                 }
-                if (Orientation(offsetPath) ^ (offset < 0)) {
-                    ReversePath(offsetPath);
+                if (IsPositive(offsetPath) ^ (offset < 0)) {
+                    std::reverse(offsetPath.begin(), offsetPath.end());
                 }
-                clip.AddPath(offsetPath, ClipperLib::PolyType::ptClip, true);
+                clips.push_back(offsetPath);
             }
-            clip.Execute(ClipperLib::ClipType::ctUnion, fullPaths);
+            fullPaths = Union(fullPaths, clips, FillRule::EvenOdd);
         }
 
         inputPaths = fullPaths;
@@ -2174,54 +2160,45 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     if (!forceInsideOut) {
 
         // 5a) Shrink the stock boundary to ensure overlap with input paths that hit the boundary
-        ClipperLib::Paths stockRev;
-        clipof.Clear();
-        clipof.AddPaths(stockInputPaths, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
-        clipof.Execute(stockRev, -2);
-        ReversePaths(stockRev);
+        Paths64 stockRev = OffsetPaths(stockInputPaths, -2);
+        for (Path64& p : stockRev) {
+            std::reverse(p.begin(), p.end());
+        }
         svgInfo.step5a_stockRev = stockRev;
 
         // 5b) Create outside-of-stock region
-        ClipperLib::Paths outsideOfStock;
         double overshootDistance = 4 * toolRadiusScaled + stockToLeave * scaleFactor;
-        clipof.Clear();
-        clipof.AddPaths(stockInputPaths, ClipperLib::JoinType::jtSquare, ClipperLib::EndType::etClosedPolygon);
-        clipof.Execute(outsideOfStock, overshootDistance);
+        Paths64 outsideOfStock = OffsetPaths(stockInputPaths, overshootDistance, EndType::Polygon, JoinType::Square);
         svgInfo.step5b_outsideOfStock = outsideOfStock;
 
         // 5c) Union input paths with stock regions
-        clip.Clear();
-        clip.AddPaths(inputPaths, ClipperLib::PolyType::ptSubject, true);
-        clip.AddPaths(stockRev, ClipperLib::PolyType::ptClip, true);
-        clip.AddPaths(outsideOfStock, ClipperLib::PolyType::ptClip, true);
+        Clipper64 clip;
+        clip.AddSubject(inputPaths);
+        clip.AddClip(stockRev);
+        clip.AddClip(outsideOfStock);
 
         // Z callback: output Z=1 if both vertices of either input edge have Z=1.
         // This callback will be invoked on new vertices created while unioning areas (i.e.
         // intersections between segments)
-        clip.ZFillFunction(
-            [](ClipperLib::IntPoint& e1bot, ClipperLib::IntPoint& e1top, ClipperLib::IntPoint& e2bot, ClipperLib::IntPoint& e2top, ClipperLib::IntPoint& pt) {
-                // Check if both vertices of edge 1 have Z=1
-                bool edge1HasZ1 = (e1bot.Z == 1 && e1top.Z == 1);
-                // Check if both vertices of edge 2 have Z=1
-                bool edge2HasZ1 = (e2bot.Z == 1 && e2top.Z == 1);
-                // Set output Z=1 if either edge has both vertices with Z=1
-                pt.Z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
+        clip.SetZCallback(
+            [](const Point64& e1bot, const Point64& e1top, const Point64& e2bot, const Point64& e2top, Point64& pt) {
+                bool edge1HasZ1 = (e1bot.z == 1 && e1top.z == 1);
+                bool edge2HasZ1 = (e2bot.z == 1 && e2top.z == 1);
+                pt.z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
             }
         );
 
-        clip.Execute(ClipperLib::ClipType::ctUnion, inputPaths);
+        clip.Execute(ClipType::Union, FillRule::EvenOdd, inputPaths);
         svgInfo.step5c_inputPathsUnion = inputPaths;
 
         // 5d) Update cleared area
-        clipof.Clear();
-        clipof.AddPaths(stockInputPaths, ClipperLib::JoinType::jtSquare, ClipperLib::EndType::etClosedPolygon);
-        clipof.Execute(outsideOfStock, 100 * toolRadiusScaled);
+        outsideOfStock = OffsetPaths(stockInputPaths, 100 * toolRadiusScaled, EndType::Polygon, JoinType::Square);
 
         clip.Clear();
-        clip.AddPaths(initialClearedPaths, ClipperLib::PolyType::ptSubject, true);
-        clip.AddPaths(stockRev, ClipperLib::PolyType::ptClip, true);
-        clip.AddPaths(outsideOfStock, ClipperLib::PolyType::ptClip, true);
-        clip.Execute(ClipperLib::ClipType::ctUnion, initialClearedPaths);
+        clip.AddSubject(initialClearedPaths);
+        clip.AddClip(stockRev);
+        clip.AddClip(outsideOfStock);
+        clip.Execute(ClipType::Union, FillRule::EvenOdd, initialClearedPaths);
         svgInfo.step5d_clearedArea = initialClearedPaths;
     }
 
@@ -2268,35 +2245,10 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // the path, potentially requires finishing) is present, so after the information lookup is
     // complete they can be handled the same way as original vertices.
     {
-
-        // Clipper 1's z-callback mechanism doesn't support binding local variables, so we convert
-        // to clipper 2 for this operation. This code will go away soon when we convert all of
-        // adaptive to clipper 2
-
-        // Convert initialClearedPaths to Clipper2
-        Paths64 initialClearedPaths2;
-        for (const auto& clearedPath : initialClearedPaths) {
-            Path64 p;
-            for (const auto& pt : clearedPath) {
-                p.emplace_back(pt.X, pt.Y, pt.Z);
-            }
-            initialClearedPaths2.push_back(p);
-        }
-
-        // Convert stockInputPaths to Clipper2
-        Paths64 stockInputPaths2;
-        for (const auto& stockPath : stockInputPaths) {
-            Path64 p;
-            for (const auto& pt : stockPath) {
-                p.emplace_back(pt.X, pt.Y, pt.Z);
-            }
-            stockInputPaths2.push_back(p);
-        }
-
         // Compute noncleared area = stock - cleared
         Clipper64 clipDiff;
-        clipDiff.AddSubject(stockInputPaths2);
-        clipDiff.AddClip(initialClearedPaths2);
+        clipDiff.AddSubject(stockInputPaths);
+        clipDiff.AddClip(initialClearedPaths);
         Paths64 nonclearedPaths;
         clipDiff.Execute(
             ClipType::Difference,
@@ -2304,14 +2256,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             nonclearedPaths
         );
 
-        ClipperLib::Paths updatedPaths;
+        Paths64 updatedPaths;
         for (const auto& path : inputPaths) {
             // Create a copy of the path with z value specifying the index. Points are initialized
             // with z=0 by default, so to make uninitialized-z bugs clear we skip z=0 and set z =
             // index + 1
             Path64 indexedPath;
             for (size_t i = 0; i < path.size(); i++) {
-                indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
+                indexedPath.emplace_back(path[i].x, path[i].y, i + 1);
             }
             // Explicitly close the path, before doing a boolean operation on it as an open (well,
             // "not implicitly closed") path. Unfortunately clipper treats points as interchangeable
@@ -2323,7 +2275,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             const int firstNewZ = static_cast<int>(path.size()) + 2;
             int nextNewZ = firstNewZ;
             std::map<int, double> newZPosition;
-            std::map<int, ClipperLib::cInt> newZNeedsFinishing;
+            std::map<int, int64_t> newZNeedsFinishing;
 
             // Create a new clipper object to avoid overwriting the z callback of the main one
             Clipper64 clip2;
@@ -2383,13 +2335,13 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
                 // I'm pretty sure e1bot and e1top are always original vertices, but just in case
                 // we can handle the alternative possibility
-                ClipperLib::cInt e1bot_finishing = (e1bot.z >= 1
+                int64_t e1bot_finishing = (e1bot.z >= 1
                                         && static_cast<std::size_t>(e1bot.z) <= path.size())
-                    ? path[e1bot.z - 1].Z
+                    ? path[e1bot.z - 1].z
                     : newZNeedsFinishing[static_cast<int>(e1bot.z)];
-                ClipperLib::cInt e1top_finishing = (e1top.z >= 1
+                int64_t e1top_finishing = (e1top.z >= 1
                                         && static_cast<std::size_t>(e1top.z) <= path.size())
-                    ? path[e1top.z - 1].Z
+                    ? path[e1top.z - 1].z
                     : newZNeedsFinishing[static_cast<int>(e1top.z)];
                 newZNeedsFinishing[pt.z] = e1bot_finishing && e1top_finishing;
             });
@@ -2408,12 +2360,12 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // Prepare for the final reassembly process by collecting all points from the
             // intersection result. Also remove duplicate representations of the start/end point,
             // since we will switch back to the clipper default of implicitly-closed paths
-            std::vector<ClipperLib::IntPoint> nonclearedPoints;
+            std::vector<Point64> nonclearedPoints;
             bool hasZ1 = false;
             for (const auto& nonclearedPath : nonclearedInputs) {
                 for (const auto& pt : nonclearedPath) {
                     if (pt.z != 1 || !hasZ1) {
-                        nonclearedPoints.push_back({pt.x, pt.y, pt.z});
+                        nonclearedPoints.push_back(pt);
                     }
                     hasZ1 |= pt.z == 1;
                 }
@@ -2427,9 +2379,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             std::sort(
                 nonclearedPoints.begin(),
                 nonclearedPoints.end(),
-                [&newZPosition, &firstNewZ](const ClipperLib::IntPoint& p1, const ClipperLib::IntPoint& p2) {
-                    double val1 = (p1.Z >= firstNewZ) ? newZPosition.at(p1.Z) : (double)p1.Z;
-                    double val2 = (p2.Z >= firstNewZ) ? newZPosition.at(p2.Z) : (double)p2.Z;
+                [&newZPosition, &firstNewZ](const Point64& p1, const Point64& p2) {
+                    double val1 = (p1.z >= firstNewZ) ? newZPosition.at(p1.z) : (double)p1.z;
+                    double val2 = (p2.z >= firstNewZ) ? newZPosition.at(p2.z) : (double)p2.z;
                     return val1 < val2;
                 }
             );
@@ -2447,15 +2399,15 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // Case 3: Points present in both appear in the non-cleared area, so they should be
             // finished if they are already tagged for finishing (i.e. keep the original z-value
             // from the input).
-            ClipperLib::Path updatedPath;
+            Path64 updatedPath;
             auto nonclearedIt = nonclearedPoints.begin();
             auto indexedIt = indexedPath.begin();
 
             while (indexedIt != indexedPath.end() || nonclearedIt != nonclearedPoints.end()) {
                 // Get position of next noncleared point (if any remain)
                 double nextNonclearedPos = (nonclearedIt != nonclearedPoints.end())
-                    ? ((nonclearedIt->Z >= firstNewZ) ? newZPosition.at(nonclearedIt->Z)
-                                                      : static_cast<double>(nonclearedIt->Z))
+                    ? ((nonclearedIt->z >= firstNewZ) ? newZPosition.at(nonclearedIt->z)
+                                                      : static_cast<double>(nonclearedIt->z))
                     : std::numeric_limits<double>::max();
 
                 // Get position of next indexed path point (if any)
@@ -2465,21 +2417,21 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
                 if (nextPathPos < nextNonclearedPos) {
                     // Case 1: original point is not in the noncleared region
-                    ClipperLib::IntPoint newPt = path[indexedIt->z - 1];
-                    newPt.Z = 0;
+                    Point64 newPt = path[indexedIt->z - 1];
+                    newPt.z = 0;
                     updatedPath.push_back(newPt);
                     indexedIt++;
                 }
                 else if (nextNonclearedPos < nextPathPos) {
                     // Case 2: newly generated/split-edge point in the noncleared region
-                    ClipperLib::IntPoint newPt = *nonclearedIt;
-                    newPt.Z = newZNeedsFinishing.at(newPt.Z);
+                    Point64 newPt = *nonclearedIt;
+                    newPt.z = newZNeedsFinishing.at(newPt.z);
                     updatedPath.push_back(newPt);
                     nonclearedIt++;
                 }
                 else {
                     // Case 3: the same point is present in both lists
-                    ClipperLib::IntPoint newPt = path[indexedIt->z - 1];
+                    Point64 newPt = path[indexedIt->z - 1];
                     updatedPath.push_back(newPt);
                     indexedIt++;
                     nonclearedIt++;
@@ -2497,30 +2449,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     //
     // This represents the locations the tool center is allowed to be during the main adatpive
     // pass, prior to applying finishing profiling.
-    //
-    // Note: Clipper1 doesn't preserve Z values when performing offset operations, so we
-    // convert to Clipper2 to perform the offset. This temporary conversion will be eliminated soon
-    // when we convert the full operation to clipper 2.
-    Paths64 inputPaths2;
-    inputPaths2.reserve(inputPaths.size());
-    for (const auto& path : inputPaths) {
-        Path64 p;
-        p.reserve(path.size());
-        for (const auto& pt : path) {
-            p.emplace_back(pt.X, pt.Y, pt.Z);  // ClipperLib::IntPoint -> Point64
-        }
-        inputPaths2.emplace_back(p);
-    }
 
     // Use ClipperOffset with Z callback to preserve Z=1 marking
     // Note that PreserveCollinear must be set of ClipperOffset (it is already set by default on
     // Clipper64) to avoid accidentally optimizing out collinear points with differing z-values
-    ClipperOffset clipof2;
-    clipof2.PreserveCollinear(true);
-    clipof2.AddPaths(inputPaths2, JoinType::Round, EndType::Polygon);
+    ClipperOffset clipof(2.0, 0.25);
+    clipof.PreserveCollinear(true);
+    clipof.AddPaths(inputPaths, JoinType::Round, EndType::Polygon);
 
     // Z callback: output Z=1 if both vertices of either input edge have Z=1
-    clipof2.SetZCallback([](const Point64& e1bot,
+    clipof.SetZCallback([](const Point64& e1bot,
                             const Point64& e1top,
                             const Point64& e2bot,
                             const Point64& e2top,
@@ -2533,20 +2471,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         pt.z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
     });
 
-    Paths64 toolBounds2;
-    clipof2.Execute(-(toolRadiusScaled + finishPassOffsetScaled), toolBounds2);
-
-    /* Convert results back to clipper1 */
-    ClipperLib::Paths toolBounds;
-    toolBounds.reserve(toolBounds2.size());
-    for (const auto& path : toolBounds2) {
-        ClipperLib::Path p;
-        p.reserve(path.size());
-        for (const auto& pt : path) {
-            p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> ClipperLib::IntPoint
-        }
-        toolBounds.emplace_back(p);
-    }
+    Paths64 toolBounds;
+    clipof.Execute(-(toolRadiusScaled + finishPassOffsetScaled), toolBounds);
 
     // 7) Loop over connected components of toolBounds
     //
@@ -2568,17 +2494,17 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     for (const auto& current : toolBounds) {
         // Nesting counts itself and the number of polygons containing it, so nesting % 2 == 1
         // specifies exterior boundaries and nesting % 2 == 0 specifies holes
-        int nesting = getPathNestingLevel(ToPath64(current), ToPaths64(toolBounds));
+        int nesting = getPathNestingLevel(current, toolBounds);
         if (nesting % 2 != 0) {
             // current is an exterior boundary; now find all the holes directly inside it
-            ClipperLib::Paths currentTBP;
+            Paths64 currentTBP;
             currentTBP.push_back(current);
 
             for (size_t iother = 0; iother < toolBounds.size(); iother++) {
                 const auto& other = toolBounds[iother];
 
-                if (PointInPolygon(other.front(), current) != 0) {
-                    if (getPathNestingLevel(ToPath64(other), ToPaths64(toolBounds)) == nesting + 1) {
+                if (PointInPolygon(other.front(), current) != PointInPolygonResult::IsOutside) {
+                    if (getPathNestingLevel(other, toolBounds) == nesting + 1) {
                         currentTBP.push_back(other);
                     }
                 }
@@ -2602,41 +2528,11 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // from already-cleared area. Thin channels that just barely/exactly fit the tool will
             // not be cut, but that is a reality of an adaptive cutting process -- such regions must
             // be cut by a slotting operation instead.
-            //
-            // Note that clipper 1 drops z values on offset operations, so we must convert to
-            // Clipper2. This temporary measure will be eliminated soon when we convert the full
-            // operation to clipper 2.
+            clipof.Clear();
+            clipof.AddPaths(currentTBP, JoinType::Round, EndType::Polygon);
 
-            // Convert currentTBP to Clipper2 format
-            Paths64 currentTBP2;
-            currentTBP2.reserve(currentTBP.size());
-            for (const auto& path : currentTBP) {
-                Path64 p;
-                p.reserve(path.size());
-                for (const auto& pt : path) {
-                    p.emplace_back(pt.X, pt.Y, pt.Z);  // ClipperLib::IntPoint -> Point64
-                }
-                currentTBP2.emplace_back(p);
-            }
-
-            clipof2.Clear();
-            clipof2.AddPaths(currentTBP2, JoinType::Round, EndType::Polygon);
-
-            Paths64 finishingPass2;
-            clipof2.Execute(finishPassOffsetScaled, finishingPass2);
-
-            // Convert results back to Clipper1 format (preserving Z values)
-            ClipperLib::Paths finishingPass;
-            finishingPass.reserve(finishingPass2.size());
-
-            for (const auto& path : finishingPass2) {
-                ClipperLib::Path p;
-                p.reserve(path.size());
-                for (const auto& pt : path) {
-                    p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> ClipperLib::IntPoint
-                }
-                finishingPass.emplace_back(p);
-            }
+            Paths64 finishingPass;
+            clipof.Execute(finishPassOffsetScaled, finishingPass);
 
             // 9) Compute bounds = offset(currentTBP, toolRadius)
             //
@@ -2657,10 +2553,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // when computing the cleared area. So when computing BP, we leave a buffer of 3 units
             // to ensure it will be seen as fully cleared when checking a correct interior clearing
             // pass. This process is a bit finicky -- take great care if you modify it!
-            ClipperLib::Paths boundPath;
-            clipof.Clear();
-            clipof.AddPaths(currentTBP, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
-            clipof.Execute(boundPath, toolRadiusScaled - 3);
+            Paths64 boundPath = OffsetPaths(currentTBP, toolRadiusScaled - 3);
 
             // Skip path generation if bounds are fully cleared
             //
@@ -2672,11 +2565,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             // interior region with only finishing work to do; probably it has never been tested and
             // it is not!
             {
-                ClipperLib::Paths boundsToClear;
-                clip.Clear();
-                clip.AddPaths(boundPath, ClipperLib::PolyType::ptSubject, true);
-                clip.AddPaths(initialClearedPaths, ClipperLib::PolyType::ptClip, true);
-                clip.Execute(ClipperLib::ClipType::ctDifference, boundsToClear);
+                Paths64 boundsToClear = Difference(boundPath, initialClearedPaths, FillRule::EvenOdd);
                 if (!boundsToClear.size()) {
                     continue;
                 }
@@ -2686,7 +2575,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             svgInfo.allFinishingPaths.push_back(finishingPass);
 
             // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-            ProcessPolyNode(ToPaths64(boundPath), ToPaths64(currentTBP), ToPaths64(finishingPass), ToPaths64(initialClearedPaths), &svgInfo);
+            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths, svgInfo);
         }
     }
 
@@ -2695,6 +2584,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 #else
     UNUSED(svgInfo);
 #endif
+
+    //======================================================
+    // DO NOT DELETE THIS COMMENT
+    // Clipper2 translation in progress: converting results back to Clipper1
+    // When moving this block down to a new WIP location of tranlsation, check
+    // each item in it to be sure it is actually used again. If the variable is not used,
+    // it can be deleted
+    //======================================================
 
     return results;
 }
@@ -3681,7 +3578,7 @@ void Adaptive2d::ProcessPolyNode(
     Paths64 toolBoundPaths_p64,
     Paths64 finishingPaths_p64,
     const Paths64& initialClearedPaths_p64,
-    DebugSVGInfo* svgInfo
+    DebugSVGInfo& svgInfo
 )
 {
     ClipperLib::Paths boundPaths = ToC1Paths(boundPaths_p64);
@@ -4635,8 +4532,9 @@ void Adaptive2d::ProcessPolyNode(
 
         // Create offset version of stock boundary to check if finishing passes are within tool radius
         ClipperLib::Paths stockExpandedPaths;
+        ClipperLib::Paths stockInputPathsC1 = ToC1Paths(stockInputPaths);
         clipof.Clear();
-        clipof.AddPaths(stockInputPaths, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
+        clipof.AddPaths(stockInputPathsC1, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
         clipof.Execute(stockExpandedPaths, toolRadiusScaled);
 
         while (!stopProcessing && (!closedFinishingPaths.empty() || !openFinishingPaths.empty())) {
@@ -4781,9 +4679,7 @@ void Adaptive2d::ProcessPolyNode(
 
     // Then calculate final cleared area
     const ClipperLib::Paths clearedPaths = ToC1Paths(cleared.GetCleared());
-    if (svgInfo) {
-        svgInfo->allFinalClearedPaths.push_back(clearedPaths);
-    }
+    svgInfo.allFinalClearedPaths.push_back(ToPaths64(clearedPaths));
     double finalClearedArea = 0.0;
     for (const ClipperLib::Path& path : clearedPaths) {
         int nesting = getPathNestingLevel(ToPath64(path), ToPaths64(clearedPaths));

@@ -94,16 +94,16 @@ struct AdaptiveOutput
 
 struct DebugSVGInfo
 {
-    ClipperLib::Paths step3Paths;
-    ClipperLib::Paths step4Paths;
-    ClipperLib::Paths step5a_stockRev;
-    ClipperLib::Paths step5b_outsideOfStock;
-    ClipperLib::Paths step5c_inputPathsUnion;
-    ClipperLib::Paths step5d_clearedArea;
-    ClipperLib::Paths step5e_inputPaths;
-    std::vector<ClipperLib::Paths> allToolBoundPaths;
-    std::vector<ClipperLib::Paths> allFinishingPaths;
-    std::vector<ClipperLib::Paths> allFinalClearedPaths;
+    Clipper2Lib::Paths64 step3Paths;
+    Clipper2Lib::Paths64 step4Paths;
+    Clipper2Lib::Paths64 step5a_stockRev;
+    Clipper2Lib::Paths64 step5b_outsideOfStock;
+    Clipper2Lib::Paths64 step5c_inputPathsUnion;
+    Clipper2Lib::Paths64 step5d_clearedArea;
+    Clipper2Lib::Paths64 step5e_inputPaths;
+    std::vector<Clipper2Lib::Paths64> allToolBoundPaths;
+    std::vector<Clipper2Lib::Paths64> allFinishingPaths;
+    std::vector<Clipper2Lib::Paths64> allFinalClearedPaths;
 };
 
 // used to isolate state -> enable potential adding of multi-threaded processing of separate regions
@@ -139,8 +139,7 @@ public:
 
 private:
     std::list<AdaptiveOutput> results;
-    ClipperLib::Paths inputPaths;
-    ClipperLib::Paths stockInputPaths;
+    Clipper2Lib::Paths64 stockInputPaths;
     long scaleFactor = 100;
     double stepOverScaled = 1;
     long toolRadiusScaled = 10;
@@ -154,14 +153,13 @@ private:
     clock_t lastProgressTime = 0;
 
     std::function<bool(TPaths)>* progressCallback = NULL;
-    ClipperLib::Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
     void ProcessPolyNode(
         Clipper2Lib::Paths64 boundPaths_p64,
         Clipper2Lib::Paths64 toolBoundPaths_p64,
         Clipper2Lib::Paths64 finishingPaths_p64,
         const Clipper2Lib::Paths64& initialClearedPaths_p64,
-        DebugSVGInfo* svgInfo = nullptr
+        DebugSVGInfo& svgInfo
     );
     bool FindEntryPoint(
         TPaths& progressPaths,
