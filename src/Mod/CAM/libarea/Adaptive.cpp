@@ -2931,28 +2931,22 @@ bool Adaptive2d::MakeLeadPath(
 }
 
 std::optional<TPaths> Adaptive2d::FindLinkPath(
-    const std::optional<Point64>& prevPoint_p64,
-    const Point64& pathStart_p64,
-    const PointD& pathDir_p64,
+    const std::optional<Point64>& prevPoint,
+
+    const Point64& pathStart,
+    const PointD& pathDir,
     ClearedArea& cleared,
-    const Paths64& toolBoundPaths_p64,
+    const Paths64& toolBoundPaths,
     AdaptiveOutput& adaptiveOutput
 )
 {
     Perf_AppendToolPath.Start();
-    std::optional<ClipperLib::IntPoint> prevPoint = prevPoint_p64
-        ? std::optional(ToC1Point(*prevPoint_p64))
-        : std::nullopt;
-    ClipperLib::IntPoint pathStart = ToC1Point(pathStart_p64);
-    ClipperLib::DoublePoint pathDir = ToC1PointD(pathDir_p64);
-    ClipperLib::Paths toolBoundPaths = ToC1Paths(toolBoundPaths_p64);
     TPaths result;
 
-    ClipperLib::IntPoint endPoint(pathStart);
+    Point64 endPoint(pathStart);
 
     // if the link distance is very short, no special linking is required
-    double linkDistance = prevPoint ? sqrt(DistanceSqrd(ToPoint64(*prevPoint), ToPoint64(endPoint)))
-                                    : stepOverScaled;
+    double linkDistance = prevPoint ? sqrt(DistanceSqrd(*prevPoint, endPoint)) : stepOverScaled;
     if (linkDistance >= NTOL) {
         size_t clpPathIndex;
         size_t clpSegmentIndex;
@@ -2963,48 +2957,40 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
 
         // plan the lead in, as a reverse-direction lead out
         double eDistToBounds = DistancePointToPathsSqrd(
-            toolBoundPaths_p64,
-            ToPoint64(endPoint),
+            toolBoundPaths,
+            endPoint,
             clp,
             clpPathIndex,
             clpSegmentIndex,
             clpParameter
         );
 
-        ClipperLib::DoublePoint revEndDir = {-pathDir.X, -pathDir.Y};
+        PointD revEndDir = {-pathDir.x, -pathDir.y};
 
-        ClipperLib::DoublePoint endBoundaryDir = ToC1PointD(
-            GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex)
-        );
+        PointD endBoundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
         if (eDistToBounds > beaconOffset) {
             endBoundaryDir = pathDir;  // if boundary is far away, use beacon to leave the path
         }
-        ClipperLib::DoublePoint endBeaconDir
-            = {revEndDir.X - endBoundaryDir.Y, revEndDir.Y + endBoundaryDir.X};
-        {
-            PointD tmp = ToPointD(endBeaconDir);
-            NormalizeV(tmp);
-            endBeaconDir = ToC1PointD(tmp);
-        }
+        PointD endBeaconDir = {revEndDir.x - endBoundaryDir.y, revEndDir.y + endBoundaryDir.x};
+        NormalizeV(endBeaconDir);
 
-        ClipperLib::IntPoint endBeacon(
-            endPoint.X + beaconOffset * endBeaconDir.X,
-            endPoint.Y + beaconOffset * endBeaconDir.Y
+        Point64 endBeacon(
+            endPoint.x + beaconOffset * endBeaconDir.x,
+            endPoint.y + beaconOffset * endBeaconDir.y
         );
 
-        Path64 leadInPath_p64;
+        Path64 leadInPath;
         bool leadInOk = MakeLeadPath(
             true,
-            ToPoint64(endPoint),
-            ToPointD(revEndDir),
-            ToPoint64(endBeacon),
+            endPoint,
+            revEndDir,
+            endBeacon,
             cleared,
-            toolBoundPaths_p64,
-            leadInPath_p64,
+            toolBoundPaths,
+            leadInPath,
             adaptiveOutput
         );
-        ClipperLib::Path leadInPath = ToC1Path(leadInPath_p64);
-        ReversePath(leadInPath);
+        std::reverse(leadInPath.begin(), leadInPath.end());
 
         if (!leadInOk) {
             Perf_AppendToolPath.Stop();
@@ -3012,34 +2998,30 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
         }
 
         // Compute linking path
-        ClipperLib::Path linkPath;
+        Path64 linkPath;
         MotionType linkType = MotionType::mtCutting;
 
         if (prevPoint) {
-            Path64 linkPath_p64;
-            if (
-                ResolveLinkPath(ToPoint64(*prevPoint), ToPoint64(leadInPath.front()), cleared, linkPath_p64)
-            ) {
-                linkPath = ToC1Path(linkPath_p64);
+            if (ResolveLinkPath(*prevPoint, leadInPath.front(), cleared, linkPath)) {
                 linkType = MotionType::mtLinkClear;
                 double remainingLeadInExtension = stepOverScaled / 2;
                 while (linkPath.size() >= 2 && remainingLeadInExtension > NTOL) {
-                    ClipperLib::IntPoint p1 = linkPath.at(linkPath.size() - 2);
-                    ClipperLib::IntPoint p2 = linkPath.at(linkPath.size() - 1);
-                    double l = sqrt(DistanceSqrd(ToPoint64(p1), ToPoint64(p2)));
+                    Point64 p1 = linkPath.at(linkPath.size() - 2);
+                    Point64 p2 = linkPath.at(linkPath.size() - 1);
+                    double l = sqrt(DistanceSqrd(p1, p2));
                     if (l >= remainingLeadInExtension) {
-                        ClipperLib::IntPoint splitPoint(
-                            p1.X + (p2.X - p1.X) * (l - remainingLeadInExtension) / l,
-                            p1.Y + (p2.Y - p1.Y) * (l - remainingLeadInExtension) / l
+                        Point64 splitPoint(
+                            p1.x + (p2.x - p1.x) * (l - remainingLeadInExtension) / l,
+                            p1.y + (p2.y - p1.y) * (l - remainingLeadInExtension) / l
                         );
                         linkPath.pop_back();
                         linkPath.push_back(splitPoint);
                         leadInPath.insert(leadInPath.begin(), splitPoint);
                         remainingLeadInExtension = 0;
-                        ClipperLib::Path checkPath;
+                        Path64 checkPath;
                         checkPath.push_back(p2);
                         checkPath.push_back(splitPoint);
-                        if (!IsClearPath(ToPath64(checkPath), cleared, 0)) {
+                        if (!IsClearPath(checkPath, cleared, 0)) {
                             remainingLeadInExtension = stepOverScaled / 2;
                         }
                     }
@@ -3048,10 +3030,10 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
                         leadInPath.insert(leadInPath.begin(), p1);
                         remainingLeadInExtension -= l;
                         if (remainingLeadInExtension < NTOL) {
-                            ClipperLib::Path checkPath;
+                            Path64 checkPath;
                             checkPath.push_back(p2);
                             checkPath.push_back(p1);
-                            if (!IsClearPath(ToPath64(checkPath), cleared, 0)) {
+                            if (!IsClearPath(checkPath, cleared, 0)) {
                                 remainingLeadInExtension = stepOverScaled / 2;
                             }
                         }
@@ -3060,19 +3042,19 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
             }
             else {
                 linkType = MotionType::mtLinkNotClear;
-                double dist = sqrt(DistanceSqrd(ToPoint64(*prevPoint), ToPoint64(leadInPath.front())));
+                double dist = sqrt(DistanceSqrd(*prevPoint, leadInPath.front()));
                 if (dist < 2 * stepOverScaled
                     && IsAllowedToCutTrough(
                         Point64(
-                            prevPoint->X + (leadInPath.front().X - prevPoint->X) / dist,
-                            prevPoint->Y + (leadInPath.front().Y - prevPoint->Y) / dist
+                            prevPoint->x + (leadInPath.front().x - prevPoint->x) / dist,
+                            prevPoint->y + (leadInPath.front().y - prevPoint->y) / dist
                         ),
                         Point64(
-                            leadInPath.front().X - (leadInPath.front().X - prevPoint->X) / dist,
-                            leadInPath.front().Y - (leadInPath.front().Y - prevPoint->Y) / dist
+                            leadInPath.front().x - (leadInPath.front().x - prevPoint->x) / dist,
+                            leadInPath.front().y - (leadInPath.front().y - prevPoint->y) / dist
                         ),
                         cleared,
-                        toolBoundPaths_p64
+                        toolBoundPaths
                     )) {
                     linkType = MotionType::mtCutting;
                 }
@@ -3085,14 +3067,12 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
         }
 
         /* paths smoothing*/
-        ClipperLib::Paths linkPaths;
+        Paths64 linkPaths;
         linkPaths.push_back(linkPath);
         linkPaths.push_back(leadInPath);
 
         if (linkType == MotionType::mtLinkClear) {
-            Paths64 linkPaths_p64 = ToPaths64(linkPaths);
-            SmoothPaths(linkPaths_p64, 0.1 * stepOverScaled, 1, 4);
-            linkPaths = ToC1Paths(linkPaths_p64);
+            SmoothPaths(linkPaths, 0.1 * stepOverScaled, 1, 4);
         }
 
         linkPath = linkPaths[0];
@@ -3103,7 +3083,7 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
             TPath linkPath1;
             linkPath1.first = linkType;
             for (const auto& pt : linkPath) {
-                linkPath1.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
+                linkPath1.second.emplace_back(double(pt.x) / scaleFactor, double(pt.y) / scaleFactor);
             }
             result.push_back(linkPath1);
         }
@@ -3112,7 +3092,7 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
         TPath linkPath2;
         linkPath2.first = MotionType::mtCutting;
         for (const auto& pt : leadInPath) {
-            linkPath2.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
+            linkPath2.second.emplace_back(double(pt.x) / scaleFactor, double(pt.y) / scaleFactor);
         }
 
         result.push_back(linkPath2);
