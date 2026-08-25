@@ -46,20 +46,23 @@ SoFCSwitch::SoFCSwitch()
 }
 
 SoFCSwitch::OverrideScope::OverrideScope(const SoPath* path)
-    : prev(s_overridePath)
+    : scoped(path)
+    , prev(s_overridePath)
 {
-    if (path) {
-        path->ref();
+    if (scoped) {
+        scoped->ref();
     }
-    s_overridePath = path;
+    s_overridePath = scoped;
 }
 
 SoFCSwitch::OverrideScope::~OverrideScope()
 {
-    if (s_overridePath) {
-        s_overridePath->unrefNoDelete();
-    }
     s_overridePath = prev;
+    if (scoped) {
+        // The caller keeps its own reference (the path is typically a stack
+        // SoTempPath), so release without deleting.
+        scoped->unrefNoDelete();
+    }
 }
 
 void SoFCSwitch::doAction(SoAction* action)
