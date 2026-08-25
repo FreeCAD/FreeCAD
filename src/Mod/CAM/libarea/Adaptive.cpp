@@ -909,13 +909,11 @@ void DeduplicatePaths(const Paths64& inputs_p64, Paths64& outputs_p64)
     outputs_p64 = ToPaths64(outputs);
 }
 
-void ConnectPaths(Paths64 input_p64, Paths64& output_p64)
+void ConnectPaths(Paths64 input, Paths64& output)
 {
-    ClipperLib::Paths input = ToC1Paths(input_p64);
-    ClipperLib::Paths output = ToC1Paths(output_p64);
     output.clear();
     bool newPath = true;
-    ClipperLib::Path joined;
+    Path64 joined;
     while (!input.empty()) {
         if (newPath) {
             if (!joined.empty()) {
@@ -930,9 +928,8 @@ void ConnectPaths(Paths64 input_p64, Paths64& output_p64)
         }
         bool anyMatch = false;
         for (size_t i = 0; i < input.size(); i++) {
-            ClipperLib::Path& n = input.at(i);
-            if (DistanceSqrd(ToPoint64(n.front()), ToPoint64(joined.back()))
-                < SAME_POINT_TOL_SQRD_SCALED) {
+            Path64& n = input.at(i);
+            if (DistanceSqrd(n.front(), joined.back()) < SAME_POINT_TOL_SQRD_SCALED) {
                 for (auto pt : n) {
                     joined.push_back(pt);
                 }
@@ -940,10 +937,8 @@ void ConnectPaths(Paths64 input_p64, Paths64& output_p64)
                 anyMatch = true;
                 break;
             }
-            else if (
-                DistanceSqrd(ToPoint64(n.back()), ToPoint64(joined.back())) < SAME_POINT_TOL_SQRD_SCALED
-            ) {
-                ReversePath(n);
+            else if (DistanceSqrd(n.back(), joined.back()) < SAME_POINT_TOL_SQRD_SCALED) {
+                std::reverse(n.begin(), n.end());
                 for (auto pt : n) {
                     joined.push_back(pt);
                 }
@@ -951,9 +946,7 @@ void ConnectPaths(Paths64 input_p64, Paths64& output_p64)
                 anyMatch = true;
                 break;
             }
-            else if (
-                DistanceSqrd(ToPoint64(n.front()), ToPoint64(joined.front())) < SAME_POINT_TOL_SQRD_SCALED
-            ) {
+            else if (DistanceSqrd(n.front(), joined.front()) < SAME_POINT_TOL_SQRD_SCALED) {
                 for (auto pt : n) {
                     joined.insert(joined.begin(), pt);
                 }
@@ -961,10 +954,8 @@ void ConnectPaths(Paths64 input_p64, Paths64& output_p64)
                 anyMatch = true;
                 break;
             }
-            else if (
-                DistanceSqrd(ToPoint64(n.back()), ToPoint64(joined.front())) < SAME_POINT_TOL_SQRD_SCALED
-            ) {
-                ReversePath(n);
+            else if (DistanceSqrd(n.back(), joined.front()) < SAME_POINT_TOL_SQRD_SCALED) {
+                std::reverse(n.begin(), n.end());
                 for (auto pt : n) {
                     joined.insert(joined.begin(), pt);
                 }
@@ -980,7 +971,6 @@ void ConnectPaths(Paths64 input_p64, Paths64& output_p64)
     if (!joined.empty()) {
         output.push_back(joined);
     }
-    output_p64 = ToPaths64(output);
 }
 
 // helper class for measuring performance
