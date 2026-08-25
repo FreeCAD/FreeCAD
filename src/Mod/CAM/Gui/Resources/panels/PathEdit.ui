@@ -913,22 +913,6 @@ positioned independently of the model.</string>
                 </layout>
                </item>
                <item>
-                <widget class="Line" name="modelTransformLine">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="frameShape">
-                  <enum>QFrame::HLine</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Sunken</enum>
-                 </property>
-                 <property name="lineWidth">
-                  <number>1</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
                 <widget class="QLabel" name="modelRotateLabel">
                  <property name="text">
                  <string>Rotate</string>
