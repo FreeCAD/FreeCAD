@@ -128,18 +128,6 @@ inline double DistanceSqrd(const Point64& pt1, const Point64& pt2)
     return (Dx * Dx + dy * dy);
 }
 
-inline bool SetSegmentLength(const ClipperLib::IntPoint& pt1, ClipperLib::IntPoint& pt2, double new_length)
-{
-    double Dx = double(pt2.X - pt1.X);
-    double dy = double(pt2.Y - pt1.Y);
-    double l = sqrt(Dx * Dx + dy * dy);
-    if (l > 0.0) {
-        pt2.X = long(pt1.X + new_length * Dx / l);
-        pt2.Y = long(pt1.Y + new_length * dy / l);
-        return true;
-    }
-    return false;
-}
 
 inline bool HasAnyPath(const Paths64& paths_p64)
 {
@@ -186,28 +174,16 @@ inline double PathLength(const Path64& path_p64)
     return len;
 }
 
-inline double PointSideOfLine(const ClipperLib::IntPoint& p1, const ClipperLib::IntPoint& p2, const ClipperLib::IntPoint& pt)
-{
-    return double((pt.X - p1.X) * (p2.Y - p1.Y) - (pt.Y - p2.Y) * (p2.X - p1.X));
-}
 
-inline double Angle3Points(const ClipperLib::DoublePoint& p1, const ClipperLib::DoublePoint& p2, const ClipperLib::DoublePoint& p3)
+inline PointD DirectionV(const Point64& pt1, const Point64& pt2)
 {
-    double t1 = atan2(p2.Y - p1.Y, p2.X - p1.X);
-    double t2 = atan2(p3.Y - p2.Y, p3.X - p2.X);
-    double a = fabs(t2 - t1);
-    return min(a, 2 * std::numbers::pi - a);
-}
-
-inline ClipperLib::DoublePoint DirectionV(const ClipperLib::IntPoint& pt1, const ClipperLib::IntPoint& pt2)
-{
-    double DX = double(pt2.X - pt1.X);
-    double DY = double(pt2.Y - pt1.Y);
+    double DX = double(pt2.x - pt1.x);
+    double DY = double(pt2.y - pt1.y);
     double l = sqrt(DX * DX + DY * DY);
     if (l < NTOL) {
-        return ClipperLib::DoublePoint(0, 0);
+        return PointD(0, 0);
     }
-    return ClipperLib::DoublePoint(DX / l, DY / l);
+    return PointD(DX / l, DY / l);
 }
 
 inline void NormalizeV(ClipperLib::DoublePoint& pt)
