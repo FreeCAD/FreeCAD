@@ -24,6 +24,7 @@
 
 #include <BRep_Tool.hxx>
 #include <TopoDS_Edge.hxx>
+#include <array>
 
 
 #include "TopoShapeMapper.h"
@@ -79,22 +80,34 @@ void ShapeMapper::insert(MappingStatus status, const TopoDS_Shape& s, const Topo
     if (s.IsNull() || d.IsNull()) {
         return;
     }
+
+    ShapeValue* entry = nullptr;
+
     // Prevent an element shape from being both generated and modified
     if (status == MappingStatus::Generated) {
-        if (_modifiedShapes.count(d)) {
+        if (_modifiedShapes.count(d) || _projectedShapes.count(d)) {
             return;
         }
         _generatedShapes.insert(d);
+        entry = &_generated[s];
     }
-    else {
-        if (_generatedShapes.count(d)) {
+    else if (status == MappingStatus::Modified) {
+        if (_generatedShapes.count(d) || _projectedShapes.count(d)) {
             return;
         }
         _modifiedShapes.insert(d);
+        entry = &_modified[s];
     }
-    auto& entry = (status == MappingStatus::Generated) ? _generated[s] : _modified[s];
-    if (entry.shapeSet.insert(d).second) {
-        entry.shapes.push_back(d);
+    else if (status == MappingStatus::Projected) {
+        if (_generatedShapes.count(d) || _modifiedShapes.count(d)) {
+            return;
+        }
+        _projectedShapes.insert(d);
+        entry = &_projected[s];
+    }
+
+    if (entry != nullptr && entry->shapeSet.insert(d).second) {
+        entry->shapes.push_back(d);
     }
 };
 
@@ -103,23 +116,32 @@ void ShapeMapper::insert(MappingStatus status, const TopoDS_Shape& s, const std:
     if (s.IsNull() || d.empty()) {
         return;
     }
-    auto& entry = (status == MappingStatus::Generated) ? _generated[s] : _modified[s];
+    ShapeValue* entry = nullptr;
     for (auto& shape : d) {
         // Prevent an element shape from being both generated and modified
         if (status == MappingStatus::Generated) {
-            if (_modifiedShapes.count(shape)) {
+            if (_modifiedShapes.count(shape) || _projectedShapes.count(shape)) {
                 continue;
             }
             _generatedShapes.insert(shape);
+            entry = &_generated[s];
         }
-        else {
-            if (_generatedShapes.count(shape)) {
+        else if (status == MappingStatus::Modified) {
+            if (_generatedShapes.count(shape) || _projectedShapes.count(shape)) {
                 continue;
             }
             _modifiedShapes.insert(shape);
+            entry = &_modified[s];
         }
-        if (entry.shapeSet.insert(shape).second) {
-            entry.shapes.push_back(shape);
+        else if (status == MappingStatus::Projected) {
+            if (_generatedShapes.count(shape) || _modifiedShapes.count(shape)) {
+                continue;
+            }
+            _projectedShapes.insert(shape);
+            entry = &_projected[s];
+        }
+        if (entry != nullptr && entry->shapeSet.insert(shape).second) {
+            entry->shapes.push_back(shape);
         }
     }
 };
