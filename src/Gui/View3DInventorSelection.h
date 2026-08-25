@@ -51,7 +51,19 @@ public:
         return guiDocument;
     }
 
+    /**
+     * @brief Update the on-top render groups for a selection change.
+     *
+     * A `SetPreselect` change also brings a hidden object on top, so that the
+     * tree view can preview it.  View3DInventorViewer only forwards
+     * `SetPreselect` when its `SubType` is `MsgSource::TreeView`, so hovering
+     * the 3D view cannot reveal a hidden object this way.
+     *
+     * @param[in] Reason The selection change to apply.
+     */
     void checkGroupOnTop(const SelectionChanges& Reason);
+
+    /// Drop every object from the on-top selection and preselection groups.
     void clearGroupOnTop();
 
 private:
