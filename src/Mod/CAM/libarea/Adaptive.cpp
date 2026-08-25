@@ -2450,41 +2450,29 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
 bool Adaptive2d::FindEntryPoint(
     TPaths& progressPaths,
-    const Paths64& toolBoundPaths_p64,
-    const Paths64& boundPaths_p64,
+    const Paths64& toolBoundPaths,
+    const Paths64& boundPaths,
     ClearedArea& clearedArea /*output-initial cleared area by helix*/,
-    Point64& entryPoint_p64 /*output*/,
-    Point64& toolPos_p64,
-    PointD& toolDir_p64,
+    Point64& entryPoint /*output*/,
+    Point64& toolPos,
+    PointD& toolDir,
     long& helixRadiusScaled,
     AdaptiveOutput& adaptiveOutput
 )
 {
-    ClipperLib::Paths toolBoundPaths = ToC1Paths(toolBoundPaths_p64);
-    ClipperLib::Paths boundPaths = ToC1Paths(boundPaths_p64);
-    ClipperLib::IntPoint entryPoint, toolPos;
-    ClipperLib::DoublePoint toolDir;
-    ClipperLib::Paths incOffset;
-    ClipperLib::Paths lastValidOffset;
-    ClipperLib::Clipper clip;
-    ClipperLib::ClipperOffset clipof;
+    Paths64 incOffset;
+    Paths64 lastValidOffset;
     bool found = false;
-    ClipperLib::Paths clearedPaths;
+    Paths64 clearedPaths;
 
-    ClipperLib::Paths checkPaths;
-    clip.Clear();
-    clip.AddPaths(toolBoundPaths, ClipperLib::PolyType::ptSubject, true);
-    clip.AddPaths(ToC1Paths(clearedArea.GetCleared()), ClipperLib::PolyType::ptClip, true);
-    clip.Execute(ClipperLib::ClipType::ctDifference, checkPaths);
+    Paths64 checkPaths = Difference(toolBoundPaths, clearedArea.GetCleared(), FillRule::EvenOdd);
 
     for (int iter = 0; iter < 10; iter++) {
-        clipof.Clear();
-        clipof.AddPaths(checkPaths, ClipperLib::JoinType::jtSquare, ClipperLib::EndType::etClosedPolygon);
         double step = MIN_STEP_CLIPPER;
         double currentDelta = -1;
-        clipof.Execute(incOffset, currentDelta);
+        incOffset = OffsetPaths(checkPaths, currentDelta, EndType::Polygon, JoinType::Square);
         while (!incOffset.empty()) {
-            clipof.Execute(incOffset, currentDelta);
+            incOffset = OffsetPaths(checkPaths, currentDelta, EndType::Polygon, JoinType::Square);
             if (!incOffset.empty()) {
                 lastValidOffset = incOffset;
             }
@@ -2492,7 +2480,7 @@ bool Adaptive2d::FindEntryPoint(
         }
         for (size_t i = 0; i < lastValidOffset.size(); i++) {
             if (!lastValidOffset[i].empty()) {
-                entryPoint = ToC1Point(Compute2DPolygonCentroid(ToPath64(lastValidOffset[i])));
+                entryPoint = Compute2DPolygonCentroid(lastValidOffset[i]);
                 found = true;
                 break;
             }
@@ -2501,26 +2489,20 @@ bool Adaptive2d::FindEntryPoint(
         // this may happen in case when toolBoundPaths are symmetric (boundary + holes)
         // we need to break simetry and try again
         for (size_t j = 0; j < checkPaths.size(); j++) {
-            int pip = PointInPolygon(entryPoint, checkPaths[j]);
-            if ((j == 0 && pip == 0) || (j > 0 && pip != 0)) {
+            PointInPolygonResult pip = PointInPolygon(entryPoint, checkPaths[j]);
+            if ((j == 0 && pip == PointInPolygonResult::IsOutside) || (j > 0 && pip != PointInPolygonResult::IsOutside)) {
                 found = false;
                 break;
             }
         }
         // check if helix fits
         const auto checkHelixFit = [&](long testHelixRadiusScaled) {
-            clipof.Clear();
-            ClipperLib::Path p1;
+            Path64 p1;
             p1.push_back(entryPoint);
-            clipof.AddPath(p1, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etOpenRound);
-            clipof.Execute(clearedPaths, (double)(testHelixRadiusScaled + toolRadiusScaled));
-            CleanPolygons(clearedPaths);
+            clearedPaths = OffsetPath(p1, (double)(testHelixRadiusScaled + toolRadiusScaled), EndType::Round);
+            clearedPaths = SimplifyPaths(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
             // we got first cleared area - check if it is crossing boundary
-            clip.Clear();
-            clip.AddPaths(clearedPaths, ClipperLib::PolyType::ptSubject, true);
-            clip.AddPaths(boundPaths, ClipperLib::PolyType::ptClip, true);
-            ClipperLib::Paths crossing;
-            clip.Execute(ClipperLib::ClipType::ctDifference, crossing);
+            Paths64 crossing = Difference(clearedPaths, boundPaths, FillRule::EvenOdd);
 
             return crossing.empty();
         };
@@ -2547,26 +2529,18 @@ bool Adaptive2d::FindEntryPoint(
                 }
                 helixRadiusScaled = minSize;
                 checkHelixFit(helixRadiusScaled);  // set clearedPaths for final size
-                clearedArea.AddClearedPaths(ToPaths64(clearedPaths));
+                clearedArea.AddClearedPaths(clearedPaths);
             }
         }
 
         if (!found) {  // break simetry and try again
-            clip.Clear();
-            clip.AddPaths(checkPaths, ClipperLib::PolyType::ptSubject, true);
-            auto bounds = clip.GetBounds();
-            clip.Clear();
-            ClipperLib::Path rect;
-            rect << ClipperLib::IntPoint(bounds.left, bounds.bottom);
-            rect << ClipperLib::IntPoint(bounds.left, (bounds.top + bounds.bottom) / 2);
-            rect << ClipperLib::IntPoint(
-                (bounds.left + bounds.right) / 2,
-                (bounds.top + bounds.bottom) / 2
-            );
-            rect << ClipperLib::IntPoint((bounds.left + bounds.right) / 2, bounds.bottom);
-            clip.AddPath(rect, ClipperLib::PolyType::ptSubject, true);
-            clip.AddPaths(checkPaths, ClipperLib::PolyType::ptClip, true);
-            clip.Execute(ClipperLib::ClipType::ctIntersection, checkPaths);
+            Rect64 bounds = GetBounds(checkPaths);
+            Path64 rect;
+            rect.push_back(Point64(bounds.left, bounds.bottom));
+            rect.push_back(Point64(bounds.left, (bounds.top + bounds.bottom) / 2));
+            rect.push_back(Point64((bounds.left + bounds.right) / 2, (bounds.top + bounds.bottom) / 2));
+            rect.push_back(Point64((bounds.left + bounds.right) / 2, bounds.bottom));
+            checkPaths = Intersect(Paths64{rect}, checkPaths, FillRule::EvenOdd);
         }
         if (found) {
             break;
@@ -2579,19 +2553,13 @@ bool Adaptive2d::FindEntryPoint(
     }
     if (found) {
         // visualize/progress for helix
-        clipof.Clear();
-        ClipperLib::Path hp;
-        hp << entryPoint;
-        clipof.AddPath(hp, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etOpenRound);
-        ClipperLib::Paths hps;
-        clipof.Execute(hps, helixRadiusScaled);
-        AddPathsToProgress(progressPaths, ToPaths64(hps));
+        Path64 hp;
+        hp.push_back(entryPoint);
+        Paths64 hps = OffsetPath(hp, helixRadiusScaled, EndType::Round);
+        AddPathsToProgress(progressPaths, hps);
 
-        toolPos = ClipperLib::IntPoint(entryPoint.X, entryPoint.Y - helixRadiusScaled);
-        toolDir = ClipperLib::DoublePoint(1.0, 0.0);
-        entryPoint_p64 = ToPoint64(entryPoint);
-        toolPos_p64 = ToPoint64(toolPos);
-        toolDir_p64 = ToPointD(toolDir);
+        toolPos = Point64(entryPoint.x, entryPoint.y - helixRadiusScaled);
+        toolDir = PointD(1.0, 0.0);
     }
     return found;
 }
