@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "clipper.hpp"
 #include "Adaptive.hpp"
 #include <cstddef>
 #include <iostream>

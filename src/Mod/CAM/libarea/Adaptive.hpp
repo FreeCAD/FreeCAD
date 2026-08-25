@@ -22,7 +22,6 @@
  *                                                                         *
  ***************************************************************************/
 
-#include "clipper.hpp"
 #include "clipper2/clipper.h"
 #include <vector>
 #include <list>
@@ -163,65 +162,65 @@ private:
     );
     bool FindEntryPoint(
         TPaths& progressPaths,
-        const Clipper2Lib::Paths64& toolBoundPaths_p64,
-        const Clipper2Lib::Paths64& boundPaths_p64,
+        const Clipper2Lib::Paths64& toolBoundPaths,
+        const Clipper2Lib::Paths64& boundPaths,
         ClearedArea& cleared /*output*/,
-        Clipper2Lib::Point64& entryPoint_p64 /*output*/,
-        Clipper2Lib::Point64& toolPos_p64,
-        Clipper2Lib::PointD& toolDir_p64,
+        Clipper2Lib::Point64& entryPoint /*output*/,
+        Clipper2Lib::Point64& toolPos,
+        Clipper2Lib::PointD& toolDir,
         long& helixRadiusScaled,
         AdaptiveOutput& adaptiveOutput
     );
-    std::pair<double, double> CalcCutArea(Clipper2Lib::Point64 c1_p64, Clipper2Lib::Point64 c2_p64, ClearedArea& clearedArea);
+    std::pair<double, double> CalcCutArea(Clipper2Lib::Point64 c1, Clipper2Lib::Point64 c2, ClearedArea& clearedArea);
     std::optional<TPaths> FindLinkPath(
-        const std::optional<Clipper2Lib::Point64>& prevPoint_p64,
-        const Clipper2Lib::Point64& pathStart_p64,
-        const Clipper2Lib::PointD& pathDir_p64,
+        const std::optional<Clipper2Lib::Point64>& prevPoint,
+        const Clipper2Lib::Point64& pathStart,
+        const Clipper2Lib::PointD& pathDir,
         ClearedArea& cleared,
-        const Clipper2Lib::Paths64& toolBoundPaths_p64,
+        const Clipper2Lib::Paths64& toolBoundPaths,
         AdaptiveOutput& adaptiveOutput
     );
     std::optional<std::pair<Clipper2Lib::Point64, Clipper2Lib::PointD>> AppendToolPath(
         AdaptiveOutput& output,
-        const Clipper2Lib::Path64& passToolPath_p64,
+        const Clipper2Lib::Path64& passToolPath,
         TPaths& linkPath,
         ClearedArea& cleared,
-        const Clipper2Lib::Paths64& toolBoundPaths_p64
+        const Clipper2Lib::Paths64& toolBoundPaths
     );
-    bool IsClearPath(const Clipper2Lib::Path64& path_p64, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
+    bool IsClearPath(const Clipper2Lib::Path64& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
     bool IsAllowedToCutTrough(
-        const Clipper2Lib::Point64& p1_p64,
-        const Clipper2Lib::Point64& p2_p64,
+        const Clipper2Lib::Point64& p1,
+        const Clipper2Lib::Point64& p2,
         ClearedArea& clearedArea,
-        const Clipper2Lib::Paths64& toolBoundPaths_p64,
+        const Clipper2Lib::Paths64& toolBoundPaths,
         double areaFactor = 1.5,
         bool skipBoundsCheck = false
     );
     bool MakeLeadPath(
         bool leadIn,
-        const Clipper2Lib::Point64& startPoint_p64,
-        const Clipper2Lib::PointD& startDir_p64,
-        Clipper2Lib::Point64 beaconPoint_p64,
+        const Clipper2Lib::Point64& startPoint,
+        const Clipper2Lib::PointD& startDir,
+        Clipper2Lib::Point64 beaconPoint,
         ClearedArea& clearedArea,
-        const Clipper2Lib::Paths64& toolBoundPaths_p64,
-        Clipper2Lib::Path64& output_p64,
+        const Clipper2Lib::Paths64& toolBoundPaths,
+        Clipper2Lib::Path64& output,
         AdaptiveOutput& adaptiveOutput
     );
 
     bool ResolveLinkPath(
-        const Clipper2Lib::Point64& startPoint_p64,
-        const Clipper2Lib::Point64& endPoint_p64,
+        const Clipper2Lib::Point64& startPoint,
+        const Clipper2Lib::Point64& endPoint,
         ClearedArea& clearedArea,
-        Clipper2Lib::Path64& output_p64
+        Clipper2Lib::Path64& output
     );
 
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
     void AddPathsToProgress(
         TPaths& progressPaths,
-        const Clipper2Lib::Paths64 paths_p64,
+        const Clipper2Lib::Paths64 paths,
         MotionType mt = MotionType::mtCutting
     );
-    void ApplyStockToLeave(Clipper2Lib::Paths64& inputPaths_p64);
+    void ApplyStockToLeave(Clipper2Lib::Paths64& inputPaths);
 
 private:
     // Derivation for MIN_STEP_CLIPPPER (MSC for short in this derivation):
