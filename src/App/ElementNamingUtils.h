@@ -134,7 +134,7 @@ constexpr const char* MAPPER_FLAG_GENERATED             = "GEN";
 /// Mapper flag that designates that an element is mapped with the `Modified` history method.
 constexpr const char* MAPPER_FLAG_MODIFIED              = "MOD";
 /// Mapper flag that designates that an element is mapped with `TopoDS_Shape`'s `IsPartner` method.
-constexpr const char* MAPPER_FLAG_PARTNER               = "PTN";
+constexpr const char* MAPPER_FLAG_PROJECTION            = "PRJ";
 /// Mapper flag that designates that an element is a source of `ReferenceIDs`.
 constexpr const char* MAPPER_FLAG_SOURCE                = "SRC";
 /// Mapper flag that designates that an element relies on unreliable, unstable, `IndexedName` mapping.
