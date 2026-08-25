@@ -63,12 +63,7 @@ def _get_global_shape(obj, subname=""):
     """Return an object's shape transformed through its container chain."""
     import Part
 
-    shape = Part.getShape(obj, subname, needSubElement=bool(subname), noElementMap=True)
-    if not shape or not hasattr(obj, "Placement") or not hasattr(obj, "getGlobalPlacement"):
-        return shape
-    container_placement = obj.getGlobalPlacement().multiply(obj.Placement.inverse())
-    shape.Placement = container_placement.multiply(shape.Placement)
-    return shape
+    return Part.getShape(obj, subname, needSubElement=bool(subname), noElementMap=True)
 
 
 def _resolve_selection(sel):
@@ -80,14 +75,8 @@ def _resolve_selection(sel):
         if subname:
             subname += "."
     obj = sel.Object.getSubObject(subname, 1) if subname else sel.Object
-    if subname:
-        placement = sel.Object.getSubObject(subname, 3)
-        shape = _get_global_shape(sel.Object, subname)
-    else:
-        placement = (
-            obj.getGlobalPlacement() if hasattr(obj, "getGlobalPlacement") else obj.Placement
-        )
-        shape = _get_global_shape(obj)
+    placement = sel.Object.getSubObject(subname, 3)
+    shape = _get_global_shape(sel.Object, subname)
     return obj, placement, shape
 
 
