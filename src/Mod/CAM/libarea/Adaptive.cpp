@@ -779,22 +779,16 @@ void SmoothPaths(Paths64& paths, double stepSize, long pointCount, long iteratio
 //   - If no paths remain in either list, the function returns false with an empty result.
 //
 bool PopNextFinishingPass(
-    Paths64& closedFinishingPaths_p64,
-    Paths64& openFinishingPaths_p64,
+    Paths64& closedFinishingPaths,
+    Paths64& openFinishingPaths,
     Point64 p1,
-    Path64& result_p64,
+    Path64& result,
     double extraDistanceAround = 0
 )
 {
-    ClipperLib::Paths closedFinishingPaths = ToC1Paths(closedFinishingPaths_p64);
-    ClipperLib::Paths openFinishingPaths = ToC1Paths(openFinishingPaths_p64);
-    ClipperLib::Path result = ToC1Path(result_p64);
     // Early return if no paths remain in either list
     if (closedFinishingPaths.empty() && openFinishingPaths.empty()) {
         result.clear();
-        result_p64 = ToPath64(result);
-        closedFinishingPaths_p64 = ToPaths64(closedFinishingPaths);
-        openFinishingPaths_p64 = ToPaths64(openFinishingPaths);
         return false;
     }
 
@@ -805,9 +799,9 @@ bool PopNextFinishingPass(
 
     // Search through closed finishing paths (can start at any point)
     for (size_t pathIndex = 0; pathIndex < closedFinishingPaths.size(); pathIndex++) {
-        ClipperLib::Path& path = closedFinishingPaths.at(pathIndex);
+        Path64& path = closedFinishingPaths.at(pathIndex);
         for (size_t i = 0; i < path.size(); i++) {
-            double dist = DistanceSqrd(p1, ToPoint64(path.at(i)));
+            double dist = DistanceSqrd(p1, path.at(i));
             if (dist < minDistSqrd) {
                 minDistSqrd = dist;
                 closestPathIndex = pathIndex;
@@ -819,9 +813,9 @@ bool PopNextFinishingPass(
 
     // Search through open finishing paths (can only start at first vertex)
     for (size_t pathIndex = 0; pathIndex < openFinishingPaths.size(); pathIndex++) {
-        ClipperLib::Path& path = openFinishingPaths.at(pathIndex);
+        Path64& path = openFinishingPaths.at(pathIndex);
         if (!path.empty()) {
-            double dist = DistanceSqrd(p1, ToPoint64(path.at(0)));
+            double dist = DistanceSqrd(p1, path.at(0));
             if (dist < minDistSqrd) {
                 minDistSqrd = dist;
                 closestPathIndex = pathIndex;
@@ -833,18 +827,15 @@ bool PopNextFinishingPass(
 
     // Handle open path: copy as-is (no rotation) and remove from list
     if (!closestIsClosed) {
-        ClipperLib::Path& closestPath = openFinishingPaths.at(closestPathIndex);
+        Path64& closestPath = openFinishingPaths.at(closestPathIndex);
         result = closestPath;  // Copy path as-is, starting at first vertex
         openFinishingPaths.erase(openFinishingPaths.begin() + closestPathIndex);
-        result_p64 = ToPath64(result);
-        closedFinishingPaths_p64 = ToPaths64(closedFinishingPaths);
-        openFinishingPaths_p64 = ToPaths64(openFinishingPaths);
         return false;  // Return false to indicate open path
     }
 
     // Handle closed path: rotate to start at closest point and remove from list
     // Copy the path before erasing to avoid dangling reference
-    ClipperLib::Path closestPath = closedFinishingPaths.at(closestPathIndex);
+    Path64 closestPath = closedFinishingPaths.at(closestPathIndex);
     closedFinishingPaths.erase(closedFinishingPaths.begin() + closestPathIndex);
     result.clear();
 
@@ -852,9 +843,9 @@ bool PopNextFinishingPass(
     // Interpolate as needed
     while (extraDistanceAround > 0) {
         size_t nexti = (closestPointIndex + 1) % closestPath.size();
-        const ClipperLib::IntPoint& p1 = closestPath[closestPointIndex];
-        const ClipperLib::IntPoint& p2 = closestPath[nexti];
-        double distToNext = sqrt(DistanceSqrd(ToPoint64(p1), ToPoint64(p2)));
+        const Point64& p1 = closestPath[closestPointIndex];
+        const Point64& p2 = closestPath[nexti];
+        double distToNext = sqrt(DistanceSqrd(p1, p2));
         closestPointIndex = nexti;
 
         if (distToNext <= extraDistanceAround) {
@@ -863,10 +854,10 @@ bool PopNextFinishingPass(
         else {
             // Interpolate to produce the first vertex
             double interp = extraDistanceAround / distToNext;  // Fraction along the edge
-            ClipperLib::IntPoint interpolated(
-                ClipperLib::cInt(p1.X * (1 - interp) + p2.X * interp),
-                ClipperLib::cInt(p1.Y * (1 - interp) + p2.Y * interp),
-                p1.Z
+            Point64 interpolated(
+                static_cast<int64_t>(p1.x * (1 - interp) + p2.x * interp),
+                static_cast<int64_t>(p1.y * (1 - interp) + p2.y * interp),
+                p1.z
             );
             result.push_back(interpolated);
             extraDistanceAround = 0;
@@ -879,9 +870,6 @@ bool PopNextFinishingPass(
         result.push_back(closestPath.at(index));
     }
 
-    result_p64 = ToPath64(result);
-    closedFinishingPaths_p64 = ToPaths64(closedFinishingPaths);
-    openFinishingPaths_p64 = ToPaths64(openFinishingPaths);
     return true;  // Return true to indicate closed path
 }
 
