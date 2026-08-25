@@ -653,18 +653,14 @@ bool IntersectionPoint(const Paths64& paths, const Point64& p1, const Point64& p
     return false;
 }
 
-void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iterations)
+void SmoothPaths(Paths64& paths, double stepSize, long pointCount, long iterations)
 {
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
-    ClipperLib::Paths output;
-    output.resize(paths.size());
+    Paths64 output(paths.size());
     const long scale = 1000;
     const double stepScaled = stepSize * scale;
 
-    Paths64 tmp = ToPaths64(paths);
-    ScaleUpPaths(tmp, scale);
-    paths = ToC1Paths(tmp);
-    vector<pair<size_t /*path index*/, ClipperLib::IntPoint>> points;
+    ScaleUpPaths(paths, scale);
+    vector<pair<size_t /*path index*/, Point64>> points;
     for (size_t i = 0; i < paths.size(); i++) {
         for (const auto& pt : paths[i]) {
             if (points.empty()) {
@@ -672,10 +668,9 @@ void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iter
                 continue;
             }
             const auto back = points.back();
-            const ClipperLib::IntPoint& lastPt = back.second;
+            const Point64& lastPt = back.second;
 
-
-            const double l = sqrt(DistanceSqrd(ToPoint64(lastPt), ToPoint64(pt)));
+            const double l = sqrt(DistanceSqrd(lastPt, pt));
 
             if (l < 0.5 * stepScaled) {
                 if (points.size() > 1) {
@@ -694,13 +689,12 @@ void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iter
                     continue;
                 }
                 const double p = double(idx) / steps;
-                const ClipperLib::IntPoint ptx(
-                    long(lastPt.X + double(pt.X - lastPt.X) * p),
-                    long(lastPt.Y + double(pt.Y - lastPt.Y) * p)
+                const Point64 ptx(
+                    long(lastPt.x + double(pt.x - lastPt.x) * p),
+                    long(lastPt.y + double(pt.y - lastPt.y) * p)
                 );
 
-                if (idx == 0 && DistanceSqrd(ToPoint64(back.second), ToPoint64(ptx)) < scale
-                    && points.size() > 1) {
+                if (idx == 0 && DistanceSqrd(back.second, ptx) < scale && points.size() > 1) {
                     points.pop_back();
                 }
 
@@ -714,14 +708,13 @@ void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iter
         }
     }
     if (points.empty()) {
-        paths_p64 = ToPaths64(paths);
         return;
     }
     const long size = long(points.size());
     for (long iter = 0; iter < iterations; iter++) {
         for (long i = 1; i < size - 1; i++) {
-            ClipperLib::IntPoint& cp = points[i].second;
-            ClipperLib::IntPoint avgPoint(cp);
+            Point64& cp = points[i].second;
+            Point64 avgPoint(cp);
             long cnt = 1;
 
             long ptsToAverage = pointCount;
@@ -742,13 +735,13 @@ void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iter
                 if (index >= size) {
                     index = size - 1;
                 }
-                ClipperLib::IntPoint& p = points[index].second;
-                avgPoint.X += p.X;
-                avgPoint.Y += p.Y;
+                Point64& p = points[index].second;
+                avgPoint.x += p.x;
+                avgPoint.y += p.y;
                 cnt++;
             }
-            cp.X = avgPoint.X / cnt;
-            cp.Y = avgPoint.Y / cnt;
+            cp.x = avgPoint.x / cnt;
+            cp.y = avgPoint.y / cnt;
         }
     }
 
@@ -756,15 +749,9 @@ void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iter
         output[pr.first].push_back(pr.second);
     }
     for (size_t i = 0; i < paths.size(); i++) {
-        Path64 out_p64 = ToPath64(output[i]);
-        Path64 paths_i_p64 = ToPath64(paths[i]);
-        paths_i_p64 = SimplifyPath(out_p64, 1.4 * scale, false);
-        paths[i] = ToC1Path(paths_i_p64);
+        paths[i] = SimplifyPath(output[i], 1.4 * scale, false);
     }
-    Paths64 tmp2 = ToPaths64(paths);
-    ScaleDownPaths(tmp2, scale);
-    paths = ToC1Paths(tmp2);
-    paths_p64 = ToPaths64(paths);
+    ScaleDownPaths(paths, scale);
 }
 
 // PopNextFinishingPass: Select and remove the next finishing pass to execute
