@@ -91,18 +91,18 @@
     <rect id="document_status_border" x="20" y="275" width="80" height="12"/>
   </g>
   <g id="title_block_labels" style="font-size:3.5px;font-family:osifont;text-anchor:start;fill:#000000;stroke:none">
-    <text id="legal_owner_label" x="160.5" y="242.6">Właściciel:</text>
-    <text id="identification_number_label" x="100.5" y="266.6">Numer rysunku:</text>
-    <text id="revision_index_label" x="160.5" y="278.6">Rewizja:</text>
+    <text id="legal_owner_label" x="160.5" y="242.6">Prawny właściciel:</text>
+    <text id="identification_number_label" x="100.5" y="266.6">Numer identyfikacyjny:</text>
+    <text id="revision_index_label" x="160.5" y="278.6">Zmiana:</text>
     <text id="date_of_issue_label" x="120.5" y="278.6">Data wydania:</text>
     <text id="sheet_number_label" x="180.5" y="278.6">Arkusz:</text>
     <text id="language_code_label" x="100.5" y="278.6">Język:</text>
-    <text id="title_label" x="20.5" y="242.6">Tytuł rysunku, podtytuł:</text>
-    <text id="responsible_department_label" x="160.5" y="266.6">Wydział odpowiedzialny:</text>
+    <text id="title_label" x="20.5" y="242.6">Tytuł, Tytuł dodatkowy:</text>
+    <text id="responsible_department_label" x="160.5" y="266.6">Dział odpowiedzialny:</text>
     <text id="approval_person_label" x="100.5" y="254.6">Zatwierdził:</text>
-    <text id="creator_label" x="100.5" y="242.6">Rysował:</text>
+    <text id="creator_label" x="100.5" y="242.6">Wykonał:</text>
     <text id="document_type label" x="20.5" y="266.6">Rodzaj dokumentu:</text>
-    <text id="document_status_label" x="20.5" y="278.6">Status dokumentu:</text>
+    <text id="document_status_label" x="20.5" y="278.6">Stan dokumentu:</text>
     <text id="sheet_scale_label" x="140.5" y="230.6">Podziałka:</text>
     <text id="general_tolerances_label" x="100.5" y="230.6">Tolerancje ogólne:</text>
     <text id="part_material_label" x="20.5" y="230.6">Materiał:</text>
@@ -117,9 +117,9 @@
     <text id="date_of_issue_data_field" x="121" y="284.2" freecad:editable="date_of_issue" freecad:autofill="date"><tspan>RRRR-MM-DD</tspan></text>
     <text id="sheet_number_data_field" x="190" y="284.2" freecad:editable="sheet_number" freecad:autofill="sheet" style="text-align:center;text-anchor:middle"><tspan>X / Y</tspan></text>
     <text id="language_data_field" x="110" y="284.2" freecad:editable="language_code" style="text-align:center;text-anchor:middle"><tspan>PL</tspan></text>
-    <text id="title_data_field" x="21" y="248.2" freecad:editable="title" freecad:autofill="title"><tspan>ISO 7200 tytuł</tspan></text>
-    <text id="supplementary_title_1_data_field" x="21" y="254.2" freecad:editable="supplementary_title_1"><tspan>Podtytuł 1</tspan></text>
-    <text id="supplementary_title_2_data_field" x="21" y="260.2" freecad:editable="supplementary_title_2"><tspan>Podtytuł 2</tspan></text>
+    <text id="title_data_field" x="21" y="248.2" freecad:editable="title" freecad:autofill="title"><tspan>Tabliczka rysunkowa wg ISO 7200</tspan></text>
+    <text id="supplementary_title_1_data_field" x="21" y="254.2" freecad:editable="supplementary_title_1"><tspan>Tytuł dodatkowy 1</tspan></text>
+    <text id="supplementary_title_2_data_field" x="21" y="260.2" freecad:editable="supplementary_title_2"><tspan>Tytuł dodatkowy 2</tspan></text>
     <text id="responsible_department_data_field" x="161" y="272.2" freecad:editable="responsible_department"><tspan>BiR</tspan></text>
     <text id="approval_person_data_field" x="101" y="260.2" freecad:editable="approval_person"><tspan>J. Nowak</tspan></text>
     <text id="creator_data_field" x="101" y="248.2" freecad:editable="creator" freecad:autofill="author"><tspan>A. Kowalski</tspan></text>
