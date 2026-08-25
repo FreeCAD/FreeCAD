@@ -75,6 +75,7 @@ def Startup():
         from Path.Op.Gui import Probe
         from Path.Op.Gui import Profile
         from Path.Op.Gui import SimpleCopy
+        from Path.Op.Gui import Flute
         from Path.Op.Gui import Slot
         from Path.Op.Gui import Stop
         from Path.Op.Gui import Tapping
