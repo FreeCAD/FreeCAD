@@ -30,6 +30,11 @@ class TestSelectionVisual(unittest.TestCase):
     _COLOR_DELTA_MIN = 0.15
     _COLOR_DELTA_RESTORE_MAX = 0.05
 
+    # Gui::SelectionChanges::MsgSource values, the last argument of
+    # Selection.setPreselection(). Only TreeView reaches the on-top group.
+    _MSG_SOURCE_INTERNAL = 1
+    _MSG_SOURCE_TREE_VIEW = 2
+
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestSelectionVisual")
         FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
@@ -139,10 +144,10 @@ class TestSelectionVisual(unittest.TestCase):
     def test_preselection_renders_hidden_object(self):
         box = self._create_test_box()
         self._prepare_view()
-        background = self._sample_hidden(box)
+        background = self._hide_and_sample(box)
 
-        # tree-view sourced preselection (tp=2) draws hidden objects on top
-        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, 2)
+        # tree-view sourced preselection draws hidden objects on top
+        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, self._MSG_SOURCE_TREE_VIEW)
         self._flush_gui()
         preselected = self._center_pixel_color()
 
@@ -164,10 +169,10 @@ class TestSelectionVisual(unittest.TestCase):
     def test_internal_preselection_leaves_hidden_object_hidden(self):
         box = self._create_test_box()
         self._prepare_view()
-        background = self._sample_hidden(box)
+        background = self._hide_and_sample(box)
 
-        # a non tree-view source (tp=1) must not draw the hidden object
-        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, 1)
+        # a non tree-view source must not draw the hidden object
+        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, self._MSG_SOURCE_INTERNAL)
         self._flush_gui()
         preselected = self._center_pixel_color()
 
@@ -177,7 +182,7 @@ class TestSelectionVisual(unittest.TestCase):
             "Internal-source preselection should not render a hidden object.",
         )
 
-    def _sample_hidden(self, obj):
+    def _hide_and_sample(self, obj):
         obj.ViewObject.Visibility = False
         self._flush_gui()
         return self._center_pixel_color()
