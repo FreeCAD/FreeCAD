@@ -1324,11 +1324,9 @@ Adaptive2d::Adaptive2d()
 //     3) if x<c2.X, additionally accumulate area in conventionalArea, for detection of conventional
 //     cutting
 // 4) Return <totalArea, conventionalArea>
-std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64, ClearedArea& clearedArea)
+std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1, Point64 c2, ClearedArea& clearedArea)
 {
-    ClipperLib::IntPoint c1 = ToC1Point(c1_p64);
-    ClipperLib::IntPoint c2 = ToC1Point(c2_p64);
-    double dist = sqrt(DistanceSqrd(ToPoint64(c1), ToPoint64(c2)));
+    double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
         return {0, 0};
     }
@@ -1336,50 +1334,49 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
     Perf_CalcCutAreaCirc.Start();
 
     // 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
-    vector<vector<ClipperLib::DoublePoint>> polygons;
+    vector<vector<PointD>> polygons;
     vector<PointD> inters;  // temporary, to hold intersection results
-    const BoundBox c2BB(ToPoint64(c2), toolRadiusScaled);
+    const BoundBox c2BB(c2, toolRadiusScaled);
     // get curves from slightly enlarged region that will cover all points tested in this iteration
     const bool useC2 = dist > 2 * toolRadiusScaled;
-    const Paths64 clearedBounded_p64 = clearedArea.GetBoundedClearedAreaClipped(
-        useC2 ? ToPoint64(c2) : ToPoint64(c1),
+    const Paths64 clearedBounded = clearedArea.GetBoundedClearedAreaClipped(
+        useC2 ? c2 : c1,
         toolRadiusScaled + (useC2 ? 0 : (int)dist) + 4
     );
-    const ClipperLib::Paths clearedBounded = ToC1Paths(clearedBounded_p64);
 
-    for (const ClipperLib::Path& path : clearedBounded) {
+    for (const Path64& path : clearedBounded) {
         if (path.size() == 0) {
             continue;
         }
 
         // bound box check
-        BoundBox pathBB(ToPoint64(path.front()));
+        BoundBox pathBB(path.front());
         for (const auto& pt : path) {
-            pathBB.AddPoint(ToPoint64(pt));
+            pathBB.AddPoint(pt);
         }
         if (!pathBB.CollidesWith(c2BB)) {
             continue;  // this path cannot colide with tool
         }
 
-        vector<ClipperLib::DoublePoint> polygon;
+        vector<PointD> polygon;
         for (const auto p : path) {
-            polygon.emplace_back((double)p.X, (double)p.Y);
+            polygon.emplace_back((double)p.x, (double)p.y);
         }
         polygons.push_back(polygon);
     }
 
     // 0.5) Rotate all geometry so the vector from c1 to c2 points up (y+)
     {
-        const double angle = std::numbers::pi / 2 - atan2(c2.Y - c1.Y, c2.X - c1.X);
+        const double angle = std::numbers::pi / 2 - atan2(c2.y - c1.y, c2.x - c1.x);
         const double ca = cos(angle);
         const double sa = sin(angle);
-        c1 = {(long long)(ca * c1.X - sa * c1.Y), (long long)(sa * c1.X + ca * c1.Y)};
-        c2 = {(long long)(ca * c2.X - sa * c2.Y), (long long)(sa * c2.X + ca * c2.Y)};
-        vector<vector<ClipperLib::DoublePoint>> rotatedPolygons;
-        for (vector<ClipperLib::DoublePoint>& pgon : polygons) {
-            vector<ClipperLib::DoublePoint> rotated;
+        c1 = {(long long)(ca * c1.x - sa * c1.y), (long long)(sa * c1.x + ca * c1.y)};
+        c2 = {(long long)(ca * c2.x - sa * c2.y), (long long)(sa * c2.x + ca * c2.y)};
+        vector<vector<PointD>> rotatedPolygons;
+        for (vector<PointD>& pgon : polygons) {
+            vector<PointD> rotated;
             for (auto& p : pgon) {
-                rotated.push_back({ca * p.X - sa * p.Y, sa * p.X + ca * p.Y});
+                rotated.push_back({ca * p.x - sa * p.y, sa * p.x + ca * p.y});
             }
             rotatedPolygons.push_back(rotated);
         }
@@ -1392,7 +1389,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
     for (const auto& polygon : polygons) {
         // 1.a) All polygon vertices
         for (const auto& p : polygon) {
-            xs.push_back(p.X);
+            xs.push_back(p.x);
         }
 
         // 1.b) Intersection of all polygons with c1
@@ -1400,16 +1397,12 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
         for (size_t i = 0; i < polygon.size(); i++) {
             const auto& p0 = polygon[i];
             const auto& p1 = polygon[(i + 1) % polygon.size()];
-            if (
-                Line2CircleIntersect(ToPoint64(c1), toolRadiusScaled, ToPointD(p0), ToPointD(p1), inters)
-            ) {
+            if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
                 for (const auto p : inters) {
                     xs.push_back(p.x);
                 }
             }
-            if (
-                Line2CircleIntersect(ToPoint64(c2), toolRadiusScaled, ToPointD(p0), ToPointD(p1), inters)
-            ) {
+            if (Line2CircleIntersect(c2, toolRadiusScaled, p0, p1, inters)) {
                 for (const auto p : inters) {
                     xs.push_back(p.x);
                 }
@@ -1420,23 +1413,23 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
     // 1.e) Compute intersection points between c1 and c2
     {
         pair<PointD, PointD> res;
-        if (Circle2CircleIntersect(ToPoint64(c1), ToPoint64(c2), toolRadiusScaled, res)) {
+        if (Circle2CircleIntersect(c1, c2, toolRadiusScaled, res)) {
             xs.push_back(res.first.x);
             xs.push_back(res.second.x);
         }
     }
 
     // 1.f) Add c1's and c2's vertical tangents to the list
-    xs.push_back((double)c1.X - toolRadiusScaled);
-    xs.push_back((double)c1.X + toolRadiusScaled);
+    xs.push_back((double)c1.x - toolRadiusScaled);
+    xs.push_back((double)c1.x + toolRadiusScaled);
 
-    const double xmin = (double)c2.X - toolRadiusScaled;
-    const double xmax = (double)c2.X + toolRadiusScaled;
+    const double xmin = (double)c2.x - toolRadiusScaled;
+    const double xmax = (double)c2.x + toolRadiusScaled;
     xs.push_back(xmin);
     xs.push_back(xmax);
 
     // 1.g) x=c2.X
-    xs.push_back(c2.X);
+    xs.push_back(c2.x);
 
     // 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r
     {
@@ -1450,15 +1443,14 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
         std::sort(xs.begin(), xs.end());
     }
 
-    const auto interpX =
-        [](const ClipperLib::DoublePoint p0, const ClipperLib::DoublePoint p1, double x) {
-            const double interp = (x - p0.X) / (p1.X - p0.X);
-            const double y = (p1.Y * interp) + (p0.Y * (1 - interp));
-            return y;
-        };
+    const auto interpX = [](const PointD p0, const PointD p1, double x) {
+        const double interp = (x - p0.x) / (p1.x - p0.x);
+        const double y = (p1.y * interp) + (p0.y * (1 - interp));
+        return y;
+    };
 
     // 3) For each non-empty range in x, construct a vertical line through its midpoint
-    const vector<ClipperLib::DoublePoint> circles = {c2, c1};
+    const vector<PointD> circles = {PointD(c2.x, c2.y), PointD(c1.x, c1.y)};
     double area = 0;
     double conventionalArea = 0;
     for (size_t ix = 0; ix + 1 < xs.size(); ix++) {
@@ -1481,8 +1473,8 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
             for (size_t iedge = 0; iedge < polygon.size(); iedge++) {
                 const auto& p0 = polygon[iedge];
                 const auto& p1 = polygon[(iedge + 1) % polygon.size()];
-                // note: we skip if the edge is vertical, p0.X == p1.X == xtest
-                if (min(p0.X, p1.X) < xtest && max(p0.X, p1.X) > xtest) {
+                // note: we skip if the edge is vertical, p0.x == p1.x == xtest
+                if (min(p0.x, p1.x) < xtest && max(p0.x, p1.x) > xtest) {
                     const double y = interpX(p0, p1, xtest);
                     ys.emplace_back(y, ipolygon, iedge);
                 }
@@ -1490,12 +1482,12 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
         }
 
         for (size_t icircle = 0; icircle < circles.size(); icircle++) {
-            const ClipperLib::DoublePoint c = circles[icircle];
-            const double dx = abs(xtest - c.X);
+            const PointD c = circles[icircle];
+            const double dx = abs(xtest - c.x);
             if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
                 const double dy = sqrt((toolRadiusScaled * toolRadiusScaled) - (dx * dx));
-                ys.emplace_back(c.Y + dy, polygons.size() + icircle, 0);
-                ys.emplace_back(c.Y - dy, polygons.size() + icircle, 1);
+                ys.emplace_back(c.y + dy, polygons.size() + icircle, 0);
+                ys.emplace_back(c.y - dy, polygons.size() + icircle, 1);
             }
         }
 
@@ -1539,7 +1531,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
                     const auto y1 = interpX(p0, p1, x1);
                     const double newArea = (y0 + y1) / 2 * (x1 - x0);
                     area += entranceExitSign * newArea;
-                    if (xtest < c2.X) {
+                    if (xtest < c2.x) {
                         conventionalArea += entranceExitSign * newArea;
                     }
                 }
@@ -1553,22 +1545,22 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
                         return max(-1.0, min(1.0, a));
                     };
                     // clamp is required only because of floating point rounding errors
-                    const double phi0 = acos(clamp((x0 - c.X) / toolRadiusScaled)) * circleSign;
-                    const double phi1 = acos(clamp((x1 - c.X) / toolRadiusScaled)) * circleSign;
+                    const double phi0 = acos(clamp((x0 - c.x) / toolRadiusScaled)) * circleSign;
+                    const double phi1 = acos(clamp((x1 - c.x) / toolRadiusScaled)) * circleSign;
                     const double areaSector = toolRadiusScaled * toolRadiusScaled / 2
                         * abs(phi1 - phi0);
 
-                    const double y0 = c.Y
+                    const double y0 = c.y
                         + circleSign
-                            * sqrt(toolRadiusScaled * toolRadiusScaled - (x0 - c.X) * (x0 - c.X));
-                    const double y1 = c.Y
+                            * sqrt(toolRadiusScaled * toolRadiusScaled - (x0 - c.x) * (x0 - c.x));
+                    const double y1 = c.y
                         + circleSign
-                            * sqrt(toolRadiusScaled * toolRadiusScaled - (x1 - c.X) * (x1 - c.X));
+                            * sqrt(toolRadiusScaled * toolRadiusScaled - (x1 - c.x) * (x1 - c.x));
                     const double tbase = sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
                     const double tmidx = (x0 + x1) / 2;
                     const double tmidy = (y0 + y1) / 2;
                     const double th = sqrt(
-                        ((tmidx - c.X) * (tmidx - c.X)) + ((tmidy - c.Y) * (tmidy - c.Y))
+                        ((tmidx - c.x) * (tmidx - c.x)) + ((tmidy - c.y) * (tmidy - c.y))
                     );
                     const double areaTriangle = tbase * th / 2;
                     const double areaSegment = areaSector - areaTriangle;
@@ -1579,7 +1571,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
                     const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
                     const double newArea = (circleSign * areaSegment) + areaTrapezoid;
                     area += entranceExitSign * newArea;
-                    if (xtest < c2.X) {
+                    if (xtest < c2.x) {
                         conventionalArea += entranceExitSign * newArea;
                     }
                 }
