@@ -202,13 +202,15 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     if (isPreselect) {
         // Some view providers build geometry lazily and skip it while hidden;
         // the true/false pair forces a one-time rebuild (no-op without it).
-        if (!vp->isShow()) {
-            vp->forceUpdate(true);
-            vp->forceUpdate(false);
-        }
-        if (svp != vp && !svp->isShow()) {
-            svp->forceUpdate(true);
-            svp->forceUpdate(false);
+        auto rebuildIfHidden = [](ViewProviderDocumentObject* provider) {
+            if (!provider->isShow()) {
+                provider->forceUpdate(true);
+                provider->forceUpdate(false);
+            }
+        };
+        rebuildIfHidden(vp);
+        if (svp != vp) {
+            rebuildIfHidden(svp);
         }
     }
     int onTop;
