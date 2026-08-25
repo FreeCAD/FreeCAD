@@ -172,16 +172,15 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         return;
     }
 
-    auto& objs = Reason.Type == SelectionChanges::SetPreselect ? objectsOnTopPreSel : objectsOnTop;
-    auto pcGroup = Reason.Type == SelectionChanges::SetPreselect ? pcGroupOnTopPreSel
-                                                                 : pcGroupOnTopSel;
+    const bool isPreselect = Reason.Type == SelectionChanges::SetPreselect;
+    auto& objs = isPreselect ? objectsOnTopPreSel : objectsOnTop;
+    auto pcGroup = isPreselect ? pcGroupOnTopPreSel : pcGroupOnTopSel;
 
     if (objs.find(key.c_str()) != objs.end()) {
         return;
     }
     auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     // preselection may target hidden objects, which are rendered on top instead
-    const bool isPreselect = Reason.Type == SelectionChanges::SetPreselect;
     if (!vp || !vp->isSelectable() || (!isPreselect && !vp->isShow())) {
         return;
     }
@@ -222,7 +221,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     else {
         onTop = svp->OnTopWhenSelected.getValue();
     }
-    if (Reason.Type == SelectionChanges::SetPreselect) {
+    if (isPreselect) {
         SoHighlightElementAction action;
         action.setHighlighted(true);
         action.setColor(selectionRoot->colorHighlight.getValue());
