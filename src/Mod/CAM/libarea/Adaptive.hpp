@@ -155,10 +155,10 @@ private:
     std::function<bool(TPaths)>* progressCallback = NULL;
 
     void ProcessPolyNode(
-        Clipper2Lib::Paths64 boundPaths_p64,
-        Clipper2Lib::Paths64 toolBoundPaths_p64,
-        Clipper2Lib::Paths64 finishingPaths_p64,
-        const Clipper2Lib::Paths64& initialClearedPaths_p64,
+        Clipper2Lib::Paths64 boundPaths,
+        Clipper2Lib::Paths64 toolBoundPaths,
+        Clipper2Lib::Paths64 finishingPaths,
+        const Clipper2Lib::Paths64& initialClearedPaths,
         DebugSVGInfo& svgInfo
     );
     bool FindEntryPoint(
