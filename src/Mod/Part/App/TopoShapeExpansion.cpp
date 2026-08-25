@@ -2250,6 +2250,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
             }
         }
 
+        std::unordered_multiset<Data::MappedName, Data::MappedNameHasher> usedProjectedLinkedNames;
         std::unordered_set<Data::IndexedName, Data::IndexedNameHasher> allGeneratedShapes;
         std::unordered_map<TopoDS_Shape, Data::MappedName, ShapeHasher, ShapeHasher> includedModifiedNameMap;
 
@@ -2315,6 +2316,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                     // values.
                     std::vector<TopoDS_Shape> modifiedShapes = mapper.modified(incomingShapeElement);
                     std::vector<TopoDS_Shape> generatedShapes = mapper.generated(incomingShapeElement);
+                    std::vector<TopoDS_Shape> projectedShapes = mapper.projected(incomingShapeElement);
 
                     std::unordered_map<TopoDS_Shape, std::vector<Data::MappedName>, ShapeHasher, ShapeHasher>
                         connectedElementMap;
@@ -2412,7 +2414,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         masterTag,
                                         op,
                                         index,
-                                        (*info->shapetype),
+                                        newInfo.shapetype[0],
                                         0,
                                         {Data::MAPPER_FLAG_MODIFIED},
                                         newConnectedElementNames
@@ -2434,6 +2436,54 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                 ensureElementMap()->setElementName(element, newName, masterTag);
                             }
                         }
+                    }
+
+                    for (size_t projectedI = 0; projectedI < projectedShapes.size(); projectedI++) {
+                        auto& projectedShape = projectedShapes[projectedI];
+
+                        if (projectedShape.ShapeType() >= TopAbs_SHAPE) {
+                            continue;
+                        }
+
+                        auto& newInfo = *infoMap.at(projectedShape.ShapeType());
+                        if (newInfo.type != projectedShape.ShapeType()) {
+                            continue;
+                        }
+
+                        int projectedShapeIndex = newInfo.find(projectedShape);
+
+                        if (projectedShapeIndex == 0) {
+                            continue;
+                        }
+
+                        Data::IndexedName element
+                            = Data::IndexedName::fromConst(newInfo.shapetype, projectedShapeIndex);
+
+                        if (getMappedName(element)) {
+                            continue;
+                        }
+
+                        const Data::MappedName& frontName = incomingShapeElementMappedNames.front().first;
+
+                        ensureElementMap()->setElementName(
+                            element,
+                            Data::MappedName(
+                                Data::MappedName::makeEncodedSection(
+                                    {},
+                                    {frontName},
+                                    masterTag,
+                                    op,
+                                    usedProjectedLinkedNames.count(frontName),
+                                    newInfo.shapetype[0],
+                                    0,
+                                    {Data::MAPPER_FLAG_PROJECTION},
+                                    {}
+                                )
+                            ),
+                            masterTag
+                        );
+
+                        usedProjectedLinkedNames.insert(frontName);
                     }
 
                     for (size_t generatedI = 0; generatedI < generatedShapes.size(); generatedI++) {
@@ -2691,7 +2741,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(
                                         usedPartnerNames.count(incomingShapeMapName),
                                         (*info->shapetype),
                                         0,
-                                        {Data::MAPPER_FLAG_PARTNER}
+                                        {Data::MAPPER_FLAG_PROJECTION}
                                     )
                                 );
 
@@ -4471,84 +4521,225 @@ struct MapperThruSections: MapperMaker
 
 struct MapperPrism: MapperMaker
 {
+    App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2;
+
+    // members for V1 algorithm mapper
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> vertexMap;
     ShapeMapper::ShapeMap edgeMap;
 
-    MapperPrism(BRepFeat_MakePrism& maker, const TopoShape& upTo)
-        : MapperMaker(maker)
+    // members for V2 algorithm mapper
+    std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> projectedElements;
+    std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> generatedElements;
+
+    MapperPrism(BRepFeat_MakePrism& maker, const TopoShape& upTo, const std::vector<TopoShape>& sourceTopoShapes, const App::HistoryAlgorithm& historyVersion)
+        : MapperMaker(maker), historyAlgorithm(historyVersion)
     {
+        ZoneScoped;
         (void)upTo;
 
-        std::vector<TopoShape> shapes;
-        for (TopTools_ListIteratorOfListOfShape it(maker.FirstShape()); it.More(); it.Next()) {
-            shapes.push_back(it.Value());
-        }
+        if (historyAlgorithm == App::HistoryAlgorithm::V1) {
+            std::vector<TopoShape> shapes;
+            for (TopTools_ListIteratorOfListOfShape it(maker.FirstShape()); it.More(); it.Next()) {
+                shapes.push_back(it.Value());
+            }
 
-        if (shapes.size()) {
-            // It seems that BRepFeat_MakePrism::newEdges() does not return
-            // edges generated by extruding the profile vertices. The following
-            // code assumes BRepFeat_MakePrism::myFShape is the profile, and
-            // FirstShape() returns the corresponding faces in the new shape,
-            // i.e. the bottom profile, and add all edges that shares a
-            // vertex with the profiles as new edges.
+            if (shapes.size()) {
+                // It seems that BRepFeat_MakePrism::newEdges() does not return
+                // edges generated by extruding the profile vertices. The following
+                // code assumes BRepFeat_MakePrism::myFShape is the profile, and
+                // FirstShape() returns the corresponding faces in the new shape,
+                // i.e. the bottom profile, and add all edges that shares a
+                // vertex with the profiles as new edges.
 
-            std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> edgeSet;
-            TopoShape bottom;
-            bottom.makeElementCompound(
-                shapes,
-                nullptr,
-                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
-            );
-            TopoShape shape(maker.Shape());
-            for (auto& vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
-                for (auto& e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
-                    // Make sure to not visit the same edge twice.
-                    // And check only edge that are not found in the bottom profile
-                    if (!edgeSet.insert(e).second && !bottom.findShape(e)) {
-                        auto otherVertex = TopExp::FirstVertex(TopoDS::Edge(e));
-                        if (otherVertex.IsSame(vertex)) {
-                            otherVertex = TopExp::LastVertex(TopoDS::Edge(e));
+                std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> edgeSet;
+                TopoShape bottom;
+                bottom.makeElementCompound(
+                    shapes,
+                    nullptr,
+                    TopoShape::SingleShapeCompoundCreationPolicy::returnShape
+                );
+                TopoShape shape(maker.Shape());
+                for (auto& vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
+                    for (auto& e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
+                        // Make sure to not visit the same edge twice.
+                        // And check only edge that are not found in the bottom profile
+                        if (!edgeSet.insert(e).second && !bottom.findShape(e)) {
+                            auto otherVertex = TopExp::FirstVertex(TopoDS::Edge(e));
+                            if (otherVertex.IsSame(vertex)) {
+                                otherVertex = TopExp::LastVertex(TopoDS::Edge(e));
+                            }
+                            vertexMap[vertex] = otherVertex;
                         }
-                        vertexMap[vertex] = otherVertex;
+                    }
+                }
+
+                // Now map each edge in the bottom profile to the extrueded top
+                // profile. vertexMap created above gives us each pair of vertexes
+                // of the bottom and top profile. We use it to find the
+                // corresponding edges in the top profile, what an extra criteria
+                // for disambiguation. That is, the pair of edges (bottom and top)
+                // must belong to the same face.
+                for (auto& edge : bottom.getSubShapes(TopAbs_EDGE)) {
+                    std::vector<int> indices;
+                    auto first = TopExp::FirstVertex(TopoDS::Edge(edge));
+                    auto last = TopExp::LastVertex(TopoDS::Edge(edge));
+                    auto itFirst = vertexMap.find(first);
+                    auto itLast = vertexMap.find(last);
+                    if (itFirst == vertexMap.end() || itLast == vertexMap.end()) {
+                        continue;
+                    }
+                    std::vector<TopoShape> faces;
+                    for (int idx : shape.findAncestors(edge, TopAbs_FACE)) {
+                        faces.push_back(shape.getSubTopoShape(TopAbs_FACE, idx));
+                    }
+                    if (faces.empty()) {
+                        continue;
+                    }
+                    for (int idx : shape.findAncestors(itFirst->second, TopAbs_EDGE)) {
+                        auto e = shape.getSubTopoShape(TopAbs_EDGE, idx);
+                        if (!e.findShape(itLast->second)) {
+                            continue;
+                        }
+                        for (auto& face : faces) {
+                            if (!face.findShape(e.getShape())) {
+                                continue;
+                            }
+                            auto& entry = edgeMap[edge];
+                            if (entry.shapeSet.insert(e.getShape()).second) {
+                                entry.shapes.push_back(e.getShape());
+                            }
+                        }
+                    }
+                }
+            }
+        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> sourceElementRemap;
+            std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> lowerSourceToFaceMap;
+            std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> allMappedElements;
+            std::array<TopAbs_ShapeEnum, 3> mapTypes = {TopAbs_FACE, TopAbs_EDGE, TopAbs_VERTEX};
+            const TopoDS_Shape& extrudedShape = maker.Shape();
+
+            TopTools_IndexedDataMapOfShapeListOfShape edgeToFaceMap;
+            TopTools_IndexedDataMapOfShapeListOfShape vertexToEdgeMap;
+
+            for (const TopAbs_ShapeEnum& type : mapTypes) {
+                TopTools_IndexedMapOfShape extrudedShapeMap;
+                TopExp::MapShapes(extrudedShape, type, extrudedShapeMap);
+                
+                for (const TopoShape& sourceTopoShape : sourceTopoShapes) {
+                    TopTools_IndexedMapOfShape sourceShapeMap;
+                    TopExp::MapShapes(sourceTopoShape.getShape(), type, sourceShapeMap);
+
+                    for (int sourceElementIdx = 1; sourceElementIdx <= sourceShapeMap.Extent(); sourceElementIdx++) {
+                        const TopoDS_Shape& sourceShape = sourceShapeMap(sourceElementIdx);
+
+                        allMappedElements.insert(sourceShape);
+
+                        if (sourceShape.ShapeType() == TopAbs_FACE) {
+                            TopTools_IndexedMapOfShape faceEdgeMap;
+                            TopExp::MapShapes(sourceShape, TopAbs_EDGE, faceEdgeMap);
+
+                            for (int sourceEdgeIdx = 1; sourceEdgeIdx <= faceEdgeMap.Extent(); sourceEdgeIdx++) {
+                                auto emplaceIterator = lowerSourceToFaceMap.try_emplace(
+                                    faceEdgeMap(sourceEdgeIdx),
+                                    sourceShape
+                                );
+
+                                if (!emplaceIterator.second) {
+                                    // don't allow duplicates
+                                    lowerSourceToFaceMap.erase(emplaceIterator.first);
+                                }
+                            }
+                        } else {
+                            for (int extrudedElementIdx = 1; extrudedElementIdx <= extrudedShapeMap.Extent(); extrudedElementIdx++) {
+                                const TopoDS_Shape& currentExtrusionShape = extrudedShapeMap(extrudedElementIdx);
+
+                                if (currentExtrusionShape.IsSame(sourceShape)) {
+                                    allMappedElements.insert(sourceShape);
+                                    sourceElementRemap[sourceShape] = currentExtrusionShape;
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-            // Now map each edge in the bottom profile to the extrueded top
-            // profile. vertexMap created above gives us each pair of vertexes
-            // of the bottom and top profile. We use it to find the
-            // corresponding edges in the top profile, what an extra criteria
-            // for disambiguation. That is, the pair of edges (bottom and top)
-            // must belong to the same face.
-            for (auto& edge : bottom.getSubShapes(TopAbs_EDGE)) {
-                std::vector<int> indices;
-                auto first = TopExp::FirstVertex(TopoDS::Edge(edge));
-                auto last = TopExp::LastVertex(TopoDS::Edge(edge));
-                auto itFirst = vertexMap.find(first);
-                auto itLast = vertexMap.find(last);
-                if (itFirst == vertexMap.end() || itLast == vertexMap.end()) {
-                    continue;
+            TopExp::MapShapesAndAncestors(
+                extrudedShape,
+                TopAbs_EDGE,
+                TopAbs_FACE,
+                edgeToFaceMap
+            );
+
+            TopExp::MapShapesAndAncestors(
+                extrudedShape,
+                TopAbs_VERTEX,
+                TopAbs_EDGE,
+                vertexToEdgeMap
+            );
+
+            // map extruded shapes (edge -> face, vertex -> edge)
+            for (const auto& sourceShapeEntry : sourceElementRemap) {
+                const TopAbs_ShapeEnum type = sourceShapeEntry.first.ShapeType();
+                const TopTools_ListOfShape* ancestors = nullptr;
+
+                if (type == TopAbs_EDGE) {
+                    ancestors = &edgeToFaceMap.FindFromKey(sourceShapeEntry.second);
+                } else if (type == TopAbs_VERTEX) {
+                    ancestors = &vertexToEdgeMap.FindFromKey(sourceShapeEntry.second);
                 }
-                std::vector<TopoShape> faces;
-                for (int idx : shape.findAncestors(edge, TopAbs_FACE)) {
-                    faces.push_back(shape.getSubTopoShape(TopAbs_FACE, idx));
-                }
-                if (faces.empty()) {
-                    continue;
-                }
-                for (int idx : shape.findAncestors(itFirst->second, TopAbs_EDGE)) {
-                    auto e = shape.getSubTopoShape(TopAbs_EDGE, idx);
-                    if (!e.findShape(itLast->second)) {
-                        continue;
+
+                if (ancestors != nullptr) {
+                    TopTools_ListOfShape::Iterator ancestorsIterator {*ancestors};
+
+                    for (; ancestorsIterator.More(); ancestorsIterator.Next()) {
+                        const TopoDS_Shape& ancestor = ancestorsIterator.Value();
+
+                        if (allMappedElements.count(ancestor) == 0) {
+                            generatedElements[sourceShapeEntry.first] = ancestor;
+                            allMappedElements.insert(ancestor);
+
+                            break;
+                        }
                     }
-                    for (auto& face : faces) {
-                        if (!face.findShape(e.getShape())) {
-                            continue;
+                }
+            }
+
+            for (const auto& generatedElementEntry : generatedElements) {
+                TopTools_IndexedMapOfShape projectedElementMap;
+                TopExp::MapShapes(
+                    generatedElementEntry.second,
+                    generatedElementEntry.first.ShapeType(),
+                    projectedElementMap
+                );
+
+                for (int projectedShapeIdx = 1; projectedShapeIdx <= projectedElementMap.Extent(); projectedShapeIdx++) {
+                    const TopoDS_Shape& projectedShape = projectedElementMap(projectedShapeIdx);
+
+                    if (allMappedElements.count(projectedShape) == 0) {
+                        projectedElements[generatedElementEntry.first] = projectedShape;
+                        allMappedElements.insert(projectedShape);
+
+                        if (projectedShape.ShapeType() == TopAbs_EDGE) {
+                            const auto& edgeToFaceIterator = lowerSourceToFaceMap.find(generatedElementEntry.first);
+
+                            if (edgeToFaceIterator != lowerSourceToFaceMap.end()) {
+                                const TopTools_ListOfShape& faceAncestors = edgeToFaceMap.FindFromKey(projectedShape);
+                                TopTools_ListOfShape::Iterator faceAncestorsIterator {faceAncestors};
+
+                                for (; faceAncestorsIterator.More(); faceAncestorsIterator.Next()) {
+                                    const TopoDS_Shape& projectedFace = faceAncestorsIterator.Value();
+
+                                    if (allMappedElements.count(projectedFace) == 0) {
+                                        projectedElements[edgeToFaceIterator->second] = projectedFace;
+                                        allMappedElements.insert(projectedFace);
+                                    }
+                                }
+                            }
                         }
-                        auto& entry = edgeMap[edge];
-                        if (entry.shapeSet.insert(e.getShape()).second) {
-                            entry.shapes.push_back(e.getShape());
-                        }
+
+                        break;
                     }
                 }
             }
@@ -4557,28 +4748,55 @@ struct MapperPrism: MapperMaker
     const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
     {
         _res.clear();
-        switch (s.ShapeType()) {
-            case TopAbs_VERTEX: {
-                auto it = vertexMap.find(s);
-                if (it != vertexMap.end()) {
-                    _res.push_back(it->second);
-                    return _res;
+
+        if (historyAlgorithm == App::HistoryAlgorithm::V1) {
+            switch (s.ShapeType()) {
+                case TopAbs_VERTEX: {
+                    auto it = vertexMap.find(s);
+                    if (it != vertexMap.end()) {
+                        _res.push_back(it->second);
+                        return _res;
+                    }
+                    break;
                 }
-                break;
-            }
-            case TopAbs_EDGE: {
-                auto it = edgeMap.find(s);
-                if (it != edgeMap.end()) {
-                    return it->second.shapes;
+                case TopAbs_EDGE: {
+                    auto it = edgeMap.find(s);
+                    if (it != edgeMap.end()) {
+                        return it->second.shapes;
+                    }
+                    break;
                 }
-                break;
+                default:
+                    break;
             }
-            default:
-                break;
+            MapperMaker::generated(s);
+        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            auto generatedMapIterator = generatedElements.find(s);
+
+            if (generatedMapIterator != generatedElements.end() && !generatedMapIterator->second.IsNull())
+            {
+                _res.push_back(generatedMapIterator->second);
+            }
         }
-        MapperMaker::generated(s);
+
         return _res;
     }
+
+    const std::vector<TopoDS_Shape>& projected(const TopoDS_Shape& s) const override
+    {
+        _res.clear();
+
+        if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            auto projectedMapIterator = projectedElements.find(s);
+
+            if (projectedMapIterator != projectedElements.end() && !projectedMapIterator->second.IsNull())
+            {
+                _res.push_back(projectedMapIterator->second);
+            }
+        }
+
+        return _res;
+    };
 };
 
 TopoShape& TopoShape::makeElementFilledFace(
@@ -5250,10 +5468,17 @@ TopoShape& TopoShape::makeElementShape(
     const char* op
 )
 {
+    const App::HistoryAlgorithm& historyAlgorithm = getHistoryAlgorithm();
+    
     if (!op) {
-        op = Part::OpCodes::Prism;
+        if (historyAlgorithm == App::HistoryAlgorithm::V1) {
+            op = Part::OpCodes::Prism;
+        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            op = Part::OpCodes::Extrude;
+        }
     }
-    MapperPrism mapper(mkShape, upTo);
+
+    MapperPrism mapper(mkShape, upTo, sources, historyAlgorithm);
     makeShapeWithElementMap(mkShape.Shape(), mapper, sources, op);
     return *this;
 }
@@ -5408,8 +5633,14 @@ TopoShape& TopoShape::makeElementPrismUntil(
     const char* op
 )
 {
+    const App::HistoryAlgorithm& historyAlgorithm = getHistoryAlgorithm();
+
     if (!op) {
-        op = Part::OpCodes::Prism;
+        if (historyAlgorithm == App::HistoryAlgorithm::V1) {
+            op = Part::OpCodes::Prism;
+        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+            op = Part::OpCodes::Extrude;
+        }
     }
 
     BRepFeat_MakePrism PrismMaker;
@@ -5527,7 +5758,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                      profile.hasSubShape(TopAbs_FACE) ? TopAbs_FACE : TopAbs_WIRE
                  )) {
                 srcShapes.clear();
-                if (!profile.isNull() && !result.findShape(profile.getShape())) {
+                if (!profile.isNull() && (!result.findShape(profile.getShape()) || historyAlgorithm == App::HistoryAlgorithm::V2)) {
                     srcShapes.push_back(profile);
                 }
                 if (!supportFace.isNull() && !result.findShape(supportFace.getShape())) {
@@ -5544,7 +5775,11 @@ TopoShape& TopoShape::makeElementPrismUntil(
                 // if (!uptoface.isNull() && !this->findShape(uptoface.getShape()))
                 //     srcShapes.push_back(uptoface);
 
-                srcShapes.push_back(result);
+                // the MapperPrism used in coordination with the V2 topological naming algorithm
+                // does not want `result` as an input, so omit it.
+                if (historyAlgorithm == App::HistoryAlgorithm::V1) {
+                    srcShapes.push_back(result);
+                }
 
                 if (result.isInfinite()) {
                     result = face;
@@ -5566,7 +5801,7 @@ TopoShape& TopoShape::makeElementPrismUntil(
                     FC_THROWM(Base::CADKernelError, "BRepFeat_MakePrism: extrusion failed");
                 }
 
-                if (getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                if (historyAlgorithm == App::HistoryAlgorithm::V2) {
                     result.Tag = Tag;
                 }
 
@@ -6217,7 +6452,7 @@ std::vector<Data::MappedName> TopoShape::decodeElementComboName(
 ) const
 {
     std::vector<Data::MappedName> names;
-    if (!element) {
+    if (!element || getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         return names;
     }
     if (!marker) {
