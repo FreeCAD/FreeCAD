@@ -41,6 +41,71 @@ def function(return_annotation: str, path: str) -> ApiCallableGroup:
 
 
 class PythonApiResolutionTests(unittest.TestCase):
+    def test_semantic_equality_ignores_provenance(self) -> None:
+        existing = ApiAttribute(
+            name="value",
+            annotation="int",
+            origin=ApiOrigin.MODULE_STUB,
+            location=ApiSourceLocation("src/App/FreeCAD.module.pyi", 4),
+        )
+        incoming = replace(
+            existing,
+            origin=ApiOrigin.TYPE_STUB,
+            location=ApiSourceLocation("src/Gui/FreeCADGui.Value.pyi", 8),
+        )
+
+        result = resolve_declaration(
+            existing,
+            incoming,
+            kind="attribute",
+            symbol="FreeCAD.value",
+        )
+
+        self.assertEqual(result.value.origin, ApiOrigin.MODULE_STUB)
+        self.assertEqual(result.diagnostics, ())
+
+    def test_equal_class_headers_prefer_higher_precedence_origin(self) -> None:
+        generated = ApiClass(
+            module_name="Demo",
+            name="Widget",
+            bases=("Base",),
+            origin=ApiOrigin.GENERATED,
+            location=ApiSourceLocation("z.cpp", 20),
+        )
+        curated = replace(
+            generated,
+            origin=ApiOrigin.TYPE_STUB,
+            location=ApiSourceLocation("a.pyi", 3),
+        )
+
+        result = merge_api_class(generated, curated)
+
+        self.assertEqual(result.value.origin, ApiOrigin.TYPE_STUB)
+        self.assertEqual(result.diagnostics, ())
+
+    def test_conflict_diagnostic_is_independent_of_input_order(self) -> None:
+        existing = function("int", "b.pyi")
+        incoming = replace(
+            function("str", "a.pyi"),
+            origin=ApiOrigin.TYPE_STUB,
+        )
+
+        first = resolve_declaration(
+            existing,
+            incoming,
+            kind="function",
+            symbol="Demo.ping",
+        )
+        second = resolve_declaration(
+            incoming,
+            existing,
+            kind="function",
+            symbol="Demo.ping",
+        )
+
+        self.assertEqual(first.value, second.value)
+        self.assertEqual(first.diagnostics, second.diagnostics)
+
     def test_higher_precedence_declaration_wins(self) -> None:
         generated = ApiAttribute(name="value", annotation="Any", origin=ApiOrigin.GENERATED)
         curated = ApiAttribute(name="value", annotation="int", origin=ApiOrigin.MODULE_STUB)

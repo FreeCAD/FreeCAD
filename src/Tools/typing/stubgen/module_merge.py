@@ -271,6 +271,12 @@ def filtered_module_support_node(
                 existing_symbols,
                 filtered_module_support_nodes,
             )
+        case ast.Try():
+            # Compatibility overlays use try/except imports to bridge optional
+            # runtime providers (notably PySide 6 and PySide 2). The block is
+            # output support rather than a public API declaration, so preserve
+            # it verbatim, including wildcard re-exports.
+            return copy.deepcopy(node)
         case _:
             return None
 

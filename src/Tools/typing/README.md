@@ -12,6 +12,12 @@ Use the helper to regenerate discovery output and run the smoke checks:
 src/Tools/typing/check-stubs.sh
 ```
 
+Run the complete Python test suite for the Tools packages with:
+
+```sh
+pixi run python src/Tools/run_tests.py
+```
+
 The helper runs the stub generator:
 
 ```sh

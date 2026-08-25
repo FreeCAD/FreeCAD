@@ -14,6 +14,8 @@ from dataclasses import replace
 
 from python_api_model.signatures import CallableSignature, decorator_name
 
+from .deprecation import normalized_deprecation_message
+
 INTERNAL_DECORATOR_NAMES = frozenset(
     {
         "bootstrap_export",
@@ -41,11 +43,24 @@ def raw_decorator_name(decorator: str) -> str:
     return decorator_name(node) or ast.unparse(node)
 
 
+def normalized_deprecated_decorator(decorator: str) -> str:
+    """Convert structured deprecation metadata to a PEP 702 decorator."""
+
+    expression = decorator.removeprefix("@").strip()
+    node = ast.parse(expression, mode="eval").body
+    if decorator_name(node) != "deprecated":
+        return decorator
+    message = normalized_deprecation_message(node)
+    if message is None:
+        raise ValueError("deprecated() requires a message or lifecycle metadata")
+    return f"deprecated({ast.unparse(ast.Constant(value=message))})"
+
+
 def public_decorators(decorators: tuple[str, ...]) -> tuple[str, ...]:
     """Remove binding metadata decorators from a public declaration."""
 
     return tuple(
-        decorator
+        normalized_deprecated_decorator(decorator)
         for decorator in decorators
         if raw_decorator_name(decorator) not in INTERNAL_DECORATOR_NAMES
     )

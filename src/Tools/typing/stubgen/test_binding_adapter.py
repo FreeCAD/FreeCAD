@@ -137,6 +137,21 @@ class PythonApiAdapterTests(unittest.TestCase):
         )
         self.assertTrue(group.overload)
 
+    def test_duplicate_call_shapes_merge_metadata_instead_of_becoming_overloads(self) -> None:
+        first = discovered_method(doc="First registration documentation.")
+        later = replace(
+            discovered_method(doc="Later registration documentation."),
+            source="src/App/OtherConsole.cpp",
+            line=43,
+        )
+
+        model = adapt_discovered_bindings([first, later], {}, {})
+
+        group = model.modules[0].functions[0]
+        self.assertEqual(len(group.signatures), 1)
+        self.assertFalse(group.overload)
+        self.assertEqual(group.signatures[0].docstring, "First registration documentation.")
+
     def test_source_type_aliases_are_normalized_in_binding_overrides(self) -> None:
         method = discovered_method(
             context_kind="python_type",

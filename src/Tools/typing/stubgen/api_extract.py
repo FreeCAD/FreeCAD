@@ -16,7 +16,7 @@ curated stub sources independently.
 from __future__ import annotations
 
 import ast
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
 from dataclasses import replace
 from pathlib import Path
 
@@ -34,6 +34,7 @@ from python_api_model.diagnostics import MergeDiagnostic
 from python_api_model.normalize import normalize_signature_types, normalize_source_type
 from python_api_model.resolve import merge_api_module
 from python_api_model.signatures import (
+    CallableSignature,
     group_callable_definitions,
     parse_callable_group,
 )
@@ -47,6 +48,7 @@ from .parsing import (
     iter_type_stub_pyi_files,
 )
 from .source_inputs import binding_class_source, parse_type_stub_target
+from .source_inputs import deprecated_attribute_messages, deprecated_message_from_function_node
 
 
 def module_stub_name(path: Path) -> str:
@@ -79,10 +81,16 @@ def callable_group_from_nodes(
     module_name: str,
     origin: ApiOrigin,
 ) -> ApiCallableGroup | None:
-    signatures = tuple(
-        normalize_signature_types(strip_binding_decorators(signature), module_name)
-        for signature in parse_callable_group(nodes)
-    )
+    signature_list: list[CallableSignature] = []
+    for node, signature in zip(nodes, parse_callable_group(nodes)):
+        signature = strip_binding_decorators(signature)
+        deprecated_message = signature.deprecated_message
+        if deprecated_message is None:
+            deprecated_message = deprecated_message_from_function_node(node)
+        if deprecated_message is not None:
+            signature = replace(signature, deprecated_message=deprecated_message)
+        signature_list.append(normalize_signature_types(signature, module_name))
+    signatures = tuple(signature_list)
     if not signatures:
         return None
     doc = next((signature.docstring for signature in signatures if signature.docstring), None)
@@ -123,6 +131,8 @@ def attribute_from_assignment(
     *,
     module_name: str,
     origin: ApiOrigin,
+    doc: str | None = None,
+    deprecated_message: str | None = None,
 ) -> ApiAttribute | None:
     name = assignment_name(node)
     if name is None or name.startswith("_"):
@@ -132,6 +142,8 @@ def attribute_from_assignment(
         name=name,
         annotation=normalize_source_type(annotation, module_name),
         value=value,
+        doc=doc,
+        deprecated_message=deprecated_message,
         origin=origin,
         location=source_location(root, path, node.lineno),
     )
@@ -144,19 +156,32 @@ def attributes_from_body(
     *,
     module_name: str,
     origin: ApiOrigin,
+    deprecated_messages: Mapping[str, str] | None = None,
 ) -> tuple[ApiAttribute, ...]:
     """Extract public assignments from either a module or class body."""
 
+    deprecated_messages = deprecated_messages or {}
     attributes: list[ApiAttribute] = []
-    for node in body:
+    for index, node in enumerate(body):
         if not isinstance(node, (ast.Assign, ast.AnnAssign)):
             continue
+        doc = None
+        if index + 1 < len(body):
+            following = body[index + 1]
+            if (
+                isinstance(following, ast.Expr)
+                and isinstance(following.value, ast.Constant)
+                and isinstance(following.value.value, str)
+            ):
+                doc = following.value.value
         attribute = attribute_from_assignment(
             root,
             path,
             node,
             module_name=module_name,
             origin=origin,
+            doc=doc,
+            deprecated_message=deprecated_messages.get(assignment_name(node) or ""),
         )
         if attribute is not None:
             attributes.append(attribute)
@@ -193,6 +218,20 @@ def class_from_node(
     *,
     origin: ApiOrigin,
 ) -> ApiClass:
+    deprecated_messages = deprecated_attribute_messages(node)
+    attributes = attributes_from_body(
+        root,
+        path,
+        node.body,
+        module_name=module_name,
+        origin=origin,
+        deprecated_messages=deprecated_messages,
+    )
+    declared_attributes = {attribute.name for attribute in attributes}
+    unknown_attributes = sorted(set(deprecated_messages) - declared_attributes)
+    if unknown_attributes:
+        joined = ", ".join(unknown_attributes)
+        raise ValueError(f"Unknown deprecated attribute metadata for class '{node.name}': {joined}")
     bases: list[str] = []
     for base in node.bases:
         base_text = ast.unparse(base)
@@ -211,13 +250,7 @@ def class_from_node(
             module_name=module_name,
             origin=origin,
         ),
-        attributes=attributes_from_body(
-            root,
-            path,
-            node.body,
-            module_name=module_name,
-            origin=origin,
-        ),
+        attributes=attributes,
         decorators=public_decorators(
             tuple(ast.unparse(decorator) for decorator in node.decorator_list)
         ),
@@ -342,9 +375,10 @@ def binding_class_from_source(
     return replace(source_class, module_name=module_name, name=public_symbol)
 
 
-def module_from_stub_file(
+def module_from_source(
     root: Path,
     path: Path,
+    source: str,
     module_name: str,
     *,
     origin: ApiOrigin,
@@ -352,7 +386,6 @@ def module_from_stub_file(
     include_attributes: bool = True,
     include_class: Callable[[ast.ClassDef], bool] | None = None,
 ) -> ApiModule:
-    source = path.read_text(encoding="utf-8")
     tree = ast.parse(source, filename=str(path))
 
     functions: list[ApiCallableGroup] = []
@@ -395,6 +428,28 @@ def module_from_stub_file(
         attributes=attributes,
         origin=origin,
         location=source_location(root, path, 1),
+    )
+
+
+def module_from_stub_file(
+    root: Path,
+    path: Path,
+    module_name: str,
+    *,
+    origin: ApiOrigin,
+    include_module_doc: bool,
+    include_attributes: bool = True,
+    include_class: Callable[[ast.ClassDef], bool] | None = None,
+) -> ApiModule:
+    return module_from_source(
+        root,
+        path,
+        path.read_text(encoding="utf-8"),
+        module_name,
+        origin=origin,
+        include_module_doc=include_module_doc,
+        include_attributes=include_attributes,
+        include_class=include_class,
     )
 
 

@@ -11,15 +11,19 @@ from typing import Any, Generic, Literal, Protocol, TypeVar, cast
 from .diagnostics import MergeDiagnostic, origin_precedence
 from .model import ApiClass, ApiModule, ApiOrigin, ApiSourceLocation, PythonApiModel
 
+SEMANTICALLY_IGNORED_FIELDS = frozenset({"origin", "location"})
+
 
 class ApiDeclaration(Protocol):
     """Common provenance fields shared by every resolvable declaration."""
 
     @property
-    def origin(self) -> ApiOrigin: ...
+    def origin(self) -> ApiOrigin:
+        raise NotImplementedError
 
     @property
-    def location(self) -> ApiSourceLocation | None: ...
+    def location(self) -> ApiSourceLocation | None:
+        raise NotImplementedError
 
 
 T = TypeVar("T")
@@ -45,13 +49,13 @@ def declaration_shape(value: object) -> object:
     """Return a declaration value without source-location-only differences."""
 
     if is_dataclass(value):
-        # Reflection is intentional so new dataclass fields participate in
-        # semantic equality automatically, while source locations do not.
+        # Reflection keeps new declaration fields in semantic equality while
+        # provenance remains available only to resolution and diagnostics.
         declaration_fields: tuple[Field[Any], ...] = fields(value)
         return tuple(
             (item.name, declaration_shape(getattr(value, item.name)))
             for item in declaration_fields
-            if item.name != "location"
+            if item.name not in SEMANTICALLY_IGNORED_FIELDS
         )
     if isinstance(value, tuple):
         items = cast(tuple[object, ...], value)
@@ -67,6 +71,26 @@ def _stable_key(value: ApiDeclaration) -> tuple[str, str, int, str]:
         location.path if location is not None else "",
         location.line if location is not None and location.line is not None else 0,
         repr(declaration_shape(value)),
+    )
+
+
+def _preferred_declaration(
+    existing: TDeclaration,
+    incoming: TDeclaration,
+) -> TDeclaration:
+    """Choose provenance for semantically identical declarations."""
+
+    highest_priority = max(
+        origin_precedence(existing.origin),
+        origin_precedence(incoming.origin),
+    )
+    return min(
+        (
+            value
+            for value in (existing, incoming)
+            if origin_precedence(value.origin) == highest_priority
+        ),
+        key=_stable_key,
     )
 
 
@@ -89,7 +113,7 @@ def _class_header_result(
     existing_header = _class_header(existing)
     incoming_header = _class_header(incoming)
     if declaration_shape(existing_header) == declaration_shape(incoming_header):
-        winner = min((existing, incoming), key=_stable_key)
+        winner = _preferred_declaration(existing, incoming)
         return winner, ()
 
     result = resolve_declaration(
@@ -112,7 +136,7 @@ def resolve_declaration(
     """Resolve two declarations according to origin and stable source order."""
 
     if declaration_shape(existing) == declaration_shape(incoming):
-        return ResolutionResult(existing)
+        return ResolutionResult(_preferred_declaration(existing, incoming))
 
     existing_origin = existing.origin
     incoming_origin = incoming.origin
@@ -135,15 +159,29 @@ def resolve_declaration(
         return ResolutionResult(existing, (diagnostic,))
 
     winner = min((existing, incoming), key=_stable_key)
+    loser = incoming if winner is existing else existing
+    winner_location = winner.location
+    loser_location = loser.location
+    winner_source = (
+        f"{winner_location.path}:{winner_location.line}"
+        if winner_location is not None and winner_location.line is not None
+        else winner_location.path if winner_location is not None else "unknown source"
+    )
+    loser_source = (
+        f"{loser_location.path}:{loser_location.line}"
+        if loser_location is not None and loser_location.line is not None
+        else loser_location.path if loser_location is not None else "unknown source"
+    )
     diagnostic = MergeDiagnostic(
         code="conflicting-definition",
         severity="error",
         symbol=symbol,
         message=(
-            f"{symbol} has incompatible {kind} definitions at the same "
-            f"precedence ({existing_origin.value})"
+            f"{symbol} has incompatible {kind} definitions at the same precedence; "
+            f"keeping {winner.origin.value} from {winner_source} and ignoring "
+            f"{loser.origin.value} from {loser_source}"
         ),
-        location=incoming.location,
+        location=loser.location,
     )
     return ResolutionResult(winner, (diagnostic,))
 

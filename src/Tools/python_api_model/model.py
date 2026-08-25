@@ -50,6 +50,7 @@ class ApiAttribute:
     annotation: str | None = None
     value: str | None = None
     doc: str | None = None
+    deprecated_message: str | None = None
     origin: ApiOrigin = ApiOrigin.GENERATED
     location: ApiSourceLocation | None = None
 

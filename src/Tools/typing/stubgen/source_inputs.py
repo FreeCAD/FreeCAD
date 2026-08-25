@@ -13,11 +13,15 @@ from __future__ import annotations
 import ast
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TypeVar
+from typing import TypeVar, cast
 
 from python_api_model.signatures import decorator_name
 
-from .deprecation import literal_keyword_values, structured_deprecation_message
+from .deprecation import (
+    literal_keyword_values,
+    normalized_deprecation_message,
+    structured_deprecation_message,
+)
 from .discovery import (
     collect_type_registrations,
     cpp_namespace_for_source,
@@ -48,28 +52,42 @@ K = TypeVar("K")
 
 
 def deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
-    if decorator_name(decorator) != "deprecated":
-        return None
-
-    if not isinstance(decorator, ast.Call):
-        raise ValueError("deprecated must be called with structured lifecycle metadata")
-    if decorator.args:
-        raise ValueError("structured deprecated() metadata accepts only keyword arguments")
-
-    kwargs = literal_keyword_values(decorator, "deprecated() metadata")
-    message = structured_deprecation_message(kwargs)
-    if message is None:
-        raise ValueError("deprecated() requires structured lifecycle metadata")
-    return message
+    return normalized_deprecation_message(decorator)
 
 
-def deprecated_message_from_function_node(node: ast.FunctionDef) -> str | None:
+def deprecated_message_from_function_node(
+    node: ast.FunctionDef | ast.AsyncFunctionDef,
+) -> str | None:
     for decorator in node.decorator_list:
         if message := deprecated_message_from_decorator(decorator):
             return message
         if message == "":
             return ""
     return None
+
+
+def deprecated_attribute_messages(node: ast.ClassDef) -> dict[str, str]:
+    """Return normalized deprecation messages declared for class attributes."""
+
+    messages: dict[str, str] = {}
+    for decorator in node.decorator_list:
+        if decorator_name(decorator) != "deprecated_attributes":
+            continue
+        if not isinstance(decorator, ast.Call):
+            raise ValueError("deprecated_attributes must be called with structured metadata")
+        values = literal_keyword_values(decorator, "deprecated_attributes() metadata")
+        for name, value in values.items():
+            if not isinstance(value, dict):
+                raise ValueError(
+                    f"deprecated attribute '{name}' metadata must be a structured mapping"
+                )
+            message = structured_deprecation_message(cast(dict[str, object], value))
+            if message is None:
+                raise ValueError(
+                    f"deprecated attribute '{name}' metadata requires lifecycle fields"
+                )
+            messages[name] = message
+    return messages
 
 
 def binding_export_name(class_name: str, export_kwargs: dict[str, object]) -> str:

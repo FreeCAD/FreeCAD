@@ -19,11 +19,28 @@ from python_api_model.resolve import merge_api_models
 
 from .api_extract import extract_curated_api_model_with_diagnostics
 from .binding_adapter import adapt_discovered_bindings
+from .cpp_properties import (
+    CppPropertyDiagnostic,
+    CppPropertyReport,
+    discover_cpp_properties,
+    typed_cpp_properties,
+)
+from .document_object_types import direct_python_types, document_object_python_types
+from .generated_api import (
+    add_cpp_properties_to_model,
+    add_document_overloads_to_model,
+    generated_constant_model,
+)
+from .init_exports import load_init_exports
 from .model import BindingClass, BindingMethod, StubSignatureOverrides
 from .module_merge import ensure_parent_package_stubs, module_stub_path, public_module_names
+from .project import Project
+from .property_contracts import conversion_metadata_issues, load_property_catalog
+from .property_hierarchy import property_hierarchy_from
 from .render import write_stub_file
 from .stub_support import StubSupport, collect_stub_support
-from .validation import validate_public_class_aliases
+from .type_hierarchy import discover_type_hierarchy
+from .validation import validate_discovered_bindings, validate_public_class_aliases
 
 
 @dataclass(frozen=True)
@@ -32,6 +49,7 @@ class GenerationResult:
 
     overlay_count: int = 0
     diagnostics: tuple[MergeDiagnostic, ...] = ()
+    cpp_property_report: CppPropertyReport = CppPropertyReport(0, 0, ())
 
     @property
     def errors(self) -> tuple[MergeDiagnostic, ...]:
@@ -93,28 +111,6 @@ def markdown_report(methods: list[BindingMethod]) -> str:
     return "\n".join(lines) + "\n"
 
 
-def append_document_add_object_overloads(
-    out_dir: Path,
-    module_names: set[str],
-    classes: list[BindingClass],
-    hierarchy: TypeHierarchy,
-) -> None:
-    """Add TypeId-derived overloads to the generated public Document class."""
-
-    target = module_stub_path(out_dir, "FreeCAD", module_names)
-    if not target.exists():
-        raise FileNotFoundError(f"Expected generated FreeCAD module stub: {target}")
-
-    registrations = document_object_python_types(
-        hierarchy,
-        direct_python_types(classes, hierarchy),
-    )
-    original = target.read_text(encoding="utf-8")
-    merged = add_document_add_object_overloads(original, registrations)
-    if merged != original:
-        target.write_text(merged, encoding="utf-8")
-
-
 def write_pep561_markers(out_dir: Path, module_names: set[str]) -> None:
     top_level = {name.split(".", 1)[0] for name in module_names}
     for pkg in sorted(top_level):
@@ -135,6 +131,7 @@ def write_outputs(
     """Generate stubs from one resolved ``PythonApiModel``."""
 
     validate_public_class_aliases(classes)
+    validate_discovered_bindings(methods, type_registrations)
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
     api_model, diagnostics = extract_curated_api_model_with_diagnostics(
         root,
@@ -149,7 +146,54 @@ def write_outputs(
     )
     merge_result = merge_api_models(api_model, generated_model)
     diagnostics = diagnostics + merge_result.diagnostics
-    result = GenerationResult(diagnostics=diagnostics)
+    api_model = merge_result.value
+    if MergeDiagnostics(diagnostics).errors:
+        return GenerationResult(diagnostics=diagnostics)
+
+    hierarchy = discover_type_hierarchy(root)
+    property_catalog = load_property_catalog(root)
+    conversion_issues = conversion_metadata_issues(
+        root,
+        property_hierarchy_from(hierarchy),
+        property_catalog,
+    )
+    if conversion_issues:
+        formatted = "\n".join(issue.format() for issue in conversion_issues)
+        raise ValueError("Core property conversion metadata is incomplete:\n" + formatted)
+
+    constants_model, generated_support = generated_constant_model(
+        root,
+        property_catalog,
+        load_init_exports(root),
+    )
+    merge_result = merge_api_models(api_model, constants_model)
+    diagnostics += merge_result.diagnostics
+    api_model = merge_result.value
+
+    property_diagnostics: list[CppPropertyDiagnostic] = []
+    discovered_properties = discover_cpp_properties(root, hierarchy, property_diagnostics)
+    typed_properties = typed_cpp_properties(
+        discovered_properties,
+        hierarchy,
+        property_catalog,
+        direct_python_types(
+            classes, type_ids={item.owner_type_id for item in discovered_properties}
+        ),
+        property_diagnostics,
+    )
+    cpp_property_report = CppPropertyReport(
+        len(discovered_properties),
+        len(typed_properties),
+        tuple(property_diagnostics),
+    )
+    api_model, property_support = add_cpp_properties_to_model(api_model, typed_properties)
+    registrations = document_object_python_types(
+        hierarchy,
+        direct_python_types(classes, hierarchy),
+    )
+    api_model, document_support = add_document_overloads_to_model(api_model, registrations)
+
+    result = GenerationResult(diagnostics=diagnostics, cpp_property_report=cpp_property_report)
     if result.errors:
         return result
 
@@ -157,11 +201,24 @@ def write_outputs(
     # Resolve the complete model before deleting the previous generated tree.
     shutil.rmtree(out_dir / "stubs", ignore_errors=True)
 
-    api_model = merge_result.value
     module_names.update(module.name for module in api_model.modules)
     support = collect_stub_support(root, source_dir, api_model, tuple(classes), overlay_dir)
+    support = StubSupport(
+        module_fragments=(
+            *support.module_fragments,
+            *generated_support,
+            *property_support,
+            *document_support,
+        ),
+        class_fragments=support.class_fragments,
+    )
     write_public_module_stubs(out_dir / "stubs", module_names, api_model, support)
+    write_pep561_markers(out_dir / "stubs", module_names)
+    project = Project(root)
+    project.write_pyproject(out_dir)
+    project.write_readme(out_dir)
     return GenerationResult(
         overlay_count=len(tuple(overlay_dir.rglob("*.pyi"))) if overlay_dir is not None else 0,
         diagnostics=diagnostics,
+        cpp_property_report=cpp_property_report,
     )

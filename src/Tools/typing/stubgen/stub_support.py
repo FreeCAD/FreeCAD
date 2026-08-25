@@ -10,6 +10,7 @@ protocols, type aliases, and ``TYPE_CHECKING`` declarations.
 from __future__ import annotations
 
 import ast
+from collections.abc import Collection, Mapping
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -98,13 +99,19 @@ def _class_public_symbols(
     }
 
 
-def _mapped_import_module(module: str | None, target_module: str) -> str:
+def _mapped_import_module(
+    module: str | None,
+    target_module: str,
+    public_modules: Collection[str] = (),
+    public_module_symbols: Mapping[str, Collection[str]] | None = None,
+    imported_names: Collection[str] = (),
+) -> str:
     """Map source-stub imports to the module namespace emitted for ``target_module``.
 
     Source-adjacent stubs use the C++ binding layout, while generated stubs
-    expose the public FreeCAD package layout. Unknown absolute imports are
-    remapped into the generated target module so support declarations do not
-    accidentally import a private source-side module.
+    expose the public FreeCAD package layout. Only known private source
+    namespaces are remapped; unknown absolute imports remain external imports
+    instead of becoming accidental self-imports.
     """
 
     if module is None:
@@ -115,21 +122,76 @@ def _mapped_import_module(module: str | None, target_module: str) -> str:
         return "FreeCAD"
     if module == "Gui" or module.startswith("Gui."):
         return "FreeCADGui"
-    if module.startswith("Part.App."):
+    if module == "Part.App" or module.startswith("Part.App."):
         return "Part"
-    if module.startswith("Part.Gui."):
+    if module == "Part.Gui" or module.startswith("Part.Gui."):
         return "PartGui"
-    if module.startswith(("PySide", "PySide2", "PySide6", "PyQt")):
+    if module in public_modules and (
+        public_module_symbols is None
+        or module not in public_module_symbols
+        or set(imported_names) <= set(public_module_symbols[module])
+    ):
         return module
-    if module.startswith(("FreeCAD", "Qt", "numpy", "collections", "enum")):
+    if (
+        module.startswith("Part.")
+        or module.startswith("TechDraw.")
+        or module.startswith("CAM.App.")
+        or module.startswith("Mesh.App.")
+        or module == "Spreadsheet.Sheet"
+    ):
+        return target_module
+    if module in {
+        "Data",
+        "DrawTemplate",
+        "DrawTile",
+        "DrawView",
+        "DrawViewCollection",
+        "DrawViewDimension",
+        "DrawViewPart",
+        "Drawview",
+        "Geometry",
+        "GeometryCurve",
+        "GeometryExtension",
+        "GeometrySurface",
+        "Line",
+        "PartFeature",
+        "Point",
+        "TopoShape",
+        "TopoShapeEdge",
+        "TopoShapeFace",
+        "TopoShapeShell",
+        "TopoShapeSolid",
+        "TopoShapeVertex",
+        "TopoShapeWire",
+        "Vertex",
+        "Wire",
+        "rawView",
+    }:
+        return target_module
+    if any(
+        module == prefix or module.startswith(f"{prefix}.")
+        for prefix in (
+            "PySide",
+            "PySide2",
+            "PySide6",
+            "PyQt",
+            "FreeCAD",
+            "Qt",
+            "numpy",
+            "collections",
+            "enum",
+        )
+    ):
         return module
-    return target_module
+    return module
 
 
 def _normalized_module_support(
     source: str,
     module_name: str,
     existing_symbols: set[str],
+    public_modules: Collection[str] = (),
+    public_module_symbols: Mapping[str, Collection[str]] | None = None,
 ) -> str:
     if not source.strip():
         return ""
@@ -148,7 +210,13 @@ def _normalized_module_support(
             continue
         if node.module and node.module.endswith("Metadata"):
             continue
-        mapped_module = _mapped_import_module(node.module, module_name)
+        mapped_module = _mapped_import_module(
+            node.module,
+            module_name,
+            public_modules,
+            public_module_symbols,
+            [alias.name for alias in node.names],
+        )
         import_level = node.level
         if module_name == "FreeCAD":
             if mapped_module == "FreeCAD":
@@ -214,6 +282,15 @@ def collect_stub_support(
 ) -> StubSupport:
     """Collect support syntax without adding it to the public API model."""
 
+    public_modules = {module.name for module in model.modules} | {
+        "FreeCAD",
+        "FreeCADGui",
+        "Part",
+        "PartGui",
+    }
+    public_module_symbols = {
+        module.name: _module_public_symbols(model, module.name) for module in model.modules
+    }
     module_fragments: list[tuple[str, str]] = []
     for path in sorted(iter_module_stub_pyi_files(root, source_dir)):
         module_name = path.name.removesuffix(".module.pyi")
@@ -221,6 +298,8 @@ def collect_stub_support(
             module_support_source(path.read_text(encoding="utf-8")),
             module_name,
             _module_public_symbols(model, module_name),
+            public_modules,
+            public_module_symbols,
         )
         if source.strip():
             module_fragments.append((module_name, source))
@@ -238,6 +317,8 @@ def collect_stub_support(
             module_source,
             module_name,
             _module_public_symbols(model, module_name),
+            public_modules,
+            public_module_symbols,
         )
         if module_source.strip():
             module_fragments.append((module_name, module_source))
@@ -254,7 +335,6 @@ def collect_stub_support(
 
     for binding_class in binding_classes:
         source = binding_class_source(root, binding_class)
-        path = source.path
         tree = source.module
         source_class = source.class_node
         if tree is None:
@@ -267,6 +347,8 @@ def collect_stub_support(
                 unparse_module_body([node for node in tree.body if node is not source_class]),
                 module_name,
                 _module_public_symbols(model, module_name) | {binding_class.class_name},
+                public_modules,
+                public_module_symbols,
             )
             if module_source.strip():
                 module_fragments.append((module_name, module_source))
@@ -291,6 +373,8 @@ def collect_stub_support(
                 module_support_source(path.read_text(encoding="utf-8")),
                 module_name,
                 _module_public_symbols(model, module_name),
+                public_modules,
+                public_module_symbols,
             )
             if source.strip():
                 module_fragments.append((module_name, source))

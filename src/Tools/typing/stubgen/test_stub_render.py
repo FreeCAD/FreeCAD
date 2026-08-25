@@ -54,7 +54,13 @@ class StubRenderTests(unittest.TestCase):
                 ApiClass(
                     module_name="Demo",
                     name="Widget",
-                    attributes=(ApiAttribute(name="value", annotation="int"),),
+                    attributes=(
+                        ApiAttribute(
+                            name="value",
+                            annotation="int",
+                            doc="Documented value.",
+                        ),
+                    ),
                     methods=(
                         ApiCallableGroup(
                             name="refresh",
@@ -87,6 +93,7 @@ class StubRenderTests(unittest.TestCase):
         self.assertIn("def ping() -> bool:", rendered)
         self.assertIn("class Widget:", rendered)
         self.assertIn("value: int", rendered)
+        self.assertIn('    """Documented value."""', rendered)
         self.assertIn("_token: object", rendered)
         self.assertIn("def refresh(self) -> None:", rendered)
 

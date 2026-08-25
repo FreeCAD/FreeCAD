@@ -17,6 +17,8 @@ class StubSupportTests(unittest.TestCase):
             (source_dir / "Demo.module.pyi").write_text(
                 """\
 from typing import TypeVar
+from Part import Shape
+from UnknownPackage import Thing
 
 _T = TypeVar("_T")
 
@@ -36,11 +38,20 @@ class Widget:
 """,
                 encoding="utf-8",
             )
+            (source_dir / "Import.module.pyi").write_text(
+                "from Part import Shape\n",
+                encoding="utf-8",
+            )
 
             model = extract_curated_api_model(root, source_dir)
             support = collect_stub_support(root, source_dir, model)
 
         self.assertIn("_T = TypeVar('_T')", support.module_source("Demo"))
+        self.assertIn("from Part import Shape", support.module_source("Demo"))
+        self.assertIn("from UnknownPackage import Thing", support.module_source("Demo"))
+        self.assertNotIn("from Demo import Shape", support.module_source("Demo"))
+        self.assertIn("from Part import Shape", support.module_source("Import"))
+        self.assertNotIn("from Import import Shape", support.module_source("Import"))
         self.assertNotIn("def ping", support.module_source("Demo"))
         self.assertIn("_token: object", support.class_source("Demo", "Widget"))
         self.assertNotIn("value: Final[int]", support.class_source("Demo", "Widget"))

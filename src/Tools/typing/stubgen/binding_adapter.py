@@ -29,12 +29,46 @@ from python_api_model.signatures import (
     CallableDecoratorFlags,
     CallableSignature,
     SignatureParameter,
+    callable_shape,
     parse_signature_parts,
 )
 
 from .discovery import group_methods, group_type_methods_by_public_module
 from .model import BindingMethod, PublicTypeGroup, StubSignatureOverrides
 from .naming import valid_identifier
+from .validation import validate_discovered_bindings
+
+
+def _merge_signature_metadata(
+    existing: CallableSignature,
+    incoming: CallableSignature,
+) -> CallableSignature:
+    """Merge descriptive fields after two signatures share one call shape."""
+
+    return replace(
+        existing,
+        docstring=existing.docstring or incoming.docstring,
+        deprecated_message=existing.deprecated_message or incoming.deprecated_message,
+        decorators=tuple(dict.fromkeys((*existing.decorators, *incoming.decorators))),
+    )
+
+
+def _unique_signatures(
+    signatures: Sequence[CallableSignature],
+) -> tuple[CallableSignature, ...]:
+    """Deduplicate signatures by call shape while retaining useful metadata."""
+
+    result: list[CallableSignature] = []
+    indexes: dict[tuple[object, ...], int] = {}
+    for signature in signatures:
+        key = callable_shape(signature)
+        index = indexes.get(key)
+        if index is None:
+            indexes[key] = len(result)
+            result.append(signature)
+        else:
+            result[index] = _merge_signature_metadata(result[index], signature)
+    return tuple(result)
 
 
 def _callable_group_from_methods(
@@ -47,10 +81,12 @@ def _callable_group_from_methods(
     """Convert one discovered registration group into callable signatures."""
 
     signatures: list[CallableSignature] = []
-    seen_signatures: set[CallableSignature] = set()
     for method in methods:
         if not valid_identifier(method.python_name):
-            continue
+            raise ValueError(
+                f"{method.source}:{method.line}: invalid discovered Python name "
+                f"{method.python_name!r}"
+            )
         method_overrides = stub_signature_overrides.get(
             (method.source, method.context_name, method.python_name)
         )
@@ -79,9 +115,6 @@ def _callable_group_from_methods(
                     signature,
                     module_name or method.inferred_module,
                 )
-                if signature in seen_signatures:
-                    continue
-                seen_signatures.add(signature)
                 signatures.append(signature)
         else:
             signature = binding_signature(method, class_symbol is not None)
@@ -89,11 +122,9 @@ def _callable_group_from_methods(
                 signature,
                 module_name or method.inferred_module,
             )
-            if signature in seen_signatures:
-                continue
-            seen_signatures.add(signature)
             signatures.append(signature)
 
+    signatures = list(_unique_signatures(signatures))
     if not signatures:
         return None
 
@@ -215,7 +246,7 @@ def _combine_generated_methods(
         if current is None:
             combined[group.name] = group
             continue
-        signatures = tuple(dict.fromkeys((*current.signatures, *group.signatures)))
+        signatures = _unique_signatures((*current.signatures, *group.signatures))
         combined[group.name] = replace(
             current,
             signatures=signatures,
@@ -233,6 +264,7 @@ def adapt_discovered_bindings(
 
     method_list = list(methods)
     registration_map = {key: list(names) for key, names in type_registrations.items()}
+    validate_discovered_bindings(method_list, registration_map)
     module_functions = _module_function_groups(method_list, stub_signature_overrides)
     type_groups = group_type_methods_by_public_module(method_list, registration_map)
     module_names = set(module_functions) | set(type_groups)

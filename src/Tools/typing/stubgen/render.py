@@ -7,10 +7,16 @@ from __future__ import annotations
 import ast
 from pathlib import Path
 
-from python_api_model.signatures import ArgumentKind, CallableSignature
+from python_api_model.signatures import (
+    ArgumentKind,
+    CallableDecoratorFlags,
+    CallableSignature,
+    SignatureParameter,
+)
 
-from python_api_model.model import ApiCallableGroup, ApiClass, ApiModule
+from python_api_model.model import ApiAttribute, ApiCallableGroup, ApiClass, ApiModule
 from .decorators import raw_decorator_name
+from .module_merge import generated_stub_header
 from .stub_support import StubSupport
 
 
@@ -158,6 +164,92 @@ def _support_lines(source: str, indent: str = "") -> list[str]:
     return [f"{indent}{line}" if line else "" for line in source.splitlines()]
 
 
+def _is_final_annotation(annotation: str | None) -> bool:
+    if not annotation:
+        return False
+    try:
+        node = ast.parse(annotation, mode="eval").body
+    except SyntaxError:
+        return False
+    if isinstance(node, ast.Subscript):
+        node = node.value
+    return (
+        isinstance(node, (ast.Name, ast.Attribute))
+        and (node.id if isinstance(node, ast.Name) else node.attr) == "Final"
+    )
+
+
+def _property_annotation(annotation: str) -> str:
+    try:
+        node = ast.parse(annotation, mode="eval").body
+    except SyntaxError:
+        return annotation
+    if isinstance(node, ast.Subscript):
+        value = node.value
+        if (
+            isinstance(value, (ast.Name, ast.Attribute))
+            and (value.id if isinstance(value, ast.Name) else value.attr) == "Final"
+        ):
+            return ast.unparse(node.slice)
+    return annotation
+
+
+def _deprecated_attribute_methods(attribute: ApiAttribute) -> ApiCallableGroup:
+    """Render one deprecated attribute as a property getter and optional setter."""
+
+    assert attribute.deprecated_message is not None
+    annotation = attribute.annotation or "Any"
+    property_annotation = _property_annotation(annotation)
+    getter = CallableSignature(
+        name=attribute.name,
+        parameters=(
+            SignatureParameter(
+                name="self",
+                annotation=None,
+                kind=ArgumentKind.POSITIONAL_OR_KEYWORD,
+            ),
+        ),
+        return_annotation=property_annotation,
+        docstring=attribute.doc,
+        flags=CallableDecoratorFlags(property_getter=True),
+        deprecated_message=attribute.deprecated_message,
+    )
+    signatures = [getter]
+    if not _is_final_annotation(annotation):
+        setter = CallableSignature(
+            name=attribute.name,
+            parameters=(
+                SignatureParameter(
+                    name="self",
+                    annotation=None,
+                    kind=ArgumentKind.POSITIONAL_OR_KEYWORD,
+                ),
+                SignatureParameter(
+                    name="value",
+                    annotation=property_annotation,
+                    kind=ArgumentKind.POSITIONAL_OR_KEYWORD,
+                ),
+            ),
+            return_annotation="None",
+            docstring=None,
+            flags=CallableDecoratorFlags(property_setter=True),
+            deprecated_message=attribute.deprecated_message,
+        )
+        signatures.append(setter)
+    return ApiCallableGroup(name=attribute.name, signatures=tuple(signatures))
+
+
+def _render_attribute(attribute: ApiAttribute, indent: str = "") -> list[str]:
+    """Render an attribute declaration together with its adjacent documentation."""
+
+    annotation = f": {attribute.annotation}" if attribute.annotation else ""
+    value = f" = {attribute.value}" if attribute.value is not None else ""
+    lines = [f"{indent}{attribute.name}{annotation}{value}"]
+    if attribute.doc:
+        lines.extend(render_docstring_lines(attribute.doc, indent))
+    return lines
+
+
 def _module_support_lines(source: str, generated_names: set[str]) -> list[str]:
     """Remove support imports already provided by the renderer preamble."""
 
@@ -186,13 +278,18 @@ def render_class(
         return [*lines, "    pass"]
     if klass.doc:
         lines.extend(render_docstring_lines(klass.doc, "    "))
+    deprecated_attributes = [
+        _deprecated_attribute_methods(attribute)
+        for attribute in klass.attributes
+        if attribute.deprecated_message is not None
+    ]
     for attribute in klass.attributes:
-        annotation = f": {attribute.annotation}" if attribute.annotation else ""
-        value = f" = {attribute.value}" if attribute.value is not None else ""
-        lines.append(f"    {attribute.name}{annotation}{value}")
+        if attribute.deprecated_message is not None:
+            continue
+        lines.extend(_render_attribute(attribute, "    "))
     if class_support.strip():
         lines.extend(_support_lines(class_support, "    "))
-    for method in klass.methods:
+    for method in (*deprecated_attributes, *klass.methods):
         if lines[-1] != "    ":
             lines.append("")
         lines.extend(render_callable_group(method, indent="    "))
@@ -206,15 +303,28 @@ def _needs_overload(module: ApiModule) -> bool:
 
 
 def _needs_deprecated(module: ApiModule) -> bool:
-    return any(
-        signature.deprecated_message is not None
-        for group in module.functions
-        for signature in group.signatures
-    ) or any(
-        signature.deprecated_message is not None
-        for klass in module.classes
-        for group in klass.methods
-        for signature in group.signatures
+    return (
+        any(
+            raw_decorator_name(decorator) == "deprecated"
+            for klass in module.classes
+            for decorator in klass.decorators
+        )
+        or any(
+            attribute.deprecated_message is not None
+            for klass in module.classes
+            for attribute in klass.attributes
+        )
+        or any(
+            signature.deprecated_message is not None
+            for group in module.functions
+            for signature in group.signatures
+        )
+        or any(
+            signature.deprecated_message is not None
+            for klass in module.classes
+            for group in klass.methods
+            for signature in group.signatures
+        )
     )
 
 
@@ -257,7 +367,12 @@ def render_module(
 ) -> str:
     needs_overload = _needs_overload(module)
     needs_deprecated = _needs_deprecated(module)
-    lines = ["from __future__ import annotations", "from typing import Any"]
+    lines = [
+        *generated_stub_header().splitlines(),
+        "",
+        "from __future__ import annotations",
+        "from typing import Any",
+    ]
     if needs_overload:
         lines[-1] += ", overload"
     if needs_deprecated:
@@ -277,9 +392,7 @@ def render_module(
         lines.extend(_module_support_lines(module_support, generated_names))
         lines.append("")
     for attribute in module.attributes:
-        annotation = f": {attribute.annotation}" if attribute.annotation else ""
-        value = f" = {attribute.value}" if attribute.value is not None else ""
-        lines.append(f"{attribute.name}{annotation}{value}")
+        lines.extend(_render_attribute(attribute))
     if module.attributes:
         lines.append("")
     for function in module.functions:

@@ -21,6 +21,7 @@ import subprocess
 import sys
 
 from .doc_lint import lint_curated_stub_docs
+from python_api_model.diagnostics import MergeDiagnostics
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
     markdown_report,
@@ -212,14 +213,23 @@ def run_generate(args: argparse.Namespace) -> int:
             stub_signature_overrides,
             overlay_dir,
         )
-        overlay_count = result.overlay_count
+        if result.diagnostics:
+            diagnostic_output = MergeDiagnostics(result.diagnostics).render() + "\n"
+            print_stderr(diagnostic_output)
+            if getattr(args, "log_dir", None):
+                write_log(
+                    args.log_dir.resolve() / "python-stubs-diagnostics.log",
+                    diagnostic_output,
+                )
+        if result.errors:
+            return 1
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
-            f"({generation_result.overlay_count} overlay stub files applied)\n"
-            f"{generation_result.cpp_property_report.summary()}"
+            f"({result.overlay_count} overlay stub files applied)\n"
+            f"{result.cpp_property_report.summary()}"
         )
         print(summary)
-        if args.log_dir:
+        if getattr(args, "log_dir", None):
             log_dir = args.log_dir.resolve()
             write_log(log_dir / "python-stubs-generate.log", summary + "\n")
     else:
@@ -274,7 +284,7 @@ def run_lint_docs(args: argparse.Namespace) -> int:
     report = lint_curated_stub_docs(root, source_dir, selected_paths)
     output = report.render(root)
 
-    if args.log_dir:
+    if getattr(args, "log_dir", None):
         log_dir = args.log_dir.resolve()
         write_log(log_dir / "python-stubs-docs.log", output)
 

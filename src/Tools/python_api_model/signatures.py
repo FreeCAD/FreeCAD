@@ -66,6 +66,29 @@ class CallableSignature:
     decorators: tuple[str, ...] = ()
 
 
+def callable_shape(signature: CallableSignature) -> tuple[object, ...]:
+    """Return the call semantics that identify one overload shape.
+
+    Documentation, deprecation metadata, and raw decorators describe a
+    declaration but do not change how it is called.  Keeping those fields out
+    of this key prevents duplicate registrations from becoming false overloads.
+    """
+
+    return (
+        signature.name,
+        tuple(
+            (parameter.name, parameter.annotation, parameter.kind, parameter.default)
+            for parameter in signature.parameters
+        ),
+        signature.return_annotation,
+        signature.is_async,
+        signature.flags.classmethod,
+        signature.flags.staticmethod,
+        signature.flags.property_getter,
+        signature.flags.property_setter,
+    )
+
+
 def annotation_text(node: ast.AST | None) -> str | None:
     if node is None:
         return None
