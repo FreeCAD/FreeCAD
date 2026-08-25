@@ -59,6 +59,7 @@ public:
         OverrideScope& operator=(const OverrideScope&) = delete;
 
     private:
+        const SoPath* scoped = nullptr;
         const SoPath* prev = nullptr;
     };
 
