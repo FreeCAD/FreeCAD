@@ -52,8 +52,10 @@ def structured_deprecation_message(values: dict[str, object]) -> str | None:
         value = values.get(field)
         if value is not None and not isinstance(value, str):
             raise ValueError(f"deprecated() {field} must be a string or None")
-    if replacement := values.get("replacement"):
+    replacement = values.get("replacement")
+    if isinstance(replacement, str) and replacement:
         message += f"; use {replacement} instead"
-    if details := values.get("details"):
+    details = values.get("details")
+    if isinstance(details, str) and details:
         message += f"; {details.rstrip()}"
     return message if message.endswith((".", "!", "?")) else message + "."

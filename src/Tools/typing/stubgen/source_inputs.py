@@ -1,25 +1,21 @@
 # pyright: strict
 
-"""Structured source-input readers for the stub generation pipeline.
+"""Structured source-input readers for the StubGen pipeline.
 
-This module turns curated Python-side inputs into normalized internal data:
-- binding class declarations from CMake-registered binding ``.pyi`` files
-- source-adjacent ``*.module.pyi`` signatures for module APIs
-- source-adjacent plain ``.pyi`` type stubs for PyCXX classes
-
-In the overall pipeline this sits between raw discovery and final rendering.
-``discovery`` tells us what runtime registrations exist; this module loads the
-curated source-side typing information that refines and documents them.
-
-Keep this file focused on parsing source-adjacent stub inputs and binding
-declarations. Stub rendering and AST merge behavior belong in other modules.
+This module parses source-adjacent Python inputs and binding declarations used
+by API extraction and binding discovery. It owns source-specific parsing and
+metadata interpretation; public API resolution belongs to
+``python_api.resolve`` and output formatting belongs to the renderer.
 """
 
 from __future__ import annotations
 
 import ast
+from dataclasses import dataclass
 from pathlib import Path
 from typing import TypeVar
+
+from python_api_model.signatures import decorator_name
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
@@ -40,7 +36,6 @@ from .model import (
 from .naming import valid_identifier
 from .parsing import (
     decorator_kwargs,
-    decorator_name,
     extract_balanced,
     iter_binding_pyi_files,
     iter_module_stub_pyi_files,
@@ -53,7 +48,7 @@ K = TypeVar("K")
 
 
 def deprecated_message_from_decorator(decorator: ast.expr) -> str | None:
-    if decorator_name(decorator).split(".", 1)[-1] != "deprecated":
+    if decorator_name(decorator) != "deprecated":
         return None
 
     if not isinstance(decorator, ast.Call):
@@ -111,7 +106,7 @@ def public_names_for_class(
     python_name: str | None,
     export_kwargs: dict[str, object],
     type_registrations: dict[str, list[str]],
-) -> list[str]:
+) -> tuple[str, ...]:
     candidate_keys: list[str] = []
     namespace = export_kwargs.get("Namespace")
     if isinstance(namespace, str) and namespace:
@@ -123,19 +118,19 @@ def public_names_for_class(
     for key in dict.fromkeys(candidate_keys):
         names = list(dict.fromkeys(type_registrations.get(key, [])))
         if names:
-            return names
+            return tuple(names)
 
     fallback_name = fallback_public_name(rel_path, class_name)
     unqualified_names = list(dict.fromkeys(type_registrations.get(export_name, [])))
     if unqualified_names and fallback_name in unqualified_names and len(unqualified_names) == 1:
-        return unqualified_names
+        return tuple(unqualified_names)
 
     names: list[str] = []
     if python_name:
         names.append(python_name)
     if fallback_name and not names:
         names.append(fallback_name)
-    return names
+    return tuple(names)
 
 
 def cpp_type_names_for_class(
@@ -222,6 +217,36 @@ def collect_binding_classes(
         classes.extend(parse_binding_class_file(root, path, type_registrations))
 
     return sorted(classes, key=lambda klass: (klass.source, klass.line, klass.class_name))
+
+
+@dataclass(frozen=True)
+class BindingClassSource:
+    """Parsed source location and class node for one binding declaration."""
+
+    path: Path
+    module: ast.Module | None
+    class_node: ast.ClassDef | None
+
+
+def binding_class_source(
+    root: Path,
+    binding_class: BindingClass,
+) -> BindingClassSource:
+    """Load the binding class declaration identified by source and line."""
+
+    path = root / binding_class.source
+    tree = parse_python_source(path)
+    source_class = next(
+        (
+            node
+            for node in (tree.body if tree is not None else [])
+            if isinstance(node, ast.ClassDef)
+            and node.name == binding_class.class_name
+            and node.lineno == binding_class.line
+        ),
+        None,
+    )
+    return BindingClassSource(path=path, module=tree, class_node=source_class)
 
 
 def extracted_function_signature_parts(
@@ -470,7 +495,13 @@ def supplement_module_methods_from_stub_signatures(
     return supplemented
 
 
-def parse_type_stub_target(path: Path) -> tuple[str, str]:
+@dataclass(frozen=True)
+class TypeStubTarget:
+    module_name: str
+    class_name: str
+
+
+def parse_type_stub_target(path: Path) -> TypeStubTarget:
     target = path.stem
     if not target or "." not in target:
         raise ValueError(f"{path}: invalid type stub filename")
@@ -481,7 +512,7 @@ def parse_type_stub_target(path: Path) -> tuple[str, str]:
         raise ValueError(f"{path}: invalid module name in type stub filename")
     if not valid_identifier(class_symbol):
         raise ValueError(f"{path}: invalid class symbol in type stub filename")
-    return module_name, class_symbol
+    return TypeStubTarget(module_name=module_name, class_name=class_symbol)
 
 
 def parse_source_type_stub_signature_overrides(
@@ -490,7 +521,9 @@ def parse_source_type_stub_signature_overrides(
 ) -> dict[tuple[str, str, str], tuple[StubSignatureGroup, Path]]:
     signatures: dict[tuple[str, str, str], tuple[StubSignatureGroup, Path]] = {}
     for path in sorted(iter_type_stub_pyi_files(root, source_dir)):
-        module_name, class_symbol = parse_type_stub_target(path)
+        target = parse_type_stub_target(path)
+        module_name = target.module_name
+        class_symbol = target.class_name
         source = path.read_text(encoding="utf-8")
         try:
             tree = ast.parse(source, filename=str(path))
