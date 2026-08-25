@@ -2581,30 +2581,28 @@ bool Adaptive2d::IsClearPath(const Path64& tp, ClearedArea& cleared, double safe
 }
 
 bool Adaptive2d::IsAllowedToCutTrough(
-    const Point64& p1_p64,
-    const Point64& p2_p64,
+    const Point64& p1,
+    const Point64& p2,
     ClearedArea& cleared,
-    const Paths64& toolBoundPaths_p64,
+    const Paths64& toolBoundPaths,
     double areaFactor,
     bool skipBoundsCheck
 )
 {
-    ClipperLib::IntPoint p1 = ToC1Point(p1_p64), p2 = ToC1Point(p2_p64);
     Perf_IsAllowedToCutTrough.Start();
 
-    if (!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths_p64, ToPoint64(p2))) {
+    if (!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths, p2)) {
         // last point outside boundary - its not clear to cut
         Perf_IsAllowedToCutTrough.Stop();
         return false;
     }
-    else if (!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths_p64, ToPoint64(p1))) {
+    else if (!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths, p1)) {
         // first point outside boundary - its not clear to cut
         Perf_IsAllowedToCutTrough.Stop();
         return false;
     }
     else {
-        ClipperLib::Clipper clip;
-        double distance = sqrt(DistanceSqrd(ToPoint64(p1), ToPoint64(p2)));
+        double distance = sqrt(DistanceSqrd(p1, p2));
         double stepSize = min(0.5 * stepOverScaled, 8 * MIN_STEP_CLIPPER);
         if (distance < stepSize / 2) {  // not significant cut
             Perf_IsAllowedToCutTrough.Stop();
@@ -2614,23 +2612,23 @@ bool Adaptive2d::IsAllowedToCutTrough(
             areaFactor *= 2;
         }
 
-        ClipperLib::IntPoint toolPos1 = p1;
+        Point64 toolPos1 = p1;
         long steps = long(distance / stepSize) + 1;
         stepSize = distance / steps;
         for (long i = 1; i <= steps; i++) {
             double p = double(i) / steps;
-            ClipperLib::IntPoint toolPos2(
-                long(p1.X + double(p2.X - p1.X) * p),
-                long(p1.Y + double(p2.Y - p1.Y) * p)
+            Point64 toolPos2(
+                long(p1.x + double(p2.x - p1.x) * p),
+                long(p1.y + double(p2.y - p1.y) * p)
             );
-            double area = CalcCutArea(ToPoint64(toolPos1), ToPoint64(toolPos2), cleared).first;
+            double area = CalcCutArea(toolPos1, toolPos2, cleared).first;
             // if we are cutting above optimal -> not clear to cut
             if (area > areaFactor * stepSize * optimalCutAreaPD) {
                 Perf_IsAllowedToCutTrough.Stop();
                 return false;
             }
             // if tool is outside boundary -> its not clear to cut
-            if (!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths_p64, ToPoint64(toolPos2))) {
+            if (!skipBoundsCheck && !IsPointWithinCutRegion(toolBoundPaths, toolPos2)) {
                 Perf_IsAllowedToCutTrough.Stop();
                 return false;
             }
