@@ -1074,7 +1074,7 @@ static TopoDS_Face getSelectedFace(const App::PropertyLinkSub& faceProp)
         subShape = topoShape.getSubShape(subs.front().c_str());
     }
     catch (const Standard_Failure& e) {
-        Base::Console().warning("getSelectedFace: OCCT exception: %s\n", e.GetMessageString());
+        Base::Console().warning("getSelectedFace: OCCT exception:...\n");
         return TopoDS_Face();
     }
     catch (const Base::Exception& e) {
@@ -1343,6 +1343,7 @@ gp_Pnt ThreadUtils::getThreadAxisOrigin(const App::PropertyLinkSub& LateralFace)
 
     if (getFaceType(threadedFace) == FaceType::Cylinder) {
         Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
+        Base::Console().message("cyl->Position().Location().z(): %lf\n", cyl->Position().Location().Z());
         return cyl->Position().Location();
     }
     else if (getFaceType(threadedFace) == FaceType::Cone) {
@@ -1749,6 +1750,8 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
     zDir.Normalize();
 
     gp_Pnt startPoint = getThreadStartPoint(lateralFace, gp_Dir(zDir));
+    Base::Console().message("getThreadStartPoint.Z(): %lf\n", startPoint.Z());
+    // gp_Pnt startPoint = getThreadAxisOrigin(lateralFace);
 
     gp_Ax2 axis(startPoint, gp_Dir(zDir));
 
@@ -1789,67 +1792,338 @@ Part::TopoShape ThreadUtils::reduceExternalThreadBase(
 #include <IntCurvesFace_ShapeIntersector.hxx>
 #include <Standard_Failure.hxx>
 
+gp_Dir ThreadUtils::getThreadAxisDir(const App::PropertyLinkSub& LateralFace)
+{
+    TopoDS_Face threadedFace = getSelectedFace(LateralFace);
+    Handle(Geom_Surface) surf = BRep_Tool::Surface(threadedFace);
+
+    FaceType faceType = getFaceType(threadedFace);
+
+    if (faceType == FaceType::Cylinder) {
+        Handle(Geom_CylindricalSurface) cyl = Handle(Geom_CylindricalSurface)::DownCast(surf);
+        return cyl->Position().Direction();
+    }
+    else if (faceType == FaceType::Cone) {
+        Handle(Geom_ConicalSurface) cone = Handle(Geom_ConicalSurface)::DownCast(surf);
+        return cone->Position().Direction();
+    }
+
+    throw Base::RuntimeError("Thread axis direction could not be calculated (Face is neither Cylinder nor Cone).");
+}
+
+#include <BRepBuilderAPI_MakeVertex.hxx>
+#include <App/PropertyGeo.h>   // App::PropertyPlacement
+#include "BRepBuilderAPI_MakeFace.hxx"
+
+static TopoDS_Shape getSelectedSubShape(const App::PropertyLinkSub& prop)
+{
+    App::DocumentObject* obj = prop.getValue();
+    if (!obj) {
+        Base::Console().message("getSelectedSubShape: obj is null\n");
+        return TopoDS_Shape();
+    }
+
+    Base::Console().message("getSelectedSubShape: obj name = %s\n", obj->getNameInDocument());
+    Base::Console().message("getSelectedSubShape: obj type = %s\n", obj->getTypeId().getName());
+
+    const std::vector<std::string>& subs = prop.getSubValues();
+    Base::Console().message("getSelectedSubShape: subs size = %zu\n", subs.size());
+
+    if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPoint")) ||
+        obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumLine")) ||
+        obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPlane")) ||
+        obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Datum")) ||
+        obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Point")) ||
+        obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Line")) ||
+        obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Plane")))
+    {
+        Base::Console().message("getSelectedSubShape: it's a Datum object\n");
+
+        App::Property* rawPlacement = obj->getPropertyByName("Placement");
+        if (!rawPlacement ||
+            !rawPlacement->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+            Base::Console().message("getSelectedSubShape: Datum has no usable 'Placement' property\n");
+            return TopoDS_Shape();
+        }
+
+        auto* propPlacement = static_cast<App::PropertyPlacement*>(rawPlacement);
+        Base::Placement trsf = propPlacement->getValue();
+        Base::Vector3d pos = trsf.getPosition();
+
+        if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPoint")) ||
+            obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Point"))) 
+        {
+            BRepBuilderAPI_MakeVertex mkVertex(gp_Pnt(pos.x, pos.y, pos.z));
+            return mkVertex.Vertex();
+        }
+
+        if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumLine")) ||
+            obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Line"))) 
+        {
+            Base::Rotation rot = trsf.getRotation();
+            Base::Vector3d dir(0, 0, 1);
+            rot.multVec(dir, dir);
+
+            gp_Pnt pnt(pos.x, pos.y, pos.z);
+            gp_Dir direction(dir.x, dir.y, dir.z);
+            gp_Lin line(pnt, direction);
+
+            BRepBuilderAPI_MakeEdge mkEdge(line, -1000.0, 1000.0);
+            return mkEdge.Edge();
+        }
+
+        if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Part::DatumPlane")) ||
+            obj->getTypeId().isDerivedFrom(Base::Type::fromName("PartDesign::Plane"))) 
+        {
+            Base::Rotation rot = trsf.getRotation();
+            Base::Vector3d normal(0, 0, 1);
+            rot.multVec(normal, normal);
+
+            gp_Pnt pnt(pos.x, pos.y, pos.z);
+            gp_Dir dirNormal(normal.x, normal.y, normal.z);
+            gp_Pln plane(pnt, dirNormal);
+
+            BRepBuilderAPI_MakeFace mkFace(plane, -1000.0, 1000.0, -1000.0, 1000.0);
+            return mkFace.Face();
+        }
+    }
+
+    auto* feature = dynamic_cast<Part::Feature*>(obj);
+    if (!feature) {
+        Base::Console().message("getSelectedSubShape: not a Part::Feature and not a recognized Datum\n");
+        return TopoDS_Shape();
+    }
+
+    const Part::TopoShape& topoShape = feature->Shape.getShape();
+    if (topoShape.isNull()) {
+        Base::Console().message("getSelectedSubShape: topoShape is null\n");
+        return TopoDS_Shape();
+    }
+
+    if (subs.empty() || subs.front().empty()) {
+        Base::Console().message("getSelectedSubShape: returning full shape\n");
+        return topoShape.getShape();
+    }
+
+    TopoDS_Shape subShape;
+    try {
+        Base::Console().message("getSelectedSubShape: getting subshape '%s'\n", subs.front().c_str());
+        subShape = topoShape.getSubShape(subs.front().c_str());
+    }
+    catch (const Standard_Failure& e) {
+        Base::Console().warning("getSelectedSubShape: OCCT exception: %s\n", e.GetMessageString());
+        return TopoDS_Shape();
+    }
+    catch (const Base::Exception& e) {
+        Base::Console().warning("getSelectedSubShape: %s\n", e.what());
+        return TopoDS_Shape();
+    }
+
+    if (subShape.IsNull()) {
+        Base::Console().message("getSelectedSubShape: subShape is null\n");
+        return TopoDS_Shape();
+    }
+
+    return subShape;
+}
+
+#include <GeomAPI_ExtremaCurveCurve.hxx>
+#include <Geom_Line.hxx>
+#include <GeomAdaptor_Curve.hxx>
+#include <BRep_Tool.hxx>
+#include <Precision.hxx>
+#include <vector>
+
+std::vector<gp_Pnt> ThreadUtils::findLineCurveIntersections(
+    const gp_Lin& line,
+    const BRepAdaptor_Curve& curve)
+{
+    std::vector<gp_Pnt> intersections;
+
+    Handle(Geom_Curve) geomCurve = curve.Curve().Curve();
+
+    if (geomCurve.IsNull()) {
+        return intersections;
+    }
+
+    Handle(Geom_Line) geomLine = new Geom_Line(line);
+
+    GeomAPI_ExtremaCurveCurve extrema(
+        geomLine,
+        geomCurve
+    );
+
+    const Standard_Integer nbExtrema = extrema.NbExtrema();
+    const double tolerance = Precision::Confusion() * 10.0;
+
+    for (Standard_Integer i = 1; i <= nbExtrema; ++i) {
+
+        gp_Pnt linePoint;
+        gp_Pnt curvePoint;
+
+        extrema.Points(i, linePoint, curvePoint);
+
+        const double distance = linePoint.Distance(curvePoint);
+
+        if (distance <= tolerance) {
+            bool alreadyExists = false;
+
+            for (const gp_Pnt& existing : intersections) {
+                if (existing.Distance(curvePoint) <= tolerance) {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+
+            if (!alreadyExists) {
+                intersections.push_back(curvePoint);
+            }
+        }
+    }
+
+    return intersections;
+}
+
+gp_Pnt ThreadUtils::getPlaneLineIntersection(
+    const gp_Pln& plane,
+    const gp_Lin& line)
+{
+    const gp_Pnt& lineOrigin = line.Location();
+    const gp_Dir& lineDir = line.Direction();
+
+    const gp_Pnt& planeOrigin = plane.Location();
+    const gp_Dir& planeNormal = plane.Axis().Direction();
+
+    const double dx = planeOrigin.X() - lineOrigin.X();
+    const double dy = planeOrigin.Y() - lineOrigin.Y();
+    const double dz = planeOrigin.Z() - lineOrigin.Z();
+
+    const double denominator =
+        planeNormal.X() * lineDir.X() +
+        planeNormal.Y() * lineDir.Y() +
+        planeNormal.Z() * lineDir.Z();
+
+    if (Abs(denominator) <= Precision::Angular()) {
+        throw Base::ValueError(
+            QT_TRANSLATE_NOOP(
+                "Exception",
+                "Thread axis is parallel to the selected plane."
+            )
+        );
+    }
+
+    const double numerator =
+        planeNormal.X() * dx +
+        planeNormal.Y() * dy +
+        planeNormal.Z() * dz;
+
+    const double t = numerator / denominator;
+
+    gp_Pnt intersection = lineOrigin.Translated(
+        gp_Vec(lineDir) * t
+    );
+
+    const double distanceToPlane =
+        plane.Distance(intersection);
+
+    return intersection;
+}
+
 gp_Pnt ThreadUtils::getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const App::PropertyLinkSub& startPlane)
 {
-    gp_Pnt axisOrigin = getThreadAxisOrigin(lateralFace);
-    // gp_Dir axisDir = getThreadAxisDir(lateralFace);
-    // gp_Ax1 threadAxis(axisOrigin, axisDir);
-    // gp_Lin axisLine(threadAxis);
+    // gp_Pnt axisOrigin = getThreadAxisOrigin(lateralFace);
+    gp_Vec zDir = getThreadZAxis(lateralFace);
+    zDir.Normalize();
+    gp_Pnt axisOrigin = getThreadStartPoint(lateralFace, gp_Dir(zDir));
 
-    auto* obj = startPlane.getValue();
+    gp_Dir axisDir = getThreadAxisDir(lateralFace);
+    gp_Ax1 threadAxis(axisOrigin, axisDir);
+    gp_Lin axisLine(threadAxis);
+
+    auto* obj = startPlane.getValue(); //TODO: change for getSelectedFace
     if (obj == nullptr) {
+        Base::Console().message("exit 1\n");
         return axisOrigin;
     }
 
-    // if (shape.ShapeType() == TopAbs_VERTEX) {
-    //     return BRep_Tool::Pnt(TopoDS::Vertex(shape));
-    // }
+    const TopoDS_Shape& shape = getSelectedSubShape(startPlane); //check if TopoDS_Face == TopoDS_Shape
 
-    // if (shape.ShapeType() == TopAbs_EDGE) {
-    //     BRepAdaptor_Curve curveAdaptor(TopoDS::Edge(shape));
-    //     gp_Pnt intersectionPnt;
-    //     if (findLineCurveIntersection(axisLine, curveAdaptor, intersectionPnt)) {
-    //         return intersectionPnt;
-    //     }
-    //     throw Base::ValueError("Selected edge does not intersect the thread axis.");
-    // }
+    if (shape.IsNull()) {
+        Base::Console().message("exit 2\n");
+        return axisOrigin;
+    }
 
-    // if (shape.ShapeType() == TopAbs_FACE) {
-    //     TopoDS_Face face = TopoDS::Face(shape);
-    //     BRepAdaptor_Surface surfAdaptor(face);
+    switch (shape.ShapeType()) {
+        case TopAbs_VERTEX: {
+            Base::Console().message("It's a vertex\n");
+            gp_Pnt pt = BRep_Tool::Pnt(TopoDS::Vertex(shape));
+            if (axisLine.Distance(pt) > Precision::Confusion() * 10) {
+                throw Base::ValueError(QT_TRANSLATE_NOOP("Exception",
+                    "Selected point does not lie on the thread axis."));
+            }
+            Base::Console().message("mandando o novo ponto.");
+            return pt;
+        }
 
-    //     if (surfAdaptor.GetType() == GeomAbs_Plane) {
-    //         gp_Pln plane = surfAdaptor.Plane();
-    //         gp_Dir planeNormal = plane.Axis().Direction();
+        case TopAbs_EDGE: {
+            BRepAdaptor_Curve curveAdaptor(TopoDS::Edge(shape));
+            Base::Console().message("Sou EDGE, estou comecando\n");
 
-    //         if (planeNormal.IsParallel(axisDir, Precision::Angular())) {
-    //             return getPlaneLineIntersection(plane, axisLine);
-    //         }
-    //     }
+            std::vector<gp_Pnt> intersections = findLineCurveIntersections(axisLine, curveAdaptor);
 
-    //     IntCurvesFace_ShapeIntersector intersector;
-    //     intersector.Load(face, Precision::Confusion());
-    //     intersector.Perform(axisLine, -1e5, 1e5);
+            if (intersections.empty()) {
+                throw Base::ValueError(
+                    "Selected edge does not intersect the thread axis."
+                );
+            }
 
-    //     if (!intersector.IsDone() || intersector.NbPnt() == 0) {
-    //         throw Base::ValueError("Selected face/surface does not intersect the thread axis.");
-    //     }
+            // TODO: find minor intersection later
+            return intersections.front();
+        }
 
-    //     gp_Pnt bestPoint;
-    //     double minDistance = std::numeric_limits<double>::max();
+        case TopAbs_FACE: {
+            Base::Console().message("It's a face!\n");
+            TopoDS_Face face = TopoDS::Face(shape);
+            BRepAdaptor_Surface surfAdaptor(face);
 
-    //     for (int i = 1; i <= intersector.NbPnt(); ++i) {
-    //         gp_Pnt pnt = intersector.Pnt(i);
-    //         double dist = pnt.Distance(axisOrigin);
+            if (surfAdaptor.GetType() == GeomAbs_Plane) {
+                gp_Pln plane = surfAdaptor.Plane();
+
+                Base::Console().message("Getting intersection\n");
+                gp_Pnt intersection =
+                    getPlaneLineIntersection(plane, axisLine);
+                Base::Console().message("intersection.Z(): %lf\n", intersection.Z());
+
+                // TODO: verify if point is on the face if it is needed.
+                return intersection;
+            }
             
-    //         if (dist < minDistance) {
-    //             minDistance = dist;
-    //             bestPoint = pnt;
-    //         }
-    //     }
+            IntCurvesFace_ShapeIntersector intersector;
+            intersector.Load(face, Precision::Confusion());
+            intersector.Perform(axisLine, -1e5, 1e5);
 
-    //     return bestPoint;
-    // }
+            if (!intersector.IsDone() || intersector.NbPnt() == 0) {
+                throw Base::ValueError(
+                    "Selected face/surface does not intersect the thread axis."
+                );
+            }
+
+            gp_Pnt bestPoint;
+            double minDistance = std::numeric_limits<double>::max();
+
+            for (int i = 1; i <= intersector.NbPnt(); ++i) {
+                gp_Pnt pnt = intersector.Pnt(i);
+                double dist = pnt.Distance(axisOrigin);
+
+                if (dist < minDistance) {
+                    minDistance = dist;
+                    bestPoint = pnt;
+                }
+            }
+
+            return bestPoint;
+        }
+    }
 
     throw Base::ValueError("Invalid start object selected for thread calculation.");
 }

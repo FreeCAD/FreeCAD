@@ -126,6 +126,8 @@ App::DocumentObjectExecReturn* Thread::execute()
     Base::Console().message("isInternal?: %d\n", IsInternal.getValue());
 
     gp_Pnt startPoint = threadUtils.getThreadStartPoint(LateralFace, StartPlane);
+    Base::Console().message("startPoint = (%f, %f, %f)\n",
+                         startPoint.X(), startPoint.Y(), startPoint.Z());
     // double diameter = threadUtils.getLateralFaceDiameter(LateralFace);
     // Base::Console().message("diameter: %lf\n", diameter);
 
@@ -206,16 +208,18 @@ App::DocumentObjectExecReturn* Thread::execute()
         );
         std::cout << "after makeThread\n";
 
-        if(IsInternal.getValue()){
+        // if(IsInternal.getValue()){
             gp_Vec zDirUnit = zDir;
             zDirUnit.Normalize();
             gp_Pnt bottomPoint = startPoint.Translated(zDirUnit * length);
             // gp_Pnt axisOrigin = threadUtils.getThreadAxisOrigin(LateralFace); // It's going to be used in getthreadstart
+            Base::Console().message("bottomPoint = (%f, %f, %f)\n",
+                             bottomPoint.X(), bottomPoint.Y(), bottomPoint.Z());
             gp_Trsf translation;
             translation.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), bottomPoint);
             TopLoc_Location locTrans(translation);
             thread.Move(locTrans);
-        }
+        // }
             
         if (thread.IsNull()) {
             return new App::DocumentObjectExecReturn(

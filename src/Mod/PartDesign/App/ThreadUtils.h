@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include <BRepAdaptor_Curve.hxx>
+
 namespace PartDesign
 {
 
@@ -73,7 +75,10 @@ public:
     std::vector<std::string> getThreadMinorDiameters(const int threadType);
     double getMinorDiameter(const int threadType, const int size);
     gp_Pnt getThreadStartPoint(const App::PropertyLinkSub& lateralFace, const gp_Dir& zDir);
+    gp_Dir getThreadAxisDir(const App::PropertyLinkSub& LateralFace);
     Part::TopoShape reduceExternalThreadBase(Part::TopoShape base, const App::PropertyLinkSub& lateralFace, double majorDiameter, double minorDiameter, double length);
+    gp_Pnt getPlaneLineIntersection(const gp_Pln& plane, const gp_Lin& line);
+    std::vector<gp_Pnt> findLineCurveIntersections(const gp_Lin& line, const BRepAdaptor_Curve& curve);
     std::vector<std::string> getThreadPitches(const int threadType, const int threadDiameter);
     std::string getThreadDesignations(
         const int threadType,
