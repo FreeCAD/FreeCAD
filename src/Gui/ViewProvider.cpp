@@ -550,6 +550,9 @@ void ViewProvider::setOverrideMode(const std::string& mode)
         setModeSwitch();
     }
     else {
+        // Hidden objects never reach setModeSwitch(), but the on-top override
+        // still needs the child the new mode would have shown.
+        updateModeSwitchDefaultChild();
         for (auto ext : getExtensionsDerivedFromType<Gui::ViewProviderExtension>()) {
             ext->extensionModeSwitchChange();
         }
