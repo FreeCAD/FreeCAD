@@ -2567,19 +2567,11 @@ bool Adaptive2d::FindEntryPoint(
 //************************************************************
 //  IsClearPath - returns true if path is clear from obstacles
 //***********************************************************
-bool Adaptive2d::IsClearPath(const Path64& tp_p64, ClearedArea& cleared, double safetyClearance)
+bool Adaptive2d::IsClearPath(const Path64& tp, ClearedArea& cleared, double safetyClearance)
 {
     Perf_IsClearPath.Start();
-    ClipperLib::Path tp = ToC1Path(tp_p64);
-    ClipperLib::Clipper clip;
-    ClipperLib::ClipperOffset clipof;
-    clipof.AddPath(tp, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etOpenRound);
-    ClipperLib::Paths toolShape;
-    clipof.Execute(toolShape, toolRadiusScaled + safetyClearance);
-    clip.AddPaths(toolShape, ClipperLib::PolyType::ptSubject, true);
-    clip.AddPaths(ToC1Paths(cleared.GetCleared()), ClipperLib::PolyType::ptClip, true);
-    ClipperLib::Paths crossing;
-    clip.Execute(ClipperLib::ClipType::ctDifference, crossing);
+    Paths64 toolShape = OffsetPath(tp, toolRadiusScaled + safetyClearance, EndType::Round);
+    Paths64 crossing = Difference(toolShape, cleared.GetCleared(), FillRule::EvenOdd);
     double collisionArea = 0;
     for (auto& p : crossing) {
         collisionArea += fabs(Area(p));
