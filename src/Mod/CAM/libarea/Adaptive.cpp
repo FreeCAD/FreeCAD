@@ -414,28 +414,24 @@ double DistancePointToLineSegSquared(
     return DX * DX + DY * DY;  // return distance squared
 }
 
-void ScaleUpPaths(Paths64& paths_p64, long scaleFactor)
+void ScaleUpPaths(Paths64& paths, long scaleFactor)
 {
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
     for (auto& pth : paths) {
         for (auto& pt : pth) {
-            pt.X *= scaleFactor;
-            pt.Y *= scaleFactor;
+            pt.x *= scaleFactor;
+            pt.y *= scaleFactor;
         }
     }
-    paths_p64 = ToPaths64(paths);
 }
 
-void ScaleDownPaths(Paths64& paths_p64, long scaleFactor)
+void ScaleDownPaths(Paths64& paths, long scaleFactor)
 {
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
     for (auto& pth : paths) {
         for (auto& pt : pth) {
-            pt.X /= scaleFactor;
-            pt.Y /= scaleFactor;
+            pt.x /= scaleFactor;
+            pt.y /= scaleFactor;
         }
     }
-    paths_p64 = ToPaths64(paths);
 }
 
 
