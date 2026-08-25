@@ -1584,37 +1584,24 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1, Point64 c2, Cleare
     return {area, conventionalArea};
 }
 
-void Adaptive2d::ApplyStockToLeave(Paths64& inputPaths_p64)
+void Adaptive2d::ApplyStockToLeave(Paths64& inputPaths)
 {
-    ClipperLib::Paths inputPaths = ToC1Paths(inputPaths_p64);
-    ClipperLib::ClipperOffset clipof;
     if (stockToLeave > NTOL) {
-        clipof.Clear();
-        clipof.AddPaths(inputPaths, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
         if (opType == OperationType::otClearingOutside
             || opType == OperationType::otProfilingOutside) {
-            clipof.Execute(inputPaths, stockToLeave * scaleFactor);
+            inputPaths = OffsetPaths(inputPaths, stockToLeave * scaleFactor);
         }
         else {
-            clipof.Execute(inputPaths, -stockToLeave * scaleFactor);
+            inputPaths = OffsetPaths(inputPaths, -stockToLeave * scaleFactor);
         }
     }
     else {
-        // fix for clipper glitches
-        clipof.Clear();
-        clipof.AddPaths(inputPaths, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
-        clipof.Execute(inputPaths, -1);
-        Paths64 tmp = ToPaths64(inputPaths);
-        filterCloseValues(tmp);
-        inputPaths = ToC1Paths(tmp);
-        clipof.Clear();
-        clipof.AddPaths(inputPaths, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etClosedPolygon);
-        clipof.Execute(inputPaths, 1);
-        Paths64 tmp2 = ToPaths64(inputPaths);
-        filterCloseValues(tmp2);
-        inputPaths = ToC1Paths(tmp2);
+        // no offset needed, but do some minimal smoothing
+        inputPaths = OffsetPaths(inputPaths, -1);
+        filterCloseValues(inputPaths);
+        inputPaths = OffsetPaths(inputPaths, 1);
+        filterCloseValues(inputPaths);
     }
-    inputPaths_p64 = ToPaths64(inputPaths);
 }
 
 // SVG Debug Info
