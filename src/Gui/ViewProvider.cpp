@@ -604,7 +604,8 @@ int ViewProvider::getActualMode() const
 void ViewProvider::updateModeSwitchDefaultChild()
 {
     // Keep defaultChild current so SoFCSwitch can draw this object on top while
-    // hidden. ViewProviderLink uses a plain SoSwitch, hence the type check.
+    // hidden. pcModeSwitch is declared as SoSwitch*, so guard against any
+    // subclass that installs a plain switch of its own.
     if (pcModeSwitch->isOfType(SoFCSwitch::getClassTypeId())) {
         static_cast<SoFCSwitch*>(pcModeSwitch)->defaultChild = getDefaultMode();
     }
