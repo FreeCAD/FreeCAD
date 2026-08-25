@@ -2013,3 +2013,45 @@ class TestExport2Integration(unittest.TestCase):
                 "nc",
                 "Existing property should not be overwritten",
             )
+
+    def test080_dwell_not_scaled_in_imperial(self):
+        """
+        Test that a dwell time survives imperial output unscaled.
+
+        P on G4 and on a canned cycle is a time in seconds, not a distance.
+        Scaling it as an axis value divides it by 25.4, so a 0.1 second dwell
+        posts as P0.004.
+        """
+        config = self._get_full_machine_config()
+        machine = Machine.from_dict(config)
+        machine.output.units = OutputUnits.IMPERIAL
+
+        with self._modify_operation_path(
+            [
+                Path.Command("G4", {"P": 0.5}),
+                Path.Command(
+                    "G82", {"X": 0.0, "Y": 0.0, "Z": -10.0, "R": 2.0, "F": 100.0, "P": 0.1}
+                ),
+            ]
+        ):
+            results = self._run_export2(machine)
+            gcode = self._get_first_section_gcode(results)
+            lines = [line.strip() for line in gcode.split("\n") if line.strip()]
+
+            def p_value(line):
+                for word in line.split():
+                    if word.startswith("P"):
+                        return float(word[1:])
+                return None
+
+            g4 = next((l for l in lines if l.startswith("G4")), None)
+            self.assertIsNotNone(g4, "expected a G4 dwell in the output")
+            self.assertAlmostEqual(
+                p_value(g4), 0.5, places=4, msg=f"G4 dwell must not be unit-scaled: {g4}"
+            )
+
+            g82 = next((l for l in lines if l.startswith("G82")), None)
+            self.assertIsNotNone(g82, "expected a G82 cycle in the output")
+            self.assertAlmostEqual(
+                p_value(g82), 0.1, places=4, msg=f"cycle dwell must not be unit-scaled: {g82}"
+            )
