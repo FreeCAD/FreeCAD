@@ -32,16 +32,6 @@
 // thread_local because the action that sets it is the one that traverses.
 static thread_local const SoPath* s_overridePath = nullptr;
 
-static bool pathContains(const SoPath* path, const SoNode* node)
-{
-    for (int i = 0, count = path->getLength(); i < count; ++i) {
-        if (path->getNode(i) == node) {
-            return true;
-        }
-    }
-    return false;
-}
-
 SO_NODE_SOURCE(SoFCSwitch)
 
 void SoFCSwitch::initClass()
@@ -75,7 +65,7 @@ SoFCSwitch::OverrideScope::~OverrideScope()
 void SoFCSwitch::doAction(SoAction* action)
 {
     if (s_overridePath && this->whichChild.getValue() == SO_SWITCH_NONE
-        && pathContains(s_overridePath, this)) {
+        && s_overridePath->containsNode(this)) {
         int numindices = 0;
         const int* indices = nullptr;
         SoAction::PathCode pathcode = action->getPathCode(numindices, indices);
