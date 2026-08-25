@@ -471,78 +471,6 @@ double DistancePointToPathsSqrd(
     return minDistSq;
 }
 
-// joins collinear segments (within the tolerance)
-// TODO when migrating to ClipperLib::Clipper 2, this function can be deleted and replaced with
-// SimplifyPath(s), which also handles open paths correctly
-void CleanPath(const Path64& inp_p64, Path64& outpt_p64, double tolerance)
-{
-    ClipperLib::Path inp = ToC1Path(inp_p64);
-    ClipperLib::Path outpt = ToC1Path(outpt_p64);
-    if (inp.size() < 3) {
-        outpt = inp;
-        outpt_p64 = ToPath64(outpt);
-        return;
-    }
-    outpt.clear();
-    ClipperLib::Path tmp;
-    CleanPolygon(inp, tmp, tolerance);
-    long size = long(tmp.size());
-
-    // CleanPolygon will have empty result if all points are collinear,
-    // 	need to add first and last point to the output
-    if (size <= 2) {
-        outpt.push_back(inp.front());
-        outpt.push_back(inp.back());
-        outpt_p64 = ToPath64(outpt);
-        return;
-    }
-
-    // restore starting point
-    double clpPar = 0;
-    size_t clpSegmentIndex = 0;
-    size_t clpPathIndex = 0;
-    ClipperLib::Paths tmpPaths;
-    tmpPaths.push_back(tmp);
-    Point64 clp;
-    // find point on cleaned poly that is closest to original starting point
-    DistancePointToPathsSqrd(
-        ToPaths64(tmpPaths),
-        ToPoint64(inp.front()),
-        clp,
-        clpPathIndex,
-        clpSegmentIndex,
-        clpPar
-    );
-
-
-    // if closes point is not one of the polygon points, add it as separate first point
-    if (DistanceSqrd(clp, ToPoint64(tmp.at(clpSegmentIndex))) > 0
-        && DistanceSqrd(clp, ToPoint64(tmp.at(clpSegmentIndex > 0 ? clpSegmentIndex - 1 : size - 1)))
-            > 0) {
-        outpt.push_back(ToC1Point(clp));
-    }
-
-    // add remaining points starting from closest
-    long index;
-    for (long i = 0; i < size; i++) {
-        index = static_cast<long>(clpSegmentIndex + i);
-        if (index >= size) {
-            index -= size;
-        }
-        outpt.push_back(tmp.at(index));
-    }
-
-
-    if (DistanceSqrd(ToPoint64(outpt.front()), ToPoint64(inp.front())) > SAME_POINT_TOL_SQRD_SCALED) {
-        outpt.insert(outpt.begin(), inp.front());
-    }
-
-    if (DistanceSqrd(ToPoint64(outpt.back()), ToPoint64(inp.back())) > SAME_POINT_TOL_SQRD_SCALED) {
-        outpt.push_back(inp.back());
-    }
-    outpt_p64 = ToPath64(outpt);
-}
-
 bool Circle2CircleIntersect(
     const Point64& c1,
     const Point64& c2,
@@ -835,7 +763,7 @@ void SmoothPaths(Paths64& paths_p64, double stepSize, long pointCount, long iter
     for (size_t i = 0; i < paths.size(); i++) {
         Path64 out_p64 = ToPath64(output[i]);
         Path64 paths_i_p64 = ToPath64(paths[i]);
-        CleanPath(out_p64, paths_i_p64, 1.4 * scale);
+        paths_i_p64 = SimplifyPath(out_p64, 1.4 * scale, false);
         paths[i] = ToC1Path(paths_i_p64);
     }
     Paths64 tmp2 = ToPaths64(paths);
@@ -2022,7 +1950,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             cpth.push_back(Point64(long(pt.first * scaleFactor), long(pt.second * scaleFactor)));
         }
         Path64 cpth2;
-        CleanPath(cpth, cpth2, FINISHING_CLEAN_PATH_TOLERANCE);
+        cpth2 = SimplifyPath(cpth, FINISHING_CLEAN_PATH_TOLERANCE);
         converted.push_back(cpth2);
     }
     Paths64 inputPaths;
@@ -4425,7 +4353,7 @@ void Adaptive2d::ProcessPolyNode(
 
         if (cumulativeCutArea >= 1) {
             Path64 cleaned;
-            CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
+            cleaned = SimplifyPath(passToolPath, CLEAN_PATH_TOLERANCE, false);
             total_output_points += long(cleaned.size());
             auto newPos = AppendToolPath(output, cleaned, linkPath, cleared, toolBoundPaths);
             if (newPos) {
@@ -4612,7 +4540,7 @@ void Adaptive2d::ProcessPolyNode(
 
             // Clean path
             Path64 finCleaned;
-            CleanPath(finShiftedPath, finCleaned, FINISHING_CLEAN_PATH_TOLERANCE);
+            finCleaned = SimplifyPath(finShiftedPath, FINISHING_CLEAN_PATH_TOLERANCE, false);
 
             // Ensure correct endpoint after cleaning
             Point64 endPoint = isClosedPath ? finCleaned.front() : finShiftedPath.back();
