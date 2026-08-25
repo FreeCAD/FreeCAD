@@ -609,39 +609,38 @@ bool IntersectionPoint(
 }
 
 /* finds one/first intersection of line segment with paths */
-bool IntersectionPoint(const Paths64& paths_p64, const Point64& p1, const Point64& p2, Point64& intersection)
+bool IntersectionPoint(const Paths64& paths, const Point64& p1, const Point64& p2, Point64& intersection)
 {
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
     BoundBox segBB(p1, p2);
     for (size_t i = 0; i < paths.size(); i++) {
-        const ClipperLib::Path* path = &paths[i];
-        size_t size = path->size();
+        const Path64& path = paths[i];
+        size_t size = path.size();
         if (size < 2) {
             continue;
         }
-        BoundBox pathBB(ToPoint64(path->front()));
+        BoundBox pathBB(path.front());
         for (size_t j = 0; j < size; j++) {
 
-            const ClipperLib::IntPoint* pp2 = &path->at(j);
+            const Point64& pp2 = path[j];
 
             // box check for performance
-            pathBB.AddPoint(ToPoint64(*pp2));
+            pathBB.AddPoint(pp2);
             if (!pathBB.CollidesWith(segBB)) {
                 continue;
             }
 
-            const ClipperLib::IntPoint* pp1 = &path->at(j > 0 ? j - 1 : size - 1);
+            const Point64& pp1 = path[j > 0 ? j - 1 : size - 1];
             double LDY = double(p2.y - p1.y);
             double LDX = double(p2.x - p1.x);
-            double PDX = double(pp2->X - pp1->X);
-            double PDY = double(pp2->Y - pp1->Y);
+            double PDX = double(pp2.x - pp1.x);
+            double PDY = double(pp2.y - pp1.y);
             double d = LDY * PDX - PDY * LDX;
             if (fabs(d) < NTOL) {
                 continue;  // lines are parallel
             }
 
-            double LPDX = double(p1.x - pp1->X);
-            double LPDY = double(p1.y - pp1->Y);
+            double LPDX = double(p1.x - pp1.x);
+            double LPDY = double(p1.y - pp1.y);
             double p1d = PDY * LPDX - PDX * LPDY;
             double p2d = LDY * LPDX - LDX * LPDY;
             if ((d < 0) && (p1d < d || p1d > 0 || p2d < d || p2d > 0)) {
