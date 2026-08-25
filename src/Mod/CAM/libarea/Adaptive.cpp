@@ -153,11 +153,11 @@ inline double averageDV(const vector<double>& vec)
     return s / double(size);
 }
 
-inline ClipperLib::DoublePoint rotate(const ClipperLib::DoublePoint& in, double rad)
+inline PointD rotate(const PointD& in, double rad)
 {
     double c = cos(rad);
     double s = sin(rad);
-    return ClipperLib::DoublePoint(c * in.X - s * in.Y, s * in.X + c * in.Y);
+    return PointD(c * in.x - s * in.y, s * in.x + c * in.y);
 }
 
 // calculates path length for open path
@@ -186,37 +186,35 @@ inline PointD DirectionV(const Point64& pt1, const Point64& pt2)
     return PointD(DX / l, DY / l);
 }
 
-inline void NormalizeV(ClipperLib::DoublePoint& pt)
+inline void NormalizeV(PointD& pt)
 {
-    double len = sqrt(pt.X * pt.X + pt.Y * pt.Y);
+    double len = sqrt(pt.x * pt.x + pt.y * pt.y);
     if (len > NTOL) {
-        pt.X /= len;
-        pt.Y /= len;
+        pt.x /= len;
+        pt.y /= len;
     }
 }
 
-inline ClipperLib::DoublePoint GetPathDirectionV(const Path64& pth_p64, size_t pointIndex)
+inline PointD GetPathDirectionV(const Path64& pth_p64, size_t pointIndex)
 {
-    ClipperLib::Path pth = ToC1Path(pth_p64);
-    if (pth.size() < 2) {
-        return ClipperLib::DoublePoint(0, 0);
+    if (pth_p64.size() < 2) {
+        return PointD(0, 0);
     }
-    const ClipperLib::IntPoint& p1 = pth.at(pointIndex > 0 ? pointIndex - 1 : pth.size() - 1);
-    const ClipperLib::IntPoint& p2 = pth.at(pointIndex);
+    const Point64& p1 = pth_p64.at(pointIndex > 0 ? pointIndex - 1 : pth_p64.size() - 1);
+    const Point64& p2 = pth_p64.at(pointIndex);
     return DirectionV(p1, p2);
 }
 
 // Returns true if points 'a' and 'b' are coincident or nearly so.
-bool isClose(const ClipperLib::IntPoint& a, const ClipperLib::IntPoint& b)
+bool isClose(const Point64& a, const Point64& b)
 {
-    return abs(a.X - b.X) <= 1 && abs(a.Y - b.Y) <= 1;
+    return abs(a.x - b.x) <= 1 && abs(a.y - b.y) <= 1;
 }
 
 // Remove coincident and almost-coincident points from ClipperLib::Paths.
 void filterCloseValues(Paths64& ppg_p64)
 {
-    ClipperLib::Paths ppg = ToC1Paths(ppg_p64);
-    for (auto& pth : ppg) {
+    for (auto& pth : ppg_p64) {
         while (true) {
             auto i = std::adjacent_find(pth.begin(), pth.end(), isClose);
             if (i == pth.end()) {
@@ -230,7 +228,6 @@ void filterCloseValues(Paths64& ppg_p64)
             pth.pop_back();
         }
     }
-    ppg_p64 = ToPaths64(ppg);
 }
 
 //*****************************************
@@ -249,59 +246,59 @@ public:
     }
 
     // generic: first point
-    BoundBox(const ClipperLib::IntPoint& p1)
+    BoundBox(const Point64& p1)
     {
-        minX = p1.X;
-        maxX = p1.X;
-        minY = p1.Y;
-        maxY = p1.Y;
+        minX = p1.x;
+        maxX = p1.x;
+        minY = p1.y;
+        maxY = p1.y;
     }
 
-    void SetFirstPoint(const ClipperLib::IntPoint& p1)
+    void SetFirstPoint(const Point64& p1)
     {
-        minX = p1.X;
-        maxX = p1.X;
-        minY = p1.Y;
-        maxY = p1.Y;
+        minX = p1.x;
+        maxX = p1.x;
+        minY = p1.y;
+        maxY = p1.y;
     }
 
     // generic: subsequent points
-    void AddPoint(const ClipperLib::IntPoint& pt)
+    void AddPoint(const Point64& pt)
     {
-        minX = min(pt.X, minX);
-        maxX = max(pt.X, maxX);
-        minY = min(pt.Y, minY);
-        maxY = max(pt.Y, maxY);
+        minX = min(pt.x, minX);
+        maxX = max(pt.x, maxX);
+        minY = min(pt.y, minY);
+        maxY = max(pt.y, maxY);
     }
 
     // line segment: two points
-    BoundBox(const ClipperLib::IntPoint& p1, const ClipperLib::IntPoint& p2)
+    BoundBox(const Point64& p1, const Point64& p2)
     {
-        if (p1.X < p2.X) {
-            minX = p1.X;
-            maxX = p2.X;
+        if (p1.x < p2.x) {
+            minX = p1.x;
+            maxX = p2.x;
         }
         else {
-            minX = p2.X;
-            maxX = p1.X;
+            minX = p2.x;
+            maxX = p1.x;
         }
-        if (p1.Y < p2.Y) {
-            minY = p1.Y;
-            maxY = p2.Y;
+        if (p1.y < p2.y) {
+            minY = p1.y;
+            maxY = p2.y;
         }
         else {
-            minY = p2.Y;
-            maxY = p1.Y;
+            minY = p2.y;
+            maxY = p1.y;
         }
     }
 
     // for circle: center and radius
-    BoundBox(const ClipperLib::IntPoint& center, long radius)
+    BoundBox(const Point64& center, long radius)
     {
-        minX = center.X - radius;
-        maxX = center.X + radius;
-        minY = center.Y - radius;
-        maxY = center.Y + radius;
+        minX = center.x - radius;
+        maxX = center.x + radius;
+        minY = center.y - radius;
+        maxY = center.y + radius;
     }
 
     // bounds check - intersection
@@ -316,10 +313,10 @@ public:
         return minX <= bb2.minX && maxX >= bb2.maxX && minY <= bb2.minY && maxY >= bb2.maxY;
     }
 
-    ClipperLib::cInt minX;
-    ClipperLib::cInt maxX;
-    ClipperLib::cInt minY;
-    ClipperLib::cInt maxY;
+    int64_t minX;
+    int64_t maxX;
+    int64_t minY;
+    int64_t maxY;
 };
 
 std::ostream& operator<<(std::ostream& s, const BoundBox& p)
@@ -375,18 +372,18 @@ void AverageDirection(const vector<PointD>& unityVectors, PointD& output)
 }
 
 double DistancePointToLineSegSquared(
-    const ClipperLib::IntPoint& p1,
-    const ClipperLib::IntPoint& p2,
-    const ClipperLib::IntPoint& pt,
-    ClipperLib::IntPoint& closestPoint,
+    const Point64& p1,
+    const Point64& p2,
+    const Point64& pt,
+    Point64& closestPoint,
     double& ptParameter,
     bool clamp = true
 )
 {
-    double D21X = double(p2.X - p1.X);
-    double D21Y = double(p2.Y - p1.Y);
-    double DP1X = double(pt.X - p1.X);
-    double DP1Y = double(pt.Y - p1.Y);
+    double D21X = double(p2.x - p1.x);
+    double D21Y = double(p2.y - p1.y);
+    double DP1X = double(pt.x - p1.x);
+    double DP1Y = double(pt.y - p1.y);
     double lsegLenSqr = D21X * D21X + D21Y * D21Y;
     if (lsegLenSqr == 0) {  // segment is zero length, return point to point distance
         closestPoint = p1;
@@ -405,11 +402,11 @@ double DistancePointToLineSegSquared(
     }
     // point on line at parameter
     ptParameter = parameter / lsegLenSqr;
-    closestPoint.X = long(p1.X + ptParameter * D21X);
-    closestPoint.Y = long(p1.Y + ptParameter * D21Y);
+    closestPoint.x = long(p1.x + ptParameter * D21X);
+    closestPoint.y = long(p1.y + ptParameter * D21Y);
     // calculate distance from point on line to pt
-    double DX = double(pt.X - closestPoint.X);
-    double DY = double(pt.Y - closestPoint.Y);
+    double DX = double(pt.x - closestPoint.x);
+    double DY = double(pt.y - closestPoint.y);
     return DX * DX + DY * DY;  // return distance squared
 }
 
@@ -448,9 +445,7 @@ double DistancePointToPathsSqrd(
 )
 {
     ClipperLib::Paths paths = ToC1Paths(paths_p64);
-    ClipperLib::IntPoint pt = ToC1Point(pt_p64);
     double minDistSq = __DBL_MAX__;
-    ClipperLib::IntPoint clp;
     // iterate though paths
     for (ClipperLib::Path::size_type i = 0; i < paths.size(); i++) {
         const ClipperLib::Path* path = &paths[i];
@@ -458,18 +453,19 @@ double DistancePointToPathsSqrd(
         // iterate through segments
         for (ClipperLib::Path::size_type j = 0; j < size; j++) {
             double ptPar;
+            Point64 clp_p64;
             double distSq = DistancePointToLineSegSquared(
-                path->at(j > 0 ? j - 1 : size - 1),
-                path->at(j),
-                pt,
-                clp,
+                ToPoint64(path->at(j > 0 ? j - 1 : size - 1)),
+                ToPoint64(path->at(j)),
+                pt_p64,
+                clp_p64,
                 ptPar
             );
             if (distSq < minDistSq) {
                 clpPathIndex = i;
                 clpSegmentIndex = j;
                 clpParameter = ptPar;
-                closestPointOnPath = ToPoint64(clp);
+                closestPointOnPath = clp_p64;
                 minDistSq = distSq;
             }
         }
@@ -542,14 +538,14 @@ void CleanPath(const Path64& inp_p64, Path64& outpt_p64, double tolerance)
 }
 
 bool Circle2CircleIntersect(
-    const ClipperLib::IntPoint& c1,
-    const ClipperLib::IntPoint& c2,
+    const Point64& c1,
+    const Point64& c2,
     double radius,
-    pair<ClipperLib::DoublePoint, ClipperLib::DoublePoint>& intersections
+    pair<PointD, PointD>& intersections
 )
 {
-    double DX = double(c2.X - c1.X);
-    double DY = double(c2.Y - c1.Y);
+    double DX = double(c2.x - c1.x);
+    double DY = double(c2.y - c1.y);
     double d = sqrt(DX * DX + DY * DY);
     if (d < NTOL) {
         return false;  // same center
@@ -559,26 +555,26 @@ bool Circle2CircleIntersect(
     }
     double a_2 = sqrt(4 * radius * radius - d * d) / 2.0;
     intersections.first
-        = ClipperLib::DoublePoint(0.5 * (c1.X + c2.X) - DY * a_2 / d, 0.5 * (c1.Y + c2.Y) + DX * a_2 / d);
+        = PointD(0.5 * (c1.x + c2.x) - DY * a_2 / d, 0.5 * (c1.y + c2.y) + DX * a_2 / d);
     intersections.second
-        = ClipperLib::DoublePoint(0.5 * (c1.X + c2.X) + DY * a_2 / d, 0.5 * (c1.Y + c2.Y) - DX * a_2 / d);
+        = PointD(0.5 * (c1.x + c2.x) + DY * a_2 / d, 0.5 * (c1.y + c2.y) - DX * a_2 / d);
     return true;
 }
 
 bool Line2CircleIntersect(
-    const ClipperLib::IntPoint& c,
+    const Point64& c,
     double radius,
-    const ClipperLib::DoublePoint& p1,
-    const ClipperLib::DoublePoint& p2,
-    vector<ClipperLib::DoublePoint>& result,
+    const PointD& p1,
+    const PointD& p2,
+    vector<PointD>& result,
     bool clamp = true
 )
 {
     // if more intersections returned, first is closer to p1
-    double dx = double(p2.X - p1.X);
-    double dy = double(p2.Y - p1.Y);
-    double lcx = double(p1.X - c.X);
-    double lcy = double(p1.Y - c.Y);
+    double dx = double(p2.x - p1.x);
+    double dy = double(p2.y - p1.y);
+    double lcx = double(p1.x - c.x);
+    double lcy = double(p1.y - c.y);
     double a = dx * dx + dy * dy;
     double b = 2 * dx * lcx + 2 * dy * lcy;
     double C = lcx * lcx + lcy * lcy - radius * radius;
@@ -591,19 +587,18 @@ bool Line2CircleIntersect(
     double t2 = (-b + sq) / (2 * a);
     result.clear();
     if ((t1 >= 0.0 && t1 <= 1.0) || !clamp) {
-        result.emplace_back(p1.X + t1 * dx, p1.Y + t1 * dy);
+        result.emplace_back(p1.x + t1 * dx, p1.y + t1 * dy);
     }
     if ((t2 >= 0.0 && t2 <= 1.0) || !clamp) {
-        result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
+        result.emplace_back(p1.x + t2 * dx, p1.y + t2 * dy);
     }
     return !result.empty();
 }
 
 // calculate center point of polygon
-ClipperLib::IntPoint Compute2DPolygonCentroid(const Path64& vertices_p64)
+Point64 Compute2DPolygonCentroid(const Path64& vertices_p64)
 {
-    ClipperLib::Path vertices = ToC1Path(vertices_p64);
-    ClipperLib::DoublePoint centroid(0, 0);
+    PointD centroid(0, 0);
     double signedArea = 0.0;
     double x0 = 0.0;  // Current vertex X
     double y0 = 0.0;  // Current vertex Y
@@ -613,22 +608,22 @@ ClipperLib::IntPoint Compute2DPolygonCentroid(const Path64& vertices_p64)
 
     // For all vertices
     size_t i = 0;
-    ClipperLib::Path::size_type size = vertices.size();
+    Path64::size_type size = vertices_p64.size();
     for (i = 0; i < size; ++i) {
-        x0 = double(vertices[i].X);
-        y0 = double(vertices[i].Y);
-        x1 = double(vertices[(i + 1) % size].X);
-        y1 = double(vertices[(i + 1) % size].Y);
+        x0 = double(vertices_p64[i].x);
+        y0 = double(vertices_p64[i].y);
+        x1 = double(vertices_p64[(i + 1) % size].x);
+        y1 = double(vertices_p64[(i + 1) % size].y);
         a = x0 * y1 - x1 * y0;
         signedArea += a;
-        centroid.X += (x0 + x1) * a;
-        centroid.Y += (y0 + y1) * a;
+        centroid.x += (x0 + x1) * a;
+        centroid.y += (y0 + y1) * a;
     }
 
     signedArea *= 0.5;
-    centroid.X /= (6.0 * signedArea);
-    centroid.Y /= (6.0 * signedArea);
-    return ClipperLib::IntPoint(long(centroid.X), long(centroid.Y));
+    centroid.x /= (6.0 * signedArea);
+    centroid.y /= (6.0 * signedArea);
+    return Point64(long(centroid.x), long(centroid.y));
 }
 
 // point must be within first path (boundary) and must not be within all other paths (holes)
@@ -683,20 +678,20 @@ bool IntersectionPoint(
 bool IntersectionPoint(const Paths64& paths_p64, const Point64& p1, const Point64& p2, Point64& intersection)
 {
     ClipperLib::Paths paths = ToC1Paths(paths_p64);
-    BoundBox segBB(ToC1Point(p1), ToC1Point(p2));
+    BoundBox segBB(p1, p2);
     for (size_t i = 0; i < paths.size(); i++) {
         const ClipperLib::Path* path = &paths[i];
         size_t size = path->size();
         if (size < 2) {
             continue;
         }
-        BoundBox pathBB(path->front());
+        BoundBox pathBB(ToPoint64(path->front()));
         for (size_t j = 0; j < size; j++) {
 
             const ClipperLib::IntPoint* pp2 = &path->at(j);
 
             // box check for performance
-            pathBB.AddPoint(*pp2);
+            pathBB.AddPoint(ToPoint64(*pp2));
             if (!pathBB.CollidesWith(segBB)) {
                 continue;
             }
@@ -1144,7 +1139,7 @@ PerfCounter Perf_IsClearPath("IsClearPath");
 class ClearedArea
 {
 public:
-    ClearedArea(ClipperLib::cInt p_toolRadiusScaled)
+    ClearedArea(int64_t p_toolRadiusScaled)
     {
         toolRadiusScaled = p_toolRadiusScaled;
     };
@@ -1191,19 +1186,20 @@ public:
     }
 
     // get cleared area/poly bounded to toolbox
-    ClipperLib::Paths& GetBoundedClearedAreaClipped(const ClipperLib::IntPoint& toolPos, int delta)
+    Paths64 GetBoundedClearedAreaClipped(const Point64& toolPos_p64, int delta)
     {
+        ClipperLib::IntPoint toolPos = ToC1Point(toolPos_p64);
         // first, attempt to serve this query from cache
-        BoundBox toolBB(toolPos, delta);
+        BoundBox toolBB(ToPoint64(toolPos), delta);
         if (!bboxClippedInvalid && clearedBBClippedInFocus.Contains(toolBB)) {
-            return clearedBoundedClipped;
+            return ToPaths64(clearedBoundedClipped);
         }
 
         // second, check if the window needs to be recomputed
         if (bboxClippedInvalid || !clearedBBWindow.Contains(toolBB)) {
             const int deltaWindow = delta * clearedBoundedWindowScale;
-            clearedBBWindow.SetFirstPoint(ClipperLib::IntPoint(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
-            clearedBBWindow.AddPoint(ClipperLib::IntPoint(toolPos.X + deltaWindow, toolPos.Y + deltaWindow));
+            clearedBBWindow.SetFirstPoint(Point64(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
+            clearedBBWindow.AddPoint(Point64(toolPos.X + deltaWindow, toolPos.Y + deltaWindow));
 
             ClipperLib::Path bbPath;
             bbPath.push_back(ClipperLib::IntPoint(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
@@ -1217,8 +1213,8 @@ public:
         }
 
         // finally, perform the query using data from the window
-        clearedBBClippedInFocus.SetFirstPoint(ClipperLib::IntPoint(toolPos.X - delta, toolPos.Y - delta));
-        clearedBBClippedInFocus.AddPoint(ClipperLib::IntPoint(toolPos.X + delta, toolPos.Y + delta));
+        clearedBBClippedInFocus.SetFirstPoint(Point64(toolPos.X - delta, toolPos.Y - delta));
+        clearedBBClippedInFocus.AddPoint(Point64(toolPos.X + delta, toolPos.Y + delta));
 
         ClipperLib::Path bbPath;
         bbPath.push_back(ClipperLib::IntPoint(toolPos.X - delta, toolPos.Y - delta));
@@ -1231,7 +1227,7 @@ public:
         clip.Execute(ClipperLib::ClipType::ctIntersection, clearedBoundedClipped);
 
         bboxClippedInvalid = false;
-        return clearedBoundedClipped;
+        return ToPaths64(clearedBoundedClipped);
     }
 
     // get full cleared area
@@ -1263,7 +1259,7 @@ private:
 //***************************************
 struct InterpItem
 {
-    std::pair<double, ClipperLib::IntPoint> angle;
+    std::pair<double, Point64> angle;
     double error;
     bool isConventional;
 };
@@ -1285,7 +1281,7 @@ public:
             && (!m_min->isConventional || !m_max->isConventional);
     }
     // adds point keeping the incremental order of areas for interpolation to work correctly
-    void addPoint(double error, std::pair<double, ClipperLib::IntPoint> angle, bool allowSkip, bool isConventional)
+    void addPoint(double error, std::pair<double, Point64> angle, bool allowSkip, bool isConventional)
     {
         const InterpItem newItem = {angle, error, isConventional};
 
@@ -1439,14 +1435,15 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
 
     // 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
     vector<vector<ClipperLib::DoublePoint>> polygons;
-    vector<ClipperLib::DoublePoint> inters;  // temporary, to hold intersection results
-    const BoundBox c2BB(c2, toolRadiusScaled);
+    vector<PointD> inters;  // temporary, to hold intersection results
+    const BoundBox c2BB(ToPoint64(c2), toolRadiusScaled);
     // get curves from slightly enlarged region that will cover all points tested in this iteration
     const bool useC2 = dist > 2 * toolRadiusScaled;
-    const ClipperLib::Paths& clearedBounded = clearedArea.GetBoundedClearedAreaClipped(
-        useC2 ? c2 : c1,
+    const Paths64 clearedBounded_p64 = clearedArea.GetBoundedClearedAreaClipped(
+        useC2 ? ToPoint64(c2) : ToPoint64(c1),
         toolRadiusScaled + (useC2 ? 0 : (int)dist) + 4
     );
+    const ClipperLib::Paths clearedBounded = ToC1Paths(clearedBounded_p64);
 
     for (const ClipperLib::Path& path : clearedBounded) {
         if (path.size() == 0) {
@@ -1454,9 +1451,9 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
         }
 
         // bound box check
-        BoundBox pathBB(path.front());
+        BoundBox pathBB(ToPoint64(path.front()));
         for (const auto& pt : path) {
-            pathBB.AddPoint(pt);
+            pathBB.AddPoint(ToPoint64(pt));
         }
         if (!pathBB.CollidesWith(c2BB)) {
             continue;  // this path cannot colide with tool
@@ -1501,14 +1498,14 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
         for (size_t i = 0; i < polygon.size(); i++) {
             const auto& p0 = polygon[i];
             const auto& p1 = polygon[(i + 1) % polygon.size()];
-            if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
+            if (Line2CircleIntersect(ToPoint64(c1), toolRadiusScaled, ToPointD(p0), ToPointD(p1), inters)) {
                 for (const auto p : inters) {
-                    xs.push_back(p.X);
+                    xs.push_back(p.x);
                 }
             }
-            if (Line2CircleIntersect(c2, toolRadiusScaled, p0, p1, inters)) {
+            if (Line2CircleIntersect(ToPoint64(c2), toolRadiusScaled, ToPointD(p0), ToPointD(p1), inters)) {
                 for (const auto p : inters) {
-                    xs.push_back(p.X);
+                    xs.push_back(p.x);
                 }
             }
         }
@@ -1516,10 +1513,10 @@ std::pair<double, double> Adaptive2d::CalcCutArea(Point64 c1_p64, Point64 c2_p64
 
     // 1.e) Compute intersection points between c1 and c2
     {
-        pair<ClipperLib::DoublePoint, ClipperLib::DoublePoint> res;
-        if (Circle2CircleIntersect(c1, c2, toolRadiusScaled, res)) {
-            xs.push_back(res.first.X);
-            xs.push_back(res.second.X);
+        pair<PointD, PointD> res;
+        if (Circle2CircleIntersect(ToPoint64(c1), ToPoint64(c2), toolRadiusScaled, res)) {
+            xs.push_back(res.first.x);
+            xs.push_back(res.second.x);
         }
     }
 
@@ -2614,7 +2611,7 @@ bool Adaptive2d::FindEntryPoint(
         }
         for (size_t i = 0; i < lastValidOffset.size(); i++) {
             if (!lastValidOffset[i].empty()) {
-                entryPoint = Compute2DPolygonCentroid(ToPath64(lastValidOffset[i]));
+                entryPoint = ToC1Point(Compute2DPolygonCentroid(ToPath64(lastValidOffset[i])));
                 found = true;
                 break;
             }
@@ -2894,7 +2891,7 @@ bool Adaptive2d::ResolveLinkPath(
             }
         }
 
-        ClipperLib::DoublePoint direction = DirectionV(pointPair.first, pointPair.second);
+        ClipperLib::DoublePoint direction = ToC1PointD(DirectionV(ToPoint64(pointPair.first), ToPoint64(pointPair.second)));
         checkPath.clear();
         if (pointPair.first == startPoint) {
             checkPath.push_back(ClipperLib::IntPoint(
@@ -3033,7 +3030,7 @@ bool Adaptive2d::MakeLeadPath(
     }
 
     ClipperLib::IntPoint currentPoint = startPoint;
-    ClipperLib::DoublePoint targetDir = DirectionV(currentPoint, beaconPoint);
+    ClipperLib::DoublePoint targetDir = ToC1PointD(DirectionV(ToPoint64(currentPoint), ToPoint64(beaconPoint)));
 
     double distanceToBeacon = sqrt(DistanceSqrd(ToPoint64(startPoint), ToPoint64(beaconPoint)));
     double minExitLength = min(toolRadiusScaled / 5., min(stepOverScaled, distanceToBeacon / 2));
@@ -3064,12 +3061,12 @@ bool Adaptive2d::MakeLeadPath(
             output.push_back(nextPoint);
             currentPoint = nextPoint;
             pathLen += stepSize;
-            targetDir = DirectionV(currentPoint, beaconPoint);
+            targetDir = ToC1PointD(DirectionV(ToPoint64(currentPoint), ToPoint64(beaconPoint)));
             nextDir = ClipperLib::DoublePoint(
                 nextDir.X + adaptFactor * targetDir.X,
                 nextDir.Y + adaptFactor * targetDir.Y
             );
-            NormalizeV(nextDir);
+            { PointD tmp = ToPointD(nextDir); NormalizeV(tmp); nextDir = ToC1PointD(tmp); }
 
             // check if cleared
             if (getPathNestingLevel(Path64{ToPoint64(currentPoint)}, ToPaths64(cleared)) % 2 == 1) {
@@ -3101,7 +3098,7 @@ bool Adaptive2d::MakeLeadPath(
             }
         }
         else {
-            nextDir = rotate(nextDir, leadIn ? -alfa : alfa);
+            nextDir = ToC1PointD(rotate(ToPointD(nextDir), leadIn ? -alfa : alfa));
         }
         nextPoint
             = ClipperLib::IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
@@ -3150,12 +3147,12 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
 
         ClipperLib::DoublePoint revEndDir = {-pathDir.X, -pathDir.Y};
 
-        ClipperLib::DoublePoint endBoundaryDir = GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex);
+        ClipperLib::DoublePoint endBoundaryDir = ToC1PointD(GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex));
         if (eDistToBounds > beaconOffset) {
             endBoundaryDir = pathDir;  // if boundary is far away, use beacon to leave the path
         }
         ClipperLib::DoublePoint endBeaconDir = {revEndDir.X - endBoundaryDir.Y, revEndDir.Y + endBoundaryDir.X};
-        NormalizeV(endBeaconDir);
+        { PointD tmp = ToPointD(endBeaconDir); NormalizeV(tmp); endBeaconDir = ToC1PointD(tmp); }
 
         ClipperLib::IntPoint endBeacon(
             endPoint.X + beaconOffset * endBeaconDir.X,
@@ -3323,7 +3320,7 @@ std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
         // plan the lead out
         if (passToolPath.size() >= 2) {
             ClipperLib::IntPoint prevPoint = passToolPath.back();
-            ClipperLib::DoublePoint prevDir = GetPathDirectionV(passToolPath_p64, passToolPath_p64.size() - 1);
+            ClipperLib::DoublePoint prevDir = ToC1PointD(GetPathDirectionV(passToolPath_p64, passToolPath_p64.size() - 1));
 
             size_t clpPathIndex;
             size_t clpSegmentIndex;
@@ -3338,14 +3335,14 @@ std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
                 clpParameter
             );
 
-            ClipperLib::DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex);
+            ClipperLib::DoublePoint boundaryDir = ToC1PointD(GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex));
             double beaconOffset
                 = max(min(stepOverScaled, PathLength(passToolPath_p64) / 2) * 1.5, 8 * MIN_STEP_CLIPPER);
             if (distToBounds > beaconOffset) {
                 boundaryDir = prevDir;  // if boundary is far away, use beacon to leave the path
             }
             ClipperLib::DoublePoint beaconDir = {prevDir.X - boundaryDir.Y, prevDir.Y + boundaryDir.X};
-            NormalizeV(beaconDir);
+            { PointD tmp = ToPointD(beaconDir); NormalizeV(tmp); beaconDir = ToC1PointD(tmp); }
 
             ClipperLib::IntPoint beacon(
                 prevPoint.X + beaconOffset * beaconDir.X,
@@ -3384,7 +3381,7 @@ std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
                 ClipperLib::IntPoint p2 = leadOutPath.back();
                 ClipperLib::IntPoint p1 = leadOutPath.size() >= 2 ? leadOutPath[leadOutPath.size() - 2]
                                                       : prevPoint;
-                ClipperLib::DoublePoint dir = DirectionV(p1, p2);
+                ClipperLib::DoublePoint dir = ToC1PointD(DirectionV(ToPoint64(p1), ToPoint64(p2)));
 
                 result = {{ToPoint64(p2), ToPointD(dir)}};
             }
@@ -3449,8 +3446,9 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths64 paths_p64, Mo
 
 // performs the intersection of the path (subject) and the area (obj), preserving
 // orientation and (closed-path) connectivity
-Paths64 PathIntersectArea(ClipperLib::Clipper& clip, Path64& subject_p64, Paths64& obj_p64, bool isClosed = true)
+Paths64 PathIntersectArea(Path64& subject_p64, Paths64& obj_p64, bool isClosed = true)
 {
+    ClipperLib::Clipper clip;
     ClipperLib::Path subject = ToC1Path(subject_p64);
     ClipperLib::Paths obj = ToC1Paths(obj_p64);
     if (isClosed) {
@@ -3647,7 +3645,7 @@ void Adaptive2d::ProcessPolyNode(
         double distanceToBoundary = sqrt(
             DistancePointToPathsSqrd(toolBoundPaths_p64, ToPoint64(toolPos), clp_p64, clpPathIndex, clpSegmentIndex, clpParameter)
         );
-        ClipperLib::DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex);
+        ClipperLib::DoublePoint boundaryDir = ToC1PointD(GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex));
 
         Perf_DistanceToBoundary.Stop();
         double distanceToEngage = sqrt(DistanceSqrd(ToPoint64(toolPos), entryPoint));
@@ -3725,8 +3723,8 @@ void Adaptive2d::ProcessPolyNode(
                 // 1.5 > sqrt(2) for the constructed triangle to contain possible steps
                 double dist = (stepScaled + toolRadiusScaled) * 1.5;
                 ClipperLib::Path triangle = {toolPos};
-                ClipperLib::DoublePoint leftAngle = rotate(toolDir, -std::numbers::pi / 4);
-                ClipperLib::DoublePoint rightAngle = rotate(toolDir, std::numbers::pi / 4);
+                ClipperLib::DoublePoint leftAngle = ToC1PointD(rotate(ToPointD(toolDir), -std::numbers::pi / 4));
+                ClipperLib::DoublePoint rightAngle = ToC1PointD(rotate(ToPointD(toolDir), std::numbers::pi / 4));
                 triangle.push_back(
                     {(long long)(toolPos.X + rightAngle.X * dist),
                      (long long)(toolPos.Y + rightAngle.Y * dist)}
@@ -3772,7 +3770,7 @@ void Adaptive2d::ProcessPolyNode(
             }
             angle = interp.clampAngle(angle);
 
-            newToolDir = rotate(toolDir, angle);
+            newToolDir = ToC1PointD(rotate(ToPointD(toolDir), angle));
             newToolPos = ClipperLib::IntPoint(
                 long(toolPos.X + newToolDir.X * stepScaled),
                 long(toolPos.Y + newToolDir.Y * stepScaled)
@@ -3780,19 +3778,19 @@ void Adaptive2d::ProcessPolyNode(
 
             // Skip iteration if this ClipperLib::IntPoint has already been processed
             bool intRepeat = false;
-            if (interp.m_min && newToolPos == interp.m_min->angle.second) {
-                interp.m_min = {{angle, newToolPos}, interp.m_min->error, interp.m_min->isConventional};
+            if (interp.m_min && ToPoint64(newToolPos) == interp.m_min->angle.second) {
+                interp.m_min = {{angle, ToPoint64(newToolPos)}, interp.m_min->error, interp.m_min->isConventional};
                 intRepeat = true;
             }
-            if (interp.m_max && newToolPos == interp.m_max->angle.second) {
-                interp.m_max = {{angle, newToolPos}, interp.m_max->error, interp.m_max->isConventional};
+            if (interp.m_max && ToPoint64(newToolPos) == interp.m_max->angle.second) {
+                interp.m_max = {{angle, ToPoint64(newToolPos)}, interp.m_max->error, interp.m_max->isConventional};
                 intRepeat = true;
             }
 
             if (intRepeat) {
                 if (interp.m_min && interp.m_max
-                    && abs(interp.m_min->angle.second.X - interp.m_max->angle.second.X) <= 1
-                    && abs(interp.m_min->angle.second.Y - interp.m_max->angle.second.Y) <= 1) {
+                    && abs(interp.m_min->angle.second.x - interp.m_max->angle.second.x) <= 1
+                    && abs(interp.m_min->angle.second.y - interp.m_max->angle.second.y) <= 1) {
                     if (pointNotInterp) {
                         // if this happens while testing min/max of the range it doesn't mean
                         // anything; only exit early if interpolation is down to adjacent
@@ -3803,27 +3801,27 @@ void Adaptive2d::ProcessPolyNode(
                     double error;
                     if (interp.m_min->isConventional ^ interp.m_max->isConventional) {
                         if (!interp.m_min->isConventional) {
-                            newToolDir = rotate(toolDir, interp.m_min->angle.first);
-                            newToolPos = interp.m_min->angle.second;
+                            newToolDir = ToC1PointD(rotate(ToPointD(toolDir), interp.m_min->angle.first));
+                            newToolPos = ToC1Point(interp.m_min->angle.second);
                             error = interp.m_min->error;
                             isConventional = interp.m_min->isConventional;
                         }
                         else {
-                            newToolDir = rotate(toolDir, interp.m_max->angle.first);
-                            newToolPos = interp.m_max->angle.second;
+                            newToolDir = ToC1PointD(rotate(ToPointD(toolDir), interp.m_max->angle.first));
+                            newToolPos = ToC1Point(interp.m_max->angle.second);
                             error = interp.m_max->error;
                             isConventional = interp.m_max->isConventional;
                         }
                     }
                     else if (abs(interp.m_min->error) < abs(interp.m_max->error)) {
-                        newToolDir = rotate(toolDir, interp.m_min->angle.first);
-                        newToolPos = interp.m_min->angle.second;
+                        newToolDir = ToC1PointD(rotate(ToPointD(toolDir), interp.m_min->angle.first));
+                        newToolPos = ToC1Point(interp.m_min->angle.second);
                         error = interp.m_min->error;
                         isConventional = interp.m_min->isConventional;
                     }
                     else {
-                        newToolDir = rotate(toolDir, interp.m_max->angle.first);
-                        newToolPos = interp.m_max->angle.second;
+                        newToolDir = ToC1PointD(rotate(ToPointD(toolDir), interp.m_max->angle.first));
+                        newToolPos = ToC1Point(interp.m_max->angle.second);
                         error = interp.m_max->error;
                         isConventional = interp.m_max->isConventional;
                     }
@@ -3847,7 +3845,7 @@ void Adaptive2d::ProcessPolyNode(
             areaPD = area / double(stepScaled);  // area per distance
             double error = areaPD - targetAreaPD;
             errorFraction = abs(error / optimalCutAreaPD);
-            interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
+            interp.addPoint(error, {angle, ToPoint64(newToolPos)}, pointNotInterp, isConventional);
             if (fabs(error) < maxError && !isConventional) {
                 out.iterationAngle = angle;
                 break;
@@ -3882,7 +3880,7 @@ void Adaptive2d::ProcessPolyNode(
                 rotateStep++;
                 // if new tool pos. outside boundary rotate until back in
                 recalcArea = true;
-                newToolDir = rotate(newToolDir, rotateIncrement);
+                newToolDir = ToC1PointD(rotate(ToPointD(newToolDir), rotateIncrement));
                 newToolPos = ClipperLib::IntPoint(
                     long(toolPos.X + newToolDir.X * stepScaled),
                     long(toolPos.Y + newToolDir.Y * stepScaled)
@@ -3958,8 +3956,8 @@ void Adaptive2d::ProcessPolyNode(
             ClipperLib::Paths clearedArea = ToC1Paths(cleared.GetCleared());
             if (DistancePointToPathsSqrd(ToPaths64(clearedArea), ToPoint64(toolPos), clp_p64, clpPathIndex, clpSegmentIndex, clpParameter)
                 < toolRadiusScaled * toolRadiusScaled) {
-                ClipperLib::IntPoint p2 = Compute2DPolygonCentroid(ToPath64(clearedArea[clpPathIndex]));
-                ClipperLib::DoublePoint dir = DirectionV(toolPos, p2);
+                Point64 p2 = Compute2DPolygonCentroid(ToPath64(clearedArea[clpPathIndex]));
+                ClipperLib::DoublePoint dir = ToC1PointD(DirectionV(ToPoint64(toolPos), p2));
                 return std::optional<PointD> {ToPointD(dir)};
             }
             return std::optional<PointD> {};
@@ -4030,7 +4028,7 @@ void Adaptive2d::ProcessPolyNode(
             // integer coordinate outside of it
             Path64 rotated_p64 = ToPath64(rotated);
             Paths64 tbpMinus_p64 = tbpMinus;
-            ClipperLib::Paths openPaths = ToC1Paths(PathIntersectArea(clip, rotated_p64, tbpMinus_p64));
+            ClipperLib::Paths openPaths = ToC1Paths(PathIntersectArea(rotated_p64, tbpMinus_p64));
 
             for (ClipperLib::Path& open : openPaths) {
                 bool added = false;
@@ -4540,7 +4538,7 @@ void Adaptive2d::ProcessPolyNode(
             Path64 finShiftedPathCopy_p64 = ToPath64(finShiftedPath);
             Paths64 stockExpandedPaths_p64 = ToPaths64(stockExpandedPaths);
             ClipperLib::Paths intersection
-                = ToC1Paths(PathIntersectArea(clip, finShiftedPathCopy_p64, stockExpandedPaths_p64, isClosedPath));
+                = ToC1Paths(PathIntersectArea(finShiftedPathCopy_p64, stockExpandedPaths_p64, isClosedPath));
             if (intersection.empty()) {
                 continue;
             }
@@ -4582,7 +4580,7 @@ void Adaptive2d::ProcessPolyNode(
             std::optional<TPaths> linkPath = FindLinkPath(
                 std::optional(toolPos),
                 ToPoint64(finCleaned[0]),
-                ToPointD(GetPathDirectionV(ToPath64(finCleaned), 1)),
+                GetPathDirectionV(ToPath64(finCleaned), 1),
                 cleared,
                 toolBoundPaths_p64,
                 output
@@ -4599,7 +4597,7 @@ void Adaptive2d::ProcessPolyNode(
                 }
                 else {
                     toolPos = ToPoint64(finCleaned.back());
-                    toolDir = ToPointD(GetPathDirectionV(ToPath64(finCleaned), finCleaned.size() - 1));
+                    toolDir = GetPathDirectionV(ToPath64(finCleaned), finCleaned.size() - 1);
                 }
 
                 cleared.ExpandCleared(ToPath64(finCleaned));
