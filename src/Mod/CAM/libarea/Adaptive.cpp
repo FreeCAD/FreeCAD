@@ -130,16 +130,6 @@ inline double DistanceSqrd(const Point64& pt1, const Point64& pt2)
 }
 
 
-inline bool HasAnyPath(const Paths64& paths_p64)
-{
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
-    for (ClipperLib::Paths::size_type i = 0; i < paths.size(); i++) {
-        if (!paths[i].empty()) {
-            return true;
-        }
-    }
-    return false;
-}
 
 inline double averageDV(const vector<double>& vec)
 {
