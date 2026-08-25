@@ -1842,11 +1842,28 @@ public:
         /// Return a list of shape generated from the given input shape
         virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape&) const
         {
+            if (_res.size()) {
+                _res.clear();
+            }
+
             return _res;
         }
         /// Return a list of shape modified from the given input shape
         virtual const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape&) const
         {
+            if (_res.size()) {
+                _res.clear();
+            }
+
+            return _res;
+        }
+        /// Return a list of shape projected from the given input shape
+        virtual const std::vector<TopoDS_Shape>& projected(const TopoDS_Shape&) const
+        {
+            if (_res.size()) {
+                _res.clear();
+            }
+            
             return _res;
         }
     };
