@@ -21,16 +21,12 @@
  *                                                                          *
  ***************************************************************************/
 
-#include "PreCompiled.h"
-
-#ifndef _PreComp_
 #include <Inventor/SoPath.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/elements/SoSwitchElement.h>
 #include <Inventor/misc/SoChildList.h>
-#endif
 
-#include "Inventor/SoFCSwitch.h"
+#include "SoFCSwitch.h"
 
 // Override path for the current thread; only switches on it are forced visible.
 // thread_local because the action that sets it is the one that traverses.
