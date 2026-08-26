@@ -307,13 +307,13 @@ StdCmdSendToPythonConsole::StdCmdSendToPythonConsole()
 bool StdCmdSendToPythonConsole::isActive()
 {
     // active only if at least 1 object is selected
-    return Gui::Selection().hasSelection();
+    return Gui::Selection().getSelection().size() > 0;
 }
 
 void StdCmdSendToPythonConsole::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    if (!Gui::Selection().hasSelection()) {
+    if (Gui::Selection().getSelection().size() == 0) {
         return;
     }
 
