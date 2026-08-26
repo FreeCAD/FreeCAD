@@ -208,6 +208,62 @@ A larger value makes it easier to select elements, but may prevent selection of 
         </property>
        </widget>
       </item>
+      <!-- Labeled "delay" for users; bound to the existing PreSelectionTimeout param (0 = instant) -->
+      <item row="10" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QLabel" name="spinPreselectDelayLabel">
+          <property name="text">
+           <string>Tree preselection delay</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>250</width>
+            <height>10</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="spinPreselectDelay">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>How long the cursor must rest on a tree item before the object is previewed in the 3D view. 0 previews it instantly.</string>
+          </property>
+          <property name="suffix">
+           <string notr="true"> ms</string>
+          </property>
+          <property name="minimum">
+           <number>0</number>
+          </property>
+          <property name="maximum">
+           <number>5000</number>
+          </property>
+          <property name="value">
+           <number>500</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PreSelectionTimeout</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>TreeView</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -320,6 +376,11 @@ A larger value makes it easier to select elements, but may prevent selection of 
    <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
  </customwidgets>
  <resources/>
  <connections>
@@ -359,6 +420,38 @@ A larger value makes it easier to select elements, but may prevent selection of 
    <sender>checkBoxPreselect</sender>
    <signal>toggled(bool)</signal>
    <receiver>checkBoxPreselectHidden</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxPreselect</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinPreselectDelay</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxPreselect</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>spinPreselectDelayLabel</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
