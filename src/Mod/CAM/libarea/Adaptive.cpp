@@ -3200,22 +3200,21 @@ void Adaptive2d::CheckReportProgress(TPaths& progressPaths, bool force)
     progressPaths.front().second.push_back(next);
 }
 
-void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths64 paths_p64, MotionType mt)
+void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths64 paths, MotionType mt)
 {
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
     for (const auto& pth : paths) {
         if (!pth.empty()) {
             progressPaths.push_back(TPath());
             progressPaths.back().first = mt;
             for (const auto pt : pth) {
                 progressPaths.back().second.emplace_back(
-                    double(pt.X) / scaleFactor,
-                    double(pt.Y) / scaleFactor
+                    double(pt.x) / scaleFactor,
+                    double(pt.y) / scaleFactor
                 );
             }
             progressPaths.back().second.emplace_back(
-                double(pth.front().X) / scaleFactor,
-                double(pth.front().Y) / scaleFactor
+                double(pth.front().x) / scaleFactor,
+                double(pth.front().y) / scaleFactor
             );
         }
     }
