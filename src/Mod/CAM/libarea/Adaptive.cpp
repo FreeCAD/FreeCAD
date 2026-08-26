@@ -3222,11 +3222,8 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths64 paths, Motion
 
 // performs the intersection of the path (subject) and the area (obj), preserving
 // orientation and (closed-path) connectivity
-Paths64 PathIntersectArea(Path64& subject_p64, Paths64& obj_p64, bool isClosed = true)
+Paths64 PathIntersectArea(Path64& subject, Paths64& obj, bool isClosed = true)
 {
-    ClipperLib::Clipper clip;
-    ClipperLib::Path subject = ToC1Path(subject_p64);
-    ClipperLib::Paths obj = ToC1Paths(obj_p64);
     if (isClosed) {
         subject.push_back(subject[0]);  // close path explicitly before treating it as open
     }
@@ -3234,42 +3231,50 @@ Paths64 PathIntersectArea(Path64& subject_p64, Paths64& obj_p64, bool isClosed =
     // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
     // this ensures new points have unique z but come between the points they're made from
     for (size_t i = 0; i < subject.size(); i++) {
-        subject[i].Z = i * 2 + 1;
+        subject[i].z = i * 2 + 1;
     }
-    for (ClipperLib::Path& path : obj) {
-        for (ClipperLib::IntPoint& p : path) {
-            p.Z = 0;
+    for (Path64& path : obj) {
+        for (Point64& p : path) {
+            p.z = 0;
         }
     }
-    auto zfill = [](ClipperLib::IntPoint& e1b,
-                    ClipperLib::IntPoint& e1t,
-                    ClipperLib::IntPoint& e2b,
-                    ClipperLib::IntPoint& e2t,
-                    ClipperLib::IntPoint& p) {
-        if (e1b.Z != 0 && e1t.Z != 0) {
-            p.Z = (e1b.Z + e1t.Z) / 2;
+    auto zfill = [](const Point64& e1b, const Point64& e1t, const Point64& e2b, const Point64& e2t, Point64& p) {
+        // If the x/y value is an exact match preserve z
+        if (e1b.z != 0 && e1b.x == p.x && e1b.y == p.y) {
+            p.z = e1b.z;
         }
-        else if (e2b.Z != 0 && e2t.Z != 0) {
-            p.Z = (e2b.Z + e2t.Z) / 2;
+        else if (e1t.z != 0 && e1t.x == p.x && e1t.y == p.y) {
+            p.z = e1t.z;
+        }
+        else if (e2b.z != 0 && e2b.x == p.x && e2b.y == p.y) {
+            p.z = e2b.z;
+        }
+        else if (e2t.z != 0 && e2t.x == p.x && e2t.y == p.y) {
+            p.z = e2t.z;
+        }
+        // Otherwise, set the z to the even number in between
+        else if (e1b.z != 0 && e1t.z != 0) {
+            p.z = (e1b.z + e1t.z) / 2;
+        }
+        else if (e2b.z != 0 && e2t.z != 0) {
+            p.z = (e2b.z + e2t.z) / 2;
         }
     };
-    clip.ZFillFunction(zfill);
 
-    ClipperLib::PolyTree diffTree;
-    ClipperLib::Paths diff;
-    clip.Clear();
-    clip.AddPath(subject, ClipperLib::PolyType::ptSubject, false);
-    clip.AddPaths(obj, ClipperLib::PolyType::ptClip, true);
-    clip.Execute(ClipperLib::ClipType::ctIntersection, diffTree);
-    clip.ZFillFunction(0);
-    OpenPathsFromPolyTree(diffTree, diff);
+    Clipper64 clip;
+    clip.PreserveCollinear(true);  // TODO: consider PreserveCollinear on the other Clipper64+SetZCallback near line 1750
+    clip.SetZCallback(zfill);
+    clip.AddOpenSubject(Paths64{subject});
+    clip.AddClip(obj);
+    Paths64 closed, diff;
+    clip.Execute(ClipType::Intersection, FillRule::EvenOdd, closed, diff);
 
     // restore orientation
-    for (ClipperLib::Path& p : diff) {
+    for (Path64& p : diff) {
         for (size_t i = 0; i < p.size() - 1; i++) {
-            if (p[i].Z != 0 && p[i + 1].Z != 0) {
-                if (p[i].Z + 1 != p[i + 1].Z && p[i].Z + 2 != p[i + 1].Z) {
-                    ReversePath(p);
+            if (p[i].z != 0 && p[i + 1].z != 0) {
+                if (p[i].z + 1 != p[i + 1].z && p[i].z + 2 != p[i + 1].z) {
+                    std::reverse(p.begin(), p.end());
                 }
 
                 break;
@@ -3280,13 +3285,13 @@ Paths64 PathIntersectArea(Path64& subject_p64, Paths64& obj_p64, bool isClosed =
     // collect result, joining any path that goes through the end point
     const int zstart = 1;
     const int zend = subject.size() * 2 - 1;
-    std::optional<ClipperLib::Path> start, end;
-    ClipperLib::Paths result;
-    for (ClipperLib::Path& p : diff) {
-        if (p[0].Z == zstart) {
+    std::optional<Path64> start, end;
+    Paths64 result;
+    for (Path64& p : diff) {
+        if (p[0].z == zstart) {
             start = {p};
         }
-        else if (p.back().Z == zend) {
+        else if (p.back().z == zend) {
             end = {p};
         }
         else {
@@ -3294,7 +3299,7 @@ Paths64 PathIntersectArea(Path64& subject_p64, Paths64& obj_p64, bool isClosed =
         }
     }
     if (start && end) {
-        ClipperLib::Path joined = *end;
+        Path64 joined = *end;
         // append points from start, skipping the first, which is a repeat
         for (size_t i = 1; i < start->size(); i++) {
             joined.push_back((*start)[i]);
@@ -3310,9 +3315,7 @@ Paths64 PathIntersectArea(Path64& subject_p64, Paths64& obj_p64, bool isClosed =
         }
     }
 
-    subject_p64 = ToPath64(subject);
-    obj_p64 = ToPaths64(obj);
-    return ToPaths64(result);
+    return result;
 }
 
 struct IterateNextStepOutput
