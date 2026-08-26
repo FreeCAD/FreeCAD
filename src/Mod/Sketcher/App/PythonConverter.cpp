@@ -26,6 +26,7 @@
 #include <boost/format.hpp>
 
 #include <Base/Exception.h>
+#include <Base/StringUtils.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
@@ -420,7 +421,7 @@ std::string PythonConverter::process(const Sketcher::Constraint* constraint, Geo
     std::string id1pos1 = id1 + ", " + pos1;
     std::string id2pos2 = id2 + ", " + pos2;
 
-    std::string val = std::to_string(constraint->getValue());
+    std::string val = Base::StringUtils::formatDouble(constraint->getValue());
 
     // Booleans to simplify the logic branches
     bool secondUndef = (constraint->Second == GeoEnum::GeoUndef);

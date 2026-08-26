@@ -43,7 +43,7 @@ void makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj, Gui::Command* cmd, in
 
 // Find the angle between two lines. Return false if geoIds are not lines.
 bool calculateAngle(
-    Sketcher::SketchObject* Obj,
+    const Sketcher::SketchObject* Obj,
     int& geoId1,
     int& geoId2,
     Sketcher::PointPos& PosId1,

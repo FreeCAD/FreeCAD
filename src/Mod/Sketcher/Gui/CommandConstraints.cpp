@@ -55,10 +55,13 @@
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
+#include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "CommandConstraints.h"
+#include "DimensionDatumPlacement.h"
+#include "DimensionOption.h"
 #include "DrawSketchHandler.h"
 #include "EditDatumDialog.h"
 #include "Utils.h"
@@ -85,248 +88,25 @@ enum ConstraintCreationMode
 
 ConstraintCreationMode constraintCreationMode = Driving;
 
-namespace SketcherGui::LinearDatumLabelPlacement
+namespace SketcherGui::DimensionOptionCommandDetail
 {
-[[nodiscard]] bool computeLabelPosition(const Sketcher::SketchObject* sketch,
-                                        const Sketcher::Constraint* constraint,
-                                        Base::Vector2d& position)
+class DimensionOptionCommand final: public Gui::Command
 {
-    if (constraint->Type != Sketcher::DistanceX && constraint->Type != Sketcher::DistanceY
-        && constraint->Type != Sketcher::Distance) {
-        return false;
+public:
+    DimensionOptionCommand()
+        : Gui::Command("Sketcher_DimensionOption")
+    {}
+
+    const char* className() const override
+    {
+        return "SketcherGui::DimensionOptionCommand";
     }
 
-    const auto projectPoint = [](const Base::Vector3d& point) {
-        return Base::Vector2d(point.x, point.y);
-    };
-
-    Base::Vector2d firstPoint;
-    Base::Vector2d secondPoint;
-
-    if (constraint->SecondPos != Sketcher::PointPos::none) {
-        firstPoint = projectPoint(sketch->getPoint(constraint->First, constraint->FirstPos));
-        secondPoint = projectPoint(sketch->getPoint(constraint->Second, constraint->SecondPos));
-    }
-    else if (constraint->FirstPos != Sketcher::PointPos::none
-             && constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-        firstPoint = Base::Vector2d(0.0, 0.0);
-        secondPoint = projectPoint(sketch->getPoint(constraint->First, constraint->FirstPos));
-    }
-    else if (constraint->Type == Sketcher::Distance
-             && constraint->Second == Sketcher::GeoEnum::GeoUndef
-             && constraint->First >= 0
-             && constraint->FirstPos == Sketcher::PointPos::none) {
-        const Part::Geometry* geo = sketch->getGeometry(constraint->First);
-
-        if (!geo || !isLineSegment(*geo)) {
-            return false;
-        }
-
-        const auto* lineSegment = static_cast<const Part::GeomLineSegment*>(geo);
-        firstPoint = projectPoint(lineSegment->getStartPoint());
-        secondPoint = projectPoint(lineSegment->getEndPoint());
-    }
-    else {
-        return false;
-    }
-
-    const double eps = Precision::Confusion();
-    Base::Vector2d labelDirection(0.0, 0.0);
-
-    switch (constraint->Type) {
-        case Sketcher::DistanceX:
-            if (secondPoint.x < firstPoint.x - eps) {
-                std::swap(firstPoint, secondPoint);
-            }
-            labelDirection = Base::Vector2d(0.0, -1.0);
-            break;
-        case Sketcher::DistanceY:
-            if (secondPoint.y < firstPoint.y - eps) {
-                std::swap(firstPoint, secondPoint);
-            }
-            if (secondPoint.x > firstPoint.x + eps) {
-                labelDirection = Base::Vector2d(1.0, 0.0);
-            }
-            else if (secondPoint.x < firstPoint.x - eps) {
-                labelDirection = Base::Vector2d(-1.0, 0.0);
-            }
-            else {
-                labelDirection = Base::Vector2d(1.0, 0.0);
-            }
-            break;
-        case Sketcher::Distance:
-            if (secondPoint.y < firstPoint.y - eps
-                || (std::abs(secondPoint.y - firstPoint.y) <= eps
-                    && secondPoint.x < firstPoint.x - eps)) {
-                std::swap(firstPoint, secondPoint);
-            }
-            {
-                const Base::Vector2d span = secondPoint - firstPoint;
-                const double spanLength = span.Length();
-                if (spanLength <= eps) {
-                    return false;
-                }
-                labelDirection = span.x >= 0.0
-                    ? Base::Vector2d(-span.y / spanLength, span.x / spanLength)
-                    : Base::Vector2d(span.y / spanLength, -span.x / spanLength);
-            }
-            break;
-        default:
-            return false;
-    }
-
-    const Base::Vector2d span = secondPoint - firstPoint;
-    position = (firstPoint + secondPoint) * 0.5
-        + labelDirection * (constraint->LabelDistance
-                            + 0.5 * std::abs(span.x * labelDirection.x
-                                             + span.y * labelDirection.y));
-    return true;
-}
-}  // namespace SketcherGui::LinearDatumLabelPlacement
-
-namespace SketcherGui::AngularDatumLabelPlacement
-{
-[[nodiscard]] std::optional<Base::Vector2d> computeLabelPosition(const Sketcher::SketchObject* sketch,
-                                                                   const Sketcher::Constraint* constraint)
-{
-    if (constraint->Type != Sketcher::Angle) {
-        return std::nullopt;
-    }
-
-    const bool firstIsAxis = constraint->First == Sketcher::GeoEnum::HAxis
-        || constraint->First == Sketcher::GeoEnum::VAxis;
-    const bool secondIsAxis = constraint->Second == Sketcher::GeoEnum::HAxis
-        || constraint->Second == Sketcher::GeoEnum::VAxis;
-
-    Base::Vector2d vertex;
-    Base::Vector2d rayPoint1;
-    Base::Vector2d rayPoint2;
-    double radius = 0.0;
-
-    const auto vertexOnSegment = [](const Base::Vector2d& segmentStart,
-                                    const Base::Vector2d& segmentSpan,
-                                    const Base::Vector2d& point) {
-        const double tolerance = Precision::Confusion();
-        const Base::Vector2d segmentToPoint = point - segmentStart;
-
-        const double crossProduct = segmentSpan.x * segmentToPoint.y
-            - segmentSpan.y * segmentToPoint.x;
-        const double dotProduct = segmentToPoint.x * segmentSpan.x
-            + segmentToPoint.y * segmentSpan.y;
-        const double segmentLengthSquared = segmentSpan.Sqr();
-
-        const bool pointIsOnLine = std::abs(crossProduct) <= tolerance;
-        const bool pointIsAfterSegmentStart = dotProduct >= -tolerance;
-        const bool pointIsBeforeSegmentEnd = dotProduct <= segmentLengthSquared + tolerance;
-
-        return pointIsOnLine && pointIsAfterSegmentStart && pointIsBeforeSegmentEnd;
-    };
-
-    if (constraint->Second == Sketcher::GeoEnum::GeoUndef) {
-        const auto* arc = freecad_cast<const Part::GeomArcOfCircle*>(
-            sketch->getGeometry(constraint->First));
-
-        if (!arc) {
-            return std::nullopt;
-        }
-
-        double startAngle = 0.0;
-        double endAngle = 0.0;
-        arc->getRange(startAngle, endAngle, true);
-
-        const Base::Vector2d center(arc->getCenter().x, arc->getCenter().y);
-        const double radius = arc->getRadius();
-        const double middleAngle = 0.5 * (startAngle + endAngle);
-        return center + Base::Vector2d(std::cos(middleAngle), std::sin(middleAngle))
-                * (radius + constraint->LabelDistance);
-    }
-    else if (firstIsAxis != secondIsAxis) {
-        const int axisGeoId = firstIsAxis ? constraint->First : constraint->Second;
-        const auto* lineSegment = freecad_cast<const Part::GeomLineSegment*>(
-            sketch->getGeometry(firstIsAxis ? constraint->Second : constraint->First));
-        if (!lineSegment) {
-            return std::nullopt;
-        }
-
-        const Base::Vector2d startPoint(lineSegment->getStartPoint().x, lineSegment->getStartPoint().y);
-        const Base::Vector2d endPoint(lineSegment->getEndPoint().x, lineSegment->getEndPoint().y);
-        const Base::Vector2d lineSpan = endPoint - startPoint;
-        if (!Base::Line2d(startPoint, endPoint)
-                 .Intersect(Base::Line2d(Base::Vector2d(0.0, 0.0),
-                                         axisGeoId == Sketcher::GeoEnum::HAxis
-                                             ? Base::Vector2d(1.0, 0.0)
-                                             : Base::Vector2d(0.0, 1.0)),
-                            vertex)) {
-            return std::nullopt;
-        }
-
-        if (vertexOnSegment(startPoint, lineSpan, vertex)) {
-            return std::nullopt;
-        }
-
-        rayPoint2 = (startPoint - vertex).Sqr() <= (endPoint - vertex).Sqr() ? startPoint : endPoint;
-
-        radius = (rayPoint2 - vertex).Length();
-        if (radius <= Precision::Confusion()) {
-            return std::nullopt;
-        }
-
-        rayPoint1 = axisGeoId == Sketcher::GeoEnum::HAxis
-            ? vertex + Base::Vector2d((rayPoint2 - vertex).x >= 0.0 ? radius : -radius, 0.0)
-            : vertex + Base::Vector2d(0.0, (rayPoint2 - vertex).y >= 0.0 ? radius : -radius);
-    }
-    else {
-        const auto* firstLine =
-            freecad_cast<const Part::GeomLineSegment*>(sketch->getGeometry(constraint->First));
-        const auto* secondLine =
-            freecad_cast<const Part::GeomLineSegment*>(sketch->getGeometry(constraint->Second));
-        if (!firstLine || !secondLine) {
-            return std::nullopt;
-        }
-
-        const Base::Vector2d firstStart(firstLine->getStartPoint().x, firstLine->getStartPoint().y);
-        const Base::Vector2d firstEnd(firstLine->getEndPoint().x, firstLine->getEndPoint().y);
-        const Base::Vector2d secondStart(secondLine->getStartPoint().x, secondLine->getStartPoint().y);
-        const Base::Vector2d secondEnd(secondLine->getEndPoint().x, secondLine->getEndPoint().y);
-        const Base::Vector2d firstSpan = firstEnd - firstStart;
-        const Base::Vector2d secondSpan = secondEnd - secondStart;
-        if (!Base::Line2d(firstStart, firstEnd).Intersect(Base::Line2d(secondStart, secondEnd), vertex)) {
-            return std::nullopt;
-        }
-
-        if (vertexOnSegment(firstStart, firstSpan, vertex)
-            && vertexOnSegment(secondStart, secondSpan, vertex)) {
-            return std::nullopt;
-        }
-
-        rayPoint1 = (firstStart - vertex).Sqr() <= (firstEnd - vertex).Sqr() ? firstStart : firstEnd;
-        rayPoint2 = (secondStart - vertex).Sqr() <= (secondEnd - vertex).Sqr() ? secondStart : secondEnd;
-        radius = std::min((rayPoint1 - vertex).Length(), (rayPoint2 - vertex).Length());
-        if (radius <= Precision::Confusion()) {
-            return std::nullopt;
-        }
-    }
-
-    Base::Vector2d firstDirection = rayPoint1 - vertex;
-    Base::Vector2d secondDirection = rayPoint2 - vertex;
-    if (firstDirection.Length() <= Precision::Confusion()
-        || secondDirection.Length() <= Precision::Confusion()) {
-        return std::nullopt;
-    }
-
-    firstDirection.Normalize();
-    secondDirection.Normalize();
-    Base::Vector2d position = firstDirection + secondDirection;
-    if (position.Length() <= Precision::Confusion()) {
-        position = firstDirection.Perpendicular(false);
-    }
-    else {
-        position.Normalize();
-    }
-
-    return vertex + position * (radius + constraint->LabelDistance);
-}
-}  // namespace SketcherGui::AngularDatumLabelPlacement
+private:
+    void activated(int) override
+    {}
+};
+}  // namespace SketcherGui::DimensionOptionCommandDetail
 
 namespace SketcherGui
 {
@@ -359,10 +139,14 @@ bool isCreateConstraintActive(Gui::Document* doc)
 }
 
 // Utility method to avoid repeating the same code over and over again
-void finishDatumConstraint(Gui::Command* cmd,
-                           Sketcher::SketchObject* sketch,
-                           bool isDriving = true,
-                           unsigned int numberofconstraints = 1)
+void finishDatumConstraint(
+    Gui::Command* cmd,
+    Sketcher::SketchObject* sketch,
+    bool isDriving = true,
+    unsigned int numberofconstraints = 1,
+    std::optional<Base::Vector2d> datumPlacement = std::nullopt,
+    bool placeDatum = true
+)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -402,27 +186,30 @@ void finishDatumConstraint(Gui::Command* cmd,
         int firstConstraintIndex = lastConstraintIndex - numberofconstraints + 1;
 
         for (int i = lastConstraintIndex; i >= firstConstraintIndex; i--) {
-            if (lastConstraintType == Radius || lastConstraintType == Diameter) {
+            if (!placeDatum) {
+                continue;
+            }
+            if (datumPlacement.has_value()) {
+                ViewProviderSketchCommandConstraintsAttorney::moveConstraint(
+                    *vp,
+                    i,
+                    *datumPlacement
+                );
+            }
+            else if (lastConstraintType == Radius || lastConstraintType == Diameter) {
                 const Part::Geometry* geo = sketch->getGeometry(ConStr[i]->First);
 
                 if (geo && isCircle(*geo)) {
                     ConStr[i]->LabelPosition = labelPosition;
                 }
             }
-            else if (lastConstraintType == Angle) {
-                if (auto labelPosition = AngularDatumLabelPlacement::computeLabelPosition(
-                        sketch, ConStr[i])) {
+            else {
+                if (auto labelPosition = defaultDimensionDatumLabelPosition(
+                        *sketch,
+                        *ConStr[i]
+                    )) {
                     ViewProviderSketchCommandConstraintsAttorney::moveConstraint(
                         *vp, i, *labelPosition);
-                }
-            }
-            else {
-                Base::Vector2d labelPosition;
-
-                if (LinearDatumLabelPlacement::computeLabelPosition(
-                        sketch, ConStr[i], labelPosition)) {
-                    ViewProviderSketchCommandConstraintsAttorney::moveConstraint(
-                        *vp, i, labelPosition);
                 }
             }
         }
@@ -444,6 +231,94 @@ void finishDatumConstraint(Gui::Command* cmd,
 
     tryAutoRecompute(sketch);
     cmd->getSelection().clearSelection();
+}
+
+namespace SketcherGui::DimensionOptionCommandDetail
+{
+std::optional<int> addDimensionConstraintToSketch(
+    Sketcher::SketchObject& sketch,
+    const DimensionOption& option,
+    bool isDriving,
+    CircleDistanceMode circleDistanceMode = CircleDistanceMode::Minimal
+)
+{
+    auto constraint = buildDimensionConstraint(sketch, option, circleDistanceMode);
+    if (!constraint) {
+        return std::nullopt;
+    }
+    constraint->isDriving = isDriving;
+
+    const int index = sketch.Constraints.getSize();
+    const auto command = Gui::Command::getObjectCmd(&sketch) + '.'
+        + Sketcher::PythonConverter::convert(constraint.get());
+    Gui::Command::doCommand(Gui::Command::Doc, "%s", command.c_str());
+    return sketch.Constraints.getSize() == index + 1 ? std::optional<int> {index} : std::nullopt;
+}
+}  // namespace SketcherGui::DimensionOptionCommandDetail
+
+bool SketcherGui::commitDimensionOption(
+    Sketcher::SketchObject& sketch,
+    const DimensionOption& option
+)
+{
+    const int geoId1
+        = option.refs.empty() ? Sketcher::GeoEnum::GeoUndef : option.refs.front().GeoId;
+    const int geoId2 = option.refs.size() > 1 ? option.refs[1].GeoId
+                                              : Sketcher::GeoEnum::GeoUndef;
+    const bool fixed = geoId2 == Sketcher::GeoEnum::GeoUndef
+        ? isPointOrSegmentFixed(&sketch, geoId1)
+        : areBothPointsOrSegmentsFixed(&sketch, geoId1, geoId2);
+    const bool isDriving = !(fixed || constraintCreationMode == Reference);
+
+    DimensionOptionCommandDetail::DimensionOptionCommand command;
+    command.openCommand(QT_TRANSLATE_NOOP("Command", "Dimension option"));
+
+    try {
+        const auto createdIndex = DimensionOptionCommandDetail::addDimensionConstraintToSketch(
+            sketch,
+            option,
+            isDriving
+        );
+        if (!createdIndex) {
+            command.abortCommand();
+            return false;
+        }
+        if (option.preparedDatumPlacement) {
+            Gui::cmdAppObjectArgs(
+                &sketch,
+                "setLabelDistance(%d,%.9g)",
+                *createdIndex,
+                option.preparedDatumPlacement->labelDistance
+            );
+            Gui::cmdAppObjectArgs(
+                &sketch,
+                "setLabelPosition(%d,%.9g)",
+                *createdIndex,
+                option.preparedDatumPlacement->labelPosition
+            );
+        }
+
+        const auto datumPlacement
+            = option.preparedDatumPlacement ? std::nullopt : option.customLabelPosition;
+        finishDatumConstraint(
+            &command,
+            &sketch,
+            isDriving,
+            1,
+            datumPlacement,
+            !option.preparedDatumPlacement
+        );
+        return true;
+    }
+    catch (const Base::Exception& exception) {
+        command.abortCommand();
+        Gui::NotifyUserError(
+            &sketch,
+            QT_TRANSLATE_NOOP("Notifications", "Invalid Constraint"),
+            exception.what()
+        );
+        return false;
+    }
 }
 
 void showNoConstraintBetweenExternal(const App::DocumentObject* obj)
@@ -562,7 +437,14 @@ void SketcherGui::makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
     }
 }
 
-bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& GeoId2, Sketcher::PointPos& PosId1, Sketcher::PointPos& PosId2, double& ActAngle)
+bool SketcherGui::calculateAngle(
+    const Sketcher::SketchObject* Obj,
+    int& GeoId1,
+    int& GeoId2,
+    Sketcher::PointPos& PosId1,
+    Sketcher::PointPos& PosId2,
+    double& ActAngle
+)
 {
     const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
@@ -3094,177 +2976,55 @@ protected:
         }
     }
 
-    void createDistanceConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
-        // If there's a point, it must be GeoId1. We could add a swap to make sure but as it's hardcoded it's not necessary.
+    bool addDimensionConstraint(
+        Sketcher::ConstraintType type,
+        std::initializer_list<DimensionReference> refs
+    )
+    {
+        return DimensionOptionCommandDetail::addDimensionConstraintToSketch(
+            *Obj,
+            DimensionOption {type, std::vector<DimensionReference> {refs}},
+            true,
+            CircleDistanceMode::Signed
+        ).has_value();
+    }
 
-        if (GeoId1 == GeoId2 || (PosId1 != Sketcher::PointPos::none && PosId2 != Sketcher::PointPos::none)) {
+    void createDistanceConstrain(
+        int GeoId1,
+        Sketcher::PointPos PosId1,
+        int GeoId2,
+        Sketcher::PointPos PosId2,
+        Base::Vector2d onSketchPos
+    )
+    {
+        if (GeoId1 == GeoId2
+            || (PosId1 != Sketcher::PointPos::none && PosId2 != Sketcher::PointPos::none)) {
             specialConstraint = SpecialConstraint::LineOr2PointsDistance;
         }
-
-        // Point-line case and point-circle/arc
-        if (PosId1 != Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) {
-            Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
-            double ActDist = 0.;
-            const Part::Geometry* geom = Obj->getGeometry(GeoId2);
-
-            if (isLineSegment(*geom)) {
-                auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
-                Base::Vector3d pnt1 = lineSeg->getStartPoint();
-                Base::Vector3d pnt2 = lineSeg->getEndPoint();
-                Base::Vector3d d = pnt2 - pnt1;
-                ActDist = std::abs(-pnt.x * d.y + pnt.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y) / d.Length();
-            }
-            else if (isCircle(*geom)) {
-                auto circle = static_cast<const Part::GeomCircle*>(geom);
-                Base::Vector3d ct = circle->getCenter();
-                Base::Vector3d di = ct - pnt;
-                ActDist = std::abs(di.Length() - circle->getRadius());
-            }
-            else if (isArcOfCircle(*geom)) {
-                auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-                Base::Vector3d ct = arc->getCenter();
-                Base::Vector3d di = ct - pnt;
-                ActDist = std::abs(di.Length() - arc->getRadius());
-            }
-
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%.8g)) ",
-                GeoId1, static_cast<int>(PosId1), GeoId2, ActDist);
+        if (addDimensionConstraint(
+                Sketcher::Distance,
+                {DimensionReference(GeoId1, PosId1), DimensionReference(GeoId2, PosId2)}
+            )) {
+            finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
         }
-        // Circle/arc - line, circle/arc - circle/arc cases
-        else if (PosId1 == Sketcher::PointPos::none && PosId2 == Sketcher::PointPos::none) {
-            const Part::Geometry* geo1 = Obj->getGeometry(GeoId1);
-            const Part::Geometry* geo2 = Obj->getGeometry(GeoId2);
-            double radius1 {};
-            double radius2 {};
-            Base::Vector3d center1, center2;
-            if (isCircle(*geo1)) {
-                auto conic = static_cast<const Part::GeomCircle*>(geo1);
-                radius1 = conic->getRadius();
-                center1 = conic->getCenter();
-            }
-            else if (isArcOfCircle(*geo1)) {
-                auto conic = static_cast<const Part::GeomArcOfCircle*>(geo1);
-                radius1 = conic->getRadius();
-                center1 = conic->getCenter();
-            }
-            if (isCircle(*geo2)) {
-                auto conic = static_cast<const Part::GeomCircle*>(geo2);
-                radius2 = conic->getRadius();
-                center2 = conic->getCenter();
-            }
-            else if (isArcOfCircle(*geo2)){
-                auto conic = static_cast<const Part::GeomArcOfCircle*>(geo2);
-                radius2 = conic->getRadius();
-                center2 = conic->getCenter();
-            }
-            // Circle/arc - line case
-            if ((isCircle(*geo1) || isArcOfCircle(*geo1)) && isLineSegment(*geo2)) {
-                auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo2);
-                Base::Vector3d pnt1 = lineSeg->getStartPoint();
-                Base::Vector3d pnt2 = lineSeg->getEndPoint();
-                Base::Vector3d d = pnt2 - pnt1;
-                double ActDist = std::abs(
-                            std::abs(-center1.x * d.y + center1.y * d.x + pnt1.x * pnt2.y - pnt2.x * pnt1.y)
-                            / d.Length()
-                            - radius1);
-
-                Gui::cmdAppObjectArgs(Obj,
-                                      "addConstraint(Sketcher.Constraint('Distance',%d,%d,%.8g))",
-                                      GeoId1,
-                                      GeoId2,
-                                      ActDist);
-            }
-            // Circle/arc - circle/arc case
-            else if ((isCircle(*geo1) || isArcOfCircle(*geo1))
-                     && (isCircle(*geo2) || isArcOfCircle(*geo2))) {
-                double ActDist = 0.;
-
-                Base::Vector3d intercenter = center1 - center2;
-                double intercenterdistance = intercenter.Length();
-
-                if (intercenterdistance >= radius1 && intercenterdistance >= radius2) {
-
-                    ActDist = intercenterdistance - radius1 - radius2;
-                }
-                else {
-                    double bigradius = std::max(radius1, radius2);
-                    double smallradius = std::min(radius1, radius2);
-
-                    ActDist = bigradius - smallradius - intercenterdistance;
-                }
-
-                Gui::cmdAppObjectArgs(Obj,
-                                      "addConstraint(Sketcher.Constraint('Distance',%d,%d,%.8g))",
-                                      GeoId1,
-                                      GeoId2,
-                                      ActDist);
-            }
-        }
-        else {  // both points
-            Base::Vector3d pnt1 = Obj->getPoint(GeoId1, PosId1);
-            Base::Vector3d pnt2 = Obj->getPoint(GeoId2, PosId2);
-
-            Gui::cmdAppObjectArgs(Obj,
-                                  "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%.8g)) ",
-                                  GeoId1,
-                                  static_cast<int>(PosId1),
-                                  GeoId2,
-                                  static_cast<int>(PosId2),
-                                  (pnt2 - pnt1).Length());
-        }
-
-        finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
     }
 
     void createDistanceXYConstrain(Sketcher::ConstraintType type, int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2, Base::Vector2d onSketchPos) {
-        Base::Vector3d pnt1 = Obj->getPoint(GeoId1, PosId1);
-        Base::Vector3d pnt2 = Obj->getPoint(GeoId2, PosId2);
-        double ActLength = pnt2.x - pnt1.x;
-
-        if (type == Sketcher::DistanceY) {
-            ActLength = pnt2.y - pnt1.y;
+        if (addDimensionConstraint(
+                type,
+                {DimensionReference(GeoId1, PosId1), DimensionReference(GeoId2, PosId2)}
+            )) {
+            finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
         }
-
-        //negative sign avoidance: swap the points to make value positive
-        if (ActLength < -Precision::Confusion()) {
-            std::swap(GeoId1, GeoId2);
-            std::swap(PosId1, PosId2);
-            std::swap(pnt1, pnt2);
-            ActLength = -ActLength;
-        }
-
-        if (type == Sketcher::DistanceY) {
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%.8g)) ",
-                GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActLength);
-        }
-        else {
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%.8g)) ",
-                GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActLength);
-        }
-
-        finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
     }
 
     void createRadiusDiameterConstrain(int GeoId, Base::Vector2d onSketchPos, bool firstCstr) {
-        double radius = 0.0;
-        bool isCircleGeom = true;
-
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
-
-        if(!geom)
+        if (!geom) {
             return;
-
-        if (geom && isArcOfCircle(*geom)) {
-            auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-            radius = arc->getRadius();
-            isCircleGeom = false;
         }
-        else if (geom && isCircle(*geom)) {
-            auto circle = static_cast<const Part::GeomCircle*>(geom);
-            radius = circle->getRadius();
-        }
-
         if (isBsplinePole(geom)) {
+            const auto radius = std::get<0>(getRadiusCenterCircleArc(geom));
             Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Weight',%d,%.8g)) ",
                 GeoId, radius);
         }
@@ -3272,17 +3032,23 @@ protected:
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
             bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
             bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
+            const bool isCircleGeom = isCircle(*geom);
 
+            Sketcher::ConstraintType type;
             if ((firstCstr && dimensioningRadius && !dimensioningDiameter) ||
                 (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
                 (firstCstr && dimensioningRadius && dimensioningDiameter && !isCircleGeom) ||
                 (!firstCstr && dimensioningRadius && dimensioningDiameter && isCircleGeom) ) {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Radius',%d,%.8g)) ",
-                    GeoId, radius);
+                type = Sketcher::Radius;
             }
             else {
-                Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Diameter',%d,%.8g)) ",
-                    GeoId, radius * 2);
+                type = Sketcher::Diameter;
+            }
+            if (!addDimensionConstraint(
+                    type,
+                    {DimensionReference(GeoId, Sketcher::PointPos::none)}
+                )) {
+                return;
             }
         }
 
@@ -3350,10 +3116,12 @@ protected:
             return;
         }
 
-        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%.8g)) ",
-            GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActAngle);
-
-        finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
+        if (addDimensionConstraint(
+                Sketcher::Angle,
+                {DimensionReference(GeoId1, PosId1), DimensionReference(GeoId2, PosId2)}
+            )) {
+            finishDimensionCreation(GeoId1, GeoId2, onSketchPos);
+        }
     }
 
     void createArcLengthConstrain(int GeoId, Base::Vector2d onSketchPos) {
@@ -3362,13 +3130,12 @@ protected:
             return;
         }
 
-        const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-        double ActLength = arc->getAngle(false) * arc->getRadius();
-
-        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Distance',%d,%.8g))",
-            GeoId, ActLength);
-
-        finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
+        if (addDimensionConstraint(
+                Sketcher::Distance,
+                {DimensionReference(GeoId, Sketcher::PointPos::none)}
+            )) {
+            finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
+        }
     }
 
     void createArcAngleConstrain(int GeoId, Base::Vector2d onSketchPos) {
@@ -3377,13 +3144,12 @@ protected:
             return;
         }
 
-        const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
-        double angle = arc->getAngle(/*EmulateCCWXY=*/true);
-
-        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%.8g))",
-            GeoId, angle);
-
-        finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
+        if (addDimensionConstraint(
+                Sketcher::Angle,
+                {DimensionReference(GeoId, Sketcher::PointPos::none)}
+            )) {
+            finishDimensionCreation(GeoId, GeoEnum::GeoUndef, onSketchPos);
+        }
     }
 
     void createVerticalConstrain(int GeoId1, Sketcher::PointPos PosId1, int GeoId2, Sketcher::PointPos PosId2) {
@@ -3545,8 +3311,9 @@ protected:
             pnt2 = Obj->getPoint(selPoints[1].GeoId, selPoints[1].PosId);
         }
 
-        bool isHorizontal = std::abs(pnt1.y - pnt2.y) < Precision::Confusion();
-        bool isVertical = std::abs(pnt1.x - pnt2.x) < Precision::Confusion();
+        const auto alignedDistanceType = getAlignedDistanceConstraintType(pnt1, pnt2);
+        const bool isHorizontal = alignedDistanceType == Sketcher::DistanceX;
+        const bool isVertical = alignedDistanceType == Sketcher::DistanceY;
 
         double minX, minY, maxX, maxY;
         minX = min(pnt1.x, pnt2.x);
@@ -5500,25 +5267,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
         if(isCircleOrArc(*geom1) && isCircleOrArc(*geom2)) {
-
-            auto [radius1, center1] = getRadiusCenterCircleArc(geom1);
-            auto [radius2, center2] = getRadiusCenterCircleArc(geom2);
-
-            double ActDist = 0.0;
-
-            Base::Vector3d intercenter = center1 - center2;
-            double intercenterdistance = intercenter.Length();
-
-            if (intercenterdistance >= radius1 && intercenterdistance >= radius2) {
-
-                ActDist = intercenterdistance - radius1 - radius2;
-            }
-            else {
-                double bigradius = std::max(radius1, radius2);
-                double smallradius = std::min(radius1, radius2);
-
-                ActDist = bigradius - smallradius - intercenterdistance;
-            }
+            const double ActDist = getCirclesSignedDistance(geom1, geom2);
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -5846,29 +5595,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
         const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
         if (isCircle(*geom1) && isCircle(*geom2)) {// circle to circle distance
-            auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
-            double radius1 = circleSeg1->getRadius();
-            Base::Vector3d center1 = circleSeg1->getCenter();
-
-            auto circleSeg2 = static_cast<const Part::GeomCircle*>(geom2);
-            double radius2 = circleSeg2->getRadius();
-            Base::Vector3d center2 = circleSeg2->getCenter();
-
-            double ActDist = 0.;
-
-            Base::Vector3d intercenter = center1 - center2;
-            double intercenterdistance = intercenter.Length();
-
-            if (intercenterdistance >= radius1 && intercenterdistance >= radius2) {
-
-                ActDist = intercenterdistance - radius1 - radius2;
-            }
-            else {
-                double bigradius = std::max(radius1, radius2);
-                double smallradius = std::min(radius1, radius2);
-
-                ActDist = bigradius - smallradius - intercenterdistance;
-            }
+            const double ActDist = getCirclesSignedDistance(geom1, geom2);
 
             openCommand(
                 QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));

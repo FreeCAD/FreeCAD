@@ -31,6 +31,7 @@
 
 #include <App/Application.h>
 #include <App/Transactions.h>
+#include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
@@ -463,6 +464,30 @@ double SketcherGui::GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d
     double dX = p2.x - p1.x;
     double dY = p2.y - p1.y;
     return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2 * std::numbers::pi;
+}
+
+Sketcher::ConstraintType SketcherGui::getAlignedDistanceConstraintType(
+    const Base::Vector3d& first,
+    const Base::Vector3d& second
+)
+{
+    if (std::abs(first.y - second.y) < Base::Precision::Confusion()) {
+        return Sketcher::DistanceX;
+    }
+    if (std::abs(first.x - second.x) < Base::Precision::Confusion()) {
+        return Sketcher::DistanceY;
+    }
+    return Sketcher::None;
+}
+
+double SketcherGui::getCirclesSignedDistance(const Part::Geometry* geom1, const Part::Geometry* geom2)
+{
+    const auto [radius1, center1] = getRadiusCenterCircleArc(geom1);
+    const auto [radius2, center2] = getRadiusCenterCircleArc(geom2);
+    const double centerDistance = (center1 - center2).Length();
+    return centerDistance >= radius1 && centerDistance >= radius2
+        ? centerDistance - radius1 - radius2
+        : std::max(radius1, radius2) - std::min(radius1, radius2) - centerDistance;
 }
 
 // Set the two points on circles at minimal distance

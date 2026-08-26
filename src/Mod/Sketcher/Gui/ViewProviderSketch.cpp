@@ -81,6 +81,8 @@
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
+#include "DimensionDatumPlacement.h"
+#include "DimensionOption.h"
 #include "DrawSketchHandler.h"
 #include "DrawSketchHandlerDragAutoConstraint.h"
 #include "EditDatumDialog.h"
@@ -113,7 +115,7 @@ using namespace SketcherGui;
 using namespace Sketcher;
 namespace sp = std::placeholders;
 
-namespace
+namespace SketcherGui::ViewProviderSketchDetail
 {
 bool isFiniteVector(const SbVec3f& vector)
 {
@@ -124,8 +126,9 @@ bool isFiniteVector(const Base::Vector3d& vector)
 {
     return std::isfinite(vector.x) && std::isfinite(vector.y) && std::isfinite(vector.z);
 }
-}  // namespace
+}  // namespace SketcherGui::ViewProviderSketchDetail
 
+using SketcherGui::ViewProviderSketchDetail::isFiniteVector;
 /************** ViewProviderSketch::ParameterObserver *********************/
 
 template<typename T>
@@ -363,6 +366,20 @@ void ViewProviderSketch::ParameterObserver::initParameters()
         {"RecalculateInitialSolutionWhileDragging",
          {[this](const std::string& string, App::Property* property) {
               updateRecalculateInitialSolutionWhileDragging(string, property);
+          },
+          nullptr}},
+        {"EnableDimensionOptionPreview",
+         {[this](const std::string&, App::Property*) {
+              if (!Client.isInEditMode()) {
+                  return;
+              }
+              Client.cancelDimensionOptionInteraction();
+              if (Client.isDimensionOptionPreviewEnabled()) {
+                  Client.refreshDimensionOptionPreview();
+              }
+              else {
+                  Client.clearDimensionOptions();
+              }
           },
           nullptr}},
         {"GridSizePixelThreshold",
@@ -703,6 +720,7 @@ ViewProviderSketch::ViewProviderSketch()
 
 ViewProviderSketch::~ViewProviderSketch()
 {
+    setDimensionOptionMouseGrab(false);
     connectionToolWidget.disconnect();
 }
 
@@ -715,6 +733,9 @@ void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
         setSketchMode(STATUS_NONE);
         resetPositionText();
     }
+
+    cancelDimensionOptionInteraction();
+    clearDimensionOptions();
 
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
@@ -734,6 +755,9 @@ void ViewProviderSketch::slotRedoDocument(const Gui::Document& /*doc*/)
         setSketchMode(STATUS_NONE);
         resetPositionText();
     }
+
+    cancelDimensionOptionInteraction();
+    clearDimensionOptions();
 
     // Note 1: this slot is only operative during edit mode (see signal connection/disconnection)
     // Note 2: ViewProviderSketch::UpdateData does not generate updates during undo/redo
@@ -1266,6 +1290,15 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_NONE: {
+                    if (beginDimensionOptionInteraction(
+                            QPoint(cursorPos[0], cursorPos[1]),
+                            pp.get()
+                        )) {
+                        const_cast<Gui::View3DInventorViewer*>(viewer)->redraw();
+                        setSketchMode(STATUS_NONE);
+                        return true;
+                    }
+
                     bool done = false;
                     detectAndShowPreselection(resolvedClickResult);
 
@@ -1330,6 +1363,10 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
             }
         }
         else {// Button 1 released
+            if (dimensionOptionInteraction.active) {
+                return finalizeDimensionOptionInteraction();
+            }
+
             // Do things depending on the mode of the user interaction
             switch (Mode) {
                 case STATUS_SELECT_Point:
@@ -1812,29 +1849,59 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
     }
 
     std::unique_ptr<SnapManager::SnapHandle> snapHandle;
-    double x, y;
-    if (!getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y)) {
+    Base::Vector2d rawOnSketchPos;
+    try {
+        double x, y;
+        if (!getCoordsOnSketchPlane(line.getPosition(), line.getDirection(), x, y)) {
+            return false;
+        }
+        rawOnSketchPos = Base::Vector2d(x, y);
+        snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), rawOnSketchPos);
+    }
+    catch (const Base::ZeroDivisionError&) {
         return false;
     }
-    snapHandle = std::make_unique<SnapManager::SnapHandle>(snapManager.get(), Base::Vector2d(x, y));
+
+    const bool freezeDimensionOptionPreview = dimensionOptionInteraction.active;
 
     bool preselectChanged = false;
-    if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
+    std::unique_ptr<SoPickedPoint> Point;
+    if (!freezeDimensionOptionPreview && Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
         && Mode != STATUS_SELECT_Constraint && Mode != STATUS_SKETCH_Drag
         && Mode != STATUS_SKETCH_DragConstraint && Mode != STATUS_SKETCH_UseRubberBand) {
+        Point.reset(this->getPointOnRay(cursorPos, viewer));
         auto result = getPreselectionResultAtViewportPos(cursorPos, viewer);
         cachePreselectionResult(cursorPos, result);
         preselectChanged = detectAndShowPreselection(result);
     }
 
+    if (!freezeDimensionOptionPreview && Mode != STATUS_NONE && Mode != STATUS_SKETCH_UseHandler) {
+        clearDimensionOptions();
+    }
+
     switch (Mode) {
-        case STATUS_NONE:
+        case STATUS_NONE: {
+            bool optionPreviewUpdated = false;
+            bool optionHoverChanged = false;
+            if (dimensionOptionInteraction.active) {
+                optionPreviewUpdated = updateDimensionOptionInteraction(
+                    QPoint(cursorPos[0], cursorPos[1]),
+                    rawOnSketchPos
+                );
+            }
+            else if (editCoinManager && !dimensionOptions.empty()) {
+                const int hoverIdx = editCoinManager->pickDimensionOption(Point.get());
+                optionHoverChanged = editCoinManager->setActiveDimensionOption(hoverIdx);
+            }
             if (preselectChanged) {
                 editCoinManager->drawConstraintIcons();
                 updateColor();
-                return true;
             }
-            return false;
+            if (optionPreviewUpdated || optionHoverChanged) {
+                viewer->redraw();
+            }
+            return preselectChanged || optionPreviewUpdated || optionHoverChanged;
+        }
         case STATUS_SELECT_Point:
             if (!getSolvedSketch().hasConflicts() && preselection.isPreselectPointValid()) {
                 int geoId;
@@ -2301,199 +2368,48 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
     }
 }
 
-void ViewProviderSketch::moveConstraint(Sketcher::Constraint* Constr, int constNum, const Base::Vector2d& toPos, OffsetMode offset)
+void ViewProviderSketch::moveConstraint(
+    Sketcher::Constraint* constraint,
+    int constraintIndex,
+    const Base::Vector2d& labelPosition,
+    OffsetMode offset
+)
 {
-    // are we in edit?
-    if (!isInEditMode())
+    if (!isInEditMode() || !constraint) {
         return;
+    }
 
-    Sketcher::SketchObject* obj = getSketchObject();
-
-    if (Constr->Type == Distance || Constr->Type == DistanceX || Constr->Type == DistanceY
-        || Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
-
-        Base::Vector3d p1(0., 0., 0.), p2(0., 0., 0.);
-        if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
-            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
-            p2 = obj->getPoint(Constr->Second, Constr->SecondPos);
-        }
-        else if (Constr->Second != GeoEnum::GeoUndef) {
-            p1 = obj->getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry *geo1 = obj->getGeometry(Constr->First);
-            const Part::Geometry *geo2 = obj->getGeometry(Constr->Second);
-
-            if (isLineSegment(*geo2)) {
-                if (isCircleOrArc(*geo1) && Constr->FirstPos == Sketcher::PointPos::none){
-                    std::swap(geo1, geo2); // see below
-                }
-                else {
-                    // point to line distance
-                    auto lineSeg = static_cast<const Part::GeomLineSegment *>(geo2); //NOLINT
-                    Base::Vector3d l2p1 = lineSeg->getStartPoint();
-                    Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                    // calculate the projection of p1 onto line2
-                    p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
-                    p2 += p1;
-                }
-            }
-
-            if (isCircleOrArc(*geo2)) {
-                if (Constr->FirstPos != Sketcher::PointPos::none){ // circular to point distance
-                    auto [rad, ct] = getRadiusCenterCircleArc(geo2);
-
-                    Base::Vector3d v = p1 - ct;
-                    v = v.Normalize();
-                    p2 = ct + rad * v;
-                }
-                else if (isCircleOrArc(*geo1)) { // circular to circular distance
-                    GetCirclesMinimalDistance(geo1, geo2, p1, p2);
-                }
-                else if (isLineSegment(*geo1)){ // circular to line distance
-                    auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo1); //NOLINT
-                    Base::Vector3d l2p1 = lineSeg->getStartPoint();
-                    Base::Vector3d l2p2 = lineSeg->getEndPoint();
-
-                    auto [rad, ct] = getRadiusCenterCircleArc(geo2);
-
-                    p1.ProjectToLine(ct - l2p1, l2p2 - l2p1);// project on the line translated to origin
-                    Base::Vector3d v = p1;
-                    p1 += ct;
-                    v.Normalize();
-                    p2 = ct + v * rad;
-                }
-            }
-        }
-        else if (Constr->FirstPos != Sketcher::PointPos::none) {
-            p2 = obj->getPoint(Constr->First, Constr->FirstPos);
-        }
-        else if (Constr->First != GeoEnum::GeoUndef) {
-            const Part::Geometry* geo = obj->getGeometry(Constr->First);
-            if (geo->is<Part::GeomLineSegment>()) {
-                const Part::GeomLineSegment* lineSeg =
-                    static_cast<const Part::GeomLineSegment*>(geo);
-                p1 = lineSeg->getStartPoint();
-                p2 = lineSeg->getEndPoint();
-            }
-            else if (geo->is<Part::GeomArcOfCircle>()) {
-                auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-                Base::Vector3d center = arc->getCenter();
-                double startangle, endangle;
-                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
-
-                if (Constr->Type == Distance && Constr->Second == GeoEnum::GeoUndef){
-                    double arcAngle = (startangle + endangle) / 2.;
-                    Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
-                    Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
-                    Constr->LabelDistance = centerToToPos * arcDirection;
-
-
-                    draw(true, false);
-                    return;
-                }
-                else {
-                    // radius and diameter
-                    p1 = center;
-                    double angle = Constr->LabelPosition;
-                    if (angle == 10) {
-                        angle = (startangle + endangle) / 2;
-                    }
-                    else {
-                        Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-                        angle = atan2(tmpDir.y, tmpDir.x);
-                    }
-                    double radius = arc->getRadius();
-                    if (Constr->Type == Sketcher::Diameter) {
-                        p1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
-                    }
-
-                    p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
-                }
-            }
-            else if (geo->is<Part::GeomCircle>()) {
-                const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
-                double radius = circle->getRadius();
-                Base::Vector3d center = circle->getCenter();
-                p1 = center;
-
-                Base::Vector3d tmpDir = Base::Vector3d(toPos.x, toPos.y, 0) - p1;
-
-                Base::Vector3d dir = radius * tmpDir.Normalize();
-
-                if (Constr->Type == Sketcher::Diameter)
-                    p1 = center - dir;
-
-                if (Constr->Type == Sketcher::Weight) {
-
-                    double scalefactor = 1.0;
-
-                    if (circle->hasExtension(
-                            SketcherGui::ViewProviderSketchGeometryExtension::getClassTypeId())) {
-                        auto vpext = std::static_pointer_cast<
-                            const SketcherGui::ViewProviderSketchGeometryExtension>(
-                            circle
-                                ->getExtension(SketcherGui::ViewProviderSketchGeometryExtension::
-                                                   getClassTypeId())
-                                .lock());
-
-                        scalefactor = vpext->getRepresentationFactor();
-                    }
-
-                    p2 = center + dir * scalefactor;
-                }
-                else
-                    p2 = center + dir;
-            }
-            else
-                return;
-        }
-        else
-            return;
-        Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
-
-        Base::Vector3d dir;
-        if (Constr->Type == Distance || Constr->Type == Radius || Constr->Type == Diameter
-            || Constr->Type == Weight)
-            dir = (p2 - p1).Normalize();
-        else if (Constr->Type == DistanceX)
-            dir = Base::Vector3d((p2.x - p1.x >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0, 0);
-        else if (Constr->Type == DistanceY)
-            dir = Base::Vector3d(0, (p2.y - p1.y >= std::numeric_limits<float>::epsilon()) ? 1 : -1, 0);
-
-        double offsetVal = 0.0;
-        if (offset == OffsetConstraint) {
-            if (auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
-                Gui::View3DInventorViewer* viewer = view->getViewer();
-                float fHeight = -1.0;
-                float fWidth = -1.0;
-                viewer->getDimensions(fHeight, fWidth);
-                offsetVal = (fHeight + fWidth) * 0.01;
-            }
-        }
-
-        if (Constr->Type == Radius || Constr->Type == Diameter || Constr->Type == Weight) {
-            double distance = vec.x * dir.x + vec.y * dir.y;
-            if (distance > offsetVal) {
-                distance -= offsetVal;
-            }
-            Constr->LabelDistance = distance;
-            Constr->LabelPosition = atan2(dir.y, dir.x);
-        }
-        else {
-            Base::Vector3d normal(-dir.y, dir.x, 0);
-            double distance = vec.x * normal.x + vec.y * normal.y - offsetVal;
-            Constr->LabelDistance = distance;
-            if (Constr->Type == Distance || Constr->Type == DistanceX
-                || Constr->Type == DistanceY) {
-                vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
-                Constr->LabelPosition = vec.x * dir.x + vec.y * dir.y;
+    double labelOffset = 0.0;
+    if (offset == OffsetConstraint) {
+        if (auto* view = qobject_cast<Gui::View3DInventor*>(getActiveView())) {
+            if (auto* viewer = view->getViewer()) {
+                float height = -1.0F;
+                float width = -1.0F;
+                viewer->getDimensions(height, width);
+                constexpr double creationLabelOffsetScale = 0.01;
+                labelOffset = (height + width) * creationLabelOffsetScale;
             }
         }
     }
-    else if (Constr->Type == Angle) {
-        moveAngleConstraint(Constr, constNum, toPos);
+
+    if (constraint->Type == Distance || constraint->Type == DistanceX
+        || constraint->Type == DistanceY || constraint->Type == Radius
+        || constraint->Type == Diameter || constraint->Type == Weight) {
+        if (prepareDimensionDatumPlacement(
+                *getSketchObject(),
+                *constraint,
+                labelPosition,
+                labelOffset
+            )) {
+            draw(true, false);
+        }
+        return;
     }
 
-    draw(true, false);
+    if (constraint->Type == Angle) {
+        moveAngleConstraint(constraint, constraintIndex, labelPosition);
+        draw(true, false);
+    }
 }
 
 void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int constNum, const Base::Vector2d& toPos)
@@ -2875,6 +2791,25 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
         }
         else if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
             resetPreselectPoint();
+        }
+
+        if (msg.Type == Gui::SelectionChanges::ClrSelection
+            || msg.Type == Gui::SelectionChanges::AddSelection
+            || msg.Type == Gui::SelectionChanges::RmvSelection) {
+            if (dimensionOptionInteraction.finalizing) {
+                return;
+            }
+
+            if (dimensionOptionInteraction.active) {
+                return;
+            }
+            refreshDimensionOptionPreview();
+
+            if (auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView())) {
+                if (auto* viewer = view->getViewer()) {
+                    viewer->redraw();
+                }
+            }
         }
     }
 }
@@ -4356,9 +4291,12 @@ void ViewProviderSketch::setupActiveAndInEdit()
     // Give focus to the MDI so that keyboard events are caught after starting edit.
     // Else pressing ESC right after starting edit will not be caught to exit edit mode.
     ensureFocus();
+    refreshDimensionOptionPreview();
 }
 void ViewProviderSketch::unsetupActiveAndInEdit()
 {
+    clearDimensionOptions();
+
     if (listener) {
         Gui::getMainWindow()->removeEventFilter(listener.get());
         listener.reset();
@@ -4513,6 +4451,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
     }
+
+    clearDimensionOptions();
 
     if (dragAutoConstraintHandler) {
         dragAutoConstraintHandler->clear();
