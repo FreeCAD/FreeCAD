@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import ast
 import tempfile
 from pathlib import Path
 import sys
@@ -11,10 +12,32 @@ TYPING_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TYPING_DIR))
 
 from stubgen.class_merge import public_class_stub_source  # noqa: E402
+from stubgen.module_merge import merge_type_class_support_nodes  # noqa: E402
 from stubgen.model import BindingClass  # noqa: E402
 
 
 class ClassMergeTests(unittest.TestCase):
+    def test_merges_source_adjacent_bases_without_class_members(self):
+        target = """\
+class Derived:
+    ...
+"""
+        support = """\
+class Derived(Base):
+    ...
+"""
+        support_class = ast.parse(support).body[0]
+        self.assertIsInstance(support_class, ast.ClassDef)
+
+        merged = merge_type_class_support_nodes(
+            target,
+            "Derived",
+            "",
+            class_bases=support_class.bases,
+        )
+
+        self.assertIn("class Derived(Base):", merged)
+
     def test_preserves_property_getters_and_setters(self):
         source = """\
 from typing import Sequence

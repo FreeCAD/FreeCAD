@@ -461,6 +461,23 @@ def type_stub_support_sources(source: str, class_symbol: str) -> tuple[str, str]
     return module_support_source_text, class_support_source
 
 
+def type_stub_class_bases(source: str, class_symbol: str) -> list[ast.expr]:
+    """Return the explicitly declared bases from one source-adjacent type stub."""
+
+    tree = ast.parse(source)
+    target_class = next(
+        (
+            node
+            for node in tree.body
+            if isinstance(node, ast.ClassDef) and node.name == class_symbol
+        ),
+        None,
+    )
+    if target_class is None:
+        return []
+    return copy.deepcopy(target_class.bases)
+
+
 def merged_module_source(target_source: str, target_tree: ast.Module) -> str:
     merged = ast.unparse(target_tree).rstrip() + "\n"
     preamble = leading_comment_block(target_source)
@@ -492,8 +509,9 @@ def merge_type_class_support_nodes(
     target_source: str,
     class_symbol: str,
     support_source: str,
+    class_bases: list[ast.expr] | None = None,
 ) -> str:
-    if not support_source.strip():
+    if not support_source.strip() and not class_bases:
         return target_source
 
     target_tree = ast.parse(target_source)
@@ -509,10 +527,13 @@ def merge_type_class_support_nodes(
     if target_class is None:
         return target_source
 
+    if class_bases:
+        target_class.bases = copy.deepcopy(class_bases)
+
     existing_symbols = class_body_defined_symbols(target_class.body)
     support_nodes = filtered_type_class_support_nodes(support_tree.body, existing_symbols)
     if not support_nodes:
-        return target_source
+        return merged_module_source(target_source, target_tree)
 
     insertion_index = class_support_insertion_index(target_class.body)
     target_class.body = (
@@ -613,16 +634,30 @@ def copy_type_support_stubs(
         )
         if not target.exists():
             continue
+        source_text = source.read_text(encoding="utf-8")
         module_support_source_text, class_support_source = type_stub_support_sources(
-            source.read_text(encoding="utf-8"),
+            source_text,
             class_symbol,
         )
+        class_bases = type_stub_class_bases(source_text, class_symbol)
         original = target.read_text(encoding="utf-8")
         merged = original
         if module_support_source_text.strip():
             merged = merge_module_support_nodes(merged, module_support_source_text)
         if class_support_source.strip():
-            merged = merge_type_class_support_nodes(merged, class_symbol, class_support_source)
+            merged = merge_type_class_support_nodes(
+                merged,
+                class_symbol,
+                class_support_source,
+                class_bases,
+            )
+        elif class_bases:
+            merged = merge_type_class_support_nodes(
+                merged,
+                class_symbol,
+                "",
+                class_bases,
+            )
         if merged == original:
             continue
         target.write_text(merged, encoding="utf-8")
