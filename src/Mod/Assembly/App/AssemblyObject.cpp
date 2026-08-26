@@ -122,8 +122,8 @@ Base::Placement getJointSideGlobalPlacement(
 
 bool axesAreCoaxial(const Base::Placement& plc1, const Base::Placement& plc2)
 {
-    Base::Vector3d axis1 = plc1.getRotation().multVec(Base::Vector3d(0, 0, 1));
-    Base::Vector3d axis2 = plc2.getRotation().multVec(Base::Vector3d(0, 0, 1));
+    Base::Vector3d axis1 = plc1.getRotation().multVec(Base::Vector3d::UnitZ);
+    Base::Vector3d axis2 = plc2.getRotation().multVec(Base::Vector3d::UnitZ);
     if (axis1.Length() <= Precision::Confusion() || axis2.Length() <= Precision::Confusion()) {
         return false;
     }
