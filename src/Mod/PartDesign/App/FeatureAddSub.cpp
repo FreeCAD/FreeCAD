@@ -32,6 +32,8 @@
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopoDS.hxx>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -94,13 +96,20 @@ Part::TopoShape FeatureAddSub::getAddSubPreviewShape()
     if (tool.getBoundBox().IsInBox(base.getBoundBox())) {
         return tool;
     }
-    // skip the boolean for expensive tools (e.g. modeled threads) so hover stays
-    // responsive; the untrimmed tool is the graceful fallback
-    constexpr int faceLimit = 200;
-    int faces = 0;
+    // only trim analytic tools; a swept or spline tool (e.g. a modeled thread)
+    // makes the boolean slow, so there the raw tool is the graceful fallback
     for (TopExp_Explorer it(tool.getShape(), TopAbs_FACE); it.More(); it.Next()) {
-        if (++faces > faceLimit) {
-            return tool;
+        switch (BRepAdaptor_Surface(TopoDS::Face(it.Current())).GetType()) {
+            case GeomAbs_Plane:
+            case GeomAbs_Cylinder:
+            case GeomAbs_Cone:
+            case GeomAbs_Sphere:
+            case GeomAbs_Torus:
+                break;
+            default:
+                // any other (or future) surface type is treated as non-analytic
+                // and skips the boolean, so an unknown type fails safe to the tool
+                return tool;
         }
     }
     try {
@@ -111,6 +120,8 @@ Part::TopoShape FeatureAddSub::getAddSubPreviewShape()
         }
     }
     catch (Standard_Failure&) {
+    }
+    catch (Base::Exception&) {
     }
     return tool;
 }
