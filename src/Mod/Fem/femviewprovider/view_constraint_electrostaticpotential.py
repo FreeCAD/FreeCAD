@@ -30,6 +30,8 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief view provider for constraint electrostatic potential object
 
+from os import path
+
 from femtaskpanels import task_constraint_electrostaticpotential
 from . import view_base_femconstraint
 
@@ -49,4 +51,4 @@ class VPConstraintElectroStaticPotential(view_base_femconstraint.VPBaseFemConstr
 
     def attach(self, vobj):
         super().attach(vobj)
-        vobj.loadSymbol(self.resource_symbol_dir + "ConstraintElectrostaticPotential.iv")
+        vobj.loadSymbol(path.join(vobj.ResourceSymbolDir, "ConstraintElectrostaticPotential.iv"))

@@ -46,7 +46,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintTransform, FemGui::ViewProvider
 ViewProviderFemConstraintTransform::ViewProviderFemConstraintTransform()
 {
     sPixmap = "FEM_ConstraintTransform";
-    loadSymbol((resourceSymbolDir + "ConstraintTransform.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintTransform.iv");
 }
 
 ViewProviderFemConstraintTransform::~ViewProviderFemConstraintTransform() = default;
