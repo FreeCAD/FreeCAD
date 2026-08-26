@@ -400,17 +400,39 @@ def filtered_module_support_nodes(
     existing_symbols: set[str],
 ) -> list[ast.stmt]:
     filtered_nodes: list[ast.stmt] = []
-    for names, group in overlay_symbol_groups(body):
+    index = 0
+    while index < len(body):
+        names = top_level_symbol_names(body[index])
+        group = [body[index]]
+        index += 1
+        while index < len(body) and top_level_symbol_names(body[index]) == names:
+            group.append(body[index])
+            index += 1
+
         if names and support_definition_group(group):
             if names.issubset(existing_symbols):
                 continue
             existing_symbols.update(names)
             filtered_nodes.extend(copy.deepcopy(node) for node in group)
             continue
+
+        group_filtered: list[ast.stmt] = []
         for node in group:
             filtered = filtered_module_support_node(node, existing_symbols)
             if filtered is not None:
-                filtered_nodes.append(filtered)
+                group_filtered.append(filtered)
+
+        filtered_nodes.extend(group_filtered)
+        if (
+            group_filtered
+            and isinstance(group[-1], (ast.Assign, ast.AnnAssign))
+            and index < len(body)
+            and isinstance(body[index], ast.Expr)
+            and isinstance(body[index].value, ast.Constant)
+            and isinstance(body[index].value.value, str)
+        ):
+            filtered_nodes.append(copy.deepcopy(body[index]))
+            index += 1
     return filtered_nodes
 
 

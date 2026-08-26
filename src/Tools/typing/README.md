@@ -74,6 +74,28 @@ merge. C++ remains authoritative for inheritance and override boundaries; the
 adjacent input is authoritative for the Python conversion shape at those
 boundaries. Focused tests should accompany each new conversion family.
 
+### Python Bootstrap Exports
+
+The Python-defined bootstrap API is kept beside the compatibility-sensitive
+startup code in `src/App/FreeCADInit.py`. Its `QUANTITY_CONSTANTS` and
+`UNIT_CONSTANTS` tables are both the runtime declarations and the input for
+`stubgen/init_exports.py`. The generator also recognizes class assignments
+such as `App.Logger = FCADLogger`, `App.ScaleType = ScaleType`, and
+`units.Scheme = Scheme`, so public bootstrap exports are sourced from their
+actual installation sites rather than duplicated in the generator. It resolves
+all of them to an intermediate `ModuleExport` model and merges typed members
+into the public `FreeCAD` and `FreeCAD.Units` stubs. The adjacent
+`src/App/FreeCADInit.pyi` contains only dynamically assigned logger methods.
+Do not edit the generated member list directly; change the structured runtime
+declaration or its typing supplement instead.
+
+The init-export parser intentionally understands only literal declaration
+tables, typed records, and direct class assignments to known bootstrap
+receivers. It does not execute `FreeCADInit.py` or inspect a running FreeCAD
+process. Missing table documentation receives a stable generated description;
+explicit `doc` fields remain the preferred form for user-facing details.
+Irregular exports remain curated until they have a stable structured source
+representation.
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or
@@ -93,6 +115,10 @@ The helper also runs the smoke checks from this directory:
 ```sh
 python3 src/Tools/typing/generate_stubs.py check --root . --out-dir src/Tools/typing/generated
 ```
+
+`check-stubs.sh` also runs the focused `stubgen` unit tests, including the
+structured property-contract catalog checks, before generating the disposable
+stubs and invoking Pyright and Pyrefly.
 
 Use the documentation linter to audit the curated source-adjacent stub files:
 

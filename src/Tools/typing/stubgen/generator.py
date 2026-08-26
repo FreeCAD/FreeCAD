@@ -46,6 +46,7 @@ from .document_object_types import (
     direct_python_types,
     document_object_python_types,
 )
+from .init_exports import ModuleExport, load_init_exports, render_init_exports
 from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
 from .property_contracts import (
     PropertyCatalog,
@@ -140,6 +141,29 @@ def append_property_aliases(
     merged = merge_module_support_nodes(original, render_property_aliases(catalog))
     if merged != original:
         target.write_text(merged, encoding="utf-8")
+
+
+def append_init_exports(
+    out_dir: Path,
+    module_names: set[str],
+    root: Path,
+) -> None:
+    """Add structured Python-bootstrap exports to their public module stub."""
+
+    exports = load_init_exports(root)
+    by_module: dict[str, list[ModuleExport]] = {}
+    for export in exports:
+        by_module.setdefault(export.module, []).append(export)
+
+    for module_name, module_exports in by_module.items():
+        target = module_stub_path(out_dir, module_name, module_names)
+        if not target.exists():
+            raise FileNotFoundError(f"Expected generated {module_name} stub: {target}")
+
+        original = target.read_text(encoding="utf-8")
+        merged = merge_module_support_nodes(original, render_init_exports(tuple(module_exports)))
+        if merged != original:
+            target.write_text(merged, encoding="utf-8")
 
 
 def markdown_report(methods: list[BindingMethod]) -> str:
@@ -245,5 +269,10 @@ def write_outputs(
         module_names,
         classes,
         type_hierarchy,
+    )
+    append_init_exports(
+        out_dir / "stubs",
+        module_names,
+        root,
     )
     return overlay_count

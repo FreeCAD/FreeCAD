@@ -153,6 +153,7 @@ HELPER_PYI_FILES = {
     "src/Base/Metadata.pyi",
     "src/Base/PyObjectBase.pyi",
     "src/App/PropertyPythonContracts.pyi",
+    "src/App/FreeCADInit.pyi",
 }
 PUBLIC_STUB_DECORATORS = {
     "classmethod",
