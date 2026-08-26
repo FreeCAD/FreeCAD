@@ -203,6 +203,14 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         }
     }
     if (previewHidden) {
+        // a view provider may supply its own on-top preview (e.g. a PartDesign
+        // feature showing only its own addition/cut instead of the whole solid)
+        if (SoNode* preview = vp->getPreselectionPreview(subname)) {
+            pcGroup->addChild(preview);
+            objs[key.c_str()] = preview;
+            FC_LOG("add feature preselect preview " << key);
+            return;
+        }
         // Some view providers build geometry lazily and skip it while hidden;
         // the true/false pair forces a one-time rebuild (no-op without it).
         auto rebuildIfHidden = [](ViewProviderDocumentObject* provider) {
