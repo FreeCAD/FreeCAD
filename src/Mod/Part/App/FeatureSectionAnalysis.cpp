@@ -21,6 +21,7 @@
 
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
+#include <Bnd_Box.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
@@ -48,11 +49,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstring>
 #include <functional>
 #include <utility>
 #include <vector>
 
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/GroupExtension.h>
 #include <Base/Console.h>
 
 #include "FaceMakerBullseye.h"
@@ -62,6 +65,19 @@
 using namespace Part;
 
 PROPERTY_SOURCE(Part::SectionAnalysis, Part::Feature)
+
+namespace
+{
+// Display first: it is the mode that stays usable on the assemblies people
+// actually complain about.
+const char* ResultModeEnums[] = {"Display", "Geometry", nullptr};
+}  // namespace
+
+
+bool SectionAnalysis::wantsSolidGeometry() const
+{
+    return ResultMode.getValue() != 0;
+}
 
 SectionAnalysis::SectionAnalysis()
 {
@@ -101,6 +117,16 @@ SectionAnalysis::SectionAnalysis()
         static_cast<App::PropertyType>(App::Prop_Output | App::Prop_Hidden),
         "Per-face index into SourceParts (authoritative face-to-source mapping)"
     );
+
+    ADD_PROPERTY_TYPE(
+        ResultMode,
+        ((long)0),
+        "Section Analysis",
+        App::Prop_None,
+       "Display: fast preview only."
+       "Geometry: builds real section faces in Shape, much slower."
+    );
+    ResultMode.setEnums(ResultModeEnums);
 
     Source.setScope(App::LinkScope::Global);
     SourceParts.setScope(App::LinkScope::Global);
@@ -145,6 +171,39 @@ void SectionAnalysis::handleChangedPropertyName(
     Part::Feature::handleChangedPropertyName(reader, TypeName, PropName);
 }
 
+bool SectionAnalysis::invalidatesHarvest(const App::Property& prop) const
+{
+    // By address, so renaming Source is a compile error rather than a rule that
+    // quietly stops matching.
+    return &prop == &Source;
+}
+
+// The properties of the source objects that can change the triangles harvested
+bool SectionAnalysis::isHarvestStaleAfter(const App::DocumentObject& obj, const App::Property& prop)
+{
+    // Visibility is declared on DocumentObject itself, so it is the one case
+    // that can be settled by address rather than by name.
+    if (&prop == &obj.Visibility) {
+        return true;
+    }
+
+    // Null for a property the object does not own, which must not be read as
+    // "something changed".
+    const char* propertyName = obj.getPropertyName(&prop);
+    if (propertyName == nullptr) {
+        return false;
+    }
+
+    // Placement covers being moved. The harvest holds world coordinates, so a
+    // source that moves leaves the cap sliced from triangles at the old
+    // position - which for a Part::Feature is masked by the placement being
+    // written back through Shape, but nothing writes it back for an App::Part,
+    // a group or a link.
+    return std::strcmp(propertyName, "Shape") == 0
+        || std::strcmp(propertyName, "Placement") == 0;
+}
+
+
 bool SectionAnalysis::isEffectivelyVisible(const App::DocumentObject* obj)
 {
     for (const auto* o = obj; o; o = App::GeoFeatureGroupExtension::getGroupOfObject(o)) {
@@ -179,23 +238,17 @@ bool SectionAnalysis::cutPlane(Base::Vector3d& normal, double& offset) const
     return true;
 }
 
-void SectionAnalysis::planeAfterDrag(
-    const Base::Vector3d& startNormal,
-    double startOffset,
-    const Base::Rotation& rotation,
-    double shift,
-    Base::Vector3d& normal,
-    double& offset
+Base::Vector3d SectionAnalysis::draggerAnchor(
+    const Base::Vector3d& normal,
+    double offset,
+    const Base::Vector3d& hint
 )
 {
-    // The gizmo sits here, on the plane. Rotating the normal alone would swing
-    // the plane about the world origin instead, so the offset has to be
-    // re-derived against the pivot before the slide is applied.
-    const Base::Vector3d pivot = startNormal * startOffset;
-
-    normal = rotation.multVec(startNormal);
-    normal.Normalize();
-    offset = normal * pivot + shift;
+    // Drop the hint onto the plane. Using the world origin instead - which is
+    // what projecting nothing amounts to - puts the handle wherever the plane
+    // happens to pass closest to (0, 0, 0), and an imported assembly can sit
+    // far enough away for that to be off screen entirely.
+    return hint - normal * (hint * normal - offset);
 }
 
 void SectionAnalysis::planeFrame(const Base::Vector3d& normal, Base::Vector3d& u, Base::Vector3d& v)
@@ -206,6 +259,81 @@ void SectionAnalysis::planeFrame(const Base::Vector3d& normal, Base::Vector3d& u
     u.Normalize();
     v = normal.Cross(u);
     v.Normalize();
+}
+
+void SectionAnalysis::forEachSourcePart(
+    const std::vector<App::DocumentObject*>& sources,
+    const App::DocumentObject* exclude,
+    const std::function<void(App::DocumentObject*, const TopoDS_Shape&)>& visit
+)
+{
+    App::DocumentObject* root = nullptr;
+    std::function<void(const std::string&)> descend = [&](const std::string& sub) {
+        App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
+        // The root must be effectively visible (its containers too); nested
+        // objects only need their own flag, their path is already checked.
+        if (!obj || (sub.empty() ? !isEffectivelyVisible(obj) : !obj->Visibility.getValue())) {
+            return;
+        }
+        // Containers are descended into, never taken whole. getShape() on an
+        // App::Part hands back a compound of everything inside it, which is not
+        // null - so asking first and descending only on failure meant the
+        // recursion stopped at the first container it met. A whole assembly then
+        // arrived as one part, with one colour and one hatch angle for the lot.
+        //
+        // Tested before the shape is fetched rather than after, which also
+        // avoids building that compound just to throw it away.
+        // Carrying a group extension is not enough to make something a
+        // container. A PartDesign Body owns an Origin, so it inherits
+        // GeoFeatureGroupExtension through OriginGroupExtension - but it is a
+        // Part::Feature with a shape of its own, and it is one part, not a bag
+        // of them. Descending into it finds sketches and datums, no shape comes
+        // back, and the Body is simply not sectioned.
+        //
+        // So being a shape-bearing feature wins: those terminate the recursion.
+        // App::Part and plain groups are not features, and still get descended.
+        const bool isContainer =
+            !obj->isDerivedFrom(Feature::getClassTypeId())
+            && (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
+                || obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()));
+
+        if (!isContainer) {
+            TopoDS_Shape shape = Feature::getShape(
+                root,
+                ShapeOption::ResolveLink | ShapeOption::Transform,
+                sub.empty() ? nullptr : sub.c_str()
+            );
+            if (!shape.IsNull()) {
+                visit(obj, shape);
+                return;
+            }
+        }
+        for (const auto& child : obj->getSubObjects()) {
+            descend(sub + child);
+        }
+    };
+
+    for (App::DocumentObject* src : sources) {
+        if (!src || src == exclude) {
+            continue;
+        }
+        root = src;
+        descend({});
+    }
+}
+
+std::vector<App::DocumentObject*> SectionAnalysis::distinctSourceParts(
+    const std::vector<App::DocumentObject*>& sources,
+    const App::DocumentObject* exclude
+)
+{
+    std::vector<App::DocumentObject*> parts;
+    forEachSourcePart(sources, exclude, [&parts](App::DocumentObject* obj, const TopoDS_Shape&) {
+        if (std::find(parts.begin(), parts.end(), obj) == parts.end()) {
+            parts.push_back(obj);
+        }
+    });
+    return parts;
 }
 
 bool SectionAnalysis::sourceBoundingBox(Bnd_Box& bbox) const
@@ -364,39 +492,34 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         return new App::DocumentObjectExecReturn("No source shape linked.");
     }
 
-    // Collect shapes, recursing into containers via subname paths so nested
-    // placements compose correctly. Hidden objects are excluded - the section
-    // shows what the user sees. Each shape stays paired with the object that
-    // produced it, for per-body colouring.
-    std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> parts;
-    App::DocumentObject* root = nullptr;
-    std::function<void(const std::string&)> collectShapes = [&](const std::string& sub) {
-        App::DocumentObject* obj = sub.empty() ? root : root->getSubObject(sub.c_str());
-        // The root must be effectively visible (its containers too); nested
-        // objects only need their own flag, their path is already checked.
-        if (!obj || (sub.empty() ? !isEffectivelyVisible(obj) : !obj->Visibility.getValue())) {
-            return;
+    // In Display mode the cap is drawn by the view provider straight from the
+    // triangles the 3D view already holds, so none of the work below is needed.
+    // Doing it anyway is what makes moving the plane cost a minute: the boolean
+    // is over 95% of that, and it is thrown away as soon as the plane moves.
+    if (!wantsSolidGeometry()) {
+        // Only publish if something actually changes. Setting a property to the
+        // value it already holds still signals, and every view provider
+        // downstream then rebuilds - clip planes, plane visual, and the cached
+        // triangle harvest - on a recompute that produced nothing new.
+        if (!FaceSourceIndex.getValues().empty()) {
+            FaceSourceIndex.setValues({});
         }
-        TopoDS_Shape shape = Feature::getShape(
-            root,
-            ShapeOption::ResolveLink | ShapeOption::Transform,
-            sub.empty() ? nullptr : sub.c_str()
-        );
-        if (!shape.IsNull()) {
-            parts.emplace_back(shape, obj);
-            return;
+        if (!SourceParts.getValues().empty()) {
+            SourceParts.setValues({});
         }
-        for (const auto& child : obj->getSubObjects()) {
-            collectShapes(sub + child);
+        if (!this->Shape.getValue().IsNull()) {
+            this->Shape.setValue(TopoDS_Shape());
         }
-    };
-    for (App::DocumentObject* src : sources) {
-        if (!src || src == this) {
-            continue;
-        }
-        root = src;
-        collectShapes({});
+        return App::DocumentObject::StdReturn;
     }
+
+    // Each shape stays paired with the object that produced it, for per-body
+    // colouring. The recursion itself lives in forEachSourcePart(), because the
+    // Display path has to group its triangles by exactly the same parts.
+    std::vector<std::pair<TopoDS_Shape, App::DocumentObject*>> parts;
+    forEachSourcePart(sources, this, [&parts](App::DocumentObject* obj, const TopoDS_Shape& shape) {
+        parts.emplace_back(shape, obj);
+    });
 
     // Nothing visible is a valid state (e.g. all bodies hidden) - publish an
     // empty section rather than erroring out and leaving a stale Shape behind.
@@ -460,8 +583,27 @@ App::DocumentObjectExecReturn* SectionAnalysis::execute()
         const TopoDS_Shape& currentSolid = solidEntry.first;
         const size_t facesBefore = sectionFaces.size();
 
+        // A solid the plane never reaches cannot contribute a cap, and both the
+        // section and the half-space fallback below are expensive. Rejecting on
+        // the bounding box first costs microseconds and skips most of the solids
+        // in an assembly.
+        Bnd_Box solidBox;
+        BRepBndLib::Add(currentSolid, solidBox, false);
+        if (!solidBox.IsVoid() && solidBox.IsOut(slicePlane)) {
+            faceSourceIdx.resize(sectionFaces.size(), sourceIndex(solidEntry.second));
+            continue;
+        }
         try {
-            BRepAlgoAPI_Section cs(currentSolid, slicePlane);
+            BRepAlgoAPI_Section cs;
+            cs.Init1(currentSolid);
+            cs.Init2(slicePlane);
+            // Oriented bounding boxes let the boolean reject non-intersecting
+            // sub-shapes far more aggressively than the default axis-aligned
+            // test. On a real assembly this is worth about 5x. RunParallel uses
+            // the spare cores for the solids that genuinely have to be cut.
+            cs.SetUseOBB(true);
+            cs.SetRunParallel(true);
+            cs.Build();
             if (cs.IsDone()) {
                 Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
                 TopExp_Explorer edgeXp;

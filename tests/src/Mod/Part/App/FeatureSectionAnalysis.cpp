@@ -2,7 +2,9 @@
 
 #include <gtest/gtest.h>
 
+#include <Bnd_Box.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BRepBndLib.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 
@@ -10,9 +12,11 @@
 #include <filesystem>
 #include <limits>
 
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Part.h>
 #include <src/App/InitApplication.h>
 #include <src/TempDirectory.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Mod/Part/App/FeaturePartCut.h>
 #include <Mod/Part/App/FeatureSectionAnalysis.h>
 
@@ -37,6 +41,10 @@ protected:
         _section->Source.setValues({_boxes[0]});
         _section->PlaneNormal.setValue(Base::Vector3d(0, 0, 1));
         _section->PlaneOffset.setValue(1.5);
+        // Everything below asserts on the B-rep faces, which is what Geometry
+        // mode produces. Display mode draws the cap in the view provider and
+        // deliberately publishes no Shape; it is covered separately.
+        _section->ResultMode.setValue("Geometry");
     }
 
     /// Faces of the section, in the order they appear in the Shape
@@ -798,100 +806,6 @@ TEST_F(FeatureSectionAnalysisTest, testManySourcesAllMapCorrectly)
 
 // --- dragging the gizmo --------------------------------------------------
 
-TEST_F(FeatureSectionAnalysisTest, testDragWithNoInputLeavesThePlaneAlone)
-{
-    // Act
-    Base::Vector3d n;
-    double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(), 0.0, n, d);
-
-    // Assert
-    EXPECT_NEAR(n.z, 1.0, 1e-9);
-    EXPECT_NEAR(d, 10.0, 1e-9);
-}
-
-TEST_F(FeatureSectionAnalysisTest, testDragTranslationSlidesAlongTheNormal)
-{
-    // Act
-    Base::Vector3d n;
-    double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(Base::Vector3d(0, 0, 1), 10.0, Base::Rotation(), 2.5, n, d);
-
-    // Assert
-    EXPECT_NEAR(n.z, 1.0, 1e-9);
-    EXPECT_NEAR(d, 12.5, 1e-9);
-}
-
-TEST_F(FeatureSectionAnalysisTest, testDragRotationKeepsThePlaneThroughTheGizmo)
-{
-    // Arrange - the gizmo sits on the plane at (0, 0, 10); turning the handle
-    // must pivot the plane about that point, not swing it about the origin
-    const Base::Vector3d startNormal(0, 0, 1);
-    const double startOffset = 10.0;
-    const Base::Vector3d pivot = startNormal * startOffset;
-    const Base::Rotation turn(Base::Vector3d(1, 0, 0), M_PI / 6);  // 30 degrees
-
-    // Act
-    Base::Vector3d n;
-    double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(startNormal, startOffset, turn, 0.0, n, d);
-
-    // Assert - the pivot still lies on the plane
-    EXPECT_NEAR(n * pivot, d, 1e-9)
-        << "the plane no longer passes through the point the gizmo is on";
-}
-
-TEST_F(FeatureSectionAnalysisTest, testDragRotationThroughTheOriginIsUnaffected)
-{
-    // Arrange - with the plane through the origin the pivot is the origin, so
-    // the offset is zero whichever way it is derived. This is why the drift
-    // goes unnoticed until the section is moved away from the origin.
-    const Base::Rotation turn(Base::Vector3d(1, 0, 0), M_PI / 6);
-
-    // Act
-    Base::Vector3d n;
-    double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(Base::Vector3d(0, 0, 1), 0.0, turn, 0.0, n, d);
-
-    // Assert
-    EXPECT_NEAR(d, 0.0, 1e-9);
-}
-
-TEST_F(FeatureSectionAnalysisTest, testDragRotationKeepsTheNormalUnitLength)
-{
-    // Act
-    Base::Vector3d n;
-    double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(
-        Base::Vector3d(0, 0, 1),
-        10.0,
-        Base::Rotation(Base::Vector3d(1, 1, 0), 0.7),
-        0.0,
-        n,
-        d
-    );
-
-    // Assert
-    EXPECT_NEAR(n.Length(), 1.0, 1e-9);
-}
-
-TEST_F(FeatureSectionAnalysisTest, testDragRotationAndTranslationCombine)
-{
-    // Arrange
-    const Base::Vector3d startNormal(0, 0, 1);
-    const double startOffset = 10.0;
-    const Base::Vector3d pivot = startNormal * startOffset;
-    const Base::Rotation turn(Base::Vector3d(1, 0, 0), M_PI / 6);
-
-    // Act
-    Base::Vector3d n;
-    double d = 0.0;
-    Part::SectionAnalysis::planeAfterDrag(startNormal, startOffset, turn, 3.0, n, d);
-
-    // Assert - pivot about the gizmo first, then slide 3mm along the new normal
-    EXPECT_NEAR(d, n * pivot + 3.0, 1e-9);
-}
-
 // --- the shared plane frame ----------------------------------------------
 
 TEST_F(FeatureSectionAnalysisTest, testPlaneFrameIsOrthonormalOnBothBranches)
@@ -917,5 +831,376 @@ TEST_F(FeatureSectionAnalysisTest, testPlaneFrameIsOrthonormalOnBothBranches)
         EXPECT_NEAR(u * n, 0.0, 1e-9);
         EXPECT_NEAR(v * n, 0.0, 1e-9);
     }
+}
+
+TEST_F(FeatureSectionAnalysisTest, testDisplayModeIsTheDefault)
+{
+    // A fresh section has to be the interactive one. Geometry mode costs a
+    // boolean per solid, which on an assembly runs into minutes.
+    auto* fresh = _doc->addObject<Part::SectionAnalysis>();
+
+    EXPECT_STREQ(fresh->ResultMode.getValueAsString(), "Display");
+    EXPECT_FALSE(fresh->wantsSolidGeometry());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testDisplayModePublishesNoShape)
+{
+    // Arrange - the fixture's section cuts box 0 and is in Geometry mode
+    _doc->recompute();
+    ASSERT_FALSE(faces(_section).empty());
+
+    // Act
+    _section->ResultMode.setValue("Display");
+    _doc->recompute();
+
+    // Assert - the cap is drawn by the view provider instead, so there is
+    // deliberately no B-rep left behind
+    EXPECT_TRUE(faces(_section).empty());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testDisplayModeClearsTheFaceMapping)
+{
+    _doc->recompute();
+    ASSERT_FALSE(_section->FaceSourceIndex.getValues().empty());
+
+    _section->ResultMode.setValue("Display");
+    _doc->recompute();
+
+    // A mapping left over from Geometry mode would point at faces that no
+    // longer exist, and the per-body colouring reads it by index.
+    EXPECT_TRUE(_section->FaceSourceIndex.getValues().empty());
+    EXPECT_TRUE(_section->SourceParts.getValues().empty());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testSwitchingBackToGeometryCutsAgain)
+{
+    // Display mode must not be a one way door: whatever it cleared has to come
+    // back the moment real geometry is asked for.
+    _section->ResultMode.setValue("Display");
+    _doc->recompute();
+    ASSERT_TRUE(faces(_section).empty());
+
+    _section->ResultMode.setValue("Geometry");
+    _doc->recompute();
+
+    EXPECT_EQ(faces(_section).size(), 1);
+    EXPECT_EQ(faceSources(_section).size(), 1);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testDisplayModeSurvivesSaveAndReload)
+{
+    _section->ResultMode.setValue("Display");
+    _doc->recompute();
+
+    tests::TempDirectory dir;
+    App::Document* reopened = nullptr;
+    Part::SectionAnalysis* restored = saveAndReopen(dir.path(), reopened);
+    ASSERT_NE(restored, nullptr);
+
+    // Reopening in Geometry mode would silently cost a minute on the documents
+    // this mode exists for.
+    EXPECT_STREQ(restored->ResultMode.getValueAsString(), "Display");
+    App::GetApplication().closeDocument(reopened->getName());
+}
+// --- where the gizmo sits -------------------------------------------------
+
+TEST_F(FeatureSectionAnalysisTest, testTheGizmoSitsOnTheGeometryNotTheOrigin)
+{
+    // Arrange - a plane cutting an assembly parked far from the world origin,
+    // which is what an imported STEP looks like
+    const Base::Vector3d normal(0, 0, 1);
+    const double offset = 10.0;
+    const Base::Vector3d modelCentre(500, 300, 10);
+
+    // Act
+    const Base::Vector3d anchor = Part::SectionAnalysis::draggerAnchor(normal, offset, modelCentre);
+
+    // Assert - it lands under the model, not off at the origin's projection
+    EXPECT_NEAR(anchor.x, 500.0, 1e-9);
+    EXPECT_NEAR(anchor.y, 300.0, 1e-9);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testTheGizmoAlwaysLandsOnTheCuttingPlane)
+{
+    // However far off the plane the hint is, the handle has to be on it - it is
+    // the thing being dragged along it.
+    const Base::Vector3d normal = Base::Vector3d(1, 2, 3).Normalize();
+    const double offset = 7.5;
+
+    for (const auto& hint : {Base::Vector3d(0, 0, 0),
+                             Base::Vector3d(500, 300, 10),
+                             Base::Vector3d(-40, 5, -900)}) {
+        const Base::Vector3d anchor = Part::SectionAnalysis::draggerAnchor(normal, offset, hint);
+        EXPECT_NEAR(anchor * normal, offset, 1e-9);
+    }
+}
+
+// --- what makes the harvested triangles stale ----------------------------
+//
+// The view provider caches the triangles it pulls out of the 3D view, because
+// walking the scene graph of an assembly costs the best part of a second while
+// slicing the result costs tens of milliseconds. Getting these rules wrong is
+// not a crash, it is a silent ten-fold slowdown, and it has already happened
+// twice - so they are pinned here rather than left as a judgement call at the
+// two call sites.
+
+TEST_F(FeatureSectionAnalysisTest, testMovingThePlaneDoesNotInvalidateTheHarvest)
+{
+    // The whole point of the cache: the geometry being cut has not changed, so
+    // dragging the plane must never trigger another scene walk.
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->PlaneNormal));
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->PlaneOffset));
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->FlipCut));
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->ResultMode));
+}
+
+TEST_F(FeatureSectionAnalysisTest, testTheSectionsOwnOutputDoesNotInvalidateTheHarvest)
+{
+    // Both of these were real regressions. execute() republishes its outputs on
+    // every recompute - even unchanged - so a cache keyed off one of them is
+    // discarded every time the plane moves.
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->Shape));
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->SourceParts));
+    EXPECT_FALSE(_section->invalidatesHarvest(_section->FaceSourceIndex));
+}
+
+TEST_F(FeatureSectionAnalysisTest, testChangingWhatIsSectionedInvalidatesTheHarvest)
+{
+    // Source is the input list, and the only own property that can change which
+    // triangles exist.
+    EXPECT_TRUE(_section->invalidatesHarvest(_section->Source));
+}
+
+TEST_F(FeatureSectionAnalysisTest, testEditingOrHidingASourceInvalidatesTheHarvest)
+{
+    // A body being edited changes what the triangles are; being hidden changes
+    // whether they are there at all. Either way the cache is stale.
+    EXPECT_TRUE(Part::SectionAnalysis::isHarvestStaleAfter(*_boxes[0], _boxes[0]->Shape));
+    EXPECT_TRUE(Part::SectionAnalysis::isHarvestStaleAfter(*_boxes[0], _boxes[0]->Visibility));
+}
+
+TEST_F(FeatureSectionAnalysisTest, testCosmeticChangesToASourceDoNotInvalidateTheHarvest)
+{
+    // Renaming a body must not cost a scene walk.
+    EXPECT_FALSE(Part::SectionAnalysis::isHarvestStaleAfter(*_boxes[0], _boxes[0]->Label));
+}
+
+TEST_F(FeatureSectionAnalysisTest, testMovingASourceInvalidatesTheHarvest)
+{
+    // The harvested triangles are world space: refreshHarvestCache walks from
+    // the source root precisely so that container placements end up in the
+    // accumulated transform. So anything that moves a source moves its
+    // triangles, and the cache is as stale as if the source had been edited.
+    //
+    // forEachSourcePart stands in for the harvest here - it applies the same
+    // placements (ShapeOption::Transform), and the view provider that owns the
+    // cache has no test target of its own.
+    auto extent = [this] {
+        Bnd_Box box;
+        Part::SectionAnalysis::forEachSourcePart(
+            _section->Source.getValues(),
+            _section,
+            [&box](App::DocumentObject*, const TopoDS_Shape& shape) {
+                BRepBndLib::Add(shape, box);
+            }
+        );
+        return box;
+    };
+
+    // An App::Part, not a Part::Feature: nothing writes its placement through
+    // to a Shape, so a move is announced as Placement and nothing else.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    _section->Source.setValues({container});
+    _doc->recompute();
+
+    const Bnd_Box before = extent();
+    ASSERT_FALSE(before.IsVoid()) << "nothing was harvested, so this test proves nothing";
+
+    // Act
+    container->Placement.setValue(Base::Placement(Base::Vector3d(100, 0, 0), Base::Rotation()));
+    _doc->recompute();
+
+    // Assert - first that the triangles really did move, otherwise the claim
+    // below is about nothing
+    Standard_Real bx = 0;
+    Standard_Real by = 0;
+    Standard_Real bz = 0;
+    Standard_Real bxMax = 0;
+    Standard_Real byMax = 0;
+    Standard_Real bzMax = 0;
+    before.Get(bx, by, bz, bxMax, byMax, bzMax);
+
+    Standard_Real ax = 0;
+    Standard_Real ay = 0;
+    Standard_Real az = 0;
+    Standard_Real axMax = 0;
+    Standard_Real ayMax = 0;
+    Standard_Real azMax = 0;
+    extent().Get(ax, ay, az, axMax, ayMax, azMax);
+
+    ASSERT_NEAR(ax - bx, 100.0, 1e-6)
+        << "the placement never reached the shapes, so nothing can be concluded "
+           "about what the harvest would see";
+
+    // ... and therefore the property that moved them has to invalidate the cache
+    EXPECT_TRUE(Part::SectionAnalysis::isHarvestStaleAfter(*container, container->Placement))
+        << "moving a source leaves the cap sliced from triangles at the old position";
+}
+
+// --- what counts as one part ---------------------------------------------
+//
+// Both result modes have to agree on this. Geometry mode turns it into
+// SourceParts; Display mode groups the triangles it harvests from the 3D view
+// by it. They did not agree: the Display path never recursed, so an assembly
+// linked in as a single object came out as one body and per-part colouring had
+// a single part to colour.
+
+TEST_F(FeatureSectionAnalysisTest, testAContainerIsBrokenIntoThePartsInsideIt)
+{
+    // Arrange - the shape of an imported assembly: one object in Source, many
+    // parts underneath it
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    container->addObject(_boxes[1]);
+    container->addObject(_boxes[2]);
+    _doc->recompute();
+
+    // Act
+    const auto parts =
+        Part::SectionAnalysis::distinctSourceParts({container}, _section);
+
+    // Assert - three parts, not one container
+    EXPECT_EQ(parts.size(), 3);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testABodyIsOnePartNotABagOfFeatures)
+{
+    // A PartDesign Body owns an Origin, so it inherits GeoFeatureGroupExtension
+    // by way of OriginGroupExtension - while being a Part::Feature with a shape
+    // of its own. Deciding "container" on the extension alone descends into its
+    // sketches and datums, no shape comes back, and the Body is not sectioned at
+    // all. BodyBase stands in for a PartDesign Body here: it is the class that
+    // carries both, which is the whole of the problem.
+    auto* body = _doc->addObject<Part::BodyBase>();
+    body->Shape.setValue(_boxes[0]->Shape.getValue());
+    _doc->recompute();
+
+    ASSERT_TRUE(body->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+        << "this test proves nothing unless the body really does carry the extension";
+
+    // Act
+    const auto parts = Part::SectionAnalysis::distinctSourceParts({body}, _section);
+
+    // Assert - the body itself, once, not whatever is nested under it
+    ASSERT_EQ(parts.size(), 1);
+    EXPECT_EQ(parts.front(), body);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testABodyInsideAContainerIsStillSectioned)
+{
+    // The end to end version of the above, and what actually broke: a Body in a
+    // Part container produced no section faces whatsoever.
+    auto* body = _doc->addObject<Part::BodyBase>();
+    body->Shape.setValue(_boxes[0]->Shape.getValue());
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(body);
+
+    _section->Source.setValues({container});
+    _section->ResultMode.setValue("Geometry");
+    _doc->recompute();
+
+    EXPECT_FALSE(faces(_section).empty()) << "the body was not cut at all";
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAPartPlacedTwiceIsStillOnePart)
+{
+    // A colour belongs to a part, not to one of its placements, so an object
+    // reached by more than one path must be counted once.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    _doc->recompute();
+
+    const auto parts =
+        Part::SectionAnalysis::distinctSourceParts({container, _boxes[0]}, _section);
+
+    EXPECT_EQ(parts.size(), 1);
+    EXPECT_EQ(parts.front(), _boxes[0]);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testTheTwoResultModesAgreeOnTheParts)
+{
+    // The invariant the split exists to hold. Geometry mode publishes
+    // SourceParts; Display mode publishes nothing and has to reach the same
+    // answer from the same recursion.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    container->addObject(_boxes[2]);
+    _section->Source.setValues({container});
+    _section->ResultMode.setValue("Geometry");
+    _doc->recompute();
+
+    const auto viaRecursion =
+        Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
+
+    EXPECT_EQ(viaRecursion, _section->SourceParts.getValues());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAHiddenPartIsNotOneOfTheParts)
+{
+    // The section shows what the user sees, so a hidden part is not a part to
+    // colour - and the Display path must not harvest its triangles either.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    container->addObject(_boxes[1]);
+    _boxes[1]->Visibility.setValue(false);
+    _doc->recompute();
+
+    const auto parts =
+        Part::SectionAnalysis::distinctSourceParts({container}, _section);
+
+    EXPECT_EQ(parts.size(), 1);
+    EXPECT_EQ(parts.front(), _boxes[0]);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAHiddenPartInsideAContainerIsNotSectioned)
+{
+    // Not about colouring: the section is meant to show what the user sees. If
+    // the recursion accepts a container whole, the visibility of what is inside
+    // it is never consulted and hidden parts get cut anyway.
+    auto* container = _doc->addObject<App::Part>();
+    container->addObject(_boxes[0]);
+    _boxes[0]->Visibility.setValue(false);
+    _section->Source.setValues({container});
+    _section->ResultMode.setValue("Geometry");
+    _doc->recompute();
+
+    EXPECT_TRUE(faces(_section).empty());
+}
+
+TEST_F(FeatureSectionAnalysisTest, testTheSectionItselfIsNeverOneOfItsParts)
+{
+    // It is a Part::Feature and so yields a shape of its own; sectioning that
+    // would feed the result back into the input.
+    _section->ResultMode.setValue("Geometry");
+    _doc->recompute();
+
+    const auto parts =
+        Part::SectionAnalysis::distinctSourceParts({_boxes[0], _section}, _section);
+
+    EXPECT_EQ(parts.size(), 1);
+    EXPECT_EQ(parts.front(), _boxes[0]);
+}
+
+TEST_F(FeatureSectionAnalysisTest, testAnUnnamedPropertyIsNotTreatedAsGeometry)
+{
+    // getPropertyName returns null for a property the object does not own, and
+    // a null must not be read as "something changed". Asking about one box's
+    // Shape while naming another box as the object is the shape that mistake
+    // takes in practice.
+    EXPECT_FALSE(Part::SectionAnalysis::isHarvestStaleAfter(*_boxes[0], _boxes[1]->Shape));
+
+    // Another object's property is not this section's Source, however it is named.
+    EXPECT_FALSE(_section->invalidatesHarvest(_boxes[1]->Shape));
 }
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

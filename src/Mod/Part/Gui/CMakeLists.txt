@@ -235,6 +235,8 @@ SET(PartGui_SRCS
     ViewProviderMirror.h
     ViewProviderSectionAnalysis.cpp
     ViewProviderSectionAnalysis.h
+    SectionCapHarvest.cpp
+    SectionCapHarvest.h
     TaskSectionAnalysis.cpp
     TaskSectionAnalysis.h
     ViewProviderPython.cpp
