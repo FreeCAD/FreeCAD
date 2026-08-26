@@ -23,14 +23,15 @@
 # include <sys/resource.h>
 #endif
 
-/// The fault code for a crash that has a faulting data address, on the platform this test
-/// binary was built for. These are the only codes for which the Writer can populate one.
-constexpr std::uint32_t addressCarryingFaultCode()
+/// Whether this is a fault code that carries a faulting data address, on the platform this test
+/// binary was built for. These are the only codes for which the Writer can populate one. POSIX
+/// has two: an unmapped access is reported as SIGBUS rather than SIGSEGV on some platforms.
+constexpr bool isAddressCarryingFaultCode(std::uint32_t code)
 {
 #ifdef FC_OS_WIN32
-    return EXCEPTION_ACCESS_VIOLATION;
+    return code == EXCEPTION_ACCESS_VIOLATION;
 #else
-    return SIGSEGV;
+    return code == SIGSEGV || code == SIGBUS;
 #endif
 }
 
@@ -508,9 +509,8 @@ TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
         }
     }
 
-    // A null dereference: SIGBUS is accepted because some platforms report an unmapped access that
-    // way rather than as SIGSEGV.
-    EXPECT_TRUE(report.code == addressCarryingFaultCode() || report.code == SIGBUS);
+    EXPECT_TRUE(isAddressCarryingFaultCode(report.code))
+        << "unexpected fault code: " << report.code;
     EXPECT_FALSE(report.partialWrite);
 }
 
