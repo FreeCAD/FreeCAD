@@ -42,6 +42,7 @@ from PySide import (
 )
 import QtUnitGui
 import SpreadsheetGui
+import Sketcher
 import TechDrawGui
 from FreeCAD import DocumentObject, ParameterGrp
 from FreeCAD.Base import (
@@ -198,18 +199,24 @@ def exercise(
     path_command = cast(PathApp.Command, object())
     part_design_view_provider = cast(PartDesignGui.ViewProvider, object())
     assert_type(part_design_view_provider.Object, FreeCAD.DocumentObject)
-    constraint = Sketcher.Constraint("Distance", 0, 1.0)
-    active_constraint = Sketcher.Constraint("Distance", 0, 1.0, True, False)
-    text_constraint = Sketcher.Constraint("Text", [0, 1], "label", "Sans")
+    assert_type(Sketcher.Constraint("Distance", 0, 1.0), Sketcher.Constraint)
+    assert_type(
+        Sketcher.Constraint("Distance", 0, 1.0, True, False),
+        Sketcher.Constraint,
+    )
+    assert_type(
+        Sketcher.Constraint("Text", [0, 1], "label", "Sans"),
+        Sketcher.Constraint,
+    )
     sketch = cast(Sketcher.SketchObject, object())
-    sketch_geometry = sketch.Geometry
-    sketch_constraints = sketch.Constraints
+    assert_type(sketch.Geometry, list[Part.Geometry])
+    assert_type(sketch.Constraints, list[Sketcher.Constraint])
     sketch.setVirtualSpace(0, True)
     sketch.setVirtualSpace((0, 1), False)
     line_segment = Part.LineSegment(vector, vector)
-    ranged_line_segment = Part.LineSegment(line_segment, 0.0, 1.0)
+    assert_type(Part.LineSegment(line_segment, 0.0, 1.0), Part.LineSegment)
     circle_from_vectors = Part.Circle(vector, vector, 1.0)
-    arc = Part.Arc(circle_from_vectors, 0.0, 1.0)
+    assert_type(Part.Arc(circle_from_vectors, 0.0, 1.0), Part.Arc)
     QtCore.QTimer.singleShot(0, lambda: None)
     selection_filter = GuiSelection.Filter("SELECT Part::Feature")
     preselection = GuiSelection.getPreselection()

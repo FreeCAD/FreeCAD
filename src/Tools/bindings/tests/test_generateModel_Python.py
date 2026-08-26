@@ -174,6 +174,13 @@ class GenerateModelPythonTests(unittest.TestCase):
                 if name == "Rotation":
                     self.assertNotRegex(header, r"PyObject\*\s+__mul__\(")
 
+    def test_overload_only_methods_keep_the_binding_implementation(self):
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            generate(str(SRC_DIR / "Mod/Sketcher/App/SketchObject.pyi"), temp_dir)
+            header = (Path(temp_dir) / "SketchObjectPy.h").read_text(encoding="utf-8")
+
+        self.assertIn("PyObject*  setVirtualSpace(PyObject *args);", header)
+
     def test_overload_only_constructor_docs_are_merged_into_class_doc(self):
         source = textwrap.dedent("""
             from __future__ import annotations

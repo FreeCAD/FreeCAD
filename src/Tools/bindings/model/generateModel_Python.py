@@ -818,7 +818,6 @@ def _parse_methods(
     *,
     skip_bound_argument: bool,
     allow_bound_decorators: bool,
-    allow_overload_signatures: bool = False,
 ) -> List[Method]:
     """
     Parse methods from collected class functions, extracting:
@@ -841,7 +840,14 @@ def _parse_methods(
         func.add_signature_docs(doc_obj)
         method_params = []
 
-        signature = func.parse_signature if allow_overload_signatures else func.signature
+        # An overload-only group is valid in a source-adjacent .pyi.  The
+        # binding generator still needs one representative signature to emit
+        # the underlying C++ wrapper declaration; for mixed groups,
+        # ``parse_signature`` continues to prefer the non-overload
+        # implementation signature. Constructors are the exception: their
+        # overloads provide documentation for the class constructor, but do
+        # not describe a separate wrapper method.
+        signature = func.parse_signature if func.name != "__init__" else func.signature
         if signature is None:
             continue
 
@@ -1195,7 +1201,6 @@ def parse_module_python_code(path: str) -> GenerateModel:
         functions,
         skip_bound_argument=False,
         allow_bound_decorators=False,
-        allow_overload_signatures=True,
     )
     metadata, explicit_export = _extract_module_kwargs(tree)
     runtime, module_class = _validate_module_runtime_metadata(metadata)
