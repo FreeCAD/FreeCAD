@@ -42,6 +42,7 @@ from PySide import (
 )
 import QtUnitGui
 import SpreadsheetGui
+import Sketcher
 import TechDrawGui
 from FreeCAD import DocumentObject, ParameterGrp
 from FreeCAD.Base import (
@@ -176,6 +177,18 @@ def exercise(
     path_command = cast(PathApp.Command, object())
     part_design_view_provider = cast(PartDesignGui.ViewProvider, object())
     part_design_object = part_design_view_provider.Object
+    constraint = Sketcher.Constraint("Distance", 0, 1.0)
+    active_constraint = Sketcher.Constraint("Distance", 0, 1.0, True, False)
+    text_constraint = Sketcher.Constraint("Text", [0, 1], "label", "Sans")
+    sketch = cast(Sketcher.SketchObject, object())
+    sketch_geometry = sketch.Geometry
+    sketch_constraints = sketch.Constraints
+    sketch.setVirtualSpace(0, True)
+    sketch.setVirtualSpace((0, 1), False)
+    line_segment = Part.LineSegment(vector, vector)
+    ranged_line_segment = Part.LineSegment(line_segment, 0.0, 1.0)
+    circle_from_vectors = Part.Circle(vector, vector, 1.0)
+    arc = Part.Arc(circle_from_vectors, 0.0, 1.0)
     qt_timer = QtCore.QTimer
     QtCore.QTimer.singleShot(0, lambda: None)
     pyside_version_value = pyside_version

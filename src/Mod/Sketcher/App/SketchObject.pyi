@@ -9,7 +9,7 @@ from Base.Axis import Axis
 from Part.App.Part2DObject import Part2DObject
 from Part.App.Geometry import Geometry
 from Sketcher.App.Constraint import Constraint
-from typing import List, Tuple, Union, Final, overload
+from typing import TYPE_CHECKING, Final, List, Tuple, Union, overload
 
 @export(
     Include="Mod/Sketcher/App/SketchObject.h",
@@ -22,6 +22,13 @@ class SketchObject(Part2DObject):
     Author: Juergen Riegel
     Licence: LGPL
     """
+
+    if TYPE_CHECKING:
+        Geometry: List[Geometry] = ...
+        """The sketch's geometric elements."""
+
+        Constraints: List[Constraint] = ...
+        """The sketch's constraints."""
 
     MissingPointOnPointConstraints: List = ...
     """Returns a list of (First FirstPos Second SecondPos Type) tuples with all the detected endpoint constraints."""
@@ -505,9 +512,15 @@ class SketchObject(Part2DObject):
         """
         ...
 
-    def setVirtualSpace(self) -> None:
+    @overload
+    def setVirtualSpace(self, constraintIndex: int, state: bool, /) -> None: ...
+    @overload
+    def setVirtualSpace(
+        self, constraintIndices: List[int] | Tuple[int, ...], state: bool, /
+    ) -> None: ...
+    def setVirtualSpace(self, constraintIndex: int, state: bool, /) -> None:
         """
-        Set the VirtualSpace status of a constraint
+        Set the VirtualSpace status of one or more constraints.
         """
         ...
 
