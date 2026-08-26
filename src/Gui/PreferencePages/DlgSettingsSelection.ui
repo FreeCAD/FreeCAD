@@ -189,6 +189,25 @@ A larger value makes it easier to select elements, but may prevent selection of 
         </property>
        </widget>
       </item>
+      <item row="9" column="0" colspan="2">
+       <widget class="Gui::PrefCheckBox" name="checkBoxPreselectHidden">
+        <property name="toolTip">
+         <string>Show a temporary on-top preview of a hidden object while hovering its tree item, without changing its visibility</string>
+        </property>
+        <property name="text">
+         <string>Preselect hidden objects when hovering over them in the tree</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>PreSelectHidden</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>TreeView</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -324,6 +343,22 @@ A larger value makes it easier to select elements, but may prevent selection of 
    <sender>checkBoxSelection</sender>
    <signal>toggled(bool)</signal>
    <receiver>SelectionColor</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxPreselect</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBoxPreselectHidden</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">

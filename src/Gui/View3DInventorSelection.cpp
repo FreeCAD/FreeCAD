@@ -32,6 +32,7 @@
 #include "Document.h"
 #include "Inventor/SoFCSwitch.h"
 #include "SoFCUnifiedSelection.h"
+#include "TreeParams.h"
 #include "View3DInventorSelection.h"
 #include "ViewProviderDocumentObject.h"
 #include <App/Document.h>
@@ -173,6 +174,8 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     }
 
     const bool isPreselect = Reason.Type == SelectionChanges::SetPreselect;
+    // gated behind a preference so the hidden-object handling can be disabled
+    const bool previewHidden = isPreselect && TreeParams::getPreSelectHidden();
     auto& objs = isPreselect ? objectsOnTopPreSel : objectsOnTop;
     auto pcGroup = isPreselect ? pcGroupOnTopPreSel : pcGroupOnTopSel;
 
@@ -181,7 +184,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     }
     auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     // preselection may target hidden objects, which are rendered on top instead
-    if (!vp || !vp->isSelectable() || (!isPreselect && !vp->isShow())) {
+    if (!vp || !vp->isSelectable() || (!previewHidden && !vp->isShow())) {
         return;
     }
     auto svp = vp;
@@ -199,7 +202,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             }
         }
     }
-    if (isPreselect) {
+    if (previewHidden) {
         // Some view providers build geometry lazily and skip it while hidden;
         // the true/false pair forces a one-time rebuild (no-op without it).
         auto rebuildIfHidden = [](ViewProviderDocumentObject* provider) {
@@ -281,7 +284,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         auto modeSwitch = grpVp->getModeSwitch();
         auto idx = modeSwitch->whichChild.getValue();
         if (idx < 0 || idx >= modeSwitch->getNumChildren() || modeSwitch->getChild(idx) != childRoot) {
-            if (!isPreselect) {
+            if (!previewHidden) {
                 FC_LOG(
                     "skip " << obj->getFullName() << '.' << (subname ? subname : "")
                             << ", hidden inside geo group"
@@ -324,7 +327,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             tmpPath.append(node);
             tmpPath.append(&path);
             // reach the element even when the object is hidden
-            SoFCSwitch::OverrideScope switchOverride(&path);
+            SoFCSwitch::OverrideScope switchOverride(previewHidden ? &path : nullptr);
             action.apply(&tmpPath);
             tmpPath.unrefNoDelete();
             node->setDetail(det);
