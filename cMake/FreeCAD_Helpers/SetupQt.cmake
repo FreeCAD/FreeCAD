@@ -1,6 +1,8 @@
 # -------------------------------- Qt --------------------------------
 
-set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)
+# FreeCAD's application sources always generate translation files, including
+# command-line builds, so LinguistTools is a required base component.
+set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml LinguistTools)
 
 if (FREECAD_QT_MAJOR_VERSION EQUAL 5)
     message(WARNING [[
@@ -27,7 +29,7 @@ if(BUILD_GUI)
         list (APPEND FREECAD_QT_COMPONENTS OpenGLWidgets)
     endif()
 
-    list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets LinguistTools)
+    list (APPEND FREECAD_QT_COMPONENTS OpenGL PrintSupport Svg UiTools Widgets)
 
     if(BUILD_DESIGNER_PLUGIN)
         list (APPEND FREECAD_QT_COMPONENTS Designer)
@@ -137,6 +139,29 @@ if (Qt${FREECAD_QT_MAJOR_VERSION}Core_VERSION VERSION_LESS 5.15.0)
 else()
     # Since Qt 5.15 Q_DISABLE_COPY_MOVE is defined
     set (HAVE_Q_DISABLE_COPY_MOVE 1)
+endif()
+
+# Qt 6.8's LinguistTools package exports the versioned command
+# `qt6_add_translation`, while the FreeCAD helpers use the version-neutral
+# `qt_add_translation` spelling.  Adapt the command only when the real Qt
+# command and its imported lrelease tool are available; never replace a
+# missing translation tool with a no-op.
+if (FREECAD_QT_MAJOR_VERSION EQUAL 6 AND NOT COMMAND qt_add_translation)
+    if (NOT COMMAND qt6_add_translation)
+        message(FATAL_ERROR
+            "Qt6 LinguistTools does not provide qt6_add_translation; "
+            "translation generation cannot be configured.")
+    endif()
+    if (NOT TARGET Qt6::lrelease)
+        message(FATAL_ERROR
+            "Qt6 LinguistTools does not provide the Qt6::lrelease tool; "
+            "translation generation cannot be configured.")
+    endif()
+
+    function(qt_add_translation _qm_files)
+        qt6_add_translation("${_qm_files}" ${ARGN})
+        set("${_qm_files}" "${${_qm_files}}" PARENT_SCOPE)
+    endfunction()
 endif()
 
 configure_file(${CMAKE_SOURCE_DIR}/src/QtCore.h.cmake ${CMAKE_BINARY_DIR}/src/QtCore.h)

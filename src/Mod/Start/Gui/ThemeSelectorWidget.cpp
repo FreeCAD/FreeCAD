@@ -112,9 +112,9 @@ void ThemeSelectorWidget::setupButtons(QBoxLayout* layout)
         return;
     }
     std::map<Theme, QString> themeMap {
-        {Theme::Classic, tr("FreeCAD Classic")},
-        {Theme::Dark, tr("FreeCAD Dark")},
-        {Theme::Light, tr("FreeCAD Light")}
+        {Theme::Classic, tr("CADX Classic")},
+        {Theme::Dark, tr("CADX Dark")},
+        {Theme::Light, tr("CADX Light")}
     };
     std::map<Theme, QIcon> iconMap {
         {Theme::Classic, QIcon(QLatin1String(":/thumbnails/Theme_thumbnail_classic.png"))},
@@ -258,7 +258,7 @@ void ThemeSelectorWidget::retranslateUi()
     else {
         _descriptionLabel->hide();
     }
-    _buttons[static_cast<int>(Theme::Dark)]->setText(tr("FreeCAD Dark", "Visual theme name"));
-    _buttons[static_cast<int>(Theme::Light)]->setText(tr("FreeCAD Light", "Visual theme name"));
-    _buttons[static_cast<int>(Theme::Classic)]->setText(tr("FreeCAD Classic", "Visual theme name"));
+    _buttons[static_cast<int>(Theme::Dark)]->setText(tr("CADX Dark", "Visual theme name"));
+    _buttons[static_cast<int>(Theme::Light)]->setText(tr("CADX Light", "Visual theme name"));
+    _buttons[static_cast<int>(Theme::Classic)]->setText(tr("CADX Classic", "Visual theme name"));
 }

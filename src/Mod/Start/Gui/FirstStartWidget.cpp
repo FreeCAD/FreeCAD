@@ -35,7 +35,6 @@
 #include "ThemeSelectorWidget.h"
 #include "GeneralSettingsWidget.h"
 
-#include <App/Application.h>
 #include <gsl/pointers>
 
 using namespace StartGui;
@@ -89,7 +88,7 @@ bool FirstStartWidget::eventFilter(QObject* object, QEvent* event)
 void FirstStartWidget::retranslateUi()
 {
     _doneButton->setText(tr("Done"));
-    QString application = QString::fromStdString(App::Application::getExecutableName());
+    const QString application = QGuiApplication::applicationName();
     _welcomeLabel->setText(
         QLatin1String("<h1>") + tr("Welcome to %1").arg(application) + QLatin1String("</h1>")
     );

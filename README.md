@@ -8,17 +8,41 @@ prototype and demonstration for engineers. It is not a customer product yet.
 
 ## Design
 
-The planned system has three parts:
+The prototype has three parts; the current checkout contains the chat
+transport, provider-neutral graph tools, and a native in-memory graph path:
 
-1. **Exposed FreeCAD tools** — operations the model can call to create,
-   inspect, modify, and validate a FreeCAD document.
-2. **An in-memory model graph** — a queryable representation of the current
-   FreeCAD model, including objects, relationships, parameters, and useful
-   geometric or semantic information. The graph is exposed through tools so the
-   model can inspect context before changing the document.
-3. **A language model** — initially `gpt-luna` as the planning and interaction
-   layer. The longer-term direction is a custom post-trained Qwen 27B model,
-   using the Markov AI CAD dataset on Hugging Face as one training resource.
+1. **Exposed FreeCAD tools (future mutation work)** — operations the model can
+   eventually call to create, inspect, modify, and validate a FreeCAD document.
+2. **An in-memory model graph (implemented foundation)** — a bounded,
+   revisioned representation of the active Assembly, including typed nodes,
+   relationships, placements, provenance, and presentation state. The graph is
+   exposed through `assembly.graph_snapshot` and `assembly.graph_query`.
+3. **A language model** — the current chat adapter connects to a local Ollama
+   server and can use any model available there. The selected model is chosen
+   in the chat interface rather than being tied to a particular model family.
+
+The current chat integration uses a local Ollama server and requires no
+provider credentials. Model discovery and selection are handled by the chat
+interface; no particular Ollama model family is required.
+
+The graph tools are owned by an independent, provider-neutral `cadx.graph`
+registry:
+
+- `cadx.graph` registers `assembly.graph_snapshot` and
+  `assembly.graph_query`.
+
+The future `freecad.document` registry is reserved for document mutation tools;
+it is not a dependency of the read-only graph path. The Ollama adapter converts
+the graph registry’s definitions to its OpenAI-compatible request shape.
+
+CadX is C++-first. Native application services, tool registries, and the
+per-document graph belong in `src/Mod/CadX/App`; the Qt chat interface belongs
+in `src/Mod/CadX/Gui`. Python is retained only as FreeCAD's module bootstrap
+and as a future adapter boundary for Python workbenches and third-party tools.
+Network work must not access FreeCAD documents directly from a worker thread;
+document operations return to FreeCAD's main thread and use its transaction,
+recompute, undo, and redo machinery. The graph remains a rebuildable projection
+of each authoritative FreeCAD document.
 
 ```text
                          query graph
@@ -63,10 +87,47 @@ and validate the resulting dimensions and constraints.
 
 ## Current status
 
-This is an early-stage plan and prototype. Tool schemas, graph structure, and
-model choices will change as the first workflows are built. The custom Qwen
-training path is future work; this repository does not claim that model has
-already been trained or evaluated.
+The implemented path can register both graph tools, capture the exact active
+Assembly from the FreeCAD GUI when one is available, publish an immutable
+bounded C++ graph, and run deterministic summary, filter, neighbor, subgraph,
+and shortest-path queries. The Ollama turn loop supports fragmented streamed
+tool calls, bounded continuations, cancellation, and transcript persistence.
+
+The remaining work is fixture-complete Assembly expansion (link arrays,
+nested/flexible links, joints, datums, and geometry summaries), native document
+and presentation observer wiring, cursor pagination, and final GUI lifecycle
+acceptance. The graph tools are read-only; document mutation tools remain
+planned. This repository does not require or assume a particular Ollama model
+family.
+
+### Graph evidence and audit trail
+
+Set `CADX_GRAPH_AUDIT_LOG` to write one flushed JSON object per line for each
+build, evidence round-trip, publish, and query checkpoint. Each graph-bearing
+event records the graph revision, presentation revision, semantic/presentation
+hashes, node and edge counts, and any failure code or diagnostic.
+
+```bash
+CADX_GRAPH_AUDIT_LOG=/private/tmp/cadx-graph.jsonl \
+  FREECAD_USER_HOME=/private/tmp/cadx-user \
+  build/debug/bin/FreeCAD
+
+python3 src/Mod/CadX/CadXGraphAudit.py /private/tmp/cadx-graph.jsonl
+```
+
+For a full retained snapshot, call the non-provider debug API with the exact
+handle and revision returned by `assembly.graph_snapshot`:
+
+```python
+import CadXApp
+evidence_json = CadXApp.graph_evidence(graph_id, graph_revision)
+```
+
+That JSON is a lossless `cadx.assembly-graph-snapshot.v1` evidence record and
+is checked by the native decoder before publication. It can reconstruct the
+same immutable graph and revisions, but it does not mutate FreeCAD or replace
+the authoritative parametric document. Live graph-to-CAD mutation remains an
+explicit future phase.
 
 ## Non-goals for now
 

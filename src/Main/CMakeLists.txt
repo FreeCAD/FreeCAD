@@ -4,6 +4,18 @@ configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
 file(COPY icon.ico DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+# Keep FreeCAD's executable, library, and Python-module names for compatibility
+# while presenting this application to users as CADX.
+configure_file(
+    branding.xml
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR}/branding.xml
+    COPYONLY
+)
+install(
+    FILES branding.xml
+    DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
 ######################## FreeCADMain ########################
 if(BUILD_GUI)
 
