@@ -84,6 +84,9 @@ public:
 
     void toggleVisibility() override;
 
+    /// On-top tree-preselection preview showing only this feature's addition/cut
+    SoNode* getPreselectionPreview(const char* subname) override;
+
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
 

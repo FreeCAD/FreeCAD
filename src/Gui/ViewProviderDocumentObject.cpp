@@ -802,6 +802,11 @@ bool ViewProviderDocumentObject::getDetailPath(
     return ret;
 }
 
+SoNode* ViewProviderDocumentObject::getPreselectionPreview(const char* /*subname*/)
+{
+    return nullptr;
+}
+
 void ViewProviderDocumentObject::onPropertyStatusChanged(const App::Property& prop, unsigned long oldStatus)
 {
     (void)oldStatus;
