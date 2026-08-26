@@ -401,9 +401,9 @@ SoNode* ViewProvider::getPreselectionPreview(const char* subname)
     if (!feature) {
         return nullptr;
     }
-    // read the stored delta directly; an empty one (e.g. dress-ups) falls back
-    // to the generic whole-object preview instead of recomputing on hover
-    Part::TopoShape delta = feature->AddSubShape.getShape();
+    // the added/removed material; an empty one (e.g. dress-ups) falls back to
+    // the generic whole-object preview instead of recomputing on hover
+    Part::TopoShape delta = feature->getAddSubPreviewShape();
     if (delta.isNull()) {
         return nullptr;
     }

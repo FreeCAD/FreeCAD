@@ -31,6 +31,7 @@
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
+#include <TopExp_Explorer.hxx>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -79,6 +80,41 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
         subShape = AddSubShape.getShape();
     }
 }
+Part::TopoShape FeatureAddSub::getAddSubPreviewShape()
+{
+    Part::TopoShape tool = AddSubShape.getShape();
+    if (addSubType != Subtractive || tool.isNull()) {
+        return tool;
+    }
+    Part::TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+    if (base.isNull()) {
+        return tool;
+    }
+    // a tool that stays inside the base is already the removed volume
+    if (tool.getBoundBox().IsInBox(base.getBoundBox())) {
+        return tool;
+    }
+    // skip the boolean for expensive tools (e.g. modeled threads) so hover stays
+    // responsive; the untrimmed tool is the graceful fallback
+    constexpr int faceLimit = 200;
+    int faces = 0;
+    for (TopExp_Explorer it(tool.getShape(), TopAbs_FACE); it.More(); it.Next()) {
+        if (++faces > faceLimit) {
+            return tool;
+        }
+    }
+    try {
+        Part::TopoShape common;
+        common.makeElementBoolean(Part::OpCodes::Common, {base, tool}, "Preview", Precision::Confusion());
+        if (!common.isNull()) {
+            return common;
+        }
+    }
+    catch (Standard_Failure&) {
+    }
+    return tool;
+}
+
 void FeatureAddSub::updatePreviewShape()
 {
     const auto notifyWarning = [](const QString& message) {
