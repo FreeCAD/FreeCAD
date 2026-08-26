@@ -57,7 +57,6 @@ FC_LOG_LEVEL_INIT("PartDesign", true, true)
 using namespace PartDesign;
 
 const char* FeatureExtrude::SideTypesEnums[] = {"One side", "Two sides", "Symmetric", nullptr};
-const char* FeatureExtrude::StartTypesEnums[] = {"Profile plane", "Offset", "Reference", nullptr};
 
 PROPERTY_SOURCE(PartDesign::FeatureExtrude, PartDesign::ProfileBased)
 
@@ -877,80 +876,6 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
     catch (Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
-}
-
-double FeatureExtrude::getStartReferenceOffset(
-    const TopoShape& sketchShape,
-    const App::PropertyLinkSub& reference,
-    const gp_Dir& dir,
-    double offset,
-    const TopLoc_Location& invObjLoc
-) const
-{
-    if (!reference.getValue()) {
-        return 0.0;
-    }
-
-    TopoShape referenceShape;
-    if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        referenceShape
-            = getTopoShapeVerifiedFace(false, false, reference.getValue(), reference.getSubValues());
-    }
-    else {
-        getUpToFaceFromLinkSub(referenceShape, reference);
-    }
-    referenceShape.move(invObjLoc);
-
-    TopoShape referenceFace = referenceShape;
-    if (referenceFace.shapeType(true) != TopAbs_FACE) {
-        referenceFace = referenceFace.getSubTopoShape(TopAbs_FACE, 1);
-    }
-    BRepAdaptor_Surface surface(TopoDS::Face(referenceFace.getShape()));
-    if (surface.GetType() == GeomAbs_Plane) {
-        // A planar start reference defines its underlying plane, independent of its trimming.
-        GProp_GProps properties;
-        BRepGProp::SurfaceProperties(sketchShape.getShape(), properties);
-        const gp_Pnt profileCenter = properties.CentreOfMass();
-        const gp_Dir normal = surface.Plane().Axis().Direction();
-        const double denominator = gp_Vec(dir).Dot(gp_Vec(normal));
-        if (std::fabs(denominator) > Precision::Confusion()) {
-            const double distance
-                = gp_Vec(profileCenter, surface.Plane().Location()).Dot(gp_Vec(normal)) / denominator;
-            return distance + offset;
-        }
-    }
-
-    auto faces = Part::findAllFacesCutBy(referenceShape, sketchShape, dir);
-    double direction = 1.0;
-    if (faces.empty()) {
-        gp_Dir oppositeDirection = dir;
-        oppositeDirection.Reverse();
-        faces = Part::findAllFacesCutBy(referenceShape, sketchShape, oppositeDirection);
-        direction = -1.0;
-    }
-
-    if (faces.empty()) {
-        throw Base::ValueError("Extrude: Start reference does not intersect the profile direction");
-    }
-
-    const auto nearest
-        = std::min_element(faces.begin(), faces.end(), [](const auto& first, const auto& second) {
-              return first.distsq < second.distsq;
-          });
-    return direction * std::sqrt(nearest->distsq) + offset;
-}
-
-TopoShape FeatureExtrude::moveProfileToStart(const TopoShape& sketchShape, const gp_Dir& dir, double offset)
-{
-    if (std::fabs(offset) < Precision::Confusion()) {
-        return sketchShape;
-    }
-
-    TopoShape result = sketchShape.makeElementCopy();
-    gp_Trsf transform;
-    transform.SetTranslation(gp_Vec(dir) * offset);
-    result.move(transform);
-    return result;
 }
 
 TopoShape FeatureExtrude::generateSingleExtrusionSide(

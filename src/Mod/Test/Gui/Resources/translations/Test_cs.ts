@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="141"/>
       <source>&amp;Help</source>
-      <translation>Nápověda</translation>
+      <translation>Ná&amp;pověda</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="144"/>
@@ -56,7 +56,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="157"/>
       <source>Alt+A</source>
-      <translation>Alt + A</translation>
+      <translation>Alt+A</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="167"/>

@@ -40,9 +40,8 @@
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
 </source>
-      <translation>
-Zaleca się, aby użytkownik kliknął prawym przyciskiem myszy na podstawie dokumentu i wybrał Oznacz do ponownego obliczenia.
-Użytkownik powinien następnie kliknąć przycisk Odśwież na głównym pasku narzędzi.
+      <translation>Zaleca się kliknięcie prawym przyciskiem myszy głównego elementu dokumentu i wybranie opcji "Oznacz do przeliczenia". 
+Następnie należy kliknąć przycisk "Odśwież" na głównym pasku narzędzi.
 </translation>
     </message>
   </context>
@@ -90,8 +89,8 @@ Użytkownik powinien następnie kliknąć przycisk Odśwież na głównym pasku 
       <location filename="../../Link.cpp" line="119"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all link
 that links to the same configurable object</source>
-      <translation>Przechowuje ostatni wybór użytkownika, czy zastosować ustawienie "Kopiuj przy zmianie" do wszystkich łączy,
-które odnoszą się do tego samego obiektu konfigurowalnego</translation>
+      <translation>Zapamiętuje ostatni wybór użytkownika dotyczący stosowania konfiguracji "KopiujPrzyZmianie" 
+do wszystkich łączy odwołujących się do tego samego obiektu konfigurowalnego</translation>
     </message>
   </context>
 </TS>

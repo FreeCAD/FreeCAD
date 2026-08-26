@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 
+#include <cstring>
 #include <limits>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
@@ -52,6 +53,7 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
+#include <Base/Converter.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
@@ -653,6 +655,39 @@ Hole::Hole()
         App::Prop_None,
         "Which profile feature to base the holes on"
     );
+    ADD_PROPERTY_TYPE(StartType, (0L), "Start", App::Prop_None, "How to define the start plane");
+    StartType.setEnums(StartTypesEnums);
+    ADD_PROPERTY_TYPE(StartOffset, (0.0), "Start", App::Prop_None, "Offset from the start plane");
+    ADD_PROPERTY_TYPE(
+        StartReference,
+        (nullptr),
+        "Start",
+        App::Prop_None,
+        "Face, plane or sketch used as the start reference"
+    );
+}
+
+double Hole::getStartOffset() const
+{
+    const char* startType = StartType.getValueAsString();
+    if (std::strcmp(startType, "Profile plane") == 0) {
+        return 0.0;
+    }
+    if (std::strcmp(startType, "Offset") == 0) {
+        return StartOffset.getValue();
+    }
+
+    TopoShape profileShape = getProfileShape(
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+        | Part::ShapeOption::Transform | Part::ShapeOption::DontSimplifyCompound
+    );
+    gp_Dir direction = Base::convertTo<gp_Dir>(guessNormalDirection(profileShape));
+    if (!Reversed.getValue()) {
+        direction.Reverse();
+    }
+
+    TopLoc_Location identity;
+    return getStartReferenceOffset(profileShape, StartReference, direction, StartOffset.getValue(), identity);
 }
 
 void Hole::updateHoleCutParams()
@@ -1275,7 +1310,12 @@ void Hole::findClosestDesignation()
 
 void Hole::onChanged(const App::Property* prop)
 {
-    if (prop == &ThreadType) {
+    if (prop == &StartType) {
+        const bool hasOffset = std::strcmp(StartType.getValueAsString(), "Profile plane") != 0;
+        StartOffset.setReadOnly(!hasOffset);
+        StartReference.setReadOnly(std::strcmp(StartType.getValueAsString(), "Reference") != 0);
+    }
+    else if (prop == &ThreadType) {
         std::string type;
 
         if (ThreadType.isValid()) {
@@ -1679,7 +1719,8 @@ short Hole::mustExecute() const
         || Depth.isTouched() || DrillPoint.isTouched() || DrillPointAngle.isTouched()
         || Tapered.isTouched() || TaperedAngle.isTouched() || ModelThread.isTouched()
         || UseCustomThreadClearance.isTouched() || CustomThreadClearance.isTouched()
-        || ThreadDepthType.isTouched() || ThreadDepth.isTouched() || BaseProfileType.isTouched()) {
+        || ThreadDepthType.isTouched() || ThreadDepth.isTouched() || BaseProfileType.isTouched()
+        || StartType.isTouched() || StartOffset.isTouched() || StartReference.isTouched()) {
         return 1;
     }
     return ProfileBased::mustExecute();
@@ -1716,6 +1757,9 @@ void Hole::updateProps()
     onChanged(&ThreadDepthType);
     onChanged(&ThreadDepth);
     onChanged(&BaseProfileType);
+    onChanged(&StartType);
+    onChanged(&StartOffset);
+    onChanged(&StartReference);
 }
 
 static gp_Pnt toPnt(gp_Vec dir)
@@ -1774,6 +1818,20 @@ App::DocumentObjectExecReturn* Hole::execute()
         gp_Vec zDir(SketchVector.x, SketchVector.y, SketchVector.z);
         zDir.Transform(invObjLoc.Transformation());
         gp_Vec xDir = computePerpendicular(zDir);
+
+        gp_Dir holeDirection(zDir);
+        holeDirection.Reverse();
+        const char* startType = StartType.getValueAsString();
+        const double startOffset = std::strcmp(startType, "Profile plane") == 0 ? 0.0
+            : std::strcmp(startType, "Offset") == 0 ? StartOffset.getValue()
+                                                    : getStartReferenceOffset(
+                                                          profileshape,
+                                                          StartReference,
+                                                          holeDirection,
+                                                          StartOffset.getValue(),
+                                                          invObjLoc
+                                                      );
+        profileshape = moveProfileToStart(profileshape, holeDirection, startOffset);
 
         if (method == "Dimension") {
             length = Depth.getValue();
