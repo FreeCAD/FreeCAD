@@ -36,7 +36,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintFixed, FemGui::ViewProviderFemC
 ViewProviderFemConstraintFixed::ViewProviderFemConstraintFixed()
 {
     sPixmap = "FEM_ConstraintFixed";
-    loadSymbol((resourceSymbolDir + "ConstraintFixed.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintFixed.iv");
 }
 
 ViewProviderFemConstraintFixed::~ViewProviderFemConstraintFixed() = default;
