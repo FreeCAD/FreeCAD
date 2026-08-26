@@ -34,6 +34,7 @@ add_executable(Part_tests_run
         TopoShapeMapper.cpp
         TopoShapeMakeShape.cpp
         WireJoiner.cpp
+        SectionCap.cpp
 )
 
 set(PartTestData_Files

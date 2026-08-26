@@ -2470,6 +2470,17 @@ CmdPartSectionAnalysis::CmdPartSectionAnalysis()
     sPixmap = "Part_SectionAnalysis";
 }
 
+namespace
+{
+/// A section of a section means nothing, and leaving one selected in the tree
+/// is an easy way to feed it in as a source.
+bool canBeSectioned(const App::DocumentObject* obj)
+{
+    return obj && !obj->isDerivedFrom(Part::SectionAnalysis::getClassTypeId())
+        && Part::SectionAnalysis::isEffectivelyVisible(obj);
+}
+}  // namespace
+
 void CmdPartSectionAnalysis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
@@ -2480,7 +2491,7 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     auto sel = Gui::Selection().getSelectionEx();
     for (auto& selObj : sel) {
         auto* obj = selObj.getObject();
-        if (obj && Part::SectionAnalysis::isEffectivelyVisible(obj)) {
+        if (canBeSectioned(obj)) {
             sources.push_back(obj);
         }
     }
@@ -2494,7 +2505,7 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 if (App::GeoFeatureGroupExtension::getGroupOfObject(obj)) {
                     continue;
                 }
-                if (Part::SectionAnalysis::isEffectivelyVisible(obj)) {
+                if (canBeSectioned(obj)) {
                     sources.push_back(obj);
                 }
             }
@@ -2506,16 +2517,17 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     }
 
     std::string docName = getDocument()->getName();
+
+    // Build safely a list for all python foo
     std::string sourceList;
     for (auto* obj : sources) {
         if (!sourceList.empty()) {
             sourceList += ", ";
         }
-        sourceList += "App.getDocument('" + docName + "').getObject('" + obj->getNameInDocument()
-            + "')";
+        sourceList += Gui::Command::getObjectCmd(obj);
     }
 
-    // Snap initial cutting plane to the nearest principal axis based on camera direction
+    // Snap initial cutting plane to the nearest principal axis/plane based on camera direction
     SbVec3f viewDir(0, 0, -1);
     auto* mdiView = qobject_cast<Gui::View3DInventor*>(Gui::Application::Instance->activeView());
     if (mdiView) {
@@ -2524,7 +2536,8 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     float vx, vy, vz;
     viewDir.getValue(vx, vy, vz);
 
-    // Find which axis the camera is most aligned with and snap to it
+    // Find which axis plane the camera is most aligned with and snap to it
+    // Surely this should be a utility function at some point
     float ax = std::abs(vx), ay = std::abs(vy), az = std::abs(vz);
     float nx = 0, ny = 0, nz = 0;
     if (ax >= ay && ax >= az) {
@@ -2537,6 +2550,7 @@ void CmdPartSectionAnalysis::activated(int iMsg)
         nz = (vz < 0) ? 1.0f : -1.0f;
     }
 
+    // Standard command plumbing
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Section Analysis"));
     doCommand(
         Doc,
@@ -2553,7 +2567,7 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     // Set the plane normal to the snapped axis
     doCommand(
         Doc,
-        "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%f, %f, %f)",
+        "App.getDocument('%s').ActiveObject.PlaneNormal = FreeCAD.Vector(%.12g, %.12g, %.12g)",
         docName.c_str(),
         nx,
         ny,
@@ -2583,10 +2597,18 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 Gui::Application::Instance->getViewProvider(saObj)
             );
             if (vp) {
+                // Count will always be 1 or greater, we just added one !
                 size_t count = appDoc->getObjectsOfType(Part::SectionAnalysis::getClassTypeId()).size();
                 vp->ShapeAppearance.setValues(
-                    {PartGui::ViewProviderSectionAnalysis::paletteColor(count > 0 ? count - 1 : 0)}
+                    {PartGui::ViewProviderSectionAnalysis::paletteColor(count - 1)}
                 );
+
+                // If the sources come from multiple parts, enable per-solid colors
+                const bool severalParts =
+                    Part::SectionAnalysis::distinctSourceParts(sources, saObj).size() > 1;
+                if (severalParts) {
+                    vp->setPerSolidColors(true);
+                }
             }
         }
     }
