@@ -47,70 +47,6 @@ using namespace Clipper2Lib;
 // Matches CleanPolygons default distance in Clipper1 (sqrt(2))
 const double CLEAN_POLYGONS_TOLERANCE = 1.415;
 
-//*****************************************
-// Clipper 1 <-> Clipper 2 conversion helpers (temporary)
-//*****************************************
-
-inline Path64 ToPath64(const ClipperLib::Path& p)
-{
-    Path64 out;
-    out.reserve(p.size());
-    for (const auto& pt : p) {
-        out.emplace_back(pt.X, pt.Y, pt.Z);
-    }
-    return out;
-}
-
-inline Paths64 ToPaths64(const ClipperLib::Paths& pp)
-{
-    Paths64 out;
-    out.reserve(pp.size());
-    for (const auto& p : pp) {
-        out.emplace_back(ToPath64(p));
-    }
-    return out;
-}
-
-inline ClipperLib::Path ToC1Path(const Path64& p)
-{
-    ClipperLib::Path out;
-    out.reserve(p.size());
-    for (const auto& pt : p) {
-        out.emplace_back(pt.x, pt.y, pt.z);
-    }
-    return out;
-}
-
-inline ClipperLib::Paths ToC1Paths(const Paths64& pp)
-{
-    ClipperLib::Paths out;
-    out.reserve(pp.size());
-    for (const auto& p : pp) {
-        out.emplace_back(ToC1Path(p));
-    }
-    return out;
-}
-
-inline Point64 ToPoint64(const ClipperLib::IntPoint& p)
-{
-    return Point64(p.X, p.Y, p.Z);
-}
-
-inline ClipperLib::IntPoint ToC1Point(const Point64& p)
-{
-    return ClipperLib::IntPoint(p.x, p.y, p.z);
-}
-
-inline PointD ToPointD(const ClipperLib::DoublePoint& p)
-{
-    return PointD(p.X, p.Y);
-}
-
-inline ClipperLib::DoublePoint ToC1PointD(const PointD& p)
-{
-    return ClipperLib::DoublePoint(p.x, p.y);
-}
-
 // Wrappers that preserve Clipper1 default offset behavior (arc_tolerance=0.25 absolute)
 inline Paths64 OffsetPaths(
     const Paths64& paths,
@@ -214,7 +150,7 @@ bool isClose(const Point64& a, const Point64& b)
     return abs(a.x - b.x) <= 1 && abs(a.y - b.y) <= 1;
 }
 
-// Remove coincident and almost-coincident points from ClipperLib::Paths.
+// Remove coincident and almost-coincident points from paths.
 void filterCloseValues(Paths64& ppg_p64)
 {
     for (auto& pth : ppg_p64) {
@@ -2276,7 +2212,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     // This represents the locations the tool center is allowed to be during the main adatpive
     // pass, prior to applying finishing profiling.
 
-    // Use ClipperOffset with Z callback to preserve Z=1 marking
+    // Offset using a Z callback to preserve Z=1 marking
     // Note that PreserveCollinear must be set of ClipperOffset (it is already set by default on
     // Clipper64) to avoid accidentally optimizing out collinear points with differing z-values
     ClipperOffset clipof(2.0, 0.25);
@@ -4410,14 +4346,6 @@ void Adaptive2d::ProcessPolyNode(
     output.ClearedArea = (finalClearedArea - initialClearedArea) / (scaleFactor * scaleFactor);
 
     results.push_back(output);
-
-    //======================================================
-    // DO NOT DELETE THIS COMMENT! Even when done, just leave it at the end of the function
-    // Clipper2 translation in progress: variables above are Clipper2 types; this block
-    // converts them back to Clipper1 so that untranslated code below can use them.
-    // When moving this block down, check each item — if the C1 variable is no longer
-    // used below the new location, it can be deleted.
-    //======================================================
 }
 
 }  // namespace AdaptivePath
