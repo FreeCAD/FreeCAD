@@ -31,6 +31,7 @@ from .module_merge import (
     copy_overlay_stubs,
     copy_type_support_stubs,
     ensure_parent_package_stubs,
+    merge_module_support_nodes,
     module_stub_path,
     public_module_names,
     public_stub_symbols,
@@ -46,6 +47,13 @@ from .document_object_types import (
     document_object_python_types,
 )
 from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
+from .property_contracts import (
+    PropertyCatalog,
+    conversion_metadata_issues,
+    load_property_catalog,
+    render_property_aliases,
+)
+from .property_hierarchy import property_hierarchy_from
 from .render import type_stub_lines, write_stub_file
 from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
 
@@ -115,6 +123,23 @@ def append_type_stubs(
         path.write_text(existing.rstrip() + separator + lines + "\n", encoding="utf-8")
         count += len(type_groups)
     return count
+
+
+def append_property_aliases(
+    out_dir: Path,
+    module_names: set[str],
+    catalog: PropertyCatalog,
+) -> None:
+    """Add generated ``App::Property*`` aliases to the public FreeCAD stub."""
+
+    target = module_stub_path(out_dir, "FreeCAD", module_names)
+    if not target.exists():
+        raise FileNotFoundError(f"Expected generated FreeCAD module stub: {target}")
+
+    original = target.read_text(encoding="utf-8")
+    merged = merge_module_support_nodes(original, render_property_aliases(catalog))
+    if merged != original:
+        target.write_text(merged, encoding="utf-8")
 
 
 def markdown_report(methods: list[BindingMethod]) -> str:
@@ -194,11 +219,18 @@ def write_outputs(
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
     type_hierarchy = discover_type_hierarchy(root)
+    property_catalog = load_property_catalog(root)
+    property_hierarchy = property_hierarchy_from(type_hierarchy)
+    conversion_issues = conversion_metadata_issues(root, property_hierarchy, property_catalog)
+    if conversion_issues:
+        formatted = "\n".join(issue.format() for issue in conversion_issues)
+        raise ValueError("Core property conversion metadata is incomplete:\n" + formatted)
     write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )
     copy_module_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    append_property_aliases(out_dir / "stubs", module_names, property_catalog)
     append_type_stubs(
         out_dir / "stubs",
         methods,

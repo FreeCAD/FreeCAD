@@ -152,6 +152,7 @@ PYCXX_SEQUENCE_SLOT_RE = re.compile(
 HELPER_PYI_FILES = {
     "src/Base/Metadata.pyi",
     "src/Base/PyObjectBase.pyi",
+    "src/App/PropertyPythonContracts.pyi",
 }
 PUBLIC_STUB_DECORATORS = {
     "classmethod",

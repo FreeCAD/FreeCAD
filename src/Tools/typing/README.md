@@ -50,6 +50,30 @@ nodes such as imports, helper aliases, helper protocols, and non-method class
 members to the merged public stub output. Do not edit generated output directly;
 edit the curated source inputs and regenerate.
 
+### Core Property Contracts
+
+The source-adjacent `src/App/PropertyPythonContracts.pyi` contains the Python
+getter/setter behavior at `App::Property*` conversion roots and override
+points. `stubgen` parses that file and renders its aliases into the generated
+`FreeCAD` module stub, so `src/App/FreeCAD.module.pyi` does not duplicate the
+property vocabulary. Draft and BIM protocols may still narrow these generic
+contracts when their workbench invariants are stronger.
+
+`stubgen/type_hierarchy.py` discovers FreeCAD's C++ TypeId graph.
+`stubgen/property_hierarchy.py` projects that graph onto `App::Property*`
+classes and discovers Python conversion override declarations.
+`property_contracts.py` combines those structural facts with
+`PropertyPythonContracts.pyi`, resolving getter and setter contracts
+independently so descendants such as `PropertyLength`, `PropertyDistance`,
+`PropertyDirection`, and `PropertyLinkHidden` do not need separate metadata
+entries. The generator checks that conversion overrides in covered families
+have adjacent contracts; it does not infer Python types from C++ method bodies.
+
+The metadata file is a stubgen input only and is excluded from the public stub
+merge. C++ remains authoritative for inheritance and override boundaries; the
+adjacent input is authoritative for the Python conversion shape at those
+boundaries. Focused tests should accompany each new conversion family.
+
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or
