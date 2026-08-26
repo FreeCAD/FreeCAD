@@ -506,6 +506,54 @@
     </message>
   </context>
   <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <source>Parameters</source>
+      <translation>Параметры</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <source>Physical Properties</source>
+      <translation>Физические свойства</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <source>Center of Gravity</source>
+      <translation>Центр тяжести</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <source>Center of Volume</source>
+      <translation>Центр объема</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <source>Inertia</source>
+      <translation type="unfinished">Inertia</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <source>Close</source>
+      <translation>Закрыть</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <source>Save</source>
+      <translation>Сохранить</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <source>Reset</source>
+      <translation>Сброс</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <source> (Average)</source>
+      <translation type="unfinished"> (Average)</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdMassProperties</name>
     <message>
       <location filename="../../Command.cpp" line="97"/>
@@ -516,54 +564,6 @@
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
       <translation type="unfinished">Calculates mass properties of selected objects</translation>
-    </message>
-  </context>
-  <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
-      <source>Parameters</source>
-      <translation>Параметры</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
-      <source>Physical Properties</source>
-      <translation>Физические свойства</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
-      <source>Center of Gravity</source>
-      <translation>Центр тяжести</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
-      <source>Center of Volume</source>
-      <translation>Центр объема</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
-      <source>Inertia</source>
-      <translation type="unfinished">Inertia</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
-      <source>Close</source>
-      <translation>Закрыть</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Save</source>
-      <translation>Сохранить</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
-      <source>Reset</source>
-      <translation>Сброс</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
-      <source> (Average)</source>
-      <translation type="unfinished"> (Average)</translation>
     </message>
   </context>
 </TS>

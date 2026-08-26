@@ -386,6 +386,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Deburr.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
+    Path/Op/Flute.py
     Path/Op/FeatureExtension.py
     Path/Op/Drilling.py
     Path/Op/Helix.py
@@ -420,6 +421,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
     Path/Op/Gui/FeatureExtension.py
+    Path/Op/Gui/Flute.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
     Path/Op/Gui/MillFacing.py
@@ -479,6 +481,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/surface_waterline.py
     Path/Base/Generator/surface_postprocess.py
     Path/Base/Generator/surface_zlevel.py
+    Path/Base/Generator/follow_wire.py
 )
 
 SET(PathPythonGui_SRCS
@@ -588,6 +591,8 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillable.py
     CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFlute.py
+    CAMTests/TestPathFollowWireGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py

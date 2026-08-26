@@ -173,12 +173,14 @@ class StockFromBase(Stock):
         )
 
         obj.Base = base
-        obj.ExtXneg = 1.0
-        obj.ExtXpos = 1.0
-        obj.ExtYneg = 1.0
-        obj.ExtYpos = 1.0
-        obj.ExtZneg = 1.0
-        obj.ExtZpos = 1.0
+        _ext_unit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Length).getUserPreferred()[2]
+        _default_ext = 3.175 if _ext_unit in ("in", '"') else 1.0  # 0.125" or 1mm
+        obj.ExtXneg = _default_ext
+        obj.ExtXpos = _default_ext
+        obj.ExtYneg = _default_ext
+        obj.ExtYpos = _default_ext
+        obj.ExtZneg = _default_ext
+        obj.ExtZpos = _default_ext
 
         # placement is only tracked on creation
         bb = shapeBoundBox(base.Group) if base else None
@@ -369,9 +371,15 @@ def SetupStockObject(obj, stockType):
         import Path.Base.Gui.IconViewProvider as PathIconViewProvider
 
         PathIconViewProvider.ViewProvider(obj.ViewObject, "Stock")
-        obj.ViewObject.Transparency = 90
-        obj.ViewObject.PointSize = 5
-        obj.ViewObject.DisplayMode = "Wireframe"
+        obj.ViewObject.ShapeColor = (0.792, 0.718, 0.537)
+        obj.ViewObject.Transparency = 95
+        obj.ViewObject.LineColor = (0.553, 0.502, 0.376)
+        obj.ViewObject.PointColor = (0.553, 0.502, 0.376)
+        obj.ViewObject.DrawStyle = "Dotted"
+        obj.ViewObject.DisplayMode = "Flat Lines"
+        obj.ViewObject.PointSize = 1
+        obj.ViewObject.LineWidth = 1
+        obj.ViewObject.Selectable = False
 
 
 class FakeJob(object):
