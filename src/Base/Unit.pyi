@@ -5,7 +5,7 @@ from __future__ import annotations
 from Metadata import export
 from PyObjectBase import PyObjectBase
 from Quantity import Quantity
-from typing import Final, Tuple, overload
+from typing import Final, overload
 
 @export(
     NumberProtocol=True,
@@ -30,28 +30,27 @@ class Unit(PyObjectBase):
     """
 
     @overload
-    def __init__(self) -> None: ...
-    @overload
     def __init__(
         self,
-        i1: float,
-        i2: float,
-        i3: float,
-        i4: float,
-        i5: float,
-        i6: float,
-        i7: float,
-        i8: float,
+        i1: int = 0,
+        i2: int = 0,
+        i3: int = 0,
+        i4: int = 0,
+        i5: int = 0,
+        i6: int = 0,
+        i7: int = 0,
+        i8: int = 0,
+        /,
     ) -> None: ...
     @overload
-    def __init__(self, quantity: Quantity) -> None: ...
+    def __init__(self, quantity: Quantity, /) -> None: ...
     @overload
-    def __init__(self, unit: Unit) -> None: ...
+    def __init__(self, unit: Unit, /) -> None: ...
     @overload
-    def __init__(self, string: str) -> None: ...
+    def __init__(self, string: str, /) -> None: ...
 
     Type: Final[str] = ...
     """holds the unit type as a string, e.g. 'Area'."""
 
-    Signature: Final[Tuple] = ...
+    Signature: Final[tuple[int, ...]] = ...
     """Returns the signature."""

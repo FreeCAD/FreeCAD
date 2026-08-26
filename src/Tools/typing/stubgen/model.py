@@ -157,6 +157,7 @@ PUBLIC_STUB_DECORATORS = {
     "classmethod",
     "deprecated",
     "overload",
+    "property",
     "staticmethod",
 }
 

@@ -102,6 +102,78 @@ def _invalid_text_signatures(path: Path) -> list[str]:
 
 
 class GenerateModelPythonTests(unittest.TestCase):
+    def test_property_accessors_are_exported_as_attributes(self):
+        source = textwrap.dedent('''
+            from typing import Sequence
+
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export
+            class Example(PyObjectBase):
+                @property
+                def values(self) -> tuple[float, ...]:
+                    """Return the values."""
+                    ...
+
+                @values.setter
+                def values(self, value: Sequence[float]) -> None: ...
+
+                def update(self, value: float) -> None: ...
+            ''')
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            model = parse_python_code(str(path))
+
+        export = model.PythonExport[0]
+        self.assertEqual(
+            [(attribute.Name, attribute.Parameter.Type.value) for attribute in export.Attribute],
+            [("values", "Sequence")],
+        )
+        self.assertFalse(export.Attribute[0].ReadOnly)
+        self.assertEqual([method.Name for method in export.Methode], ["update"])
+        self.assertEqual(export.Attribute[0].Documentation.UserDocu, "Return the values.")
+
+    def test_property_setter_requires_a_getter(self):
+        source = textwrap.dedent("""
+            from Base.Metadata import export
+            from Base.PyObjectBase import PyObjectBase
+
+
+            @export
+            class Example(PyObjectBase):
+                @values.setter
+                def values(self, value: int) -> None: ...
+            """)
+
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            path = Path(temp_dir) / "Example.pyi"
+            path.write_text(source, encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "has a setter but no getter"):
+                parse_python_code(str(path))
+
+    def test_generated_headers_keep_property_accessor_declarations(self):
+        expected = {
+            "Matrix": ("Py::Sequence getA() const;", "void setA(Py::Sequence arg);"),
+            "Placement": ("Py::Object getBase() const;", "void setBase(Py::Object arg);"),
+            "Rotation": ("Py::Object getAxis() const;", "void setAxis(Py::Object arg);"),
+        }
+
+        for name, declarations in expected.items():
+            with self.subTest(name=name), tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+                generate(str(SRC_DIR / "Base" / f"{name}.pyi"), temp_dir)
+                header = (Path(temp_dir) / f"{name}Py.h").read_text(encoding="utf-8")
+                for declaration in declarations:
+                    self.assertIn(declaration, header)
+
+                method_name = name if name != "Matrix" else "A"
+                self.assertNotRegex(header, rf"PyObject\*\s+{method_name}\(")
+                if name == "Rotation":
+                    self.assertNotRegex(header, r"PyObject\*\s+__mul__\(")
+
     def test_overload_only_constructor_docs_are_merged_into_class_doc(self):
         source = textwrap.dedent("""
             from __future__ import annotations

@@ -64,7 +64,8 @@ def normalized_deprecated_decorator(decorator: ast.expr) -> ast.expr:
 
 def keep_public_stub_decorator(decorator: ast.expr) -> bool:
     name = decorator_name(decorator).split(".", 1)[-1]
-    return name in PUBLIC_STUB_DECORATORS
+    full_name = decorator_name(decorator)
+    return name in PUBLIC_STUB_DECORATORS or full_name.endswith(".setter")
 
 
 class PublicClassStubTransformer(ast.NodeTransformer):

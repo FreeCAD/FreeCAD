@@ -228,6 +228,23 @@ documentation only. Attribute deprecations require structured metadata.
 
 Attributes defined as read-only are annotated with `Final` from Python’s `typing` module to indicate immutability.
 
+Properties with distinct getter and setter contracts use the standard Python
+property syntax. The getter and setter are represented as one binding attribute;
+the binding generator still emits the corresponding `get<Name>()` and
+`set<Name>()` C++ wrapper declarations while preserving the asymmetric Python
+annotations for the type-checking tools.
+
+```python
+from typing import Sequence
+
+class MatrixPy(PyObjectBase):
+    @property
+    def A(self) -> tuple[float, ...]: ...
+
+    @A.setter
+    def A(self, value: Sequence[float]) -> None: ...
+```
+
 **Example:**
 
 ```python

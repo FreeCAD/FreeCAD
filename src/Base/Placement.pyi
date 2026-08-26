@@ -59,13 +59,22 @@ class Placement(PyObjectBase):
     angle : float
     """
 
-    Base: Vector = None
-    """Vector to the Base Position of the Placement."""
+    @property
+    def Base(self) -> Vector:
+        """Vector to the Base Position of the Placement."""
+        ...
 
-    Rotation: RotationPy = None
-    """Orientation of the placement expressed as rotation."""
+    @Base.setter
+    def Base(self, value: Vector | Sequence[float]) -> None: ...
+    @property
+    def Rotation(self) -> RotationPy:
+        """Orientation of the placement expressed as rotation."""
+        ...
 
-    Matrix: MatrixPy = None
+    @Rotation.setter
+    def Rotation(self, value: RotationPy | tuple[float, float, float, float]) -> None: ...
+
+    Matrix: MatrixPy = ...
     """Set/get matrix representation of the placement."""
 
     # fmt: off

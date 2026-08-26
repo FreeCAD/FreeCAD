@@ -41,6 +41,7 @@ from FreeCAD.Base import (
     ProgressIndicator,
     Quantity,
     Rotation,
+    Unit,
     Vector,
 )
 import Part
@@ -108,6 +109,21 @@ def exercise(
     console_observers = Console.GetObservers()
     gui_up = FreeCAD.GuiUp
     parsed_quantity = Units.parseQuantity("10 mm")
+    quantity_format: dict[str, int | str] = parsed_quantity.Format
+    unit = Unit(1, 0, 0, 0, 0, 0, 0, 0)
+    assert_type(Unit(1, 0), Unit)
+    unit_signature: tuple[int, ...] = unit.Signature
+    rotation_axis: Vector = rotation.Axis
+    raw_rotation_axis: Vector = rotation.RawAxis
+    placement_base: Vector = placement.Base
+    placement_rotation: Rotation = placement.Rotation
+    placement_matrix: Matrix = placement.Matrix
+    placement.Base = (0, 0, 0)
+    placement.Rotation = (0, 0, 0, 1)
+    rotation.Axis = (0, 0, 1)
+    matrix_values: tuple[float, ...] = matrix.A
+    assert_type(shape.CompSolids, list[Part.CompSolid])
+    assert_type(shape.Compounds, list[Part.Compound])
     schema = Units.getSchema()
     schema_names = Units.listSchemas()
     schema_description = Units.listSchemas(schema)
@@ -150,6 +166,14 @@ def exercise(
     resolve_mode: GuiSelection.ResolveMode = GuiSelection.ResolveMode.NoResolve
     selection_style_enum: GuiSelection.SelectionStyle = GuiSelection.SelectionStyle.NormalSelection
     main_window = cast(FreeCADGui._MainWindow, object())
+    view_provider = cast(FreeCADGui.ViewProvider, object())
+    view_provider.addProperty(
+        "App::PropertyEnumeration",
+        "Mode",
+        enum_vals=["First", "Second"],
+    )
+    main_window.statusBar()
+    main_window.findChildren(FreeCADGui._MainWindow)
     mdi_view = cast(FreeCADGui._MDIView, object())
     task_dialog = cast(FreeCADGui._TaskDialog, object())
     split_view = cast(FreeCADGui._AbstractSplitView, object())
@@ -360,7 +384,6 @@ def exercise(
     assert_type(console_observers, list[str])
     assert_type(gui_up, int)
     assert_type(active_document, FreeCAD.Document | None)
-    assert_type(part_feature, Part.Feature)
     assert_type(part_feature.Shape, Part.Shape)
     part_feature.Shape = shape
     assert_type(copied_object, FreeCAD.DocumentObject)

@@ -369,6 +369,26 @@ def _decorator_name(node: ast.AST) -> str | None:
     return None
 
 
+def _property_accessor(node: ast.FunctionDef) -> tuple[str, str] | None:
+    """Return the property name and accessor kind for a property function."""
+    for decorator in node.decorator_list:
+        if isinstance(decorator, ast.Name) and decorator.id == "property":
+            return node.name, "getter"
+
+        if (
+            isinstance(decorator, ast.Attribute)
+            and decorator.attr == "setter"
+            and isinstance(decorator.value, ast.Name)
+        ):
+            return decorator.value.id, "setter"
+
+    return None
+
+
+def _is_typing_only(node: ast.FunctionDef) -> bool:
+    return any(_decorator_name(decorator) == "typing_only" for decorator in node.decorator_list)
+
+
 def _is_text_signature_default_supported(node: ast.AST | None) -> bool:
     if node is None:
         return True
@@ -700,6 +720,73 @@ def _parse_class_attributes(class_node: ast.ClassDef, source_code: str) -> List[
             )
             attributes.append(attr)
 
+    property_accessors: dict[str, dict[str, ast.FunctionDef]] = {}
+    for function in _collect_function_defs(class_node.body):
+        accessor = _property_accessor(function)
+        if accessor is None or _is_typing_only(function):
+            continue
+
+        property_name, accessor_kind = accessor
+        accessors = property_accessors.setdefault(property_name, {})
+        if accessor_kind in accessors:
+            raise ValueError(
+                f"Property '{class_node.name}.{property_name}' has multiple "
+                f"{accessor_kind} declarations"
+            )
+        accessors[accessor_kind] = function
+
+    existing_names = {attribute.Name for attribute in attributes}
+    for property_name, accessors in property_accessors.items():
+        getter = accessors.get("getter")
+        if getter is None:
+            raise ValueError(
+                f"Property '{class_node.name}.{property_name}' has a setter but no getter"
+            )
+        if property_name in existing_names:
+            raise ValueError(
+                f"Property '{class_node.name}.{property_name}' is declared both as an "
+                "attribute and a property"
+            )
+
+        setter = accessors.get("setter")
+        if setter is not None:
+            setter_arguments = [*setter.args.posonlyargs, *setter.args.args]
+            if (
+                len(setter_arguments) != 2
+                or setter.args.vararg is not None
+                or setter.args.kwonlyargs
+                or setter.args.kwarg is not None
+            ):
+                raise ValueError(
+                    f"Property setter '{class_node.name}.{property_name}' must accept "
+                    "exactly self and value"
+                )
+        # The C++ wrapper uses one PyCXX converter type for the get/set pair.
+        # Prefer the setter annotation because it describes the value accepted by
+        # the generated set<Name>() declaration.  The public stub generator keeps
+        # the richer, asymmetric Python getter/setter annotations separately.
+        binding_annotation = (
+            setter.args.args[-1].annotation
+            if setter is not None and setter.args.args
+            else getter.returns
+        )
+        binding_type = (
+            ast.unparse(binding_annotation) if binding_annotation is not None else "object"
+        )
+        attr_doc = _parse_docstring_for_documentation(ast.get_docstring(getter) or "")
+        attributes.append(
+            Attribute(
+                Documentation=attr_doc,
+                Parameter=Parameter(
+                    Name=property_name,
+                    Type=_python_type_to_parameter_type(binding_type),
+                ),
+                Name=property_name,
+                ReadOnly=setter is None,
+                Deprecated=None,
+            )
+        )
+
     return attributes
 
 
@@ -717,6 +804,8 @@ def _collect_function_defs(nodes) -> list[ast.FunctionDef]:
 def _collect_functions(class_node: ast.ClassDef) -> dict[str, Function]:
     functions: dict[str, Function] = {}
     for func_node in _collect_function_defs(class_node.body):
+        if _property_accessor(func_node) is not None:
+            continue
         if func := functions.get(func_node.name):
             func.update(func_node)
         else:
