@@ -112,8 +112,8 @@ void FileCardView::contextMenuEvent(QContextMenuEvent* event)
         return;
     }
 
-    const auto filePath =
-        index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
+    const auto filePath
+        = index.data(static_cast<int>(Start::DisplayedFilesModelRoles::path)).toString();
     if (filePath.isEmpty()) {
         QListView::contextMenuEvent(event);
         return;

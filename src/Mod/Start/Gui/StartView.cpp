@@ -195,9 +195,7 @@ StartView::StartView(QWidget* parent)
         recentFilesListWidget,
         &FileCardView::fileRemovalRequested,
         this,
-        [this](const QString& filePath) {
-            _recentFilesModel.removeFile(filePath);
-        }
+        [this](const QString& filePath) { _recentFilesModel.removeFile(filePath); }
     );
 
     QTimer::singleShot(2000, this, [this, recentFilesListWidget]() {
