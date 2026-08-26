@@ -326,6 +326,34 @@ class CreateSketch(unittest.TestCase):
         param.SetBool("NewSketchUseAttachmentDialog", useAttachmentSaved)
 
 
+class TestClone(unittest.TestCase):
+    def setUp(self):
+        self.Doc = App.newDocument("PartDesignTestClone")
+        Gui.activateView("Gui::View3DInventor", True)
+
+    def tearDown(self):
+        Gui.Selection.clearSelection()
+        App.closeDocument(self.Doc.Name)
+
+    def testCloneRespectsActivePart(self):
+        part = self.Doc.addObject("App::Part", "Part")
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+        part.addObject(body)
+
+        box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
+        body.addObject(box)
+        self.Doc.recompute()
+
+        Gui.activeView().setActiveObject("part", part)
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(body)
+        Gui.runCommand("PartDesign_Clone")
+
+        clone_body = self.Doc.getObject("Body001")
+        self.assertIsNotNone(clone_body)
+        self.assertIn(clone_body, part.Group)
+
+
 # class PartDesignGuiTestCases(unittest.TestCase):
 #   def setUp(self):
 #       self.Doc = FreeCAD.newDocument("SketchGuiTest")
