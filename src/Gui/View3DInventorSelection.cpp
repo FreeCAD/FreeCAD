@@ -202,6 +202,11 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             }
         }
     }
+    // with preview off, a hidden target (e.g. a sub-object of a shown parent)
+    // must not be forced on top; matches upstream where it renders nothing
+    if (!previewHidden && !svp->isShow()) {
+        return;
+    }
     if (previewHidden) {
         // a view provider may supply its own on-top preview (e.g. a PartDesign
         // feature showing only its own addition/cut instead of the whole solid);
