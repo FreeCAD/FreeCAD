@@ -2652,7 +2652,6 @@ bool Adaptive2d::ResolveLinkPath(
 
     // to hold CLP results
     Point64 clp;
-    Point64 clpDist_p64;
     size_t pindex;
     size_t sindex;
     double par;
@@ -2747,8 +2746,8 @@ bool Adaptive2d::ResolveLinkPath(
                 Point64 checkPoint2(midPoint.x - offset * pDir.x, midPoint.y - offset * pDir.y);
 
                 if (
-                    DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint1, clpDist_p64, pindex, sindex, par)
-                    < DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint2, clpDist_p64, pindex, sindex, par)
+                    DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint1, clp, pindex, sindex, par)
+                    < DistancePointToPathsSqrd(clearedArea.GetCleared(), checkPoint2, clp, pindex, sindex, par)
                 ) {
                     // exchange points
                     Point64 tmp = checkPoint2;
