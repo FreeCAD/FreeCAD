@@ -49,6 +49,11 @@ Params = [
     ParamBool("CheckBoxesSelection", False, on_change=True, title="Show item checkbox"),
     ParamBool("SyncView", True),
     ParamBool("PreSelection", True),
+    ParamBool(
+        "PreSelectHidden",
+        False,
+        doc="Preselect hidden objects when hovering over them in the tree view.",
+    ),
     ParamBool("SyncPlacement", False),
     ParamBool("RecordSelection", True),
     ParamInt("DocumentMode", 2, on_change=True),
