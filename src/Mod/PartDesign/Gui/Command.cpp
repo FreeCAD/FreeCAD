@@ -528,6 +528,8 @@ void CmdPartDesignClone::activated(int iMsg)
     );
 
     if (objs.size() == 1) {
+        App::Part* activePart = PartDesignGui::getActivePart();
+
         // As suggested in https://forum.freecad.org/viewtopic.php?f=3&t=25265&p=198547#p207336
         // put the clone into its own new body.
         // This also fixes bug #3447 because the clone is a PD feature and thus
@@ -552,6 +554,13 @@ void CmdPartDesignClone::activated(int iMsg)
 
         auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
         auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
+
+        if (activePart) {
+            Gui::cmdAppObject(
+                activePart,
+                std::stringstream() << "addObject(" << getObjectCmd(bodyObj) << ")"
+            );
+        }
 
         // In the first step set the group link and tip of the body
         Gui::cmdAppObject(
