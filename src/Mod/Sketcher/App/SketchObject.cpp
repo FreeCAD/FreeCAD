@@ -306,27 +306,28 @@ void SketchObject::buildShape()
         vertices.back().copyElementMap(vertex, Part::OpCodes::Sketch);
     };
 
-    auto addEdge = [this, &shapes, &vertexHistoryMap, &selectedHistoryVersion](auto geo, auto indexedName) {
-        std::string edgeName = convertSubName(indexedName, false);
-        Part::TopoShape edgeShape {getEdge(geo, edgeName.c_str())};
-        shapes.push_back(edgeShape);
-        if (checkSmallEdge(shapes.back())) {
-            FC_WARN("Edge too small: " << indexedName);
-        }
-
-        if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
-            TopTools_IndexedMapOfShape vertexMap;
-            TopExp::MapShapes(edgeShape.getShape(), TopAbs_VERTEX, vertexMap);
-
-            std::string vertexNamePrefix {edgeName + 'v'};
-
-            for (int vertexIdx = 1; vertexIdx <= vertexMap.Extent(); vertexIdx++) {
-                vertexHistoryMap[BRep_Tool::Pnt(TopoDS::Vertex(vertexMap(vertexIdx)))].push_back(
-                    vertexNamePrefix + std::to_string(vertexIdx)
-                );
+    auto addEdge =
+        [this, &shapes, &vertexHistoryMap, &selectedHistoryVersion](auto geo, auto indexedName) {
+            std::string edgeName = convertSubName(indexedName, false);
+            Part::TopoShape edgeShape {getEdge(geo, edgeName.c_str())};
+            shapes.push_back(edgeShape);
+            if (checkSmallEdge(shapes.back())) {
+                FC_WARN("Edge too small: " << indexedName);
             }
-        }
-    };
+
+            if (selectedHistoryVersion == App::HistoryAlgorithm::V2) {
+                TopTools_IndexedMapOfShape vertexMap;
+                TopExp::MapShapes(edgeShape.getShape(), TopAbs_VERTEX, vertexMap);
+
+                std::string vertexNamePrefix {edgeName + 'v'};
+
+                for (int vertexIdx = 1; vertexIdx <= vertexMap.Extent(); vertexIdx++) {
+                    vertexHistoryMap[BRep_Tool::Pnt(TopoDS::Vertex(vertexMap(vertexIdx)))].push_back(
+                        vertexNamePrefix + std::to_string(vertexIdx)
+                    );
+                }
+            }
+        };
 
     // get the geometry after running the solver
     auto geometries = solvedSketch.extractGeometry();
@@ -410,11 +411,10 @@ void SketchObject::buildShape()
     for (int vertexIdx = 1; vertexIdx <= resultVertexMap.Extent(); vertexIdx++) {
         std::vector<std::string> referenceIDs;
         gp_Pnt mainVertexPoint = BRep_Tool::Pnt(TopoDS::Vertex(resultVertexMap(vertexIdx)));
-        
+
         for (const auto& vertexHistoryEntry : vertexHistoryMap) {
-            if (vertexHistoryEntry.second.size() 
-                && vertexHistoryEntry.first.IsEqual(mainVertexPoint, Precision::Confusion()))
-            {
+            if (vertexHistoryEntry.second.size()
+                && vertexHistoryEntry.first.IsEqual(mainVertexPoint, Precision::Confusion())) {
                 referenceIDs.insert(
                     referenceIDs.end(),
                     vertexHistoryEntry.second.begin(),

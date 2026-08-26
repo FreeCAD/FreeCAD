@@ -1863,7 +1863,7 @@ public:
             if (_res.size()) {
                 _res.clear();
             }
-            
+
             return _res;
         }
     };

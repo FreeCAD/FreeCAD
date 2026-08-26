@@ -4531,8 +4531,14 @@ struct MapperPrism: MapperMaker
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> projectedElements;
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> generatedElements;
 
-    MapperPrism(BRepFeat_MakePrism& maker, const TopoShape& upTo, const std::vector<TopoShape>& sourceTopoShapes, const App::HistoryAlgorithm& historyVersion)
-        : MapperMaker(maker), historyAlgorithm(historyVersion)
+    MapperPrism(
+        BRepFeat_MakePrism& maker,
+        const TopoShape& upTo,
+        const std::vector<TopoShape>& sourceTopoShapes,
+        const App::HistoryAlgorithm& historyVersion
+    )
+        : MapperMaker(maker)
+        , historyAlgorithm(historyVersion)
     {
         ZoneScoped;
         (void)upTo;
@@ -4612,7 +4618,8 @@ struct MapperPrism: MapperMaker
                     }
                 }
             }
-        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+        }
+        else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
             std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> sourceElementRemap;
             std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> lowerSourceToFaceMap;
             std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> allMappedElements;
@@ -4625,12 +4632,13 @@ struct MapperPrism: MapperMaker
             for (const TopAbs_ShapeEnum& type : mapTypes) {
                 TopTools_IndexedMapOfShape extrudedShapeMap;
                 TopExp::MapShapes(extrudedShape, type, extrudedShapeMap);
-                
+
                 for (const TopoShape& sourceTopoShape : sourceTopoShapes) {
                     TopTools_IndexedMapOfShape sourceShapeMap;
                     TopExp::MapShapes(sourceTopoShape.getShape(), type, sourceShapeMap);
 
-                    for (int sourceElementIdx = 1; sourceElementIdx <= sourceShapeMap.Extent(); sourceElementIdx++) {
+                    for (int sourceElementIdx = 1; sourceElementIdx <= sourceShapeMap.Extent();
+                         sourceElementIdx++) {
                         const TopoDS_Shape& sourceShape = sourceShapeMap(sourceElementIdx);
 
                         allMappedElements.insert(sourceShape);
@@ -4639,7 +4647,8 @@ struct MapperPrism: MapperMaker
                             TopTools_IndexedMapOfShape faceEdgeMap;
                             TopExp::MapShapes(sourceShape, TopAbs_EDGE, faceEdgeMap);
 
-                            for (int sourceEdgeIdx = 1; sourceEdgeIdx <= faceEdgeMap.Extent(); sourceEdgeIdx++) {
+                            for (int sourceEdgeIdx = 1; sourceEdgeIdx <= faceEdgeMap.Extent();
+                                 sourceEdgeIdx++) {
                                 auto emplaceIterator = lowerSourceToFaceMap.try_emplace(
                                     faceEdgeMap(sourceEdgeIdx),
                                     sourceShape
@@ -4650,9 +4659,14 @@ struct MapperPrism: MapperMaker
                                     lowerSourceToFaceMap.erase(emplaceIterator.first);
                                 }
                             }
-                        } else {
-                            for (int extrudedElementIdx = 1; extrudedElementIdx <= extrudedShapeMap.Extent(); extrudedElementIdx++) {
-                                const TopoDS_Shape& currentExtrusionShape = extrudedShapeMap(extrudedElementIdx);
+                        }
+                        else {
+                            for (int extrudedElementIdx = 1;
+                                 extrudedElementIdx <= extrudedShapeMap.Extent();
+                                 extrudedElementIdx++) {
+                                const TopoDS_Shape& currentExtrusionShape = extrudedShapeMap(
+                                    extrudedElementIdx
+                                );
 
                                 if (currentExtrusionShape.IsSame(sourceShape)) {
                                     allMappedElements.insert(sourceShape);
@@ -4665,19 +4679,9 @@ struct MapperPrism: MapperMaker
                 }
             }
 
-            TopExp::MapShapesAndAncestors(
-                extrudedShape,
-                TopAbs_EDGE,
-                TopAbs_FACE,
-                edgeToFaceMap
-            );
+            TopExp::MapShapesAndAncestors(extrudedShape, TopAbs_EDGE, TopAbs_FACE, edgeToFaceMap);
 
-            TopExp::MapShapesAndAncestors(
-                extrudedShape,
-                TopAbs_VERTEX,
-                TopAbs_EDGE,
-                vertexToEdgeMap
-            );
+            TopExp::MapShapesAndAncestors(extrudedShape, TopAbs_VERTEX, TopAbs_EDGE, vertexToEdgeMap);
 
             // map extruded shapes (edge -> face, vertex -> edge)
             for (const auto& sourceShapeEntry : sourceElementRemap) {
@@ -4686,7 +4690,8 @@ struct MapperPrism: MapperMaker
 
                 if (type == TopAbs_EDGE) {
                     ancestors = &edgeToFaceMap.FindFromKey(sourceShapeEntry.second);
-                } else if (type == TopAbs_VERTEX) {
+                }
+                else if (type == TopAbs_VERTEX) {
                     ancestors = &vertexToEdgeMap.FindFromKey(sourceShapeEntry.second);
                 }
 
@@ -4714,7 +4719,8 @@ struct MapperPrism: MapperMaker
                     projectedElementMap
                 );
 
-                for (int projectedShapeIdx = 1; projectedShapeIdx <= projectedElementMap.Extent(); projectedShapeIdx++) {
+                for (int projectedShapeIdx = 1; projectedShapeIdx <= projectedElementMap.Extent();
+                     projectedShapeIdx++) {
                     const TopoDS_Shape& projectedShape = projectedElementMap(projectedShapeIdx);
 
                     if (allMappedElements.count(projectedShape) == 0) {
@@ -4722,10 +4728,13 @@ struct MapperPrism: MapperMaker
                         allMappedElements.insert(projectedShape);
 
                         if (projectedShape.ShapeType() == TopAbs_EDGE) {
-                            const auto& edgeToFaceIterator = lowerSourceToFaceMap.find(generatedElementEntry.first);
+                            const auto& edgeToFaceIterator = lowerSourceToFaceMap.find(
+                                generatedElementEntry.first
+                            );
 
                             if (edgeToFaceIterator != lowerSourceToFaceMap.end()) {
-                                const TopTools_ListOfShape& faceAncestors = edgeToFaceMap.FindFromKey(projectedShape);
+                                const TopTools_ListOfShape& faceAncestors
+                                    = edgeToFaceMap.FindFromKey(projectedShape);
                                 TopTools_ListOfShape::Iterator faceAncestorsIterator {faceAncestors};
 
                                 for (; faceAncestorsIterator.More(); faceAncestorsIterator.Next()) {
@@ -4770,11 +4779,12 @@ struct MapperPrism: MapperMaker
                     break;
             }
             MapperMaker::generated(s);
-        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+        }
+        else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
             auto generatedMapIterator = generatedElements.find(s);
 
-            if (generatedMapIterator != generatedElements.end() && !generatedMapIterator->second.IsNull())
-            {
+            if (generatedMapIterator != generatedElements.end()
+                && !generatedMapIterator->second.IsNull()) {
                 _res.push_back(generatedMapIterator->second);
             }
         }
@@ -4789,8 +4799,8 @@ struct MapperPrism: MapperMaker
         if (historyAlgorithm == App::HistoryAlgorithm::V2) {
             auto projectedMapIterator = projectedElements.find(s);
 
-            if (projectedMapIterator != projectedElements.end() && !projectedMapIterator->second.IsNull())
-            {
+            if (projectedMapIterator != projectedElements.end()
+                && !projectedMapIterator->second.IsNull()) {
                 _res.push_back(projectedMapIterator->second);
             }
         }
@@ -5469,11 +5479,12 @@ TopoShape& TopoShape::makeElementShape(
 )
 {
     const App::HistoryAlgorithm& historyAlgorithm = getHistoryAlgorithm();
-    
+
     if (!op) {
         if (historyAlgorithm == App::HistoryAlgorithm::V1) {
             op = Part::OpCodes::Prism;
-        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+        }
+        else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
             op = Part::OpCodes::Extrude;
         }
     }
@@ -5638,7 +5649,8 @@ TopoShape& TopoShape::makeElementPrismUntil(
     if (!op) {
         if (historyAlgorithm == App::HistoryAlgorithm::V1) {
             op = Part::OpCodes::Prism;
-        } else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
+        }
+        else if (historyAlgorithm == App::HistoryAlgorithm::V2) {
             op = Part::OpCodes::Extrude;
         }
     }
@@ -5758,7 +5770,9 @@ TopoShape& TopoShape::makeElementPrismUntil(
                      profile.hasSubShape(TopAbs_FACE) ? TopAbs_FACE : TopAbs_WIRE
                  )) {
                 srcShapes.clear();
-                if (!profile.isNull() && (!result.findShape(profile.getShape()) || historyAlgorithm == App::HistoryAlgorithm::V2)) {
+                if (!profile.isNull()
+                    && (!result.findShape(profile.getShape())
+                        || historyAlgorithm == App::HistoryAlgorithm::V2)) {
                     srcShapes.push_back(profile);
                 }
                 if (!supportFace.isNull() && !result.findShape(supportFace.getShape())) {

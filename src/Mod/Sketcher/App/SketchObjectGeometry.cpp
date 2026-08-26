@@ -1651,7 +1651,7 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
     }
     shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
                           builtName,0L);
-    
+
     if (selectedHistoryVersion == App::HistoryAlgorithm::V1) {
         TopTools_IndexedMapOfShape vmap;
         TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
