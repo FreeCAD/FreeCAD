@@ -3069,15 +3069,13 @@ std::optional<TPaths> Adaptive2d::FindLinkPath(
 
 std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
     AdaptiveOutput& output,
-    const Path64& passToolPath_p64,
+    const Path64& passToolPath,
     TPaths& linkPath,
     ClearedArea& cleared,
-    const Paths64& toolBoundPaths_p64
+    const Paths64& toolBoundPaths
 )
 {
     std::optional<std::pair<Point64, PointD>> result;  // new toolPos and toolDir after lead out
-    ClipperLib::Path passToolPath = ToC1Path(passToolPath_p64);
-    ClipperLib::Paths toolBoundPaths = ToC1Paths(toolBoundPaths_p64);
 
     Perf_AppendToolPath.Start();
 
@@ -3089,8 +3087,8 @@ std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
     cutPath.first = MotionType::mtCutting;
     for (const auto& p : passToolPath) {
         DPoint nextT;
-        nextT.first = double(p.X) / scaleFactor;
-        nextT.second = double(p.Y) / scaleFactor;
+        nextT.first = double(p.x) / scaleFactor;
+        nextT.second = double(p.y) / scaleFactor;
         cutPath.second.push_back(nextT);
     }
 
@@ -3099,82 +3097,70 @@ std::optional<std::pair<Point64, PointD>> Adaptive2d::AppendToolPath(
 
         // plan the lead out
         if (passToolPath.size() >= 2) {
-            ClipperLib::IntPoint prevPoint = passToolPath.back();
-            ClipperLib::DoublePoint prevDir = ToC1PointD(
-                GetPathDirectionV(passToolPath_p64, passToolPath_p64.size() - 1)
-            );
+            Point64 prevPoint = passToolPath.back();
+            PointD prevDir = GetPathDirectionV(passToolPath, passToolPath.size() - 1);
 
             size_t clpPathIndex;
             size_t clpSegmentIndex;
             double clpParameter;
             Point64 clp;
             double distToBounds = DistancePointToPathsSqrd(
-                toolBoundPaths_p64,
-                ToPoint64(prevPoint),
+                toolBoundPaths,
+                prevPoint,
                 clp,
                 clpPathIndex,
                 clpSegmentIndex,
                 clpParameter
             );
 
-            ClipperLib::DoublePoint boundaryDir = ToC1PointD(
-                GetPathDirectionV(toolBoundPaths_p64[clpPathIndex], clpSegmentIndex)
-            );
-            double beaconOffset = max(
-                min(stepOverScaled, PathLength(passToolPath_p64) / 2) * 1.5,
-                8 * MIN_STEP_CLIPPER
-            );
+            PointD boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+            double beaconOffset
+                = max(min(stepOverScaled, PathLength(passToolPath) / 2) * 1.5, 8 * MIN_STEP_CLIPPER);
             if (distToBounds > beaconOffset) {
                 boundaryDir = prevDir;  // if boundary is far away, use beacon to leave the path
             }
-            ClipperLib::DoublePoint beaconDir = {prevDir.X - boundaryDir.Y, prevDir.Y + boundaryDir.X};
-            {
-                PointD tmp = ToPointD(beaconDir);
-                NormalizeV(tmp);
-                beaconDir = ToC1PointD(tmp);
-            }
+            PointD beaconDir = {prevDir.x - boundaryDir.y, prevDir.y + boundaryDir.x};
+            NormalizeV(beaconDir);
 
-            ClipperLib::IntPoint beacon(
-                prevPoint.X + beaconOffset * beaconDir.X,
-                prevPoint.Y + beaconOffset * beaconDir.Y
+            Point64 beacon(
+                prevPoint.x + beaconOffset * beaconDir.x,
+                prevPoint.y + beaconOffset * beaconDir.y
             );
 
-            Path64 leadOutPath_p64;
+            Path64 leadOutPath;
             bool ok = MakeLeadPath(
                 false,
-                ToPoint64(prevPoint),
-                ToPointD(prevDir),
-                ToPoint64(beacon),
+                prevPoint,
+                prevDir,
+                beacon,
                 cleared,
-                toolBoundPaths_p64,
-                leadOutPath_p64,
+                toolBoundPaths,
+                leadOutPath,
                 output
             );
-            ClipperLib::Path leadOutPath = ToC1Path(leadOutPath_p64);
 
             if (ok && leadOutPath.size() >= 1) {
                 // smooth path
-                Paths64 linkPaths_p64;
-                linkPaths_p64.push_back(ToPath64(leadOutPath));
-                SmoothPaths(linkPaths_p64, 0.1 * stepOverScaled, 1, 4);
-                leadOutPath = ToC1Path(linkPaths_p64[0]);
+                Paths64 leadOutPaths;
+                leadOutPaths.push_back(leadOutPath);
+                SmoothPaths(leadOutPaths, 0.1 * stepOverScaled, 1, 4);
+                leadOutPath = leadOutPaths[0];
 
                 // scale and output
                 TPath out;
                 out.first = MotionType::mtCutting;
                 for (auto& p : leadOutPath) {
-                    out.second.push_back({((double)p.X) / scaleFactor, ((double)p.Y) / scaleFactor});
+                    out.second.push_back({((double)p.x) / scaleFactor, ((double)p.y) / scaleFactor});
                 }
                 output.AdaptivePaths.push_back(out);
-                cleared.ExpandCleared(ToPath64(leadOutPath));
+                cleared.ExpandCleared(leadOutPath);
 
-                ClipperLib::IntPoint p2 = leadOutPath.back();
-                ClipperLib::IntPoint p1 = leadOutPath.size() >= 2
-                    ? leadOutPath[leadOutPath.size() - 2]
-                    : prevPoint;
-                ClipperLib::DoublePoint dir = ToC1PointD(DirectionV(ToPoint64(p1), ToPoint64(p2)));
+                Point64 p2 = leadOutPath.back();
+                Point64 p1 = leadOutPath.size() >= 2 ? leadOutPath[leadOutPath.size() - 2]
+                                                      : prevPoint;
+                PointD dir = DirectionV(p1, p2);
 
-                result = {{ToPoint64(p2), ToPointD(dir)}};
+                result = {{p2, dir}};
             }
         }
     }
