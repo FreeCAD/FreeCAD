@@ -297,6 +297,7 @@ SET(FreeCADBase_HPP_SRCS
     Interpreter.h
     Matrix.h
     Observer.h
+    Parallel.h
     Parameter.h
     ParameterObserver.h
     Persistence.h
