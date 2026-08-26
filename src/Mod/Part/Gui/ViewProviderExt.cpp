@@ -1236,7 +1236,7 @@ void ViewProviderPartExt::setupCoinGeometry(
             }
 
             const TopoDS_Face& actFace = TopoDS::Face(faceMap(faceIndex + 1));
-            const Handle(Poly_Triangulation)& mesh = tess.mesh;
+            const Handle(Poly_Triangulation) & mesh = tess.mesh;
             const int faceNodeOffset = tess.nodeOffset;
             const int faceTriaOffset = tess.triaOffset;
 
@@ -1253,7 +1253,7 @@ void ViewProviderPartExt::setupCoinGeometry(
             // check orientation
             TopAbs_Orientation orient = actFace.Orientation();
 
-            // cycling through the poly mesh
+        // cycling through the poly mesh
 #if OCC_VERSION_HEX < 0x070600
             const Poly_Array1OfTriangle& Triangles = mesh->Triangles();
             const TColgp_Array1OfPnt& Nodes = mesh->Nodes();
@@ -1281,7 +1281,7 @@ void ViewProviderPartExt::setupCoinGeometry(
                     N2 = tmp;
                 }
 
-                // get the 3 points of this triangle
+            // get the 3 points of this triangle
 #if OCC_VERSION_HEX < 0x070600
                 gp_Pnt V1(Nodes(N1)), V2(Nodes(N2)), V3(Nodes(N3));
 #else
@@ -1351,7 +1351,7 @@ void ViewProviderPartExt::setupCoinGeometry(
         }
 
         const TopoDS_Face& actFace = TopoDS::Face(faceMap(faceIndex + 1));
-        const Handle(Poly_Triangulation)& mesh = tess.mesh;
+        const Handle(Poly_Triangulation) & mesh = tess.mesh;
         const int faceNodeOffset = tess.nodeOffset;
 
         gp_Trsf myTransf;
@@ -1463,9 +1463,7 @@ void ViewProviderPartExt::setupCoinGeometry(
     Base::parallelFor(
         0,
         numNorms,
-        [norms](int i) {
-            norms[i].normalize();
-        },
+        [norms](int i) { norms[i].normalize(); },
         /*grainSize*/ 4096,
         threadLimit
     );

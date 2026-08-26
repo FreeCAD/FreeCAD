@@ -3609,7 +3609,7 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
         faces.push_back(face);
 
         TopLoc_Location loc;
-        const Handle(Poly_Triangulation)& tria = BRep_Tool::Triangulation(face, loc);
+        const Handle(Poly_Triangulation) & tria = BRep_Tool::Triangulation(face, loc);
         if (!tria.IsNull()) {
             nodeCount += tria->NbNodes();
         }

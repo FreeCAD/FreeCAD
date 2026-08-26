@@ -44,9 +44,7 @@ TEST_F(ParallelTest, visitsEveryIndexExactlyOnce)
     std::vector<int> visits(count, 0);
 
     // Act
-    Base::parallelFor(0, count, [&visits](int index) {
-        visits[index] += 1;
-    });
+    Base::parallelFor(0, count, [&visits](int index) { visits[index] += 1; });
 
     // Assert
     EXPECT_EQ(std::accumulate(visits.begin(), visits.end(), 0), count);
@@ -64,9 +62,7 @@ TEST_F(ParallelTest, visitsEveryIndexExactlyOnceWithLargeGrainSize)
     Base::parallelFor(
         0,
         count,
-        [&visits](int index) {
-            visits[index] += 1;
-        },
+        [&visits](int index) { visits[index] += 1; },
         /*grainSize*/ 64
     );
 
@@ -100,12 +96,8 @@ TEST_F(ParallelTest, emptyRangeDoesNothing)
     std::atomic<int> calls {0};
 
     // Act
-    Base::parallelFor(5, 5, [&calls](int) {
-        calls += 1;
-    });
-    Base::parallelFor(5, 1, [&calls](int) {
-        calls += 1;
-    });
+    Base::parallelFor(5, 5, [&calls](int) { calls += 1; });
+    Base::parallelFor(5, 1, [&calls](int) { calls += 1; });
 
     // Assert
     EXPECT_EQ(calls.load(), 0);
