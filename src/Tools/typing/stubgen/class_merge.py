@@ -30,6 +30,7 @@ from .model import (
 )
 from .module_merge import (
     class_body_defined_symbols,
+    generated_stub_header,
     import_stmt_line,
     module_names_from_classes,
     module_stub_path,
@@ -880,9 +881,7 @@ def class_stub_lines(
     existing_source: str = "",
 ) -> list[str]:
     all_classes = all_classes or module_classes
-    header = [
-        "# Generated public class stubs from binding .pyi specs.",
-    ]
+    header = list(generated_stub_header().splitlines())
     if include_future_import:
         header.append("from __future__ import annotations")
     body: list[str] = []

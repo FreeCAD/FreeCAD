@@ -210,6 +210,32 @@ class BindingClass:
     public_names: list[str]
     base_class: str | None
     explicit_export: bool
+    cpp_type_names: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class PublicPythonType:
+    """A normalized public Python module/class name."""
+
+    module_name: str
+    python_name: str
+
+    @property
+    def qualified_name(self) -> str:
+        return f"{self.module_name}.{self.python_name}"
+
+
+@dataclass(frozen=True)
+class PythonObjectType:
+    """A TypeId and the public Python type returned for it."""
+
+    type_id: str
+    python_module: str
+    python_name: str
+
+    @property
+    def qualified_python_name(self) -> str:
+        return f"{self.python_module}.{self.python_name}"
 
 
 @dataclass(frozen=True)

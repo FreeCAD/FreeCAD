@@ -24,7 +24,9 @@ from typing import TypeVar
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .discovery import (
     collect_type_registrations,
+    cpp_namespace_for_source,
     contextual_cpp_type_name,
+    normalize_cpp_qualified_name,
     public_type_context_index,
 )
 from .model import (
@@ -136,6 +138,27 @@ def public_names_for_class(
     return names
 
 
+def cpp_type_names_for_class(
+    rel_path: str,
+    class_name: str,
+    export_kwargs: dict[str, object],
+) -> tuple[str, ...]:
+    """Return the C++ TypeId represented by a binding input class."""
+
+    twin = export_kwargs.get("Twin")
+    raw_name = twin if isinstance(twin, str) and twin else class_name
+    raw_name = normalize_cpp_qualified_name(raw_name)
+    if "::" in raw_name:
+        return (raw_name,)
+
+    namespace = export_kwargs.get("Namespace")
+    if not isinstance(namespace, str) or not namespace:
+        namespace = cpp_namespace_for_source(rel_path)
+    if not namespace:
+        return (raw_name,)
+    return (f"{namespace}::{raw_name}",)
+
+
 def parse_binding_class_file(
     root: Path,
     path: Path,
@@ -178,6 +201,7 @@ def parse_binding_class_file(
                 ),
                 base_class=base_class,
                 explicit_export=explicit_export,
+                cpp_type_names=cpp_type_names_for_class(rel, node.name, export_kwargs),
             )
         )
 

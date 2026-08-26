@@ -20,6 +20,7 @@ from pathlib import Path
 import re
 
 from .model import BindingMethod, PublicTypeGroup, StubSignatureOverrides
+from .module_merge import generated_stub_header
 from .naming import valid_identifier
 
 
@@ -194,6 +195,7 @@ def write_stub_file(
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
+        *generated_stub_header().splitlines(),
         "from __future__ import annotations",
         *typing_import_lines(methods, stub_signature_overrides),
         "",
@@ -233,7 +235,7 @@ def type_stub_lines(
 ) -> list[str]:
     methods = [method for type_group in type_groups for method in type_group.methods]
     lines = [
-        "# Generated public type stubs from PyCXX binding method tables.",
+        *generated_stub_header().splitlines(),
     ]
     if include_future_import:
         lines.append("from __future__ import annotations")

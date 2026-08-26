@@ -40,8 +40,14 @@ from .discovery import (
     group_type_methods_by_public_module,
     module_names_from_type_methods,
 )
+from .document_object_types import (
+    add_document_add_object_overloads,
+    direct_python_types,
+    document_object_python_types,
+)
 from .model import BindingClass, BindingMethod, PublicTypeGroup, StubSignatureOverrides
 from .render import type_stub_lines, write_stub_file
+from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
 
 
 def write_public_module_stubs(
@@ -149,6 +155,28 @@ def markdown_report(methods: list[BindingMethod]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def append_document_add_object_overloads(
+    out_dir: Path,
+    module_names: set[str],
+    classes: list[BindingClass],
+    hierarchy: TypeHierarchy,
+) -> None:
+    """Add TypeId-derived overloads to the generated public Document class."""
+
+    target = module_stub_path(out_dir, "FreeCAD", module_names)
+    if not target.exists():
+        raise FileNotFoundError(f"Expected generated FreeCAD module stub: {target}")
+
+    registrations = document_object_python_types(
+        hierarchy,
+        direct_python_types(classes, hierarchy),
+    )
+    original = target.read_text(encoding="utf-8")
+    merged = add_document_add_object_overloads(original, registrations)
+    if merged != original:
+        target.write_text(merged, encoding="utf-8")
+
+
 def write_outputs(
     out_dir: Path,
     root: Path,
@@ -165,6 +193,7 @@ def write_outputs(
         shutil.rmtree(out_dir / generated_dir, ignore_errors=True)
 
     module_names = public_module_names(methods, classes, type_registrations, overlay_dir)
+    type_hierarchy = discover_type_hierarchy(root)
     write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
@@ -179,4 +208,10 @@ def write_outputs(
     )
     append_class_stubs(out_dir / "stubs", root, classes, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    append_document_add_object_overloads(
+        out_dir / "stubs",
+        module_names,
+        classes,
+        type_hierarchy,
+    )
     return overlay_count
