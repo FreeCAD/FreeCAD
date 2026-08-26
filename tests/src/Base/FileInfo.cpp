@@ -165,12 +165,8 @@ TEST_F(FileInfoTest, TestOverlongNameDoesNotThrow)
 {
     const Base::FileInfo overlong(tmp.filePath() + "/" + std::string(600, 'x'));
 
-    EXPECT_NO_THROW({
-        EXPECT_FALSE(overlong.exists());
-    });
-    EXPECT_NO_THROW({
-        EXPECT_FALSE(overlong.isSymlink());
-    });
+    EXPECT_NO_THROW({ EXPECT_FALSE(overlong.exists()); });
+    EXPECT_NO_THROW({ EXPECT_FALSE(overlong.isSymlink()); });
 }
 
 // The same must hold when the name has no directory separator at all, which is how an
@@ -179,12 +175,8 @@ TEST_F(FileInfoTest, TestOverlongNameWithoutSeparatorDoesNotThrow)
 {
     const Base::FileInfo overlong(std::string(600, 'x'));
 
-    EXPECT_NO_THROW({
-        EXPECT_FALSE(overlong.exists());
-    });
-    EXPECT_NO_THROW({
-        EXPECT_FALSE(overlong.isSymlink());
-    });
+    EXPECT_NO_THROW({ EXPECT_FALSE(overlong.exists()); });
+    EXPECT_NO_THROW({ EXPECT_FALSE(overlong.isSymlink()); });
 }
 
 // Tests for pathToString / stringToPath UTF-8 round-trip (PR #28222)
