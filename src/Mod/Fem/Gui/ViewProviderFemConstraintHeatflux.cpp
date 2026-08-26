@@ -37,7 +37,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux, FemGui::ViewProviderF
 ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 {
     sPixmap = "FEM_ConstraintHeatflux";
-    loadSymbol((resourceSymbolDir + "ConstraintHeatFlux.iv").c_str());
+    loadSymbol(resourceSymbolDir / "ConstraintHeatFlux.iv");
     ShapeAppearance.setDiffuseColor(1.0f, 0.0f, 0.0f);
 }
 
