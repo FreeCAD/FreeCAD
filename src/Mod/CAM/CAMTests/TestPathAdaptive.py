@@ -27,11 +27,68 @@ import Path.Main.Job as PathJob
 from CAMTests.PathTestUtils import PathTestBase
 import area
 import math
+import os
 import time
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Adaptive as PathAdaptiveGui
+
+_MT_CUTTING = 0
+_MT_LINK_CLEAR = 1
+_MT_LINK_NOT_CLEAR = 2
+
+
+def _write_adaptive_svg(results, path):
+    all_pts = []
+    segments = []
+    for r in results:
+        for motion_type, dpath in r.AdaptivePaths:
+            pts = [(x, y) for x, y in dpath]
+            if pts:
+                all_pts.extend(pts)
+                segments.append((motion_type, pts))
+
+    if not all_pts:
+        return
+
+    xs = [p[0] for p in all_pts]
+    ys = [p[1] for p in all_pts]
+    minx, maxx = min(xs), max(xs)
+    miny, maxy = min(ys), max(ys)
+    pad = 5
+    W, H = 800, 800
+    sx = (W - 2 * pad) / (maxx - minx) if maxx != minx else 1
+    sy = (H - 2 * pad) / (maxy - miny) if maxy != miny else 1
+    scale = min(sx, sy)
+
+    def tx(x):
+        return pad + (x - minx) * scale
+
+    def ty(y):
+        return H - pad - (y - miny) * scale
+
+    lines = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}">',
+        f'<rect width="{W}" height="{H}" fill="white"/>',
+    ]
+    for motion_type, pts in segments:
+        if len(pts) < 2:
+            continue
+        coords = " ".join(f"{tx(x):.1f},{ty(y):.1f}" for x, y in pts)
+        if motion_type == _MT_CUTTING:
+            style = 'stroke="green" stroke-width="1" fill="none"'
+        elif motion_type == _MT_LINK_CLEAR:
+            style = 'stroke="red" stroke-width="1" fill="none" stroke-dasharray="4,3"'
+        elif motion_type == _MT_LINK_NOT_CLEAR:
+            style = 'stroke="red" stroke-width="1" fill="none"'
+        else:
+            style = 'stroke="orange" stroke-width="1" fill="none"'
+        lines.append(f'  <polyline points="{coords}" {style}/>')
+    lines.append("</svg>")
+
+    with open(path, "w") as f:
+        f.write("\n".join(lines))
 
 
 class TestPathAdaptive(PathTestBase):
@@ -49,6 +106,7 @@ class TestPathAdaptive(PathTestBase):
         """
         cls.needsInit = True
         cls.test_times = {}  # For tracking per-test execution time
+        cls._svg_exec_counts = {}  # Per-test SVG execution counter
 
     @classmethod
     def initClass(cls):
@@ -194,7 +252,9 @@ class TestPathAdaptive(PathTestBase):
 
         return stockPath2d, path2d, dimensions
 
-    def _executeAdaptive(self, opType, stockPath2d, path2d, clearedArea=None, **kwargs):
+    def _executeAdaptive(
+        self, opType, stockPath2d, path2d, clearedArea=None, debugSvgs=True, **kwargs
+    ):
         """Create, configure, execute Adaptive2d and return total cleared area."""
         if clearedArea is None:
             clearedArea = []
@@ -219,6 +279,15 @@ class TestPathAdaptive(PathTestBase):
 
         # Execute
         results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
+
+        if debugSvgs:
+            test_name = self.id().split(".")[-1]
+            count = self.__class__._svg_exec_counts.get(test_name, 0) + 1
+            self.__class__._svg_exec_counts[test_name] = count
+            svg_dir = os.path.join(os.getcwd(), "debugSvgs")
+            os.makedirs(svg_dir, exist_ok=True)
+            svg_path = os.path.join(svg_dir, f"{test_name}_{count}.svg")
+            _write_adaptive_svg(results, svg_path)
 
         # Validate
         self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
