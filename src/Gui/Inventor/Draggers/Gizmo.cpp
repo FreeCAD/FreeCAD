@@ -236,6 +236,23 @@ void LinearGizmo::reverseDir()
     getDraggerContainer()->setPointerDirection(dir * -1);
 }
 
+void LinearGizmo::setDraggerTip(const SbVec3f& tip, const SbVec3f& dir)
+{
+    assert(dragger && "Forgot to call GizmoContainer::initGizmos?");
+
+    // Taken from the dragger's own translation rather than from the property,
+    // so this compensates exactly what displaces the handle.
+    const float carried = dragger->translation.getValue()[1];
+    SbVec3f unit = dir;
+    unit.normalize();
+    setDraggerPlacement(tip - unit * carried, dir);
+}
+
+void LinearGizmo::setDraggerTip(const Base::Vector3d& tip, const Base::Vector3d& dir)
+{
+    setDraggerTip(Base::convertTo<SbVec3f>(tip), Base::convertTo<SbVec3f>(dir));
+}
+
 double LinearGizmo::getDragLength()
 {
     double dragLength = dragger->translationIncrementCount.getValue()

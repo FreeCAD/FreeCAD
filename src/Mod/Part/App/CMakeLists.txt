@@ -192,7 +192,9 @@ SET(Features_SRCS
     FeaturePartSection.cpp
     FeaturePartSection.h
     FeatureSectionAnalysis.cpp
+    SectionCap.cpp
     FeatureSectionAnalysis.h
+    SectionCap.h
     FeaturePartSpline.cpp
     FeaturePartSpline.h
     FeatureProjectOnSurface.cpp
