@@ -450,12 +450,12 @@ QPainterPath QGILeaderLine::makeLeaderPath(std::vector<QPointF> qPoints)
         ArrowType choice = static_cast<ArrowType>(featLeader->StartSymbol.getValue());
         if (choice != ArrowType::NONE) {
             startAdjLength = QGIArrow::getOverlapAdjust(choice,
-                                                        QGIArrow::getPrefArrowSize());
+                                                        QGIArrow::getPrefArrowSize() * m_scale);
         }
         choice = static_cast<ArrowType>(featLeader->EndSymbol.getValue());
         if (choice != ArrowType::NONE) {
             endAdjLength = QGIArrow::getOverlapAdjust(choice,
-                                                      QGIArrow::getPrefArrowSize());
+                                                      QGIArrow::getPrefArrowSize() * m_scale);
         }
 
         //get adjustment directions
@@ -542,7 +542,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     if (choice != ArrowType::NONE) {
         m_arrow1->setStyle(choice);
         m_arrow1->setWidth(getLineWidth());
-        m_arrow1->setSize(QGIArrow::getPrefArrowSize());
+        m_arrow1->setSize(QGIArrow::getPrefArrowSize() * m_scale);
         m_arrow1->setDirMode(true);
         m_arrow1->setDirection(stdX);
         if (pathPoints.size() > 1) {
@@ -565,7 +565,7 @@ void QGILeaderLine::setArrows(std::vector<QPointF> pathPoints)
     if (choice != ArrowType::NONE) {
         m_arrow2->setStyle(choice);
         m_arrow2->setWidth(getLineWidth());
-        m_arrow2->setSize(QGIArrow::getPrefArrowSize());
+        m_arrow2->setSize(QGIArrow::getPrefArrowSize() * m_scale);
         m_arrow2->setDirMode(true);
         m_arrow2->setDirection(-stdX);
         if (pathPoints.size() > 1) {
@@ -629,13 +629,19 @@ void QGILeaderLine::abandonEdit()
     restoreState();
 }
 
+void QGILeaderLine::setScreenScale(double scale)
+{
+    m_scale = scale;
+    draw();
+}
+
 double QGILeaderLine::getLineWidth()
 {
     auto vp = static_cast<ViewProviderLeader*>(getViewProvider(getViewObject()));
     if (!vp) {
         return Rez::guiX(LineGroup::getDefaultWidth("Graphic"));
     }
-    return Rez::guiX(vp->LineWidth.getValue());
+    return Rez::guiX(vp->LineWidth.getValue() * m_scale);
 }
 
 TechDraw::DrawLeaderLine* QGILeaderLine::getLeaderFeature()

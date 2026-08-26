@@ -46,6 +46,7 @@
 #include <App/DocumentObject.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -105,6 +106,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     m_toggleGridAction = new QAction(tr("Show &Grid"), this);
     connect(m_toggleGridAction, &QAction::triggered, this, &MDIViewPage::toggleGrid);
+
+    m_toggleScreenModeAction = new QAction(tr("Screen Mode"), this);
+    connect(m_toggleScreenModeAction, &QAction::triggered, this, &MDIViewPage::toggleScreenMode);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
@@ -630,6 +634,7 @@ bool MDIViewPage::addSelectionGroups(QMenu& menu)
 void MDIViewPage::addPageGroup(QMenu& menu)
 {
     menu.addAction(m_toggleGridAction);
+    menu.addAction(m_toggleScreenModeAction);
     menu.addAction(m_toggleFrameAction);
     menu.addAction(m_toggleKeepUpdatedAction);
     menu.addSeparator();
@@ -641,6 +646,9 @@ void MDIViewPage::addPageGroup(QMenu& menu)
 
     m_toggleGridAction->setCheckable(true);
     m_toggleGridAction->setChecked(m_vpPage->ShowGrid.getValue());
+
+    m_toggleScreenModeAction->setCheckable(true);
+    m_toggleScreenModeAction->setChecked(PreferencesGui::screenMode());
 
     m_toggleFrameAction->setCheckable(true);
     m_toggleFrameAction->setChecked(m_vpPage->getFrameState());
@@ -713,6 +721,10 @@ void MDIViewPage::toggleGrid()
     m_vpPage->ShowGrid.setValue(!m_vpPage->ShowGrid.getValue());
 }
 
+void MDIViewPage::toggleScreenMode() {
+    PreferencesGui::setScreenMode(!PreferencesGui::screenMode());
+}
+
 void MDIViewPage::toggleKeepUpdated()
 {
     bool state = m_vpPage->getDrawPage()->KeepUpdated.getValue();
@@ -722,6 +734,7 @@ void MDIViewPage::toggleKeepUpdated()
 void MDIViewPage::viewAll()
 {
     m_vpPage->getQGVPage()->fitInView(m_scene->itemsBoundingRect(), Qt::KeepAspectRatio);
+    m_scene->updateScreenScale();
 }
 
 QString MDIViewPage::defaultFileName()
@@ -742,6 +755,11 @@ QString MDIViewPage::defaultFileName()
 
 void MDIViewPage::saveSVG(std::string filename)
 {
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    Base::ScopeGuard restoreScreenMode([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
     auto vpp = getViewProviderPage();
     if (!vpp) {
         return;
@@ -770,6 +788,12 @@ void MDIViewPage::saveSVG()
 
 void MDIViewPage::saveDXF(std::string filename)
 {
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    Base::ScopeGuard restoreScreenMode([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
+
     PagePrinter::saveDXF(getViewProviderPage(), filename);
 }
 
@@ -792,6 +816,12 @@ void MDIViewPage::saveDXF()
 
 void MDIViewPage::savePDF(const std::string& filename) const
 {
+    bool screenMode = PreferencesGui::screenMode();
+    PreferencesGui::setScreenMode(false);
+    Base::ScopeGuard restoreScreenMode([screenMode]() {
+        PreferencesGui::setScreenMode(screenMode);
+    });
+    
     auto vpp = getViewProviderPage();
     if (!vpp) {
         return;

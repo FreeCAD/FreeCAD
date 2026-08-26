@@ -213,6 +213,8 @@ public:
     // balloons handle their own dragging
     void dragFinished() override { };
 
+    void setScreenScale(double scale);
+
 public Q_SLOTS:
     void balloonLabelDragged(bool ctrl);
     void balloonLabelDragFinished();
@@ -255,6 +257,8 @@ private:
     Base::Vector3d m_saveOriginOffset;
     Base::Vector3d m_saveOrigin;
     Base::Vector3d m_savePosition;
+
+    double m_scale = 1.0;
 };
 
 }// namespace TechDrawGui

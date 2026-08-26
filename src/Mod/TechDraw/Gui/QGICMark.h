@@ -46,9 +46,10 @@ public:
     void draw(void);
     float getSize() { return m_size; }
     void setSize(float s);
-    float getThick() { return m_pen.widthF(); }
+    float getThick() { return m_thickness; }
     void setThick(float t);
     void setPrettyNormal() override;
+    void setScreenScale(double scale) override;
 
     double getMarkFuzz(void) const;
 
@@ -57,6 +58,7 @@ protected:
 
 private:
     float m_size;
+    float m_thickness;
     double m_markFuzz;
 };
 

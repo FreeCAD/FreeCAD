@@ -803,14 +803,14 @@ void QGIViewBalloon::drawBalloon(bool originDrag)
     double yAdj = 0.0;
     ArrowType endType = static_cast<ArrowType>(balloon->EndType.getValue());
     double arrowAdj = QGIArrow::getOverlapAdjust(
-        endType, balloon->EndTypeScale.getValue() * QGIArrow::getPrefArrowSize());
+        endType, balloon->EndTypeScale.getValue() * QGIArrow::getPrefArrowSize() * m_scale);
 
     if (endType == ArrowType::NONE) {
         arrow->hide();
     }
     else {
         arrow->setStyle(endType);
-        arrow->setSize(balloon->EndTypeScale.getValue() * QGIArrow::getPrefArrowSize());
+        arrow->setSize(balloon->EndTypeScale.getValue() * QGIArrow::getPrefArrowSize() * m_scale);
         arrow->draw();
         arrow->setPos(DU::toQPointF(arrowTipPosInParent));
 
@@ -935,10 +935,16 @@ void QGIViewBalloon::setSvgPens(void)
 
 void QGIViewBalloon::setPens(void)
 {
-    balloonLines->setWidth(m_lineWidth);
-    balloonShape->setWidth(m_lineWidth);
+    balloonLines->setWidth(m_lineWidth * m_scale);
+    balloonShape->setWidth(m_lineWidth * m_scale);
     balloonShape->setFillColor(PreferencesGui::pageQColor());
-    arrow->setWidth(m_lineWidth);
+    arrow->setWidth(m_lineWidth * m_scale);
+}
+
+void QGIViewBalloon::setScreenScale(double scale)
+{
+    m_scale = scale;
+    draw();
 }
 
 void QGIViewBalloon::setNormalColorAll()

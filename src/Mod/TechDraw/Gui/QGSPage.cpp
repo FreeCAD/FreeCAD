@@ -24,6 +24,7 @@
 #include <QDomDocument>
 #include <QFile>
 #include <QGraphicsSceneEvent>
+#include <QGraphicsView>
 #include <QPainter>
 #include <QSvgGenerator>
 #include <QTemporaryFile>
@@ -60,13 +61,16 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
+#include "QGICMark.h"
 #include "QGIDrawingTemplate.h"
+#include "QGIEdge.h"
 #include "QGILeaderLine.h"
 #include "QGIProjGroup.h"
 #include "QGIRichAnno.h"
 #include "QGISVGTemplate.h"
 #include "QGITemplate.h"
 #include "QGIUserTypes.h"
+#include "QGIVertex.h"
 #include "QGIViewAnnotation.h"
 #include "QGIViewBalloon.h"
 #include "QGIViewClip.h"
@@ -845,6 +849,49 @@ void QGSPage::refreshViews()
             itemView->updateView(true);
         }
     }
+
+    updateScreenScale();
+}
+
+void QGSPage::updateScreenScale()
+{
+    double scale = 1.0;
+    if (PreferencesGui::screenMode()) {
+        const QList<QGraphicsView*> allViews = views();
+        
+        if (!allViews.empty()) {
+            double zoom = allViews.first()->transform().m11();
+            scale = 1.0 / zoom;
+        }
+    }
+
+    // The items should not be larger than their original size only smaller
+    scale = std::clamp(scale, Precision::Confusion(), 1.0);
+
+    const QList<QGraphicsItem*> allItems = items();
+    
+    for (auto* item : allItems) {
+        switch (item->type()) {
+            case QGIEdge::Type:
+                static_cast<QGIEdge*>(item)->setScreenScale(scale);
+                break;
+            case QGIVertex::Type:
+            case QGICMark::Type:
+                static_cast<QGIVertex*>(item)->setScreenScale(scale);
+                break;
+            case QGIViewDimension::Type:
+                static_cast<QGIViewDimension*>(item)->setScreenScale(scale);
+                break;
+            case QGIViewBalloon::Type:
+                static_cast<QGIViewBalloon*>(item)->setScreenScale(scale);
+                break;
+            case QGILeaderLine::Type:
+                static_cast<QGILeaderLine*>(item)->setScreenScale(scale);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void QGSPage::findMissingViews(const std::vector<App::DocumentObject*>& list,
@@ -984,6 +1031,8 @@ void QGSPage::redrawAllViews()
     for (std::vector<QGIView*>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
         (*it)->updateView(true);
     }
+
+    updateScreenScale();
 }
 
 //NOTE: this doesn't add missing views.   see fixOrphans()
@@ -997,6 +1046,8 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
             (*it)->updateView(true);
         }
     }
+
+    updateScreenScale();
 }
 
 // RichTextAnno needs to know when it is rendering an Svg as the font size

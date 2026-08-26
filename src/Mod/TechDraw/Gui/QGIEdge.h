@@ -53,6 +53,9 @@ public:
     void setPrettyNormal() override;
     void setLinePen(const QPen& isoPen);
 
+    void setWidth(double width) override;
+    void setScreenScale(double scale);
+
     void setSource(TechDraw::SourceType source) { m_source = source; }
     TechDraw::SourceType getSource() const { return m_source;}
 
@@ -70,6 +73,9 @@ private:
     bool isCosmetic;
     bool isHiddenEdge;
     bool isSmoothEdge;
+
+    double m_width = 1.0;
+    double m_scale = 1.0;
 
     TechDraw::SourceType m_source{TechDraw::SourceType::GEOMETRY};
 };
