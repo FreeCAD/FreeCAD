@@ -8,6 +8,10 @@ repo_root="$(cd -- "${script_dir}/../../.." && pwd)"
 
 cd "${repo_root}"
 
+PYTHONPATH=src/Tools/typing python3 -m unittest discover \
+    --start-directory src/Tools/typing/stubgen \
+    --pattern 'test_*.py'
+
 python3 src/Tools/typing/generate_stubs.py check \
     --root . \
     --out-dir src/Tools/typing/generated
