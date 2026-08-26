@@ -157,6 +157,36 @@ TEST_F(FileInfoTest, TestCopyFile)
     EXPECT_TRUE(copy.deleteFile());
 }
 
+// A name whose component exceeds NAME_MAX cannot be stat()ed. exists() and isSymlink()
+// are predicates, so they must report "no" rather than propagate a filesystem_error to
+// callers that have no way to anticipate it (issue #31987: freecadcmd -c crashed when the
+// script text passed as the command-line argument was treated as a candidate path).
+TEST_F(FileInfoTest, TestOverlongNameDoesNotThrow)
+{
+    const Base::FileInfo overlong(tmp.filePath() + "/" + std::string(600, 'x'));
+
+    EXPECT_NO_THROW({
+        EXPECT_FALSE(overlong.exists());
+    });
+    EXPECT_NO_THROW({
+        EXPECT_FALSE(overlong.isSymlink());
+    });
+}
+
+// The same must hold when the name has no directory separator at all, which is how an
+// inline script arrives from the command line.
+TEST_F(FileInfoTest, TestOverlongNameWithoutSeparatorDoesNotThrow)
+{
+    const Base::FileInfo overlong(std::string(600, 'x'));
+
+    EXPECT_NO_THROW({
+        EXPECT_FALSE(overlong.exists());
+    });
+    EXPECT_NO_THROW({
+        EXPECT_FALSE(overlong.isSymlink());
+    });
+}
+
 // Tests for pathToString / stringToPath UTF-8 round-trip (PR #28222)
 
 class FileInfoPathConversionTest: public ::testing::Test

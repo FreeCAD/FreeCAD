@@ -281,7 +281,12 @@ bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 bool FileInfo::exists() const
 {
     fs::path path(stringToPath(FileName));
-    return fs::exists(path);
+    // Use the non-throwing overload: a name the filesystem cannot even stat, for instance
+    // one whose component exceeds NAME_MAX, simply does not exist as far as callers are
+    // concerned. The throwing overload propagates a filesystem_error out of what callers
+    // reasonably treat as a plain predicate.
+    std::error_code ec;
+    return fs::exists(path, ec);
 }
 
 bool FileInfo::isReadable() const
@@ -419,8 +424,9 @@ bool FileInfo::isDir() const
 bool FileInfo::isSymlink() const
 {
     fs::path path = stringToPath(FileName);
-    if (fs::exists(path)) {
-        return fs::is_symlink(path);
+    std::error_code ec;
+    if (fs::exists(path, ec)) {
+        return fs::is_symlink(path, ec);
     }
 
     return false;
