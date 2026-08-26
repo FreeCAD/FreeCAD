@@ -44,6 +44,34 @@ DRAFT_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
     )
 )
 
+BIM_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
+    Path("src/Mod/BIM") / name
+    for name in (
+        "ArchComponent.py",
+        "ArchBuildingPart.py",
+        "ArchSectionPlane.py",
+        "ArchFrame.py",
+        "ArchRoof.py",
+        "ArchWindow.py",
+        "ArchWall.py",
+        "ArchSpace.py",
+    )
+)
+
+BIM_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
+    "src/Mod/BIM/ArchComponent.py": {"Component": "ArchComponentObject"},
+    "src/Mod/BIM/ArchBuildingPart.py": {"BuildingPart": "ArchBuildingPartObject"},
+    "src/Mod/BIM/ArchSectionPlane.py": {
+        "_SectionPlane": "ArchSectionPlaneObject",
+        "_ViewProviderSectionPlane": "ArchSectionPlaneViewObject",
+    },
+    "src/Mod/BIM/ArchFrame.py": {"_Frame": "_FrameObject"},
+    "src/Mod/BIM/ArchRoof.py": {"_Roof": "_RoofObject"},
+    "src/Mod/BIM/ArchWindow.py": {"_Window": "_WindowObject"},
+    "src/Mod/BIM/ArchWall.py": {"_Wall": "_WallObject"},
+    "src/Mod/BIM/ArchSpace.py": {"_Space": "_SpaceObject"},
+}
+
 
 @dataclass(frozen=True)
 class PropertyDeclaration:

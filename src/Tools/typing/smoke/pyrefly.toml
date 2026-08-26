@@ -1,6 +1,6 @@
 project-includes = [
     "smoke.py",
-    "draft_protocols.py",
+    "property_protocols.py",
     "../../../Mod/Draft/draftmake/make_arc_3points.py",
     "../../../Mod/Draft/draftmake/make_bezcurve.py",
     "../../../Mod/Draft/draftmake/make_bspline.py",

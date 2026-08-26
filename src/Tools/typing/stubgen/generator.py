@@ -65,6 +65,8 @@ from .property_contracts import (
 )
 from .property_hierarchy import property_hierarchy_from
 from .property_declarations import (
+    BIM_PROPERTY_SOURCES,
+    BIM_PROTOCOL_CLASSES,
     DRAFT_PROPERTY_SOURCES,
     format_issues,
     validate_protocol_property_contracts,
@@ -327,6 +329,14 @@ def write_outputs(
         root,
         paths=DRAFT_PROPERTY_SOURCES,
         hierarchy=property_hierarchy,
+        catalog=property_catalog,
+    )
+    property_issues += validate_protocol_property_contracts(
+        root,
+        paths=BIM_PROPERTY_SOURCES,
+        hierarchy=property_hierarchy,
+        protocol_classes=BIM_PROTOCOL_CLASSES,
+        inherited_source_paths=(Path("src/Mod/BIM/ArchTypeHints.py"),),
         catalog=property_catalog,
     )
     if property_issues:

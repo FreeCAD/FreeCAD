@@ -42,6 +42,7 @@ TODO put examples here.
 """
 
 import math
+from typing import Any, cast
 
 import FreeCAD
 import ArchCommands
@@ -49,6 +50,47 @@ import ArchIFC
 import Draft
 
 from draftutils import params
+from draftutils.type_hints import DraftAPI
+
+_draft = cast(DraftAPI, Draft)
+
+
+def _set_coin_field(node: object, name: str, value: object) -> None:
+    """Assign a SWIG-exposed Coin field without hiding the dynamic boundary."""
+
+    setattr(node, name, value)
+
+
+def _active_document() -> Any:
+    """Return the active document or fail explicitly outside a document context."""
+
+    document = FreeCAD.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD requires an active document for this operation")
+    return document
+
+
+def _active_gui_document() -> Any:
+    """Return the active GUI document or fail explicitly outside a GUI context."""
+
+    document = FreeCADGui.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD GUI requires an active document for this operation")
+    return document
+
+
+def _set_arch_observer(observer: object) -> None:
+    setattr(FreeCAD, "ArchObserver", observer)
+
+
+def _get_arch_observer() -> Any:
+    return getattr(FreeCAD, "ArchObserver", None)
+
+
+def _delete_arch_observer() -> None:
+    if hasattr(FreeCAD, "ArchObserver"):
+        delattr(FreeCAD, "ArchObserver")
+
 
 if FreeCAD.GuiUp:
     from PySide import QtGui, QtCore
@@ -57,11 +99,11 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, text: str, /) -> str:
+        return text
 
     # \endcond
 
@@ -106,13 +148,13 @@ def addToComponent(compobject, addobject, prop):
         setattr(compobject, prop, addobject)
         addobject.Visibility = False
     elif prop == "Axes":
-        if Draft.getType(addobject) == "Axis":
+        if _draft.getType(addobject) == "Axis":
             setattr(compobject, prop, getattr(compobject, prop) + [addobject])
     else:
         setattr(compobject, prop, getattr(compobject, prop) + [addobject])
         if prop not in ("Hosts", "Objects"):
             addobject.Visibility = False
-            if Draft.getType(compobject) == "PanelSheet":
+            if _draft.getType(compobject) == "PanelSheet":
                 addobject.Placement.move(compobject.Placement.Base.negative())
 
 
@@ -160,7 +202,7 @@ def removeFromComponent(compobject, subobject):
                     l.remove(subobject)
                     setattr(compobject, a, l)
                     subobject.ViewObject.show()
-                    if Draft.getType(compobject) == "PanelSheet":
+                    if _draft.getType(compobject) == "PanelSheet":
                         subobject.Placement.move(compobject.Placement.Base)
                     found = True
     if not found:
@@ -168,8 +210,8 @@ def removeFromComponent(compobject, subobject):
             l = compobject.Subtractions
             l.append(subobject)
             compobject.Subtractions = l
-            if (Draft.getType(subobject) != "Window") and (
-                not Draft.isClone(subobject, "Window", True)
+            if (_draft.getType(subobject) != "Window") and (
+                not _draft.isClone(subobject, "Window", True)
             ):
                 ArchCommands.setAsSubcomponent(subobject)
 
@@ -552,7 +594,7 @@ class Component(ArchIFC.IfcProduct):
         """
 
         for parent in obj.InList:
-            if Draft.getType(parent) in ["Floor", "BuildingPart"]:
+            if _draft.getType(parent) in ["Floor", "BuildingPart"]:
                 if obj in parent.Group:
                     if parent.HeightPropagate:
                         if parent.Height.Value:
@@ -593,8 +635,8 @@ class Component(ArchIFC.IfcProduct):
 
         if hasattr(obj, "CloneOf"):
             if obj.CloneOf:
-                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (
-                    Draft.getType(obj) in ["Component", "BuildingPart"]
+                if (_draft.getType(obj.CloneOf) == _draft.getType(obj)) or (
+                    _draft.getType(obj) in ["Component", "BuildingPart"]
                 ):
                     pl = obj.Placement
                     ## TODO use Part.Shape() instead?
@@ -642,7 +684,7 @@ class Component(ArchIFC.IfcProduct):
                 if o.Base:
                     if o.Base.Name == obj.Base.Name:
                         if o.Name != obj.Name:
-                            if Draft.getType(o) == Draft.getType(obj):
+                            if _draft.getType(o) == _draft.getType(obj):
                                 siblings.append(o)
         return siblings
 
@@ -846,11 +888,11 @@ class Component(ArchIFC.IfcProduct):
             if prop in ["Additions", "Subtractions"]:
                 if hasattr(obj, prop):
                     for o in getattr(obj, prop):
-                        if (Draft.getType(o) != "Window") and (
-                            not Draft.isClone(o, "Window", True)
+                        if (_draft.getType(o) != "Window") and (
+                            not _draft.isClone(o, "Window", True)
                         ):
-                            if Draft.getType(obj) == "Wall":
-                                if Draft.getType(o) == "Roof":
+                            if _draft.getType(obj) == "Wall":
+                                if _draft.getType(o) == "Roof":
                                     continue
                             o.ViewObject.hide()
             elif prop == "HiRes":
@@ -961,7 +1003,7 @@ class Component(ArchIFC.IfcProduct):
         for link in obj.InListRecursive:
             if hasattr(link, "Host"):
                 if (
-                    Draft.getType(link) != "Rebar"
+                    _draft.getType(link) != "Rebar"
                     and link.Host == obj
                     and not self._objectInInternalLinkgroup(link)
                 ):
@@ -977,14 +1019,14 @@ class Component(ArchIFC.IfcProduct):
             if base:
                 subvolume = None
 
-                if (Draft.getType(o.getLinkedObject()) == "Window") or (
-                    Draft.isClone(o, "Window", True)
+                if (_draft.getType(o.getLinkedObject()) == "Window") or (
+                    _draft.isClone(o, "Window", True)
                 ):
                     # windows can be additions or subtractions, treated the same way
                     subvolume = o.getLinkedObject().Proxy.getSubVolume(
                         o, host=obj
                     )  # pass host obj (mostly Wall)
-                elif (Draft.getType(o) == "Roof") or (Draft.isClone(o, "Roof")):
+                elif (_draft.getType(o) == "Roof") or (_draft.isClone(o, "Roof")):
                     # roofs define their own special subtraction volume
                     subvolume = o.Proxy.getSubVolume(o).copy()
                 elif hasattr(o, "Subvolume") and hasattr(o.Subvolume, "Shape"):
@@ -1342,8 +1384,9 @@ class Component(ArchIFC.IfcProduct):
             ArchCommands.override_link_properties(linkObj, self.LinkOverrideProperties)
 
         # Execute features in the SketchArch External Add-on, if present
-        if hasattr(self, "executeSketchArchFeatures"):
-            self.executeSketchArchFeatures(obj, linkObj, index, linkElement)
+        execute_features = getattr(self, "executeSketchArchFeatures", None)
+        if execute_features is not None:
+            execute_features(obj, linkObj, index, linkElement)
 
 
 class AreaCalculator:
@@ -1866,7 +1909,7 @@ class ViewProviderComponent:
                             if c.getChild(0).getName() == "HiRes":
                                 num = 1
                         # print "getting node ",num," for ",self.Object.Label
-                        c.whichChild = num
+                        _set_coin_field(c, "whichChild", num)
                         break
                 self.hiresgroup.addChild(self.meshnode)
             else:
@@ -1902,16 +1945,16 @@ class ViewProviderComponent:
             c = []
             if hasattr(self.Object, "Base"):
                 if not (
-                    Draft.getType(self.Object) == "Wall"
-                    and Draft.getType(self.Object.Base) == "Space"
+                    _draft.getType(self.Object) == "Wall"
+                    and _draft.getType(self.Object.Base) == "Space"
                 ):
                     c = [self.Object.Base]
             if hasattr(self.Object, "Additions"):
                 c.extend(self.Object.Additions)
             if hasattr(self.Object, "Subtractions"):
                 for s in self.Object.Subtractions:
-                    if Draft.getType(self.Object) == "Wall":
-                        if Draft.getType(s) == "Roof":
+                    if _draft.getType(self.Object) == "Wall":
+                        if _draft.getType(s) == "Roof":
                             continue
                     c.append(s)
 
@@ -1984,7 +2027,7 @@ class ViewProviderComponent:
         menu.addAction(actionToggleSubcomponents)
 
     def edit(self):
-        FreeCADGui.ActiveDocument.setEdit(self.Object, 0)
+        _active_gui_document().setEdit(self.Object, 0)
 
     def toggleSubcomponents(self):
         FreeCADGui.runCommand("Arch_ToggleSubs")
@@ -2099,10 +2142,12 @@ class ArchSelectionObserver:
         """
 
         if not self.watched:
-            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
+            observer = _get_arch_observer()
+            if observer is not None:
+                FreeCADGui.Selection.removeObserver(observer)
             if self.nextCommand:
                 FreeCADGui.runCommand(self.nextCommand)
-            del FreeCAD.ArchObserver
+            _delete_arch_observer()
         elif object == self.watched.Name:
             if not element:
                 FreeCAD.Console.PrintMessage(translate("Arch", "Closing Sketch edit"))
@@ -2112,9 +2157,10 @@ class ArchSelectionObserver:
                         self.origin.ViewObject.Selectable = True
                     self.watched.ViewObject.hide()
                 FreeCADGui.activateWorkbench("BIMWorkbench")
-                if hasattr(FreeCAD, "ArchObserver"):
-                    FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
-                    del FreeCAD.ArchObserver
+                observer = _get_arch_observer()
+                if observer is not None:
+                    FreeCADGui.Selection.removeObserver(observer)
+                _delete_arch_observer()
                 if self.nextCommand:
                     FreeCADGui.Selection.clearSelection()
                     FreeCADGui.Selection.addSelection(self.watched)
@@ -2138,9 +2184,10 @@ class SelectionTaskPanel:
     def reject(self):
         """The method run when the user selects the close button."""
 
-        if hasattr(FreeCAD, "ArchObserver"):
-            FreeCADGui.Selection.removeObserver(FreeCAD.ArchObserver)
-            del FreeCAD.ArchObserver
+        observer = _get_arch_observer()
+        if observer is not None:
+            FreeCADGui.Selection.removeObserver(observer)
+        _delete_arch_observer()
         FreeCADGui.HintManager.hide()
         return True
 
@@ -2150,6 +2197,19 @@ class ComponentTaskPanel:
 
     TODO: outline the purpose of this taskpanel.
     """
+
+    obj: Any
+    doc: Any
+    form: Any
+    treeBase: Any
+    treeAdditions: Any
+    treeSubtractions: Any
+    treeObjects: Any
+    treeAxes: Any
+    treeComponents: Any
+    treeFixtures: Any
+    treeGroup: Any
+    treeHosts: Any
 
     def __init__(self):
         """
@@ -2240,7 +2300,7 @@ class ComponentTaskPanel:
         )
         self.update()
 
-        self.doc = FreeCAD.ActiveDocument
+        self.doc = _active_document()
 
     def isAllowedAlterSelection(self):
         """Indicate whether this task dialog allows other commands to modify
@@ -2395,7 +2455,7 @@ class ComponentTaskPanel:
         if not element_selected:
             return
 
-        element_to_remove = FreeCAD.ActiveDocument.getObject(str(element_selected.toolTip(0)))
+        element_to_remove = _active_document().getObject(str(element_selected.toolTip(0)))
 
         # Call the polymorphic handler on the object's proxy.
         # This is generic and works for any Arch object.
@@ -2415,8 +2475,8 @@ class ComponentTaskPanel:
 
         The transaction is implicitly committed by the C++ layer during resetEdit.
         """
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
+        _active_document().recompute()
+        _active_gui_document().resetEdit()
         return True
 
     def reject(self):
@@ -2425,7 +2485,7 @@ class ComponentTaskPanel:
         committing changes during resetEdit.
         """
         self.doc.abortTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
+        _active_gui_document().resetEdit()
         return True
 
     def editObject(self, wid, col):
@@ -2444,7 +2504,7 @@ class ComponentTaskPanel:
         """
 
         if wid.parent():
-            obj = FreeCAD.ActiveDocument.getObject(str(wid.toolTip(0)))
+            obj = _active_document().getObject(str(wid.toolTip(0)))
             if obj:
                 self.obj.ViewObject.Transparency = 80
                 self.obj.ViewObject.Selectable = False
@@ -2452,9 +2512,10 @@ class ComponentTaskPanel:
                 self.accept()
                 if obj.isDerivedFrom("Sketcher::SketchObject"):
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
-                FreeCAD.ArchObserver = ArchSelectionObserver(self.obj, obj)
-                FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
-                FreeCADGui.ActiveDocument.setEdit(obj.Name, 0)
+                observer = ArchSelectionObserver(self.obj, obj)
+                _set_arch_observer(observer)
+                FreeCADGui.Selection.addObserver(observer)
+                _active_gui_document().setEdit(obj.Name, 0)
 
     def retranslateUi(self, TaskPanel):
         """Add the text of the task panel, in translated form."""
@@ -2522,7 +2583,7 @@ class ComponentTaskPanel:
         self.ifcEditor = FreeCADGui.PySideUic.loadUi(":/ui/dialogIfcPropertiesRedux.ui")
 
         # center the dialog over FreeCAD window
-        mw = FreeCADGui.getMainWindow()
+        mw = cast(Any, FreeCADGui.getMainWindow())
         self.ifcEditor.move(
             mw.frameGeometry().topLeft() + mw.rect().center() - self.ifcEditor.rect().center()
         )
@@ -2834,7 +2895,7 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
 
             prop_val = getattr(target_obj, prop_name)
             prop_type_id = target_obj.getTypeIdOfProperty(prop_name)
-            widget = None
+            widget: Any = None
 
             # Quantity types
             if prop_type_id in [
@@ -2844,13 +2905,13 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
                 "App::PropertyVolume",
                 "App::PropertyAngle",
             ]:
-                widget = loader.createWidget("Gui::QuantitySpinBox")
+                widget = cast(Any, loader.createWidget("Gui::QuantitySpinBox"))
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
                 widget.setProperty("value", prop_val)
 
             # Float
             elif prop_type_id == "App::PropertyFloat":
-                widget = loader.createWidget("Gui::DoubleSpinBox")
+                widget = cast(Any, loader.createWidget("Gui::DoubleSpinBox"))
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
                 # Unlike `Gui::QuantitySpinbox`, `Gui::DoubleSpinBox` requires explicit initialization
                 widget.setDecimals(
@@ -2863,7 +2924,7 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
 
             # Integer types
             elif prop_type_id in ["App::PropertyInteger", "App::PropertyPercent"]:
-                widget = loader.createWidget("Gui::IntSpinBox")
+                widget = cast(Any, loader.createWidget("Gui::IntSpinBox"))
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
                 widget.setProperty("value", int(prop_val))
 
@@ -2891,7 +2952,7 @@ class ComponentOptionsTaskPanel(ComponentTaskPanel):
 
             # String
             elif prop_type_id == "App::PropertyString":
-                widget = loader.createWidget("Gui::ExpLineEdit")
+                widget = cast(Any, loader.createWidget("Gui::ExpLineEdit"))
                 FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
                 widget.setProperty("text", prop_val)
 
@@ -3021,7 +3082,7 @@ if FreeCAD.GuiUp:
                     editor = QtGui.QComboBox(parent)
                     editor.addItems(["True", "False"])
                 elif "Measure" in ptype:
-                    editor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+                    editor = cast(Any, FreeCADGui.UiLoader().createWidget("Gui::InputField"))
                     editor.setParent(parent)
                 else:
                     editor = QtGui.QLineEdit(parent)
@@ -3103,4 +3164,5 @@ if FreeCAD.GuiUp:
                     model.setData(index, editor.property("text"))
                 else:
                     model.setData(index, editor.text())
-            self.dialog.update()
+            if self.dialog is not None:
+                self.dialog.update()

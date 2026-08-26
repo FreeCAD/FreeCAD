@@ -10,6 +10,8 @@ TYPING_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(TYPING_DIR))
 
 from stubgen.property_declarations import (  # noqa: E402
+    BIM_PROPERTY_SOURCES,
+    BIM_PROTOCOL_CLASSES,
     parse_property_declarations,
     validate_protocol_property_contracts,
 )
@@ -46,6 +48,15 @@ class Example:
 
     def test_draft_protocols_match_cataloged_property_contracts(self):
         issues = validate_protocol_property_contracts(ROOT_DIR, require_complete=True)
+        self.assertEqual([], list(issues), "\n".join(issue.format() for issue in issues))
+
+    def test_bim_protocols_match_cataloged_property_contracts(self):
+        issues = validate_protocol_property_contracts(
+            ROOT_DIR,
+            paths=BIM_PROPERTY_SOURCES,
+            protocol_classes=BIM_PROTOCOL_CLASSES,
+            inherited_source_paths=(Path("src/Mod/BIM/ArchTypeHints.py"),),
+        )
         self.assertEqual([], list(issues), "\n".join(issue.format() for issue in issues))
 
 

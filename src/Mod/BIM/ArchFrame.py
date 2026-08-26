@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import annotations
+
 __title__ = "FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -34,10 +36,76 @@ __url__ = "https://www.freecad.org"
 #  Frames are objects made of a profile and an object with
 #  edges along which the profile gets extruded
 
+from typing import Any, Protocol, Sequence, TYPE_CHECKING, cast
+
 import FreeCAD
 import ArchComponent
 import Draft
 import DraftVecUtils
+from ArchTypeHints import (
+    ArchComponentObject,
+    DocumentObjectLink,
+    QuantityValueInput,
+    VectorInput,
+    VectorValue,
+)
+
+from FreeCAD import Vector
+
+if TYPE_CHECKING:
+    import FreeCADGui
+    import Part
+    from FreeCAD.Base import Quantity
+
+
+class _PlacementFacade(Protocol):
+    """Placement operations used by the frame proxy."""
+
+    Base: Vector
+    Rotation: Any
+
+    def isNull(self) -> bool: ...
+    def multiply(self, placement: Any, /) -> Any: ...
+
+
+class _FrameObject(ArchComponentObject, Protocol):
+    """Dynamic document-object surface used by the frame proxy."""
+
+    PropertiesList: Sequence[str]
+
+    Shape: Part.Shape
+    Placement: _PlacementFacade
+
+    @property
+    def Profile(self) -> DocumentObjectLink: ...
+
+    @Profile.setter
+    def Profile(self, value: DocumentObjectLink) -> None: ...
+
+    Align: bool
+
+    @property
+    def Offset(self) -> VectorValue: ...
+
+    @Offset.setter
+    def Offset(self, value: VectorInput) -> None: ...
+
+    BasePoint: int
+    ProfilePlacement: FreeCAD.Placement
+
+    @property
+    def Rotation(self) -> Quantity: ...
+
+    @Rotation.setter
+    def Rotation(self, value: QuantityValueInput) -> None: ...
+
+    Edges: str | list[str]
+    Fuse: bool
+    IfcType: str
+
+    def addProperty(self, *args: Any, **kwargs: Any) -> Any: ...
+    def setEditorMode(self, name: str, mode: int | list[str], /) -> None: ...
+
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -45,11 +113,11 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None, /) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str:
+        return source_text
 
     # \endcond
 
@@ -57,13 +125,13 @@ else:
 class _Frame(ArchComponent.Component):
     "A parametric frame object"
 
-    def __init__(self, obj):
+    def __init__(self, obj: _FrameObject) -> None:
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Frame"
         self.setProperties(obj)
         obj.IfcType = "Railing"
 
-    def setProperties(self, obj):
+    def setProperties(self, obj: _FrameObject) -> None:
 
         pl = obj.PropertiesList
         if not "Profile" in pl:
@@ -151,16 +219,16 @@ class _Frame(ArchComponent.Component):
                 locked=True,
             )
 
-    def onDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj: _FrameObject) -> None:
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
 
-    def loads(self, state):
+    def loads(self, state: Any) -> None:
 
         self.Type = "Frame"
 
-    def execute(self, obj):
+    def execute(self, obj: _FrameObject) -> None:
 
         if self.clone(obj):
             return
@@ -178,7 +246,7 @@ class _Frame(ArchComponent.Component):
         if obj.Base.Shape.Solids:
             obj.Shape = obj.Base.Shape.copy()
             if not pl.isNull():
-                obj.Placement = obj.Shape.Placement.multiply(pl)
+                obj.Placement = cast(Any, obj.Shape.Placement).multiply(pl)
         else:
             if not obj.Profile:
                 return
@@ -201,7 +269,7 @@ class _Frame(ArchComponent.Component):
                 if not obj.ProfilePlacement.isNull():
                     baseprofile.Placement = obj.ProfilePlacement.multiply(baseprofile.Placement)
             if not baseprofile.Faces:
-                f = []
+                f: list[Any] = []
                 for w in baseprofile.Wires:
                     f.append(Part.Face(w))
                 if len(f) == 1:
@@ -248,6 +316,8 @@ class _Frame(ArchComponent.Component):
                     edges = [e for e in edges if abs(e.CenterOfMass.z - z) < 0.00001]
             for e in edges:
                 bvec = DraftGeomUtils.vec(e)
+                if bvec is None:
+                    continue
                 bpoint = e.Vertexes[0].Point
                 profile = baseprofile.copy()
                 rot = None  # New rotation.
@@ -304,19 +374,21 @@ class _Frame(ArchComponent.Component):
 class _ViewProviderFrame(ArchComponent.ViewProviderComponent):
     "A View Provider for the Frame object"
 
-    def __init__(self, vobj):
+    Object: _FrameObject
+
+    def __init__(self, vobj: Any) -> None:
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
-    def getIcon(self):
+    def getIcon(self) -> Any:
 
         import Arch_rc
 
         return ":/icons/Arch_Frame_Tree.svg"
 
-    def claimChildren(self):
+    def claimChildren(self) -> list[Any]:
 
-        p = []
+        p: list[Any] = []
         if hasattr(self, "Object"):
             if self.Object.Profile:
                 p = [self.Object.Profile]

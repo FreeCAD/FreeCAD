@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import annotations
+
 __title__ = "FreeCAD Window"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -36,6 +38,7 @@ __url__ = "https://www.freecad.org"
 #  by defining a volume that gets subtracted from them.
 
 import os
+from typing import Any, Protocol, Sequence, TYPE_CHECKING, cast
 
 import FreeCAD
 import ArchCommands
@@ -43,11 +46,166 @@ import ArchComponent
 import ArchWindowPresets
 import Draft
 import DraftVecUtils
+from ArchTypeHints import (
+    ArchComponentObject,
+    DocumentObjectLink,
+    DocumentObjectList,
+    DocumentObjectListInput,
+    IntegerConstraintInput,
+    QuantityValueInput,
+    StringList,
+    StringListInput,
+    VectorInput,
+    VectorValue,
+)
 
 from FreeCAD import Units
 from FreeCAD import Vector
 from draftutils import params
 from draftutils.messages import _wrn
+from draftutils.type_hints import DraftAPI
+
+if TYPE_CHECKING:
+    import FreeCADGui
+    import Part
+    from FreeCAD.Base import Quantity
+
+
+class _WindowObject(ArchComponentObject, Protocol):
+    """Dynamic document-object surface used by the window proxy and editor."""
+
+    PropertiesList: Sequence[str]
+
+    Shape: Part.Shape
+    Placement: FreeCAD.Placement
+    Proxy: Any
+    State: Sequence[str]
+    Label: str
+    Name: str
+    IfcType: str
+
+    @property
+    def Hosts(self) -> DocumentObjectList: ...
+
+    @Hosts.setter
+    def Hosts(self, value: DocumentObjectListInput) -> None: ...
+
+    @property
+    def WindowParts(self) -> StringList: ...
+
+    @WindowParts.setter
+    def WindowParts(self, value: StringListInput) -> None: ...
+
+    @property
+    def HoleDepth(self) -> Quantity: ...
+
+    @HoleDepth.setter
+    def HoleDepth(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Subvolume(self) -> DocumentObjectLink: ...
+
+    @Subvolume.setter
+    def Subvolume(self, value: DocumentObjectLink) -> None: ...
+
+    @property
+    def Width(self) -> Quantity: ...
+
+    @Width.setter
+    def Width(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Height(self) -> Quantity: ...
+
+    @Height.setter
+    def Height(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Normal(self) -> VectorValue: ...
+
+    @Normal.setter
+    def Normal(self, value: VectorInput) -> None: ...
+
+    AutoNormalReversed: bool
+    Preset: int
+
+    @property
+    def Frame(self) -> Quantity: ...
+
+    @Frame.setter
+    def Frame(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Offset(self) -> Quantity: ...
+
+    @Offset.setter
+    def Offset(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def LouvreWidth(self) -> Quantity: ...
+
+    @LouvreWidth.setter
+    def LouvreWidth(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def LouvreSpacing(self) -> Quantity: ...
+
+    @LouvreSpacing.setter
+    def LouvreSpacing(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Opening(self) -> int: ...
+
+    @Opening.setter
+    def Opening(self, value: IntegerConstraintInput) -> None: ...
+
+    HoleWire: int
+    SymbolPlan: bool
+    SymbolElevation: bool
+    Material: Any
+    MoveWithHost: Any
+
+    def addProperty(self, *args: Any, **kwargs: Any) -> Any: ...
+    def setEditorMode(self, name: str, mode: int | list[str], /) -> None: ...
+    def setPropertyStatus(self, name: str, status: str, /) -> None: ...
+    def removeProperty(self, name: str, /) -> None: ...
+    def isDerivedFrom(self, type_name: str, /) -> bool: ...
+    def touch(self) -> None: ...
+    def recompute(self) -> None: ...
+
+
+class _ArchSketchFacade(Protocol):
+    """Optional SketchArch integration used by the window proxy."""
+
+    def updateAttachmentOffset(self, obj: object, link_obj: object | None = None, /) -> None: ...
+
+
+_draft = cast(DraftAPI, Draft)
+
+
+def _active_document() -> Any:
+    """Return the active document or fail explicitly outside a document context."""
+
+    document = FreeCAD.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD requires an active document for this operation")
+    return document
+
+
+def _active_gui_document() -> Any:
+    """Return the active GUI document or fail explicitly outside a GUI context."""
+
+    document = FreeCADGui.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD GUI requires an active document for this operation")
+    return document
+
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -57,11 +215,11 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None, /) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str:
+        return source_text
 
     # \endcond
 
@@ -83,7 +241,7 @@ WindowOpeningModes = [
 WindowPresets = ArchWindowPresets.WindowPresets
 
 
-def recolorize(attr):  # names is [docname,objname]
+def recolorize(attr: Any) -> None:  # names is [docname,objname]
     """Recolorizes an object or a [documentname,objectname] list
     This basically calls the Proxy.colorize(obj) methods of objects that
     have one."""
@@ -108,8 +266,13 @@ class _Window(ArchComponent.Component):
     # Configure App::Link shadowing, so that linked windows can have independent Hosts properties
     # without triggering a deep copy of the geometry. See ArchComponent.Component.appLinkExecute()
     LinkOverrideProperties = ["Hosts"]
+    sshapes: list[Part.Shape]
+    vshapes: list[Part.Shape]
+    boxes: Part.Shape | None = None
+    Hosts: Any
+    TouchOnShapeChange: bool = False
 
-    def __init__(self, obj):
+    def __init__(self, obj: _WindowObject) -> None:
 
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Window"
@@ -117,7 +280,7 @@ class _Window(ArchComponent.Component):
         obj.IfcType = "Window"
         obj.MoveWithHost = True
 
-    def setProperties(self, obj, mode=None):
+    def setProperties(self, obj: _WindowObject, mode: str | None = None) -> None:
 
         lp = obj.PropertiesList
         if not "Hosts" in lp:
@@ -292,7 +455,7 @@ class _Window(ArchComponent.Component):
         obj.setEditorMode("HorizontalArea", 2)
         obj.setEditorMode("PerimeterLength", 2)
 
-    def onDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj: _WindowObject) -> None:
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj, mode="ODR")
@@ -315,18 +478,18 @@ class _Window(ArchComponent.Component):
                     obj.setPropertyStatus(prop, "-LockDynamic")
                     obj.removeProperty(prop)
 
-    def loads(self, state):
+    def loads(self, state: Any) -> None:
 
         self.Type = "Window"
 
-    def onBeforeChange(self, obj, prop):
+    def onBeforeChange(self, obj: _WindowObject, prop: str) -> None:
 
         if prop in ["Base", "WindowParts", "Placement", "HoleDepth", "Height", "Width", "Hosts"]:
             setattr(self, prop, getattr(obj, prop))
         if prop in ["Height", "Width", "Opening", "WindowParts"] and obj.CloneOf is None:
             self.TouchOnShapeChange = True  # touch hosts after next "Shape" change
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj: _WindowObject, prop: str) -> None:
 
         self.hideSubobjects(obj, prop)
         if not "Restore" in obj.State:
@@ -366,7 +529,7 @@ class _Window(ArchComponent.Component):
             else:
                 ArchComponent.Component.onChanged(self, obj, prop)
 
-    def buildShapes(self, obj):
+    def buildShapes(self, obj: _WindowObject) -> list[Part.Shape]:
 
         import Part
         import DraftGeomUtils
@@ -381,6 +544,8 @@ class _Window(ArchComponent.Component):
             wires = []
             hinge = None
             omode = None
+            chord: Any = None
+            enorm: Any = None
             ssymbols = []
             vsymbols = []
             wstr = obj.WindowParts[(i * 5) + 2].split(",")
@@ -399,10 +564,13 @@ class _Window(ArchComponent.Component):
                         omode = None
             if wires:
                 max_length = 0
+                ext = None
                 for w in wires:
                     if w.BoundBox.DiagonalLength > max_length:
                         max_length = w.BoundBox.DiagonalLength
                         ext = w
+                if ext is None:
+                    continue
                 wires.remove(ext)
                 shape = Part.Face(ext)
                 norm = None
@@ -414,7 +582,7 @@ class _Window(ArchComponent.Component):
                             norm = obj.Normal
                 if not norm:
                     if not obj.AutoNormalReversed:
-                        norm = shape.normalAt(
+                        norm = cast(Any, shape).normalAt(
                             0, 0
                         )  # TODO Should use Sketch's normal, to avoid possible difference in edge direction of various wires, for consistency?
                     else:  # elif obj.AutoNormalReversed:
@@ -591,7 +759,7 @@ class _Window(ArchComponent.Component):
                     for w in wires:
                         f = Part.Face(w)
                         f = f.extrude(exv)
-                        shape = shape.cut(f)
+                        shape = cast(Any, shape).cut(f)
                 if obj.WindowParts[(i * 5) + 4]:
                     V = 0
                     zof = obj.WindowParts[(i * 5) + 4]
@@ -602,7 +770,7 @@ class _Window(ArchComponent.Component):
                     if zof:
                         zov = DraftVecUtils.scaleTo(norm, zof)
                         shape.translate(zov)
-                if hinge and omode and 0 < omode < 9:
+                if hinge and omode and 0 < omode < 9 and chord is not None and enorm is not None:
                     if DraftVecUtils.angle(chord, norm, enorm) < 0:
                         if omode % 2 == 0:
                             zov = zov.add(exv)
@@ -636,7 +804,7 @@ class _Window(ArchComponent.Component):
                                 self.boxes.translate(
                                     shape.BoundBox.Center.sub(self.boxes.BoundBox.Center)
                                 )
-                                shape = shape.cut(self.boxes)
+                        shape = cast(Any, shape).cut(self.boxes)
                 if rotdata:
                     # Apply rotation for hinged parts if it exists
                     shape.rotate(rotdata[0], rotdata[1], rotdata[2])
@@ -649,7 +817,7 @@ class _Window(ArchComponent.Component):
                 self.vshapes.extend(vsymbols)
         return shapes
 
-    def execute(self, obj):
+    def execute(self, obj: _WindowObject) -> None:
 
         if self.clone(obj):
             clonedProxy = obj.CloneOf.Proxy
@@ -668,7 +836,7 @@ class _Window(ArchComponent.Component):
         import math
 
         pl = obj.Placement
-        base = None
+        base: Part.Shape | None = None
         self.sshapes = []
         self.vshapes = []
         if obj.Base:
@@ -715,7 +883,13 @@ class _Window(ArchComponent.Component):
 
         self.executeSketchArchFeatures(obj)
 
-    def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
+    def executeSketchArchFeatures(
+        self,
+        obj: _WindowObject,
+        linkObj: Any = None,
+        index: Any = None,
+        linkElement: Any = None,
+    ) -> None:
         """
         To execute features in the SketchArch External Add-on  (https://github.com/paullee0/FreeCAD_SketchArch)
         -  import ArchSketchObject module, and
@@ -730,21 +904,27 @@ class _Window(ArchComponent.Component):
 
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
             # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
-            ArchSketchObject.updateAttachmentOffset(obj, linkObj)
+            arch_sketch = cast(_ArchSketchFacade, ArchSketchObject)
+            arch_sketch.updateAttachmentOffset(obj, linkObj)
         except:
             pass
 
-    def getSubFace(self):
+    def getSubFace(self) -> Part.Face:
         "returns a subface for creation of subvolume for cutting in a base object"
         # creation of subface from HoleWire (getSubWire)
         raise NotImplementedError
 
-    def getSubVolume(self, obj, plac=None, host=None):
+    def getSubVolume(
+        self,
+        obj: _WindowObject,
+        plac: FreeCAD.Placement | None = None,
+        host: Any = None,
+    ) -> Part.Shape | None:
         "returns a subvolume for cutting in a base object"
 
         # check if this is a clone or not, setup orig if positive
         orig = None
-        if Draft.isClone(obj, "Window"):
+        if _draft.isClone(obj, "Window"):
             if hasattr(obj, "CloneOf"):  # TODO need to check this?
                 orig = obj.CloneOf
 
@@ -775,7 +955,7 @@ class _Window(ArchComponent.Component):
                 if orig.HoleDepth.Value:
                     width = orig.HoleDepth.Value
         if not width:
-            if host and Draft.getType(host) == "Wall":
+            if host and _draft.getType(host) == "Wall":
                 # TODO More robust approach :  With ArchSketch, on which wall segment an ArchObject is attached to is declared by user and saved.
                 #      The extrusion of each wall segment could be done per segment, and punch hole in the exact wall segment before fusing them all. No need to care about each wall segment thickness.
                 # TODO Consider to turn below codes to getWidths/getSortedWidths() in ArchWall (below codes copied and modified from ArchWall)
@@ -784,7 +964,7 @@ class _Window(ArchComponent.Component):
                 if (
                     hasattr(host, "ArchSketchData")
                     and host.ArchSketchData
-                    and Draft.getType(host.Base) == "ArchSketch"
+                    and _draft.getType(host.Base) == "ArchSketch"
                 ):
                     if hasattr(host.Base, "Proxy"):  # TODO Any need to test ?
                         if hasattr(host.Base.Proxy, "getWidths"):
@@ -859,7 +1039,7 @@ class _Window(ArchComponent.Component):
             import Part
 
             f = Part.Face(f)
-            norm = f.normalAt(0, 0)
+            norm = cast(Any, f).normalAt(0, 0)
             if hasattr(obj, "Normal"):
                 if obj.Normal:
                     if not DraftVecUtils.isNull(obj.Normal):
@@ -876,18 +1056,21 @@ class _Window(ArchComponent.Component):
             return f
         return None
 
-    def computeAreas(self, obj):
+    def computeAreas(self, obj: _WindowObject) -> None:
         return
 
 
 class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
     "A View Provider for the Window object"
 
-    def __init__(self, vobj):
+    Object: _WindowObject
+    sets: list[Any]
+
+    def __init__(self, vobj: Any) -> None:
 
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
-    def getIcon(self):
+    def getIcon(self) -> Any:
 
         import Arch_rc
 
@@ -897,7 +1080,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                     return ":/icons/Arch_Window_Clone.svg"
         return ":/icons/Arch_Window_Tree.svg"
 
-    def updateData(self, obj, prop):
+    def updateData(self, obj: _WindowObject, prop: str) -> None:
 
         if prop == "Shape":
             if obj.Base:
@@ -919,19 +1102,19 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                             obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                             obj.ViewObject.update()
 
-    def onDelete(self, vobj, subelements):
+    def onDelete(self, vobj: Any, subelements: Any) -> bool:
 
         for o in vobj.Object.Hosts:
             o.touch()
         return True
 
-    def onChanged(self, vobj, prop):
+    def onChanged(self, vobj: Any, prop: str) -> None:
 
         if prop == "ShapeAppearance":
             self.colorize(vobj.Object)
         ArchComponent.ViewProviderComponent.onChanged(self, vobj, prop)
 
-    def colorize(self, obj):
+    def colorize(self, obj, force=False):
 
         def _shapeAppearanceMaterialIsSame(sapp_mat1, sapp_mat2):
             for prop in (
@@ -1010,7 +1193,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if not _shapeAppearanceIsSame(obj.ViewObject.ShapeAppearance, sapp):
             obj.ViewObject.ShapeAppearance = sapp
 
-    def getSolidSignature(self, solid):
+    def getSolidSignature(self, solid: Part.Shape) -> tuple[str, float, float, float]:
         """Returns a tuple defining as uniquely as possible a solid"""
 
         return (
@@ -1020,7 +1203,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             round(solid.Length, 3),
         )
 
-    def getSolidMaterial(self, obj, arch_mat, name, mtype=None):
+    def getSolidMaterial(self, obj: Any, arch_mat: Any, name: str, mtype: str | None = None) -> Any:
         """returns an RGBA tuple of floats (0.0 - 1.0)"""
 
         color = None
@@ -1041,7 +1224,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                     color = color[:3] + (1.0 - t,)
         return color
 
-    def getHingeEdgeIndices(self):
+    def getHingeEdgeIndices(self) -> list[int]:
         """returns a list of hinge edge indices (0-based)"""
 
         # WindowParts example:
@@ -1057,7 +1240,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                     idxs.append(int(s[4:]) - 1)  # Edge indices in string are 1-based.
         return idxs
 
-    def setEdit(self, vobj, mode):
+    def setEdit(self, vobj: Any, mode: int) -> Any:
         if mode != 0:
             return None
 
@@ -1072,7 +1255,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def unsetEdit(self, vobj, mode):
+    def unsetEdit(self, vobj: Any, mode: int) -> Any:
         if mode != 0:
             return None
 
@@ -1084,7 +1267,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         FreeCADGui.Control.closeDialog()
         return True
 
-    def setupContextMenu(self, vobj, menu):
+    def setupContextMenu(self, vobj: Any, menu: Any) -> None:
 
         if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
@@ -1121,7 +1304,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         super().contextMenuAddToggleSubcomponents(menu)
 
-    def invertOpening(self):
+    def invertOpening(self) -> None:
         """swaps the opening modes found in this window"""
 
         pairs = [
@@ -1129,7 +1312,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         ]
         self.invertPairs(pairs)
 
-    def invertHinge(self):
+    def invertHinge(self) -> None:
         """swaps the hinge edge of a single hinge edge window"""
 
         idxs = self.getHingeEdgeIndices()
@@ -1138,6 +1321,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
 
         idx = idxs[0]
         end = 0
+        new = idx
         for wire in self.Object.Base.Shape.Wires:
             sta = end
             end += len(wire.Edges)
@@ -1153,7 +1337,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         # the same side of the wall
         self.invertOpening()
 
-    def invertPairs(self, pairs):
+    def invertPairs(self, pairs: Sequence[Sequence[str]]) -> None:
         """scans the WindowParts of this window and swaps the two elements of each pair, if found"""
 
         if hasattr(self, "Object"):
@@ -1170,7 +1354,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 nparts.append(",".join(new_tokens))
             if nparts != self.Object.WindowParts:
                 self.Object.WindowParts = nparts
-                FreeCAD.ActiveDocument.recompute()
+                _active_document().recompute()
             else:
                 FreeCAD.Console.PrintWarning(
                     translate("Arch", "This window has no defined opening") + "\n"
@@ -1182,7 +1366,9 @@ class _ArchWindowTaskPanel:
 
     def __init__(self):
 
-        self.obj = None
+        self.obj: _WindowObject | None = None
+        qtcore = cast(Any, QtCore)
+        qtgui = cast(Any, QtGui)
 
         # Window options task box
         self.optionsform = QtGui.QWidget()
@@ -1190,7 +1376,7 @@ class _ArchWindowTaskPanel:
             QtGui.QApplication.translate("Arch", "Window Options", None)
         )
         optLayout = QtGui.QFormLayout(self.optionsform)
-        loader = FreeCADGui.UiLoader()
+        loader = cast(Any, FreeCADGui.UiLoader())
 
         self.widthWidget = loader.createWidget("Gui::QuantitySpinBox")
         optLayout.addRow(QtGui.QApplication.translate("Arch", "Width", None), self.widthWidget)
@@ -1214,7 +1400,7 @@ class _ArchWindowTaskPanel:
         self.tree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.tree, 1, 0, 1, 7)
         self.tree.setColumnCount(1)
-        self.tree.setMaximumSize(QtCore.QSize(500, 24))
+        self.tree.setMaximumSize(qtcore.QSize(500, 24))
         self.tree.header().hide()
 
         # hole
@@ -1232,7 +1418,7 @@ class _ArchWindowTaskPanel:
         self.wiretree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.wiretree, 3, 0, 1, 3)
         self.wiretree.setColumnCount(1)
-        self.wiretree.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        self.wiretree.setSelectionMode(qtgui.QAbstractItemView.MultiSelection)
 
         self.comptree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.comptree, 3, 4, 1, 3)
@@ -1243,20 +1429,20 @@ class _ArchWindowTaskPanel:
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
         self.grid.addWidget(self.addButton, 4, 0, 1, 1)
-        self.addButton.setMaximumSize(QtCore.QSize(70, 40))
+        self.addButton.setMaximumSize(qtcore.QSize(70, 40))
 
         self.editButton = QtGui.QPushButton(self.baseform)
         self.editButton.setObjectName("editButton")
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
         self.grid.addWidget(self.editButton, 4, 2, 1, 3)
-        self.editButton.setMaximumSize(QtCore.QSize(60, 40))
+        self.editButton.setMaximumSize(qtcore.QSize(60, 40))
         self.editButton.setEnabled(False)
 
         self.delButton = QtGui.QPushButton(self.baseform)
         self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 4, 6, 1, 1)
-        self.delButton.setMaximumSize(QtCore.QSize(70, 40))
+        self.delButton.setMaximumSize(qtcore.QSize(70, 40))
         self.delButton.setEnabled(False)
 
         # invert buttons
@@ -1273,7 +1459,7 @@ class _ArchWindowTaskPanel:
 
         # add new
 
-        ui = FreeCADGui.UiLoader()
+        ui = cast(Any, FreeCADGui.UiLoader())
         self.newtitle = QtGui.QLabel(self.baseform)
         self.new1 = QtGui.QLabel(self.baseform)
         self.new2 = QtGui.QLabel(self.baseform)
@@ -1687,8 +1873,8 @@ class _ArchWindowTaskPanel:
 
     def reject(self):
 
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
+        _active_document().recompute()
+        _active_gui_document().resetEdit()
         return True
 
     def retranslateUi(self, TaskPanel):

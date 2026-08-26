@@ -144,6 +144,11 @@ calls in the typed Draft object sources. Cataloged declarations that appear as
 explicit getter/setter members in Draft protocols are checked during
 generation; dynamic declarations and uncataloged property kinds remain
 outside this conservative validation pass until they have structured input.
+
+The BIM typing layer uses the same conservative validation for literal
+property declarations in its typed object sources. The shared `DraftAPI`
+protocol in `draftutils/type_hints.py` is the single typed boundary used by
+BIM modules that call the dynamic public `Draft` module.
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or

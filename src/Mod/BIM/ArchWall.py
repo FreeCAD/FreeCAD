@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import annotations
+
 __title__ = "FreeCAD Wall"
 __author__ = "Yorik van Havre"
 __url__ = "https://www.freecad.org"
@@ -45,6 +47,7 @@ TODO put examples here.
 """
 
 import math
+from typing import Any, Literal, Protocol, Sequence, TYPE_CHECKING, cast, overload
 
 import FreeCAD
 import ArchCommands
@@ -53,8 +56,177 @@ import ArchSketchObject
 import Draft
 import DraftVecUtils
 
+from ArchTypeHints import (
+    ArchComponentObject,
+    FloatList,
+    FloatListInput,
+    QuantityInput,
+    QuantityValueInput,
+    StringList,
+    StringListInput,
+    VectorInput,
+    VectorValue,
+)
 from FreeCAD import Vector
 from draftutils import params
+from draftutils.type_hints import DraftAPI
+
+if TYPE_CHECKING:
+    import FreeCADGui
+    import Part
+    from FreeCAD.Base import Quantity
+
+
+class _WallObject(ArchComponentObject, Protocol):
+    """Dynamic document-object surface used by the wall proxy.
+
+    FreeCAD creates these properties at runtime through ``addProperty``. The
+    common component fields come from ``ArchComponentObject``; wall-specific
+    fields are checked against their declared Core property contracts below.
+    """
+
+    PropertiesList: Sequence[str]
+    Shape: Part.Shape
+    Placement: FreeCAD.Placement
+    Proxy: Any
+    Label: str
+    Name: str
+    IfcType: str
+
+    @property
+    def Length(self) -> Quantity: ...
+
+    @Length.setter
+    def Length(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Width(self) -> Quantity: ...
+
+    @Width.setter
+    def Width(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Height(self) -> Quantity: ...
+
+    @Height.setter
+    def Height(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
+
+    Align: str
+
+    @property
+    def Normal(self) -> VectorValue: ...
+
+    @Normal.setter
+    def Normal(self, value: VectorInput) -> None: ...
+
+    Face: int
+
+    @property
+    def Offset(self) -> Quantity: ...
+
+    @Offset.setter
+    def Offset(self, value: QuantityInput) -> None: ...
+
+    @property
+    def OverrideWidth(self) -> FloatList: ...
+
+    @OverrideWidth.setter
+    def OverrideWidth(self, value: FloatListInput) -> None: ...
+
+    @property
+    def OverrideAlign(self) -> StringList: ...
+
+    @OverrideAlign.setter
+    def OverrideAlign(self, value: StringListInput) -> None: ...
+
+    @property
+    def OverrideOffset(self) -> FloatList: ...
+
+    @OverrideOffset.setter
+    def OverrideOffset(self, value: FloatListInput) -> None: ...
+
+    MakeBlocks: bool
+
+    @property
+    def BlockLength(self) -> Quantity: ...
+
+    @BlockLength.setter
+    def BlockLength(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def BlockHeight(self) -> Quantity: ...
+
+    @BlockHeight.setter
+    def BlockHeight(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def OffsetFirst(self) -> Quantity: ...
+
+    @OffsetFirst.setter
+    def OffsetFirst(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def OffsetSecond(self) -> Quantity: ...
+
+    @OffsetSecond.setter
+    def OffsetSecond(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Joint(self) -> Quantity: ...
+
+    @Joint.setter
+    def Joint(self, value: QuantityValueInput) -> None: ...
+
+    CountEntire: int
+    CountBroken: int
+    ArchSketchData: bool
+
+    @property
+    def ArchSketchEdges(self) -> StringList: ...
+
+    @ArchSketchEdges.setter
+    def ArchSketchEdges(self, value: StringListInput) -> None: ...
+
+    ArchSketchPropertySet: str
+
+    def addProperty(self, *args: Any, **kwargs: Any) -> Any: ...
+    def setEditorMode(self, name: str, mode: int | list[str], /) -> None: ...
+    def isDerivedFrom(self, type_name: str, /) -> bool: ...
+    def recompute(self) -> None: ...
+
+
+class _ArchSketchFacade(Protocol):
+    """Optional SketchArch helpers used when an ArchSketch add-on is present."""
+
+    def sortSketchWidth(self, obj: object, widths: object, edges: object, /) -> list[float]: ...
+    def sortSketchAlign(self, obj: object, aligns: object, edges: object, /) -> list[str]: ...
+    def sortSketchOffset(self, obj: object, offsets: object, edges: object, /) -> list[float]: ...
+
+
+_draft = cast(DraftAPI, Draft)
+_arch_sketch = cast(_ArchSketchFacade, ArchSketchObject)
+
+
+def _active_document() -> Any:
+    """Return the active document or fail explicitly outside a document context."""
+
+    document = FreeCAD.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD requires an active document for this operation")
+    return document
+
+
+def _set_coin_field(node: object, name: str, value: object) -> None:
+    """Assign a SWIG-exposed Coin field through the dynamic boundary."""
+
+    setattr(node, name, value)
+
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -64,16 +236,16 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None, /) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str:
+        return source_text
 
     # \endcond
 
 
-def mergeShapes(w1, w2):
+def mergeShapes(w1: _WallObject, w2: _WallObject) -> Any:
     """Not currently implemented.
 
     Return a Shape built on two walls that share same properties and have a
@@ -104,7 +276,7 @@ def mergeShapes(w1, w2):
     return None
 
 
-def areSameWallTypes(walls):
+def areSameWallTypes(walls: Sequence[_WallObject]) -> bool:
     """Check if a list of walls have the same height, width and alignment.
 
     Parameters
@@ -127,7 +299,9 @@ def areSameWallTypes(walls):
                 value = getattr(w, att)
             else:
                 if type(value) == float:
-                    if round(value, Draft.precision()) != round(getattr(w, att), Draft.precision()):
+                    if round(value, _draft.precision()) != round(
+                        getattr(w, att), _draft.precision()
+                    ):
                         return False
                 else:
                     if value != getattr(w, att):
@@ -151,13 +325,23 @@ class _Wall(ArchComponent.Component):
         forms the basis for the new wall's shape. That is given later.
     """
 
-    def __init__(self, obj):
+    basewires: list[Any] | None = None
+    connectEdges: list[Part.Edge]
+    layersNum: int = 0
+    noWidths: bool = False
+    noHeight: bool = False
+    multimaterialsWidth: bool = False
+    oldLength: float | None = None
+    ArchSkPropSetPickedUuid: str
+    ArchSkPropSetListPrev: Any
+
+    def __init__(self, obj: _WallObject) -> None:
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Wall"
         self.setProperties(obj)
         obj.IfcType = "Wall"
 
-    def setProperties(self, obj):
+    def setProperties(self, obj: _WallObject) -> None:
         """Give the wall its wall specific properties, such as its alignment.
 
         You can learn more about properties here:
@@ -411,14 +595,14 @@ class _Wall(ArchComponent.Component):
             self.ArchSkPropSetListPrev = []
         self.connectEdges = []
 
-    def dumps(self):
+    def dumps(self) -> Any:
         dump = super().dumps()
         if not isinstance(dump, tuple):
             dump = (dump,)  # Python Tuple With One Item
         dump = dump + (self.ArchSkPropSetPickedUuid, self.ArchSkPropSetListPrev)
         return dump
 
-    def loads(self, state):
+    def loads(self, state: Any) -> None:
         self.Type = "Wall"
         if state == None:
             return
@@ -431,7 +615,7 @@ class _Wall(ArchComponent.Component):
             self.ArchSkPropSetPickedUuid = state[0]
             self.ArchSkPropSetListPrev = state[1]
 
-    def onDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj: _WallObject) -> None:
         """Method run when the document is restored. Re-adds the Arch component, and Arch wall properties."""
 
         import DraftGeomUtils
@@ -446,7 +630,7 @@ class _Wall(ArchComponent.Component):
         # instead of towards +Z as before. To avoid this their Normal property is
         # changed to [0, 0, 1].
         if (
-            FreeCAD.ActiveDocument.getProgramVersion() < "0.22"
+            _active_document().getProgramVersion() < "0.22"
             and obj.Normal == Vector(0, 0, 0)
             and hasattr(obj.Base, "Shape")
             and not obj.Base.Shape.Solids
@@ -465,7 +649,7 @@ class _Wall(ArchComponent.Component):
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
+            and _draft.getType(obj.Base) == "ArchSketch"
         ):
             if hasattr(obj, "Width"):  # TODO need test?
                 obj.setEditorMode("Width", ["ReadOnly"])
@@ -501,7 +685,7 @@ class _Wall(ArchComponent.Component):
             if hasattr(obj, "ArchSketchPropertySet"):
                 obj.setEditorMode("ArchSketchPropertySet", ["ReadOnly"])
 
-    def execute(self, obj):
+    def execute(self, obj: _WallObject) -> None:
         """Method run when the object is recomputed.
 
         Extrude the wall from the Base shape if possible. Processe additions
@@ -522,7 +706,9 @@ class _Wall(ArchComponent.Component):
         import Part
         import DraftGeomUtils
 
-        base = None
+        base: Part.Shape | None = None
+        base_faces: list[Part.Face] = []
+        extv = Vector()
         pl = obj.Placement
 
         # PropertySet support
@@ -531,7 +717,7 @@ class _Wall(ArchComponent.Component):
         propSetSelectedNamePrev = obj.ArchSketchPropertySet
         propSetSelectedNameCur = None
         propSetListCur = None
-        if Draft.getType(obj.Base) == "ArchSketch":
+        if _draft.getType(obj.Base) == "ArchSketch":
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy, "getPropertySet"):
                 # get full list of PropertySet
@@ -560,13 +746,15 @@ class _Wall(ArchComponent.Component):
 
         extdata = self.getExtrusionData(obj)
         if extdata:
-            base_faces = extdata[0]
+            raw_base_faces = extdata[0]
             extv = extdata[2].Rotation.multVec(extdata[1])
 
             # Normalize geometry: getExtrusionData can return a single face or a list of faces.
             # Normalize it to always be a list to simplify the logic below.
-            if not isinstance(base_faces, list):
-                base_faces = [base_faces]
+            if isinstance(raw_base_faces, list):
+                base_faces = raw_base_faces
+            else:
+                base_faces = [raw_base_faces]
 
             # Determine the fusion strategy: solids should only be fused if the base is a Sketch and
             # it is not a multi-layer wall.
@@ -591,7 +779,7 @@ class _Wall(ArchComponent.Component):
             if should_fuse_solids:
                 fused_shape = None
                 for solid in solids:
-                    fused_shape = fused_shape.fuse(solid) if fused_shape else solid
+                    fused_shape = cast(Any, fused_shape).fuse(solid) if fused_shape else solid
                 base = fused_shape
             else:
                 base = Part.makeCompound(solids)
@@ -610,7 +798,13 @@ class _Wall(ArchComponent.Component):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
                         sh = ArchCommands.getShapeFromMesh(obj.Base.Mesh)
-                        if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
+                        if (
+                            sh is not None
+                            and sh.isClosed()
+                            and sh.isValid()
+                            and sh.Solids
+                            and (not sh.isNull())
+                        ):
                             base = sh
                         else:
                             FreeCAD.Console.PrintWarning(
@@ -630,6 +824,7 @@ class _Wall(ArchComponent.Component):
             base = Part.Shape()
         base = self.processSubShapes(obj, base, pl)
         self.applyShape(obj, base, pl)
+        assert base is not None
 
         # Check if there is base, and if width and height is provided or not
         # Provide users message below to check the setting of the Wall object
@@ -674,7 +869,7 @@ class _Wall(ArchComponent.Component):
         # set the Area property
         obj.Area = obj.Length.Value * obj.Height.Value
 
-    def onBeforeChange(self, obj, prop):
+    def onBeforeChange(self, obj: _WallObject, prop: str) -> None:
         """Method called before the object has a property changed.
 
         Specifically, this method is called before the value changes.
@@ -694,7 +889,7 @@ class _Wall(ArchComponent.Component):
             self.oldLength = obj.Length.Value
         ArchComponent.Component.onBeforeChange(self, obj, prop)
 
-    def onChanged(self, obj, prop):
+    def onChanged(self, obj: _WallObject, prop: str) -> None:
         """Method called when the object has a property changed.
 
         If length has changed, extend the length of the Base object, if the
@@ -729,10 +924,10 @@ class _Wall(ArchComponent.Component):
                                 v.normalize()
                                 v.multiply(obj.Length.Value)
                                 p2 = e.Vertexes[0].Point.add(v)
-                                if Draft.getType(obj.Base) == "Wire":
+                                if _draft.getType(obj.Base) == "Wire":
                                     # print "modifying p2"
                                     obj.Base.End = p2
-                                elif Draft.getType(obj.Base) in [
+                                elif _draft.getType(obj.Base) in [
                                     "Sketcher::SketchObject",
                                     "ArchSketch",
                                 ]:
@@ -749,7 +944,7 @@ class _Wall(ArchComponent.Component):
                                         + "\n"
                                     )
 
-        if prop == "ArchSketchPropertySet" and Draft.getType(obj.Base) == "ArchSketch":
+        if prop == "ArchSketchPropertySet" and _draft.getType(obj.Base) == "ArchSketch":
             baseProxy = obj.Base.Proxy
             if hasattr(baseProxy, "getPropertySet"):
                 uuid = baseProxy.getPropertySet(obj, propSetName=obj.ArchSketchPropertySet)
@@ -757,7 +952,7 @@ class _Wall(ArchComponent.Component):
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
+            and _draft.getType(obj.Base) == "ArchSketch"
         ):
             if hasattr(obj, "Width"):
                 obj.setEditorMode("Width", ["ReadOnly"])
@@ -799,7 +994,7 @@ class _Wall(ArchComponent.Component):
         self.hideSubobjects(obj, prop)
         ArchComponent.Component.onChanged(self, obj, prop)
 
-    def getFootprint(self, obj):
+    def getFootprint(self, obj: _WallObject) -> list[Part.Face]:
         """Get the faces that make up the base/foot of the wall.
 
         Returns
@@ -808,7 +1003,7 @@ class _Wall(ArchComponent.Component):
             The faces that make up the foot of the wall.
         """
 
-        faces = []
+        faces: list[Part.Face] = []
         if obj.Shape:
             for f in obj.Shape.Faces:
                 if f.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, -1)) < 0.01:
@@ -816,7 +1011,9 @@ class _Wall(ArchComponent.Component):
                         faces.append(f)
         return faces
 
-    def getExtrusionData(self, obj):
+    def getExtrusionData(
+        self, obj: _WallObject
+    ) -> tuple[list[Part.Face] | Part.Face, Vector, FreeCAD.Placement] | None:
         """Get data needed to extrude the wall from a base object.
 
         take the Base object, and find a base face to extrude
@@ -860,7 +1057,7 @@ class _Wall(ArchComponent.Component):
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
+            and _draft.getType(obj.Base) == "ArchSketch"
         ):
             if hasattr(obj.Base, "Proxy"):  # TODO Any need to test ?
                 if hasattr(obj.Base.Proxy, "getWidths"):
@@ -879,7 +1076,7 @@ class _Wall(ArchComponent.Component):
                     except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
-                        widths = ArchSketchObject.sortSketchWidth(
+                        widths = _arch_sketch.sortSketchWidth(
                             obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
                         )
                     except Exception:
@@ -929,7 +1126,7 @@ class _Wall(ArchComponent.Component):
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
+            and _draft.getType(obj.Base) == "ArchSketch"
         ):
             if hasattr(obj.Base, "Proxy"):
                 if hasattr(obj.Base.Proxy, "getAligns"):
@@ -950,7 +1147,7 @@ class _Wall(ArchComponent.Component):
                     except Exception:
                         print("ArchSketchObject add-on module is not installed yet")
                     try:
-                        aligns = ArchSketchObject.sortSketchAlign(
+                        aligns = _arch_sketch.sortSketchAlign(
                             obj.Base, obj.OverrideAlign, obj.ArchSketchEdges
                         )
                     except Exception:
@@ -972,7 +1169,7 @@ class _Wall(ArchComponent.Component):
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
+            and _draft.getType(obj.Base) == "ArchSketch"
         ):
             if hasattr(obj.Base, "Proxy"):
                 if hasattr(obj.Base.Proxy, "getOffsets"):
@@ -987,7 +1184,7 @@ class _Wall(ArchComponent.Component):
                     # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
                     # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
                     if hasattr(ArchSketchObject, "sortSketchOffset"):
-                        offsets = ArchSketchObject.sortSketchOffset(
+                        offsets = _arch_sketch.sortSketchOffset(
                             obj.Base, obj.OverrideOffset, obj.ArchSketchEdges
                         )
                     else:
@@ -1093,7 +1290,7 @@ class _Wall(ArchComponent.Component):
                     elif obj.Base.isDerivedFrom("Sketcher::SketchObject"):
                         self.basewires = []
                         skGeom = obj.Base.GeometryFacadeList
-                        skGeomEdges = []
+                        skGeomEdges: list[Part.Edge] = []
                         skPlacement = obj.Base.Placement  # Get Sketch's placement to restore later
                         # Get ArchSketch edges to construct ArchWall
                         # No need to test obj.ArchSketchData ...
@@ -1112,7 +1309,7 @@ class _Wall(ArchComponent.Component):
                                     (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
                                 ):
                                     skGeomEdgesI = geom.Geometry.toShape()
-                                    skGeomEdges.append(skGeomEdgesI)
+                                    skGeomEdges.append(cast(Part.Edge, skGeomEdgesI))
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
@@ -1231,7 +1428,10 @@ class _Wall(ArchComponent.Component):
                             if isinstance(e.Curve, (Part.Circle, Part.Ellipse)):
                                 dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
                             else:
-                                dvec = DraftGeomUtils.vec(e).cross(normal)
+                                dvec = DraftGeomUtils.vec(e)
+                            if dvec is None:
+                                continue
+                            dvec = dvec.cross(normal)
 
                             if not DraftVecUtils.isNull(dvec):
                                 dvec.normalize()
@@ -1240,6 +1440,8 @@ class _Wall(ArchComponent.Component):
                             curAligns = aligns[0]
                             # off = obj.Offset.Value  # off is no longer used
 
+                            wNe1: Any = None
+                            wNe2: Any = None
                             if curAligns == "Left":
 
                                 if layers:
@@ -1486,7 +1688,7 @@ class _Wall(ArchComponent.Component):
             return (base, extrusion, placement)
         return None
 
-    def calc_endpoints(self, obj):
+    def calc_endpoints(self, obj: _WallObject) -> list[Vector]:
         """Returns the global start and end points of a baseless wall's centerline."""
         # The wall's shape is centered, so its endpoints in local coordinates
         # are at (-Length/2, 0, 0) and (+Length/2, 0, 0).
@@ -1499,7 +1701,7 @@ class _Wall(ArchComponent.Component):
 
         return [p1_global, p2_global]
 
-    def set_from_endpoints(self, obj, pts):
+    def set_from_endpoints(self, obj: _WallObject, pts: Sequence[Vector]) -> None:
         """Sets the Length and Placement of a baseless wall from two global points."""
         if len(pts) < 2:
             return
@@ -1520,13 +1722,15 @@ class _Wall(ArchComponent.Component):
         obj.Placement.Base = new_midpoint
         obj.Placement.Rotation = new_rotation
 
-    def handleComponentRemoval(self, obj, subobject):
+    def handleComponentRemoval(self, obj: _WallObject, subobject: object) -> None:
         """
         Overrides the default component removal to implement smart debasing
         when the Base object is being removed.
         """
         import Arch
         from PySide import QtGui
+
+        qtgui = cast(Any, QtGui)
 
         # Check if the component being removed is this wall's Base
         if hasattr(obj, "Base") and obj.Base == subobject:
@@ -1537,9 +1741,7 @@ class _Wall(ArchComponent.Component):
                 # This is a complex wall. Behavior depends on GUI availability.
                 if FreeCAD.GuiUp:
                     # --- GUI Path: Warn the user and ask for confirmation. ---
-                    from PySide import QtGui
-
-                    msg_box = QtGui.QMessageBox()
+                    msg_box = qtgui.QMessageBox()
                     msg_box.setWindowTitle(translate("ArchComponent", "Unsupported Base"))
                     msg_box.setText(
                         translate(
@@ -1553,9 +1755,9 @@ class _Wall(ArchComponent.Component):
                             "Do you want to proceed?",
                         )
                     )
-                    msg_box.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.Cancel)
-                    msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
-                    if msg_box.exec_() == QtGui.QMessageBox.Yes:
+                    msg_box.setStandardButtons(qtgui.QMessageBox.Yes | qtgui.QMessageBox.Cancel)
+                    msg_box.setDefaultButton(qtgui.QMessageBox.Cancel)
+                    if msg_box.exec_() == qtgui.QMessageBox.Yes:
                         # User confirmed, perform the standard removal
                         super(_Wall, self).handleComponentRemoval(obj, subobject)
                 else:
@@ -1569,11 +1771,19 @@ class _Wall(ArchComponent.Component):
             # from the parent Component class.
             super(_Wall, self).handleComponentRemoval(obj, subobject)
 
-    def get_width(self, obj, widths=True):
+    @overload
+    def get_width(self, obj: _WallObject, widths: Literal[False]) -> float: ...
+
+    @overload
+    def get_width(
+        self, obj: _WallObject, widths: Literal[True] = True
+    ) -> tuple[float, list[float]] | None: ...
+
+    def get_width(
+        self, obj: _WallObject, widths: bool = True
+    ) -> float | tuple[float, list[float]] | None:
         """Returns a width and a list of widths for this wall.
         If widths is False, only the main width is returned"""
-        import ArchSketchObject
-
         # Set 'default' width - for filling in any item in the list == 0 or None
         if obj.Width.Value:
             width = obj.Width.Value
@@ -1586,7 +1796,7 @@ class _Wall(ArchComponent.Component):
         if (
             hasattr(obj, "ArchSketchData")
             and obj.ArchSketchData
-            and Draft.getType(obj.Base) == "ArchSketch"
+            and _draft.getType(obj.Base) == "ArchSketch"
         ):
             if hasattr(obj.Base, "Proxy"):
                 if hasattr(obj.Base.Proxy, "getWidths"):
@@ -1600,7 +1810,7 @@ class _Wall(ArchComponent.Component):
                     and obj.Base.isDerivedFrom("Sketcher::SketchObject")
                     and hasattr(ArchSketchObject, "sortSketchWidth")
                 ):
-                    lwidths = ArchSketchObject.sortSketchWidth(
+                    lwidths = _arch_sketch.sortSketchWidth(
                         obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
                     )
                 else:
@@ -1611,28 +1821,29 @@ class _Wall(ArchComponent.Component):
                 return None
         return width, lwidths
 
-    def get_layers(self, obj):
+    def get_layers(self, obj: _WallObject) -> list[float]:
         """Returns a list of layers"""
         layers = []
         width = self.get_width(obj, widths=False)
         if hasattr(obj, "Material"):
             if obj.Material:
                 if hasattr(obj.Material, "Materials"):
-                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    thicknesses = [abs(float(t)) for t in obj.Material.Thicknesses]
                     restwidth = width - sum(thicknesses)
                     varwidth = 0
-                    if restwidth > 0:
-                        varwidth = [t for t in thicknesses if t == 0]
-                        if varwidth:
-                            varwidth = restwidth / len(varwidth)
+                    zero_layers = [t for t in thicknesses if t == 0]
+                    if restwidth > 0 and zero_layers:
+                        varwidth = restwidth / len(zero_layers)
                     for t in obj.Material.Thicknesses:
                         if t:
-                            layers.append(t)
+                            layers.append(float(t))
                         elif varwidth:
                             layers.append(varwidth)
         return layers
 
-    def _make_blocks(self, obj, base_face, extv):
+    def _make_blocks(
+        self, obj: _WallObject, base_face: Part.Face, extv: Vector
+    ) -> Part.Shape | None:
         """Cut a wall's base face into block-sized pieces and stack them.
 
         Uses self.basewires (a list of lists of edges representing the wall's centerline) to compute
@@ -1656,7 +1867,7 @@ class _Wall(ArchComponent.Component):
         """
         import Part
 
-        if len(self.basewires) != 1:
+        if self.basewires is None or len(self.basewires) != 1:
             FreeCAD.Console.PrintWarning(
                 translate("Arch", "Cannot compute blocks for wall") + obj.Label + "\n"
             )
@@ -1664,8 +1875,8 @@ class _Wall(ArchComponent.Component):
 
         n = FreeCAD.Vector(extv)
         n.normalize()
-        cuts1 = []
-        cuts2 = []
+        cuts1: list[Part.Shape] = []
+        cuts2: list[Part.Shape] = []
         if obj.BlockLength.Value:
             for i in range(2):
                 if i == 0:
@@ -1689,7 +1900,7 @@ class _Wall(ArchComponent.Component):
                             p.multiply(1.1 * obj.Width.Value + obj.Offset.Value)
                             p1 = edge.valueAt(offset).add(p)
                             p2 = edge.valueAt(offset).add(p.negative())
-                            sh = Part.LineSegment(p1, p2).toShape()
+                            sh = cast(Part.Edge, Part.LineSegment(p1, p2).toShape())
                             if obj.Joint.Value:
                                 sh = sh.extrude(-t.multiply(obj.Joint.Value))
                             sh = sh.extrude(n)
@@ -1712,12 +1923,12 @@ class _Wall(ArchComponent.Component):
         svec = FreeCAD.Vector(n)
         svec.multiply(fsize)
         if cuts1:
-            faces1 = base_face.cut(cuts1).Faces
+            faces1 = base_face.cut(cast(Any, cuts1)).Faces
         else:
             faces1 = base_face.Faces
         blocks1 = Part.makeCompound([f.extrude(bvec) for f in faces1])
         if cuts2:
-            faces2 = base_face.cut(cuts2).Faces
+            faces2 = base_face.cut(cast(Any, cuts2)).Faces
         else:
             faces2 = base_face.Faces
         blocks2 = Part.makeCompound([f.extrude(bvec) for f in faces2])
@@ -1750,7 +1961,9 @@ class _Wall(ArchComponent.Component):
             return Part.makeCompound(blocks)
         return None
 
-    def build_base_from_scratch(self, obj):
+    def build_base_from_scratch(
+        self, obj: _WallObject
+    ) -> tuple[list[Part.Face], FreeCAD.Placement]:
         """Generate the 2D profile for extruding a baseless Arch Wall.
 
         This function creates the rectangular face or faces that form the wall's cross-section,
@@ -1777,7 +1990,7 @@ class _Wall(ArchComponent.Component):
         """
         import Part
 
-        def _create_face_from_coords(half_length, y_min, y_max):
+        def _create_face_from_coords(half_length: float, y_min: float, y_max: float) -> Part.Face:
             """Creates a rectangular Part.Face centered on the X-axis, defined by Y coordinates."""
             bottom_left = Vector(-half_length, y_min, 0)
             bottom_right = Vector(half_length, y_min, 0)
@@ -1833,7 +2046,9 @@ class _Wall(ArchComponent.Component):
         # Set basewires so blocks calculation can use the centerline edge.
         p1 = Vector(-safe_length / 2, 0, 0)
         p2 = Vector(safe_length / 2, 0, 0)
-        self.basewires = [[Part.LineSegment(p1, p2).toShape()]]
+        self.basewires = [
+            [cast(Part.Edge, Part.LineSegment(cast(Any, p1), cast(Any, p2)).toShape())]
+        ]
 
         return base_faces, placement
 
@@ -1841,14 +2056,15 @@ class _Wall(ArchComponent.Component):
 if FreeCAD.GuiUp:
 
     class WallTaskPanel(ArchComponent.ComponentTaskPanel):
-        def __init__(self, obj):
+        def __init__(self, obj: _WallObject) -> None:
             ArchComponent.ComponentTaskPanel.__init__(self)
             self.obj = obj
             self.wallWidget = QtGui.QWidget()
             self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
 
             layout = QtGui.QFormLayout(self.wallWidget)
-            loader = FreeCADGui.UiLoader()
+            loader = cast(Any, FreeCADGui.UiLoader())
+            qtgui = cast(Any, QtGui)
 
             # Length
             self.length = loader.createWidget("Gui::QuantitySpinBox")
@@ -1868,16 +2084,16 @@ if FreeCAD.GuiUp:
             self.height.setProperty("value", self.obj.Height)
             layout.addRow(translate("Arch", "Height"), self.height)
 
-            self.alignLayout = QtGui.QHBoxLayout()
-            self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
-            self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
-            self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
+            self.alignLayout = qtgui.QHBoxLayout()
+            self.alignLeft = qtgui.QRadioButton(translate("Arch", "Left"))
+            self.alignCenter = qtgui.QRadioButton(translate("Arch", "Center"))
+            self.alignRight = qtgui.QRadioButton(translate("Arch", "Right"))
             self.alignLayout.addWidget(self.alignLeft)
             self.alignLayout.addWidget(self.alignCenter)
             self.alignLayout.addWidget(self.alignRight)
             self.alignLayout.addStretch()
 
-            self.alignGroup = QtGui.QButtonGroup(self.wallWidget)
+            self.alignGroup = qtgui.QButtonGroup(self.wallWidget)
             self.alignGroup.addButton(self.alignLeft)
             self.alignGroup.addButton(self.alignCenter)
             self.alignGroup.addButton(self.alignRight)
@@ -1895,7 +2111,7 @@ if FreeCAD.GuiUp:
             # Wall Options first, then Components (inherited self.form)
             self.form = [self.wallWidget, self.form]
 
-        def setAlign(self, button):
+        def setAlign(self, button: Any) -> None:
             if button == self.alignLeft:
                 self.obj.Align = "Left"
             elif button == self.alignRight:
@@ -1904,7 +2120,7 @@ if FreeCAD.GuiUp:
                 self.obj.Align = "Center"
             self.obj.recompute()
 
-        def accept(self):
+        def accept(self) -> Any:
             self.obj.Length = self.length.property("value")
             self.obj.Width = self.width.property("value")
             self.obj.Height = self.height.property("value")
@@ -1920,11 +2136,15 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         The view provider to turn into a wall view provider.
     """
 
-    def __init__(self, vobj):
+    Object: _WallObject
+    fcoords: Any
+    fset: Any
+
+    def __init__(self, vobj: Any) -> None:
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
         vobj.ShapeColor = ArchCommands.getDefaultColor("Wall")
 
-    def getIcon(self):
+    def getIcon(self) -> Any:
         """Return the path to the appropriate icon.
 
         If a clone, return the cloned wall icon path. Otherwise return the
@@ -1947,7 +2167,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                 return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
-    def attach(self, vobj):
+    def attach(self, vobj: Any) -> None:
         """Add display modes' data to the coin scenegraph.
 
         Add each display mode as a coin node, whose parent is this view
@@ -1965,9 +2185,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         from pivy import coin
 
         tex = coin.SoTexture2()
-        image = Draft.loadTexture(Draft.svgpatterns()["simple"][1], 128)
+        image = _draft.loadTexture(_draft.svgpatterns()["simple"][1], 128)
         if not image is None:
-            tex.image = image
+            _set_coin_field(tex, "image", image)
         texcoords = coin.SoTextureCoordinatePlane()
         s = params.get_param_arch("patternScale")
         texcoords.directionS.setValue(s, 0, 0)
@@ -1982,7 +2202,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         vobj.RootNode.addChild(sep)
         ArchComponent.ViewProviderComponent.attach(self, vobj)
 
-    def updateData(self, obj, prop):
+    def updateData(self, obj: _WallObject, prop: str) -> None:
         """Method called when the host object has a property changed.
 
         If the host object's Placement, Shape, or Material has changed, and the
@@ -2037,7 +2257,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             # force-reset colors if changed
             obj.ViewObject.DiffuseColor = obj.ViewObject.DiffuseColor
 
-    def getDisplayModes(self, vobj):
+    def getDisplayModes(self, vobj: Any) -> list[str]:
         """Define the display modes unique to the Arch Wall.
 
         Define mode Footprint, which only displays the footprint of the wall.
@@ -2052,7 +2272,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         modes = ArchComponent.ViewProviderComponent.getDisplayModes(self, vobj) + ["Footprint"]
         return modes
 
-    def setDisplayMode(self, mode):
+    def setDisplayMode(self, mode: str) -> str:
         """Method called when the display mode changes.
 
         Called when the display mode changes, this method can be used to set
@@ -2096,7 +2316,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self, mode)
 
-    def setEdit(self, vobj, mode):
+    def setEdit(self, vobj: Any, mode: int):
         if mode != 0:
             return None
         taskd = WallTaskPanel(vobj.Object)
@@ -2104,7 +2324,7 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         FreeCADGui.Control.showDialog(taskd)
         return True
 
-    def setupContextMenu(self, vobj, menu):
+    def setupContextMenu(self, vobj: Any, menu: Any) -> None:
 
         if FreeCADGui.activeWorkbench().name() != "BIMWorkbench":
             return
@@ -2121,13 +2341,13 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
         super().contextMenuAddToggleSubcomponents(menu)
 
-    def flipDirection(self):
+    def flipDirection(self) -> None:
 
         if hasattr(self, "Object") and self.Object:
             obj = self.Object
             if obj.Align == "Left":
                 obj.Align = "Right"
-                FreeCAD.ActiveDocument.recompute()
+                _active_document().recompute()
             elif obj.Align == "Right":
                 obj.Align = "Left"
-                FreeCAD.ActiveDocument.recompute()
+                _active_document().recompute()

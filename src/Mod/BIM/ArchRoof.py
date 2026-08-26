@@ -22,6 +22,8 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import annotations
+
 __title__ = "FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"
 __url__ = "https://www.freecad.org"
@@ -35,15 +37,125 @@ __url__ = "https://www.freecad.org"
 #  slopes.
 
 import math
+from typing import Any, Protocol, Sequence, TYPE_CHECKING, cast
 
 import FreeCAD
 import ArchComponent
 import DraftGeomUtils
 import DraftVecUtils
 import Part
+from ArchTypeHints import (
+    ArchComponentObject,
+    DocumentObjectLink,
+    FloatList,
+    FloatListInput,
+    IntegerList,
+    IntegerListInput,
+    QuantityValueInput,
+)
 
 from FreeCAD import Units
 from FreeCAD import Vector
+
+if TYPE_CHECKING:
+    import FreeCADGui
+    import Part as PartTypes
+    from FreeCAD.Base import Quantity
+
+
+class _RoofObject(ArchComponentObject, Protocol):
+    """Dynamic document-object surface used by the roof proxy and editor."""
+
+    PropertiesList: Sequence[str]
+
+    Shape: PartTypes.Shape
+    Placement: FreeCAD.Placement
+    Proxy: Any
+    Label: str
+    Name: str
+    IfcType: str
+
+    @property
+    def Angles(self) -> FloatList: ...
+
+    @Angles.setter
+    def Angles(self, value: FloatListInput) -> None: ...
+
+    @property
+    def Runs(self) -> FloatList: ...
+
+    @Runs.setter
+    def Runs(self, value: FloatListInput) -> None: ...
+
+    @property
+    def IdRel(self) -> IntegerList: ...
+
+    @IdRel.setter
+    def IdRel(self, value: IntegerListInput) -> None: ...
+
+    @property
+    def Thickness(self) -> FloatList: ...
+
+    @Thickness.setter
+    def Thickness(self, value: FloatListInput) -> None: ...
+
+    @property
+    def Overhang(self) -> FloatList: ...
+
+    @Overhang.setter
+    def Overhang(self, value: FloatListInput) -> None: ...
+
+    @property
+    def Heights(self) -> FloatList: ...
+
+    @Heights.setter
+    def Heights(self, value: FloatListInput) -> None: ...
+
+    Face: int
+
+    @property
+    def RidgeLength(self) -> Quantity: ...
+
+    @RidgeLength.setter
+    def RidgeLength(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def BorderLength(self) -> Quantity: ...
+
+    @BorderLength.setter
+    def BorderLength(self, value: QuantityValueInput) -> None: ...
+
+    Flip: bool
+
+    @property
+    def Subvolume(self) -> DocumentObjectLink: ...
+
+    @Subvolume.setter
+    def Subvolume(self, value: DocumentObjectLink) -> None: ...
+
+    def addProperty(self, *args: Any, **kwargs: Any) -> Any: ...
+    def setEditorMode(self, name: str, mode: int | list[str], /) -> None: ...
+    def touch(self) -> None: ...
+    def recompute(self) -> None: ...
+
+
+def _active_document() -> Any:
+    """Return the active document or fail explicitly outside a document context."""
+
+    document = FreeCAD.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD requires an active document for this operation")
+    return document
+
+
+def _active_gui_document() -> Any:
+    """Return the active GUI document or fail explicitly outside a GUI context."""
+
+    document = FreeCADGui.ActiveDocument
+    if document is None:
+        raise RuntimeError("FreeCAD GUI requires an active document for this operation")
+    return document
+
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui, QtWidgets
@@ -52,11 +164,11 @@ if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
     # \cond
-    def translate(ctxt, txt):
-        return txt
+    def translate(context: str, text: str, comment: str | None = None, /) -> str:
+        return text
 
-    def QT_TRANSLATE_NOOP(ctxt, txt):
-        return txt
+    def QT_TRANSLATE_NOOP(context: str, source_text: str, /) -> str:
+        return source_text
 
     # \endcond
 
@@ -118,10 +230,10 @@ def find_inters(edge1, edge2, infinite1=True, infinite2=True):
                 vec1.scale(k, k, k)
                 intp = pt1.add(vec1)
 
-                if infinite1 is False and not isPtOnEdge(intp, edge1):
+                if infinite1 is False and not DraftGeomUtils.isPtOnEdge(intp, edge1):
                     return []
 
-                if infinite2 is False and not isPtOnEdge(intp, edge2):
+                if infinite2 is False and not DraftGeomUtils.isPtOnEdge(intp, edge2):
                     return []
 
                 return [intp]
@@ -159,14 +271,21 @@ class _Roof(ArchComponent.Component):
     """The Roof object"""
 
     _SUPERSIZE = 100000.0  # Value (100m) for oversized extrusions used as subtractions.
+    profilsDico: list[dict[str, Any]]
+    ptsPaneProject: list[Any]
+    shps: list[Any]
+    subVolShps: list[Any]
+    sub: Any
+    flip: bool
+    normal: Any
 
-    def __init__(self, obj):
+    def __init__(self, obj: _RoofObject) -> None:
         ArchComponent.Component.__init__(self, obj)
         self.Type = "Roof"
         self.setProperties(obj)
         obj.IfcType = "Roof"
 
-    def setProperties(self, obj):
+    def setProperties(self, obj: _RoofObject) -> None:
         pl = obj.PropertiesList
         if not "Angles" in pl:
             obj.addProperty(
@@ -275,14 +394,14 @@ class _Roof(ArchComponent.Component):
                 locked=True,
             )
 
-    def onDocumentRestored(self, obj):
+    def onDocumentRestored(self, obj: _RoofObject) -> None:
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
 
-    def loads(self, state):
+    def loads(self, state: Any) -> None:
         self.Type = "Roof"
 
-    def flipEdges(self, edges):
+    def flipEdges(self, edges: list[Any]) -> list[Any]:
         edges.reverse()
         newEdges = []
         for edge in edges:
@@ -290,32 +409,32 @@ class _Roof(ArchComponent.Component):
             newEdges.append(NewEdge)
         return newEdges
 
-    def calcHeight(self, id):
+    def calcHeight(self, id: int) -> float:
         """Get the height from run and angle of the given roof profile"""
         htRel = self.profilsDico[id]["run"] * (
             math.tan(math.radians(self.profilsDico[id]["angle"]))
         )
         return htRel
 
-    def calcRun(self, id):
+    def calcRun(self, id: int) -> float:
         """Get the run from height and angle of the given roof profile"""
         runRel = self.profilsDico[id]["height"] / (
             math.tan(math.radians(self.profilsDico[id]["angle"]))
         )
         return runRel
 
-    def calcAngle(self, id):
+    def calcAngle(self, id: int) -> float:
         """Get the angle from height and run of the given roof profile"""
         ang = math.degrees(math.atan(self.profilsDico[id]["height"] / self.profilsDico[id]["run"]))
         return ang
 
-    def getPerpendicular(self, vec, rotEdge, l):
+    def getPerpendicular(self, vec: Vector, rotEdge: float, l: float) -> Vector:
         """Get the perpendicular vec of given edge on xy plane"""
         norm = Vector(0.0, 0.0, 1.0)
         if hasattr(self, "normal"):
             if self.normal:
                 norm = self.normal
-        per = vec.cross(norm)
+        per: Any = vec.cross(norm)
         if -180.0 <= rotEdge < -90.0:
             per[0] = -abs(per[0])
             per[1] = -abs(per[1])
@@ -335,8 +454,10 @@ class _Roof(ArchComponent.Component):
         per = per.multiply(l)
         return per
 
-    def makeRoofProfilsDic(self, id, angle, run, idrel, overhang, thickness):
-        profilDico = {}
+    def makeRoofProfilsDic(
+        self, id: int, angle: float, run: float, idrel: int, overhang: float, thickness: float
+    ) -> None:
+        profilDico: dict[str, Any] = {}
         profilDico["id"] = id
         if angle == 90.0:
             profilDico["name"] = "Gable" + str(id)
@@ -352,7 +473,7 @@ class _Roof(ArchComponent.Component):
         profilDico["points"] = []
         self.profilsDico.append(profilDico)
 
-    def calcEdgeGeometry(self, i, edge):
+    def calcEdgeGeometry(self, i: int, edge: Any) -> None:
         profilCurr = self.profilsDico[i]
         profilCurr["edge"] = edge
         vec = edge.Vertexes[1].Point.sub(edge.Vertexes[0].Point)
@@ -360,7 +481,7 @@ class _Roof(ArchComponent.Component):
         rot = math.degrees(DraftVecUtils.angle(vec))
         profilCurr["rot"] = rot
 
-    def helperCalcApex(self, profilCurr, profilOpposite):
+    def helperCalcApex(self, profilCurr: dict[str, Any], profilOpposite: dict[str, Any]) -> float:
         ptCurr = profilCurr["edge"].Vertexes[0].Point
         ptOpposite = profilOpposite["edge"].Vertexes[0].Point
         dis = ptCurr.distanceToLine(ptOpposite, profilOpposite["vec"])
@@ -372,7 +493,7 @@ class _Roof(ArchComponent.Component):
             )
         return profilCurr["run"]
 
-    def calcApex(self, i, numEdges):
+    def calcApex(self, i: int, numEdges: int) -> None:
         """Recalculate the run and height if there is an opposite roof segment
         with a parallel edge, and if the sum of the runs of the segments is
         larger than the distance between the edges of the segments.
@@ -406,7 +527,7 @@ class _Roof(ArchComponent.Component):
             hgt = self.calcHeight(i)
             profilCurr["height"] = hgt
 
-    def calcMissingData(self, i, numEdges):
+    def calcMissingData(self, i: int, numEdges: int) -> None:
         profilCurr = self.profilsDico[i]
         ang = profilCurr["angle"]
         run = profilCurr["run"]
@@ -446,7 +567,7 @@ class _Roof(ArchComponent.Component):
             hgt = self.calcHeight(i)
             profilCurr["height"] = hgt
 
-    def calcDraftEdges(self, i):
+    def calcDraftEdges(self, i: int) -> None:
         profilCurr = self.profilsDico[i]
         edge = profilCurr["edge"]
         vec = profilCurr["vec"]
@@ -464,7 +585,7 @@ class _Roof(ArchComponent.Component):
         ridge = DraftGeomUtils.offset(edge, per)
         profilCurr["ridge"] = ridge
 
-    def calcEave(self, i):
+    def calcEave(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         ptInterEaves1Lst = find_inters(profilCurr["eaveDraft"], self.findProfil(i - 1)["eaveDraft"])
         if ptInterEaves1Lst:
@@ -481,7 +602,7 @@ class _Roof(ArchComponent.Component):
             ptInterEaves2,
         ]  # list of points instead of edge as points can be identical
 
-    def findProfil(self, i):
+    def findProfil(self, i: int) -> dict[str, Any]:
         if 0 <= i < len(self.profilsDico):
             profil = self.profilsDico[i]
         else:
@@ -489,7 +610,9 @@ class _Roof(ArchComponent.Component):
             profil = self.profilsDico[i]
         return profil
 
-    def helperGable(self, profilCurr, profilOther, isBack):
+    def helperGable(
+        self, profilCurr: dict[str, Any], profilOther: dict[str, Any], isBack: bool
+    ) -> None:
         if isBack:
             i = 0
         else:
@@ -505,19 +628,25 @@ class _Roof(ArchComponent.Component):
         for ptProj in ptProjLst:
             self.ptsPaneProject.append(ptProj)
 
-    def backGable(self, i):
+    def backGable(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilBack = self.findProfil(i - 1)
         self.helperGable(profilCurr, profilBack, isBack=True)
 
-    def nextGable(self, i):
+    def nextGable(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilNext = self.findProfil(i + 1)
         self.helperGable(profilCurr, profilNext, isBack=False)
 
     def helperSloped(
-        self, profilCurr, profilOther, ridgeCurr, ridgeOther, isBack, otherIsLower=False
-    ):
+        self,
+        profilCurr: dict[str, Any],
+        profilOther: dict[str, Any],
+        ridgeCurr: Any,
+        ridgeOther: Any,
+        isBack: bool,
+        otherIsLower: bool = False,
+    ) -> None:
         if isBack:
             i = 0
         else:
@@ -553,21 +682,21 @@ class _Roof(ArchComponent.Component):
         for ptProj in ptProjLst:
             self.ptsPaneProject.append(ptProj)
 
-    def backSameHeight(self, i):
+    def backSameHeight(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilBack = self.findProfil(i - 1)
         self.helperSloped(
             profilCurr, profilBack, profilCurr["ridge"], profilBack["ridge"], isBack=True
         )
 
-    def nextSameHeight(self, i):
+    def nextSameHeight(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilNext = self.findProfil(i + 1)
         self.helperSloped(
             profilCurr, profilNext, profilCurr["ridge"], profilNext["ridge"], isBack=False
         )
 
-    def backHigher(self, i):
+    def backHigher(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilBack = self.findProfil(i - 1)
         dec = profilCurr["height"] / math.tan(math.radians(profilBack["angle"]))
@@ -575,7 +704,7 @@ class _Roof(ArchComponent.Component):
         edgeRidgeOnPane = DraftGeomUtils.offset(profilBack["edge"], per)
         self.helperSloped(profilCurr, profilBack, profilCurr["ridge"], edgeRidgeOnPane, isBack=True)
 
-    def nextHigher(self, i):
+    def nextHigher(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilNext = self.findProfil(i + 1)
         dec = profilCurr["height"] / math.tan(math.radians(profilNext["angle"]))
@@ -585,7 +714,7 @@ class _Roof(ArchComponent.Component):
             profilCurr, profilNext, profilCurr["ridge"], edgeRidgeOnPane, isBack=False
         )
 
-    def backLower(self, i):
+    def backLower(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilBack = self.findProfil(i - 1)
         dec = profilBack["height"] / math.tan(math.radians(profilCurr["angle"]))
@@ -600,7 +729,7 @@ class _Roof(ArchComponent.Component):
             otherIsLower=True,
         )
 
-    def nextLower(self, i):
+    def nextLower(self, i: int) -> None:
         profilCurr = self.findProfil(i)
         profilNext = self.findProfil(i + 1)
         dec = profilNext["height"] / math.tan(math.radians(profilCurr["angle"]))
@@ -615,7 +744,7 @@ class _Roof(ArchComponent.Component):
             otherIsLower=True,
         )
 
-    def getRoofPaneProject(self, i):
+    def getRoofPaneProject(self, i: int) -> None:
         self.ptsPaneProject = []
         profilCurr = self.findProfil(i)
         profilBack = self.findProfil(i - 1)
@@ -647,7 +776,16 @@ class _Roof(ArchComponent.Component):
 
         profilCurr["points"] = self.ptsPaneProject
 
-    def createProfilShape(self, points, midpoint, rot, vec, run, diag, sol):
+    def createProfilShape(
+        self,
+        points: list[Vector],
+        midpoint: Vector,
+        rot: float,
+        vec: Vector,
+        run: float,
+        diag: float,
+        sol: Any,
+    ) -> Any:
         lp = len(points)
         points.append(points[0])
         edgesWire = []
@@ -669,7 +807,7 @@ class _Roof(ArchComponent.Component):
         # shapesList.append(profilShp)
         return profilShp
 
-    def execute(self, obj):
+    def execute(self, obj: _RoofObject) -> None:
 
         if self.clone(obj):
             return
@@ -744,6 +882,8 @@ class _Roof(ArchComponent.Component):
                     if face:
                         diag = face.BoundBox.DiagonalLength
                         midpoint = DraftGeomUtils.findMidpoint(profilCurr["edge"])
+                        if midpoint is None:
+                            continue
                         thicknessV = profilCurr["thickness"] / (
                             math.cos(math.radians(profilCurr["angle"]))
                         )
@@ -809,14 +949,14 @@ class _Roof(ArchComponent.Component):
                 ## baseVolume
                 base = self.shps.pop()
                 for s in self.shps:
-                    base = base.fuse(s)
+                    base = cast(Any, base).fuse(s)
                 base = self.processSubShapes(obj, base, pl)
                 self.applyShape(obj, base, pl, allownosolid=True)
 
                 ## subVolume
                 self.sub = self.subVolShps.pop()
                 for s in self.subVolShps:
-                    self.sub = self.sub.fuse(s)
+                    self.sub = cast(Any, self.sub).fuse(s)
                 self.sub = self.sub.removeSplitter()
                 if not self.sub.isNull():
                     if not DraftGeomUtils.isNull(pl):
@@ -828,7 +968,7 @@ class _Roof(ArchComponent.Component):
         else:
             FreeCAD.Console.PrintMessage(translate("Arch", "Unable to create a roof"))
 
-    def getSubVolume(self, obj):
+    def getSubVolume(self, obj: _RoofObject) -> Any:
         """returns a volume to be subtracted"""
         custom_subvolume = getattr(obj, "Subvolume", None)
         if custom_subvolume:
@@ -894,7 +1034,7 @@ class _Roof(ArchComponent.Component):
             self.execute(obj)
         return self.sub
 
-    def computeAreas(self, obj):
+    def computeAreas(self, obj: _RoofObject) -> None:
         """computes border and ridge roof edges length"""
         if hasattr(obj, "RidgeLength") and hasattr(obj, "BorderLength"):
             rl = 0
@@ -909,7 +1049,7 @@ class _Roof(ArchComponent.Component):
                             faceLst.append(face)
                     if faceLst:
                         try:
-                            shell = Part.Shell(faceLst)
+                            shell = cast(Any, Part).Shell(faceLst)
                         except Exception:
                             pass
                         else:
@@ -941,17 +1081,19 @@ class _Roof(ArchComponent.Component):
 class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
     """A View Provider for the Roof object"""
 
-    def __init__(self, vobj):
+    Object: _RoofObject
+
+    def __init__(self, vobj: Any) -> None:
         ArchComponent.ViewProviderComponent.__init__(self, vobj)
 
-    def getIcon(self):
+    def getIcon(self) -> Any:
         return ":/icons/Arch_Roof_Tree.svg"
 
-    def attach(self, vobj):
+    def attach(self, vobj: Any) -> None:
         self.Object = vobj.Object
         return
 
-    def setEdit(self, vobj, mode=0):
+    def setEdit(self, vobj: Any, mode: int = 0) -> Any:
         if mode != 0:
             return None
 
@@ -971,7 +1113,10 @@ class _ViewProviderRoof(ArchComponent.ViewProviderComponent):
 class _RoofTaskPanel:
     """The editmode TaskPanel for Roof objects"""
 
-    def __init__(self):
+    obj: _RoofObject | None = None
+    updating: bool
+
+    def __init__(self) -> None:
         self.updating = False
         self.obj = None
         self.form = QtGui.QWidget()
@@ -1000,16 +1145,16 @@ class _RoofTaskPanel:
         )
         self.update()
 
-    def isAllowedAlterSelection(self):
+    def isAllowedAlterSelection(self) -> bool:
         return False
 
-    def isAllowedAlterView(self):
+    def isAllowedAlterView(self) -> bool:
         return True
 
-    def getStandardButtons(self):
+    def getStandardButtons(self) -> Any:
         return QtGui.QDialogButtonBox.Close
 
-    def update(self):
+    def update(self) -> None:
         """fills the treewidget"""
         self.updating = True
         if self.obj:
@@ -1020,26 +1165,32 @@ class _RoofTaskPanel:
             for i in range(len(self.obj.Angles)):
                 item = root.child(i)
                 item.setText(0, str(i))
-                item.setText(1, Units.Quantity(self.obj.Angles[i], Units.Angle).UserString)
+                item.setText(
+                    1, Units.Quantity(self.obj.Angles[i], cast(Any, Units).Angle).UserString
+                )
                 item.setText(2, Units.Quantity(self.obj.Runs[i], Units.Length).UserString)
                 item.setText(3, str(self.obj.IdRel[i]))
                 item.setText(4, Units.Quantity(self.obj.Thickness[i], Units.Length).UserString)
                 item.setText(5, Units.Quantity(self.obj.Overhang[i], Units.Length).UserString)
                 item.setText(6, Units.Quantity(self.obj.Heights[i], Units.Length).UserString)
-                item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
+                item.setFlags(item.flags() | cast(Any, QtCore).Qt.ItemIsEditable)
             # treeHgt = 1 + 23 + (len(self.obj.Angles) * 17) + 1 # 1px borders, 23px header, 17px rows
             # self.tree.setMinimumSize(QtCore.QSize(445, treeHgt))
         self.retranslateUi(self.form)
         self.updating = False
 
-    def _update_value(self, row, prop, str_val):
+    def _update_value(self, row: int, prop: str, str_val: str) -> None:
+        if self.obj is None:
+            return
         val_list = getattr(self.obj, prop)
         val_list[row] = Units.Quantity(str_val).Value
         setattr(self.obj, prop, val_list)
 
-    def edit(self, item, column):
+    def edit(self, item: Any, column: int) -> None:
         """transfers an edited value from the widget to the object"""
         if self.updating:
+            return
+        if self.obj is None:
             return
         row = int(item.text(0))
         match column:
@@ -1058,15 +1209,15 @@ class _RoofTaskPanel:
             case _:
                 return
         self.obj.touch()
-        FreeCAD.ActiveDocument.recompute()
+        _active_document().recompute()
         self.update()
 
-    def reject(self):
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.ActiveDocument.resetEdit()
+    def reject(self) -> bool:
+        _active_document().recompute()
+        _active_gui_document().resetEdit()
         return True
 
-    def retranslateUi(self, TaskPanel):
+    def retranslateUi(self, TaskPanel: Any) -> None:
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None))
         self.title.setText(
             QtGui.QApplication.translate(
@@ -1093,7 +1244,7 @@ if FreeCAD.GuiUp:
     class _RoofTaskPanel_Delegate(QtWidgets.QStyledItemDelegate):
         """Model delegate"""
 
-        def createEditor(self, parent, option, index):
+        def createEditor(self, parent: Any, option: Any, index: Any) -> Any:
             if index.column() in (0, 6):
                 # Make these columns read-only.
                 return None
@@ -1102,13 +1253,14 @@ if FreeCAD.GuiUp:
                 editor.installEventFilter(self)
             return editor
 
-        def setEditorData(self, editor, index):
+        def setEditorData(self, editor: Any, index: Any) -> None:
             editor.setText(index.data())
 
-        def setModelData(self, editor, model, index):
+        def setModelData(self, editor: Any, model: Any, index: Any) -> None:
             model.setData(index, editor.text())
 
-        def eventFilter(self, widget, event):
-            if event.type() == QtCore.QEvent.FocusIn:
-                widget.setSelection(0, FreeCADGui.draftToolBar.number_length(widget.text()))
+        def eventFilter(self, widget: Any, event: Any) -> Any:
+            if event.type() == cast(Any, QtCore).QEvent.FocusIn:
+                gui = cast(Any, FreeCADGui)
+                widget.setSelection(0, gui.draftToolBar.number_length(widget.text()))
             return super().eventFilter(widget, event)
