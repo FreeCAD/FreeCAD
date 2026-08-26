@@ -1046,107 +1046,86 @@ public:
         toolRadiusScaled = p_toolRadiusScaled;
     };
 
-    void SetClearedPaths(const Paths64& paths_p64)
+    void SetClearedPaths(const Paths64& paths)
     {
-        ClipperLib::Paths paths = ToC1Paths(paths_p64);
         clearedPaths = paths;
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
     }
 
-    void AddClearedPaths(const Paths64& paths_p64)
+    void AddClearedPaths(const Paths64& paths)
     {
-        ClipperLib::Paths paths = ToC1Paths(paths_p64);
-        clip.Clear();
-        clip.AddPaths(clearedPaths, ClipperLib::PolyType::ptSubject, true);
-        clip.AddPaths(paths, ClipperLib::PolyType::ptClip, true);
-        clip.Execute(ClipperLib::ClipType::ctUnion, clearedPaths);
-        CleanPolygons(clearedPaths);
+        clearedPaths = Union(clearedPaths, paths, FillRule::EvenOdd);
+        clearedPaths = SimplifyPaths(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
     }
 
-    void ExpandCleared(const Path64 toClearToolPath_p64)
+    void ExpandCleared(const Path64& toClearToolPath)
     {
-        if (toClearToolPath_p64.empty()) {
+        if (toClearToolPath.empty()) {
             return;
         }
-        ClipperLib::Path toClearToolPath = ToC1Path(toClearToolPath_p64);
         Perf_ExpandCleared.Start();
-        clipof.Clear();
-        clipof.AddPath(toClearToolPath, ClipperLib::JoinType::jtRound, ClipperLib::EndType::etOpenRound);
-        ClipperLib::Paths toolCoverPoly;
-        clipof.Execute(toolCoverPoly, toolRadiusScaled + 1);
-        clip.Clear();
-        clip.AddPaths(clearedPaths, ClipperLib::PolyType::ptSubject, true);
-        clip.AddPaths(toolCoverPoly, ClipperLib::PolyType::ptClip, true);
-        clip.Execute(ClipperLib::ClipType::ctUnion, clearedPaths);
-        CleanPolygons(clearedPaths);
+        Paths64 toolCoverPoly = OffsetPath(toClearToolPath, toolRadiusScaled + 1, EndType::Round);
+        clearedPaths = Union(clearedPaths, toolCoverPoly, FillRule::EvenOdd);
+        clearedPaths = SimplifyPaths(clearedPaths, CLEAN_POLYGONS_TOLERANCE);
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
         Perf_ExpandCleared.Stop();
     }
 
     // get cleared area/poly bounded to toolbox
-    Paths64 GetBoundedClearedAreaClipped(const Point64& toolPos_p64, int delta)
+    Paths64 GetBoundedClearedAreaClipped(const Point64& toolPos, int delta)
     {
-        ClipperLib::IntPoint toolPos = ToC1Point(toolPos_p64);
         // first, attempt to serve this query from cache
-        BoundBox toolBB(ToPoint64(toolPos), delta);
+        BoundBox toolBB(toolPos, delta);
         if (!bboxClippedInvalid && clearedBBClippedInFocus.Contains(toolBB)) {
-            return ToPaths64(clearedBoundedClipped);
+            return clearedBoundedClipped;
         }
 
         // second, check if the window needs to be recomputed
         if (bboxClippedInvalid || !clearedBBWindow.Contains(toolBB)) {
             const int deltaWindow = delta * clearedBoundedWindowScale;
-            clearedBBWindow.SetFirstPoint(Point64(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
-            clearedBBWindow.AddPoint(Point64(toolPos.X + deltaWindow, toolPos.Y + deltaWindow));
+            clearedBBWindow.SetFirstPoint(Point64(toolPos.x - deltaWindow, toolPos.y - deltaWindow));
+            clearedBBWindow.AddPoint(Point64(toolPos.x + deltaWindow, toolPos.y + deltaWindow));
 
-            ClipperLib::Path bbPath;
-            bbPath.push_back(ClipperLib::IntPoint(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
-            bbPath.push_back(ClipperLib::IntPoint(toolPos.X + deltaWindow, toolPos.Y - deltaWindow));
-            bbPath.push_back(ClipperLib::IntPoint(toolPos.X + deltaWindow, toolPos.Y + deltaWindow));
-            bbPath.push_back(ClipperLib::IntPoint(toolPos.X - deltaWindow, toolPos.Y + deltaWindow));
-            clip.Clear();
-            clip.AddPath(bbPath, ClipperLib::PolyType::ptSubject, true);
-            clip.AddPaths(clearedPaths, ClipperLib::PolyType::ptClip, true);
-            clip.Execute(ClipperLib::ClipType::ctIntersection, clearedBoundedWindow);
+            Path64 bbPath;
+            bbPath.push_back(Point64(toolPos.x - deltaWindow, toolPos.y - deltaWindow));
+            bbPath.push_back(Point64(toolPos.x + deltaWindow, toolPos.y - deltaWindow));
+            bbPath.push_back(Point64(toolPos.x + deltaWindow, toolPos.y + deltaWindow));
+            bbPath.push_back(Point64(toolPos.x - deltaWindow, toolPos.y + deltaWindow));
+            clearedBoundedWindow = Intersect(Paths64{bbPath}, clearedPaths, FillRule::EvenOdd);
         }
 
         // finally, perform the query using data from the window
-        clearedBBClippedInFocus.SetFirstPoint(Point64(toolPos.X - delta, toolPos.Y - delta));
-        clearedBBClippedInFocus.AddPoint(Point64(toolPos.X + delta, toolPos.Y + delta));
+        clearedBBClippedInFocus.SetFirstPoint(Point64(toolPos.x - delta, toolPos.y - delta));
+        clearedBBClippedInFocus.AddPoint(Point64(toolPos.x + delta, toolPos.y + delta));
 
-        ClipperLib::Path bbPath;
-        bbPath.push_back(ClipperLib::IntPoint(toolPos.X - delta, toolPos.Y - delta));
-        bbPath.push_back(ClipperLib::IntPoint(toolPos.X + delta, toolPos.Y - delta));
-        bbPath.push_back(ClipperLib::IntPoint(toolPos.X + delta, toolPos.Y + delta));
-        bbPath.push_back(ClipperLib::IntPoint(toolPos.X - delta, toolPos.Y + delta));
-        clip.Clear();
-        clip.AddPath(bbPath, ClipperLib::PolyType::ptSubject, true);
-        clip.AddPaths(clearedBoundedWindow, ClipperLib::PolyType::ptClip, true);
-        clip.Execute(ClipperLib::ClipType::ctIntersection, clearedBoundedClipped);
+        Path64 bbPath;
+        bbPath.push_back(Point64(toolPos.x - delta, toolPos.y - delta));
+        bbPath.push_back(Point64(toolPos.x + delta, toolPos.y - delta));
+        bbPath.push_back(Point64(toolPos.x + delta, toolPos.y + delta));
+        bbPath.push_back(Point64(toolPos.x - delta, toolPos.y + delta));
+        clearedBoundedClipped = Intersect(Paths64{bbPath}, clearedBoundedWindow, FillRule::EvenOdd);
 
         bboxClippedInvalid = false;
-        return ToPaths64(clearedBoundedClipped);
+        return clearedBoundedClipped;
     }
 
     // get full cleared area
     Paths64 GetCleared()
     {
-        return ToPaths64(clearedPaths);
+        return clearedPaths;
     }
 
 private:
-    ClipperLib::Clipper clip;
-    ClipperLib::ClipperOffset clipof;
-    ClipperLib::Paths clearedPaths;
-    ClipperLib::Paths clearedBoundedWindow;
-    ClipperLib::Paths clearedBoundedClipped;
-    ClipperLib::Paths clearedBoundedPaths;
+    Paths64 clearedPaths;
+    Paths64 clearedBoundedWindow;
+    Paths64 clearedBoundedClipped;
+    Paths64 clearedBoundedPaths;
 
-    ClipperLib::cInt toolRadiusScaled;
+    int64_t toolRadiusScaled;
     BoundBox clearedBBWindow;
     BoundBox clearedBBClippedInFocus;
     BoundBox clearedBBPathsInFocus;
