@@ -162,6 +162,8 @@ def exercise(
     resolve_mode: GuiSelection.ResolveMode = GuiSelection.ResolveMode.NoResolve
     selection_style_enum: GuiSelection.SelectionStyle = GuiSelection.SelectionStyle.NormalSelection
     main_window = cast(FreeCADGui._MainWindow, object())
+    main_window.statusBar()
+    main_window.findChildren(FreeCADGui._MainWindow)
     mdi_view = cast(FreeCADGui._MDIView, object())
     task_dialog = cast(FreeCADGui._TaskDialog, object())
     split_view = cast(FreeCADGui._AbstractSplitView, object())
@@ -173,6 +175,7 @@ def exercise(
     material = cast(Materials.Material, object())
     path_command = cast(PathApp.Command, object())
     part_design_view_provider = cast(PartDesignGui.ViewProvider, object())
+    part_design_object = part_design_view_provider.Object
     qt_timer = QtCore.QTimer
     QtCore.QTimer.singleShot(0, lambda: None)
     pyside_version_value = pyside_version

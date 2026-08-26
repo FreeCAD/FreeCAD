@@ -5,8 +5,9 @@
 from __future__ import annotations
 
 from FreeCADGui import InputHint, _MDIView
+import PySide.QtWidgets as QtWidgets
 
-class _MainWindow:
+class _MainWindow(QtWidgets.QMainWindow):
     """Wrapper around the FreeCAD main application window."""
 
     def getWindows(self) -> list[_MDIView]:
