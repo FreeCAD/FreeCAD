@@ -39,8 +39,6 @@ using namespace TechDrawGui;
 QGICMark::QGICMark(int index) : QGIVertex(index)
 {
     m_markFuzz = PreferencesGui::markFuzz();
-    m_size = 3.0;
-    m_thickness = 0.0;
     setThick(0.75);
     draw();
 }
