@@ -4531,7 +4531,11 @@ TopoShape& TopoShape::makeElementLoft(
     for (auto& sh : profiles) {
         if (i > 0) {
             if (!checkProfiles(sh, profiles[i - 1])) {
-                FC_THROWM(Base::CADKernelError, "Segments " << i << " and " << (i + 1) << " of a loft do not have sufficient separation");
+                FC_THROWM(
+                    Base::CADKernelError,
+                    "Segments " << i << " and " << (i + 1)
+                                << " of a loft do not have sufficient separation"
+                );
             }
         }
         const auto& shape = sh.getShape();
