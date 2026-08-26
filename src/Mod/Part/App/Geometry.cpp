@@ -5003,6 +5003,11 @@ double GeomOffsetCurve::getOffset() const
     return this->myCurve->Offset();
 }
 
+void GeomOffsetCurve::setOffset(double value)
+{
+    this->myCurve->SetOffsetValue(value);
+}
+
 Base::Vector3d GeomOffsetCurve::getStartPoint() const
 {
     double startParam = this->getFirstParameter();
