@@ -863,10 +863,8 @@ bool PopNextFinishingPass(
     return true;  // Return true to indicate closed path
 }
 
-void DeduplicatePaths(const Paths64& inputs_p64, Paths64& outputs_p64)
+void DeduplicatePaths(const Paths64& inputs, Paths64& outputs)
 {
-    ClipperLib::Paths inputs = ToC1Paths(inputs_p64);
-    ClipperLib::Paths outputs = ToC1Paths(outputs_p64);
     outputs.clear();
     for (const auto& new_pth : inputs) {
         bool duplicate = false;
@@ -876,7 +874,7 @@ void DeduplicatePaths(const Paths64& inputs_p64, Paths64& outputs_p64)
             for (const auto pt1 : new_pth) {
                 bool pointExists = false;
                 for (const auto pt2 : old_pth) {
-                    if (DistanceSqrd(ToPoint64(pt1), ToPoint64(pt2)) < SAME_POINT_TOL_SQRD_SCALED) {
+                    if (DistanceSqrd(pt1, pt2) < SAME_POINT_TOL_SQRD_SCALED) {
                         pointExists = true;
                         break;
                     }
@@ -896,7 +894,6 @@ void DeduplicatePaths(const Paths64& inputs_p64, Paths64& outputs_p64)
             outputs.push_back(new_pth);
         }
     }
-    outputs_p64 = ToPaths64(outputs);
 }
 
 void ConnectPaths(Paths64 input, Paths64& output)
