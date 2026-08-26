@@ -207,6 +207,11 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     if (!previewHidden && !svp->isShow()) {
         return;
     }
+    // a hidden object previews as a whole; the inner items of a hidden container
+    // do not, as they would float without the container around them
+    if (previewHidden && svp != vp && !vp->isShow()) {
+        return;
+    }
     if (previewHidden) {
         // a view provider may supply its own on-top preview (e.g. a PartDesign
         // feature showing only its own addition/cut instead of the whole solid);
