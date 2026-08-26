@@ -944,6 +944,7 @@ public:
 
     Base::Vector3d getDir() const;
     double getOffset() const;
+    void setOffset(double value);
 
     Base::Vector3d getStartPoint() const;
     Base::Vector3d getEndPoint() const;
