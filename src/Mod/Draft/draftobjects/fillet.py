@@ -22,17 +22,61 @@
 # ***************************************************************************
 """Provides the object code for the Fillet object."""
 
+from __future__ import annotations
+
 ## @package fillet
 # \ingroup draftobjects
 # \brief Provides the object code for the Fillet object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import (
+    DraftDocumentObject,
+    QuantityValueInput,
+    VectorInput,
+    VectorValue,
+)
 from draftutils import gui_utils
+
+if TYPE_CHECKING:
+    import Part
+    from FreeCAD.Base import Quantity
+
+
+class FilletObject(DraftDocumentObject, Protocol):
+    """Document object with properties added by the Fillet proxy."""
+
+    Shape: Part.Shape
+
+    @property
+    def Length(self) -> Quantity: ...
+
+    @Length.setter
+    def Length(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Start(self) -> VectorValue: ...
+
+    @Start.setter
+    def Start(self, value: VectorInput) -> None: ...
+
+    @property
+    def End(self) -> VectorValue: ...
+
+    @End.setter
+    def End(self, value: VectorInput) -> None: ...
+
+    @property
+    def FilletRadius(self) -> Quantity: ...
+
+    @FilletRadius.setter
+    def FilletRadius(self, value: QuantityValueInput) -> None: ...
 
 
 class Fillet(DraftObject):

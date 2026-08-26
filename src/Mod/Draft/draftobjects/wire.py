@@ -24,6 +24,8 @@
 # ***************************************************************************
 """Provides the object code for the Wire (Polyline) object."""
 
+from __future__ import annotations
+
 ## @package wire
 # \ingroup draftobjects
 # \brief Provides the object code for the Wire (Polyline) object.
@@ -31,16 +33,83 @@
 ## \addtogroup draftobjects
 # @{
 import math
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
+
 from draftgeoutils import faces as geo_faces
 from draftgeoutils import fillets as geo_fillets
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import (
+    DraftPointListObject,
+    DocumentObjectLink,
+    QuantityValueInput,
+    VectorInput,
+    VectorValue,
+)
 from draftutils import gui_utils
 from draftutils import params
 from draftutils.messages import _log
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class WireObject(DraftPointListObject, Protocol):
+    """Document object shape used by Wire make helpers."""
+
+    @property
+    def Base(self) -> DocumentObjectLink: ...
+
+    @Base.setter
+    def Base(self, value: DocumentObjectLink) -> None: ...
+
+    @property
+    def Tool(self) -> DocumentObjectLink: ...
+
+    @Tool.setter
+    def Tool(self, value: DocumentObjectLink) -> None: ...
+
+    @property
+    def Start(self) -> VectorValue: ...
+
+    @Start.setter
+    def Start(self, value: VectorInput) -> None: ...
+
+    @property
+    def End(self) -> VectorValue: ...
+
+    @End.setter
+    def End(self, value: VectorInput) -> None: ...
+
+    @property
+    def Length(self) -> Quantity: ...
+
+    @Length.setter
+    def Length(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def FilletRadius(self) -> Quantity: ...
+
+    @FilletRadius.setter
+    def FilletRadius(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def ChamferSize(self) -> Quantity: ...
+
+    @ChamferSize.setter
+    def ChamferSize(self, value: QuantityValueInput) -> None: ...
+
+    Subdivisions: int
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
 
 
 class Wire(DraftObject):

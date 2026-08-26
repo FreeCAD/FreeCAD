@@ -24,18 +24,38 @@
 # ***************************************************************************
 """Provides the object code for the BSpline object."""
 
+from __future__ import annotations
+
 ## @package bspline
 # \ingroup draftobjects
 # \brief Provides the object code for the BSpline object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import DraftPointListObject, QuantityValueInput
 from draftutils import gui_utils
 from draftutils import params
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class BSplineObject(DraftPointListObject, Protocol):
+    """Document object shape used by BSpline make helpers."""
+
+    Parameterization: float
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
 
 
 class BSpline(DraftObject):
@@ -79,21 +99,21 @@ class BSpline(DraftObject):
         """
         if closed:  # we need to add the first point as the end point
             pts.append(pts[0])
-        params = [0]
+        params = [0.0]
         for i in range(1, len(pts)):
             p = pts[i].sub(pts[i - 1])
             pl = pow(p.Length, a)
             params.append(params[-1] + pl)
         return params
 
-    def onChanged(self, fp, prop):
+    def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
         if prop == "Parameterization":
-            if fp.Parameterization < 0.0:
-                fp.Parameterization = 0.0
-            if fp.Parameterization > 1.0:
-                fp.Parameterization = 1.0
+            if obj.Parameterization < 0.0:
+                obj.Parameterization = 0.0
+            if obj.Parameterization > 1.0:
+                obj.Parameterization = 1.0
 
     def execute(self, obj):
         if self.props_changed_placement_only() or not obj.Points:

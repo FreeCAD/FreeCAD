@@ -30,17 +30,25 @@ The functions here are also used in the Arch Workbench as some of
 the objects created with this workbench work like groups.
 """
 
+from __future__ import annotations
+
 ## @package groups
 # \ingroup draftutils
 # \brief Provides utility functions to do operations with groups.
 
 ## \addtogroup draftutils
 # @{
+from typing import Protocol, cast
+
 import FreeCAD as App
 import draftutils.utils as utils
 
 from draftutils.translate import translate
 from draftutils.messages import _err
+
+
+class _GroupLike(Protocol):
+    Group: list[object]
 
 
 def is_group(obj):
@@ -94,18 +102,17 @@ def get_group_names(doc=None):
 
         Otherwise returns an empty list.
     """
-    if not doc:
-        found, doc = utils.find_doc(App.activeDocument())
+    found, doc = utils.find_doc(doc)
 
-    if not found:
+    if not found or doc is None:
         _err(translate("draft", "No active document. Aborting."))
         return []
 
-    glist = []
+    glist: list[str] = []
 
     for obj in doc.Objects:
         if is_group(obj):
-            glist.append(obj.Name)
+            glist.append(str(obj.Name))
 
     return glist
 
@@ -129,18 +136,17 @@ def ungroup(obj):
         Since a label is not guaranteed to be unique in a document,
         it will use the first object found with this label.
     """
-    if isinstance(obj, str):
-        obj_str = obj
+    obj_str = obj if isinstance(obj, str) else str(obj)
 
     found, obj = utils.find_object(obj, doc=App.activeDocument())
-    if not found:
+    if not found or obj is None:
         _err(translate("draft", "Wrong input: object {} not in document.").format(obj_str))
         return None
 
     doc = obj.Document
 
-    for name in get_group_names():
-        group = doc.getObject(name)
+    for name in get_group_names(doc):
+        group = cast(_GroupLike, doc.getObject(name))
         if obj in group.Group:
             # The list of objects cannot be modified directly,
             # so a new list is created, this new list is modified,

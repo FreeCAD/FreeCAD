@@ -24,18 +24,60 @@
 # ***************************************************************************
 """Provides the object code for the Ellipse object."""
 
+from __future__ import annotations
+
 ## @package ellipse
 # \ingroup draftobjects
 # \brief Provides the object code for the Ellipse object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import DraftMakeFaceObject, QuantityValueInput
 from draftutils import gui_utils
 from draftutils import params
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class EllipseObject(DraftMakeFaceObject, Protocol):
+    """Document object with properties added by the Ellipse proxy."""
+
+    @property
+    def MajorRadius(self) -> Quantity: ...
+
+    @MajorRadius.setter
+    def MajorRadius(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def MinorRadius(self) -> Quantity: ...
+
+    @MinorRadius.setter
+    def MinorRadius(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def FirstAngle(self) -> Quantity: ...
+
+    @FirstAngle.setter
+    def FirstAngle(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def LastAngle(self) -> Quantity: ...
+
+    @LastAngle.setter
+    def LastAngle(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
 
 
 class Ellipse(DraftObject):

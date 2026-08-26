@@ -24,6 +24,8 @@
 # ***************************************************************************
 """Provides the object code for the Point object."""
 
+from __future__ import annotations
+
 ## @package point
 # \ingroup draftobjects
 # \brief Provides the object code for the Point object.
@@ -31,11 +33,49 @@
 ## \addtogroup draftobjects
 # @{
 import math
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import QuantityInput
 from draftutils import gui_utils
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
+
+
+class PointViewObject(Protocol):
+    """View object shape used by Draft point creation."""
+
+    PointColor: tuple[float, float, float]
+    PointSize: object
+
+
+class PointObject(Protocol):
+    """Document object shape used by Draft point creation."""
+
+    Placement: App.Placement
+    ViewObject: PointViewObject | None
+
+    @property
+    def X(self) -> Quantity: ...
+
+    @X.setter
+    def X(self, value: QuantityInput) -> None: ...
+
+    @property
+    def Y(self) -> Quantity: ...
+
+    @Y.setter
+    def Y(self, value: QuantityInput) -> None: ...
+
+    @property
+    def Z(self) -> Quantity: ...
+
+    @Z.setter
+    def Z(self, value: QuantityInput) -> None: ...
 
 
 class Point(DraftObject):

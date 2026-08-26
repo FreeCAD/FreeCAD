@@ -24,19 +24,29 @@
 # ***************************************************************************
 """Provides functions to create Ellipse objects."""
 
+from __future__ import annotations
+
 ## @package make_ellipse
 # \ingroup draftmake
 # \brief Provides functions to create Ellipse objects.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.ellipse import Ellipse
+from draftobjects.ellipse import Ellipse, EllipseObject
 
 if App.GuiUp:
     from draftviewproviders.view_base import ViewProviderDraft
+
+
+def _new_ellipse_object(doc: App.Document) -> EllipseObject:
+    obj = doc.addObject("Part::Part2DObjectPython", "Ellipse")
+    Ellipse(obj)
+    return cast(EllipseObject, obj)
 
 
 def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
@@ -64,12 +74,12 @@ def make_ellipse(majradius, minradius, placement=None, face=None, support=None):
         TODO: Describe.
     """
 
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Ellipse")
-    Ellipse(obj)
+    obj = _new_ellipse_object(doc)
 
     if minradius > majradius:
         majradius, minradius = minradius, majradius

@@ -24,20 +24,31 @@
 # ***************************************************************************
 """Provides functions to create Rectangle objects."""
 
+from __future__ import annotations
+
 ## @package make_rectangle
 # \ingroup draftmake
 # \brief This module provides the code for Draft make_rectangle function.
 
 ## \addtogroup draftmake
 # @{
+from typing import cast
+
 import FreeCAD as App
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 
-from draftobjects.rectangle import Rectangle
+from draftobjects.rectangle import Rectangle, RectangleObject
+from draftobjects.type_hints import QuantityInput
 
 if App.GuiUp:
     from draftviewproviders.view_rectangle import ViewProviderRectangle
+
+
+def _new_rectangle_object(doc: App.Document) -> RectangleObject:
+    obj = doc.addObject("Part::Part2DObjectPython", "Rectangle")
+    Rectangle(obj)
+    return cast(RectangleObject, obj)
 
 
 def make_rectangle(length, height=0, placement=None, face=None, support=None):
@@ -64,7 +75,8 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
     is ignored when constructing a rectangle this way (face argument is kept).
     """
 
-    if not App.ActiveDocument:
+    doc = App.ActiveDocument
+    if not doc:
         App.Console.PrintError("No active document. Aborting\n")
         return
 
@@ -80,10 +92,9 @@ def make_rectangle(length, height=0, placement=None, face=None, support=None):
     if placement:
         utils.type_check([(placement, App.Placement)], "make_rectangle")
 
-    obj = App.ActiveDocument.addObject("Part::Part2DObjectPython", "Rectangle")
-    Rectangle(obj)
+    obj = _new_rectangle_object(doc)
 
-    obj.Length = length
+    obj.Length = cast(QuantityInput, length)
     obj.Height = height
     obj.AttachmentSupport = support
 

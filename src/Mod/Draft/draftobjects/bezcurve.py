@@ -24,18 +24,31 @@
 # ***************************************************************************
 """Provides the object code for the BezCurve object."""
 
+from __future__ import annotations
+
 ## @package bezcurve
 # \ingroup draftobjects
 # \brief Provides the object code for the BezCurve object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import TYPE_CHECKING, Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftutils import gui_utils
 from draftutils import params
 from draftobjects.base import DraftObject
+from draftobjects.type_hints import (
+    DraftPointListObject,
+    IntegerList,
+    IntegerListInput,
+    QuantityValueInput,
+)
+
+if TYPE_CHECKING:
+    from FreeCAD.Base import Quantity
 
 
 class BezCurve(DraftObject):
@@ -78,14 +91,14 @@ class BezCurve(DraftObject):
             obj, vp_module="view_bezcurve", vp_class="ViewProviderBezCurve"
         )
 
-    def execute(self, fp):
+    def execute(self, obj):
         if self.props_changed_placement_only():
-            fp.positionBySupport()
+            obj.positionBySupport()
             self.props_changed_clear()
             return
 
-        self.createGeometry(fp)
-        fp.positionBySupport()
+        self.createGeometry(obj)
+        obj.positionBySupport()
         self.props_changed_clear()
 
     def _segpoleslst(self, fp):
@@ -105,33 +118,33 @@ class BezCurve(DraftObject):
         # numsegments = (nump // fp.Degree) + 1 * (nump % fp.Degree > 0) -1
         # fp.Continuity = [0]*numsegments
 
-    def onChanged(self, fp, prop):
+    def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
         if prop == "Closed":
             # if remove the last entry when curve gets opened
-            oldlen = len(fp.Continuity)
-            newlen = len(self._segpoleslst(fp)) - 1 + 1 * fp.Closed
+            oldlen = len(obj.Continuity)
+            newlen = len(self._segpoleslst(obj)) - 1 + 1 * obj.Closed
             if oldlen > newlen:
-                fp.Continuity = fp.Continuity[:newlen]
+                obj.Continuity = obj.Continuity[:newlen]
             if oldlen < newlen:
-                fp.Continuity = fp.Continuity + [0] * (newlen - oldlen)
+                obj.Continuity = obj.Continuity + [0] * (newlen - oldlen)
 
         if (
-            hasattr(fp, "Closed")
-            and fp.Closed
+            hasattr(obj, "Closed")
+            and obj.Closed
             and prop in ["Points", "Degree", "Closed"]
-            and len(fp.Points) % fp.Degree
+            and len(obj.Points) % obj.Degree
         ):
             # the curve editing tools can't handle extra points
-            fp.Points = fp.Points[: (fp.Degree * (len(fp.Points) // fp.Degree))]
+            obj.Points = obj.Points[: (obj.Degree * (len(obj.Points) // obj.Degree))]
             # for closed curves
 
-        if prop in ["Degree"] and fp.Degree >= 1:
-            self.resetcontinuity(fp)
+        if prop in ["Degree"] and obj.Degree >= 1:
+            self.resetcontinuity(obj)
 
         if prop in ["Points", "Degree", "Continuity", "Closed"]:
-            self.createGeometry(fp)
+            self.createGeometry(obj)
 
     def createGeometry(self, fp):
         import Part
@@ -203,6 +216,31 @@ class BezCurve(DraftObject):
         pn.normalize()
         pn.multiply((knot - oldp2).Length)
         return pn + knot
+
+
+class BezCurveObject(DraftPointListObject, Protocol):
+    """Document object with properties added by the BezCurve proxy."""
+
+    Degree: int
+    Proxy: BezCurve
+
+    @property
+    def Continuity(self) -> IntegerList: ...
+
+    @Continuity.setter
+    def Continuity(self, value: IntegerListInput) -> None: ...
+
+    @property
+    def Length(self) -> Quantity: ...
+
+    @Length.setter
+    def Length(self, value: QuantityValueInput) -> None: ...
+
+    @property
+    def Area(self) -> Quantity: ...
+
+    @Area.setter
+    def Area(self, value: QuantityValueInput) -> None: ...
 
 
 # Alias for compatibility with v0.18 and earlier

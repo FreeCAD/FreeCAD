@@ -25,18 +25,46 @@
 # ***************************************************************************
 """Provides the object code for the Text object."""
 
+from __future__ import annotations
+
 ## @package text
 # \ingroup draftobjects
 # \brief Provides the object code for the Text object.
 
 ## \addtogroup draftobjects
 # @{
+from typing import Protocol
+
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 from draftobjects.draft_annotation import DraftAnnotation
+from draftobjects.type_hints import StringList, StringListInput
 from draftutils import gui_utils
 from draftutils.messages import _log
+
+
+class TextViewObject(Protocol):
+    """View object with properties used by Draft Text."""
+
+    DisplayMode: str
+    FontSize: float
+    LineSpacing: float
+
+
+class TextObject(Protocol):
+    """Document object with properties added by the Text proxy."""
+
+    Label: str
+
+    @property
+    def Text(self) -> StringList: ...
+
+    @Text.setter
+    def Text(self, value: StringListInput) -> None: ...
+
+    Placement: App.Placement
+    ViewObject: TextViewObject | None
 
 
 class Text(DraftAnnotation):
