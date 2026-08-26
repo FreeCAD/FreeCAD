@@ -114,9 +114,12 @@ TEST(CadXNativePrimitiveParser, EnforcesLabelAndRequiredFields)
 
     std::string longLabel(161, 'a');
     const auto tooLong = CadX::NativePrimitiveOperations::parseRequest(
-        std::string(R"json({"operation":"box","operation_id":"x","expected_graph_revision":"","label":")json")
+        std::string(
+            R"json({"operation":"box","operation_id":"x","expected_graph_revision":"","label":")json"
+        )
         + longLabel
-        + R"json(","center_mm":{"x":0,"y":0,"z":0},"length_mm":1,"width_mm":1,"height_mm":1})json");
+        + R"json(","center_mm":{"x":0,"y":0,"z":0},"length_mm":1,"width_mm":1,"height_mm":1})json"
+    );
     EXPECT_FALSE(tooLong);
 }
 

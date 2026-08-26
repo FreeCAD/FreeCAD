@@ -29,7 +29,7 @@ std::shared_ptr<CadX::GraphSnapshot> makeSnapshot(const std::string& revisionLab
     EXPECT_TRUE(snapshot->finalize(diagnostic)) << diagnostic;
     return snapshot;
 }
-}
+}  // namespace
 
 TEST(CadXGraphStore, PublishesAndLooksUpExactRevision)
 {
@@ -53,8 +53,10 @@ TEST(CadXGraphStore, StaleGraphsAreRejectedUntilExplicitlyAllowed)
     ASSERT_EQ(store.publish({"doc:test", "Assembly"}, snapshot, diagnostic), CadX::StoreError::None);
     ASSERT_TRUE(store.markStale("assembly-graph:test", "source changed"));
 
-    EXPECT_EQ(store.lookup("assembly-graph:test", snapshot->header().graphRevision).error,
-              CadX::StoreError::GraphStale);
+    EXPECT_EQ(
+        store.lookup("assembly-graph:test", snapshot->header().graphRevision).error,
+        CadX::StoreError::GraphStale
+    );
     EXPECT_TRUE(store.lookup("assembly-graph:test", snapshot->header().graphRevision, true));
 }
 
@@ -66,8 +68,10 @@ TEST(CadXGraphStore, SourceDocumentChangesInvalidateDependentGraphs)
     ASSERT_EQ(store.publish({"doc:test", "Assembly"}, snapshot, diagnostic), CadX::StoreError::None);
 
     EXPECT_TRUE(store.markSourceDocumentStale("doc:test", "linked source changed"));
-    EXPECT_EQ(store.lookup("assembly-graph:test", snapshot->header().graphRevision).error,
-              CadX::StoreError::GraphStale);
+    EXPECT_EQ(
+        store.lookup("assembly-graph:test", snapshot->header().graphRevision).error,
+        CadX::StoreError::GraphStale
+    );
 }
 
 TEST(CadXGraphStore, CompareAndSwapRejectsStaleWriter)
@@ -78,13 +82,19 @@ TEST(CadXGraphStore, CompareAndSwapRejectsStaleWriter)
     ASSERT_EQ(store.publish({"doc:test", "Assembly"}, first, diagnostic), CadX::StoreError::None);
     auto second = makeSnapshot("second");
     const auto parent = first->header().graphRevision;
-    ASSERT_EQ(store.publishIfCurrent({"doc:test", "Assembly"}, second, parent, diagnostic),
-              CadX::StoreError::None);
+    ASSERT_EQ(
+        store.publishIfCurrent({"doc:test", "Assembly"}, second, parent, diagnostic),
+        CadX::StoreError::None
+    );
     auto stale = makeSnapshot("stale");
-    EXPECT_EQ(store.publishIfCurrent({"doc:test", "Assembly"}, stale, parent, diagnostic),
-              CadX::StoreError::RevisionMismatch);
-    EXPECT_EQ(store.current({"doc:test", "Assembly"}).snapshot->header().graphRevision,
-              second->header().graphRevision);
+    EXPECT_EQ(
+        store.publishIfCurrent({"doc:test", "Assembly"}, stale, parent, diagnostic),
+        CadX::StoreError::RevisionMismatch
+    );
+    EXPECT_EQ(
+        store.current({"doc:test", "Assembly"}).snapshot->header().graphRevision,
+        second->header().graphRevision
+    );
 }
 
 TEST(CadXGraphStore, CompareAndSwapEmptyRevisionOnlyPublishesAnInitialGraph)
@@ -92,14 +102,20 @@ TEST(CadXGraphStore, CompareAndSwapEmptyRevisionOnlyPublishesAnInitialGraph)
     CadX::GraphStore store;
     auto first = makeSnapshot("first");
     std::string diagnostic;
-    ASSERT_EQ(store.publishIfCurrent({"doc:test", "Assembly"}, first, {}, diagnostic),
-              CadX::StoreError::None) << diagnostic;
+    ASSERT_EQ(
+        store.publishIfCurrent({"doc:test", "Assembly"}, first, {}, diagnostic),
+        CadX::StoreError::None
+    ) << diagnostic;
 
     auto second = makeSnapshot("second");
-    EXPECT_EQ(store.publishIfCurrent({"doc:test", "Assembly"}, second, {}, diagnostic),
-              CadX::StoreError::RevisionMismatch);
-    EXPECT_EQ(store.current({"doc:test", "Assembly"}).snapshot->header().graphRevision,
-              first->header().graphRevision);
+    EXPECT_EQ(
+        store.publishIfCurrent({"doc:test", "Assembly"}, second, {}, diagnostic),
+        CadX::StoreError::RevisionMismatch
+    );
+    EXPECT_EQ(
+        store.current({"doc:test", "Assembly"}).snapshot->header().graphRevision,
+        first->header().graphRevision
+    );
 }
 
 TEST(CadXGraphStore, InitialCompareAndSwapValidatesSnapshotScope)
@@ -108,8 +124,10 @@ TEST(CadXGraphStore, InitialCompareAndSwapValidatesSnapshotScope)
     auto snapshot = makeSnapshot("scope-mismatch");
     std::string diagnostic;
 
-    EXPECT_EQ(store.publishIfCurrent({"doc:other", "Assembly"}, snapshot, {}, diagnostic),
-              CadX::StoreError::RevisionMismatch);
+    EXPECT_EQ(
+        store.publishIfCurrent({"doc:other", "Assembly"}, snapshot, {}, diagnostic),
+        CadX::StoreError::RevisionMismatch
+    );
     EXPECT_EQ(diagnostic, "graph scope does not match the snapshot header");
     EXPECT_EQ(store.graphCount(), 0U);
 }
@@ -123,10 +141,14 @@ TEST(CadXGraphStore, InitialCompareAndSwapCannotReplaceAStaleHandle)
     ASSERT_TRUE(store.markStale("assembly-graph:test", "source changed"));
 
     auto replacement = makeSnapshot("replacement");
-    EXPECT_EQ(store.publishIfCurrent({"doc:test", "Assembly"}, replacement, {}, diagnostic),
-              CadX::StoreError::RevisionMismatch);
-    EXPECT_EQ(store.current({"doc:test", "Assembly"}, true).snapshot->header().graphRevision,
-              first->header().graphRevision);
+    EXPECT_EQ(
+        store.publishIfCurrent({"doc:test", "Assembly"}, replacement, {}, diagnostic),
+        CadX::StoreError::RevisionMismatch
+    );
+    EXPECT_EQ(
+        store.current({"doc:test", "Assembly"}, true).snapshot->header().graphRevision,
+        first->header().graphRevision
+    );
 }
 
 TEST(CadXGraphStore, CompareAndSwapAllowsOnlyOneConcurrentWriter)

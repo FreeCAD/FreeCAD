@@ -6,8 +6,7 @@
 
 namespace
 {
-std::shared_ptr<CadX::GraphSnapshot> snapshot(const std::string& uid,
-                                             const std::string& name)
+std::shared_ptr<CadX::GraphSnapshot> snapshot(const std::string& uid, const std::string& name)
 {
     auto result = std::make_shared<CadX::GraphSnapshot>();
     result->header().graphId = "graph:" + uid;

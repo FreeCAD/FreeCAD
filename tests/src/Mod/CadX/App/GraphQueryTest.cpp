@@ -36,13 +36,15 @@ std::shared_ptr<CadX::GraphSnapshot> makeAssembly()
     occurrence.presentation.visible = true;
     snapshot->nodes().push_back(occurrence);
 
-    snapshot->edges().push_back({"contains", CadX::EdgeKind::Contains, "assembly", "occurrence", {}, ""});
+    snapshot->edges().push_back(
+        {"contains", CadX::EdgeKind::Contains, "assembly", "occurrence", {}, ""}
+    );
     snapshot->edges().push_back({"instance", CadX::EdgeKind::InstanceOf, "occurrence", "part", {}, ""});
     std::string diagnostic;
     EXPECT_TRUE(snapshot->finalize(diagnostic)) << diagnostic;
     return snapshot;
 }
-}
+}  // namespace
 
 TEST(CadXGraphQuery, FindsVisibleOccurrencesDeterministically)
 {

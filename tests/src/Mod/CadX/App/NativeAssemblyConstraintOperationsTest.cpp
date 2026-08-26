@@ -27,7 +27,8 @@ std::string jointJson(const std::string& extra = {})
            "\"connector\":\"Face1\"},"
            "\"second\":{\"component\":\"Arm\",\"connector_type\":\"interface\","
            "\"connector\":\"Pivot\"},"
-           "\"joint_type\":\"revolute\"" + extra + "}";
+           "\"joint_type\":\"revolute\""
+        + extra + "}";
 }
 }  // namespace
 
@@ -54,16 +55,25 @@ TEST(CadXNativeAssemblyConstraintParser, GroundingRequiresUniqueBoundedComponent
 {
     CadX::GroundingRequest request;
     std::string diagnostic;
-    EXPECT_TRUE(CadX::parseGroundingRequest(
-        groundingJson("set_grounded", "[\"Base\",\"Arm\"]"),
-        "set_grounded", request, diagnostic))
-        << diagnostic;
+    EXPECT_TRUE(
+        CadX::parseGroundingRequest(
+            groundingJson("set_grounded", "[\"Base\",\"Arm\"]"),
+            "set_grounded",
+            request,
+            diagnostic
+        )
+    ) << diagnostic;
     EXPECT_TRUE(request.grounded);
     EXPECT_EQ(request.components.size(), 2U);
 
-    EXPECT_FALSE(CadX::parseGroundingRequest(
-        groundingJson("set_grounded", "[\"Base\",\"Base\"]"),
-        "set_grounded", request, diagnostic));
+    EXPECT_FALSE(
+        CadX::parseGroundingRequest(
+            groundingJson("set_grounded", "[\"Base\",\"Base\"]"),
+            "set_grounded",
+            request,
+            diagnostic
+        )
+    );
     EXPECT_NE(diagnostic.find("unique"), std::string::npos);
 }
 
@@ -79,8 +89,9 @@ TEST(CadXNativeAssemblyConstraintParser, GroundingRejectsMoreThanSixteenComponen
     components += "]";
     CadX::GroundingRequest request;
     std::string diagnostic;
-    EXPECT_FALSE(CadX::parseGroundingRequest(
-        groundingJson("set_movable", components), "set_movable", request, diagnostic));
+    EXPECT_FALSE(
+        CadX::parseGroundingRequest(groundingJson("set_movable", components), "set_movable", request, diagnostic)
+    );
     EXPECT_NE(diagnostic.find("1 to 16"), std::string::npos);
 }
 
@@ -88,12 +99,16 @@ TEST(CadXNativeAssemblyConstraintParser, JointParsesConnectorRecordsAndOffsets)
 {
     CadX::JointRequest request;
     std::string diagnostic;
-    EXPECT_TRUE(CadX::parseJointRequest(
-        jointJson(
-            ",\"label\":\"Arm pivot\",\"reverse\":true,\"limits\":{"
-            "\"minimum_degrees\":-90,\"maximum_degrees\":90}"),
-        request, diagnostic))
-        << diagnostic;
+    EXPECT_TRUE(
+        CadX::parseJointRequest(
+            jointJson(
+                ",\"label\":\"Arm pivot\",\"reverse\":true,\"limits\":{"
+                "\"minimum_degrees\":-90,\"maximum_degrees\":90}"
+            ),
+            request,
+            diagnostic
+        )
+    ) << diagnostic;
     EXPECT_EQ(request.jointType, "revolute");
     EXPECT_TRUE(request.reverse);
     EXPECT_TRUE(request.hasLimits);
@@ -105,13 +120,16 @@ TEST(CadXNativeAssemblyConstraintParser, JointRejectsInvalidLimitsAndUnknownFiel
 {
     CadX::JointRequest request;
     std::string diagnostic;
-    EXPECT_FALSE(CadX::parseJointRequest(
-        jointJson(",\"limits\":{\"minimum_degrees\":90,\"maximum_degrees\":-90}"),
-        request, diagnostic));
+    EXPECT_FALSE(
+        CadX::parseJointRequest(
+            jointJson(",\"limits\":{\"minimum_degrees\":90,\"maximum_degrees\":-90}"),
+            request,
+            diagnostic
+        )
+    );
     EXPECT_NE(diagnostic.find("must not exceed"), std::string::npos);
 
-    EXPECT_FALSE(CadX::parseJointRequest(
-        jointJson(",\"unexpected\":true"), request, diagnostic));
+    EXPECT_FALSE(CadX::parseJointRequest(jointJson(",\"unexpected\":true"), request, diagnostic));
     EXPECT_NE(diagnostic.find("unknown field"), std::string::npos);
 }
 
@@ -119,14 +137,18 @@ TEST(CadXNativeAssemblyConstraintParser, JointRejectsMalformedConnectorTopology)
 {
     CadX::JointRequest request;
     std::string diagnostic;
-    EXPECT_FALSE(CadX::parseJointRequest(
-        "{\"operation\":\"create\",\"operation_id\":\"op\","
-        "\"expected_graph_revision\":\"rev\",\"assembly\":{\"object_name\":\"Assembly\"},"
-        "\"first\":{\"component\":\"Base\",\"connector_type\":\"element\","
-        "\"connector\":\"Face0\"},"
-        "\"second\":{\"component\":\"Arm\",\"connector_type\":\"element\","
-        "\"connector\":\"Face1\"},\"joint_type\":\"fixed\"}",
-        request, diagnostic));
+    EXPECT_FALSE(
+        CadX::parseJointRequest(
+            "{\"operation\":\"create\",\"operation_id\":\"op\","
+            "\"expected_graph_revision\":\"rev\",\"assembly\":{\"object_name\":\"Assembly\"},"
+            "\"first\":{\"component\":\"Base\",\"connector_type\":\"element\","
+            "\"connector\":\"Face0\"},"
+            "\"second\":{\"component\":\"Arm\",\"connector_type\":\"element\","
+            "\"connector\":\"Face1\"},\"joint_type\":\"fixed\"}",
+            request,
+            diagnostic
+        )
+    );
     EXPECT_NE(diagnostic.find("FaceN"), std::string::npos);
 }
 
@@ -165,9 +187,8 @@ TEST(CadXNativeAssemblyConstraintParser, UnsupportedBuildReturnsExplicitFailure)
     CadX::GraphStore graphs;
     CadX::GraphAuditLog audit;
     CadX::NativeAssemblyConstraintOperations operations(graphs, audit);
-    const auto result = operations.execute(
-        "assembly.ground",
-        groundingJson("set_grounded", "[\"Base\"]"));
+    const auto result
+        = operations.execute("assembly.ground", groundingJson("set_grounded", "[\"Base\"]"));
 #ifndef CADX_HAVE_ASSEMBLY
     EXPECT_FALSE(result.ok);
     EXPECT_EQ(result.errorCode, "CADX_UNSUPPORTED_OBJECT");
@@ -188,13 +209,11 @@ TEST(CadXNativeMutationPublication, ReconcilesCommittedGraphAfterCompareAndSwapR
     auto concurrent = publicationSnapshot("concurrent");
     ASSERT_EQ(graphs.publish(scope, concurrent, diagnostic), CadX::StoreError::None) << diagnostic;
     auto committed = publicationSnapshot("committed");
-    const auto publication = CadX::publishCommittedGraph(
-        graphs, scope, committed, parent, diagnostic);
+    const auto publication = CadX::publishCommittedGraph(graphs, scope, committed, parent, diagnostic);
 
     EXPECT_EQ(publication, CadX::CommitPublication::Reconciled);
     EXPECT_NE(diagnostic.find("SEVERE"), std::string::npos);
     const auto current = graphs.current(scope);
     ASSERT_TRUE(current);
-    EXPECT_EQ(current.snapshot->header().graphRevision,
-              committed->header().graphRevision);
+    EXPECT_EQ(current.snapshot->header().graphRevision, committed->header().graphRevision);
 }

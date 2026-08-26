@@ -17,9 +17,7 @@ TEST(CadXMainThreadGateway, BindsToQtApplicationThreadWhenConstructedElsewhere)
     QCoreApplication application(argc, argv);
 
     std::unique_ptr<CadX::MainThreadGateway> gateway;
-    std::thread creator([&gateway] {
-        gateway = std::make_unique<CadX::MainThreadGateway>();
-    });
+    std::thread creator([&gateway] { gateway = std::make_unique<CadX::MainThreadGateway>(); });
     creator.join();
 
     ASSERT_NE(gateway, nullptr);

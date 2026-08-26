@@ -17,22 +17,26 @@
 
 namespace
 {
-CadX::NodeRecord node(const std::string& id,
-                     CadX::NodeKind kind,
-                     const std::string& objectName,
-                     const std::string& label,
-                     CadX::NodePayload payload = {},
-                     bool unresolved = false)
+CadX::NodeRecord node(
+    const std::string& id,
+    CadX::NodeKind kind,
+    const std::string& objectName,
+    const std::string& label,
+    CadX::NodePayload payload = {},
+    bool unresolved = false
+)
 {
     CadX::NodeRecord result;
     result.id = id;
     result.kind = kind;
     result.native = {"doc:examples", objectName, std::string("Example::") + objectName};
     result.display = {label, label};
-    std::transform(result.display.normalizedLabel.begin(),
-                   result.display.normalizedLabel.end(),
-                   result.display.normalizedLabel.begin(),
-                   [](unsigned char character) { return static_cast<char>(std::tolower(character)); });
+    std::transform(
+        result.display.normalizedLabel.begin(),
+        result.display.normalizedLabel.end(),
+        result.display.normalizedLabel.begin(),
+        [](unsigned char character) { return static_cast<char>(std::tolower(character)); }
+    );
     result.provenance = {"freecad-example", "example:" + id};
     result.presentation = {true, false, "view:main"};
     result.payload = std::move(payload);
@@ -40,11 +44,13 @@ CadX::NodeRecord node(const std::string& id,
     return result;
 }
 
-CadX::EdgeRecord edge(const std::string& id,
-                      CadX::EdgeKind kind,
-                      const std::string& from,
-                      const std::string& to,
-                      const std::string& relation = {})
+CadX::EdgeRecord edge(
+    const std::string& id,
+    CadX::EdgeKind kind,
+    const std::string& from,
+    const std::string& to,
+    const std::string& relation = {}
+)
 {
     CadX::EdgeRecord result;
     result.id = id;
@@ -56,9 +62,11 @@ CadX::EdgeRecord edge(const std::string& id,
     return result;
 }
 
-CadX::OccurrencePayload occurrence(std::initializer_list<std::string> path,
-                                    bool rigid,
-                                    const std::string& signature)
+CadX::OccurrencePayload occurrence(
+    std::initializer_list<std::string> path,
+    bool rigid,
+    const std::string& signature
+)
 {
     CadX::OccurrencePayload result;
     result.occurrencePath = path;
@@ -87,25 +95,58 @@ CadX::GraphSnapshot makeExampleGraph(bool reverseInput = false)
     // occurrence, relation, artifact, and unresolved external reference.
     graph.nodes() = {
         node("document", CadX::NodeKind::Document, "Document", "Document"),
-        node("assembly", CadX::NodeKind::AssemblyDefinition, "Assembly", "Main Assembly",
-             CadX::DefinitionPayload {"assembly", "Assembly", "none", "freecad", "assembly"}),
-        node("part", CadX::NodeKind::PartDefinition, "Part", "Bracket",
-             CadX::DefinitionPayload {"part", "Part", "solid", "freecad", "mechanical"}),
-        node("body", CadX::NodeKind::BodyDefinition, "Body", "Bracket Body",
-             CadX::DefinitionPayload {"body", "Body", "solid", "freecad", "mechanical"}),
+        node(
+            "assembly",
+            CadX::NodeKind::AssemblyDefinition,
+            "Assembly",
+            "Main Assembly",
+            CadX::DefinitionPayload {"assembly", "Assembly", "none", "freecad", "assembly"}
+        ),
+        node(
+            "part",
+            CadX::NodeKind::PartDefinition,
+            "Part",
+            "Bracket",
+            CadX::DefinitionPayload {"part", "Part", "solid", "freecad", "mechanical"}
+        ),
+        node(
+            "body",
+            CadX::NodeKind::BodyDefinition,
+            "Body",
+            "Bracket Body",
+            CadX::DefinitionPayload {"body", "Body", "solid", "freecad", "mechanical"}
+        ),
         node("feature", CadX::NodeKind::FeatureDefinition, "Pad", "Pad Feature"),
-        node("occurrence-a", CadX::NodeKind::Occurrence, "BracketInstanceA", "Bracket A",
-             occurrence({"Assembly", "BracketInstanceA"}, true, "shape:bracket")),
-        node("occurrence-subassembly", CadX::NodeKind::AssemblyOccurrence,
-             "SubassemblyInstance", "Subassembly",
-             occurrence({"Assembly", "SubassemblyInstance"}, true, "shape:subassembly")),
-        node("joint", CadX::NodeKind::Joint, "Joint", "Fixed Joint",
-             CadX::RelationPayload {"fixed", false}),
-        node("artifact", CadX::NodeKind::AssemblyArtifact, "BomRow", "BOM Row",
-             CadX::ArtifactPayload {"bom-row"}),
-        node("unresolved", CadX::NodeKind::UnresolvedDefinition, "MissingPart", "Missing Part",
-             CadX::UnresolvedPayload {"doc:missing", "MissingPart", "source document unavailable"},
-             true),
+        node(
+            "occurrence-a",
+            CadX::NodeKind::Occurrence,
+            "BracketInstanceA",
+            "Bracket A",
+            occurrence({"Assembly", "BracketInstanceA"}, true, "shape:bracket")
+        ),
+        node(
+            "occurrence-subassembly",
+            CadX::NodeKind::AssemblyOccurrence,
+            "SubassemblyInstance",
+            "Subassembly",
+            occurrence({"Assembly", "SubassemblyInstance"}, true, "shape:subassembly")
+        ),
+        node("joint", CadX::NodeKind::Joint, "Joint", "Fixed Joint", CadX::RelationPayload {"fixed", false}),
+        node(
+            "artifact",
+            CadX::NodeKind::AssemblyArtifact,
+            "BomRow",
+            "BOM Row",
+            CadX::ArtifactPayload {"bom-row"}
+        ),
+        node(
+            "unresolved",
+            CadX::NodeKind::UnresolvedDefinition,
+            "MissingPart",
+            "Missing Part",
+            CadX::UnresolvedPayload {"doc:missing", "MissingPart", "source document unavailable"},
+            true
+        ),
     };
 
     for (auto& item : graph.nodes()) {
@@ -123,19 +164,19 @@ CadX::GraphSnapshot makeExampleGraph(bool reverseInput = false)
         edge("e-part-body", CadX::EdgeKind::HasBody, "part", "body"),
         edge("e-body-feature", CadX::EdgeKind::HasFeature, "body", "feature"),
         edge("e-assembly-occurrence-a", CadX::EdgeKind::Contains, "assembly", "occurrence-a"),
-        edge("e-assembly-subassembly", CadX::EdgeKind::Contains,
-             "assembly", "occurrence-subassembly"),
-        edge("e-occurrence-a-definition", CadX::EdgeKind::InstanceOf,
-             "occurrence-a", "part"),
-        edge("e-subassembly-definition", CadX::EdgeKind::InstanceOf,
-             "occurrence-subassembly", "assembly"),
-        edge("e-subassembly-occurrence-a", CadX::EdgeKind::NestedOccurrence,
-             "occurrence-subassembly", "occurrence-a"),
+        edge("e-assembly-subassembly", CadX::EdgeKind::Contains, "assembly", "occurrence-subassembly"),
+        edge("e-occurrence-a-definition", CadX::EdgeKind::InstanceOf, "occurrence-a", "part"),
+        edge("e-subassembly-definition", CadX::EdgeKind::InstanceOf, "occurrence-subassembly", "assembly"),
+        edge(
+            "e-subassembly-occurrence-a",
+            CadX::EdgeKind::NestedOccurrence,
+            "occurrence-subassembly",
+            "occurrence-a"
+        ),
         edge("e-assembly-joint", CadX::EdgeKind::HasJoint, "assembly", "joint"),
         edge("e-joint-endpoint", CadX::EdgeKind::JointEndpoint, "joint", "occurrence-a"),
         edge("e-assembly-artifact", CadX::EdgeKind::HasArtifact, "assembly", "artifact"),
-        edge("e-artifact-unresolved", CadX::EdgeKind::UnresolvedSource,
-             "artifact", "unresolved"),
+        edge("e-artifact-unresolved", CadX::EdgeKind::UnresolvedSource, "artifact", "unresolved"),
         edge("e-assembly-source", CadX::EdgeKind::SourceDocument, "assembly", "document"),
     };
 
@@ -150,9 +191,7 @@ CadX::GraphSnapshot makeExampleGraph(bool reverseInput = false)
     return graph;
 }
 
-std::string replaceOnce(std::string value,
-                        const std::string& search,
-                        const std::string& replacement)
+std::string replaceOnce(std::string value, const std::string& search, const std::string& replacement)
 {
     const auto position = value.find(search);
     if (position == std::string::npos) {
@@ -174,12 +213,10 @@ TEST(CadXGraphEvidence, RoundTripPreservesEveryStrictExampleRecord)
     ASSERT_EQ(decoded.snapshot->nodes().size(), original.nodes().size());
     ASSERT_EQ(decoded.snapshot->edges().size(), original.edges().size());
     EXPECT_EQ(CadX::canonicalSemantic(*decoded.snapshot), CadX::canonicalSemantic(original));
-    EXPECT_EQ(CadX::canonicalPresentation(*decoded.snapshot),
-              CadX::canonicalPresentation(original));
+    EXPECT_EQ(CadX::canonicalPresentation(*decoded.snapshot), CadX::canonicalPresentation(original));
     EXPECT_EQ(CadX::GraphJsonCodec::encode(*decoded.snapshot), evidence);
     EXPECT_EQ(decoded.snapshot->header().graphRevision, original.header().graphRevision);
-    EXPECT_EQ(decoded.snapshot->header().presentationRevision,
-              original.header().presentationRevision);
+    EXPECT_EQ(decoded.snapshot->header().presentationRevision, original.header().presentationRevision);
 }
 
 TEST(CadXGraphEvidence, InsertionOrderDoesNotChangeRevisionOrEvidence)
@@ -201,18 +238,31 @@ TEST(CadXGraphEvidence, RoundTripPreservesTypedMutationPayloads)
         }
         else if (item.id == "joint") {
             CadX::JointPayload joint {"revolute", true, true, -15.0, 45.0};
-            joint.first = {"BracketInstanceA", "element", "Face1",
-                           CadX::Placement {1.0, 2.0, 3.0, 0.0, 0.0, 0.6, 0.8}, true};
-            joint.second = {"BracketInstanceA", "interface", "Pivot",
-                            CadX::Placement {-4.0, 5.0, 6.0, 0.0, 0.0, 0.0, 1.0}, true};
+            joint.first = {
+                "BracketInstanceA",
+                "element",
+                "Face1",
+                CadX::Placement {1.0, 2.0, 3.0, 0.0, 0.0, 0.6, 0.8},
+                true
+            };
+            joint.second = {
+                "BracketInstanceA",
+                "interface",
+                "Pivot",
+                CadX::Placement {-4.0, 5.0, 6.0, 0.0, 0.0, 0.0, 1.0},
+                true
+            };
             item.payload = joint;
         }
     }
     graph.nodes().push_back(node(
-        "ground", CadX::NodeKind::GroundConstraint, "GroundedJoint", "Grounded",
-        CadX::GroundConstraintPayload {true, "BracketInstanceA", "GroundedJoint"}));
-    graph.edges().push_back(
-        edge("e-ground", CadX::EdgeKind::GroundedBy, "ground", "occurrence-a"));
+        "ground",
+        CadX::NodeKind::GroundConstraint,
+        "GroundedJoint",
+        "Grounded",
+        CadX::GroundConstraintPayload {true, "BracketInstanceA", "GroundedJoint"}
+    ));
+    graph.edges().push_back(edge("e-ground", CadX::EdgeKind::GroundedBy, "ground", "occurrence-a"));
     std::string diagnostic;
     ASSERT_TRUE(graph.finalize(diagnostic)) << diagnostic;
 
@@ -227,10 +277,20 @@ TEST(CadXGraphEvidence, JointRoundTripPreservesTopologyAndCanonicalRevision)
 {
     auto graph = makeExampleGraph();
     CadX::JointPayload joint {"revolute", false, true, -30.0, 60.0};
-    joint.first = {"BracketInstanceA", "element", "Face12",
-                   CadX::Placement {10.0, -2.0, 0.5, 0.0, 0.0, 0.6, 0.8}, true};
-    joint.second = {"BracketInstanceA", "interface", "PivotAxis",
-                    CadX::Placement {0.0, 0.0, 7.0, 0.0, 0.0, 0.0, 1.0}, false};
+    joint.first = {
+        "BracketInstanceA",
+        "element",
+        "Face12",
+        CadX::Placement {10.0, -2.0, 0.5, 0.0, 0.0, 0.6, 0.8},
+        true
+    };
+    joint.second = {
+        "BracketInstanceA",
+        "interface",
+        "PivotAxis",
+        CadX::Placement {0.0, 0.0, 7.0, 0.0, 0.0, 0.0, 1.0},
+        false
+    };
     for (auto& item : graph.nodes()) {
         if (item.id == "joint") {
             item.payload = joint;
@@ -279,16 +339,15 @@ TEST(CadXGraphEvidence, JointPayloadRejectsMalformedConnectorEvidence)
 
     const auto missingPath = replaceOnce(evidence, "\"connector\":\"Face1\",", "");
     EXPECT_FALSE(CadX::GraphJsonCodec::decode(missingPath));
-    const auto badOffset = replaceOnce(evidence, "\"offset\":[0,0,0,0,0,0,1]",
-                                       "\"offset\":null");
+    const auto badOffset = replaceOnce(evidence, "\"offset\":[0,0,0,0,0,0,1]", "\"offset\":null");
     EXPECT_FALSE(CadX::GraphJsonCodec::decode(badOffset));
     const auto badFlag = replaceOnce(evidence, "\"has_offset\":true", "\"has_offset\":1");
     EXPECT_FALSE(CadX::GraphJsonCodec::decode(badFlag));
-    const auto badQuaternion = replaceOnce(evidence, "\"offset\":[0,0,0,0,0,0,1]",
-                                           "\"offset\":[0,0,0,0,0,0,0]");
+    const auto badQuaternion
+        = replaceOnce(evidence, "\"offset\":[0,0,0,0,0,0,1]", "\"offset\":[0,0,0,0,0,0,0]");
     EXPECT_FALSE(CadX::GraphJsonCodec::decode(badQuaternion));
-    const auto unknownField = replaceOnce(evidence, "\"type\":\"joint\"",
-                                          "\"type\":\"joint\",\"unexpected\":true");
+    const auto unknownField
+        = replaceOnce(evidence, "\"type\":\"joint\"", "\"type\":\"joint\",\"unexpected\":true");
     EXPECT_FALSE(CadX::GraphJsonCodec::decode(unknownField));
 }
 
@@ -296,8 +355,13 @@ TEST(CadXGraphEvidence, JointOffsetIsNormalizedForDeterministicRoundTrip)
 {
     auto graph = makeExampleGraph();
     CadX::JointPayload joint {"revolute", false, false, 0.0, 0.0};
-    joint.first = {"BracketInstanceA", "element", "Face1",
-                   CadX::Placement {0.0, 0.0, 0.0, 0.0, 0.0, 3.0, 4.0}, true};
+    joint.first = {
+        "BracketInstanceA",
+        "element",
+        "Face1",
+        CadX::Placement {0.0, 0.0, 0.0, 0.0, 0.0, 3.0, 4.0},
+        true
+    };
     joint.second = {"BracketInstanceA", "interface", "Pivot", {}, false};
     for (auto& item : graph.nodes()) {
         if (item.id == "joint") {
@@ -322,7 +386,8 @@ TEST(CadXGraphEvidence, TamperedRevisionIsRejected)
     const auto tampered = replaceOnce(
         evidence,
         "\"graph_revision\":\"" + graph.header().graphRevision + "\"",
-        "\"graph_revision\":\"sha256:tampered\"");
+        "\"graph_revision\":\"sha256:tampered\""
+    );
     ASSERT_NE(tampered, evidence);
 
     const auto result = CadX::GraphJsonCodec::decode(tampered);
@@ -333,8 +398,7 @@ TEST(CadXGraphEvidence, TamperedRevisionIsRejected)
 TEST(CadXGraphEvidence, RejectsContainmentCycleAtValidationLayer)
 {
     auto graph = makeExampleGraph();
-    graph.edges().push_back(
-        edge("e-cycle", CadX::EdgeKind::Contains, "occurrence-a", "assembly"));
+    graph.edges().push_back(edge("e-cycle", CadX::EdgeKind::Contains, "occurrence-a", "assembly"));
     std::string diagnostic;
 
     EXPECT_FALSE(graph.finalize(diagnostic));
@@ -345,10 +409,13 @@ TEST(CadXGraphEvidence, RejectsMissingOccurrenceDefinitionAtValidationLayer)
 {
     auto graph = makeExampleGraph();
     graph.edges().erase(
-        std::remove_if(graph.edges().begin(), graph.edges().end(), [](const auto& item) {
-            return item.id == "e-occurrence-a-definition";
-        }),
-        graph.edges().end());
+        std::remove_if(
+            graph.edges().begin(),
+            graph.edges().end(),
+            [](const auto& item) { return item.id == "e-occurrence-a-definition"; }
+        ),
+        graph.edges().end()
+    );
     std::string diagnostic;
 
     EXPECT_FALSE(graph.finalize(diagnostic));
@@ -379,14 +446,10 @@ TEST(CadXGraphAudit, WritesOrderedRevisionAndHashCheckpoints)
 
     const auto graph = makeExampleGraph();
     CadX::GraphAuditLog log(path);
-    log.record(CadX::makeGraphAuditEvent("build", "started", nullptr,
-                                         "assembly.graph_snapshot"));
-    log.record(CadX::makeGraphAuditEvent("build", "passed", &graph,
-                                         "assembly.graph_snapshot"));
-    log.record(CadX::makeGraphAuditEvent("round_trip", "passed", &graph,
-                                         "assembly.graph_snapshot"));
-    log.record(CadX::makeGraphAuditEvent("publish", "passed", &graph,
-                                         "assembly.graph_snapshot"));
+    log.record(CadX::makeGraphAuditEvent("build", "started", nullptr, "assembly.graph_snapshot"));
+    log.record(CadX::makeGraphAuditEvent("build", "passed", &graph, "assembly.graph_snapshot"));
+    log.record(CadX::makeGraphAuditEvent("round_trip", "passed", &graph, "assembly.graph_snapshot"));
+    log.record(CadX::makeGraphAuditEvent("publish", "passed", &graph, "assembly.graph_snapshot"));
 
     std::ifstream input(path);
     ASSERT_TRUE(input);
@@ -394,12 +457,13 @@ TEST(CadXGraphAudit, WritesOrderedRevisionAndHashCheckpoints)
     int count = 0;
     while (std::getline(input, line)) {
         ++count;
-        EXPECT_NE(line.find("\"schema_version\":\"cadx.graph-audit.v1\""),
-                  std::string::npos);
+        EXPECT_NE(line.find("\"schema_version\":\"cadx.graph-audit.v1\""), std::string::npos);
         EXPECT_NE(line.find("\"sequence\":" + std::to_string(count)), std::string::npos);
         if (count > 1) {
-            EXPECT_NE(line.find("\"graph_revision\":\"" + graph.header().graphRevision + "\""),
-                      std::string::npos);
+            EXPECT_NE(
+                line.find("\"graph_revision\":\"" + graph.header().graphRevision + "\""),
+                std::string::npos
+            );
             EXPECT_NE(line.find("\"semantic_hash\":\"sha256:"), std::string::npos);
             EXPECT_NE(line.find("\"presentation_hash\":\"sha256:"), std::string::npos);
         }

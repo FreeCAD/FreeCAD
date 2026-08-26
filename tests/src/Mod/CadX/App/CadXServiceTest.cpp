@@ -49,8 +49,12 @@ CadX::AssemblyCapture makeCapture()
     capture.nodes.push_back(secondOccurrence);
     capture.edges.push_back({"contains", CadX::EdgeKind::Contains, "assembly", "occurrence", {}, ""});
     capture.edges.push_back({"instance", CadX::EdgeKind::InstanceOf, "occurrence", "part", {}, ""});
-    capture.edges.push_back({"contains-two", CadX::EdgeKind::Contains, "assembly", "occurrence-two", {}, ""});
-    capture.edges.push_back({"instance-two", CadX::EdgeKind::InstanceOf, "occurrence-two", "part", {}, ""});
+    capture.edges.push_back(
+        {"contains-two", CadX::EdgeKind::Contains, "assembly", "occurrence-two", {}, ""}
+    );
+    capture.edges.push_back(
+        {"instance-two", CadX::EdgeKind::InstanceOf, "occurrence-two", "part", {}, ""}
+    );
     return capture;
 }
 
@@ -75,17 +79,17 @@ TEST(CadXService, ExecutesAllBoundedGraphQueryOperations)
     const auto decoded = CadX::GraphJsonCodec::decode(evidence.toJson());
     ASSERT_TRUE(decoded) << decoded.errorCode << ": " << decoded.diagnostic;
     EXPECT_EQ(decoded.snapshot->header().graphRevision, revision);
-    const auto base = "\"graph_id\":\"" + graphId + "\",\"graph_revision\":\""
-        + revision + "\",";
+    const auto base = "\"graph_id\":\"" + graphId + "\",\"graph_revision\":\"" + revision + "\",";
 
-    const auto summary = service.executeTool(
-        "assembly.graph_query", "{" + base + "\"operation\":\"summary\"}");
+    const auto summary
+        = service.executeTool("assembly.graph_query", "{" + base + "\"operation\":\"summary\"}");
     ASSERT_TRUE(summary.ok) << summary.message;
     EXPECT_EQ(payload(summary).value("operation").toString(), "summary");
 
     const auto find = service.executeTool(
         "assembly.graph_query",
-        "{" + base + "\"operation\":\"find_nodes\",\"node_kinds\":[\"Occurrence\"],\"limit\":1}");
+        "{" + base + "\"operation\":\"find_nodes\",\"node_kinds\":[\"Occurrence\"],\"limit\":1}"
+    );
     ASSERT_TRUE(find.ok) << find.message;
     EXPECT_EQ(payload(find).value("returned_node_count").toInt(), 1);
     const auto cursor = payload(find).value("next_cursor").toString().toStdString();
@@ -93,25 +97,29 @@ TEST(CadXService, ExecutesAllBoundedGraphQueryOperations)
     const auto next = service.executeTool(
         "assembly.graph_query",
         "{" + base + "\"operation\":\"find_nodes\",\"node_kinds\":[\"Occurrence\"],\"limit\":1,\"cursor\":\""
-            + cursor + "\"}");
+            + cursor + "\"}"
+    );
     ASSERT_TRUE(next.ok) << next.message;
     EXPECT_EQ(payload(next).value("returned_node_count").toInt(), 1);
 
     const auto neighbors = service.executeTool(
         "assembly.graph_query",
-        "{" + base + "\"operation\":\"neighbors\",\"start_node_ids\":[\"occurrence\"],\"direction\":\"outgoing\"}");
+        "{" + base + "\"operation\":\"neighbors\",\"start_node_ids\":[\"occurrence\"],\"direction\":\"outgoing\"}"
+    );
     ASSERT_TRUE(neighbors.ok) << neighbors.message;
     EXPECT_EQ(payload(neighbors).value("returned_edge_count").toInt(), 1);
 
     const auto subgraph = service.executeTool(
         "assembly.graph_query",
-        "{" + base + "\"operation\":\"subgraph\",\"start_node_ids\":[\"occurrence\"],\"max_depth\":1,\"edge_kinds\":[\"INSTANCE_OF\"]}");
+        "{" + base + "\"operation\":\"subgraph\",\"start_node_ids\":[\"occurrence\"],\"max_depth\":1,\"edge_kinds\":[\"INSTANCE_OF\"]}"
+    );
     ASSERT_TRUE(subgraph.ok) << subgraph.message;
     EXPECT_EQ(payload(subgraph).value("returned_edge_count").toInt(), 1);
 
     const auto path = service.executeTool(
         "assembly.graph_query",
-        "{" + base + "\"operation\":\"shortest_path\",\"start_node_id\":\"occurrence\",\"target_node_id\":\"part\",\"max_depth\":1,\"edge_kinds\":[\"INSTANCE_OF\"]}");
+        "{" + base + "\"operation\":\"shortest_path\",\"start_node_id\":\"occurrence\",\"target_node_id\":\"part\",\"max_depth\":1,\"edge_kinds\":[\"INSTANCE_OF\"]}"
+    );
     ASSERT_TRUE(path.ok) << path.message;
     EXPECT_EQ(payload(path).value("returned_node_count").toInt(), 2);
 }
@@ -120,25 +128,27 @@ TEST(CadXService, MutationSchemasMatchCreateAndJointRuntimeShapes)
 {
     CadX::CadXService service;
     const auto definitions = service.toolRegistry().definitions();
-    const auto create = std::find_if(definitions.begin(), definitions.end(),
-                                     [](const CadX::ToolDefinition& definition) {
-                                         return definition.name == "assembly.create";
-                                     });
-    const auto joint = std::find_if(definitions.begin(), definitions.end(),
-                                    [](const CadX::ToolDefinition& definition) {
-                                        return definition.name == "assembly.joint";
-                                    });
+    const auto create = std::find_if(
+        definitions.begin(),
+        definitions.end(),
+        [](const CadX::ToolDefinition& definition) { return definition.name == "assembly.create"; }
+    );
+    const auto joint = std::find_if(
+        definitions.begin(),
+        definitions.end(),
+        [](const CadX::ToolDefinition& definition) { return definition.name == "assembly.joint"; }
+    );
     if (create == definitions.end() || joint == definitions.end()) {
         GTEST_SKIP() << "Assembly mutation tools are unavailable in this build";
     }
 
-    const auto createSchema = QJsonDocument::fromJson(
-        QByteArray::fromStdString(create->inputSchemaJson)).object();
+    const auto createSchema
+        = QJsonDocument::fromJson(QByteArray::fromStdString(create->inputSchemaJson)).object();
     const auto createProperties = createSchema.value("properties").toObject();
     EXPECT_FALSE(createProperties.contains("parent_assembly"));
 
-    const auto jointSchema = QJsonDocument::fromJson(
-        QByteArray::fromStdString(joint->inputSchemaJson)).object();
+    const auto jointSchema
+        = QJsonDocument::fromJson(QByteArray::fromStdString(joint->inputSchemaJson)).object();
     const auto connector = jointSchema.value("$defs").toObject().value("connector").toObject();
     const auto offset = connector.value("properties").toObject().value("offset").toObject();
     EXPECT_EQ(offset.value("type").toString(), "object");
