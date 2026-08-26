@@ -35,6 +35,8 @@ class TestSelectionVisual(unittest.TestCase):
     _MSG_SOURCE_INTERNAL = 1
     _MSG_SOURCE_TREE_VIEW = 2
 
+    _TREE_VIEW_PARAMS = "User parameter:BaseApp/Preferences/TreeView"
+
     def setUp(self):
         self.doc = FreeCAD.newDocument("TestSelectionVisual")
         FreeCADGui.ActiveDocument = FreeCADGui.getDocument(self.doc.Name)
@@ -46,7 +48,17 @@ class TestSelectionVisual(unittest.TestCase):
         self._had_navi_cube = self.viewer.isEnabledNaviCube()
         self.viewer.setEnabledNaviCube(False)
 
+        self._had_preselect_hidden = self._tree_params().GetBool("PreSelectHidden", False)
+
+    def _tree_params(self):
+        return FreeCAD.ParamGet(self._TREE_VIEW_PARAMS)
+
+    def _set_preselect_hidden(self, enabled):
+        self._tree_params().SetBool("PreSelectHidden", enabled)
+
     def tearDown(self):
+        self._set_preselect_hidden(self._had_preselect_hidden)
+
         with suppress(Exception):
             Selection.clearPreselection()
         with suppress(Exception):
@@ -144,6 +156,7 @@ class TestSelectionVisual(unittest.TestCase):
     def test_preselection_renders_hidden_object(self):
         box = self._create_test_box()
         self._prepare_view()
+        self._set_preselect_hidden(True)
         background = self._hide_and_sample(box)
 
         # tree-view sourced preselection draws hidden objects on top
@@ -169,6 +182,7 @@ class TestSelectionVisual(unittest.TestCase):
     def test_internal_preselection_leaves_hidden_object_hidden(self):
         box = self._create_test_box()
         self._prepare_view()
+        self._set_preselect_hidden(True)
         background = self._hide_and_sample(box)
 
         # a non tree-view source must not draw the hidden object
@@ -180,6 +194,23 @@ class TestSelectionVisual(unittest.TestCase):
             background,
             preselected,
             "Internal-source preselection should not render a hidden object.",
+        )
+
+    def test_disabled_preference_leaves_hidden_object_hidden(self):
+        box = self._create_test_box()
+        self._prepare_view()
+        self._set_preselect_hidden(False)
+        background = self._hide_and_sample(box)
+
+        # with the preference off, even tree-view preselection stays hidden
+        Selection.setPreselection(box, "", 0.0, 0.0, 0.0, self._MSG_SOURCE_TREE_VIEW)
+        self._flush_gui()
+        preselected = self._center_pixel_color()
+
+        self._assert_color_restored(
+            background,
+            preselected,
+            "Preselection should not render a hidden object when the preference is off.",
         )
 
     def _hide_and_sample(self, obj):

@@ -113,6 +113,18 @@ public:
 
     // Auto generated code (Tools/params_utils.py:138)
     //@{
+    /// Accessor for parameter PreSelectHidden
+    ///
+    /// Preselect hidden objects when hovering over them in the tree view.
+    static const bool& getPreSelectHidden();
+    static const bool& defaultPreSelectHidden();
+    static void removePreSelectHidden();
+    static void setPreSelectHidden(const bool& v);
+    static const char* docPreSelectHidden();
+    //@}
+
+    // Auto generated code (Tools/params_utils.py:138)
+    //@{
     /// Accessor for parameter SyncPlacement
     static const bool& getSyncPlacement();
     static const bool& defaultSyncPlacement();
