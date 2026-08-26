@@ -328,13 +328,11 @@ std::ostream& operator<<(std::ostream& s, const BoundBox& p)
     return s;
 }
 
-int getPathNestingLevel(const Path64& path_p64, const Paths64& paths_p64)
+int getPathNestingLevel(const Path64& path, const Paths64& paths)
 {
-    ClipperLib::Path path = ToC1Path(path_p64);
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
     int nesting = 0;
     for (const auto& other : paths) {
-        if (!path.empty() && PointInPolygon(path.front(), other) != 0) {
+        if (!path.empty() && PointInPolygon(path.front(), other) != PointInPolygonResult::IsOutside) {
             nesting++;
         }
     }
