@@ -550,14 +550,11 @@ Point64 Compute2DPolygonCentroid(const Path64& vertices_p64)
 }
 
 // point must be within first path (boundary) and must not be within all other paths (holes)
-bool IsPointWithinCutRegion(const Paths64& toolBoundPaths_p64, const Point64& point_p64)
+bool IsPointWithinCutRegion(const Paths64& toolBoundPaths, const Point64& point)
 {
-    ClipperLib::Paths toolBoundPaths = ToC1Paths(toolBoundPaths_p64);
-    ClipperLib::IntPoint point = ToC1Point(point_p64);
     bool inside = false;
     for (size_t i = 0; i < toolBoundPaths.size(); i++) {
-        int pip = PointInPolygon(point, toolBoundPaths[i]);
-        if (pip != 0) {
+        if (PointInPolygon(point, toolBoundPaths[i]) != PointInPolygonResult::IsOutside) {
             inside = !inside;
         }
     }
