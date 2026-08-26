@@ -204,8 +204,11 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     }
     if (previewHidden) {
         // a view provider may supply its own on-top preview (e.g. a PartDesign
-        // feature showing only its own addition/cut instead of the whole solid)
-        if (SoNode* preview = vp->getPreselectionPreview(subname)) {
+        // feature showing only its own addition/cut instead of the whole solid);
+        // tree hover addresses the feature through svp, so ask that one
+        const char* element = subname ? strrchr(subname, '.') : nullptr;
+        element = element ? element + 1 : (subname ? subname : "");
+        if (SoNode* preview = svp->getPreselectionPreview(element)) {
             pcGroup->addChild(preview);
             objs[key.c_str()] = preview;
             FC_LOG("add feature preselect preview " << key);
