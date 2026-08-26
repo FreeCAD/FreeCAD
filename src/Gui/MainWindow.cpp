@@ -1000,16 +1000,23 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
     box.setWindowFlags(box.windowFlags() | Qt::WindowStaysOnTopHint);
     box.setWindowTitle(QObject::tr("Unsaved Document"));
     const QString docName = QString::fromStdString(doc->Label.getStrValue());
+    
+    // 1. Updated Question Text
     const QString text
         = (!docName.isEmpty()
-               ? QObject::tr("Save all changes to document '%1' before closing?").arg(docName)
-               : QObject::tr("Save all changes to document before closing?"));
+               ? QObject::tr("Do you want to save the changes to the document '%1' before closing?").arg(docName)
+               : QObject::tr("Do you want to save the changes to the document before closing?"));
     box.setText(text);
 
-
     box.setInformativeText(QObject::tr("Otherwise, all changes will be lost."));
-    box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
-    box.setDefaultButton(QMessageBox::Save);
+    
+    // 2. Updated Standard Buttons and Text Overrides
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    box.button(QMessageBox::Yes)->setText(QObject::tr("Yes(&Y)"));
+    box.button(QMessageBox::No)->setText(QObject::tr("No(&N)"));
+    box.button(QMessageBox::Cancel)->setText(QObject::tr("Cancel(&C)"));
+    
+    box.setDefaultButton(QMessageBox::Yes);
     box.setEscapeButton(QMessageBox::Cancel);
 
     QCheckBox checkBox(QObject::tr("Apply to all"));
@@ -1025,20 +1032,8 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
         box.addButton(&checkBox, QMessageBox::ResetRole);
     }
 
-    // add shortcuts
-    QAbstractButton* saveBtn = box.button(QMessageBox::Save);
-    if (saveBtn->shortcut().isEmpty()) {
-        QString text = saveBtn->text();
-        text.prepend(QLatin1Char('&'));
-        saveBtn->setShortcut(QKeySequence::mnemonic(text));
-    }
-
-    QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
-    if (discardBtn->shortcut().isEmpty()) {
-        QString text = discardBtn->text();
-        text.prepend(QLatin1Char('&'));
-        discardBtn->setShortcut(QKeySequence::mnemonic(text));
-    }
+    // Note: The old dynamic shortcut injection blocks were removed here 
+    // because our text overrides above natively handle the shortcuts.
 
     int res = ConfirmSaveResult::Cancel;
     box.adjustSize();  // Silence warnings from Qt on Windows
@@ -1056,14 +1051,19 @@ int MainWindow::confirmSave(App::Document* doc, QWidget* parent, bool addCheckbo
         }
     }
 
+    // 3. Updated Switch Block to listen for Yes/No
     switch (box.exec()) {
-        case QMessageBox::Save:
+        case QMessageBox::Yes:
             res = checkBox.isChecked() ? ConfirmSaveResult::SaveAll : ConfirmSaveResult::Save;
             break;
-        case QMessageBox::Discard:
+        case QMessageBox::No:
             res = checkBox.isChecked() ? ConfirmSaveResult::DiscardAll : ConfirmSaveResult::Discard;
             break;
+        case QMessageBox::Cancel:
+            res = ConfirmSaveResult::Cancel;
+            break;
     }
+    
     if (addCheckbox && res) {
         hGrp->SetBool("ConfirmAll", checkBox.isChecked());
     }
