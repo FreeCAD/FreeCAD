@@ -216,6 +216,10 @@ private:
     /// ghost expensive enough to look like the section itself was slow.
     void updateRemovedMaterialPlane();
 
+    /// Split out from the rebuild because changing a float should not re-copy
+    /// an assembly's worth of triangles.
+    void updateRemovedMaterialAppearance();
+
     void applyPerSolidColors();
 
     /// Push ShowHatching / PerBodyColors into the scene graph. Separate from the
@@ -259,6 +263,9 @@ private:
     /// Shared by every ghosted body, so moving the plane writes one field.
     /// Owned by pcGhostRoot; cleared whenever its children are.
     SoClipPlane* removedMaterialClip = nullptr;
+
+    /// Owned by removedMaterialRoot; cleared whenever its children are.
+    SoMaterial* removedMaterialAppearance = nullptr;
 
     /// Triangles harvested from the 3D view, one entry per source object.
     ///

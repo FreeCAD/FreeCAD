@@ -53,6 +53,7 @@
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoPolygonOffset.h>
 #include <Inventor/nodes/SoTransform.h>
+#include <Inventor/nodes/SoTransparencyType.h>
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPerspectiveCamera.h>
@@ -549,6 +550,21 @@ void ViewProviderSectionAnalysis::updateRemovedMaterialPlane()
 }
 
 
+void ViewProviderSectionAnalysis::updateRemovedMaterialAppearance()
+{
+    if (!removedMaterialAppearance) {
+        return;
+    }
+
+    removedMaterialAppearance->diffuseColor.setValue(
+        Base::convertTo<SbColor>(RemovedMaterialColor.getValue())
+    );
+    removedMaterialAppearance->transparency.setValue(
+        static_cast<float>(RemovedMaterialTransparency.getValue()) / 100.0F
+    );
+}
+
+
 void ViewProviderSectionAnalysis::updateRemovedMaterial()
 {
     if (!removedMaterialRoot || !removedMaterialSwitch) {
@@ -556,6 +572,7 @@ void ViewProviderSectionAnalysis::updateRemovedMaterial()
     }
     removedMaterialRoot->removeAllChildren();
     removedMaterialClip = nullptr;
+    removedMaterialAppearance = nullptr;
     removedMaterialSwitch->whichChild = SO_SWITCH_NONE;
 
     auto* feat = getObject<Part::SectionAnalysis>();
@@ -611,6 +628,13 @@ void ViewProviderSectionAnalysis::updateRemovedMaterial()
     pickStyle->style = SoPickStyle::UNPICKABLE;
     removedMaterialRoot->addChild(pickStyle);
 
+    // The viewer sorts transparency per triangle, which for a second copy of the
+    // assembly costs more than everything else here together. One flat unlit
+    // colour has no draw order to get wrong, so the sort buys nothing.
+    auto* transparencyType = new SoTransparencyType();
+    transparencyType->value = SoTransparencyType::DELAYED_BLEND;
+    removedMaterialRoot->addChild(transparencyType);
+
     removedMaterialClip = new SoClipPlane();
     removedMaterialClip->on.setValue(TRUE);
     removedMaterialRoot->addChild(removedMaterialClip);
@@ -630,10 +654,9 @@ void ViewProviderSectionAnalysis::updateRemovedMaterial()
     polygonOffset->styles = SoPolygonOffset::FILLED;
     removedMaterialRoot->addChild(polygonOffset);
 
-    auto* material = new SoMaterial();
-    material->diffuseColor.setValue(Base::convertTo<SbColor>(RemovedMaterialColor.getValue()));
-    material->transparency.setValue(static_cast<float>(RemovedMaterialTransparency.getValue()) / 100.0F);
-    removedMaterialRoot->addChild(material);
+    removedMaterialAppearance = new SoMaterial();
+    removedMaterialRoot->addChild(removedMaterialAppearance);
+    updateRemovedMaterialAppearance();
 
     auto* hints = new SoShapeHints();
     hints->vertexOrdering = SoShapeHints::UNKNOWN_ORDERING;
@@ -1568,9 +1591,16 @@ void ViewProviderSectionAnalysis::onChanged(const App::Property* prop)
             updateCapFromScene();
         }
     }
-    if (prop == &ShowRemovedMaterial || prop == &RemovedMaterialTransparency || prop == &RemovedMaterialColor) {
+    if (prop == &ShowRemovedMaterial) {
         if (!isRestoring()) {
             updateRemovedMaterial();
+        }
+    }
+    // Appearance only. Rebuilding an assembly's triangles to change a float is
+    // what made dragging the transparency slider feel like the section was slow.
+    if (prop == &RemovedMaterialTransparency || prop == &RemovedMaterialColor) {
+        if (!isRestoring()) {
+            updateRemovedMaterialAppearance();
         }
     }
 
