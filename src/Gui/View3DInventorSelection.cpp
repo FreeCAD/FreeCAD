@@ -209,6 +209,11 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         const char* element = subname ? strrchr(subname, '.') : nullptr;
         element = element ? element + 1 : (subname ? subname : "");
         if (SoNode* preview = svp->getPreselectionPreview(element)) {
+            // color it like any other preselection, not the leftover context
+            SoHighlightElementAction action;
+            action.setHighlighted(true);
+            action.setColor(selectionRoot->colorHighlight.getValue());
+            action.apply(pcGroupOnTopPreSel);
             pcGroup->addChild(preview);
             objs[key.c_str()] = preview;
             FC_LOG("add feature preselect preview " << key);
