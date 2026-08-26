@@ -122,6 +122,10 @@ public:
     /// return the coin node detail and path to the node of the subname
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
+    /// On-top preview node showing only this object's own contribution for tree
+    /// preselection, or nullptr to fall back to the whole-object path.
+    virtual SoNode* getPreselectionPreview(const char* subname);
+
     /* Force update visual
      *
      * These method exists because some view provider skips visual update when

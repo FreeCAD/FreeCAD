@@ -30,8 +30,10 @@
 #include <BRep_Builder.hxx>
 
 #include <Base/Exception.h>
+#include <Base/Placement.h>
 #include <Base/ServiceProvider.h>
 #include <App/Document.h>
+#include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -356,6 +358,30 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
     makeChildrenVisible();
 
     return true;
+}
+
+SoNode* ViewProvider::getPreselectionPreview(const char* subname)
+{
+    // only the whole feature has a meaningful addition/cut preview
+    if (subname && *subname) {
+        return nullptr;
+    }
+    auto* feature = getObject<PartDesign::FeatureAddSub>();
+    if (!feature) {
+        return nullptr;
+    }
+    // read the stored delta directly; an empty one (e.g. dress-ups) falls back
+    // to the generic whole-object preview instead of recomputing on hover
+    Part::TopoShape delta = feature->AddSubShape.getShape();
+    if (delta.isNull()) {
+        return nullptr;
+    }
+    auto* preview = new PartGui::SoPreviewShape;
+    updatePreviewShape(delta, preview);
+    // the shared on-top group is not under our placement, so apply it here
+    const Base::Placement plc = App::GeoFeature::getGlobalPlacement(getObject());
+    preview->transform.setValue(Base::convertTo<SbMatrix>(plc.toMatrix() * delta.getTransform()));
+    return preview;
 }
 
 void ViewProvider::showPreviousFeature(bool enable)
