@@ -509,8 +509,7 @@ TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
         }
     }
 
-    EXPECT_TRUE(isAddressCarryingFaultCode(report.code))
-        << "unexpected fault code: " << report.code;
+    EXPECT_TRUE(isAddressCarryingFaultCode(report.code)) << "unexpected fault code: " << report.code;
     EXPECT_FALSE(report.partialWrite);
 }
 
