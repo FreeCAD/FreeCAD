@@ -25,6 +25,10 @@ import FreeCAD
 import Part
 import Path
 import Path.Base.Generator.tapping as generator
+import Path.Main.Job as PathJob
+import Path.Op.Drilling as PathDrilling
+import Path.Tool.Controller as PathToolController
+from Path.Tool.toolbit import ToolBit
 import CAMTests.PathTestUtils as PathTestUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
@@ -132,3 +136,39 @@ class TestPathTapGenerator(PathTestUtils.PathTestBase):
         self.assertRaises(ValueError, generator.generate, **args)
         args = {"edge": e, "retractheight": "1"}
         self.assertRaises(ValueError, generator.generate, **args)
+
+    def test50(self):
+        """Flood coolant commands surround tapping cycles after executing the operation."""
+        for spindleDirection, tappingCycle in (("Forward", "G84"), ("Reverse", "G74")):
+            with self.subTest(tappingCycle=tappingCycle):
+                doc = FreeCAD.newDocument(f"TestPathTapCoolant{tappingCycle}")
+                try:
+                    base = doc.addObject("Part::Feature", "Base")
+                    base.Shape = Part.makeBox(20, 20, 10)
+                    job = PathJob.Create("Job", [base], None)
+
+                    tool = ToolBit.from_shape_id("tap.fcstd").attach_to_doc(doc=doc)
+                    tool.Pitch = 1.25
+                    tool.SpindleDirection = spindleDirection
+                    toolController = PathToolController.Create("TapTool", tool, 1)
+                    toolController.SpindleSpeed = 500
+                    toolController.HorizFeed = 100
+                    toolController.VertFeed = 100
+                    toolController.HorizRapid = 200
+                    toolController.VertRapid = 200
+                    job.Tools.Group = [toolController]
+
+                    operation = PathDrilling.Create("Tapping", parentJob=job)
+                    operation.ToolController = toolController
+                    operation.Strategy = "Tapping"
+                    operation.CoolantMode = "Flood"
+                    operation.Locations = [FreeCAD.Vector(10, 10, 0)]
+                    operation.Proxy.execute(operation)
+
+                    commands = [command.Name for command in operation.Path.Commands]
+                    cycleIndex = commands.index(tappingCycle)
+                    self.assertEqual(
+                        commands[cycleIndex - 1 : cycleIndex + 2], ["M8", tappingCycle, "M9"]
+                    )
+                finally:
+                    FreeCAD.closeDocument(doc.Name)

@@ -21,6 +21,7 @@ if(BUILD_GUI)
     list (APPEND Part_Scripts
           InitGui.py
           TestPartGui.py
+          TestPartPreview.py
     )
 endif(BUILD_GUI)
 
