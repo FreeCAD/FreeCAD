@@ -51,6 +51,9 @@ if FreeCAD.GuiUp:
 
 __doc__ = "Class and implementation of the Adaptive CAM operation."
 
+# Set to a callable(results) to receive raw AdaptiveOutput lists after each Execute call.
+_debug_results_callback = None
+
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -461,6 +464,8 @@ def Execute(op, obj):
 
             # EXECUTE
             results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
+            if _debug_results_callback is not None:
+                _debug_results_callback(results)
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -721,6 +726,8 @@ def ExecuteModelAware(op, obj):
                 rdict["toolpaths"] = a2d.Execute(
                     stockPaths[rdict["startdepth"]], path2d, clearedArea, progressFn
                 )
+                if _debug_results_callback is not None:
+                    _debug_results_callback(rdict["toolpaths"])
 
             # Sort regions to cut by either depth or area.
             # TODO: Bonus points for ordering to minimize rapids

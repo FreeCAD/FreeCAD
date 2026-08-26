@@ -28,15 +28,31 @@ from CAMTests.PathTestUtils import PathTestBase
 import area
 import math
 import os
+import shutil
 import time
 
 if FreeCAD.GuiUp:
     import Path.Main.Gui.Job as PathJobGui
     import Path.Op.Gui.Adaptive as PathAdaptiveGui
 
+DEBUG_SVGS = True
+
 _MT_CUTTING = 0
 _MT_LINK_CLEAR = 1
 _MT_LINK_NOT_CLEAR = 2
+
+
+def _make_svg_callback(test_name):
+    count = 0
+
+    def callback(results):
+        nonlocal count
+        count += 1
+        svg_dir = os.path.join(os.getcwd(), "debugSvgs")
+        os.makedirs(svg_dir, exist_ok=True)
+        _write_adaptive_svg(results, os.path.join(svg_dir, f"{test_name}_{count}.svg"))
+
+    return callback
 
 
 def _write_adaptive_svg(results, path):
@@ -106,7 +122,11 @@ class TestPathAdaptive(PathTestBase):
         """
         cls.needsInit = True
         cls.test_times = {}  # For tracking per-test execution time
-        cls._svg_exec_counts = {}  # Per-test SVG execution counter
+
+        if DEBUG_SVGS:
+            svg_dir = os.path.join(os.getcwd(), "debugSvgs")
+            if os.path.exists(svg_dir):
+                shutil.rmtree(svg_dir)
 
     @classmethod
     def initClass(cls):
@@ -173,6 +193,9 @@ class TestPathAdaptive(PathTestBase):
         # Start timing this test
         self._test_start_time = time.time()
 
+        if DEBUG_SVGS:
+            PathAdaptive._debug_results_callback = _make_svg_callback(self.id().split(".")[-1])
+
     def tearDown(self):
         """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
@@ -180,6 +203,7 @@ class TestPathAdaptive(PathTestBase):
         """
         # Clean up scene graph visualization
         PathAdaptive.sceneClean()
+        PathAdaptive._debug_results_callback = None
 
         # Record elapsed time for this test
         elapsed = time.time() - self._test_start_time
@@ -252,9 +276,7 @@ class TestPathAdaptive(PathTestBase):
 
         return stockPath2d, path2d, dimensions
 
-    def _executeAdaptive(
-        self, opType, stockPath2d, path2d, clearedArea=None, debugSvgs=True, **kwargs
-    ):
+    def _executeAdaptive(self, opType, stockPath2d, path2d, clearedArea=None, **kwargs):
         """Create, configure, execute Adaptive2d and return total cleared area."""
         if clearedArea is None:
             clearedArea = []
@@ -280,14 +302,8 @@ class TestPathAdaptive(PathTestBase):
         # Execute
         results = a2d.Execute(stockPath2d, path2d, clearedArea, progressFn)
 
-        if debugSvgs:
-            test_name = self.id().split(".")[-1]
-            count = self.__class__._svg_exec_counts.get(test_name, 0) + 1
-            self.__class__._svg_exec_counts[test_name] = count
-            svg_dir = os.path.join(os.getcwd(), "debugSvgs")
-            os.makedirs(svg_dir, exist_ok=True)
-            svg_path = os.path.join(svg_dir, f"{test_name}_{count}.svg")
-            _write_adaptive_svg(results, svg_path)
+        if PathAdaptive._debug_results_callback is not None:
+            PathAdaptive._debug_results_callback(results)
 
         # Validate
         self.assertTrue(len(results) > 0, "Adaptive2d should return at least one result")
