@@ -366,6 +366,10 @@ SoNode* ViewProvider::getPreselectionPreview(const char* subname)
     if (subname && *subname) {
         return nullptr;
     }
+    // a visible feature already shows itself and is highlighted normally
+    if (isShow()) {
+        return nullptr;
+    }
     auto* feature = getObject<PartDesign::FeatureAddSub>();
     if (!feature) {
         return nullptr;
