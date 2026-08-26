@@ -361,7 +361,13 @@ PyObject* TopoShapePy::writeInventor(PyObject* args, PyObject* keywds) const
     }
 
     std::stringstream result;
-    BRepMesh_IncrementalMesh(getTopoShapePtr()->getShape(), dev);
+    BRepMesh_IncrementalMesh(
+        getTopoShapePtr()->getShape(),
+        dev,
+        Standard_False,
+        0.5,
+        /*isInParallel*/ Standard_True
+    );
     if (mode == 0) {
         getTopoShapePtr()->exportFaceSet(dev, angle, faceColors, result);
     }
