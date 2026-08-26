@@ -28,6 +28,18 @@ import FreeCADGui.Selection as GuiSelection
 import Materials
 import PartDesignGui
 import PathApp
+from PySide import (
+    __version__ as pyside_version,
+    __version_info__ as pyside_version_info,
+    QtCore,
+    QtGui,
+    QtNetwork,
+    QtSvg,
+    QtSvgWidgets,
+    QtUiTools,
+    QtWebEngineWidgets,
+    QtWidgets,
+)
 import QtUnitGui
 import SpreadsheetGui
 import TechDrawGui
@@ -161,6 +173,17 @@ def exercise(
     material = cast(Materials.Material, object())
     path_command = cast(PathApp.Command, object())
     part_design_view_provider = cast(PartDesignGui.ViewProvider, object())
+    qt_timer = QtCore.QTimer
+    QtCore.QTimer.singleShot(0, lambda: None)
+    pyside_version_value = pyside_version
+    pyside_version_info_value = pyside_version_info
+    qt_color = QtGui.QColor
+    qt_request = QtNetwork.QNetworkRequest
+    qt_svg_renderer = QtSvg.QSvgRenderer
+    qt_svg_widget = QtSvgWidgets.QSvgWidget
+    qt_ui_loader = QtUiTools.QUiLoader
+    qt_web_page = QtWebEngineWidgets.QWebEnginePage
+    qt_widget = QtWidgets.QWidget
     selection_filter = GuiSelection.Filter("SELECT Part::Feature")
     preselection = GuiSelection.getPreselection()
     selection = GuiSelection.getSelection()
