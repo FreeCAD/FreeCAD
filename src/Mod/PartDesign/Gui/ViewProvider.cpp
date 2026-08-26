@@ -370,6 +370,33 @@ SoNode* ViewProvider::getPreselectionPreview(const char* subname)
     if (isShow()) {
         return nullptr;
     }
+    // the delta only reads well over the solid it sits on; if that support (this
+    // feature's base) is not part of the shown solid, fall back to the whole
+    // object preview instead of floating in space
+    auto* body = getBodyViewProvider();
+    if (!body) {
+        return nullptr;
+    }
+    App::DocumentObject* shown = body->getShownFeature();
+    if (!shown) {
+        return nullptr;
+    }
+    auto* self = getObject<PartDesign::Feature>();
+    App::DocumentObject* base = self ? self->BaseFeature.getValue() : nullptr;
+    if (base) {
+        bool supported = false;
+        for (App::DocumentObject* f = shown; f;) {
+            if (f == base) {
+                supported = true;
+                break;
+            }
+            auto* feat = freecad_cast<PartDesign::Feature*>(f);
+            f = feat ? feat->BaseFeature.getValue() : nullptr;
+        }
+        if (!supported) {
+            return nullptr;
+        }
+    }
     auto* feature = getObject<PartDesign::FeatureAddSub>();
     if (!feature) {
         return nullptr;
