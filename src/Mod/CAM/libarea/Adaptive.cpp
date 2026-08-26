@@ -339,20 +339,16 @@ int getPathNestingLevel(const Path64& path, const Paths64& paths)
     return nesting;
 }
 
-void appendDirectChildPaths(Paths64& outPaths_p64, const Path64& path_p64, const Paths64& paths_p64)
+void appendDirectChildPaths(Paths64& outPaths, const Path64& path, const Paths64& paths)
 {
-    ClipperLib::Paths outPaths = ToC1Paths(outPaths_p64);
-    ClipperLib::Path path = ToC1Path(path_p64);
-    ClipperLib::Paths paths = ToC1Paths(paths_p64);
-    int nesting = getPathNestingLevel(path_p64, paths_p64);
+    int nesting = getPathNestingLevel(path, paths);
     for (const auto& other : paths) {
-        if (!path.empty() && !other.empty() && PointInPolygon(other.front(), path) != 0) {
-            if (getPathNestingLevel(ToPath64(other), paths_p64) == nesting + 1) {
+        if (!path.empty() && !other.empty() && PointInPolygon(other.front(), path) != PointInPolygonResult::IsOutside) {
+            if (getPathNestingLevel(other, paths) == nesting + 1) {
                 outPaths.push_back(other);
             }
         }
     }
-    outPaths_p64 = ToPaths64(outPaths);
 }
 
 void AverageDirection(const vector<PointD>& unityVectors, PointD& output)
