@@ -150,6 +150,7 @@ def exercise(
     resource_from_dialog = FreeCADGui.createDialog("dialog.ui")
     single_viewer = FreeCADGui.createViewer()
     split_viewer = FreeCADGui.createViewer(2, "Split")
+    freecad_gui_alias = FreeCAD.Gui
     active_workbench = FreeCADGui.activeWorkbench()
     workbench_by_name = FreeCADGui.getWorkbench("NoneWorkbench")
     workbenches = FreeCADGui.listWorkbenches()
