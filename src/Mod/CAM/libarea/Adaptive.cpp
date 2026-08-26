@@ -165,15 +165,14 @@ inline PointD rotate(const PointD& in, double rad)
 }
 
 // calculates path length for open path
-inline double PathLength(const Path64& path_p64)
+inline double PathLength(const Path64& path)
 {
-    ClipperLib::Path path = ToC1Path(path_p64);
     double len = 0;
     if (path.size() < 2) {
         return len;
     }
     for (size_t i = 1; i < path.size(); i++) {
-        len += sqrt(DistanceSqrd(ToPoint64(path[i - 1]), ToPoint64(path[i])));
+        len += sqrt(DistanceSqrd(path[i - 1], path[i]));
     }
     return len;
 }
