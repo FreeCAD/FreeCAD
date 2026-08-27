@@ -70,8 +70,13 @@ public:
         return _isWorker;
     }
 
-    void run(std::size_t count, std::size_t grainSize, unsigned int participants,
-             Detail::ParallelBody body, void* context)
+    void run(
+        std::size_t count,
+        std::size_t grainSize,
+        unsigned int participants,
+        Detail::ParallelBody body,
+        void* context
+    )
     {
         {
             const std::lock_guard<std::mutex> lock(_mutex);
