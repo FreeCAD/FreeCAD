@@ -307,7 +307,7 @@ void init_pyarea(py::module& m)
         .def("Split", &SplitArea)
         .def("Thicken", &CArea::Thicken)
         .def("GetArea", &AreaGetArea)
-        .def("TestIntersectOpenPathReversal", &CArea::TestIntersectOpenPathReversal);
+        .def("Debug_IntersectOpenPathReversal", &CArea::Debug_IntersectOpenPathReversal);
 
     m.def("get_accuracy", get_accuracy);
     m.def("set_accuracy", set_accuracy);

@@ -152,9 +152,10 @@ public:
     // path. This method will behave the same as Intersect, but before converting clipper
     // results back to CArea it will optionally reverse the open paths.
     //
+    // For testing only — not production API.
     // reverseOpenPathContents: if true, reverse the contents (vertices) of each open path
     // reverseOpenPathOrder: if true, reverse the order of the open paths themselves
-    void TestIntersectOpenPathReversal(
+    void Debug_IntersectOpenPathReversal(
         const CArea& clip_area,
         bool reverseOpenPathContents,
         bool reverseOpenPathOrder

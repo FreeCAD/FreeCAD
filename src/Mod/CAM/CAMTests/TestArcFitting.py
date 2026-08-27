@@ -814,7 +814,7 @@ class TestArcFittingOpenPathReversal(PathTestBase):
     """Tests for open path reversal handling in clipper operations."""
 
     def assert_open_path_reversal_identical(self, closed_curve):
-        """Helper: Assert that TestIntersectOpenPathReversal produces identical results for all reversal permutations.
+        """Helper: Assert that Debug_IntersectOpenPathReversal produces identical results for all reversal permutations.
 
         Args:
             closed_area: Area containing closed path(s) to intersect with
@@ -826,10 +826,10 @@ class TestArcFittingOpenPathReversal(PathTestBase):
         closed_area = make_area(closed_curve)
 
         # Test all 4 permutations of the two types of reversal
-        a[0].TestIntersectOpenPathReversal(closed_area, False, False)
-        a[1].TestIntersectOpenPathReversal(closed_area, False, True)
-        a[2].TestIntersectOpenPathReversal(closed_area, True, False)
-        a[3].TestIntersectOpenPathReversal(closed_area, True, True)
+        a[0].Debug_IntersectOpenPathReversal(closed_area, False, False)
+        a[1].Debug_IntersectOpenPathReversal(closed_area, False, True)
+        a[2].Debug_IntersectOpenPathReversal(closed_area, True, False)
+        a[3].Debug_IntersectOpenPathReversal(closed_area, True, True)
 
         # Assert that output points have increasing x values across all curves
         lastX = None
