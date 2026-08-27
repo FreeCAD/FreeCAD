@@ -111,7 +111,7 @@ Base::Placement getJointSideGlobalPlacement(
         return {};
     }
 
-    auto* ref = joint->getPropertyByName<App::PropertyXLinkSub*>(refName);
+    auto* ref = joint->getPropertyByName<App::PropertyXLinkSub>(refName);
     if (!ref) {
         return {};
     }
