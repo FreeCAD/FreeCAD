@@ -115,7 +115,7 @@ public:
     //@{
     /// Accessor for parameter PreSelectHidden
     ///
-    /// Preselect hidden objects when hovering over them in the tree view.
+    /// Preselect hidden objects hovered in the tree view.
     static const bool& getPreSelectHidden();
     static const bool& defaultPreSelectHidden();
     static void removePreSelectHidden();

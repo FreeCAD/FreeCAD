@@ -52,7 +52,7 @@ Params = [
     ParamBool(
         "PreSelectHidden",
         False,
-        doc="Preselect hidden objects when hovering over them in the tree view.",
+        doc="Preselect hidden objects hovered in the tree view.",
     ),
     ParamBool("SyncPlacement", False),
     ParamBool("RecordSelection", True),

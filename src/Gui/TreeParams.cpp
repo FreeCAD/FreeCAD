@@ -621,7 +621,7 @@ void TreeParams::removePreSelection()
 // Auto generated code (Tools/params_utils.py:350)
 const char* TreeParams::docPreSelectHidden()
 {
-    return QT_TRANSLATE_NOOP("TreeParams", "Preselect hidden objects when hovering over them in the tree view.");
+    return QT_TRANSLATE_NOOP("TreeParams", "Preselect hidden objects hovered in the tree view.");
 }
 
 // Auto generated code (Tools/params_utils.py:358)
