@@ -129,6 +129,14 @@ Feature::Feature()
 
     App::SuppressibleExtension::initExtension(this);
     Part::PreviewExtension::initExtension(this);
+
+    CanComputeShape.setValue(true);
+
+    startSaveDocumentConnection = App::GetApplication().signalStartSaveDocument.connect(
+        [this](const App::Document& /*doc*/, const std::string& /*filename*/) {
+            SuppressedShape.setCanBeCachedForDocument(CanComputeShape.getValue());
+        }
+    );
 }
 
 App::DocumentObjectExecReturn* Feature::recompute()

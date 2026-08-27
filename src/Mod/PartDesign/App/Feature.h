@@ -166,6 +166,9 @@ protected:
     // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
     static TopoDS_Shape makeShapeFromPlane(const App::DocumentObject* obj);
     static TopoShape makeTopoShapeFromPlane(const App::DocumentObject* obj);
+
+private:
+    fastsignals::scoped_connection startSaveDocumentConnection;
 };
 
 using FeaturePython = App::FeaturePythonT<Feature>;

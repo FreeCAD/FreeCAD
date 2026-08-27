@@ -50,6 +50,11 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 FeatureAddSub::FeatureAddSub()
 {
     ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+    startSaveDocumentConnection = App::GetApplication().signalStartSaveDocument.connect(
+        [this](const App::Document& /*doc*/, const std::string& /*filename*/) {
+            AddSubShape.setCanBeCachedForDocument(CanComputeShape.getValue());
+        }
+    );
 }
 
 void FeatureAddSub::onChanged(const App::Property* property)
