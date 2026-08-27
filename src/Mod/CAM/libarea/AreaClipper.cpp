@@ -874,12 +874,16 @@ void CArea::Offset(double offset)
     // Union (fill rule positive), keeping positive edges and dropping negative edges
     _Clip(ClipType::Union, CArea {}, FillRule::Positive);
 
-    // If negative offset, reverse the curves to put them in the forward direction
-    if (offset < 0) {
-        for (CCurve& c : m_curves) {
-            c.Reverse();
-        }
-    }
+    // Note that this code currently has no impact because we call Reorder afterwards, but
+    // (to be vetted in a future PR) I think the curves from the previous step have known
+    // orientation and this simpler/lighter loop should replace the Reorder call
+    //
+    // // If negative offset, reverse the curves to put them in the forward direction
+    // if (offset < 0) {
+    //     for (CCurve& c : m_curves) {
+    //         c.Reverse();
+    //     }
+    // }
 
     // I'm preserving this Reorder() call to preserve old behavior, but imo this should not be part
     // of Offset's spec
