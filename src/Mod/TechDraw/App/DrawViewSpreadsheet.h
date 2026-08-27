@@ -38,6 +38,10 @@ class TechDrawExport DrawViewSpreadsheet : public TechDraw::DrawViewSymbol
     PROPERTY_HEADER_WITH_OVERRIDE(TechDraw::DrawViewSpreadsheet);
 
 public:
+    // SVG positions text by its baseline. Keep this ratio shared with the in-view editor so its
+    // text does not move when edit mode is toggled.
+    static constexpr double TextBaselineHeightRatio = 0.75;
+
     DrawViewSpreadsheet();
     ~DrawViewSpreadsheet() override;
     App::PropertyLink         Source;

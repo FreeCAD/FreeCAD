@@ -38,6 +38,7 @@
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QTimer>
+#include <QVariant>
 #endif
 
 #include "TaskSpreadsheetView.h"
@@ -142,7 +143,7 @@ bool TaskSpreadsheetView::initializeContent()
         return false;
     }
 
-    m_spreadsheet = dynamic_cast<Spreadsheet::Sheet*>(m_viewObject->Source.getValue());
+    m_spreadsheet = freecad_cast<Spreadsheet::Sheet*>(m_viewObject->Source.getValue());
     if (!m_spreadsheet) {
         Base::Console().warning("TaskSpreadsheetView: Source spreadsheet is bad.\n");
         return false;
@@ -218,7 +219,7 @@ ViewProviderSpreadsheet* TaskSpreadsheetView::getVps()
         return nullptr;
     }
 
-    return dynamic_cast<TechDrawGui::ViewProviderSpreadsheet*>(
+    return freecad_cast<TechDrawGui::ViewProviderSpreadsheet*>(
         guiDocument->getViewProvider(m_viewObject));
 }
 
@@ -399,8 +400,10 @@ bool TaskSpreadsheetView::parseCellAddress(const QString& addressStr, int& colId
     // Converts to 0-indexed colIdx, rowIdx
     if (addressStr.isEmpty()) return false;
 
-    QRegularExpression re(QStringLiteral("^([A-Z]+)([1-9][0-9]*)$"), QRegularExpression::CaseInsensitiveOption);
-    QRegularExpressionMatch match = re.match(addressStr.toUpper());
+    static const QRegularExpression re(
+        QStringLiteral("^([A-Z]+)([1-9][0-9]*)$"),
+        QRegularExpression::CaseInsensitiveOption);
+    const QRegularExpressionMatch match = re.match(addressStr.toUpper());
 
     if (!match.hasMatch()) {
         return false;
@@ -450,26 +453,13 @@ void TaskSpreadsheetView::revalidateRangeAndUpdateEditor()
                    m_startCol <= m_endCol &&
                    m_startRow <= m_endRow;
 
-    if (m_rangeValid) {
-        ui->lineEdit_StartCell->setStyleSheet(QStringLiteral(""));
-        ui->lineEdit_EndCell->setStyleSheet(QStringLiteral(""));
-        refreshViewEditor();
-    }
-    else {
-        // Indicate error, e.g., red border
-        QString errorStyle = QString::fromLatin1("QLineEdit { border: 1px solid red; }");
-        if (!startOk || (startOk && endOk && m_startCol > m_endCol) || (startOk && endOk && m_startRow > m_endRow) ) {
-            ui->lineEdit_StartCell->setStyleSheet(errorStyle);
-        } else {
-            ui->lineEdit_StartCell->setStyleSheet(QStringLiteral(""));
-        }
-        if (!endOk || (startOk && endOk && m_startCol > m_endCol) || (startOk && endOk && m_startRow > m_endRow)) {
-            ui->lineEdit_EndCell->setStyleSheet(errorStyle);
-        } else {
-            ui->lineEdit_EndCell->setStyleSheet(QStringLiteral(""));
-        }
-        refreshViewEditor();
-    }
+    const bool reversedRange = startOk && endOk
+        && (m_startCol > m_endCol || m_startRow > m_endRow);
+    ui->lineEdit_StartCell->setProperty(
+        "validationState", !startOk || reversedRange ? QStringLiteral("error") : QVariant());
+    ui->lineEdit_EndCell->setProperty(
+        "validationState", !endOk || reversedRange ? QStringLiteral("error") : QVariant());
+    refreshViewEditor();
 
     m_viewObject->recomputeFeature();
 }
@@ -581,6 +571,7 @@ void TaskSpreadsheetView::onTextColorChanged()
     ac.setValue<QColor>(ui->cpFrameColor->color());
     m_viewObject->TextColor.setValue(ac);
 
+    refreshViewEditor();
     m_viewObject->recomputeFeature();
 }
 
@@ -592,6 +583,7 @@ void TaskSpreadsheetView::onLineWidthChanged(double value)
 
     m_viewObject->LineWidth.setValue(value);
 
+    refreshViewEditor();
     m_viewObject->recomputeFeature();
 }
 

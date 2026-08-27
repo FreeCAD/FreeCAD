@@ -45,8 +45,8 @@
 #include <QPalette>
 #include <QPainter>
 #include <QPen>
-#include <QPixmap>
 #include <QSize>
+#include <QStyle>
 #include <QStyledItemDelegate>
 #include <QStringList>
 #include <QTableWidget>
@@ -59,6 +59,7 @@
 #include <App/Range.h>
 #include <Mod/Spreadsheet/App/Cell.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/Utils.h>
 
 #include "QGCustomSvg.h"
 #include "QGDisplayArea.h"
@@ -75,39 +76,10 @@ constexpr int MaxEditorColumns = 100;
 constexpr int MaxEditorRows = 200;
 constexpr int SpreadsheetAlignmentRole = Qt::UserRole + 1;
 constexpr int SpreadsheetTextSizeRole = Qt::UserRole + 2;
-
-// Keep these controls visually consistent with PartGui::PatternInstanceControls.
-QIcon makePlusIcon()
-{
-    QPixmap pixmap(18, 18);
-    pixmap.fill(Qt::transparent);
-
-    QPainter painter(&pixmap);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(QPen(QColor(29, 132, 72), 3, Qt::SolidLine, Qt::RoundCap));
-    painter.drawLine(9, 4, 9, 14);
-    painter.drawLine(4, 9, 14, 9);
-
-    return QIcon(pixmap);
-}
-
-QString buttonStyleSheet()
-{
-    return QStringLiteral(
-        "QToolButton {"
-        "  background-color: rgba(255, 255, 255, 215);"
-        "  border: 1px solid rgba(40, 40, 40, 120);"
-        "  border-radius: 11px;"
-        "  padding: 2px;"
-        "}"
-        "QToolButton:hover {"
-        "  background-color: rgba(255, 255, 255, 245);"
-        "}"
-        "QToolButton:pressed {"
-        "  background-color: rgba(232, 232, 232, 245);"
-        "}"
-    );
-}
+constexpr int SpreadsheetTextColorRole = Qt::UserRole + 3;
+constexpr int SpreadsheetGridColorRole = Qt::UserRole + 4;
+constexpr int SpreadsheetLineWidthRole = Qt::UserRole + 5;
+constexpr qreal StructureButtonSpacing = 6.0;
 
 class SpreadsheetTableItem final : public QTableWidgetItem
 {
@@ -134,13 +106,19 @@ public:
                        const QString& editValue,
                        bool stringLiteral,
                        int alignment,
-                       double textSize)
+                       double textSize,
+                       const QColor& textColor,
+                       const QColor& gridColor,
+                       double lineWidth)
     {
         m_editValue = editValue;
         m_stringLiteral = stringLiteral;
         QTableWidgetItem::setData(Qt::DisplayRole, displayValue);
         QTableWidgetItem::setData(SpreadsheetAlignmentRole, alignment);
         QTableWidgetItem::setData(SpreadsheetTextSizeRole, textSize);
+        QTableWidgetItem::setData(SpreadsheetTextColorRole, textColor);
+        QTableWidgetItem::setData(SpreadsheetGridColorRole, gridColor);
+        QTableWidgetItem::setData(SpreadsheetLineWidthRole, lineWidth);
     }
 
     QString serializedEditValue() const
@@ -159,6 +137,31 @@ class SpreadsheetItemDelegate final : public QStyledItemDelegate
 public:
     using QStyledItemDelegate::QStyledItemDelegate;
 
+    QWidget* createEditor(QWidget* parent,
+                          const QStyleOptionViewItem& option,
+                          const QModelIndex& index) const override
+    {
+        QWidget* editor = QStyledItemDelegate::createEditor(parent, option, index);
+        if (!editor) {
+            return nullptr;
+        }
+        const QColor textColor = index.data(SpreadsheetTextColorRole).value<QColor>();
+        QPalette palette = editor->palette();
+        palette.setColor(QPalette::Base, Qt::white);
+        palette.setColor(QPalette::AlternateBase, Qt::white);
+        palette.setColor(QPalette::Text, textColor);
+        palette.setColor(QPalette::WindowText, textColor);
+        palette.setColor(QPalette::Highlight, QColor(190, 215, 240));
+        palette.setColor(QPalette::HighlightedText, textColor);
+        editor->setPalette(palette);
+        // The text color is document data rather than theme chrome. A widget-level rule is needed
+        // because application stylesheets otherwise override the delegate editor's palette.
+        const QString colorName = textColor.name(QColor::HexArgb);
+        editor->setStyleSheet(
+            QStringLiteral("color: %1; selection-color: %1;").arg(colorName));
+        return editor;
+    }
+
     void paint(QPainter* painter,
                const QStyleOptionViewItem& option,
                const QModelIndex& index) const override
@@ -169,21 +172,40 @@ public:
         backgroundOption.text.clear();
         QStyle* style = option.widget ? option.widget->style() : QApplication::style();
         style->drawControl(QStyle::CE_ItemViewItem, &backgroundOption, painter, option.widget);
-        if (text.isEmpty()) {
-            return;
-        }
 
         painter->save();
         painter->setClipRect(option.rect);
         painter->setFont(backgroundOption.font);
-        painter->setPen(backgroundOption.palette.color(
-            option.state & QStyle::State_Selected ? QPalette::HighlightedText : QPalette::Text));
 
         const QRectF cellRect(option.rect);
         const double textSize = index.data(SpreadsheetTextSizeRole).toDouble();
+        const QColor textColor = index.data(SpreadsheetTextColorRole).value<QColor>();
+        const QColor gridColor = index.data(SpreadsheetGridColorRole).value<QColor>();
+        const qreal lineWidth = index.data(SpreadsheetLineWidthRole).toDouble();
         const double horizontalInset = textSize / 2.0;
-        const double textWidth = QFontMetricsF(backgroundOption.font).horizontalAdvance(text);
+        const QFontMetricsF fontMetrics(backgroundOption.font);
+        const double textWidth = fontMetrics.horizontalAdvance(text);
         const int alignment = index.data(SpreadsheetAlignmentRole).toInt();
+
+        painter->setPen(QPen(gridColor, lineWidth));
+        const qreal halfLineWidth = lineWidth / 2.0;
+        const qreal left = cellRect.left() + halfLineWidth;
+        const qreal right = cellRect.right() - halfLineWidth;
+        const qreal top = cellRect.top() + halfLineWidth;
+        const qreal bottom = cellRect.bottom() - halfLineWidth;
+        if (index.column() == 0) {
+            painter->drawLine(QPointF(left, top), QPointF(left, bottom));
+        }
+        if (index.row() == 0) {
+            painter->drawLine(QPointF(left, top), QPointF(right, top));
+        }
+        painter->drawLine(QPointF(right, top), QPointF(right, bottom));
+        painter->drawLine(QPointF(left, bottom), QPointF(right, bottom));
+
+        if (text.isEmpty()) {
+            painter->restore();
+            return;
+        }
 
         double textX = cellRect.left() + horizontalInset;
         if (alignment & Spreadsheet::Cell::ALIGNMENT_HCENTER) {
@@ -193,7 +215,10 @@ public:
             textX = cellRect.left() + cellRect.width() - horizontalInset - textWidth;
         }
 
-        painter->drawText(QPointF(textX, cellRect.top() + 0.75 * cellRect.height()), text);
+        painter->setPen(textColor);
+        const double textY = cellRect.top()
+            + TechDraw::DrawViewSpreadsheet::TextBaselineHeightRatio * cellRect.height();
+        painter->drawText(QPointF(textX, textY), text);
         painter->restore();
     }
 };
@@ -201,8 +226,7 @@ public:
 class SpreadsheetTableWidget final : public QTableWidget
 {
 public:
-    std::function<void(int, int)> deleteRows;
-    std::function<void(int, int)> deleteColumns;
+    std::function<void(Qt::Orientation, int, int)> deleteSections;
 
     bool isEditingCell() const
     {
@@ -227,8 +251,8 @@ protected:
                 firstRow = std::min(firstRow, index.row());
                 lastRow = std::max(lastRow, index.row());
             }
-            if (deleteRows && lastRow >= firstRow) {
-                deleteRows(firstRow, lastRow - firstRow + 1);
+            if (deleteSections && lastRow >= firstRow) {
+                deleteSections(Qt::Vertical, firstRow, lastRow - firstRow + 1);
             }
             event->accept();
             return;
@@ -243,8 +267,8 @@ protected:
                 firstColumn = std::min(firstColumn, index.column());
                 lastColumn = std::max(lastColumn, index.column());
             }
-            if (deleteColumns && lastColumn >= firstColumn) {
-                deleteColumns(firstColumn, lastColumn - firstColumn + 1);
+            if (deleteSections && lastColumn >= firstColumn) {
+                deleteSections(Qt::Horizontal, firstColumn, lastColumn - firstColumn + 1);
             }
             event->accept();
             return;
@@ -256,18 +280,6 @@ protected:
         event->accept();
     }
 };
-
-QString columnName(int column)
-{
-    QString result;
-    int value = column + 1;
-    while (value > 0) {
-        const int remainder = (value - 1) % 26;
-        result.prepend(QChar('A' + remainder));
-        value = (value - 1) / 26;
-    }
-    return result;
-}
 
 }  // namespace
 
@@ -303,9 +315,8 @@ void QGIViewSpreadsheet::updateView(bool update)
         // QGIViewSymbol::updateView() normally updates the SVG item's scale in drawSvg(). Since
         // drawing is deliberately skipped above, keep its scale in sync explicitly so the editor
         // transform follows scale changes made while the task panel is open.
-        auto* view = dynamic_cast<TechDraw::DrawViewSpreadsheet*>(getViewObject());
-        auto* viewProvider =
-            dynamic_cast<ViewProviderSpreadsheet*>(getViewProvider(view));
+        auto* view = getViewObject<TechDraw::DrawViewSpreadsheet>();
+        auto* viewProvider = getViewProvider<ViewProviderSpreadsheet>(view);
         if (view && viewProvider) {
             const double scale = viewProvider->LegacyScaling.getValue()
                 ? legacyScaler(view)
@@ -375,8 +386,9 @@ void QGIViewSpreadsheet::createEditor()
     m_editorGroup->setZValue(m_displayArea->zValue() + 1.0);
 
     m_table = new SpreadsheetTableWidget();
+    m_table->setObjectName(QStringLiteral("spreadsheetViewEditor"));
     m_table->setAlternatingRowColors(false);
-    m_table->setShowGrid(true);
+    m_table->setShowGrid(false);
     m_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_table->setEditTriggers(QAbstractItemView::DoubleClicked
@@ -385,8 +397,7 @@ void QGIViewSpreadsheet::createEditor()
     m_table->setSelectionMode(QAbstractItemView::ExtendedSelection);
     m_table->setSelectionBehavior(QAbstractItemView::SelectItems);
     m_table->setItemDelegate(new SpreadsheetItemDelegate(m_table));
-    m_table->setFrameStyle(QFrame::Box | QFrame::Plain);
-    m_table->setLineWidth(1);
+    m_table->setFrameStyle(QFrame::NoFrame);
     m_table->horizontalHeader()->setObjectName(QStringLiteral("spreadsheetHorizontalHeader"));
     m_table->verticalHeader()->setObjectName(QStringLiteral("spreadsheetVerticalHeader"));
     m_table->horizontalHeader()->setSectionsClickable(true);
@@ -398,71 +409,6 @@ void QGIViewSpreadsheet::createEditor()
     m_table->setAttribute(Qt::WA_TranslucentBackground);
     m_table->viewport()->setAttribute(Qt::WA_TranslucentBackground);
     m_table->viewport()->setAutoFillBackground(false);
-
-    QPalette palette = m_table->palette();
-    palette.setColor(QPalette::Base, Qt::transparent);
-    palette.setColor(QPalette::AlternateBase, Qt::transparent);
-    palette.setColor(QPalette::Text, Qt::black);
-    palette.setColor(QPalette::Highlight, Qt::transparent);
-    palette.setColor(QPalette::HighlightedText, Qt::black);
-    m_table->setPalette(palette);
-    m_table->setStyleSheet(QStringLiteral(
-        "QTableWidget {"
-        "  background-color: transparent;"
-        "  alternate-background-color: transparent;"
-        "  color: black;"
-        "  gridline-color: black;"
-        "  selection-background-color: transparent;"
-        "  selection-color: black;"
-        "  border: 1px solid black;"
-        "}"
-        "QTableWidget::item {"
-        "  background-color: transparent;"
-        "  color: black;"
-        "}"
-        "QTableWidget::item:selected {"
-        "  background-color: transparent;"
-        "  color: black;"
-        "}"
-        "QHeaderView#spreadsheetHorizontalHeader::section {"
-        "  background-color: rgb(235, 235, 235);"
-        "  color: black;"
-        "  border: 0;"
-        "  border-top: 1px solid black;"
-        "  border-right: 1px solid black;"
-        "  border-bottom: 1px solid black;"
-        "}"
-        "QHeaderView#spreadsheetHorizontalHeader::section:checked {"
-        "  background-color: rgb(205, 220, 235);"
-        "}"
-        "QHeaderView#spreadsheetVerticalHeader::section {"
-        "  background-color: rgb(235, 235, 235);"
-        "  color: black;"
-        "  border: 0;"
-        "  border-left: 1px solid black;"
-        "  border-right: 1px solid black;"
-        "  border-bottom: 1px solid black;"
-        "}"
-        "QHeaderView#spreadsheetVerticalHeader::section:checked {"
-        "  background-color: rgb(205, 220, 235);"
-        "}"
-        "QTableCornerButton::section {"
-        "  background-color: rgb(235, 235, 235);"
-        "  border: 0;"
-        "  border-top: 1px solid black;"
-        "  border-left: 1px solid black;"
-        "  border-right: 1px solid black;"
-        "  border-bottom: 1px solid black;"
-        "}"
-        "QTableWidget QLineEdit {"
-        "  background-color: white;"
-        "  color: black;"
-        "  selection-background-color: rgb(190, 215, 240);"
-        "  selection-color: black;"
-        "  border: 1px solid black;"
-        "  padding: 0;"
-        "}"
-    ));
 
     m_tableProxy = new QGraphicsProxyWidget();
     m_editorGroup->addToGroup(m_tableProxy);
@@ -476,8 +422,8 @@ void QGIViewSpreadsheet::createEditor()
         button->setFixedSize(24, 24);
         button->setFocusPolicy(Qt::ClickFocus);
         button->setIconSize(QSize(18, 18));
-        button->setStyleSheet(buttonStyleSheet());
-        button->setIcon(makePlusIcon());
+        button->setObjectName(QStringLiteral("overlayButton"));
+        button->setIcon(QIcon(QStringLiteral(":/icons/overlay-add.svg")));
     }
     m_addRowButton->setToolTip(tr("Add row"));
     m_addColumnButton->setToolTip(tr("Add column"));
@@ -605,17 +551,15 @@ void QGIViewSpreadsheet::createEditor()
             });
 
     auto* spreadsheetTable = static_cast<SpreadsheetTableWidget*>(m_table);
-    spreadsheetTable->deleteRows = [this](int firstRow, int count) {
-        QTimer::singleShot(0, this, [this, firstRow, count]() {
+    spreadsheetTable->deleteSections = [this](Qt::Orientation orientation, int first, int count) {
+        QTimer::singleShot(0, this, [this, orientation, first, count]() {
             if (m_isEditing) {
-                Q_EMIT deleteRowsRequested(firstRow, count);
-            }
-        });
-    };
-    spreadsheetTable->deleteColumns = [this](int firstColumn, int count) {
-        QTimer::singleShot(0, this, [this, firstColumn, count]() {
-            if (m_isEditing) {
-                Q_EMIT deleteColumnsRequested(firstColumn, count);
+                if (orientation == Qt::Vertical) {
+                    Q_EMIT deleteRowsRequested(first, count);
+                }
+                else {
+                    Q_EMIT deleteColumnsRequested(first, count);
+                }
             }
         });
     };
@@ -664,7 +608,8 @@ void QGIViewSpreadsheet::populateEditor()
 
     QStringList columnHeaders;
     for (int column = 0; column < columnCount; ++column) {
-        columnHeaders.push_back(columnName(m_startColumn + column));
+        columnHeaders.push_back(
+            QString::fromStdString(Spreadsheet::columnName(m_startColumn + column)));
     }
     m_table->setHorizontalHeaderLabels(columnHeaders);
 
@@ -684,7 +629,7 @@ void QGIViewSpreadsheet::populateEditor()
         }
     }
 
-    if (auto* view = dynamic_cast<TechDraw::DrawViewSpreadsheet*>(getViewObject())) {
+    if (auto* view = getViewObject<TechDraw::DrawViewSpreadsheet>()) {
         QFont font(QString::fromStdString(view->Font.getValue()));
         font.setPixelSize(std::max(1, static_cast<int>(std::round(view->TextSize.getValue()))));
         m_table->setFont(font);
@@ -746,9 +691,26 @@ void QGIViewSpreadsheet::updateCellItem(int tableRow, int tableColumn)
         item = new SpreadsheetTableItem();
         m_table->setItem(tableRow, tableColumn, item);
     }
-    const auto* view = dynamic_cast<TechDraw::DrawViewSpreadsheet*>(getViewObject());
+    const auto* view = getViewObject<TechDraw::DrawViewSpreadsheet>();
     const double textSize = view ? view->TextSize.getValue() : 12.0;
-    item->setCellValues(displayValue, editValue, stringLiteral, alignment, textSize);
+    const QColor gridColor = view
+        ? view->TextColor.getValue().asValue<QColor>()
+        : QColor(Qt::black);
+    QColor textColor = gridColor;
+    Base::Color cellTextColor;
+    if (cell && cell->getForeground(cellTextColor)) {
+        textColor = cellTextColor.asValue<QColor>();
+    }
+    const double lineWidth = view ? view->LineWidth.getValue() / view->getScale() : 1.0;
+    item->setCellValues(
+        displayValue,
+        editValue,
+        stringLiteral,
+        alignment,
+        textSize,
+        textColor,
+        gridColor,
+        lineWidth);
 }
 
 void QGIViewSpreadsheet::updateEditorGeometry()
@@ -779,11 +741,11 @@ void QGIViewSpreadsheet::updateEditorGeometry()
     const QSize rowButtonSize = m_addRowButton->size();
     m_addRowProxy->setPos(
         -0.5 * cellWidth - 0.5 * (headerWidth + rowButtonSize.width()),
-        0.5 * cellHeight + 6);
+        0.5 * cellHeight + StructureButtonSpacing);
 
     const QSize columnButtonSize = m_addColumnButton->size();
     m_addColumnProxy->setPos(
-        0.5 * cellWidth + 6,
+        0.5 * cellWidth + StructureButtonSpacing,
         -0.5 * cellHeight - 0.5 * (headerHeight + columnButtonSize.height()));
 }
 
