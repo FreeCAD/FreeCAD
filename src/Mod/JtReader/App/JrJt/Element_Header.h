@@ -46,7 +46,7 @@ struct Element_Header
         read(cont, zLib);
     };
 
-    inline void read(Context& cont, bool zLib = false)
+    inline void read(Context& cont, [[maybe_unused]] bool zLib = false)
     {
         // only zip less implemented so far...
         assert(zLib == false);

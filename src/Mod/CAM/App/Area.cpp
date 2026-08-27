@@ -3784,7 +3784,6 @@ std::list<TopoDS_Shape> Area::sortWires(
         auto best_it = shape_list.begin();
         for (auto it = best_it; it != shape_list.end(); ++it) {
             double d;
-            gp_Pnt pt;
             if (it->myPlanar && current_it == shape_list.end()) {
                 d = it->myPln.SquareDistance(pstart);
             }
@@ -3911,8 +3910,8 @@ static inline void addG1(
 {
     addGCode(verbose, path, last, next, "G1");
     if (f > Precision::Confusion()) {
-        Command* cmd = path.getCommands().back();
-        addParameter(verbose, *cmd, "F", last_f, f);
+        Command& cmd = path.getCommand(path.getSize() - 1);
+        addParameter(verbose, cmd, "F", last_f, f);
         last_f = f;
     }
     return;

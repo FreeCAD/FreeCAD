@@ -65,7 +65,7 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     static const char *group = "Base";
 
     auto showLabel = Preferences::alwaysShowLabel();
-    // TODO: KeepLabel is not used. Make it ReadOnly or Hidden?
+
     ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 

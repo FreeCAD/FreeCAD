@@ -25,13 +25,12 @@ import FreeCAD as App
 import FreeCADGui
 import Part
 import Path
-import Path.Base.Generator.leadinout as leadinout
-
+from Path.Base.Generator import leadinout
 from Path.Base.Gui.Util import QuantitySpinBox
 from Path.Base.Util import toolControllerForOp
 from Path.Dressup import Utils as PathDressup
 from PathPythonGui.simple_edit_panel import SimpleEditPanel
-from PathScripts import PathUtils as PathUtils
+from PathScripts import PathUtils
 from Path.Base.MachineState import MachineState
 
 __doc__ = """LeadInOut Dressup USE ROLL-ON ROLL-OFF to profile"""
@@ -117,13 +116,13 @@ class ObjectDressup:
             "App::PropertyAngle",
             "AngleIn",
             "Path Lead-in",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-In"),
         )
         obj.addProperty(
             "App::PropertyAngle",
             "AngleOut",
             "Path Lead-out",
-            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out (1..90)"),
+            QT_TRANSLATE_NOOP("App::Property", "Angle of the Lead-Out"),
         )
         obj.addProperty(
             "App::PropertyLength",
@@ -268,15 +267,13 @@ class ObjectDressup:
             )
             obj.AngleOut = 90
 
-        if styleOn:
-            if styleOn == "Arc":
-                obj.StyleIn = "Arc"
-                obj.AngleIn = 90
+        if styleOn and styleOn == "Arc":
+            obj.StyleIn = "Arc"
+            obj.AngleIn = 90
 
-        if styleOff:
-            if styleOff == "Arc":
-                obj.StyleOut = "Arc"
-                obj.AngleOut = 90
+        if styleOff and styleOff == "Arc":
+            obj.StyleOut = "Arc"
+            obj.AngleOut = 90
 
         for prop in ("Length", "LengthIn"):
             if hasattr(obj, prop):
@@ -439,9 +436,9 @@ class ObjectDressup:
         ):
 
             def _isVertical(currentposition, cmd):
-                x = cmd.Parameters["X"] if "X" in cmd.Parameters else currentposition.x
-                y = cmd.Parameters["Y"] if "Y" in cmd.Parameters else currentposition.y
-                z = cmd.Parameters["Z"] if "Z" in cmd.Parameters else currentposition.z
+                x = cmd.Parameters.get("X", currentposition.x)
+                y = cmd.Parameters.get("Y", currentposition.y)
+                z = cmd.Parameters.get("Z", currentposition.z)
                 endpoint = App.Vector(x, y, z)
                 if Path.Geom.pointsCoincide(currentposition, endpoint):
                     return True
@@ -612,16 +609,33 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         self.connectWidget("InvertOut", self.form.chkInvertDirectionOut)
         self.connectWidget("StyleIn", self.form.cboStyleIn)
         self.connectWidget("StyleOut", self.form.cboStyleOut)
-        self.radiusIn = QuantitySpinBox(self.form.dspRadiusIn, self.obj, "RadiusIn")
-        self.radiusOut = QuantitySpinBox(self.form.dspRadiusOut, self.obj, "RadiusOut")
-        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn")
-        self.angleOut = QuantitySpinBox(self.form.dspAngleOut, self.obj, "AngleOut")
-        self.extendIn = QuantitySpinBox(self.form.dspExtendIn, self.obj, "ExtendIn")
-        self.extendOut = QuantitySpinBox(self.form.dspExtendOut, self.obj, "ExtendOut")
-        self.offsetIn = QuantitySpinBox(self.form.dspOffsetIn, self.obj, "OffsetIn")
-        self.offsetOut = QuantitySpinBox(self.form.dspOffsetOut, self.obj, "OffsetOut")
         self.connectWidget("RapidPlunge", self.form.chkRapidPlunge)
-        self.threshold = QuantitySpinBox(self.form.dspThreshold, self.obj, "RetractThreshold")
+
+        self.radiusIn = QuantitySpinBox(
+            self.form.dspRadiusIn, self.obj, "RadiusIn", setToolTip=True
+        )
+        self.radiusOut = QuantitySpinBox(
+            self.form.dspRadiusOut, self.obj, "RadiusOut", setToolTip=True
+        )
+        self.angleIn = QuantitySpinBox(self.form.dspAngleIn, self.obj, "AngleIn", setToolTip=True)
+        self.angleOut = QuantitySpinBox(
+            self.form.dspAngleOut, self.obj, "AngleOut", setToolTip=True
+        )
+        self.extendIn = QuantitySpinBox(
+            self.form.dspExtendIn, self.obj, "ExtendIn", setToolTip=True
+        )
+        self.extendOut = QuantitySpinBox(
+            self.form.dspExtendOut, self.obj, "ExtendOut", setToolTip=True
+        )
+        self.offsetIn = QuantitySpinBox(
+            self.form.dspOffsetIn, self.obj, "OffsetIn", setToolTip=True
+        )
+        self.offsetOut = QuantitySpinBox(
+            self.form.dspOffsetOut, self.obj, "OffsetOut", setToolTip=True
+        )
+        self.threshold = QuantitySpinBox(
+            self.form.dspThreshold, self.obj, "RetractThreshold", setToolTip=True
+        )
 
         self.radiusIn.updateWidget()
         self.radiusOut.updateWidget()

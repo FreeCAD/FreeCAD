@@ -239,6 +239,7 @@ class OpenSBPPost(PostProcessor):
         # Override .values
 
         self.values["COMMENT_SYMBOL"] = "'"
+        self.values["TRANSLATE_DRILL_CYCLES"] = True
 
         # schema by [name]
         schema = {x["name"]: x for x in self.get_common_property_schema()}
@@ -246,7 +247,7 @@ class OpenSBPPost(PostProcessor):
         # These schema defaults are r/o: force them
         for property_name in (
             "supported_commands drill_cycles_to_translate"
-            " translate_drill_cycles output_tool_length_offset"
+            " output_tool_length_offset"
             " f_for_rapid_moves".split(  # FIXME: the merge logic doesn't respect our updated default
                 " "
             )

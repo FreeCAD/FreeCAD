@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 add_subdirectory(App)
 add_subdirectory(libarea)
 add_subdirectory(PathSimulator)
@@ -386,6 +388,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Deburr.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
+    Path/Op/Flute.py
     Path/Op/FeatureExtension.py
     Path/Op/Drilling.py
     Path/Op/Helix.py
@@ -420,10 +423,11 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
     Path/Op/Gui/FeatureExtension.py
+    Path/Op/Gui/Flute.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
     Path/Op/Gui/MillFacing.py
-    Path/Op/Gui/PathShapeTC.py
+    Path/Op/Gui/PathShape.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
     Path/Op/Gui/PocketShape.py
@@ -450,6 +454,7 @@ SET(PathScripts_SRCS
 )
 
 SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/adaptive_common.py
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
     Path/Base/Generator/facing_common.py
@@ -471,6 +476,14 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
+    Path/Base/Generator/surface_common.py
+    Path/Base/Generator/surface_dropcutter.py
+    Path/Base/Generator/surface_pattern.py
+    Path/Base/Generator/surface_mesh.py
+    Path/Base/Generator/surface_waterline.py
+    Path/Base/Generator/surface_postprocess.py
+    Path/Base/Generator/surface_zlevel.py
+    Path/Base/Generator/follow_wire.py
 )
 
 SET(PathPythonGui_SRCS
@@ -578,7 +591,10 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestDrillCycleExpander.py
     CAMTests/TestPathDrillable.py
+    CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFlute.py
+    CAMTests/TestPathFollowWireGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py
@@ -651,6 +667,15 @@ SET(Tests_SRCS
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
+    CAMTests/TestAdaptiveCommonGenerator.py
+    CAMTests/TestSurfaceGenerator.py
+    CAMTests/TestSurfaceCommonGenerator.py
+    CAMTests/TestSurfacePostprocessGenerator.py
+    CAMTests/TestSurfacePatternGenerator.py
+    CAMTests/TestSurfaceDropCutterGenerator.py
+    CAMTests/TestSurfaceMeshGenerator.py
+    CAMTests/TestSurfaceWaterlineGenerator.py
+    CAMTests/TestSurfaceZLevelGenerator.py
 )
 
 SET(Tests_Fixtures

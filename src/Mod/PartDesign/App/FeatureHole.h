@@ -78,6 +78,9 @@ public:
     App::PropertyBool UseCustomThreadClearance;
     App::PropertyLength CustomThreadClearance;
     App::PropertyInteger BaseProfileType;
+    App::PropertyEnumeration StartType;
+    App::PropertyLength StartOffset;
+    App::PropertyLinkSub StartReference;
 
     enum BaseProfileTypeOptions
     {
@@ -131,6 +134,7 @@ public:
     bool isDynamicCounterbore(const std::string& thread, const std::string& holeCutType);
     bool isDynamicCountersink(const std::string& thread, const std::string& holeCutType);
     double getThreadPitch() const;
+    double getStartOffset() const;
 
     Base::Vector3d guessNormalDirection(const TopoShape& profileshape) const;
     TopoShape findHoles(
