@@ -44,7 +44,7 @@ static PointD ToPointD(const Point64& p)
 // Helper method for recentering an angle in the 2*PI range next to a reference angle
 // type = 1 puts phi CCW of phi_ref; type = -1 puts it CW
 // final bounds: result is between phi_ref (exclusive) and (phi_ref + 2*pi * type) (inclusive)
-double recenter(double phi, double phi_ref, int type)
+static double recenter(double phi, double phi_ref, int type)
 {
     while (phi <= phi_ref && phi < phi_ref + 2 * M_PI * type) {
         phi += 2 * M_PI;
