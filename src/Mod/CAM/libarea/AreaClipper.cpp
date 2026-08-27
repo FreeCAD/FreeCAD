@@ -224,7 +224,7 @@ void CArea::ClipperNoop()
     SetFromResult(open_paths, /*is_closed=*/false, metadata);
 }
 
-void CArea::TestIntersectOpenPathReversal(
+void CArea::Debug_IntersectOpenPathReversal(
     const CArea& clip_area,
     bool reverseOpenPathContents,
     bool reverseOpenPathOrder
@@ -403,6 +403,9 @@ void CArea::NaiveOffset(double offset)
                 const double dx = v.m_p.x - pPrev.x;
                 const double dy = v.m_p.y - pPrev.y;
                 const double len = std::hypot(dx, dy);
+                if (len == 0) {
+                    continue;
+                }
                 tie(sTanX, sTanY) = make_pair(dx / len * offset, dy / len * offset);
                 tie(sNormX, sNormY) = make_pair(sTanY, -sTanX);
                 tie(eTanX, eTanY) = make_pair(sTanX, sTanY);
@@ -416,6 +419,9 @@ void CArea::NaiveOffset(double offset)
                 const double ex = v.m_type * (v.m_p.x - v.m_c.x);
                 const double ey = v.m_type * (v.m_p.y - v.m_c.y);
                 radius = std::hypot(sx, sy);
+                if (radius == 0) {
+                    continue;
+                }
 
                 tie(sNormX, sNormY) = make_pair(sx / radius * offset, sy / radius * offset);
                 tie(eNormX, eNormY) = make_pair(ex / radius * offset, ey / radius * offset);
@@ -432,9 +438,7 @@ void CArea::NaiveOffset(double offset)
 
             // If the output curves are empty, intialize the start point and direction
             const bool hasPrev = !cPos.m_vertices.empty();
-            double exitQ = v.m_type == 0
-                ? 0
-                : v.m_type / std::hypot(pPrev.x - v.m_c.x, pPrev.y - v.m_c.y);
+            double exitQ = v.m_type == 0 ? 0 : v.m_type / radius;
             if (!hasPrev) {
                 cPos.m_vertices.emplace_back(0, pPosS, Point(0, 0));
                 cNeg.m_vertices.emplace_back(0, pNegS, Point(0, 0));
@@ -446,7 +450,7 @@ void CArea::NaiveOffset(double offset)
             if (hasPrev) {
                 addJoin(pPosS, pNegS, pPrev, prevDirX, prevDirY, sTanX, sTanY, enterQ, exitQ);
             }
-            enterQ = v.m_type == 0 ? 0 : v.m_type / std::hypot(v.m_p.x - v.m_c.x, v.m_p.y - v.m_c.y);
+            enterQ = v.m_type == 0 ? 0 : v.m_type / radius;
 
             // Generate the positive and negative offset segments connecting pPosS to pPosE and
             // pNegS to pNegE
