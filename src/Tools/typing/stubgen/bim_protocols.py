@@ -7,28 +7,28 @@ from __future__ import annotations
 import ast
 from collections.abc import Mapping
 from dataclasses import dataclass
+import json
+import os
 from pathlib import Path
 
 from .module_merge import generated_stub_header
 from .property_contracts import PropertyCatalog, property_contract
 from .property_declarations import (
-    BIM_GENERATED_PROTOCOL_CLASSES,
-    BIM_PROTOCOL_CLASSES,
+    BIM_GENERATED_OBJECT_CLASSES,
+    BIM_GENERATED_RUNTIME_BASES,
+    BIM_MANUAL_OBJECT_CLASSES,
+    BIM_TYPE_CHECK_SOURCES,
     discover_property_declarations,
 )
 from .property_hierarchy import PropertyHierarchy
 
-BIM_GENERATED_BASE_TYPES: Mapping[str, tuple[str, ...]] = {
-    "ArchEquipmentObject": ("Part.Feature",),
-}
-
 
 @dataclass(frozen=True)
-class GeneratedBIMProtocol:
+class GeneratedBIMObject:
     """One generated BIM object stub and its discovered property members."""
 
     source: str
-    protocol_name: str
+    object_name: str
     base_types: tuple[str, ...]
     properties: tuple[tuple[str, str, str], ...]
 
@@ -52,13 +52,13 @@ def _class_bases(source: str) -> dict[str, tuple[str, ...]]:
     }
 
 
-def _owner_protocols(
-    protocol_classes: Mapping[str, Mapping[str, str]],
+def _owner_objects(
+    object_classes: Mapping[str, Mapping[str, str]],
 ) -> dict[str, str]:
     return {
-        owner: protocol
-        for class_map in protocol_classes.values()
-        for owner, protocol in class_map.items()
+        owner: object_name
+        for class_map in object_classes.values()
+        for owner, object_name in class_map.items()
     }
 
 
@@ -74,30 +74,30 @@ def _expand_aliases(expression: str, catalog: PropertyCatalog) -> str:
     raise ValueError(f"cyclic Core property aliases while expanding {expression!r}")
 
 
-def _protocol_properties(
+def _object_properties(
     root: Path,
     source_name: str,
     owner: str,
-    protocol_name: str,
+    object_name: str,
     hierarchy: PropertyHierarchy,
     catalog: PropertyCatalog,
-    protocol_classes: Mapping[str, str],
+    object_classes: Mapping[str, str],
 ) -> tuple[tuple[str, str, str], ...]:
     declarations = discover_property_declarations(
         root,
         paths=(Path(source_name),),
-        protocol_classes={source_name: protocol_classes},
+        object_classes={source_name: object_classes},
     )
     properties: list[tuple[str, str, str]] = []
     seen: set[str] = set()
     for declaration in declarations:
-        if declaration.owner_class != owner or declaration.protocol_class != protocol_name:
+        if declaration.owner_class != owner or declaration.object_class != object_name:
             continue
         if declaration.property_name in seen:
             continue
         if not declaration.property_name.isidentifier():
             raise ValueError(
-                f"{declaration.source}:{declaration.line}: cannot generate a protocol "
+                f"{declaration.source}:{declaration.line}: cannot generate an object "
                 f"member for invalid property name {declaration.property_name!r}"
             )
         try:
@@ -118,50 +118,50 @@ def _protocol_properties(
     return tuple(properties)
 
 
-def discover_generated_bim_protocols(
+def discover_generated_bim_objects(
     root: Path,
     hierarchy: PropertyHierarchy,
     catalog: PropertyCatalog,
-    generated_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_GENERATED_PROTOCOL_CLASSES,
-    inherited_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_PROTOCOL_CLASSES,
-    generated_base_types: Mapping[str, tuple[str, ...]] = BIM_GENERATED_BASE_TYPES,
-) -> tuple[GeneratedBIMProtocol, ...]:
+    generated_object_classes: Mapping[str, Mapping[str, str]] = BIM_GENERATED_OBJECT_CLASSES,
+    inherited_object_classes: Mapping[str, Mapping[str, str]] = BIM_MANUAL_OBJECT_CLASSES,
+    runtime_base_types: Mapping[str, tuple[str, ...]] = BIM_GENERATED_RUNTIME_BASES,
+) -> tuple[GeneratedBIMObject, ...]:
     """Discover generated BIM objects and resolve their Core property contracts."""
 
-    all_protocol_classes = {**inherited_protocol_classes, **generated_protocol_classes}
-    owner_protocols = _owner_protocols(all_protocol_classes)
-    protocols: list[GeneratedBIMProtocol] = []
-    for source_name, class_map in generated_protocol_classes.items():
+    all_object_classes = {**inherited_object_classes, **generated_object_classes}
+    owner_objects = _owner_objects(all_object_classes)
+    objects: list[GeneratedBIMObject] = []
+    for source_name, class_map in generated_object_classes.items():
         source_path = root / source_name
         source = source_path.read_text(encoding="utf-8")
         class_bases = _class_bases(source)
-        for owner, protocol_name in class_map.items():
+        for owner, object_name in class_map.items():
             inherited_base_types = tuple(
-                base_protocol
+                base_object
                 for base in class_bases.get(owner, ())
-                if (base_protocol := owner_protocols.get(base)) is not None
-                and base_protocol != protocol_name
+                if (base_object := owner_objects.get(base)) is not None
+                and base_object != object_name
             )
             base_types = tuple(
-                dict.fromkeys((*generated_base_types.get(protocol_name, ()), *inherited_base_types))
+                dict.fromkeys((*runtime_base_types.get(object_name, ()), *inherited_base_types))
             )
-            protocols.append(
-                GeneratedBIMProtocol(
+            objects.append(
+                GeneratedBIMObject(
                     source=source_name,
-                    protocol_name=protocol_name,
+                    object_name=object_name,
                     base_types=base_types,
-                    properties=_protocol_properties(
+                    properties=_object_properties(
                         root,
                         source_name,
                         owner,
-                        protocol_name,
+                        object_name,
                         hierarchy,
                         catalog,
                         class_map,
                     ),
                 )
             )
-    return tuple(protocols)
+    return tuple(objects)
 
 
 def _base_import(base: str) -> str:
@@ -184,35 +184,35 @@ def _render_property(name: str, getter: str, setter: str) -> list[str]:
     ]
 
 
-def render_bim_protocols(
+def render_bim_objects(
     root: Path,
     hierarchy: PropertyHierarchy,
     catalog: PropertyCatalog,
-    generated_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_GENERATED_PROTOCOL_CLASSES,
-    inherited_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_PROTOCOL_CLASSES,
-    generated_base_types: Mapping[str, tuple[str, ...]] = BIM_GENERATED_BASE_TYPES,
+    generated_object_classes: Mapping[str, Mapping[str, str]] = BIM_GENERATED_OBJECT_CLASSES,
+    inherited_object_classes: Mapping[str, Mapping[str, str]] = BIM_MANUAL_OBJECT_CLASSES,
+    runtime_base_types: Mapping[str, tuple[str, ...]] = BIM_GENERATED_RUNTIME_BASES,
 ) -> str:
-    """Render the generated BIM protocol package source."""
+    """Render the generated BIM object package source."""
 
-    protocols = discover_generated_bim_protocols(
+    objects = discover_generated_bim_objects(
         root,
         hierarchy,
         catalog,
-        generated_protocol_classes,
-        inherited_protocol_classes,
-        generated_base_types,
+        generated_object_classes,
+        inherited_object_classes,
+        runtime_base_types,
     )
-    generated_names = {protocol.protocol_name for protocol in protocols}
+    generated_names = {obj.object_name for obj in objects}
     base_types = {
         base
-        for protocol in protocols
-        for base in (protocol.base_types or ("DocumentObject",))
+        for obj in objects
+        for base in (obj.base_types or ("DocumentObject",))
         if base not in generated_names
     }
     annotations = [
         annotation
-        for protocol in protocols
-        for _, getter, setter in protocol.properties
+        for obj in objects
+        for _, getter, setter in obj.properties
         for annotation in (getter, setter)
     ]
 
@@ -227,31 +227,82 @@ def render_bim_protocols(
     lines.extend(sorted(imports))
     lines.extend(["", ""])
 
-    for index, protocol in enumerate(protocols):
-        bases = ", ".join(protocol.base_types or ("DocumentObject",))
-        lines.append(f"class {protocol.protocol_name}({bases}):")
-        lines.append(f'    """Generated from {protocol.source} addProperty declarations."""')
+    for index, obj in enumerate(objects):
+        bases = ", ".join(obj.base_types or ("DocumentObject",))
+        lines.append(f"class {obj.object_name}({bases}):")
+        lines.append(f'    """Generated from {obj.source} addProperty declarations."""')
         lines.append("")
-        if not protocol.properties:
+        if not obj.properties:
             lines.append("    pass")
         else:
-            for property_name, getter, setter in protocol.properties:
+            for property_name, getter, setter in obj.properties:
                 lines.extend(_render_property(property_name, getter, setter))
-        if index != len(protocols) - 1:
+        if index != len(objects) - 1:
             lines.extend(["", ""])
     return "\n".join(lines).rstrip() + "\n"
 
 
-def write_bim_protocols(
+def write_bim_objects(
     out_dir: Path,
     root: Path,
     hierarchy: PropertyHierarchy,
     catalog: PropertyCatalog,
 ) -> Path:
-    """Write the generated BIM protocol package and return its init stub path."""
+    """Write the generated BIM object package and return its init stub path."""
 
     package_dir = out_dir / "bim_typing"
     package_dir.mkdir(parents=True, exist_ok=True)
     target = package_dir / "__init__.pyi"
-    target.write_text(render_bim_protocols(root, hierarchy, catalog), encoding="utf-8")
+    target.write_text(render_bim_objects(root, hierarchy, catalog), encoding="utf-8")
     return target
+
+
+def _toml_array(values: tuple[Path, ...]) -> str:
+    return "[\n" + ",\n".join(f"    {json.dumps(str(value))}" for value in values) + "\n]"
+
+
+def write_bim_checker_configs(stubs_dir: Path, root: Path) -> tuple[Path, Path]:
+    """Write disposable checker configs using all registry-enabled BIM sources."""
+
+    smoke_dir = root / "src/Tools/typing/smoke"
+    generated_sources = tuple(root / source for source in BIM_TYPE_CHECK_SOURCES)
+    included_paths = tuple(
+        dict.fromkeys(
+            (
+                smoke_dir / "smoke.py",
+                smoke_dir / "property_protocols.py",
+                *generated_sources,
+            )
+        )
+    )
+    search_paths = (stubs_dir, root / "src/Mod/Draft", root / "src/Mod/BIM")
+
+    def relative(path: Path) -> str:
+        return os.path.relpath(path, stubs_dir)
+
+    pyright_config = stubs_dir / "_bim_pyrightconfig.json"
+    pyright_config.write_text(
+        json.dumps(
+            {
+                "include": [relative(path) for path in included_paths],
+                "extraPaths": [relative(path) for path in search_paths],
+                "reportMissingImports": "error",
+                "reportMissingModuleSource": "none",
+                "typeCheckingMode": "basic",
+            },
+            indent=4,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    pyrefly_config = stubs_dir / "_bim_pyrefly.toml"
+    pyrefly_config.write_text(
+        "project-includes = "
+        + _toml_array(tuple(Path(relative(path)) for path in included_paths))
+        + "\nsearch-path = "
+        + _toml_array(tuple(Path(relative(path)) for path in search_paths))
+        + '\nignore-missing-imports = ["Arch_rc", "pivy"]\n',
+        encoding="utf-8",
+    )
+    return pyright_config, pyrefly_config

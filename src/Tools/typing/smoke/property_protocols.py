@@ -21,7 +21,7 @@ from ArchTypeHints import (
     VectorInput,
     VectorValue,
 )
-from bim_typing import ArchEquipmentObject
+from bim_typing import ArchEquipmentObject, ArchFrameObject, ArchSpaceObject
 from FreeCAD import DocumentObject, _QuantityInput as QuantityInput
 from FreeCAD.Base import Placement, Quantity, Unit, Vector
 from Part import Feature, Shape
@@ -125,6 +125,18 @@ assert_type(equipment.SnapPoints, list[Vector])
 equipment.SnapPoints = [(0, 0, 1)]
 assert_type(equipment.EquipmentPower, float)
 equipment.EquipmentPower = 1500.0
+
+frame = cast(ArchFrameObject, object())
+assert_type(frame.Edges, str)
+frame.Edges = ["All edges", "Vertical edges"]
+
+space = cast(ArchSpaceObject, object())
+assert_type(space.SpaceType, str)
+space.SpaceType = ["Undefined", "Office"]
+assert_type(space.Conditioning, str)
+space.Conditioning = ["Heated"]
+assert_type(space.AreaCalculationType, str)
+space.AreaCalculationType = ["XY-plane projection"]
 
 # Keep the public aliases exercised as both getter and setter vocabulary.
 objects: DocumentObjectList = [document_object]

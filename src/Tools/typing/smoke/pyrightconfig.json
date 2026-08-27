@@ -32,8 +32,7 @@
         "../../../Mod/Draft/draftobjects/type_hints.py",
         "../../../Mod/Draft/draftobjects/wire.py",
         "../../../Mod/Draft/draftutils/groups.py",
-        "../../../Mod/Draft/draftutils/type_hints.py",
-        "../../../Mod/BIM/ArchEquipment.py"
+        "../../../Mod/Draft/draftutils/type_hints.py"
     ],
     "extraPaths": [
         "../generated/stubs",

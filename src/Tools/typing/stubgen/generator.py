@@ -35,7 +35,7 @@ from .cpp_properties import (
     discover_cpp_properties,
     typed_cpp_properties,
 )
-from .bim_protocols import write_bim_protocols
+from .bim_protocols import write_bim_checker_configs, write_bim_objects
 from .module_merge import (
     copy_module_support_stubs,
     copy_overlay_stubs,
@@ -67,7 +67,7 @@ from .property_contracts import (
 from .property_hierarchy import property_hierarchy_from
 from .property_declarations import (
     BIM_PROPERTY_SOURCES,
-    BIM_PROTOCOL_CLASSES,
+    BIM_MANUAL_OBJECT_CLASSES,
     DRAFT_PROPERTY_SOURCES,
     format_issues,
     validate_protocol_property_contracts,
@@ -321,7 +321,7 @@ def write_outputs(
         formatted = "\n".join(issue.format() for issue in conversion_issues)
         raise ValueError("Core property conversion metadata is incomplete:\n" + formatted)
     write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
-    write_bim_protocols(out_dir / "stubs", root, property_hierarchy, property_catalog)
+    write_bim_objects(out_dir / "stubs", root, property_hierarchy, property_catalog)
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )
@@ -337,7 +337,7 @@ def write_outputs(
         root,
         paths=BIM_PROPERTY_SOURCES,
         hierarchy=property_hierarchy,
-        protocol_classes=BIM_PROTOCOL_CLASSES,
+        protocol_classes=BIM_MANUAL_OBJECT_CLASSES,
         inherited_source_paths=(Path("src/Mod/BIM/ArchTypeHints.py"),),
         catalog=property_catalog,
     )
@@ -373,10 +373,10 @@ def write_outputs(
         module_names,
         root,
     )
-
     write_pep561_markers(out_dir / "stubs", module_names)
     project = Project(root)
     project.write_pyproject(out_dir)
     project.write_readme(out_dir)
 
+    write_bim_checker_configs(out_dir / "stubs", root)
     return GenerationResult(overlay_count, cpp_property_report)

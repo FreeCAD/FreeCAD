@@ -32,7 +32,6 @@ project-includes = [
     "../../../Mod/Draft/draftobjects/wire.py",
     "../../../Mod/Draft/draftutils/groups.py",
     "../../../Mod/Draft/draftutils/type_hints.py",
-    "../../../Mod/BIM/ArchEquipment.py",
 ]
 search-path = ["../generated/stubs", "../../../Mod/Draft", "../../../Mod/BIM", "../../../3rdParty"]
 ignore-missing-imports = ["Arch_rc", "Draft_rc", "pivy"]

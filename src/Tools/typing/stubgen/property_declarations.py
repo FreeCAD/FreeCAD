@@ -2,10 +2,10 @@
 
 """Discover and verify simple Python ``App::Property*`` declarations.
 
-The first pass is intentionally conservative.  It recognizes calls whose
+The first pass is intentionally conservative. It recognizes calls whose
 TypeId and property name are literal strings, records their runtime owner and
-matching structural protocol, checks manually maintained protocol properties,
-and supplies declarations to the generated BIM protocol path. Dynamic
+matching manual object type, checks manually maintained structural interfaces,
+and supplies declarations to the generated BIM object path. Dynamic
 declarations and property kinds that are not yet covered by the Core property
 catalog remain outside this conservative validation pass without becoming
 false-positive failures.
@@ -45,43 +45,92 @@ DRAFT_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
     )
 )
 
-BIM_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
-    Path("src/Mod/BIM") / name
-    for name in (
-        "ArchIFC.py",
-        "ArchComponent.py",
-        "ArchBuildingPart.py",
-        "ArchSectionPlane.py",
-        "ArchFrame.py",
-        "ArchEquipment.py",
-        "ArchRoof.py",
-        "ArchWindow.py",
-        "ArchWall.py",
-        "ArchSpace.py",
-    )
+
+@dataclass(frozen=True)
+class BIMObjectSpec:
+    """Source metadata for one typed BIM proxy or structural object surface."""
+
+    source: Path
+    proxy: str
+    object_name: str
+    runtime_bases: tuple[str, ...] = ()
+    generated: bool = True
+    type_check: bool = False
+
+
+# Keep the registry ordered from base objects to leaf objects. The generator
+# uses the same metadata for source discovery, inheritance, validation, and
+# checker coverage, so a migrated object cannot silently fall out of one of
+# those paths.
+BIM_OBJECTS: tuple[BIMObjectSpec, ...] = (
+    BIMObjectSpec(Path("src/Mod/BIM/ArchIFC.py"), "IfcRoot", "ArchIFCRootObject"),
+    BIMObjectSpec(Path("src/Mod/BIM/ArchIFC.py"), "IfcProduct", "ArchIFCProductObject"),
+    BIMObjectSpec(Path("src/Mod/BIM/ArchComponent.py"), "Component", "ArchComponentObject"),
+    BIMObjectSpec(
+        Path("src/Mod/BIM/ArchEquipment.py"),
+        "_Equipment",
+        "ArchEquipmentObject",
+        ("Part.Feature",),
+        type_check=True,
+    ),
+    BIMObjectSpec(
+        Path("src/Mod/BIM/ArchFrame.py"),
+        "_Frame",
+        "ArchFrameObject",
+        ("Part.Feature",),
+        type_check=True,
+    ),
+    BIMObjectSpec(
+        Path("src/Mod/BIM/ArchSpace.py"),
+        "_Space",
+        "ArchSpaceObject",
+        ("Part.Feature",),
+        type_check=True,
+    ),
+    BIMObjectSpec(
+        Path("src/Mod/BIM/ArchBuildingPart.py"),
+        "BuildingPart",
+        "ArchBuildingPartObject",
+        generated=False,
+    ),
+    BIMObjectSpec(
+        Path("src/Mod/BIM/ArchSectionPlane.py"),
+        "_SectionPlane",
+        "ArchSectionPlaneObject",
+        generated=False,
+    ),
+    BIMObjectSpec(
+        Path("src/Mod/BIM/ArchSectionPlane.py"),
+        "_ViewProviderSectionPlane",
+        "ArchSectionPlaneViewObject",
+        generated=False,
+    ),
+    BIMObjectSpec(Path("src/Mod/BIM/ArchRoof.py"), "_Roof", "_RoofObject", generated=False),
+    BIMObjectSpec(Path("src/Mod/BIM/ArchWindow.py"), "_Window", "_WindowObject", generated=False),
+    BIMObjectSpec(Path("src/Mod/BIM/ArchWall.py"), "_Wall", "_WallObject", generated=False),
 )
 
-BIM_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
-    "src/Mod/BIM/ArchBuildingPart.py": {"BuildingPart": "ArchBuildingPartObject"},
-    "src/Mod/BIM/ArchSectionPlane.py": {
-        "_SectionPlane": "ArchSectionPlaneObject",
-        "_ViewProviderSectionPlane": "ArchSectionPlaneViewObject",
-    },
-    "src/Mod/BIM/ArchFrame.py": {"_Frame": "_FrameObject"},
-    "src/Mod/BIM/ArchRoof.py": {"_Roof": "_RoofObject"},
-    "src/Mod/BIM/ArchWindow.py": {"_Window": "_WindowObject"},
-    "src/Mod/BIM/ArchWall.py": {"_Wall": "_WallObject"},
-    "src/Mod/BIM/ArchSpace.py": {"_Space": "_SpaceObject"},
-}
 
-BIM_GENERATED_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
-    "src/Mod/BIM/ArchIFC.py": {
-        "IfcRoot": "ArchIFCRootObject",
-        "IfcProduct": "ArchIFCProductObject",
-    },
-    "src/Mod/BIM/ArchComponent.py": {"Component": "ArchComponentObject"},
-    "src/Mod/BIM/ArchEquipment.py": {"_Equipment": "ArchEquipmentObject"},
+def _object_class_map(generated: bool) -> Mapping[str, Mapping[str, str]]:
+    result: dict[str, dict[str, str]] = {}
+    for spec in BIM_OBJECTS:
+        if spec.generated != generated:
+            continue
+        result.setdefault(spec.source.as_posix(), {})[spec.proxy] = spec.object_name
+    return result
+
+
+BIM_PROPERTY_SOURCES: tuple[Path, ...] = tuple(dict.fromkeys(spec.source for spec in BIM_OBJECTS))
+BIM_GENERATED_OBJECT_CLASSES = _object_class_map(generated=True)
+BIM_MANUAL_OBJECT_CLASSES = _object_class_map(generated=False)
+BIM_GENERATED_RUNTIME_BASES: Mapping[str, tuple[str, ...]] = {
+    spec.object_name: spec.runtime_bases
+    for spec in BIM_OBJECTS
+    if spec.generated and spec.runtime_bases
 }
+BIM_TYPE_CHECK_SOURCES: tuple[Path, ...] = tuple(
+    dict.fromkeys(spec.source for spec in BIM_OBJECTS if spec.generated and spec.type_check)
+)
 
 
 @dataclass(frozen=True)
@@ -91,7 +140,7 @@ class PropertyDeclaration:
     source: str
     line: int
     owner_class: str | None
-    protocol_class: str | None
+    object_class: str | None
     property_name: str
     type_id: str
 
@@ -130,11 +179,11 @@ class _DeclarationVisitor(ast.NodeVisitor):
         self,
         source: str,
         class_names: set[str],
-        protocol_classes: Mapping[str, str] | None = None,
+        object_classes: Mapping[str, str] | None = None,
     ) -> None:
         self.source = source
         self.class_names = class_names
-        self.protocol_classes = protocol_classes or {}
+        self.object_classes = object_classes or {}
         self.class_stack: list[str] = []
         self.declarations: list[PropertyDeclaration] = []
 
@@ -149,9 +198,9 @@ class _DeclarationVisitor(ast.NodeVisitor):
             property_name = _literal_string(node.args, 1)
             if type_id is not None and property_name is not None:
                 owner_class = self.class_stack[-1] if self.class_stack else None
-                protocol_name = self.protocol_classes.get(owner_class or "")
-                if protocol_name is None:
-                    protocol_name = (
+                object_name = self.object_classes.get(owner_class or "")
+                if object_name is None:
+                    object_name = (
                         f"{owner_class}Object"
                         if owner_class is not None and f"{owner_class}Object" in self.class_names
                         else None
@@ -161,7 +210,7 @@ class _DeclarationVisitor(ast.NodeVisitor):
                         source=self.source,
                         line=node.lineno,
                         owner_class=owner_class,
-                        protocol_class=protocol_name,
+                        object_class=object_name,
                         property_name=property_name,
                         type_id=type_id,
                     )
@@ -190,13 +239,13 @@ def _parse_source(source: str) -> ast.Module:
 def parse_property_declarations(
     source: str,
     source_name: str,
-    protocol_classes: Mapping[str, str] | None = None,
+    object_classes: Mapping[str, str] | None = None,
 ) -> tuple[PropertyDeclaration, ...]:
     """Parse literal property declarations from one source string."""
 
     tree = _parse_source(source)
     class_names = {node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)}
-    visitor = _DeclarationVisitor(source_name, class_names, protocol_classes)
+    visitor = _DeclarationVisitor(source_name, class_names, object_classes)
     visitor.visit(tree)
     return tuple(visitor.declarations)
 
@@ -204,7 +253,7 @@ def parse_property_declarations(
 def discover_property_declarations(
     root: Path,
     paths: Sequence[Path] = DRAFT_PROPERTY_SOURCES,
-    protocol_classes: Mapping[str, Mapping[str, str]] | None = None,
+    object_classes: Mapping[str, Mapping[str, str]] | None = None,
 ) -> tuple[PropertyDeclaration, ...]:
     """Discover declarations from repository-relative source paths."""
 
@@ -218,7 +267,7 @@ def discover_property_declarations(
             parse_property_declarations(
                 path.read_text(encoding="utf-8"),
                 source_name,
-                (protocol_classes or {}).get(source_name),
+                (object_classes or {}).get(source_name),
             )
         )
     return tuple(declarations)
@@ -377,15 +426,15 @@ def validate_protocol_property_contracts(
         for path in inherited_source_paths
     )
     for declaration in discover_property_declarations(root, paths, protocol_classes):
-        if declaration.protocol_class is None:
+        if declaration.object_class is None:
             continue
         source_path = root / declaration.source
         source = source_cache.setdefault(
             declaration.source, source_path.read_text(encoding="utf-8")
         )
-        cache_key = (declaration.source, declaration.protocol_class)
+        cache_key = (declaration.source, declaration.object_class)
         properties = protocol_cache.setdefault(
-            cache_key, protocol_properties(source, declaration.protocol_class, inherited_sources)
+            cache_key, protocol_properties(source, declaration.object_class, inherited_sources)
         )
         try:
             contract = property_contract(declaration.type_id, hierarchy, catalog)
@@ -419,7 +468,7 @@ def validate_protocol_property_contracts(
                 ProtocolContractIssue(
                     source=declaration.source,
                     line=declaration.line,
-                    protocol_class=declaration.protocol_class,
+                    protocol_class=declaration.object_class,
                     property_name=declaration.property_name,
                     type_id=declaration.type_id,
                     direction=direction,
