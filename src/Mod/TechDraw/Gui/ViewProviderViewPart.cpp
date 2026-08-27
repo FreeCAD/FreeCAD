@@ -222,7 +222,7 @@ void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
         sPixmap = "TechDraw_TreeMulti";
     } else if (dvd) {
         sPixmap = "actions/TechDraw_DetailView";
-        KeepLabel.setValue(true);
+
         // these properties apply to the base view, not the detail
         HighlightLineStyle.setStatus(App::Property::ReadOnly, true);
         HighlightLineStyle.setStatus(App::Property::Hidden, true);

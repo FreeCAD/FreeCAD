@@ -78,6 +78,9 @@ const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
                                          "Custom",
                                          nullptr};
+const char* DrawView::CaptionPositionEnums[] = {"Top",
+                                                "Bottom",
+                                                nullptr};
 const double SCALEINCREMENT(0.1);
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
                                                                   std::numeric_limits<double>::max(),
@@ -103,7 +106,8 @@ DrawView::DrawView():
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
-
+    CaptionPosition.setEnums(CaptionPositionEnums);
+    ADD_PROPERTY_TYPE(CaptionPosition, ("Bottom"), group, App::Prop_Output, "Position of the caption relative to the view");
     setScaleAttribute();
 }
 

@@ -727,19 +727,22 @@ void QGIView::layoutDecorations(const QRectF& contentArea,
                           paddedContentArea.top(),
                           frameWidth,
                           frameHeight).adjusted(-padding, - padding, padding, padding);
+    
+    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
 
-    double firstTextVerticalPos = outFrameRect.bottom();
+    double firstTextVerticalPos = outFrameRect.top() - labelRect.height();
+    outLabelPos = QPointF(outFrameRect.left(), firstTextVerticalPos);
+
     if (m_caption->toPlainText().isEmpty()) {
-        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                              firstTextVerticalPos);
+        return;
+    }
+    if (getViewObject()->CaptionPosition.isValue("Bottom")) {
+        outCaptionPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
+                                  outFrameRect.bottom());
     } else {
         outCaptionPos = QPointF(outFrameRect.center().x() - (captionRect.width() / 2),
-                                firstTextVerticalPos);
-        outLabelPos = QPointF(outFrameRect.center().x() - (labelRect.width() / 2),
-                              firstTextVerticalPos + captionRect.height());
+                                  firstTextVerticalPos - captionRect.height());
     }
-
-    outLockPos = QPointF(outFrameRect.left(), outFrameRect.bottom() - m_lockHeight);
 }
 
 

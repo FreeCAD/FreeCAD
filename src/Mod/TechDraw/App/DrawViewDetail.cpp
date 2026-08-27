@@ -51,6 +51,7 @@
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawComplexSection.h"
 #include "DrawUtil.h"
@@ -128,11 +129,65 @@ void DrawViewDetail::onChanged(const App::Property* prop)
     }
 
     if (prop == &Reference) {
-        std::string lblText = "Detail " + std::string(Reference.getValue());
-        Label.setValue(lblText);
+        std::string captionText = makeCaption();
+        Caption.setValue(captionText);
     }
 
     DrawViewPart::onChanged(prop);
+}
+
+std::string DrawViewDetail::makeCaption() {
+    std::string ref = Reference.getValue();
+    std::string mainCaption = "DETAIL " + ref;
+
+    App::DocumentObject* baseObj = BaseView.getValue();
+    auto* baseView = dynamic_cast<TechDraw::DrawView*>(baseObj);
+    if (!baseView) {
+        return mainCaption;
+    }
+    double baseScale = baseView->Scale.getValue();
+
+    double relativeScale = Scale.getValue() / baseScale;
+
+    // If the relative scale is 1.0 it should not show scale
+    if (relativeScale == 1.0) {
+        return mainCaption;
+    }
+
+    double num1, num2;
+
+    // turning a scale of 0.5 into 1:2 and a scale of 2 into 2:1 etc.
+    if (relativeScale < 1.0) {
+        num1 = 1.0;
+        num2 = 1.0 / relativeScale;
+    } else {
+        num1 = relativeScale;
+        num2 = 1.0;
+    }
+
+    std::string scaleText = "\nSCALE " + formatScale(num1) + ":" + formatScale(num2);
+
+    return mainCaption + scaleText;
+}
+
+std::string DrawViewDetail::formatScale(double scale)
+{
+    const int decimals = Base::UnitsApi::getDecimals();
+    std::ostringstream oss;
+    oss.precision(decimals);
+    oss << std::fixed << scale;
+    std::string result = oss.str();
+
+    // Removes trailing zeros and removes the decimal point
+    if (result.find('.') != std::string::npos) {
+        while (result.back() == '0') {
+            result.pop_back();
+        }
+        if (result.back() == '.') {
+            result.pop_back();
+        }
+    }
+    return result;
 }
 
 App::DocumentObjectExecReturn* DrawViewDetail::execute()

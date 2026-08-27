@@ -81,6 +81,8 @@ protected:
     void changeEvent(QEvent *event) override;
     void startDragger();
 
+    std::string makeCaption();
+
     void createDetail();
     void updateDetail();
 

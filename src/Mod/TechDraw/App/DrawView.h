@@ -61,6 +61,7 @@ public:
     App::PropertyEnumeration ScaleType;
     App::PropertyAngle Rotation;
     App::PropertyString Caption;
+    App::PropertyEnumeration CaptionPosition;
 
     /** @name methods override Feature */
     //@{
@@ -144,6 +145,7 @@ protected:
 
 private:
     static const char* ScaleTypeEnums[];
+    static const char* CaptionPositionEnums[];
     static App::PropertyFloatConstraint::Constraints scaleRange;
 
     bool m_overrideKeepUpdated;

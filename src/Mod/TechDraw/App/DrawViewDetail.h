@@ -73,6 +73,7 @@ public:
     void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
+    std::string makeCaption();
 
     void detailExec(TopoDS_Shape& s,
                     DrawViewPart* baseView,
@@ -102,6 +103,7 @@ protected:
     void getParameters(void);
     double m_fudge;
     bool debugDetail() const;
+    std::string formatScale(double scale);
 
     TopoDS_Shape m_scaledShape;
     gp_Ax2 m_viewAxis;
