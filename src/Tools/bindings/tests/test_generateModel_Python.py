@@ -174,6 +174,14 @@ class GenerateModelPythonTests(unittest.TestCase):
                 if name == "Rotation":
                     self.assertNotRegex(header, r"PyObject\*\s+__mul__\(")
 
+    def test_type_checking_attributes_do_not_generate_binding_accessors(self):
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            generate(str(SRC_DIR / "App" / "GeoFeature.pyi"), temp_dir)
+            header = (Path(temp_dir) / "GeoFeaturePy.h").read_text(encoding="utf-8")
+
+        self.assertNotIn("Py::Object getPlacement() const;", header)
+        self.assertNotIn("void setPlacement(Py::Object arg);", header)
+
     def test_overload_only_methods_keep_the_binding_implementation(self):
         with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
             generate(str(SRC_DIR / "Mod/Sketcher/App/SketchObject.pyi"), temp_dir)
