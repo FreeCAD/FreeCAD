@@ -69,11 +69,17 @@ View3DInventorSelection::View3DInventorSelection(SoFCUnifiedSelection* root)
     pcGroupOnTop->addChild(pcGroupOnTopMaterial);
 
     // Depth off so a previewed hidden object doesn't z-fight the visible result
-    // in the transparency pass. Must live on the parent group: the Sel/PreSel
-    // children are wiped by coinRemoveAllChildren() on every selection change.
-    auto pcGroupOnTopDepth = new SoDepthBuffer;
+    // in the transparency pass; the raw glDisable(GL_DEPTH_TEST) in
+    // SoFCPathAnnotation does not survive that pass. Must live on the parent
+    // group: the Sel/PreSel children are wiped by coinRemoveAllChildren() on
+    // every selection change. Both fields start ignored so ordinary selection
+    // and preselection keep the depth state they had before this existed; only
+    // a hidden preview turns the override on.
+    pcGroupOnTopDepth = new SoDepthBuffer;
     pcGroupOnTopDepth->test = FALSE;
     pcGroupOnTopDepth->write = FALSE;
+    pcGroupOnTopDepth->test.setIgnored(true);
+    pcGroupOnTopDepth->write.setIgnored(true);
     pcGroupOnTopDepth->setName("GroupOnTopDepthBuffer");
     pcGroupOnTop->addChild(pcGroupOnTopDepth);
 
@@ -104,6 +110,15 @@ View3DInventorSelection::~View3DInventorSelection()
     pcGroupOnTopSel->unref();
 }
 
+void View3DInventorSelection::setHiddenPreviewDepthOverride(DepthOverride state)
+{
+    // An ignored field makes SoDepthBuffer read the value already on the state,
+    // which is exactly the behavior of not having the node here at all.
+    const SbBool ignored = state == DepthOverride::Off;
+    pcGroupOnTopDepth->test.setIgnored(ignored);
+    pcGroupOnTopDepth->write.setIgnored(ignored);
+}
+
 void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
 {
     if (Reason.Type == SelectionChanges::SetSelection
@@ -119,6 +134,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         action.apply(pcGroupOnTopPreSel);
         coinRemoveAllChildren(pcGroupOnTopPreSel);
         objectsOnTopPreSel.clear();
+        setHiddenPreviewDepthOverride(DepthOverride::Off);
         return;
     }
     if (!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName) {
@@ -232,6 +248,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             action.setColor(highlightColor);
             action.apply(pcGroupOnTopPreSel);
             pcGroup->addChild(preview);
+            setHiddenPreviewDepthOverride(DepthOverride::On);
             objs[key.c_str()] = preview;
             FC_LOG("add feature preselect preview " << key);
             return;
@@ -351,6 +368,9 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         auto node = new SoFCPathAnnotation;
         node->setPath(&path);
         pcGroup->addChild(node);
+        if (previewHidden && (!vp->isShow() || !svp->isShow())) {
+            setHiddenPreviewDepthOverride(DepthOverride::On);
+        }
         if (det) {
             SoSelectionElementAction action(SoSelectionElementAction::Append, true);
             action.setElement(det);
@@ -383,6 +403,7 @@ void View3DInventorSelection::clearGroupOnTop()
         action.apply(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopSel);
         coinRemoveAllChildren(pcGroupOnTopPreSel);
+        setHiddenPreviewDepthOverride(DepthOverride::Off);
         FC_LOG("clear annotation");
     }
 }
