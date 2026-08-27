@@ -103,6 +103,22 @@ Part::TopoShape FeatureAddSub::getAddSubPreviewShape() const
     if (tool.getBoundBox().IsInBox(base.getBoundBox())) {
         return tool;
     }
+    // Trimming costs a boolean and this runs on tree hover, so it is only worth
+    // doing while both operands stay simple. The tool is checked below; a heavy
+    // base is left untrimmed because the Common would be expensive and noticeable.
+    constexpr int maxPreviewBaseFaces = 200;
+    const auto exceedsFaceCount = [](const TopoDS_Shape& shape, int limit) {
+        int count = 0;
+        for (TopExp_Explorer it(shape, TopAbs_FACE); it.More(); it.Next()) {
+            if (++count > limit) {
+                return true;
+            }
+        }
+        return false;
+    };
+    if (exceedsFaceCount(base.getShape(), maxPreviewBaseFaces)) {
+        return tool;
+    }
     // only trim analytic tools; a swept or spline tool (e.g. a modeled thread)
     // makes the boolean slow, so there the raw tool is the graceful fallback
     for (TopExp_Explorer it(tool.getShape(), TopAbs_FACE); it.More(); it.Next()) {
