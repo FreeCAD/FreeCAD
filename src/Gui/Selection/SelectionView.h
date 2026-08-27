@@ -37,6 +37,7 @@ class QListWidget;
 class QListWidgetItem;
 class QCheckBox;
 class QLabel;
+class QTextStream;
 
 namespace App
 {
@@ -118,6 +119,13 @@ private:
     QString getModule(std::string_view type) const;
     QString getProperty(App::DocumentObject* obj) const;
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
+    void getSelectionName(
+        QTextStream& str,
+        const char* docName,
+        const char* objName,
+        const char* subName,
+        App::DocumentObject* obj
+    ) const;
 
 private:
     float x, y, z;

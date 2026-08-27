@@ -157,39 +157,6 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
     QString selObject;
     QTextStream str(&selObject);
 
-    auto getSelectionName = [](QTextStream& str,
-                               const char* docName,
-                               const char* objName,
-                               const char* subName,
-                               App::DocumentObject* obj) {
-        str << QString::fromUtf8(docName);
-        str << "#";
-        str << QString::fromUtf8(objName);
-        if (subName != 0 && subName[0] != 0) {
-            str << ".";
-            /* Original code doesn't take account of histories in subelement names and displays
-             * them inadvertently.  Let's not do that.
-            str << subName;
-            */
-            /* Remove the history from the displayed subelement name */
-            App::ElementNamePair elementName;
-            App::GeoFeature::resolveElement(obj, subName, elementName);
-            str << elementName.oldName.c_str();  // Use the shortened element name not the full one.
-            /* Mark it visually if there was a history as a "tell" for if a given selection has TNP
-             * fixes in it. */
-            if (elementName.newName.size() > 0) {
-                str << " []";
-            }
-            auto subObj = obj->getSubObject(subName);
-            if (subObj) {
-                obj = subObj;
-            }
-        }
-        str << " (";
-        str << QString::fromUtf8(obj->Label.getValue());
-        str << ")";
-    };
-
     if (Reason.Type == SelectionChanges::AddSelection) {
         // save as user data
         QStringList list;
@@ -281,9 +248,63 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
     countLabel->setText(QString::number(selectionView->count()));
 }
 
+void SelectionView::getSelectionName(
+    QTextStream& str,
+    const char* docName,
+    const char* objName,
+    const char* subName,
+    App::DocumentObject* obj
+) const
+{
+    str << QString::fromUtf8(docName);
+    str << "#";
+    str << QString::fromUtf8(objName);
+    if (subName != 0 && subName[0] != 0) {
+        str << ".";
+        /* Remove the history from the displayed subelement name */
+        App::ElementNamePair elementName;
+        App::GeoFeature::resolveElement(obj, subName, elementName);
+        str << elementName.oldName.c_str();  // Use the shortened element name not the full one.
+        /* Mark it visually if there was a history as a "tell" for if a given selection has TNP
+         * fixes in it. */
+        if (elementName.newName.size() > 0) {
+            str << " []";
+        }
+        auto subObj = obj->getSubObject(subName);
+        if (subObj) {
+            obj = subObj;
+        }
+    }
+    str << " (";
+    str << QString::fromUtf8(obj->Label.getValue());
+    str << ")";
+}
+
 void SelectionView::search(const QString& text)
 {
-    if (!text.isEmpty()) {
+    if (text.isEmpty()) {
+        searchList.clear();
+        selectionView->clear();
+        std::vector<SelectionSingleton::SelObj> objs = Gui::Selection().getCompleteSelection(
+            ResolveMode::NoResolve
+        );
+        for (const auto& it : objs) {
+            if (!it.pObject) {
+                continue;
+            }
+            QStringList list;
+            list << QString::fromUtf8(it.DocName);
+            list << QString::fromUtf8(it.FeatName);
+            QString selObject;
+            QTextStream str(&selObject);
+            getSelectionName(str, it.DocName, it.FeatName, it.SubName, it.pObject);
+            QListWidgetItem* item = new QListWidgetItem(selObject, selectionView);
+            item->setData(Qt::UserRole, list);
+        }
+        countLabel->setText(QString::number(selectionView->count()));
+        return;
+    }
+    else {
         searchList.clear();
         App::Document* doc = App::GetApplication().getActiveDocument();
         std::vector<App::DocumentObject*> objects;
