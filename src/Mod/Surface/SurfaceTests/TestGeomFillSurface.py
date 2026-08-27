@@ -3,13 +3,13 @@
 import unittest
 
 import FreeCAD as App
-import Surface  # noqa: F401
+import Surface
 
 
 class TestGeomFillSurface(unittest.TestCase):
     def setUp(self):
         self.doc = App.newDocument("TestGeomFillSurface")
-        self.surface = self.doc.addObject("Surface::GeomFillSurface", "Surface")
+        self.surface = self.doc.addObject(f"{Surface.__name__}::GeomFillSurface", "Surface")
 
     def tearDown(self):
         App.closeDocument(self.doc.Name)
