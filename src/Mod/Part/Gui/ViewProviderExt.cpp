@@ -1165,6 +1165,11 @@ void ViewProviderPartExt::setupCoinGeometry(
         || numTriangles < parallelTriangleThreshold || (normalsFromUV && sharedMesh);
     const unsigned int threadLimit = singleThreaded ? 1U : 0U;
 
+    // Shapes made of very many small faces would otherwise spend more time claiming
+    // faces than converting them, so hand them out in blocks.
+    const std::size_t faceGrainSize
+        = Base::balancedGrainSize(static_cast<std::size_t>(faceMap.Extent()), threadLimit);
+
     // get an indexed map of edges
     TopTools_IndexedMapOfShape edgeMap;
     TopExp::MapShapes(shape, TopAbs_EDGE, edgeMap);
@@ -1337,7 +1342,7 @@ void ViewProviderPartExt::setupCoinGeometry(
 
             parts[faceIndex] = nbTriInFace;  // new part
         },
-        /*grainSize*/ 1,
+        faceGrainSize,
         threadLimit
     );
 

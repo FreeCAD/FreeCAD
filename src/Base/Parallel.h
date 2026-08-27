@@ -25,14 +25,9 @@
 
 #pragma once
 
-#include <algorithm>
-#include <atomic>
+#include <FCGlobal.h>
+
 #include <cstddef>
-#include <exception>
-#include <mutex>
-#include <system_error>
-#include <thread>
-#include <vector>
 
 
 namespace Base
@@ -42,41 +37,62 @@ namespace Base
  * @brief Number of worker threads a parallel algorithm may use.
  *
  * @param limit Upper bound requested by the caller, 0 means "no explicit limit".
- * @return At least 1, never more than the reported hardware concurrency.
+ * @return At least 1, never more than the size of the shared worker pool.
  */
-inline unsigned int maxParallelThreads(unsigned int limit = 0)
-{
-    unsigned int hardware = std::thread::hardware_concurrency();
-    if (hardware == 0) {
-        // hardware_concurrency() is allowed to return 0 when it cannot tell
-        hardware = 1;
-    }
-
-    if (limit == 0) {
-        return hardware;
-    }
-
-    return std::min(limit, hardware);
-}
+BaseExport unsigned int maxParallelThreads(unsigned int limit = 0);
 
 /**
- * @brief Apply @p func to every index in [begin, end) using several threads.
+ * @brief Grain size that keeps @p count items balanced over the worker pool.
  *
- * Indices are handed out dynamically in blocks of @p grainSize, so uneven work
- * per index does not leave threads idle. @p func must be safe to call
- * concurrently for different indices; writing to disjoint slices of a
- * preallocated buffer is the intended use.
+ * Handing out single items costs one atomic operation each, which dominates when the
+ * per-item work is small. This returns a block size that still gives every worker
+ * several blocks to steal from, so load stays balanced without that overhead.
+ */
+BaseExport std::size_t balancedGrainSize(std::size_t count, unsigned int threadLimit = 0);
+
+namespace Detail
+{
+
+/// Type-erased body of a parallel loop, invoked as body(context, index).
+using ParallelBody = void (*)(void*, std::size_t);
+
+/**
+ * @brief Run @p body over [0, count) on the shared worker pool and wait for it.
  *
- * The calling thread takes part in the work, so no threads are spawned when the
- * range is small enough to be handled serially. If @p func throws, the
- * remaining indices are skipped and the first exception is rethrown on the
- * calling thread once all workers have finished.
+ * The calling thread takes part in the work. Returns false without running anything if
+ * the work should be done serially by the caller instead, which happens when the pool
+ * has no workers, when @p threadLimit is 1, when there is less than one block per
+ * worker, or when the caller is itself a pool worker (nested parallelism is flattened
+ * so it cannot deadlock).
+ *
+ * Exceptions escaping @p body are caught; the first one is rethrown on the calling
+ * thread once every worker has finished.
+ */
+BaseExport bool runParallel(
+    std::size_t count,
+    std::size_t grainSize,
+    unsigned int threadLimit,
+    ParallelBody body,
+    void* context
+);
+
+}  // namespace Detail
+
+/**
+ * @brief Apply @p func to every index in [begin, end) using the shared worker pool.
+ *
+ * Indices are handed out dynamically in blocks of @p grainSize, so uneven work per index
+ * does not leave workers idle. @p func must be safe to call concurrently for different
+ * indices; writing to disjoint slices of a preallocated buffer is the intended use.
+ *
+ * The pool is created once and reused, so a call costs a condition-variable wake rather
+ * than thread creation. Small ranges still run inline on the calling thread.
  *
  * @param begin First index, inclusive.
  * @param end Last index, exclusive.
  * @param func Callable invoked as func(index).
  * @param grainSize Number of consecutive indices claimed per block.
- * @param threadLimit Upper bound on worker threads, 0 means hardware concurrency.
+ * @param threadLimit Upper bound on participating threads, 0 means the whole pool.
  */
 template<class Index, class Function>
 void parallelFor(
@@ -96,68 +112,24 @@ void parallelFor(
     }
 
     const auto count = static_cast<std::size_t>(end - begin);
-    const std::size_t blocks = (count + grainSize - 1) / grainSize;
 
-    unsigned int threads = maxParallelThreads(threadLimit);
-    if (blocks < threads) {
-        threads = static_cast<unsigned int>(blocks);
-    }
+    struct Context
+    {
+        Function* func;
+        Index begin;
+    } context {&func, begin};
 
-    if (threads < 2) {
-        for (Index i = begin; i < end; ++i) {
-            func(i);
-        }
+    const auto body = [](void* ctx, std::size_t offset) {
+        auto* self = static_cast<Context*>(ctx);
+        (*self->func)(self->begin + static_cast<Index>(offset));
+    };
+
+    if (Detail::runParallel(count, grainSize, threadLimit, body, &context)) {
         return;
     }
 
-    std::atomic<std::size_t> nextBlock {0};
-    std::atomic<bool> failed {false};
-    std::mutex errorMutex;
-    std::exception_ptr firstError;
-
-    auto worker = [&]() {
-        try {
-            while (!failed.load(std::memory_order_relaxed)) {
-                const std::size_t first = nextBlock.fetch_add(grainSize, std::memory_order_relaxed);
-                if (first >= count) {
-                    return;
-                }
-
-                const std::size_t last = std::min(first + grainSize, count);
-                for (std::size_t offset = first; offset < last; ++offset) {
-                    func(begin + static_cast<Index>(offset));
-                }
-            }
-        }
-        catch (...) {
-            const std::lock_guard<std::mutex> guard(errorMutex);
-            if (!firstError) {
-                firstError = std::current_exception();
-            }
-            failed.store(true, std::memory_order_relaxed);
-        }
-    };
-
-    std::vector<std::thread> pool;
-    pool.reserve(threads - 1);
-    try {
-        for (unsigned int i = 1; i < threads; ++i) {
-            pool.emplace_back(worker);
-        }
-    }
-    catch (const std::system_error&) {
-        // Getting fewer threads than asked for is not fatal, the calling thread
-        // drains whatever is left of the range on its own.
-    }
-
-    worker();
-
-    for (auto& thread : pool) {
-        thread.join();
-    }
-
-    if (firstError) {
-        std::rethrow_exception(firstError);
+    for (Index i = begin; i < end; ++i) {
+        func(i);
     }
 }
 

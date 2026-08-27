@@ -3625,6 +3625,10 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
     constexpr std::size_t parallelNodeThreshold = 20000;
     const unsigned int threadLimit = nodeCount < parallelNodeThreshold ? 1U : 0U;
 
+    // Shapes made of very many small faces would otherwise spend more time claiming
+    // faces than converting them, so hand them out in blocks.
+    const std::size_t grainSize = Base::balancedGrainSize(faces.size(), threadLimit);
+
     Base::parallelFor(
         std::size_t(0),
         faces.size(),
@@ -3658,7 +3662,7 @@ void TopoShape::getDomains(std::vector<Domain>& domains) const
                 domain.facets.push_back(tria);
             }
         },
-        /*grainSize*/ 1,
+        grainSize,
         threadLimit
     );
 }
