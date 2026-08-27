@@ -1462,6 +1462,8 @@ private:
     void changePropertyOfObject(TransactionalObject* obj, const Property* prop,
                                 const std::function<void()>& changeFunc);
 
+    std::string resolveDocumentCacheDir(std::string_view filename) const;
+
 private:
     // # Data Member of the document
     // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

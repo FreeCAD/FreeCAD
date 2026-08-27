@@ -1184,9 +1184,7 @@ void Document::Restore(Base::XMLReader& reader)
     // value could be invalid.
     FileName.setValue(FilePath.c_str());
     Label.setValue(DocLabel.c_str());
-    if (auto* docCacheDirProp = freecad_cast<PropertyPath*>(getPropertyByName("DocumentCacheDir"))) {
-        reader.setDocumentCacheDir(docCacheDirProp->getValue().string());
-    }
+    reader.setDocumentCacheDir(resolveDocumentCacheDir(FileName.getValue()));
 
     // SchemeVersion "2"
     if (scheme == 2) {
@@ -1945,6 +1943,31 @@ bool Document::save()
     return false;
 }
 
+std::string Document::resolveDocumentCacheDir(std::string_view filename) const
+{
+    auto* cacheDirProp = freecad_cast<PropertyPath*>(getPropertyByName("DocumentCacheDir"));
+
+    if (!cacheDirProp) {
+        return {};
+    }
+
+    fs::path cacheDir = cacheDirProp->getValue();
+
+    if (cacheDir.empty()) {
+        return {};
+    }
+
+    if (cacheDir.is_relative()) {
+        fs::path filePath = fs::path(filename);
+        fs::path dirFile = filePath.parent_path();
+        fs::path cacheInDirFile = dirFile / cacheDir;
+        return cacheInDirFile.string();
+    }
+
+    return cacheDir.string();
+}
+
+
 bool Document::saveToFile(const char* filename) const
 {
     signalStartSave(*this, filename);
@@ -2013,11 +2036,7 @@ bool Document::saveToFile(const char* filename) const
         Base::ofstream file(tmp, std::ios::out | std::ios::binary);
 
         Base::ZipWriter writer(file);
-        if (auto* cacheDirProp =
-            freecad_cast<PropertyPath*>(getPropertyByName("DocumentCacheDir"))) {
-
-            writer.setDocumentCacheDir(cacheDirProp->getValue().string());
-        }
+        writer.setDocumentCacheDir(resolveDocumentCacheDir(fn));
         if (!file.is_open()) {
             throw Base::FileException("Failed to open file", tmp);
         }

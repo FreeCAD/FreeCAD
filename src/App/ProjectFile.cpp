@@ -58,6 +58,7 @@
 
 using namespace App;
 using namespace XERCES_CPP_NAMESPACE;
+namespace fs = std::filesystem;
 
 namespace
 {
@@ -625,8 +626,14 @@ bool ProjectFile::containsFileInDocumentCache(const std::string& name) const
         return false;
     }
 
-    std::string path = metadata.documentCacheDir + "/" + name;
-    Base::FileInfo fi(path);
+    fs::path pathInCache = fs::path(metadata.documentCacheDir) / name;
+    if (pathInCache.is_relative()) {
+        fs::path filePath = fs::path(stdFile);
+        fs::path dirFile = filePath.parent_path();
+        pathInCache = dirFile / pathInCache;
+    }
+
+    Base::FileInfo fi(pathInCache.string());
     return fi.exists();
 }
 
