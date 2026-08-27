@@ -26,6 +26,7 @@
 #include <string>
 #include <Gui/Selection/Selection.h>
 
+class SoDepthBuffer;
 class SoGroup;
 class SoNode;
 class SoSeparator;
@@ -67,7 +68,18 @@ public:
     void clearGroupOnTop();
 
 private:
+    /// Whether the on-top group suppresses depth testing.
+    enum class DepthOverride
+    {
+        Off,  ///< Keep whatever depth state the traversal already had.
+        On    ///< Suppress the depth test so a hidden preview draws over the scene.
+    };
+
+    /// Turn the on-top depth override on only while a hidden preview needs it.
+    void setHiddenPreviewDepthOverride(DepthOverride state);
+
     SoGroup* pcGroupOnTop;
+    SoDepthBuffer* pcGroupOnTopDepth;
     SoGroup* pcGroupOnTopSel;
     SoGroup* pcGroupOnTopPreSel;
     SoFCUnifiedSelection* selectionRoot;
