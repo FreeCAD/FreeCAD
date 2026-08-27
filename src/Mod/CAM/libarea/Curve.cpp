@@ -372,15 +372,15 @@ void CCurve::ExtractSeparateCurves(
 
     CCurve current_curve;
 
-    std::list<Point>::const_iterator M_PIt = ordered_points.begin();
-    Point point = *M_PIt;
+    std::list<Point>::const_iterator PIt = ordered_points.begin();
+    Point point = *PIt;
 
     for (std::list<CVertex>::const_iterator VIt = m_vertices.begin(); VIt != m_vertices.end(); VIt++) {
         const CVertex& vertex = *VIt;
         if (prev_p)  // not the first vertex
         {
             Span span(*prev_p, vertex);
-            while ((M_PIt != ordered_points.end()) && span.On(point)) {
+            while ((PIt != ordered_points.end()) && span.On(point)) {
                 CVertex v(vertex);
                 v.m_p = point;
                 current_curve.m_vertices.push_back(v);
@@ -389,9 +389,9 @@ void CCurve::ExtractSeparateCurves(
                 }
                 current_curve = CCurve();               // make a new curve
                 current_curve.m_vertices.push_back(v);  // add it's first point
-                M_PIt++;
-                if (M_PIt != ordered_points.end()) {
-                    point = *M_PIt;  // increment the point
+                PIt++;
+                if (PIt != ordered_points.end()) {
+                    point = *PIt;  // increment the point
                 }
             }
 
