@@ -27,6 +27,7 @@
 
 
 #include <App/FeaturePythonPyImp.h>
+#include <Base/Console.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
@@ -40,6 +41,8 @@
 
 #include <Mod/Part/App/Tools.h>
 
+
+FC_LOG_LEVEL_INIT("PartDesign", true, true)
 
 using namespace PartDesign;
 
@@ -119,9 +122,14 @@ Part::TopoShape FeatureAddSub::getAddSubPreviewShape()
             return common;
         }
     }
-    catch (Standard_Failure&) {
+    catch (const Standard_Failure& e) {
+        // The trim is only cosmetic, so a failed boolean falls back to the raw
+        // tool rather than aborting the preview. Logged because a shape that
+        // fails here every time is otherwise invisible in a bug report.
+        FC_WARN("preselect preview trim failed for " << getFullName() << ": " << e.GetMessageString());
     }
-    catch (Base::Exception&) {
+    catch (const Base::Exception& e) {
+        FC_WARN("preselect preview trim failed for " << getFullName() << ": " << e.what());
     }
     return tool;
 }
