@@ -36,6 +36,7 @@ namespace Gui
 
 class Document;
 class SoFCUnifiedSelection;
+class ViewProviderDocumentObject;
 
 class GuiExport View3DInventorSelection
 {
@@ -67,6 +68,12 @@ public:
     /// Drop every object from the on-top selection and preselection groups.
     void clearGroupOnTop();
 
+    /// True when the last change showed a view provider's own preselection preview.
+    bool isFeaturePreviewActive() const
+    {
+        return featurePreviewActive;
+    }
+
 private:
     /// Whether the on-top group suppresses depth testing.
     enum class DepthOverride
@@ -78,6 +85,9 @@ private:
     /// Turn the on-top depth override on only while a hidden preview needs it.
     void setHiddenPreviewDepthOverride(DepthOverride state);
 
+    /// Hide the feature that is showing its own preselection preview, if any.
+    void clearFeaturePreview();
+
     SoGroup* pcGroupOnTop;
     SoDepthBuffer* pcGroupOnTopDepth;
     SoGroup* pcGroupOnTopSel;
@@ -86,6 +96,8 @@ private:
     std::map<std::string, SoNode*> objectsOnTop;
     std::map<std::string, SoNode*> objectsOnTopPreSel;
     Gui::Document* guiDocument = nullptr;
+    ViewProviderDocumentObject* previewedFeature = nullptr;
+    bool featurePreviewActive = false;
 };
 
 }  // namespace Gui
