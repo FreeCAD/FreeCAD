@@ -149,6 +149,10 @@ App::DocumentObjectExecReturn* Thickness::execute()
             }
             TopoShape res = makeTopoShape(false);
             try {
+                if (getSelectedHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                    solid.Tag = getID();
+                }
+
                 res = solid.makeElementThickSolid(
                     *faces,
                     thickness,
