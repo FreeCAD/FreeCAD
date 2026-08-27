@@ -35,6 +35,7 @@ from .cpp_properties import (
     discover_cpp_properties,
     typed_cpp_properties,
 )
+from .bim_protocols import write_bim_protocols
 from .module_merge import (
     copy_module_support_stubs,
     copy_overlay_stubs,
@@ -320,6 +321,7 @@ def write_outputs(
         formatted = "\n".join(issue.format() for issue in conversion_issues)
         raise ValueError("Core property conversion metadata is incomplete:\n" + formatted)
     write_public_module_stubs(out_dir / "stubs", methods, module_names, stub_signature_overrides)
+    write_bim_protocols(out_dir / "stubs", root, property_hierarchy, property_catalog)
     overlay_count = (
         copy_overlay_stubs(overlay_dir, out_dir / "stubs", module_names) if overlay_dir else 0
     )

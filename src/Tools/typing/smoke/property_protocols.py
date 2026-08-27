@@ -8,7 +8,6 @@ import FreeCADGui
 from ArchTypeHints import (
     ArchBuildingPartObject,
     ArchComponentObject,
-    ArchEquipmentObject,
     DocumentObjectList,
     DocumentObjectListInput,
     DocumentObjectSubLinkList,
@@ -22,6 +21,7 @@ from ArchTypeHints import (
     VectorInput,
     VectorValue,
 )
+from bim_typing import ArchEquipmentObject
 from FreeCAD import DocumentObject, _QuantityInput as QuantityInput
 from FreeCAD.Base import Quantity, Unit, Vector
 from ArchWall import _WallObject

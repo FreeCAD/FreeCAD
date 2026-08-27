@@ -149,6 +149,13 @@ The BIM typing layer uses the same conservative validation for literal
 property declarations in its typed object sources. The shared `DraftAPI`
 protocol in `draftutils/type_hints.py` is the single typed boundary used by
 BIM modules that call the dynamic public `Draft` module.
+
+The generator also has an experimental BIM protocol path. It resolves literal
+`addProperty()` declarations through the Core property catalog and emits a
+disposable `bim_typing` package under `generated/stubs/`. `ArchEquipment` is the
+first generated object; its source imports the protocol only under
+`TYPE_CHECKING`. Keep non-property BIM semantics in handwritten protocols and
+extend the generated path incrementally as more object families are migrated.
 Use package-shaped overlay paths that mirror the public import tree, such as
 `src/Tools/typing/inputs/overlays/PySide/QtCore.pyi`. Third-party packages such as Pivy should
 stay out of this tree until their stubs are ready to be maintained or

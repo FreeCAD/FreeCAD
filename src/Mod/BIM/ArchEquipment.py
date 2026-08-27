@@ -36,12 +36,14 @@ __url__ = "https://www.freecad.org"
 #  Equipment is used to represent furniture and all kinds of electrical
 #  or hydraulic appliances in a building
 
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 import FreeCAD
 import ArchComponent
 import DraftVecUtils
-from ArchTypeHints import ArchEquipmentObject
+
+if TYPE_CHECKING:
+    from bim_typing import ArchEquipmentObject
 
 if FreeCAD.GuiUp:
     from PySide import QtGui

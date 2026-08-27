@@ -4,10 +4,11 @@
 
 The first pass is intentionally conservative.  It recognizes calls whose
 TypeId and property name are literal strings, records their runtime owner and
-matching structural protocol, and checks only protocol properties with an
-explicit getter/setter pair.  Dynamic declarations and protocol fields that
-are not yet covered by the Core property catalog remain outside this
-conservative validation pass without becoming false-positive failures.
+matching structural protocol, checks manually maintained protocol properties,
+and supplies declarations to the generated BIM protocol path. Dynamic
+declarations and property kinds that are not yet covered by the Core property
+catalog remain outside this conservative validation pass without becoming
+false-positive failures.
 """
 
 from __future__ import annotations
@@ -67,11 +68,14 @@ BIM_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
         "_ViewProviderSectionPlane": "ArchSectionPlaneViewObject",
     },
     "src/Mod/BIM/ArchFrame.py": {"_Frame": "_FrameObject"},
-    "src/Mod/BIM/ArchEquipment.py": {"_Equipment": "ArchEquipmentObject"},
     "src/Mod/BIM/ArchRoof.py": {"_Roof": "_RoofObject"},
     "src/Mod/BIM/ArchWindow.py": {"_Window": "_WindowObject"},
     "src/Mod/BIM/ArchWall.py": {"_Wall": "_WallObject"},
     "src/Mod/BIM/ArchSpace.py": {"_Space": "_SpaceObject"},
+}
+
+BIM_GENERATED_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
+    "src/Mod/BIM/ArchEquipment.py": {"_Equipment": "ArchEquipmentObject"},
 }
 
 

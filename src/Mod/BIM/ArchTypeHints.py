@@ -4,14 +4,12 @@
 
 from __future__ import annotations
 
-from typing import Any, TYPE_CHECKING, Protocol, Sequence
+from typing import TYPE_CHECKING, Protocol, Sequence
 
 import FreeCAD as App
-from FreeCAD import Vector
 
 if TYPE_CHECKING:
     import FreeCADGui as Gui
-    import Part
     from FreeCAD import (
         _DocumentObjectLink as DocumentObjectLink,
         _DocumentObjectList as DocumentObjectList,
@@ -125,33 +123,6 @@ class ArchComponentObject(Protocol):
     def Axis(self, value: DocumentObjectLink) -> None: ...
 
     ViewObject: Gui.ViewProviderDocumentObject | None
-
-
-class ArchEquipmentObject(ArchComponentObject, Protocol):
-    """Document object surface exposed by ``Arch.makeEquipment``."""
-
-    PropertiesList: Sequence[str]
-    Shape: Part.Shape
-    Placement: App.Placement
-    Proxy: Any
-    Label: str
-    Name: str
-    IfcType: str
-
-    Model: str
-    ProductURL: str
-    StandardCode: str
-
-    @property
-    def SnapPoints(self) -> list[Vector]: ...
-
-    @SnapPoints.setter
-    def SnapPoints(self, value: Sequence[VectorInput]) -> None: ...
-
-    EquipmentPower: float
-
-    def addProperty(self, *args: Any, **kwargs: Any) -> Any: ...
-    def setEditorMode(self, name: str, mode: int | list[str], /) -> None: ...
 
 
 class ArchBuildingPartObject(Protocol):
