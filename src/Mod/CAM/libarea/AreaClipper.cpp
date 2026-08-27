@@ -46,10 +46,10 @@ static PointD ToPointD(const Point64& p)
 // final bounds: result is between phi_ref (exclusive) and (phi_ref + 2*pi * type) (inclusive)
 double recenter(double phi, double phi_ref, int type)
 {
-    while (phi <= phi_ref && phi < phi_ref + 2 * PI * type) {
+    while (phi <= phi_ref && phi < phi_ref + 2 * M_PI * type) {
         phi += 2 * M_PI;
     }
-    while (phi >= phi_ref && phi > phi_ref + 2 * PI * type) {
+    while (phi >= phi_ref && phi > phi_ref + 2 * M_PI * type) {
         phi -= 2 * M_PI;
     }
     return phi;
