@@ -84,8 +84,8 @@ public:
 
     void toggleVisibility() override;
 
-    /// On-top tree-preselection preview showing only this feature's addition/cut
-    SoNode* getPreselectionPreview(const char* subname, const SbColor& highlightColor) override;
+    /// Reuse the task-panel preview infrastructure for tree preselection.
+    bool showPreselectPreview(bool on) override;
 
     /// Toggles visibility of the preview
     void showPreviousFeature(bool);
@@ -124,6 +124,7 @@ protected:
 
 private:
     Gui::CoinPtr<PartGui::SoPreviewShape> pcToolPreview;
+    bool previewToolShape {true};
 };
 
 using ViewProviderPython = Gui::ViewProviderFeaturePythonT<ViewProvider>;

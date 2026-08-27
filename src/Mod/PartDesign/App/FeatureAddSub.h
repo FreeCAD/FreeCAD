@@ -54,11 +54,6 @@ public:
 
     virtual void getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& subShape);
 
-    /// Shape previewing this feature's added/removed material. A far-reaching
-    /// subtractive tool (e.g. a through-all pocket) is trimmed to the base, but
-    /// only when that stays cheap; otherwise the raw tool is returned.
-    Part::TopoShape getAddSubPreviewShape() const;
-
     void updatePreviewShape() override;
 
     Part::PropertyPartShape AddSubShape;

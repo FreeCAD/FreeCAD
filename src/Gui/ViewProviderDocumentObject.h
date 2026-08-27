@@ -28,7 +28,6 @@
 #include "ViewProvider.h"
 #include <App/DocumentObject.h>
 
-class SbColor;
 class SoMaterial;
 class SoDrawStyle;
 class SoNode;
@@ -123,22 +122,8 @@ public:
     /// return the coin node detail and path to the node of the subname
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
-    /**
-     * @brief On-top preview node showing only this object's own contribution.
-     *
-     * Used for tree preselection of a hidden object, where showing the whole
-     * object would be misleading (a PartDesign feature, for instance, previews
-     * just the material it adds or removes when possible).
-     *
-     * @param[in] subname The preselected sub-element, empty for the whole object.
-     * @param[in] highlightColor The preselection color of the calling viewer.
-     * Passed in because it is a per-view setting that only %Gui knows, while the
-     * node type carrying it is known only to the implementation.
-     * @return A newly created node with a reference count of zero, which the
-     * caller takes ownership of and must attach to the scene graph; or nullptr
-     * to fall back to the generic whole-object path.
-     */
-    virtual SoNode* getPreselectionPreview(const char* subname, const SbColor& highlightColor);
+    /// Toggle this object's own preselection preview; returns true if it handled it.
+    virtual bool showPreselectPreview(bool on);
 
     /* Force update visual
      *

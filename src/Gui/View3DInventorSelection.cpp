@@ -119,8 +119,17 @@ void View3DInventorSelection::setHiddenPreviewDepthOverride(DepthOverride state)
     pcGroupOnTopDepth->write.setIgnored(ignored);
 }
 
+void View3DInventorSelection::clearFeaturePreview()
+{
+    if (previewedFeature) {
+        previewedFeature->showPreselectPreview(false);
+        previewedFeature = nullptr;
+    }
+}
+
 void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
 {
+    featurePreviewActive = false;
     if (Reason.Type == SelectionChanges::SetSelection
         || Reason.Type == SelectionChanges::ClrSelection) {
         clearGroupOnTop();
@@ -135,6 +144,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         coinRemoveAllChildren(pcGroupOnTopPreSel);
         objectsOnTopPreSel.clear();
         setHiddenPreviewDepthOverride(DepthOverride::Off);
+        clearFeaturePreview();
         return;
     }
     if (!getDocument() || !Reason.pDocName || !Reason.pDocName[0] || !Reason.pObjectName) {
@@ -229,28 +239,13 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         return;
     }
     if (previewHidden) {
-        // a view provider may supply its own on-top preview (e.g. a PartDesign
-        // feature showing only its own addition/cut instead of the whole solid);
-        // tree hover addresses the feature through svp, so ask that one
-        const auto trailingElement = [](const char* sub) -> const char* {
-            if (!sub) {
-                return "";
-            }
-            const char* dot = strrchr(sub, '.');
-            return dot ? dot + 1 : sub;
-        };
-        const SbColor& highlightColor = selectionRoot->colorHighlight.getValue();
-        if (SoNode* preview = svp->getPreselectionPreview(trailingElement(subname), highlightColor)) {
-            // the preview colors itself from highlightColor; this action is here
-            // to drop the highlight context left over from the last hover
-            SoHighlightElementAction action;
-            action.setHighlighted(true);
-            action.setColor(highlightColor);
-            action.apply(pcGroupOnTopPreSel);
-            pcGroup->addChild(preview);
-            setHiddenPreviewDepthOverride(DepthOverride::On);
-            objs[key.c_str()] = preview;
-            FC_LOG("add feature preselect preview " << key);
+        // let a PartDesign feature drive its own preview instead of the generic copy
+        if (previewedFeature && previewedFeature != svp) {
+            clearFeaturePreview();
+        }
+        if (svp->showPreselectPreview(true)) {
+            previewedFeature = svp;
+            featurePreviewActive = true;
             return;
         }
         // Some view providers build geometry lazily and skip it while hidden;
@@ -395,6 +390,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
 
 void View3DInventorSelection::clearGroupOnTop()
 {
+    clearFeaturePreview();
     if (!objectsOnTop.empty() || !objectsOnTopPreSel.empty()) {
         objectsOnTop.clear();
         objectsOnTopPreSel.clear();

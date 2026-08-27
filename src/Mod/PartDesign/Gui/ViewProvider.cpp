@@ -30,10 +30,8 @@
 #include <BRep_Builder.hxx>
 
 #include <Base/Exception.h>
-#include <Base/Placement.h>
 #include <Base/ServiceProvider.h>
 #include <App/Document.h>
-#include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -234,18 +232,19 @@ void ViewProvider::updatePreview()
 {
     ViewProviderPreviewExtension::updatePreview();
 
-    if (auto* addSubFeature = getObject<PartDesign::FeatureAddSub>()) {
-        // we only want to show the additional tool preview for subtractive features
-        if (addSubFeature->getAddSubType() != PartDesign::FeatureAddSub::Subtractive) {
-            return;
+    auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
+    // the raw cutting tool is only for editing; a preselection preview shows only the delta
+    const bool showTool = previewToolShape && addSubFeature
+        && addSubFeature->getAddSubType() == PartDesign::FeatureAddSub::Subtractive;
+
+    if (showTool) {
+        updatePreviewShape(addSubFeature->AddSubShape.getShape(), pcToolPreview);
+        if (pcPreviewRoot->findChild(pcToolPreview) < 0) {
+            pcPreviewRoot->addChild(pcToolPreview);
         }
-
-        Part::TopoShape toolShape = addSubFeature->AddSubShape.getShape();
-
-        updatePreviewShape(toolShape, pcToolPreview);
     }
-    else {
-        updatePreviewShape({}, pcToolPreview);
+    else if (pcPreviewRoot->findChild(pcToolPreview) >= 0) {
+        pcPreviewRoot->removeChild(pcToolPreview);
     }
 }
 
@@ -360,62 +359,15 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
     return true;
 }
 
-SoNode* ViewProvider::getPreselectionPreview(const char* subname, const SbColor& highlightColor)
+bool ViewProvider::showPreselectPreview(bool on)
 {
-    // only the whole feature has a meaningful addition/cut preview
-    if (subname && *subname) {
-        return nullptr;
+    if (!getObject<PartDesign::FeatureAddSub>()) {
+        return false;
     }
-    // a visible feature already shows itself and is highlighted normally
-    if (isShow()) {
-        return nullptr;
-    }
-    // the delta only reads well over the solid it sits on; if that support (this
-    // feature's base) is not part of the shown solid, fall back to the whole
-    // object preview instead of floating in space
-    auto* body = getBodyViewProvider();
-    if (!body) {
-        return nullptr;
-    }
-    App::DocumentObject* shown = body->getShownFeature();
-    if (!shown) {
-        return nullptr;
-    }
-    auto* self = getObject<PartDesign::Feature>();
-    App::DocumentObject* base = self ? self->BaseFeature.getValue() : nullptr;
-    if (base) {
-        bool supported = false;
-        for (App::DocumentObject* f = shown; f;) {
-            if (f == base) {
-                supported = true;
-                break;
-            }
-            auto* feat = freecad_cast<PartDesign::Feature*>(f);
-            f = feat ? feat->BaseFeature.getValue() : nullptr;
-        }
-        if (!supported) {
-            return nullptr;
-        }
-    }
-    auto* feature = getObject<PartDesign::FeatureAddSub>();
-    if (!feature) {
-        return nullptr;
-    }
-    // the added/removed material; an empty one (e.g. dress-ups) falls back to
-    // the generic whole-object preview instead of recomputing on hover
-    Part::TopoShape delta = feature->getAddSubPreviewShape();
-    if (delta.isNull()) {
-        return nullptr;
-    }
-    auto* preview = new PartGui::SoPreviewShape;
-    // match the viewer's preselection color rather than the preview default, so
-    // a hidden feature highlights like every other preselected object
-    preview->color = highlightColor;
-    updatePreviewShape(delta, preview);
-    // the shared on-top group is not under our placement, so apply it here
-    const Base::Placement plc = App::GeoFeature::getGlobalPlacement(getObject());
-    preview->transform.setValue(Base::convertTo<SbMatrix>(plc.toMatrix() * delta.getTransform()));
-    return preview;
+    // a preselection preview shows only the resulting delta, not the cutting tool
+    previewToolShape = !on;
+    showPreview(on);
+    return true;
 }
 
 void ViewProvider::showPreviousFeature(bool enable)

@@ -766,12 +766,9 @@ bool ViewProviderDocumentObject::getDetailPath(
     return ret;
 }
 
-SoNode* ViewProviderDocumentObject::getPreselectionPreview(
-    const char* /*subname*/,
-    const SbColor& /*highlightColor*/
-)
+bool ViewProviderDocumentObject::showPreselectPreview(bool /*on*/)
 {
-    return nullptr;
+    return false;
 }
 
 void ViewProviderDocumentObject::onPropertyStatusChanged(const App::Property& prop, unsigned long oldStatus)

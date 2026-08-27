@@ -32,9 +32,6 @@
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
-#include <TopExp_Explorer.hxx>
-#include <BRepAdaptor_Surface.hxx>
-#include <TopoDS.hxx>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -84,74 +81,6 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
     else if (addSubType == Subtractive) {
         subShape = AddSubShape.getShape();
     }
-}
-
-Part::TopoShape FeatureAddSub::getAddSubPreviewShape() const
-{
-    Part::TopoShape tool = AddSubShape.getShape();
-    if (addSubType != Subtractive || tool.isNull()) {
-        return tool;
-    }
-    // no base is an ordinary state here (the first feature in a body), so ask
-    // for it silently
-    constexpr bool silent = true;
-    Part::TopoShape base = getBaseTopoShape(silent).moved(getLocation().Inverted());
-    if (base.isNull()) {
-        return tool;
-    }
-    // a tool that stays inside the base is already the removed volume
-    if (tool.getBoundBox().IsInBox(base.getBoundBox())) {
-        return tool;
-    }
-    // Trimming costs a boolean and this runs on tree hover, so it is only worth
-    // doing while both operands stay simple. The tool is checked below; a heavy
-    // base is left untrimmed because the Common would be expensive and noticeable.
-    constexpr int maxPreviewBaseFaces = 200;
-    const auto exceedsFaceCount = [](const TopoDS_Shape& shape, int limit) {
-        int count = 0;
-        for (TopExp_Explorer it(shape, TopAbs_FACE); it.More(); it.Next()) {
-            if (++count > limit) {
-                return true;
-            }
-        }
-        return false;
-    };
-    if (exceedsFaceCount(base.getShape(), maxPreviewBaseFaces)) {
-        return tool;
-    }
-    // only trim analytic tools; a swept or spline tool (e.g. a modeled thread)
-    // makes the boolean slow, so there the raw tool is the graceful fallback
-    for (TopExp_Explorer it(tool.getShape(), TopAbs_FACE); it.More(); it.Next()) {
-        switch (BRepAdaptor_Surface(TopoDS::Face(it.Current())).GetType()) {
-            case GeomAbs_Plane:
-            case GeomAbs_Cylinder:
-            case GeomAbs_Cone:
-            case GeomAbs_Sphere:
-            case GeomAbs_Torus:
-                break;
-            default:
-                // any other (or future) surface type is treated as non-analytic
-                // and skips the boolean, so an unknown type fails safe to the tool
-                return tool;
-        }
-    }
-    try {
-        Part::TopoShape common;
-        common.makeElementBoolean(Part::OpCodes::Common, {base, tool}, "Preview", Precision::Confusion());
-        if (!common.isNull()) {
-            return common;
-        }
-    }
-    catch (const Standard_Failure& e) {
-        // The trim is only cosmetic, so a failed boolean falls back to the raw
-        // tool rather than aborting the preview. Logged because a shape that
-        // fails here every time is otherwise invisible in a bug report.
-        FC_WARN("preselect preview trim failed for " << getFullName() << ": " << e.GetMessageString());
-    }
-    catch (const Base::Exception& e) {
-        FC_WARN("preselect preview trim failed for " << getFullName() << ": " << e.what());
-    }
-    return tool;
 }
 
 void FeatureAddSub::updatePreviewShape()
