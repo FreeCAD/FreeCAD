@@ -275,9 +275,9 @@ def wireToCArea(wire, tolerance=0.01):
     a = area.Area()
     c = area.Curve()
 
-    # Approximate wire as lines and arcs, sorted
+    # Approximate wire as lines and arcs
     wire = approximateWire(wire, tolerance)
-    edges = Part.__sortEdges__(wire.Edges)
+    edges = _orientEdges(Part.__sortEdges__(wire.Edges))
 
     # Add the first point (start of first edge)
     if len(edges) > 0:

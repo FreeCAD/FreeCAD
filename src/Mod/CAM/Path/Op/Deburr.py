@@ -418,9 +418,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
             for w in basewires:
                 self.adjusted_basewires.append(w)
                 tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
-                wire = PathOpUtil.offsetWireCompat(w, base.Shape, offset, tol)
-                if wire:
-                    wires.append(wire)
+                wires.extend(PathOpUtil.offsetWireCompat(w, base.Shape, offset, tol))
 
         # Set direction of op
         forward = obj.Direction == "CW"
