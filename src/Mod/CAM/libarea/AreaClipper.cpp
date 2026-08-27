@@ -7,6 +7,7 @@
 #include "Area.h"
 #include "clipper2/clipper.h"
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <optional>
 #include <stdexcept>
@@ -304,8 +305,8 @@ void CArea::NaiveOffset(double offset)
         // forwards, so cNeg will need to be reversed later. End caps will be handled later
         CCurve cPos;
         CCurve cNeg;
-        double startDirX, startDirY, startQex;
-        double prevDirX, prevDirY;
+        double startDirX = 0, startDirY = 0, startQex = 0;  // initialized below
+        double prevDirX = 0, prevDirY = 0;                  // initialized below
         heeks::Point pPrev = curve.m_vertices.front().m_p;
         double enterQ = 0;
 
@@ -397,7 +398,7 @@ void CArea::NaiveOffset(double offset)
             double sNormX, sNormY;
             double eTanX, eTanY;
             double eNormX, eNormY;
-            double radius;
+            double radius = 0;  // initialized below
             if (v.m_type == 0) {
                 const double dx = v.m_p.x - pPrev.x;
                 const double dy = v.m_p.y - pPrev.y;
@@ -408,7 +409,7 @@ void CArea::NaiveOffset(double offset)
                 tie(eNormX, eNormY) = make_pair(sNormX, sNormY);
             }
             else {
-                [[assume(v.m_type == 1 || v.m_type == -1)]];
+                assert(v.m_type == 1 || v.m_type == -1);
 
                 const double sx = v.m_type * (pPrev.x - v.m_c.x);
                 const double sy = v.m_type * (pPrev.y - v.m_c.y);
@@ -456,7 +457,7 @@ void CArea::NaiveOffset(double offset)
             else {
                 // Check if the offset causes the arc to collapse; if so, generate a straight line
                 // instead of an arc because it will be optimized out anyway in a union operation later
-                [[assume(v.m_type == 1 || v.m_type == -1)]];
+                assert(v.m_type == 1 || v.m_type == -1);
                 const bool posCollapse = radius + (offset * v.m_type) <= 0;
                 const bool negCollapse = radius - (offset * v.m_type) <= 0;
 
@@ -578,7 +579,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
         }
         else if (vertex.m_p.x != ptPrev.x || vertex.m_p.y != ptPrev.y) {
             // The current edge is an arc; interpolate many lines in clipper
-            [[assume(vertex.m_type == 1 || vertex.m_type == -1)]];
+            assert(vertex.m_type == 1 || vertex.m_type == -1);
 
             // Compute start and end angles
             const double phi0 = atan2(ptPrev.y - vertex.m_c.y, ptPrev.x - vertex.m_c.x);
@@ -711,9 +712,9 @@ void CArea::SetFromResult(
         };
 
         // For closed paths, start at the smallest z-value
-        int startVertex = 0;
+        size_t startVertex = 0;
         if (isClosed) {
-            for (int i = startVertex + 1; i < path.size(); i++) {
+            for (size_t i = startVertex + 1; i < path.size(); i++) {
                 if (path[i].z < path[startVertex].z) {
                     startVertex = i;
                 }
@@ -721,9 +722,9 @@ void CArea::SetFromResult(
         }
 
         // Loop through clipper edges, converting to CVertex and building up the current CCurve
-        for (int edgeNum = 0; edgeNum < (isClosed ? path.size() : path.size() - 1); edgeNum++) {
+        for (size_t edgeNum = 0; edgeNum < (isClosed ? path.size() : path.size() - 1); edgeNum++) {
             // Current edge
-            const int iEdge = (startVertex + edgeNum) % path.size();
+            const size_t iEdge = (startVertex + edgeNum) % path.size();
             const Point64& v0 = path[iEdge];
             const Point64& v1 = path[(iEdge + 1) % path.size()];
 
@@ -1044,7 +1045,7 @@ void CArea::ReorderOpenPaths(Paths64& paths, const ConversionMetadata& metadata)
                     = std::max(pathOrder.back(), {seg.curveIndex, seg.vertexIndex, progress});
             }
             else {
-                [[assume(seg.orig.m_type == 1 || seg.orig.m_type == -1)]];
+                assert(seg.orig.m_type == 1 || seg.orig.m_type == -1);
                 // For arcs, use angular distance. Clipper segments representing lines are
                 // always small angles, so center phi1 and phi2 together
                 double phi1 = atan2(p1.y - mc64.y, p1.x - mc64.x);
