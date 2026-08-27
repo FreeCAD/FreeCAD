@@ -165,9 +165,9 @@ class _Equipment(ArchComponent.Component):
 
         pl = obj.Placement
         if obj.Base:
-            base = None
-            if hasattr(obj.Base, "Shape"):
-                base = obj.Base.Shape.copy()
+            base_shape = getattr(obj.Base, "Shape", None)
+            if base_shape is not None:
+                base = base_shape.copy()
                 base = self.processSubShapes(obj, base, pl)
                 self.applyShape(obj, base, pl, allowinvalid=False, allownosolid=True)
 
@@ -195,7 +195,9 @@ class _Equipment(ArchComponent.Component):
 
             # Execute SketchArch Feature - Intuitive Automatic Placement for Arch Windows/Doors, Equipment etc.
             # see https://forum.freecad.org/viewtopic.php?f=23&t=50802
-            ArchSketchObject.updateAttachmentOffset(obj, linkObj)
+            update_attachment_offset = getattr(ArchSketchObject, "updateAttachmentOffset", None)
+            if callable(update_attachment_offset):
+                update_attachment_offset(obj, linkObj)
         except:
             pass
 
@@ -215,7 +217,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
 
     def getIcon(self) -> str:
 
-        import Arch_rc
+        import Arch_rc  # pyright: ignore[reportMissingImports]
 
         if hasattr(self, "Object"):
             if hasattr(self.Object, "CloneOf"):
@@ -226,7 +228,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
     def attach(self, vobj: Any) -> None:
 
         self.Object = vobj.Object
-        from pivy import coin
+        from pivy import coin  # pyright: ignore[reportMissingImports]
 
         sep = coin.SoSeparator()
         self.coords = coin.SoCoordinate3()

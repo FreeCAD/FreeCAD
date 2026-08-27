@@ -23,7 +23,8 @@ from ArchTypeHints import (
 )
 from bim_typing import ArchEquipmentObject
 from FreeCAD import DocumentObject, _QuantityInput as QuantityInput
-from FreeCAD.Base import Quantity, Unit, Vector
+from FreeCAD.Base import Placement, Quantity, Unit, Vector
+from Part import Feature, Shape
 from ArchWall import _WallObject
 from draftobjects.bezcurve import BezCurveObject
 from draftobjects.circle import CircleObject
@@ -35,6 +36,11 @@ from draftobjects.type_hints import DraftPointListObject
 from draftutils.type_hints import CloneObjectLike, DraftAPI
 
 document_object = cast(DocumentObject, object())
+assert_type(document_object.PropertiesList, list)
+part_feature = cast(Feature, object())
+assert_type(part_feature.PropertiesList, list)
+assert_type(part_feature.Placement, Placement)
+assert_type(part_feature.Shape, Shape)
 draft_api = cast(DraftAPI, Draft)
 assert_type(draft_api.get_type(document_object), str | None)
 assert_type(draft_api.precision(), int)
@@ -109,6 +115,12 @@ assert_type(building_part.Height, Quantity)
 building_part.Height = "3 m"
 
 equipment = cast(ArchEquipmentObject, object())
+assert_type(equipment.PropertiesList, list)
+assert_type(equipment.Placement, Placement)
+assert_type(equipment.Shape, Shape)
+assert_type(equipment.IfcType, str)
+equipment.addProperty("App::PropertyString", "Temporary", "Test")
+equipment.setEditorMode("Temporary", 2)
 assert_type(equipment.SnapPoints, list[Vector])
 equipment.SnapPoints = [(0, 0, 1)]
 assert_type(equipment.EquipmentPower, float)

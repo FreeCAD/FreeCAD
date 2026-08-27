@@ -1734,7 +1734,7 @@ class ViewProviderComponent:
                             obj.ViewObject.update()
         return
 
-    def getIcon(self):
+    def getIcon(self) -> str:
         """Return the path to the appropriate icon.
 
         If a clone, return the cloned component icon path. Otherwise return the
@@ -1974,7 +1974,7 @@ class ViewProviderComponent:
             return c
         return []
 
-    def setEdit(self, vobj, mode):
+    def setEdit(self, vobj: Any, mode: int) -> bool | None:
         if mode != 0:
             return None
 

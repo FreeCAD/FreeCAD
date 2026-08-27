@@ -98,7 +98,7 @@ class _SpaceObject(ArchComponentObject, Protocol):
     @Group.setter
     def Group(self, value: DocumentObjectListInput) -> None: ...
 
-    SpaceType: str | list[str]
+    SpaceType: str
 
     @property
     def FloorThickness(self) -> Quantity: ...
@@ -110,9 +110,9 @@ class _SpaceObject(ArchComponentObject, Protocol):
     LightingPower: float
     EquipmentPower: float
     AutoPower: bool
-    Conditioning: str | list[str]
+    Conditioning: str
     Internal: bool
-    AreaCalculationType: str | list[str]
+    AreaCalculationType: str
     Zone: Any
 
     def addProperty(self, *args: Any, **kwargs: Any) -> Any: ...

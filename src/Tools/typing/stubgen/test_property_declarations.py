@@ -73,10 +73,12 @@ class Example:
             load_property_catalog(ROOT_DIR),
         )
 
-        self.assertEqual(1, len(protocols))
-        protocol = protocols[0]
+        self.assertEqual(4, len(protocols))
+        protocol = next(
+            protocol for protocol in protocols if protocol.protocol_name == "ArchEquipmentObject"
+        )
         self.assertEqual("ArchEquipmentObject", protocol.protocol_name)
-        self.assertEqual(("ArchComponentObject",), protocol.base_protocols)
+        self.assertEqual(("Part.Feature", "ArchComponentObject"), protocol.base_types)
         self.assertEqual(
             ["Model", "ProductURL", "StandardCode", "SnapPoints", "EquipmentPower"],
             [property_name for property_name, _, _ in protocol.properties],
@@ -93,8 +95,25 @@ class Example:
             load_property_catalog(ROOT_DIR),
         )
         ast.parse(source)
-        self.assertIn("from ArchTypeHints import ArchComponentObject", source)
-        self.assertIn("class ArchEquipmentObject(ArchComponentObject, Protocol):", source)
+        self.assertIn("import Part", source)
+        self.assertIn("class ArchIFCRootObject(DocumentObject):", source)
+        self.assertIn("class ArchEquipmentObject(Part.Feature, ArchComponentObject):", source)
+
+    def test_root_bim_object_uses_document_object_once(self):
+        source = render_bim_protocols(
+            ROOT_DIR,
+            discover_property_hierarchy(ROOT_DIR),
+            load_property_catalog(ROOT_DIR),
+            generated_protocol_classes={
+                "src/Mod/BIM/ArchEquipment.py": {"_Equipment": "RootObject"}
+            },
+            inherited_protocol_classes={},
+            generated_base_types={},
+        )
+
+        self.assertIn("from FreeCAD import DocumentObject", source)
+        self.assertIn("class RootObject(DocumentObject):", source)
+        self.assertNotIn("DocumentObject, DocumentObject", source)
 
 
 if __name__ == "__main__":

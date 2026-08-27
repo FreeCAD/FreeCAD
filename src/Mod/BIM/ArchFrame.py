@@ -99,7 +99,7 @@ class _FrameObject(ArchComponentObject, Protocol):
     @Rotation.setter
     def Rotation(self, value: QuantityValueInput) -> None: ...
 
-    Edges: str | list[str]
+    Edges: str
     Fuse: bool
     IfcType: str
 

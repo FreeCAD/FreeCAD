@@ -55,6 +55,8 @@ else:
 class ArchComponentObject(Protocol):
     """Common document properties installed by ``ArchComponent.Component``."""
 
+    IfcType: str
+
     @property
     def Base(self) -> DocumentObjectLink: ...
 

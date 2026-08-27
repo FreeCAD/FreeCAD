@@ -48,6 +48,7 @@ DRAFT_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
 BIM_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
     Path("src/Mod/BIM") / name
     for name in (
+        "ArchIFC.py",
         "ArchComponent.py",
         "ArchBuildingPart.py",
         "ArchSectionPlane.py",
@@ -61,7 +62,6 @@ BIM_PROPERTY_SOURCES: tuple[Path, ...] = tuple(
 )
 
 BIM_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
-    "src/Mod/BIM/ArchComponent.py": {"Component": "ArchComponentObject"},
     "src/Mod/BIM/ArchBuildingPart.py": {"BuildingPart": "ArchBuildingPartObject"},
     "src/Mod/BIM/ArchSectionPlane.py": {
         "_SectionPlane": "ArchSectionPlaneObject",
@@ -75,6 +75,11 @@ BIM_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
 }
 
 BIM_GENERATED_PROTOCOL_CLASSES: Mapping[str, Mapping[str, str]] = {
+    "src/Mod/BIM/ArchIFC.py": {
+        "IfcRoot": "ArchIFCRootObject",
+        "IfcProduct": "ArchIFCProductObject",
+    },
+    "src/Mod/BIM/ArchComponent.py": {"Component": "ArchComponentObject"},
     "src/Mod/BIM/ArchEquipment.py": {"_Equipment": "ArchEquipmentObject"},
 }
 

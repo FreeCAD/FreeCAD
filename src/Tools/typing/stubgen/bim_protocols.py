@@ -1,6 +1,6 @@
 # pyright: strict
 
-"""Generate structural BIM protocols from literal property declarations."""
+"""Generate BIM object stubs from literal property declarations."""
 
 from __future__ import annotations
 
@@ -18,14 +18,18 @@ from .property_declarations import (
 )
 from .property_hierarchy import PropertyHierarchy
 
+BIM_GENERATED_BASE_TYPES: Mapping[str, tuple[str, ...]] = {
+    "ArchEquipmentObject": ("Part.Feature",),
+}
+
 
 @dataclass(frozen=True)
 class GeneratedBIMProtocol:
-    """One generated protocol and the property members discovered for it."""
+    """One generated BIM object stub and its discovered property members."""
 
     source: str
     protocol_name: str
-    base_protocols: tuple[str, ...]
+    base_types: tuple[str, ...]
     properties: tuple[tuple[str, str, str], ...]
 
 
@@ -120,8 +124,9 @@ def discover_generated_bim_protocols(
     catalog: PropertyCatalog,
     generated_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_GENERATED_PROTOCOL_CLASSES,
     inherited_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_PROTOCOL_CLASSES,
+    generated_base_types: Mapping[str, tuple[str, ...]] = BIM_GENERATED_BASE_TYPES,
 ) -> tuple[GeneratedBIMProtocol, ...]:
-    """Discover generated BIM protocols and resolve their Core property contracts."""
+    """Discover generated BIM objects and resolve their Core property contracts."""
 
     all_protocol_classes = {**inherited_protocol_classes, **generated_protocol_classes}
     owner_protocols = _owner_protocols(all_protocol_classes)
@@ -131,17 +136,20 @@ def discover_generated_bim_protocols(
         source = source_path.read_text(encoding="utf-8")
         class_bases = _class_bases(source)
         for owner, protocol_name in class_map.items():
-            base_protocols = tuple(
+            inherited_base_types = tuple(
                 base_protocol
                 for base in class_bases.get(owner, ())
                 if (base_protocol := owner_protocols.get(base)) is not None
                 and base_protocol != protocol_name
             )
+            base_types = tuple(
+                dict.fromkeys((*generated_base_types.get(protocol_name, ()), *inherited_base_types))
+            )
             protocols.append(
                 GeneratedBIMProtocol(
                     source=source_name,
                     protocol_name=protocol_name,
-                    base_protocols=base_protocols or ("Protocol",),
+                    base_types=base_types,
                     properties=_protocol_properties(
                         root,
                         source_name,
@@ -154,6 +162,15 @@ def discover_generated_bim_protocols(
                 )
             )
     return tuple(protocols)
+
+
+def _base_import(base: str) -> str:
+    if "." in base:
+        module, _ = base.rsplit(".", 1)
+        return f"import {module}"
+    if base == "DocumentObject":
+        return "from FreeCAD import DocumentObject"
+    return f"from ArchTypeHints import {base}"
 
 
 def _render_property(name: str, getter: str, setter: str) -> list[str]:
@@ -173,6 +190,7 @@ def render_bim_protocols(
     catalog: PropertyCatalog,
     generated_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_GENERATED_PROTOCOL_CLASSES,
     inherited_protocol_classes: Mapping[str, Mapping[str, str]] = BIM_PROTOCOL_CLASSES,
+    generated_base_types: Mapping[str, tuple[str, ...]] = BIM_GENERATED_BASE_TYPES,
 ) -> str:
     """Render the generated BIM protocol package source."""
 
@@ -182,13 +200,14 @@ def render_bim_protocols(
         catalog,
         generated_protocol_classes,
         inherited_protocol_classes,
+        generated_base_types,
     )
     generated_names = {protocol.protocol_name for protocol in protocols}
-    external_bases = {
+    base_types = {
         base
         for protocol in protocols
-        for base in protocol.base_protocols
-        if base not in generated_names and base != "Protocol"
+        for base in (protocol.base_types or ("DocumentObject",))
+        if base not in generated_names
     }
     annotations = [
         annotation
@@ -200,15 +219,16 @@ def render_bim_protocols(
     lines = [generated_stub_header(), "", "from __future__ import annotations", ""]
     if any("Sequence[" in annotation for annotation in annotations):
         lines.append("from collections.abc import Sequence")
-    lines.append("from typing import Protocol")
     if any("Base." in annotation for annotation in annotations):
         lines.append("from FreeCAD import Base")
-    if "ArchComponentObject" in external_bases:
-        lines.append("from ArchTypeHints import ArchComponentObject")
+    imports = {_base_import(base) for base in base_types}
+    if any("DocumentObject" in annotation for annotation in annotations):
+        imports.add("from FreeCAD import DocumentObject")
+    lines.extend(sorted(imports))
     lines.extend(["", ""])
 
     for index, protocol in enumerate(protocols):
-        bases = ", ".join((*protocol.base_protocols, "Protocol"))
+        bases = ", ".join(protocol.base_types or ("DocumentObject",))
         lines.append(f"class {protocol.protocol_name}({bases}):")
         lines.append(f'    """Generated from {protocol.source} addProperty declarations."""')
         lines.append("")
