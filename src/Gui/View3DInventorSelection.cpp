@@ -223,11 +223,13 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
             const char* dot = strrchr(sub, '.');
             return dot ? dot + 1 : sub;
         };
-        if (SoNode* preview = svp->getPreselectionPreview(trailingElement(subname))) {
-            // color it like any other preselection, not the leftover context
+        const SbColor& highlightColor = selectionRoot->colorHighlight.getValue();
+        if (SoNode* preview = svp->getPreselectionPreview(trailingElement(subname), highlightColor)) {
+            // the preview colors itself from highlightColor; this action is here
+            // to drop the highlight context left over from the last hover
             SoHighlightElementAction action;
             action.setHighlighted(true);
-            action.setColor(selectionRoot->colorHighlight.getValue());
+            action.setColor(highlightColor);
             action.apply(pcGroupOnTopPreSel);
             pcGroup->addChild(preview);
             objs[key.c_str()] = preview;

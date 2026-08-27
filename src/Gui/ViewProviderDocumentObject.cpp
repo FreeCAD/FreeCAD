@@ -766,7 +766,10 @@ bool ViewProviderDocumentObject::getDetailPath(
     return ret;
 }
 
-SoNode* ViewProviderDocumentObject::getPreselectionPreview(const char* /*subname*/)
+SoNode* ViewProviderDocumentObject::getPreselectionPreview(
+    const char* /*subname*/,
+    const SbColor& /*highlightColor*/
+)
 {
     return nullptr;
 }

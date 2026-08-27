@@ -360,7 +360,7 @@ bool ViewProvider::onDelete(const std::vector<std::string>&)
     return true;
 }
 
-SoNode* ViewProvider::getPreselectionPreview(const char* subname)
+SoNode* ViewProvider::getPreselectionPreview(const char* subname, const SbColor& highlightColor)
 {
     // only the whole feature has a meaningful addition/cut preview
     if (subname && *subname) {
@@ -408,6 +408,9 @@ SoNode* ViewProvider::getPreselectionPreview(const char* subname)
         return nullptr;
     }
     auto* preview = new PartGui::SoPreviewShape;
+    // match the viewer's preselection color rather than the preview default, so
+    // a hidden feature highlights like every other preselected object
+    preview->color = highlightColor;
     updatePreviewShape(delta, preview);
     // the shared on-top group is not under our placement, so apply it here
     const Base::Placement plc = App::GeoFeature::getGlobalPlacement(getObject());
