@@ -146,11 +146,11 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
 
     Base::Vector3d rotCenter = tp.getCenter();
     Base::Vector3d last(startPosition);
-    Base::Vector3d rlast(startPosition);
-    Base::Rotation lrot;
     double A = 0.0;
     double B = 0.0;
     double C = 0.0;
+    Base::Rotation lrot(yawPitchRoll(A, B, C));
+    Base::Vector3d rlast(compensateRotation(startPosition, lrot, rotCenter));
 
     bool absolute = true;
     bool absolutecenter = false;
