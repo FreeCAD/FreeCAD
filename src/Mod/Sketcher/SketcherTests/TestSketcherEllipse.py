@@ -54,3 +54,29 @@ class TestSketcherEllipse(unittest.TestCase):
 
     def testProjectEllipse6(self):
         self.addExternalEllipse(60)
+
+    def testProjectEllipse7(self):
+        ell = self.doc.addObject("Part::Ellipse", "Ellipse")
+        ell.Placement.Rotation.setYawPitchRoll(-61.194, -36.5151, -66.0633)
+        ell.MinorRadius = 2.0
+        self.doc.recompute()
+
+        c = ell.Shape.Edge1.Curve
+        angle = math.acos(c.MinorRadius / c.MajorRadius)
+        R = App.Rotation(c.YAxis, Radian=angle)
+        proj_dir = R * c.Axis
+
+        line = self.doc.addObject("Part::Feature", "Axis")
+        line.Shape = Part.makeLine(c.Location, c.Location + 10 * proj_dir)
+
+        sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")
+        sketch.MapReversed = False
+        sketch.AttachmentSupport = [(line, "Edge1")]
+        sketch.MapPathParameter = 0.000000
+        sketch.MapMode = "NormalToEdge"
+
+        sketch.addExternal(ell.Name, "Edge1")
+        self.doc.recompute()
+
+        geo = sketch.ExternalGeo[-1]
+        self.assertEqual(type(geo), Part.Circle)
