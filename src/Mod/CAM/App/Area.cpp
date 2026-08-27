@@ -28,6 +28,8 @@
 #include <limits>
 #include <optional>
 
+using namespace std;
+
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/register/point.hpp>
 #include <boost/geometry/index/rtree.hpp>

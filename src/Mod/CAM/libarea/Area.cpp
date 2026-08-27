@@ -102,7 +102,7 @@ void CArea::Reorder()
         if (!It->IsClosed()) {
             continue;
         }
-        ao.Insert(make_shared<CCurve>(curve));
+        ao.Insert(std::make_shared<CCurve>(curve));
         if (m_set_processing_length_in_split) {
             CArea::m_processing_done += (m_split_processing_length / m_curves.size());
         }

@@ -406,10 +406,10 @@ void CArea::NaiveOffset(double offset)
                 if (len == 0) {
                     continue;
                 }
-                tie(sTanX, sTanY) = make_pair(dx / len * offset, dy / len * offset);
-                tie(sNormX, sNormY) = make_pair(sTanY, -sTanX);
-                tie(eTanX, eTanY) = make_pair(sTanX, sTanY);
-                tie(eNormX, eNormY) = make_pair(sNormX, sNormY);
+                std::tie(sTanX, sTanY) = std::make_pair(dx / len * offset, dy / len * offset);
+                std::tie(sNormX, sNormY) = std::make_pair(sTanY, -sTanX);
+                std::tie(eTanX, eTanY) = std::make_pair(sTanX, sTanY);
+                std::tie(eNormX, eNormY) = std::make_pair(sNormX, sNormY);
             }
             else {
                 assert(v.m_type == 1 || v.m_type == -1);
@@ -423,11 +423,11 @@ void CArea::NaiveOffset(double offset)
                     continue;
                 }
 
-                tie(sNormX, sNormY) = make_pair(sx / radius * offset, sy / radius * offset);
-                tie(eNormX, eNormY) = make_pair(ex / radius * offset, ey / radius * offset);
+                std::tie(sNormX, sNormY) = std::make_pair(sx / radius * offset, sy / radius * offset);
+                std::tie(eNormX, eNormY) = std::make_pair(ex / radius * offset, ey / radius * offset);
 
-                tie(sTanX, sTanY) = make_pair(-sNormY, sNormX);
-                tie(eTanX, eTanY) = make_pair(-eNormY, eNormX);
+                std::tie(sTanX, sTanY) = std::make_pair(-sNormY, sNormX);
+                std::tie(eTanX, eTanY) = std::make_pair(-eNormY, eNormX);
             }
 
             // Compute the start and end points of the offset segment
@@ -442,7 +442,7 @@ void CArea::NaiveOffset(double offset)
             if (!hasPrev) {
                 cPos.m_vertices.emplace_back(0, pPosS, Point(0, 0));
                 cNeg.m_vertices.emplace_back(0, pNegS, Point(0, 0));
-                tie(startDirX, startDirY) = make_pair(sTanX, sTanY);
+                std::tie(startDirX, startDirY) = std::make_pair(sTanX, sTanY);
                 startQex = exitQ;
             }
 
@@ -471,7 +471,7 @@ void CArea::NaiveOffset(double offset)
 
             // Update state variables
             pPrev = v.m_p;
-            tie(prevDirX, prevDirY) = make_pair(eTanX, eTanY);
+            std::tie(prevDirX, prevDirY) = std::make_pair(eTanX, eTanY);
         }
 
         // Post processing
@@ -606,7 +606,8 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
             const double max_dphi = 2 * acos((radius - CArea::m_accuracy) / radius);
 
             // Determine the number of segments
-            const int num_segments = max(min_arc_points, (int)ceil(abs(phi1 - phi0) / max_dphi));
+            const int num_segments
+                = std::max(min_arc_points, (int)ceil(std::abs(phi1 - phi0) / max_dphi));
             const double dphi = (phi1 - phi0) / num_segments;
 
             // Generate arc points
@@ -860,7 +861,7 @@ void CArea::Offset(double offset)
     }
 
     // Perform the naive offset, offsetting each edge and joining
-    NaiveOffset(abs(offset));
+    NaiveOffset(std::abs(offset));
 
     // If we want to keep the negative edges, flip all the edge labels
     if (offset < 0) {
@@ -898,7 +899,7 @@ CArea CArea::OpenOffset(double offset)
     }
 
     // Perform the naive offset, offsetting each edge and joining
-    NaiveOffset(abs(offset));
+    NaiveOffset(std::abs(offset));
 
     // Union (fill rule positive), separating out the positive and negative edges
     _Clip(ClipType::Union, CArea {}, FillRule::Positive, false, false, std::ref(cNeg));
@@ -919,7 +920,7 @@ CArea CArea::OpenOffset(double offset)
 void CArea::Thicken(double value)
 {
     // Perform the naive offset, offsetting each edge and joining
-    NaiveOffset(abs(value));
+    NaiveOffset(std::abs(value));
 
     // We want to keep all offset curves, so clear the edge tags
     for (CCurve& curve : m_curves) {
@@ -939,7 +940,7 @@ std::pair<int64_t, int64_t> CArea::getParentEdge(
 )
 {
     // Check for a direct edge p1.z to p2.z
-    std::pair<int64_t, int64_t> testEdge = {min(p1.z, p2.z), max(p1.z, p2.z)};
+    std::pair<int64_t, int64_t> testEdge = {std::min(p1.z, p2.z), std::max(p1.z, p2.z)};
     if (metadata.edgeData.count(testEdge)) {
         return testEdge;
     }
@@ -1072,7 +1073,7 @@ void CArea::ReorderOpenPaths(Paths64& paths, const ConversionMetadata& metadata)
                     phi2 += 2 * M_PI * seg.orig.m_type;
                 }
 
-                const double progress = max(-abs(phi_end - phi1), -abs(phi_end - phi2));
+                const double progress = std::max(-std::abs(phi_end - phi1), -std::abs(phi_end - phi2));
                 pathOrder.back()
                     = std::max(pathOrder.back(), {seg.curveIndex, seg.vertexIndex, progress});
             }
