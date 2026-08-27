@@ -404,7 +404,7 @@ class TestAreaOperations(unittest.TestCase):
                 pos = area.copy_area(a)
                 neg = pos.OpenOffset(0.1)
                 debug_str = (
-                    f"{format_area(a, "input")}\n{format_area(pos, "pos")}{format_area(neg, "neg")}"
+                    f'{format_area(a, "input")}\n{format_area(pos, "pos")}{format_area(neg, "neg")}'
                 )
                 self.assertEqual(len(pos.getCurves()), 1, debug_str)
                 self.assertEqual(len(neg.getCurves()), 1, debug_str)
@@ -452,7 +452,7 @@ class TestAreaOperations(unittest.TestCase):
                 pos = area.copy_area(a)
                 neg = pos.OpenOffset(0.1)
                 debug_str = (
-                    f"{format_area(a, "input")}\n{format_area(pos, "pos")}{format_area(neg, "neg")}"
+                    f'{format_area(a, "input")}\n{format_area(pos, "pos")}{format_area(neg, "neg")}'
                 )
                 self.assertEqual(len(pos.getCurves()), 1, debug_str)
                 self.assertEqual(len(neg.getCurves()), 1, debug_str)
