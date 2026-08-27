@@ -85,13 +85,17 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
         subShape = AddSubShape.getShape();
     }
 }
-Part::TopoShape FeatureAddSub::getAddSubPreviewShape()
+
+Part::TopoShape FeatureAddSub::getAddSubPreviewShape() const
 {
     Part::TopoShape tool = AddSubShape.getShape();
     if (addSubType != Subtractive || tool.isNull()) {
         return tool;
     }
-    Part::TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
+    // no base is an ordinary state here (the first feature in a body), so ask
+    // for it silently
+    constexpr bool silent = true;
+    Part::TopoShape base = getBaseTopoShape(silent).moved(getLocation().Inverted());
     if (base.isNull()) {
         return tool;
     }
