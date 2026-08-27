@@ -198,8 +198,6 @@ public:
     ~Area() override;
 
     bool isBuilt() const;
-    CArea copyCArea() const;
-
     /** Set a working plane
      *
      * \arg \c shape: a shape defining a working plane.

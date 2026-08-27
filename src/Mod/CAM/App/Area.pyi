@@ -69,10 +69,6 @@ class Area(BaseClass):
         """Convert the Area object to a TopoShape."""
         ...
 
-    def copyCArea(self) -> Any:
-        """Return a copy of the internal CArea as an area.Area object."""
-        ...
-
     def setParams(self, **kwargs) -> Any:
         """Set algorithm parameters."""
         ...

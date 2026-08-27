@@ -2020,11 +2020,6 @@ TopoDS_Shape Area::getPlane(gp_Trsf* trsf)
     return myShapePlane;
 }
 
-CArea Area::copyCArea() const
-{
-    return myArea ? *myArea : CArea();
-}
-
 bool Area::isBuilt() const
 {
     return (myArea || !mySections.empty());

@@ -570,14 +570,6 @@ return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
 PY_CATCH_OCC
 }
 
-PyObject* AreaPy::copyCArea(PyObject* args) {PY_TRY {if (!PyArg_ParseTuple(args, "")) return nullptr;
-namespace py = pybind11;
-Area* area = getAreaPtr();
-CArea copy = area->copyCArea();
-return py::cast(copy).release().ptr();
-}
-PY_CATCH_OCC
-}
 
 PyObject* AreaPy::setDefaultParams(PyObject*, PyObject*)
 {
