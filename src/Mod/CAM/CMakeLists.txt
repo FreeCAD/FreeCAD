@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+disable_occt8_deprecation_warnings()
+
 add_subdirectory(App)
 add_subdirectory(libarea)
 add_subdirectory(PathSimulator)
@@ -121,6 +123,7 @@ SET(PathPythonTools_SRCS
     Path/Tool/__init__.py
     Path/Tool/camassets.py
     Path/Tool/Controller.py
+    Path/Tool/UpdateDocumentTools.py
 )
 
 SET(PathPythonToolsAssets_SRCS
@@ -170,6 +173,7 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/__init__.py
     Path/Tool/Gui/Controller.py
     Path/Tool/Gui/FeedsSpeedsDialog.py
+    Path/Tool/Gui/UpdateDocumentToolsDlg.py
     Path/Tool/Gui/MaterialPicker.py
 )
 
@@ -384,6 +388,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Deburr.py
     Path/Op/Engrave.py
     Path/Op/EngraveBase.py
+    Path/Op/Flute.py
     Path/Op/FeatureExtension.py
     Path/Op/Drilling.py
     Path/Op/Helix.py
@@ -418,10 +423,11 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/Drilling.py
     Path/Op/Gui/Engrave.py
     Path/Op/Gui/FeatureExtension.py
+    Path/Op/Gui/Flute.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
     Path/Op/Gui/MillFacing.py
-    Path/Op/Gui/PathShapeTC.py
+    Path/Op/Gui/PathShape.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
     Path/Op/Gui/PocketShape.py
@@ -448,6 +454,7 @@ SET(PathScripts_SRCS
 )
 
 SET(PathPythonBaseGenerator_SRCS
+    Path/Base/Generator/adaptive_common.py
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
     Path/Base/Generator/facing_common.py
@@ -456,6 +463,7 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/directional_facing.py
     Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
+    Path/Base/Generator/leadinout.py
     Path/Base/Generator/linking.py
     Path/Base/Generator/ramp_entry.py
     Path/Base/Generator/rotary_dropcutter.py
@@ -468,6 +476,14 @@ SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
     Path/Base/Generator/toolchange.py
+    Path/Base/Generator/surface_common.py
+    Path/Base/Generator/surface_dropcutter.py
+    Path/Base/Generator/surface_pattern.py
+    Path/Base/Generator/surface_mesh.py
+    Path/Base/Generator/surface_waterline.py
+    Path/Base/Generator/surface_postprocess.py
+    Path/Base/Generator/surface_zlevel.py
+    Path/Base/Generator/follow_wire.py
 )
 
 SET(PathPythonGui_SRCS
@@ -547,6 +563,7 @@ SET(Tests_SRCS
     CAMTests/test_holes00.fcstd
     CAMTests/TestAreaOperations.py
     CAMTests/TestArcFitting.py
+    CAMTests/TestSlicer.py
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidLegacyPost.py
     CAMTests/TestCentroidPost.py
@@ -575,12 +592,16 @@ SET(Tests_SRCS
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestDrillCycleExpander.py
     CAMTests/TestPathDrillable.py
+    CAMTests/TestPathEngrave.py
     CAMTests/TestPathFacingGenerator.py
+    CAMTests/TestPathFlute.py
+    CAMTests/TestPathFollowWireGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py
     CAMTests/TestPathHelpers.py
     CAMTests/TestPathHelixGenerator.py
+    CAMTests/TestPathLeadInOutGenerator.py
     CAMTests/TestPathLanguage.py
     CAMTests/TestPathLog.py
     CAMTests/TestPathLogNew.py
@@ -642,14 +663,26 @@ SET(Tests_SRCS
     CAMTests/TestFeedsSpeedsResolver.py
     CAMTests/TestFeedsSpeedsToolBitPresets.py
     CAMTests/TestFeedsSpeedsToolController.py
+    CAMTests/TestUpdateDocumentTools.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
     CAMTests/TestToolBitRecomputeState.py
+    CAMTests/TestAdaptiveCommonGenerator.py
+    CAMTests/TestSurfaceGenerator.py
+    CAMTests/TestSurfaceCommonGenerator.py
+    CAMTests/TestSurfacePostprocessGenerator.py
+    CAMTests/TestSurfacePatternGenerator.py
+    CAMTests/TestSurfaceDropCutterGenerator.py
+    CAMTests/TestSurfaceMeshGenerator.py
+    CAMTests/TestSurfaceWaterlineGenerator.py
+    CAMTests/TestSurfaceZLevelGenerator.py
 )
 
 SET(Tests_Fixtures
     CAMTests/Fixtures/OpHelix_v0-21.FCStd
+    CAMTests/Fixtures/test_17748_cam_profile.FCStd
+    CAMTests/Fixtures/test_28534_truncated_pocket.FCStd
 )
 
 SET(PathImages_Ops

@@ -862,3 +862,21 @@ class TestPathGeom(PathTestBase):
         # do some sanity checks
         self.assertTrue(w2.isValid())
         self.assertTrue(w2.isClosed())
+
+    def test77(self):
+        """Flip an elliptical arc"""
+        ellipse = Part.Ellipse(Vector(1, 3, 2), 5, 3)
+        edge = Part.Edge(ellipse, 0.3, 2.1)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
+        ellipse = Part.Ellipse(Vector(1, 3, 2), 5, 3)
+        ellipse.Axis = Vector(0, 0, -1)
+        edge = Part.Edge(ellipse, 1.0, 4.0)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))
+
+    def test78(self):
+        """Flip a rotated elliptical arc"""
+        ellipse = Part.Ellipse(Vector(1, 3, 2), 5, 3)
+        edge = Part.Edge(ellipse, 0.3, 2.1)
+        edge.rotate(edge.Curve.Center, Vector(0, 0, 1), -40)
+        self.assertEdgeShapesMatch(edge, Path.Geom.flipEdge(edge))

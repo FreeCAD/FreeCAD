@@ -239,6 +239,7 @@ class OpenSBPPost(PostProcessor):
         # Override .values
 
         self.values["COMMENT_SYMBOL"] = "'"
+        self.values["TRANSLATE_DRILL_CYCLES"] = True
 
         # schema by [name]
         schema = {x["name"]: x for x in self.get_common_property_schema()}
@@ -246,7 +247,7 @@ class OpenSBPPost(PostProcessor):
         # These schema defaults are r/o: force them
         for property_name in (
             "supported_commands drill_cycles_to_translate"
-            " translate_drill_cycles output_tool_length_offset"
+            " output_tool_length_offset"
             " f_for_rapid_moves".split(  # FIXME: the merge logic doesn't respect our updated default
                 " "
             )
@@ -275,6 +276,8 @@ class OpenSBPPost(PostProcessor):
     def _convert_move(self, command):
         # FIXME: use Path.Command world _add_line_numbers when implemented
         gcode = super()._convert_move(command)
+        if gcode is None or "" == gcode.strip():
+            return None
 
         if self.values["OUTPUT_LINE_NUMBERS"]:
             # It will be taken care of later (everything line-numbered)
@@ -320,8 +323,8 @@ class OpenSBPPost(PostProcessor):
 
         params = command.Parameters
 
-        # We may be axis-modal
-        machine_state_params = self._modal_state  # FIXME self.machine_state.getState()
+        # We may be axis-modal, restore "missing" params
+        machine_state_params = self.machine_state.previous
         params.update(
             {
                 p: machine_state_params[p]
@@ -346,14 +349,13 @@ class OpenSBPPost(PostProcessor):
         RequiredState = "XYZ"
         if modal_missing := [p for p in RequiredState if machine_state_params[p] is None]:
             raise ValueError(
-                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}"
+                f"Arcs require a previous {''.join(modal_missing)} (from some movement) for {command}, previous machine-state = {machine_state_params}"
             )
 
         # GCODE if no dZ
 
-        if (
-            params["Z"] == machine_state_params["Z"]
-        ):  # nb: works ok if Z is omitted, and state.Z is None (never seen)
+        if params["Z"] == machine_state_params["Z"]:
+            # nb: works ok if Z is omitted, and state.Z is None (never seen)
             return super()._convert_arc_move(command)
 
         # HELIX, requires opensbp CG, command
@@ -424,7 +426,7 @@ class OpenSBPPost(PostProcessor):
 
             #
             z_distance = abs(start_position[2] - end_position[2])
-            xy_distance, total_distance = arc_length_3d(
+            xy_distance, _ = arc_length_3d(
                 center,
                 start_position,
                 end_position,
@@ -445,7 +447,7 @@ class OpenSBPPost(PostProcessor):
             # format_parameter is going to *60 so we have to /60
             return f"VS,{self.format_parameter('F', vs_speeds[0]/60)},{self.format_parameter('F', vs_speeds[1]/60)}"
 
-        last_position = self._modal_state  # FIXME: self.machine_state.getState()
+        last_position = self.machine_state.previous
         speed_command = calculate_arc_speed(command.Name, params, last_position=last_position)
         if speed_command:
             output.append(speed_command)
@@ -609,12 +611,14 @@ class OpenSBPPost(PostProcessor):
         """
 
         # We are being strict here, Z motion only
+        excess = set(command.Parameters.keys()) - set(list("ZF"))
+        if len(excess) > 0:
+            raise Exception(f"A probing move (G38.2) must only have Z and F, saw {command}")
         required = {p: v for p, v in command.Parameters.items() if p in "ZF"}
-        # FIXME: allow default F from MachineState when implemented?
+        if self.machine_state.F is not None:
+            required["F"] = self.machine_state.F
         if len(required) != 2:
             raise Exception(f"A probing move (G38.2) must have a Z and F, only saw: {command}")
-        if len(command.Parameters) > 2:
-            raise Exception(f"A probing move (G38.2) should only have Z and F, saw {command}")
 
         # G1, we aren't jogging, we are doing a slow, deliberate move, i.e. ~"feed".
         probe_movement = self._convert_move(Path.Command("G1", required))

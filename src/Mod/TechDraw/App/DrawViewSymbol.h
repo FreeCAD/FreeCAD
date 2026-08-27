@@ -68,6 +68,8 @@ public:
     //return PyObject as DrawViewSymbolPy
     PyObject *getPyObject() override;
 
+    bool snapsToPosition() const override { return false; }
+
 protected:
     void onChanged(const App::Property* prop) override;
     Base::BoundBox3d bbox;

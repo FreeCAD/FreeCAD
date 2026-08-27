@@ -24,6 +24,7 @@
 import FreeCAD
 from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
+import Constants
 import Path
 import Path.Base.Util as PathUtil
 import Path.Geom
@@ -947,15 +948,9 @@ class ObjectOp(object):
                 obj.OpFinalDepth = zmin
             zmin = obj.OpFinalDepth.Value
 
-            def minZmax(z):
-                if hasattr(obj, "StepDown") and not Path.Geom.isRoughly(obj.StepDown.Value, 0):
-                    return z + obj.StepDown.Value
-                else:
-                    return z + 1
-
             # ensure zmax is higher than zmin
-            if (zmax - 0.0001) <= zmin:
-                zmax = minZmax(zmin)
+            if zmax < zmin or Path.Geom.isRoughly(zmax, zmin):
+                zmax = zmin
 
             # update start depth if requested and required
             if not Path.Geom.isRoughly(obj.OpStartDepth.Value, zmax):
@@ -1199,13 +1194,12 @@ class ObjectOp(object):
         # move in the command list.
         # Add the command to turn it off right after the last non-rapid move in the command list.
         if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
-            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
-            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            # Find the first and last cutting moves (includes G1, G2, G3, and drill cycles)
             first_feed_index = None
             last_feed_index = None
 
             for i, cmd in enumerate(self.commandlist):
-                if cmd.Name in Path.Geom.CmdMove:
+                if cmd.Name in Constants.GCODE_MOVE:
                     if first_feed_index is None:
                         first_feed_index = i
                     last_feed_index = i

@@ -4122,7 +4122,8 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
-    menu->addAction(tr("Edit Sketch"), receiver, member);
+    QAction* act = menu->addAction(tr("Edit Sketch"), receiver, member);
+    act->setData(QVariant((int)ViewProvider::Default));
     // Call the extensions
     ViewProvider::setupContextMenu(menu, receiver, member);
 }
@@ -4496,6 +4497,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 {
     if (ModNum != ViewProviderSketch::Default) {
         return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
+    }
+
+    if (dragAutoConstraintHandler) {
+        dragAutoConstraintHandler->clear();
     }
 
     setGridEnabled(nullptr);

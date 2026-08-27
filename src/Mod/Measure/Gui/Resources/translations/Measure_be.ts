@@ -340,6 +340,11 @@
       <translation>Плошча</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Дыяметр</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Радыус</translation>
@@ -503,6 +508,54 @@
     </message>
   </context>
   <context>
+    <name>MassPropertiesGui::TaskMassProperties</name>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
+      <source>Parameters</source>
+      <translation>Налады</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
+      <source>Physical Properties</source>
+      <translation>Фізічныя ўласцівасці</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
+      <source>Center of Gravity</source>
+      <translation>Цэнтр масы</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
+      <source>Center of Volume</source>
+      <translation>Цэнтр аб'ёму</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
+      <source>Inertia</source>
+      <translation>Інерцыя</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="425"/>
+      <source>Close</source>
+      <translation>Зачыніць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="428"/>
+      <source>Save</source>
+      <translation>Захаваць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="432"/>
+      <source>Reset</source>
+      <translation>Скінуць</translation>
+    </message>
+    <message>
+      <location filename="../../TaskMassProperties.cpp" line="1217"/>
+      <source> (Average)</source>
+      <translation> (сярэдняе значэнне)</translation>
+    </message>
+  </context>
+  <context>
     <name>StdCmdMassProperties</name>
     <message>
       <location filename="../../Command.cpp" line="97"/>
@@ -513,54 +566,6 @@
       <location filename="../../Command.cpp" line="98"/>
       <source>Calculates mass properties of selected objects</source>
       <translation>Вылічае ўласцівасці мас абраных аб'ектаў</translation>
-    </message>
-  </context>
-  <context>
-    <name>MassPropertiesGui::TaskMassProperties</name>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
-      <source>Parameters</source>
-      <translation>Налады</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
-      <source>Physical Properties</source>
-      <translation>Фізічныя ўласцівасці</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
-      <source>Center of Gravity</source>
-      <translation>Цэнтр масы</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
-      <source>Center of Volume</source>
-      <translation>Цэнтр аб'ёму</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
-      <source>Inertia</source>
-      <translation>Інерцыя</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
-      <source>Close</source>
-      <translation>Зачыніць</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
-      <source>Save</source>
-      <translation>Захаваць</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
-      <source>Reset</source>
-      <translation>Скінуць</translation>
-    </message>
-    <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
-      <source> (Average)</source>
-      <translation> (сярэдняе значэнне)</translation>
     </message>
   </context>
 </TS>

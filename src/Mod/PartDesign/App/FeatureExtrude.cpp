@@ -22,12 +22,18 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
+#include <cmath>
+#include <cstring>
 #include <limits>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
 #include <BRep_Builder.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <BRepGProp.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
 #include <gp_Dir.hxx>
+#include <TopoDS.hxx>
 #include <gp_Ax2.hxx>
 #include <Precision.hxx>
 #include <TopExp_Explorer.hxx>
@@ -37,8 +43,10 @@
 
 #include <App/Document.h>
 #include <App/ObjectIdentifier.h>
+#include <Base/Converter.h>
 #include <Base/Tools.h>
 #include <Mod/Part/App/ExtrusionHelper.h>
+#include <Mod/Part/App/Tools.h>
 #include "Mod/Part/App/TopoShapeOpCode.h"
 #include <Mod/Part/App/PartFeature.h>
 
@@ -65,7 +73,8 @@ short FeatureExtrude::mustExecute() const
         || Length.isTouched() || Length2.isTouched() || TaperAngle.isTouched()
         || TaperAngle2.isTouched() || UseCustomVector.isTouched() || Direction.isTouched()
         || ReferenceAxis.isTouched() || AlongSketchNormal.isTouched() || Offset.isTouched()
-        || Offset2.isTouched() || UpToFace.isTouched() || UpToFace2.isTouched()
+        || Offset2.isTouched() || StartType.isTouched() || StartOffset.isTouched()
+        || StartReference.isTouched() || UpToFace.isTouched() || UpToFace2.isTouched()
         || UpToShape.isTouched() || UpToShape2.isTouched()) {
         return 1;
     }
@@ -133,24 +142,25 @@ bool FeatureExtrude::hasTaperedAngle() const
 
 void FeatureExtrude::onChanged(const App::Property* prop)
 {
-    if (!isRestoring() && prop == &Midplane) {
+    if (prop == &Midplane && !isRestoring() && !migratingDeprecatedProperties) {
         // Deprecation notice: Midplane property is deprecated and has been replaced by SideType in
         // FreeCAD 1.1 when FeatureExtrude was refactored.
-        App::DocumentObject* obj = Profile.getValue();
-        auto baseName = obj ? obj->getNameInDocument() : "";
-        Base::Console().warning(
-            "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
-            "been replaced by the 'SideType' property in FeatureExtrude. Please update your script,"
-            " this property will be removed in a future version.\n",
-            baseName
-        );
-        if (Midplane.getValue()) {
-            SideType.setValue("Symmetric");
-        }
-        else {
-            Base::Console()
-                .warning("Deprecated Midplane property was explicitly set to False: assuming SideType='One side'\n");
-            SideType.setValue("One side");
+        const char* impliedSideType = Midplane.getValue() ? "Symmetric" : "One side";
+
+        // Scripts routinely assign every property, so only scream when the write actually
+        // asks for something SideType is not already saying.
+        if (SideType.getValueAsString() != std::string(impliedSideType)) {
+            App::DocumentObject* obj = Profile.getValue();
+            auto baseName = obj ? obj->getNameInDocument() : "";
+            Base::Console().warning(
+                "The 'Midplane' property being set for the extrusion of %s is deprecated and has "
+                "been replaced by the 'SideType' property in FeatureExtrude; assuming "
+                "SideType='%s'. Please update your script, this property will be removed in a"
+                " future version.\n",
+                baseName,
+                impliedSideType
+            );
+            SideType.setValue(impliedSideType);
         }
     }
     ProfileBased::onChanged(prop);
@@ -312,12 +322,41 @@ void FeatureExtrude::updateProperties()
     UpToShape2.setReadOnly(!isUpToShape2Enabled);
     Offset2.setReadOnly(!isOffset2Enabled);
 
+    const bool isStartOffsetEnabled = std::strcmp(StartType.getValueAsString(), "Profile plane") != 0;
+    StartOffset.setReadOnly(!isStartOffsetEnabled);
+    StartReference.setReadOnly(std::strcmp(StartType.getValueAsString(), "Reference") != 0);
+
     AlongSketchNormal.setReadOnly(!currentAlongSketchNormalEnabled);
 }
 
 void FeatureExtrude::setupObject()
 {
     ProfileBased::setupObject();
+}
+
+double FeatureExtrude::getStartOffset() const
+{
+    const char* startType = StartType.getValueAsString();
+    if (std::strcmp(startType, "Profile plane") == 0) {
+        return 0.0;
+    }
+
+    gp_Dir dir = Base::convertTo<gp_Dir>(Direction.getValue());
+    if (Reversed.getValue()) {
+        dir.Reverse();
+    }
+    if (std::strcmp(startType, "Offset") == 0) {
+        return StartOffset.getValue();
+    }
+
+    TopLoc_Location identity;
+    return getStartReferenceOffset(
+        getTopoShapeVerifiedFace(),
+        StartReference,
+        dir,
+        StartOffset.getValue(),
+        identity
+    );
 }
 
 App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions options)
@@ -481,13 +520,20 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
         }
         sketchshape.move(invObjLoc);
 
+        const char* startType = StartType.getValueAsString();
+        const double startOffset = std::strcmp(startType, "Profile plane") == 0 ? 0.0
+            : std::strcmp(startType, "Offset") == 0
+            ? StartOffset.getValue()
+            : getStartReferenceOffset(sketchshape, StartReference, dir, StartOffset.getValue(), invObjLoc);
+        TopoShape startSketch = moveProfileToStart(sketchshape, dir, startOffset);
+
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
         double taper1 = TaperAngle.getValue();
         double offset1 = Offset.getValue();
 
         if (Sidemethod == "One side") {
             TopoShape prism1 = generateSingleExtrusionSide(
-                sketchshape,
+                startSketch,
                 method,
                 L,
                 taper1,
@@ -511,7 +557,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     // directions.
                     L /= 2.0;
                     TopoShape prism1 = generateSingleExtrusionSide(
-                        sketchshape.makeElementCopy(),
+                        startSketch.makeElementCopy(),
                         method,
                         L,
                         taper1,
@@ -530,7 +576,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     gp_Dir dir2 = dir;
                     dir2.Reverse();
                     TopoShape prism2 = generateSingleExtrusionSide(
-                        sketchshape.makeElementCopy(),
+                        startSketch.makeElementCopy(),
                         method,
                         L,
                         taper1,
@@ -553,7 +599,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     gp_Trsf start_transform;
                     start_transform.SetTranslation(gp_Vec(dir).Reversed() * (L / 2.0));
 
-                    TopoShape moved_sketch = sketchshape.makeElementCopy();
+                    TopoShape moved_sketch = startSketch.makeElementCopy();
                     moved_sketch.move(start_transform);
 
                     TopoShape prism1 = generateSingleExtrusionSide(
@@ -577,7 +623,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             else {
                 // For "UpToFace", "UpToShape", etc., mirror the result.
                 TopoShape prism1 = generateSingleExtrusionSide(
-                    sketchshape,
+                    startSketch,
                     method,
                     L,
                     taper1,
@@ -596,7 +642,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 gp_Dir sketchNormalDir(SketchVector.x, SketchVector.y, SketchVector.z);
                 sketchNormalDir.Transform(invTrsf);  // Transform to global CS, like 'dir' was.
 
-                Base::Vector3d sketchCenter = sketchshape.getBoundBox().GetCenter();
+                Base::Vector3d sketchCenter = startSketch.getBoundBox().GetCenter();
                 gp_Ax2 mirrorPlane(
                     gp_Pnt(sketchCenter.x, sketchCenter.y, sketchCenter.z),
                     sketchNormalDir
@@ -614,8 +660,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 && std::fabs(taper2) < Precision::Angular();
             bool method1LengthBased = method == "Length" || method == "ThroughAll";
             bool method2LengthBased = method2 == "Length" || method2 == "ThroughAll";
+            bool hasStartOffset = std::fabs(startOffset) > Precision::Confusion();
 
-            if (method1LengthBased && method2 != "UpToFirst" && noTaper) {
+            if (!hasStartOffset && method1LengthBased && method2 != "UpToFirst" && noTaper) {
                 gp_Trsf start_transform;
                 start_transform.SetTranslation(gp_Vec(dir) * L);
 
@@ -638,7 +685,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     prisms.push_back(prism);
                 }
             }
-            else if (method2LengthBased && method != "UpToFirst" && noTaper) {
+            else if (!hasStartOffset && method2LengthBased && method != "UpToFirst" && noTaper) {
                 gp_Trsf start_transform;
                 start_transform.SetTranslation(gp_Vec(dir).Reversed() * L2);
 
@@ -663,7 +710,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             else {
                 TopoShape prism1 = generateSingleExtrusionSide(
-                    sketchshape.makeElementCopy(),
+                    startSketch.makeElementCopy(),
                     method,
                     L,
                     taper1,
@@ -681,7 +728,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 // Side 2
                 TopoShape prism2 = generateSingleExtrusionSide(
-                    sketchshape.makeElementCopy(),
+                    startSketch.makeElementCopy(),
                     method2,
                     L2,
                     taper2,
@@ -962,6 +1009,8 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
 void FeatureExtrude::onDocumentRestored()
 {
+    Base::StateLocker migrating(migratingDeprecatedProperties);
+
     // property Type no longer has TwoLengths.
     if (strcmp(Type.getValueAsString(), "?TwoLengths") == 0) {
         Type.setValue("Length");

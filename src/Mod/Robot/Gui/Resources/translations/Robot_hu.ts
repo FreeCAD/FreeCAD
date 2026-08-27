@@ -292,6 +292,20 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandTrajectory.cpp" line="110"/>
+      <location filename="../../CommandTrajectory.cpp" line="181"/>
+      <location filename="../../CommandTrajectory.cpp" line="202"/>
+      <location filename="../../CommandTrajectory.cpp" line="489"/>
+      <location filename="../../CommandInsertRobot.cpp" line="70"/>
+      <location filename="../../CommandExport.cpp" line="64"/>
+      <location filename="../../CommandExport.cpp" line="147"/>
+      <location filename="../../Command.cpp" line="105"/>
+      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="272"/>
+      <source>Wrong selection</source>
+      <translation>Rossz kiválasztás</translation>
+    </message>
+    <message>
       <location filename="../../Command.cpp" line="55"/>
       <source>Select VRML file for Robot</source>
       <translation>VRML fájl kiválasztása a robothoz</translation>
@@ -312,20 +326,6 @@
       <translation>CSV fájlok (*.csv)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="105"/>
-      <location filename="../../Command.cpp" line="168"/>
-      <location filename="../../Command.cpp" line="272"/>
-      <location filename="../../CommandTrajectory.cpp" line="110"/>
-      <location filename="../../CommandTrajectory.cpp" line="181"/>
-      <location filename="../../CommandTrajectory.cpp" line="202"/>
-      <location filename="../../CommandTrajectory.cpp" line="489"/>
-      <location filename="../../CommandExport.cpp" line="64"/>
-      <location filename="../../CommandExport.cpp" line="147"/>
-      <location filename="../../CommandInsertRobot.cpp" line="70"/>
-      <source>Wrong selection</source>
-      <translation>Rossz kiválasztás</translation>
-    </message>
-    <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Select one Robot to set home position</source>
       <translation>Válasszon egy Robot -ot a kiinduló helyzet beállításához</translation>
@@ -336,10 +336,10 @@
       <translation>Válasszon ki egy robotot</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="273"/>
       <location filename="../../CommandTrajectory.cpp" line="111"/>
       <location filename="../../CommandExport.cpp" line="65"/>
       <location filename="../../CommandExport.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="273"/>
       <source>Select one Robot and one Trajectory object.</source>
       <translation>Egy Robot és egy útvonal objektum kijelölése.</translation>
     </message>

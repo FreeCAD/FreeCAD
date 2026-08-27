@@ -214,7 +214,7 @@ bool ReferenceSelection::allowPartFeature(App::DocumentObject* pObj, const char*
         }
     }
 
-    if (type.testFlag(AllowSelection::FACE) && subName.compare(0, 4, "Face") == 0) {
+    if (type.testFlag(AllowSelection::FACE)) {
         if (isFace(pObj, sSubName)) {
             return true;
         }
@@ -245,10 +245,13 @@ bool ReferenceSelection::isEdge(App::DocumentObject* pObj, const char* sSubName)
 
 bool ReferenceSelection::isFace(App::DocumentObject* pObj, const char* sSubName) const
 {
-    const Part::TopoShape& shape = static_cast<const Part::Feature*>(pObj)->Shape.getValue();
-    TopoDS_Shape sh = shape.getSubShape(sSubName);
-    const TopoDS_Face& face = TopoDS::Face(sh);
-    if (!face.IsNull()) {
+    const Part::TopoShape shape = Part::Feature::getTopoShape(
+        pObj,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+        sSubName
+    );
+    if (shape.shapeType(true) == TopAbs_FACE) {
+        const TopoDS_Face& face = TopoDS::Face(shape.getShape());
         if (type.testFlag(AllowSelection::PLANAR)) {
             BRepAdaptor_Surface adapt(face);
             if (adapt.GetType() == GeomAbs_Plane) {
