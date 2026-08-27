@@ -129,7 +129,7 @@ def getLoopDirection(commands, pocket_depth, loop_index=0):
         p2 = loop_points[i + 1]
         signed_area += (p2.x - p1.x) * (p2.y + p1.y)
 
-    return "CCW" if signed_area > 0 else "CW"
+    return "CW" if signed_area > 0 else "CCW"
 
 
 class TestPathPocket(PathTestBase):
@@ -258,9 +258,9 @@ class TestPathPocket(PathTestBase):
         # Actual: Count plunge moves from generated G-code
         actual_num_loops = countOffsetLoops(pocket.Path.Commands, pocket_bottom_z)
 
-        # Check that first offset loop is clockwise
+        # Check that first offset loop is counterclockwise
         first_loop_direction = getLoopDirection(pocket.Path.Commands, pocket_bottom_z, 0)
-        self.assertEqual(first_loop_direction, "CW", "First offset loop should be clockwise")
+        self.assertEqual(first_loop_direction, "CCW")
 
         # Expected: Calculate from geometry and stepover
         # Each offset loop moves inward by stepover distance on each side
@@ -337,7 +337,7 @@ class TestPathPocket(PathTestBase):
 
         # Check that offset loops are clockwise (climb cutting for this pocket)
         first_loop_direction = getLoopDirection(pocket.Path.Commands, pocket_bottom_z, 0)
-        self.assertEqual(first_loop_direction, "CW", "First offset loop should be clockwise")
+        self.assertEqual(first_loop_direction, "CCW")
 
         # Without ForceMaxStepOver, pocket should generate more loops than base-calculated max
         # to ensure full area coverage
