@@ -554,6 +554,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
     Point64 pPrev = getPoint64(curve.m_vertices.front().m_p.x, curve.m_vertices.front().m_p.y);
     result.push_back(pPrev);
     heeks::Point ptPrev = curve.m_vertices.front().m_p;
+    assert(curve.m_edgeTags.empty() || curve.m_edgeTags.size() == curve.m_vertices.size() - 1);
     auto tagIt = curve.m_edgeTags.cbegin();
     int vertexIndex = 0;
 
@@ -561,7 +562,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
     for (auto vIt = std::next(curve.m_vertices.cbegin()); vIt != curve.m_vertices.cend(); vIt++) {
         const CVertex& vertex = *vIt;
         const bool isLoop = std::next(vIt) == curve.m_vertices.end() && curve.IsClosed();
-        const int edgeTag = curve.m_edgeTags.empty() ? 1 : *tagIt;
+        const int edgeTag = tagIt != curve.m_edgeTags.cend() ? *tagIt : 1;
 
         if (vertex.m_type == 0) {
             // The current edge is a line segment; add a single point to clipper
@@ -637,7 +638,7 @@ Path64 CArea::MakePoly(const CCurve& curve, ConversionMetadata& metadata) const
 
         ptPrev = vertex.m_p;
         vertexIndex++;
-        if (!curve.m_edgeTags.empty()) {
+        if (tagIt != curve.m_edgeTags.cend()) {
             tagIt++;
         }
     }
