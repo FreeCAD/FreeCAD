@@ -63,6 +63,58 @@ struct SegmentData
 
 
 // Metadata structure to facilitate correct conversion from clipper lines back to CCurves
+//
+// Note on purpose, and preserving correct behavior when populating the edgeData map:
+//
+// When populating the edgeData map, it is possible to have key duplication (two segments with
+// matching x/y clipper endpoints), resulting in overwriting saved metadata. This is not desirable,
+// but it is acceptable. Here are the consequences of such overwrites, broken down by SegmentData
+// struct member
+//
+// SegmentData:
+// - CVertex (original arc/line type, and arc center location)
+// - tag indicating offset direction (if offsetting, otherwise unused/set to 1)
+// - original curve/vertex index
+//
+// CVertex: The purpose of the CVertex metadata is to know after clipper geometry processing which
+// clipper lines are actually meant to represent arcs, and what those arcs' centers are. If clipper
+// inputs are sufficiently similar that this system gets confused, it's acceptable (if still wrong)
+// to output the wrong geometry element because it's within clipper tolerances of the right element,
+// and we are (necessarily) tolerant of clipper-scale imprecision in CAM geometry processing. This
+// makes it ok to make an error in mapping back from clipper line segments to the original geometry
+// type in these cases.
+//
+// tag, on closed path offsets: It is not possible for segments with duplicate x/y endpoints and
+// different tags to exist in the output, because +1 tags are on the exterior of a closed region and
+// -1 tags are the interior (i.e. a hole). A duplicated line segment that is both interior and
+// exterior will be eliminated by the union operation after "naive" segment offsetting/joining. The
+// SegmentData for these segments does not matter.
+//
+// tag, on open path offsets: This is more nuanced, because open paths can cross themselves or do a
+// near pass when spiraling around, potentially creating overlapping offsets with different tags.
+// The main saving grace here is that when this happens, the output open offset tag is poorly
+// defined. If the same geometry is generated twice, (i.e.) from expansion of an endpoint and also
+// the right side of the of the input path, does it or does it not deserve to be emitted as a
+// right-side offset segment? Thankfully these poorly defined cases don't matter much to us in CAM,
+// because we ultimately try to fit a tool on these paths. When clearance space for the tool drops
+// towards ~0mm, it becomes quite ambiguous if we want to emit that section of the offset path or
+// not. Operations that care to resolve this gracefully can require/compute a specific amount of
+// clearance, eliminating this ambiguous ~0mm clearance region. Currently we don't do this in any
+// operation (in fact, we hardly use open path offsets at all).
+//
+// original index in input geometry: This is used exclusively for ordering/sorting output open
+// paths, such that clipping an open path produces output that is a subset of the original open
+// path, in the original input order. This is a clearly desirable feature and will generally produce
+// better-routed tool paths (supposing we follow the output path directly, and don't discard path
+// order and replace it with output from a separate routing algorithm), but it's not critical to our
+// application. Notably, though, since this information is only used in open path clipping,
+// duplicate x/y endpoints would mean that the open path doubles back on itself exactly (or at least
+// within clipper tolerance). This is not a standard/sensible CAM use case, and I don't think it is
+// critical to ensure that open path clipping preserves order in this case. If a (new?) operation
+// feels differently, it is possible to invoke open path clipping on successive non-overlapping
+// subsets of the input path (i.e. trivially one edge at a time, or with a more complex algorithm to
+// process more edges at once). Or perhaps if we find ourselves wanting to do that, then the feature
+// can be built in to AreaClipper as an automatic feature at that time.
 struct ConversionMetadata
 {
     // New points may be created by clipper at the intersection of segments. This multimap tracks
