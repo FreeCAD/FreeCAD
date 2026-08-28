@@ -672,7 +672,7 @@ class TaskPanelPage(object):
         tcCount = 0
         selfBase = PathDressupUtils.baseOp(self.obj)
         for job in PathUtils.GetJobs():
-            for op in job.Operations.Group:
+            for op in PathUtils.getOperations(job):
                 opBase = PathDressupUtils.baseOp(op)
                 if opBase == selfBase:
                     continue
@@ -798,7 +798,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         it is loaded."""
         # Determine if Job operations are available with Base Geometry
         availableOps = list()
-        ops = self.job.Operations.Group
+        ops = PathUtils.getOperations(self.job)
         for op in ops:
             if hasattr(op, "Base") and isinstance(op.Base, list):
                 if len(op.Base) > 0:

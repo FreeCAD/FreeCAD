@@ -359,7 +359,10 @@ class CommandPathPostSelected(CommandPathPost):
         if not selection:
             return False
 
-        return all(hasattr(op, "Path") and not op.Name.startswith("Job") for op in selection)
+        return all(
+            hasattr(sel, "Path") or (hasattr(sel, "Group") and PathUtils.getOperations(sel))
+            for sel in selection
+        )
 
     def Activated(self):
         """
@@ -381,9 +384,15 @@ class CommandPathPostSelected(CommandPathPost):
             job = PathUtils.findParentJob(baseOp)
         self.candidate = job
 
-        opCandidates = [op for op in selection if hasattr(op, "Path") and "Job" not in op.Name]
+        opCandidates = []
+        for sel in selection:
+            if hasattr(sel, "Path") and not sel.Name.startswith("Job"):
+                opCandidates.append(sel)
+            elif hasattr(sel, "Group"):
+                opCandidates.extend(PathUtils.getOperations(sel))
+
         self.operations = None
-        if opCandidates and job.Operations.Group != opCandidates:
+        if opCandidates and PathUtils.getOperations(job) != opCandidates:
             msgBox = QtGui.QMessageBox()
             msgBox.setWindowTitle("Post Process")
             msgBox.setText("<p align='center'>What needs to be exported?</p>")

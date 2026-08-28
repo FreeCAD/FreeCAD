@@ -65,11 +65,13 @@ class ToolControllerTemplate:
 
 def _migrateRampDressups(tc):
     # Enumerate ramp dressups using this TC and their feed rates
+    from PathScripts.PathUtils import getOperations
+
     ramps = set()
     job_ramp_feeds = []
     for job in tc.Document.Objects:
         if hasattr(job, "Operations") and hasattr(job.Operations, "Group"):
-            for op in job.Operations.Group:
+            for op in getOperations(job):
                 for ramp in [op] + op.OutListRecursive:
                     if ramp not in ramps and (
                         hasattr(ramp, "RampFeedRate")
