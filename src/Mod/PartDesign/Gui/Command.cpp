@@ -1601,7 +1601,7 @@ CmdPartDesignAdditiveLoft::CmdPartDesignAdditiveLoft()
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Additive Loft");
     sToolTipText = QT_TR_NOOP(
-        "Lofts the selected sketch or profile along a path and adds it to the body"
+        "Creates a solid between one or more sketches, profiles or faces and adds it to the body"
     );
     sWhatsThis = "PartDesign_AdditiveLoft";
     sStatusTip = sToolTipText;
@@ -1651,7 +1651,7 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Subtractive Loft");
     sToolTipText = QT_TR_NOOP(
-        "Lofts the selected sketch or profile along a path and removes it from the body"
+        "Creates a solid between one or more sketches, profiles or faces and removes it from the body"
     );
     sWhatsThis = "PartDesign_SubtractiveLoft";
     sStatusTip = sToolTipText;
