@@ -364,6 +364,10 @@ bool ViewProvider::showPreselectPreview(bool on)
     if (!getObject<PartDesign::FeatureAddSub>()) {
         return false;
     }
+    // the task dialog owns the preview while editing, so do not take it over
+    if (on && isEditing()) {
+        return false;
+    }
     // a preselection preview shows only the resulting delta, not the cutting tool
     previewToolShape = !on;
     showPreview(on);
