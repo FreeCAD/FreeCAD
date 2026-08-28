@@ -411,6 +411,7 @@ class BIM_IfcProperties:
                             "IFC",
                             QT_TRANSLATE_NOOP("App::Property", "IFC properties of this object"),
                             locked=True,
+                            hidden=True,
                         )
                     if hasattr(obj, "IfcProperties"):
                         obj.IfcProperties = values[1]
