@@ -480,7 +480,10 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         bool resolvedMissing = false;
 
         if (elementName.newName.size() && !reverse) {
-            const char* mappedNameString = Data::isMappedElement(elementName.newName.c_str());
+            size_t prefixOffset = strlen(subname) - strlen(element);
+            std::string namePrefix {subname, prefixOffset};
+
+            const char* mappedNameString = Data::isMappedElement(elementName.newName.c_str() + prefixOffset);
             Data::MappedName searchName;
 
             if (mappedNameString) {
@@ -495,19 +498,20 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                 std::vector<Data::MappedElement> foundMappedElements = geo->findSimilarNames(searchName);
                 
                 if (foundMappedElements.size()) {
-                    elementName.oldName = foundMappedElements.front().index.toString();
+                    std::string frontIndexedName = foundMappedElements.front().index.toString();
+                    elementName.oldName = namePrefix + frontIndexedName;
 
                     std::ostringstream ss;
-                    ss << Data::ComplexGeoData::elementMapPrefix() << foundMappedElements.front().name << '.' << elementName.oldName;
+                    ss << namePrefix << Data::ComplexGeoData::elementMapPrefix() << foundMappedElements.front().name << '.' << frontIndexedName;
 
                     elementName.newName = ss.str();
 
                     missing = false;
-                    resolvedMissing = true;
                 }
 
-                if (matchedNames != nullptr)
+                if (matchedNames != nullptr) {
                     *matchedNames = foundMappedElements;
+                }
             }
         }
 

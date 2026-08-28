@@ -293,12 +293,10 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                         linkedNamePass = true;
                     }
 
-                    if (connectedNameInterference >= 1) {
-                        connectedElementPass = true;
-                    }
-
-                    if (connectedNameInterference == mainCheckSection.connectedElements.size()
-                        && connectedNameInterference == loopCheckSection.connectedElements.size()) {
+                    if (connectedNameInterference >= 1
+                        || (connectedNameInterference == mainCheckSection.connectedElements.size()
+                        && connectedNameInterference == loopCheckSection.connectedElements.size()))
+                    {
                         connectedElementPass = true;
                     }
 
@@ -306,8 +304,8 @@ bool Feature::doNamesMatch(Data::MappedName& name1, Data::MappedName& name2, boo
                         && (refIDInterference >= 2
                             || mainCheckSection.referenceIDs == loopCheckSection.referenceIDs
                             || (refIDInterference == 1 && mainCheckSection.elementType == 'V'))) {
-                        Data::DecodedMappedSection modifiedFirstSection(mainCheckSection);
-                        Data::DecodedMappedSection modifiedSecondSection(loopCheckSection);
+                        Data::DecodedMappedSection modifiedFirstSection  {mainCheckSection};
+                        Data::DecodedMappedSection modifiedSecondSection {loopCheckSection};
 
                         // remove the reference ID and linked names lists to make a direct equality
                         // check much easier.
@@ -361,10 +359,9 @@ std::vector<Data::MappedElement> Feature::findSimilarNames(
 
     if (searchShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
         for (Data::MappedElement& loopNamePair : searchShape.getElementMap()) {
-            if (loopNamePair.name == searchName) {
-                ret.push_back(loopNamePair);
-            }
-            else if (Feature::doNamesMatch(searchName, loopNamePair.name, true)) {
+            if (loopNamePair.name == searchName 
+                || Feature::doNamesMatch(searchName, loopNamePair.name, true))
+            {
                 ret.push_back(loopNamePair);
             }
         }
