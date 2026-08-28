@@ -29,20 +29,13 @@
 
 
 #include <App/DocumentObject.h>
-#include <App/Origin.h>
-#include <App/Part.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Selection/Selection.h>
 #include <Mod/Part/App/DatumFeature.h>
-#include <Mod/PartDesign/App/Body.h>
-
-#include <ui_DlgReference.h>
 
 #include "TaskDatumParameters.h"
 #include "ReferenceSelection.h"
-#include "TaskFeaturePick.h"
-#include "Utils.h"
 
 using namespace PartDesignGui;
 using namespace Gui;
@@ -96,11 +89,6 @@ bool TaskDlgDatumParameters::reject()
 bool TaskDlgDatumParameters::accept()
 {
 
-    Part::Datum* pcDatum = ViewProvider->getObject<Part::Datum>();
-    auto pcActiveBody = PartDesignGui::getBodyFor(pcDatum, false);
-    auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
-    std::vector<App::DocumentObject*> copies;
-
     // see if we are able to assign a mode
     if (parameter->getActiveMapMode() == mmDeactivated) {
         QMessageBox msg(Gui::getMainWindow());
@@ -121,71 +109,8 @@ bool TaskDlgDatumParameters::accept()
         }
     }
 
-    // see what to do with external references
-    // check the prerequisites for the selected objects
-    // the user has to decide which option we should take if external references are used
-    bool extReference = false;
-    for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
-        if (pcActiveBody && !pcActiveBody->hasObject(obj)
-            && !pcActiveBody->getOrigin()->hasObject(obj)) {
-            extReference = true;
-        }
-    }
-
-    if (extReference) {
-        // TODO: rewrite this to be shared with CmdPartDesignNewSketch::activated() (2015-10-20, Fat-Zer)
-        QDialog dia(Gui::getMainWindow());
-        PartDesignGui::Ui_DlgReference dlg;
-        dlg.setupUi(&dia);
-        dia.setModal(true);
-        int result = dia.exec();
-        if (result == QDialog::DialogCode::Rejected) {
-            return false;
-        }
-        else if (!dlg.radioXRef->isChecked()) {
-            std::vector<App::DocumentObject*> copyObjects;
-            std::vector<std::string> copySubValues;
-            std::vector<std::string> subs = pcDatum->AttachmentSupport.getSubValues();
-            int index = 0;
-            for (App::DocumentObject* obj : pcDatum->AttachmentSupport.getValues()) {
-                if (pcActiveBody && !pcActiveBody->hasObject(obj)
-                    && !pcActiveBody->getOrigin()->hasObject(obj)) {
-                    auto* copy = PartDesignGui::TaskFeaturePick::makeCopy(
-                        obj,
-                        subs[index],
-                        dlg.radioIndependent->isChecked()
-                    );
-                    if (copy) {
-                        copyObjects.push_back(copy);
-                        copies.push_back(copyObjects.back());
-                        copySubValues.emplace_back();
-                    }
-                }
-                else {
-                    copyObjects.push_back(obj);
-                    copySubValues.push_back(subs[index]);
-                }
-
-                index++;
-            }
-
-            pcDatum->AttachmentSupport.setValues(copyObjects, copySubValues);
-        }
-    }
-
     if (!PartGui::TaskDlgAttacher::accept()) {
         return false;
-    }
-
-    // we need to add the copied features to the body after the command action, as otherwise FreeCAD
-    // crashes unexplainably
-    for (auto obj : copies) {
-        if (pcActiveBody) {
-            pcActiveBody->addObject(obj);
-        }
-        else if (pcActivePart) {
-            pcActivePart->addObject(obj);
-        }
     }
 
     return true;

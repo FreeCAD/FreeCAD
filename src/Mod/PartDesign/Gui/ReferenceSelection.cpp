@@ -28,17 +28,12 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Face.hxx>
-#include <QDialog>
-
-
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Datums.h>
 #include <App/Part.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>
-#include <Gui/Document.h>
-#include <Gui/MainWindow.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -48,9 +43,7 @@
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/DatumPoint.h>
 
-#include "ui_DlgReference.h"
 #include "ReferenceSelection.h"
-#include "TaskFeaturePick.h"
 #include "Utils.h"
 
 
@@ -146,6 +139,8 @@ bool ReferenceSelection::allowOrigin(
     App::DocumentObject* pObj
 ) const
 {
+    (void)body;
+    (void)originGroup;
     bool fits = false;
     if (type.testFlag(AllowSelection::FACE) && pObj->isDerivedFrom<App::Plane>()) {
         fits = true;
@@ -154,33 +149,12 @@ bool ReferenceSelection::allowOrigin(
         fits = true;
     }
 
-    if (fits) {  // check that it actually belongs to the chosen body or part
-        try {    // here are some throwers
-            if (body) {
-                if (body->hasObject(pObj, true)) {
-                    return true;
-                }
-            }
-            else if (originGroup) {
-                if (originGroup->hasObject(pObj, true)) {
-                    return true;
-                }
-            }
-        }
-        catch (const Base::Exception&) {
-        }
-    }
-    return false;  // The Plane/Axis doesn't fits our needs
+    return fits;
 }
 
 bool ReferenceSelection::allowDatum(PartDesign::Body* body, App::DocumentObject* pObj) const
 {
-    if (!body) {  // Allow selecting Part::Datum features from the active Body
-        return false;
-    }
-    else if (!type.testFlag(AllowSelection::OTHERBODY) && !body->hasObject(pObj)) {
-        return false;
-    }
+    (void)body;
 
     if (type.testFlag(AllowSelection::FACE) && (pObj->isDerivedFrom<PartDesign::Plane>())) {
         return true;
@@ -323,41 +297,6 @@ bool getReferencedSelection(
     }
 
     std::string subname = msg.pSubName;
-
-    // check if the selection is an external reference and ask the user what to do
-    // of course only if thisObj is in a body, as otherwise the old workflow would not
-    // be supported
-    PartDesign::Body* body = PartDesignGui::getBodyFor(thisObj, false);
-    bool originfeature = selObj->isDerivedFrom<App::DatumElement>();
-    if (!originfeature && body) {
-        PartDesign::Body* selBody = PartDesignGui::getBodyFor(selObj, false);
-        if (!selBody || body != selBody) {
-            QDialog dia(Gui::getMainWindow());
-            Ui_DlgReference dlg;
-            dlg.setupUi(&dia);
-            dia.setModal(true);
-            int result = dia.exec();
-            if (result == QDialog::DialogCode::Rejected) {
-                selObj = nullptr;
-                return false;
-            }
-
-            if (!dlg.radioXRef->isChecked()) {
-                App::Document* document = thisObj->getDocument();
-                document->openTransaction("Make copy");
-                auto copy = PartDesignGui::TaskFeaturePick::makeCopy(
-                    selObj,
-                    subname,
-                    dlg.radioIndependent->isChecked()
-                );
-                body->addObject(copy);
-
-                selObj = copy;
-                subname.erase(std::remove_if(subname.begin(), subname.end(), &isdigit), subname.end());
-                subname.append("1");
-            }
-        }
-    }
 
     // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {

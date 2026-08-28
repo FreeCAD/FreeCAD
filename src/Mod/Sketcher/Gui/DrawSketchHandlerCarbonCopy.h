@@ -24,8 +24,6 @@
 
 #pragma once
 
-#include <QApplication>
-
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Command.h>
@@ -60,13 +58,8 @@ public:
         Q_UNUSED(sSubName);
 
         Sketcher::SketchObject* sketch = static_cast<Sketcher::SketchObject*>(object);
-        sketch->setAllowOtherBody(
-            QApplication::keyboardModifiers() == Qt::ControlModifier
-            || QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier)
-        );
-        sketch->setAllowUnaligned(
-            QApplication::keyboardModifiers() == (Qt::ControlModifier | Qt::AltModifier)
-        );
+        sketch->setAllowOtherBody(true);
+        sketch->setAllowUnaligned(true);
 
         this->notAllowedReason = "";
         Sketcher::SketchObject::eReasonList msg;

@@ -69,6 +69,7 @@ Groove::Groove()
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", App::Prop_None, "Face where groove will end");
     ADD_PROPERTY_TYPE(UpToFace2, (nullptr), "Side2", App::Prop_None, "Face where groove will end on side 2");
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Groove", (App::Prop_None), "Reference axis of groove");
+    ReferenceAxis.setScope(App::LinkScope::Global);
 }
 
 App::DocumentObjectExecReturn* Groove::execute()

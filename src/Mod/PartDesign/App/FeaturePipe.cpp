@@ -97,6 +97,9 @@ Pipe::Pipe()
     );
     ADD_PROPERTY_TYPE(Transition, (long(0)), "Sweep", App::Prop_None, "Transition mode");
     ADD_PROPERTY_TYPE(Transformation, (long(0)), "Sweep", App::Prop_None, "Section transformation mode");
+    Sections.setScope(App::LinkScope::Global);
+    Spine.setScope(App::LinkScope::Global);
+    AuxiliarySpine.setScope(App::LinkScope::Global);
     Mode.setEnums(ModeEnums);
     Transition.setEnums(TransitionEnums);
     Transformation.setEnums(TransformEnums);
@@ -125,8 +128,8 @@ App::DocumentObjectExecReturn* Pipe::execute()
         return App::DocumentObject::StdReturn;
     }
 
-    auto getSectionShape = [](App::DocumentObject* feature,
-                              const std::vector<std::string>& subs) -> Part::TopoShape {
+    auto getSectionShape =
+        [this](App::DocumentObject* feature, const std::vector<std::string>& subs) -> Part::TopoShape {
         if (!feature || !feature->isDerivedFrom<Part::Feature>()) {
             throw Base::TypeError("Pipe: Invalid profile/section");
         }
@@ -136,13 +139,15 @@ App::DocumentObjectExecReturn* Pipe::execute()
         // only take the entire shape when we have a sketch selected, but
         // not a point of the sketch
         if (feature->isDerivedFrom<Part::Part2DObject>() && subName.compare(0, 6, "Vertex") != 0) {
-            return static_cast<Part::Part2DObject*>(feature)->Shape.getShape();
+            return getTopoShapeInLocalCoordinates(feature);
         }
         else {
             if (subName.empty()) {
                 throw Base::ValueError("Pipe: No valid subelement linked in Part::Feature");
             }
-            return static_cast<Part::Feature*>(feature)->Shape.getShape().getSubTopoShape(
+            return getTopoShapeInLocalCoordinates(
+                feature,
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
                 subName.c_str()
             );
         }
@@ -220,7 +225,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
 
         std::vector<std::string> subedge = Spine.getSubValues();
         Part::TopoShape path;
-        const Part::TopoShape& shape = static_cast<Part::Feature*>(spine)->Shape.getShape();
+        Part::TopoShape shape = getTopoShapeInLocalCoordinates(spine);
         buildPipePath(shape, subedge, path);
         path.move(invObjLoc);
 
@@ -235,7 +240,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
             }
             std::vector<std::string> auxsubedge = AuxiliarySpine.getSubValues();
 
-            const Part::TopoShape& auxshape = static_cast<Part::Feature*>(auxspine)->Shape.getValue();
+            Part::TopoShape auxshape = getTopoShapeInLocalCoordinates(auxspine);
             buildPipePath(auxshape, auxsubedge, auxpath);
             auxpath.move(invObjLoc);
         }

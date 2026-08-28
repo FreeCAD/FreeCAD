@@ -30,7 +30,6 @@
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
-#include <App/Origin.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -44,10 +43,8 @@
 #include "ui_TaskPipeParameters.h"
 #include "ui_TaskPipeOrientation.h"
 #include "ui_TaskPipeScaling.h"
-#include <ui_DlgReference.h>
 
 #include "TaskPipeParameters.h"
-#include "TaskFeaturePick.h"
 #include "TaskSketchBasedParameters.h"
 #include "Utils.h"
 
@@ -486,21 +483,13 @@ void TaskPipeParameters::setVisibilityOfSpineAndProfile()
 
 bool TaskPipeParameters::accept()
 {
-    // see what to do with external references
-    // check the prerequisites for the selected objects
-    // the user has to decide which option we should take if external references are used
     auto pipe = getObject<PartDesign::Pipe>();
     auto pcActiveBody = PartDesignGui::getBodyFor(pipe, false);
     if (!pcActiveBody) {
         QMessageBox::warning(this, tr("Input Error"), tr("No active body"));
         return false;
     }
-    // auto pcActivePart = PartDesignGui::getPartFor (pcActiveBody, false);
-    std::vector<App::DocumentObject*> copies;
-
-    bool extReference = false;
     App::DocumentObject* spine = pipe->Spine.getValue();
-    App::DocumentObject* auxSpine = pipe->AuxiliarySpine.getValue();
 
     // If a spine isn't set but user entered a label then search for the appropriate document object
     QString label = ui->spineBaseEdit->text();
@@ -514,79 +503,6 @@ bool TaskPipeParameters::accept()
         if (!objs.empty()) {
             pipe->Spine.setValue(objs.front());
             spine = objs.front();
-        }
-    }
-
-    if (spine && !pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
-        extReference = true;
-    }
-    else if (
-        auxSpine && !pcActiveBody->hasObject(auxSpine)
-        && !pcActiveBody->getOrigin()->hasObject(auxSpine)
-    ) {
-        extReference = true;
-    }
-    else {
-        for (App::DocumentObject* obj : pipe->Sections.getValues()) {
-            if (!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
-                extReference = true;
-                break;
-            }
-        }
-    }
-
-    if (extReference) {
-        QDialog dia(Gui::getMainWindow());
-        Ui_DlgReference dlg;
-        dlg.setupUi(&dia);
-        dia.setModal(true);
-        int result = dia.exec();
-        if (result == QDialog::DialogCode::Rejected) {
-            return false;
-        }
-
-        if (!dlg.radioXRef->isChecked()) {
-            if (!pcActiveBody->hasObject(spine) && !pcActiveBody->getOrigin()->hasObject(spine)) {
-                pipe->Spine.setValue(
-                    PartDesignGui::TaskFeaturePick::makeCopy(spine, "", dlg.radioIndependent->isChecked()),
-                    pipe->Spine.getSubValues()
-                );
-                copies.push_back(pipe->Spine.getValue());
-            }
-            else if (
-                !pcActiveBody->hasObject(auxSpine) && !pcActiveBody->getOrigin()->hasObject(auxSpine)
-            ) {
-                pipe->AuxiliarySpine.setValue(
-                    PartDesignGui::TaskFeaturePick::makeCopy(
-                        auxSpine,
-                        "",
-                        dlg.radioIndependent->isChecked()
-                    ),
-                    pipe->AuxiliarySpine.getSubValues()
-                );
-                copies.push_back(pipe->AuxiliarySpine.getValue());
-            }
-
-            std::vector<App::PropertyLinkSubList::SubSet> subSets;
-            for (auto& subSet : pipe->Sections.getSubListValues()) {
-                if (!pcActiveBody->hasObject(subSet.first)
-                    && !pcActiveBody->getOrigin()->hasObject(subSet.first)) {
-                    subSets.emplace_back(
-                        PartDesignGui::TaskFeaturePick::makeCopy(
-                            subSet.first,
-                            "",
-                            dlg.radioIndependent->isChecked()
-                        ),
-                        subSet.second
-                    );
-                    copies.push_back(subSets.back().first);
-                }
-                else {
-                    subSets.push_back(subSet);
-                }
-            }
-
-            pipe->Sections.setSubListValues(subSets);
         }
     }
 
@@ -604,12 +520,6 @@ bool TaskPipeParameters::accept()
         }
         Gui::cmdGuiDocument(pipe, "resetEdit()");
         pipe->getDocument()->commitTransaction();
-
-        // we need to add the copied features to the body after the command action, as otherwise
-        // FreeCAD crashes unexplainably
-        for (auto obj : copies) {
-            pcActiveBody->addObject(obj);
-        }
     }
     catch (const Base::Exception& e) {
         pipe->getDocument()->abortTransaction();

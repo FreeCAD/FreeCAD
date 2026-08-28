@@ -169,10 +169,10 @@ protected:
     TopoDS_Face getSupportFace(const App::PropertyLinkSub& link) const;
 
     /// Extract a face from a given LinkSub
-    static void getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace);
+    void getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace) const;
 
     /// Extract a face from a given LinkSub
-    static void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace);
+    void getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace) const;
 
     double getStartReferenceOffset(
         const TopoShape& profileShape,
@@ -189,10 +189,7 @@ protected:
 
     /// Create a shape with shapes and faces from a given LinkSubList
     /// return the face count or 2 if a unique full shape is selected
-    static int getUpToShapeFromLinkSubList(
-        TopoShape& upToShape,
-        const App::PropertyLinkSubList& refShape
-    );
+    int getUpToShapeFromLinkSubList(TopoShape& upToShape, const App::PropertyLinkSubList& refShape) const;
 
     /// Find a valid face to extrude up to
     static void getUpToFace(

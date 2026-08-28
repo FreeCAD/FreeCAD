@@ -91,6 +91,7 @@ SketchObject::SketchObject() : geoLastId(0)
                       "Sketch",
                       (App::PropertyType)(App::Prop_None | App::Prop_ReadOnly),
                       "Sketch external geometry");
+    ExternalGeometry.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(ExternalTypes,
                       ({}),
                       "Sketch",

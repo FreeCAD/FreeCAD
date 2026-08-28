@@ -98,6 +98,7 @@ Helix::Helix()
         App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "The reference axis of the helix.")
     );
+    ReferenceAxis.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(
         Mode,
         (long(initialMode)),

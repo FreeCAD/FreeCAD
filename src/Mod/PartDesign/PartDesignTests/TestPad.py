@@ -335,6 +335,66 @@ class TestPad(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.Pad.Shape.Volume, 1.5)
 
+    def testCrossBodyAttachmentDoesNotImportSupportShape(self):
+        source_body = self.Doc.addObject("PartDesign::Body", "SourceBody")
+        support = source_body.newObject("PartDesign::Feature", "Support")
+        support.Shape = Part.makeBox(10, 10, 10)
+
+        top_face = max(
+            range(1, len(support.Shape.Faces) + 1),
+            key=lambda index: support.Shape.Faces[index - 1].CenterOfMass.z,
+        )
+
+        target_body = self.Doc.addObject("PartDesign::Body", "TargetBody")
+        sketch = target_body.newObject("Sketcher::SketchObject", "TargetSketch")
+        sketch.AttachmentSupport = (support, [f"Face{top_face}"])
+        sketch.MapMode = "FlatFace"
+        TestSketcherApp.CreateRectangleSketch(sketch, (1, 1), (2, 2))
+
+        pad = target_body.newObject("PartDesign::Pad", "TargetPad")
+        pad.Profile = sketch
+        pad.Length = 2
+        self.Doc.recompute()
+
+        self.assertNotIn("Invalid", pad.State)
+        self.assertAlmostEqual(pad.Shape.Volume, 8.0)
+        self.assertEqual(len(pad.Shape.Solids), 1)
+
+    def testNestedTransformedCrossBodyUpToFace(self):
+        source_part = self.Doc.addObject("App::Part", "SourcePart")
+        source_part.Placement.Base = Base.Vector(10, 0, 4)
+        source_body = self.Doc.addObject("PartDesign::Body", "SourceBody")
+        source_body.Placement.Base = Base.Vector(5, 0, 2)
+        source_part.addObject(source_body)
+        limit = source_body.newObject("PartDesign::Feature", "Limit")
+        limit.Shape = Part.makeBox(2, 2, 1)
+        bottom_face = min(
+            range(1, len(limit.Shape.Faces) + 1),
+            key=lambda index: limit.Shape.Faces[index - 1].CenterOfMass.z,
+        )
+
+        target_part = self.Doc.addObject("App::Part", "TargetPart")
+        target_part.Placement.Base = Base.Vector(20, 0, 1)
+        target_body = self.Doc.addObject("PartDesign::Body", "TargetBody")
+        target_body.Placement.Base = Base.Vector(-5, 0, -1)
+        target_part.addObject(target_body)
+
+        base = target_body.newObject("PartDesign::Feature", "Base")
+        base.Shape = Part.makeBox(1, 1, 1)
+        sketch = target_body.newObject("Sketcher::SketchObject", "TargetSketch")
+        sketch.Placement.Base.z = 1
+        TestSketcherApp.CreateRectangleSketch(sketch, (0, 0), (1, 1))
+
+        pad = target_body.newObject("PartDesign::Pad", "TargetPad")
+        pad.Profile = sketch
+        pad.Type = 3
+        pad.UpToFace = (limit, [f"Face{bottom_face}"])
+        self.Doc.recompute()
+
+        self.assertNotIn("Invalid", pad.State)
+        self.assertAlmostEqual(pad.Shape.Volume, 6.0)
+        self.assertAlmostEqual(pad.Shape.BoundBox.ZMax, 6.0)
+
     def tearDown(self):
         # closing doc
         FreeCAD.closeDocument("PartDesignTestPad")

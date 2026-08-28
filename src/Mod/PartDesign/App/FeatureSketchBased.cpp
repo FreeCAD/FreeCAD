@@ -82,6 +82,7 @@ const char* ProfileBased::StartTypesEnums[] = {"Profile plane", "Offset", "Refer
 ProfileBased::ProfileBased()
 {
     ADD_PROPERTY_TYPE(Profile, (nullptr), "SketchBased", App::Prop_None, "Reference to sketch");
+    Profile.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Midplane, (0), "SketchBased", App::Prop_None, "Extrude symmetric to sketch face");
     ADD_PROPERTY_TYPE(Reversed, (0), "SketchBased", App::Prop_None, "Reverse extrusion direction");
     ADD_PROPERTY_TYPE(
@@ -119,6 +120,10 @@ ProfileBased::ProfileBased()
         App::Prop_None,
         "Allow multiple faces in profile"
     );
+    UpToFace.setScope(App::LinkScope::Global);
+    UpToShape.setScope(App::LinkScope::Global);
+    UpToFace2.setScope(App::LinkScope::Global);
+    UpToShape2.setScope(App::LinkScope::Global);
 }
 
 short ProfileBased::mustExecute() const
@@ -142,15 +147,8 @@ void ProfileBased::positionByPrevious()
         this->Placement.setValue(feat->Placement.getValue());
     }
     else {
-        // no base. Use either Sketch support's placement, or sketch's placement itself.
-        Part::Part2DObject* sketch = getVerifiedSketch();
-        App::DocumentObject* support = sketch->AttachmentSupport.getValue();
-        if (support && support->isDerivedFrom<App::GeoFeature>()) {
-            this->Placement.setValue(static_cast<App::GeoFeature*>(support)->Placement.getValue());
-        }
-        else {
-            this->Placement.setValue(sketch->Placement.getValue());
-        }
+        Part::Feature* profile = getVerifiedObject();
+        this->Placement.setValue(getObjectPlacementInLocalCoordinates(profile));
     }
 }
 
@@ -229,18 +227,14 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
         TopoShape shape;
         if (AllowMultiFace.getValue()) {
             if (subs.empty()) {
-                shape = Part::Feature::getTopoShape(
-                    obj,
-                    Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-                );
+                shape = getTopoShapeInLocalCoordinates(obj, Part::ShapeOption::ResolveLink);
             }
             else {
                 std::vector<TopoShape> shapes;
                 for (auto& sub : subs) {
-                    auto subshape = Part::Feature::getTopoShape(
+                    auto subshape = getTopoShapeInLocalCoordinates(
                         obj,
-                        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                            | Part::ShapeOption::Transform,
+                        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
                         sub.c_str()
                     );
 
@@ -266,10 +260,10 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
                     sub = subs[0];
                 }
             }
-            shape = Part::Feature::getTopoShape(
+            shape = getTopoShapeInLocalCoordinates(
                 obj,
                 (sub.empty() ? Part::ShapeOption::NoFlag : Part::ShapeOption::NeedSubElement)
-                    | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+                    | Part::ShapeOption::ResolveLink,
                 sub.c_str()
             );
         }
@@ -435,8 +429,13 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const
             }
             else {
 
-                const Part::TopoShape& shape = Profile.getValue<Part::Feature*>()->Shape.getShape();
-                TopoDS_Shape sub = shape.getSubShape(Profile.getSubValues()[0].c_str());
+                TopoDS_Shape sub = getTopoShapeInLocalCoordinates(
+                                       Profile.getValue(),
+                                       Part::ShapeOption::NeedSubElement
+                                           | Part::ShapeOption::ResolveLink,
+                                       Profile.getSubValues()[0].c_str()
+                )
+                                       .getShape();
                 if (sub.ShapeType() == TopAbs_FACE) {
                     return TopoDS::Face(sub);
                 }
@@ -475,15 +474,12 @@ TopoShape ProfileBased::getProfileShape(Part::ShapeOptions subShapeOptions) cons
     const auto& subs = Profile.getSubValues();
     auto profile = Profile.getValue();
     if (subs.empty()) {
-        shape = Part::Feature::getTopoShape(
-            profile,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-        );
+        shape = getTopoShapeInLocalCoordinates(profile, Part::ShapeOption::ResolveLink);
     }
     else {
         std::vector<TopoShape> shapes;
         for (auto& sub : subs) {
-            shapes.push_back(Part::Feature::getTopoShape(profile, subShapeOptions, sub.c_str()));
+            shapes.push_back(getTopoShapeInLocalCoordinates(profile, subShapeOptions, sub.c_str()));
         }
         shape = TopoShape(shape.Tag).makeElementCompound(shapes);
     }
@@ -503,19 +499,7 @@ std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const
         throw Base::TypeError("No valid profile linked");
     }
 
-    TopoDS_Shape shape;
-    if (Profile.getValue()->isDerivedFrom<Part::Part2DObject>()) {
-        shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
-    }
-    else {
-        if (Profile.getSubValues().empty()) {
-            throw Base::ValueError("No valid subelement linked in Part::Feature");
-        }
-
-        shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(
-            Profile.getSubValues().front().c_str()
-        );
-    }
+    TopoDS_Shape shape = getProfileShape().getShape();
 
     if (shape.IsNull()) {
         throw Base::ValueError("Linked shape object is empty");
@@ -589,16 +573,20 @@ TopoDS_Face ProfileBased::getSupportFace(const Part::Part2DObject* sketch) const
 
             if (sub.at(0).empty()) {
                 // This seems to happen when sketch is on a datum plane
-                return TopoDS::Face(Feature::makeShapeFromPlane(sketch));
+                return TopoDS::Face(makeTopoShapeFromPlaneInLocalCoordinates(sketch).getShape());
             }
 
             // get the selected sub shape (a Face)
-            const Part::TopoShape& shape = part->Shape.getShape();
+            Part::TopoShape shape = getTopoShapeInLocalCoordinates(
+                part,
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+                sub[0].c_str()
+            );
             if (shape.getShape().IsNull()) {
                 throw Base::ValueError("Sketch support shape is empty!");
             }
 
-            TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
+            TopoDS_Shape sh = shape.getShape();
             if (sh.IsNull()) {
                 throw Base::ValueError("Null shape in SketchBased::getSupportFace()!");
             }
@@ -643,10 +631,9 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     ) {
         const auto& Support = sketch->AttachmentSupport;
         App::DocumentObject* ref = Support.getValue();
-        shape = Part::Feature::getTopoShape(
+        shape = getTopoShapeInLocalCoordinates(
             ref,
-            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                | Part::ShapeOption::Transform,
+            Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
             Support.getSubValues().empty() ? "" : Support.getSubValues()[0].c_str()
         );
     }
@@ -692,6 +679,10 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
 
     if (!obj) {
         return nullptr;
+    }
+
+    if (getFeatureBody()) {
+        return Feature::getBaseObject(silent);
     }
 
     if (!obj->isDerivedFrom<Part::Part2DObject>()) {
@@ -740,7 +731,7 @@ void ProfileBased::onBaseFeatureRerouted(App::DocumentObject* oldBase, App::Docu
     }
 }
 
-void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace)
+void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::PropertyLinkSub& refFace) const
 {
     App::DocumentObject* ref = refFace.getValue();
 
@@ -749,15 +740,14 @@ void ProfileBased::getUpToFaceFromLinkSub(TopoShape& upToFace, const App::Proper
     }
 
     if (ref->isDerivedFrom<App::Plane>()) {
-        upToFace = makeShapeFromPlane(ref);
+        upToFace = makeTopoShapeFromPlaneInLocalCoordinates(ref);
         return;
     }
 
     const auto& subs = refFace.getSubValues();
-    upToFace = Part::Feature::getTopoShape(
+    upToFace = getTopoShapeInLocalCoordinates(
         ref,
-        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-            | Part::ShapeOption::Transform,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
         subs.empty() ? nullptr : subs[0].c_str()
     );
 
@@ -817,8 +807,8 @@ double ProfileBased::getStartReferenceOffset(
     if (reference.getValue()->isDerivedFrom<Part::Part2DObject>()) {
         if (!subValues.empty()) {
             const Part::ShapeOptions options = Part::ShapeOption::NeedSubElement
-                | Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform;
-            referenceShape = Part::Feature::getTopoShape(
+                | Part::ShapeOption::ResolveLink;
+            referenceShape = getTopoShapeInLocalCoordinates(
                 reference.getValue(),
                 options,
                 subValues.front().c_str()
@@ -874,13 +864,13 @@ TopoShape ProfileBased::moveProfileToStart(
 int ProfileBased::getUpToShapeFromLinkSubList(
     TopoShape& upToShape,
     const App::PropertyLinkSubList& refShape
-)
+) const
 {
     auto subSets = refShape.getSubListValues();
 
     // early returns if only one full shape is selected
     if (subSets.size() == 1 && (subSets[0].second.empty() || subSets[0].second[0].empty())) {
-        upToShape = Part::Feature::getTopoShape(subSets[0].first, Part::ShapeOption::ResolveLink);
+        upToShape = getTopoShapeInLocalCoordinates(subSets[0].first, Part::ShapeOption::ResolveLink);
         return 2;  // 0 and 1 have special treatment but true face count isn't relevant
     }
 
@@ -889,7 +879,7 @@ int ProfileBased::getUpToShapeFromLinkSubList(
     for (auto& subSet : subSets) {
         auto ref = subSet.first;
         if (ref->isDerivedFrom<App::Plane>()) {
-            faceList.push_back(makeTopoShapeFromPlane(ref));
+            faceList.push_back(makeTopoShapeFromPlaneInLocalCoordinates(ref));
             ret++;
         }
         else {
@@ -899,10 +889,9 @@ int ProfileBased::getUpToShapeFromLinkSubList(
 
             auto subStrings = subSet.second;
             if (subStrings.empty() || subStrings[0].empty()) {
-                TopoShape baseShape = Part::Feature::getTopoShape(
+                TopoShape baseShape = getTopoShapeInLocalCoordinates(
                     ref,
                     Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                        | Part::ShapeOption::Transform
                 );
 
                 for (const auto& face : baseShape.getSubTopoShapes(TopAbs_FACE)) {
@@ -912,10 +901,9 @@ int ProfileBased::getUpToShapeFromLinkSubList(
             }
             else {
                 for (auto& subString : subStrings) {
-                    TopoShape face = Part::Feature::getTopoShape(
+                    TopoShape face = getTopoShapeInLocalCoordinates(
                         ref,
-                        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                            | Part::ShapeOption::Transform,
+                        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
                         subString.c_str()
                     );
                     face = face.makeElementFace();
@@ -941,7 +929,7 @@ int ProfileBased::getUpToShapeFromLinkSubList(
     return ret;
 }
 
-void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace)
+void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::PropertyLinkSub& refFace) const
 {
     App::DocumentObject* ref = refFace.getValue();
     std::vector<std::string> subStrings = refFace.getSubValues();
@@ -950,20 +938,13 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
         throw Base::ValueError("SketchBased: No face selected");
     }
 
-    if (ref->isDerivedFrom<App::Plane>()) {
-        upToFace = TopoDS::Face(makeShapeFromPlane(ref));
-        return;
-    }
-    else if (ref->isDerivedFrom<PartDesign::Plane>()) {
-        Part::Datum* datum = static_cast<Part::Datum*>(ref);
-        upToFace = TopoDS::Face(datum->getShape());
-        return;
-    }
-
     if (!ref->isDerivedFrom<Part::Feature>()) {
+        if (ref->isDerivedFrom<App::Plane>()) {
+            upToFace = TopoDS::Face(makeTopoShapeFromPlaneInLocalCoordinates(ref).getShape());
+            return;
+        }
         throw Base::TypeError("SketchBased: Must be face of a feature");
     }
-    Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
 
     // Allow an empty sub here - example is a sketch reference (no sub) that creates a face.
     if (subStrings.empty()) {
@@ -971,7 +952,12 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
     }
     // TODO: Check for multiple UpToFaces?
 
-    upToFace = TopoDS::Face(baseShape.getSubShape(subStrings[0].c_str()));
+    auto shape = getTopoShapeInLocalCoordinates(
+        ref,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+        subStrings[0].c_str()
+    );
+    upToFace = TopoDS::Face(shape.getShape());
     if (upToFace.IsNull()) {
         throw Base::ValueError("SketchBased: Failed to extract face");
     }
@@ -1348,7 +1334,7 @@ double ProfileBased::getReversedAngle(const Base::Vector3d& b, const Base::Vecto
         // get cross product of projection direction with revolve axis direction
         Base::Vector3d cross = v % perp_dir;
         // get sketch vector pointing away from support material
-        Base::Placement SketchPos = obj->Placement.getValue();
+        Base::Placement SketchPos = getObjectPlacementInLocalCoordinates(obj);
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         Base::Vector3d SketchNormal(0, 0, 1);
         SketchOrientation.multVec(SketchNormal, SketchNormal);
@@ -1421,7 +1407,7 @@ void ProfileBased::getAxis(
 
     if (profile->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* sketch = getVerifiedSketch();
-        Base::Placement SketchPlm = sketch->Placement.getValue();
+        Base::Placement SketchPlm = getObjectPlacementInLocalCoordinates(sketch);
         Base::Vector3d SketchVector = Base::Vector3d(0, 0, 1);
         Base::Rotation SketchOrientation = SketchPlm.getRotation();
         SketchOrientation.multVec(SketchVector, SketchVector);
@@ -1462,7 +1448,7 @@ void ProfileBased::getAxis(
         }
     }
     else if (profile->isDerivedFrom<Part::Feature>()) {
-        Base::Placement SketchPlm = getVerifiedObject()->Placement.getValue();
+        Base::Placement SketchPlm = getObjectPlacementInLocalCoordinates(getVerifiedObject());
         Base::Vector3d SketchVector = getProfileNormal();
         Base::Vector3d SketchPos = SketchPlm.getPosition();
         sketchplane = gp_Pln(
@@ -1473,18 +1459,18 @@ void ProfileBased::getAxis(
 
     // get reference axis
     if (pcReferenceAxis->isDerivedFrom<PartDesign::Line>()) {
-        const PartDesign::Line* line = static_cast<const PartDesign::Line*>(pcReferenceAxis);
-        base = line->getBasePoint();
-        dir = line->getDirection();
+        Base::Placement placement = getObjectPlacementInLocalCoordinates(pcReferenceAxis);
+        base = placement.getPosition();
+        placement.getRotation().multVec(Base::Vector3d(0, 0, 1), dir);
 
         verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
     }
 
     if (pcReferenceAxis->isDerivedFrom<App::Line>()) {
-        auto* line = static_cast<const App::Line*>(pcReferenceAxis);
-        base = line->getBasePoint();
-        dir = line->getDirection();
+        Base::Placement placement = getObjectPlacementInLocalCoordinates(pcReferenceAxis);
+        base = placement.getPosition();
+        placement.getRotation().multVec(Base::Vector3d(0, 0, 1), dir);
 
         verifyAxisFunc(checkAxis, sketchplane, gp_Dir(dir.x, dir.y, dir.z));
         return;
@@ -1494,12 +1480,15 @@ void ProfileBased::getAxis(
         if (subReferenceAxis.empty()) {
             throw Base::ValueError("No rotation axis reference specified");
         }
-        const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);
-        Part::TopoShape refShape = refFeature->Shape.getShape();
         TopoDS_Shape ref;
         try {
             // if an exception is raised then convert it into a FreeCAD-specific exception
-            ref = refShape.getSubShape(subReferenceAxis[0].c_str());
+            ref = getTopoShapeInLocalCoordinates(
+                      pcReferenceAxis,
+                      Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+                      subReferenceAxis[0].c_str()
+            )
+                      .getShape();
         }
         catch (const Standard_Failure& e) {
             throw Base::RuntimeError(e.GetMessageString());
@@ -1526,7 +1515,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const
 
     // get the Sketch plane
     if (obj->isDerivedFrom<Part::Part2DObject>()) {
-        Base::Placement SketchPos = obj->Placement.getValue();
+        Base::Placement SketchPos = getObjectPlacementInLocalCoordinates(obj);
         Base::Rotation SketchOrientation = SketchPos.getRotation();
         SketchOrientation.multVec(SketchVector, SketchVector);
         return SketchVector;
@@ -1545,10 +1534,7 @@ Base::Vector3d ProfileBased::getProfileNormal() const
 
     if (shape.hasSubShape(TopAbs_EDGE)) {
         // Find the first planar face that contains the edge, and return the plane normal
-        TopoShape objShape = Part::Feature::getTopoShape(
-            obj,
-            Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
-        );
+        TopoShape objShape = getTopoShapeInLocalCoordinates(obj, Part::ShapeOption::ResolveLink);
         for (int idx : objShape.findAncestors(shape.getSubShape(TopAbs_EDGE, 1), TopAbs_FACE)) {
             if (objShape.getSubTopoShape(TopAbs_FACE, idx).findPlane(pln)) {
                 gp_Dir dir = pln.Axis().Direction();

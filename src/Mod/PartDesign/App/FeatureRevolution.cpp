@@ -85,6 +85,7 @@ Revolution::Revolution()
         (App::Prop_None),
         "Reference axis of revolution"
     );
+    ReferenceAxis.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(
         FuseOrder,
         (BaseFirst),

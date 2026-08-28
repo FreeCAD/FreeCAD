@@ -65,7 +65,11 @@ App::PropertyQuantityConstraint::Constraints FeatureExtrude::signedLengthConstra
 double FeatureExtrude::maxAngle = 90 - Base::toDegrees<double>(Precision::Angular());
 App::PropertyAngle::Constraints FeatureExtrude::floatAngle = {-maxAngle, maxAngle, 1.0};
 
-FeatureExtrude::FeatureExtrude() = default;
+FeatureExtrude::FeatureExtrude()
+{
+    StartReference.setScope(App::LinkScope::Global);
+    ReferenceAxis.setScope(App::LinkScope::Global);
+}
 
 short FeatureExtrude::mustExecute() const
 {
@@ -419,10 +423,9 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                 if (sub.empty() && subs.size() > 1) {
                     continue;
                 }
-                TopoShape shape = Part::Feature::getTopoShape(
+                TopoShape shape = getTopoShapeInLocalCoordinates(
                     obj,
-                    Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                        | Part::ShapeOption::Transform,
+                    Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
                     sub.c_str()
                 );
 

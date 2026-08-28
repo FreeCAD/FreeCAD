@@ -76,6 +76,8 @@ Draft::Draft()
         "PullDirection"
     );
     ADD_PROPERTY(Reversed, (0));
+    NeutralPlane.setScope(App::LinkScope::Global);
+    PullDirection.setScope(App::LinkScope::Global);
 }
 
 void Draft::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop)
@@ -131,14 +133,12 @@ App::DocumentObjectExecReturn* Draft::execute()
     gp_Dir pullDirection;
     App::DocumentObject* refDirection = PullDirection.getValue();
     if (refDirection) {
-        if (refDirection->isDerivedFrom<PartDesign::Line>()) {
-            PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
-            Base::Vector3d d = line->getDirection();
-            pullDirection = gp_Dir(d.x, d.y, d.z);
-        }
-        else if (refDirection->isDerivedFrom<App::Line>()) {
-            App::Line* line = static_cast<App::Line*>(refDirection);
-            Base::Vector3d d = line->getDirection();
+        if (refDirection->isDerivedFrom<PartDesign::Line>()
+            || refDirection->isDerivedFrom<App::Line>()) {
+            Base::Vector3d d;
+            getObjectPlacementInLocalCoordinates(refDirection)
+                .getRotation()
+                .multVec(Base::Vector3d(0, 0, 1), d);
             pullDirection = gp_Dir(d.x, d.y, d.z);
         }
         else if (refDirection->isDerivedFrom<Part::Feature>()) {
@@ -147,9 +147,12 @@ App::DocumentObjectExecReturn* Draft::execute()
                 throw Base::ValueError("No pull direction reference specified");
             }
 
-            Part::Feature* refFeature = static_cast<Part::Feature*>(refDirection);
-            Part::TopoShape refShape = refFeature->Shape.getShape();
-            TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
+            TopoDS_Shape ref = getTopoShapeInLocalCoordinates(
+                                   refDirection,
+                                   Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+                                   subStrings[0].c_str()
+            )
+                                   .getShape();
 
             if (ref.ShapeType() == TopAbs_EDGE) {
                 TopoDS_Edge refEdge = TopoDS::Edge(ref);
@@ -232,16 +235,9 @@ App::DocumentObjectExecReturn* Draft::execute()
         }
     }
     else {
-        if (refPlane->isDerivedFrom<PartDesign::Plane>()) {
-            PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refPlane);
-            Base::Vector3d b = plane->getBasePoint();
-            Base::Vector3d n = plane->getNormal();
-            neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
-        }
-        else if (
-            refPlane->isDerivedFrom<App::Plane>() || refPlane->isDerivedFrom<Part::Part2DObject>()
-        ) {
-            neutralPlane = Feature::makePlnFromPlane(refPlane);
+        if (refPlane->isDerivedFrom<PartDesign::Plane>() || refPlane->isDerivedFrom<App::Plane>()
+            || refPlane->isDerivedFrom<Part::Part2DObject>()) {
+            neutralPlane = makePlnFromPlaneInLocalCoordinates(refPlane);
         }
         else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
@@ -249,9 +245,12 @@ App::DocumentObjectExecReturn* Draft::execute()
                 throw Base::ValueError("No neutral plane reference specified");
             }
 
-            Part::Feature* refFeature = static_cast<Part::Feature*>(refPlane);
-            Part::TopoShape refShape = refFeature->Shape.getShape();
-            TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
+            TopoDS_Shape ref = getTopoShapeInLocalCoordinates(
+                                   refPlane,
+                                   Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+                                   subStrings[0].c_str()
+            )
+                                   .getShape();
 
             if (ref.ShapeType() == TopAbs_FACE) {
                 TopoDS_Face refFace = TopoDS::Face(ref);

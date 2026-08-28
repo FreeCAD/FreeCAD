@@ -909,6 +909,66 @@ class TestSketcherSolver(unittest.TestCase):
         self.assertLess(after.dot(before), 0, "the borrowed edge did not reverse")
         self.assertVectorAlmostEqual(sketch.Geometry[circle].Center, expected)
 
+    def testNestedTransformedCrossBodyExternalGeometry(self):
+        source_part = self.Doc.addObject("App::Part", "SourcePart")
+        source_part.Placement = App.Placement(
+            App.Vector(20, 5, 3), App.Rotation(App.Vector(0, 0, 1), 45)
+        )
+        source_body = self.Doc.addObject("PartDesign::Body", "SourceBody")
+        source_body.Placement = App.Placement(
+            App.Vector(2, -1, 0), App.Rotation(App.Vector(0, 0, 1), 30)
+        )
+        source_part.addObject(source_body)
+        source = source_body.newObject("PartDesign::Feature", "Source")
+        source.Shape = Part.makeBox(4, 2, 1)
+
+        target_part = self.Doc.addObject("App::Part", "TargetPart")
+        target_part.Placement = App.Placement(
+            App.Vector(-7, 4, 1), App.Rotation(App.Vector(0, 0, 1), -20)
+        )
+        target_body = self.Doc.addObject("PartDesign::Body", "TargetBody")
+        target_body.Placement = App.Placement(
+            App.Vector(3, 6, 0), App.Rotation(App.Vector(0, 0, 1), 10)
+        )
+        target_part.addObject(target_body)
+        sketch = target_body.newObject("Sketcher::SketchObject", "TargetSketch")
+        sketch.Placement = App.Placement(App.Vector(1, -2, 2), App.Rotation(App.Vector(0, 0, 1), 5))
+        self.Doc.recompute()
+
+        edge_index = next(
+            index
+            for index, edge in enumerate(source.Shape.Edges, 1)
+            if len(edge.Vertexes) == 2
+            and abs(edge.Vertexes[0].Point.z - edge.Vertexes[1].Point.z) < Precision.confusion()
+        )
+        edge_name = f"Edge{edge_index}"
+        sketch.addExternal(source.Name, edge_name)
+        self.Doc.recompute()
+        self.assertEqual(len(sketch.ExternalGeometry), 1)
+
+        def assert_projected_edge():
+            source_to_global = source.getGlobalPlacement() * source.Placement.inverse()
+            global_to_sketch = sketch.getGlobalPlacement().inverse()
+            expected = []
+            for vertex in source.Shape.getElement(edge_name).Vertexes:
+                point = global_to_sketch.multVec(source_to_global.multVec(vertex.Point))
+                expected.append(App.Vector(point.x, point.y, 0))
+
+            projected = sketch.ExternalGeo[-1]
+            same_order = (projected.StartPoint - expected[0]).Length + (
+                projected.EndPoint - expected[1]
+            ).Length
+            reverse_order = (projected.StartPoint - expected[1]).Length + (
+                projected.EndPoint - expected[0]
+            ).Length
+            self.assertLess(min(same_order, reverse_order), Precision.confusion())
+
+        assert_projected_edge()
+
+        source.Placement.Base += App.Vector(3, -2, 0)
+        self.Doc.recompute()
+        assert_projected_edge()
+
     def testRemovedExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")

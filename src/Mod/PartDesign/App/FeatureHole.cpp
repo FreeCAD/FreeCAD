@@ -665,6 +665,7 @@ Hole::Hole()
         App::Prop_None,
         "Face, plane or sketch used as the start reference"
     );
+    StartReference.setScope(App::LinkScope::Global);
 }
 
 double Hole::getStartOffset() const

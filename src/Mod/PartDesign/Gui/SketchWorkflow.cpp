@@ -38,7 +38,6 @@
 #include "Utils.h"
 #include "ViewProviderBody.h"
 #include "WorkflowManager.h"
-#include "ui_DlgReference.h"
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/DatumPlane.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
@@ -152,11 +151,6 @@ public:
         return faceSelection.getAsPropertyLinkSubString();
     }
 
-    App::DocumentObject* getObject() const
-    {
-        return faceSelection.getObject();
-    }
-
 private:
     void setThroughModeOfBody(PartDesign::Body* activeBody)
     {
@@ -183,11 +177,6 @@ public:
     std::string getSupport() const
     {
         return faceSelection.getAsPropertyLinkSubString();
-    }
-
-    App::DocumentObject* getObject() const
-    {
-        return faceSelection.getObject();
     }
 
 private:
@@ -230,31 +219,23 @@ public:
     {
         createBodyOrThrow();
 
-        // get the selected object
-        App::DocumentObject* selectedObject {};
-
         if (faceFilter.match()) {
             Gui::SelectionObject faceSelObject = faceFilter.Result[0][0];
             SupportFaceValidator validator {faceSelObject};
             validator.handleSelectedBody(activeBody);
             validator.throwIfInvalid();
 
-            selectedObject = validator.getObject();
             supportString = validator.getSupport();
         }
         else if (planeFilter.match()) {
             SupportPlaneValidator validator(planeFilter.Result[0][0]);
-            selectedObject = validator.getObject();
             supportString = validator.getSupport();
         }
         else {
             // For a sketch, the support is the object itself with no sub-element.
             Gui::SelectionObject sketchSelObject = sketchFilter.Result[0][0];
-            selectedObject = sketchSelObject.getObject();
             supportString = sketchSelObject.getAsPropertyLinkSubString();
         }
-
-        handleIfSupportOutOfBody(selectedObject);
     }
 
     void createSketchOnSupport(const std::string& supportString)
@@ -306,72 +287,6 @@ private:
         }
     }
 
-    void handleIfSupportOutOfBody(App::DocumentObject* selectedObject)
-    {
-        if (!activeBody->hasObject(selectedObject)) {
-            if (!selectedObject->isDerivedFrom(App::Plane::getClassTypeId())) {
-                // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
-
-                // check the prerequisites for the selected objects
-                // the user has to decide which option we should take if external references are used
-                //  TODO share this with UnifiedDatumCommand() (2015-10-20, Fat-Zer)
-                QDialog dia(Gui::getMainWindow());
-                PartDesignGui::Ui_DlgReference dlg;
-                dlg.setupUi(&dia);
-                dia.setModal(true);
-                int result = dia.exec();
-                if (result == QDialog::Rejected) {
-                    throw RejectException();
-                }
-
-                if (!dlg.radioXRef->isChecked()) {
-                    guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Make copy"));
-                    auto copy = makeCopy(selectedObject, dlg.radioIndependent->isChecked());
-                    supportString = supportFromCopy(copy);
-                    guidocument->commitCommand();
-                }
-            }
-        }
-    }
-
-    App::DocumentObject* makeCopy(App::DocumentObject* selectedObject, bool independent)
-    {
-        std::string sub;
-        if (faceFilter.match()) {
-            sub = faceFilter.Result[0][0].getSubNames()[0];
-        }
-        auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selectedObject, sub, independent);
-
-        addToBodyOrPart(copy);
-
-        return copy;
-    }
-
-    std::string supportFromCopy(App::DocumentObject* copy)
-    {
-        std::string supportString;
-        if (planeFilter.match()) {
-            supportString = Gui::Command::getObjectCmd(copy, "(", ",'')");
-        }
-        else {
-            // it is ensured that only a single face is selected, hence it must always be Face1 of
-            // the shapebinder
-            supportString = Gui::Command::getObjectCmd(copy, "(", ",'Face1')");
-        }
-        return supportString;
-    }
-
-    void addToBodyOrPart(App::DocumentObject* object)
-    {
-        auto activePart = PartDesignGui::getPartFor(activeBody, false);
-        if (activeBody) {
-            activeBody->addObject(object);
-        }
-        else if (activePart) {
-            activePart->addObject(object);
-        }
-    }
-
 private:
     Gui::Document* guidocument;
     PartDesign::Body* activeBody;
@@ -416,7 +331,6 @@ public:
 
     void findDatumPlanes()
     {
-        App::GeoFeatureGroupExtension* geoGroup = getGroupExtensionOfBody();
         const std::vector<Base::Type> types
             = {PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId()};
         auto datumPlanes = appdocument->getObjectsOfType(types);
@@ -427,36 +341,12 @@ public:
             }
 
             planes.push_back(plane);
-            // Check whether this plane belongs to the active body
-            if (activeBody->hasObject(plane, true)) {
-                if (!activeBody->isAfterInsertPoint(plane)) {
-                    validPlaneCount++;
-                    status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-                }
-                else {
-                    status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
-                }
+            if (activeBody->hasObject(plane, true) && activeBody->isAfterInsertPoint(plane)) {
+                status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
             }
             else {
-                PartDesign::Body* planeBody = PartDesign::Body::findBodyOf(plane);
-                if (planeBody) {
-                    if ((geoGroup && geoGroup->hasObject(planeBody, true))
-                        || !App::GeoFeatureGroupExtension::getGroupOfObject(planeBody)) {
-                        status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
-                    }
-                    else {
-                        status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-                    }
-                }
-                else {
-                    if ((geoGroup && geoGroup->hasObject(plane, true))
-                        || App::GeoFeatureGroupExtension::getGroupOfObject(plane)) {
-                        status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-                    }
-                    else {
-                        status.push_back(PartDesignGui::TaskFeaturePick::notInBody);
-                    }
-                }
+                validPlaneCount++;
+                status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
             }
         }
     }
@@ -469,16 +359,18 @@ public:
         auto binders(appdocument->getObjectsOfType(PartDesign::SubShapeBinder::getClassTypeId()));
         shapeBinders.insert(shapeBinders.end(), binders.begin(), binders.end());
         for (auto binder : shapeBinders) {
-            // Check whether this plane belongs to the active body
-            if (activeBody->hasObject(binder)) {
-                Part::TopoShape shape = static_cast<Part::Feature*>(binder)->Shape.getShape();
-                if (shape.isPlanar()) {
-                    if (!activeBody->isAfterInsertPoint(binder)) {
-                        validPlaneCount++;
-                        planes.push_back(binder);
-                        status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
-                    }
-                }
+            Part::TopoShape shape = static_cast<Part::Feature*>(binder)->Shape.getShape();
+            if (!shape.isPlanar()) {
+                continue;
+            }
+
+            planes.push_back(binder);
+            if (activeBody->hasObject(binder) && activeBody->isAfterInsertPoint(binder)) {
+                status.push_back(PartDesignGui::TaskFeaturePick::afterTip);
+            }
+            else {
+                validPlaneCount++;
+                status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
             }
         }
     }
@@ -492,19 +384,6 @@ private:
             status.push_back(PartDesignGui::TaskFeaturePick::basePlane);
             validPlaneCount++;
         }
-    }
-
-    App::GeoFeatureGroupExtension* getGroupExtensionOfBody() const
-    {
-        App::GeoFeatureGroupExtension* geoGroup {nullptr};
-        if (activeBody) {
-            auto group(App::GeoFeatureGroupExtension::getGroupOfObject(activeBody));
-            if (group) {
-                geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-            }
-        }
-
-        return geoGroup;
     }
 
 private:

@@ -46,6 +46,7 @@ Loft::Loft()
 {
     ADD_PROPERTY_TYPE(Sections, (nullptr), "Loft", App::Prop_None, "List of sections");
     Sections.setValue(nullptr);
+    Sections.setScope(App::LinkScope::Global);
     ADD_PROPERTY_TYPE(Ruled, (false), "Loft", App::Prop_None, "Create ruled surface");
     ADD_PROPERTY_TYPE(Closed, (false), "Loft", App::Prop_None, "Close Last to First Profile");
 }
@@ -70,7 +71,7 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
     App::DocumentObject* obj,
     const std::vector<std::string>& subs,
     size_t expected_size
-)
+) const
 {
     auto useSketch = [](App::DocumentObject* obj, const std::vector<std::string>& subs) {
         // Be smart. If part of a sketch is selected, use the entire sketch unless it is a single
@@ -86,9 +87,7 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
     std::vector<TopoShape> shapes;
     auto useEntireSketch = useSketch(obj, subs);
     if (subs.empty() || std::ranges::find(subs, std::string()) != subs.end() || useEntireSketch) {
-        shapes.push_back(
-            Part::Feature::getTopoShape(obj, Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform)
-        );
+        shapes.push_back(getTopoShapeInLocalCoordinates(obj, Part::ShapeOption::ResolveLink));
         if (shapes.back().isNull()) {
             std::stringstream str;
             str << "Failed to get shape of " << name;
@@ -101,14 +100,11 @@ std::vector<Part::TopoShape> Loft::getSectionShape(
     }
     else {
         for (const auto& sub : subs) {
-            shapes.push_back(
-                Part::Feature::getTopoShape(
-                    obj,
-                    Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
-                        | Part::ShapeOption::Transform,
-                    sub.c_str()
-                )
-            );
+            shapes.push_back(getTopoShapeInLocalCoordinates(
+                obj,
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+                sub.c_str()
+            ));
             if (shapes.back().isNull()) {
                 std::stringstream str;
                 str << "Failed to get shape of " << name;

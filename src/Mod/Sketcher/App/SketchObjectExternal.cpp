@@ -72,6 +72,7 @@
 #include <App/ElementNamingUtils.h>
 #include <App/Expression.h>
 #include <App/ExpressionParser.h>
+#include <App/GeoFeature.h>
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
@@ -99,6 +100,24 @@ using namespace Sketcher;
 using namespace Base;
 
 FC_LOG_LEVEL_INIT("Sketch", true, true)
+
+namespace
+{
+
+Base::Placement getObjectPlacement(const App::DocumentObject* object)
+{
+    auto placement = object
+        ? object->getPropertyByName<App::PropertyPlacement>("Placement")
+        : nullptr;
+    return placement ? placement->getValue() : Base::Placement();
+}
+
+Base::Placement getContainingPlacement(const App::DocumentObject* object)
+{
+    return App::GeoFeature::getGlobalPlacement(object) * getObjectPlacement(object).inverse();
+}
+
+}  // namespace
 
 void SketchObject::initExternalGeo() {
     std::vector<Part::Geometry *> geos;
@@ -210,40 +229,7 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
     }
 
 
-    // Note: Checking for the body of the support doesn't work when the support are the three base
-    // planes
-    Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
-    Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
-
-    // DatumElements in an LCS, get body from the parent LCS
-    if (!body_obj && pObj->isDerivedFrom<App::DatumElement>()) {
-        auto* datum = static_cast<const App::DatumElement*>(pObj);
-        if (auto* lcs = datum->getLCS()) {
-            body_obj = Part::BodyBase::findBodyOf(lcs);
-        }
-    }
-
-    App::Part* part_this = App::Part::getPartOfObject(this);
-    App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this == part_obj) {// either in the same part, or in the root of document
-        if (!body_this) {
-            return true;
-        }
-        else if (body_this == body_obj) {
-            return true;
-        }
-        else {
-            if (rsn)
-                *rsn = rlOtherBody;
-            return false;
-        }
-    }
-    else {
-        // cross-part link. Disallow, should be done via shapebinders only
-        if (rsn)
-            *rsn = rlOtherPart;
-        return false;
-    }
+    return true;
 }
 
 bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject* pObj, bool& xinv,
@@ -288,34 +274,10 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
     }
 
 
-    // Note: Checking for the body of the support doesn't work when the support are the three base
-    // planes
-    Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
-    Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
-    App::Part* part_this = App::Part::getPartOfObject(this);
-    App::Part* part_obj = App::Part::getPartOfObject(pObj);
-    if (part_this != part_obj) {
-        // cross-part relation. Disallow, should be done via shapebinders only
-        setReason(rlOtherPart);
-        return false;
-    }
-
-    // Hereafter assuming: either in the same part, or in the root of document
-    if (body_this && body_this != body_obj) {
-        if (!this->allowOtherBody) {
-            setReason(rlOtherBody);
-            return false;
-        }
-        // if the original sketch has external geometry AND it is not in this body prevent
-        // link
-        else if (psObj->getExternalGeometryCount() > 2) {
-            setReason(rlOtherBodyWithLinks);
-            return false;
-        }
-    }
-
-    const Rotation& srot = psObj->Placement.getValue().getRotation();
-    const Rotation& lrot = this->Placement.getValue().getRotation();
+    const Base::Placement sourcePlacement = psObj->globalPlacement();
+    const Base::Placement targetPlacement = globalPlacement();
+    const Rotation& srot = sourcePlacement.getRotation();
+    const Rotation& lrot = targetPlacement.getRotation();
 
     Base::Vector3d snormal(0, 0, 1);
     Base::Vector3d sx(1, 0, 0);
@@ -351,15 +313,13 @@ bool SketchObject::isCarbonCopyAllowed(App::Document* pDoc, App::DocumentObject*
 
 
     // the origins of the sketches must be aligned or be the same
-    Base::Vector3d ddir =
-        (psObj->Placement.getValue().getPosition() - this->Placement.getValue().getPosition())
-            .Normalize();
+    Base::Vector3d ddir
+        = (sourcePlacement.getPosition() - targetPlacement.getPosition()).Normalize();
 
     double alignment = ddir * lnormal;
 
     if (!allowUnaligned && (fabs(fabs(alignment) - 1) > Precision::Confusion())
-        && (psObj->Placement.getValue().getPosition()
-            != this->Placement.getValue().getPosition())) {
+        && (sourcePlacement.getPosition() != targetPlacement.getPosition())) {
         setReason(rlOriginsMisaligned);
         return false;
     }
@@ -746,6 +706,9 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         Obj,
         Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
     );
+    if (!wholeShape.isNull()) {
+        wholeShape.setPlacement(getContainingPlacement(Obj) * wholeShape.getPlacement());
+    }
     auto shape = wholeShape.getSubTopoShape(SubName, /*silent*/ true);
     TopAbs_ShapeEnum shapeType = TopAbs_SHAPE;
     if (shape.shapeType(/*silent*/ true) != TopAbs_FACE) {
@@ -764,7 +727,7 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
 
         gp_Pln sketchPlane;
         if (intersection) {
-            Base::Placement Plm = Placement.getValue();
+            Base::Placement Plm = globalPlacement();
             Base::Vector3d Pos = Plm.getPosition();
             Base::Rotation Rot = Plm.getRotation();
             Base::Vector3d dN(0, 0, 1);
@@ -2362,7 +2325,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         }
     }
 
-    Base::Placement Plm = Placement.getValue();
+    Base::Placement Plm = globalPlacement();
     Base::Vector3d Pos = Plm.getPosition();
     Base::Rotation Rot = Plm.getRotation();
     Base::Rotation invRot = Rot.inverse();
@@ -2539,6 +2502,14 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             else {
                 throw Base::TypeError(
                     "Datum feature type is not yet supported as external geometry for a sketch");
+            }
+
+            if (!refSubShape.IsNull()) {
+                Part::TopoShape contextualShape(refSubShape);
+                contextualShape.setPlacement(
+                    getContainingPlacement(resolvedObj) * contextualShape.getPlacement()
+                );
+                refSubShape = contextualShape.getShape();
             }
 
             if (projection && !refSubShape.IsNull()) {

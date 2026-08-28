@@ -52,12 +52,12 @@ public:
     }
     //@}
 
-    static std::vector<Part::TopoShape> getSectionShape(
+    std::vector<Part::TopoShape> getSectionShape(
         const char* name,
         App::DocumentObject* obj,
         const std::vector<std::string>& subname,
         size_t expected_size = 0
-    );
+    ) const;
 
 protected:
     // handle changed property

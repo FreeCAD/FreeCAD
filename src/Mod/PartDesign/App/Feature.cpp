@@ -490,7 +490,25 @@ Part::TopoShape Feature::getBaseTopoShape(bool silent) const
     return result;
 }
 
-Part::TopoShape Feature::getTopoShapeInLocalCoordinates(const App::DocumentObject* object) const
+Base::Placement Feature::getObjectPlacementInLocalCoordinates(const App::DocumentObject* object) const
+{
+    if (!object) {
+        return {};
+    }
+
+    auto body = getFeatureBody();
+    if (!body) {
+        return getDisplayedObjectPlacement(object);
+    }
+
+    return getDisplayedObjectPlacement(body).inverse() * getDisplayedObjectPlacement(object);
+}
+
+Part::TopoShape Feature::getTopoShapeInLocalCoordinates(
+    const App::DocumentObject* object,
+    Part::ShapeOptions options,
+    const char* subname
+) const
 {
     if (!object) {
         return {};
@@ -501,19 +519,19 @@ Part::TopoShape Feature::getTopoShapeInLocalCoordinates(const App::DocumentObjec
         && PartDesign::Body::findBodyOf(object) == body;
 
     if (isSameBodyFeature) {
-        return static_cast<const Part::Feature*>(object)->Shape.getShape();
+        auto shape = static_cast<const Part::Feature*>(object)->Shape.getShape();
+        if (options.testFlag(Part::ShapeOption::NeedSubElement) && subname && *subname) {
+            shape = shape.getSubTopoShape(subname, true);
+        }
+        return shape;
     }
 
-    Part::ShapeOptions options = Part::ShapeOption::ResolveLink;
-    if (!body) {
-        return Part::Feature::getTopoShape(object, options | Part::ShapeOption::Transform);
-    }
+    options.setFlag(Part::ShapeOption::Transform, false);
 
     Base::Matrix4D shapePlacement;
-    auto shape = Part::Feature::getTopoShape(object, options, nullptr, &shapePlacement);
+    auto shape = Part::Feature::getTopoShape(object, options, subname, &shapePlacement);
     if (!shape.isNull()) {
-        Base::Matrix4D placement = getDisplayedObjectPlacement(body).inverse().toMatrix();
-        placement *= getDisplayedObjectPlacement(object).toMatrix();
+        Base::Matrix4D placement = getObjectPlacementInLocalCoordinates(object).toMatrix();
         placement *= shapePlacement;
         shape.transformShape(placement, false, true);
     }
@@ -593,6 +611,15 @@ gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)
     return gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(normal.x, normal.y, normal.z));
 }
 
+gp_Pln Feature::makePlnFromPlaneInLocalCoordinates(const App::DocumentObject* obj) const
+{
+    Base::Placement placement = getObjectPlacementInLocalCoordinates(obj);
+    Base::Vector3d pos = placement.getPosition();
+    Base::Vector3d normal;
+    placement.getRotation().multVec(Base::Vector3d(0, 0, 1), normal);
+    return gp_Pln(gp_Pnt(pos.x, pos.y, pos.z), gp_Dir(normal.x, normal.y, normal.z));
+}
+
 // TODO: Toponaming April 2024 Deprecated in favor of TopoShape method.  Remove when possible.
 TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 {
@@ -607,6 +634,16 @@ TopoDS_Shape Feature::makeShapeFromPlane(const App::DocumentObject* obj)
 TopoShape Feature::makeTopoShapeFromPlane(const App::DocumentObject* obj)
 {
     BRepBuilderAPI_MakeFace builder(makePlnFromPlane(obj));
+    if (!builder.IsDone()) {
+        throw Base::CADKernelError("Feature: Could not create shape from base plane");
+    }
+
+    return TopoShape(obj->getID(), nullptr, builder.Shape());
+}
+
+TopoShape Feature::makeTopoShapeFromPlaneInLocalCoordinates(const App::DocumentObject* obj) const
+{
+    BRepBuilderAPI_MakeFace builder(makePlnFromPlaneInLocalCoordinates(obj));
     if (!builder.IsDone()) {
         throw Base::CADKernelError("Feature: Could not create shape from base plane");
     }

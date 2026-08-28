@@ -55,6 +55,7 @@ Mirrored::Mirrored()
         (App::PropertyType)(App::Prop_None),
         "Mirror plane"
     );
+    MirrorPlane.setScope(App::LinkScope::Global);
 }
 
 short Mirrored::mustExecute() const
@@ -102,7 +103,7 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
                     throw Base::ValueError("No valid axis specified");
                 }
             }
-            axis *= refSketch->Placement.getValue();
+            axis *= getObjectPlacementInLocalCoordinates(refSketch);
             axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
             axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
             return true;
@@ -114,11 +115,10 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
     // Datum plane
     getMirrorAxis axisOfDatumPlane = [this](gp_Pnt& axbase, gp_Dir& axdir) {
         App::DocumentObject* refObject = MirrorPlane.getValue();
-        if (auto plane = dynamic_cast<PartDesign::Plane*>(refObject)) {
-            Base::Vector3d base = plane->getBasePoint();
-            axbase = gp_Pnt(base.x, base.y, base.z);
-            Base::Vector3d dir = plane->getNormal();
-            axdir = gp_Dir(dir.x, dir.y, dir.z);
+        if (refObject && refObject->isDerivedFrom<PartDesign::Plane>()) {
+            gp_Pln plane = makePlnFromPlaneInLocalCoordinates(refObject);
+            axbase = plane.Location();
+            axdir = plane.Axis().Direction();
             return true;
         }
 
@@ -128,11 +128,10 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
     // Normal plane
     getMirrorAxis axisOfPlane = [this](gp_Pnt& axbase, gp_Dir& axdir) {
         App::DocumentObject* refObject = MirrorPlane.getValue();
-        if (auto plane = dynamic_cast<App::Plane*>(refObject)) {
-            Base::Vector3d base = plane->getBasePoint();
-            axbase = gp_Pnt(base.x, base.y, base.z);
-            Base::Vector3d dir = plane->getDirection();
-            axdir = gp_Dir(dir.x, dir.y, dir.z);
+        if (refObject && refObject->isDerivedFrom<App::Plane>()) {
+            gp_Pln plane = makePlnFromPlaneInLocalCoordinates(refObject);
+            axbase = plane.Location();
+            axdir = plane.Axis().Direction();
             return true;
         }
 
@@ -144,7 +143,7 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
         App::DocumentObject* refObject = MirrorPlane.getValue();
         std::vector<std::string> subStrings = MirrorPlane.getSubValues();
 
-        if (auto feature = dynamic_cast<Part::Feature*>(refObject)) {
+        if (refObject && refObject->isDerivedFrom<Part::Feature>()) {
             if (subStrings.empty()) {
                 throw Base::ValueError("No mirror plane reference specified");
             }
@@ -152,10 +151,12 @@ const std::list<gp_Trsf> Mirrored::getTransformations(const std::vector<App::Doc
                 throw Base::ValueError("No direction reference specified");
             }
 
-            Part::TopoShape baseShape = feature->Shape.getShape();
-            // TODO: Check for multiple mirror planes?
-            TopoDS_Shape shape = baseShape.getSubShape(subStrings[0].c_str());
-            TopoDS_Face face = TopoDS::Face(shape);
+            auto shape = getTopoShapeInLocalCoordinates(
+                refObject,
+                Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink,
+                subStrings[0].c_str()
+            );
+            TopoDS_Face face = TopoDS::Face(shape.getShape());
             if (face.IsNull()) {
                 throw Base::ValueError("Failed to extract mirror plane");
             }
