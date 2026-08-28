@@ -329,7 +329,7 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         auto modeSwitch = grpVp->getModeSwitch();
         auto idx = modeSwitch->whichChild.getValue();
         if (idx < 0 || idx >= modeSwitch->getNumChildren() || modeSwitch->getChild(idx) != childRoot) {
-            if (!previewHidden) {
+            if (!previewHidden || !childRoot) {
                 FC_LOG(
                     "skip " << obj->getFullName() << '.' << (subname ? subname : "")
                             << ", hidden inside geo group"
