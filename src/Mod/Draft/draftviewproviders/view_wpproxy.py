@@ -62,10 +62,12 @@ class ViewProviderWorkingPlaneProxy:
         vobj.addProperty("App::PropertyColor", "LineColor", "Base", "", locked=True)
 
         vobj.addProperty("App::PropertyFloatList", "ViewData", "Base", "", locked=True)
+        vobj.setPropertyStatus("ViewData", "Hidden")
 
         vobj.addProperty("App::PropertyBool", "RestoreView", "Base", "", locked=True)
 
         vobj.addProperty("App::PropertyMap", "VisibilityMap", "Base", "", locked=True)
+        vobj.setPropertyStatus("VisibilityMap", "Hidden")
 
         vobj.addProperty("App::PropertyBool", "RestoreState", "Base", "", locked=True)
 
