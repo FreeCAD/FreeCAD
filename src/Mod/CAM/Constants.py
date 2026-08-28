@@ -195,6 +195,17 @@ GCODE_NON_CONFORMING = (
     + GCODE_CYCLE_CANCEL
 )
 
+# Axis sets
+
+# Which Parameters can be deduplicated
+AXIS_MODAL = list("XYZUVWABC")  # just motion axis
+PARAMETER_MODAL = AXIS_MODAL + list("F")  # full candidate list
+
+# But, for certain gcodes, you can't treat an axis as modal
+NOT_PARAMETER_MODAL = {
+    # canned drill doesn't allow any axis modal
+    **{g: PARAMETER_MODAL for g in (GCODE_DRILL_EXTENDED + GCODE_MOVE_DRILL)},
+}
 
 # =============================================================================
 # Annotations
@@ -210,3 +221,8 @@ ANNOT_ALLOW_UNSUPPORTED = "allow_unsupported"
 
 # G0 moves which can be replaced by G1 with No-Engagement Feed
 ANNOT_NO_ENGAGEMENT_FEED = "NoEngagementFeed"
+# When de-dup'ing, do not look back at this or previous commands in the stream
+# True|absent|False
+ANNOT_MODAL_BARRIER = "modal_barrier"
+# Don't optimize this G0 into next/previous ones, the motion is salient
+ANNOT_NO_COLLAPSE_G0 = "no_collapse_g0"
