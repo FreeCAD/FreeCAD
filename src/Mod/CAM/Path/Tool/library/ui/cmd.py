@@ -60,7 +60,7 @@ class CommandToolBitLibraryDockOpen:
         return True
 
     def Activated(self):
-        dock = ToolBitLibraryDock()
+        dock = ToolBitLibraryDock(askToolNumber=True)
         dock.open()
 
 
