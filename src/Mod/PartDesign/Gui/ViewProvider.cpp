@@ -231,7 +231,21 @@ void ViewProvider::attachPreview()
 void ViewProvider::updatePreview()
 {
     ViewProviderPreviewExtension::updatePreview();
+    syncToolPreview();
+}
 
+void ViewProvider::showPreview(bool enable)
+{
+    ViewProviderPreviewExtension::showPreview(enable);
+
+    // a fresh preview skips updatePreview(), leaving the previous owner's tool state
+    if (isPreviewEnabled()) {
+        syncToolPreview();
+    }
+}
+
+void ViewProvider::syncToolPreview()
+{
     auto* addSubFeature = getObject<PartDesign::FeatureAddSub>();
     // the raw cutting tool is only for editing; a preselection preview shows only the delta
     const bool showTool = previewToolShape && addSubFeature
