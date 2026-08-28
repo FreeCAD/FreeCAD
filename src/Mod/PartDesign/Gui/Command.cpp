@@ -1650,9 +1650,8 @@ CmdPartDesignSubtractiveLoft::CmdPartDesignSubtractiveLoft()
     sAppModule = "PartDesign";
     sGroup = QT_TR_NOOP("PartDesign");
     sMenuText = QT_TR_NOOP("Subtractive Loft");
-    sToolTipText = QT_TR_NOOP(
-        "Creates a solid between one or more sketches, profiles or faces and removes it from the body"
-    );
+    sToolTipText
+        = QT_TR_NOOP("Creates a solid between one or more sketches, profiles or faces and removes it from the body");
     sWhatsThis = "PartDesign_SubtractiveLoft";
     sStatusTip = sToolTipText;
     sPixmap = "PartDesign_SubtractiveLoft";
