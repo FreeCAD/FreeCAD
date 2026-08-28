@@ -589,6 +589,32 @@ def addToJob(obj, jobname=None):
     return job
 
 
+def getOperations(obj, addGroups=False):
+    """getOperations() ... returns all operations from job or group, includes sub groups
+    addGroups: returns list with group objects"""
+
+    def getOpsFromGroup(group):
+        operations = []
+        for candidate in group.Group:
+            if hasattr(candidate, "Path"):
+                operations.append(candidate)
+            elif hasattr(candidate, "Group"):
+                if addGroups:
+                    operations.append(candidate)
+                operations.extend(getOpsFromGroup(candidate))
+        return operations
+
+    if getattr(obj, "Proxy", None) and obj.Proxy.__module__ == "Path.Main.Job":
+        group = getattr(obj, "Operations", None)
+    elif hasattr(obj, "Group"):
+        group = obj
+    elif getattr(obj, "__module__", None) == "CAMTests.PostTestMocks":
+        return obj.Operations.Group  # needed for tests with mocks objects
+    else:
+        group = None
+    return getOpsFromGroup(group) if group else []
+
+
 def sort_locations(locations, keys, attractors=None):
     """sort holes by the nearest neighbor method
     keys: two-element list of keys for X and Y coordinates. for example ['x','y']
