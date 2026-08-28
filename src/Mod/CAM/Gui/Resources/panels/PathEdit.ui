@@ -1984,12 +1984,12 @@ If &lt;span style=&quot; font-style:italic;&quot;&gt;order by&lt;/span&gt; is se
        <widget class="QTreeWidget" name="operationsList">
         <column>
          <property name="text">
-          <string>#</string>
+          <string>Label</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>Operation</string>
+          <string>#</string>
          </property>
         </column>
         <column>
