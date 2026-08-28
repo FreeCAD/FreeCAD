@@ -175,6 +175,21 @@ class TestSurfaceGenerator(unittest.TestCase):
         self.assertGreater(len(scan_lines), 0, "Spiral should generate lines.")
         self.assertGreater(len(scan_lines[0]), 10, "Spiral should have multiple points.")
 
+    def test70(self):
+        """Tests that the spiral generator respects the boundary."""
+        scan_lines = surface_cpp.generate_spiral_pattern_cpp(
+            0, 10, 0, 10, 5.0, 5.0, 1.0, 0.1, False, self.square_boundary
+        )
+        self.assertGreater(len(scan_lines), 0, "Clipped spiral should generate lines.")
+
+        # Check if all points are within the boundary
+        for line in scan_lines:
+            for point in line:
+                self.assertTrue(
+                    0.0 <= point[0] <= 10.0 and 0.0 <= point[1] <= 10.0,
+                    f"Point {point} is outside the 10x10 boundary.",
+                )
+
     def test80_follow_curve_on_surface(self):
         """Tests FollowCurve cut pattern on 3D Surface operation follows curved height profile."""
         import Path.Op.Surface as PathSurface

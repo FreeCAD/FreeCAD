@@ -51,7 +51,6 @@ import Path.Op.Base as PathOp
 import Path.Op.SurfaceSupport as PathSurfaceSupport
 import PathScripts.PathUtils as PathUtils
 from Path.Base.Generator.surface_pattern import generate_curve_pattern
-from Path.Base.Generator.surface_dropcutter import batch_dropcutter
 import math
 import time
 
