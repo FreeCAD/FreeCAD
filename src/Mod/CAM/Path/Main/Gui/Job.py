@@ -178,17 +178,17 @@ class ViewProvider:
 
     def hideOperations(self):
         self.operationsVisibility = {}
-        for op in self.obj.Operations.Group:
+        for op in PathUtils.getOperations(self.obj):
             self.operationsVisibility[op.Name] = op.Visibility
             op.Visibility = False
 
     def restoreOperationsVisibility(self):
         if hasattr(self, "operationsVisibility"):
-            for op in self.obj.Operations.Group:
+            for op in PathUtils.getOperations(self.obj):
                 if self.operationsVisibility.get(op.Name, True):
                     op.Visibility = True
         else:
-            for op in self.obj.Operations.Group:
+            for op in PathUtils.getOperations(self.obj):
                 op.Visibility = True
 
     def hideModels(self):
@@ -1019,10 +1019,23 @@ class TaskPanel:
 
             self.obj.Label = str(self.form.jobLabel.text())
             self.obj.Description = str(self.form.jobDescription.toPlainText())
-            self.obj.Operations.Group = [
-                self.form.operationsList.invisibleRootItem().child(i).data(self.DataObject, 0)
-                for i in range(self.form.operationsList.topLevelItemCount())
-            ]
+
+            # assign top level of operations list
+            objs = []
+            for i in range(self.form.operationsList.topLevelItemCount()):
+                obj = self.form.operationsList.invisibleRootItem().child(i).data(self.DataObject, 0)
+                objs.append(obj)
+            self.obj.Operations.Group = objs
+
+            # assign sub groups of operations list
+            for name, item in self.groups.items():
+                objs = []
+                for i in range(item.childCount()):
+                    obj = item.child(i).data(self.DataObject, 0)
+                    objs.append(obj)
+                group = obj.Document.getObject(name)
+                group.Group = objs
+
             try:
                 self.obj.SplitOutput = self.form.splitOutput.isChecked()
                 self.obj.OrderOutputBy = str(self.form.orderBy.currentData())
@@ -1134,6 +1147,11 @@ class TaskPanel:
         self.form.activeToolController.blockSignals(False)
         self.form.toolControllerList.blockSignals(False)
 
+    def getParent(self, obj):
+        for candidate in obj.InList:
+            if hasattr(candidate, "Group"):
+                return candidate.Name
+
     def setFields(self):
         """sets fields in the form to match the object"""
 
@@ -1156,8 +1174,8 @@ class TaskPanel:
         # self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
-        col_num = 0
-        col_op_label = 1
+        col_label = 0
+        col_num = 1
         col_tool_number = 2
         col_tc = 3
         col_coolant = 4
@@ -1169,24 +1187,38 @@ class TaskPanel:
         tree.setWordWrap(False)
         tree.clear()
 
-        for index, op in enumerate(self.obj.Operations.Group):
-            item = QtGui.QTreeWidgetItem(tree)
-            item.setData(self.DataObject, 0, op)
-            item.setText(col_num, str(index))
-            item.setText(col_op_label, op.Label)
-            if tc := PathUtil.toolControllerForOp(op):
-                tcLabel = tc.Label
-                toolNumber = str(tc.ToolNumber)
+        self.groups = {}
+        index = 1
+        for obj in PathUtils.getOperations(self.obj, True):
+            parentName = self.getParent(obj)
+            item = QtGui.QTreeWidgetItem([obj.Label])
+            item.setData(self.DataObject, 0, obj)
+            item.setText(col_label, obj.Label)
+            if hasattr(obj, "Group"):
+                self.groups[obj.Name] = item
+            if parentName == self.obj.Operations.Name:
+                tree.addTopLevelItem(item)
             else:
-                tcLabel = "???"
-                toolNumber = ""
-            item.setText(col_tool_number, toolNumber)
-            item.setTextAlignment(col_tool_number, QtCore.Qt.AlignCenter)
-            item.setText(col_tc, tcLabel)
-            coolant = PathUtil.coolantModeForOp(op)
-            coolantString = coolant if coolant != "None" else ""
-            item.setText(col_coolant, coolantString)
-            item.setText(col_time, getattr(op, "CycleTime", ""))
+                parentItem = self.groups.get(parentName)
+                parentItem.addChild(item)
+                parentItem.setExpanded(True)
+
+            if hasattr(obj, "Path"):
+                item.setText(col_num, str(index))
+                if tc := PathUtil.toolControllerForOp(obj):
+                    tcLabel = tc.Label
+                    toolNumber = str(tc.ToolNumber)
+                else:
+                    tcLabel = "???"
+                    toolNumber = ""
+                item.setText(col_tool_number, toolNumber)
+                item.setTextAlignment(col_tool_number, QtCore.Qt.AlignCenter)
+                item.setText(col_tc, tcLabel)
+                coolant = PathUtil.coolantModeForOp(obj)
+                coolantString = coolant if coolant != "None" else ""
+                item.setText(col_coolant, coolantString)
+                item.setText(col_time, getattr(obj, "CycleTime", ""))
+                index += 1
 
         for column in range(tree.columnCount()):
             tree.resizeColumnToContents(column)
@@ -1243,10 +1275,14 @@ class TaskPanel:
             self.form.operationMove.setEnabled(True)
             selected_item = tree.currentItem()
             if selected_item:
-                row = tree.indexOfTopLevelItem(selected_item)
-                # row = tree.currentItem()
-                self.form.operationUp.setEnabled(row > 0)
-                self.form.operationDown.setEnabled(row < tree.topLevelItemCount() - 1)
+                if selected_item.parent() is None:  # Top-level item
+                    i = tree.indexOfTopLevelItem(selected_item)
+                    maxi = tree.topLevelItemCount() - 1
+                else:
+                    i = selected_item.parent().indexOfChild(selected_item)
+                    maxi = selected_item.parent().childCount() - 1
+                self.form.operationUp.setEnabled(i > 0)
+                self.form.operationDown.setEnabled(i < maxi)
         else:
             self.form.operationModify.setEnabled(False)
             self.form.operationMove.setEnabled(False)
@@ -1263,6 +1299,8 @@ class TaskPanel:
                 and hasattr(obj.ViewObject.Proxy, "onDelete")
             ):
                 obj.ViewObject.Proxy.onDelete(obj.ViewObject, None)
+            if hasattr(obj, "removeObjectsFromDocument"):
+                obj.removeObjectsFromDocument()
             FreeCAD.ActiveDocument.removeObject(obj.Name)
         self.setFields()
 
@@ -1270,22 +1308,42 @@ class TaskPanel:
         self.objectDelete(self.form.operationsList)
 
     def operationMoveUp(self):
-        selected_item = self.form.operationsList.currentItem()
-        row = self.form.operationsList.indexOfTopLevelItem(selected_item)
-        if row > 0:
-            item = self.form.operationsList.takeTopLevelItem(row)
-            self.form.operationsList.insertTopLevelItem(row - 1, item)
-            self.form.operationsList.setCurrentItem(item)
-            self.getFields()
+        tree = self.form.operationsList
+        selected_item = tree.currentItem()
+        parent = selected_item.parent()
+        if parent is None:  # top-level item
+            i = tree.indexOfTopLevelItem(selected_item)
+            if i > 0:
+                item = tree.takeTopLevelItem(i)
+                tree.insertTopLevelItem(i - 1, item)
+                tree.setCurrentItem(item)
+                self.getFields()
+        else:
+            i = selected_item.parent().indexOfChild(selected_item)
+            if i > 0:
+                item = parent.takeChild(i)
+                parent.insertChild(i - 1, item)
+                tree.setCurrentItem(item)
+                self.getFields()
 
     def operationMoveDown(self):
-        selected_item = self.form.operationsList.currentItem()
-        row = self.form.operationsList.indexOfTopLevelItem(selected_item)
-        if row < self.form.operationsList.topLevelItemCount() - 1:
-            item = self.form.operationsList.takeTopLevelItem(row)
-            self.form.operationsList.insertTopLevelItem(row + 1, item)
-            self.form.operationsList.setCurrentItem(item)
-            self.getFields()
+        tree = self.form.operationsList
+        selected_item = tree.currentItem()
+        parent = selected_item.parent()
+        if parent is None:  # Top-level item
+            i = tree.indexOfTopLevelItem(selected_item)
+            if i < tree.topLevelItemCount() - 1:
+                item = tree.takeTopLevelItem(i)
+                tree.insertTopLevelItem(i + 1, item)
+                tree.setCurrentItem(item)
+                self.getFields()
+        else:
+            i = selected_item.parent().indexOfChild(selected_item)
+            if i < parent.childCount():
+                item = parent.takeChild(i)
+                parent.insertChild(i + 1, item)
+                tree.setCurrentItem(item)
+                self.getFields()
 
     def toolControllerSelect(self):
         def canDeleteTC(tc):

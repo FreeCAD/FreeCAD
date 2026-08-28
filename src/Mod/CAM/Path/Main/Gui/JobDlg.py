@@ -192,6 +192,7 @@ class JobCreate:
         self.dialog.setWindowTitle(title)
 
     def setupModel(self, job=None):
+        from PathScripts.PathUtils import jobInstances
 
         if job:
             preSelected = Counter(
@@ -252,7 +253,7 @@ class JobCreate:
                     if itemSelected:
                         expand2Ds = True
 
-        for j in sorted(PathJob.Instances(), key=lambda x: x.Label):
+        for j in sorted(jobInstances(), key=lambda x: x.Label):
             if j != job:
                 item0 = QtGui.QStandardItem()
                 item1 = QtGui.QStandardItem()
