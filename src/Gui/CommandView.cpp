@@ -3104,13 +3104,12 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     if (!vpd) {
         return;
     }
-    Selection().selStackPush();
+    SelectionHistoryBatcher historyBatch;
     Selection().clearCompleteSelection();
     const auto trees = getMainWindow()->findChildren<TreeWidget*>();
     for (auto tree : trees) {
         tree->selectAllInstances(*vpd);
     }
-    Selection().selStackPush();
 }
 
 
@@ -3216,9 +3215,7 @@ StdCmdSelBack::StdCmdSelBack()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Back");
-    static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Restores the previous tree view selection. "
-                     "Only works if tree RecordSelection mode is switched on.")
+    static std::string toolTip = std::string("<p>") + QT_TR_NOOP("Restores the previous selection.")
         + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelBack";
@@ -3236,7 +3233,8 @@ void StdCmdSelBack::activated(int iMsg)
 
 bool StdCmdSelBack::isActive()
 {
-    return Selection().selStackBackSize() > 1;
+    auto& selection = Selection();
+    return selection.selStackBackSize() > (selection.hasSelection() ? 1 : 0);
 }
 
 //===========================================================================
@@ -3250,9 +3248,7 @@ StdCmdSelForward::StdCmdSelForward()
 {
     sGroup = "View";
     sMenuText = QT_TR_NOOP("Selection &Forward");
-    static std::string toolTip = std::string("<p>")
-        + QT_TR_NOOP("Restores the next tree view selection. "
-                     "Only works if tree RecordSelection mode is switched on.")
+    static std::string toolTip = std::string("<p>") + QT_TR_NOOP("Restores the next selection.")
         + "</p>";
     sToolTipText = toolTip.c_str();
     sWhatsThis = "Std_SelForward";
@@ -3455,25 +3451,6 @@ StdTreePreSelection::StdTreePreSelection()
 }
 
 //===========================================================================
-// Std_TreeRecordSelection
-//===========================================================================
-TREEVIEW_CMD_DEF(RecordSelection)
-
-StdTreeRecordSelection::StdTreeRecordSelection()
-    : Command("Std_TreeRecordSelection")
-{
-    sGroup = "TreeView";
-    sMenuText = QT_TR_NOOP("Record Selection");
-    sToolTipText
-        = QT_TR_NOOP("Records the selection in the tree view in order to go back/forward using the navigation buttons");
-    sStatusTip = sToolTipText;
-    sWhatsThis = "Std_TreeRecordSelection";
-    sPixmap = "tree-rec-sel";
-    sAccel = "T,5";
-    eType = 0;
-}
-
-//===========================================================================
 // Std_TreeDrag
 //===========================================================================
 DEF_STD_CMD(StdTreeDrag)
@@ -3526,7 +3503,6 @@ public:
         addCommand(new StdTreeSyncSelection());
         addCommand(new StdTreeSyncPlacement());
         addCommand(new StdTreePreSelection());
-        addCommand(new StdTreeRecordSelection());
 
         addCommand();
 
@@ -3538,11 +3514,6 @@ public:
 
         addCommand(new StdTreeDrag(), !cmds.empty());
         addCommand(new StdTreeSelection(), !cmds.empty());
-
-        addCommand();
-
-        addCommand(new StdCmdSelBack());
-        addCommand(new StdCmdSelForward());
     }
     const char* className() const override
     {
@@ -4321,6 +4292,8 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdDemoMode());
     rcCmdMgr.addCommand(new StdCmdToggleNavigation());
     rcCmdMgr.addCommand(new StdCmdAxisCross());
+    rcCmdMgr.addCommand(new StdCmdSelBack());
+    rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
     rcCmdMgr.addCommand(new StdCmdDockOverlay());

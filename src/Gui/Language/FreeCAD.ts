@@ -4365,11 +4365,6 @@ A larger value makes it easier to select elements, but may prevent selection of 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PreferencePages/DlgSettingsSelection.ui" line="221"/>
-        <source>Record selection in tree view in order to go back/forward using navigation button</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../PreferencePages/DlgSettingsSelection.ui" line="234"/>
         <source>Add checkboxes for selection in document tree</source>
         <translation type="unfinished"></translation>
@@ -13842,7 +13837,7 @@ Proceed?</source>
     </message>
     <message>
         <location filename="../CommandView.cpp" line="3243"/>
-        <source>Restores the previous tree view selection. Only works if tree RecordSelection mode is switched on.</source>
+        <source>Restores the previous selection.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13855,7 +13850,7 @@ Proceed?</source>
     </message>
     <message>
         <location filename="../CommandView.cpp" line="3277"/>
-        <source>Restores the next tree view selection. Only works if tree RecordSelection mode is switched on.</source>
+        <source>Restores the next selection.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -13921,19 +13916,6 @@ Proceed?</source>
     <message>
         <location filename="../CommandView.cpp" line="3439"/>
         <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StdTreeRecordSelection</name>
-    <message>
-        <location filename="../CommandView.cpp" line="3474"/>
-        <source>&amp;5 Record Selection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandView.cpp" line="3475"/>
-        <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

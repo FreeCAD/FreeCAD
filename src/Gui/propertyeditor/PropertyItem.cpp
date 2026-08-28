@@ -4668,7 +4668,7 @@ void LinkSelection::select()
         QMessageBox::critical(getMainWindow(), tr("Error"), tr("Object not found"));
         return;
     }
-    Gui::Selection().selStackPush();
+    Gui::SelectionHistoryBatcher historyBatch;
     Gui::Selection().clearSelection();
     Gui::Selection().addSelection(
         link.getDocumentName().c_str(),

@@ -310,6 +310,8 @@ void Gui::applyBoxSelection(
         return;
     }
 
+    Gui::SelectionHistoryBatcher historyBatch;
+
     if (!additive) {
         Gui::Selection().clearSelection(doc->getName());
     }

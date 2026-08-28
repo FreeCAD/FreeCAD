@@ -50,7 +50,6 @@ void DlgSettingsSelection::saveSettings()
     ui->checkBoxAutoSwitch->onSave();
     ui->checkBoxAutoExpand->onSave();
     ui->checkBoxPreselect->onSave();
-    ui->checkBoxRecord->onSave();
     ui->checkBoxSelectionCheckBoxes->onSave();
 }
 
@@ -64,7 +63,6 @@ void DlgSettingsSelection::loadSettings()
     ui->checkBoxAutoSwitch->onRestore();
     ui->checkBoxAutoExpand->onRestore();
     ui->checkBoxPreselect->onRestore();
-    ui->checkBoxRecord->onRestore();
     ui->checkBoxSelectionCheckBoxes->onRestore();
 }
 
