@@ -316,6 +316,7 @@ class BuildingPart(ArchIFC.IfcProduct):
                     "A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files",
                 ),
                 locked=True,
+                hidden=True,
             )
 
     def onDocumentRestored(self, obj):
