@@ -486,6 +486,7 @@ class ProcessSelectedFaces:
         self.JOB = JOB
         self.obj = obj
         self.profileEdges = "None"
+        self.selectedWires = []
 
         if hasattr(obj, "ProfileEdges"):
             self.profileEdges = obj.ProfileEdges
@@ -545,7 +546,7 @@ class ProcessSelectedFaces:
             Path.Log.debug(" -obj.Base exists. Pre-processing for selected faces.")
 
             hasFace, hasVoid = self._identifyFacesAndVoids(FACES, VOIDS)  # modifies FACES and VOIDS
-            hasGeometry = True if hasFace or hasVoid else False
+            hasGeometry = True if hasFace or hasVoid or len(self.selectedWires) > 0 else False
 
             # Cycle through each base model, processing faces for each
             for m in range(0, lenGRP):
@@ -554,7 +555,7 @@ class ProcessSelectedFaces:
                 fShapes[m] = mFS
                 vShapes[m] = mVS
                 self.profileShapes[m] = mPS
-                if mFS or mVS:
+                if mFS or mVS or len(self.selectedWires) > 0:
                     proceed = True
             if hasGeometry and not proceed:
                 return False
@@ -673,6 +674,9 @@ class ProcessSelectedFaces:
                     V[m].append((shape, faceIdx))
                     Path.Log.debug(".. Avoiding {}".format(sub))
                     hasVoid = True
+            elif isinstance(shape, (Part.Wire, Part.Edge)):
+                self.selectedWires.append(shape)
+                Path.Log.debug(".. Curve {}".format(sub))
         return (hasFace, hasVoid)
 
     def _preProcessFacesAndVoids(self, base, FCS, VDS):
@@ -928,7 +932,9 @@ class ProcessSelectedFaces:
     def _calculateOffsetValue(self, isHole, isVoid=False):
         """_calculateOffsetValue(self.obj, isHole, isVoid) ... internal function.
         Calculate the offset for the Path.Area() function."""
-        self.JOB = PathUtils.findParentJob(self.obj)
+        parentJob = PathUtils.findParentJob(self.obj)
+        if parentJob is not None:
+            self.JOB = parentJob
         # We need to offset by at least our linear tessellation deflection
         # (default GeometryTolerance / 4) to avoid false retracts at the
         # boundaries.

@@ -25,6 +25,7 @@ import Part
 import FreeCAD
 import unittest
 import CAMTests.PathTestUtils as PathTestUtils
+import PathScripts.PathUtils as PathUtils
 
 Path.Log.setLevel(Path.Log.Level.INFO, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -355,4 +356,61 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
         polylines = generate_curve_pattern([edge], sample_interval=1.0)
         self.assertEqual(len(polylines), 1)
         self.assertGreaterEqual(len(polylines[0]), 2)
+
+    def test_preprocess_wires_and_edges(self):
+        """Test extraction of Edge and Wire subobjects from Base geometry in ProcessSelectedFaces."""
+        from Path.Op.SurfaceSupport import ProcessSelectedFaces
+
+        edge1 = Part.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 0, 0))
+        edge2 = Part.makeLine(FreeCAD.Vector(10, 0, 0), FreeCAD.Vector(10, 10, 0))
+        wire = Part.Wire([edge1, edge2])
+        box_solid = Part.makeBox(20, 20, 10)
+
+        mock_model = MockFeature(box_solid, label="ModelFeature")
+        # Mock Base: (mock_model, ["Edge1", "Wire1"])
+        class MockValue:
+            def __init__(self, val):
+                self.Value = val
+
+        class MockModelGroup:
+            def __init__(self, items):
+                self.Group = items
+
+        class MockJob:
+            def __init__(self, models):
+                self.Model = MockModelGroup(models)
+                self.Stock = None
+                self.GeometryTolerance = MockValue(0.01)
+
+            def isDerivedFrom(self, type_name):
+                return type_name == "Path::FeaturePython" or type_name == "Path::Job"
+
+        class MockOp:
+            def __init__(self, base, job):
+                self.Base = base
+                self.AvoidLastX_Faces = 0
+                self.ScanType = "Planar"
+                self.BoundBox = "BaseBoundBox"
+                self.HandleMultipleFeatures = "Collectively"
+                self.InternalFeaturesCut = False
+                self.LinearDeflection = MockValue(0.001)
+                self.BoundaryAdjustment = MockValue(0.0)
+                self.BoundaryEnforcement = False
+                self.InList = [job]
+
+        job = MockJob([mock_model])
+        op = MockOp([(mock_model, ["Edge1", "Wire1"])], job)
+
+        psf = ProcessSelectedFaces(job, op)
+        psf.radius = 3.0
+        psf.depthParams = PathUtils.depth_params(10.0, 5.0, 0.0, 1.0, 0.0, -5.0)
+
+        # Check preProcessModel
+        result = psf.preProcessModel("Op.Surface")
+        self.assertIsNotNone(result)
+        self.assertTrue(hasattr(psf, "selectedWires"))
+        self.assertEqual(len(psf.selectedWires), 2)
+        # Verify selectedWires contains Wire/Edge objects
+        for item in psf.selectedWires:
+            self.assertTrue(isinstance(item, (Part.Wire, Part.Edge)))
 
