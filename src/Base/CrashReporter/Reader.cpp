@@ -106,6 +106,12 @@ std::string stripSourceRoot(const std::string& path)
 
 /**
  * Trim the "+ offset" that a symbol-table lookup appends to a function name.
+ *
+ * This is purely heuristic: the "<name> + <decimal>" form is an implementation detail of cpptrace's
+ * symbol-table resolution, and was observed in its Mach-O backend and is not part of its documented
+ * API. If cpptrace ever changes the format, this stops matching and the offsets reappear in the
+ * symbols; the `realCrashCapturesUsableFrames` test is designed to catch that. Note that requiring
+ * all digits after the " + " keeps demangled template arguments such as "thinger<1 + 2>" intact.
  */
 std::string stripSymbolOffset(const std::string& symbol)
 {
