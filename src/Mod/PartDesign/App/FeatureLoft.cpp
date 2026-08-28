@@ -194,6 +194,21 @@ App::DocumentObjectExecReturn* Loft::execute()
             );
         }
 
+        const auto& firstSection = multisections.front();
+        const auto& profileSubelements = Profile.getSubValues();
+        const auto isWholeObjectReference = [](const std::vector<std::string>& subelements) {
+            return subelements.empty() || (subelements.size() == 1 && subelements.front().empty());
+        };
+        const bool referencesSameSubelements = profileSubelements == firstSection.second
+            || (isWholeObjectReference(profileSubelements)
+                && isWholeObjectReference(firstSection.second));
+        if (Profile.getValue() == firstSection.first && referencesSameSubelements) {
+            const std::string label = Profile.getValue()->Label.getStrValue();
+            return new App::DocumentObjectExecReturn(
+                "'" + label + "' cannot be used as both the profile and the first section"
+            );
+        }
+
         std::vector<std::vector<TopoShape>> wiresections;
         wiresections.reserve(wires.size());
         for (auto& wire : wires) {
@@ -206,6 +221,13 @@ App::DocumentObjectExecReturn* Loft::execute()
                  getSectionShape("Section", subSet.first, subSet.second, wiresections.size())) {
                 wiresections[i++].push_back(s);
             }
+        }
+
+        std::vector<std::string> sectionLabels;
+        sectionLabels.reserve(multisections.size() + 1);
+        sectionLabels.push_back(Profile.getValue()->Label.getStrValue());
+        for (const auto& section : multisections) {
+            sectionLabels.push_back(section.first->Label.getStrValue());
         }
 
         bool closed = Closed.getValue();
@@ -223,12 +245,25 @@ App::DocumentObjectExecReturn* Loft::execute()
             for (auto& wire : sectionWires) {
                 wire.move(invObjLoc);
             }
-            shells.push_back(TopoShape(0, hasher).makeElementLoft(
-                sectionWires,
-                Part::IsSolid::notSolid,
-                Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
-                closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
-            ));
+            try {
+                shells.push_back(TopoShape(0, hasher).makeElementLoft(
+                    sectionWires,
+                    Part::IsSolid::notSolid,
+                    Ruled.getValue() ? Part::IsRuled::ruled : Part::IsRuled::notRuled,
+                    closed ? Part::IsClosed::closed : Part::IsClosed::notClosed
+                ));
+            }
+            catch (const Part::LoftProfileSeparationException& e) {
+                const auto first = e.getFirstProfile();
+                const auto second = e.getSecondProfile();
+                if (second < sectionLabels.size()) {
+                    return new App::DocumentObjectExecReturn(
+                        "'" + sectionLabels[first] + "' and '" + sectionLabels[second]
+                        + "' do not have sufficient separation"
+                    );
+                }
+                throw;
+            }
         }
 
         // build the top and bottom face, sew the shell and build the final solid

@@ -58,6 +58,64 @@ class TestLoft(unittest.TestCase):
         self.Doc.recompute()
         self.assertAlmostEqual(self.AdditiveLoft.Shape.Volume, 1)
 
+    def testDuplicateProfileReportsItsLabel(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+
+        profile = body.newObject("Sketcher::SketchObject", "Profile")
+        profile.Label = "Profile A"
+        profile.addGeometry(
+            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
+            False,
+        )
+
+        section = body.newObject("Sketcher::SketchObject", "Section")
+        section.Label = "Section B"
+        section.Placement.Base.z = 20
+        section.addGeometry(
+            Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 8),
+            False,
+        )
+
+        loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
+        loft.Profile = profile
+        loft.Sections = [profile, section]
+        self.Doc.recompute()
+
+        self.assertFalse(loft.isValid())
+        self.assertIn(
+            "'Profile A' cannot be used as both the profile and the first section",
+            loft.getStatusString(),
+        )
+
+    def testUnseparatedSectionsReportTheirLabels(self):
+        body = self.Doc.addObject("PartDesign::Body", "Body")
+
+        sketches = []
+        for name, label, z in (
+            ("Profile", "Profile A", 0),
+            ("SectionB", "Section B", 20),
+            ("SectionC", "Section C", 20),
+        ):
+            sketch = body.newObject("Sketcher::SketchObject", name)
+            sketch.Label = label
+            sketch.Placement.Base.z = z
+            sketch.addGeometry(
+                Part.Circle(Base.Vector(), Base.Vector(0, 0, 1), 10),
+                False,
+            )
+            sketches.append(sketch)
+
+        loft = body.newObject("PartDesign::AdditiveLoft", "AdditiveLoft")
+        loft.Profile = sketches[0]
+        loft.Sections = sketches[1:]
+        self.Doc.recompute()
+
+        self.assertFalse(loft.isValid())
+        self.assertIn(
+            "'Section B' and 'Section C' do not have sufficient separation",
+            loft.getStatusString(),
+        )
+
     def testSimpleSubtractiveLoftCase(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.PadSketch = self.Doc.addObject("Sketcher::SketchObject", "SketchPad")

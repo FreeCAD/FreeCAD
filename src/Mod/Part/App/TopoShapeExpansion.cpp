@@ -4527,11 +4527,11 @@ TopoShape& TopoShape::makeElementLoft(
         FC_THROWM(Base::CADKernelError, "Need at least two vertices, edges or wires to create loft face");
     }
 
-    int i = 0;
+    std::size_t i = 0;
     for (auto& sh : profiles) {
         if (i > 0) {
             if (!checkProfiles(sh, profiles[i - 1])) {
-                FC_THROWM(Base::CADKernelError, "Segments of a loft do not have sufficient separation");
+                throw LoftProfileSeparationException(i - 1, i);
             }
         }
         const auto& shape = sh.getShape();
