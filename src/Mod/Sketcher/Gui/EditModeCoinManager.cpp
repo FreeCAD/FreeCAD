@@ -1117,6 +1117,22 @@ void EditModeCoinManager::drawEdit(
     editModeScenegraphNodes.EditCurvesMaterials->diffuseColor.finishEditing();
 }
 
+void EditModeCoinManager::updateEditCurveAppearance(GeometryCreationMode mode)
+{
+    setEditDrawStyle(mode);
+
+    auto& colors = editModeScenegraphNodes.EditCurvesMaterials->diffuseColor;
+    SbColor* values = colors.startEditing();
+    const SbColor& color = mode == GeometryCreationMode::Normal ? drawingParameters.CurveColor
+                                                                : drawingParameters.CurveDraftColor;
+
+    for (int i = 0; i < colors.getNum(); ++i) {
+        values[i] = color;
+    }
+
+    colors.finishEditing();
+}
+
 void EditModeCoinManager::drawLineExtensionAutoConstraintHint(
     const std::vector<Base::Vector2d>& HintCurve
 )
