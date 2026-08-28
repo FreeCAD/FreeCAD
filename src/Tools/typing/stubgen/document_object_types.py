@@ -32,6 +32,7 @@ def _public_python_type(public_name: str) -> PublicPythonType | None:
 def direct_python_types(
     classes: Sequence[BindingClass],
     hierarchy: TypeHierarchy | None = None,
+    type_ids: set[str] | None = None,
 ) -> dict[str, PublicPythonType]:
     """Normalize existing binding-class public-name discovery for TypeIds."""
 
@@ -43,6 +44,8 @@ def direct_python_types(
             if (target := _public_python_type(public_name)) is not None
         ]
         for cpp_name in klass.cpp_type_names:
+            if type_ids is not None and cpp_name not in type_ids:
+                continue
             if hierarchy is not None and not hierarchy.is_derived_from(
                 cpp_name,
                 "App::DocumentObject",

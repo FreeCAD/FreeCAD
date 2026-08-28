@@ -132,6 +132,30 @@ class DocumentObjectTypeTests(unittest.TestCase):
             self.assertTrue(freecad_stub.exists())
             source = freecad_stub.read_text(encoding="utf-8")
             tree = ast.parse(source)
+            freecad_gui_stub = out_dir / "stubs" / "FreeCADGui" / "__init__.pyi"
+            self.assertTrue(freecad_gui_stub.exists())
+            freecad_gui_source = freecad_gui_stub.read_text(encoding="utf-8")
+            freecad_gui_tree = ast.parse(freecad_gui_source)
+            part_stub = out_dir / "stubs" / "Part" / "__init__.pyi"
+            self.assertTrue(part_stub.exists())
+            part_source = part_stub.read_text(encoding="utf-8")
+            part_tree = ast.parse(part_source)
+            sketcher_stub = out_dir / "stubs" / "Sketcher" / "__init__.pyi"
+            self.assertTrue(sketcher_stub.exists())
+            sketcher_source = sketcher_stub.read_text(encoding="utf-8")
+            sketcher_tree = ast.parse(sketcher_source)
+            mesh_stub = out_dir / "stubs" / "Mesh" / "__init__.pyi"
+            self.assertTrue(mesh_stub.exists())
+            mesh_source = mesh_stub.read_text(encoding="utf-8")
+            mesh_tree = ast.parse(mesh_source)
+            cam_stub = out_dir / "stubs" / "CAM" / "__init__.pyi"
+            self.assertTrue(cam_stub.exists())
+            cam_source = cam_stub.read_text(encoding="utf-8")
+            cam_tree = ast.parse(cam_source)
+            spreadsheet_stub = out_dir / "stubs" / "Spreadsheet" / "__init__.pyi"
+            self.assertTrue(spreadsheet_stub.exists())
+            spreadsheet_source = spreadsheet_stub.read_text(encoding="utf-8")
+            spreadsheet_tree = ast.parse(spreadsheet_source)
             units_stub = out_dir / "stubs" / "FreeCAD" / "Units.pyi"
             self.assertTrue(units_stub.exists())
             units_source = units_stub.read_text(encoding="utf-8")
@@ -177,6 +201,172 @@ class DocumentObjectTypeTests(unittest.TestCase):
         self.assertEqual("_Part.Feature", overload_returns["Part::FeaturePython"])
         self.assertEqual("_Sketcher.SketchObject", overload_returns["Sketcher::SketchObject"])
         self.assertNotIn("Part::Primitive", overload_returns)
+
+        geo_feature = next(
+            node
+            for node in tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "GeoFeature"
+        )
+        placement_getter = next(
+            node
+            for node in geo_feature.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Placement"
+        )
+        placement_setter = next(
+            node
+            for node in geo_feature.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name == "Placement"
+            and any(
+                isinstance(decorator, ast.Attribute) and decorator.attr == "setter"
+                for decorator in node.decorator_list
+            )
+        )
+        self.assertEqual("Base.Placement", ast.unparse(placement_getter.returns))
+        self.assertEqual(
+            "Base.Placement | Base.Matrix",
+            ast.unparse(placement_setter.args.args[1].annotation),
+        )
+
+        document_object = next(
+            node
+            for node in tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "DocumentObject"
+        )
+        visibility = next(
+            node
+            for node in document_object.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Visibility"
+        )
+        self.assertEqual("bool", ast.unparse(visibility.returns))
+
+        view_provider = next(
+            node
+            for node in freecad_gui_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "ViewProviderDocumentObject"
+        )
+        view_visibility = next(
+            node
+            for node in view_provider.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Visibility"
+        )
+        self.assertEqual("bool", ast.unparse(view_visibility.returns))
+
+        label = next(
+            node
+            for node in document_object.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name == "Label"
+            and any(
+                isinstance(decorator, ast.Attribute) and decorator.attr == "setter"
+                for decorator in node.decorator_list
+            )
+        )
+        self.assertEqual("str", ast.unparse(label.args.args[1].annotation))
+
+        part = next(
+            node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "Part"
+        )
+        color = next(
+            node for node in part.body if isinstance(node, ast.FunctionDef) and node.name == "Color"
+        )
+        self.assertEqual("tuple[float, float, float, float]", ast.unparse(color.returns))
+
+        feature = next(
+            node
+            for node in part_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "Feature"
+        )
+        shape = next(
+            node
+            for node in feature.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Shape"
+        )
+        shape_material = next(
+            node
+            for node in feature.body
+            if isinstance(node, ast.FunctionDef) and node.name == "ShapeMaterial"
+        )
+        self.assertEqual("Shape", ast.unparse(shape.returns))
+        self.assertEqual("Materials.Material", ast.unparse(shape_material.returns))
+        self.assertIn("import Materials as Materials", part_source)
+
+        sketch_object = next(
+            node
+            for node in sketcher_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "SketchObject"
+        )
+        geometry = next(
+            node
+            for node in sketch_object.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Geometry"
+        )
+        constraints = next(
+            node
+            for node in sketch_object.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Constraints"
+        )
+        self.assertEqual("list[Part.Geometry]", ast.unparse(geometry.returns))
+        self.assertEqual("list[Constraint]", ast.unparse(constraints.returns))
+
+        mesh_feature = next(
+            node
+            for node in mesh_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "Feature"
+        )
+        mesh_property = next(
+            node
+            for node in mesh_feature.body
+            if isinstance(node, ast.FunctionDef) and node.name == "Mesh"
+        )
+        self.assertEqual("Mesh", ast.unparse(mesh_property.returns))
+
+        feature_area = next(
+            node
+            for node in cam_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "FeatureArea"
+        )
+        work_plane = next(
+            node
+            for node in feature_area.body
+            if isinstance(node, ast.FunctionDef) and node.name == "WorkPlane"
+        )
+        self.assertEqual("Part.Shape", ast.unparse(work_plane.returns))
+
+        sheet = next(
+            node
+            for node in spreadsheet_tree.body
+            if isinstance(node, ast.ClassDef) and node.name == "Sheet"
+        )
+        cells = next(
+            node
+            for node in sheet.body
+            if isinstance(node, ast.FunctionDef) and node.name == "cells"
+        )
+        column_widths = next(
+            node
+            for node in sheet.body
+            if isinstance(node, ast.FunctionDef) and node.name == "columnWidths"
+        )
+        row_heights = next(
+            node
+            for node in sheet.body
+            if isinstance(node, ast.FunctionDef) and node.name == "rowHeights"
+        )
+        self.assertEqual("PropertySheet", ast.unparse(cells.returns))
+        self.assertEqual("PropertyColumnWidths", ast.unparse(column_widths.returns))
+        self.assertEqual("PropertyRowHeights", ast.unparse(row_heights.returns))
+        self.assertFalse(
+            any(
+                isinstance(node, ast.FunctionDef)
+                and node.name == "columnWidths"
+                and any(
+                    isinstance(decorator, ast.Attribute) and decorator.attr == "setter"
+                    for decorator in node.decorator_list
+                )
+                for node in sheet.body
+            )
+        )
 
     def test_generated_overloads_keep_generic_fallback_last(self):
         source = """\

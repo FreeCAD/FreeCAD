@@ -21,10 +21,6 @@ class DocumentObject(ExtensionContainer):
     Licence: LGPL
     """
 
-    if TYPE_CHECKING:
-        Label: str = ...
-        Label2: str = ...
-
     OutListProp: Final[List[DepEdge]] = []
     """A list of all objects which link to this object with properties."""
 

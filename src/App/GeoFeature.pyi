@@ -5,7 +5,7 @@ from __future__ import annotations
 from DocumentObject import DocumentObject
 from Base.Metadata import deprecated
 from Base.Placement import Placement
-from typing import TYPE_CHECKING, Any, Final, Optional
+from typing import Any, Final, Optional
 
 
 class GeoFeature(DocumentObject):
@@ -18,9 +18,6 @@ class GeoFeature(DocumentObject):
     the main geometric property in general form, without reference
     to any particular property name.
     """
-
-    if TYPE_CHECKING:
-        Placement: Placement = ...
 
     ElementMapVersion: Final[str] = ""
     """Element map version"""

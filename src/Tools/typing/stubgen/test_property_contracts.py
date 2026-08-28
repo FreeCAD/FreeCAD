@@ -22,6 +22,7 @@ from stubgen.property_hierarchy import (  # noqa: E402
     discover_conversion_overrides,
     discover_property_hierarchy,
 )
+from stubgen.type_hierarchy import discover_type_hierarchy  # noqa: E402
 
 ROOT_DIR = Path(__file__).resolve().parents[4]
 
@@ -54,6 +55,7 @@ class PropertyContractsTests(unittest.TestCase):
     def test_cpp_inheritance_resolves_common_descendants(self):
         hierarchy = discover_property_hierarchy(ROOT_DIR)
         catalog = load_property_catalog(ROOT_DIR)
+        full_hierarchy = discover_type_hierarchy(ROOT_DIR)
 
         self.assertEqual(
             "App::Property",
@@ -73,6 +75,27 @@ class PropertyContractsTests(unittest.TestCase):
         self.assertIn("tuple[float, float, float]", direction.setter)
         self.assertEqual(hidden_link.getter, "DocumentObject | None")
         self.assertEqual(hidden_link.setter, "DocumentObject | None")
+
+        part_shape = property_contract("Part::PropertyPartShape", full_hierarchy, catalog)
+        material = property_contract("Materials::PropertyMaterial", full_hierarchy, catalog)
+        file_included = property_contract("App::PropertyFileIncluded", full_hierarchy, catalog)
+        xlink_list = property_contract("App::PropertyXLinkList", full_hierarchy, catalog)
+        expression_engine = property_contract(
+            "App::PropertyExpressionEngine", full_hierarchy, catalog
+        )
+        aliases = {alias.name: alias.expression for alias in catalog.aliases}
+        self.assertEqual("Part.Shape", part_shape.getter)
+        self.assertEqual("Materials.Material", material.getter)
+        self.assertEqual("str", file_included.getter)
+        self.assertEqual(
+            "_FileInput | dict[str, str] | tuple[str | bytes, str | bytes]",
+            file_included.setter,
+        )
+        self.assertIn("IOBase", aliases["_FileInput"])
+        self.assertIn("_DocumentObjectListInput", xlink_list.setter)
+        self.assertIn("_DocumentObjectSubLinkList", xlink_list.getter)
+        self.assertEqual("list[tuple[str, str | None]]", expression_engine.getter)
+        self.assertIsNone(expression_engine.setter)
 
     def test_core_link_getter_aliases_preserve_nullability(self):
         catalog = load_property_catalog(ROOT_DIR)
@@ -162,7 +185,7 @@ class PropertyContractsTests(unittest.TestCase):
             if isinstance(node, (ast.Import, ast.ImportFrom))
             for alias in node.names
         }
-        self.assertTrue({"Base", "Sequence", "TypeAlias"}.issubset(imported_names))
+        self.assertTrue({"Base", "IOBase", "Sequence", "TypeAlias"}.issubset(imported_names))
 
     def test_core_module_no_longer_manually_defines_catalog_aliases(self):
         catalog = load_property_catalog(ROOT_DIR)

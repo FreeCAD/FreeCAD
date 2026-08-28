@@ -74,6 +74,28 @@ merge. C++ remains authoritative for inheritance and override boundaries; the
 adjacent input is authoritative for the Python conversion shape at those
 boundaries. Focused tests should accompany each new conversion family.
 
+### C++-Registered Properties
+
+Properties registered through C++ `ADD_PROPERTY(...)` calls are exposed by
+the Python wrapper's dynamic property lookup rather than by direct PyCXX
+binding members. `stubgen/cpp_properties.py` discovers those registrations,
+matches them with the C++ property members, resolves their Python conversion
+contracts, and adds the resulting getter/setter pairs to the generated public
+class stubs. The source-adjacent binding stubs therefore stay focused on
+directly bound members; a manually declared dynamic property should be removed
+once this pipeline covers it.
+
+Property conversion metadata remains source-adjacent to the owning module in
+`PropertyPythonContracts.pyi` files. The App catalog supplies shared
+conversion aliases, while module catalogs describe workbench-specific wrapper
+types such as Part shapes, Mesh objects, and Sketcher constraints. Properties
+whose owner has no public binding, or whose conversion depends on optional
+external support such as VTK's Python wrappers, are intentionally left out
+instead of being guessed. Generation reports discovered and emitted property
+counts together with categorized diagnostics and a few source examples for
+skipped cases. Existing declarations are treated as conflicts rather than
+silently masking generated properties.
+
 ### Python Bootstrap Exports
 
 The Python-defined bootstrap API is kept beside the compatibility-sensitive

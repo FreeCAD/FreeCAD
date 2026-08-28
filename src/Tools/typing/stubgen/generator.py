@@ -19,12 +19,21 @@ of growing this file again.
 from __future__ import annotations
 
 from collections import Counter
+from dataclasses import dataclass
 from pathlib import Path
 import shutil
 
 from .class_merge import (
     append_class_stubs,
     validate_public_class_aliases,
+)
+from .cpp_properties import (
+    CppPropertyDiagnostic,
+    CppPropertyReport,
+    TypedCppProperty,
+    add_cpp_properties,
+    discover_cpp_properties,
+    typed_cpp_properties,
 )
 from .module_merge import (
     copy_module_support_stubs,
@@ -57,6 +66,14 @@ from .property_contracts import (
 from .property_hierarchy import property_hierarchy_from
 from .render import type_stub_lines, write_stub_file
 from .type_hierarchy import TypeHierarchy, discover_type_hierarchy
+
+
+@dataclass(frozen=True)
+class GenerationResult:
+    """Results from generating the public stub tree."""
+
+    overlay_count: int
+    cpp_property_report: CppPropertyReport
 
 
 def write_public_module_stubs(
@@ -141,6 +158,44 @@ def append_property_aliases(
     merged = merge_module_support_nodes(original, render_property_aliases(catalog))
     if merged != original:
         target.write_text(merged, encoding="utf-8")
+
+
+def append_cpp_properties(
+    out_dir: Path,
+    module_names: set[str],
+    root: Path,
+    classes: list[BindingClass],
+    hierarchy: TypeHierarchy,
+    property_catalog: PropertyCatalog,
+) -> CppPropertyReport:
+    """Add C++ property-container members to generated public class stubs."""
+
+    diagnostics: list[CppPropertyDiagnostic] = []
+    discovered_properties = discover_cpp_properties(root, hierarchy, diagnostics)
+    public_types = direct_python_types(
+        classes,
+        type_ids={property_.owner_type_id for property_ in discovered_properties},
+    )
+    properties = typed_cpp_properties(
+        discovered_properties,
+        hierarchy,
+        property_catalog,
+        public_types,
+        diagnostics,
+    )
+    by_module: dict[str, list[TypedCppProperty]] = {}
+    for property_ in properties:
+        by_module.setdefault(property_.owner.module_name, []).append(property_)
+
+    for module_name, module_properties in sorted(by_module.items()):
+        target = module_stub_path(out_dir, module_name, module_names)
+        if not target.exists():
+            raise FileNotFoundError(f"Expected generated {module_name} stub: {target}")
+        original = target.read_text(encoding="utf-8")
+        merged = add_cpp_properties(original, tuple(module_properties))
+        if merged != original:
+            target.write_text(merged, encoding="utf-8")
+    return CppPropertyReport(len(discovered_properties), len(properties), tuple(diagnostics))
 
 
 def append_init_exports(
@@ -235,7 +290,7 @@ def write_outputs(
     type_registrations: dict[str, list[str]],
     stub_signature_overrides: StubSignatureOverrides,
     overlay_dir: Path | None = None,
-) -> int:
+) -> GenerationResult:
     validate_public_class_aliases(classes)
     out_dir.mkdir(parents=True, exist_ok=True)
     for generated_dir in ("stubs",):
@@ -264,6 +319,14 @@ def write_outputs(
     )
     append_class_stubs(out_dir / "stubs", root, classes, module_names)
     copy_type_support_stubs(root, source_dir, out_dir / "stubs", module_names)
+    cpp_property_report = append_cpp_properties(
+        out_dir / "stubs",
+        module_names,
+        root,
+        classes,
+        type_hierarchy,
+        property_catalog,
+    )
     append_document_add_object_overloads(
         out_dir / "stubs",
         module_names,
@@ -275,4 +338,4 @@ def write_outputs(
         module_names,
         root,
     )
-    return overlay_count
+    return GenerationResult(overlay_count, cpp_property_report)

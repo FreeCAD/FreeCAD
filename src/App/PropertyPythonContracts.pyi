@@ -7,7 +7,10 @@ property inheritance graph and conversion implementations; this source-side
 input records the Python shape at conversion roots and override points.
 """
 
+PROPERTY_CPP_NAMESPACE = "App"
+
 from collections.abc import Sequence
+from io import IOBase
 from typing import TypeAlias
 
 from FreeCAD import Base
@@ -33,6 +36,8 @@ _DocumentObjectSubLinkList: TypeAlias = (
 _DocumentObjectSubLinkListInput: TypeAlias = (
     _DocumentObjectSubLinkInput | Sequence[_DocumentObjectSubLinkListItemInput]
 )
+_XLinkListInput: TypeAlias = _DocumentObjectListInput | _DocumentObjectSubLinkListInput
+_XLinkListValue: TypeAlias = _DocumentObjectList | _DocumentObjectSubLinkList
 _QuantityInput: TypeAlias = float | str | Base.Quantity | Base.Unit
 _QuantityValueInput: TypeAlias = float | str | Base.Quantity
 _IntegerConstraintInput: TypeAlias = (
@@ -51,6 +56,18 @@ _FloatList: TypeAlias = list[float]
 _FloatListInput: TypeAlias = Sequence[float]
 _IntegerList: TypeAlias = list[int]
 _IntegerListInput: TypeAlias = Sequence[int]
+_FileInput: TypeAlias = str | bytes | IOBase
+_FileIncludedInput: TypeAlias = (
+    _FileInput | dict[str, str] | tuple[str | bytes, str | bytes]
+)
+_ColorValue: TypeAlias = tuple[float, float, float, float]
+_ColorInput: TypeAlias = (
+    int
+    | tuple[float, float, float]
+    | tuple[float, float, float, float]
+    | tuple[int, int, int]
+    | tuple[int, int, int, int]
+)
 _XLinkValue: TypeAlias = (
     DocumentObject | tuple[DocumentObject, str | list[str]] | None
 )
@@ -106,8 +123,32 @@ class PropertyMap:
     def set(self, value: dict[str, str]) -> None: ...
 
 
+class PropertyUUID:
+    def get(self) -> str: ...
+
+    def set(self, value: str) -> None: ...
+
+
+class PropertyColor:
+    def get(self) -> _ColorValue: ...
+
+    def set(self, value: _ColorInput) -> None: ...
+
+
+class PropertyExpressionEngine:
+    READ_ONLY = True
+
+    def get(self) -> list[tuple[str, str | None]]: ...
+
+
 class PropertyFile:
     def set(self, value: str | dict[str, str]) -> None: ...
+
+
+class PropertyFileIncluded:
+    def get(self) -> str: ...
+
+    def set(self, value: _FileIncludedInput) -> None: ...
 
 
 class PropertyPlacement:
@@ -188,6 +229,12 @@ class PropertyXLink:
     def get(self) -> _XLinkValue: ...
 
     def set(self, value: _XLinkInput) -> None: ...
+
+
+class PropertyXLinkList:
+    def get(self) -> _XLinkListValue: ...
+
+    def set(self, value: _XLinkListInput) -> None: ...
 
 
 class PropertyXLinkSub:

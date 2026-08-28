@@ -174,6 +174,14 @@ class GenerateModelPythonTests(unittest.TestCase):
                 if name == "Rotation":
                     self.assertNotRegex(header, r"PyObject\*\s+__mul__\(")
 
+    def test_feature_area_binding_keeps_cpp_work_plane_accessors(self):
+        with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
+            generate(str(SRC_DIR / "Mod/CAM/App/FeatureArea.pyi"), temp_dir)
+            header = (Path(temp_dir) / "FeatureAreaPy.h").read_text(encoding="utf-8")
+
+        self.assertIn("Py::Object getWorkPlane() const;", header)
+        self.assertIn("void setWorkPlane(Py::Object arg);", header)
+
     def test_type_checking_attributes_do_not_generate_binding_accessors(self):
         with tempfile.TemporaryDirectory(dir=SRC_DIR) as temp_dir:
             generate(str(SRC_DIR / "App" / "GeoFeature.pyi"), temp_dir)
