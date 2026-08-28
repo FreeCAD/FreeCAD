@@ -50,6 +50,13 @@ class TestPathJobRemove(PathTestBase):
         self.boundary = PathDressupBoundary.Create(self.boundaryBase)
         self.boundaryStock = self.boundary.Stock
 
+        # Group
+        self.groupInOp = self.doc.addObject("App::DocumentObjectGroup", "Group")
+        self.job.Operations.addObject(self.groupInOp)
+        self.opInSubGroup = PathProfile.Create("ProfileSubGroup", parentJob=self.job)
+        self.job.Operations.removeObject(self.opInSubGroup)
+        self.groupInOp.addObject(self.opInSubGroup)
+
         self.doc.recompute()
 
     def tearDown(self):
@@ -103,6 +110,18 @@ class TestPathJobRemove(PathTestBase):
     def test050_boundary_stock_removed(self):
         """removeJob() removes the stock object of a Boundary dressup."""
         name = self.boundaryStock.Name
+        _, after = self._remove()
+        self.assertNotIn(name, after)
+
+    def test055_operation_in_sub_group_removed(self):
+        """removeJob() removes the op from Operations sub group."""
+        name = self.opInSubGroup.Name
+        _, after = self._remove()
+        self.assertNotIn(name, after)
+
+    def test056_operations_sub_group_removed(self):
+        """removeJob() removes the sub group of Operations."""
+        name = self.groupInOp.Name
         _, after = self._remove()
         self.assertNotIn(name, after)
 
