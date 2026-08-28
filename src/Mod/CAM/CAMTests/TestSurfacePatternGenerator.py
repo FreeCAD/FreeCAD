@@ -321,3 +321,38 @@ class TestSurfacePattern(PathTestUtils.PathTestBase):
                 self.assertTrue(
                     0 <= x <= 20 and 0 <= y <= 20, f"Point ({x},{y}) is outside the boundary"
                 )
+
+    def test_generate_curve_pattern_straight_wire(self):
+        """Test sampling a straight 2D wire at fixed intervals."""
+        from Path.Base.Generator.surface_pattern import generate_curve_pattern
+
+        edge = Part.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(10, 0, 0))
+        wire = Part.Wire([edge])
+        polylines = generate_curve_pattern([wire], sample_interval=2.0)
+        self.assertEqual(len(polylines), 1)
+        # 0, 2, 4, 6, 8, 10 -> at least 6 points
+        self.assertGreaterEqual(len(polylines[0]), 6)
+        self.assertAlmostEqual(polylines[0][0][0], 0.0)
+        self.assertAlmostEqual(polylines[0][-1][0], 10.0)
+
+    def test_generate_curve_pattern_circle_wire(self):
+        """Test sampling a circular wire into closed polyline coordinates."""
+        from Path.Base.Generator.surface_pattern import generate_curve_pattern
+
+        circle_edge = Part.makeCircle(5.0)
+        wire = Part.Wire([circle_edge])
+        polylines = generate_curve_pattern([wire], sample_interval=1.0)
+        self.assertEqual(len(polylines), 1)
+        self.assertGreater(len(polylines[0]), 20)
+
+    def test_generate_curve_pattern_empty_and_edges(self):
+        """Test generate_curve_pattern with empty input and bare edge/compound inputs."""
+        from Path.Base.Generator.surface_pattern import generate_curve_pattern
+
+        self.assertEqual(generate_curve_pattern([], sample_interval=1.0), [])
+
+        edge = Part.makeLine(FreeCAD.Vector(0, 0, 0), FreeCAD.Vector(5, 5, 0))
+        polylines = generate_curve_pattern([edge], sample_interval=1.0)
+        self.assertEqual(len(polylines), 1)
+        self.assertGreaterEqual(len(polylines[0]), 2)
+

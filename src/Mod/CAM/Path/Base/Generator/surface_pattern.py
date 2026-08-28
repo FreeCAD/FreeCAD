@@ -641,3 +641,55 @@ def generate_offset_scan_lines(
         offset_lines.reverse()
 
     return offset_lines
+
+
+# ---------------------------------------------------------------------------
+# Curve Pattern Generator
+# ---------------------------------------------------------------------------
+
+
+def generate_curve_pattern(shapes, sample_interval, offset_dist=0.0):
+    """
+    Discretize a list of 2D/3D Edges or Wires into continuous XY polylines for dropcutter scanning.
+
+    Args:
+        shapes: List of Part.Edge, Part.Wire, or Compound objects.
+        sample_interval: Maximum distance between consecutive sampled points (mm).
+        offset_dist: Optional 2D lateral offset distance (mm).
+
+    Returns:
+        A list of polylines, where each polyline is a list of (x, y, 0.0) coordinate tuples.
+    """
+    if sample_interval <= 0:
+        sample_interval = 1.0
+
+    polylines = []
+    for shape in shapes:
+        wires = []
+        if isinstance(shape, Part.Wire):
+            wires.append(shape)
+        elif hasattr(shape, "Wires") and len(shape.Wires) > 0:
+            wires.extend(shape.Wires)
+        elif hasattr(shape, "Edges") and len(shape.Edges) > 0:
+            wires.append(Part.Wire(shape.Edges))
+
+        for wire in wires:
+            if offset_dist != 0.0:
+                try:
+                    wire = wire.makeOffset2D(offset_dist)
+                except Exception as e:
+                    Path.Log.warning(f"Failed to offset wire: {e}")
+
+            # Discretize wire along length
+            length = wire.Length
+            if length <= 0.0:
+                continue
+
+            num_samples = max(2, int(math.ceil(length / sample_interval)) + 1)
+            pts = wire.discretize(num_samples)
+            polyline = [(p.x, p.y, 0.0) for p in pts]
+            if polyline:
+                polylines.append(polyline)
+
+    return polylines
+
