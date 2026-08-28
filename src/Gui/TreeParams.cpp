@@ -119,9 +119,9 @@ public:
         funcs["KeepRootOrder"] = &TreeParamsP::updateKeepRootOrder;
         TreeActiveAutoExpand = handle->GetBool("TreeActiveAutoExpand", true);
         funcs["TreeActiveAutoExpand"] = &TreeParamsP::updateTreeActiveAutoExpand;
-        TreeActiveColor = handle->GetUnsigned("TreeActiveColor", 3873898495);
+        TreeActiveColor = handle->GetUnsigned("TreeActiveColor", 1538528255);
         funcs["TreeActiveColor"] = &TreeParamsP::updateTreeActiveColor;
-        TreeEditColor = handle->GetUnsigned("TreeEditColor", 11272191);
+        TreeEditColor = handle->GetUnsigned("TreeEditColor", 563609599);
         funcs["TreeEditColor"] = &TreeParamsP::updateTreeEditColor;
         SelectingGroupColor = handle->GetUnsigned("SelectingGroupColor", 1082163711);
         funcs["SelectingGroupColor"] = &TreeParamsP::updateSelectingGroupColor;
@@ -272,7 +272,7 @@ public:
     // Auto generated code (Tools/params_utils.py:256)
     static void updateTreeActiveColor(TreeParamsP* self)
     {
-        auto v = self->handle->GetUnsigned("TreeActiveColor", 3873898495);
+        auto v = self->handle->GetUnsigned("TreeActiveColor", 1538528255);
         if (self->TreeActiveColor != v) {
             self->TreeActiveColor = v;
             TreeParams::onTreeActiveColorChanged();
@@ -281,7 +281,7 @@ public:
     // Auto generated code (Tools/params_utils.py:256)
     static void updateTreeEditColor(TreeParamsP* self)
     {
-        auto v = self->handle->GetUnsigned("TreeEditColor", 11272191);
+        auto v = self->handle->GetUnsigned("TreeEditColor", 563609599);
         if (self->TreeEditColor != v) {
             self->TreeEditColor = v;
             TreeParams::onTreeEditColorChanged();
@@ -937,7 +937,7 @@ const unsigned long& TreeParams::getTreeActiveColor()
 // Auto generated code (Tools/params_utils.py:312)
 const unsigned long& TreeParams::defaultTreeActiveColor()
 {
-    const static unsigned long def = 3873898495;
+    const static unsigned long def = 1538528255;
     return def;
 }
 
@@ -969,7 +969,7 @@ const unsigned long& TreeParams::getTreeEditColor()
 // Auto generated code (Tools/params_utils.py:312)
 const unsigned long& TreeParams::defaultTreeEditColor()
 {
-    const static unsigned long def = 11272191;
+    const static unsigned long def = 563609599;
     return def;
 }
 
