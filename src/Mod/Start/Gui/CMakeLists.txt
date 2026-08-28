@@ -66,6 +66,8 @@ SET(StartGui_SRCS
         StartView.h
         ThemeSelectorWidget.cpp
         ThemeSelectorWidget.h
+        Tour.cpp
+        Tour.h
         )
 
 SET(StartGuiIcon_SVG

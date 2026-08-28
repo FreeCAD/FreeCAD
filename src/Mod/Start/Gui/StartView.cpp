@@ -43,6 +43,7 @@
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
 #include "NewFileButton.h"
+#include "Tour.h"
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -167,6 +168,10 @@ StartView::StartView(QWidget* parent)
     _openFirstStart->setIcon(QIcon(QLatin1String(":/icons/preferences-general.svg")));
     connect(_openFirstStart, &QPushButton::clicked, this, &StartView::openFirstStartClicked);
 
+    _openTour = gsl::owner<QPushButton*>(new QPushButton());
+    _openTour->setIcon(QIcon(QLatin1String(":/icons/PartDesign_Clone.svg")));
+    connect(_openTour, &QPushButton::clicked, this, &StartView::openTourClicked);
+
     _showOnStartupCheckBox = gsl::owner<QCheckBox*>(new QCheckBox());
     bool showOnStartup = hGrp->GetBool("ShowOnStartup", true);
     _showOnStartupCheckBox->setCheckState(
@@ -175,6 +180,7 @@ StartView::StartView(QWidget* parent)
     connect(_showOnStartupCheckBox, &QCheckBox::toggled, this, &StartView::showOnStartupChanged);
 
     footerLayout->addWidget(_openFirstStart);
+    footerLayout->addWidget(_openTour);
     footerLayout->addStretch();
     footerLayout->addWidget(_showOnStartupCheckBox);
 
@@ -435,6 +441,13 @@ void StartView::openFirstStartClicked()
     _contents->setCurrentIndex(0);
 }
 
+void StartView::openTourClicked()
+{
+    if (auto mainWindow = Gui::getMainWindow()) {
+        Tour::start(mainWindow);
+    }
+}
+
 void StartView::firstStartWidgetDismissed()
 {
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -537,5 +550,6 @@ void StartView::retranslateUi()
 
     QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
     _openFirstStart->setText(tr("Open First Start Setup"));
+    _openTour->setText(tr("Start UI Tour"));
     _showOnStartupCheckBox->setText(tr("Do not show this Start page again (start with blank screen)"));
 }
