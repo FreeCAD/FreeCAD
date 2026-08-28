@@ -2327,7 +2327,7 @@ void SoFCPathAnnotation::GLRenderBelowPath(SoGLRenderAction* action)
 
     if (action->isRenderingDelayedPaths()) {
         // let hidden objects on this path render on top (e.g. tree preselection)
-        SoFCSwitch::OverrideScope switchOverride(path);
+        SoFCSwitch::OverrideScope switchOverride(overrideHidden ? path : nullptr);
         SbBool zbenabled = glIsEnabled(GL_DEPTH_TEST);
         if (zbenabled) {
             glDisable(GL_DEPTH_TEST);
@@ -2495,7 +2495,7 @@ void SoFCPathAnnotation::getBoundingBox(SoGetBoundingBoxAction* action)
         SoGetBoundingBoxAction bboxAction(action->getViewportRegion());
         SoFCSelectionRoot::moveActionStack(action, &bboxAction, false);
         // include hidden on-top geometry so auto near/far clipping accounts for it
-        SoFCSwitch::OverrideScope switchOverride(path);
+        SoFCSwitch::OverrideScope switchOverride(overrideHidden ? path : nullptr);
         bboxAction.apply(path);
         SoFCSelectionRoot::moveActionStack(&bboxAction, action, true);
         auto bbox = bboxAction.getBoundingBox();

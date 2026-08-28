@@ -239,6 +239,11 @@ public:
     {
         return det;
     }
+    /// Draw through mode switches that are off, to preview a hidden object.
+    void setOverrideHidden(bool enable)
+    {
+        overrideHidden = enable;
+    }
 
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void GLRender(SoGLRenderAction* action) override;
@@ -256,6 +261,7 @@ protected:
     SoPath* path;
     SoTempPath* tmpPath;
     SoDetail* det;
+    bool overrideHidden {false};
 };
 
 class GuiExport SoFCSeparator: public SoSeparator
