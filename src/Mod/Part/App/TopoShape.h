@@ -104,21 +104,21 @@ public:
 class PartExport LoftProfileSeparationException: public Base::CADKernelError
 {
 public:
-    LoftProfileSeparationException(std::size_t firstProfile, std::size_t secondProfile);
+    LoftProfileSeparationException(std::size_t firstProfileIndex, std::size_t secondProfileIndex);
     ~LoftProfileSeparationException() noexcept override = default;
 
-    std::size_t getFirstProfile() const
+    std::size_t getFirstProfileIndex() const
     {
-        return firstProfile;
+        return firstProfileIndex;
     }
-    std::size_t getSecondProfile() const
+    std::size_t getSecondProfileIndex() const
     {
-        return secondProfile;
+        return secondProfileIndex;
     }
 
 private:
-    std::size_t firstProfile;
-    std::size_t secondProfile;
+    std::size_t firstProfileIndex;
+    std::size_t secondProfileIndex;
 };
 
 class PartExport ShapeSegment: public Data::Segment

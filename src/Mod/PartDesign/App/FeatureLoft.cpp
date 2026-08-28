@@ -254,11 +254,11 @@ App::DocumentObjectExecReturn* Loft::execute()
                 ));
             }
             catch (const Part::LoftProfileSeparationException& e) {
-                const auto first = e.getFirstProfile();
-                const auto second = e.getSecondProfile();
-                if (second < sectionLabels.size()) {
+                const auto firstIndex = e.getFirstProfileIndex();
+                const auto secondIndex = e.getSecondProfileIndex();
+                if (firstIndex < sectionLabels.size() && secondIndex < sectionLabels.size()) {
                     return new App::DocumentObjectExecReturn(
-                        "'" + sectionLabels[first] + "' and '" + sectionLabels[second]
+                        "'" + sectionLabels[firstIndex] + "' and '" + sectionLabels[secondIndex]
                         + "' do not have sufficient separation"
                     );
                 }

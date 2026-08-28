@@ -265,12 +265,12 @@ BooleanException::BooleanException(const std::string& sMessage)
 // ------------------------------------------------
 
 LoftProfileSeparationException::LoftProfileSeparationException(
-    std::size_t firstProfile,
-    std::size_t secondProfile
+    std::size_t firstProfileIndex,
+    std::size_t secondProfileIndex
 )
     : CADKernelError("Segments of a loft do not have sufficient separation")
-    , firstProfile(firstProfile)
-    , secondProfile(secondProfile)
+    , firstProfileIndex(firstProfileIndex)
+    , secondProfileIndex(secondProfileIndex)
 {}
 
 // ------------------------------------------------
