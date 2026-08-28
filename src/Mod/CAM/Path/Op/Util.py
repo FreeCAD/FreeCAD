@@ -551,13 +551,15 @@ def getClearedAreas(currentOp, bbox):
     non-Z-up Workplane the path's leading rotary G0 is stripped before
     walking so positions are read in the same rotated frame as bbox.
     """
+    from PathScripts.PathUtils import getOperations
+
     clearedAreas = []
     job = currentOp.Proxy.job
     z = bbox.ZMin + job.GeometryTolerance.getValueAs("mm")
     z_up = FreeCAD.Vector(0, 0, 1)
     currentWp = getattr(currentOp, "Workplane", z_up)
     rotated = not currentWp.isEqual(z_up, 1e-6)
-    for op in job.Operations.Group:
+    for op in getOperations(job):
         baseOp = PathDressup.baseOp(op)
         if baseOp.Name == currentOp.Name:
             break
