@@ -68,6 +68,7 @@
 #include <Mod/Part/App/FaceMakerCheese.h>
 #include <Mod/Part/App/Tools.h>
 
+#include "Body.h"
 #include "FeatureSketchBased.h"
 #include "DatumLine.h"
 #include "DatumPlane.h"
@@ -713,6 +714,11 @@ Part::Feature* ProfileBased::getBaseObject(bool silent) const
     const char* err = nullptr;
     App::DocumentObject* spt = sketch->AttachmentSupport.getValue();
     if (spt) {
+        // Attaching to a Body positions the profile but must not import its complete tip shape.
+        // Feature supports remain implicit bases for compatibility with legacy files.
+        if (spt->isDerivedFrom<PartDesign::Body>()) {
+            return Feature::getBaseObject(silent);
+        }
         if (spt->isDerivedFrom<Part::Feature>()) {
             rv = static_cast<Part::Feature*>(spt);
         }
