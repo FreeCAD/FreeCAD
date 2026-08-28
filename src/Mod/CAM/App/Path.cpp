@@ -202,7 +202,7 @@ double Toolpath::getLength()
     return l;
 }
 
-double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double vRapid)
+double Toolpath::getCycleTime(double hFeed, double vFeed, double rapid)
 {
     // check the feedrates are set
     if ((hFeed == 0) || (vFeed == 0)) {
@@ -215,51 +215,51 @@ double Toolpath::getCycleTime(double hFeed, double vFeed, double hRapid, double 
         return 0;
     }
 
-    if (hRapid == 0) {
-        hRapid = hFeed;
-    }
-
-    if (vRapid == 0) {
-        vRapid = vFeed;
+    if (rapid == 0) {
+        rapid = hFeed;
     }
 
     if (vpcCommands.empty()) {
         return 0;
     }
-    double l = 0;
+
     double time = 0;
-    bool verticalMove = false;
+    double fG0 = rapid;
+    double fG1 = hFeed;
     Vector3d last(0, 0, 0);
     bool absolute = true;
     bool absoluteCenter = false;
     for (const auto& command : vpcCommands) {
         const std::string& name = command.Name;
-        float feedrate = hFeed;
+        double fCommand = command.getParam("F");
 
-        l = 0;
-        verticalMove = false;
-        Vector3d next = getNextPosition(command, last, absolute);
-
-        if (last.z != next.z) {
-            verticalMove = true;
-            feedrate = vFeed;
-        }
+        double l = 0;
+        double feedrate = hFeed;
+        Vector3d next = command.getPlacement(last).getPosition();
 
         if (isRapidCommand(name)) {
             // Rapid Move
-            l += (next - last).Length();
-            feedrate = hRapid;
-            if (verticalMove) {
-                feedrate = vRapid;
+            l = (next - last).Length();
+            if (fCommand) {
+                fG0 = fCommand;
             }
+            feedrate = fG0;
         }
         else if (name == "G1" || name == "G01") {
             // Feed Move
-            l += (next - last).Length();
+            l = (next - last).Length();
+            if (fCommand) {
+                fG1 = fCommand;
+            }
+            feedrate = fG1;
         }
         else if (isArcCommand(name)) {
             // Arc Move
             l += getArcLength(command, last, next, absoluteCenter);
+            if (fCommand) {
+                fG1 = fCommand;
+            }
+            feedrate = fG1;
         }
         else if (name == "G90") {
             absolute = true;
