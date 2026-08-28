@@ -362,6 +362,8 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
     if (vp->getDetailPath(subname, &path, true, det) && path.getLength()) {
         auto node = new SoFCPathAnnotation;
         node->setPath(&path);
+        // only a tree preselect may draw an object whose mode switch is off
+        node->setOverrideHidden(previewHidden);
         pcGroup->addChild(node);
         if (previewHidden && (!vp->isShow() || !svp->isShow())) {
             setHiddenPreviewDepthOverride(DepthOverride::On);
