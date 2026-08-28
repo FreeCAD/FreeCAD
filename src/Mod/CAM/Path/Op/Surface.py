@@ -50,6 +50,8 @@ import Path
 import Path.Op.Base as PathOp
 import Path.Op.SurfaceSupport as PathSurfaceSupport
 import PathScripts.PathUtils as PathUtils
+from Path.Base.Generator.surface_pattern import generate_curve_pattern
+from Path.Base.Generator.surface_dropcutter import batch_dropcutter
 import math
 import time
 
@@ -83,6 +85,7 @@ class ObjectSurface(PathOp.ObjectOp):
             | PathOp.FeatureStepDown
             | PathOp.FeatureCoolant
             | PathOp.FeatureBaseFaces
+            | PathOp.FeatureBaseEdges
         )
 
     def initOperation(self, obj):
@@ -449,6 +452,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "CutPattern": [
                 (translate("CAM_Surface", "Circular"), "Circular"),
                 (translate("CAM_Surface", "CircularZigZag"), "CircularZigZag"),
+                (translate("CAM_Surface", "FollowCurve"), "FollowCurve"),
                 (translate("CAM_Surface", "Line"), "Line"),
                 (translate("CAM_Surface", "Offset"), "Offset"),
                 (translate("CAM_Surface", "Spiral"), "Spiral"),
@@ -907,6 +911,7 @@ class ObjectSurface(PathOp.ObjectOp):
             FACES, VOIDS = pPM
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
+            self.selectedWires = getattr(PSF, "selectedWires", [])
 
             for idx, model in enumerate(JOB.Model.Group):
                 Path.Log.debug(idx)
@@ -988,6 +993,7 @@ class ObjectSurface(PathOp.ObjectOp):
         self.ClearHeightOffset = None
         self.depthParams = None
         self.midDep = None
+        self.selectedWires = None
         del self.modelSTLs
         del self.safeSTLs
         del self.modelTypes
@@ -998,6 +1004,7 @@ class ObjectSurface(PathOp.ObjectOp):
         del self.ClearHeightOffset
         del self.depthParams
         del self.midDep
+        del self.selectedWires
 
         execTime = time.time() - startTime
         if execTime > 60.0:
@@ -1125,26 +1132,35 @@ class ObjectSurface(PathOp.ObjectOp):
 
         geoScan = []
         if obj.ProfileEdges != "Only":
-            self.showDebugObject(cmpdShp, "CutArea")
-            # get internal path geometry and perform OCL scan with that geometry
-            PGG = PathSurfaceSupport.PathGeometryGenerator(obj, cmpdShp, obj.CutPattern)
-            if self.showDebugObjects:
-                PGG.setDebugObjectsGroup(self.tempGroup)
-            self.tmpCOM = PGG.getCenterOfPattern()
-            pathGeom = PGG.generatePathGeometry()
-            if pathGeom is False:
-                msg = translate("PathSurface", "No clearing shape returned.")
-                Path.Log.error(msg)
-                return []
-            if obj.CutPattern == "Offset":
-                useGeom = self._offsetFacesToPointData(obj, pathGeom, profile=False)
-                if useGeom is False:
-                    msg = translate("PathSurface", "No clearing path geometry returned.")
+            if obj.CutPattern == "FollowCurve":
+                selected_wires = getattr(self, "selectedWires", [])
+                polylines = generate_curve_pattern(selected_wires, obj.SampleInterval.Value)
+                if not polylines:
+                    msg = translate("PathSurface", "No valid curve geometry found for FollowCurve.")
                     Path.Log.error(msg)
                     return []
-                geoScan = [self._planarPerformOclScan(obj, pdc, useGeom, True)]
+                geoScan = self._planarPerformOclScan(obj, pdc, polylines, False)
             else:
-                geoScan = self._planarPerformOclScan(obj, pdc, pathGeom, False)
+                self.showDebugObject(cmpdShp, "CutArea")
+                # get internal path geometry and perform OCL scan with that geometry
+                PGG = PathSurfaceSupport.PathGeometryGenerator(obj, cmpdShp, obj.CutPattern)
+                if self.showDebugObjects:
+                    PGG.setDebugObjectsGroup(self.tempGroup)
+                self.tmpCOM = PGG.getCenterOfPattern()
+                pathGeom = PGG.generatePathGeometry()
+                if pathGeom is False:
+                    msg = translate("PathSurface", "No clearing shape returned.")
+                    Path.Log.error(msg)
+                    return []
+                if obj.CutPattern == "Offset":
+                    useGeom = self._offsetFacesToPointData(obj, pathGeom, profile=False)
+                    if useGeom is False:
+                        msg = translate("PathSurface", "No clearing path geometry returned.")
+                        Path.Log.error(msg)
+                        return []
+                    geoScan = [self._planarPerformOclScan(obj, pdc, useGeom, True)]
+                else:
+                    geoScan = self._planarPerformOclScan(obj, pdc, pathGeom, False)
 
         if obj.ProfileEdges == "Only":  # ['None', 'Only', 'First', 'Last']
             SCANDATA.extend(profScan)
@@ -1293,6 +1309,17 @@ class ObjectSurface(PathOp.ObjectOp):
                                 scan.append(FreeCAD.Vector(scan[0].x, scan[0].y, scan[0].z))
                             stpOvr.append(scan)
                 if erFlg is False:
+                    SCANS.append(stpOvr)
+        elif obj.CutPattern == "FollowCurve":
+            # pathGeom is a list of polylines: [[(x,y,z), (x,y,z), ...], ...]
+            # Drop tool along each polyline segment
+            for poly in pathGeom:
+                stpOvr = []
+                for i in range(len(poly) - 1):
+                    A = poly[i]
+                    B = poly[i + 1]
+                    stpOvr.append(self._planarDropCutScan(pdc, (A[0], A[1]), (B[0], B[1])))
+                if stpOvr:
                     SCANS.append(stpOvr)
         # Eif
 

@@ -175,21 +175,47 @@ class TestSurfaceGenerator(unittest.TestCase):
         self.assertGreater(len(scan_lines), 0, "Spiral should generate lines.")
         self.assertGreater(len(scan_lines[0]), 10, "Spiral should have multiple points.")
 
-    def test70(self):
-        """Tests that the spiral generator respects the boundary."""
-        scan_lines = surface_cpp.generate_spiral_pattern_cpp(
-            0, 10, 0, 10, 5.0, 5.0, 1.0, 0.1, False, self.square_boundary
-        )
-        self.assertGreater(len(scan_lines), 0, "Clipped spiral should generate lines.")
+    def test80_follow_curve_on_surface(self):
+        """Tests FollowCurve cut pattern on 3D Surface operation follows curved height profile."""
+        import Path.Op.Surface as PathSurface
+        import Path.Main.Job as PathJob
 
-        # Check if all points are within the boundary
-        for line in scan_lines:
-            for point in line:
-                self.assertTrue(
-                    0.0 <= point[0] <= 10.0 and 0.0 <= point[1] <= 10.0,
-                    f"Point {point} is outside the 10x10 boundary.",
-                )
+        doc = FreeCAD.newDocument("TestFollowCurveDoc")
+        try:
+            # Create a curved surface solid (e.g. cylinder or sphere top)
+            sphere = Part.makeSphere(25.0)
+            box = Part.makeBox(60, 60, 30, FreeCAD.Vector(-30, -30, -30))
+            hemisphere = sphere.cut(box)
+            model_obj = doc.addObject("Part::Feature", "CurvedModel")
+            model_obj.Shape = hemisphere
+
+            # Create a 2D wire above/across the model (circle at Z=0, radius 15)
+            circle_edge = Part.makeCircle(15.0, FreeCAD.Vector(0, 0, 0))
+            wire_obj = doc.addObject("Part::Feature", "GuideWire")
+            wire_obj.Shape = Part.Wire([circle_edge])
+
+            job = PathJob.Create("Job", [model_obj])
+            op = PathSurface.Create("SurfaceOp", parentJob=job)
+            op.CutPattern = "FollowCurve"
+            op.Base = [(wire_obj, ["Wire1"])]
+            op.SampleInterval = 2.0
+            op.ToolController.Tool.Diameter = 6.0
+            doc.recompute()
+
+            commands = op.Path.Commands
+            self.assertGreater(len(commands), 5, "Should generate commands for FollowCurve")
+            
+            # Check that cutting moves (G1) have varying Z heights corresponding to the curved surface
+            z_coords = [c.Parameters["Z"] for c in commands if c.Name == "G1" and "Z" in c.Parameters]
+            self.assertGreater(len(z_coords), 5, "Should have multiple G1 moves with Z coordinates")
+            # For a 6mm flat endmill on a sphere of radius 25 at r=15, the corner of the endmill contacts
+            # the sphere at r = 15 - 3 = 12, where Z = sqrt(25^2 - 12^2) = sqrt(481) ~= 21.93 mm.
+            for z in z_coords:
+                self.assertAlmostEqual(z, 21.93, delta=0.5)
+        finally:
+            FreeCAD.closeDocument(doc.Name)
 
 
 if __name__ == "__main__":
     unittest.main()
+

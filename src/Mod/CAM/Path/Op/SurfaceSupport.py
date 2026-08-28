@@ -654,6 +654,11 @@ class ProcessSelectedFaces:
                         break
                 TUPS.append((mdlIdx, bs, sb))  # (model idx, base, sub)
 
+        # If wires are present or no specific model was flagged, ensure all models are enabled for STL
+        if not any(self.modelSTLs):
+            for m in range(0, lenGRP):
+                self.modelSTLs[m] = True
+
         # Apply `AvoidXFaces` value
         faceCnt = len(TUPS)
         add = faceCnt - self.obj.AvoidLastX_Faces
