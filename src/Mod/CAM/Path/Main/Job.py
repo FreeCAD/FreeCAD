@@ -23,6 +23,7 @@
 
 from Path.Op.Util import getCycleTimeEstimate
 from Path.Post.Processor import PostProcessorFactory  # PostProcessor,
+from PathScripts.PathUtils import getOperations
 from PySide import QtCore
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD
@@ -351,7 +352,7 @@ class ObjectJob:
         if not getattr(obj, "Workplanes", None) or not getattr(obj, "Operations", None):
             return
         held = set(o.Name for o in obj.Workplanes.Group)
-        for op in obj.Operations.Group:
+        for op in getOperations(obj):
             workplane = getattr(op, "Workplane", None)
             if workplane is not None and hasattr(workplane, "Placement"):
                 if workplane.Name not in held:
@@ -464,15 +465,17 @@ class ObjectJob:
         if getattr(obj, "Operations", None):
             # the first to tear down are the ops, they depend on other resources
             Path.Log.debug("taking down ops: %s" % [o.Name for o in self.allOperations()])
-            while obj.Operations.Group:
-                op = obj.Operations.Group[0]
-                if (
-                    not op.ViewObject
-                    or not hasattr(op.ViewObject.Proxy, "onDelete")
-                    or op.ViewObject.Proxy.onDelete(op.ViewObject, ())
+            for el in reversed(getOperations(obj, True)):
+                if el.hasExtension("App::GroupExtension"):
+                    doc.removeObject(el.Name)
+                elif (
+                    not el.ViewObject
+                    or not hasattr(el.ViewObject.Proxy, "onDelete")
+                    or el.ViewObject.Proxy.onDelete(el.ViewObject, ())
                 ):
-                    PathUtil.clearExpressionEngine(op)
-                    doc.removeObject(op.Name)
+                    PathUtil.clearExpressionEngine(el)
+                    doc.removeObject(el.Name)
+
             obj.Operations.Group = []
             doc.removeObject(obj.Operations.Name)
             obj.Operations = None
@@ -831,7 +834,7 @@ class ObjectJob:
     def getCycleTime(self):
         seconds = 0
         errorStr = ""
-        for op in self.obj.Operations.Group:
+        for op in getOperations(self.obj):
             result = getCycleTimeEstimate(op, formatted=False)
             if isinstance(result, (int, float)):
                 seconds += result
@@ -841,20 +844,31 @@ class ObjectJob:
         self.obj.CycleTime = f"{timeStr}{errorStr}"
 
     def addOperation(self, op, before=None, removeBefore=False):
-        group = self.obj.Operations.Group
-        if op not in group:
-            if before:
-                try:
-                    group.insert(group.index(before), op)
-                    if removeBefore:
-                        group.remove(before)
-                except Exception as e:
-                    Path.Log.error(e)
-                    group.append(op)
-            else:
-                group.append(op)
-            self.obj.Operations.Group = group
-            # op.Path.Center = self.obj.Operations.Path.Center
+        def getGroup(op):
+            for candidate in op.InList:
+                if hasattr(candidate, "Group"):
+                    return candidate
+            return self.job.Operations
+
+        if op in getOperations(self.obj):
+            return
+
+        if before:
+            objGroup = getGroup(before)
+            groupList = objGroup.Group
+            try:
+                groupList.insert(groupList.index(before), op)
+                if removeBefore:
+                    groupList.remove(before)
+            except Exception as e:
+                Path.Log.error(e)
+                groupList.append(op)
+            objGroup.Group = groupList
+        else:
+            groupList = self.obj.Operations.Group
+            groupList.append(op)
+            self.obj.Operations.Group = groupList
+        # op.Path.Center = self.obj.Operations.Path.Center
 
     def getMachine(self):
         """getMachine() ... returns an instantiated Machine object for this job.
@@ -923,7 +937,7 @@ class ObjectJob:
                         collectBaseOps(sub)
 
         if getattr(self.obj, "Operations", None) and getattr(self.obj.Operations, "Group", None):
-            for op in self.obj.Operations.Group:
+            for op in getOperations(self.obj):
                 collectBaseOps(op)
 
         return ops
