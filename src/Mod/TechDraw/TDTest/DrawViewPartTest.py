@@ -47,5 +47,56 @@ class DrawViewPartTest(unittest.TestCase):
         self.assertEqual(len(edges), 4, "DrawViewPart has wrong number of edges")
         self.assertTrue("Up-to-date" in view.State, "DrawViewPart is not Up-to-date")
 
+    def testDisplayStyleControlsHardHidden(self):
+        """DisplayStyle controls hard hidden edges without changing other HLR options."""
+        view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewPart", "StyleView")
+
+        self.assertEqual(view.DisplayStyle, "Visible Edges")
+        self.assertFalse(view.HardHidden)
+        hard_hidden_status = view.getPropertyStatus("HardHidden")
+        self.assertIn(24, hard_hidden_status)  # App::Property::PropReadOnly
+        self.assertIn(26, hard_hidden_status)  # App::Property::PropHidden
+
+        view.DisplayStyle = "All Edges"
+        self.assertTrue(view.HardHidden)
+
+        view.DisplayStyle = "Hidden Edges"
+        self.assertTrue(view.HardHidden)
+
+        view.DisplayStyle = "Shaded with Edges"
+        self.assertFalse(view.HardHidden)
+
+        view.SmoothHidden = True
+        view.SeamHidden = True
+        view.DisplayStyle = "Shaded"
+        self.assertTrue(view.SmoothHidden)
+        self.assertTrue(view.SeamHidden)
+
+    def testBreakPropertiesOnDrawViewPart(self):
+        """Every DrawViewPart stores multiple breaks without helper sketches."""
+        view = FreeCAD.ActiveDocument.addObject("TechDraw::DrawViewPart", "BreakableView")
+        self.page.addView(view)
+        view.Source = [FreeCAD.ActiveDocument.Box]
+
+        self.assertEqual(view.BreakPoints, [])
+        self.assertEqual(view.BreakDirections, [])
+        self.assertEqual(view.BreakGaps, [])
+        self.assertEqual(view.BreakLineTypes, [])
+
+        view.BreakPoints = [
+            FreeCAD.Vector(3.0, 0.0, 0.0),
+            FreeCAD.Vector(7.0, 0.0, 0.0),
+        ]
+        view.BreakDirections = [FreeCAD.Vector(1.0, 0.0, 0.0)]
+        view.BreakGaps = [1.0]
+        view.BreakLineTypes = [1]
+        FreeCAD.ActiveDocument.recompute()
+
+        self.assertEqual(len(view.BreakPoints), 2)
+        self.assertEqual(len(view.BreakDirections), 1)
+        self.assertEqual(view.BreakGaps, [1.0])
+        self.assertEqual(view.BreakLineTypes, [1])
+        self.assertTrue(view.getVisibleEdges())
+
 if __name__ == "__main__":
     unittest.main()

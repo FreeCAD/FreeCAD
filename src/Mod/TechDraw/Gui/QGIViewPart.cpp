@@ -23,6 +23,10 @@
 #include <QPainterPath>
 #include <QKeyEvent>
 #include <QGraphicsTransform>
+#include <QImage>
+#include <QTimer>
+#include <algorithm>
+#include <cmath>
 #include <cstdio>
 #include <qmath.h>
 
@@ -78,6 +82,346 @@ using DU = DrawUtil;
 using FillMode = QGIFace::FillMode;
 
 const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
+
+namespace {
+
+constexpr double ShadedPixelsPerMillimetre = 12.0;  // approximately 300 dpi
+constexpr int ShadedMaxImageDimension = 4096;
+constexpr double ShadedAngularDeflection = 0.20;
+constexpr double BreakLineClipInset = 2.0;
+
+QRectF breakLineClipBounds(const DrawViewPart* view)
+{
+    if (!view) {
+        return {};
+    }
+
+    const Base::BoundBox3d box = view->getBoundingBox();
+    if (!box.IsValid()) {
+        return {};
+    }
+
+    QRectF bounds(QPointF(Rez::guiX(box.MinX), Rez::guiX(-box.MaxY)),
+                  QPointF(Rez::guiX(box.MaxX), Rez::guiX(-box.MinY)));
+    bounds = bounds.normalized();
+
+    // Keep the break decoration, including its waveform and pen, inside the
+    // projected geometry.  In particular, never derive this extent from
+    // QGIViewPart::boundingRect(): it already contains previously drawn break
+    // lines and would make them grow on every redraw.
+    const double inset = std::min(
+        Rez::guiX(BreakLineClipInset),
+        0.25 * std::min(bounds.width(), bounds.height()));
+    bounds.adjust(inset, inset, -inset, -inset);
+    return bounds;
+}
+
+struct ShadedVertex
+{
+    QPointF point;
+    double depth;
+    gp_Vec normal;
+};
+
+struct ShadedTriangle
+{
+    ShadedVertex vertices[3];
+};
+
+struct ShadedImage
+{
+    QImage image;
+    QRectF rect;
+};
+
+class QGIShadedImage final : public QGIPrimPath
+{
+public:
+    explicit QGIShadedImage(ShadedImage shaded)
+        : m_image(std::move(shaded.image))
+        , m_rect(shaded.rect)
+    {
+        QPainterPath outline;
+        outline.addRect(m_rect);
+        setPath(outline);
+        setFlag(QGraphicsItem::ItemIsSelectable, false);
+        setFlag(QGraphicsItem::ItemIsFocusable, false);
+        setAcceptHoverEvents(false);
+    }
+
+    void paint(QPainter* painter,
+               const QStyleOptionGraphicsItem*,
+               QWidget*) override
+    {
+        painter->save();
+        painter->setRenderHint(QPainter::SmoothPixmapTransform, true);
+        painter->drawImage(m_rect, m_image);
+        painter->restore();
+    }
+
+private:
+    QImage m_image;
+    QRectF m_rect;
+};
+
+double edgeFunction(const QPointF& a, const QPointF& b, double x, double y)
+{
+    return (x - a.x()) * (b.y() - a.y()) - (y - a.y()) * (b.x() - a.x());
+}
+
+QColor shadePixel(const QColor& base,
+                  gp_Vec normal,
+                  const gp_Vec& lightDirection,
+                  const gp_Vec& viewDirection,
+                  const gp_Vec& halfDirection)
+{
+    if (normal.SquareMagnitude() <= Precision::SquareConfusion()) {
+        return base;
+    }
+    normal.Normalize();
+
+    // TechDraw shades both sides of open shells. Make the normal face the camera
+    // before applying a camera-relative light.
+    if (normal.Dot(viewDirection) < 0.0) {
+        normal.Reverse();
+    }
+
+    const double diffuse = std::max(0.0, normal.Dot(lightDirection));
+    const double specular = std::pow(std::max(0.0, normal.Dot(halfDirection)), 24.0);
+    const double intensity = std::clamp(0.28 + 0.62 * diffuse + 0.18 * specular, 0.0, 1.15);
+
+    auto channel = [intensity](int value) {
+        return std::clamp(static_cast<int>(std::lround(value * intensity)), 0, 255);
+    };
+    return QColor(channel(base.red()), channel(base.green()), channel(base.blue()), base.alpha());
+}
+
+std::optional<ShadedImage> makeShadedImage(DrawViewPart* viewPart, QColor baseColor)
+{
+    TopoDS_Shape sourceShape = viewPart->getSourceShape();
+    if (sourceShape.IsNull()) {
+        return {};
+    }
+
+    // Work on a topology copy so tessellation never modifies the source object's mesh.
+    BRepBuilderAPI_Copy copier(sourceShape, false, false);
+    TopoDS_Shape displayShape = copier.Shape();
+    DrawViewPart::centerScaleRotate(
+        viewPart, displayShape, viewPart->getCurrentCentroid());
+
+    Bnd_Box shapeBox;
+    BRepBndLib::Add(displayShape, shapeBox);
+    if (shapeBox.IsVoid()) {
+        return {};
+    }
+
+    double xMin = 0.0;
+    double yMin = 0.0;
+    double zMin = 0.0;
+    double xMax = 0.0;
+    double yMax = 0.0;
+    double zMax = 0.0;
+    shapeBox.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+    const double extent =
+        std::max({xMax - xMin, yMax - yMin, zMax - zMin});
+    const double deflection = std::max(Precision::Confusion(), extent / 500.0);
+    BRepMesh_IncrementalMesh mesher(
+        displayShape, deflection, false, ShadedAngularDeflection, true);
+    if (!mesher.IsDone()) {
+        return {};
+    }
+
+    const gp_Ax2 projection = viewPart->getProjectionCS();
+    const gp_Pnt origin = projection.Location();
+    const gp_Dir xDirection = projection.XDirection();
+    const gp_Dir yDirection = projection.YDirection();
+    const gp_Dir projectionDirection = projection.Direction();
+
+    gp_Vec lightDirection(projectionDirection);
+    lightDirection += gp_Vec(xDirection).Multiplied(-0.35);
+    lightDirection += gp_Vec(yDirection).Multiplied(-0.45);
+    lightDirection.Normalize();
+    gp_Vec viewDirection(projectionDirection);
+    gp_Vec halfDirection = lightDirection + viewDirection;
+    halfDirection.Normalize();
+
+    std::vector<ShadedTriangle> triangles;
+    double sceneMinX = std::numeric_limits<double>::infinity();
+    double sceneMinY = std::numeric_limits<double>::infinity();
+    double sceneMaxX = -std::numeric_limits<double>::infinity();
+    double sceneMaxY = -std::numeric_limits<double>::infinity();
+
+    for (TopExp_Explorer explorer(displayShape, TopAbs_FACE);
+         explorer.More();
+         explorer.Next()) {
+        const TopoDS_Face face = TopoDS::Face(explorer.Current());
+        TopLoc_Location location;
+        Handle(Poly_Triangulation) triangulation =
+            BRep_Tool::Triangulation(face, location);
+        if (triangulation.IsNull()) {
+            continue;
+        }
+
+        std::vector<gp_Vec> normals;
+        Part::Tools::getPointNormals(face, triangulation, normals);
+        Part::Tools::applyTransformationOnNormals(location, normals);
+
+#if OCC_VERSION_HEX < 0x070600
+        const TColgp_Array1OfPnt& nodes = triangulation->Nodes();
+        const Poly_Array1OfTriangle& meshTriangles = triangulation->Triangles();
+#endif
+        std::vector<ShadedVertex> vertices;
+        vertices.reserve(triangulation->NbNodes());
+        for (int nodeIndex = 1; nodeIndex <= triangulation->NbNodes(); ++nodeIndex) {
+#if OCC_VERSION_HEX < 0x070600
+            gp_Pnt point = nodes(nodeIndex);
+#else
+            gp_Pnt point = triangulation->Node(nodeIndex);
+#endif
+            if (!location.IsIdentity()) {
+                point.Transform(location.Transformation());
+            }
+
+            const gp_Vec relative(origin, point);
+            const QPointF projected(
+                Rez::guiX(relative.Dot(gp_Vec(xDirection))),
+                Rez::guiX(-relative.Dot(gp_Vec(yDirection))));
+            vertices.push_back(
+                {projected,
+                 relative.Dot(gp_Vec(projectionDirection)),
+                 normals.at(static_cast<size_t>(nodeIndex - 1))});
+
+            sceneMinX = std::min(sceneMinX, projected.x());
+            sceneMinY = std::min(sceneMinY, projected.y());
+            sceneMaxX = std::max(sceneMaxX, projected.x());
+            sceneMaxY = std::max(sceneMaxY, projected.y());
+        }
+
+        for (int triangleIndex = 1;
+             triangleIndex <= triangulation->NbTriangles();
+             ++triangleIndex) {
+            int indices[3];
+#if OCC_VERSION_HEX < 0x070600
+            meshTriangles(triangleIndex).Get(
+                indices[0], indices[1], indices[2]);
+#else
+            triangulation->Triangle(triangleIndex).Get(
+                indices[0], indices[1], indices[2]);
+#endif
+            ShadedTriangle triangle;
+            for (int vertexIndex = 0; vertexIndex < 3; ++vertexIndex) {
+                triangle.vertices[vertexIndex] =
+                    vertices.at(static_cast<size_t>(indices[vertexIndex] - 1));
+            }
+            triangles.push_back(std::move(triangle));
+        }
+    }
+
+    const QRectF sceneBoundsUnpadded(
+        QPointF(sceneMinX, sceneMinY),
+        QPointF(sceneMaxX, sceneMaxY));
+    if (triangles.empty() || sceneBoundsUnpadded.isEmpty()) {
+        return {};
+    }
+
+    QRectF sceneBounds = sceneBoundsUnpadded;
+    double pixelsPerSceneUnit = ShadedPixelsPerMillimetre / Rez::getRezFactor();
+    const double longestSceneSide = std::max(sceneBounds.width(), sceneBounds.height());
+    if (longestSceneSide * pixelsPerSceneUnit > ShadedMaxImageDimension) {
+        pixelsPerSceneUnit = ShadedMaxImageDimension / longestSceneSide;
+    }
+    pixelsPerSceneUnit = std::max(pixelsPerSceneUnit, 0.01);
+
+    const double margin = 1.0 / pixelsPerSceneUnit;
+    sceneBounds.adjust(-margin, -margin, margin, margin);
+    const int imageWidth =
+        std::max(2, static_cast<int>(std::ceil(sceneBounds.width() * pixelsPerSceneUnit)));
+    const int imageHeight =
+        std::max(2, static_cast<int>(std::ceil(sceneBounds.height() * pixelsPerSceneUnit)));
+
+    QImage image(imageWidth, imageHeight, QImage::Format_ARGB32);
+    image.fill(Qt::transparent);
+    std::vector<double> depthBuffer(
+        static_cast<size_t>(imageWidth) * static_cast<size_t>(imageHeight),
+        -std::numeric_limits<double>::infinity());
+
+    auto toImagePoint = [&sceneBounds, pixelsPerSceneUnit](const QPointF& point) {
+        return QPointF(
+            (point.x() - sceneBounds.left()) * pixelsPerSceneUnit,
+            (point.y() - sceneBounds.top()) * pixelsPerSceneUnit);
+    };
+
+    for (const auto& triangle : triangles) {
+        QPointF points[3] = {
+            toImagePoint(triangle.vertices[0].point),
+            toImagePoint(triangle.vertices[1].point),
+            toImagePoint(triangle.vertices[2].point)
+        };
+        const double area = edgeFunction(points[0], points[1], points[2].x(), points[2].y());
+        if (std::abs(area) <= std::numeric_limits<double>::epsilon()) {
+            continue;
+        }
+
+        const int left = std::max(
+            0, static_cast<int>(std::floor(std::min({points[0].x(), points[1].x(), points[2].x()}))));
+        const int right = std::min(
+            imageWidth - 1,
+            static_cast<int>(std::ceil(std::max({points[0].x(), points[1].x(), points[2].x()}))));
+        const int top = std::max(
+            0, static_cast<int>(std::floor(std::min({points[0].y(), points[1].y(), points[2].y()}))));
+        const int bottom = std::min(
+            imageHeight - 1,
+            static_cast<int>(std::ceil(std::max({points[0].y(), points[1].y(), points[2].y()}))));
+
+        for (int y = top; y <= bottom; ++y) {
+            auto* scanline = reinterpret_cast<QRgb*>(image.scanLine(y));
+            for (int x = left; x <= right; ++x) {
+                const double sampleX = x + 0.5;
+                const double sampleY = y + 0.5;
+                const double w0 =
+                    edgeFunction(points[1], points[2], sampleX, sampleY) / area;
+                const double w1 =
+                    edgeFunction(points[2], points[0], sampleX, sampleY) / area;
+                const double w2 = 1.0 - w0 - w1;
+                constexpr double edgeTolerance = -1.0e-8;
+                if (w0 < edgeTolerance || w1 < edgeTolerance || w2 < edgeTolerance) {
+                    continue;
+                }
+
+                const double depth =
+                    w0 * triangle.vertices[0].depth
+                    + w1 * triangle.vertices[1].depth
+                    + w2 * triangle.vertices[2].depth;
+                const size_t bufferIndex =
+                    static_cast<size_t>(y) * static_cast<size_t>(imageWidth)
+                    + static_cast<size_t>(x);
+                if (depth <= depthBuffer[bufferIndex]) {
+                    continue;
+                }
+
+                depthBuffer[bufferIndex] = depth;
+                const gp_Vec normal(
+                    w0 * triangle.vertices[0].normal.X()
+                        + w1 * triangle.vertices[1].normal.X()
+                        + w2 * triangle.vertices[2].normal.X(),
+                    w0 * triangle.vertices[0].normal.Y()
+                        + w1 * triangle.vertices[1].normal.Y()
+                        + w2 * triangle.vertices[2].normal.Y(),
+                    w0 * triangle.vertices[0].normal.Z()
+                        + w1 * triangle.vertices[1].normal.Z()
+                        + w2 * triangle.vertices[2].normal.Z());
+                const QColor shaded =
+                    shadePixel(baseColor, normal, lightDirection, viewDirection, halfDirection);
+                scanline[x] = qRgba(
+                    shaded.red(), shaded.green(), shaded.blue(), shaded.alpha());
+            }
+        }
+    }
+
+    return ShadedImage{std::move(image), sceneBounds};
+}
+
+}  // namespace
 
 QGIViewPart::QGIViewPart()
 {
@@ -1082,8 +1426,8 @@ void QGIViewPart::drawBreakLines()
 {
     // Base::Console().message("QGIVP::drawBreakLines()\n");
 
-    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(getViewObject());
-    if (!dbv) {
+    auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(getViewObject());
+    if (!dvp) {
         return;
     }
 
@@ -1092,29 +1436,72 @@ void QGIViewPart::drawBreakLines()
         return;
     }
 
-    DrawBrokenView::BreakType breakType = static_cast<DrawBrokenView::BreakType>(vp->BreakLineType.getValue());
-    auto breaks = dbv->Breaks.getValues();
-    for (auto& breakObj : breaks) {
-        QGIBreakLine* breakLine = new QGIBreakLine();
-        addToGroupWithoutUpdate(breakLine);
+    auto dbv = dynamic_cast<TechDraw::DrawBrokenView*>(dvp);
+    if (dbv) {
+        DrawBrokenView::BreakType breakType =
+            static_cast<DrawBrokenView::BreakType>(vp->BreakLineType.getValue());
+        auto breaks = dbv->Breaks.getValues();
+        for (auto& breakObj : breaks) {
+            QGIBreakLine* breakLine = new QGIBreakLine();
+            addToGroupWithoutUpdate(breakLine);
 
-        Base::Vector3d direction = dbv->guiDirectionFromObj(*breakObj);
-        breakLine->setDirection(direction);
-        // the bounds describe two corners of the removed area in the view
-        std::pair<Base::Vector3d, Base::Vector3d> bounds = dbv->breakBoundsFromObj(*breakObj);
-        // the bounds are in 3d form, so we need to invert & rez them
-        Base::Vector3d topLeft     = Rez::guiX(DU::invertY(bounds.first));
-        Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
-        breakLine->setBounds(topLeft, bottomRight);
+            Base::Vector3d direction = dbv->guiDirectionFromObj(*breakObj);
+            breakLine->setDirection(direction);
+            std::pair<Base::Vector3d, Base::Vector3d> bounds =
+                dbv->breakBoundsFromObj(*breakObj);
+            Base::Vector3d topLeft = Rez::guiX(DU::invertY(bounds.first));
+            Base::Vector3d bottomRight = Rez::guiX(DU::invertY(bounds.second));
+            breakLine->setBounds(topLeft, bottomRight);
+            breakLine->setPos(0.0, 0.0);
+            breakLine->setLinePen(m_dashedLineGenerator->getLinePen(
+                vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
+            breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+            breakLine->setBreakType(breakType);
+            breakLine->setZValue(ZVALUE::SECTIONLINE);
+            Base::Color color = prefBreaklineColor();
+            breakLine->setBreakColor(color.asValue<QColor>());
+            breakLine->setRotation(-dbv->Rotation.getValue());
+            breakLine->draw();
+        }
+    }
+
+    const QRectF clip = breakLineClipBounds(dvp);
+    for (std::size_t index = 0; index < dvp->getBreakCount(); ++index) {
+        const auto points = dvp->getBreakLinePoints(index);
+        const Base::Vector3d tangent = dvp->getBreakLineDirection(index);
+        const QPointF first(Rez::guiX(points.first.x),
+                            Rez::guiX(-points.first.y));
+        const QPointF second(Rez::guiX(points.second.x),
+                             Rez::guiX(-points.second.y));
+        const QPointF guiTangent(tangent.x, -tangent.y);
+
+        auto* breakLine = new QGIBreakLine();
+        addToGroupWithoutUpdate(breakLine);
+        breakLine->setLineGeometry(first, second, guiTangent, clip);
         breakLine->setPos(0.0, 0.0);
-        breakLine->setLinePen(
-            m_dashedLineGenerator->getLinePen(vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
+        breakLine->setLinePen(m_dashedLineGenerator->getLinePen(
+            vp->BreakLineStyle.getValue(), vp->HiddenWidth.getValue()));
         breakLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
-        breakLine->setBreakType(breakType);
+        breakLine->setBreakType(dvp->getBreakType(index));
         breakLine->setZValue(ZVALUE::SECTIONLINE);
-        Base::Color color = prefBreaklineColor();
-        breakLine->setBreakColor(color.asValue<QColor>());
-        breakLine->setRotation(-dbv->Rotation.getValue());
+        breakLine->setBreakColor(prefBreaklineColor().asValue<QColor>());
+        breakLine->setDeleteCallback([dvp, index]() {
+            QTimer::singleShot(0, [dvp, index]() {
+                App::Document* document = dvp ? dvp->getDocument() : nullptr;
+                if (!document) {
+                    return;
+                }
+                document->openTransaction(
+                    QT_TRANSLATE_NOOP("Command", "Remove view break"));
+                if (!dvp->removeBreak(index)) {
+                    document->abortTransaction();
+                    return;
+                }
+                document->commitTransaction();
+                dvp->recomputeFeature();
+                dvp->requestPaint();
+            });
+        });
         breakLine->draw();
     }
 }
