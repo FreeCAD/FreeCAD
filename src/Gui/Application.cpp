@@ -76,6 +76,7 @@
 #include "CommandActionPy.h"
 #include "CommandPy.h"
 #include "Control.h"
+#include "Dialogs/DlgAbout.h"
 #include "PreferencePages/DlgSettingsCacheDirectory.h"
 #include "DocumentPy.h"
 #include "DocumentRecovery.h"
@@ -97,6 +98,7 @@
 #include "PythonConsolePy.h"
 #include "MainWindowPy.h"
 #include "MDIViewPy.h"
+#include "MDIViewPyWrap.h"
 #include "MDIViewWithCamera.h"
 #include "Placement.h"
 #include "SoFCDB.h"
@@ -2387,6 +2389,7 @@ void Application::initTypes()
     // views
     Gui::BaseView                               ::init();
     Gui::MDIView                                ::init();
+    Gui::MDIViewPyWrap                          ::init();
     Gui::MDIViewWithCamera						::init();
     Gui::View3DInventor                         ::init();
     Gui::AbstractSplitView                      ::init();
@@ -2396,6 +2399,7 @@ void Application::initTypes()
     Gui::PythonEditorView                       ::init();
     Gui::ImageView                              ::init();
     Gui::GraphvizView                           ::init();
+    Gui::Dialog::LicenseView                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
     Gui::ViewProviderExtension                  ::init();
