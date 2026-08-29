@@ -106,7 +106,7 @@ void MeasureArea::parseSelection(const App::MeasureSelection& selection)
 App::DocumentObjectExecReturn* MeasureArea::execute()
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
-    const std::vector<std::string>& subElements = Elements.getSubValues();
+    const std::vector<std::string> subElements = Elements.getSubValues(true);
 
     double result(0.0);
 
@@ -145,7 +145,7 @@ void MeasureArea::onChanged(const App::Property* prop)
 Base::Placement MeasureArea::getPlacement() const
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
-    const std::vector<std::string>& subElements = Elements.getSubValues();
+    const std::vector<std::string> subElements = Elements.getSubValues(true);
 
     if (objects.empty() || subElements.empty()) {
         return Base::Placement();

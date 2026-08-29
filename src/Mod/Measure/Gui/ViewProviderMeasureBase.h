@@ -29,6 +29,7 @@
 
 #include <Inventor/SbVec3f.h>
 #include <Inventor/fields/SoSFFloat.h>
+#include <Inventor/fields/SoSFVec3f.h>
 
 #include <App/Application.h>
 #include <App/PropertyStandard.h>
@@ -48,12 +49,14 @@ class SoPickStyle;
 class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTranslate2Dragger;
+class SoSwitch;
 // NOLINTEND
 
 namespace Gui
 {
 class SoFrameLabel;
-}
+class SoFCSelectionRoot;
+}  // namespace Gui
 
 
 namespace MeasureGui
@@ -201,18 +204,36 @@ public:
     ViewProviderMeasure();
     ~ViewProviderMeasure() override;
 
+    void attach(App::DocumentObject* pcObj) override;
+    void beforeDelete() override;
     void redrawAnnotation() override;
     void positionAnno(const Measure::MeasureBase* measureObject) override;
+    void finishRestoring() override;
 
 protected:
     void onChanged(const App::Property* prop) override;
 
     virtual Base::Vector3d getBasePosition();
     virtual Base::Vector3d getTextPosition();
+    virtual SbVec3f getLeaderLineStartOffset(
+        const Base::Vector3d& basePosition,
+        const Base::Vector3d& labelWorldPosition
+    ) const;
 
 private:
+    void ensureMeasuredGeometryHighlight();
+    void attachMeasuredGeometryHighlightToViews();
+    void detachMeasuredGeometryHighlightFromViews();
+    void clearMeasuredGeometryHighlight();
+    void updateMeasuredGeometryHighlight();
+
     SoCoordinate3* pCoords;
     SoIndexedLineSet* pLines;
+    SoSFVec3f* pLeaderLineStartOffset;
+    SoSeparator* pMeasuredGeometryHighlight = nullptr;
+    SoSwitch* pMeasuredGeometryVisibilitySwitch = nullptr;
+    Gui::SoFCSelectionRoot* pMeasuredGeometrySelectionRoot = nullptr;
+    fastsignals::connection _mDocumentRecomputedConnection;
 };
 
 
@@ -225,6 +246,12 @@ public:
     {
         sPixmap = "Measurement-Area";
     }
+
+protected:
+    SbVec3f getLeaderLineStartOffset(
+        const Base::Vector3d& basePosition,
+        const Base::Vector3d& labelWorldPosition
+    ) const override;
 };
 
 
@@ -233,10 +260,7 @@ class ViewProviderMeasureLength: public ViewProviderMeasure
     PROPERTY_HEADER(MeasureGui::ViewProviderMeasureLength);
 
 public:
-    ViewProviderMeasureLength()
-    {
-        sPixmap = "Measurement-Distance";
-    }
+    ViewProviderMeasureLength();
 };
 
 

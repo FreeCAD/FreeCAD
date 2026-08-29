@@ -94,7 +94,7 @@ void MeasurePosition::parseSelection(const App::MeasureSelection& selection)
 App::DocumentObjectExecReturn* MeasurePosition::execute()
 {
     const App::DocumentObject* object = Element.getValue();
-    const std::vector<std::string>& subElements = Element.getSubValues();
+    const std::vector<std::string> subElements = Element.getSubValues(true);
     if (subElements.empty()) {
         return {};
     }

@@ -166,7 +166,7 @@ Base::Vector3d MeasureRadius::getPointOnCurve() const
 Part::MeasureRadiusInfoPtr MeasureRadius::getMeasureInfoFirst() const
 {
     const App::DocumentObject* object = Element.getValue();
-    const std::vector<std::string>& subElements = Element.getSubValues();
+    const std::vector<std::string> subElements = Element.getSubValues(true);
 
     if (!object || subElements.empty()) {
         // NOLINTNEXTLINE(modernize-return-braced-init-list)

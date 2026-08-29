@@ -146,7 +146,7 @@ Base::Vector3d MeasureDiameter::getPointOnCurve() const
 Part::MeasureRadiusInfoPtr MeasureDiameter::getMeasureInfoFirst() const
 {
     const App::DocumentObject* object = Element.getValue();
-    const std::vector<std::string>& subElements = Element.getSubValues();
+    const std::vector<std::string> subElements = Element.getSubValues(true);
 
     if (!object || subElements.empty()) {
         return std::make_shared<Part::MeasureRadiusInfo>();

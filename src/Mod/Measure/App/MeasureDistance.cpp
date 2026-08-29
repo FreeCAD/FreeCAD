@@ -184,7 +184,7 @@ bool MeasureDistance::getShape(App::PropertyLinkSub* prop, TopoDS_Shape& rShape)
 {
 
     App::DocumentObject* ob = prop->getValue();
-    std::vector<std::string> subs = prop->getSubValues();
+    std::vector<std::string> subs = prop->getSubValues(true);
 
     if (!ob || !ob->isValid() || subs.empty()) {
         return false;
@@ -392,10 +392,10 @@ void MeasureDistance::setValues(const gp_Pnt& p1, const gp_Pnt& p2)
 App::DocumentObjectExecReturn* MeasureDistance::execute()
 {
     App::DocumentObject* ob1 = Element1.getValue();
-    std::vector<std::string> subs1 = Element1.getSubValues();
+    std::vector<std::string> subs1 = Element1.getSubValues(true);
 
     App::DocumentObject* ob2 = Element2.getValue();
-    std::vector<std::string> subs2 = Element2.getSubValues();
+    std::vector<std::string> subs2 = Element2.getSubValues(true);
 
     if (!ob1 || !ob1->isValid() || !ob2 || !ob2->isValid()) {
         return new App::DocumentObjectExecReturn("Submitted object(s) is not valid");

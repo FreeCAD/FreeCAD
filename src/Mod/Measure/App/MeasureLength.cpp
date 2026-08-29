@@ -97,7 +97,7 @@ void MeasureLength::parseSelection(const App::MeasureSelection& selection)
 App::DocumentObjectExecReturn* MeasureLength::execute()
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
-    const std::vector<std::string>& subElements = Elements.getSubValues();
+    const std::vector<std::string> subElements = Elements.getSubValues(true);
 
     double result(0.0);
 
@@ -137,7 +137,7 @@ void MeasureLength::onChanged(const App::Property* prop)
 Base::Placement MeasureLength::getPlacement() const
 {
     const std::vector<App::DocumentObject*>& objects = Elements.getValues();
-    const std::vector<std::string>& subElements = Elements.getSubValues();
+    const std::vector<std::string> subElements = Elements.getSubValues(true);
 
     if (!objects.size() || !subElements.size()) {
         return Base::Placement();

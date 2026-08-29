@@ -25,13 +25,21 @@
 #include <QMessageBox>
 #include <QAction>
 #include <QMenu>
+#include <algorithm>
+#include <cmath>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <BRep_Builder.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepGProp.hxx>
+#include <Bnd_Box.hxx>
+#include <GProp_GProps.hxx>
+#include <TopExp_Explorer.hxx>
 
 #include <Base/Exception.h>
 #include <Base/ServiceProvider.h>
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
@@ -43,6 +51,7 @@
 #include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureAddSub.h>
+#include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <Mod/Part/Gui/SoBrepEdgeSet.h>
@@ -57,6 +66,179 @@
 using namespace PartDesignGui;
 
 PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProvider, PartGui::ViewProviderPart)
+
+namespace
+{
+
+TopoDS_Shape findContainingSolid(const TopoDS_Shape& shape, const TopoDS_Shape& selected)
+{
+    if (shape.IsNull() || selected.IsNull()) {
+        return {};
+    }
+
+    if (selected.ShapeType() == TopAbs_SOLID) {
+        return selected;
+    }
+
+    for (TopExp_Explorer solids(shape, TopAbs_SOLID); solids.More(); solids.Next()) {
+        const TopoDS_Shape solid = solids.Current();
+        for (TopExp_Explorer subshapes(solid, selected.ShapeType()); subshapes.More();
+             subshapes.Next()) {
+            if (subshapes.Current().IsSame(selected)) {
+                return solid;
+            }
+        }
+    }
+
+    return {};
+}
+
+bool solidsGeometricallyEquivalent(const TopoDS_Shape& first, const TopoDS_Shape& second)
+{
+    if (first.IsNull() || second.IsNull() || first.ShapeType() != TopAbs_SOLID
+        || second.ShapeType() != TopAbs_SOLID) {
+        return false;
+    }
+
+    GProp_GProps firstProps;
+    GProp_GProps secondProps;
+    BRepGProp::VolumeProperties(first, firstProps);
+    BRepGProp::VolumeProperties(second, secondProps);
+
+    const double firstVolume = std::abs(firstProps.Mass());
+    const double secondVolume = std::abs(secondProps.Mass());
+    const double volumeScale = std::max({1.0, firstVolume, secondVolume});
+    if (std::abs(firstVolume - secondVolume) > volumeScale * 1.0e-8) {
+        return false;
+    }
+
+    const gp_Pnt firstCenter = firstProps.CentreOfMass();
+    const gp_Pnt secondCenter = secondProps.CentreOfMass();
+    if (firstCenter.Distance(secondCenter) > 1.0e-6) {
+        return false;
+    }
+
+    Bnd_Box firstBox;
+    Bnd_Box secondBox;
+    BRepBndLib::Add(first, firstBox);
+    BRepBndLib::Add(second, secondBox);
+    if (firstBox.IsVoid() || secondBox.IsVoid()) {
+        return false;
+    }
+
+    Standard_Real firstXMin, firstYMin, firstZMin, firstXMax, firstYMax, firstZMax;
+    Standard_Real secondXMin, secondYMin, secondZMin, secondXMax, secondYMax, secondZMax;
+    firstBox.Get(firstXMin, firstYMin, firstZMin, firstXMax, firstYMax, firstZMax);
+    secondBox.Get(secondXMin, secondYMin, secondZMin, secondXMax, secondYMax, secondZMax);
+
+    const double boxScale = std::max(
+        {1.0,
+         std::abs(firstXMax - firstXMin),
+         std::abs(firstYMax - firstYMin),
+         std::abs(firstZMax - firstZMin),
+         std::abs(secondXMax - secondXMin),
+         std::abs(secondYMax - secondYMin),
+         std::abs(secondZMax - secondZMin)}
+    );
+    const double tolerance = boxScale * 1.0e-7;
+
+    return std::abs(firstXMin - secondXMin) <= tolerance
+        && std::abs(firstYMin - secondYMin) <= tolerance
+        && std::abs(firstZMin - secondZMin) <= tolerance
+        && std::abs(firstXMax - secondXMax) <= tolerance
+        && std::abs(firstYMax - secondYMax) <= tolerance
+        && std::abs(firstZMax - secondZMax) <= tolerance;
+}
+
+bool containsEquivalentSolid(const PartDesign::Feature* feature, const TopoDS_Shape& solid)
+{
+    if (!feature || solid.IsNull()) {
+        return false;
+    }
+
+    const TopoDS_Shape shape = feature->Shape.getValue();
+    if (shape.IsNull()) {
+        return false;
+    }
+
+    for (TopExp_Explorer solids(shape, TopAbs_SOLID); solids.More(); solids.Next()) {
+        if (solidsGeometricallyEquivalent(solids.Current(), solid)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+PartDesign::Feature* findFeatureThatIntroducedSelectedSolid(
+    PartDesign::Feature* currentFeature,
+    const std::vector<std::string>& subNames
+)
+{
+    if (!currentFeature || subNames.empty() || subNames.front().empty()) {
+        return nullptr;
+    }
+
+    const Part::TopoShape currentShape = currentFeature->Shape.getShape();
+    if (currentShape.isNull()) {
+        return nullptr;
+    }
+
+    App::SubObjectT selectedReference(currentFeature, subNames.front().c_str());
+    std::string elementName = selectedReference.getOldElementName();
+    if (elementName.empty()) {
+        if (const char* name = selectedReference.getElementName()) {
+            elementName = name;
+        }
+    }
+    if (elementName.empty()) {
+        return nullptr;
+    }
+
+    const Part::TopoShape selectedShape = currentShape.getSubTopoShape(elementName.c_str(), true);
+    if (selectedShape.isNull()) {
+        return nullptr;
+    }
+
+    const TopoDS_Shape selectedSolid
+        = findContainingSolid(currentShape.getShape(), selectedShape.getShape());
+    if (selectedSolid.IsNull()) {
+        return nullptr;
+    }
+
+    // This special handling is only meaningful when the current Part Design result contains
+    // several independent solids. For a normal single-solid feature, retain FreeCAD's standard
+    // feature deletion semantics.
+    int solidCount = 0;
+    for (TopExp_Explorer solids(currentShape.getShape(), TopAbs_SOLID); solids.More(); solids.Next()) {
+        ++solidCount;
+        if (solidCount > 1) {
+            break;
+        }
+    }
+    if (solidCount <= 1) {
+        return nullptr;
+    }
+
+    // Walk backwards through BaseFeature while the exact selected solid already existed. The last
+    // matching feature is the one that introduced that independent solid. This is important for a
+    // cumulative multi-solid Part Design tip: clicking an older cylinder still selects a face of
+    // the current tip, but deleting that current tip would remove the newest cylinder instead.
+    PartDesign::Feature* introducedBy = currentFeature;
+    for (App::DocumentObject* base = currentFeature->BaseFeature.getValue(); base;) {
+        auto* baseFeature = dynamic_cast<PartDesign::Feature*>(base);
+        if (!baseFeature || !containsEquivalentSolid(baseFeature, selectedSolid)) {
+            break;
+        }
+
+        introducedBy = baseFeature;
+        base = baseFeature->BaseFeature.getValue();
+    }
+
+    return introducedBy == currentFeature ? nullptr : introducedBy;
+}
+
+}  // namespace
 
 ViewProvider::ViewProvider()
 {
@@ -319,9 +501,31 @@ QIcon ViewProvider::mergeColorfulOverlayIcons(const QIcon& orig) const
     return Gui::ViewProvider::mergeColorfulOverlayIcons(mergedicon);
 }
 
-bool ViewProvider::onDelete(const std::vector<std::string>&)
+bool ViewProvider::onDelete(const std::vector<std::string>& subNames)
 {
     PartDesign::Feature* feature = getObject<PartDesign::Feature>();
+
+    // When a Body contains several independent solids, the 3D selection always belongs to the
+    // current cumulative tip. If the clicked solid was actually introduced by an older feature,
+    // deleting the tip removes the newest solid instead of the one the user clicked. Redirect the
+    // deletion to the feature that introduced the selected independent solid.
+    if (auto* selectedFeature = findFeatureThatIntroducedSelectedSolid(feature, subNames)) {
+        App::Document* document = feature->getDocument();
+        if (document && selectedFeature->getDocument() == document) {
+            if (auto* selectedViewProvider = dynamic_cast<ViewProvider*>(
+                    Gui::Application::Instance->getViewProvider(selectedFeature)
+                )) {
+                selectedViewProvider->onDelete({});
+            }
+
+            const std::string selectedFeatureName = selectedFeature->getNameInDocument();
+            FCMD_DOC_CMD(document, "removeObject('" << selectedFeatureName << "')");
+            FCMD_DOC_CMD(document, "recompute()");
+
+            // Returning false prevents Std_Delete from deleting the current tip as well.
+            return false;
+        }
+    }
 
     App::DocumentObject* previousfeat = feature->BaseFeature.getValue();
 

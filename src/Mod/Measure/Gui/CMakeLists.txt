@@ -77,6 +77,14 @@ SET(MeasureGuiIcon_SVG
 
 add_library(MeasureGui SHARED ${MeasureGui_SRCS} ${MeasureGuiIcon_SVG})
 
+# Keep the measured-geometry helper explicitly attached to MeasureGui.
+# This source provides the non-inline definitions used by ViewProviderMeasureBase
+# and TaskMeasure; omitting it produces unresolved externals at link time.
+target_sources(MeasureGui PRIVATE
+    MeasuredGeometryHelper.cpp
+    MeasuredGeometryHelper.h
+)
+
 if(FREECAD_USE_PCH)
     target_precompile_headers(MeasureGui PRIVATE
             $<$<COMPILE_LANGUAGE:CXX>:"${CMAKE_CURRENT_LIST_DIR}/PreCompiled.h">

@@ -319,31 +319,25 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
         "Display the X, Y and Z components of the distance"
     );
 
-    // vert indexes used to create the annotation lines
+    // Draw the measured segment directly; use one helper line from the segment to the label.
     const size_t lineCount(3);
     static const int32_t lines[lineCount] = {
-        2,
-        3,
-        -1  // dimension line
+        0,
+        1,
+        -1  // measured segment
     };
 
-    const size_t lineCountSecondary(9);
+    const size_t lineCountSecondary(3);
     static const int32_t linesSecondary[lineCountSecondary] = {
-        0,
         2,
-        -1,  // extension line 1
-        1,
         3,
-        -1,  // extension line 2
-        2,
-        4,
         -1  // label helper line
     };
 
-    // Line Coordinates
-    // 0-1 points on shape (dimension points)
-    // 2-3 ends of extension lines/dimension line
-    // 4 label position
+    // Line Coordinates (local X is aligned with Position1 -> Position2)
+    // 0-1 measured points
+    // 2 closest point on the measured segment to the label
+    // 3 label position
     pCoords = new SoCoordinate3();
     pCoords->ref();
 
@@ -351,16 +345,15 @@ ViewProviderMeasureDistance::ViewProviderMeasureDistance()
     engineCoords->a.connectFrom(&fieldDistance);
     engineCoords->A.connectFrom(&pLabelTranslation->translation);
     engineCoords->expression.setValue(
-        "ta=a/2; tb=A[1]; oA=vec3f(ta, 0, 0); oB=vec3f(-ta, 0, 0); "
-        "oC=vec3f(ta, tb, 0); oD=vec3f(-ta, tb, 0)"
+        "ta=a/2; tx=A[0]; tc=(tx>ta)?ta:((tx<-ta)?-ta:tx); "
+        "oA=vec3f(ta, 0, 0); oB=vec3f(-ta, 0, 0); oC=vec3f(tc, 0, 0)"
     );
 
     auto engineCat = new SoConcatenate(SoMFVec3f::getClassTypeId());
     engineCat->input[0]->connectFrom(&engineCoords->oA);
     engineCat->input[1]->connectFrom(&engineCoords->oB);
     engineCat->input[2]->connectFrom(&engineCoords->oC);
-    engineCat->input[3]->connectFrom(&engineCoords->oD);
-    engineCat->input[4]->connectFrom(&pLabelTranslation->translation);
+    engineCat->input[3]->connectFrom(&pLabelTranslation->translation);
 
     pCoords->point.connectFrom(engineCat->output);
     pCoords->point.setNum(engineCat->output->getNumConnections());

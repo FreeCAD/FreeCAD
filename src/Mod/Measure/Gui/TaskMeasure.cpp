@@ -30,8 +30,11 @@
 
 #include <App/DocumentObjectGroup.h>
 #include <App/Link.h>
-#include <Mod/Measure/App/MeasureDistance.h>
 #include <App/PropertyStandard.h>
+#include <Mod/Measure/App/MeasureDiameter.h>
+#include <Mod/Measure/App/MeasureDistance.h>
+#include <Mod/Measure/App/MeasureRadius.h>
+#include "MeasuredGeometryHelper.h"
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -53,6 +56,7 @@ using enum Gui::InputHint::UserInput;
 
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
+#include <algorithm>
 #include <array>
 
 using namespace MeasureGui;
@@ -126,6 +130,179 @@ QString preferredUnitForMeasureType(const App::MeasureType* measureType)
     std::string unitString;
     Base::UnitsApi::schemaTranslate(Base::Quantity(1.0, unit), factor, unitString);
     return QString::fromStdString(unitString);
+}
+
+bool referencesSameSubElement(
+    App::DocumentObject* firstObject,
+    const std::string& firstSubElement,
+    App::DocumentObject* secondObject,
+    const std::string& secondSubElement
+)
+{
+    return MeasureGui::MeasuredGeometryHelper::referencesSameGeometry(
+        firstObject,
+        firstSubElement,
+        secondObject,
+        secondSubElement
+    );
+}
+
+bool referencesSameCircularGeometry(
+    App::DocumentObject* firstObject,
+    const std::string& firstSubElement,
+    App::DocumentObject* secondObject,
+    const std::string& secondSubElement
+)
+{
+    auto firstBoundaries = MeasureGui::MeasuredGeometryHelper::getCircularBoundarySubnames(
+        firstObject,
+        firstSubElement
+    );
+    auto secondBoundaries = MeasureGui::MeasuredGeometryHelper::getCircularBoundarySubnames(
+        secondObject,
+        secondSubElement
+    );
+
+    // Compare a circular face and its edge through the same boundary reference.
+    if (firstBoundaries.empty()) {
+        firstBoundaries.push_back(firstSubElement);
+    }
+    if (secondBoundaries.empty()) {
+        secondBoundaries.push_back(secondSubElement);
+    }
+
+    for (const auto& firstBoundary : firstBoundaries) {
+        for (const auto& secondBoundary : secondBoundaries) {
+            if (referencesSameSubElement(firstObject, firstBoundary, secondObject, secondBoundary)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+struct MeasuredGeometryReference
+{
+    App::DocumentObject* object {nullptr};
+    std::string subElement;
+};
+
+std::vector<MeasuredGeometryReference> getMeasuredGeometryReferences(Measure::MeasureBase* measure)
+{
+    std::vector<MeasuredGeometryReference> references;
+    if (!measure) {
+        return references;
+    }
+
+    // Collect link-based inputs generically, including Python-backed Center of Mass.
+    for (const auto& propertyName : measure->getInputProps()) {
+        App::Property* property = measure->getPropertyByName(propertyName.c_str());
+        if (!property) {
+            continue;
+        }
+
+        if (auto* linkSub = dynamic_cast<App::PropertyLinkSub*>(property)) {
+            App::DocumentObject* object = linkSub->getValue();
+            if (!object) {
+                continue;
+            }
+
+            const auto subElements = linkSub->getSubValues(true);
+            if (subElements.empty()) {
+                // No subname means the whole object.
+                references.push_back({object, {}});
+            }
+            else {
+                for (const auto& subElement : subElements) {
+                    references.push_back({object, subElement});
+                }
+            }
+            continue;
+        }
+
+        if (auto* linkSubList = dynamic_cast<App::PropertyLinkSubList*>(property)) {
+            const auto& objects = linkSubList->getValues();
+            const auto subElements = linkSubList->getSubValues(true);
+            const auto count = std::min(objects.size(), subElements.size());
+
+            for (std::size_t i = 0; i < count; ++i) {
+                if (objects[i]) {
+                    references.push_back({objects[i], subElements[i]});
+                }
+            }
+
+            // Also support whole-object entries in a link-sub-list.
+            if (subElements.empty()) {
+                for (auto* object : objects) {
+                    if (object) {
+                        references.push_back({object, {}});
+                    }
+                }
+            }
+        }
+    }
+
+    return references;
+}
+
+bool referencesSameGeometryForMeasurementKind(
+    const Measure::MeasureBase* measurement,
+    const MeasuredGeometryReference& first,
+    const MeasuredGeometryReference& second
+)
+{
+    if (dynamic_cast<const Measure::MeasureRadius*>(measurement)
+        || dynamic_cast<const Measure::MeasureDiameter*>(measurement)) {
+        return referencesSameCircularGeometry(
+            first.object,
+            first.subElement,
+            second.object,
+            second.subElement
+        );
+    }
+
+    return referencesSameSubElement(first.object, first.subElement, second.object, second.subElement);
+}
+
+bool isDuplicateSameTypeMeasurement(Measure::MeasureBase* candidate)
+{
+    if (!candidate || !candidate->getDocument()) {
+        return false;
+    }
+
+    const auto candidateReferences = getMeasuredGeometryReferences(candidate);
+    if (candidateReferences.empty()) {
+        // Geometry-free measurements are not constrained by this rule.
+        return false;
+    }
+
+    for (auto* object : candidate->getDocument()->getObjects()) {
+        if (!object || object == candidate || object->isRemoving()) {
+            continue;
+        }
+
+        auto* existing = dynamic_cast<Measure::MeasureBase*>(object);
+        if (!existing || existing->getTypeId() != candidate->getTypeId()) {
+            // Different measurement kinds on the same geometry remain valid.
+            continue;
+        }
+
+        const auto existingReferences = getMeasuredGeometryReferences(existing);
+        for (const auto& candidateReference : candidateReferences) {
+            for (const auto& existingReference : existingReferences) {
+                if (referencesSameGeometryForMeasurementKind(
+                        candidate,
+                        candidateReference,
+                        existingReference
+                    )) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 }  // namespace
@@ -416,20 +593,26 @@ void TaskMeasure::tryUpdate()
         createObject(measureType);
     }
 
-    // we have a valid measure object so we can enable the annotate button
-    enableAnnotateButton(true);
-
     if (_mMeasureObject) {
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
+
+        // Reject a second measurement of the same type on geometry already used by that type.
+        if (isDuplicateSameTypeMeasurement(_mMeasureObject)) {
+            removeObject();
+            valueResult->setText(QStringLiteral("-"));
+            enableAnnotateButton(false);
+            return;
+        }
 
         syncDisplayUnit();
         refreshResult();
 
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
+        enableAnnotateButton(true);
+        _mMeasureObject->purgeTouched();
     }
-    _mMeasureObject->purgeTouched();
 }
 
 void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
@@ -495,8 +678,12 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
         return;
     }
 
-    // Init the position of the annotation
-    dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)->positionAnno(measure);
+    // Redraw the preview immediately so its measured-geometry highlight appears before saving.
+    if (auto* measureView = dynamic_cast<MeasureGui::ViewProviderMeasureBase*>(viewObject)) {
+        measureView->positionAnno(measure);
+        measureView->redrawAnnotation();
+        measureView->show();
+    }
 
     // Set the ShowDelta Property if it exists on the measurements view object
     auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
@@ -567,6 +754,12 @@ bool TaskMeasure::apply()
 
 bool TaskMeasure::apply(bool reset)
 {
+    // Recheck on save as well, including auto-save paths.
+    if (!_mMeasureObject || isDuplicateSameTypeMeasurement(_mMeasureObject)) {
+        enableAnnotateButton(false);
+        return false;
+    }
+
     ensureGroup(_mMeasureObject);
     _mMeasureObject = nullptr;
     if (reset) {

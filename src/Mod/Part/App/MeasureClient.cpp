@@ -284,10 +284,12 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
         return std::make_shared<MeasureLengthInfo>(false, 0.0, Base::Matrix4D());
     }
 
-    // Get Center of mass as the attachment point of the label
-    GProp_GProps gprops;
-    BRepGProp::LinearProperties(shape, gprops);
-    auto origin = gprops.CentreOfMass();
+    // Anchor the annotation on the edge; an edge center of mass may lie off a curved edge.
+    // The parameter midpoint is intentionally used only as a stable point on the curve, not as a
+    // claim that this is the half-length point for non-uniformly parameterized curves.
+    BRepAdaptor_Curve curve(TopoDS::Edge(shape));
+    const double middleParameter = 0.5 * (curve.FirstParameter() + curve.LastParameter());
+    const gp_Pnt origin = curve.Value(middleParameter);
 
     Base::Placement placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), Base::Rotation());
     return std::make_shared<MeasureLengthInfo>(true, getLength(shape), placement);
