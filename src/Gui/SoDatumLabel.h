@@ -75,12 +75,20 @@ public:
         ARCLENGTH
     };
 
+    enum class SelectionPart
+    {
+        Presentation,
+        Annotation
+    };
+
     static void initClass();
     SoDatumLabel();
 
     /*The points have to be on XY plane, ie they need to be 2D points.
     To draw on other planes, you need to attach a SoTransform to the SoDatumLabel (or parent).*/
     void setPoints(SbVec3f p1, SbVec3f p2);
+
+    [[nodiscard]] SelectionPart classifySelectionPoint(const SbVec3f& objectPoint) const;
 
     /* returns the center point of the text of the label */
     SbVec3f getLabelTextCenter();

@@ -84,10 +84,11 @@ struct ScreenPreselectionPolicy
 struct PreselectionPriority
 {
     static constexpr int None = 0;
-    static constexpr int ConstraintDatumLabel = 100;
+    static constexpr int ConstraintDatumPresentation = 100;
     static constexpr int Axis = 300;
     static constexpr int ConstraintFallback = 350;
     static constexpr int Edge = 400;
+    static constexpr int ConstraintDatumAnnotation = 425;
     static constexpr int ConstraintIcon = 450;
     static constexpr int Point = 500;
 };
@@ -103,8 +104,11 @@ int preselectionPriority(const EditModeCoinManager::PreselectionResult& result)
             if (result.ConstraintKind == Result::ConstraintHitKind::Icon) {
                 return PreselectionPriority::ConstraintIcon;
             }
-            if (result.ConstraintKind == Result::ConstraintHitKind::DatumLabel) {
-                return PreselectionPriority::ConstraintDatumLabel;
+            if (result.ConstraintKind == Result::ConstraintHitKind::DatumPresentation) {
+                return PreselectionPriority::ConstraintDatumPresentation;
+            }
+            if (result.ConstraintKind == Result::ConstraintHitKind::DatumAnnotation) {
+                return PreselectionPriority::ConstraintDatumAnnotation;
             }
             return PreselectionPriority::ConstraintFallback;
         case Result::HitKind::Edge:
@@ -1247,8 +1251,11 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
             case ConstraintResult::HitKind::Icon:
                 target.ConstraintKind = PreselectionResult::ConstraintHitKind::Icon;
                 break;
-            case ConstraintResult::HitKind::DatumLabel:
-                target.ConstraintKind = PreselectionResult::ConstraintHitKind::DatumLabel;
+            case ConstraintResult::HitKind::DatumPresentation:
+                target.ConstraintKind = PreselectionResult::ConstraintHitKind::DatumPresentation;
+                break;
+            case ConstraintResult::HitKind::DatumAnnotation:
+                target.ConstraintKind = PreselectionResult::ConstraintHitKind::DatumAnnotation;
                 break;
             case ConstraintResult::HitKind::None:
                 target.ConstraintKind = PreselectionResult::ConstraintHitKind::None;

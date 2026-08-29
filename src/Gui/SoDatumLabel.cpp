@@ -1299,6 +1299,14 @@ void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
     point[2] = z;
 }
 
+SoDatumLabel::SelectionPart SoDatumLabel::classifySelectionPoint(const SbVec3f& objectPoint) const
+{
+    constexpr float annotationThreshold = (ZCONSTR + ZARROW_TEXT_OFFSET) * 0.5F;
+
+    return objectPoint[2] > annotationThreshold ? SelectionPart::Annotation
+                                                : SelectionPart::Presentation;
+}
+
 void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
 {
     if (!points || numPoints <= 0 || !m_LineVertexProperty || !m_LineSet

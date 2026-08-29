@@ -195,7 +195,8 @@ public:
         {
             None,
             Icon,
-            DatumLabel
+            DatumPresentation,
+            DatumAnnotation
         };
 
         enum SpecialValues
