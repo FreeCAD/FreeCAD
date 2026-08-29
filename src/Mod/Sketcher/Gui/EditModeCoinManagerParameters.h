@@ -146,6 +146,8 @@ struct DrawingParameters
     float axisTransparency = 0.3f;
     // transparency of axis when occluded
     float occludedAxisTransparency = 0.9f;
+    // The visible origin point must explicitly override inherited transparency.
+    static constexpr float originTransparency = 0.0f;
 
     int CurveWidth = 2;                      // width of normal edges
     int ConstructionWidth = 1;               // width of construction edges
