@@ -248,6 +248,7 @@ SET(bimtests_SRCS
     bimtests/TestArchWindowGui.py
     bimtests/TestArchStairs.py
     bimtests/TestArchStructure.py
+    bimtests/test_structure_column_flip_v1_0_v1_1.FCStd
     bimtests/TestArchPipe.py
     bimtests/TestArchCurtainWall.py
     bimtests/TestArchProfile.py
