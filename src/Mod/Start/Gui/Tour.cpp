@@ -266,7 +266,12 @@ private:
         QList<TourStop> candidates {
             {nullptr, kWelcomeId, tr("Welcome"), tr("Welcome to the project"), QString(), {}, false, false},
 
-            {findDock({QStringLiteral("Tree View"), QStringLiteral("Model")}),
+            {findDock(
+                 {QStringLiteral("Model"),
+                  QStringLiteral("Tree view"),
+                  QStringLiteral("Std_TreeView"),
+                  QStringLiteral("Std_ComboView")}
+             ),
              QStringLiteral("Tree"),
              tr("Tree"),
              tr("Read the tree"),
@@ -294,7 +299,12 @@ private:
              {}},
 
 
-            {findDock({QStringLiteral("Tree View"), QStringLiteral("Model")}),
+            {findDock(
+                 {QStringLiteral("Model"),
+                  QStringLiteral("Tree view"),
+                  QStringLiteral("Std_TreeView"),
+                  QStringLiteral("Std_ComboView")}
+             ),
              QStringLiteral("Origin Folder"),
              tr("Origin Folder"),
              tr("Hidden by default"),
@@ -315,7 +325,12 @@ private:
              true,
              true},
 
-            {findDock({QStringLiteral("Tree View"), QStringLiteral("Model")}),
+            {findDock(
+                 {QStringLiteral("Model"),
+                  QStringLiteral("Tree view"),
+                  QStringLiteral("Std_TreeView"),
+                  QStringLiteral("Std_ComboView")}
+             ),
              QStringLiteral("Rollback"),
              tr("Rollback"),
              tr("Editing an earlier feature"),
@@ -496,7 +511,12 @@ private:
              false,
              QStringLiteral("PartWorkbench")},
 
-            {findDock({QStringLiteral("Tree View"), QStringLiteral("Model")}),
+            {findDock(
+                 {QStringLiteral("Model"),
+                  QStringLiteral("Tree view"),
+                  QStringLiteral("Std_TreeView"),
+                  QStringLiteral("Std_ComboView")}
+             ),
              QStringLiteral("Layout"),
              tr("Layout"),
              tr("Make it yours"),
@@ -527,7 +547,7 @@ private:
              true,
              false},
 
-            {_mainWindow->findChild<QDockWidget*>(QStringLiteral("Std_ReportView")),
+            {findDock({QStringLiteral("Report view"), QStringLiteral("Std_ReportView")}),
              QStringLiteral("Report View"),
              tr("Report View"),
              tr("Check the Report view"),
@@ -647,10 +667,10 @@ private:
         return strip;
     }
 
-    QDockWidget* findDock(const QStringList& titles) const
+    QDockWidget* findDock(const QStringList& objectNames) const
     {
         for (auto dock : _mainWindow->findChildren<QDockWidget*>()) {
-            if (titles.contains(dock->windowTitle())) {
+            if (objectNames.contains(dock->objectName())) {
                 return dock;
             }
         }
