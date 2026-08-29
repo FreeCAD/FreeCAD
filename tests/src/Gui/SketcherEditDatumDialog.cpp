@@ -72,7 +72,8 @@ private Q_SLOTS:
                                  Sketcher::PointPos firstPos = Sketcher::PointPos::none,
                                  int second = Sketcher::GeoEnum::GeoUndef,
                                  Sketcher::PointPos secondPos = Sketcher::PointPos::none,
-                                 int third = Sketcher::GeoEnum::GeoUndef) {
+                                 int third = Sketcher::GeoEnum::GeoUndef
+                             ) {
             auto* constraint = new Sketcher::Constraint();
             constraint->Type = type;
             constraint->First = first;
@@ -90,18 +91,22 @@ private Q_SLOTS:
         addConstraint(Sketcher::Vertical, 0);
         addConstraint(Sketcher::Horizontal, 1);
         addConstraint(Sketcher::Equal, 3, Sketcher::PointPos::none, 2);
-        addConstraint(Sketcher::Symmetric,
-                      2,
-                      Sketcher::PointPos::end,
-                      1,
-                      Sketcher::PointPos::end,
-                      Sketcher::GeoEnum::HAxis);
-        addConstraint(Sketcher::Symmetric,
-                      2,
-                      Sketcher::PointPos::end,
-                      0,
-                      Sketcher::PointPos::start,
-                      Sketcher::GeoEnum::VAxis);
+        addConstraint(
+            Sketcher::Symmetric,
+            2,
+            Sketcher::PointPos::end,
+            1,
+            Sketcher::PointPos::end,
+            Sketcher::GeoEnum::HAxis
+        );
+        addConstraint(
+            Sketcher::Symmetric,
+            2,
+            Sketcher::PointPos::end,
+            0,
+            Sketcher::PointPos::start,
+            Sketcher::GeoEnum::VAxis
+        );
 
         auto* distance = new Sketcher::Constraint();
         distance->Type = Sketcher::DistanceX;
