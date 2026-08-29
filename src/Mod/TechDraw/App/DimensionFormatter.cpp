@@ -49,7 +49,9 @@ bool DimensionFormatter::isMultiValueSchema() const
 std::string DimensionFormatter::formatValue(const qreal value,
                                             const QString& qFormatSpec,
                                             const Format partial,
-                                            const bool isDim) const
+                                            const bool isDim,
+                                            const double forcedFactor,
+                                            const std::string& forcedUnitText) const
 {
     bool distanceMeasure{true};
     const bool angularMeasure =
@@ -103,7 +105,13 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
     double factor{1.0};
     std::string unitText{""};
-    asQuantity.getUserString(factor, unitText);
+    if (forcedFactor != 0.0) {
+        factor = forcedFactor;
+        unitText = forcedUnitText;
+    }
+    else {
+        asQuantity.getUserString(factor, unitText);
+    }
     std::string squareTag{"^2"};
 
     if (unitText.empty()) {
@@ -153,7 +161,10 @@ std::string DimensionFormatter::formatValue(const qreal value,
             unitStr = " " + unitText;
         }
 
-        return formatPrefix + formattedValueString + unitStr + formatSuffix;
+        std::string suffixStr = (isDim && (m_dimension->haveTolerance() || m_dimension->TheoreticalExact.getValue()))
+            ? std::string() : formatSuffix;
+
+        return formatPrefix + formattedValueString + unitStr + suffixStr;
     }
 
     if (partial == Format::UNIT) {
@@ -166,7 +177,9 @@ std::string DimensionFormatter::formatValue(const qreal value,
 
 //! get the formatted OverTolerance value
 // wf: is this a leftover from when we only had 1 tolerance instead of over/under?
-std::string DimensionFormatter::getFormattedToleranceValue(const Format partial) const
+std::string DimensionFormatter::getFormattedToleranceValue(const Format partial,
+                                                            const double forcedFactor,
+                                                            const std::string& forcedUnitText) const
 {
     QString FormatSpec = QString::fromUtf8(m_dimension->FormatSpecOverTolerance.getStrValue().data());
     QString ToleranceString;
@@ -177,7 +190,9 @@ std::string DimensionFormatter::getFormattedToleranceValue(const Format partial)
         ToleranceString = QString::fromUtf8(formatValue(m_dimension->OverTolerance.getValue(),
                                                         FormatSpec,
                                                         partial,
-                                                        false).c_str());
+                                                        true,
+                                                        forcedFactor,
+                                                        forcedUnitText).c_str());
 
     return ToleranceString.toStdString();
 }
@@ -194,14 +209,29 @@ std::pair<std::string, std::string> DimensionFormatter::getFormattedToleranceVal
         underTolerance = underFormatSpec;
         overTolerance = overFormatSpec;
     } else {
+        // force Under and Over to share the nominal value's unit/scale
+        // instead of each auto-picking its own from its own magnitude
+        Base::Quantity mainQuantity{m_dimension->getDimValue(), Base::Unit::Length};
+        double mainFactor{1.0};
+        std::string mainUnitText{};
+        mainQuantity.getUserString(mainFactor, mainUnitText);
+
         underTolerance = QString::fromUtf8(formatValue(m_dimension->UnderTolerance.getValue(),
                                                            underFormatSpec,
                                                            partial,
-                                                           false).c_str());
+                                                           false,
+                                                           mainFactor,
+                                                           mainUnitText).c_str());
         overTolerance = QString::fromUtf8(formatValue(m_dimension->OverTolerance.getValue(),
                                                           overFormatSpec,
                                                           partial,
-                                                          false).c_str());
+                                                          false,
+                                                          mainFactor,
+                                                          mainUnitText).c_str());
+
+        if (underTolerance.startsWith(QLatin1Char('+'))) {
+            underTolerance.replace(0, 1, QString::fromUtf8("\xE2\x88\x92")); // U+2212 MINUS SIGN
+        }
     }
 
     tolerances.first = underTolerance.toStdString();
@@ -236,31 +266,42 @@ std::string DimensionFormatter::getFormattedDimensionValue(const Format partial)
         !m_dimension->TheoreticalExact.getValue() &&
         (!DrawUtil::fpCompare(m_dimension->OverTolerance.getValue(), 0.0) ||
           m_dimension->ArbitraryTolerances.getValue())) {
+        Base::Quantity mainQuantity{m_dimension->getDimValue(), Base::Unit::Length};
+        double mainFactor{1.0};
+        std::string mainUnitText{};
+        mainQuantity.getUserString(mainFactor, mainUnitText);
+
+        if (partial == Format::UNIT) {
+            return mainUnitText;
+        }
+
         QString labelText = QString::fromUtf8(formatValue(m_dimension->getDimValue(),
                                                           qFormatSpec,
                                                           Format::FORMATTED,
                                                           true).c_str()); //just the number pref/spec[unit]/suf
-        QString unitText = QString::fromUtf8(formatValue(m_dimension->getDimValue(),
-                                                         qFormatSpec,
-                                                         Format::UNIT,
-                                                         false).c_str()); //just the unit
-        QString tolerance = QString::fromStdString(getFormattedToleranceValue(Format::FORMATTED).c_str());
+        QString tolerance = QString::fromStdString(
+            getFormattedToleranceValue(Format::FORMATTED, mainFactor, mainUnitText).c_str());
 
         // tolerance might start with a plus sign that we don't want, so cut it off
         // note plus sign is not at pos = 0!
         QRegularExpression plus(QStringLiteral("^\\s*\\+"));
         tolerance.remove(plus);
 
-        return (labelText +
-                 QString::fromUtf8(" \xC2\xB1 ") +          // +/- symbol
-                 tolerance).toStdString();
-
-        // Unreachable code??
-        if (partial == Format::UNIT) {
-            return unitText.toStdString();
+        QString formatSuffix = getPrefixSuffixSpec(qFormatSpec).value(1);
+        if (!formatSuffix.isEmpty() && labelText.endsWith(formatSuffix)) {
+            labelText.chop(formatSuffix.length());
         }
 
-        return "";
+        QString unitStr;
+        if (m_dimension->showUnits()) {
+            unitStr = QStringLiteral(" ") + QString::fromStdString(mainUnitText);
+        }
+
+        return (labelText +
+                 QString::fromUtf8(" \xC2\xB1") +           // +/- symbol, no trailing space
+                 tolerance +
+                 unitStr +
+                 formatSuffix).toStdString();
     }
 
     //tolerance not specified, so just format dimension value?

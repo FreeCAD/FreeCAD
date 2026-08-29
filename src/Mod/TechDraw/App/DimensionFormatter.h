@@ -51,8 +51,10 @@ public:
 
     //void setDimension(DrawViewDimension* dim) { m_dimension = dim; }
     bool isMultiValueSchema() const;
-    std::string formatValue(qreal value, const QString& qFormatSpec, Format partial, bool isDim) const;
-    std::string getFormattedToleranceValue(Format partial) const;
+    std::string formatValue(qreal value, const QString& qFormatSpec, Format partial, bool isDim,
+                             double forcedFactor = 0.0, const std::string& forcedUnitText = {}) const;
+    std::string getFormattedToleranceValue(Format partial, double forcedFactor = 0.0,
+                                            const std::string& forcedUnitText = {}) const;
     std::pair<std::string, std::string> getFormattedToleranceValues(Format partial) const;
     std::string getFormattedDimensionValue(Format partial) const;
     QStringList getPrefixSuffixSpec(const QString& fSpec) const;

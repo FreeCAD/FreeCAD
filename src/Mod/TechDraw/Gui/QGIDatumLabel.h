@@ -59,6 +59,7 @@ public:
     QFont getFont() const { return m_dimText->font(); }
     void setDimString(QString text, qreal maxWidth=-1);
     void setToleranceString();
+    void setSuffixString();
     void setPrettySel();
     void setPrettyPre();
     void setPrettyNormal();
@@ -109,6 +110,8 @@ protected:
     void setSeps(std::vector<int> newSeps) { seps = newSeps; }
 
 private:
+    QRectF computeTextBoundingRect(bool includeSuffix) const;
+
     bool verticalSep;
     std::vector<int> seps;
 
@@ -118,6 +121,7 @@ private:
     QGCustomText* m_tolTextOver;
     QGCustomText* m_tolTextUnder;
     QGCustomText* m_unitText;
+    QGCustomText* m_suffixText;
     QGraphicsItemGroup* m_textItems;
     QGraphicsRectItem* m_frame;
     QColor m_colNormal;

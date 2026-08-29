@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #include <QApplication>
+#include <QFontMetrics>
 #include <QGraphicsSceneMouseEvent>
 
 #include <Gui/Application.h>
@@ -72,6 +73,9 @@ QGIDatumLabel::QGIDatumLabel() : m_dragState(DragState::NoDrag)
     m_unitText = new QGCustomText();
     m_unitText->setTightBounding(true);
     m_unitText->setParentItem(m_textItems);
+    m_suffixText = new QGCustomText();
+    m_suffixText->setTightBounding(true);
+    m_suffixText->setParentItem(m_textItems);
 
     m_frame = new QGraphicsRectItem();
     QPen framePen;
@@ -328,9 +332,17 @@ QRectF QGIDatumLabel::boundingRect() const
 
 QRectF QGIDatumLabel::tightBoundingRect() const
 {
+    return computeTextBoundingRect(true);
+}
+
+QRectF QGIDatumLabel::computeTextBoundingRect(bool includeSuffix) const
+{
     QRectF totalRect;
     for (QGraphicsItem* item : m_textItems->childItems()) {
         auto* customText = dynamic_cast<QGCustomText*>(item);
+        if (!includeSuffix && customText == m_suffixText) {
+            continue;
+        }
         if (customText && !customText->toPlainText().isEmpty()) {
             QRectF itemRect = customText->alignmentRect();
             QPointF pos = customText->pos();
@@ -348,7 +360,7 @@ QRectF QGIDatumLabel::tightBoundingRect() const
 
 void QGIDatumLabel::updateFrameRect() {
     prepareGeometryChange();
-    m_frame->setRect(tightBoundingRect());
+    m_frame->setRect(computeTextBoundingRect(false));
 }
 
 void QGIDatumLabel::boundingRectChanged()
@@ -416,13 +428,27 @@ void QGIDatumLabel::updateChildren()
 
     //set tolerance position
     QRectF overBox = m_tolTextOver->alignmentRect();
+    QRectF underBox = m_tolTextUnder->alignmentRect();
     double tolLeft  = unitRight;
+
+    // align digits vertically rather than align left, because the + and - glyphs may differ in width, throwing off the alignment of the text
+    QFontMetrics tolFm(m_tolTextOver->font());
+    QString overSign = m_tolTextOver->toPlainText().left(1);
+    QString underSign = m_tolTextUnder->toPlainText().left(1);
+    double overSignWidth = overSign.isEmpty() ? 0.0 : tolFm.horizontalAdvance(overSign);
+    double underSignWidth = underSign.isEmpty() ? 0.0 : tolFm.horizontalAdvance(underSign);
+    double maxSignWidth = overSignWidth > underSignWidth ? overSignWidth : underSignWidth;
 
     // Adjust for difference in tight and original bounding box sizes, note the y-coord down system
     QPointF tol_adj = m_tolTextOver->tightBoundingAdjust();
-    m_tolTextOver->justifyLeftAt(tolLeft + tol_adj.x(), middle + tol_adj.y()/2.0, false);
+    m_tolTextOver->justifyLeftAt(tolLeft + (maxSignWidth - overSignWidth) + tol_adj.x(),
+                                  middle + tol_adj.y()/2.0, false);
     tol_adj = m_tolTextUnder->tightBoundingAdjust();
-    m_tolTextUnder->justifyLeftAt(tolLeft + tol_adj.x(), middle + overBox.height() + tol_adj.y()/2.0, false);
+    m_tolTextUnder->justifyLeftAt(tolLeft + (maxSignWidth - underSignWidth) + tol_adj.x(),
+                                   middle + overBox.height() + tol_adj.y()/2.0, false);
+
+    double tolRight = tolLeft + std::max(overBox.width(), underBox.width());
+    m_suffixText->setPos(tolRight, 0.0);
 }
 
 Base::Vector2d QGIDatumLabel::getPosToCenterVec() const
@@ -436,6 +462,7 @@ void QGIDatumLabel::setFont(QFont font)
     prepareGeometryChange();
     m_dimText->setFont(font);
     m_unitText->setFont(font);
+    m_suffixText->setFont(font);
     QFont tFont(font);
     double fontSize = font.pixelSize();
     double tolAdj = getTolAdjust();
@@ -525,7 +552,31 @@ void QGIDatumLabel::setToleranceString()
     boundingRectChanged();
 }
 
+void QGIDatumLabel::setSuffixString()
+{
+    prepareGeometryChange();
+    QGIViewDimension* qgivd = dynamic_cast<QGIViewDimension*>(parentItem());
+    if (!qgivd) {
+        return;
+    }
+    const auto dim(dynamic_cast<TechDraw::DrawViewDimension*>(qgivd->getViewObject()));
+    if (!dim) {
+        return;
+    }
 
+    if ((dim->hasOverUnderTolerance() && !dim->EqualTolerance.getValue())
+        || dim->TheoreticalExact.getValue()) {
+        QStringList prefixSuffix
+            = dim->getPrefixSuffixSpec(QString::fromStdString(dim->FormatSpec.getStrValue()));
+        m_suffixText->setPlainText(prefixSuffix.value(1));
+    }
+    else {
+        m_suffixText->setPlainText(QString());
+    }
+
+    updateFrameRect();
+    boundingRectChanged();
+}
 
 int QGIDatumLabel::getPrecision()
 {
@@ -548,6 +599,7 @@ void QGIDatumLabel::setPrettySel()
     m_tolTextOver->setPrettySel();
     m_tolTextUnder->setPrettySel();
     m_unitText->setPrettySel();
+    m_suffixText->setPrettySel();
     setFrameColor(PreferencesGui::selectQColor());
     Q_EMIT setPretty(SEL);
 }
@@ -559,6 +611,7 @@ void QGIDatumLabel::setPrettyPre()
     m_tolTextOver->setPrettyPre();
     m_tolTextUnder->setPrettyPre();
     m_unitText->setPrettyPre();
+    m_suffixText->setPrettyPre();
     setFrameColor(PreferencesGui::preselectQColor());
     Q_EMIT setPretty(PRE);
 }
@@ -570,6 +623,7 @@ void QGIDatumLabel::setPrettyNormal()
     m_tolTextOver->setPrettyNormal();
     m_tolTextUnder->setPrettyNormal();
     m_unitText->setPrettyNormal();
+    m_suffixText->setPrettyNormal();
     setFrameColor(m_colNormal);
     Q_EMIT setPretty(NORMAL);
 }
@@ -582,6 +636,7 @@ void QGIDatumLabel::setColor(QColor color)
     m_tolTextOver->setColor(m_colNormal);
     m_tolTextUnder->setColor(m_colNormal);
     m_unitText->setColor(m_colNormal);
+    m_suffixText->setColor(m_colNormal);
     setFrameColor(m_colNormal);
 }
 
