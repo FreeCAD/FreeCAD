@@ -1858,15 +1858,24 @@ TEST_F(TopoShapeExpansionTest, makeElementLoftRejectsCoincidentProfiles)  // NOL
 
     // Arrange
     auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(5, 5);
+    auto transform {gp_Trsf()};
+    transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.0, 0.0, 10.0));
+    auto shiftedWire = wire1;
+    shiftedWire.Move(TopLoc_Location(transform));
     TopoShape firstProfile {wire1, 1L};
-    TopoShape secondProfile {wire1, 2L};
-    std::vector<TopoShape> shapes = {firstProfile, secondProfile};
+    TopoShape secondProfile {shiftedWire, 2L};
+    TopoShape thirdProfile {shiftedWire, 3L};
+    std::vector<TopoShape> shapes = {firstProfile, secondProfile, thirdProfile};
 
     // Act / Assert
-    EXPECT_THROW(  // NOLINT
-        (new TopoShape())->makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled),
-        Base::CADKernelError
-    );
+    try {
+        TopoShape loft;
+        loft.makeElementLoft(shapes, IsSolid::notSolid, IsRuled::notRuled);
+        FAIL() << "Expected coincident loft profiles to be rejected";
+    }
+    catch (const Base::CADKernelError& e) {
+        EXPECT_STREQ(e.what(), "Loft profiles 2 and 3 do not have sufficient separation");
+    }
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementPipeShell)
