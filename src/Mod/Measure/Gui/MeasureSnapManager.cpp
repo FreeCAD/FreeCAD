@@ -42,11 +42,10 @@
 using namespace MeasureGui;
 
 MeasureSnapManager::MeasureSnapManager()
-    : mIndicator(std::make_unique<MeasureSnapIndicator>())
 {
     // Let go of a closing document's scene graph so the overlay does not pin it alive.
     mDeleteDocConn = Gui::Application::Instance->signalDeleteDocument.connect(
-        [this](const Gui::Document&) { mIndicator->detach(); }
+        [this](const Gui::Document&) { mIndicator.detach(); }
     );
 }
 
@@ -62,7 +61,7 @@ void MeasureSnapManager::setEnabled(bool enabled)
     }
     mEnabled = enabled;
     if (!enabled) {
-        mIndicator->hide();
+        mIndicator.hide();
     }
 }
 
@@ -73,7 +72,7 @@ void MeasureSnapManager::onPreselect(const Gui::SelectionChanges& msg)
     }
     try {
         if (msg.Type == Gui::SelectionChanges::RmvPreselect) {
-            mIndicator->hide();
+            mIndicator.hide();
             return;
         }
         // Preview in the document the hover came from, not whichever window is
@@ -81,7 +80,7 @@ void MeasureSnapManager::onPreselect(const Gui::SelectionChanges& msg)
         Gui::Document* guiDoc = msg.pDocName ? Gui::Application::Instance->getDocument(msg.pDocName)
                                              : nullptr;
         if (!guiDoc) {
-            mIndicator->hide();
+            mIndicator.hide();
             return;
         }
         const TopoDS_Shape shape = Measure::MeasureSnap::resolveShape(msg.Object);
@@ -89,7 +88,7 @@ void MeasureSnapManager::onPreselect(const Gui::SelectionChanges& msg)
         // Mode is fixed to Auto until the panel exposes a snap-mode control.
         const Measure::MeasureSnapMode type
             = Measure::MeasureSnap::pickPreviewType(flags, Measure::MeasureSnapMode::Auto);
-        mIndicator->show(guiDoc, Measure::MeasureSnap::previewPoints(shape, type), type);
+        mIndicator.show(guiDoc, Measure::MeasureSnap::previewPoints(shape, type), type);
     }
     catch (const Base::Exception& e) {
         Base::Console().log("MeasureSnapManager: %s\n", e.what());

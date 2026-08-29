@@ -1210,7 +1210,6 @@ TEST_F(MeasureDistance, testTypeUsesSnapping)
     EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("DISTANCE"));
     EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("DISTANCEFREE"));
     EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("ANGLE"));
-    EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("POSITION"));
     // Types registered from Python keep the preview.
     EXPECT_TRUE(Measure::MeasureSnap::typeUsesSnapping("SOME_ADDON_TYPE"));
 
@@ -1219,5 +1218,6 @@ TEST_F(MeasureDistance, testTypeUsesSnapping)
     EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("DIAMETER"));
     EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("RADIUS"));
     EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("CENTEROFMASS"));
+    EXPECT_FALSE(Measure::MeasureSnap::typeUsesSnapping("POSITION"));
 }
 // NOLINTEND

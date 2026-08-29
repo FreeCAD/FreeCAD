@@ -24,9 +24,9 @@
 
 #pragma once
 
-#include <memory>
-
 #include <fastsignals/connection.h>
+
+#include "MeasureSnapIndicator.h"
 
 
 namespace Gui
@@ -36,8 +36,6 @@ class SelectionChanges;
 
 namespace MeasureGui
 {
-
-class MeasureSnapIndicator;
 
 // Owns the snap preview and reacts to hover events routed from the measure task dialog.
 class MeasureSnapManager
@@ -53,7 +51,7 @@ public:
     void setEnabled(bool enabled);
 
 private:
-    std::unique_ptr<MeasureSnapIndicator> mIndicator;
+    MeasureSnapIndicator mIndicator;
     fastsignals::connection mDeleteDocConn;
     bool mEnabled = true;
 };
