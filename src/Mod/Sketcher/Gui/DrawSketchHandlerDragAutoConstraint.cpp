@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <exception>
 #include <limits>
 #include <memory>
 #include <numbers>
@@ -33,6 +34,8 @@
 
 #include <App/Application.h>
 #include <Precision.hxx>
+#include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Sketch.h>
@@ -49,6 +52,7 @@ namespace
 {
 constexpr double DragAutoConstraintSnapDistanceFactor = 0.25;
 constexpr int DefaultDragAutoConstraintDelay = 400;
+constexpr int MaximumDragAutoConstraintDelay = 5000;
 
 int getDragAutoConstraintDelay()
 {
@@ -56,15 +60,15 @@ int getDragAutoConstraintDelay()
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
     );
     const auto delay = hGrp->GetInt("DragAutoConstraintDelay", DefaultDragAutoConstraintDelay);
-    return static_cast<int>(std::clamp(delay, 0L, static_cast<long>(std::numeric_limits<int>::max())));
+    return static_cast<int>(std::clamp(delay, 0L, static_cast<long>(MaximumDragAutoConstraintDelay)));
 }
 }  // namespace
 
 DrawSketchHandlerDragAutoConstraint::DrawSketchHandlerDragAutoConstraint()
-    : dwellTimerContext(std::make_unique<QObject>())
-{}
-
-DrawSketchHandlerDragAutoConstraint::~DrawSketchHandlerDragAutoConstraint() = default;
+{
+    dwellTimer.setSingleShot(true);
+    QObject::connect(&dwellTimer, &QTimer::timeout, &dwellTimer, [this]() { onDwellTimerTimeout(); });
+}
 
 bool DrawSketchHandlerDragAutoConstraint::canSuggestFor(const std::vector<GeoElementId>& dragged) const
 {
@@ -100,7 +104,7 @@ void DrawSketchHandlerDragAutoConstraint::addAutoConstraint(ConstraintType type,
 
 void DrawSketchHandlerDragAutoConstraint::clear()
 {
-    ++dwellTimerGeneration;
+    dwellTimer.stop();
     suggestedConstraints.clear();
     draggedElements.clear();
     unsetCursor();
@@ -218,7 +222,7 @@ void DrawSketchHandlerDragAutoConstraint::update(
     const Base::Vector2d& /*pos*/
 )
 {
-    const auto timerGeneration = ++dwellTimerGeneration;
+    dwellTimer.stop();
     suggestedConstraints.clear();
     unsetCursor();
 
@@ -228,11 +232,26 @@ void DrawSketchHandlerDragAutoConstraint::update(
         return;
     }
 
-    QTimer::singleShot(getDragAutoConstraintDelay(), dwellTimerContext.get(), [this, timerGeneration]() {
-        if (timerGeneration == dwellTimerGeneration) {
-            updateSuggestions();
-        }
-    });
+    dwellTimer.start(getDragAutoConstraintDelay());
+}
+
+void DrawSketchHandlerDragAutoConstraint::onDwellTimerTimeout()
+{
+    try {
+        updateSuggestions();
+    }
+    catch (const Base::Exception& e) {
+        clear();
+        Base::Console().error("Failed to update drag auto-constraints: %s\n", e.what());
+    }
+    catch (const std::exception& e) {
+        clear();
+        Base::Console().error("C++ exception while updating drag auto-constraints: %s\n", e.what());
+    }
+    catch (...) {
+        clear();
+        Base::Console().error("Unknown exception while updating drag auto-constraints\n");
+    }
 }
 
 void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
@@ -315,7 +334,7 @@ void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
         CurveCandidate bestCurve;
 
         auto considerCurve = [&](int geoId, double distance, bool lineCenter = false) {
-            if (geoId == dragged.GeoId || distance >= snapDistance || distance >= bestCurve.distance) {
+            if (distance >= snapDistance || distance >= bestCurve.distance) {
                 return;
             }
 
@@ -326,7 +345,7 @@ void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
 
         for (int geoId = 0; geoId <= obj->getHighestCurveIndex(); ++geoId) {
             const Part::Geometry* geo = getSolvedGeometry(geoId);
-            if (!geo) {
+            if (!geo || geoId == dragged.GeoId) {
                 continue;
             }
 
@@ -355,9 +374,16 @@ void DrawSketchHandlerDragAutoConstraint::updateSuggestions()
                 const auto* curve = static_cast<const Part::GeomCurve*>(geo);
                 double parameter;
 
-                if (curve->closestParameter(toVector3d(actualPos), parameter)) {
-                    const Base::Vector2d closestPoint = toVector2d(curve->pointAtParameter(parameter));
-                    considerCurve(geoId, (actualPos - closestPoint).Length());
+                try {
+                    if (curve->closestParameter(toVector3d(actualPos), parameter)) {
+                        const Base::Vector2d closestPoint = toVector2d(
+                            curve->pointAtParameter(parameter)
+                        );
+                        considerCurve(geoId, (actualPos - closestPoint).Length());
+                    }
+                }
+                catch (const Base::CADKernelError&) {
+                    continue;
                 }
             }
         }
