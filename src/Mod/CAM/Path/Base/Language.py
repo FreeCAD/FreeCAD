@@ -1,24 +1,23 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# ***************************************************************************
-# *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
-# *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
-# *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
-# *                                                                         *
-# ***************************************************************************
+# SPDX-FileCopyrightText: 2022 sliptonic <shopinthewoods@gmail.com>
+# SPDX-FileNotice: Part of the FreeCAD project.
+
+################################################################################
+#                                                                              #
+#   FreeCAD is free software: you can redistribute it and/or modify            #
+#   it under the terms of the GNU Lesser General Public License as             #
+#   published by the Free Software Foundation, either version 2.1              #
+#   of the License, or (at your option) any later version.                     #
+#                                                                              #
+#   FreeCAD is distributed in the hope that it will be useful,                 #
+#   but WITHOUT ANY WARRANTY; without even the implied warranty                #
+#   of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.                    #
+#   See the GNU Lesser General Public License for more details.                #
+#                                                                              #
+#   You should have received a copy of the GNU Lesser General Public           #
+#   License along with FreeCAD. If not, see https://www.gnu.org/licenses       #
+#                                                                              #
+################################################################################
 
 import Constants
 import FreeCAD
@@ -31,7 +30,7 @@ __url__ = "https://www.freecad.org"
 __doc__ = "Functions to extract and convert between Path.Command and Part.Edge and utility functions to reason about them."
 
 
-class Instruction(object):
+class Instruction:
     """An Instruction is a pure python replacement of Path.Command which also tracks its begin position."""
 
     def __init__(self, begin, cmd, param=None):
@@ -77,14 +76,12 @@ class Instruction(object):
 
     def isPlunge(self):
         """isPlunge() ... return true if this moves is vertical"""
-        if self.isMove():
-            if (
-                Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
-                and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
-                and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
-            ):
-                return True
-        return False
+        return (
+            self.isMove()
+            and Path.Geom.isRoughly(self.begin.x, self.x(self.begin.x))
+            and Path.Geom.isRoughly(self.begin.y, self.y(self.begin.y))
+            and not Path.Geom.isRoughly(self.begin.z, self.z(self.begin.z))
+        )
 
     def leadsInto(self, instr):
         """leadsInto(instr) ... return true if instr is a continuation of self"""
@@ -228,7 +225,7 @@ class MoveArcCCW(MoveArc):
         return math.pi / 2
 
 
-class Maneuver(object):
+class Maneuver:
     """A series of instructions and moves"""
 
     def __init__(self, begin=None, instr=None):
@@ -279,10 +276,23 @@ class Maneuver(object):
         maneuver = Maneuver(begin)
         instr = []
         begin = maneuver.positionBegin()
+        x = y = z = None
+        isPosDefined = False
         for cmd in path.Commands:
             i = cls.InstructionFromCommand(cmd, begin)
+            if (
+                i.isMove()
+                and isPosDefined
+                and Path.Geom.pointsCoincide(i.positionBegin(), i.positionEnd())
+            ):
+                continue  # skip zero length move
             instr.append(i)
             begin = i.positionEnd()
+            if not isPosDefined:
+                x = cmd.x if cmd.x is not None else x
+                y = cmd.y if cmd.y is not None else y
+                z = cmd.z if cmd.z is not None else z
+                isPosDefined = x is not None and y is not None and z is not None
         maneuver.instr = instr
         return maneuver
 

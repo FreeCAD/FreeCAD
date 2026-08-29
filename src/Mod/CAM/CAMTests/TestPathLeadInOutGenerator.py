@@ -19,8 +19,8 @@
 ################################################################################
 
 import Path
-import CAMTests.PathTestUtils as PathTestUtils
-import Path.Base.Generator.leadinout as leadinout
+from CAMTests import PathTestUtils
+from Path.Base.Generator import leadinout
 
 
 def _resetArgs(close=True):
@@ -94,6 +94,33 @@ G0 Z10.000000
 """
         args = _resetArgs()
         pp = leadinout.LeadInOut(**args).generate()
+        self.assertTrue(pp.toGCode() == expected_gcode, "Incorrect g-code generated: basic")
+
+    def test01(self):
+        """Test with move command zero length"""
+        expected_gcode = """G0 Z10.000000
+G0 X-10.000000 Y-15.000000
+G0 Z5.000000
+G1 F10.000000 Z0.000000
+G1 F15.000000 X-10.000000 Y-10.000000 Z0.000000
+G2 F15.000000 I10.000000 J0.000000 X0.000000 Y0.000000 Z0.000000
+G1 F20.000000 X50.000000
+G0 Z10.000000
+"""
+        commands = [
+            Path.Command("G0", {"Z": 10}),
+            Path.Command("G0", {"X": 0, "Y": 0}),
+            Path.Command("G0", {"Z": 5}),
+            Path.Command("G1", {"Z": 0, "F": 10}),
+            Path.Command("G1", {"Z": 0, "F": 10}),
+            Path.Command("G1", {"X": 50, "F": 20}),
+            Path.Command("G0", {"Z": 10}),
+        ]
+        args = _resetArgs()
+        args["path"] = Path.Path(commands)
+        args["styleOut"] = "Vertical"
+        pp = leadinout.LeadInOut(**args).generate()
+        print(pp.toGCode())
         self.assertTrue(pp.toGCode() == expected_gcode, "Incorrect g-code generated: basic")
 
     def test10(self):
