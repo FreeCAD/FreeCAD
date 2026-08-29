@@ -2094,16 +2094,16 @@ class PostProcessor:
 
             else:
 
-                # Modal GCode
-                if not self.values["OUTPUT_DUPLICATE_COMMANDS"]:
-                    next_previous, new_command = modal_gcode(cmd, section_state["previous"])
-                else:
-                    new_command = cmd
-                    next_previous = cmd
+                # Modal Axis always runs on the original command, so "previous"
+                # accumulates the axis state under the command's real name.
+                # Deriving it from a name-stripped command instead makes every
+                # other duplicate compare unequal and re-emit its gcode word.
+                next_previous, axis_command = modal_axis(cmd, section_state["previous"])
+                new_command = axis_command if not self.values["OUTPUT_DOUBLES"] else cmd
 
-                # Modal Axis
-                if not self.values["OUTPUT_DOUBLES"]:
-                    next_previous, new_command = modal_axis(new_command, section_state["previous"])
+                # Modal GCode
+                if not self.values["OUTPUT_DUPLICATE_COMMANDS"] and new_command is not None:
+                    _, new_command = modal_gcode(new_command, section_state["previous"])
 
                 section_state["previous"] = next_previous
 
@@ -2837,7 +2837,11 @@ class PostProcessor:
             prefix = self.values["LINE_NUMBER_PREFIX"]
             command_line.append(f"{prefix}{ int(params['N']):d}")
 
-        command_line.append(command_name)
+        # A modal-stripped command has no name. Appending it anyway leaves an
+        # empty leading element, which format_command_line renders as a leading
+        # separator: "G1 X1.0 Y2.0" followed by " X3.0 Y4.0".
+        if command_name:
+            command_line.append(command_name)
 
         # Format parameters with clean, stateless implementation
         parameter_order = self.values.get(
@@ -2878,6 +2882,11 @@ class PostProcessor:
 
                 formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
+
+        # Nothing left to emit, e.g. a modal command whose parameters were all
+        # suppressed as duplicates.
+        if not command_line:
+            return None
 
         # Format the command line
         formatted_line = format_command_line(self.values, command_line)
