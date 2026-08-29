@@ -1232,17 +1232,47 @@ void TaskMassProperties::tryUpdate()
         setText(panel->ui.covXText, Base::Quantity(info.cov.x, Base::Unit::Length));
         setText(panel->ui.covYText, Base::Quantity(info.cov.y, Base::Unit::Length));
         setText(panel->ui.covZText, Base::Quantity(info.cov.z, Base::Unit::Length));
-        setText(panel->ui.inertiaJoxText, Base::Quantity(info.inertiaJo.x, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJoyText, Base::Quantity(info.inertiaJo.y, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJozText, Base::Quantity(info.inertiaJo.z, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJxyText, Base::Quantity(info.inertiaJCross.x, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJzxText, Base::Quantity(info.inertiaJCross.y, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJzyText, Base::Quantity(info.inertiaJCross.z, Base::Unit::MassMomentOfInertia));
+        setText(
+            panel->ui.inertiaJoxText,
+            Base::Quantity(info.inertiaJo.x, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJoyText,
+            Base::Quantity(info.inertiaJo.y, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJozText,
+            Base::Quantity(info.inertiaJo.z, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJxyText,
+            Base::Quantity(info.inertiaJCross.x, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJzxText,
+            Base::Quantity(info.inertiaJCross.y, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJzyText,
+            Base::Quantity(info.inertiaJCross.z, Base::Unit::MassMomentOfInertia)
+        );
 
-        setText(panel->ui.inertiaJxText, Base::Quantity(info.inertiaJ.x, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJyText, Base::Quantity(info.inertiaJ.y, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.inertiaJzText, Base::Quantity(info.inertiaJ.z, Base::Unit::MassMomentOfInertia));
-        setText(panel->ui.axisInertiaText, Base::Quantity(info.axisInertia, Base::Unit::MassMomentOfInertia));
+        setText(
+            panel->ui.inertiaJxText,
+            Base::Quantity(info.inertiaJ.x, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJyText,
+            Base::Quantity(info.inertiaJ.y, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.inertiaJzText,
+            Base::Quantity(info.inertiaJ.z, Base::Unit::MassMomentOfInertia)
+        );
+        setText(
+            panel->ui.axisInertiaText,
+            Base::Quantity(info.axisInertia, Base::Unit::MassMomentOfInertia)
+        );
     }
 
     const bool hasAxisSelection = currentMode == MassPropertiesMode::Custom
