@@ -200,20 +200,18 @@ TEST_F(MeasureSnap, testAutoAndNoneReturnFalse)
 {
     const TopoDS_Edge circle = makeCircle(gp_Pnt(0.0, 0.0, 0.0));
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Auto, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Auto, nullptr).has_value()
     );
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::None, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::None, nullptr).has_value()
     );
 }
 
 TEST_F(MeasureSnap, testCenterOnCircleEdge)
 {
     const TopoDS_Edge circle = makeCircle(gp_Pnt(3.0, 4.0, 0.0));
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Center, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Center, nullptr);
     ASSERT_TRUE(snap.has_value());
     EXPECT_DOUBLE_EQ(snap->point.X(), 3.0);
     EXPECT_DOUBLE_EQ(snap->point.Y(), 4.0);
@@ -224,8 +222,8 @@ TEST_F(MeasureSnap, testCenterOnCircleEdge)
 TEST_F(MeasureSnap, testCenterOnArcEdge)
 {
     const TopoDS_Edge arc = makeArc(gp_Pnt(2.0, 3.0, 0.0), 0.0, 1.0);
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(arc, Measure::MeasureSnapMode::Center, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(arc, Measure::MeasureSnapMode::Center, nullptr);
     ASSERT_TRUE(snap.has_value());
     EXPECT_DOUBLE_EQ(snap->point.X(), 2.0);
     EXPECT_DOUBLE_EQ(snap->point.Y(), 3.0);
@@ -236,8 +234,7 @@ TEST_F(MeasureSnap, testCenterOnLineReturnsFalse)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Center, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Center, nullptr).has_value()
     );
 }
 
@@ -247,8 +244,7 @@ TEST_F(MeasureSnap, testCenterOnCircularWireReturnsFalse)
 {
     const TopoDS_Wire wire = makeCircularWire(gp_Pnt(3.0, 4.0, 0.0));
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(wire, Measure::MeasureSnapMode::Center, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(wire, Measure::MeasureSnapMode::Center, nullptr).has_value()
     );
 }
 
@@ -258,16 +254,15 @@ TEST_F(MeasureSnap, testCenterOnCircularBezierEdgeReturnsFalse)
 {
     const TopoDS_Edge edge = makeCircularBezierEdge();
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Center, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Center, nullptr).has_value()
     );
 }
 
 TEST_F(MeasureSnap, testMidpointOnLineEdge)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Midpoint, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Midpoint, nullptr);
     ASSERT_TRUE(snap.has_value());
     EXPECT_NEAR(snap->point.X(), 2.0, Precision::Confusion());
     EXPECT_NEAR(snap->point.Y(), 0.0, Precision::Confusion());
@@ -279,8 +274,8 @@ TEST_F(MeasureSnap, testMidpointOnLineEdge)
 TEST_F(MeasureSnap, testMidpointOnArcIsOnCurve)
 {
     const TopoDS_Edge arc = makeArc(gp_Pnt(0.0, 0.0, 0.0), 0.0, 1.0);
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(arc, Measure::MeasureSnapMode::Midpoint, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(arc, Measure::MeasureSnapMode::Midpoint, nullptr);
     ASSERT_TRUE(snap.has_value());
     EXPECT_NEAR(snap->point.X(), 0.877582561890, Precision::Confusion());
     EXPECT_NEAR(snap->point.Y(), 0.479425538604, Precision::Confusion());
@@ -292,8 +287,8 @@ TEST_F(MeasureSnap, testMidpointOnArcIsOnCurve)
 TEST_F(MeasureSnap, testMidpointIsArcLengthNotParameter)
 {
     const TopoDS_Edge edge = makeNonUniformStraightEdge();
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Midpoint, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Midpoint, nullptr);
     ASSERT_TRUE(snap.has_value());
     EXPECT_NEAR(snap->point.X(), 5.0, Precision::Confusion());
     EXPECT_NEAR(snap->point.Y(), 0.0, Precision::Confusion());
@@ -312,8 +307,8 @@ TEST_F(MeasureSnap, testMidpointOnVertexReturnsFalse)
 TEST_F(MeasureSnap, testVertexOnVertexShape)
 {
     const TopoDS_Vertex vertex = makeVertex(gp_Pnt(1.0, 2.0, 3.0));
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(vertex, Measure::MeasureSnapMode::Vertex, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(vertex, Measure::MeasureSnapMode::Vertex, nullptr);
     ASSERT_TRUE(snap.has_value());
     EXPECT_DOUBLE_EQ(snap->point.X(), 1.0);
     EXPECT_DOUBLE_EQ(snap->point.Y(), 2.0);
@@ -325,14 +320,14 @@ TEST_F(MeasureSnap, testVertexOnVertexShape)
 TEST_F(MeasureSnap, testVertexOnEdgeNullCursorIsFirstAndStable)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
-    const auto first =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, nullptr);
+    const auto first
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, nullptr);
     ASSERT_TRUE(first.has_value());
     EXPECT_DOUBLE_EQ(first->point.X(), 0.0);
     EXPECT_DOUBLE_EQ(first->point.Y(), 0.0);
     EXPECT_DOUBLE_EQ(first->point.Z(), 0.0);
-    const auto again =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, nullptr);
+    const auto again
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, nullptr);
     ASSERT_TRUE(again.has_value());
     EXPECT_DOUBLE_EQ(again->point.X(), first->point.X());
     EXPECT_DOUBLE_EQ(again->point.Y(), first->point.Y());
@@ -343,13 +338,13 @@ TEST_F(MeasureSnap, testVertexOnEdgeCursorSelectsNearer)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
     const Base::Vector3d nearEnd(3.5, 0.0, 0.0);
-    const auto atEnd =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, &nearEnd);
+    const auto atEnd
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, &nearEnd);
     ASSERT_TRUE(atEnd.has_value());
     EXPECT_DOUBLE_EQ(atEnd->point.X(), 4.0);
     const Base::Vector3d nearStart(0.5, 0.0, 0.0);
-    const auto atStart =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, &nearStart);
+    const auto atStart
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, &nearStart);
     ASSERT_TRUE(atStart.has_value());
     EXPECT_DOUBLE_EQ(atStart->point.X(), 0.0);
 }
@@ -359,8 +354,8 @@ TEST_F(MeasureSnap, testVertexEquidistantCursorPicksFirst)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
     const Base::Vector3d middle(2.0, 0.0, 0.0);
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, &middle);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Vertex, &middle);
     ASSERT_TRUE(snap.has_value());
     EXPECT_DOUBLE_EQ(snap->point.X(), 0.0);
 }
@@ -369,8 +364,7 @@ TEST_F(MeasureSnap, testVertexOnWireReturnsFalse)
 {
     const TopoDS_Wire wire = makeCircularWire(gp_Pnt(0.0, 0.0, 0.0));
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(wire, Measure::MeasureSnapMode::Vertex, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(wire, Measure::MeasureSnapMode::Vertex, nullptr).has_value()
     );
 }
 
@@ -449,16 +443,14 @@ TEST_F(MeasureSnap, testDegenerateEdgeRejected)
     ASSERT_TRUE(BRep_Tool::Degenerated(pole));
     EXPECT_EQ(Measure::MeasureSnap::getAvailableSnapTypes(pole), 0);
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(pole, Measure::MeasureSnapMode::Center, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(pole, Measure::MeasureSnapMode::Center, nullptr).has_value()
     );
     EXPECT_FALSE(
         Measure::MeasureSnap::computeSnapPoint(pole, Measure::MeasureSnapMode::Midpoint, nullptr)
             .has_value()
     );
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(pole, Measure::MeasureSnapMode::Vertex, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(pole, Measure::MeasureSnapMode::Vertex, nullptr).has_value()
     );
 }
 
@@ -651,8 +643,8 @@ TEST_F(MeasureSnap, testAvailableSnapTypesOnCylinderFace)
 TEST_F(MeasureSnap, testAxisSnapNoCursorProjectsBboxCentre)
 {
     const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, nullptr);
     ASSERT_TRUE(snap.has_value());
     ASSERT_TRUE(snap->axisDir.has_value());
     EXPECT_TRUE(snap->axisDir->IsParallel(gp_Dir(0.0, 0.0, 1.0), Precision::Confusion()));
@@ -667,8 +659,8 @@ TEST_F(MeasureSnap, testAxisSnapCursorProjectsCursor)
 {
     const TopoDS_Face face = makeCylinderFace(2.0, 5.0);
     const Base::Vector3d cursor(10.0, 10.0, 3.0);
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, &cursor);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, &cursor);
     ASSERT_TRUE(snap.has_value());
     ASSERT_TRUE(snap->axisDir.has_value());
     EXPECT_TRUE(snap->axisDir->IsParallel(gp_Dir(0.0, 0.0, 1.0), Precision::Confusion()));
@@ -682,8 +674,8 @@ TEST_F(MeasureSnap, testAxisSnapCursorProjectsCursor)
 TEST_F(MeasureSnap, testAxisSnapOnLineEdge)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, nullptr);
     ASSERT_TRUE(snap.has_value());
     ASSERT_TRUE(snap->axisDir.has_value());
     EXPECT_TRUE(snap->axisDir->IsParallel(gp_Dir(1.0, 0.0, 0.0), Precision::Confusion()));
@@ -698,8 +690,8 @@ TEST_F(MeasureSnap, testAxisSnapOnLineEdgeCursorProjectsPastEnd)
 {
     const TopoDS_Edge line = makeLine(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(4.0, 0.0, 0.0));
     const Base::Vector3d cursor(10.0, 10.0, 3.0);
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, &cursor);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(line, Measure::MeasureSnapMode::Axis, &cursor);
     ASSERT_TRUE(snap.has_value());
     EXPECT_NEAR(snap->point.X(), 10.0, Precision::Confusion());
     EXPECT_NEAR(snap->point.Y(), 0.0, Precision::Confusion());
@@ -711,8 +703,7 @@ TEST_F(MeasureSnap, testAxisSnapOnBezierEdgeReturnsFalse)
 {
     const TopoDS_Edge edge = makeCircularBezierEdge();
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Axis, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(edge, Measure::MeasureSnapMode::Axis, nullptr).has_value()
     );
 }
 
@@ -721,8 +712,7 @@ TEST_F(MeasureSnap, testAxisSnapOnPlaneFaceReturnsFalse)
 {
     const TopoDS_Face face = makePlaneFace();
     EXPECT_FALSE(
-        Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, nullptr)
-            .has_value()
+        Measure::MeasureSnap::computeSnapPoint(face, Measure::MeasureSnapMode::Axis, nullptr).has_value()
     );
 }
 
@@ -919,8 +909,8 @@ TEST_F(MeasureSnap, testPreviewPointsAxisOnCylinder)
 TEST_F(MeasureSnap, testAxisSnapOnCircleEdge)
 {
     const TopoDS_Edge circle = makeCircle(gp_Pnt(3.0, 4.0, 0.0));
-    const auto snap =
-        Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Axis, nullptr);
+    const auto snap
+        = Measure::MeasureSnap::computeSnapPoint(circle, Measure::MeasureSnapMode::Axis, nullptr);
     ASSERT_TRUE(snap.has_value());
     ASSERT_TRUE(snap->axisDir.has_value());
     EXPECT_TRUE(snap->axisDir->IsParallel(gp_Dir(0.0, 0.0, 1.0), Precision::Confusion()));
