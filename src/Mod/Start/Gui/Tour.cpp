@@ -74,6 +74,17 @@ constexpr int kChapterMinTop = 90;     // minimum top offset for the chapter lis
 constexpr int kMinBubbleWidth = 260;   // minimum bubble width before it starts shrinking
 constexpr int kMaxBubbleWidth = 420;   // maximum bubble width
 
+// Some themes leave stale values for foreground roles, leaving unreadable text contrast
+// Using known background to select contrasting text color instead of relying on theme.
+// If there is a better way to do this, please implement
+QColor textColorForBackground(const QColor& background)
+{
+    // Rec. 601 perceptual luminance weighting, sRGB channels ~linear enough for this threshold.
+    const qreal luminance
+        = (0.299 * background.redF() + 0.587 * background.greenF() + 0.114 * background.blueF());
+    return luminance > 0.5 ? QColor(Qt::black) : QColor(Qt::white);
+}
+
 class ChapterItemDelegate: public QStyledItemDelegate
 {
 public:
@@ -92,9 +103,10 @@ public:
             opt.widget->style()->drawControl(QStyle::CE_ItemViewItem, &opt, painter, opt.widget);
         }
 
+        // Derive text color to contrast current background
         const QColor color = opt.state.testFlag(QStyle::State_Selected)
-            ? opt.palette.color(QPalette::HighlightedText)
-            : opt.palette.color(QPalette::Text);
+            ? textColorForBackground(opt.palette.color(QPalette::Highlight))
+            : textColorForBackground(opt.palette.color(QPalette::Base));
         painter->setPen(color);
 
         const int indent = index.data(Qt::UserRole).toBool() ? 14 : 0;
@@ -175,6 +187,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
     void showEvent(QShowEvent* event) override;
     void paintEvent(QPaintEvent*) override;
+    void changeEvent(QEvent* event) override;
 
 private:
     struct DockFloatState
@@ -186,6 +199,7 @@ private:
 
     // UI construction and event handling.
     void buildUi();
+    void applyThemeColors();
 
     // Layout, target lookup and geometry helpers.
     void applyLayout();
@@ -267,13 +281,7 @@ void TourOverlay::buildUi()
     setAttribute(Qt::WA_TranslucentBackground);
 
     _bubble = new QFrame(this);
-    _bubble->setStyleSheet(
-        "QFrame { background: #20252b; border: none; border-radius: 8px; }"
-        "QLabel { color: #f5f7f8; }"
-        "QPushButton { background: #3d8f9b; color: white; border: 0; border-radius: 4px; "
-        "padding: 6px 12px; }"
-        "QPushButton:hover { background: #50a9b5; }"
-    );
+    _bubble->setObjectName(QStringLiteral("TourBubbleFrame"));
 
     auto bubbleLayout = new QVBoxLayout(_bubble);
     bubbleLayout->setContentsMargins(16, 14, 16, 14);
@@ -327,15 +335,6 @@ void TourOverlay::buildUi()
     bubbleLayout->addLayout(buttonRow);
 
     _chapters = new QListWidget(this);
-    _chapters->setStyleSheet(
-        "QListWidget { background: rgba(32, 37, 43, 235); color: #d7dde2; border: 1px solid "
-        "#3d454d; border-radius: 6px; padding: 0px; }"
-        "QListWidget::item { background: rgba(32, 37, 43, 235); border: none; border-radius: 0; "
-        "margin: 0; border-bottom: 1px solid #3d454d; }"
-        "QListWidget::item:hover { background: #303a42; }"
-        "QListWidget::item:selected { background: #3d8f9b; color: white; border-bottom-color: "
-        "#3d8f9b; }"
-    );
     _chapters->setCursor(Qt::PointingHandCursor);
     _chapters->setSpacing(0);
     _chapters->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
@@ -359,6 +358,71 @@ void TourOverlay::buildUi()
         );
         chapterItem->setData(Qt::UserRole, stop.isSubchapter);
         _chapters->addItem(chapterItem);
+    }
+
+    applyThemeColors();
+}
+
+// Builds the bubble/chapter-list stylesheets from _mainWindow's palette (this widget is
+// translucent, so its own palette isn't reliable). Re-invoked on palette/style changes.
+void TourOverlay::applyThemeColors()
+{
+    const QPalette pal = _mainWindow->palette();
+
+    const QColor bubbleBg = pal.color(QPalette::Window);
+    const QColor bubbleText = textColorForBackground(bubbleBg);
+    const QColor bubbleBorder = pal.color(QPalette::Mid);
+    const QColor accent = pal.color(QPalette::Highlight);
+    const QColor accentText = textColorForBackground(accent);
+    const QColor accentHover = accent.lighter(115);
+    const QColor accentBorder = accent.darker(130);
+
+    _bubble->setStyleSheet(
+        QStringLiteral(
+            "QFrame#TourBubbleFrame { background: %1; border: 1px solid %2; border-radius: 8px; }"
+        )
+            .arg(bubbleBg.name(), bubbleBorder.name())
+        + QStringLiteral("QLabel { color: %1; }").arg(bubbleText.name())
+        + QStringLiteral(
+              "QPushButton { background: %1; color: %2; border: 1px solid %3; border-radius: 4px; "
+              "padding: 6px 12px; }"
+        )
+              .arg(accent.name(), accentText.name(), accentBorder.name())
+        + QStringLiteral("QPushButton:hover { background: %1; }").arg(accentHover.name())
+    );
+
+    const QColor chapterBg = pal.color(QPalette::Base);
+    const QColor chapterText = textColorForBackground(chapterBg);
+    const QColor chapterBorder = pal.color(QPalette::Mid);
+    const QColor chapterHoverBg = pal.color(QPalette::AlternateBase);
+
+    _chapters->setStyleSheet(
+        QStringLiteral(
+            "QListWidget { background: %1; color: %2; border: 1px solid %3; border-radius: 10px; "
+            "padding: 4px; }"
+        )
+            .arg(chapterBg.name(), chapterText.name(), chapterBorder.name())
+        + QStringLiteral(
+              "QListWidget::item { background: %1; border: none; border-radius: 0; margin: 0; "
+              "border-bottom: 1px solid %2; }"
+        )
+              .arg(chapterBg.name(), chapterBorder.name())
+        + QStringLiteral("QListWidget::item:hover { background: %1; }").arg(chapterHoverBg.name())
+        + QStringLiteral(
+              "QListWidget::item:selected { background: %1; color: %2; border-bottom-color: %1; }"
+        )
+              .arg(accent.name(), accentText.name())
+    );
+
+    update();
+}
+
+void TourOverlay::changeEvent(QEvent* event)
+{
+    QWidget::changeEvent(event);
+    if (_bubble != nullptr && _chapters != nullptr
+        && (event->type() == QEvent::PaletteChange || event->type() == QEvent::StyleChange)) {
+        applyThemeColors();
     }
 }
 
@@ -400,7 +464,7 @@ void TourOverlay::paintEvent(QPaintEvent*)
     }
     painter.fillPath(path, QColor(0, 0, 0, 150));
     if (!_targetRect.isNull() && _mainWindow->rect().intersects(_targetRect)) {
-        painter.setPen(QPen(QColor(91, 190, 198), 2));
+        painter.setPen(QPen(palette().color(QPalette::Highlight), 2));
         painter.drawRoundedRect(QRectF(_targetRect).adjusted(-6, -6, 6, 6), 8, 8);
     }
 }
