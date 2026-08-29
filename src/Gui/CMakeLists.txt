@@ -354,6 +354,7 @@ generate_module_from_py(
 
 generate_embed_from_py(FreeCADGuiInit GuiInitScript.h)
 generate_embed_from_py(FreeCADGuiTest GuiTestScript.h)
+generate_embed_from_py(FreeCADGuiDiff GuiDiffScript.h)
 
 # The Pyi files
 SET(FreeCADGui_Pyi_SRCS
@@ -1388,6 +1389,7 @@ SET(FreeCADGui_SRCS
     ExpressionCompleter.h
     FreeCADGuiInit.py
     FreeCADGuiTest.py
+    FreeCADGuiDiff.py
     FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
