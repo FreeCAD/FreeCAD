@@ -35,12 +35,8 @@
 namespace StartGui
 {
 
-const QString kWelcomeId = QStringLiteral("Welcome");
-const QString kSketcherWorkbenchId = QStringLiteral("Sketcher Workbench");
+// These specific stops are references by Tour.cpp for additional functions. This keeps them in sync.
 const QString kNewSketchId = QStringLiteral("New Sketch");
-const QString kSelectPlaneId = QStringLiteral("Select Plane");
-const QString kExternalProjectionId = QStringLiteral("External Projection");
-const QString kSubShapeBinderId = QStringLiteral("SubShape Binder");
 const QString kReadMoreId = QStringLiteral("Read More");
 
 TourStop::TourStop(
@@ -127,7 +123,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
 
     QList<TourStop> candidates {
         {nullptr,
-         kWelcomeId,
+         QStringLiteral("Welcome"),
          QStringLiteral("Welcome"),
          QStringLiteral("Welcome to the project"),
          QString(),
@@ -209,7 +205,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          true},
 
         {workbenchSelector(mainWindow),
-         kSketcherWorkbenchId,
+         QStringLiteral("Sketcher Workbench"),
          QStringLiteral("Sketcher Workbench"),
          QStringLiteral("Sketcher Workbench"),
          QStringLiteral(
@@ -263,7 +259,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          TourStopExitAction::CreateSketchOnXYPlane},
 
         {nullptr,
-         kSelectPlaneId,
+         QStringLiteral("Select Plane"),
          QStringLiteral("Select a Plane"),
          QStringLiteral("Pick a plane"),
          QStringLiteral(
@@ -277,7 +273,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("SketcherWorkbench")},
 
         {nullptr,
-         kExternalProjectionId,
+         QStringLiteral("External Projection"),
          QStringLiteral("External Projection"),
          QStringLiteral("External geometry"),
          QStringLiteral(
@@ -330,7 +326,7 @@ QList<TourStop> buildStops(const QMainWindow* mainWindow)
          QStringLiteral("PartDesignWorkbench")},
 
         {nullptr,
-         kSubShapeBinderId,
+         QStringLiteral("SubShape Binder"),
          QStringLiteral("SubShape Binder"),
          QStringLiteral("Referencing without duplicating"),
          QStringLiteral(
