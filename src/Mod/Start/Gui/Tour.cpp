@@ -186,10 +186,6 @@ private:
 
     // UI construction and event handling.
     void buildUi();
-    bool eventFilter(QObject* watched, QEvent* event) override;
-    void resizeEvent(QResizeEvent* event) override;
-    void showEvent(QShowEvent* event) override;
-    void paintEvent(QPaintEvent*) override;
 
     // Layout, target lookup and geometry helpers.
     void applyLayout();
