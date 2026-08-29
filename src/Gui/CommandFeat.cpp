@@ -329,15 +329,15 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         "        obj = obj.getLinkedObject()\n"
         "    objs.append(obj)\n"
         "    subs.extend(sel.SubObjects)\n"
+        "    names.append(sel.SubElementNames)\n"
         "    shps.append(None)\n"
-        "    if hasattr(obj, \"getPropertyNameOfGeometry\"):\n"
-        "        shps[-1] = obj.getPropertyNameOfGeometry()\n"
+        "    if (geo := getattr(obj, \"getPropertyNameOfGeometry\", None)) and geo():\n"
+        "        shps[-1] = obj.getPropertyByName(geo())\n"
         "doc = obj.Document if obj else None\n"
         "lnk = lnks[-1] if lnks else None\n"
-        "shp = shps[-1] if subs else None\n"
+        "shp = shps[-1] if shps else None\n"
         "sub = subs[-1] if subs else None\n"
-        "names = sel.SubElementNames if sel else None\n"
-        "name = names[-1] if names else None"
+        "name = names[-1][-1] if names[-1] else None"
     );
     Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
 
