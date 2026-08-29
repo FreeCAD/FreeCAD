@@ -749,7 +749,7 @@ class ToolBit(Asset, ABC):
             return png_data
         icon = self.get_icon()
         if icon:
-            return icon.get_png()
+            return icon.get_png(dimensions=False)
         return None
 
     def _remove_properties(self, group, prop_names):

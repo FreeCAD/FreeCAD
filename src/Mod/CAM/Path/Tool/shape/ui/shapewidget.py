@@ -39,13 +39,20 @@ def _png2qpixmap(data, icon_size):
 
 
 class ShapeWidget(QtGui.QWidget):
-    def __init__(self, shape: ToolBitShape, icon_size: Optional[QtCore.QSize] = None, parent=None):
+    def __init__(
+        self,
+        shape: ToolBitShape,
+        icon_size: Optional[QtCore.QSize] = None,
+        parent=None,
+        dimensions: bool = True,
+    ):
         super(ShapeWidget, self).__init__(parent)
         self.layout = QtGui.QVBoxLayout(self)
         self.layout.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.shape = shape
         self.icon_size = icon_size or QtCore.QSize(263, 372)  # A4 aspect ratio
+        self.dimensions = dimensions
         self.icon_widget = QtGui.QLabel()
         self.layout.addWidget(self.icon_widget)
 
@@ -56,7 +63,7 @@ class ShapeWidget(QtGui.QWidget):
         size = self.icon_size * ratio
         icon = self.shape.get_icon()
         if icon:
-            pixmap = icon.get_qpixmap(size)
+            pixmap = icon.get_qpixmap(size, dimensions=self.dimensions)
             pixmap.setDevicePixelRatio(ratio)
             self.icon_widget.setPixmap(pixmap)
             return

@@ -24,12 +24,70 @@ import pathlib
 import re
 import xml.etree.ElementTree as ET
 from typing import Mapping, Optional
-from functools import cached_property
+from functools import cached_property, lru_cache
 from ...assets import Asset, AssetUri, AssetSerializer, DummyAssetSerializer
 import Path.Tool.shape.util as util
+from Path.Base.Gui.Theme import is_dark_theme
 from PySide import QtCore, QtGui, QtSvg
 
 _svg_ns = {"s": "http://www.w3.org/2000/svg"}
+
+# Dimension lines, arrows and labels in the shape SVGs are drawn in sentinel
+# colors that never appear in the tool artwork itself, and are recolored to suit
+# the active theme before the icon is rendered. Two sentinels tell apart the
+# dimensions drawn over the empty background from those drawn on top of the tool
+# body; both currently render in the same color, but the distinction is kept in
+# the artwork so the two can be tuned apart again without re-editing the SVGs.
+DIMENSION_SENTINEL_BACKGROUND = b"#ff0000"  # dimension over the empty background
+DIMENSION_SENTINEL_OVER_BODY = b"#00ff00"  # dimension over the tool body
+DIMENSION_SENTINELS = (DIMENSION_SENTINEL_BACKGROUND, DIMENSION_SENTINEL_OVER_BODY)
+DIMENSION_COLOR_DARK = b"#23818d"  # amber: the artwork is grayscale, so a hue reads clearly
+DIMENSION_COLOR_LIGHT = b"#111111"
+
+# The tool artwork is drawn as light gray steel for a white page. On a dark theme
+# it is scaled toward black so that it does not glare, and so that the dimensions
+# crossing it stay legible in the same color as the ones beside it.
+ARTWORK_DARK_FACTOR = 0.85
+
+_hex_color_re = re.compile(rb"#[0-9a-fA-F]{6}")
+
+
+def _darken_artwork(data: bytes, factor: float) -> bytes:
+    """Scale every color of the tool artwork toward black, leaving dimensions alone."""
+
+    def scale(match):
+        color = match.group(0)
+        if color.lower() in DIMENSION_SENTINELS:
+            return color
+        channels = (int(color[i : i + 2], 16) for i in (1, 3, 5))
+        return b"#%02x%02x%02x" % tuple(int(c * factor) for c in channels)
+
+    return _hex_color_re.sub(scale, data)
+
+
+@lru_cache(maxsize=32)
+def _themed_svg(data: bytes, dark: bool, dimensions: bool) -> bytes:
+    if dark:
+        data = _darken_artwork(data, ARTWORK_DARK_FACTOR)
+    # "none" is a valid paint for both fill and stroke, so substituting it for the
+    # sentinels hides the dimensioning - arrowhead markers included - and leaves
+    # the tool artwork untouched.
+    color = (DIMENSION_COLOR_DARK if dark else DIMENSION_COLOR_LIGHT) if dimensions else b"none"
+    for sentinel in DIMENSION_SENTINELS:
+        data = data.replace(sentinel, color).replace(sentinel.upper(), color)
+    return data
+
+
+def theme_svg(data: bytes, dimensions: bool = True) -> bytes:
+    """Recolor a shape SVG - dimensions and artwork - to suit the active theme.
+
+    Args:
+        data: the raw SVG bytes.
+        dimensions: when False the dimension lines, arrows and labels are dropped,
+            leaving just the tool artwork. Used for the small icons, where the
+            dimensioning is illegible anyway.
+    """
+    return _themed_svg(data, is_dark_theme(), dimensions)
 
 
 class ToolBitShapeIcon(Asset):
@@ -155,13 +213,15 @@ class ToolBitShapeIcon(Asset):
         normalized_param_name = param_name.lower().replace(" ", "_")
         return self.abbreviations.get(normalized_param_name)
 
-    def get_png(self, icon_size: Optional[QtCore.QSize] = None) -> bytes:
+    def get_png(self, icon_size: Optional[QtCore.QSize] = None, dimensions: bool = True) -> bytes:
         """
         Returns the icon data as PNG bytes.
         """
         raise NotImplementedError
 
-    def get_qpixmap(self, icon_size: Optional[QtCore.QSize] = None) -> QtGui.QPixmap:
+    def get_qpixmap(
+        self, icon_size: Optional[QtCore.QSize] = None, dimensions: bool = True
+    ) -> QtGui.QPixmap:
         """
         Returns the icon data as a QPixmap.
         """
@@ -171,7 +231,7 @@ class ToolBitShapeIcon(Asset):
 class ToolBitShapeSvgIcon(ToolBitShapeIcon):
     asset_type: str = "toolbitshapesvg"
 
-    def get_png(self, icon_size: Optional[QtCore.QSize] = None) -> bytes:
+    def get_png(self, icon_size: Optional[QtCore.QSize] = None, dimensions: bool = True) -> bytes:
         """
         Converts SVG icon data to PNG and returns it using QtSvg.
         """
@@ -181,7 +241,7 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
         image.fill(QtGui.Qt.transparent)
         painter = QtGui.QPainter(image)
 
-        buffer = QtCore.QBuffer(QtCore.QByteArray(self.data))
+        buffer = QtCore.QBuffer(QtCore.QByteArray(theme_svg(self.data, dimensions)))
         buffer.open(QtCore.QIODevice.ReadOnly)
         svg_renderer = QtSvg.QSvgRenderer(buffer)
         svg_renderer.setAspectRatioMode(QtCore.Qt.KeepAspectRatio)
@@ -195,13 +255,15 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
 
         return bytes(byte_array)
 
-    def get_qpixmap(self, icon_size: Optional[QtCore.QSize] = None) -> QtGui.QPixmap:
+    def get_qpixmap(
+        self, icon_size: Optional[QtCore.QSize] = None, dimensions: bool = True
+    ) -> QtGui.QPixmap:
         """
         Returns the SVG icon data as a QPixmap using QtSvg.
         """
         if icon_size is None:
             icon_size = QtCore.QSize(48, 48)
-        icon_ba = QtCore.QByteArray(self.data)
+        icon_ba = QtCore.QByteArray(theme_svg(self.data, dimensions))
         image = QtGui.QImage(icon_size, QtGui.QImage.Format_ARGB32)
         image.fill(QtGui.Qt.transparent)
         painter = QtGui.QPainter(image)
@@ -279,15 +341,18 @@ class ToolBitShapeSvgIcon(ToolBitShapeIcon):
 class ToolBitShapePngIcon(ToolBitShapeIcon):
     asset_type: str = "toolbitshapepng"
 
-    def get_png(self, icon_size: Optional[QtCore.QSize] = None) -> bytes:
+    def get_png(self, icon_size: Optional[QtCore.QSize] = None, dimensions: bool = True) -> bytes:
         """
-        Returns the PNG icon data.
+        Returns the PNG icon data. `dimensions` is accepted for signature parity
+        with the SVG icon; a rasterized thumbnail has nothing to strip.
         """
         # For PNG, resizing might be needed if icon_size is different
         # from the original size. Simple return for now.
         return self.data
 
-    def get_qpixmap(self, icon_size: Optional[QtCore.QSize] = None) -> QtGui.QPixmap:
+    def get_qpixmap(
+        self, icon_size: Optional[QtCore.QSize] = None, dimensions: bool = True
+    ) -> QtGui.QPixmap:
         """
         Returns the PNG icon data as a QPixmap.
         """

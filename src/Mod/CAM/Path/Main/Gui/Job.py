@@ -30,6 +30,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 import Path.Base.Gui.SetupSheet as PathSetupSheetGui
+import Path.Base.Gui.Theme as PathGuiTheme
 import Path.Base.Util as PathUtil
 import Path.GuiInit as PathGuiInit
 import Path.Main.Gui.JobCmd as PathJobCmd
@@ -1917,10 +1918,7 @@ class TaskPanel:
         current theme (white on dark, black on light).  The XYZ axis buttons always
         keep their fixed Red / Green / Blue stroke colors."""
 
-        theme = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/MainWindow").GetString(
-            "Theme", ""
-        )
-        is_dark = "dark" in theme.lower() if theme else False
+        is_dark = PathGuiTheme.is_dark_theme()
 
         def _adaptive_icon(resource_path, size=16):
             """Load a monochrome SVG icon (#111111 stroke/fill) and invert to white
