@@ -315,7 +315,7 @@ class SketcherGuiTestCases(unittest.TestCase):
             )
         )
         self.sketch.setLabelDistance(constraint_id, 0.0)
-        self.sketch.setLabelPosition(constraint_id, 0.0)
+        self.sketch.setLabelPosition(constraint_id, 12.0)
         self.expected_constraint_name = f"Constraint{constraint_id + 1}"
         self.doc.recompute()
         self.pump_gui_events(12)
@@ -336,3 +336,60 @@ class SketcherGuiTestCases(unittest.TestCase):
 
         self.assertGreater(len(edge_offsets), 0, detail)
         self.assertEqual(unexpected_probe_results, [], detail)
+
+    def testDistanceDatumTextWinsOverOverlappingCurve(self):
+        start_point = FreeCAD.Vector(80.0, 100.0, 0.0)
+        end_point = FreeCAD.Vector(130.0, 100.0, 0.0)
+        midpoint = FreeCAD.Vector(105.0, 100.0, 0.0)
+
+        line_id = self.sketch.addGeometry(
+            Part.LineSegment(start_point, end_point),
+            False,
+        )
+        self.doc.recompute()
+        self.pump_gui_events(6)
+
+        self.configure_view_state(self.view)
+        self.pump_gui_events(8)
+
+        midpoint_coin = tuple(int(value) for value in self.view.getPointOnViewport(midpoint))
+
+        before_info = SketcherGui.getActiveSketchPreselection(midpoint_coin)
+        before_kind = self.classify_preselection(before_info, "Constraint0")
+
+        constraint_id = self.sketch.addConstraint(
+            Sketcher.Constraint(
+                "Distance",
+                line_id,
+                1,
+                line_id,
+                2,
+                start_point.distanceToPoint(end_point),
+            )
+        )
+        self.sketch.setLabelDistance(constraint_id, 0.0)
+        self.sketch.setLabelPosition(constraint_id, 0.0)
+        self.expected_constraint_name = f"Constraint{constraint_id + 1}"
+        self.doc.recompute()
+        self.pump_gui_events(12)
+
+        text_coin = self.find_constraint_probe_viewport_point(
+            self.view,
+            midpoint,
+            self.expected_constraint_name,
+            span=32,
+            step=2,
+        )
+        after_info = (
+            SketcherGui.getActiveSketchPreselection(text_coin) if text_coin is not None else None
+        )
+        after_kind = self.classify_preselection(after_info, self.expected_constraint_name)
+
+        detail = (
+            f"before_info={before_info}, after_info={after_info}, "
+            f"midpoint_coin={midpoint_coin}, text_coin={text_coin}"
+        )
+
+        self.assertEqual(before_kind, "edge", detail)
+        self.assertIsNotNone(text_coin, detail)
+        self.assertEqual(after_kind, "target_constraint", detail)
