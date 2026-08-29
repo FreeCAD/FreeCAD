@@ -43,16 +43,6 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         for ch in text:
             self.key_click(widget, self.KEYS[ch], ch)
 
-    def active_spinbox(self):
-        widget = QtGui.QApplication.focusWidget()
-        if isinstance(widget, QtGui.QAbstractSpinBox):
-            return widget
-        if isinstance(widget, QtGui.QLineEdit):
-            parent = widget.parent()
-            if isinstance(parent, QtGui.QAbstractSpinBox):
-                return parent
-        return None
-
     def visible_spinboxes(self):
         main_window = FreeCADGui.getMainWindow()
         return [
@@ -60,6 +50,18 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             for spinbox in main_window.findChildren(QtGui.QAbstractSpinBox)
             if spinbox.isVisible()
         ]
+
+    def ovp_spinboxes(self):
+        spinboxes = self.visible_spinboxes()
+        self.assertEqual(len(spinboxes), 2, "Expected exactly two visible rectangle OVPs")
+        return spinboxes
+
+    def focus_ovp_spinbox(self, spinbox):
+        main_window = FreeCADGui.getMainWindow()
+        main_window.raise_()
+        main_window.activateWindow()
+        spinbox.setFocus(QtCore.Qt.OtherFocusReason)
+        self.flush_gui()
 
     def active_task_dialog(self):
         return FreeCADGui.Control.activeTaskDialog()
@@ -79,6 +81,7 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         )
 
     def begin_sketch_edit_with_task_dialog(self):
+        FreeCADGui.getMainWindow().show()
         FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
         self.pump(200)
         self.assert_sketch_edit_active()
@@ -96,10 +99,10 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
         origin = FreeCAD.Vector(0, 0, 0)
 
         def wait_for_origin_point():
-            first_point = None
+            origin_point = None
 
             def origin_is_framed():
-                nonlocal first_point
+                nonlocal origin_point
 
                 width, height = view.getSize()
                 if width <= 0 or height <= 0:
@@ -111,24 +114,28 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
                 if not interior_rect.contains(point):
                     return False
 
-                first_point = point
+                origin_point = point
                 return True
 
             self.assertTrue(
                 self.wait_until(origin_is_framed, timeout_ms=5000, step_ms=100),
                 "Expected the sketch origin to project to an interior viewport point",
             )
-            self.assertIsNotNone(first_point)
-            return first_point
+            self.assertIsNotNone(origin_point)
+            return origin_point
 
         FreeCADGui.runCommand("Sketcher_CreateRectangle")
         self.pump(250)
 
-        first_point = wait_for_origin_point()
+        origin_point = wait_for_origin_point()
+        first_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(origin_point.x() + 80, origin_point.y() - 60),
+        )
 
         move_target = self.clamp_to_widget(
             viewport,
-            QtCore.QPoint(first_point.x() + 80, first_point.y() - 60),
+            QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
         )
 
         self.move(viewport, first_point)
@@ -139,8 +146,452 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
             "Expected the rectangle OVPs to become visible after the first click",
         )
+        self.ovp_spinboxes()
 
         return viewport, first_point
+
+    def origin_marker_index(self):
+        from pivy import coin
+
+        view = FreeCADGui.ActiveDocument.ActiveView
+        root = view.getViewer().getSoRenderManager().getSceneGraph()
+        search = coin.SoSearchAction()
+        search.setName("OriginPointSet")
+        search.setSearchingAll(True)
+        search.apply(root)
+        path = search.getPath()
+        self.assertIsNotNone(path, "Expected the visible origin marker in the scene graph")
+        return path.getTail().markerIndex.getValues()[0]
+
+    def origin_marker_indices(self, marker_name):
+        # MarkerSize is converted to a device-pixel size by the C++ view provider. Querying all
+        # supported sizes keeps this semantic check independent of the display scale factor.
+        return {
+            FreeCADGui.getMarkerIndex(marker_name, size)
+            for size in (5, 7, 9, 11, 13, 15, 20, 25, 30)
+        }
+
+    def origin_marker_is(self, marker_name):
+        return self.origin_marker_index() in self.origin_marker_indices(marker_name)
+
+    def origin_material_transparency(self, name):
+        from pivy import coin
+
+        view = FreeCADGui.ActiveDocument.ActiveView
+        root = view.getViewer().getSoRenderManager().getSceneGraph()
+        search = coin.SoSearchAction()
+        search.setName(name)
+        search.setSearchingAll(True)
+        search.apply(root)
+        path = search.getPath()
+        self.assertIsNotNone(path, f"Expected {name} in the scene graph")
+        transparency = path.getTail().transparency
+        return transparency.getValues()[0], transparency.isDefault()
+
+    def datum_labels(self, view):
+        from pivy import coin
+
+        root = view.getViewer().getSoRenderManager().getSceneGraph()
+        datum_type = coin.SoType.fromName("SoDatumLabel")
+        labels = []
+
+        def visit(node):
+            if node.isOfType(datum_type):
+                labels.append(node)
+            if node.isOfType(coin.SoGroup.getClassTypeId()):
+                for index in range(node.getNumChildren()):
+                    visit(node.getChild(index))
+
+        visit(root)
+        return labels
+
+    def datum_label_points(self, label):
+        return tuple(
+            tuple(float(label.pnts[i][axis]) for axis in range(3))
+            for i in range(label.pnts.getNum())
+        )
+
+    def record_datum_label_point_updates(self, labels):
+        from pivy import coin
+
+        updates = []
+        completed_updates = []
+        sensors = []
+
+        for label_index, label in enumerate(labels):
+            point_count = [label.pnts.getNum()]
+
+            def record_update(
+                data,
+                sensor,
+                label=label,
+                label_index=label_index,
+                point_count=point_count,
+            ):
+                points = self.datum_label_points(label)
+                updates.append((label_index, points))
+
+                # SoDatumLabel::setPoints() grows pnts before it edits both values. Coin
+                # notifies the priority-0 sensor for that allocation as well as for the
+                # completed edit. Ignore only the notification that changes the point
+                # count; every same-sized notification is a completed assignment and
+                # must be retained, including a zero-to-nonzero transition.
+                current_point_count = label.pnts.getNum()
+                if current_point_count == point_count[0]:
+                    completed_updates.append((label_index, points))
+                else:
+                    point_count[0] = current_point_count
+
+            sensor = coin.SoFieldSensor(record_update, None)
+            sensor.setPriority(0)
+            sensor.attach(label.pnts)
+            sensors.append(sensor)
+
+        return sensors, updates, completed_updates
+
+    def test_origin_marker_tracks_drawing_tool_state(self):
+        """The origin marker is hollow only while a drawing handler is active."""
+
+        self.begin_sketch_edit_with_task_dialog()
+        view = FreeCADGui.ActiveDocument.ActiveView
+        view.viewTop()
+        view.fitAll()
+        self.pump(150)
+        viewport = view.graphicsView().viewport()
+        first_point = self.viewport_to_qpoint(
+            view,
+            viewport,
+            view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)),
+        )
+        filled_marker = self.origin_marker_index()
+        self.assertTrue(
+            self.origin_marker_is("CIRCLE_FILLED"),
+            "Expected the idle origin marker to use the filled circle marker",
+        )
+
+        transparency, is_default = self.origin_material_transparency("OriginPointMaterial")
+        self.assertEqual(transparency, 0.0)
+        self.assertFalse(is_default, "Expected the origin transparency to be explicitly set")
+
+        FreeCADGui.runCommand("Sketcher_CreateLine")
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_LINE"),
+                timeout_ms=3000,
+            ),
+            "Expected the drawing tool to switch the origin marker appearance",
+        )
+        hollow_marker = self.origin_marker_index()
+
+        self.assertNotEqual(
+            hollow_marker,
+            filled_marker,
+            "Expected an active drawing tool to switch the origin marker appearance",
+        )
+
+        view_params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        old_marker_size = view_params.GetInt("MarkerSize", 9)
+        new_marker_size = 13 if old_marker_size != 13 else 15
+        try:
+            view_params.SetInt("MarkerSize", new_marker_size)
+            self.assertTrue(
+                self.wait_until(
+                    lambda: self.origin_marker_is("CIRCLE_LINE")
+                    and self.origin_marker_index() != hollow_marker,
+                    timeout_ms=3000,
+                ),
+                "Expected the active origin marker to update after changing its size",
+            )
+            resized_hollow_marker = self.origin_marker_index()
+            self.assertNotEqual(
+                resized_hollow_marker,
+                hollow_marker,
+                "Expected an active hollow marker to be regenerated when its size changes",
+            )
+        finally:
+            view_params.SetInt("MarkerSize", old_marker_size)
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_LINE")
+                and self.origin_marker_index() != resized_hollow_marker,
+                timeout_ms=3000,
+            ),
+            "Expected restoring the marker size to update the active marker",
+        )
+
+        active_marker = self.origin_marker_index()
+        self.right_click(viewport, first_point)
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_FILLED")
+                and self.origin_marker_index() != active_marker,
+                timeout_ms=3000,
+            ),
+            "Expected leaving the drawing tool to restore the filled origin marker",
+        )
+
+        second_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
+        )
+        FreeCADGui.runCommand("Sketcher_CreateLine")
+        self.pump(100)
+        self.move(viewport, first_point)
+        self.click(viewport, first_point)
+        self.move(viewport, second_point)
+        self.click(viewport, second_point)
+        self.assertGreater(
+            self.sketch.GeometryCount,
+            0,
+            "Expected geometry away from the origin before cancelling the tool",
+        )
+        active_marker = self.origin_marker_index()
+        self.right_click(viewport, second_point)
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_FILLED")
+                and self.origin_marker_index() != active_marker,
+                timeout_ms=3000,
+            ),
+            "Expected cancelling the drawing tool to leave a filled origin marker",
+        )
+        transparency, is_default = self.origin_material_transparency("OriginPointMaterial")
+        self.assertEqual(transparency, 0.0)
+        self.assertFalse(is_default, "Expected the origin transparency to remain explicit")
+
+        for command in ("Sketcher_CreateRectangle", "Sketcher_CreateCircle"):
+            FreeCADGui.runCommand(command)
+            self.assertTrue(
+                self.wait_until(
+                    lambda: self.origin_marker_is("CIRCLE_LINE"),
+                    timeout_ms=3000,
+                ),
+                f"Expected {command} to activate the hollow origin marker",
+            )
+            active_marker = self.origin_marker_index()
+            self.right_click(viewport, first_point)
+            self.assertTrue(
+                self.wait_until(
+                    lambda: self.origin_marker_is("CIRCLE_FILLED")
+                    and self.origin_marker_index() != active_marker,
+                    timeout_ms=3000,
+                ),
+                f"Expected {command} cancellation to restore the filled origin marker",
+            )
+
+        FreeCADGui.ActiveDocument.resetEdit()
+        self.assertTrue(
+            self.wait_until(lambda: self.active_task_dialog() is None, timeout_ms=1000),
+            "Expected leaving sketch edit mode to close the task dialog",
+        )
+        FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_FILLED"),
+                timeout_ms=3000,
+            ),
+            "Expected the origin marker to be filled after re-entering the sketch",
+        )
+        transparency, is_default = self.origin_material_transparency("OriginPointMaterial")
+        self.assertEqual(transparency, 0.0)
+        self.assertFalse(is_default, "Expected the re-entered origin transparency to be explicit")
+
+    def test_origin_marker_resets_between_edit_sessions(self):
+        """A hollow drawing marker must not leak into a later edit session."""
+
+        self.begin_sketch_edit_with_task_dialog()
+        view = FreeCADGui.ActiveDocument.ActiveView
+        view.viewTop()
+        view.fitAll()
+        self.pump(150)
+        self.assertTrue(self.origin_marker_is("CIRCLE_FILLED"))
+
+        FreeCADGui.runCommand("Sketcher_CreateLine")
+        self.assertTrue(
+            self.wait_until(lambda: self.origin_marker_is("CIRCLE_LINE"), timeout_ms=3000),
+            "Expected the drawing tool to switch the origin marker appearance",
+        )
+
+        FreeCADGui.ActiveDocument.resetEdit()
+        self.assertTrue(
+            self.wait_until(lambda: self.active_task_dialog() is None, timeout_ms=1000),
+            "Expected leaving sketch edit mode to close the task dialog",
+        )
+        FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
+
+        self.assertTrue(
+            self.wait_until(
+                lambda: self.origin_marker_is("CIRCLE_FILLED"),
+                timeout_ms=3000,
+            ),
+            "Expected a new edit session to start with a filled origin marker",
+        )
+        transparency, is_default = self.origin_material_transparency("OriginPointMaterial")
+        self.assertEqual(transparency, 0.0)
+        self.assertFalse(is_default, "Expected the origin transparency to be explicit")
+
+    def test_rectangle_ovp_transition_never_resets_to_origin(self):
+        """OVP points must not be updated to the sketch origin during tool transitions."""
+
+        self.begin_sketch_edit_with_task_dialog()
+        view = FreeCADGui.ActiveDocument.ActiveView
+        view.viewTop()
+        view.fitAll()
+        self.pump(150)
+        viewport = view.graphicsView().viewport()
+
+        for command, needs_radius in (
+            ("Sketcher_CreateRectangle", False),
+            ("Sketcher_CreateRectangle_Center", False),
+            ("Sketcher_CreateOblong", True),
+        ):
+            FreeCADGui.runCommand(command)
+            self.pump(250)
+            view.fitAll()
+            origin = self.viewport_to_qpoint(
+                view,
+                viewport,
+                view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)),
+            )
+            first_point = self.clamp_to_widget(
+                viewport,
+                QtCore.QPoint(origin.x() + 80, origin.y() - 60),
+            )
+            second_point = self.clamp_to_widget(
+                viewport,
+                QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
+            )
+            radius_point = self.clamp_to_widget(
+                viewport,
+                QtCore.QPoint(second_point.x() + 25, second_point.y() + 20),
+            )
+            labels = self.datum_labels(view)
+            self.assertGreaterEqual(
+                len(labels),
+                4,
+                f"Expected {command} to create its on-view datum labels",
+            )
+            sensors = []
+            observations = []
+
+            def observe_current_labels():
+                current_labels = self.datum_labels(view)
+                self.assertGreaterEqual(
+                    len(current_labels),
+                    4,
+                    f"Expected {command} to retain its on-view datum labels",
+                )
+                # Observe every label. The scene-graph order is not a stable part of the
+                # handler API, and the centered rectangle does not necessarily expose its
+                # dimension labels at the same positions as the diagonal rectangle. The
+                # regression is specifically a complete two-point assignment at the origin,
+                # so it is safe and more reliable to inspect all labels owned by this tool.
+                current_sensors, current_updates, current_completed_updates = (
+                    self.record_datum_label_point_updates(current_labels)
+                )
+                sensors.extend(current_sensors)
+                observations.append((current_updates, current_completed_updates))
+
+            self.move(viewport, first_point)
+            self.flush_gui()
+            observe_current_labels()
+            self.click(viewport, first_point)
+            self.assertTrue(
+                self.wait_until(lambda: len(self.visible_spinboxes()) == 2, timeout_ms=1000),
+                f"Expected {command} to activate its width and height OVPs",
+            )
+            self.move(viewport, second_point)
+            self.flush_gui()
+            observe_current_labels()
+            self.click(viewport, second_point)
+            if needs_radius:
+                self.move(viewport, radius_point)
+                self.flush_gui()
+                observe_current_labels()
+                self.click(viewport, radius_point)
+
+            for sensor in sensors:
+                sensor.detach()
+
+            updates = [update for batch, _ in observations for update in batch]
+            completed_updates = [update for _, batch in observations for update in batch]
+
+            self.assertTrue(
+                updates, f"Expected {command} to update OVP points during the transition"
+            )
+            self.assertTrue(
+                completed_updates,
+                f"Expected {command} to complete OVP point assignments during the transition: {updates}",
+            )
+
+            origin_updates = [
+                points
+                for _, points in completed_updates
+                if len(points) >= 2
+                and all(all(abs(coordinate) < 1e-9 for coordinate in point) for point in points[:2])
+            ]
+            self.assertFalse(
+                origin_updates,
+                f"{command} left both OVP points at (0, 0, 0): {origin_updates}",
+            )
+
+            self.right_click(viewport, second_point)
+            self.assert_sketch_edit_active()
+
+    def test_rectangle_variants_accept_and_cancel_cleanly(self):
+        """Normal, centered, and rounded rectangles survive the same tool lifecycle."""
+
+        self.begin_sketch_edit_with_task_dialog()
+        view = FreeCADGui.ActiveDocument.ActiveView
+        view.viewTop()
+        view.fitAll()
+        self.pump(150)
+        viewport = view.graphicsView().viewport()
+
+        origin = self.viewport_to_qpoint(
+            view,
+            viewport,
+            view.getPointOnScreen(FreeCAD.Vector(0, 0, 0)),
+        )
+        first_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(origin.x() + 80, origin.y() - 60),
+        )
+        second_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(first_point.x() + 100, first_point.y() + 80),
+        )
+        radius_point = self.clamp_to_widget(
+            viewport,
+            QtCore.QPoint(second_point.x() + 25, second_point.y() + 20),
+        )
+
+        for command, needs_radius in (
+            ("Sketcher_CreateRectangle", False),
+            ("Sketcher_CreateRectangle_Center", False),
+            ("Sketcher_CreateOblong", True),
+        ):
+            initial_geometry_count = self.sketch.GeometryCount
+            FreeCADGui.runCommand(command)
+            self.pump(150)
+
+            self.move(viewport, first_point)
+            self.click(viewport, first_point)
+            self.move(viewport, second_point)
+            self.click(viewport, second_point)
+            if needs_radius:
+                self.move(viewport, radius_point)
+                self.click(viewport, radius_point)
+
+            self.pump(250)
+            self.assertGreater(
+                self.sketch.GeometryCount,
+                initial_geometry_count,
+                f"Expected {command} to create geometry",
+            )
+
+            self.right_click(viewport, second_point)
+            self.assert_sketch_edit_active()
 
     def test_reset_edit_closes_sketch_task_dialog(self):
         self.begin_sketch_edit_with_task_dialog()
@@ -185,22 +636,16 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
 
         self.begin_rectangle_with_visible_ovp()
 
-        first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        first_spinbox = self.ovp_spinboxes()[0]
+        self.focus_ovp_spinbox(first_spinbox)
         self.key_text(first_spinbox, "10")
         self.key_click(first_spinbox, QtCore.Qt.Key_Tab, "\t")
 
+        second_spinbox = self.ovp_spinboxes()[1]
         self.assertTrue(
-            self.wait_until(
-                lambda: self.active_spinbox() is not None
-                and self.active_spinbox() is not first_spinbox,
-                timeout_ms=1000,
-            ),
+            self.wait_until(lambda: second_spinbox.hasFocus(), timeout_ms=1000),
             "Expected Tab to move focus to the second rectangle OVP",
         )
-
-        second_spinbox = self.active_spinbox()
-        self.assertIsNotNone(second_spinbox, "Expected the second rectangle OVP to have focus")
         self.key_text(second_spinbox, "20")
         self.key_click(second_spinbox, QtCore.Qt.Key_Return, "\r")
 
@@ -215,8 +660,8 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
     def test_rectangle_ovp_escape_resets_tool_without_exiting_sketch(self):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
-        first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        first_spinbox = self.ovp_spinboxes()[0]
+        self.focus_ovp_spinbox(first_spinbox)
         self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
@@ -244,13 +689,13 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
             "Expected Esc to reset the rectangle tool back to its first stage",
         )
         self.assertEqual(self.sketch.GeometryCount, 0)
-        self.assertIsNotNone(self.active_spinbox())
+        self.focus_ovp_spinbox(self.ovp_spinboxes()[0])
 
     def test_rectangle_ovp_escape_then_right_click_exits_tool(self):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
-        first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        first_spinbox = self.ovp_spinboxes()[0]
+        self.focus_ovp_spinbox(first_spinbox)
         self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
@@ -290,8 +735,8 @@ class TestOnViewParameterGui(SketcherGuiTestCase):
     def test_rectangle_ovp_escape_then_escape_then_escape_exits_sketch(self):
         viewport, first_point = self.begin_rectangle_with_visible_ovp()
 
-        first_spinbox = self.active_spinbox()
-        self.assertIsNotNone(first_spinbox, "Expected the first rectangle OVP to have focus")
+        first_spinbox = self.ovp_spinboxes()[0]
+        self.focus_ovp_spinbox(first_spinbox)
         self.key_click(first_spinbox, QtCore.Qt.Key_Escape)
 
         self.assertTrue(
