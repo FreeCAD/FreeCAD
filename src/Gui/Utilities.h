@@ -32,7 +32,10 @@
 #include <Inventor/SbMatrix.h>
 #include <Inventor/SbRotation.h>
 #include <Inventor/SbVec2f.h>
+#include <Inventor/SbVec2s.h>
+#include <Inventor/SbVec3f.h>
 #include <Inventor/SbViewVolume.h>
+#include <Inventor/SbViewportRegion.h>
 
 class SbViewVolume;
 class QAbstractItemView;
@@ -450,6 +453,15 @@ namespace Gui
 {
 
 [[nodiscard]] GuiExport bool isInternalGuiTestRun();
+
+/**
+ * Project a world point through Coin's effective rendering viewport and return window pixels.
+ */
+[[nodiscard]] GuiExport SbVec2f projectToViewportPixels(
+    const SbViewVolume& viewVolume,
+    const SbViewportRegion& viewportRegion,
+    const SbVec3f& point
+);
 
 /**
  */

@@ -2716,36 +2716,12 @@ SbVec2f View3DInventorViewer::screenCoordsOfPath(SoPath* path) const
     SbMatrix mat = gma.getMatrix().transpose();
     mat.multMatrixVec(imageCoords, imageCoords);
 
-    // Now, project the object space coordinates of the object
-    // into "normalized" screen coordinates.
-    SbViewVolume vol = getSoRenderManager()->getCamera()->getViewVolume();
-    vol.projectToScreen(imageCoords, imageCoords);
-
-    // Translate "normalized" screen coordinates to pixel coords.
-    //
-    // Note: for some reason, projectToScreen() doesn't seem to
-    // handle non-square viewports properly.  The X and Y are
-    // scaled such that [0,1] fits within the smaller of the window
-    // width or height.  For instance, in a window that's 400px
-    // tall and 800px wide, the Y will be within [0,1], but X can
-    // vary within [-0.5,1.5]...
-    int width = getGLWidget()->width();
-    int height = getGLWidget()->height();
-
-    if (width >= height) {
-        // "Landscape" orientation, to square
-        imageCoords[0] *= height;
-        imageCoords[0] += (width - height) / 2.0;  // NOLINT
-        imageCoords[1] *= height;
-    }
-    else {
-        // "Portrait" orientation
-        imageCoords[0] *= width;
-        imageCoords[1] *= width;
-        imageCoords[1] += (height - width) / 2.0;  // NOLINT
-    }
-
-    return {imageCoords[0], imageCoords[1]};
+    const auto* renderManager = getSoRenderManager();
+    const SbViewportRegion& viewportRegion = renderManager->getViewportRegion();
+    SbViewportRegion renderViewportRegion = viewportRegion;
+    const SbViewVolume viewVolume
+        = renderManager->getCamera()->getViewVolume(viewportRegion, renderViewportRegion);
+    return Gui::projectToViewportPixels(viewVolume, renderViewportRegion, imageCoords);
 }
 
 std::vector<SbVec2f> View3DInventorViewer::getGLPolygon(const std::vector<SbVec2s>& pnts) const

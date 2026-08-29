@@ -1236,7 +1236,8 @@ void EditModeCoinManager::setAxisPickStyle(bool on)
 
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPreselection(
     const SoPickedPointList& points,
-    const SbVec2s& cursorPos
+    const SbVec2s& cursorPos,
+    const ScreenPickContext& pickContext
 )
 {
     PreselectionResult result;
@@ -1263,7 +1264,8 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
         }
     };
 
-    auto constraintHit = pEditModeConstraintCoinManager->detectPreselectionConstr(cursorPos);
+    auto constraintHit
+        = pEditModeConstraintCoinManager->detectPreselectionConstr(cursorPos, pickContext);
     if (constraintHit.hasHit()) {
         toPreselectionResult(constraintHit, result);
         return result;
@@ -1275,7 +1277,8 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectConstraintPre
             continue;
         }
 
-        constraintHit = pEditModeConstraintCoinManager->detectPreselectionConstr(point, cursorPos);
+        constraintHit
+            = pEditModeConstraintCoinManager->detectPreselectionConstr(point, cursorPos, pickContext);
         if (!constraintHit.hasHit()) {
             continue;
         }
@@ -1532,7 +1535,8 @@ bool EditModeCoinManager::detectAxisPreselection(
 EditModeCoinManager::PreselectionCandidates EditModeCoinManager::collectPreselectionCandidates(
     const SoPickedPointList& points,
     const SbVec2s& cursorPos,
-    int hoveredPointIndex
+    int hoveredPointIndex,
+    const ScreenPickContext& pickContext
 )
 {
     PreselectionCandidates candidates;
@@ -1542,7 +1546,7 @@ EditModeCoinManager::PreselectionCandidates EditModeCoinManager::collectPreselec
         }
     };
 
-    addCandidate(detectConstraintPreselection(points, cursorPos));
+    addCandidate(detectConstraintPreselection(points, cursorPos, pickContext));
 
     PreselectionResult geometry;
     detectGeometryPreselection(points, cursorPos, hoveredPointIndex, geometry);
@@ -1574,11 +1578,12 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::resolvePreselection
 EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
     const SoPickedPointList& points,
     const SbVec2s& cursorPos,
+    const ScreenPickContext& pickContext,
     int hoveredPointIndex
 )
 {
     return resolvePreselectionCandidates(
-        collectPreselectionCandidates(points, cursorPos, hoveredPointIndex)
+        collectPreselectionCandidates(points, cursorPos, hoveredPointIndex, pickContext)
     );
 }
 

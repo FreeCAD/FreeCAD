@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+
 #include <Inventor/SbTesselator.h>
 #include <QAbstractItemModel>
 #include <QAbstractItemView>
@@ -40,6 +42,23 @@ using namespace Gui;
 bool Gui::isInternalGuiTestRun()
 {
     return App::Application::Config()["RunMode"] == "Internal";
+}
+
+SbVec2f Gui::projectToViewportPixels(
+    const SbViewVolume& viewVolume,
+    const SbViewportRegion& viewportRegion,
+    const SbVec3f& point
+)
+{
+    SbVec3f projectedPoint = point;
+    viewVolume.projectToScreen(projectedPoint, projectedPoint);
+
+    const SbVec2s viewportOrigin = viewportRegion.getViewportOriginPixels();
+    const SbVec2s viewportSize = viewportRegion.getViewportSizePixels();
+    return {
+        projectedPoint[0] * viewportSize[0] + viewportOrigin[0],
+        projectedPoint[1] * viewportSize[1] + viewportOrigin[1]
+    };
 }
 
 

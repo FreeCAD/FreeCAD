@@ -37,6 +37,8 @@
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
+#include <Inventor/SoPath.h>
+#include <Inventor/actions/SoGetMatrixAction.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoGroup.h>
@@ -60,6 +62,8 @@
 #include <Gui/SoDatumLabel.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
+#include <Inventor/elements/SoViewVolumeElement.h>
+#include <Inventor/elements/SoViewportRegionElement.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
@@ -2185,7 +2189,8 @@ QString EditModeConstraintCoinManager::getPresentationString(
 
 EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SoPickedPoint* Point,
-    const SbVec2s& cursorScreenPos
+    const SbVec2s& cursorScreenPos,
+    const ScreenPickContext& pickContext
 )
 {
     ConstraintPreselectionResult result;
@@ -2202,7 +2207,14 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
 
     for (int childIdx = 0; childIdx < sep->getNumChildren(); ++childIdx) {
         if (tail == sep->getChild(childIdx) && dynamic_cast<SoImage*>(tail)) {
-            return detectPreselectionIcon(sep, static_cast<SoImage*>(tail), childIdx, cursorScreenPos);
+            return detectPreselectionIcon(
+                sep,
+                static_cast<SoImage*>(tail),
+                childIdx,
+                path,
+                cursorScreenPos,
+                pickContext
+            );
         }
     }
 
@@ -2226,10 +2238,33 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
 
 EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCoinManager::detectPreselectionConstr(
     const SbVec2s& cursorScreenPos,
+    const ScreenPickContext& pickContext,
     Base::Vector3d* pickedPoint
 )
 {
     ConstraintPreselectionResult result;
+
+    auto detectIcon = [&](SoSeparator* sep, SoImage* iconNode, int iconIndex) {
+        if (!pickContext.constraintGroupPath) {
+            return ConstraintPreselectionResult {};
+        }
+
+        SoPath* iconPath = pickContext.constraintGroupPath->copy();
+        iconPath->ref();
+        iconPath->append(sep);
+        iconPath->append(iconNode);
+        auto iconResult = detectPreselectionIcon(
+            sep,
+            iconNode,
+            iconIndex,
+            iconPath,
+            cursorScreenPos,
+            pickContext,
+            pickedPoint
+        );
+        iconPath->unref();
+        return iconResult;
+    };
 
     for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
         auto* sep = dynamic_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
@@ -2241,7 +2276,7 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                result = detectIcon(sep, iconNode, iconIndex);
                 if (result.hasHit()) {
                     return result;
                 }
@@ -2252,7 +2287,7 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                result = detectPreselectionIcon(sep, iconNode, iconIndex, cursorScreenPos, pickedPoint);
+                result = detectIcon(sep, iconNode, iconIndex);
                 if (result.hasHit()) {
                     return result;
                 }
@@ -2277,6 +2312,8 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
     SoSeparator* sep,
     SoImage* iconNode,
     int iconIndex,
+    const SoPath* iconPath,
+    const ScreenPickContext& pickContext,
     SbVec2f& iconScreenCenter,
     SbVec3s& iconSize,
     QString& constrIdsStr,
@@ -2298,34 +2335,32 @@ bool EditModeConstraintCoinManager::resolveIconScreenGeometry(
         return false;
     }
 
-    auto* firstTransNode = dynamic_cast<SoZoomTranslation*>(
-        sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
-    );
-    if (!firstTransNode) {
+    if (!iconPath) {
         return false;
     }
 
-    SbVec3f absPos = firstTransNode->abPos.getValue();
-    SbVec3f trans = firstTransNode->translation.getValue();
-    float scaleFactor = firstTransNode->getScaleFactor();
+    // Use the current Coin transformation chain instead of reconstructing the
+    // icon position from the last action that traversed each SoZoomTranslation.
+    const auto& viewportRegion = pickContext.renderViewportRegion;
+    const auto& viewVolume = pickContext.renderViewVolume;
+    SoPath* path = iconPath->copy();
+    path->ref();
 
-    if (iconIndex == static_cast<int>(ConstraintNodePosition::SecondIconIndex)
-        && static_cast<int>(ConstraintNodePosition::SecondTranslationIndex) < sep->getNumChildren()) {
-        auto* secondTransNode = dynamic_cast<SoZoomTranslation*>(
-            sep->getChild(static_cast<int>(ConstraintNodePosition::SecondTranslationIndex))
-        );
-        if (secondTransNode) {
-            absPos += secondTransNode->abPos.getValue();
-            trans += secondTransNode->translation.getValue();
-            scaleFactor = secondTransNode->getScaleFactor();
-        }
-    }
+    SoGetMatrixAction matrixAction(viewportRegion);
+    SoViewVolumeElement::set(matrixAction.getState(), iconNode, viewVolume);
+    SoViewportRegionElement::set(matrixAction.getState(), viewportRegion);
+    matrixAction.apply(path);
 
-    SbVec3f iconWorldPos = absPos + scaleFactor * trans;
-    iconScreenCenter = ViewProviderSketchCoinAttorney::getScreenCoordinates(viewProvider, iconWorldPos);
+    SbVec3f iconWorldPos;
+    matrixAction.getMatrix().multVecMatrix(SbVec3f(0.f, 0.f, 0.f), iconWorldPos);
+    path->unref();
 
+    iconScreenCenter = pickContext.projectRenderPointToViewport(iconWorldPos);
     if (pickedPoint) {
-        *pickedPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+        const Base::Vector3d worldPoint = Base::convertTo<Base::Vector3d>(iconWorldPos);
+        ViewProviderSketchCoinAttorney::getEditingPlacement(viewProvider)
+            .inverse()
+            .multVec(worldPoint, *pickedPoint);
     }
 
     return true;
@@ -2335,7 +2370,9 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     SoSeparator* sep,
     SoImage* iconNode,
     int iconIndex,
+    const SoPath* iconPath,
     const SbVec2s& cursorScreenPos,
+    const ScreenPickContext& pickContext,
     Base::Vector3d* pickedPoint
 ) const
 {
@@ -2346,9 +2383,17 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     Base::Vector3d hitPoint;
     Base::Vector3d* resultPoint = pickedPoint ? pickedPoint : &hitPoint;
 
-    if (
-        !resolveIconScreenGeometry(sep, iconNode, iconIndex, iconScreenCenter, iconSize, constrIdsStr, resultPoint)
-    ) {
+    if (!resolveIconScreenGeometry(
+            sep,
+            iconNode,
+            iconIndex,
+            iconPath,
+            pickContext,
+            iconScreenCenter,
+            iconSize,
+            constrIdsStr,
+            resultPoint
+        )) {
         return result;
     }
 
