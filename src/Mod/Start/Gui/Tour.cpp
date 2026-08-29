@@ -268,9 +268,14 @@ TourOverlay::TourOverlay(QMainWindow* mainWindow)
 
     showStop(0);
 
+    // Ensure the overlay is drawn above all other widgets
     QTimer::singleShot(0, this, [this]() {
         raise();
         update();
+        QTimer::singleShot(0, this, [this]() {
+            raise();
+            update();
+        });
     });
 }
 
