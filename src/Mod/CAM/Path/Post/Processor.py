@@ -2467,6 +2467,10 @@ class PostProcessor:
                 return super()._convert_drill_cycle(command)
         """
 
+        # Pass through G-code as-is
+        if "as-is" in command.Annotations:
+            return command.Annotations[Constants.ANNOT_AS_IS]
+
         # Validate command is supported
         supported = self.values.get(
             "SUPPORTED_COMMANDS",
