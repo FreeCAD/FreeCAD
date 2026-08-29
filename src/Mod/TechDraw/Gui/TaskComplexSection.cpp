@@ -563,7 +563,7 @@ void TaskComplexSection::createComplexSection()
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
         std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
-        std::string sectionCaption = Base::Tools::escapeEncodeString(makeSectionCaption(qTemp));
+        std::string sectionCaption = Base::Tools::escapeEncodeString("SECTION <REF> - <REF>");
 
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
@@ -656,7 +656,6 @@ void TaskComplexSection::updateComplexSection()
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
         std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
-        std::string sectionCaption = Base::Tools::escapeEncodeString(makeSectionCaption(qTemp));
         //NOLINTBEGIN
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
@@ -713,11 +712,6 @@ std::string TaskComplexSection::makeSectionLabel()
     return ( uniqueLabel );
 }
 
-std::string TaskComplexSection::makeSectionCaption(QString symbol)
-{
-    std::string temp = symbol.toStdString();
-    return ( "SECTION " + temp + " - " + temp );
-}
 
 void TaskComplexSection::failNoObject()
 {

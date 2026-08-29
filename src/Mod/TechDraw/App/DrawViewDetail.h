@@ -103,7 +103,6 @@ protected:
     void getParameters(void);
     double m_fudge;
     bool debugDetail() const;
-    std::string formatScale(double scale);
 
     TopoDS_Shape m_scaledShape;
     gp_Ax2 m_viewAxis;
@@ -112,6 +111,8 @@ protected:
     QFutureWatcher<void> m_detailWatcher;
     QFuture<void> m_detailFuture;
     bool m_waitingForDetail;
+    bool m_scaleAdded = false;
+    bool m_refAdded = false;
 
     DrawViewPart* m_saveDvp;
     DrawViewSection* m_saveDvs;

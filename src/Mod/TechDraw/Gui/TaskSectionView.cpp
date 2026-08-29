@@ -503,12 +503,16 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
         std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
+        std::string sectionCaption = Base::Tools::escapeEncodeString("SECTION <REF> - <REF>");
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
                            sectionLabel.c_str());
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Caption = '%s'",
+                           m_sectionName.c_str(),
+                           sectionCaption.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
               m_sectionName.c_str(), sectionLabel.c_str());
 
@@ -582,16 +586,12 @@ void TaskSectionView::updateSectionView()
         QString qTemp = ui->leSymbol->text();
         std::string temp = Base::Tools::escapeEncodeString(qTemp.toStdString());
         std::string sectionLabel = Base::Tools::escapeEncodeString(makeSectionLabel());
-        std::string sectionCaption = Base::Tools::escapeEncodeString(makeSectionCaption(qTemp));
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionSymbol = '%s'",
                            m_sectionName.c_str(), temp.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Label = '%s'",
                            m_sectionName.c_str(),
                            sectionLabel.c_str());
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Caption = '%s'",
-                           m_sectionName.c_str(),
-                           sectionCaption.c_str());
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
               m_sectionName.c_str(), sectionLabel.c_str());
 
@@ -633,11 +633,6 @@ std::string TaskSectionView::makeSectionLabel()
     std::string uniqueSuffix{m_sectionName.substr(objectName.length(), std::string::npos)};
     std::string uniqueLabel = "Section" + uniqueSuffix;
     return ( uniqueLabel );
-}
-
-std::string TaskSectionView::makeSectionCaption(QString symbol) {
-    std::string temp = symbol.toStdString();
-    return ( "SECTION " + temp + " - " + temp );
 }
 
 void TaskSectionView::failNoObject(void)

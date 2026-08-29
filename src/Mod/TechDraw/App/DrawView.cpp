@@ -78,8 +78,11 @@ const char* DrawView::ScaleTypeEnums[]= {"Page",
                                          "Automatic",
                                          "Custom",
                                          nullptr};
-const char* DrawView::CaptionPositionEnums[] = {"Top",
+const char* DrawView::CaptionSnapEnums[] = {"Top",
                                                 "Bottom",
+                                                "Left",
+                                                "Right",
+                                                "NoSnap",
                                                 nullptr};
 const double SCALEINCREMENT(0.1);
 App::PropertyFloatConstraint::Constraints DrawView::scaleRange = {Precision::Confusion(),
@@ -106,8 +109,9 @@ DrawView::DrawView():
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
-    CaptionPosition.setEnums(CaptionPositionEnums);
-    ADD_PROPERTY_TYPE(CaptionPosition, ("Bottom"), group, App::Prop_Output, "Position of the caption relative to the view");
+    ADD_PROPERTY_TYPE(CaptionLocation, (Base::Vector3d(0.0, 0.0, 0.0)), group, App::Prop_Output, "Location of the caption relative to the view");
+    CaptionSnap.setEnums(CaptionSnapEnums);
+    ADD_PROPERTY_TYPE(CaptionSnap, ("Bottom"), group, App::Prop_Hidden, "Snap the caption to the view's top, bottom, left or right edge");
     setScaleAttribute();
 }
 
