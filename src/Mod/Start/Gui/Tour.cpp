@@ -64,15 +64,16 @@ namespace StartGui
 {
 namespace
 {
-constexpr int kLayoutMargin = 24;      // margin around the overlay and chapter list
-constexpr int kLayoutLeftGap = 24;     // gap between the chapter list and the tooltip bubble
-constexpr int kBubbleGap = 16;         // gap between a target widget and the tooltip bubble
-constexpr int kChapterMinWidth = 170;  // keep the chapter list usable on narrower windows
-constexpr int kChapterMaxWidth = 200;  // chapter list width cap
-constexpr int kChapterMinHeight = 60;  // minimum height for the chapter list
-constexpr int kChapterMinTop = 90;     // minimum top offset for the chapter list
-constexpr int kMinBubbleWidth = 260;   // minimum bubble width before it starts shrinking
-constexpr int kMaxBubbleWidth = 420;   // maximum bubble width
+constexpr double kLayoutMarginEm = 1.5;       // margin around the overlay and chapter list
+constexpr double kLayoutLeftGapEm = 1.5;      // gap between the chapter list and the tooltip bubble
+constexpr double kBubbleGapEm = 1.0;          // gap between a target widget and the tooltip bubble
+constexpr double kChapterMinWidthEm = 10.5;   // keep the chapter list usable on narrower windows
+constexpr double kChapterMaxWidthEm = 12.5;   // chapter list width cap
+constexpr double kChapterMinHeightEm = 3.75;  // minimum height for the chapter list
+constexpr double kChapterFloorHeightEm = 11.25;  // absolute floor for max chapter list height
+constexpr double kChapterMinTopEm = 5.5;         // minimum top offset for the chapter list
+constexpr double kMinBubbleWidthEm = 16.0;       // minimum bubble width before it starts shrinking
+constexpr double kMaxBubbleWidthEm = 26.0;       // maximum bubble width
 
 // Some themes leave stale values for foreground roles, leaving unreadable text contrast
 // Using known background to select contrasting text color instead of relying on theme.
@@ -203,6 +204,7 @@ private:
 
     // Layout, target lookup and geometry helpers.
     void applyLayout();
+    int emUnit() const;
     QRect resolveTargetRect(const TourStop& stop) const;
     QPoint bubblePosition(
         const QRect& targetRect,
@@ -612,16 +614,17 @@ QPoint TourOverlay::bubblePosition(
         return QPoint(leftLimit, y);
     }
 
+    const int bubbleGap = std::lround(kBubbleGapEm * emUnit());
     const QPoint besideNear(
-        rtl ? targetRect.left() - bubbleSize.width() - kBubbleGap : targetRect.right() + kBubbleGap,
+        rtl ? targetRect.left() - bubbleSize.width() - bubbleGap : targetRect.right() + bubbleGap,
         targetRect.top()
     );
     const QPoint besideFar(
-        rtl ? targetRect.right() + kBubbleGap : targetRect.left() - bubbleSize.width() - kBubbleGap,
+        rtl ? targetRect.right() + bubbleGap : targetRect.left() - bubbleSize.width() - bubbleGap,
         targetRect.top()
     );
-    const QPoint below(targetRect.left(), targetRect.bottom() + kBubbleGap);
-    const QPoint above(targetRect.left(), targetRect.top() - bubbleSize.height() - kBubbleGap);
+    const QPoint below(targetRect.left(), targetRect.bottom() + bubbleGap);
+    const QPoint above(targetRect.left(), targetRect.top() - bubbleSize.height() - bubbleGap);
 
     const std::array<QPoint, 4> candidates {besideNear, besideFar, below, above};
     auto overflow = [&](const QPoint& candidate) {
@@ -653,11 +656,27 @@ QPoint TourOverlay::bubblePosition(
     return fallback;
 }
 
+int TourOverlay::emUnit() const
+{
+    return std::max(1, fontMetrics().height());
+}
+
 void TourOverlay::applyLayout()
 {
-    const int chapterWidth = std::min(kChapterMaxWidth, std::max(kChapterMinWidth, width() / 6));
-    const int chapterTop = std::max<int>(height() * 0.2, kChapterMinTop);
-    const auto maxChapterHeight = std::max(180, height() - chapterTop - kLayoutMargin);
+    const int em = emUnit();
+    const int layoutMargin = std::lround(kLayoutMarginEm * em);
+    const int layoutLeftGap = std::lround(kLayoutLeftGapEm * em);
+    const int chapterMinWidth = std::lround(kChapterMinWidthEm * em);
+    const int chapterMaxWidth = std::lround(kChapterMaxWidthEm * em);
+    const int chapterMinHeight = std::lround(kChapterMinHeightEm * em);
+    const int chapterFloorHeight = std::lround(kChapterFloorHeightEm * em);
+    const int chapterMinTop = std::lround(kChapterMinTopEm * em);
+    const int minBubbleWidth = std::lround(kMinBubbleWidthEm * em);
+    const int maxBubbleWidth = std::lround(kMaxBubbleWidthEm * em);
+
+    const int chapterWidth = std::min(chapterMaxWidth, std::max(chapterMinWidth, width() / 6));
+    const int chapterTop = std::max<int>(height() * 0.2, chapterMinTop);
+    const auto maxChapterHeight = std::max(chapterFloorHeight, height() - chapterTop - layoutMargin);
     const auto rowWidth = chapterWidth - 2 * _chapters->frameWidth();
 
     int chapterContentHeight = 2 * _chapters->frameWidth();
@@ -668,23 +687,23 @@ void TourOverlay::applyLayout()
             += ChapterItemDelegate::rowHeight(label, _chapters->font(), stop.isSubchapter, rowWidth);
     }
 
-    const int chapterHeight = std::clamp(chapterContentHeight, kChapterMinHeight, maxChapterHeight);
+    const int chapterHeight = std::clamp(chapterContentHeight, chapterMinHeight, maxChapterHeight);
     const bool chapterScrollBarVisible = chapterContentHeight > chapterHeight;
 
-    _chapters->setGeometry(kLayoutMargin, chapterTop, chapterWidth, chapterHeight);
+    _chapters->setGeometry(layoutMargin, chapterTop, chapterWidth, chapterHeight);
     _chapters->setVerticalScrollBarPolicy(
         chapterScrollBarVisible ? Qt::ScrollBarAsNeeded : Qt::ScrollBarAlwaysOff
     );
 
-    const int leftLimit = kLayoutMargin + chapterWidth + kLayoutLeftGap;
-    const int rightLimit = width() - kLayoutMargin;
-    const int topLimit = kLayoutMargin;
-    const int bottomLimit = height() - kLayoutMargin;
+    const int leftLimit = layoutMargin + chapterWidth + layoutLeftGap;
+    const int rightLimit = width() - layoutMargin;
+    const int topLimit = layoutMargin;
+    const int bottomLimit = height() - layoutMargin;
     const bool rtl = layoutDirection() == Qt::RightToLeft;
 
     const auto availableBubbleWidth = std::max(0, rightLimit - leftLimit);
-    const int bubbleWidth = availableBubbleWidth >= kMinBubbleWidth
-        ? std::min(availableBubbleWidth, kMaxBubbleWidth)
+    const int bubbleWidth = availableBubbleWidth >= minBubbleWidth
+        ? std::min(availableBubbleWidth, maxBubbleWidth)
         : std::max(1, availableBubbleWidth);
 
     _bubble->setFixedWidth(bubbleWidth);
