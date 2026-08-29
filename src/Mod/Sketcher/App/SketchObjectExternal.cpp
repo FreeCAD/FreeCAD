@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <limits>
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
@@ -1899,8 +1900,14 @@ void processEdge(const TopoDS_Edge& edge,
         //           + minorRadius * sin(t) * origAxisMinorDir
         gp_Vec2d PA = ProjVecOnPlane_UV(origAxisMajor, sketchPlane);
         gp_Vec2d PB = ProjVecOnPlane_UV(origAxisMinor, sketchPlane);
-        double t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
-        t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        double t_max = 0.0;
+        const double dPAPB = PA.SquareMagnitude() - PB.SquareMagnitude();
+
+        // For dPAPB=0 it's a circle where we use t_max=0
+        if (std::fabs(dPAPB) > std::numeric_limits<double>::epsilon()) {
+            t_max = 2.0 * PA.Dot(PB) / (PA.SquareMagnitude() - PB.SquareMagnitude());
+            t_max = 0.5 * atan(t_max);// gives new major axis is most cases, but not all
+        }
         double t_min = t_max + 0.5 * pi;
 
         // ON_max = OM(t_max) gives the point, which projected on the sketch plane,

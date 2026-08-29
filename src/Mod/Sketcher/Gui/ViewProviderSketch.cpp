@@ -3364,7 +3364,22 @@ bool ViewProviderSketch::isConstructionMode() const
 
 void ViewProviderSketch::setGeometryCreationMode(GeometryCreationMode newMode)
 {
+    if (geometryCreationMode == newMode) {
+        return;
+    }
+
     geometryCreationMode = newMode;
+
+    if (!editCoinManager) {
+        return;
+    }
+
+    editCoinManager->updateEditCurveAppearance(newMode);
+
+    Gui::MDIView* mdi = getActiveView();
+    if (mdi && mdi->isDerivedFrom<Gui::View3DInventor>()) {
+        static_cast<Gui::View3DInventor*>(mdi)->getViewer()->redraw();
+    }
 }
 
 GeometryCreationMode ViewProviderSketch::getGeometryCreationMode() const

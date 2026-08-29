@@ -534,7 +534,7 @@ class CommandCreateJointRigidGroup:
         return {
             "Pixmap": "Assembly_CreateJointRigidGroup",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointRigidGroup", "Create Rigid Group"),
-            "Accel": "O",
+            "Accel": "Y",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRigidGroup",
                 "<p>Create a rigid group.</p>"

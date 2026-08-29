@@ -103,6 +103,29 @@ std::string stripSourceRoot(const std::string& path)
 
     return Base::FileInfo(normalized).fileName();
 }
+
+/**
+ * Trim the "+ offset" that a symbol-table lookup appends to a function name.
+ *
+ * This is purely heuristic: the "<name> + <decimal>" form is an implementation detail of cpptrace's
+ * symbol-table resolution, and was observed in its Mach-O backend and is not part of its documented
+ * API. If cpptrace ever changes the format, this stops matching and the offsets reappear in the
+ * symbols; the `realCrashCapturesUsableFrames` test is designed to catch that. Note that requiring
+ * all digits after the " + " keeps demangled template arguments such as "thinger<1 + 2>" intact.
+ */
+std::string stripSymbolOffset(const std::string& symbol)
+{
+    const auto plus = symbol.rfind(" + ");
+    if (plus == std::string::npos || plus == 0) {
+        return symbol;
+    }
+    const auto offsetDigits = std::string_view {symbol}.substr(plus + 3);
+    if (offsetDigits.empty()
+        || offsetDigits.find_first_not_of("0123456789") != std::string_view::npos) {
+        return symbol;
+    }
+    return symbol.substr(0, plus);
+}
 #endif
 }  // namespace
 
@@ -226,11 +249,16 @@ ParsedCrashReport Base::CrashReporter::parse(const std::string& pathToRawReportF
             parsedFrame.rawAddress = frame.raw_address;
             parsedFrame.moduleOffset = frame.object_address;
 
-            // To avoid any PII in the backtrace, only include the filename, not the full path:
-            parsedFrame.modulePath = FileInfo(modulePathMap[frame.raw_address]).fileName();
+            const std::string& objectPath = modulePathMap[frame.raw_address];
 
-            parsedFrame.symbol = frame.symbol;
-            parsedFrame.file = stripSourceRoot(frame.filename);  // Avoid PII!
+            // To avoid any PII in the backtrace, only include the filename, not the full path:
+            parsedFrame.modulePath = FileInfo(objectPath).fileName();
+
+            parsedFrame.symbol = stripSymbolOffset(frame.symbol);
+
+            // `file` means a source file, if we've got it
+            const bool haveRealSourceFile = !frame.filename.empty() && frame.filename != objectPath;
+            parsedFrame.file = haveRealSourceFile ? stripSourceRoot(frame.filename) : std::string {};
             parsedFrame.line = frame.line.has_value() ? std::optional(frame.line.value())
                                                       : std::nullopt;
             parsedFrame.isInline = frame.is_inline;
