@@ -149,6 +149,20 @@
        </property>
       </widget>
      </item>
+     <item row="4" column="4">
+      <widget class="QLabel" name="retractLabel">
+       <property name="text">
+        <string>Peck Retract</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="6">
+      <widget class="Gui::QuantitySpinBox" name="peckRetractHeight">
+       <property name="toolTip">
+        <string>R: height the tool retracts to between pecks and when the canned drilling cycle finishes. Not the same as the job's Retract (safe) height.</string>
+       </property>
+      </widget>
+     </item>
      <item row="3" column="1">
         <widget class="QCheckBox" name="feedRetractEnabled">
           <property name="text">
@@ -185,6 +199,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>peckEnabled</tabstop>
+  <tabstop>peckRetractHeight</tabstop>
   <tabstop>feedRetractEnabled</tabstop>
   <tabstop>dwellEnabled</tabstop>
  </tabstops>

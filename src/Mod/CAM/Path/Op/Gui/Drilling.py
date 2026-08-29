@@ -50,6 +50,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def initPage(self, obj):
         self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(self.form.peckDepth, obj, "PeckDepth")
+        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.peckRetractHeight, obj, "RetractHeight"
+        )
         self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
         self.form.chipBreakEnabled.setEnabled(False)
 
@@ -125,6 +128,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckDepthLabel,
             self.form.chipBreakEnabled,
             self.form.feedRetractEnabled,
+            self.form.peckRetractHeight,
+            self.form.retractLabel,
         ]
 
         # Show/hide based on strategy
@@ -155,12 +160,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def updateQuantitySpinBoxes(self, index=None):
         self.peckDepthSpinBox.updateWidget()
+        self.peckRetractSpinBox.updateWidget()
         self.dwellTimeSpinBox.updateWidget()
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""
         Path.Log.track()
         self.peckDepthSpinBox.updateProperty()
+        self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
 
         if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
@@ -237,6 +244,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             signals.append(self.form.Strategy.currentIndexChanged)
 
         signals.append(self.form.peckDepth.editingFinished)
+        signals.append(self.form.peckRetractHeight.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.dwellEnabled.checkStateChanged)
@@ -256,7 +264,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return signals
 
     def updateData(self, obj, prop):
-        if prop in ["PeckDepth"] and not prop in ["Base", "Disabled"]:
+        if prop in ["PeckDepth", "RetractHeight"] and not prop in ["Base", "Disabled"]:
             self.updateQuantitySpinBoxes()
 
 

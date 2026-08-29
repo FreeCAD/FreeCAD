@@ -138,17 +138,20 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if hasattr(obj, "RetractMode"):
             obj.removeProperty("RetractMode")
 
-        # Migration: Remove RetractHeight property and adjust StartDepth if needed
-        # This handles old Tapping operations that used RetractHeight
-        if hasattr(obj, "RetractHeight"):
-            # If RetractHeight was higher than StartDepth, migrate to StartDepth
-            if obj.RetractHeight.Value > obj.StartDepth.Value:
-                Path.Log.warning(
-                    f"Migrating RetractHeight ({obj.RetractHeight.Value}) to StartDepth. "
-                    f"Old StartDepth was {obj.StartDepth.Value}"
-                )
-                obj.StartDepth = obj.RetractHeight.Value
-            obj.removeProperty("RetractHeight")
+        # Migration: Restore RetractHeight property (G83/G73/G85 "R" value) for
+        # operations saved while this property was mistakenly removed.
+        if not hasattr(obj, "RetractHeight"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "RetractHeight",
+                "Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The height (R) the tool retracts to between pecks and when "
+                    "the canned drilling cycle finishes",
+                ),
+            )
+            obj.RetractHeight = obj.SafeHeight.Value
 
         # Migration: Old Tapping ReturnLevel to KeepToolDown
         # This handles old Tapping operations that used ReturnLevel enum
@@ -221,6 +224,16 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Calculate the tip length and subtract from final depth",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "RetractHeight",
+            "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The height (R) the tool retracts to between pecks and when "
+                "the canned drilling cycle finishes",
             ),
         )
         obj.addProperty(
@@ -353,7 +366,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 firstMove = False
 
             else:  # Check if we need linking moves
-                # For G99 mode, tool is at StartDepth (R-plane) after previous hole
+                # For G99 mode, tool is at RetractHeight (R-plane) after previous hole
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
                 target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
@@ -386,7 +399,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     dwelltime,
                     peckdepth,
                     repeat,
-                    obj.StartDepth.Value,
+                    obj.RetractHeight.Value,
                     chipBreak=chipBreak,
                     feedRetract=obj.FeedRetractEnabled,
                 )
@@ -403,11 +416,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Update Z position based on RetractMode
             # G98: retract to initial Z (Z before cycle started)
-            # G99: retract to R parameter (StartDepth)
+            # G99: retract to R parameter (RetractHeight)
             if mode == "G98":
                 machinestate.Z = z_before_cycle
             else:  # G99
-                machinestate.Z = obj.StartDepth.Value
+                machinestate.Z = obj.RetractHeight.Value
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
@@ -550,6 +563,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.ExtraOffset = "None"
         obj.KeepToolDown = False  # default to safest option: G98
 
+        # Default retract (R) to the op's SafeHeight. These are not the same thing:
+        # SafeHeight is the general rapid-clearance plane, while RetractHeight is the
+        # canned-cycle R value and may need to be set lower (e.g. inside a deep hole)
+        # to avoid repeated full retracts with a long, thin drill. Bound as an
+        # expression (like the other Op* defaults below) so it tracks SafeHeight
+        # until the user overrides it with an explicit value.
+        if not self.applyExpression(obj, "RetractHeight", "SafeHeight"):
+            obj.RetractHeight = obj.SafeHeight.Value
+
         if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
         elif self.applyExpression(obj, "PeckDepth", "OpToolDiameter*0.75"):
@@ -569,6 +591,7 @@ def SetupProperties():
     setup.append("DwellTime")
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
+    setup.append("RetractHeight")
     setup.append("ExtraOffset")
     setup.append("KeepToolDown")
     return setup
