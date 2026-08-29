@@ -29,7 +29,7 @@
 
 from typing import Any, Dict
 
-from Path.Post.Processor import PostProcessor
+from Path.Post.Processor import PostProcessor, SCOPE_JOB
 
 import Path
 import FreeCAD
@@ -88,8 +88,8 @@ class Linuxcnc(PostProcessor):
         return [
             {
                 "name": "blend_mode",
+                "scope": SCOPE_JOB,
                 "type": "choice",
-                "runtime": True,
                 "label": translate("CAM", "Path Blending Mode"),
                 "default": "BLEND",
                 "choices": ["EXACT_PATH", "EXACT_STOP", "BLEND"],
@@ -101,8 +101,8 @@ class Linuxcnc(PostProcessor):
             },
             {
                 "name": "blend_tolerance",
+                "scope": SCOPE_JOB,
                 "type": "float",
-                "runtime": True,
                 "label": translate("CAM", "Blend Tolerance"),
                 "default": 0.0,
                 "min": 0.0,
