@@ -37,6 +37,10 @@ class QUrl;
 class QMdiSubWindow;
 class QMenu;
 
+#if defined(BUILD_QTTESTING)
+# include "QtTesting/QtTestUtility.h"
+#endif
+
 namespace App
 {
 class Document;
@@ -254,6 +258,13 @@ public:
 
     bool isRestoringWindowState() const;
 
+#if defined(BUILD_QTTESTING)
+    QtTesting::QtTestUtility& getTestUtility() const
+    {
+        return *qtTestUtility;
+    }
+#endif
+
 public Q_SLOTS:
     /**
      * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
@@ -445,6 +456,10 @@ private:
     /// some kind of singleton
     static MainWindow* instance;
     struct MainWindowP* d;
+
+#if defined(BUILD_QTTESTING)
+    std::unique_ptr<QtTesting::QtTestUtility> qtTestUtility;
+#endif
 };
 
 inline MainWindow* getMainWindow()
