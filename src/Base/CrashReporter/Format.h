@@ -87,7 +87,7 @@ enum class OS : std::uint8_t
     Linux,
     macOS,
     Windows,
-    BSD
+    BSDFamily  // Can't use "BSD" since it's #defined
 };
 
 enum class Architecture : std::uint8_t
