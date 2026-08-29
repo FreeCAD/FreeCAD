@@ -209,9 +209,9 @@ class LeadInOut:
         if direction == "CW":
             output = -output
 
-        if cmdName in Constants.GCODE_MOVE_CW and direction == "CCW":
-            output = -output
-        elif cmdName in Constants.GCODE_MOVE_CCW and direction == "CW":
+        if (cmdName in Constants.GCODE_MOVE_CW and direction == "CCW") or (
+            cmdName in Constants.GCODE_MOVE_CCW and direction == "CW"
+        ):
             output = -output
 
         return output
@@ -767,8 +767,7 @@ class LeadInOut:
 
     # Check command
     def isCuttingMove(self, instr):
-        result = instr.isMove() and not instr.isRapid() and not instr.isPlunge()
-        return result
+        return instr.isMove() and not instr.isRapid() and not instr.isPlunge()
 
     # Get direction of non cut movements
     def getMoveDir(self, instr):
@@ -813,10 +812,7 @@ class LeadInOut:
         startPoint = self.source[start].positionBegin()
         endPoint = self.source[end].positionEnd()
 
-        if Path.Geom.pointsCoincide(startPoint, endPoint):
-            return True
-        else:
-            return False
+        return Path.Geom.pointsCoincide(startPoint, endPoint)
 
     # Increase travel length from 'begin', take commands from profile 'end'
     def extendTravelIn(self, length, forceClosed=None):

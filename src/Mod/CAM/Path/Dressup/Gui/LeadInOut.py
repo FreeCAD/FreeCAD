@@ -388,7 +388,7 @@ class ObjectDressup:
             )
 
         # Ensure correct initial visibility of fields after defaults are set
-        for k, v in TaskDressupLeadInOut.hideModes.items():
+        for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
@@ -497,19 +497,14 @@ class ObjectDressup:
         return self.clearanceHeight is not None and self.safeHeight is not None
 
     def execute(self, obj):
-        if not obj.Base:
+        if not obj.Base or not obj.Base.isDerivedFrom("Path::Feature") or not obj.Base.Path:
             obj.Path = Path.Path()
             return
-        if not obj.Base.isDerivedFrom("Path::Feature"):
-            obj.Path = Path.Path()
-            return
-        if not obj.Base.Path:
-            obj.Path = Path.Path()
-            return
+
         if not PathDressup.baseOp(obj.Base).Active:
-            path = Path.Path("(inactive operation)")
-            obj.Path = path
+            obj.Path = Path.Path("(inactive operation)")
             return
+
         if not obj.LeadIn and not obj.LeadOut:
             obj.Path = PathUtils.getPathWithPlacement(obj.Base)
 
@@ -542,8 +537,8 @@ class ObjectDressup:
         elif obj.StyleOut == "LineZFollow" and obj.AngleOut > 89:
             obj.AngleOut = 89
 
-        # Use shared hideModes from TaskDressupLeadInOut
-        for k, v in TaskDressupLeadInOut.hideModes.items():
+        # Use shared hideModes
+        for k, v in hideModes.items():
             obj.setEditorMode(k + "In", 2 if obj.StyleIn in v else 0)
             obj.setEditorMode(k + "Out", 2 if obj.StyleOut in v else 0)
 
@@ -691,33 +686,6 @@ class TaskDressupLeadInOut(SimpleEditPanel):
         for signal in self.getSignalsForUpdate():
             signal.connect(self.pageGetFields)
 
-    # Shared hideModes for both LeadIn and LeadOut
-    hideModes = {
-        "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
-        "Invert": (
-            "No Retract",
-            "ArcZ",
-            "ArcZFollow",
-            "LineZ",
-            "LineZFollow",
-            "Vertical",
-            "Tangent",
-        ),
-        "Offset": ("No Retract"),
-        "Extend": (
-            "No Retract",
-            "Vertical",
-            "Arc3d",
-            "ArcZ",
-            "ArcZFollow",
-            "Line3d",
-            "LineZ",
-            "LineZFollow",
-            "Helix",
-        ),
-        "Radius": ("No Retract", "Vertical"),
-    }
-
     def updateLeadVisibility(self, style, inout):
         if inout == "in":
             angleField = self.form.dspAngleIn
@@ -741,7 +709,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             radiusLabel = self.form.labelRadiusOut
 
         # Angle
-        if style in self.hideModes["Angle"]:
+        if style in hideModes["Angle"]:
             angleField.hide()
             angleLabel.hide()
         else:
@@ -749,7 +717,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             angleLabel.show()
 
         # Extend
-        if style in self.hideModes["Extend"]:
+        if style in hideModes["Extend"]:
             extendField.hide()
             extendLabel.hide()
         else:
@@ -757,13 +725,13 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             extendLabel.show()
 
         # Invert Direction
-        if style in self.hideModes["Invert"]:
+        if style in hideModes["Invert"]:
             invertWidget.hide()
         else:
             invertWidget.show()
 
         # Offset
-        if style in self.hideModes["Offset"]:
+        if style in hideModes["Offset"]:
             offsetField.hide()
             offsetLabel.hide()
         else:
@@ -771,7 +739,7 @@ class TaskDressupLeadInOut(SimpleEditPanel):
             offsetLabel.show()
 
         # Radius
-        if style in self.hideModes["Radius"]:
+        if style in hideModes["Radius"]:
             radiusField.hide()
             radiusLabel.hide()
         else:
@@ -910,6 +878,34 @@ def Create(baseObject, name="DressupLeadInOut", mode=0):
     obj.ViewObject.Document.setEdit(obj.ViewObject, mode)
 
     return obj
+
+
+# Shared hideModes for both LeadIn and LeadOut
+hideModes = {
+    "Angle": ("No Retract", "Perpendicular", "Tangent", "Vertical"),
+    "Invert": (
+        "No Retract",
+        "ArcZ",
+        "ArcZFollow",
+        "LineZ",
+        "LineZFollow",
+        "Vertical",
+        "Tangent",
+    ),
+    "Offset": ("No Retract"),
+    "Extend": (
+        "No Retract",
+        "Vertical",
+        "Arc3d",
+        "ArcZ",
+        "ArcZFollow",
+        "Line3d",
+        "LineZ",
+        "LineZFollow",
+        "Helix",
+    ),
+    "Radius": ("No Retract", "Vertical"),
+}
 
 
 if App.GuiUp:
