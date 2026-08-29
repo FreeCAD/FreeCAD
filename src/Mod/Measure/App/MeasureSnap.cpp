@@ -65,8 +65,8 @@ namespace
 std::array<const char*, 7> SnapModeLabels
     = {"Auto", "None", "Vertex", "Center", "Midpoint", "Axis", nullptr};
 
-constexpr std::array<const char*, 5> SnaplessMeasureTypes
-    = {"LENGTH", "AREA", "DIAMETER", "RADIUS", "CENTEROFMASS"};
+constexpr std::array<const char*, 6> SnaplessMeasureTypes
+    = {"LENGTH", "AREA", "DIAMETER", "RADIUS", "CENTEROFMASS", "POSITION"};
 
 // A degenerate or curveless edge (sphere pole, cone apex) carries no 3D curve;
 // constructing an adaptor on it raises, so callers must reject it first.

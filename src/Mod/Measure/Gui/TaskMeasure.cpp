@@ -263,8 +263,6 @@ TaskMeasure::TaskMeasure()
         mTargetDoc->openCommand("Add Measurement");
     }
 
-    mSnapManager = std::make_unique<MeasureSnapManager>();
-
     setAutoCloseOnDeletedDocument(true);
     // Call invoke method delayed, otherwise the dialog might not be fully initialized
     QTimer::singleShot(0, this, &TaskMeasure::invoke);
@@ -394,12 +392,10 @@ void TaskMeasure::tryUpdate()
     }
 
 
-    if (mSnapManager) {
-        // Auto is not gated: the type is still moving while elements are picked.
-        App::MeasureType* chosen = explicitMode ? getMeasureType() : nullptr;
-        const bool snaps = !chosen || Measure::MeasureSnap::typeUsesSnapping(chosen->identifier);
-        mSnapManager->setEnabled(snaps);
-    }
+    // Auto is not gated: the type is still moving while elements are picked.
+    App::MeasureType* chosen = explicitMode ? getMeasureType() : nullptr;
+    const bool snaps = !chosen || Measure::MeasureSnap::typeUsesSnapping(chosen->identifier);
+    mSnapManager.setEnabled(snaps);
 
     if (!measureType) {
         QSignalBlocker unitSwitchBlocker(unitSwitch);
@@ -663,10 +659,9 @@ void TaskMeasure::onSelectionChanged(const Gui::SelectionChanges& msg)
         && msg.Type != Gui::SelectionChanges::SetSelection
         && msg.Type != Gui::SelectionChanges::ClrSelection) {
 
-        if (mSnapManager
-            && (msg.Type == Gui::SelectionChanges::RmvPreselect
-                || msg.Type == Gui::SelectionChanges::SetPreselect)) {
-            mSnapManager->onPreselect(msg);
+        if (msg.Type == Gui::SelectionChanges::RmvPreselect
+            || msg.Type == Gui::SelectionChanges::SetPreselect) {
+            mSnapManager.onPreselect(msg);
         }
         return;
     }
