@@ -425,6 +425,11 @@ class MachineEditorDialog(QtGui.QDialog):
         self.tabs.addTab(self.machine_tab, translate("CAM_MachineEditor", "Machine"))
         self.setup_machine_tab()
 
+        # Toolheads tab
+        self.toolheads_tab = QtGui.QWidget()
+        self.tabs.addTab(self.toolheads_tab, translate("CAM_MachineEditor", "Toolheads"))
+        self.setup_toolheads_tab()
+
         # Postprocessor tab
         self.postprocessor_tab = QtGui.QWidget()
         self.tabs.addTab(self.postprocessor_tab, translate("CAM_MachineEditor", "Postprocessor"))
@@ -895,8 +900,8 @@ class MachineEditorDialog(QtGui.QDialog):
         """Set up the machine configuration tab with form fields.
 
         Creates input fields for machine name, manufacturer, description,
-        units, type, toolhead count, axes configuration, and toolheads.
-        Connects change handlers for dynamic updates.
+        units, type, kinematics, and axes configuration. Connects change
+        handlers for dynamic updates.
         """
         layout = QtGui.QFormLayout(self.machine_tab)
 
@@ -1030,9 +1035,13 @@ class MachineEditorDialog(QtGui.QDialog):
         self.axes_group.setVisible(False)  # Initially hidden, shown when axes are configured
         layout.addRow(self.axes_group)
 
-        # Toolheads group
-        self.toolheads_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Toolheads"))
-        toolheads_layout = QtGui.QVBoxLayout(self.toolheads_group)
+    def setup_toolheads_tab(self):
+        """Set up the toolheads tab.
+
+        Holds the "Add Toolhead" button bar and the tabbed interface with one
+        tab per toolhead, populated by update_toolheads().
+        """
+        layout = QtGui.QVBoxLayout(self.toolheads_tab)
 
         # Button bar for toolhead actions
         button_bar = QtGui.QHBoxLayout()
@@ -1042,14 +1051,13 @@ class MachineEditorDialog(QtGui.QDialog):
         self.add_toolhead_button.clicked.connect(self._add_toolhead)
         self.add_toolhead_button.setEnabled(True)
         button_bar.addWidget(self.add_toolhead_button)
-        toolheads_layout.addLayout(button_bar)
+        layout.addLayout(button_bar)
 
         self.toolheads_tabs = QtGui.QTabWidget()
         self.toolheads_tabs.setTabsClosable(True)
         self.toolheads_tabs.tabCloseRequested.connect(self._remove_toolhead)
 
-        toolheads_layout.addWidget(self.toolheads_tabs)
-        layout.addRow(self.toolheads_group)
+        layout.addWidget(self.toolheads_tabs)
 
     def update_axes(self):
         """Update the axes configuration UI based on machine type and units.
