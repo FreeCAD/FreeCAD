@@ -1706,6 +1706,17 @@ void EditModeCoinManager::setConstraintSelectability(bool enabled /* = true */)
     pEditModeConstraintCoinManager->setConstraintSelectability(enabled);
 }
 
+void EditModeCoinManager::setOriginPointMarker(bool hollow)
+{
+    originPointMarkerHollow = hollow;
+    const char* markerName = hollow ? "CIRCLE_LINE" : "CIRCLE_FILLED";
+
+    editModeScenegraphNodes.OriginPointSet->markerIndex
+        = Gui::Inventor::MarkerBitmaps::getMarkerIndex(markerName, drawingParameters.markerSize);
+    editModeScenegraphNodes.OriginPointSetOccluded->markerIndex
+        = Gui::Inventor::MarkerBitmaps::getMarkerIndex(markerName, drawingParameters.markerSize);
+}
+
 
 void EditModeCoinManager::updateGeometryLayersConfiguration()
 {
@@ -2199,10 +2210,7 @@ void EditModeCoinManager::updateInventorNodeSizes()
 
     editModeScenegraphNodes.OriginPointDrawStyle->pointSize = 8
         * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.OriginPointSet->markerIndex
-        = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
-    editModeScenegraphNodes.OriginPointSetOccluded->markerIndex
-        = Gui::Inventor::MarkerBitmaps::getMarkerIndex("CIRCLE_FILLED", drawingParameters.markerSize);
+    setOriginPointMarker(originPointMarkerHollow);
 
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = drawingParameters.AxisLineWidth
         * drawingParameters.pixelScalingFactor;

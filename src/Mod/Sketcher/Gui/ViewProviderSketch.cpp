@@ -5045,6 +5045,11 @@ void ViewProviderSketch::setConstraintSelectability(bool enabled /*= true*/)
     editCoinManager->setConstraintSelectability(enabled);
 }
 
+void ViewProviderSketch::setOriginPointMarker(bool hollow)
+{
+    editCoinManager->setOriginPointMarker(hollow);
+}
+
 void ViewProviderSketch::setPositionText(const Base::Vector2d& Pos, const SbString& text)
 {
     editCoinManager->setPositionText(Pos, text);

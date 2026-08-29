@@ -98,6 +98,7 @@ class ViewProviderSketchDrawSketchHandlerAttorney
 {
 private:
     static inline void setConstraintSelectability(ViewProviderSketch& vp, bool enabled = true);
+    static inline void setOriginPointMarker(ViewProviderSketch& vp, bool hollow);
     static inline void setPositionText(
         ViewProviderSketch& vp,
         const Base::Vector2d& Pos,
