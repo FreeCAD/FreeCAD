@@ -174,7 +174,6 @@ private:
             int GeoId;
             PointPos PosId = PointPos::none;
             obj->getGeoVertexIndex(vtId, GeoId, PosId);
-            const Part::Geometry* geom = obj->getGeometry(GeoId);
             if (PosId == PointPos::start || PosId == PointPos::end) {
 
                 // guess fillet radius
