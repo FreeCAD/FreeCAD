@@ -798,6 +798,7 @@ bool SoFCUnifiedSelection::setPreselect(
         action.setElement(det);
         action.apply(currentHighlightPath);
         if (!highlighted) {
+            FC_WARN("DIAG 3d view dropped the highlight");
             currentHighlightPath->unref();
             currentHighlightPath = nullptr;
             Selection().rmvPreselect();
