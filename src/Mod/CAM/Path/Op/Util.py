@@ -698,10 +698,12 @@ def getCycleTimeEstimate(obj, formatted=True):
 
 
 def drillTipLength(tool):
-    """returns the length of the drillbit tip."""
+    """returns the length of the drillbit tip. Tools without a TipAngle (e.g. an
+    endmill, used to drill/plunge a hole) have no cone to compensate for, so this
+    is a normal case, not an error -- 0.0 is the correct length, not a fallback."""
 
     if not hasattr(tool, "TipAngle"):
-        Path.Log.error(translate("Path", "Selected tool is not a drill"))
+        Path.Log.debug(translate("Path", "Selected tool has no TipAngle, treating as 0"))
         return 0.0
 
     angle = tool.TipAngle

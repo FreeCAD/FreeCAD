@@ -50,6 +50,9 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def initPage(self, obj):
         self.peckDepthSpinBox = PathGuiUtil.QuantitySpinBox(self.form.peckDepth, obj, "PeckDepth")
+        self.peckRetractSpinBox = PathGuiUtil.QuantitySpinBox(
+            self.form.peckRetract, obj, "PeckRetract"
+        )
         self.dwellTimeSpinBox = PathGuiUtil.QuantitySpinBox(self.form.dwellTime, obj, "DwellTime")
         self.form.chipBreakEnabled.setEnabled(False)
 
@@ -59,11 +62,17 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.Strategy.currentIndexChanged.connect(self.onStrategyChanged)
 
         self.form.peckEnabled.toggled.connect(self.form.peckDepth.setEnabled)
+        self.form.peckEnabled.toggled.connect(self.form.peckDepthLabel.setEnabled)
+        self.form.peckEnabled.toggled.connect(self.form.peckRetract.setEnabled)
+        self.form.peckEnabled.toggled.connect(self.form.retractLabel.setEnabled)
         self.form.peckEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.form.feedRetractEnabled.setDisabled)
         self.form.peckEnabled.toggled.connect(self.setChipBreakControl)
 
         self.form.feedRetractEnabled.toggled.connect(self.form.peckDepth.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.peckDepthLabel.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.peckRetract.setDisabled)
+        self.form.feedRetractEnabled.toggled.connect(self.form.retractLabel.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.peckEnabled.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.dwellEnabled.setDisabled)
         self.form.feedRetractEnabled.toggled.connect(self.form.chipBreakEnabled.setDisabled)
@@ -81,6 +90,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.feedRetractEnabled.setEnabled(False)
             self.form.peckDepth.setEnabled(True)
             self.form.peckDepthLabel.setEnabled(True)
+            self.form.peckRetract.setEnabled(True)
+            self.form.retractLabel.setEnabled(True)
             self.form.chipBreakEnabled.setEnabled(True)
         elif self.form.dwellEnabled.isChecked():
             self.form.feedRetractEnabled.setEnabled(False)
@@ -125,6 +136,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             self.form.peckDepthLabel,
             self.form.chipBreakEnabled,
             self.form.feedRetractEnabled,
+            self.form.peckRetract,
+            self.form.retractLabel,
         ]
 
         # Show/hide based on strategy
@@ -155,12 +168,14 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
 
     def updateQuantitySpinBoxes(self, index=None):
         self.peckDepthSpinBox.updateWidget()
+        self.peckRetractSpinBox.updateWidget()
         self.dwellTimeSpinBox.updateWidget()
 
     def getFields(self, obj):
         """setFields(obj) ... update obj's properties with values from the UI"""
         Path.Log.track()
         self.peckDepthSpinBox.updateProperty()
+        self.peckRetractSpinBox.updateProperty()
         self.dwellTimeSpinBox.updateProperty()
 
         if hasattr(self.form, "Strategy") and hasattr(obj, "Strategy"):
@@ -237,6 +252,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             signals.append(self.form.Strategy.currentIndexChanged)
 
         signals.append(self.form.peckDepth.editingFinished)
+        signals.append(self.form.peckRetract.editingFinished)
         signals.append(self.form.dwellTime.editingFinished)
         if hasattr(self.form.dwellEnabled, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.dwellEnabled.checkStateChanged)
@@ -256,7 +272,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         return signals
 
     def updateData(self, obj, prop):
-        if prop in ["PeckDepth"] and not prop in ["Base", "Disabled"]:
+        if prop in ["PeckDepth", "PeckRetract"] and not prop in ["Base", "Disabled"]:
             self.updateQuantitySpinBoxes()
 
 
