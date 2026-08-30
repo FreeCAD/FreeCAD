@@ -202,6 +202,7 @@ class TestSyncWaylandAppId(unittest.TestCase):
             result, changed = sync_wayland_app_id(filepath, make_version())
             self.assertIn("QGuiApplication::setDesktopFileName", result)
 
+
 def write_temp_file(directory: Path, name: str, content: str) -> Path:
     filepath = directory / name
     filepath.parent.mkdir(parents=True, exist_ok=True)

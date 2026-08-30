@@ -212,6 +212,7 @@ def sync_wayland_app_id(filepath: Path, version: VersionInfo) -> tuple[str, bool
     )
     return updated, updated != content
 
+
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
     ("pixi.toml", sync_workspace_pixi_toml),
