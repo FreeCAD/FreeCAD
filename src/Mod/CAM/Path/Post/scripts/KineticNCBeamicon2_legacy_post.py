@@ -368,7 +368,7 @@ def parse(pathobj):
         # if OUTPUT_COMMENTS:
         #     out += linenumber() + "(" + pathobj.Label + ")\n"
 
-        for c in PathUtils.getPathWithPlacement(pathobj).Commands:
+        for c in PathUtils.getPathWithPlacementAndTerminator(pathobj).Commands:
 
             outstring = []
             command = c.Name
