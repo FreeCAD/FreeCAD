@@ -602,7 +602,7 @@ void ViewProviderSectionAnalysis::updateRemovedMaterial()
 
     // A second copy of an assembly's triangles is hundreds of megabytes, so
     // there is a point past which the removed material is not worth its cost.
-    constexpr std::size_t maxRemovedMaterialTriangles = 5000000;
+    constexpr std::size_t maxRemovedMaterialTriangles = 10000000;
     std::size_t totalTriangles = 0;
     for (const HarvestedBody& body : harvestCache) {
         totalTriangles += body.soup.indices.size() / 3;
@@ -756,28 +756,6 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
     // chaining at OCCT's 1e-7 would leave every tessellation seam unjoined.
     constexpr double chainTolerance = 1e-3;
 
-    // How tall the cap's fill strips are, in model units, shared by every body
-    // so the fill is the same visual density throughout the section.
-    //
-    // Derived from the whole section rather than from each body: a strip count
-    // per body spends as much on a washer as on a machine frame, and on an
-    // assembly most of the work then lands on parts whose strips are far finer
-    // than a pixel. Sized so the section as a whole gets stripsAcrossSection of
-    // them, which is what the old fixed count was reaching for.
-    constexpr int stripsAcrossSection = 400;
-    double fillStripHeight = 0.0;
-    {
-        if (!sourceBBoxValid) {
-            refreshSourceBBoxCache();
-        }
-        // The cap lies in the plane, so the diagonal is a fair stand-in for how
-        // far the section reaches whichever way the plane is turned.
-        const double diagonal = sourceBBox.CalcDiagonalLength();
-        fillStripHeight = (sourceBBoxValid && diagonal > 0.0)
-            ? diagonal / stripsAcrossSection
-            : chainTolerance;
-    }
-
     // Walking the scene graph is most of the cost and does not depend on the
     // plane, so it is done once and kept.
     //
@@ -825,7 +803,7 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             ? partColor(body.source, index)
             : appearance.front();
 
-        const auto fill = Part::SectionCap::fillLoops(loops, u, v, fillStripHeight);
+        const auto fill = Part::SectionCap::fillLoops(loops, u, v);
         if (!fill.indices.empty()) {
             std::vector<SbVec3f> fillPoints;
             fillPoints.reserve(fill.points.size());

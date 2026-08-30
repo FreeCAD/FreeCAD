@@ -2476,8 +2476,19 @@ namespace
 /// is an easy way to feed it in as a source.
 bool canBeSectioned(const App::DocumentObject* obj)
 {
-    return obj && !obj->isDerivedFrom(Part::SectionAnalysis::getClassTypeId())
-        && Part::SectionAnalysis::isEffectivelyVisible(obj);
+    if (!obj || obj->isDerivedFrom(Part::SectionAnalysis::getClassTypeId())) {
+        return false;
+    }
+
+    // The folder the sections live in, once there is one. Selecting it would
+    // otherwise feed every section made so far back in as a source.
+    if (const auto* group = dynamic_cast<const App::DocumentObjectGroup*>(obj)) {
+        if (!group->getObjectsOfType(Part::SectionAnalysis::getClassTypeId()).empty()) {
+            return false;
+        }
+    }
+
+    return Part::SectionAnalysis::isEffectivelyVisible(obj);
 }
 }  // namespace
 
@@ -2552,11 +2563,46 @@ void CmdPartSectionAnalysis::activated(int iMsg)
 
     // Standard command plumbing
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Section Analysis"));
+
+    // A section is analysis output, not something the user goes on to build
+    // from, so it gets its own folder instead of sitting among the bodies at
+    // the document root. Made before the section itself: addObject leaves what
+    // it created as the active object, and the lines below reach the section
+    // through ActiveObject.
+    const char* const sectionGroupName = "Sections";
+    std::string groupName;
+    if (auto* existing =
+            dynamic_cast<App::DocumentObjectGroup*>(getDocument()->getObject(sectionGroupName))) {
+        groupName = existing->getNameInDocument();
+    }
+    else {
+        doCommand(
+            Doc,
+            "App.getDocument('%s').addObject('App::DocumentObjectGroup', '%s')",
+            docName.c_str(),
+            sectionGroupName
+        );
+        // The document renames on a clash, so the folder's own name is the one
+        // to address it by, not the one that was asked for.
+        if (auto* created = getDocument()->getActiveObject()) {
+            groupName = created->getNameInDocument();
+        }
+    }
+
     doCommand(
         Doc,
         "App.getDocument('%s').addObject('Part::SectionAnalysis', 'SectionAnalysis')",
         docName.c_str()
     );
+    if (!groupName.empty()) {
+        doCommand(
+            Doc,
+            "App.getDocument('%s').getObject('%s').addObject(App.getDocument('%s').ActiveObject)",
+            docName.c_str(),
+            groupName.c_str(),
+            docName.c_str()
+        );
+    }
     doCommand(
         Doc,
         "App.getDocument('%s').ActiveObject.Source = [%s]",

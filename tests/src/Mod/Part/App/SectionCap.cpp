@@ -38,16 +38,6 @@ const Base::Vector3d Z(0, 0, 1);
 const Base::Vector3d U(1, 0, 0);
 const Base::Vector3d V(0, 1, 0);
 
-/// Strip height giving `count` strips across a region `extent` tall.
-///
-/// fillLoops takes a height rather than a count, so that one part of an
-/// assembly does not get the same effort as the whole of it. These tests still
-/// read most naturally as "this many strips across a 10 mm square", so they
-/// say that and convert.
-constexpr double stripsAcross(double extent, int count)
-{
-    return extent / count;
-}
 /// The box the view provider measures once at harvest time and then rejects
 /// planes against, without touching the triangles again.
 Base::BoundBox3d boundsOf(const TriangleSoup& soup)
@@ -206,7 +196,7 @@ TEST(SectionCapChain, testTheLoopEnclosesTheCrossSectionArea)
     const auto loops = chainLoops(sliceTriangles(box(10), Z, 5.0), 1e-7);
 
     ASSERT_EQ(loops.size(), 1);
-    EXPECT_NEAR(soupArea(fillLoops(loops, U, V, stripsAcross(10.0, 400))), 100.0, 1e-3);
+    EXPECT_NEAR(soupArea(fillLoops(loops, U, V)), 100.0, 1e-3);
 }
 
 TEST(SectionCapChain, testTwoSeparateBodiesGiveTwoLoops)
@@ -302,7 +292,7 @@ TEST(SectionCapFill, testASquareIsFilledWithItsOwnArea)
     const std::vector<std::vector<Base::Vector3d>> loops = {square(0, 0, 10)};
 
     // Act
-    const auto soup = fillLoops(loops, U, V, stripsAcross(10.0, 200));
+    const auto soup = fillLoops(loops, U, V);
 
     // Assert - the strips tile the square exactly, so the areas agree
     EXPECT_NEAR(soupArea(soup), 100.0, 1e-6);
@@ -314,7 +304,7 @@ TEST(SectionCapFill, testAHoleIsNotFilled)
     const std::vector<std::vector<Base::Vector3d>> loops = {square(0, 0, 10), square(3, 3, 4)};
 
     // Act
-    const auto soup = fillLoops(loops, U, V, stripsAcross(10.0, 400));
+    const auto soup = fillLoops(loops, U, V);
 
     // Assert - the hole's 16 mm2 is missing. Filling it would put a surface
     // across a bore, which is exactly what the section is meant to reveal.
@@ -328,7 +318,7 @@ TEST(SectionCapFill, testTheFillStaysOnTheLoopsOwnPlane)
         p.z = 7.0;
     }
 
-    const auto soup = fillLoops({loop}, U, V, stripsAcross(10.0, 50));
+    const auto soup = fillLoops({loop}, U, V);
 
     ASSERT_FALSE(soup.points.empty());
     for (const auto& p : soup.points) {
@@ -338,7 +328,7 @@ TEST(SectionCapFill, testTheFillStaysOnTheLoopsOwnPlane)
 
 TEST(SectionCapFill, testEveryTriangleIndexIsInRange)
 {
-    const auto soup = fillLoops({square(0, 0, 10), square(3, 3, 4)}, U, V, stripsAcross(10.0, 64));
+    const auto soup = fillLoops({square(0, 0, 10), square(3, 3, 4)}, U, V);
 
     ASSERT_FALSE(soup.indices.empty());
     EXPECT_EQ(soup.indices.size() % 3, 0);
@@ -354,16 +344,15 @@ TEST(SectionCapFill, testFillRunsFromTheSlicedGeometry)
     const auto loops = chainLoops(sliceTriangles(box(10), Z, 5.0), 1e-7);
     ASSERT_EQ(loops.size(), 1);
 
-    const auto soup = fillLoops(loops, U, V, stripsAcross(10.0, 128));
+    const auto soup = fillLoops(loops, U, V);
 
     EXPECT_NEAR(soupArea(soup), 100.0, 1e-6);
 }
 
 TEST(SectionCapFill, testNonsenseInputIsRefused)
 {
-    EXPECT_TRUE(fillLoops({}, U, V, stripsAcross(10.0, 100)).indices.empty());
-    EXPECT_TRUE(fillLoops({square(0, 0, 10)}, U, V, 0.0).indices.empty());
-    EXPECT_TRUE(fillLoops({square(0, 0, 10)}, U, V, -5.0).indices.empty());
+    EXPECT_TRUE(fillLoops({}, U, V).indices.empty());
+    EXPECT_TRUE(fillLoops({{}}, U, V).indices.empty());
 }
 // --- gaps found by a coverage run ----------------------------------------
 
@@ -437,27 +426,27 @@ TEST(SectionCapChain, testALoopTooShortToEncloseAnythingIsNotClosed)
 
 TEST(SectionCapFill, testDegenerateLoopsFillNothing)
 {
-    // Loops of fewer than three points contribute no edges. Without the guard
-    // the strip height comes out zero and the fill degenerates.
+    // Loops of fewer than three points contribute no edges, so there is
+    // nothing for the sweep to stand on.
     using Vec = Base::Vector3d;
     const std::vector<std::vector<Base::Vector3d>> degenerate = {
         {Vec(0, 0, 0), Vec(10, 0, 0)},
         {Vec(5, 5, 0)},
     };
 
-    EXPECT_TRUE(fillLoops(degenerate, U, V, stripsAcross(10.0, 100)).indices.empty());
+    EXPECT_TRUE(fillLoops(degenerate, U, V).indices.empty());
 }
 
 TEST(SectionCapFill, testAFlatRegionFillsNothing)
 {
-    // Every point on one line: there is no area to fill, and the strip height
-    // would be zero.
+    // Every point on one line: no edge crosses a level, so there is no band
+    // to fill.
     using Vec = Base::Vector3d;
     const std::vector<std::vector<Base::Vector3d>> flat = {
         {Vec(0, 0, 0), Vec(10, 0, 0), Vec(20, 0, 0)},
     };
 
-    EXPECT_TRUE(fillLoops(flat, U, V, stripsAcross(10.0, 100)).indices.empty());
+    EXPECT_TRUE(fillLoops(flat, U, V).indices.empty());
 }
 
 TEST(SectionCapFill, testNotANumberInALoopIsSkippedRatherThanPoisoningTheFill)
@@ -468,7 +457,7 @@ TEST(SectionCapFill, testNotANumberInALoopIsSkippedRatherThanPoisoningTheFill)
     std::vector<Base::Vector3d> loop = square(0, 0, 10);
     loop.push_back(Vec(nan, nan, 0));
 
-    const auto soup = fillLoops({loop}, U, V, stripsAcross(10.0, 64));
+    const auto soup = fillLoops({loop}, U, V);
 
     for (const auto& p : soup.points) {
         EXPECT_TRUE(std::isfinite(p.x));
