@@ -1726,6 +1726,16 @@ short Hole::mustExecute() const
     return ProfileBased::mustExecute();
 }
 
+void Hole::updatePreviewShape()
+{
+    // a modeled thread is swept, making the removed volume booleans too slow to be worth it
+    if (Threaded.getValue() && ModelThread.getValue()) {
+        PreviewShape.setValue(AddSubShape.getShape());
+        return;
+    }
+    ProfileBased::updatePreviewShape();
+}
+
 void Hole::Restore(Base::XMLReader& reader)
 {
     ProfileBased::Restore(reader);
