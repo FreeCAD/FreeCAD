@@ -2614,7 +2614,7 @@ class PostProcessor:
         else:
             return f"{block_delete_string}{comment_symbol} {comment_text}"  # FIXME: no extra space
 
-    def format_parameter(self, param_name, value):
+    def format_parameter(self, param_name, value, command_name=None):
 
         def _convert_axis_param(value):
             # Apply unit conversion based on machine units setting
@@ -2652,6 +2652,14 @@ class PostProcessor:
             """Format integer parameter."""
             return str(int(value))
 
+        def format_p_param(value):
+            """Format P according to what it means for this command."""
+            if command_name in Constants.GCODE_P_IS_DWELL:
+                # A dwell keeps the axis precision but must not be unit converted
+                precision = self.values["AXIS_PRECISION"]
+                return f"{value:.{precision}f}"
+            return format_axis_param(value)
+
         # Parameter type mappings
         param_formatters = {
             # Axis parameters
@@ -2673,8 +2681,8 @@ class PostProcessor:
             # Feed and spindle
             "F": format_feed_param,
             "S": format_spindle_param,
-            # P parameter - use axis formatting to support decimal values (e.g., G4 P2.5)
-            "P": format_axis_param,
+            # P is a dwell on G4 and the canned cycles, a distance on G5/G64
+            "P": format_p_param,
             # Integer parameters
             "D": format_int_param,
             "H": format_int_param,
@@ -2749,7 +2757,7 @@ class PostProcessor:
                 ):
                     continue  # no F for G0, or the F is 0.0 which should be skipped too
 
-                formatted_value = self.format_parameter(parameter, current_value)
+                formatted_value = self.format_parameter(parameter, current_value, command_name)
                 command_line.append(f"{parameter}{formatted_value}")
 
         # Format the command line
