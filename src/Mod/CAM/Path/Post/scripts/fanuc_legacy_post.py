@@ -502,7 +502,8 @@ def parse(pathobj):
                         "Tool Controller Vertical Rapid Values are unset" + "\n"
                     )
 
-        commands = PathUtils.getPathWithPlacement(pathobj).Commands
+        # Some ops (e.g. Drilling) only annotate retract mode; make it literal.
+        commands = PostUtils.cannedCycleTerminator(PathUtils.getPathWithPlacement(pathobj)).Commands
         for index, c in enumerate(commands):
 
             outstring = []
