@@ -320,11 +320,16 @@ class TaskPanel:
         self.form.SetProbePointFileName.clicked.connect(self.SetProbePointFileName)
 
     def SetProbePointFileName(self):
+        path = self.form.ProbePointFileName.text().strip()
+        if not os.path.exists(path):
+            path = os.path.dirname(path)
+        if not os.path.exists(path):
+            path = os.path.dirname(FreeCAD.activeDocument().FileName)
         filename = QtGui.QFileDialog.getOpenFileName(
             self.form,
             translate("CAM_Probe", "Select Probe Point File"),
-            None,
-            translate("CAM_Probe", "All Files (*.*)"),
+            path,
+            translate("CAM_Probe", "All Files (*)"),
         )
         if filename and filename[0]:
             self.obj.probefile = str(filename[0])
@@ -409,10 +414,10 @@ class CommandPathDressup:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "ZCorrectDressup")'
         )
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ObjectDressup(obj)")
-        FreeCADGui.doCommand("obj.Base = FreeCAD.ActiveDocument." + op.Name)
+        FreeCADGui.doCommand(f"obj.Base = FreeCAD.ActiveDocument.getObject('{op.Name}')")
         FreeCADGui.doCommand("Path.Dressup.Gui.ZCorrect.ViewProviderDressup(obj.ViewObject)")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
-        FreeCADGui.doCommand("Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False")
+        FreeCADGui.doCommand("obj.Base.Visibility = False")
         FreeCADGui.doCommand("obj.ViewObject.Document.setEdit(obj.ViewObject, 0)")
         # FreeCAD.ActiveDocument.commitTransaction()  # Final `commitTransaction()` called via TaskPanel.accept()
         FreeCAD.ActiveDocument.recompute()

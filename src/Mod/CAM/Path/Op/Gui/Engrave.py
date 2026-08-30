@@ -27,7 +27,6 @@ import Path
 import Path.Op.Engrave as PathEngrave
 import Path.Op.Gui.Base as PathOpGui
 import PathGui
-import PathScripts.PathUtils as PathUtils
 
 from PySide import QtCore, QtGui
 
@@ -68,14 +67,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         added = False
         shapes = self.obj.BaseShapes
         for sel in selection:
-            job = PathUtils.findParentJob(self.obj)
-            base = job.Proxy.resourceClone(job, sel.Object)
-            if not base:
-                Path.Log.notice(
-                    (translate("CAM", "%s is not a Base Model object of the job %s") + "\n")
-                    % (sel.Object.Label, job.Label)
-                )
-                continue
+            base = sel.Object
             if base in shapes:
                 Path.Log.notice(
                     (translate("CAM", "Base shape %s already in the list") + "\n")
@@ -141,21 +133,15 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         """getFields(obj) ... transfers values from UI to obj's properties"""
         if obj.StartVertex != self.form.startVertex.value():
             obj.StartVertex = self.form.startVertex.value()
-        self.updateToolController(obj, self.form.toolController)
-        self.updateCoolant(obj, self.form.coolantController)
 
     def setFields(self, obj):
         """setFields(obj) ... transfers obj's property values to UI"""
         self.form.startVertex.setValue(obj.StartVertex)
-        self.setupToolController(obj, self.form.toolController)
-        self.setupCoolant(obj, self.form.coolantController)
 
     def getSignalsForUpdate(self, obj):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
         signals.append(self.form.startVertex.editingFinished)
-        signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.coolantController.currentIndexChanged)
         return signals
 
     def taskPanelBaseGeometryPage(self, obj, features):

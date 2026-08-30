@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="842"/>
+      <location filename="../../AttacherTexts.cpp" line="862"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>任意</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="843"/>
+      <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="844"/>
+      <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>エッジ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="845"/>
+      <location filename="../../AttacherTexts.cpp" line="865"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="847"/>
+      <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>直線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="848"/>
+      <location filename="../../AttacherTexts.cpp" line="868"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>曲線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="849"/>
+      <location filename="../../AttacherTexts.cpp" line="869"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>円</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="850"/>
+      <location filename="../../AttacherTexts.cpp" line="870"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>円錐</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="851"/>
+      <location filename="../../AttacherTexts.cpp" line="871"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>楕円</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="852"/>
+      <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>放物線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="853"/>
+      <location filename="../../AttacherTexts.cpp" line="873"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>双曲線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="855"/>
+      <location filename="../../AttacherTexts.cpp" line="875"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="856"/>
+      <location filename="../../AttacherTexts.cpp" line="876"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>球体</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="857"/>
+      <location filename="../../AttacherTexts.cpp" line="877"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>回転</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="858"/>
+      <location filename="../../AttacherTexts.cpp" line="878"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>円柱</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="859"/>
+      <location filename="../../AttacherTexts.cpp" line="879"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>トーラス</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="860"/>
+      <location filename="../../AttacherTexts.cpp" line="880"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>円錐</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="862"/>
+      <location filename="../../AttacherTexts.cpp" line="882"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="863"/>
+      <location filename="../../AttacherTexts.cpp" line="883"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>ソリッド</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="864"/>
+      <location filename="../../AttacherTexts.cpp" line="884"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>ワイヤー</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="727"/>
+      <location filename="../../AttacherTexts.cpp" line="747"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>非アクティブ化</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="728"/>
+      <location filename="../../AttacherTexts.cpp" line="748"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>アタッチメントは無効です。Placementプロパティーを編集することで点を移動できます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="736"/>
+      <location filename="../../AttacherTexts.cpp" line="756"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>オブジェクトの原点</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="737"/>
+      <location filename="../../AttacherTexts.cpp" line="757"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>点がオブジェクトの配置位置に置かれます。配置情報を持つオブジェクト、楕円、放物線、双曲線エッジで動作します。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="746"/>
+      <location filename="../../AttacherTexts.cpp" line="766"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>焦点1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="747"/>
+      <location filename="../../AttacherTexts.cpp" line="767"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>楕円、放物線、双曲線の焦点</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="755"/>
+      <location filename="../../AttacherTexts.cpp" line="775"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>焦点2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="756"/>
+      <location filename="../../AttacherTexts.cpp" line="776"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>楕円と双曲線の2つ目の焦点</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="764"/>
+      <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>エッジ上</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="765"/>
+      <location filename="../../AttacherTexts.cpp" line="785"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>点がエッジ上、MapPathParametr コントロール位置に配置されます。また投影するために節点をリンクすることができます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="774"/>
+      <location filename="../../AttacherTexts.cpp" line="794"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>曲線の中心</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="775"/>
+      <location filename="../../AttacherTexts.cpp" line="795"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>エッジの接触円の中心。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="784"/>
+      <location filename="../../AttacherTexts.cpp" line="804"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>重心</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="785"/>
+      <location filename="../../AttacherTexts.cpp" line="805"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>全ての参照物の重心（等密度を仮定）</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="793"/>
+      <location filename="../../AttacherTexts.cpp" line="813"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>共通集合</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="794"/>
+      <location filename="../../AttacherTexts.cpp" line="814"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>実装されていません。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="798"/>
+      <location filename="../../AttacherTexts.cpp" line="818"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="799"/>
+      <location filename="../../AttacherTexts.cpp" line="819"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>他の節点と一致するデータム点を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="807"/>
+      <location filename="../../AttacherTexts.cpp" line="827"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>近接点1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="808"/>
+      <location filename="../../AttacherTexts.cpp" line="828"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>2番目の参照物に最も近い1番目の参照物上の点</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="816"/>
+      <location filename="../../AttacherTexts.cpp" line="836"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>近接点2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="817"/>
+      <location filename="../../AttacherTexts.cpp" line="837"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>1番目の参照物に最も近い2番目の参照物上の点</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="537"/>
+      <location filename="../../AttacherTexts.cpp" line="557"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>非アクティブ化</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="538"/>
+      <location filename="../../AttacherTexts.cpp" line="558"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>アタッチメントは無効です。Placementプロパティーを編集することで線を移動できます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="546"/>
+      <location filename="../../AttacherTexts.cpp" line="566"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>オブジェクトのX座標</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="547"/>
       <location filename="../../AttacherTexts.cpp" line="567"/>
+      <location filename="../../AttacherTexts.cpp" line="587"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>オブジェクトのローカルX軸に沿って線を整列。配置情報を持つオブジェクト、楕円、放物線、双曲線エッジで動作します。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="556"/>
+      <location filename="../../AttacherTexts.cpp" line="576"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>オブジェクトのY座標</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="557"/>
+      <location filename="../../AttacherTexts.cpp" line="577"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>オブジェクトのローカルY軸に沿って線を整列。配置情報を持つオブジェクト、楕円、放物線、双曲線エッジで動作します。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="566"/>
+      <location filename="../../AttacherTexts.cpp" line="586"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>オブジェクトのZ座標</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="576"/>
+      <location filename="../../AttacherTexts.cpp" line="596"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>曲線の軸</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="577"/>
+      <location filename="../../AttacherTexts.cpp" line="597"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>曲線エッジの接触円の軸となる線。オプション節点で位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="586"/>
+      <location filename="../../AttacherTexts.cpp" line="606"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>準線1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="587"/>
+      <location filename="../../AttacherTexts.cpp" line="607"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>楕円、放物線、双曲線の準線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="595"/>
+      <location filename="../../AttacherTexts.cpp" line="615"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>準線2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="596"/>
+      <location filename="../../AttacherTexts.cpp" line="616"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>楕円と双曲線の2番目の準線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="604"/>
+      <location filename="../../AttacherTexts.cpp" line="624"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>漸近線1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="605"/>
+      <location filename="../../AttacherTexts.cpp" line="625"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>双曲線の漸近線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="609"/>
+      <location filename="../../AttacherTexts.cpp" line="629"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>漸近線2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="610"/>
+      <location filename="../../AttacherTexts.cpp" line="630"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>双曲線の2番目の漸近線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="614"/>
+      <location filename="../../AttacherTexts.cpp" line="634"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>正接</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="615"/>
+      <location filename="../../AttacherTexts.cpp" line="635"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>エッジに正接する線。オプションの頂点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="623"/>
+      <location filename="../../AttacherTexts.cpp" line="643"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>エッジに垂直</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="624"/>
+      <location filename="../../AttacherTexts.cpp" line="644"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>曲線エッジのフレネ・セレ座標系のNベクトルに揃えます。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="633"/>
+      <location filename="../../AttacherTexts.cpp" line="653"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>従法線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="634"/>
+      <location filename="../../AttacherTexts.cpp" line="654"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>曲線エッジのフレネ・セレ座標系のBベクトルに揃えます。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="643"/>
+      <location filename="../../AttacherTexts.cpp" line="663"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>表面に正接（U）</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="644"/>
-      <location filename="../../AttacherTexts.cpp" line="653"/>
+      <location filename="../../AttacherTexts.cpp" line="664"/>
+      <location filename="../../AttacherTexts.cpp" line="673"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>Uパラメーターに沿って表面に正接。節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="652"/>
+      <location filename="../../AttacherTexts.cpp" line="672"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>表面に正接（V）</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="661"/>
+      <location filename="../../AttacherTexts.cpp" line="681"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>2点を通過</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="662"/>
+      <location filename="../../AttacherTexts.cpp" line="682"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>2つの節点を通過する線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="670"/>
+      <location filename="../../AttacherTexts.cpp" line="690"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>共通集合</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="671"/>
+      <location filename="../../AttacherTexts.cpp" line="691"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>2面の交差</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="675"/>
+      <location filename="../../AttacherTexts.cpp" line="695"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>近接線</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="676"/>
+      <location filename="../../AttacherTexts.cpp" line="696"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>シェイプ間の最短距離を結ぶ線。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="684"/>
+      <location filename="../../AttacherTexts.cpp" line="704"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>第1主軸</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="685"/>
+      <location filename="../../AttacherTexts.cpp" line="705"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>第1慣性主軸に揃った線。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="693"/>
+      <location filename="../../AttacherTexts.cpp" line="713"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>第2主軸</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="694"/>
+      <location filename="../../AttacherTexts.cpp" line="714"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>第2慣性主軸に揃った線。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="702"/>
+      <location filename="../../AttacherTexts.cpp" line="722"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>第3主軸</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="703"/>
+      <location filename="../../AttacherTexts.cpp" line="723"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>第3慣性主軸に揃った線。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="711"/>
+      <location filename="../../AttacherTexts.cpp" line="731"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>サーフェスに垂直</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="712"/>
+      <location filename="../../AttacherTexts.cpp" line="732"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>頂点によって指定された点での表面の法線</translation>
@@ -507,207 +507,219 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>非アクティブ化</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="297"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>アタッチメントは無効です。Placementプロパティーを編集することでオブジェクトを移動できます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="316"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>原点を移動</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="307"/>
+      <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>原点を頂点を一致するように配置。向きはPlacementプロパティで制御されます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>オブジェクトのXY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>リンクされたオブジェクトのXYローカル面に平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>オブジェクトのXZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>リンクされたオブジェクトのXZローカル面に平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="344"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>オブジェクトのYZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="345"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>リンクされたオブジェクトのYZローカル面に平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="343"/>
+      <location filename="../../AttacherTexts.cpp" line="353"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>面に平行なXY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="344"/>
+      <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>X' Y'平面はその面 (オブジェクトのXY) に平行で、その頂点を通過します。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="353"/>
+      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <source>Midplane between faces</source>
+      <comment>AttachmentPlane mode caption</comment>
+      <translation type="unfinished">Midplane between faces</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="364"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="373"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>平面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="354"/>
+      <location filename="../../AttacherTexts.cpp" line="374"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>平面フェイスと一致するように平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="362"/>
+      <location filename="../../AttacherTexts.cpp" line="382"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>表面に正接</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <location filename="../../AttacherTexts.cpp" line="383"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>頂点で表面と接するように平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="371"/>
+      <location filename="../../AttacherTexts.cpp" line="391"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>エッジに垂直</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="372"/>
+      <location filename="../../AttacherTexts.cpp" line="392"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>平面をエッジに正接。オプションの頂点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="380"/>
+      <location filename="../../AttacherTexts.cpp" line="400"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>フレネ NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="381"/>
-      <location filename="../../AttacherTexts.cpp" line="391"/>
       <location filename="../../AttacherTexts.cpp" line="401"/>
+      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="421"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>曲線エッジのフレネ・セレ座標系に揃えて配置。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="390"/>
+      <location filename="../../AttacherTexts.cpp" line="410"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>フレネ TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="400"/>
+      <location filename="../../AttacherTexts.cpp" line="420"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>フレネ TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="410"/>
+      <location filename="../../AttacherTexts.cpp" line="430"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>同心</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="431"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>平面をエッジの接触円に揃えて配置。原点は湾曲点に揃えられます。オプションの頂点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="420"/>
+      <location filename="../../AttacherTexts.cpp" line="440"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>回転押し出しセクション</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="421"/>
+      <location filename="../../AttacherTexts.cpp" line="441"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>平面をエッジに垂直となるよう配置。Y軸は接触円の軸と一致させられます。オプションの頂点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="430"/>
+      <location filename="../../AttacherTexts.cpp" line="450"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>3点から決まる平面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="431"/>
+      <location filename="../../AttacherTexts.cpp" line="451"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>3 点を通過する様に平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="439"/>
+      <location filename="../../AttacherTexts.cpp" line="459"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>3点に対して垂直</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="440"/>
+      <location filename="../../AttacherTexts.cpp" line="460"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>初めの2点を通過し、3点を通過する面に垂直な平面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="449"/>
+      <location filename="../../AttacherTexts.cpp" line="469"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>畳み込み</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="450"/>
+      <location filename="../../AttacherTexts.cpp" line="470"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>多面体畳み込みのための特殊モード。畳み込み可能なエッジ、畳み込み線、別の畳み込み線、別の畳み込み可能なエッジの順番に4つのエッジを選択してください。1番目のエッジを畳み込むために平面が配置されます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="460"/>
+      <location filename="../../AttacherTexts.cpp" line="480"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>慣性 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="461"/>
+      <location filename="../../AttacherTexts.cpp" line="481"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>第2慣性主軸と第3慣性主軸上に作成された平面（重心を通過）</translation>
@@ -788,269 +800,281 @@
       <translation>X' Y'平面はその面 (オブジェクトのXY) に平行で、その頂点を通過します。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>平面上のXY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>平面フェイスと一致するようにX' Y'平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="120"/>
+      <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>表面に正接するXY</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>頂点で表面と接するようにX' Y'平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="129"/>
+      <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>エッジに正接するZ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Z'軸をエッジに正接。オプションの頂点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>フレネ NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
       <location filename="../../AttacherTexts.cpp" line="150"/>
       <location filename="../../AttacherTexts.cpp" line="160"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>曲線エッジのフレネ・セレ座標系に揃えて配置。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>フレネ TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
+      <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>フレネ TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>同心</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>回転押し出しセクション</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>Y'軸をエッジの接触円の軸に一致するよう配置。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>畳み込み</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>XY平面をエッジの接触円に揃えて配置。オプションの節点リンクで位置を定義。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <source>Midplane between faces</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation type="unfinished">Midplane between faces</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation type="unfinished">Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>3点から決まるXY平面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>3 点を通過する様にXY平面を配置</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="198"/>
+      <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>3点から決まるXZ平面</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="199"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>3 点を通過する様にXZ平面を配置。X軸は初めの2点を通過。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>多面体畳み込みのための特殊モード。畳み込み可能なエッジ、畳み込み線、別の畳み込み線、別の畳み込み可能なエッジの順番に4つのエッジを選択してください。1番目のエッジを畳み込むためにXY平面が配置されます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="229"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>慣性CS</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="220"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>慣性座標系。重心と慣性主軸上に構築されます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-Z-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。Z軸、X軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-Z-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。Z軸、Y軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
-      <location filename="../../AttacherTexts.cpp" line="490"/>
+      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="510"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-X-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。X軸、Y軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-X-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。X軸、Z軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="269"/>
+      <location filename="../../AttacherTexts.cpp" line="279"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-Y-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="270"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。Y軸、Z軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
-      <location filename="../../AttacherTexts.cpp" line="520"/>
+      <location filename="../../AttacherTexts.cpp" line="289"/>
+      <location filename="../../AttacherTexts.cpp" line="540"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-Y-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。Y軸、X軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="470"/>
+      <location filename="../../AttacherTexts.cpp" line="490"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-N-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="471"/>
+      <location filename="../../AttacherTexts.cpp" line="491"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。法線と水平面軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="480"/>
+      <location filename="../../AttacherTexts.cpp" line="500"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-N-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="481"/>
+      <location filename="../../AttacherTexts.cpp" line="501"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。法線と垂直面軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="491"/>
+      <location filename="../../AttacherTexts.cpp" line="511"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。水平面軸と垂直面軸が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="500"/>
+      <location filename="../../AttacherTexts.cpp" line="520"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-X-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="501"/>
+      <location filename="../../AttacherTexts.cpp" line="521"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。水平面軸と法線が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="510"/>
+      <location filename="../../AttacherTexts.cpp" line="530"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>配置 O-Y-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="511"/>
+      <location filename="../../AttacherTexts.cpp" line="531"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。垂直面軸と法線が頂点を向き/線に沿うように揃えます。</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="521"/>
+      <location filename="../../AttacherTexts.cpp" line="541"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>最初の頂点を原点と一致させます。垂直面軸と水平面軸が頂点を向き/線に沿うように揃えます。</translation>
@@ -1174,22 +1198,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2397"/>
+      <location filename="../../Command.cpp" line="2395"/>
       <source>Box Selection</source>
       <translation>矩形選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>矩形選択を使用して3Dビューの要素を選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Box selection</source>
       <translation>矩形選択</translation>
     </message>
@@ -1197,17 +1221,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2316"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2319"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>Check Geometry</source>
       <translation>幾何形状のチェック</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>選択したシェイプの問題を分析</translation>
     </message>
@@ -1215,17 +1239,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2352"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2353"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Appearance per &amp;Face</source>
       <translation>面ごとの外観(&amp;F)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2352"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>選択したオブジェクトの各面の外観を設定</translation>
     </message>
@@ -1233,17 +1257,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Boolean Operation</source>
       <translation>ブーリアン演算</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation>選択したシェイプにブール演算を適用</translation>
     </message>
@@ -1306,17 +1330,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1703"/>
       <source>Shape Builder</source>
       <translation>シェイプビルダー</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Advanced utility to create shapes</source>
       <translation>高度な図形作成ユーティリティ</translation>
     </message>
@@ -1324,17 +1348,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>Chamfer</source>
       <translation>面取り</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>シェイプの選択されたエッジを面取り</translation>
     </message>
@@ -1396,17 +1420,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1924"/>
       <source>Offset</source>
       <translation>オフセット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>シェイプオフセット用ツール（平行なシェイプを作成）</translation>
     </message>
@@ -1469,17 +1493,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1664"/>
       <source>Cross-Sections</source>
       <translation>断面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Creates cross-sections</source>
       <translation>断面を作成</translation>
     </message>
@@ -1578,17 +1602,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1437"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1438"/>
+      <location filename="../../Command.cpp" line="1436"/>
       <source>Extrude</source>
       <translation>押し出し</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>選択したスケッチまたはプロファイルを押し出し</translation>
     </message>
@@ -1596,17 +1620,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1582"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Fillet</source>
       <translation>フィレット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1583"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>シェイプの選択したエッジをフィレット</translation>
     </message>
@@ -1668,17 +1692,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1733"/>
       <source>Loft</source>
       <translation>ロフト</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Lofts the selected profiles</source>
       <translation>選択したプロファイルをロフト</translation>
     </message>
@@ -1686,17 +1710,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1493"/>
       <source>Face From Wires</source>
       <translation>ワイヤーから面へ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>選択したワイヤーから面を作成（例：スケッチから）</translation>
     </message>
@@ -1704,17 +1728,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>ソリッドに変換</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>選択したシェルまたはコンパウンドをソリッドに変換</translation>
     </message>
@@ -1722,17 +1746,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1638"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Mirror</source>
       <translation>鏡像</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Mirrors the selected shape</source>
       <translation>選択したシェイプを鏡像コピー</translation>
     </message>
@@ -1740,17 +1764,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1793"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>3D Offset</source>
       <translation>3Dオフセット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Offsets shapes in 3D</source>
       <translation>3Dで形状をオフセット</translation>
     </message>
@@ -1758,17 +1782,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1860"/>
+      <location filename="../../Command.cpp" line="1858"/>
       <source>2D Offset</source>
       <translation>2Dオフセット</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>2Dで形状をオフセット</translation>
     </message>
@@ -1830,17 +1854,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2426"/>
+      <location filename="../../Command.cpp" line="2424"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2427"/>
+      <location filename="../../Command.cpp" line="2425"/>
       <source>Project on Surface</source>
       <translation>サーフェスに投影</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1870,17 +1894,17 @@ of the projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>シェイプを反転</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>選択したシェイプの方向を反転</translation>
     </message>
@@ -1888,17 +1912,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>Revolve</source>
       <translation>回転</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Revolves the selected shape</source>
       <translation>選択したシェイプを回転押し出し</translation>
     </message>
@@ -1906,17 +1930,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2175"/>
+      <location filename="../../Command.cpp" line="2173"/>
       <source>Ruled Surface</source>
       <translation>線織面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>選択した2本のワイヤーの間に線織面を作成</translation>
     </message>
@@ -2015,17 +2039,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1764"/>
+      <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
       <translation>スイープ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1765"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
       <translation>ワイヤーに沿ってプロファイルをスイープ</translation>
     </message>
@@ -2033,27 +2057,27 @@ of the projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2025"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2026"/>
       <source>Thickness</source>
       <translation>厚み</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>選択した面を削除し、残りの形状を外側にオフセットして厚みを追加</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
+      <location filename="../../Command.cpp" line="2086"/>
       <source>Wrong selection</source>
       <translation>誤った選択</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2089"/>
+      <location filename="../../Command.cpp" line="2087"/>
       <source>Selected shape is not a solid</source>
       <translation>選択した図形はソリッドではありません</translation>
     </message>
@@ -2134,47 +2158,47 @@ of the projection.</source>
       <translation>部品をインポート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>曲線ネットをインポート</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>反転</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1513"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Make face</source>
       <translation>面を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1819"/>
+      <location filename="../../Command.cpp" line="1817"/>
       <source>Make Offset</source>
       <translation>オフセットを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1887"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>Make 2D Offset</source>
       <translation>2D オフセットを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2096"/>
+      <location filename="../../Command.cpp" line="2094"/>
       <source>Make Thickness</source>
       <translation>厚みを作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2285"/>
+      <location filename="../../Command.cpp" line="2283"/>
       <source>Create ruled surface</source>
       <translation>線織面を作成</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2536"/>
       <source>Add coordinate system</source>
       <translation>座標系を追加</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2576"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Add datum plane</source>
       <translation>データム平面を追加</translation>
     </message>
@@ -2184,7 +2208,7 @@ of the projection.</source>
       <translation>データム線を追加</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2642"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Add datum point</source>
       <translation>データム点を追加</translation>
     </message>
@@ -2224,7 +2248,7 @@ of the projection.</source>
       <translation>面の色を変更</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>ロフト</translation>
     </message>
@@ -2255,12 +2279,12 @@ of the projection.</source>
       <translation>ソリッド</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>スイープ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>サーフェスに投影</translation>
     </message>
@@ -4133,17 +4157,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>投影オブジェクト</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>アクティブなドキュメントがありません</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>投影オブジェクトを作成できません</translation>
     </message>
@@ -4325,12 +4349,12 @@ Check one or more edge entities first.</source>
       <translation>小さすぎる偏差を設定すると、テッセレーションに時間がかかり、GUIがフリーズしたり遅くなったりします。</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>角度偏差</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>小さすぎる角度を設定すると、テッセレーションに時間がかかり、GUIがフリーズしたり遅くなったりします。</translation>
     </message>
@@ -4513,29 +4537,49 @@ Check one or more edge entities first.</source>
       <translation>ドラッグ中の低精度スナップを有効化</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation type="unfinished">Enables larger snapping increments while  manipulating draggers</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation>高精度スナップの修飾子</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation type="unfinished">Defines the modifier key used for fine snapping while dragging</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation>デフォルトの低精度ドラッグ動作</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>修飾キーを押していない時のドラッグの低精度、高精度を決定</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation>低精度動作の乗数</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation type="unfinished">Multiplies the base movement increment when coarse snapping is active</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>低精度回転のステップ（度）</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation type="unfinished">Sets the rotation step in degrees applied when coarse snapping is active</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4866,37 +4910,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>使用可能なプロファイル</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>選択したプロファイル</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation>要素が少なすぎます</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>少なくとも2つの頂点、エッジ、ワイヤー、または面が必要です。</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>頂点/辺/法線/面</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>ロフト</translation>
     </message>
@@ -4996,17 +5040,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="363"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="364"/>
       <source>Name</source>
       <translation>名前</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="365"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="366"/>
       <source>Type</source>
       <translation>タイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="367"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="368"/>
       <source>Error</source>
       <translation>エラー</translation>
     </message>
@@ -5221,79 +5265,79 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>使用可能なプロファイル</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>選択したプロファイル</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>少なくとも1つのエッジまたはワイヤーが必要です。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>1つのオブジェクトから少なくとも1つのエッジを選択してください</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation>要素が少なすぎます</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation>無効な選択</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>間違った選択</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' は、プロファルおよびパスとして使用できません。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>入力エラー</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>終了</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>3Dビューで1つまたは複数の接続エッジを選択して「終了」を押してください</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>選択されたスイープ経路が正しくありません。</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>スイープ経路</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation>頂点/連線</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>スイープ</translation>
     </message>
@@ -5485,191 +5529,191 @@ of the object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>Shape Content</source>
       <translation>シェイプのコンテンツ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1456"/>
       <source>Settings</source>
       <translation>設定</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
       <source>Default: false</source>
       <translation>デフォルト: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Run boolean operation check</source>
       <translation>ブーリアン演算の検査を実行</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1220"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>ブーリアン演算の追加検査。標準の BRep ジオメトリ検査では見落とされるようなエラーを発見できる場合があります。これらのエラーは、必ずしも検査されたオブジェクトが使用できないことを意味するものではありません。既定: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1228"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
       <source>Single-threaded</source>
       <translation>シングルスレッド</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>単一スレッドでジオメトリチェックを実行します。これは遅くなりますが、
 安定性が向上します。デフォルト: false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1243"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
       <source>Log errors</source>
       <translation>エラーを記録</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1245"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>レポートビューにエラーを記録します。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1255"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1256"/>
       <source>Expand shape content</source>
       <translation>シェイプの内容を展開</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1257"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。既定：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1270"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1271"/>
       <source>Advanced shape content</source>
       <translation>高度なシェイプコンテンツ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1272"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1273"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>シェイプコンテンツを展開します。次回ジオメトリチェックツールを使用するときに変更が有効になります。既定：false</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1284"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 個々のブーリアン演算の検査:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Bad type</source>
       <translation>不正なタイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1299"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Self-intersect</source>
       <translation>自己交差</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1311"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
       <source>Too small edge</source>
       <translation>エッジが小さすぎます</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1323"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Nonrecoverable face</source>
       <translation>回復不能な面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
       <source>Continuity</source>
       <translation>続行</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
       <source>Incompatibility of face</source>
       <translation>面の非互換性</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1359"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Incompatibility of vertex</source>
       <translation>頂点の非互換性</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1371"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
       <source>Incompatibility of edge</source>
       <translation>エッジの非互換性</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1383"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
       <source>Invalid curve on surface</source>
       <translation>サーフェス上の無効な曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
       <translation>チェックを実行</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>不正な引数タイプをチェックします。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Skip this settings page</source>
       <translation>この設定ページをスキップ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>この設定をスキップし、ジオメトリーチェックを自動実行します。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1301"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>自己交差を確認します。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1313"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>小さすぎるエッジをチェックします。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1325"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>回復不能な面を確認します。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1337"/>
       <source>Check for continuity.  Default: true</source>
       <translation>連続性をチェックします。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1349"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>互換性のない面を確認します。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1361"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>互換性のない頂点をチェックします。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1373"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>互換性のないエッジを確認します。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1385"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>サーフェス上の無効な曲線をチェックします。デフォルト: true</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1466"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1467"/>
       <source>Results</source>
       <translation>結果</translation>
     </message>
@@ -5677,95 +5721,95 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="402"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="403"/>
       <source>Check Geometry Results</source>
       <translation>ジオメトリの結果を確認</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
       <translation>チェックを実行中…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <source>Boolean operation check…</source>
       <translation>ブール演算チェック…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
       <source>Check geometry</source>
       <translation>ジオメトリを確認</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="489"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
       <source>Null shape</source>
       <translation>空の形状</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="491"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
       <translation>スキップ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
       <translation>無限形状</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="528"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="529"/>
       <source>Invalid</source>
       <translation>無効です</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>Checking</source>
       <translation>検査中</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="578"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="579"/>
       <source>No errors</source>
       <translation>エラーなし</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
       <source>%1 processed out of %2 selected</source>
       <translation>選択した %2 のうち %1 が処理されました。</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n の無効なシェイプ。</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="593"/>
       <source>to report view.</source>
       <translation>レポートビューへ。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="739"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="740"/>
       <source>Global minimum</source>
       <translation>グローバル最小値</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="747"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="748"/>
       <source>Global average</source>
       <translation>グローバル平均値</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="755"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="756"/>
       <source>Global maximum</source>
       <translation>グローバル最大値</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="714"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="715"/>
       <source>Checked object</source>
       <translation>検査されたオブジェクト</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="731"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="732"/>
       <source>Tolerance information</source>
       <translation>トレランス情報</translation>
     </message>
@@ -5784,8 +5828,8 @@ Individual boolean operation checks:</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
-      <source>2x%1 select and confirm</source>
-      <translation>2x%1 選択と確認</translation>
+      <source>%1 select and confirm</source>
+      <translation type="unfinished">%1 select and confirm</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -5973,7 +6017,7 @@ Individual boolean operation checks:</source>
       <translation>フレネ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>3Dビューでスイープ経路として少なくとも1つのプロファイルとエッジまたはワイヤーを選択</translation>
@@ -6037,8 +6081,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>%1を編集</translation>
     </message>
@@ -6079,7 +6123,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="952"/>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2279"/>
+      <location filename="../../Command.cpp" line="2277"/>
       <source>Wrong Selection</source>
       <translation>間違った選択</translation>
     </message>
@@ -6124,7 +6168,7 @@ Continue?</source>
       <translation>全てのCADファイル</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2280"/>
+      <location filename="../../Command.cpp" line="2278"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>2つのエッジまたは2つのワイヤーのいずれかを選択</translation>
     </message>
@@ -6135,292 +6179,292 @@ Continue?</source>
       <translation>参照が選択されていません。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Edge</source>
       <translation>エッジ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
       <translation>頂点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
       <translation>コンパウンド</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
       <translation>コンパウンド・ソリッド</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
       <translation>ソリッド</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
       <translation>シェル</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
       <translation>ワイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
       <translation>シェイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No error</source>
       <translation>エラーなし</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on curve</source>
       <translation>曲線上の無効な点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Invalid point on curve on surface</source>
       <translation>サーフェス上にある曲線上の無効な点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid point on surface</source>
       <translation>サーフェス上の無効な点</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No 3D curve</source>
       <translation>3D曲線がありません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Multiple 3D curves</source>
       <translation>複数の3D曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid 3D curve</source>
       <translation>無効な3D曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>No curve on surface</source>
       <translation>サーフェス上に曲線がありません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid curve on surface</source>
       <translation>サーフェス上の無効な曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid curve on closed surface</source>
       <translation>閉じたサーフェス上の無効な曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
       <translation>無効な同範囲フラグ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
       <translation>無効な同パラメーターフラグ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
       <translation>無効な縮退フラグ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Free edge</source>
       <translation>自由なエッジ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
       <translation>無効な多重連結状態</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid range</source>
       <translation>無効な範囲</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
       <translation>空のワイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant edge</source>
       <translation>冗長なエッジ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Self-intersecting wire</source>
       <translation>自己交差したワイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>No surface</source>
       <translation>サーフェスがありません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
       <translation>無効なワイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
       <translation>冗長なワイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Intersecting wires</source>
       <translation>交差したワイヤー</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Invalid imbrication of wires</source>
       <translation>無効なワイヤーの覆瓦構造</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Empty shell</source>
       <translation>空のシェル</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Redundant face</source>
       <translation>冗長な面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Unorientable shape</source>
       <translation>方向付け不能なシェイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
       <translation>閉じていません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Not connected</source>
       <translation>接続していません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
       <translation>シェイプ内にないサブシェイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
       <translation>向きが正しくありません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
       <source>Bad orientation of sub-shape</source>
       <translation>サブシェイプの向きが正しくありません</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
       <source>Invalid tolerance value</source>
       <translation>無効な誤差許容値</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="139"/>
       <source>Check failed</source>
       <translation>チェックに失敗しました</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>No result</source>
       <translation>結果なし</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="150"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="151"/>
       <source>Out of enum range:</source>
       <translation>列挙型の範囲外:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: unknown check</source>
       <translation>ブーリアン演算: 不明な検査</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: bad type</source>
       <translation>ブーリアン演算: 不正なタイプ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: self-intersection found</source>
       <translation>ブーリアン演算: 自己交差が見つかりました。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: edge too small</source>
       <translation>ブーリアン演算: エッジが小さすぎます。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation>ブーリアン演算: 回復不能な面</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation>ブーリアン演算: 頂点が非互換</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation>ブーリアン演算: エッジが非互換</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation>ブーリアン演算: 面が非互換</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
       <source>Boolean operation: aborted</source>
       <translation>ブーリアン演算: 中断されました。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="179"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="180"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation>ブーリアン演算: サーフェス上の無効な曲線</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="181"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="182"/>
       <source>Boolean operation: not valid</source>
       <translation>ブール演算: 不正です。</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="178"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>ブーリアン演算: Geomabs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="857"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="858"/>
       <source>Invalid</source>
       <translation>無効です</translation>
     </message>
@@ -7080,17 +7124,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1464"/>
       <source>Scale</source>
       <translation>拡大縮小</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>Scales the selected shape</source>
       <translation>選択したシェイプを拡大縮小</translation>
     </message>
@@ -7252,17 +7296,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2524"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2527"/>
+      <location filename="../../Command.cpp" line="2525"/>
       <source>Coordinate System</source>
       <translation>座標系</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2528"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>他のオブジェクトにアタッチできる座標系を作成</translation>
     </message>
@@ -7270,17 +7314,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2665"/>
+      <location filename="../../Command.cpp" line="2667"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Datums</source>
       <translation>データム</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2668"/>
+      <location filename="../../Command.cpp" line="2670"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>他のオブジェクトにアタッチできるデータムオブジェクト（座標系、平面、線、点）を作成</translation>
     </message>
@@ -7296,17 +7340,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2563"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2565"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Datum Plane</source>
       <translation>データム平面</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2566"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>他のオブジェクトにアタッチできるデータム平面を作成</translation>
     </message>
@@ -7332,17 +7376,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Part</source>
       <translation>部品</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Datum Point</source>
       <translation>データム点</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>他のオブジェクトにアタッチできるデータム点を作成</translation>
     </message>
@@ -7525,12 +7569,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2462"/>
+      <location filename="../../Command.cpp" line="2460"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>永続的な断面カット(&amp;N)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2463"/>
+      <location filename="../../Command.cpp" line="2461"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>すべての表示シェイプと選択した軸面のブーリアン積として新しいオブジェクトを作成</translation>
     </message>
@@ -7682,18 +7726,18 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>角度間隔</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="423"/>
-      <location filename="../../PatternParametersWidget.cpp" line="519"/>
+      <location filename="../../PatternParametersWidget.cpp" line="425"/>
+      <location filename="../../PatternParametersWidget.cpp" line="521"/>
       <source>Spacing %1</source>
       <translation>間隔 %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="439"/>
+      <location filename="../../PatternParametersWidget.cpp" line="441"/>
       <source>Remove this spacing definition.</source>
       <translation>この間隔定義を削除します。</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <location filename="../../PatternParametersWidget.cpp" line="942"/>
       <source>Reset spacing</source>
       <translation>間隔をリセット</translation>
     </message>
@@ -7716,19 +7760,6 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>統合されたフェイスメーカー</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>統合: 入れ子となった穴、重複するワイヤー、曲面を制御</translation>
-    </message>
-  </context>
-  <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
@@ -7739,6 +7770,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>交点でエッジを分割し、すべての境界面領域を検出します。任意の重なったジオメトリーを処理します。</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>統合されたフェイスメーカー</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>統合: 入れ子となった穴、重複するワイヤー、曲面を制御</translation>
     </message>
   </context>
 </TS>

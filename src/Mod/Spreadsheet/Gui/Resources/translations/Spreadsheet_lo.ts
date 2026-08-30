@@ -413,16 +413,6 @@
       <translation>ລ້າງຂໍ້ມູນໃນເຊວ</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="228"/>
-      <source>Setup conf table</source>
-      <translation>ຕັ້ງຄ່າຕາຕະລາງການກຳນົດຄ່າ</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSheetConf.cpp" line="391"/>
-      <source>Unsetup conf table</source>
-      <translation>ຍົກເລີກການຕັ້ງຄ່າຕາຕະລາງການກຳນົດຄ່າ</translation>
-    </message>
-    <message>
       <location filename="../../DlgBindSheet.cpp" line="243"/>
       <source>Bind cells</source>
       <translation>ຜູກມັດເຊວ</translation>
@@ -431,6 +421,16 @@
       <location filename="../../DlgBindSheet.cpp" line="297"/>
       <source>Unbind cells</source>
       <translation>ຍົກເລີກການຜູກມັດເຊວ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="228"/>
+      <source>Setup conf table</source>
+      <translation>ຕັ້ງຄ່າຕາຕະລາງການກຳນົດຄ່າ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSheetConf.cpp" line="391"/>
+      <source>Unsetup conf table</source>
+      <translation>ຍົກເລີກການຕັ້ງຄ່າຕາຕະລາງການກຳນົດຄ່າ</translation>
     </message>
   </context>
   <context>

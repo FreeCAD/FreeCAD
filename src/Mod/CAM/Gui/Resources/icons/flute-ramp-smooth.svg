@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RampType dropdown icon: Smooth (quarter-sine, f = sin(t*pi/2)).  viewBox
+     height matches the combo's iconSize (16px) exactly so there is no extra
+     vertical scaling; the curve occupies y=2..14, leaving a real 2px margin
+     top and bottom. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 16" width="24" height="16">
+  <polyline fill="none" stroke="#3d85c6" stroke-width="2" stroke-linecap="round"
+    points="2.0,2.0 3.2,3.2 4.5,4.3 5.8,5.5 7.0,6.6 8.2,7.7 9.5,8.7 10.8,9.6 12.0,10.5 13.2,11.3 14.5,12.0 15.8,12.6 17.0,13.1 18.2,13.5 19.5,13.8 20.8,13.9 22.0,14.0"/>
+</svg>

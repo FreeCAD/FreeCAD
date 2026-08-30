@@ -24,6 +24,7 @@
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 
 #include "MDIViewPy.h"
 #include "MDIView.h"
@@ -49,7 +50,7 @@ void MDIViewPy::init_type()
     add_varargs_method("undoActions", &MDIViewPy::undoActions, "undoActions()");
     add_varargs_method("redoActions", &MDIViewPy::redoActions, "redoActions()");
 
-    add_varargs_method("message", &MDIViewPy::sendMessage, "deprecated: use sendMessage");
+    add_varargs_method("message", &MDIViewPy::message, "message(str) -- deprecated: use sendMessage(str)");
     add_varargs_method("sendMessage", &MDIViewPy::sendMessage, "sendMessage(str)");
     add_varargs_method("supportMessage", &MDIViewPy::supportMessage, "supportMessage(str)");
     add_varargs_method("fitAll", &MDIViewPy::fitAll, "fitAll()");
@@ -64,6 +65,7 @@ void MDIViewPy::init_type()
         "getActiveObject(name,resolve=True)\nreturns the active object for the given type"
     );
     add_varargs_method("cast_to_base", &MDIViewPy::cast_to_base, "cast_to_base() cast to MDIView class");
+    add_varargs_method("getTypeId", &MDIViewPy::getTypeId, "getTypeId() returns type id as string");
     behaviors().readyType();
 }
 
@@ -176,6 +178,23 @@ Py::Object MDIViewPy::redoActions(const Py::Tuple& args)
     }
 
     return list;
+}
+
+Py::Object MDIViewPy::message(const Py::Tuple& args)
+{
+    if (!Base::warnDeprecatedPythonApi(
+            "Method",
+            "FreeCADGui._MDIView.message",
+            Base::PythonApiDeprecation {
+                .deprecatedIn = "26.3",
+                .removedIn = "27.2",
+                .replacement = "sendMessage",
+            }
+        )) {
+        throw Py::Exception();
+    }
+
+    return sendMessage(args);
 }
 
 Py::Object MDIViewPy::sendMessage(const Py::Tuple& args)
@@ -314,6 +333,20 @@ Py::Object MDIViewPy::getActiveObject(const Py::Tuple& args)
 
     return Py::TupleN(Py::None(), Py::None(), Py::String());
     // NOLINTEND(cppcoreguidelines-slicing)
+}
+
+Py::Object MDIViewPy::getTypeId(const Py::Tuple& args)
+{
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
+        throw Py::Exception();
+    }
+
+    Base::Type type;
+    if (_view) {
+        type = _view->getTypeId();
+    }
+
+    return Base::toPyString(type.getName());
 }
 
 Py::Object MDIViewPy::cast_to_base(const Py::Tuple&)

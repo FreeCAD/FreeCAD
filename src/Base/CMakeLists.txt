@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_library(FreeCADBase SHARED)
+add_dependencies(FreeCADBase fc_version)
 
 if(WIN32)
     add_definitions(-DFCBase)
@@ -51,6 +52,7 @@ if(MSVC)
         optimized MSVCPRT.LIB
         Rpcrt4.lib
         version.lib
+        dbghelp.lib
     )
 
     #Universal C runtime introduced in VS 2015 (cl version 19)
@@ -87,6 +89,15 @@ endif()
 
 list(APPEND FreeCADBase_LIBS libfastsignals fmt::fmt)
 
+if(cpptrace_FOUND)
+    list(APPEND FreeCADBase_LIBS cpptrace::cpptrace)
+    target_compile_definitions(FreeCADBase PRIVATE FC_HAVE_CPPTRACE)
+    # The CrashReporter Reader uses this to reduce the absolute source paths recorded in the
+    # debug info to paths relative to the source root, so a crash report cannot leak the
+    # build machine's directory layout.
+    target_compile_definitions(FreeCADBase PRIVATE FC_SOURCE_DIR="${CMAKE_SOURCE_DIR}")
+endif()
+
 if (BUILD_DYNAMIC_LINK_PYTHON)
     list(APPEND FreeCADBase_LIBS ${Python3_LIBRARIES})
 endif (BUILD_DYNAMIC_LINK_PYTHON)
@@ -109,6 +120,18 @@ generate_from_py(Axis)
 generate_from_py(Unit)
 generate_from_py(Quantity)
 generate_from_py(Precision)
+generate_module_from_py(
+    FreeCAD.Qt
+    Qt_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Console
+    Console_MODULE_GENERATED_SRCS
+)
+generate_module_from_py(
+    FreeCAD.Units
+    Units_MODULE_GENERATED_SRCS
+)
 generate_from_any(Parameter.xsd Parameter.inl xmlSchemeString)
 
 if(SWIG_FOUND)
@@ -140,6 +163,9 @@ SET(FreeCADBase_Pyi_SRCS
     Type.pyi
     Unit.pyi
     Precision.pyi
+    FreeCAD.Qt.module.pyi
+    FreeCAD.Console.module.pyi
+    FreeCAD.Units.module.pyi
 )
 SOURCE_GROUP("Pyi" FILES ${FreeCADBase_Pyi_SRCS})
 
@@ -147,6 +173,7 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsApi.cpp
     UnitsApiPy.cpp
     UnitsApi.h
+    ${Units_MODULE_GENERATED_SRCS}
     UnitsConvData.h
     UnitsSchema.h
     UnitsSchema.cpp
@@ -179,6 +206,7 @@ SET(FreeCADBase_CPP_SRCS
     BoundBoxPyImp.cpp
     Builder3D.cpp
     Console.cpp
+    ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
     Color.cpp
     CoordinateSystem.cpp
@@ -225,6 +253,7 @@ SET(FreeCADBase_CPP_SRCS
     Tools2D.cpp
     Tools3D.cpp
     Translation.cpp
+    ${Qt_MODULE_GENERATED_SRCS}
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -307,12 +336,23 @@ SET(FreeCADBase_HPP_SRCS
     ZipHeader.h
 )
 
+SET (FreeCADBase_CrashReporter_SRCS
+    CrashReporter/Format.h
+    CrashReporter/Manager.h
+    CrashReporter/Manager.cpp
+    CrashReporter/Reader.h
+    CrashReporter/Reader.cpp
+    CrashReporter/Writer.h
+    CrashReporter/Writer.cpp
+)
+
 SET(FreeCADBase_SRCS
     ${PYCXX_SOURCES}
     ${FreeCADBase_CPP_SRCS}
     ${FreeCADBase_HPP_SRCS}
     ${FreeCADBase_Pyi_SRCS}
     ${FreeCADBase_UNITAPI_SRCS}
+    ${FreeCADBase_CrashReporter_SRCS}
     PyTools.c
     PyTools.h
     PreCompiled.h
@@ -323,7 +363,10 @@ IF (MSVC)
         ${FreeCADBase_SRCS}
         StackWalker.cpp
         StackWalker.h
+        CrashReporter/WindowsCrashReporter.cpp
+        CrashReporter/WindowsCrashReporter.h
     )
+
 ENDIF(MSVC)
 
 if(FREECAD_USE_EXTERNAL_ZIPIOS)

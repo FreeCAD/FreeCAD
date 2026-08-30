@@ -338,6 +338,11 @@
       <translation>Площадь</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Диаметр</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Радиус</translation>
@@ -358,7 +363,7 @@
     <message>
       <location filename="../../TaskMassProperties.ui" line="83"/>
       <source>Center of gravity</source>
-      <translation type="unfinished">Center of gravity</translation>
+      <translation>Центр тяжести</translation>
     </message>
     <message>
       <location filename="../../TaskMassProperties.ui" line="110"/>
@@ -503,47 +508,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
       <source>Parameters</source>
       <translation>Параметры</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
       <source>Physical Properties</source>
-      <translation type="unfinished">Physical Properties</translation>
+      <translation>Физические свойства</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
       <source>Center of Gravity</source>
-      <translation type="unfinished">Center of Gravity</translation>
+      <translation>Центр тяжести</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
       <source>Center of Volume</source>
-      <translation type="unfinished">Center of Volume</translation>
+      <translation>Центр объема</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
       <source>Inertia</source>
       <translation type="unfinished">Inertia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
+      <location filename="../../TaskMassProperties.cpp" line="425"/>
       <source>Close</source>
       <translation>Закрыть</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
+      <location filename="../../TaskMassProperties.cpp" line="428"/>
       <source>Save</source>
       <translation>Сохранить</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
+      <location filename="../../TaskMassProperties.cpp" line="432"/>
       <source>Reset</source>
       <translation>Сброс</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
+      <location filename="../../TaskMassProperties.cpp" line="1217"/>
       <source> (Average)</source>
       <translation type="unfinished"> (Average)</translation>
     </message>

@@ -128,6 +128,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "GLPainter.h"
+#include "RubberbandOverlay.h"
 #include "Inventor/SoAxisCrossKit.h"
 #include "Inventor/SoFCBackgroundGradient.h"
 #include "Inventor/SoFCBoundingBox.h"
@@ -150,7 +151,6 @@
 #include "SoTouchEvents.h"
 #include "SpaceballEvent.h"
 #include "SpaceMouseParameter.h"
-#include "View3DInventorRiftViewer.h"
 #include "View3DViewerPy.h"
 #include "ViewParams.h"
 #include "ViewProvider.h"
@@ -1137,6 +1137,8 @@ void View3DInventorViewer::init()
     this->decorationroot->addChild(decorationBaseColor);
     this->decorationroot->addChild(naviCubeAnnotation);
 
+    rubberbandOverlayRenderer = std::unique_ptr<RubberbandOverlay>(new RubberbandOverlay);
+
     auto threePointLightingSeparator = new SoTransformSeparator;
     threePointLightingSeparator->addChild(lightRotation);
     threePointLightingSeparator->addChild(this->fillLight);
@@ -1320,6 +1322,8 @@ void View3DInventorViewer::init()
 
 View3DInventorViewer::~View3DInventorViewer()
 {
+    rubberbandOverlayRenderer.reset();
+
     // to prevent following OpenGL error message: "Texture is not valid in the current context.
     // Texture has not been destroyed"
     aboutToDestroyGLContext();
@@ -2021,11 +2025,64 @@ void View3DInventorViewer::setEnabledFPSCounter(bool on)
             fpsCounter = new QLabel(this);
             fpsCounter->setAttribute(Qt::WA_TransparentForMouseEvents);
         }
+        if (!fpsUpdateTimer) {
+            fpsUpdateTimer = new QTimer(this);
+            fpsUpdateTimer->setInterval(250);  // 4 Hz
+            connect(fpsUpdateTimer, &QTimer::timeout, this, &View3DInventorViewer::updateFPSLabel);
+        }
         fpsCounter->show();
+        fpsUpdateTimer->start();
     }
-    else if (fpsCounter) {
-        fpsCounter->hide();
+    else {
+        if (fpsUpdateTimer) {
+            fpsUpdateTimer->stop();
+        }
+        if (fpsCounter) {
+            fpsCounter->hide();
+        }
     }
+}
+
+void View3DInventorViewer::updateFPSLabel()
+{
+    if (!fpsEnabled || !fpsCounter) {
+        return;
+    }
+
+    fpsCounter->setText(
+        QString::fromStdString(
+            fmt::format("{:.1f} ms / {:.1f} fps", framesPerSecond[0], framesPerSecond[1])
+        )
+    );
+
+    // update color from user preference (only when it changes)
+    ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View"
+    );
+
+    unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015);  // default
+                                                                                           // yellow
+
+    if (axisLetterColor != previousAxisLetterColor) {
+        previousAxisLetterColor = axisLetterColor;
+        Base::Color c(static_cast<uint32_t>(axisLetterColor));
+        fpsCounter->setStyleSheet(
+            QString::fromLatin1("color: rgb(%1,%2,%3); background: transparent;")
+                .arg(int(c.r * 255))
+                .arg(int(c.g * 255))
+                .arg(int(c.b * 255))
+        );
+    }
+
+    // size must be current before we use width()/height() for positioning
+    fpsCounter->adjustSize();
+
+    // position, bottom left, accounting for left-side overlay widgets
+    ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
+    );
+    int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
+    fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
 }
 
 
@@ -2837,6 +2894,11 @@ void View3DInventorViewer::clearGraphicsItems()
     this->graphicsItems.clear();
 }
 
+RubberbandOverlay& View3DInventorViewer::rubberbandOverlay()
+{
+    return *rubberbandOverlayRenderer;
+}
+
 int View3DInventorViewer::getNumSamples()
 {
     Gui::AntiAliasing msaa = Multisample::readMSAAFromSettings();
@@ -3347,37 +3409,7 @@ void View3DInventorViewer::renderScene()
         }
     }
 
-    if (fpsEnabled && fpsCounter) {
-        std::stringstream stream;
-        stream.precision(1);
-        stream.setf(std::ios::fixed | std::ios::showpoint);
-        stream << framesPerSecond[0] << " ms / " << framesPerSecond[1] << " fps";
-
-        ParameterGrp::handle hGrpView = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/View"
-        );
-        unsigned long axisLetterColor = hGrpView->GetUnsigned("AxisLetterColor", 4294902015);
-        if (axisLetterColor != previousAxisLetterColor) {
-            previousAxisLetterColor = axisLetterColor;
-            Base::Color c(static_cast<uint32_t>(axisLetterColor));
-            fpsCounter->setStyleSheet(
-                QString::fromLatin1("color: rgb(%1,%2,%3); background: transparent;")
-                    .arg(int(c.r * 255))
-                    .arg(int(c.g * 255))
-                    .arg(int(c.b * 255))
-            );
-        }
-
-        fpsCounter->setText(QString::fromStdString(stream.str()));
-        fpsCounter->adjustSize();
-
-        ParameterGrp::handle hGrpOverlayL = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/MainWindow/DockWindows/OverlayLeft"
-        );
-        int xOffset = hGrpOverlayL->GetASCII("Widgets", "").empty() ? 10 : fpsCounter->width() + 20;
-        fpsCounter->move(xOffset, height() - fpsCounter->height() - 5);
-    }
-
+    renderRubberbandOverlay();
     // Workaround for inconsistent QT behavior related to handling custom OpenGL widgets that
     // leave non opaque alpha values in final output.
     // On wayland that can cause window to become transparent or blurry trail effect in the
@@ -3403,6 +3435,23 @@ void View3DInventorViewer::renderScene()
 
     glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
     glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
+}
+
+void View3DInventorViewer::renderRubberbandOverlay()
+{
+    if (currentRenderIntent() != RenderIntent::LiveInteractive || !rubberbandOverlayRenderer) {
+        return;
+    }
+
+    auto* manager = getSoRenderManager();
+    auto* action = manager ? manager->getGLRenderAction() : nullptr;
+    if (!action) {
+        return;
+    }
+
+    ZoneScopedN("Rubberband overlay");
+    rubberbandOverlayRenderer->prepareGeometry(manager->getViewportRegion(), devicePixelRatio());
+    action->apply(rubberbandOverlayRenderer->sceneRoot());
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
@@ -4389,26 +4438,6 @@ void View3DInventorViewer::animatedViewAll(const SbBox3f& box, int steps, int ms
         timer.start(Base::clamp<int>(ms, 0, 5000));  // NOLINT
         loop.exec(QEventLoop::ExcludeUserInputEvents);
     }
-}
-
-#if BUILD_VR
-extern View3DInventorRiftViewer* oculusStart(void);
-extern bool oculusUp(void);
-extern void oculusStop(void);
-void oculusSetTestScene(View3DInventorRiftViewer* window);
-#endif
-
-void View3DInventorViewer::viewVR()
-{
-#if BUILD_VR
-    if (oculusUp()) {
-        oculusStop();
-    }
-    else {
-        View3DInventorRiftViewer* riftWin = oculusStart();
-        riftWin->setSceneGraph(pcViewProviderRoot);
-    }
-#endif
 }
 
 void View3DInventorViewer::boxZoom(const SbBox2s& box)

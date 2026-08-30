@@ -949,6 +949,14 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+
+    // External theme override for Sketcher Constraints task-panel icons
+    ui->filterButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("view-filter", ui->filterButton->icon()));
+    ui->showHideButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Std_ToggleVisibility", ui->showHideButton->icon()));
+    ui->settingsButton->setIcon(
+        Gui::BitmapFactory().iconFromTheme("Sketcher_Settings", ui->settingsButton->icon()));
     ui->listWidgetConstraints->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetConstraints->setEditTriggers(QListWidget::EditKeyPressed);
 

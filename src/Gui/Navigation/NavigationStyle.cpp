@@ -51,6 +51,7 @@
 
 #include <Base/Interpreter.h>
 #include <App/Application.h>
+#include <App/DocumentObject.h>
 
 #include "Navigation/NavigationStyle.h"
 #include "Navigation/NavigationStylePy.h"
@@ -58,6 +59,7 @@
 #include "Camera.h"
 #include "Command.h"
 #include "Action.h"
+#include "Document.h"
 #include "Inventor/SoMouseWheelEvent.h"
 #include "MenuManager.h"
 #include "MouseSelection.h"
@@ -67,8 +69,27 @@
 #include "SoFullPathHelper.h"
 #include "View3DInventorViewer.h"
 #include "ViewParams.h"
+#include "ViewProviderDocumentObject.h"
 
 using namespace Gui;
+
+NavigationStyleContextMenuReceiver::NavigationStyleContextMenuReceiver(
+    ViewProviderDocumentObject* viewProvider,
+    QObject* parent
+)
+    : QObject(parent)
+    , viewProvider(viewProvider)
+{}
+
+void NavigationStyleContextMenuReceiver::startEditing()
+{
+    auto action = qobject_cast<QAction*>(sender());
+    if (!action || !viewProvider) {
+        return;
+    }
+
+    viewProvider->getDocument()->setEdit(viewProvider, action->data().toInt());
+}
 
 namespace
 {
@@ -596,8 +617,9 @@ void NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 
 void NavigationStyle::lookAtPoint(const SbVec3f& position)
 {
-    this->rotationCenterFound = false;
     translateCamera(position - viewer->getFocalPoint());
+    this->rotationCenter = position;
+    this->rotationCenterFound = true;
 }
 
 SoCamera* NavigationStyle::getCamera() const
@@ -2372,10 +2394,15 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
 
     SbVec3f dir = ev->getTranslation();
 
+    const float zoom = dir[2] * 0.0001;
+    dir[2] = 0.0;
+    float zoomFactor = 1.0 + zoom;
+    if (zoomFactor < 0.1F) {
+        zoomFactor = 0.1F;
+    }
+
     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        auto oCam = static_cast<SoOrthographicCamera*>(camera);
-        oCam->scaleHeight(1.0 + (dir[2] * 0.0001));
-        dir[2] = 0.0;  // don't move the cam for z translation.
+        static_cast<SoOrthographicCamera*>(camera)->scaleHeight(zoomFactor);
     }
 
     // Use the active navigation rotation center mode for SpaceMouse rotations
@@ -2413,6 +2440,12 @@ SbBool NavigationStyle::processMotionEvent(const SoMotion3Event* const ev)
     else {
         newRotation.multVec(SbVec3f(0.0, 0.0, -1.0), newDirection);
         newPosition = center - (newDirection * camera->focalDistance.getValue());
+    }
+
+    if (camera->getTypeId().isDerivedFrom(SoPerspectiveCamera::getClassTypeId())) {
+        const SbVec3f zoomPivot = useMotionRotationCenter ? motionRotationCenter : center;
+        newPosition = zoomPivot + (newPosition - zoomPivot) * zoomFactor;
+        camera->focalDistance.setValue(camera->focalDistance.getValue() * zoomFactor);
     }
 
     newRotation.multVec(dir, dir);
@@ -2555,7 +2588,7 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     // store the right-click position for potential use by Clarify Selection
     rightClickPosition = position;
 
-    // ask workbenches and view provider, ...
+    // ask workbenches
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("View", &view);
 
@@ -2563,9 +2596,47 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     MenuManager::getInstance()->setupContextMenu(&view, *contextMenu);
     contextMenu->setAttribute(Qt::WA_DeleteOnClose);
 
+    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
+
+    QMenu* objectMenu = nullptr;
+    QList<QAction*> objectActions;
+    App::DocumentObject* preselectedObject = Gui::Selection().getPreselection().Object.getObject();
+
+    if (preselectedObject) {
+        auto* preselectedViewProvider
+            = Gui::Application::Instance->getViewProvider<Gui::ViewProviderDocumentObject>(
+                preselectedObject
+            );
+
+        if (preselectedViewProvider) {
+            objectMenu = new QMenu(contextMenu);
+            auto receiver = new NavigationStyleContextMenuReceiver(preselectedViewProvider, objectMenu);
+            preselectedViewProvider->setupContextMenu(objectMenu, receiver, SLOT(startEditing()));
+            objectActions = objectMenu->actions();
+            if (!objectActions.empty()) {
+                contextMenu->setDefaultAction(objectActions.front());
+
+                for (auto* action : objectActions) {
+                    if (posAction) {
+                        contextMenu->insertAction(posAction, action);
+                    }
+                    else {
+                        contextMenu->addAction(action);
+                    }
+                }
+
+                if (posAction) {
+                    contextMenu->insertSeparator(posAction);
+                }
+                else {
+                    contextMenu->addSeparator();
+                }
+            }
+        }
+    }
+
     // Add Clarify Selection option if there are objects under cursor
     bool separator = false;
-    auto posAction = !contextMenu->actions().empty() ? contextMenu->actions().front() : nullptr;
 
     // Get picked objects at position
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());

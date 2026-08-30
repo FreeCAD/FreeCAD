@@ -240,7 +240,8 @@ void ViewProviderBoolean::exposeViewProvider(
             }
         );
         if (state != exposure.viewProviders.end()) {
-            state->topLevelExposed = addToTopLevelSceneGraph(getDocument(), vp);
+            const bool added = addToTopLevelSceneGraph(getDocument(), vp);
+            state->topLevelExposed = state->topLevelExposed || added;
         }
     }
 }
@@ -339,10 +340,10 @@ void ViewProviderBoolean::onBodyActivated(const Gui::ViewProviderDocumentObject*
     }
 
     for (auto it = groups.rbegin(); it != groups.rend(); ++it) {
-        exposeViewProvider(exposure, *it, true, true);
+        exposeViewProvider(exposure, *it, true, it == groups.rbegin());
     }
 
-    exposeViewProvider(exposure, matchingMember, true, true);
+    exposeViewProvider(exposure, matchingMember, true, groups.empty());
 }
 
 void ViewProviderBoolean::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -356,6 +357,8 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string>& s)
 {
     auto* feature = getObject<PartDesign::Boolean>();
 
+    restoreActiveBodyExposure();
+
     // if abort command deleted the object the bodies are visible again
     for (auto body : feature->Group.getValues()) {
         if (auto vp = Gui::Application::Instance->getViewProvider(body)) {
@@ -368,7 +371,24 @@ bool ViewProviderBoolean::onDelete(const std::vector<std::string>& s)
 
 void ViewProviderBoolean::beforeDelete()
 {
+    auto* feature = getObject<PartDesign::Boolean>();
+    const bool removing = feature && feature->testStatus(App::ObjectStatus::Remove);
+    const auto members = removing ? feature->Group.getValues() : std::vector<App::DocumentObject*> {};
+
     restoreActiveBodyExposure();
+
+    // Object removal unclaims the tools before this callback. Put each member back at its real
+    // scene-graph location after restoring the temporary exposure.
+    for (auto* member : members) {
+        auto* memberVP = Gui::Application::Instance->getViewProvider(member);
+        if (App::GeoFeatureGroupExtension::getGroupOfObject(member)) {
+            removeFromTopLevelSceneGraph(getDocument(), memberVP);
+        }
+        else {
+            addToTopLevelSceneGraph(getDocument(), memberVP);
+        }
+    }
+
     ViewProvider::beforeDelete();
 }
 

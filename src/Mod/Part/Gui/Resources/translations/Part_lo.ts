@@ -4,121 +4,121 @@
   <context>
     <name>Attacher</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="842"/>
+      <location filename="../../AttacherTexts.cpp" line="862"/>
       <source>Any</source>
       <comment>Attacher reference type</comment>
       <translation>ໃດໜຶ່ງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="843"/>
+      <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Vertex</source>
       <comment>Attacher reference type</comment>
       <translation type="unfinished">Vertex</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="844"/>
+      <location filename="../../AttacherTexts.cpp" line="864"/>
       <source>Edge</source>
       <comment>Attacher reference type</comment>
       <translation>ຂອບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="845"/>
+      <location filename="../../AttacherTexts.cpp" line="865"/>
       <source>Face</source>
       <comment>Attacher reference type</comment>
       <translation>ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="847"/>
+      <location filename="../../AttacherTexts.cpp" line="867"/>
       <source>Line</source>
       <comment>Attacher reference type</comment>
       <translation>ເສັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="848"/>
+      <location filename="../../AttacherTexts.cpp" line="868"/>
       <source>Curve</source>
       <comment>Attacher reference type</comment>
       <translation>ເສັ້ນໂຄ້ງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="849"/>
+      <location filename="../../AttacherTexts.cpp" line="869"/>
       <source>Circle</source>
       <comment>Attacher reference type</comment>
       <translation>ວົງມົນ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="850"/>
+      <location filename="../../AttacherTexts.cpp" line="870"/>
       <source>Conic</source>
       <comment>Attacher reference type</comment>
       <translation>ຮູບຈວຍ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="851"/>
+      <location filename="../../AttacherTexts.cpp" line="871"/>
       <source>Ellipse</source>
       <comment>Attacher reference type</comment>
       <translation>ວົງລີ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="852"/>
+      <location filename="../../AttacherTexts.cpp" line="872"/>
       <source>Parabola</source>
       <comment>Attacher reference type</comment>
       <translation>ພາຣາໂບລາ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="853"/>
+      <location filename="../../AttacherTexts.cpp" line="873"/>
       <source>Hyperbola</source>
       <comment>Attacher reference type</comment>
       <translation>ໄຮເປີໂບລາ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="855"/>
+      <location filename="../../AttacherTexts.cpp" line="875"/>
       <source>Plane</source>
       <comment>Attacher reference type</comment>
       <translation>ໜ້າພຽງ (Plane)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="856"/>
+      <location filename="../../AttacherTexts.cpp" line="876"/>
       <source>Sphere</source>
       <comment>Attacher reference type</comment>
       <translation>ໜ່ວຍມົນ (Sphere)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="857"/>
+      <location filename="../../AttacherTexts.cpp" line="877"/>
       <source>Revolve</source>
       <comment>Attacher reference type</comment>
       <translation>ໝູນອ້ອມ (Revolve)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="858"/>
+      <location filename="../../AttacherTexts.cpp" line="878"/>
       <source>Cylinder</source>
       <comment>Attacher reference type</comment>
       <translation>ຮູບຊົງກະບອກ (Cylinder)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="859"/>
+      <location filename="../../AttacherTexts.cpp" line="879"/>
       <source>Torus</source>
       <comment>Attacher reference type</comment>
       <translation>ຮູບວົງແຫວນ (Torus)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="860"/>
+      <location filename="../../AttacherTexts.cpp" line="880"/>
       <source>Cone</source>
       <comment>Attacher reference type</comment>
       <translation>ຮູບຊົງຈວຍ (Cone)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="862"/>
+      <location filename="../../AttacherTexts.cpp" line="882"/>
       <source>Object</source>
       <comment>Attacher reference type</comment>
       <translation>ວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="863"/>
+      <location filename="../../AttacherTexts.cpp" line="883"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
       <translation>ຂອງແຂງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="864"/>
+      <location filename="../../AttacherTexts.cpp" line="884"/>
       <source>Wire</source>
       <comment>Attacher reference type</comment>
       <translation>ເສັ້ນເຊື່ອມ (Wire)</translation>
@@ -127,133 +127,133 @@
   <context>
     <name>Attacher0D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="727"/>
+      <location filename="../../AttacherTexts.cpp" line="747"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ປິດໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="728"/>
+      <location filename="../../AttacherTexts.cpp" line="748"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ການແນບຖືກປິດໃຊ້ງານ. ຈຸດສາມາດຍ້າຍໄດ້ໂດຍການແກ້ໄຂຄຸນສົມບັດການວາງຕຳແໜ່ງ (Placement).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="736"/>
+      <location filename="../../AttacherTexts.cpp" line="756"/>
       <source>Object's origin</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດກຳເນີດຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="737"/>
+      <location filename="../../AttacherTexts.cpp" line="757"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດຖືກວາງໄວ້ທີ່ຕຳແໜ່ງການວາງຂອງວັດຖຸ. ໃຊ້ໄດ້ກັບວັດຖຸທີ່ມີການວາງຕຳແໜ່ງ, ແລະ ຂອບຂອງຮູບວົງລີ/ພາຣາໂບລາ/ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="746"/>
+      <location filename="../../AttacherTexts.cpp" line="766"/>
       <source>Focus1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດສຸມ 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="747"/>
+      <location filename="../../AttacherTexts.cpp" line="767"/>
       <source>Focus of ellipse, parabola, hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດສຸມຂອງຮູບວົງລີ, ພາຣາໂບລາ, ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="755"/>
+      <location filename="../../AttacherTexts.cpp" line="775"/>
       <source>Focus2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດສຸມ 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="756"/>
+      <location filename="../../AttacherTexts.cpp" line="776"/>
       <source>Second focus of ellipse and hyperbola.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດສຸມທີສອງຂອງຮູບວົງລີ ແລະ ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="764"/>
+      <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>On edge</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຢູ່ເທິງຂອບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="765"/>
+      <location filename="../../AttacherTexts.cpp" line="785"/>
       <source>Point is put on edge, MapPathParameter controls where. Additionally, vertex can be linked in for making a projection.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດຖືກວາງໄວ້ເທິງຂອບ, MapPathParameter ຄວບຄຸມຕຳແໜ່ງ. ນອກຈາກນັ້ນ, ສາມາດເຊື່ອມຈຸດຈອມເພື່ອເຮັດການສາຍ (Projection) ໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="774"/>
+      <location filename="../../AttacherTexts.cpp" line="794"/>
       <source>Center of curvature</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດໃຈກາງຄວາມໂຄ້ງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="775"/>
+      <location filename="../../AttacherTexts.cpp" line="795"/>
       <source>Center of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດໃຈກາງຂອງວົງມົນສຳຜັດຄວາມໂຄ້ງຂອງຂອບ. ສາມາດເຊື່ອມຕໍ່ຈຸດຈອມເພື່ອລະບຸຕຳແໜ່ງໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="784"/>
+      <location filename="../../AttacherTexts.cpp" line="804"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດສູນກາງມວນສານ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="785"/>
+      <location filename="../../AttacherTexts.cpp" line="805"/>
       <source>Center of mass of all references (equal densities are assumed).</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດໃຈກາງມວນສານຂອງການອ້າງອີງທັງໝົດ (ສົມມຸດວ່າມີຄວາມໜາແໜ້ນເທົ່າກັນ).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="793"/>
+      <location filename="../../AttacherTexts.cpp" line="813"/>
       <source>Intersection</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ສ່ວນຕັດ (Intersection)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="794"/>
+      <location filename="../../AttacherTexts.cpp" line="814"/>
       <source>Not implemented</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຍັງບໍ່ທັນໄດ້ຕິດຕັ້ງເທື່ອ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="798"/>
+      <location filename="../../AttacherTexts.cpp" line="818"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດຈອມ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="799"/>
+      <location filename="../../AttacherTexts.cpp" line="819"/>
       <source>Put Datum point coincident with another vertex.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ວາງຈຸດອ້າງອີງ (Datum point) ໃຫ້ທັບກັບຈຸດຈອມອື່ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="807"/>
+      <location filename="../../AttacherTexts.cpp" line="827"/>
       <source>Proximity point 1</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດໃກ້ຄຽງ 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="808"/>
+      <location filename="../../AttacherTexts.cpp" line="828"/>
       <source>Point on first reference that is closest to second reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດຢູ່ເທິງການອ້າງອີງທຳອິດທີ່ຢູ່ໃກ້ກັບການອ້າງອີງທີສອງທີ່ສຸດ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="816"/>
+      <location filename="../../AttacherTexts.cpp" line="836"/>
       <source>Proximity point 2</source>
       <comment>AttachmentPoint mode caption</comment>
       <translation>ຈຸດໃກ້ຄຽງ 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="817"/>
+      <location filename="../../AttacherTexts.cpp" line="837"/>
       <source>Point on second reference that is closest to first reference.</source>
       <comment>AttachmentPoint mode tooltip</comment>
       <translation>ຈຸດຢູ່ເທິງການອ້າງອີງທີສອງທີ່ຢູ່ໃກ້ກັບການອ້າງອີງທຳອິດທີ່ສຸດ.</translation>
@@ -262,243 +262,243 @@
   <context>
     <name>Attacher1D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="537"/>
+      <location filename="../../AttacherTexts.cpp" line="557"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ປິດໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="538"/>
+      <location filename="../../AttacherTexts.cpp" line="558"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ການແນບຖືກປິດໃຊ້ງານ. ເສັ້ນສາມາດຍ້າຍໄດ້ໂດຍການແກ້ໄຂຄຸນສົມບັດການວາງຕຳແໜ່ງ (Placement).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="546"/>
+      <location filename="../../AttacherTexts.cpp" line="566"/>
       <source>Object's X</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນ X ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="547"/>
       <location filename="../../AttacherTexts.cpp" line="567"/>
+      <location filename="../../AttacherTexts.cpp" line="587"/>
       <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຖືກວາງຕາມແກນ X ຂອງວັດຖຸ. ໃຊ້ໄດ້ກັບວັດຖຸທີ່ມີການວາງຕຳແໜ່ງ, ແລະ ຂອບຂອງຮູບວົງລີ/ພາຣາໂບລາ/ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="556"/>
+      <location filename="../../AttacherTexts.cpp" line="576"/>
       <source>Object's Y</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນ Y ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="557"/>
+      <location filename="../../AttacherTexts.cpp" line="577"/>
       <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຖືກວາງຕາມແກນ Y ຂອງວັດຖຸ. ໃຊ້ໄດ້ກັບວັດຖຸທີ່ມີການວາງຕຳແໜ່ງ, ແລະ ຂອບຂອງຮູບວົງລີ/ພາຣາໂບລາ/ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="566"/>
+      <location filename="../../AttacherTexts.cpp" line="586"/>
       <source>Object's Z</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນ Z ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="576"/>
+      <location filename="../../AttacherTexts.cpp" line="596"/>
       <source>Axis of curvature</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນຂອງຄວາມໂຄ້ງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="577"/>
+      <location filename="../../AttacherTexts.cpp" line="597"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນທີ່ເປັນແກນຂອງວົງມົນສຳຜັດຄວາມໂຄ້ງຂອງຂອບໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="586"/>
+      <location filename="../../AttacherTexts.cpp" line="606"/>
       <source>Directrix1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນໄດເຣັກຕຣິກ 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="587"/>
+      <location filename="../../AttacherTexts.cpp" line="607"/>
       <source>Directrix line for ellipse, parabola, hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນໄດເຣັກຕຣິກສຳລັບຮູບວົງລີ, ພາຣາໂບລາ, ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="595"/>
+      <location filename="../../AttacherTexts.cpp" line="615"/>
       <source>Directrix2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນໄດເຣັກຕຣິກ 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="596"/>
+      <location filename="../../AttacherTexts.cpp" line="616"/>
       <source>Second directrix line for ellipse and hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນໄດເຣັກຕຣິກທີສອງສຳລັບຮູບວົງລີ ແລະ ໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="604"/>
+      <location filename="../../AttacherTexts.cpp" line="624"/>
       <source>Asymptote1</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນອາຊິມໂຕດ 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="605"/>
+      <location filename="../../AttacherTexts.cpp" line="625"/>
       <source>Asymptote of a hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນອາຊິມໂຕດຂອງໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="609"/>
+      <location filename="../../AttacherTexts.cpp" line="629"/>
       <source>Asymptote2</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນອາຊິມໂຕດ 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="610"/>
+      <location filename="../../AttacherTexts.cpp" line="630"/>
       <source>Second asymptote of hyperbola.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນອາຊິມໂຕດທີສອງຂອງໄຮເປີໂບລາ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="614"/>
+      <location filename="../../AttacherTexts.cpp" line="634"/>
       <source>Tangent</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນສຳຜັດ (Tangent)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="615"/>
+      <location filename="../../AttacherTexts.cpp" line="635"/>
       <source>Line tangent to an edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນສຳຜັດກັບຂອບ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="623"/>
+      <location filename="../../AttacherTexts.cpp" line="643"/>
       <source>Normal to edge</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ຕັ້ງສາກກັບຂອບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="624"/>
+      <location filename="../../AttacherTexts.cpp" line="644"/>
       <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ວາງຕາມແນວເວັກເຕີ N ຂອງລະບົບປະສານງານ Frenet-Serret ຂອງຂອບໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="633"/>
+      <location filename="../../AttacherTexts.cpp" line="653"/>
       <source>Binormal</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນໄບນໍໂມ (Binormal)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="634"/>
+      <location filename="../../AttacherTexts.cpp" line="654"/>
       <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ວາງຕາມແນວເວັກເຕີ B ຂອງລະບົບປະສານງານ Frenet-Serret ຂອງຂອບໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="643"/>
+      <location filename="../../AttacherTexts.cpp" line="663"/>
       <source>Tangent to surface (U)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນສຳຜັດກັບໜ້າພຽງ (U)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="644"/>
-      <location filename="../../AttacherTexts.cpp" line="653"/>
+      <location filename="../../AttacherTexts.cpp" line="664"/>
+      <location filename="../../AttacherTexts.cpp" line="673"/>
       <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນສຳຜັດກັບໜ້າພຽງ ຕາມຕົວປ່ຽນ U. ລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="652"/>
+      <location filename="../../AttacherTexts.cpp" line="672"/>
       <source>Tangent to surface (V)</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນສຳຜັດກັບໜ້າພຽງ (V)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="661"/>
+      <location filename="../../AttacherTexts.cpp" line="681"/>
       <source>Through two points</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ຜ່ານສອງຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="662"/>
+      <location filename="../../AttacherTexts.cpp" line="682"/>
       <source>Line that passes through two vertices.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນທີ່ຜ່ານສອງຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="670"/>
+      <location filename="../../AttacherTexts.cpp" line="690"/>
       <source>Intersection</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ສ່ວນຕັດ (Intersection)</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="671"/>
+      <location filename="../../AttacherTexts.cpp" line="691"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຕັດກັນຂອງສອງໜ້າພຽງ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="675"/>
+      <location filename="../../AttacherTexts.cpp" line="695"/>
       <source>Proximity line</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນໃກ້ຄຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="676"/>
+      <location filename="../../AttacherTexts.cpp" line="696"/>
       <source>Line that spans the shortest distance between shapes.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນທີ່ເຊື່ອມຕໍ່ໄລຍະຫ່າງທີ່ສັ້ນທີ່ສຸດລະຫວ່າງຮູບຊົງ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="684"/>
+      <location filename="../../AttacherTexts.cpp" line="704"/>
       <source>1st principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນຫຼັກທີ 1</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="685"/>
+      <location filename="../../AttacherTexts.cpp" line="705"/>
       <source>Line follows first principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຕາມແນວແກນຫຼັກຄວາມເສື່ອຍທີໜຶ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="693"/>
+      <location filename="../../AttacherTexts.cpp" line="713"/>
       <source>2nd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນຫຼັກທີ 2</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="694"/>
+      <location filename="../../AttacherTexts.cpp" line="714"/>
       <source>Line follows second principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຕາມແນວແກນຫຼັກຄວາມເສື່ອຍທີສອງ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="702"/>
+      <location filename="../../AttacherTexts.cpp" line="722"/>
       <source>3rd principal axis</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ແກນຫຼັກທີ 3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="703"/>
+      <location filename="../../AttacherTexts.cpp" line="723"/>
       <source>Line follows third principal axis of inertia.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຕາມແນວແກນຫຼັກຄວາມເສື່ອຍທີສາມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="711"/>
+      <location filename="../../AttacherTexts.cpp" line="731"/>
       <source>Normal to surface</source>
       <comment>AttachmentLine mode caption</comment>
       <translation>ເສັ້ນຕັ້ງສາກກັບໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="712"/>
+      <location filename="../../AttacherTexts.cpp" line="732"/>
       <source>Line perpendicular to surface at point set by vertex.</source>
       <comment>AttachmentLine mode tooltip</comment>
       <translation>ເສັ້ນຕັ້ງສາກກັບໜ້າພຽງທີ່ຈຸດທີ່ກຳນົດໂດຍຈຸດຈອມ.</translation>
@@ -507,207 +507,219 @@
   <context>
     <name>Attacher2D</name>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="296"/>
+      <location filename="../../AttacherTexts.cpp" line="306"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ປິດໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="297"/>
+      <location filename="../../AttacherTexts.cpp" line="307"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ການແນບຖືກປິດໃຊ້ງານ. ວັດຖຸສາມາດຍ້າຍໄດ້ໂດຍການແກ້ໄຂຄຸນສົມບັດການວາງຕຳແໜ່ງ (Placement).</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="306"/>
+      <location filename="../../AttacherTexts.cpp" line="316"/>
       <source>Translate origin</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ຍ້າຍຈຸດກຳເນີດ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="307"/>
+      <location filename="../../AttacherTexts.cpp" line="317"/>
       <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ຈຸດກຳເນີດຖືກຈັດໃຫ້ຕົວກັບຈຸດຈອມ. ການກຳນົດທິດທາງແມ່ນຄວບຄຸມໂດຍຄຸນສົມບັດການວາງຕຳແໜ່ງ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="316"/>
+      <location filename="../../AttacherTexts.cpp" line="326"/>
       <source>Object's XY</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ໜ້າພຽງ XY ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="317"/>
+      <location filename="../../AttacherTexts.cpp" line="327"/>
       <source>Plane is aligned to XY local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກຈັດໃຫ້ຕົວກັບໜ້າພຽງ XY ຂອງວັດຖຸທີ່ເຊື່ອມຕໍ່.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="325"/>
+      <location filename="../../AttacherTexts.cpp" line="335"/>
       <source>Object's XZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ໜ້າພຽງ XZ ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="326"/>
+      <location filename="../../AttacherTexts.cpp" line="336"/>
       <source>Plane is aligned to XZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກຈັດໃຫ້ຕົວກັບໜ້າພຽງ XZ ຂອງວັດຖຸທີ່ເຊື່ອມຕໍ່.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="334"/>
+      <location filename="../../AttacherTexts.cpp" line="344"/>
       <source>Object's YZ</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ໜ້າພຽງ YZ ຂອງວັດຖຸ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="335"/>
+      <location filename="../../AttacherTexts.cpp" line="345"/>
       <source>Plane is aligned to YZ local plane of linked object.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກຈັດໃຫ້ຕົວກັບໜ້າພຽງ YZ ຂອງວັດຖຸທີ່ເຊື່ອມຕໍ່.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="343"/>
+      <location filename="../../AttacherTexts.cpp" line="353"/>
       <source>XY parallel to plane</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>XY ຂະໜານກັບແຜ່ນພຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="344"/>
+      <location filename="../../AttacherTexts.cpp" line="354"/>
       <source>X' Y' plane is parallel to the plane (object's XY) and passes through the vertex</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ໜ້າພຽງ X' Y' ຂະໜານກັບແຜ່ນພຽງ (XY ຂອງວັດຖຸ) ແລະ ຜ່ານຈຸດຈອມ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="353"/>
+      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <source>Midplane between faces</source>
+      <comment>AttachmentPlane mode caption</comment>
+      <translation>ໜ້າພຽງເຄິ່ງກາງລະຫວ່າງໜ້າ</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="364"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>AttachmentPlane mode tooltip</comment>
+      <translation>ຈຸດກຳເນີດຂອງໜ້າພຽງແມ່ນຢູ່ເຄິ່ງກາງລະຫວ່າງຈຸດສູນກາງຂອງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນຈະແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="373"/>
       <source>Plane face</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ໜ້າພຽງແບນ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="354"/>
+      <location filename="../../AttacherTexts.cpp" line="374"/>
       <source>Plane is aligned to coincide planar face.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກຈັດໃຫ້ທັບກັບໜ້າພຽງແບນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="362"/>
+      <location filename="../../AttacherTexts.cpp" line="382"/>
       <source>Tangent to surface</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ສຳຜັດກັບໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="363"/>
+      <location filename="../../AttacherTexts.cpp" line="383"/>
       <source>Plane is made tangent to surface at vertex.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກສ້າງໃຫ້ສຳຜັດກັບໜ້າພຽງທີ່ຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="371"/>
+      <location filename="../../AttacherTexts.cpp" line="391"/>
       <source>Normal to edge</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ຕັ້ງສາກກັບຂອບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="372"/>
+      <location filename="../../AttacherTexts.cpp" line="392"/>
       <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກສ້າງໃຫ້ສຳຜັດກັບຂອບ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="380"/>
+      <location filename="../../AttacherTexts.cpp" line="400"/>
       <source>Frenet NB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet NB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="381"/>
-      <location filename="../../AttacherTexts.cpp" line="391"/>
       <location filename="../../AttacherTexts.cpp" line="401"/>
+      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="421"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ຈັດໃຫ້ຕົວກັບລະບົບປະສານງານ Frenet-Serret ຂອງຂອບໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="390"/>
+      <location filename="../../AttacherTexts.cpp" line="410"/>
       <source>Frenet TN</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="400"/>
+      <location filename="../../AttacherTexts.cpp" line="420"/>
       <source>Frenet TB</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>Frenet TB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="410"/>
+      <location filename="../../AttacherTexts.cpp" line="430"/>
       <source>Concentric</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ຮ່ວມສູນ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="411"/>
+      <location filename="../../AttacherTexts.cpp" line="431"/>
       <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ຈັດແຜ່ນພຽງໃຫ້ຕົວກັບວົງມົນສຳຜັດຄວາມໂຄ້ງຂອງຂອບ. ຈຸດກຳເນີດຖືກຈັດໃຫ້ຕົວກັບຈຸດຂອງຄວາມໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="420"/>
+      <location filename="../../AttacherTexts.cpp" line="440"/>
       <source>Revolution Section</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ພາກສ່ວນການໝູນອ້ອມ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="421"/>
+      <location filename="../../AttacherTexts.cpp" line="441"/>
       <source>Plane is perpendicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຕັ້ງສາກກັບຂອບ, ແລະ ແກນ Y ຖືກຈັບຄູ່ກັບແກນຂອງວົງມົນສຳຜັດຄວາມໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="430"/>
+      <location filename="../../AttacherTexts.cpp" line="450"/>
       <source>Plane by 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ແຜ່ນພຽງຈາກ 3 ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="431"/>
+      <location filename="../../AttacherTexts.cpp" line="451"/>
       <source>Align plane to pass through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ຈັດແຜ່ນພຽງໃຫ້ຜ່ານສາມຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="439"/>
+      <location filename="../../AttacherTexts.cpp" line="459"/>
       <source>Normal to 3 points</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ຕັ້ງສາກກັບ 3 ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="440"/>
+      <location filename="../../AttacherTexts.cpp" line="460"/>
       <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຈະຜ່ານສອງຈຸດຈອມທຳອິດ, ແລະ ຕັ້ງສາກກັບແຜ່ນພຽງທີ່ຜ່ານສາມຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="449"/>
+      <location filename="../../AttacherTexts.cpp" line="469"/>
       <source>Folding</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ການພັບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="450"/>
+      <location filename="../../AttacherTexts.cpp" line="470"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ໂໝດພິເສດສຳລັບການພັບຮູບຊົງຫຼາຍໜ້າ. ເລືອກ 4 ຂອບຕາມລຳດັບ: ຂອບທີ່ພັບໄດ້, ເສັ້ນພັບ, ເສັ້ນພັບອື່ນ, ຂອບທີ່ພັບໄດ້ອື່ນ. ແຜ່ນພຽງຈະຖືກຈັດໃຫ້ຕົວກັບການພັບຂອບທຳອິດ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="460"/>
+      <location filename="../../AttacherTexts.cpp" line="480"/>
       <source>Inertia 2-3</source>
       <comment>AttachmentPlane mode caption</comment>
       <translation>ຄວາມເສື່ອຍ 2-3</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="461"/>
+      <location filename="../../AttacherTexts.cpp" line="481"/>
       <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
       <comment>AttachmentPlane mode tooltip</comment>
       <translation>ແຜ່ນພຽງຖືກສ້າງຂຶ້ນເທິງແກນຫຼັກຄວາມເສື່ອຍທີສອງ ແລະ ທີສາມ (ຜ່ານຈຸດໃຈກາງມວນສານ).</translation>
@@ -788,269 +800,281 @@
       <translation>ໜ້າພຽງ X' Y' ຂະໜານກັບແຜ່ນພຽງ (XY ຂອງວັດຖຸ) ແລະ ຜ່ານຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <location filename="../../AttacherTexts.cpp" line="121"/>
       <source>XY on plane</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY ເທິງແຜ່ນພຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <location filename="../../AttacherTexts.cpp" line="122"/>
       <source>X' Y' plane is aligned to coincide planar face.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ໜ້າພຽງ X' Y' ຖືກຈັດໃຫ້ທັບກັບໜ້າພຽງແບນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="120"/>
+      <location filename="../../AttacherTexts.cpp" line="130"/>
       <source>XY tangent to surface</source>
       <comment>Attachment3D mode caption</comment>
       <translation>XY ສຳຜັດກັບໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="121"/>
+      <location filename="../../AttacherTexts.cpp" line="131"/>
       <source>X' Y' plane is made tangent to surface at vertex.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ໜ້າພຽງ X' Y' ຖືກສ້າງໃຫ້ສຳຜັດກັບໜ້າພຽງທີ່ຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="129"/>
+      <location filename="../../AttacherTexts.cpp" line="139"/>
       <source>Z tangent to edge</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Z ສຳຜັດກັບຂອບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="130"/>
+      <location filename="../../AttacherTexts.cpp" line="140"/>
       <source>Z' axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ແກນ Z' ຖືກຈັດໃຫ້ສຳຜັດກັບຂອບ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="139"/>
+      <location filename="../../AttacherTexts.cpp" line="149"/>
       <source>Frenet NBT</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet NBT</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="140"/>
       <location filename="../../AttacherTexts.cpp" line="150"/>
       <location filename="../../AttacherTexts.cpp" line="160"/>
+      <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັດໃຫ້ຕົວກັບລະບົບປະສານງານ Frenet-Serret ຂອງຂອບໂຄ້ງ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="149"/>
+      <location filename="../../AttacherTexts.cpp" line="159"/>
       <source>Frenet TNB</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet TNB</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="159"/>
+      <location filename="../../AttacherTexts.cpp" line="169"/>
       <source>Frenet TBN</source>
       <comment>Attachment3D mode caption</comment>
       <translation>Frenet TBN</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="169"/>
+      <location filename="../../AttacherTexts.cpp" line="179"/>
       <source>Concentric</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຮ່ວມສູນ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="179"/>
+      <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>Revolution Section</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ພາກສ່ວນການໝູນອ້ອມ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="180"/>
+      <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align Y' axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັດແກນ Y' ໃຫ້ຕົວກັບແກນຂອງວົງມົນສຳຜັດຄວາມໂຄ້ງຂອງຂອບ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="208"/>
+      <location filename="../../AttacherTexts.cpp" line="218"/>
       <source>Folding</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ການພັບ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="170"/>
+      <location filename="../../AttacherTexts.cpp" line="180"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັດໜ້າພຽງ XY ໃຫ້ຕົວກັບວົງມົນສຳຜັດຄວາມໂຄ້ງຂອງຂອບ. ສາມາດລະບຸຕຳແໜ່ງດ້ວຍຈຸດຈອມໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="189"/>
+      <location filename="../../AttacherTexts.cpp" line="111"/>
+      <source>Midplane between faces</source>
+      <comment>Attachment3D mode caption</comment>
+      <translation>ໜ້າພຽງເຄິ່ງກາງລະຫວ່າງໜ້າ</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="112"/>
+      <source>Plane origin is midway between the centers of two planar faces and its orientation equally bisects their angle.</source>
+      <comment>Attachment3D mode tooltip</comment>
+      <translation>ຈຸດກຳເນີດຂອງໜ້າພຽງແມ່ນຢູ່ເຄິ່ງກາງລະຫວ່າງຈຸດສູນກາງຂອງສອງໜ້າພຽງ ແລະ ທິດທາງຂອງມັນຈະແບ່ງເຄິ່ງມຸມຂອງພວກມັນຢ່າງເທົ່າທຽມກັນ.</translation>
+    </message>
+    <message>
+      <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ໜ້າພຽງ XY ຈາກ 3 ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="190"/>
+      <location filename="../../AttacherTexts.cpp" line="200"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັດໜ້າພຽງ XY ໃຫ້ຜ່ານສາມຈຸດຈອມ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="198"/>
+      <location filename="../../AttacherTexts.cpp" line="208"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ໜ້າພຽງ XZ ຈາກ 3 ຈຸດ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="199"/>
+      <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັດໜ້າພຽງ XZ ໃຫ້ຜ່ານ 3 ຈຸດ; ແກນ X ຈະຜ່ານສອງຈຸດທຳອິດ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="209"/>
+      <location filename="../../AttacherTexts.cpp" line="219"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ໂໝດພິເສດສຳລັບການພັບຮູບຊົງຫຼາຍໜ້າ. ເລືອກ 4 ຂອບຕາມລຳດັບ: ຂອບທີ່ພັບໄດ້, ເສັ້ນພັບ, ເສັ້ນພັບອື່ນ, ຂອບທີ່ພັບໄດ້ອື່ນ. ໜ້າພຽງ XY ຈະຖືກຈັດໃຫ້ຕົວກັບການພັບຂອບທຳອິດ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="219"/>
+      <location filename="../../AttacherTexts.cpp" line="229"/>
       <source>Inertial CS</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ລະບົບປະສານງານຄວາມເສື່ອຍ</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="220"/>
+      <location filename="../../AttacherTexts.cpp" line="230"/>
       <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ລະບົບປະສານງານຄວາມເສື່ອຍ, ສ້າງຂຶ້ນເທິງແກນຫຼັກຄວາມເສື່ອຍ ແລະ ຈຸດໃຈກາງມວນສານ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="229"/>
+      <location filename="../../AttacherTexts.cpp" line="239"/>
       <source>Align O-Z-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-Z-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="230"/>
+      <location filename="../../AttacherTexts.cpp" line="240"/>
       <source>Match origin with first Vertex. Align Z' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນ Z' ແລະ X' ໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="239"/>
+      <location filename="../../AttacherTexts.cpp" line="249"/>
       <source>Align O-Z-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-Z-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="240"/>
+      <location filename="../../AttacherTexts.cpp" line="250"/>
       <source>Match origin with first Vertex. Align Z' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນ Z' ແລະ Y' ໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="249"/>
-      <location filename="../../AttacherTexts.cpp" line="490"/>
+      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="510"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-X-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="250"/>
+      <location filename="../../AttacherTexts.cpp" line="260"/>
       <source>Match origin with first Vertex. Align X' and Y' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນ X' ແລະ Y' ໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="259"/>
+      <location filename="../../AttacherTexts.cpp" line="269"/>
       <source>Align O-X-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-X-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="260"/>
+      <location filename="../../AttacherTexts.cpp" line="270"/>
       <source>Match origin with first Vertex. Align X' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນ X' ແລະ Z' ໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="269"/>
+      <location filename="../../AttacherTexts.cpp" line="279"/>
       <source>Align O-Y-Z</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-Y-Z</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="270"/>
+      <location filename="../../AttacherTexts.cpp" line="280"/>
       <source>Match origin with first Vertex. Align Y' and Z' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນ Y' ແລະ Z' ໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="279"/>
-      <location filename="../../AttacherTexts.cpp" line="520"/>
+      <location filename="../../AttacherTexts.cpp" line="289"/>
+      <location filename="../../AttacherTexts.cpp" line="540"/>
       <source>Align O-Y-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-Y-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="280"/>
+      <location filename="../../AttacherTexts.cpp" line="290"/>
       <source>Match origin with first Vertex. Align Y' and X' axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນ Y' ແລະ X' ໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="470"/>
+      <location filename="../../AttacherTexts.cpp" line="490"/>
       <source>Align O-N-X</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-N-X</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="471"/>
+      <location filename="../../AttacherTexts.cpp" line="491"/>
       <source>Match origin with first Vertex. Align normal and horizontal plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນຕັ້ງສາກ ແລະ ແກນໜ້າພຽງແນວນອນໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="480"/>
+      <location filename="../../AttacherTexts.cpp" line="500"/>
       <source>Align O-N-Y</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-N-Y</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="481"/>
+      <location filename="../../AttacherTexts.cpp" line="501"/>
       <source>Match origin with first Vertex. Align normal and vertical plane axis towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນຕັ້ງສາກ ແລະ ແກນໜ້າພຽງແນວຕັ້ງໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="491"/>
+      <location filename="../../AttacherTexts.cpp" line="511"/>
       <source>Match origin with first Vertex. Align horizontal and vertical plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນໜ້າພຽງແນວນອນ ແລະ ແນວຕັ້ງໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="500"/>
+      <location filename="../../AttacherTexts.cpp" line="520"/>
       <source>Align O-X-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-X-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="501"/>
+      <location filename="../../AttacherTexts.cpp" line="521"/>
       <source>Match origin with first Vertex. Align horizontal plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນໜ້າພຽງແນວນອນ ແລະ ແກນຕັ້ງສາກໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="510"/>
+      <location filename="../../AttacherTexts.cpp" line="530"/>
       <source>Align O-Y-N</source>
       <comment>Attachment3D mode caption</comment>
       <translation>ຈັດລຽງ O-Y-N</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="511"/>
+      <location filename="../../AttacherTexts.cpp" line="531"/>
       <source>Match origin with first Vertex. Align vertical plane axis and normal towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນໜ້າພຽງແນວຕັ້ງ ແລະ ແກນຕັ້ງສາກໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
     </message>
     <message>
-      <location filename="../../AttacherTexts.cpp" line="521"/>
+      <location filename="../../AttacherTexts.cpp" line="541"/>
       <source>Match origin with first Vertex. Align vertical and horizontal plane axes towards vertex/along line.</source>
       <comment>Attachment3D mode tooltip</comment>
       <translation>ຈັບຄູ່ຈຸດກຳເນີດກັບຈຸດຈອມທຳອິດ. ຈັດແກນໜ້າພຽງແນວຕັ້ງ ແລະ ແນວນອນໄປທາງຈຸດຈອມ/ຕາມແນວເສັ້ນ.</translation>
@@ -1174,22 +1198,22 @@
   <context>
     <name>CmdBoxSelection</name>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2394"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2397"/>
+      <location filename="../../Command.cpp" line="2395"/>
       <source>Box Selection</source>
       <translation>ການເລືອກແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Selects elements in the 3D view using a box selection</source>
       <translation>ເລືອກອົງປະກອບໃນມຸມມອງ 3D ໂດຍການໃຊ້ການເລືອກແບບກ່ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Box selection</source>
       <translation>ການເລືອກແບບກ່ອງ</translation>
     </message>
@@ -1197,17 +1221,17 @@
   <context>
     <name>CmdCheckGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="2318"/>
+      <location filename="../../Command.cpp" line="2316"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2319"/>
+      <location filename="../../Command.cpp" line="2317"/>
       <source>Check Geometry</source>
       <translation>ກວດສອບເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2320"/>
+      <location filename="../../Command.cpp" line="2318"/>
       <source>Analyzes the selected shapes for errors</source>
       <translation>ວິເຄາະຮູບຊົງທີ່ເລືອກເພື່ອຫາຂໍ້ຜິດພາດ</translation>
     </message>
@@ -1215,17 +1239,17 @@
   <context>
     <name>CmdColorPerFace</name>
     <message>
-      <location filename="../../Command.cpp" line="2352"/>
+      <location filename="../../Command.cpp" line="2350"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2353"/>
+      <location filename="../../Command.cpp" line="2351"/>
       <source>Appearance per &amp;Face</source>
       <translation>ລັກສະນະພາຍນອກຕໍ່ &amp;ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2354"/>
+      <location filename="../../Command.cpp" line="2352"/>
       <source>Sets the appearance of individual faces of the selected object</source>
       <translation>ກຳນົດລັກສະນະພາຍນອກຂອງແຕ່ລະໜ້າພຽງຂອງວັດຖຸທີ່ເລືອກ</translation>
     </message>
@@ -1233,17 +1257,17 @@
   <context>
     <name>CmdPartBoolean</name>
     <message>
-      <location filename="../../Command.cpp" line="1405"/>
+      <location filename="../../Command.cpp" line="1403"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1406"/>
+      <location filename="../../Command.cpp" line="1404"/>
       <source>Boolean Operation</source>
       <translation>ການດຳເນີນການແບບບູນລີນ (Boolean Operation)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1407"/>
+      <location filename="../../Command.cpp" line="1405"/>
       <source>Applies a boolean operation with the selected shapes</source>
       <translation>ນຳໃຊ້ການດຳເນີນການແບບບູລີນກັບຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -1306,17 +1330,17 @@
   <context>
     <name>CmdPartBuilder</name>
     <message>
-      <location filename="../../Command.cpp" line="1704"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1705"/>
+      <location filename="../../Command.cpp" line="1703"/>
       <source>Shape Builder</source>
       <translation>ເຄື່ອງມືສ້າງຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1707"/>
+      <location filename="../../Command.cpp" line="1705"/>
       <source>Advanced utility to create shapes</source>
       <translation>ເຄື່ອງມືຂັ້ນສູງສຳລັບການສ້າງຮູບຊົງ</translation>
     </message>
@@ -1324,17 +1348,17 @@
   <context>
     <name>CmdPartChamfer</name>
     <message>
-      <location filename="../../Command.cpp" line="1609"/>
+      <location filename="../../Command.cpp" line="1607"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1610"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>Chamfer</source>
       <translation>ປາດມົນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1609"/>
       <source>Chamfers the selected edges of a shape</source>
       <translation>ປາດມົນຂອບທີ່ເລືອກຂອງຮູບຊົງ</translation>
     </message>
@@ -1396,17 +1420,17 @@
   <context>
     <name>CmdPartCompOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1925"/>
+      <location filename="../../Command.cpp" line="1923"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1926"/>
+      <location filename="../../Command.cpp" line="1924"/>
       <source>Offset</source>
       <translation>ໄລຍະຫ່າງ (Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1927"/>
+      <location filename="../../Command.cpp" line="1925"/>
       <source>Tools to offset shapes (construct parallel shapes)</source>
       <translation>ເຄື່ອງມືສ້າງໄລຍະຫ່າງຂອງຮູບຊົງ (ສ້າງຮູບຊົງທີ່ຂະໜານກັນ)</translation>
     </message>
@@ -1469,17 +1493,17 @@
   <context>
     <name>CmdPartCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="1665"/>
+      <location filename="../../Command.cpp" line="1663"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1666"/>
+      <location filename="../../Command.cpp" line="1664"/>
       <source>Cross-Sections</source>
       <translation>ໜ້າຕັດຂວາງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1667"/>
+      <location filename="../../Command.cpp" line="1665"/>
       <source>Creates cross-sections</source>
       <translation>ສ້າງໜ້າຕັດຂວາງ</translation>
     </message>
@@ -1578,17 +1602,17 @@
   <context>
     <name>CmdPartExtrude</name>
     <message>
-      <location filename="../../Command.cpp" line="1437"/>
+      <location filename="../../Command.cpp" line="1435"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1438"/>
+      <location filename="../../Command.cpp" line="1436"/>
       <source>Extrude</source>
       <translation>ການຍືດອອກ (Extrude)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1439"/>
+      <location filename="../../Command.cpp" line="1437"/>
       <source>Extrudes the selected sketch or profile</source>
       <translation>ຍືດແບບຮ່າງ ຫຼື ໂປຣໄຟລ໌ທີ່ເລືອກອອກ</translation>
     </message>
@@ -1596,17 +1620,17 @@
   <context>
     <name>CmdPartFillet</name>
     <message>
-      <location filename="../../Command.cpp" line="1581"/>
+      <location filename="../../Command.cpp" line="1579"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1582"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Fillet</source>
       <translation>ລົບລ່ຽມ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1583"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Fillets the selected edges of a shape</source>
       <translation>ລົບລ່ຽມຂອບທີ່ເລືອກຂອງຮູບຊົງ</translation>
     </message>
@@ -1668,17 +1692,17 @@
   <context>
     <name>CmdPartLoft</name>
     <message>
-      <location filename="../../Command.cpp" line="1734"/>
+      <location filename="../../Command.cpp" line="1732"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1735"/>
+      <location filename="../../Command.cpp" line="1733"/>
       <source>Loft</source>
       <translation>ການລອບ (Loft)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1736"/>
+      <location filename="../../Command.cpp" line="1734"/>
       <source>Lofts the selected profiles</source>
       <translation>ສ້າງຮູບຊົງຕາມໜ້າຕັດ (Loft) ຈາກໂປຣໄຟລ໌ທີ່ເລືອກ</translation>
     </message>
@@ -1686,17 +1710,17 @@
   <context>
     <name>CmdPartMakeFace</name>
     <message>
-      <location filename="../../Command.cpp" line="1494"/>
+      <location filename="../../Command.cpp" line="1492"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1495"/>
+      <location filename="../../Command.cpp" line="1493"/>
       <source>Face From Wires</source>
       <translation>ສ້າງໜ້າພຽງຈາກເສັ້ນເຊື່ອມ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1496"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
       <translation>ສ້າງໜ້າພຽງຈາກເສັ້ນເຊື່ອມທີ່ເລືອກ (ຕົວຢ່າງ: ຈາກແບບຮ່າງ)</translation>
     </message>
@@ -1704,17 +1728,17 @@
   <context>
     <name>CmdPartMakeSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1243"/>
+      <location filename="../../Command.cpp" line="1241"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1244"/>
+      <location filename="../../Command.cpp" line="1242"/>
       <source>Convert to Solid</source>
       <translation>ປ່ຽນເປັນຮູບຊົງຕັນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1245"/>
+      <location filename="../../Command.cpp" line="1243"/>
       <source>Converts the selected shell or compound to a solid</source>
       <translation>ປ່ຽນຮູບຊົງເປືອກ ຫຼື ຮູບຊົງປະສົມທີ່ເລືອກໃຫ້ເປັນຮູບຊົງຕັນ</translation>
     </message>
@@ -1722,17 +1746,17 @@
   <context>
     <name>CmdPartMirror</name>
     <message>
-      <location filename="../../Command.cpp" line="1637"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1638"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Mirror</source>
       <translation>ແວ່ນແຍງ (Mirror)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1639"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Mirrors the selected shape</source>
       <translation>ເຮັດແວ່ນແຍງຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -1740,17 +1764,17 @@
   <context>
     <name>CmdPartOffset</name>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1790"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1793"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>3D Offset</source>
       <translation>ໄລຍະຫ່າງ 3D (3D Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1794"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Offsets shapes in 3D</source>
       <translation>ສ້າງໄລຍະຫ່າງຂອງຮູບຊົງໃນແບບ 3D</translation>
     </message>
@@ -1758,17 +1782,17 @@
   <context>
     <name>CmdPartOffset2D</name>
     <message>
-      <location filename="../../Command.cpp" line="1859"/>
+      <location filename="../../Command.cpp" line="1857"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1860"/>
+      <location filename="../../Command.cpp" line="1858"/>
       <source>2D Offset</source>
       <translation>ໄລຍະຫ່າງ 2D (2D Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1861"/>
+      <location filename="../../Command.cpp" line="1859"/>
       <source>Offsets planar shapes in 2D</source>
       <translation>ສ້າງໄລຍະຫ່າງຂອງຮູບຊົງແບບແບນໃນແບບ 2D</translation>
     </message>
@@ -1830,17 +1854,17 @@
   <context>
     <name>CmdPartProjectionOnSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2426"/>
+      <location filename="../../Command.cpp" line="2424"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2427"/>
+      <location filename="../../Command.cpp" line="2425"/>
       <source>Project on Surface</source>
       <translation>ສາຍພາບລົງເທິງພື້ນຜິວ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2428"/>
+      <location filename="../../Command.cpp" line="2426"/>
       <source>Projects edges, wires, or faces of one shape
 onto a face of another shape.
 The camera view determines the direction
@@ -1872,17 +1896,17 @@ of the projection.</source>
   <context>
     <name>CmdPartReverseShape</name>
     <message>
-      <location filename="../../Command.cpp" line="1336"/>
+      <location filename="../../Command.cpp" line="1334"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1337"/>
+      <location filename="../../Command.cpp" line="1335"/>
       <source>Reverse Shapes</source>
       <translation>ກັບດ້ານຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1338"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Reverses the orientation of the selected shapes</source>
       <translation>ກັບທິດທາງຂອງຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -1890,17 +1914,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRevolve</name>
     <message>
-      <location filename="../../Command.cpp" line="1553"/>
+      <location filename="../../Command.cpp" line="1551"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1554"/>
+      <location filename="../../Command.cpp" line="1552"/>
       <source>Revolve</source>
       <translation>ໝູນອ້ອມ (Revolve)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1555"/>
+      <location filename="../../Command.cpp" line="1553"/>
       <source>Revolves the selected shape</source>
       <translation>ໝູນຮູບຊົງທີ່ເລືອກອ້ອມແກນ</translation>
     </message>
@@ -1908,17 +1932,17 @@ of the projection.</source>
   <context>
     <name>CmdPartRuledSurface</name>
     <message>
-      <location filename="../../Command.cpp" line="2174"/>
+      <location filename="../../Command.cpp" line="2172"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2175"/>
+      <location filename="../../Command.cpp" line="2173"/>
       <source>Ruled Surface</source>
       <translation>ໜ້າພຽງແບບຣູລ (Ruled Surface)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2176"/>
+      <location filename="../../Command.cpp" line="2174"/>
       <source>Creates a ruled surface between 2 selected wires</source>
       <translation>ສ້າງໜ້າພຽງແບບຣູລລະຫວ່າງ 2 ເສັ້ນເຊື່ອມທີ່ເລືອກ</translation>
     </message>
@@ -2017,17 +2041,17 @@ of the projection.</source>
   <context>
     <name>CmdPartSweep</name>
     <message>
-      <location filename="../../Command.cpp" line="1763"/>
+      <location filename="../../Command.cpp" line="1761"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1764"/>
+      <location filename="../../Command.cpp" line="1762"/>
       <source>Sweep</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1765"/>
+      <location filename="../../Command.cpp" line="1763"/>
       <source>Sweeps profiles along a wire</source>
       <translation>ກວາດຮູບຮ່າງ (profiles) ໄປຕາມເສັ້ນລວດ</translation>
     </message>
@@ -2035,27 +2059,27 @@ of the projection.</source>
   <context>
     <name>CmdPartThickness</name>
     <message>
-      <location filename="../../Command.cpp" line="2027"/>
+      <location filename="../../Command.cpp" line="2025"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2028"/>
+      <location filename="../../Command.cpp" line="2026"/>
       <source>Thickness</source>
       <translation>ຄວາມໜາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2029"/>
+      <location filename="../../Command.cpp" line="2027"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
       <translation>ລຶບໜ້າພຽງທີ່ເລືອກອອກ ແລະ ຂະຫຍາຍຮູບຮ່າງທີ່ເຫຼືອອອກໄປດ້ານນອກເພື່ອເພີ່ມຄວາມໜາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2088"/>
+      <location filename="../../Command.cpp" line="2086"/>
       <source>Wrong selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2089"/>
+      <location filename="../../Command.cpp" line="2087"/>
       <source>Selected shape is not a solid</source>
       <translation>ຮູບຮ່າງທີ່ເລືອກບໍ່ແມ່ນວັດຖຸແຂງ (solid)</translation>
     </message>
@@ -2136,47 +2160,47 @@ of the projection.</source>
       <translation>ນຳເຂົ້າຊິ້ນສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1214"/>
       <source>Import Curve Net</source>
       <translation>ນຳເຂົ້າຕາໜ່າງເສັ້ນໂຄ້ງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1350"/>
+      <location filename="../../Command.cpp" line="1348"/>
       <source>Reverse</source>
       <translation>ກັບດ້ານ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1513"/>
+      <location filename="../../Command.cpp" line="1511"/>
       <source>Make face</source>
       <translation>ສ້າງໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1819"/>
+      <location filename="../../Command.cpp" line="1817"/>
       <source>Make Offset</source>
       <translation>ສ້າງໄລຍະຫ່າງ (Offset)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1887"/>
+      <location filename="../../Command.cpp" line="1885"/>
       <source>Make 2D Offset</source>
       <translation>ສ້າງໄລຍະຫ່າງ 2D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2096"/>
+      <location filename="../../Command.cpp" line="2094"/>
       <source>Make Thickness</source>
       <translation>ສ້າງຄວາມໜາ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2285"/>
+      <location filename="../../Command.cpp" line="2283"/>
       <source>Create ruled surface</source>
       <translation>ສ້າງພື້ນຜິວແບບ Ruled Surface</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2538"/>
+      <location filename="../../Command.cpp" line="2536"/>
       <source>Add coordinate system</source>
       <translation>ເພີ່ມລະບົບພິກັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2576"/>
+      <location filename="../../Command.cpp" line="2575"/>
       <source>Add datum plane</source>
       <translation>ເພີ່ມໜ້າພຽງອ້າງອີງ (Datum Plane)</translation>
     </message>
@@ -2186,7 +2210,7 @@ of the projection.</source>
       <translation>ເພີ່ມເສັ້ນອ້າງອີງ (Datum Line)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2642"/>
+      <location filename="../../Command.cpp" line="2643"/>
       <source>Add datum point</source>
       <translation>ເພີ່ມຈຸດອ້າງອີງ (Datum Point)</translation>
     </message>
@@ -2226,7 +2250,7 @@ of the projection.</source>
       <translation>ປ່ຽນສີໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="225"/>
+      <location filename="../../TaskLoft.cpp" line="226"/>
       <source>Loft</source>
       <translation>ການລອບ (Loft)</translation>
     </message>
@@ -2257,12 +2281,12 @@ of the projection.</source>
       <translation>ຂອງແຂງ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="417"/>
+      <location filename="../../TaskSweep.cpp" line="418"/>
       <source>Sweep</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="1620"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="1621"/>
       <source>Project on surface</source>
       <translation>ສາຍລົງເທິງພື້ນຜິວ</translation>
     </message>
@@ -4128,17 +4152,17 @@ Check one or more edge entities first.</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="141"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="142"/>
       <source>Projection object</source>
       <translation>ວັດຖຸສາຍພາບ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="168"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="169"/>
       <source>No active document</source>
       <translation>ບໍ່ມີເອກະສານທີ່ກຳລັງໃຊ້ງານ</translation>
     </message>
     <message>
-      <location filename="../../DlgProjectionOnSurface.cpp" line="174"/>
+      <location filename="../../DlgProjectionOnSurface.cpp" line="175"/>
       <source>Cannot create a projection object</source>
       <translation>ບໍ່ສາມາດສ້າງວັດຖຸສາຍພາບໄດ້</translation>
     </message>
@@ -4322,12 +4346,12 @@ Check one or more edge entities first.</source>
       <translation>ການຕັ້ງຄ່າບ່ຽງເບນທີ່ນ້ອຍເກີນໄປ ຈະເຮັດໃຫ້ການແບ່ງພື້ນຜິວຍ່ອຍໃຊ້ເວລາດົນຂຶ້ນ ແລະ ອາດເຮັດໃຫ້ສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ (GUI) ຄ້າງ ຫຼື ຊ້າລົງ.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="110"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="113"/>
       <source>Angle deflection</source>
       <translation>ການບ່ຽງເບນມຸມ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettings3DViewPartImp.cpp" line="111"/>
+      <location filename="../../DlgSettings3DViewPartImp.cpp" line="114"/>
       <source>Setting a too small angle deviation causes the tessellation to take longer and thus freezes or slows down the GUI.</source>
       <translation>ການຕັ້ງຄ່າການບ່ຽງເບນມຸມທີ່ນ້ອຍເກີນໄປ ຈະເຮັດໃຫ້ການແບ່ງພື້ນຜິວຍ່ອຍໃຊ້ເວລາດົນຂຶ້ນ ແລະ ອາດເຮັດໃຫ້ສ່ວນຕິດຕໍ່ຜູ້ໃຊ້ (GUI) ຄ້າງ ຫຼື ຊ້າລົງ.</translation>
     </message>
@@ -4510,29 +4534,49 @@ Check one or more edge entities first.</source>
       <translation>ເປີດໃຊ້ການດູດຕິດແບບຫຍາບໃນຂະນະທີ່ລາກ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="442"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="427"/>
+      <source>Enables larger snapping increments while  manipulating draggers</source>
+      <translation>ເປີດນຳໃຊ້ການເພີ່ມໄລຍະການດຶງຕິດໃຫ້ໃຫຍ່ຂຶ້ນ ໃນຂະນະທີ່ປັບປ່ຽນຕົວລາກ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="445"/>
       <source>Fine snap modifier</source>
       <translation>ປຸ່ມປັບປ່ຽນການດູດຕິດແບບລະອຽດ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="466"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="452"/>
+      <source>Defines the modifier key used for fine snapping while dragging</source>
+      <translation>ກຳນົດປຸ່ມປ່ຽນຄ່າທີ່ໃຊ້ສຳລັບການດຶງຕິດແບບລະອຽດ ໃນຂະນະທີ່ລາກ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="472"/>
       <source>Default coarse drag behavior</source>
       <translation>ພຶດຕິກຳການລາກແບບຫຍາບເລີ່ມຕົ້ນ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="473"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="479"/>
       <source>Determines whether the drag is coarse or fine without holding the modifier key</source>
       <translation>ກຳນົດວ່າການລາກຈະເປັນແບບຫຍາບ ຫຼື ລະອຽດ ໂດຍທີ່ບໍ່ຕ້ອງກົດປຸ່ມປັບປ່ຽນຄ້າງໄວ້</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="493"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="499"/>
       <source>Coarse movement multiplier</source>
       <translation>ຕົວຄູນການເຄື່ອນທີ່ແບບຫຍາບ</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsGeneral.ui" line="523"/>
+      <location filename="../../DlgSettingsGeneral.ui" line="515"/>
+      <source>Multiplies the base movement increment when coarse snapping is active</source>
+      <translation>ຄູນໄລຍະການເຄື່ອນທີ່ພື້ນຖານ ເມື່ອການດຶງຕິດແບບຫຍາບກຳລັງເຮັດວຽກ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="532"/>
       <source>Coarse rotation step (degrees)</source>
       <translation>ຂັ້ນຕອນການໝູນແບບຫຍາບ (ອົງສາ)</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsGeneral.ui" line="548"/>
+      <source>Sets the rotation step in degrees applied when coarse snapping is active</source>
+      <translation>ຕັ້ງຄ່າຂັ້ນຕອນການໝຸນເປັນອົງສາ ທີ່ຈະນຳໃຊ້ເມື່ອການດຶງຕິດແບບຫຍາບກຳລັງເຮັດວຽກ</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="233"/>
@@ -4861,37 +4905,37 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::LoftWidget</name>
     <message>
-      <location filename="../../TaskLoft.cpp" line="73"/>
+      <location filename="../../TaskLoft.cpp" line="74"/>
       <source>Available profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ມີໃຫ້</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="74"/>
+      <location filename="../../TaskLoft.cpp" line="75"/>
       <source>Selected profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ຖືກເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="199"/>
+      <location filename="../../TaskLoft.cpp" line="200"/>
       <source>Too Few Elements</source>
       <translation>ອົງປະກອບໜ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="200"/>
+      <location filename="../../TaskLoft.cpp" line="201"/>
       <source>At least 2 vertices, edges, wires, or faces are required.</source>
       <translation>ຕ້ອງການຢ່າງໜ້ອຍ 2 ຈຸດຍອດ, ຂອບ, ເສັ້ນໂຄງ ຫຼື ໜ້າພຽງ.</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="239"/>
+      <location filename="../../TaskLoft.cpp" line="240"/>
       <source>Input error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="274"/>
+      <location filename="../../TaskLoft.cpp" line="275"/>
       <source>Vertex/Edge/Wire/Face</source>
       <translation>ຈຸດຍອດ/ຂອບ/ເສັ້ນໂຄງ/ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskLoft.cpp" line="275"/>
+      <location filename="../../TaskLoft.cpp" line="276"/>
       <source>Loft</source>
       <translation>ການລອບ (Loft)</translation>
     </message>
@@ -4991,17 +5035,17 @@ the sketch plane's normal vector will be used</source>
   <context>
     <name>PartGui::ResultModel</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="363"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="364"/>
       <source>Name</source>
       <translation>ຊື່</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="365"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="366"/>
       <source>Type</source>
       <translation>ປະເພດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="367"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="368"/>
       <source>Error</source>
       <translation>ຂໍ້ຜິດພາດ</translation>
     </message>
@@ -5214,79 +5258,79 @@ only created cuts will be visible</source>
   <context>
     <name>PartGui::SweepWidget</name>
     <message>
-      <location filename="../../TaskSweep.cpp" line="136"/>
+      <location filename="../../TaskSweep.cpp" line="137"/>
       <source>Available profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ມີໃຫ້</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="137"/>
+      <location filename="../../TaskSweep.cpp" line="138"/>
       <source>Selected profiles</source>
       <translation>ໂປຣໄຟລ໌ທີ່ຖືກເລືອກ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>At least one edge or wire is required.</source>
       <translation>ຕ້ອງການຢ່າງໜ້ອຍໜຶ່ງຂອບ ຫຼື ເສັ້ນໂຄງ.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="383"/>
+      <location filename="../../TaskSweep.cpp" line="384"/>
       <source>Select at least 1 edge from a single object.</source>
       <translation>ເລືອກຢ່າງໜ້ອຍ 1 ຂອບຈາກວັດຖຸດຽວ.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="376"/>
+      <location filename="../../TaskSweep.cpp" line="377"/>
       <source>Too Few Elements</source>
       <translation>ອົງປະກອບໜ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="382"/>
+      <location filename="../../TaskSweep.cpp" line="383"/>
       <source>Invalid Selection</source>
       <translation>ການເລືອກທີ່ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="393"/>
+      <location filename="../../TaskSweep.cpp" line="394"/>
       <source>Wrong Selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="394"/>
+      <location filename="../../TaskSweep.cpp" line="395"/>
       <source>'%1' cannot be used as profile and path.</source>
       <translation>'%1' ບໍ່ສາມາດໃຊ້ເປັນທັງໂປຣໄຟລ໌ ແລະ ເສັ້ນທາງໄດ້.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="431"/>
+      <location filename="../../TaskSweep.cpp" line="432"/>
       <source>Input error</source>
       <translation>ຂໍ້ຜິດພາດໃນການປ້ອນຂໍ້ມູນ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="472"/>
+      <location filename="../../TaskSweep.cpp" line="473"/>
       <source>Done</source>
       <translation>ສຳເລັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="475"/>
+      <location filename="../../TaskSweep.cpp" line="476"/>
       <source>Select one or more connected edges in the 3D view and press 'Done'</source>
       <translation>ເລືອກໜຶ່ງ ຫຼື ຫຼາຍຂອບທີ່ເຊື່ອມຕໍ່ກັນໃນມຸມມອງ 3D ແລ້ວກົດ 'ສຳເລັດ'</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>The selected sweep path is invalid.</source>
       <translation>ເສັ້ນທາງການກວາດທີ່ເລືອກບໍ່ຖືກຕ້ອງ.</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="499"/>
-      <location filename="../../TaskSweep.cpp" line="507"/>
+      <location filename="../../TaskSweep.cpp" line="500"/>
+      <location filename="../../TaskSweep.cpp" line="508"/>
       <source>Sweep Path</source>
       <translation>ເສັ້ນທາງການກວາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="519"/>
+      <location filename="../../TaskSweep.cpp" line="520"/>
       <source>Vertex/Wire</source>
       <translation type="unfinished">Vertex/Wire</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="520"/>
+      <location filename="../../TaskSweep.cpp" line="521"/>
       <source>Sweep</source>
       <translation>ການກວາດ (Sweep)</translation>
     </message>
@@ -5478,190 +5522,190 @@ of the object being attached.</source>
   <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1188"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1189"/>
       <source>Shape Content</source>
       <translation>ເນື້ອໃນຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1200"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1201"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1456"/>
       <source>Settings</source>
       <translation>ການຕັ້ງຄ່າ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1211"/>
       <source>Default: false</source>
       <translation>ເລີ່ມຕົ້ນ: ເປັນເທັດ (false)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1217"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1218"/>
       <source>Run boolean operation check</source>
       <translation>ດຳເນີນການກວດສອບການປະຕິບັດການບູລີນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1219"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1220"/>
       <source>Extra boolean operations check that can sometimes find errors that
 the standard BRep geometry check misses. These errors do not always
 mean the checked object is unusable.  Default: false</source>
       <translation>ການກວດສອບການປະຕິບັດການບູລີນເພີ່ມເຕີມ ບາງຄັ້ງສາມາດກວດຫາຂໍ້ຜິດພາດທີ່ການກວດສອບເລຂາຄະນິດ BRep ມາດຕະຖານຂ້າມໄປ. ຂໍ້ຜິດພາດເຫຼົ່ານີ້ບໍ່ໄດ້ໝາຍຄວາມວ່າວັດຖຸທີ່ຖືກກວດສອບນັ້ນໃຊ້ງານບໍ່ໄດ້ສະເໝີໄປ. ເລີ່ມຕົ້ນ: ເປັນເທັດ (false)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1228"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1229"/>
       <source>Single-threaded</source>
       <translation>ແບບເທຣດດຽວ (Single-threaded)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1230"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1231"/>
       <source>Run the geometry check in a single thread.  This is slower,
 but more stable.  Default: false</source>
       <translation>ດຳເນີນການກວດສອບເລຂາຄະນິດໃນເທຣດດຽວ. ສິ່ງນີ້ຈະຊ້າກວ່າ ແຕ່ມີຄວາມສະຖຽນກວ່າ. ເລີ່ມຕົ້ນ: ເປັນເທັດ (false)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1243"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
       <source>Log errors</source>
       <translation>ບັນທຶກຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1244"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1245"/>
       <source>Log errors to report view.  Default: true</source>
       <translation>ບັນທຶກຂໍ້ຜິດພາດໄປທີ່ມຸມມອງລາຍງານ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1255"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1256"/>
       <source>Expand shape content</source>
       <translation>ຂະຫຍາຍເນື້ອໃນຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1257"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1258"/>
       <source>Expand shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>ຂະຫຍາຍເນື້ອໃນຮູບຊົງ. ການປ່ຽນແປງຈະມີຜົນໃນຄັ້ງຕໍ່ໄປທີ່ທ່ານໃຊ້ເຄື່ອງມືກວດສອບເລຂາຄະນິດ. ເລີ່ມຕົ້ນ: ເປັນເທັດ (false)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1270"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1271"/>
       <source>Advanced shape content</source>
       <translation>ເນື້ອໃນຮູບຊົງຂັ້ນສູງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1272"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1273"/>
       <source>Show advanced shape content.  Changes will take effect next time you use 
 the check geometry tool.  Default: false</source>
       <translation>ສະແດງເນື້ອໃນຮູບຊົງຂັ້ນສູງ. ການປ່ຽນແປງຈະມີຜົນໃນຄັ້ງຕໍ່ໄປທີ່ທ່ານໃຊ້ເຄື່ອງມືກວດສອບເລຂາຄະນິດ. ເລີ່ມຕົ້ນ: ເປັນເທັດ (false)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1284"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1285"/>
       <source>
 Individual boolean operation checks:</source>
       <translation>
 ການກວດສອບການປະຕິບັດການບູລີນແຕ່ລະອັນ:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1287"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
       <source>Bad type</source>
       <translation>ປະເພດທີ່ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1299"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
       <source>Self-intersect</source>
       <translation>ຕັດກັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1311"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
       <source>Too small edge</source>
       <translation>ຂອບນ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1323"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
       <source>Nonrecoverable face</source>
       <translation>ໜ້າພຽງທີ່ບໍ່ສາມາດກູ້ຄືນໄດ້</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1335"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
       <source>Continuity</source>
       <translation>ຄວາມຕໍ່ເນື່ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1347"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
       <source>Incompatibility of face</source>
       <translation>ຄວາມບໍ່ເຂົ້າກັນຂອງໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1359"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
       <source>Incompatibility of vertex</source>
       <translation>ຄວາມບໍ່ເຂົ້າກັນຂອງຈຸດຍອດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1371"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
       <source>Incompatibility of edge</source>
       <translation>ຄວາມບໍ່ເຂົ້າກັນຂອງຂອບ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1383"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
       <source>Invalid curve on surface</source>
       <translation>ເສັ້ນໂຄ້ງເທິງໜ້າພຽງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1455"/>
       <source>Run Check</source>
       <translation>ດຳເນີນການກວດສອບ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1288"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1289"/>
       <source>Check for bad argument types.  Default: true</source>
       <translation>ກວດສອບປະເພດອາຣກິວເມນທີ່ບໍ່ຖືກຕ້ອງ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1207"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1208"/>
       <source>Skip this settings page</source>
       <translation>ຂ້າມໜ້າການຕັ້ງຄ່ານີ້</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1209"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1210"/>
       <source>Skip this settings page and run the geometry check automatically</source>
       <translation>ຂ້າມໜ້າການຕັ້ງຄ່ານີ້ ແລະ ດຳເນີນການກວດສອບເລຂາຄະນິດໂດຍອັດຕະໂນມັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1300"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1301"/>
       <source>Check for self-intersections.  Default: true</source>
       <translation>ກວດສອບການຕັດກັນເອງ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1312"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1313"/>
       <source>Check for edges that are too small.  Default: true</source>
       <translation>ກວດສອບຂອບທີ່ມີຂະໜາດນ້ອຍເກີນໄປ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1324"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1325"/>
       <source>Check for nonrecoverable faces.  Default: true</source>
       <translation>ກວດສອບໜ້າພຽງທີ່ບໍ່ສາມາດກູ້ຄືນໄດ້. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1336"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1337"/>
       <source>Check for continuity.  Default: true</source>
       <translation>ກວດສອບຄວາມຕໍ່ເນື່ອງ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1348"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1349"/>
       <source>Check for incompatible faces.  Default: true</source>
       <translation>ກວດສອບໜ້າພຽງທີ່ບໍ່ເຂົ້າກັນ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1360"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1361"/>
       <source>Check for incompatible vertices.  Default: true</source>
       <translation>ກວດສອບຈຸດຍອດທີ່ບໍ່ເຂົ້າກັນ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1372"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1373"/>
       <source>Check for incompatible edges.  Default: true</source>
       <translation>ກວດສອບຂອບທີ່ບໍ່ເຂົ້າກັນ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1384"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1385"/>
       <source>Check for invalid curves on surfaces.  Default: true</source>
       <translation>ກວດສອບເສັ້ນໂຄ້ງທີ່ບໍ່ຖືກຕ້ອງເທິງພື້ນຜິວ. ເລີ່ມຕົ້ນ: ເປັນຈິງ (true)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="1466"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="1467"/>
       <source>Results</source>
       <translation>ຜົນລັດ</translation>
     </message>
@@ -5669,95 +5713,95 @@ Individual boolean operation checks:</source>
   <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="402"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="403"/>
       <source>Check Geometry Results</source>
       <translation>ຜົນລັດການກວດສອບເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="425"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="426"/>
       <source>Check is running…</source>
       <translation>ກຳລັງດຳເນີນການກວດສອບ…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="454"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="455"/>
       <source>Boolean operation check…</source>
       <translation>ກຳລັງກວດສອບການປະຕິບັດການບູລີນ…</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="457"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="458"/>
       <source>Check geometry</source>
       <translation>ກວດສອບເລຂາຄະນິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="489"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
       <source>Null shape</source>
       <translation>ຮູບຊົງຫວ່າງເປົ່າ (Null)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="490"/>
-      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="491"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="503"/>
       <source>Skipped</source>
       <translation>ຂ້າມໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="501"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="502"/>
       <source>Infinite shape</source>
       <translation>ຮູບຊົງທີ່ບໍ່ມີທີ່ສິ້ນສຸດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="528"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="529"/>
       <source>Invalid</source>
       <translation>ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="554"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="555"/>
       <source>Checking</source>
       <translation>ກຳລັງກວດສອບ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="578"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="579"/>
       <source>No errors</source>
       <translation>ບໍ່ມີຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="590"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
       <source>%1 processed out of %2 selected</source>
       <translation>ປະມວນຜົນແລ້ວ %1 ຈາກທັງໝົດ %2 ທີ່ເລືອກ</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../TaskCheckGeometry.cpp" line="591"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
       <source>%n invalid shapes.</source>
       <translation>
         <numerusform>%n ຮູບຊົງທີ່ບໍ່ຖືກຕ້ອງ.</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="592"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="593"/>
       <source>to report view.</source>
       <translation>ໄປທີ່ມຸມມອງລາຍງານ.</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="739"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="740"/>
       <source>Global minimum</source>
       <translation>ຄ່າຕໍ່າສຸດທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="747"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="748"/>
       <source>Global average</source>
       <translation>ຄ່າສະເລ່ຍທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="755"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="756"/>
       <source>Global maximum</source>
       <translation>ຄ່າສູງສຸດທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="714"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="715"/>
       <source>Checked object</source>
       <translation>ວັດຖຸທີ່ຖືກກວດສອບ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="731"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="732"/>
       <source>Tolerance information</source>
       <translation>ຂໍ້ມູນຄ່າຄວາມຄາດເຄື່ອນ (Tolerance)</translation>
     </message>
@@ -5776,8 +5820,8 @@ Individual boolean operation checks:</source>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1498"/>
-      <source>2x%1 select and confirm</source>
-      <translation>2x%1 ເລືອກ ແລະ ຢືນຢັນ</translation>
+      <source>%1 select and confirm</source>
+      <translation>%1 ເລືອກ ແລະ ຢືນຢັນ</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="1648"/>
@@ -5965,7 +6009,7 @@ Individual boolean operation checks:</source>
       <translation>ເຟຣເນັດ (Frenet)</translation>
     </message>
     <message>
-      <location filename="../../TaskSweep.cpp" line="545"/>
+      <location filename="../../TaskSweep.cpp" line="546"/>
       <source>Select at least 1 profile and an edge or wire
 in the 3D view for the sweep path.</source>
       <translation>ເລືອກຢ່າງໜ້ອຍ 1 ໂປຣໄຟລ໌ ແລະ ຂອບ ຫຼື ເສັ້ນໂຄງ ໃນມຸມມອງ 3D ສຳລັບເສັ້ນທາງການກວາດ.</translation>
@@ -6029,8 +6073,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="51"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="59"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <location filename="../../ViewProvider.cpp" line="53"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="55"/>
       <source>Edit %1</source>
       <translation>ແກ້ໄຂ %1</translation>
     </message>
@@ -6071,7 +6115,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="510"/>
       <location filename="../../Command.cpp" line="952"/>
       <location filename="../../Command.cpp" line="1015"/>
-      <location filename="../../Command.cpp" line="2279"/>
+      <location filename="../../Command.cpp" line="2277"/>
       <source>Wrong Selection</source>
       <translation>ການເລືອກບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -6117,7 +6161,7 @@ Continue?</source>
       <translation>ໄຟລ໌ CAD ທັງໝົດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2280"/>
+      <location filename="../../Command.cpp" line="2278"/>
       <source>Select either 2 edges or 2 wires.</source>
       <translation>ເລືອກ 2 ຂອບ (edges) ຫຼື 2 ເສັ້ນເຊື່ອມ (wires).</translation>
     </message>
@@ -6128,292 +6172,292 @@ Continue?</source>
       <translation>ບໍ່ມີການເລືອກການອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Face</source>
       <translation>ໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Edge</source>
       <translation>ຂອບ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Vertex</source>
       <translation>ຈຸດຈອມ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="77"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
       <source>Compound</source>
       <translation>ວັດຖຸປະສົມ (Compound)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Compound solid</source>
       <translation>ຂອງແຂງແບບປະສົມ (Compound solid)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="79"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
       <source>Solid</source>
       <translation>ຂອງແຂງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="80"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Shell</source>
       <translation>ເປືອກ (Shell)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="82"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Wire</source>
       <translation>ເສັ້ນເຊື່ອມ (Wire)</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="85"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="86"/>
       <source>Shape</source>
       <translation>ຮູບຊົງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="101"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
       <source>No error</source>
       <translation>ບໍ່ມີຂໍ້ຜິດພາດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="102"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="103"/>
       <source>Invalid point on curve</source>
       <translation>ຈຸດເທິງເສັ້ນໂຄ້ງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="104"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="105"/>
       <source>Invalid point on curve on surface</source>
       <translation>ຈຸດເທິງເສັ້ນໂຄ້ງເທິງໜ້າພຽງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="106"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
       <source>Invalid point on surface</source>
       <translation>ຈຸດເທິງໜ້າພຽງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="107"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
       <source>No 3D curve</source>
       <translation>ບໍ່ມີເສັ້ນໂຄ້ງ 3 ມິຕິ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="108"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
       <source>Multiple 3D curves</source>
       <translation>ມີເສັ້ນໂຄ້ງ 3 ມິຕິຫຼາຍເສັ້ນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="109"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
       <source>Invalid 3D curve</source>
       <translation>ເສັ້ນໂຄ້ງ 3 ມິຕິບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="110"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
       <source>No curve on surface</source>
       <translation>ບໍ່ມີເສັ້ນໂຄ້ງເທິງໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="111"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="112"/>
       <source>Invalid curve on surface</source>
       <translation>ເສັ້ນໂຄ້ງເທິງໜ້າພຽງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="113"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="114"/>
       <source>Invalid curve on closed surface</source>
       <translation>ເສັ້ນໂຄ້ງເທິງໜ້າພຽງແບບປິດບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="115"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
       <source>Invalid same range flag</source>
       <translation>ຄ່າທຸງຊ່ວງດຽວກັນ (same range flag) ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="116"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
       <source>Invalid same parameter flag</source>
       <translation>ຄ່າທຸງພາຣາມີເຕີດຽວກັນ (same parameter flag) ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="117"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
       <source>Invalid degenerated flag</source>
       <translation>ຄ່າທຸງເສື່ອມສະພາບ (degenerated flag) ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="118"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
       <source>Free edge</source>
       <translation>ຂອບອິດສະຫຼະ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="119"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
       <source>Invalid multi-connexity</source>
       <translation>ການເຊື່ອມຕໍ່ແບບຫຼາຍຈຸດບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="120"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
       <source>Invalid range</source>
       <translation>ຊ່ວງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="121"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
       <source>Empty wire</source>
       <translation>ເສັ້ນເຊື່ອມ (wire) ຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="122"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
       <source>Redundant edge</source>
       <translation>ຂອບທີ່ຊ້ຳຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="123"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
       <source>Self-intersecting wire</source>
       <translation>ເສັ້ນເຊື່ອມຕັດກັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="124"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
       <source>No surface</source>
       <translation>ບໍ່ມີໜ້າພຽງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="125"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
       <source>Invalid wire</source>
       <translation>ເສັ້ນເຊື່ອມ (wire) ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="126"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
       <source>Redundant wire</source>
       <translation>ເສັ້ນເຊື່ອມທີ່ຊ້ຳຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="127"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
       <source>Intersecting wires</source>
       <translation>ເສັ້ນເຊື່ອມຕັດກັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="128"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
       <source>Invalid imbrication of wires</source>
       <translation>ການຊ້ອນທັບຂອງເສັ້ນເຊື່ອມບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="129"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
       <source>Empty shell</source>
       <translation>ເປືອກ (shell) ຫວ່າງເປົ່າ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="130"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
       <source>Redundant face</source>
       <translation>ໜ້າພຽງທີ່ຊ້ຳຊ້ອນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="131"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
       <source>Unorientable shape</source>
       <translation>ຮູບຊົງທີ່ບໍ່ສາມາດກຳນົດທິດທາງໄດ້</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="132"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
       <source>Not closed</source>
       <translation>ບໍ່ປິດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="133"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
       <source>Not connected</source>
       <translation>ບໍ່ເຊື່ອມຕໍ່ກັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="134"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
       <source>Sub-shape not in shape</source>
       <translation>ຮູບຊົງຍ່ອຍບໍ່ໄດ້ຢູ່ໃນຮູບຊົງຫຼັກ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="135"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
       <source>Bad orientation</source>
       <translation>ທິດທາງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="136"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
       <source>Bad orientation of sub-shape</source>
       <translation>ທິດທາງຂອງຮູບຊົງຍ່ອຍບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="137"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
       <source>Invalid tolerance value</source>
       <translation>ຄ່າຄວາມຄາດເຄື່ອນ (tolerance) ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="138"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="139"/>
       <source>Check failed</source>
       <translation>ການກວດສອບລົ້ມເຫຼວ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="147"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="148"/>
       <source>No result</source>
       <translation>ບໍ່ມີຜົນລັດ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="150"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="151"/>
       <source>Out of enum range:</source>
       <translation>ຢູ່ນອກຂອບເຂດ enum:</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="162"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
       <source>Boolean operation: unknown check</source>
       <translation>ການປະຕິບັດການບູລີນ: ການກວດສອບທີ່ບໍ່ຮູ້ຈັກ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="163"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
       <source>Boolean operation: bad type</source>
       <translation>ການປະຕິບັດການບູລີນ: ຊະນິດບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="164"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
       <source>Boolean operation: self-intersection found</source>
       <translation>ການປະຕິບັດການບູລີນ: ພົບການຕັດກັນເອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="165"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
       <source>Boolean operation: edge too small</source>
       <translation>ການປະຕິບັດການບູລີນ: ຂອບນ້ອຍເກີນໄປ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="166"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="167"/>
       <source>Boolean operation: non-recoverable face</source>
       <translation>ການປະຕິບັດການບູລີນ: ໜ້າພຽງທີ່ບໍ່ສາມາດກູ້ຄືນໄດ້</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="168"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="169"/>
       <source>Boolean operation: incompatibility of vertex</source>
       <translation>ການປະຕິບັດການບູລີນ: ຈຸດຍອດບໍ່ເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="171"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="172"/>
       <source>Boolean operation: incompatibility of edge</source>
       <translation>ການປະຕິບັດການບູລີນ: ຂອບບໍ່ເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="174"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="175"/>
       <source>Boolean operation: incompatibility of face</source>
       <translation>ການປະຕິບັດການບູລີນ: ໜ້າພຽງບໍ່ເຂົ້າກັນ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="176"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
       <source>Boolean operation: aborted</source>
       <translation>ການປະຕິບັດການບູລີນ: ຖືກຍົກເລີກ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="179"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="180"/>
       <source>Boolean operation: invalid curve on surface</source>
       <translation>ການປະຕິບັດການບູລີນ: ເສັ້ນໂຄ້ງເທິງໜ້າພຽງບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="181"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="182"/>
       <source>Boolean operation: not valid</source>
       <translation>ການປະຕິບັດການບູລີນ: ບໍ່ຖືກຕ້ອງ</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="177"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="178"/>
       <source>Boolean operation: GeomAbs_C0</source>
       <translation>ການປະຕິບັດການບູລີນ: GeomAbs_C0</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="857"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="858"/>
       <source>Invalid</source>
       <translation>ບໍ່ຖືກຕ້ອງ</translation>
     </message>
@@ -7071,17 +7115,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1463"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1466"/>
+      <location filename="../../Command.cpp" line="1464"/>
       <source>Scale</source>
       <translation>ອັດຕາສ່ວນ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1467"/>
+      <location filename="../../Command.cpp" line="1465"/>
       <source>Scales the selected shape</source>
       <translation>ຍໍ້-ຂະຫຍາຍຮູບຊົງທີ່ເລືອກ</translation>
     </message>
@@ -7243,17 +7287,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartCoordinateSystem</name>
     <message>
-      <location filename="../../Command.cpp" line="2526"/>
+      <location filename="../../Command.cpp" line="2524"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2527"/>
+      <location filename="../../Command.cpp" line="2525"/>
       <source>Coordinate System</source>
       <translation>ລະບົບພິກັດ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2528"/>
+      <location filename="../../Command.cpp" line="2526"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
       <translation>ສ້າງລະບົບພິກັດທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7261,17 +7305,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatums</name>
     <message>
-      <location filename="../../Command.cpp" line="2665"/>
+      <location filename="../../Command.cpp" line="2667"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2666"/>
+      <location filename="../../Command.cpp" line="2668"/>
       <source>Datums</source>
       <translation>ຂໍ້ມູນອ້າງອີງ</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2668"/>
+      <location filename="../../Command.cpp" line="2670"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
       <translation>ສ້າງວັດຖຸອ້າງອີງ (ລະບົບພິກັດ, ໜ້າພຽງ, ເສັ້ນ, ຫຼື ຈຸດ) ທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້.</translation>
     </message>
@@ -7287,17 +7331,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2563"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2565"/>
+      <location filename="../../Command.cpp" line="2564"/>
       <source>Datum Plane</source>
       <translation>ໜ້າພຽງອ້າງອີງ (Datum Plane)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2566"/>
+      <location filename="../../Command.cpp" line="2565"/>
       <source>Creates a datum plane that can be attached to other objects</source>
       <translation>ສ້າງໜ້າພຽງອ້າງອີງທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7323,17 +7367,17 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartDatumPoint</name>
     <message>
-      <location filename="../../Command.cpp" line="2630"/>
+      <location filename="../../Command.cpp" line="2631"/>
       <source>Part</source>
       <translation>Part</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2631"/>
+      <location filename="../../Command.cpp" line="2632"/>
       <source>Datum Point</source>
       <translation>ຈຸດອ້າງອີງ (Datum Point)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2632"/>
+      <location filename="../../Command.cpp" line="2633"/>
       <source>Creates a datum point that can be attached to other objects</source>
       <translation>ສ້າງຈຸດອ້າງອີງທີ່ສາມາດຕິດຄັດໃສ່ວັດຖຸອື່ນໄດ້</translation>
     </message>
@@ -7516,12 +7560,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>CmdPartSectionCut</name>
     <message>
-      <location filename="../../Command.cpp" line="2462"/>
+      <location filename="../../Command.cpp" line="2460"/>
       <source>Persiste&amp;nt Section Cut</source>
       <translation>ການຕັດສ່ວນແບບຄົງທີ່</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2463"/>
+      <location filename="../../Command.cpp" line="2461"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
       <translation>ສ້າງວັດຖຸໃໝ່ເປັນສ່ວນຕັດບູລີນຂອງທຸກຮູບຊົງທີ່ສະແດງຢູ່ ແລະ ໜ້າພຽງແກນທີ່ເລືອກ.</translation>
     </message>
@@ -7673,18 +7717,18 @@ Overlapping volumes of the shapes will be removed.</source>
       <translation>ໄລຍະຫ່າງມຸມ</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="423"/>
-      <location filename="../../PatternParametersWidget.cpp" line="519"/>
+      <location filename="../../PatternParametersWidget.cpp" line="425"/>
+      <location filename="../../PatternParametersWidget.cpp" line="521"/>
       <source>Spacing %1</source>
       <translation>ໄລຍະຫ່າງ %1</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="439"/>
+      <location filename="../../PatternParametersWidget.cpp" line="441"/>
       <source>Remove this spacing definition.</source>
       <translation>ລຶບການກຳນົດໄລຍະຫ່າງນີ້ອອກ.</translation>
     </message>
     <message>
-      <location filename="../../PatternParametersWidget.cpp" line="940"/>
+      <location filename="../../PatternParametersWidget.cpp" line="942"/>
       <source>Reset spacing</source>
       <translation>ລ້າງຄ່າໄລຍະຫ່າງ</translation>
     </message>
@@ -7707,19 +7751,6 @@ Overlapping volumes of the shapes will be removed.</source>
     </message>
   </context>
   <context>
-    <name>Part::FaceMakerUnified</name>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
-      <source>Unified facemaker</source>
-      <translation>ເຄື່ອງມືສ້າງໜ້າພຽງແບບເອກະພາບ</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
-      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
-      <translation>ເອກະພາບ: ຮອງຮັບຮູທີ່ຊ້ອນກັນ, wires ທີ່ທັບກັນ ແລະ ໜ້າພຽງໂຄ້ງ</translation>
-    </message>
-  </context>
-  <context>
     <name>Part::FaceMakerBuildFace</name>
     <message>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="60"/>
@@ -7730,6 +7761,19 @@ Overlapping volumes of the shapes will be removed.</source>
       <location filename="../../../App/FaceMakerBuildFace.cpp" line="65"/>
       <source>Splits edges at intersections and finds all bounded face regions. Handles arbitrary overlapping geometry.</source>
       <translation>ແຍກຂອບຢູ່ບ່ອນຕັດກັນ ແລະ ຊອກຫາບໍລິເວນໜ້າພຽງທັງໝົດ. ຮອງຮັບເລຂາຄະນິດທີ່ທັບກັນໄດ້ທຸກຮູບແບບ.</translation>
+    </message>
+  </context>
+  <context>
+    <name>Part::FaceMakerUnified</name>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="53"/>
+      <source>Unified facemaker</source>
+      <translation>ເຄື່ອງມືສ້າງໜ້າພຽງແບບເອກະພາບ</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FaceMakerUnified.cpp" line="58"/>
+      <source>Unified: handles nested holes, overlapping wires, and curved surfaces</source>
+      <translation>ເອກະພາບ: ຮອງຮັບຮູທີ່ຊ້ອນກັນ, wires ທີ່ທັບກັນ ແລະ ໜ້າພຽງໂຄ້ງ</translation>
     </message>
   </context>
 </TS>

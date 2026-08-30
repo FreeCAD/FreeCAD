@@ -1954,7 +1954,9 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                     text->name.setValue(drawingParameters.labelFontName.toStdString().c_str());
                 }
                 text->size.setValue(drawingParameters.labelFontSize);
-                text->lineWidth = 2 * drawingParameters.pixelScalingFactor;
+                text->lineWidth = drawingParameters.DimensionalConstraintLineWidth
+                    * drawingParameters.pixelScalingFactor;
+                text->linePattern = drawingParameters.DimensionalConstraintLinePattern;
                 text->useAntialiasing = false;
                 sep->addChild(text);
                 editModeScenegraphNodes.constrGroup->addChild(sep);
@@ -2978,14 +2980,7 @@ QString EditModeConstraintCoinManager::iconTypeFromConstraint(Constraint* constr
 
 void EditModeConstraintCoinManager::sendConstraintIconToCoin(const QImage& icon, SoImage* soImagePtr)
 {
-    SoSFImage icondata = SoSFImage();
-
-    Gui::BitmapFactory().convert(icon, icondata);
-
-    SbVec2s iconSize(icon.width(), icon.height());
-
-    int four = 4;
-    soImagePtr->image.setValue(iconSize, 4, icondata.getValue(iconSize, four));
+    Gui::BitmapFactory().convert(icon, soImagePtr->image);
 
     // Set Image Alignment to Center
     soImagePtr->vertAlignment = SoImage::HALF;

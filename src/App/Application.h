@@ -509,6 +509,8 @@ public:
     fastsignals::signal<void (const App::Property&)> signalAppendDynamicProperty;
     /// Signal on renaming a dynamic property.
     fastsignals::signal<void (const App::Property&, const char*)> signalRenameDynamicProperty;
+    /// signal on moving a dynamic property
+    fastsignals::signal<void (const App::Property&, const App::DocumentObject&)> signalMoveDynamicProperty;
     /// Signal before removing a dynamic property.
     fastsignals::signal<void (const App::Property&)> signalRemoveDynamicProperty;
     /// Signal before changing the editor mode of a property.
@@ -995,6 +997,7 @@ private:
 
     /* Private Init, Destruct, and Access methods */
     static void initConfig(int argc, char ** argv);
+    static void initCrashReporter();
     static void initApplication();
     static void logStatus();
     // the one and only pointer to the application object

@@ -234,6 +234,11 @@ struct InputHint
         MouseScroll = 5 << 16,
         MouseScrollUp = 6 << 16,
         MouseScrollDown = 7 << 16,
+        Mouse = 8 << 16,
+        MouseMoveLeft = 9 << 16,
+        MouseMoveMiddle = 10 << 16,
+        MouseMoveRight = 11 << 16,
+        MouseDoubleLeft = 12 << 16,
     };
 
     struct InputSequence

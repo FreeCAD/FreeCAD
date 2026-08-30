@@ -35,6 +35,10 @@ inputs:
   testName:
     description: "A descriptive name for the test suite"
     required: true
+  shellCmd:
+    description: "Shell command to use for action steps (e.g. 'pixi run bash -l {0}')"
+    default: "bash -l {0}"
+    required: false
 outputs:
   reportText:
     description: "Report text"
@@ -44,14 +48,14 @@ runs:
   using: "composite"
   steps:
     - name: Run C++ tests
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       run: |
         set -o pipefail
         ${{ inputs.testCommand }} | tee -a ${{ inputs.testLogFile }}
     - name: Parse test results
       if: always()
       id: report
-      shell: bash -l {0}
+      shell: ${{ inputs.shellCmd }}
       run:  |
         result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
         if grep -qF "[  FAILED  ]" <<< $result

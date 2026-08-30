@@ -43,6 +43,7 @@
 #include "FirstStartWidget.h"
 #include "FlowLayout.h"
 #include "NewFileButton.h"
+#include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -191,7 +192,7 @@ StartView::StartView(QWidget* parent)
     }
     configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
 
-    QTimer::singleShot(2000, [this, recentFilesListWidget]() {
+    QTimer::singleShot(2000, this, [this, recentFilesListWidget]() {
         auto updateFun = [this, recentFilesListWidget]() {
             configureRecentFilesListWidget(recentFilesListWidget, _recentFilesLabel);
         };
@@ -204,6 +205,14 @@ StartView::StartView(QWidget* parent)
     isInitialized = true;
 
     retranslateUi();
+
+    // NOLINTBEGIN
+    _saveddoc = App::GetApplication().signalFinishSaveDocument.connect(
+        [this](const App::Document& doc, const std::string&) {
+            _recentFilesModel.modifiedFile(QString::fromStdString(doc.FileName.getStrValue()));
+        }
+    );
+    // NOLINTEND
 }
 
 void StartView::configureNewFileButtons(QLayout* layout) const

@@ -338,6 +338,11 @@
       <translation>Area</translation>
     </message>
     <message>
+      <location filename="../../../App/AppMeasure.cpp" line="167"/>
+      <source>Diameter</source>
+      <translation>Diametro</translation>
+    </message>
+    <message>
       <location filename="../../../App/AppMeasure.cpp" line="175"/>
       <source>Radius</source>
       <translation>Raggio</translation>
@@ -503,47 +508,47 @@
   <context>
     <name>MassPropertiesGui::TaskMassProperties</name>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="280"/>
+      <location filename="../../TaskMassProperties.cpp" line="345"/>
       <source>Parameters</source>
       <translation>Parametri</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="283"/>
+      <location filename="../../TaskMassProperties.cpp" line="348"/>
       <source>Physical Properties</source>
       <translation>Proprietà fisiche</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="286"/>
+      <location filename="../../TaskMassProperties.cpp" line="351"/>
       <source>Center of Gravity</source>
       <translation>Centro di gravità</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="287"/>
+      <location filename="../../TaskMassProperties.cpp" line="352"/>
       <source>Center of Volume</source>
       <translation>Centro del volume</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="288"/>
+      <location filename="../../TaskMassProperties.cpp" line="353"/>
       <source>Inertia</source>
       <translation>Inerzia</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="360"/>
+      <location filename="../../TaskMassProperties.cpp" line="425"/>
       <source>Close</source>
       <translation>Chiudi</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="363"/>
+      <location filename="../../TaskMassProperties.cpp" line="428"/>
       <source>Save</source>
       <translation>Salva</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="367"/>
+      <location filename="../../TaskMassProperties.cpp" line="432"/>
       <source>Reset</source>
       <translation>Ripristina</translation>
     </message>
     <message>
-      <location filename="../../TaskMassProperties.cpp" line="1119"/>
+      <location filename="../../TaskMassProperties.cpp" line="1217"/>
       <source> (Average)</source>
       <translation> (nella media)</translation>
     </message>

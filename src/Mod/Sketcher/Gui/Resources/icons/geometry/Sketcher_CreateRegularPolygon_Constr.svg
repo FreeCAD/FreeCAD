@@ -189,26 +189,14 @@
        id="g4587"
        transform="matrix(0.91581284,0,0,0.91581284,1.8514053,0.7742157)"
        style="stroke-width:1.09193">
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:26.6667px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#2e0000;fill-opacity:1;stroke:#2e0000;stroke-width:6.55156;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-         x="0.33403441"
-         y="27.462246"
-         id="text4553"><tspan
-           id="tspan4551"
-           x="0.33403441"
-           y="27.462246"
-           style="font-size:32px;fill:#2e0000;fill-opacity:1;stroke:#2e0000;stroke-width:6.55156;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill">N</tspan></text>
-      <text
-         xml:space="preserve"
-         style="font-style:normal;font-weight:normal;font-size:26.6667px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#cc0000;fill-opacity:1;stroke:#ef2929;stroke-width:2.18385;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
-         x="0.33403441"
-         y="27.462246"
-         id="text1"><tspan
-           id="tspan1"
-           x="0.33403441"
-           y="27.462246"
-           style="font-size:32px;fill:#cc0000;stroke:#ef2929;stroke-width:2.18385;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill">N</tspan></text>
+      <path
+         style="fill:#2e0000;stroke:#2e0000;stroke-width:6.55156;paint-order:stroke markers fill"
+         d="m 21.550034,27.462246 h -3.36 L 5.9660344,8.4862459 h -0.128 q 0.064,0.736 0.096,1.7600001 0.064,0.992 0.096,2.144 0.064,1.12 0.064,2.304 v 12.768 h -2.656 V 4.6142459 h 3.328 L 18.958034,23.526246 h 0.128 q -0.032,-0.512 -0.096,-1.536 -0.032,-1.024 -0.096,-2.24 -0.032,-1.216 -0.032,-2.24 V 4.6142459 h 2.688 z"
+         id="text4553" />
+      <path
+         style="fill:#cc0000;stroke:#ef2929;stroke-width:2.18385;paint-order:stroke markers fill"
+         d="m 21.550034,27.462246 h -3.36 L 5.9660344,8.4862459 h -0.128 q 0.064,0.736 0.096,1.7600001 0.064,0.992 0.096,2.144 0.064,1.12 0.064,2.304 v 12.768 h -2.656 V 4.6142459 h 3.328 L 18.958034,23.526246 h 0.128 q -0.032,-0.512 -0.096,-1.536 -0.032,-1.024 -0.096,-2.24 -0.032,-1.216 -0.032,-2.24 V 4.6142459 h 2.688 z"
+         id="text1" />
     </g>
     <g
        transform="matrix(0.77869459,0,0,0.77869445,47.548264,23.597628)"

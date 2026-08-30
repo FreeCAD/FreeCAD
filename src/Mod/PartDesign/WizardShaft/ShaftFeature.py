@@ -152,7 +152,7 @@ class ShaftFeature:
         else:
             self.Doc.recompute()
         # FIXME: Will give a warning in the console if the active window is not the feature
-        self.Gui.SendMsgToActiveView("ViewFit")
+        self.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")
 
     def updateSegment(self, segment, oldLength, length, diameter, innerdiameter):
         constrRadius = 4 + segment * 6
@@ -170,4 +170,4 @@ class ShaftFeature:
         self.sketch.setDatum(constrInnerRadius, innerdiameter / 2)
         # Update feature
         self.Doc.recompute()
-        self.Gui.SendMsgToActiveView("ViewFit")
+        self.Gui.ActiveDocument.ActiveView.sendMessage("ViewFit")

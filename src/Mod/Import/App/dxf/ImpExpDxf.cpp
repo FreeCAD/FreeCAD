@@ -1774,7 +1774,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
 {
     // export Edges
     TopExp_Explorer edges(input, TopAbs_EDGE);
-    for (int i = 1; edges.More(); edges.Next(), i++) {
+    for (; edges.More(); edges.Next()) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         BRepAdaptor_Curve adapt(edge);
         if (adapt.GetType() == GeomAbs_Circle) {
@@ -1890,7 +1890,7 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
     if (optionExpPoints) {
         TopExp_Explorer verts(input, TopAbs_VERTEX);
         std::vector<gp_Pnt> duplicates;
-        for (int i = 1; verts.More(); verts.Next(), i++) {
+        for (; verts.More(); verts.Next()) {
             const TopoDS_Vertex& v = TopoDS::Vertex(verts.Current());
             gp_Pnt p = BRep_Tool::Pnt(v);
             duplicates.push_back(p);

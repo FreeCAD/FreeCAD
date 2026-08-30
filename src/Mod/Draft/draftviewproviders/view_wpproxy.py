@@ -39,6 +39,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 from draftutils import gui_utils
 from draftutils import params
+from draftutils.translate import translate
 
 
 class ViewProviderWorkingPlaneProxy:
@@ -61,10 +62,12 @@ class ViewProviderWorkingPlaneProxy:
         vobj.addProperty("App::PropertyColor", "LineColor", "Base", "", locked=True)
 
         vobj.addProperty("App::PropertyFloatList", "ViewData", "Base", "", locked=True)
+        vobj.setPropertyStatus("ViewData", "Hidden")
 
         vobj.addProperty("App::PropertyBool", "RestoreView", "Base", "", locked=True)
 
         vobj.addProperty("App::PropertyMap", "VisibilityMap", "Base", "", locked=True)
+        vobj.setPropertyStatus("VisibilityMap", "Hidden")
 
         vobj.addProperty("App::PropertyBool", "RestoreState", "Base", "", locked=True)
 
@@ -90,7 +93,9 @@ class ViewProviderWorkingPlaneProxy:
 
     def setupContextMenu(self, vobj, menu):
         action1 = QtGui.QAction(
-            QtGui.QIcon(":/icons/Draft_SelectPlane.svg"), "Save Camera Position", menu
+            QtGui.QIcon(":/icons/Draft_SelectPlane.svg"),
+            translate("draft", "Save Camera View"),
+            menu,
         )
         QtCore.QObject.connect(action1, QtCore.SIGNAL("triggered()"), self.writeCamera)
         menu.addAction(action1)
