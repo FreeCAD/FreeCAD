@@ -67,6 +67,23 @@ class TestFillet(unittest.TestCase):
                 return source_name, matches[0][0] if matches else None
         self.skipTest("Test model did not contain a suitable edge")
 
+    def _assert_dress_up_stops_at_z0(self, source, result, upper_region, lower_region, name):
+        self.assertFalse(result.isNull(), name)
+        self.assertTrue(result.isValid(), name)
+
+        source_upper = source.common(upper_region)
+        result_upper = result.common(upper_region)
+        changed_above = source_upper.cut(result_upper).Volume
+        changed_above += result_upper.cut(source_upper).Volume
+        self.assertAlmostEqual(changed_above, 0.0, places=7, msg=name)
+
+        source_lower = source.common(lower_region)
+        result_lower = result.common(lower_region)
+        changed_below = source_lower.cut(result_lower).Volume
+        changed_below += result_lower.cut(source_lower).Volume
+        self.assertGreater(changed_below, 1e-7, name)
+        return changed_below
+
     def testFilletCubeToSphere(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
         self.Box = self.Doc.addObject("PartDesign::AdditiveBox", "Box")
@@ -130,33 +147,69 @@ class TestFillet(unittest.TestCase):
         FreeCAD.closeDocument(self.Doc.Name)
         self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH))
 
+        upper_region = Part.makeBox(100, 100, 20, FreeCAD.Vector(-50, -50, 1e-6))
+        lower_region = Part.makeBox(100, 100, 50, FreeCAD.Vector(-50, -50, -50))
+
         for feature_name in ("Fillet001", "Fillet002", "Fillet003"):
             feature = self.Doc.getObject(feature_name)
-            radius = feature.Radius.Value
-            feature.Radius = radius + 1e-6
-            self.Doc.recompute()
-            feature.Radius = radius
             feature.touch()
             self.Doc.recompute()
             self.assertTrue(feature.Shape.isValid(), feature_name)
 
-            if feature_name == "Fillet001":
-                continue
+            if feature_name != "Fillet001":
+                self._assert_dress_up_stops_at_z0(
+                    feature.Base[0].Shape,
+                    feature.Shape,
+                    upper_region,
+                    lower_region,
+                    feature_name,
+                )
 
-            source = feature.Base[0]
-            upper_region = Part.makeBox(100, 100, 20, FreeCAD.Vector(-50, -50, 1e-6))
-            source_upper = source.Shape.common(upper_region)
-            result_upper = feature.Shape.common(upper_region)
-            changed_volume = source_upper.cut(result_upper).Volume
-            changed_volume += result_upper.cut(source_upper).Volume
-            self.assertAlmostEqual(changed_volume, 0.0, places=7, msg=feature_name)
+    def testIssue32231EndpointFilletMatrix(self):
+        """Endpoint clipping must work on either axis, together, and across usable radii."""
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH))
+        source = self.Doc.getObject("Fillet001")
+        source.touch()
+        self.Doc.recompute()
+        source_shape = source.Shape.copy(noElementMap=True)
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.newDocument("Issue32231EndpointFillets")
 
-            lower_region = Part.makeBox(100, 100, 50, FreeCAD.Vector(-50, -50, -50))
-            source_lower = source.Shape.common(lower_region)
-            result_lower = feature.Shape.common(lower_region)
-            fillet_volume = source_lower.cut(result_lower).Volume
-            fillet_volume += result_lower.cut(source_lower).Volume
-            self.assertGreater(fillet_volume, 1e-6, feature_name)
+        upper_region = Part.makeBox(100, 100, 20, FreeCAD.Vector(-50, -50, 1e-6))
+        lower_region = Part.makeBox(100, 100, 50, FreeCAD.Vector(-50, -50, -50))
+        changes = {}
+        for radius in (0.08, 0.1, 0.2, 0.4, 0.475):
+            for axis, edge_names in (
+                ("X", ["Edge23"]),
+                ("Y", ["Edge5"]),
+                ("XY", ["Edge23", "Edge5"]),
+            ):
+                case_name = "Fillet{}_{:03d}".format(axis, round(radius * 1000))
+                body = self.Doc.addObject("PartDesign::Body", case_name + "Body")
+                base = self.Doc.addObject("PartDesign::Feature", case_name + "Base")
+                body.addObject(base)
+                base.Shape = source_shape
+                fillet = self.Doc.addObject("PartDesign::Fillet", case_name)
+                body.addObject(fillet)
+                fillet.Base = (base, edge_names)
+                fillet.Radius = radius
+                self.Doc.recompute()
+                changes[(radius, axis)] = self._assert_dress_up_stops_at_z0(
+                    base.Shape,
+                    fillet.Shape,
+                    upper_region,
+                    lower_region,
+                    case_name,
+                )
+
+        for radius in (0.1, 0.2, 0.4):
+            self.assertAlmostEqual(changes[(radius, "X")], changes[(radius, "Y")], delta=1e-6)
+            self.assertAlmostEqual(
+                changes[(radius, "XY")],
+                changes[(radius, "X")] + changes[(radius, "Y")],
+                delta=1e-6,
+            )
 
     def tearDown(self):
         # closing doc

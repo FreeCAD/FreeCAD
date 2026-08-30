@@ -3041,6 +3041,11 @@ private:
 
 private:
     // Helper methods
+    void limitElementAtPlanarEndpoints(
+        const TopoShape& baseShape,
+        const std::vector<TopoShape>& selectedEdges
+    );
+
     static std::vector<Data::ElementMap::MappedChildElements> createChildMap(
         size_t count,
         const std::vector<TopoShape>& shapes,
