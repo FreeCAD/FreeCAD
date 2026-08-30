@@ -3518,6 +3518,7 @@ struct UpdateDisabler
         }
 
         if (visible) {
+            FC_WARN("DIAG tree shown again");
             widget.setVisible(true);
             if (focus) {
                 widget.setFocus();
@@ -3742,7 +3743,11 @@ void TreeWidget::onItemEntered(QTreeWidgetItem* item)
             if (timeout < 0) {
                 timeout = 1;
             }
+            const auto entered = item->text(0).toUtf8();
             if (preselectTime.elapsed() < timeout) {
+                FC_WARN(
+                    "DIAG enter " << entered.constData() << " now, gap " << preselectTime.elapsed()
+                );
                 onPreSelectTimer();
             }
             else {
@@ -3750,6 +3755,10 @@ void TreeWidget::onItemEntered(QTreeWidgetItem* item)
                 if (timeout < 0) {
                     timeout = 1;
                 }
+                FC_WARN(
+                    "DIAG enter " << entered.constData() << " delayed, gap "
+                                  << preselectTime.elapsed()
+                );
                 preselectTimer->start(timeout);
                 Selection().rmvPreselect();
             }
@@ -3764,6 +3773,7 @@ void TreeWidget::leaveEvent(QEvent* event)
 {
     Q_UNUSED(event)
     if (!updateBlocked && TreeParams::getPreSelection()) {
+        FC_WARN("DIAG tree leave event");
         preselectTimer->stop();
         Selection().rmvPreselect();
     }
@@ -4022,6 +4032,7 @@ void TreeWidget::changeEvent(QEvent* e)
 
 void TreeWidget::onItemSelectionChanged()
 {
+    FC_WARN("DIAG item selection changed, blocked " << updateBlocked);
     if (!this->isSelectionAttached() || this->isSelectionBlocked() || updateBlocked) {
         return;
     }

@@ -1139,6 +1139,7 @@ void SelectionSingleton::rmvPreselect(bool signal)
     if (DocName.empty()) {
         return;
     }
+    FC_WARN("DIAG rmvPreselect signal " << signal);
 
     if (signal) {
         SelectionChanges Chng(SelectionChanges::RmvPreselectSignal, DocName, FeatName, SubName);
