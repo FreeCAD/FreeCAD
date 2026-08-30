@@ -22,6 +22,7 @@ SET(Test_SRCS
     Workbench.py
     unittestgui.py
     testmakeWireString.py
+    TestCrashReporter.py
     TestPythonSyntax.py
     TestPerf.py
     TestTreeSelection.py
