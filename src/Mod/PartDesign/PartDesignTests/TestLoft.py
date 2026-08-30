@@ -80,15 +80,11 @@ class TestLoft(unittest.TestCase):
                     3 * math.pi / 2,
                 ),
                 Part.ArcOfCircle(
-                    Part.Circle(
-                        Base.Vector(centerDistance, 0, 0), Base.Vector(0, 0, 1), radius
-                    ),
+                    Part.Circle(Base.Vector(centerDistance, 0, 0), Base.Vector(0, 0, 1), radius),
                     -math.pi / 2,
                     math.pi / 2,
                 ),
-                Part.LineSegment(
-                    Base.Vector(0, radius, 0), Base.Vector(centerDistance, radius, 0)
-                ),
+                Part.LineSegment(Base.Vector(0, radius, 0), Base.Vector(centerDistance, radius, 0)),
                 Part.LineSegment(
                     Base.Vector(0, -radius, 0), Base.Vector(centerDistance, -radius, 0)
                 ),
@@ -135,9 +131,7 @@ class TestLoft(unittest.TestCase):
         if reverseTopWires:
             topRadii.reverse()
         for radius in topRadii:
-            top.addGeometry(
-                Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False
-            )
+            top.addGeometry(Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False)
 
         loft = body.newObject("PartDesign::AdditiveLoft", f"{name}Loft")
         loft.Profile = bottom
@@ -168,9 +162,7 @@ class TestLoft(unittest.TestCase):
         if reverseTopWires:
             topRadii.reverse()
         for radius in topRadii:
-            top.addGeometry(
-                Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False
-            )
+            top.addGeometry(Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False)
 
         loft = body.newObject("PartDesign::SubtractiveLoft", f"{name}Loft")
         loft.Profile = bottom
@@ -199,9 +191,7 @@ class TestLoft(unittest.TestCase):
         for radius, centerDistance in topCapsules:
             self._addCapsule(top, radius, centerDistance)
 
-        featureType = (
-            "PartDesign::SubtractiveLoft" if subtractive else "PartDesign::AdditiveLoft"
-        )
+        featureType = "PartDesign::SubtractiveLoft" if subtractive else "PartDesign::AdditiveLoft"
         loft = body.newObject(featureType, f"{name}Loft")
         loft.Profile = bottom
         loft.Sections = [top]
@@ -219,9 +209,7 @@ class TestLoft(unittest.TestCase):
         top.Placement.Base.z = 40
         topRadii = (10, 36, 24) if permuteTopWires else (36, 24, 10)
         for radius in topRadii:
-            top.addGeometry(
-                Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False
-            )
+            top.addGeometry(Part.Circle(Base.Vector(0, 0, 0), Base.Vector(0, 0, 1), radius), False)
 
         loft = body.newObject("PartDesign::AdditiveLoft", f"{name}Loft")
         loft.Profile = bottom

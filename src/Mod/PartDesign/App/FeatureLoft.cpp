@@ -84,8 +84,8 @@ void sortWiresByNesting(std::vector<Part::TopoShape>& wires)
         return;
     }
 
-    // Keep the original ordering within the same depth (e.g., if multiple wires/loops exist within an outer loop)
-    // because this doesn't determine correspondence between peers.
+    // Keep the original ordering within the same depth (e.g., if multiple wires/loops exist within
+    // an outer loop) because this doesn't determine correspondence between peers.
     std::stable_sort(wireInfos.begin(), wireInfos.end(), [](const auto& left, const auto& right) {
         return left.depth < right.depth;
     });
