@@ -261,8 +261,15 @@ void TaskPatternParameters::enterReferenceSelectionMode()
     hideObject();  // Hide the pattern feature itself
     showBase();    // Show the base features/body
     Gui::Selection().clearSelection();
-    // Add selection gate (allow edges, faces, potentially datums)
-    addReferenceSelectionGate(AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR);
+
+    AllowSelectionFlags allowedReferences = AllowSelection::EDGE | AllowSelection::PLANAR;
+    if (getObject<PartDesign::PolarPattern>()) {
+        allowedReferences |= AllowSelection::CIRCLE;
+    }
+    else {
+        allowedReferences |= AllowSelection::FACE;
+    }
+    addReferenceSelectionGate(allowedReferences);
     Gui::getMainWindow()->showMessage(
         tr("Select a direction reference (edge, face, datum line)")
     );  // User feedback
