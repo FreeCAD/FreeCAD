@@ -167,8 +167,8 @@ public:
         return PerBodyColors.getValue();
     }
 
-    /// Centre and diagonal of the cached source bounding box. 
-    /// False if there is nothing to measure. 
+    /// Centre and diagonal of the cached source bounding box.
+    /// False if there is nothing to measure.
     /// Shared so the plane quad and the handles are placed
     /// from one box - computing it twice let them drift apart.
     bool sourceBounds(Base::Vector3d& centre, double& diagonal);

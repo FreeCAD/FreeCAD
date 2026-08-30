@@ -39,12 +39,12 @@ using namespace Part;
 namespace
 {
 
-/// When slicing, segments are scattered without a clear order. 
+/// When slicing, segments are scattered without a clear order.
 /// ChainLoops must repeatedly determine the end of each unused segment.
-/// Each scan is inefficient, like a quadratic search. 
-/// To simplify, we store endpoints by position. 
+/// Each scan is inefficient, like a quadratic search.
+/// To simplify, we store endpoints by position.
 /// A point is rounded to a cell tolerance wide. ...
-/// Instead of checking every cell, we look for nearby ones. 
+/// Instead of checking every cell, we look for nearby ones.
 /// The cell narrows down possibilities, but the exact distance test determines a match.
 
 struct EndpointCell
@@ -74,17 +74,16 @@ struct EndpointCellHash
 EndpointCell cellOf(const Base::Vector3d& p, double tolerance)
 {
     const double inv = 1.0 / tolerance;
-    return EndpointCell {static_cast<long long>(std::llround(p.x * inv)),
-                    static_cast<long long>(std::llround(p.y * inv)),
-                    static_cast<long long>(std::llround(p.z * inv))};
+    return EndpointCell {
+        static_cast<long long>(std::llround(p.x * inv)),
+        static_cast<long long>(std::llround(p.y * inv)),
+        static_cast<long long>(std::llround(p.z * inv))
+    };
 }
 
 /// The 27 cells enclosing a point - itself and its 26 neighbours - so a lookup
 /// still finds a partner that rounded into an adjacent cell.
-void forEachNeighbouringCell(
-    const EndpointCell& cell,
-    const std::function<void(const EndpointCell&)>& fn
-)
+void forEachNeighbouringCell(const EndpointCell& cell, const std::function<void(const EndpointCell&)>& fn)
 {
     for (long long dx = -1; dx <= 1; ++dx) {
         for (long long dy = -1; dy <= 1; ++dy) {
@@ -164,11 +163,13 @@ std::vector<SectionCap::Segment> SectionCap::sliceTriangles(
             continue;
         }
 
-        auto segment = planeTriangleIntersection(soup.points[ia],
-                                                 soup.points[ib],
-                                                 soup.points[ic],
-                                                 normal,
-                                                 offset);
+        auto segment = planeTriangleIntersection(
+            soup.points[ia],
+            soup.points[ib],
+            soup.points[ic],
+            normal,
+            offset
+        );
         if (segment.has_value()) {
             segments.push_back(segment.value());
         }
@@ -178,8 +179,10 @@ std::vector<SectionCap::Segment> SectionCap::sliceTriangles(
 }
 
 
-std::vector<std::vector<Base::Vector3d>>
-SectionCap::chainLoops(const std::vector<Segment>& segments, double tolerance)
+std::vector<std::vector<Base::Vector3d>> SectionCap::chainLoops(
+    const std::vector<Segment>& segments,
+    double tolerance
+)
 {
     std::vector<std::vector<Base::Vector3d>> loops;
     if (segments.empty() || tolerance <= 0.0) {
@@ -297,8 +300,7 @@ SectionCap::TriangleSoup SectionCap::fillLoops(
             const double b0 = p * v;
             const double a1 = q * u;
             const double b1 = q * v;
-            if (!std::isfinite(a0) || !std::isfinite(b0) || !std::isfinite(a1)
-                || !std::isfinite(b1)) {
+            if (!std::isfinite(a0) || !std::isfinite(b0) || !std::isfinite(a1) || !std::isfinite(b1)) {
                 continue;
             }
             levels.push_back(b0);
@@ -333,19 +335,20 @@ SectionCap::TriangleSoup SectionCap::fillLoops(
     };
 
     // One quad per span, so neighbouring bands meet exactly and leave no gaps.
-    auto addQuad = [&soup, &u, &v, &offsetFromOrigin](double leftLower,
-                                                      double rightLower,
-                                                      double leftUpper,
-                                                      double rightUpper,
-                                                      double lower,
-                                                      double upper) {
+    auto addQuad = [&soup, &u, &v, &offsetFromOrigin](
+                       double leftLower,
+                       double rightLower,
+                       double leftUpper,
+                       double rightUpper,
+                       double lower,
+                       double upper
+                   ) {
         const int base = static_cast<int>(soup.points.size());
         soup.points.push_back(offsetFromOrigin + u * leftLower + v * lower);
         soup.points.push_back(offsetFromOrigin + u * rightLower + v * lower);
         soup.points.push_back(offsetFromOrigin + u * rightUpper + v * upper);
         soup.points.push_back(offsetFromOrigin + u * leftUpper + v * upper);
-        soup.indices.insert(soup.indices.end(),
-                            {base, base + 1, base + 2, base, base + 2, base + 3});
+        soup.indices.insert(soup.indices.end(), {base, base + 1, base + 2, base, base + 2, base + 3});
     };
 
     std::vector<std::size_t> active;
@@ -473,9 +476,7 @@ std::vector<SectionCap::Segment> SectionCap::hatchTriangles(
             continue;
         }
 
-        for (auto k = static_cast<std::int64_t>(firstD);
-             k <= static_cast<std::int64_t>(lastD);
-             ++k) {
+        for (auto k = static_cast<std::int64_t>(firstD); k <= static_cast<std::int64_t>(lastD); ++k) {
             if (hatch.size() >= maxSegments) {
                 break;
             }

@@ -2571,8 +2571,8 @@ void CmdPartSectionAnalysis::activated(int iMsg)
     // through ActiveObject.
     const char* const sectionGroupName = "Sections";
     std::string groupName;
-    if (auto* existing =
-            dynamic_cast<App::DocumentObjectGroup*>(getDocument()->getObject(sectionGroupName))) {
+    if (auto* existing
+        = dynamic_cast<App::DocumentObjectGroup*>(getDocument()->getObject(sectionGroupName))) {
         groupName = existing->getNameInDocument();
     }
     else {
@@ -2650,8 +2650,8 @@ void CmdPartSectionAnalysis::activated(int iMsg)
                 );
 
                 // If the sources come from multiple parts, enable per-solid colors
-                const bool severalParts =
-                    Part::SectionAnalysis::distinctSourceParts(sources, saObj).size() > 1;
+                const bool severalParts
+                    = Part::SectionAnalysis::distinctSourceParts(sources, saObj).size() > 1;
                 if (severalParts) {
                     vp->setPerSolidColors(true);
                 }
