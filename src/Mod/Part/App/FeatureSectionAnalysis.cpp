@@ -123,8 +123,8 @@ SectionAnalysis::SectionAnalysis()
         ((long)0),
         "Section Analysis",
         App::Prop_None,
-       "Display: fast preview only."
-       "Geometry: builds real section faces in Shape, much slower."
+        "Display: fast preview only."
+        "Geometry: builds real section faces in Shape, much slower."
     );
     ResultMode.setEnums(ResultModeEnums);
 
@@ -199,8 +199,7 @@ bool SectionAnalysis::isHarvestStaleAfter(const App::DocumentObject& obj, const 
     // position - which for a Part::Feature is masked by the placement being
     // written back through Shape, but nothing writes it back for an App::Part,
     // a group or a link.
-    return std::strcmp(propertyName, "Shape") == 0
-        || std::strcmp(propertyName, "Placement") == 0;
+    return std::strcmp(propertyName, "Shape") == 0 || std::strcmp(propertyName, "Placement") == 0;
 }
 
 
@@ -292,8 +291,7 @@ void SectionAnalysis::forEachSourcePart(
         //
         // So being a shape-bearing feature wins: those terminate the recursion.
         // App::Part and plain groups are not features, and still get descended.
-        const bool isContainer =
-            !obj->isDerivedFrom(Feature::getClassTypeId())
+        const bool isContainer = !obj->isDerivedFrom(Feature::getClassTypeId())
             && (obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())
                 || obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()));
 

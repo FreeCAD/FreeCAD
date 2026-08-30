@@ -82,8 +82,11 @@ PartExport std::optional<Segment> planeTriangleIntersection(
 );
 
 /// Every place the plane crosses a triangle, as an unordered segment list.
-PartExport std::vector<Segment>
-sliceTriangles(const TriangleSoup& soup, const Base::Vector3d& normal, double offset);
+PartExport std::vector<Segment> sliceTriangles(
+    const TriangleSoup& soup,
+    const Base::Vector3d& normal,
+    double offset
+);
 
 /// Join segments end to end into closed loops, within `tolerance`.
 ///
@@ -91,8 +94,10 @@ sliceTriangles(const TriangleSoup& soup, const Base::Vector3d& normal, double of
 /// tolerance, so joining has to be fuzzy. Chains that fail to close are still
 /// returned - an open mesh has no closed outline, and a partial boundary is
 /// more useful to draw than nothing.
-PartExport std::vector<std::vector<Base::Vector3d>>
-chainLoops(const std::vector<Segment>& segments, double tolerance);
+PartExport std::vector<std::vector<Base::Vector3d>> chainLoops(
+    const std::vector<Segment>& segments,
+    double tolerance
+);
 
 /// A solid cap covering the region enclosed by `loops`, as triangles.
 ///
@@ -120,8 +125,12 @@ PartExport TriangleSoup fillLoops(
 /// again on each plane move is the very cost the rejection exists to avoid.
 /// The box is a conservative hull, so the rejection is conservative too: a
 /// plane it fails to reject simply slices to nothing.
-PartExport bool
-extentAlong(const Base::BoundBox3d& bounds, const Base::Vector3d& normal, double& lo, double& hi);
+PartExport bool extentAlong(
+    const Base::BoundBox3d& bounds,
+    const Base::Vector3d& normal,
+    double& lo,
+    double& hi
+);
 
 /// True if the loop's first and last point meet within `tolerance`.
 PartExport bool isClosed(const std::vector<Base::Vector3d>& loop, double tolerance);

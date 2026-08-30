@@ -90,8 +90,11 @@ public:
     /// Where the gizmo should sit for the given plane: `hint` projected onto it.
     /// Pass the centre of the geometry being cut, so the handle stays with what
     /// the user is looking at.
-    static Base::Vector3d
-    draggerAnchor(const Base::Vector3d& normal, double offset, const Base::Vector3d& hint);
+    static Base::Vector3d draggerAnchor(
+        const Base::Vector3d& normal,
+        double offset,
+        const Base::Vector3d& hint
+    );
 
     /// Does a change to this section's own `prop` mean the triangles harvested
     /// from the 3D view are stale?
@@ -154,9 +157,10 @@ public:
     ///
     /// Prefer this to reading SourceParts when you need the count: SourceParts
     /// is an output, and Display mode deliberately leaves it empty.
-    static std::vector<App::DocumentObject*>
-    distinctSourceParts(const std::vector<App::DocumentObject*>& sources,
-                        const App::DocumentObject* exclude);
+    static std::vector<App::DocumentObject*> distinctSourceParts(
+        const std::vector<App::DocumentObject*>& sources,
+        const App::DocumentObject* exclude
+    );
 
     /// Combined bounding box of the visible source shapes. False if empty.
     bool sourceBoundingBox(Bnd_Box& bbox) const;

@@ -173,5 +173,3 @@ void SectionCapHarvest::fromSceneGraph(
     action.addTriangleCallback(SoShape::getClassTypeId(), splitTriangleCB, &context);
     action.apply(node);
 }
-
-

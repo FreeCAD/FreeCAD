@@ -70,8 +70,11 @@ using PartOwners = std::unordered_map<const SoNode*, std::size_t>;
 ///
 /// Triangles under no listed owner are dropped: they are decoration the section
 /// has no part to attribute them to.
-PartExport void
-fromSceneGraph(SoNode* node, const PartOwners& owners, std::vector<Part::SectionCap::TriangleSoup>& soups);
+PartExport void fromSceneGraph(
+    SoNode* node,
+    const PartOwners& owners,
+    std::vector<Part::SectionCap::TriangleSoup>& soups
+);
 
 }  // namespace SectionCapHarvest
 }  // namespace PartGui

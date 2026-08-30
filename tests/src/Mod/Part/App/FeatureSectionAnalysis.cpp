@@ -927,9 +927,8 @@ TEST_F(FeatureSectionAnalysisTest, testTheGizmoAlwaysLandsOnTheCuttingPlane)
     const Base::Vector3d normal = Base::Vector3d(1, 2, 3).Normalize();
     const double offset = 7.5;
 
-    for (const auto& hint : {Base::Vector3d(0, 0, 0),
-                             Base::Vector3d(500, 300, 10),
-                             Base::Vector3d(-40, 5, -900)}) {
+    for (const auto& hint :
+         {Base::Vector3d(0, 0, 0), Base::Vector3d(500, 300, 10), Base::Vector3d(-40, 5, -900)}) {
         const Base::Vector3d anchor = Part::SectionAnalysis::draggerAnchor(normal, offset, hint);
         EXPECT_NEAR(anchor * normal, offset, 1e-9);
     }
@@ -1000,9 +999,7 @@ TEST_F(FeatureSectionAnalysisTest, testMovingASourceInvalidatesTheHarvest)
         Part::SectionAnalysis::forEachSourcePart(
             _section->Source.getValues(),
             _section,
-            [&box](App::DocumentObject*, const TopoDS_Shape& shape) {
-                BRepBndLib::Add(shape, box);
-            }
+            [&box](App::DocumentObject*, const TopoDS_Shape& shape) { BRepBndLib::Add(shape, box); }
         );
         return box;
     };
@@ -1067,8 +1064,7 @@ TEST_F(FeatureSectionAnalysisTest, testAContainerIsBrokenIntoThePartsInsideIt)
     _doc->recompute();
 
     // Act
-    const auto parts =
-        Part::SectionAnalysis::distinctSourceParts({container}, _section);
+    const auto parts = Part::SectionAnalysis::distinctSourceParts({container}, _section);
 
     // Assert - three parts, not one container
     EXPECT_EQ(parts.size(), 3);
@@ -1121,8 +1117,7 @@ TEST_F(FeatureSectionAnalysisTest, testAPartPlacedTwiceIsStillOnePart)
     container->addObject(_boxes[0]);
     _doc->recompute();
 
-    const auto parts =
-        Part::SectionAnalysis::distinctSourceParts({container, _boxes[0]}, _section);
+    const auto parts = Part::SectionAnalysis::distinctSourceParts({container, _boxes[0]}, _section);
 
     EXPECT_EQ(parts.size(), 1);
     EXPECT_EQ(parts.front(), _boxes[0]);
@@ -1140,8 +1135,8 @@ TEST_F(FeatureSectionAnalysisTest, testTheTwoResultModesAgreeOnTheParts)
     _section->ResultMode.setValue("Geometry");
     _doc->recompute();
 
-    const auto viaRecursion =
-        Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
+    const auto viaRecursion
+        = Part::SectionAnalysis::distinctSourceParts(_section->Source.getValues(), _section);
 
     EXPECT_EQ(viaRecursion, _section->SourceParts.getValues());
 }
@@ -1156,8 +1151,7 @@ TEST_F(FeatureSectionAnalysisTest, testAHiddenPartIsNotOneOfTheParts)
     _boxes[1]->Visibility.setValue(false);
     _doc->recompute();
 
-    const auto parts =
-        Part::SectionAnalysis::distinctSourceParts({container}, _section);
+    const auto parts = Part::SectionAnalysis::distinctSourceParts({container}, _section);
 
     EXPECT_EQ(parts.size(), 1);
     EXPECT_EQ(parts.front(), _boxes[0]);
@@ -1185,8 +1179,7 @@ TEST_F(FeatureSectionAnalysisTest, testTheSectionItselfIsNeverOneOfItsParts)
     _section->ResultMode.setValue("Geometry");
     _doc->recompute();
 
-    const auto parts =
-        Part::SectionAnalysis::distinctSourceParts({_boxes[0], _section}, _section);
+    const auto parts = Part::SectionAnalysis::distinctSourceParts({_boxes[0], _section}, _section);
 
     EXPECT_EQ(parts.size(), 1);
     EXPECT_EQ(parts.front(), _boxes[0]);
