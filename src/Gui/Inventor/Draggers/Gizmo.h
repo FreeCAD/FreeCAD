@@ -146,6 +146,8 @@ private:
 class GuiExport RotationGizmo: public Gizmo
 {
 public:
+    using ClickCallback = std::function<void()>;
+
     RotationGizmo(QuantitySpinBox* property);
     ~RotationGizmo() override;
 
@@ -176,6 +178,7 @@ public:
     void setProperty(QuantitySpinBox* property);
     void setMultFactor(const double val);
     void setAddFactor(const double val);
+    void setClickCallback(ClickCallback callback);
     void setVisibility(bool visible);
 
 private:
@@ -186,6 +189,8 @@ private:
     QMetaObject::Connection quantityChangedConnection;
     QMetaObject::Connection formulaDialogConnection;
     double lastDragOffset = 0.0;
+    bool hasDragged = false;
+    ClickCallback clickCallback;
 
     void draggingStarted();
     void draggingFinished();

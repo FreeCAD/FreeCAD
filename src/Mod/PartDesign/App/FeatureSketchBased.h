@@ -38,6 +38,9 @@ class TopLoc_Location;
 namespace PartDesign
 {
 
+/// Normalize an angle in radians to [0, 2 pi), snapping a near-full turn to zero.
+PartDesignExport double normalizeAngleRadians(double angle);
+
 class PartDesignExport ProfileBased: public PartDesign::FeatureAddSub
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesign::ProfileBased);
