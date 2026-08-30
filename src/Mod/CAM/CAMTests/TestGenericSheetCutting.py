@@ -32,8 +32,8 @@ Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
 
-class TestGenericPlasma(PathTestUtils.PathTestBase):
-    """Test the GenericPlasma postprocessor unique functionality."""
+class TestGenericSheetCutting(PathTestUtils.PathTestBase):
+    """Test the GenericSheetCutting postprocessor unique functionality."""
 
     @classmethod
     def setUpClass(cls):
@@ -52,8 +52,8 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
             PostTestMocks.create_default_job_with_operation()
         )
 
-        # Create GenericPlasma postprocessor using the mock job
-        cls.post = PostProcessorFactory.get_post_processor(cls.job, "generic_plasma")
+        # Create GenericSheetCutting postprocessor using the mock job
+        cls.post = PostProcessorFactory.get_post_processor(cls.job, "generic_sheet_cutting")
 
     @classmethod
     def tearDownClass(cls):
@@ -83,7 +83,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
 
         # Create machine with postprocessor properties
         self.post._machine = Machine.create_3axis_config()
-        self.post._machine.name = "Test Generic Plasma"
+        self.post._machine.name = "Test Generic Sheet Cutting"
 
     def _set_postprocessor_properties(self, **kwargs):
         """Have to do this before any method that checks .values"""
@@ -101,17 +101,17 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
 
     def test00_property_schema(self):
         """
-        Test that GenericPlasma has the correct property schema with plasma-specific properties.
+        Test that GenericSheetCutting has the correct property schema with sheet cutting-specific properties.
 
         INPUT:
         - Function: get_property_schema()
         - Parameters: None
-        - Input data: GenericPlasma postprocessor instance
+        - Input data: GenericSheetCutting postprocessor instance
 
         EXPECTED OUTPUT:
         - Returns schema with pierce_delay, cooling_delay, marking_delay, torch_zaxis_control, force_rapid_feeds
         - Properties should have correct types, defaults, and help text
-        - This ensures the machine configuration editor can properly configure plasma features
+        - This ensures the machine configuration editor can properly configure sheet cutting features
         """
         schema = self.post.get_property_schema()
 
@@ -140,15 +140,25 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.assertEqual(marking_delay["min"], 0)
         self.assertEqual(marking_delay["max"], 10000)
 
-        # Check torch_zaxis_control property
-        torch_control = next(prop for prop in schema if prop["name"] == "torch_zaxis_control")
-        self.assertEqual(torch_control["type"], "bool")
-        self.assertEqual(torch_control["default"], True)
+        # Check cutter_control property
+        cutter_control = next(prop for prop in schema if prop["name"] == "cutter_control")
+        self.assertEqual(cutter_control["type"], "choice")
+        self.assertEqual(cutter_control["default"], "Z_Control")
 
-        # Check force_rapid_feeds property
-        rapid_feeds = next(prop for prop in schema if prop["name"] == "force_rapid_feeds")
-        self.assertEqual(rapid_feeds["type"], "bool")
-        self.assertEqual(rapid_feeds["default"], False)
+        # Check STRIP_Z property
+        STRIP_Z = next(prop for prop in schema if prop["name"] == "STRIP_Z")
+        self.assertEqual(STRIP_Z["type"], "bool")
+        self.assertEqual(STRIP_Z["default"], False)
+
+        # Check mark_entry_only property
+        mark_entry_only = next(prop for prop in schema if prop["name"] == "mark_entry_only")
+        self.assertEqual(mark_entry_only["type"], "bool")
+        self.assertEqual(mark_entry_only["default"], False)
+
+        # Check STRIP_F property
+        STRIP_F = next(prop for prop in schema if prop["name"] == "STRIP_F")
+        self.assertEqual(STRIP_F["type"], "bool")
+        self.assertEqual(STRIP_F["default"], False)
 
     def test01_pierce_delay_injection(self):
         """
@@ -162,7 +172,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         EXPECTED OUTPUT:
         - G4 dwell command inserted after M3 with correct P parameter
         - Delay duration matches pierce_delay property value in seconds
-        - This ensures proper torch ignition delay for plasma cutting
+        - This ensures proper torch ignition delay for sheet cutting cutting
         """
         # Create a simple path with M3 command
         commands = [
@@ -230,9 +240,9 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
             result_cmds[m5_idx + 1].Parameters["P"], 0.5, msg="G4 should have 0.5 second delay"
         )
 
-    def test03_torch_z_axis_control_enabled(self):
+    def test03_cutter_control_z_control(self):
         """
-        Test torch Z-axis control when enabled - M3/M5 inserted based on Z movement.
+        Test cutter_control when set to Z_Control - M3/M5 inserted based on Z movement.
 
         INPUT:
         - Function: _inject_torch_control()
@@ -259,7 +269,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.profile_op.Path = Path.Path(commands)
 
         # Enable torch Z-axis control
-        self._set_postprocessor_properties(torch_zaxis_control=True)
+        self._set_postprocessor_properties(cutter_control="Z_Control")
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -285,9 +295,9 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.assertIsNotNone(cut_idx, "G1 Z0.0 cut move should be present")
         self.assertLess(m3_idx, cut_idx, "M3 should appear before Z- cut move")
 
-    def test04_torch_z_axis_control_disabled(self):
+    def test04_cutter_control_spindle_control(self):
         """
-        Test that torch Z-axis control is disabled when property is False.
+        Test when cutter_control is set to Spindle_Control.
 
         INPUT:
         - Function: _inject_torch_control()
@@ -315,7 +325,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         original_cmd_count = len(commands)
 
         # Disable torch Z-axis control
-        self._set_postprocessor_properties(torch_zaxis_control=False)
+        self._set_postprocessor_properties(cutter_control="Spindle_Control")
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
@@ -333,7 +343,61 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.assertNotIn("M3", cmd_names, "No M3 should be injected when torch control is disabled")
         self.assertNotIn("M5", cmd_names, "No M5 should be injected when torch control is disabled")
 
-    def test05_mark_entry_only_mode(self):
+    def test04_cutter_control_G0_control(self):
+        """
+        Test that G0_Control adds M3 commands when switching between G0 and G1 and M5 commands when switching between G1 and G0.
+
+        INPUT:
+        - Function: _inject_torch_control()
+        - Parameters: postables with G0 and movements
+        - Input data: Path with Z movements, torch_zaxis_control=False
+
+        EXPECTED OUTPUT:
+        - M3 inserted before Z- movement when torch_zaxis_control=True
+        - M5 inserted after Z+ movement when torch is active
+        - This demonstrates automatic torch control based on G0 and G1
+        """
+
+        # Create path with Z movements (no manual M3/M5)
+        commands = [
+            Path.Command("G0", {"Z": 10.0}),
+            Path.Command("G0", {"Z": 2.0}),
+            Path.Command("G1", {"Z": 0.0, "F": 500}),
+            Path.Command("G1", {"X": 10.0, "Y": 10.0, "F": 1000}),
+            Path.Command("G0", {"Z": 10.0}),
+        ]
+        self.profile_op.Path = Path.Path(commands)
+        original_cmd_count = len(commands)
+
+        # Disable torch Z-axis control
+        self._set_postprocessor_properties(cutter_control="G0_Control")
+
+        # Build postables and call injection method directly
+        postables = [("section", [self.profile_op])]
+        self.post._inject_torch_control(postables)
+
+        # Verify the modified path
+        result_cmds = self.profile_op.Path.Commands
+        cmd_names = [cmd.Name for cmd in result_cmds]
+
+        # Should have M3 inserted for torch ignition
+        self.assertIn("M3", cmd_names, "M3 should be inserted for torch ignition")
+        # Should have M5 inserted for torch extinguish
+        self.assertIn("M5", cmd_names, "M5 should be inserted for torch extinguish")
+
+        # M3 should appear before the G1 cut move
+        m3_idx = cmd_names.index("M3")
+        # Find the G1 Z0.0 command (cut height move)
+        cut_idx = None
+        for i, cmd in enumerate(result_cmds):
+            if cmd.Name == "G1":
+                cut_idx = i
+                break
+        self.assertIsNotNone(cut_idx, "G1 Z0.0 cut move should be present")
+        self.assertLess(m3_idx, cut_idx, "M3 should appear before Z- cut move")
+    
+
+    def test06_mark_entry_only_mode(self):
         """
         Test mark entry only mode - only first entry point is marked.
 
@@ -387,7 +451,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         # In mark mode, we should have exactly 1 G1 Z0 move (the marked entry)
         self.assertEqual(len(g1_cut_moves), 1, "Should have exactly 1 cutting move in mark mode")
 
-    def test06_force_rapid_feeds(self):
+    def test07_force_rapid_feeds(self):
         """
         Test force rapid feeds functionality - removes F parameters from movement commands.
 
@@ -437,20 +501,20 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
             m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
         )
 
-    def test07_common_property_overrides(self):
+    def test08_common_property_overrides(self):
         """
-        Test that GenericPlasma correctly overrides common postprocessor properties.
+        Test that GenericSheetCutting correctly overrides common postprocessor properties.
 
         INPUT:
         - Function: get_common_property_schema()
         - Parameters: None
-        - Input data: GenericPlasma postprocessor instance
+        - Input data: GenericSheetCutting postprocessor instance
 
         EXPECTED OUTPUT:
         - file_extension defaults to "nc"
         - supports_tool_radius_compensation defaults to True
-        - preamble and postamble have plasma-specific defaults
-        - This ensures proper defaults for plasma cutting controllers
+        - preamble and postamble have sheet cutting-specific defaults
+        - This ensures proper defaults for sheet cutting cutting controllers
         """
         common_props = self.post.get_common_property_schema()
 
@@ -472,7 +536,7 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         postamble = next(prop for prop in common_props if prop["name"] == "postamble")
         self.assertEqual(postamble["default"], "M05\nG17 G54 G90 G80 G40\nM2")
 
-    def test08_zero_delay_values(self):
+    def test09_zero_delay_values(self):
         """
         Test that zero or negative delay values don't inject G4 commands.
 
@@ -529,11 +593,111 @@ class TestGenericPlasma(PathTestUtils.PathTestBase):
         self.assertIn("M3", cmd_names, "M3 should be present")
         self.assertIn("M5", cmd_names, "M5 should be present")
 
+    def test10_strip_F_commands(self):
+        """
+        Test strip F parameters functionality - removes F parameters from movement commands.
+
+        INPUT:
+        - Function: STRIP_F()
+        - Parameters: postables with movement commands containing F parameters
+        - Input data: Path with G0/G1/G2/G3 commands having feed rates
+
+        EXPECTED OUTPUT:
+        - All F parameters removed from movement commands
+        - Non-movement commands unchanged
+        - This dissables feed rate commands for machines that do not support them
+        """
+        # Create path with various movement commands and feed rates
+        commands = [
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0, "F": 3000}),  # Rapid with feed
+            Path.Command("G1", {"X": 10.0, "Y": 10.0, "Z": 0.0, "F": 1000}),  # Linear move
+            Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "F": 800}),  # Arc move
+            Path.Command("G3", {"X": 30.0, "Y": 20.0, "J": 5.0, "F": 600}),  # Arc move
+            Path.Command("M3", {"S": 1000}),  # Non-movement command
+        ]
+        self.profile_op.Path = Path.Path(commands)
+
+        # Enable force rapid feeds
+        self._set_postprocessor_properties(STRIP_F=True)
+
+        # Build postables and call injection method directly
+        postables = [("section", [self.profile_op])]
+        self.post._force_rapid_feeds(postables)
+
+        # Verify the modified path
+        result_cmds = self.profile_op.Path.Commands
+
+        # Check that no movement commands have F parameters
+        for cmd in result_cmds:
+            if cmd.Name in ["G0", "G1", "G2", "G3"]:
+                self.assertNotIn(
+                    "F",
+                    cmd.Parameters,
+                    f"{cmd.Name} should not have F parameter after strip F parameters",
+                )
+
+        # Check that non-movement commands are unchanged
+        m3_cmd = next(cmd for cmd in result_cmds if cmd.Name == "M3")
+        self.assertIn("S", m3_cmd.Parameters, "M3 should retain S parameter")
+        self.assertAlmostEqual(
+            m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
+        )
+
+    def test11_strip_Z_commands(self):
+            """
+            Test strip Z parameters functionality - removes Z parameters from movement commands.
+    
+            INPUT:
+            - Function: STRIP_Z()
+            - Parameters: postables with movement commands containing F parameters
+            - Input data: Path with G0/G1/G2/G3 commands having feed rates
+    
+            EXPECTED OUTPUT:
+            - All Z parameters removed from movement commands
+            - Non-movement commands unchanged
+            - This dissables feed rate commands for machines that do not support them
+            """
+            # Create path with various movement commands and feed rates
+            commands = [
+                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0, "F": 3000}),  # Rapid with feed
+                Path.Command("G1", {"X": 10.0, "Y": 10.0, "Z": 0.0, "F": 1000}),  # Linear move
+                Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "F": 800}),  # Arc move
+                Path.Command("G3", {"X": 30.0, "Y": 20.0, "J": 5.0, "F": 600}),  # Arc move
+                Path.Command("M3", {"S": 1000}),  # Non-movement command
+            ]
+            self.profile_op.Path = Path.Path(commands)
+    
+            # Enable force rapid feeds
+            self._set_postprocessor_properties(STRIP_Z=True)
+    
+            # Build postables and call injection method directly
+            postables = [("section", [self.profile_op])]
+            self.post._force_rapid_feeds(postables)
+    
+            # Verify the modified path
+            result_cmds = self.profile_op.Path.Commands
+    
+            # Check that no movement commands have F parameters
+            for cmd in result_cmds:
+                if cmd.Name in ["G0", "G1", "G2", "G3"]:
+                    self.assertNotIn(
+                        "Z",
+                        cmd.Parameters,
+                        f"{cmd.Name} should not have Z parameter after strip Z parameters",
+                    )
+    
+            # Check that non-movement commands are unchanged
+            m3_cmd = next(cmd for cmd in result_cmds if cmd.Name == "M3")
+            self.assertIn("S", m3_cmd.Parameters, "M3 should retain S parameter")
+            self.assertAlmostEqual(
+                m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
+            )
+
     def test_actual_machine(self):
         """Our specific `postprocessor_properties` were seen"""
-        self.post = PostProcessorFactory.get_post_processor(self.job, "generic_plasma")
+        self.post = PostProcessorFactory.get_post_processor(self.job, "generic_sheet_cutting")
         self.post._machine = Machine.create_3axis_config()
-        self.post._machine.name = "Test Generic Plasma"
+        self.post._machine.name = "Test Generic Sheet Cutting"
         self.post.apply_configuration_bundle()
 
         self.assertIsNotNone(self.post.values["PIERCE_DELAY"])

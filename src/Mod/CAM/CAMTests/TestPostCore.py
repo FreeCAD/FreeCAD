@@ -1067,7 +1067,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
         Expected:
             - Override values are reflected in the final G-code output
         """
-        from Path.Post.scripts.generic_plasma_post import GenericPlasma
+        from Path.Post.scripts.generic_sheet_cutting_post import GenericSheetCutting
         from Machine.models.machine import MachineFactory
 
         # Reset job overrides to clean state
@@ -1075,7 +1075,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
         # Create machine with plasma postprocessor
         machine = self._create_test_machine(pierce_delay=1000)
-        machine.postprocessor_file_name = "generic_plasma"
+        machine.postprocessor_file_name = "generic_sheet_cutting"
 
         # Add M3/M4 commands to trigger plasma behavior
         plasma_commands = [
@@ -1098,7 +1098,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
             # Test with no overrides (machine defaults)
             self.job.PostProcessorPropertyOverrides = "{}"
-            processor = GenericPlasma(self.job, "", "", "mm")
+            processor = GenericSheetCutting(self.job, "", "", "mm")
             # Ensure the processor uses our test machine with dialog disabled
             processor._machine = machine
             results = processor.export2()
@@ -1108,7 +1108,7 @@ class TestJobPropertyOverrides(unittest.TestCase):
 
             # Test with pierce_delay override
             self.job.PostProcessorPropertyOverrides = '{"pierce_delay": 2500}'  # 2.5 seconds
-            processor = GenericPlasma(self.job, "", "", "mm")
+            processor = GenericSheetCutting(self.job, "", "", "mm")
             # Ensure the processor uses our test machine with dialog disabled
             processor._machine = machine
             results = processor.export2()
