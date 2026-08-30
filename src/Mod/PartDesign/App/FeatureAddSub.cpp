@@ -32,6 +32,9 @@
 #include <Mod/Part/App/TopoShapeOpCode.h>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -83,6 +86,27 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
     }
 }
 
+namespace
+{
+// The preview booleans are only cheap and well behaved on elementary surfaces.
+bool hasOnlyAnalyticFaces(const TopoDS_Shape& shape)
+{
+    for (TopExp_Explorer it(shape, TopAbs_FACE); it.More(); it.Next()) {
+        switch (BRepAdaptor_Surface(TopoDS::Face(it.Current())).GetType()) {
+            case GeomAbs_Plane:
+            case GeomAbs_Cylinder:
+            case GeomAbs_Cone:
+            case GeomAbs_Sphere:
+            case GeomAbs_Torus:
+                break;
+            default:
+                return false;
+        }
+    }
+    return true;
+}
+}  // namespace
+
 void FeatureAddSub::updatePreviewShape()
 {
     const auto notifyWarning = [](const QString& message) {
@@ -97,7 +121,13 @@ void FeatureAddSub::updatePreviewShape()
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
         const TopoShape& tool = AddSubShape.getShape();
 
-        if (!tool.isEmpty()) {
+        // with no base there is nothing to trim against, so preview the tool below
+        if (!tool.isEmpty() && !base.isEmpty()) {
+            // a swept tool (e.g. a modeled thread) trims slowly and unreliably; preview it as-is
+            if (!hasOnlyAnalyticFaces(tool.getShape())) {
+                PreviewShape.setValue(tool);
+                return;
+            }
             try {
                 // Compute removed volume preview (for display)
                 TopoShape common;
@@ -123,14 +153,16 @@ void FeatureAddSub::updatePreviewShape()
                 BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
 
                 const double removed = propsBefore.Mass() - propsAfter.Mass();
+                // an empty or zero volume intersection would draw nothing at all
+                const bool nothingRemoved = common.isEmpty() || removed <= Precision::Confusion();
 
-                if (removed <= Precision::Confusion()) {
+                if (nothingRemoved) {
                     notifyWarning(
                         tr("Resulting shape is empty. That may indicate that no material will be "
                            "removed or a problem with the model.")
                     );
                 }
-                PreviewShape.setValue(common);
+                PreviewShape.setValue(nothingRemoved ? tool : common);
                 return;
             }
             catch (Standard_Failure& e) {
