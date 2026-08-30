@@ -88,7 +88,7 @@ public:
         return mapToParent(boundingRect().center()).y();
     }
 
-    void setFont(QFont font);
+    void setFont(const QFont& font);
     QFont getFont()
     {
         return m_labelText->font();

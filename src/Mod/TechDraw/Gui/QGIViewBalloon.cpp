@@ -212,9 +212,11 @@ void QGIBalloonLabel::setPosFromCenter(const double& xCenter, const double& yCen
 {
     //Get the font metrics to find the invisible descent space
     QFontMetrics fm(m_labelText->font());
+
+    constexpr double Half = 2.0;
     
     //Calculate the visual offset (push down by half the descent)
-    double visualYOffset = fm.descent() / 2.0;
+    double visualYOffset = fm.descent() / Half;
 
     setPos(xCenter - boundingRect().center().x(),
            yCenter - boundingRect().center().y() + visualYOffset);
@@ -225,10 +227,12 @@ Base::Vector3d QGIBalloonLabel::getLabelCenter() const
     return Base::Vector3d(getCenterX(), getCenterY(), 0.0);
 }
 
-void QGIBalloonLabel::setFont(QFont font) 
+void QGIBalloonLabel::setFont(const QFont& font) 
 { 
     m_labelText->setFont(font);
-    for(auto* cell : m_cellTexts) cell->setFont(font); 
+    for(auto* cell : m_cellTexts){     
+        cell->setFont(font);
+    } 
 }
 
 void QGIBalloonLabel::setDimString(QString text)
@@ -247,26 +251,34 @@ void QGIBalloonLabel::setDimString(QString text, qreal maxWidth)
 void QGIBalloonLabel::setPrettySel() 
 { 
     m_labelText->setPrettySel(); 
-    for(auto* cell : m_cellTexts) cell->setPrettySel();
+    for(auto* cell : m_cellTexts){
+        cell->setPrettySel();
+    }
 }
 
 void QGIBalloonLabel::setPrettyPre() 
 { 
     m_labelText->setPrettyPre(); 
-    for(auto* cell : m_cellTexts) cell->setPrettyPre();
+    for(auto* cell : m_cellTexts){
+        cell->setPrettyPre();
+    }
 }
 
 void QGIBalloonLabel::setPrettyNormal() 
 { 
     m_labelText->setPrettyNormal(); 
-    for(auto* cell : m_cellTexts) cell->setPrettyNormal();
+    for(auto* cell : m_cellTexts){
+        cell->setPrettyNormal();
+    }
 }
 
 void QGIBalloonLabel::setColor(QColor color)
 {
     m_colNormal = color;
     m_labelText->setColor(m_colNormal);
-    for(auto* cell : m_cellTexts) cell->setColor(m_colNormal);
+    for(auto* cell : m_cellTexts){
+        cell->setColor(m_colNormal);
+    }
 }
 
 void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeScale)
@@ -291,7 +303,8 @@ void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeSc
     QStringList parts = text.split(QStringLiteral("|"));
 
     double currentX = 0; //this is a tracker for the separators position
-    double basePad = Rez::guiX(2.0);
+    constexpr double BasePadding = 2.0;
+    double basePad = Rez::guiX(BasePadding);
     QFont font = m_labelText->font();
 
     //we need to know the height so we can make the customBoundingRect 
@@ -300,7 +313,7 @@ void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeSc
     for(int i=0; i < parts.size(); i++){
         QString cellString = parts[i];
 
-        QGCustomText* cell = new QGCustomText();
+        auto* cell = new QGCustomText();
         cell->setParentItem(this);
         cell->setTightBounding(true);
         cell->setFont(font);
@@ -313,8 +326,8 @@ void QGIBalloonLabel::buildCells(const QString& text, bool split, double shapeSc
 
         cellWidth = (rawTextWidth * shapeScale) + (basePad * 2 * shapeScale);
         
-
-        double textOffsetX = (cellWidth - rawTextWidth) / 2.0;
+        constexpr double Half = 2.0;
+        double textOffsetX = (cellWidth - rawTextWidth) / Half;
         cell->setPos(currentX + textOffsetX, 0);
 
 
@@ -527,11 +540,10 @@ void QGIViewBalloon::updateBalloon(bool obtuse)
 
     balloonLabel->setDimString(labelText, Rez::guiX(balloon->TextWrapLen.getValue()));
 
-    if (balloon->X.isTouched() || balloon->Y.isTouched()) {
-        float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
-        float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
-        balloonLabel->setPosFromCenter(x, -y);
-    }
+    
+    float x = Rez::guiX(balloon->X.getValue() * refObj->getScale());
+    float y = Rez::guiX(balloon->Y.getValue() * refObj->getScale());
+    balloonLabel->setPosFromCenter(x, -y);
 
 
 }
@@ -1122,4 +1134,4 @@ void QGIViewBalloon::updatePositionFromFeatureXY()
     //      QGIViewBalloon::placeBalloon(), QGSPage::createBalloon(), etc.
 }
 
-#include <Mod/TechDraw/Gui/moc_QGIViewBalloon.cpp>
+
