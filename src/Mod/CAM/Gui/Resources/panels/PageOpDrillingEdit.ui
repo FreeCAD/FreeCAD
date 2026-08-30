@@ -56,7 +56,9 @@
       <item row="1" column="1">
        <widget class="QCheckBox" name="KeepToolDownEnabled">
         <property name="toolTip">
-         <string>Do not retract after every hole</string>
+         <string>G99: Between holes, retract only to Peck Retract (or the operation Retract
+Height if not pecking) instead of fully retracting like G98. Only applies
+when Peck Retract is at or above Retract Height; otherwise, linking rules apply.</string>
         </property>
         <property name="text">
          <string>Keep tool down</string>
@@ -70,6 +72,10 @@
     <layout class="QGridLayout" name="gridLayout">
      <item row="1" column="1" colspan="2">
       <widget class="QCheckBox" name="peckEnabled">
+       <property name="toolTip">
+        <string>G73/G83: retract partially between passes to clear chips,
+instead of drilling the full depth in one pass</string>
+       </property>
        <property name="text">
         <string>Peck</string>
        </property>
@@ -97,10 +103,17 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>Q value: incremental drill depth per peck before retracting to clear chips</string>
+       </property>
       </widget>
      </item>
      <item row="8" column="6">
       <widget class="QComboBox" name="ExtraOffset">
+       <property name="toolTip">
+        <string>How far past Final Depth to extend the cut, to fully clear
+the drill/tap tip's cone at the target depth</string>
+       </property>
        <item>
         <property name="text">
          <string>None</string>
@@ -108,12 +121,12 @@
        </item>
        <item>
         <property name="text">
-         <string>Drill tip</string>
+         <string>Tool tip</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>2x drill tip</string>
+         <string>2x tool tip</string>
         </property>
        </item>
       </widget>
@@ -123,10 +136,16 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="toolTip">
+        <string>P paramter: how long to pause at the bottom of each hole</string>
+       </property>
       </widget>
      </item>
      <item row="6" column="1" rowspan="2" colspan="2">
       <widget class="QCheckBox" name="dwellEnabled">
+       <property name="toolTip">
+        <string>G82: pause at the bottom of each hole before retracting</string>
+       </property>
        <property name="text">
         <string>Dwell</string>
        </property>
@@ -142,14 +161,38 @@
        </property>
       </widget>
      </item>
-     <item row="2" column="1">
+     <item row="2" column="4">
+      <widget class="QLabel" name="retractLabel">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Peck Retract</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="6">
+      <widget class="Gui::QuantitySpinBox" name="peckRetract">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="toolTip">
+        <string>R value: height the tool retracts to between pecks and at the end
+of each canned cycle. Not the same as the job's Retract Height.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
       <widget class="QCheckBox" name="chipBreakEnabled">
+       <property name="toolTip">
+        <string>G73: small retracts to break the chip, instead of G83's full retract to clear it</string>
+       </property>
        <property name="text">
         <string>Chip break</string>
        </property>
       </widget>
      </item>
-     <item row="3" column="1">
+     <item row="4" column="1">
         <widget class="QCheckBox" name="feedRetractEnabled">
           <property name="text">
             <string>Feed retract</string>
@@ -185,6 +228,7 @@
  </customwidgets>
  <tabstops>
   <tabstop>peckEnabled</tabstop>
+  <tabstop>peckRetract</tabstop>
   <tabstop>feedRetractEnabled</tabstop>
   <tabstop>dwellEnabled</tabstop>
  </tabstops>

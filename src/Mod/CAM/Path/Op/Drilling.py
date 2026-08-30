@@ -70,9 +70,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             ],  # hole-making strategy
             "ExtraOffset": [
                 (translate("CAM_Drilling", "None"), "None"),
-                (translate("CAM_Drilling", "Drill Tip"), "Drill Tip"),
-                (translate("CAM_Drilling", "2x Drill Tip"), "2x Drill Tip"),
-            ],  # extra drilling depth to clear drill taper
+                (translate("CAM_Drilling", "Tool Tip"), "Tool Tip"),
+                (translate("CAM_Drilling", "2x Tool Tip"), "2x Tool Tip"),
+            ],  # extra depth to clear the drill/tap tip's cone. Was "Drill Tip"/"2x
+            # Drill Tip" -- renamed since this applies to Tapping too, not just
+            # Drilling. See opOnDocumentRestored for the value migration.
         }
 
         if dataType == "raw":
@@ -112,6 +114,22 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             # Default to Drilling for old operations
             obj.Strategy = "Drilling"
 
+        # Migration: ExtraOffset enum values renamed from "Drill Tip"/"2x Drill Tip"
+        # to "Tool Tip"/"2x Tool Tip" -- applies to Tapping too, not just Drilling.
+        # Capture the stored value before refreshing the valid-options list, then
+        # remap it explicitly, so an old doc's selection survives the list change.
+        if hasattr(obj, "ExtraOffset"):
+            old_offset = str(obj.ExtraOffset)
+            for n in self.propertyEnumerations():
+                if n[0] == "ExtraOffset":
+                    setattr(obj, n[0], n[1])
+            if old_offset == "Drill Tip":
+                obj.ExtraOffset = "Tool Tip"
+            elif old_offset == "2x Drill Tip":
+                obj.ExtraOffset = "2x Tool Tip"
+            else:
+                obj.ExtraOffset = old_offset
+
         if hasattr(obj, "chipBreakEnabled"):
             obj.renameProperty("chipBreakEnabled", "ChipBreakEnabled")
         elif not hasattr(obj, "ChipBreakEnabled"):
@@ -135,17 +153,26 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if hasattr(obj, "RetractMode"):
             obj.removeProperty("RetractMode")
 
-        # Migration: Remove RetractHeight property and adjust StartDepth if needed
-        # This handles old Tapping operations that used RetractHeight
+        # Migration: the peck-retract property (G83/G73/G85 "R" value) was briefly
+        # restored under its pre-regression name "RetractHeight" before being renamed
+        # to "PeckRetract" -- "RetractHeight" is too easily confused with SafeHeight,
+        # which is also loosely "the retract height" but a different, general plane.
+        # Handles both: (a) old docs that already have RetractHeight (rename it), and
+        # (b) docs saved while the property was missing entirely (add it fresh).
         if hasattr(obj, "RetractHeight"):
-            # If RetractHeight was higher than StartDepth, migrate to StartDepth
-            if obj.RetractHeight.Value > obj.StartDepth.Value:
-                Path.Log.warning(
-                    f"Migrating RetractHeight ({obj.RetractHeight.Value}) to StartDepth. "
-                    f"Old StartDepth was {obj.StartDepth.Value}"
-                )
-                obj.StartDepth = obj.RetractHeight.Value
-            obj.removeProperty("RetractHeight")
+            obj.renameProperty("RetractHeight", "PeckRetract")
+        elif not hasattr(obj, "PeckRetract"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "PeckRetract",
+                "Drill",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The height (R) the tool retracts to between pecks and when "
+                    "the canned drilling cycle finishes",
+                ),
+            )
+            obj.PeckRetract = obj.SafeHeight.Value
 
         # Migration: Old Tapping ReturnLevel to KeepToolDown
         # This handles old Tapping operations that used ReturnLevel enum
@@ -163,9 +190,37 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Apply G99 retraction: only retract to StartDepth between holes in this operation",
+                    "Apply G99 retraction: between holes, retract only to PeckRetract (or "
+                    "SafeHeight if not pecking) instead of the full retract G98 does",
                 ),
             )
+
+        self.updateStrategyVisibility(obj)
+
+    def opOnChanged(self, obj, prop):
+        """opOnChanged(obj, prop) ... react to Strategy changes to update property visibility."""
+        if prop == "Strategy":
+            self.updateStrategyVisibility(obj)
+
+    def updateStrategyVisibility(self, obj):
+        """Hide the peck-only properties in the Property Editor while Strategy != Drilling.
+        Tapping never pecks in this codebase, so PeckEnabled/PeckDepth/ChipBreakEnabled/
+        FeedRetractEnabled/PeckRetract are stored but inert -- matches how the task panel
+        already hides the same fields (Gui/Drilling.py's updateStrategyVisibility), and
+        how CircularHoleBase does the same for SortingMode's StartPoint/EndPoint/UseEndPoint.
+        """
+        if not hasattr(obj, "Strategy"):
+            return
+        mode = 0 if obj.Strategy == "Drilling" else 2  # 0=visible, 2=hidden
+        for prop in (
+            "PeckEnabled",
+            "PeckDepth",
+            "ChipBreakEnabled",
+            "FeedRetractEnabled",
+            "PeckRetract",
+        ):
+            if hasattr(obj, prop):
+                obj.setEditorMode(prop, mode)
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... add drilling specific properties to obj."""
@@ -221,10 +276,20 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyDistance",
+            "PeckRetract",
+            "Drill",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The height (R) the tool retracts to between pecks and when "
+                "the canned drilling cycle finishes",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
-            QT_TRANSLATE_NOOP("App::Property", "How far the drilling depth is extended"),
+            QT_TRANSLATE_NOOP("App::Property", "How far the cutting depth is extended"),
         )
         obj.addProperty(
             "App::PropertyBool",
@@ -232,7 +297,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Apply G99 retraction: only retract to StartDepth between holes in this operation",
+                "Apply G99 retraction: between holes, retract only to PeckRetract (or "
+                "SafeHeight if not pecking) instead of the full retract G98 does",
             ),
         )
         obj.addProperty(
@@ -277,9 +343,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
-        if obj.ExtraOffset == "Drill Tip":
+        if obj.ExtraOffset == "Tool Tip":
             endoffset = drillTipLength(self.tool)
-        elif obj.ExtraOffset == "2x Drill Tip":
+        elif obj.ExtraOffset == "2x Tool Tip":
             endoffset = drillTipLength(self.tool) * 2
 
         # compute the drilling targets
@@ -350,9 +416,24 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 firstMove = False
 
             else:  # Check if we need linking moves
-                # For G99 mode, tool is at StartDepth (R-plane) after previous hole
-                # Check if direct move at retract plane would collide with model
+                # For G99 mode, tool is at PeckRetract (R-plane) after previous hole,
+                # which may be below SafeHeight (e.g. a low peck retract inside a deep
+                # hole). The collision check below assumes travel happens at SafeHeight,
+                # so if the tool isn't there yet, climb to it first -- otherwise a "no
+                # collision" result here would be silently wrong: with no commands
+                # emitted, the modal G99 cycle would actually traverse to the next hole
+                # at the low R height instead, potentially dragging the tool through
+                # stock between holes.
                 current_pos = machinestate.getPosition()
+                if current_pos.z < safe_height and not Path.Geom.isRoughly(
+                    current_pos.z, safe_height
+                ):
+                    command = Path.Command("G0", {"Z": safe_height})
+                    self.commandlist.append(command)
+                    machinestate.addCommand(command)
+                    current_pos = machinestate.getPosition()
+
+                # Check if direct move at retract plane would collide with model
                 target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
                 linkingArgs["start_position"] = current_pos
                 linkingArgs["target_position"] = target_at_safe_height
@@ -372,6 +453,10 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             repeat = 1  # technical debt:  Add a repeat property for user control
             chipBreak = obj.ChipBreakEnabled and obj.PeckEnabled
 
+            # PeckRetract (R) only applies to peck cycles; a non-peck cycle just
+            # retracts to SafeHeight like it did before PeckRetract existed.
+            peck_retract = obj.PeckRetract.Value if obj.PeckEnabled else safe_height
+
             # Save Z position before canned cycle for G98 retract
             z_before_cycle = machinestate.Z
 
@@ -381,7 +466,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     dwelltime,
                     peckdepth,
                     repeat,
-                    obj.StartDepth.Value,
+                    peck_retract,
                     chipBreak=chipBreak,
                     feedRetract=obj.FeedRetractEnabled,
                 )
@@ -398,11 +483,11 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             # Update Z position based on RetractMode
             # G98: retract to initial Z (Z before cycle started)
-            # G99: retract to R parameter (StartDepth)
+            # G99: retract to R parameter (peck_retract)
             if mode == "G98":
                 machinestate.Z = z_before_cycle
             else:  # G99
-                machinestate.Z = obj.StartDepth.Value
+                machinestate.Z = peck_retract
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
@@ -437,9 +522,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Calculate offsets to add to target edge
         endoffset = 0.0
-        if obj.ExtraOffset == "Drill Tip":
+        if obj.ExtraOffset == "Tool Tip":
             endoffset = drillTipLength(self.tool)
-        elif obj.ExtraOffset == "2x Drill Tip":
+        elif obj.ExtraOffset == "2x Tool Tip":
             endoffset = drillTipLength(self.tool) * 2
 
         # compute the tapping targets
@@ -545,6 +630,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         obj.ExtraOffset = "None"
         obj.KeepToolDown = False  # default to safest option: G98
 
+        # Default retract (R) to the op's SafeHeight. These are not the same thing:
+        # SafeHeight is the general rapid-clearance plane, while PeckRetract is the
+        # canned-cycle R value and may need to be set lower (e.g. inside a deep hole)
+        # to avoid repeated full retracts with a long, thin drill. Bound as an
+        # expression (like the other Op* defaults below) so it tracks SafeHeight
+        # until the user overrides it with an explicit value.
+        if not self.applyExpression(obj, "PeckRetract", "SafeHeight"):
+            obj.PeckRetract = obj.SafeHeight.Value
+
         if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
         elif self.applyExpression(obj, "PeckDepth", "OpToolDiameter*0.75"):
@@ -564,6 +658,7 @@ def SetupProperties():
     setup.append("DwellTime")
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
+    setup.append("PeckRetract")
     setup.append("ExtraOffset")
     setup.append("KeepToolDown")
     return setup
