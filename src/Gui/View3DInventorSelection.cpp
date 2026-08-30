@@ -122,7 +122,6 @@ void View3DInventorSelection::setHiddenPreviewDepthOverride(DepthOverride state)
 void View3DInventorSelection::clearFeaturePreview()
 {
     if (previewedFeature) {
-        FC_WARN("DIAG clear feature preview");
         previewedFeature->showPreselectPreview(false);
         previewedFeature = nullptr;
     }
@@ -130,11 +129,6 @@ void View3DInventorSelection::clearFeaturePreview()
 
 void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
 {
-    FC_WARN(
-        "DIAG checkGroupOnTop type " << Reason.Type << " sub " << static_cast<int>(Reason.SubType)
-                                     << " " << (Reason.pObjectName ? Reason.pObjectName : "?")
-                                     << "." << (Reason.pSubName ? Reason.pSubName : "")
-    );
     featurePreviewActive = false;
     if (Reason.Type == SelectionChanges::SetSelection
         || Reason.Type == SelectionChanges::ClrSelection) {
@@ -252,7 +246,6 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
         if (svp->showPreselectPreview(true)) {
             previewedFeature = svp;
             featurePreviewActive = true;
-            FC_WARN("DIAG feature preview on " << key);
             return;
         }
         // Some view providers build geometry lazily and skip it while hidden;
@@ -399,7 +392,6 @@ void View3DInventorSelection::checkGroupOnTop(const SelectionChanges& Reason)
 
 void View3DInventorSelection::clearGroupOnTop()
 {
-    FC_WARN("DIAG clearGroupOnTop");
     clearFeaturePreview();
     if (!objectsOnTop.empty() || !objectsOnTopPreSel.empty()) {
         objectsOnTop.clear();
