@@ -336,8 +336,6 @@ void DimensionQuickEdit::readFromFeature()
 
     m_populating = true;
 
-    m_valueEdit->setText(QString::fromStdString(dim->getFormattedDimensionValue(Format::FORMATTED)));
-
     std::string currentFormat = dim->FormatSpec.getStrValue();
 
     QStringList prefixSuffix = dim->getPrefixSuffixSpec(QString::fromStdString(currentFormat));
@@ -362,6 +360,7 @@ void DimensionQuickEdit::readFromFeature()
     m_decimals = std::clamp(decimals, 0, MaxDecimalPlaces);
     m_referenceBtn->setChecked(m_referenceActive);
     m_symbolCombo->setCurrentIndex(0);  // since it just inserts the symbol, we reset the index back to 0
+    updateValuePreview();
 
     bool equalTol = dim->EqualTolerance.getValue();
     double over = dim->OverTolerance.getValue();
@@ -397,29 +396,16 @@ void DimensionQuickEdit::updateValuePreview()
     if (!dim) {
         return;
     }
-    m_valueEdit->setText(QString::fromStdString(dim->getFormattedDimensionValue(Format::FORMATTED)));
+    QString bareSpec = QString::fromStdString("%." + std::to_string(m_decimals) + m_formatChar);
+    m_valueEdit->setText(
+        QString::fromStdString(dim->formatValue(dim->getDimValue(), bareSpec, Format::FORMATTED, true)));
 }
 
 void DimensionQuickEdit::onPrefixOrSuffixLiveUpdate()
 {
-    if (m_populating || !m_dimensionVP) {
+    if (m_populating) {
         return;
     }
-    auto* dim = freecad_cast<DrawViewDimension*>(m_dimensionVP->getObject());
-    if (!dim) {
-        return;
-    }
-
-    std::string prefix = (m_referenceActive ? "(" : "") + m_prefixEdit->text().toStdString();
-    std::string suffix = m_suffixEdit->text().toStdString() + (m_referenceActive ? ")" : "");
-    QString hypotheticalSpec = QString::fromStdString(
-        prefix + "%." + std::to_string(m_decimals) + m_formatChar + suffix
-    );
-
-    std::string preview
-        = dim->formatValue(dim->getDimValue(), hypotheticalSpec, Format::FORMATTED, true);
-    m_valueEdit->setText(QString::fromStdString(preview));
-
     m_liveCommitTimer->start();
 }
 
