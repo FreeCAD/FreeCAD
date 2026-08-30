@@ -574,7 +574,7 @@ public:
     void SaveDocument(const char* sFileName) const;
     void SaveDocument(XERCES_CPP_NAMESPACE::XMLFormatTarget* pFormatTarget) const;
     void CreateDocument();
-    
+
     /**
      * Check the validity of the current parameter XML document against the .xsd schema.
      * Return true on success, false on failure.

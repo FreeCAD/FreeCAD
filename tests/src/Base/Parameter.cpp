@@ -32,8 +32,8 @@ public:
     }
     void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override
     {
-        (void)rCaller; // Unused
-        (void)Reason; // Unused
+        (void)rCaller;  // Unused
+        (void)Reason;   // Unused
         notify++;
     }
 
@@ -277,7 +277,7 @@ TEST_F(ParameterTest, TestColor)
     grp->SetColor("Color2", color2);
     EXPECT_EQ(grp->GetColor("Color1"), color1);
     EXPECT_EQ(grp->GetColor("Color2"), color2);
-    EXPECT_EQ(grp->GetColor("Color3"),colorNull);
+    EXPECT_EQ(grp->GetColor("Color3"), colorNull);
 
     EXPECT_TRUE(grp->GetColors("Test").empty());
     EXPECT_EQ(grp->GetColors().size(), 2);
@@ -446,8 +446,8 @@ TEST_F(ParameterTest, TestClear)
 
     // Group is still referenced, not deleted
     EXPECT_TRUE(grp->HasGroup("Sub"));
-    EXPECT_EQ(grp->GetASCII("String", "default"),"default");
-    EXPECT_EQ(subGrp->GetUnsigned("Value", 1),1);
+    EXPECT_EQ(grp->GetASCII("String", "default"), "default");
+    EXPECT_EQ(subGrp->GetUnsigned("Value", 1), 1);
 
     // Remove reference
     subGrp = nullptr;
@@ -581,7 +581,7 @@ TEST_F(ParameterTest, TestObserverRef)
     grp->ClearObserver();
     grp->SetFloat("Float", 2.0);
     EXPECT_EQ(obs.getCountNotifications(), 0);
-    
+
     obs.detachSelf(grp);
 }
 
