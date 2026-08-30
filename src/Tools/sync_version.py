@@ -188,7 +188,7 @@ def sync_startup_wm_class(filepath: Path, version: VersionInfo) -> tuple[str, bo
     # Version:           1.2.0
     updated = re.sub(
         r"(StartupWMClass=)\S+",
-        rf"\g<1>FreeCAD-{version.major}.{version.minor}",
+        rf"\g<1>FreeCAD-{version.simple}",
         updated,
     )
 
@@ -207,11 +207,10 @@ def sync_wayland_app_id(filepath: Path, version: VersionInfo) -> tuple[str, bool
     # Version:           1.2.0
     updated = re.sub(
         r'(App::Application::Config\(\)\["DesktopFileName"\]\s*=\s*")[^"]+(")',
-        rf"\g<1>org.freecad.FreeCAD-{version.major}.{version.minor}\g<2>",
+        rf"\g<1>org.freecad.FreeCAD-{version.simple}\g<2>",
         updated,
     )
     return updated, updated != content
-
 
 # Each entry is (relative_path, sync_function).
 SYNC_TARGETS = [
@@ -229,7 +228,7 @@ SYNC_TARGETS = [
 RENAME_TARGETS = [
     (
         "src/XDGData/org.freecad.FreeCAD.desktop",
-        lambda v: f"src/XDGData/org.freecad.FreeCAD-{v.major}.{v.minor}.desktop",
+        lambda v: f"src/XDGData/org.freecad.FreeCAD-{v.major}.{v.minor}.{v.patch}.desktop",
     ),
 ]
 
