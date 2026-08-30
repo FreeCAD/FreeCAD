@@ -32,6 +32,7 @@
 
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #if OCC_VERSION_HEX < 0x070600
 # include <BRepAdaptor_HCurve.hxx>
 # include <BRepAdaptor_HCompCurve.hxx>
@@ -68,6 +69,7 @@
 #include <BRepOffsetAPI_MakeThickSolid.hxx>
 #include <BRepPrimAPI_MakeRevol.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
+#include <BRepPrimAPI_MakeHalfSpace.hxx>
 #include <BRepProj_Projection.hxx>
 #include <BRepTools_WireExplorer.hxx>
 #include <GeomConvert.hxx>
@@ -4173,7 +4175,103 @@ TopoShape& TopoShape::makeElementFillet(
         }
         mkFillet.Add(radius1, radius2, TopoDS::Edge(edge));
     }
-    return makeElementShape(mkFillet, shape, op);
+    makeElementShape(mkFillet, shape, op);
+
+    NCollection_IndexedDataMap<TopoDS_Shape,
+                               NCollection_List<TopoDS_Shape>,
+                               TopTools_ShapeMapHasher>
+        vertexFaces;
+    TopExp::MapShapesAndAncestors(
+        shape.getShape(),
+        TopAbs_VERTEX,
+        TopAbs_FACE,
+        vertexFaces
+    );
+
+    // A fillet ending at an ordinary three-face corner is handled directly by OCCT. At a
+    // multi-face vertex, however, its corner-filling fallback can extend the blend past a
+    // transverse planar end face. Preserve the input shape on the far side of such a plane,
+    // which clips the blend at the selected edge endpoint and creates the required planar cap.
+    for (const auto& edgeShape : edges) {
+        const TopoDS_Edge edge = TopoDS::Edge(edgeShape.getShape());
+        TopoDS_Vertex firstVertex;
+        TopoDS_Vertex lastVertex;
+        TopExp::Vertices(edge, firstVertex, lastVertex);
+        if (firstVertex.IsNull() || lastVertex.IsNull() || firstVertex.IsSame(lastVertex)) {
+            continue;
+        }
+
+        BRepAdaptor_Curve curve(edge);
+        for (const auto& endpoint : {firstVertex, lastVertex}) {
+            if (!vertexFaces.Contains(endpoint)) {
+                continue;
+            }
+
+            NCollection_Map<TopoDS_Shape, TopTools_ShapeMapHasher> uniqueFaces;
+            for (const auto& ancestor : vertexFaces.FindFromKey(endpoint)) {
+                uniqueFaces.Add(ancestor);
+            }
+            if (uniqueFaces.Extent() <= 3) {
+                continue;
+            }
+
+            const bool isFirst = endpoint.IsSame(firstVertex);
+            gp_Pnt pointOnCurve;
+            gp_Vec tangent;
+            curve.D1(isFirst ? curve.FirstParameter() : curve.LastParameter(), pointOnCurve, tangent);
+            if (tangent.SquareMagnitude() <= Precision::SquareConfusion()) {
+                continue;
+            }
+            const gp_Dir tangentDirection(tangent);
+            const gp_Pnt endpointPoint = BRep_Tool::Pnt(endpoint);
+            const gp_Pnt oppositePoint = BRep_Tool::Pnt(isFirst ? lastVertex : firstVertex);
+            const gp_Pnt edgeSidePoint(
+                endpointPoint.XYZ() + gp_Vec(endpointPoint, oppositePoint).XYZ() * 0.1
+            );
+
+            for (const auto& ancestor : uniqueFaces) {
+                const TopoDS_Face face = TopoDS::Face(ancestor);
+                BRepAdaptor_Surface surface(face, false);
+                if (surface.GetType() != GeomAbs_Plane
+                    || std::abs(surface.Plane().Axis().Direction().Dot(tangentDirection))
+                        < 1.0 - Precision::Angular()) {
+                    continue;
+                }
+
+                BRepBuilderAPI_MakeFace planeFace(surface.Plane());
+                BRepPrimAPI_MakeHalfSpace makeHalfSpace(planeFace.Face(), edgeSidePoint);
+                if (!makeHalfSpace.IsDone()) {
+                    continue;
+                }
+
+                TopoShape halfSpace(Tag, Hasher);
+                halfSpace.setShape(makeHalfSpace.Solid());
+                TopoShape filletSide(Tag, Hasher);
+                filletSide.makeElementBoolean(
+                    Part::OpCodes::Common,
+                    {*this, halfSpace},
+                    nullptr
+                );
+                TopoShape baseSide(Tag, Hasher);
+                baseSide.makeElementBoolean(
+                    Part::OpCodes::Cut,
+                    {shape, halfSpace},
+                    nullptr
+                );
+                TopoShape limited(Tag, Hasher);
+                limited.makeElementBoolean(
+                    Part::OpCodes::Fuse,
+                    {filletSide, baseSide},
+                    nullptr
+                );
+                if (!limited.isNull() && BRepCheck_Analyzer(limited.getShape()).IsValid()) {
+                    *this = limited;
+                }
+                break;
+            }
+        }
+    }
+    return *this;
 }
 
 TopoShape& TopoShape::makeElementChamfer(

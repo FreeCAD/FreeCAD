@@ -24,15 +24,12 @@
 
 #include <limits>
 
-#include <BRepAlgo.hxx>
 #include <BRepFilletAPI_MakeChamfer.hxx>
 #include <TopExp.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
-#include <TopTools_ListOfShape.hxx>
 #include <ShapeFix_Shape.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
 #include <Standard_Version.hxx>
 
 
@@ -137,6 +134,11 @@ App::DocumentObjectExecReturn* Chamfer::execute()
 
     TopShape.setTransform(Base::Matrix4D());
 
+    // Detach reused OCCT topology before another dress-up operation. Sharing the immutable
+    // geometry is safe, while fresh TShapes prevent transient builder data from a preceding
+    // feature from contaminating this operation.
+    TopShape = TopShape.makeElementCopy(nullptr, false);
+
     auto edges = UseAllEdges.getValue() ? TopShape.getSubTopoShapes(TopAbs_EDGE)
                                         : getContinuousEdges(TopShape);
 
@@ -174,18 +176,6 @@ App::DocumentObjectExecReturn* Chamfer::execute()
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Failed to create chamfer")
-            );
-        }
-
-        TopTools_ListOfShape aLarg;
-        aLarg.Append(TopShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
-            ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(
-                shape.getShape(),
-                Precision::Confusion(),
-                Precision::Confusion(),
-                TopAbs_SHAPE
             );
         }
 

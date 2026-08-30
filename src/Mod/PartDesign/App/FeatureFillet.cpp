@@ -24,16 +24,13 @@
 
 #include <limits>
 
-#include <BRepAlgo.hxx>
 #include <BRepFilletAPI_MakeFillet.hxx>
 #include <BRep_Tool.hxx>
 #include <Geom_Circle.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopTools_ListOfShape.hxx>
 #include <ShapeFix_Shape.hxx>
-#include <ShapeFix_ShapeTolerance.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -90,6 +87,11 @@ App::DocumentObjectExecReturn* Fillet::execute()
     }
     baseShape.setTransform(Base::Matrix4D());
 
+    // Detach reused OCCT topology before another dress-up operation. Sharing the immutable
+    // geometry is safe, while fresh TShapes prevent transient builder data from a preceding
+    // feature from contaminating this operation.
+    baseShape = baseShape.makeElementCopy(nullptr, false);
+
     auto edges = UseAllEdges.getValue() ? baseShape.getSubTopoShapes(TopAbs_EDGE)
                                         : getContinuousEdges(baseShape);
     if (edges.empty()) {
@@ -120,18 +122,6 @@ App::DocumentObjectExecReturn* Fillet::execute()
         if (shape.isNull()) {
             return new App::DocumentObjectExecReturn(
                 QT_TRANSLATE_NOOP("Exception", "Resulting shape is null")
-            );
-        }
-
-        TopTools_ListOfShape aLarg;
-        aLarg.Append(baseShape.getShape());
-        if (!BRepAlgo::IsValid(aLarg, shape.getShape(), Standard_False, Standard_False)) {
-            ShapeFix_ShapeTolerance aSFT;
-            aSFT.LimitTolerance(
-                shape.getShape(),
-                Precision::Confusion(),
-                Precision::Confusion(),
-                TopAbs_SHAPE
             );
         }
 

@@ -23,9 +23,14 @@
 
 from __future__ import division
 from math import pi
+from pathlib import Path
 import unittest
 
 import FreeCAD
+import Part
+
+
+FIXTURE_PATH = Path(__file__).parent / "Fixtures" / "issue_32231_fillets.FCStd"
 
 
 class TestFillet(unittest.TestCase):
@@ -120,7 +125,40 @@ class TestFillet(unittest.TestCase):
         if followup.Base[0]:
             self.assertNotEqual(followup.Base[0].Name, box.Name)
 
+    def testIssue32231FilletChainPreservesValidTopology(self):
+        """Chained fillets must remain valid and stop at transverse planar endpoints."""
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH))
+
+        for feature_name in ("Fillet001", "Fillet002", "Fillet003"):
+            feature = self.Doc.getObject(feature_name)
+            radius = feature.Radius.Value
+            feature.Radius = radius + 1e-6
+            self.Doc.recompute()
+            feature.Radius = radius
+            feature.touch()
+            self.Doc.recompute()
+            self.assertTrue(feature.Shape.isValid(), feature_name)
+
+            if feature_name == "Fillet001":
+                continue
+
+            source = feature.Base[0]
+            upper_region = Part.makeBox(100, 100, 20, FreeCAD.Vector(-50, -50, 1e-6))
+            source_upper = source.Shape.common(upper_region)
+            result_upper = feature.Shape.common(upper_region)
+            changed_volume = source_upper.cut(result_upper).Volume
+            changed_volume += result_upper.cut(source_upper).Volume
+            self.assertAlmostEqual(changed_volume, 0.0, places=7, msg=feature_name)
+
+            lower_region = Part.makeBox(100, 100, 50, FreeCAD.Vector(-50, -50, -50))
+            source_lower = source.Shape.common(lower_region)
+            result_lower = feature.Shape.common(lower_region)
+            fillet_volume = source_lower.cut(result_lower).Volume
+            fillet_volume += result_lower.cut(source_lower).Volume
+            self.assertGreater(fillet_volume, 1e-6, feature_name)
+
     def tearDown(self):
         # closing doc
-        FreeCAD.closeDocument("PartDesignTestFillet")
+        FreeCAD.closeDocument(self.Doc.Name)
         # print ("omit closing document for debugging")

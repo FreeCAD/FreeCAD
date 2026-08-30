@@ -22,8 +22,13 @@
 # ***************************************************************************
 
 import unittest
+from pathlib import Path
 
 import FreeCAD
+import Part
+
+
+FIXTURE_PATH = Path(__file__).parent / "Fixtures" / "issue_32231_chamfers.FCStd"
 
 
 class TestChamfer(unittest.TestCase):
@@ -61,7 +66,38 @@ class TestChamfer(unittest.TestCase):
         self.MajorFaces = [face for face in self.Chamfer.Shape.Faces if face.Area > 1e-3]
         self.assertEqual(len(self.MajorFaces), 9)
 
+    def testIssue32231ChamferChainPreservesValidTopology(self):
+        """Chained chamfers must detach reused topology and preserve OCCT tolerances."""
+        FreeCAD.closeDocument(self.Doc.Name)
+        self.Doc = FreeCAD.openDocument(str(FIXTURE_PATH))
+
+        precursor = self.Doc.getObject("Fillet001")
+        radius = precursor.Radius.Value
+        precursor.Radius = radius + 1e-6
+        self.Doc.recompute()
+        precursor.Radius = radius
+        precursor.touch()
+        self.Doc.recompute()
+        self.assertTrue(precursor.Shape.isValid(), "Fillet001")
+
+        for feature_name in ("Chamfer", "Chamfer001"):
+            chamfer = self.Doc.getObject(feature_name)
+            size = chamfer.Size.Value
+            chamfer.Size = size + 1e-6
+            self.Doc.recompute()
+            chamfer.Size = size
+            chamfer.touch()
+            self.Doc.recompute()
+            self.assertTrue(chamfer.Shape.isValid(), feature_name)
+            source = chamfer.Base[0]
+            upper_region = Part.makeBox(100, 100, 20, FreeCAD.Vector(-50, -50, 0.5))
+            source_upper = source.Shape.common(upper_region)
+            result_upper = chamfer.Shape.common(upper_region)
+            changed_volume = source_upper.cut(result_upper).Volume
+            changed_volume += result_upper.cut(source_upper).Volume
+            self.assertAlmostEqual(changed_volume, 0.0, places=7, msg=feature_name)
+
     def tearDown(self):
         # closing doc
-        FreeCAD.closeDocument("PartDesignTestChamfer")
+        FreeCAD.closeDocument(self.Doc.Name)
         # print ("omit closing document for debugging")
