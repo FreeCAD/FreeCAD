@@ -596,7 +596,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         Test strip F parameters functionality - removes F parameters from movement commands.
 
         INPUT:
-        - Function: STRIP_F()
+        - Function: _strip_f_parameterts()
         - Parameters: postables with movement commands containing F parameters
         - Input data: Path with G0/G1/G2/G3 commands having feed rates
 
@@ -646,9 +646,9 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         Test strip Z parameters functionality - removes Z parameters from movement commands.
 
         INPUT:
-        - Function: STRIP_Z()
-        - Parameters: postables with movement commands containing F parameters
-        - Input data: Path with G0/G1/G2/G3 commands having feed rates
+        - Function: _strip_z_parameterts()
+        - Parameters: postables with movement commands containing Z parameters
+        - Input data: Path with G0/G1/G2/G3 commands having Z parameters
 
         EXPECTED OUTPUT:
         - All Z parameters removed from movement commands
@@ -670,7 +670,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
 
         # Build postables and call injection method directly
         postables = [("section", [self.profile_op])]
-        self.post._force_rapid_feeds(postables)
+        self.post._strip_z_parameterts(postables)
 
         # Verify the modified path
         result_cmds = self.profile_op.Path.Commands
