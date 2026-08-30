@@ -142,7 +142,6 @@ class GenericSheetCutting(PostProcessor):
                 "label": translate("CAM", "Control Method For Cutter"),
                 "choices": ["Z_Control", "Spindle_Control" , "G0_Control"],
                 "default": "Z_Control",
-                "runtime": True,
                 "help": translate(
                     "CAM",
                     "Z_Control: Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement.\n"
