@@ -368,7 +368,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         ]
         self.profile_op.Path = Path.Path(commands)
 
-        # Disable torch Z-axis control
+        # Enable torch G0 control
         self._set_postprocessor_properties(cutter_control="G0_Control")
 
         # Build postables and call injection method directly
@@ -615,7 +615,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         ]
         self.profile_op.Path = Path.Path(commands)
 
-        # Enable force rapid feeds
+        # Enable strip F Parameters
         self._set_postprocessor_properties(STRIP_F=True)
 
         # Build postables and call injection method directly
@@ -665,7 +665,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         ]
         self.profile_op.Path = Path.Path(commands)
 
-        # Enable force rapid feeds
+        # Enable strip Z
         self._set_postprocessor_properties(STRIP_Z=True)
 
         # Build postables and call injection method directly
@@ -675,7 +675,7 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         # Verify the modified path
         result_cmds = self.profile_op.Path.Commands
 
-        # Check that no movement commands have F parameters
+        # Check that no movement commands have Z parameters
         for cmd in result_cmds:
             if cmd.Name in ["G0", "G1", "G2", "G3"]:
                 self.assertNotIn(
