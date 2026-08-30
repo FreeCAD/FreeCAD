@@ -146,12 +146,36 @@ App::Material ViewProviderSectionAnalysis::distinctColor(std::size_t index)
     double g = 0.0;
     double b = 0.0;
     switch (sector) {
-        case 0: r = value; g = t; b = p; break;
-        case 1: r = q; g = value; b = p; break;
-        case 2: r = p; g = value; b = t; break;
-        case 3: r = p; g = q; b = value; break;
-        case 4: r = t; g = p; b = value; break;
-        default: r = value; g = p; b = q; break;
+        case 0:
+            r = value;
+            g = t;
+            b = p;
+            break;
+        case 1:
+            r = q;
+            g = value;
+            b = p;
+            break;
+        case 2:
+            r = p;
+            g = value;
+            b = t;
+            break;
+        case 3:
+            r = p;
+            g = q;
+            b = value;
+            break;
+        case 4:
+            r = t;
+            g = p;
+            b = value;
+            break;
+        default:
+            r = value;
+            g = p;
+            b = q;
+            break;
     }
 
     App::Material mat;
@@ -160,8 +184,7 @@ App::Material ViewProviderSectionAnalysis::distinctColor(std::size_t index)
     return mat;
 }
 
-App::Material
-ViewProviderSectionAnalysis::partColor(const App::DocumentObject* part, std::size_t index)
+App::Material ViewProviderSectionAnalysis::partColor(const App::DocumentObject* part, std::size_t index)
 {
     // Read here, at draw time, rather than cached with the triangles - a part's
     // colour is not a reason to walk the scene graph again.
@@ -197,9 +220,7 @@ ViewProviderSectionAnalysis::partColor(const App::DocumentObject* part, std::siz
 bool ViewProviderSectionAnalysis::isDefaultShapeColor(const Base::Color& colour)
 {
     Base::Color fallback;
-    fallback.setPackedValue(
-        static_cast<uint32_t>(Gui::ViewParams::instance()->getDefaultShapeColor())
-    );
+    fallback.setPackedValue(static_cast<uint32_t>(Gui::ViewParams::instance()->getDefaultShapeColor()));
 
     // Compared loosely: the default arrives as 8 bit channels and comes back as
     // floats, so exact equality would never hold.
@@ -313,7 +334,7 @@ ViewProviderSectionAnalysis::ViewProviderSectionAnalysis()
     );
     ADD_PROPERTY_TYPE(
         RemovedMaterialColor,
-        (Base::Color(0.5843F, 0.98823F, 0.8823F)), /// x-ray vision sci-fi colour
+        (Base::Color(0.5843F, 0.98823F, 0.8823F)),  /// x-ray vision sci-fi colour
         "Section Analysis",
         App::Prop_None,
         "Colour of the cut-away material"
@@ -327,7 +348,7 @@ ViewProviderSectionAnalysis::~ViewProviderSectionAnalysis()
     removeClipPlane();
 }
 
-// Attach and create the visual representation of the cutting plane and hatching. 
+// Attach and create the visual representation of the cutting plane and hatching.
 // The plane is a translucent rectangle with a solid border.
 // The hatching is a set of diagonal lines (per settings in the view provider).
 void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
@@ -439,7 +460,7 @@ void ViewProviderSectionAnalysis::attach(App::DocumentObject* pcFeat)
     hatchSwitch = new SoSwitch();
     hatchSwitch->addChild(hatchLod);
     hatchSwitch->whichChild = (hatchingEnabled() && Visibility.getValue()) ? SO_SWITCH_ALL
-                                                                        : SO_SWITCH_NONE;
+                                                                           : SO_SWITCH_NONE;
     pcRoot->addChild(hatchSwitch);
 
     capRoot = new SoSeparator();
@@ -481,8 +502,8 @@ void ViewProviderSectionAnalysis::refreshHarvestCache()
     // object identity - that execute() uses to build SourceParts. Sectioning an
     // assembly that arrives as a single link used to produce exactly one body,
     // which left per-part colouring with a single part to colour.
-    const std::vector<App::DocumentObject*> parts =
-        Part::SectionAnalysis::distinctSourceParts(sources, feat);
+    const std::vector<App::DocumentObject*> parts
+        = Part::SectionAnalysis::distinctSourceParts(sources, feat);
 
     SectionCapHarvest::PartOwners owners;
     for (std::size_t i = 0; i < parts.size(); ++i) {
@@ -543,9 +564,7 @@ void ViewProviderSectionAnalysis::updateRemovedMaterialPlane()
     // the half the section throws away means not negating the normal.
     removedMaterialClip->plane.setValue(SbPlane(
         SbVec3f(static_cast<float>(n.x), static_cast<float>(n.y), static_cast<float>(n.z)),
-        SbVec3f(static_cast<float>(n.x * d),
-                static_cast<float>(n.y * d),
-                static_cast<float>(n.z * d))
+        SbVec3f(static_cast<float>(n.x * d), static_cast<float>(n.y * d), static_cast<float>(n.z * d))
     ));
 }
 
@@ -675,9 +694,11 @@ void ViewProviderSectionAnalysis::updateRemovedMaterial()
         std::vector<SbVec3f> points;
         points.reserve(body.soup.points.size());
         for (const auto& p : body.soup.points) {
-            points.emplace_back(static_cast<float>(p.x),
-                                static_cast<float>(p.y),
-                                static_cast<float>(p.z));
+            points.emplace_back(
+                static_cast<float>(p.x),
+                static_cast<float>(p.y),
+                static_cast<float>(p.z)
+            );
         }
         auto* coordinates = new SoCoordinate3();
         coordinates->point.setNum(static_cast<int>(points.size()));
@@ -808,9 +829,11 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             std::vector<SbVec3f> fillPoints;
             fillPoints.reserve(fill.points.size());
             for (const auto& p : fill.points) {
-                fillPoints.emplace_back(static_cast<float>(p.x),
-                                        static_cast<float>(p.y),
-                                        static_cast<float>(p.z));
+                fillPoints.emplace_back(
+                    static_cast<float>(p.x),
+                    static_cast<float>(p.y),
+                    static_cast<float>(p.z)
+                );
             }
             std::vector<int32_t> fillIndex;
             fillIndex.reserve(fill.indices.size() / 3 * 4);
@@ -879,9 +902,11 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
         for (const auto& loop : loops) {
             for (const auto& p : loop) {
                 lineIndex.push_back(static_cast<int32_t>(points.size()));
-                points.emplace_back(static_cast<float>(p.x),
-                                    static_cast<float>(p.y),
-                                    static_cast<float>(p.z));
+                points.emplace_back(
+                    static_cast<float>(p.x),
+                    static_cast<float>(p.y),
+                    static_cast<float>(p.z)
+                );
             }
             if (Part::SectionCap::isClosed(loop, chainTolerance)) {
                 lineIndex.push_back(lineIndex[lineIndex.size() - loop.size()]);
@@ -899,13 +924,17 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
             const auto hatch = Part::SectionCap::hatchTriangles(fill, levelDir, spacing);
             for (const auto& seg : hatch) {
                 lineIndex.push_back(static_cast<int32_t>(points.size()));
-                points.emplace_back(static_cast<float>(seg.start.x),
-                                    static_cast<float>(seg.start.y),
-                                    static_cast<float>(seg.start.z));
+                points.emplace_back(
+                    static_cast<float>(seg.start.x),
+                    static_cast<float>(seg.start.y),
+                    static_cast<float>(seg.start.z)
+                );
                 lineIndex.push_back(static_cast<int32_t>(points.size()));
-                points.emplace_back(static_cast<float>(seg.end.x),
-                                    static_cast<float>(seg.end.y),
-                                    static_cast<float>(seg.end.z));
+                points.emplace_back(
+                    static_cast<float>(seg.end.x),
+                    static_cast<float>(seg.end.y),
+                    static_cast<float>(seg.end.z)
+                );
                 lineIndex.push_back(SO_END_LINE_INDEX);
             }
         }
@@ -917,12 +946,10 @@ void ViewProviderSectionAnalysis::updateCapFromScene()
         // Same colour the fill was darkened from, at full strength, so the
         // outline and hatching read as belonging to that cap.
         auto* material = new SoMaterial();
-        material->diffuseColor.setValue(colour.diffuseColor.r,
-                                        colour.diffuseColor.g,
-                                        colour.diffuseColor.b);
-        material->emissiveColor.setValue(colour.diffuseColor.r,
-                                         colour.diffuseColor.g,
-                                         colour.diffuseColor.b);
+        material->diffuseColor
+            .setValue(colour.diffuseColor.r, colour.diffuseColor.g, colour.diffuseColor.b);
+        material->emissiveColor
+            .setValue(colour.diffuseColor.r, colour.diffuseColor.g, colour.diffuseColor.b);
         node->addChild(material);
 
         auto* style = new SoDrawStyle();
@@ -1422,12 +1449,16 @@ void ViewProviderSectionAnalysis::updateHatchGeometry()
     segIdx.reserve(hatch.size() * 3);
     for (const auto& seg : hatch) {
         const auto base = static_cast<int32_t>(segPts.size());
-        segPts.emplace_back(static_cast<float>(seg.start.x),
-                            static_cast<float>(seg.start.y),
-                            static_cast<float>(seg.start.z));
-        segPts.emplace_back(static_cast<float>(seg.end.x),
-                            static_cast<float>(seg.end.y),
-                            static_cast<float>(seg.end.z));
+        segPts.emplace_back(
+            static_cast<float>(seg.start.x),
+            static_cast<float>(seg.start.y),
+            static_cast<float>(seg.start.z)
+        );
+        segPts.emplace_back(
+            static_cast<float>(seg.end.x),
+            static_cast<float>(seg.end.y),
+            static_cast<float>(seg.end.z)
+        );
         segIdx.push_back(base);
         segIdx.push_back(base + 1);
         segIdx.push_back(SO_END_LINE_INDEX);
@@ -1461,7 +1492,7 @@ void ViewProviderSectionAnalysis::updateHatchGeometry()
 
 void ViewProviderSectionAnalysis::applyPerSolidColors()
 {
-  auto* feat = getObject<Part::SectionAnalysis>();
+    auto* feat = getObject<Part::SectionAnalysis>();
     if (!feat) {
         return;
     }
@@ -1520,8 +1551,8 @@ void ViewProviderSectionAnalysis::applyHatching()
     // The hatching hangs off pcRoot rather than the display-mode switch, so it
     // has to follow the object's visibility explicitly
     if (hatchSwitch) {
-        hatchSwitch->whichChild =
-            (hatchingEnabled() && Visibility.getValue()) ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+        hatchSwitch->whichChild = (hatchingEnabled() && Visibility.getValue()) ? SO_SWITCH_ALL
+                                                                               : SO_SWITCH_NONE;
     }
     updateHatchGeometry();
 }

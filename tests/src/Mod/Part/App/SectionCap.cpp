@@ -19,8 +19,14 @@ TriangleSoup box(double size)
     const double s = size;
     using V = Base::Vector3d;
     soup.points = {
-        V(0, 0, 0), V(s, 0, 0), V(s, s, 0), V(0, s, 0),  // bottom
-        V(0, 0, s), V(s, 0, s), V(s, s, s), V(0, s, s),  // top
+        V(0, 0, 0),
+        V(s, 0, 0),
+        V(s, s, 0),
+        V(0, s, 0),  // bottom
+        V(0, 0, s),
+        V(s, 0, s),
+        V(s, s, s),
+        V(0, s, s),  // top
     };
     // 12 triangles, wound outwards
     soup.indices = {
@@ -161,11 +167,13 @@ TEST(SectionCapSlice, testThePerTriangleAndSoupPathsAgree)
 
     std::vector<Segment> viaTriangle;
     for (std::size_t i = 0; i + 2 < soup.indices.size(); i += 3) {
-        auto segment = planeTriangleIntersection(soup.points[soup.indices[i]],
-                                                soup.points[soup.indices[i + 1]],
-                                                soup.points[soup.indices[i + 2]],
-                                                Z,
-                                                5.0);
+        auto segment = planeTriangleIntersection(
+            soup.points[soup.indices[i]],
+            soup.points[soup.indices[i + 1]],
+            soup.points[soup.indices[i + 2]],
+            Z,
+            5.0
+        );
         if (segment.has_value()) {
             viaTriangle.push_back(segment.value());
         }
@@ -226,8 +234,12 @@ TEST(SectionCapChain, testAnOpenOutlineIsStillReturned)
 {
     // Arrange - a single wall, so the crossing cannot close
     TriangleSoup soup;
-    soup.points = {Base::Vector3d(0, 0, -5), Base::Vector3d(10, 0, -5),
-                   Base::Vector3d(10, 0, 5), Base::Vector3d(0, 0, 5)};
+    soup.points = {
+        Base::Vector3d(0, 0, -5),
+        Base::Vector3d(10, 0, -5),
+        Base::Vector3d(10, 0, 5),
+        Base::Vector3d(0, 0, 5)
+    };
     soup.indices = {0, 1, 2, 0, 2, 3};
 
     // Act
@@ -269,10 +281,7 @@ namespace
 std::vector<Base::Vector3d> square(double x0, double y0, double side)
 {
     using Vec = Base::Vector3d;
-    return {Vec(x0, y0, 0),
-            Vec(x0 + side, y0, 0),
-            Vec(x0 + side, y0 + side, 0),
-            Vec(x0, y0 + side, 0)};
+    return {Vec(x0, y0, 0), Vec(x0 + side, y0, 0), Vec(x0 + side, y0 + side, 0), Vec(x0, y0 + side, 0)};
 }
 
 double totalLength(const std::vector<Segment>& segments)
@@ -478,10 +487,12 @@ namespace
 TriangleSoup squareSoup(double x0, double y0, double size)
 {
     TriangleSoup soup;
-    soup.points = {Base::Vector3d(x0, y0, 0),
-                   Base::Vector3d(x0 + size, y0, 0),
-                   Base::Vector3d(x0 + size, y0 + size, 0),
-                   Base::Vector3d(x0, y0 + size, 0)};
+    soup.points = {
+        Base::Vector3d(x0, y0, 0),
+        Base::Vector3d(x0 + size, y0, 0),
+        Base::Vector3d(x0 + size, y0 + size, 0),
+        Base::Vector3d(x0, y0 + size, 0)
+    };
     soup.indices = {0, 1, 2, 0, 2, 3};
     return soup;
 }
@@ -521,10 +532,10 @@ TEST(SectionCapHatchTriangles, testAHoleIsLeftUnhatchedWithoutBeingIdentified)
             cap.indices.push_back(base + i);
         }
     };
-    addQuad(0, 0, 10, 3);   // below the hole
-    addQuad(0, 7, 10, 3);   // above it
-    addQuad(0, 3, 3, 4);    // left of it
-    addQuad(7, 3, 3, 4);    // right of it
+    addQuad(0, 0, 10, 3);  // below the hole
+    addQuad(0, 7, 10, 3);  // above it
+    addQuad(0, 3, 3, 4);   // left of it
+    addQuad(7, 3, 3, 4);   // right of it
 
     // Act
     const auto hatch = hatchTriangles(cap, V, 1.0);

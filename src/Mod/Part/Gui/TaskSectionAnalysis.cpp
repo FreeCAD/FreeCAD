@@ -305,10 +305,7 @@ void SectionAnalysisWidget::setupGizmos()
     tiltGizmo1->automaticOrientation = false;
     tiltGizmo2->automaticOrientation = false;
 
-    gizmoContainer = Gui::GizmoContainer::create(
-        {offsetGizmo, tiltGizmo1, tiltGizmo2},
-        viewProvider
-    );
+    gizmoContainer = Gui::GizmoContainer::create({offsetGizmo, tiltGizmo1, tiltGizmo2}, viewProvider);
 
     // After create(), because initDragger() applies the theme colours and would
     // otherwise overwrite these. Two arcs in one colour are indistinguishable,
@@ -346,8 +343,8 @@ void SectionAnalysisWidget::setupGizmos()
     // step so dragging and typing have the same resolution.
     constexpr double tiltStepDegrees = 0.1;
     for (Gui::RotationGizmo* tilt : {tiltGizmo1, tiltGizmo2}) {
-        tilt->getDraggerContainer()->getDragger()->rotationIncrement =
-            tiltStepDegrees * std::numbers::pi / 180.0;
+        tilt->getDraggerContainer()->getDragger()->rotationIncrement = tiltStepDegrees
+            * std::numbers::pi / 180.0;
     }
 
     setGizmoPositions();
@@ -366,9 +363,8 @@ void SectionAnalysisWidget::showDraggerHints()
     }
 
     const Gui::InputHint::UserInput key = Gui::GizmoContainer::getFineSnapKey();
-    const QString message = Gui::GizmoContainer::isCoarseByDefault()
-        ? tr("%1 fine dragging")
-        : tr("%1 coarse dragging");
+    const QString message = Gui::GizmoContainer::isCoarseByDefault() ? tr("%1 fine dragging")
+                                                                     : tr("%1 coarse dragging");
 
     Gui::getMainWindow()->showHints({{
         .message = message,
@@ -460,13 +456,12 @@ void SectionAnalysisWidget::setGizmoPositions()
 
     // Pivot first: setPointerDirection overwrites the container rotation,
     // setArcNormalDirection composes onto it.
-    auto placeArc = [](Gui::RotationGizmo* arc,
-                    const Base::Vector3d& pivot,
-                    const Base::Vector3d& axis) {
-        auto* container = arc->getDraggerContainer();
-        container->setPointerDirection(Base::convertTo<SbVec3f>(pivot));
-        container->setArcNormalDirection(Base::convertTo<SbVec3f>(axis));
-    };
+    auto placeArc =
+        [](Gui::RotationGizmo* arc, const Base::Vector3d& pivot, const Base::Vector3d& axis) {
+            auto* container = arc->getDraggerContainer();
+            container->setPointerDirection(Base::convertTo<SbVec3f>(pivot));
+            container->setArcNormalDirection(Base::convertTo<SbVec3f>(axis));
+        };
 
     // Only the pivot is projected into the current plane. The rotation axis
     // stays the world axis its spin box is labelled with, so "X Angle" keeps
@@ -515,7 +510,7 @@ void SectionAnalysisWidget::setupConnections()
         offsetSpin,
         qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
         this,
-        // arrow gizmo moves the plane 
+        // arrow gizmo moves the plane
         [this](double value) {
             feature->PlaneOffset.setValue(value);
             setGizmoPositions();
@@ -750,7 +745,7 @@ void SectionAnalysisWidget::applyAngles()
     double oldD = feature->PlaneOffset.getValue();
     double oldLen = oldN.Length();
     Base::Vector3d oldPlanePoint = (oldLen > minUnitMagnitude) ? (oldN / oldLen) * oldD
-                                                    : Base::Vector3d(0, 0, 0);
+                                                               : Base::Vector3d(0, 0, 0);
     double newOffset = oldPlanePoint.x * n.x + oldPlanePoint.y * n.y + oldPlanePoint.z * n.z;
 
     feature->PlaneNormal.setValue(n);
@@ -829,11 +824,9 @@ bool SectionAnalysisWidget::accept()
         Base::Vector3d n = feature->PlaneNormal.getValue();
         // %.12g rather than %f: these are doubles, and a recorded macro should
         // reproduce the plane the user actually left rather than a rounding of it.
-        Gui::cmdAppObjectArgs(
-            feature, "PlaneNormal = FreeCAD.Vector(%.12g, %.12g, %.12g)", n.x, n.y, n.z);
+        Gui::cmdAppObjectArgs(feature, "PlaneNormal = FreeCAD.Vector(%.12g, %.12g, %.12g)", n.x, n.y, n.z);
         Gui::cmdAppObjectArgs(feature, "PlaneOffset = %.12g", feature->PlaneOffset.getValue());
-        Gui::cmdAppObjectArgs(
-            feature, "FlipCut = %s", feature->FlipCut.getValue() ? "True" : "False");
+        Gui::cmdAppObjectArgs(feature, "FlipCut = %s", feature->FlipCut.getValue() ? "True" : "False");
 
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         if (!feature->isValid()) {

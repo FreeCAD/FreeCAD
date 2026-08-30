@@ -62,9 +62,9 @@ public:
     /// matching no entry leaves the combo blank, i.e. currentIndex() == -1.
     enum class Preset
     {
-        XY = 0,   //!< Z normal
-        XZ = 1,   //!< Y normal
-        YZ = 2,   //!< X normal
+        XY = 0,  //!< Z normal
+        XZ = 1,  //!< Y normal
+        YZ = 2,  //!< X normal
         ViewDirection = 3,
     };
 
@@ -133,7 +133,7 @@ private:
     ViewProviderSectionAnalysis* viewProvider;
 
     /// Orientation the tilt angles are measured from, for the presets that have
-    /// no fixed axis. 
+    /// no fixed axis.
     Base::Vector3d angleBaseNormal {0.0, 0.0, 1.0};
 
     QComboBox* presetCombo = nullptr;
