@@ -3987,7 +3987,7 @@ int Sketch::addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value
     cOffset->basis = cBasis;
 
     int tag = ++ConstraintsCounter;
-    GCSsys.addConstraintOffset(*cOffset, value, tag, driving);
+    GCSsys.addConstraintEqual(cOffset->offset, value, tag, driving);
     return ConstraintsCounter;
 }
 
@@ -5212,12 +5212,14 @@ void Sketch::updateBSpline(const GeoDef& def)
 void Sketch::updateOffsetCurve(const GeoDef& def)
 {
     auto* offc = static_cast<GeomOffsetCurve*>(def.geo);
+    GCS::OffsetCurve& myGcsOffCurve = OffsetCurves[def.index];
 
     // Find basis and update
     // TODO: Basis can be stored in Geoms
     // FIXME: It is assumed that basis curve is already updated.
     auto* basis = static_cast<GeomCurve*>(Geoms[def.basisId].geo);
     offc->setBasis(basis);
+    offc->setOffset(*myGcsOffCurve.offset);
 }
 
 void Sketch::updateRestrictedCurve(const GeoDef& def)
