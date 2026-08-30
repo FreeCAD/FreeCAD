@@ -60,7 +60,7 @@ class TestChamfer(unittest.TestCase):
             reverse = (points[0] - target[1]).Length + (points[1] - target[0]).Length
             if min(direct, reverse) < 1e-6:
                 return "Edge" + str(index)
-        self.fail("Expected endpoint edge was not found")
+        raise AssertionError("Expected endpoint edge was not found")
 
     def testChamferCubeToOctahedron(self):
         self.Body = self.Doc.addObject("PartDesign::Body", "Body")
