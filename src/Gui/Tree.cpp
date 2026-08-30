@@ -3502,7 +3502,11 @@ struct UpdateDisabler
     }
     ~UpdateDisabler()
     {
-        if (blocked <= 0 || --blocked != 0) {
+        if (blocked <= 0) {
+            return;
+        }
+        if (blocked > 1) {
+            --blocked;
             return;
         }
 
@@ -3513,6 +3517,8 @@ struct UpdateDisabler
                 widget.setFocus();
             }
         }
+        // release last, so showing the widget again is not read as user input
+        --blocked;
     }
 };
 
@@ -3723,6 +3729,11 @@ void TreeWidget::onUpdateStatus()
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
 {
+    if (updateBlocked) {
+        // hiding and showing the tree makes Qt re-send hover, which is not a hover
+        FC_LOG("skip item entered while the tree is updating");
+        return;
+    }
     if (item && item->type() == TreeWidget::ObjectType) {
         auto objItem = static_cast<DocumentObjectItem*>(item);
         objItem->displayStatusInfo();
