@@ -571,7 +571,7 @@ class GenericSheetCutting(PostProcessor):
                         new_cmd = cmd
                         # Remove Z parameter from all movement commands
                         if (
-                            cmd.Name in Constants.GCODE_MOVE_LINE + Constants.GCODE_MOVE_ARC
+                            cmd.Name in Constants.GCODE_MOVE + Constants.GCODE_MOVE_RAPID
                             and "Z" in cmd.Parameters
                         ):
                             # Create new command without Z parameter
