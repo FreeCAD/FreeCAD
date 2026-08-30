@@ -43,6 +43,7 @@ add_executable(Base_tests_run
         Vector3D.cpp
         ViewProj.cpp
         Writer.cpp
+        XMLParser.cpp
         XMLTools.cpp
 )
 
