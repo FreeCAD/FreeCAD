@@ -219,22 +219,40 @@ class _ProfileH(_Profile):
         pl = obj.Placement
         p1 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
         p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
-        p3 = Vector(obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
-        p4 = Vector(
-            obj.WebThickness.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+        p3 = Vector(
+            obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
         )
-        p5 = Vector(obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
-        p6 = Vector(obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p4 = Vector(
+            obj.WebThickness.Value / 2,
+            (-obj.Height.Value / 2) + obj.FlangeThickness.Value,
+            0,
+        )
+        p5 = Vector(
+            obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
+        )
+        p6 = Vector(
+            obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+        )
         p7 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
-        p9 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p9 = Vector(
+            -obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+        )
         p10 = Vector(
-            -obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+            -obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
         )
         p11 = Vector(
-            -obj.WebThickness.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+            -obj.WebThickness.Value / 2,
+            (-obj.Height.Value / 2) + obj.FlangeThickness.Value,
+            0,
         )
-        p12 = Vector(-obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0)
+        p12 = Vector(
+            -obj.Width.Value / 2, (-obj.Height.Value / 2) + obj.FlangeThickness.Value, 0
+        )
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p1])
         obj.Shape = Part.Face(p)
         obj.Placement = pl
@@ -321,7 +339,9 @@ class _ProfileRH(_Profile):
             0,
         )
         q3 = Vector(
-            obj.Width.Value / 2 - obj.Thickness.Value, obj.Height.Value / 2 - obj.Thickness.Value, 0
+            obj.Width.Value / 2 - obj.Thickness.Value,
+            obj.Height.Value / 2 - obj.Thickness.Value,
+            0,
         )
         q4 = Vector(
             -obj.Width.Value / 2 + obj.Thickness.Value,
@@ -376,7 +396,9 @@ class _ProfileU(_Profile):
         p1 = Vector(-obj.Width.Value / 2, -obj.Height.Value / 2, 0)
         p2 = Vector(obj.Width.Value / 2, -obj.Height.Value / 2, 0)
         p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
-        p4 = Vector(obj.Width.Value / 2 - obj.FlangeThickness.Value, obj.Height.Value / 2, 0)
+        p4 = Vector(
+            obj.Width.Value / 2 - obj.FlangeThickness.Value, obj.Height.Value / 2, 0
+        )
         p5 = Vector(
             obj.Width.Value / 2 - obj.FlangeThickness.Value,
             obj.WebThickness.Value - obj.Height.Value / 2,
@@ -387,7 +409,9 @@ class _ProfileU(_Profile):
             obj.WebThickness.Value - obj.Height.Value / 2,
             0,
         )
-        p7 = Vector(-obj.Width.Value / 2 + obj.FlangeThickness.Value, obj.Height.Value / 2, 0)
+        p7 = Vector(
+            -obj.Width.Value / 2 + obj.FlangeThickness.Value, obj.Height.Value / 2, 0
+        )
         p8 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
         obj.Shape = Part.Face(p)
@@ -481,13 +505,23 @@ class _ProfileT(_Profile):
 
         pl = obj.Placement
         p1 = Vector(obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
-        p2 = Vector(obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
-        p3 = Vector(obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p2 = Vector(
+            obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
+        )
+        p3 = Vector(
+            obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+        )
         p4 = Vector(obj.Width.Value / 2, obj.Height.Value / 2, 0)
         p5 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2, 0)
-        p6 = Vector(-obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0)
+        p6 = Vector(
+            -obj.Width.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+        )
         p7 = Vector(
-            -obj.WebThickness.Value / 2, obj.Height.Value / 2 - obj.FlangeThickness.Value, 0
+            -obj.WebThickness.Value / 2,
+            obj.Height.Value / 2 - obj.FlangeThickness.Value,
+            0,
         )
         p8 = Vector(-obj.WebThickness.Value / 2, -obj.Height.Value / 2, 0)
         p = Part.makePolygon([p1, p2, p3, p4, p5, p6, p7, p8, p1])
@@ -571,7 +605,9 @@ class _ProfileTSLOT(_Profile):
         nut_width_dim = obj.TnutSlotWidth / 2
         templist = list()
         templist.append(Vector(nut_depth, core_dim, 0.0))
-        templist.append(Vector(nut_width_dim, nut_width_dim + (wall_dim / math.sqrt(2)), 0.0))
+        templist.append(
+            Vector(nut_width_dim, nut_width_dim + (wall_dim / math.sqrt(2)), 0.0)
+        )
         templist.append(Vector(nut_width_dim, obj.Size / 2 - wall_dim, 0.0))
         templist.append(Vector(slot_dim, obj.Size / 2 - wall_dim, 0.0))
         templist.append(Vector(slot_dim, obj.Size / 2, 0.0))
@@ -586,7 +622,9 @@ class _ProfileTSLOT(_Profile):
         templist.append(Vector(obj.Size / 2, slot_dim, 0.0))
         templist.append(Vector(obj.Size / 2 - wall_dim, slot_dim, 0.0))
         templist.append(Vector(obj.Size / 2 - wall_dim, nut_width_dim, 0.0))
-        templist.append(Vector(nut_width_dim + (wall_dim / math.sqrt(2)), nut_width_dim, 0.0))
+        templist.append(
+            Vector(nut_width_dim + (wall_dim / math.sqrt(2)), nut_width_dim, 0.0)
+        )
         templist.append(Vector(core_dim, nut_depth, 0.0))
         # sub_poly2 = Part.makePolygon(templist3)
         # l1=Part.LineSegment(Vector(obj.SlotSize/2, obj.Size/2, 0.0),Vector(obj.Size/2, obj.Size/2, 0.0))
@@ -607,6 +645,7 @@ class _ProfileTSLOT(_Profile):
         poly = Part.makePolygon(templist)
         hole = Part.makeCircle(obj.HoleDiameter / 2, FreeCAD.Vector(0, 0, 0))
         obj.Shape = Part.makeFace([poly, hole], "Part::FaceMakerCheese").Faces[0]
+        obj.reverse()
         obj.Placement = pl
 
 
@@ -673,10 +712,14 @@ class ProfileTaskPanel:
         self.comboProfile = QtGui.QComboBox(self.form)
         layout.addWidget(self.comboProfile)
         QtCore.QObject.connect(
-            self.comboCategory, QtCore.SIGNAL("currentTextChanged(QString)"), self.changeCategory
+            self.comboCategory,
+            QtCore.SIGNAL("currentTextChanged(QString)"),
+            self.changeCategory,
         )
         QtCore.QObject.connect(
-            self.comboProfile, QtCore.SIGNAL("currentIndexChanged(int)"), self.changeProfile
+            self.comboProfile,
+            QtCore.SIGNAL("currentIndexChanged(int)"),
+            self.changeProfile,
         )
         # Read preset profiles and add relevant ones
         self.categories = []
@@ -706,8 +749,12 @@ class ProfileTaskPanel:
                             self.Profile = pre
                             break
         if self.Profile:
-            origprofile = list(self.Profile)  # the operation below will change self.profile
-            self.comboCategory.setCurrentIndex(1 + self.categories.index(origprofile[1]))
+            origprofile = list(
+                self.Profile
+            )  # the operation below will change self.profile
+            self.comboCategory.setCurrentIndex(
+                1 + self.categories.index(origprofile[1])
+            )
             self.changeCategory(origprofile[1])
             self.comboProfile.setCurrentIndex(self.currentpresets.index(origprofile))
         self.retranslateUi(self.form)
@@ -719,7 +766,9 @@ class ProfileTaskPanel:
         for pre in self.presets:
             if pre[1] == text:
                 self.currentpresets.append(pre)
-                f = FreeCAD.Units.Quantity(pre[4], FreeCAD.Units.Length).getUserPreferred()
+                f = FreeCAD.Units.Quantity(
+                    pre[4], FreeCAD.Units.Length
+                ).getUserPreferred()
                 d = params.get_param("Decimals", path="Units")
                 s1 = str(round(pre[4] / f[1], d))
                 s2 = str(round(pre[5] / f[1], d))
