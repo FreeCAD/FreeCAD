@@ -25,6 +25,7 @@
 #include <FCConfig.h>
 
 #include <QPainter>
+#include <QPointF>
 #include <QRegularExpression>
 #include <Bnd_Box.hxx>
 #include <algorithm>
@@ -80,6 +81,23 @@
 using namespace Gui;
 using namespace SketcherGui;
 using namespace Sketcher;
+
+namespace
+{
+float distanceSquaredToRect(const QPointF& point, const QRectF& rect)
+{
+    const float left = static_cast<float>(rect.left());
+    const float top = static_cast<float>(rect.top());
+    const float right = left + static_cast<float>(rect.width());
+    const float bottom = top + static_cast<float>(rect.height());
+
+    const float pointX = static_cast<float>(point.x());
+    const float pointY = static_cast<float>(point.y());
+    const float dx = std::max({left - pointX, 0.0F, pointX - right});
+    const float dy = std::max({top - pointY, 0.0F, pointY - bottom});
+    return dx * dx + dy * dy;
+}
+}  // namespace
 
 //**************************** EditModeConstraintCoinManager class ******************************
 
@@ -2242,28 +2260,46 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     Base::Vector3d* pickedPoint
 )
 {
-    ConstraintPreselectionResult result;
+    struct IconCandidate
+    {
+        ConstraintPreselectionResult result;
+        float distanceToBoundsSquared = std::numeric_limits<float>::max();
+        float distanceToCenterSquared = std::numeric_limits<float>::max();
+        int constraintIndex = std::numeric_limits<int>::max();
+    };
 
-    auto detectIcon = [&](SoSeparator* sep, SoImage* iconNode, int iconIndex) {
+    std::vector<IconCandidate> candidates;
+
+    auto collectCandidate = [&](SoSeparator* sep, SoImage* iconNode, int iconIndex) {
         if (!pickContext.constraintGroupPath) {
-            return ConstraintPreselectionResult {};
+            return;
         }
 
         SoPath* iconPath = pickContext.constraintGroupPath->copy();
         iconPath->ref();
         iconPath->append(sep);
         iconPath->append(iconNode);
-        auto iconResult = detectPreselectionIcon(
+
+        float distanceToBoundsSquared = std::numeric_limits<float>::max();
+        float distanceToCenterSquared = std::numeric_limits<float>::max();
+        auto result = detectPreselectionIcon(
             sep,
             iconNode,
             iconIndex,
             iconPath,
             cursorScreenPos,
             pickContext,
-            pickedPoint
+            nullptr,
+            &distanceToBoundsSquared,
+            &distanceToCenterSquared
         );
         iconPath->unref();
-        return iconResult;
+        if (result.hasHit()) {
+            const int constraintIndex = *result.ConstrIndices.begin();
+            candidates.push_back(
+                {result, distanceToBoundsSquared, distanceToCenterSquared, constraintIndex}
+            );
+        }
     };
 
     for (int i = 0; i < editModeScenegraphNodes.constrGroup->getNumChildren(); ++i) {
@@ -2276,10 +2312,7 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                result = detectIcon(sep, iconNode, iconIndex);
-                if (result.hasHit()) {
-                    return result;
-                }
+                collectCandidate(sep, iconNode, iconIndex);
             }
         }
 
@@ -2287,15 +2320,31 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
             iconIndex < sep->getNumChildren()) {
             auto* iconNode = dynamic_cast<SoImage*>(sep->getChild(iconIndex));
             if (iconNode) {
-                result = detectIcon(sep, iconNode, iconIndex);
-                if (result.hasHit()) {
-                    return result;
-                }
+                collectCandidate(sep, iconNode, iconIndex);
             }
         }
     }
 
-    return result;
+    if (candidates.empty()) {
+        ConstraintPreselectionResult noHit;
+        return noHit;
+    }
+
+    const auto closest
+        = std::ranges::min_element(candidates, [](const IconCandidate& lhs, const IconCandidate& rhs) {
+              if (lhs.distanceToBoundsSquared != rhs.distanceToBoundsSquared) {
+                  return lhs.distanceToBoundsSquared < rhs.distanceToBoundsSquared;
+              }
+              if (lhs.distanceToCenterSquared != rhs.distanceToCenterSquared) {
+                  return lhs.distanceToCenterSquared < rhs.distanceToCenterSquared;
+              }
+              return lhs.constraintIndex < rhs.constraintIndex;
+          });
+
+    if (pickedPoint) {
+        *pickedPoint = closest->result.PickedPoint;
+    }
+    return closest->result;
 }
 
 std::set<int> EditModeConstraintCoinManager::parseConstraintIds(const QString& constrIdsStr) const
@@ -2373,7 +2422,9 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     const SoPath* iconPath,
     const SbVec2s& cursorScreenPos,
     const ScreenPickContext& pickContext,
-    Base::Vector3d* pickedPoint
+    Base::Vector3d* pickedPoint,
+    float* distanceToBoundsSquared,
+    float* distanceToCenterSquared
 ) const
 {
     ConstraintPreselectionResult result;
@@ -2397,8 +2448,23 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
         return result;
     }
 
-    int relativeX = static_cast<int>(cursorScreenPos[0] - iconScreenCenter[0] + iconSize[0] / 2.0f);
-    int relativeY = static_cast<int>(iconScreenCenter[1] - cursorScreenPos[1] + iconSize[1] / 2.0f);
+    const QPointF iconPoint(
+        static_cast<float>(cursorScreenPos[0]) - iconScreenCenter[0] + iconSize[0] / 2.0F,
+        iconScreenCenter[1] - static_cast<float>(cursorScreenPos[1]) + iconSize[1] / 2.0F
+    );
+    const QRectF iconBounds(0.0, 0.0, iconSize[0], iconSize[1]);
+    const float iconDistanceToBoundsSquared = distanceSquaredToRect(iconPoint, iconBounds);
+    const float dx = static_cast<float>(cursorScreenPos[0]) - iconScreenCenter[0];
+    const float dy = static_cast<float>(cursorScreenPos[1]) - iconScreenCenter[1];
+    if (distanceToBoundsSquared) {
+        *distanceToBoundsSquared = iconDistanceToBoundsSquared;
+    }
+    if (distanceToCenterSquared) {
+        *distanceToCenterSquared = dx * dx + dy * dy;
+    }
+
+    int relativeX = static_cast<int>(iconPoint.x());
+    int relativeY = static_cast<int>(iconPoint.y());
     const QMargins iconHitPadding(
         drawingParameters.constraintIconHitPaddingPx,
         drawingParameters.constraintIconHitPaddingPx,
@@ -2407,10 +2473,15 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
     );
 
     if (combinedConstrBoxes.count(constrIdsStr)) {
+        float closestBoxDistanceSquared = std::numeric_limits<float>::max();
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
-            if (boxInfo.first.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+            const float boxDistanceSquared = distanceSquaredToRect(iconPoint, boxInfo.first);
+            if (boxDistanceSquared <= selectionRadiusSquared) {
                 result.ConstrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
+        }
+        if (distanceToBoundsSquared) {
+            *distanceToBoundsSquared = closestBoxDistanceSquared;
         }
         if (!result.ConstrIndices.empty()) {
             result.Kind = ConstraintPreselectionResult::HitKind::Icon;

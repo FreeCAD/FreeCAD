@@ -210,7 +210,9 @@ private:
         const SoPath* iconPath,
         const SbVec2s& cursorScreenPos,
         const ScreenPickContext& pickContext,
-        Base::Vector3d* pickedPoint = nullptr
+        Base::Vector3d* pickedPoint = nullptr,
+        float* distanceToBoundsSquared = nullptr,
+        float* distanceToCenterSquared = nullptr
     ) const;
 
     /** @name Protected helpers for drawing constraint icons*/
