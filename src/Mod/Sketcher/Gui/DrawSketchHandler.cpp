@@ -385,6 +385,12 @@ QString DrawSketchHandler::getToolWidgetText() const
 void DrawSketchHandler::activate(ViewProviderSketch* vp)
 {
     sketchgui = vp;
+    geometryTagsAtToolStart.clear();
+    for (const auto* geometry : sketchgui->getSketchObject()->getInternalGeometry()) {
+        if (geometry) {
+            geometryTagsAtToolStart.insert(geometry->getTag());
+        }
+    }
 
     if (!Gui::ToolHandler::activate()) {
         sketchgui->purgeHandler();
@@ -405,6 +411,7 @@ void DrawSketchHandler::deactivate()
     clearEditMarkers();
     clearLineExtensionAutoConstraintHintDrawing();
     resetParallelPerpendicularHint();
+    autoConstraintHintReferences.clear();
     resetPositionText();
     setAngleSnapping(false);
 
@@ -667,7 +674,7 @@ bool DrawSketchHandler::seekLineExtensionAutoConstraint(
 
     for (int geoId = 0; geoId <= getHighestCurveIndex(); ++geoId) {
         const Part::Geometry* geo = obj->getGeometry(geoId);
-        if (!geo) {
+        if (!geo || !isAutoConstraintHintReference(geoId, PointPos::none)) {
             continue;
         }
 
@@ -765,6 +772,77 @@ bool DrawSketchHandler::getLineExtensionAutoConstraintSnapPoint(Base::Vector2d& 
 void DrawSketchHandler::resetTangentAutoConstraintHint()
 {
     tangentAutoConstraintHint = TangentAutoConstraintHint();
+}
+
+void DrawSketchHandler::seekPointAlignmentAutoConstraint(
+    std::vector<AutoConstraint>& suggestedConstraints,
+    const Base::Vector2d& Pos,
+    AutoConstraint::TargetType type
+)
+{
+    if (type != AutoConstraint::VERTEX && type != AutoConstraint::VERTEX_NO_TANGENCY) {
+        return;
+    }
+
+    for (const auto& constraint : suggestedConstraints) {
+        if (constraint.Type == Coincident || constraint.Type == PointOnObject
+            || constraint.Type == Symmetric) {
+            return;
+        }
+    }
+
+    SketchObject* obj = sketchgui->getSketchObject();
+    if (!obj) {
+        return;
+    }
+
+    Base::Vector2d segmentStart;
+    const bool hasSegmentStart = getStartPointOfCurrentSegment(segmentStart);
+    double bestDeviation = getAutoConstraintSearchDistance();
+    AutoConstraint bestConstraint {Sketcher::None, GeoEnum::GeoUndef, PointPos::none};
+    LineExtensionAutoConstraintHint bestHint;
+
+    auto considerPoint = [&](int geoId, PointPos posId, const Base::Vector2d& anchor) {
+        const Base::Vector2d cursorOffset = Pos - anchor;
+        if (cursorOffset.Sqr() < Precision::SquareConfusion()
+            || (hasSegmentStart && (anchor - segmentStart).Sqr() < Precision::SquareConfusion())) {
+            return;
+        }
+
+        auto considerAlignment =
+            [&](ConstraintType constraintType, double deviation, const Base::Vector2d& position) {
+                if (deviation > bestDeviation) {
+                    return;
+                }
+
+                bestDeviation = deviation;
+                bestConstraint = {constraintType, geoId, posId};
+                bestHint.isValid = true;
+                bestHint.start = anchor;
+                bestHint.end = position;
+            };
+
+        considerAlignment(Horizontal, std::abs(cursorOffset.y), {Pos.x, anchor.y});
+        considerAlignment(Vertical, std::abs(cursorOffset.x), {anchor.x, Pos.y});
+    };
+
+    const int highestVertex = getHighestVertexIndex();
+    for (int vertexIndex = 0; vertexIndex <= highestVertex; ++vertexIndex) {
+        int geoId = GeoEnum::GeoUndef;
+        PointPos posId = PointPos::none;
+        obj->getGeoVertexIndex(vertexIndex, geoId, posId);
+        if (geoId == GeoEnum::GeoUndef || !isAutoConstraintHintReference(geoId, posId)) {
+            continue;
+        }
+        considerPoint(geoId, posId, toVector2d(obj->getPoint(geoId, posId)));
+    }
+
+    if (!bestHint.isValid || !isLineExtensionAutoConstraintHintVisible(bestHint.start, bestHint.end)) {
+        return;
+    }
+
+    suggestedConstraints.push_back(bestConstraint);
+    lineExtensionAutoConstraintHint = bestHint;
 }
 
 bool DrawSketchHandler::updateTangentAutoConstraintHint()
@@ -1243,25 +1321,20 @@ int DrawSketchHandler::seekAutoConstraint(
 
     updateParallelPerpendicularEndpointHint();
 
-    // Reference line hover-selection detection
-    PreselectionData preselection = getPreselectionData();
-    bool horOrVert = fabs(preselection.hitShapeDir.x) < Precision::Confusion()
-        || fabs(preselection.hitShapeDir.y) < Precision::Confusion();
-    if (preselection.isLine && !horOrVert && preselection.geoId != GeoEnum::GeoUndef) {
-        if (preselection.geoId != lastHoveredGeoId) {
-            lastHoveredGeoId = preselection.geoId;
-            startHoverTimer();
-        }
-    }
-    else {
-        if (lastHoveredGeoId != GeoEnum::GeoUndef) {
-            lastHoveredGeoId = GeoEnum::GeoUndef;
+    const auto reference = getHoveredHintReference(getPreselectionData());
+    if (reference != lastHoveredHintReference) {
+        lastHoveredHintReference = reference;
+        if (reference.geoId == GeoEnum::GeoUndef) {
             stopHoverTimer();
+        }
+        else {
+            startHoverTimer();
         }
     }
 
     seekPreselectionAutoConstraint(suggestedConstraints, Pos, Dir, type);
     seekLineExtensionAutoConstraint(suggestedConstraints, Pos, type);
+    seekPointAlignmentAutoConstraint(suggestedConstraints, Pos, type);
 
     if (Dir.Length() > 1e-8 && type != AutoConstraint::CURVE) {
         bool tangentCreated = false;
@@ -1376,7 +1449,16 @@ bool DrawSketchHandler::generateOneAutoConstraintFromSuggestion(
         case Sketcher::Vertical: {
             auto c = std::make_unique<Sketcher::Constraint>();
             c->Type = ac.Type;
-            c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+            if (posId1 != Sketcher::PointPos::none && posId2 != Sketcher::PointPos::none
+                && geoId2 != Sketcher::GeoEnum::GeoUndef) {
+                c->First = geoId1;
+                c->FirstPos = posId1;
+                c->Second = geoId2;
+                c->SecondPos = posId2;
+            }
+            else {
+                c->First = (geoId2 != Sketcher::GeoEnum::GeoUndef ? geoId2 : geoId1);
+            }
             autoConstraints.push_back(std::move(c));
         } break;
         case Sketcher::Perpendicular: {
@@ -1648,18 +1730,44 @@ void DrawSketchHandler::createAutoConstraints(
                 // case the caller as to set geoId2, then it will be used as target instead of
                 // geoId2
             case Sketcher::Horizontal: {
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
-                );
+                if (posId1 != Sketcher::PointPos::none && cstr.PosId != Sketcher::PointPos::none
+                    && geoId2 != GeoEnum::GeoUndef) {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Horizontal',%d,%d,%d,%d)) ",
+                        geoId1,
+                        static_cast<int>(posId1),
+                        geoId2,
+                        static_cast<int>(cstr.PosId)
+                    );
+                }
+                else {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                    );
+                }
             } break;
             case Sketcher::Vertical: {
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                    geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
-                );
+                if (posId1 != Sketcher::PointPos::none && cstr.PosId != Sketcher::PointPos::none
+                    && geoId2 != GeoEnum::GeoUndef) {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Vertical',%d,%d,%d,%d)) ",
+                        geoId1,
+                        static_cast<int>(posId1),
+                        geoId2,
+                        static_cast<int>(cstr.PosId)
+                    );
+                }
+                else {
+                    Gui::cmdAppObjectArgs(
+                        sketchgui->getObject(),
+                        "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
+                        geoId2 != GeoEnum::GeoUndef ? geoId2 : geoId1
+                    );
+                }
             } break;
             case Sketcher::Perpendicular: {
                 Gui::cmdAppObjectArgs(
@@ -1887,7 +1995,7 @@ void DrawSketchHandler::resetParallelPerpendicularHint()
     parallelPerpendicularActiveHintLine = -1;
     parallelPerpendicularRefFromEndpoint = false;
     resetTangentAutoConstraintHint();
-    lastHoveredGeoId = GeoEnum::GeoUndef;
+    lastHoveredHintReference = {};
     stopHoverTimer();
     clearParallelPerpendicularHintDrawing();
 }
@@ -1953,9 +2061,7 @@ bool DrawSketchHandler::updateParallelPerpendicularEndpointHint()
         if ((lineStart - startPoint).Sqr() < Precision::SquareConfusion()
             || (lineEnd - startPoint).Sqr() < Precision::SquareConfusion()) {
             parallelPerpendicularRefGeoId = geoId;
-            lastHoveredGeoId = geoId;
             parallelPerpendicularRefFromEndpoint = true;
-            stopHoverTimer();
             return true;
         }
     }
@@ -2024,6 +2130,41 @@ bool DrawSketchHandler::snapToParallelPerpendicularHint(Base::Vector2d& point)
     return true;
 }
 
+DrawSketchHandler::AutoConstraintHintReference DrawSketchHandler::getHoveredHintReference(
+    const PreselectionData& preselection
+) const
+{
+    const auto* obj = sketchgui->getSketchObject();
+    const auto* geometry = obj && preselection.geoId != GeoEnum::GeoUndef
+        ? obj->getGeometry(preselection.geoId)
+        : nullptr;
+    if (!geometry || (preselection.posId == PointPos::none && !preselection.isLine)) {
+        return {};
+    }
+
+    return {preselection.geoId, preselection.posId, geometry->getTag()};
+}
+
+bool DrawSketchHandler::isAutoConstraintHintReference(int geoId, PointPos posId) const
+{
+    const auto* obj = sketchgui->getSketchObject();
+    const auto* geometry = obj ? obj->getGeometry(geoId) : nullptr;
+    if (!geometry) {
+        return false;
+    }
+
+    if (geoId >= 0 && !geometryTagsAtToolStart.contains(geometry->getTag())) {
+        return true;
+    }
+
+    // Hovering a line acquires all its points and its extension. Hovering a point
+    // acquires only that point and the extension of its line.
+    const auto reference = autoConstraintHintReferences.find(geometry->getTag());
+    return reference != autoConstraintHintReferences.end()
+        && (posId == PointPos::none || reference->second.contains(PointPos::none)
+            || reference->second.contains(posId));
+}
+
 void DrawSketchHandler::startHoverTimer()
 {
     if (!hoverTimer) {
@@ -2043,8 +2184,25 @@ void DrawSketchHandler::stopHoverTimer()
 
 void DrawSketchHandler::onHoverTimeout()
 {
-    if (lastHoveredGeoId != GeoEnum::GeoUndef) {
-        parallelPerpendicularRefGeoId = lastHoveredGeoId;
+    if (!sketchgui->Autoconstraints.getValue()
+        || lastHoveredHintReference.geoId == GeoEnum::GeoUndef) {
+        return;
+    }
+
+    PreselectionData preselection = getPreselectionData();
+    if (lastHoveredHintReference != getHoveredHintReference(preselection)) {
+        return;
+    }
+
+    autoConstraintHintReferences[lastHoveredHintReference.geometryTag].insert(
+        lastHoveredHintReference.posId
+    );
+
+    // Preserve the existing directional reference behavior for non-axis-aligned lines.
+    bool horOrVert = fabs(preselection.hitShapeDir.x) < Precision::Confusion()
+        || fabs(preselection.hitShapeDir.y) < Precision::Confusion();
+    if (preselection.isLine && !horOrVert) {
+        parallelPerpendicularRefGeoId = preselection.geoId;
         parallelPerpendicularRefFromEndpoint = false;
         renderDirectionalAutoConstraintHints();
     }
