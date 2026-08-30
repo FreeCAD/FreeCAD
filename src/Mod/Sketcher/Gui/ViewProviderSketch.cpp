@@ -958,6 +958,7 @@ EditModeCoinManager::PreselectionResult ViewProviderSketch::getPreselectionResul
     const ScreenPickContext pickContext {
         renderViewportRegion,
         renderViewVolume,
+        std::max(0.0F, viewer->getPickRadius()),
         search.isFound() ? search.getPath() : nullptr
     };
 

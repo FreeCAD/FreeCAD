@@ -341,6 +341,7 @@ private:
         const SoPickedPointList& points,
         const SbVec2s& cursorPos,
         int hoveredPointIndex,
+        const ScreenPickContext& pickContext,
         PreselectionResult& result
     );
     bool detectPointPreselection(const SoPickedPointList& points, PreselectionResult& result);

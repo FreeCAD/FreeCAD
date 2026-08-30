@@ -17,6 +17,8 @@ struct ScreenPickContext
 {
     SbViewportRegion renderViewportRegion;
     SbViewVolume renderViewVolume;
+    float selectionRadiusPx = 0.0F;
+
     // Borrowed from the SoSearchAction that created this context. It remains valid for the
     // duration of the preselection operation.
     const SoPath* constraintGroupPath = nullptr;

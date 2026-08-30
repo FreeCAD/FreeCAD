@@ -2452,8 +2452,11 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
         static_cast<float>(cursorScreenPos[0]) - iconScreenCenter[0] + iconSize[0] / 2.0F,
         iconScreenCenter[1] - static_cast<float>(cursorScreenPos[1]) + iconSize[1] / 2.0F
     );
-    const QRectF iconBounds(0.0, 0.0, iconSize[0], iconSize[1]);
-    const float iconDistanceToBoundsSquared = distanceSquaredToRect(iconPoint, iconBounds);
+    const QRectF iconBoundsForDistance(0.0, 0.0, iconSize[0], iconSize[1]);
+    const float iconDistanceToBoundsSquared = distanceSquaredToRect(iconPoint, iconBoundsForDistance);
+    const float selectionRadiusPx = pickContext.selectionRadiusPx;
+    const float selectionRadiusSquared = selectionRadiusPx * selectionRadiusPx;
+
     const float dx = static_cast<float>(cursorScreenPos[0]) - iconScreenCenter[0];
     const float dy = static_cast<float>(cursorScreenPos[1]) - iconScreenCenter[1];
     if (distanceToBoundsSquared) {
@@ -2463,19 +2466,11 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
         *distanceToCenterSquared = dx * dx + dy * dy;
     }
 
-    int relativeX = static_cast<int>(iconPoint.x());
-    int relativeY = static_cast<int>(iconPoint.y());
-    const QMargins iconHitPadding(
-        drawingParameters.constraintIconHitPaddingPx,
-        drawingParameters.constraintIconHitPaddingPx,
-        drawingParameters.constraintIconHitPaddingPx,
-        drawingParameters.constraintIconHitPaddingPx
-    );
-
     if (combinedConstrBoxes.count(constrIdsStr)) {
         float closestBoxDistanceSquared = std::numeric_limits<float>::max();
         for (const auto& boxInfo : combinedConstrBoxes.at(constrIdsStr)) {
             const float boxDistanceSquared = distanceSquaredToRect(iconPoint, boxInfo.first);
+            closestBoxDistanceSquared = std::min(closestBoxDistanceSquared, boxDistanceSquared);
             if (boxDistanceSquared <= selectionRadiusSquared) {
                 result.ConstrIndices.insert(boxInfo.second.begin(), boxInfo.second.end());
             }
@@ -2490,8 +2485,7 @@ EditModeConstraintCoinManager::ConstraintPreselectionResult EditModeConstraintCo
         return result;
     }
 
-    QRect iconBounds(0, 0, iconSize[0], iconSize[1]);
-    if (iconBounds.marginsAdded(iconHitPadding).contains(relativeX, relativeY)) {
+    if (iconDistanceToBoundsSquared <= selectionRadiusSquared) {
         result.Kind = ConstraintPreselectionResult::HitKind::Icon;
         result.ConstrIndices = parseConstraintIds(constrIdsStr);
         result.PickedPoint = *resultPoint;
