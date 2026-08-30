@@ -1396,6 +1396,14 @@ void AssemblyObject::fixGroundedPart(App::DocumentObject* obj, Base::Placement& 
     markerName1 = "/OndselAssembly/" + mbdMarker1->name;
     markerName2 = "/OndselAssembly/" + mbdPart->name + "/" + mbdMarker2->name;
 
+    // Ground the part at the frame level rather than with an ordinary fixed joint.
+    // A joint's constraints are eligible for removal by the solver's redundant
+    // constraint elimination, so in an over-constrained assembly the ground itself
+    // could be relaxed - after which the elimination degenerates and the solve dies
+    // with "invalid vector subscript". A part flagged isFixed has no degrees of
+    // freedom to begin with, so there is nothing for the eliminator to take away.
+    mbdPart->isFixed = true;
+
     auto mbdJoint = CREATE<ASMTFixedJoint>::With();
     mbdJoint->setName(name);
     mbdJoint->setMarkerI(markerName1);
