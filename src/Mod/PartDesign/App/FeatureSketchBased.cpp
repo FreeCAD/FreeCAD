@@ -880,7 +880,9 @@ TopoShape ProfileBased::moveProfileToStart(
         return profileShape;
     }
 
-    TopoShape result = profileShape.makeElementCopy();
+    // Translating the profile only requires a new location. Rebuilding its topology can change
+    // OCCT's signed wire offset and invert a subsequent taper for transformed sketches.
+    TopoShape result = profileShape;
     gp_Trsf transform;
     transform.SetTranslation(gp_Vec(direction) * offset);
     result.move(transform);

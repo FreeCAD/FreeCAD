@@ -527,6 +527,8 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             : getStartReferenceOffset(sketchshape, StartReference, dir, StartOffset.getValue(), invObjLoc);
         TopoShape startSketch = moveProfileToStart(sketchshape, dir, startOffset);
 
+        // Reuse the profile for tapered sides. Deep copies can change OCCT's signed wire offset
+        // for transformed sketches and invert the taper.
         std::vector<TopoShape> prisms;  // Stores prisms, all in global CS
         double taper1 = TaperAngle.getValue();
         double offset1 = Offset.getValue();
@@ -557,7 +559,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     // directions.
                     L /= 2.0;
                     TopoShape prism1 = generateSingleExtrusionSide(
-                        startSketch.makeElementCopy(),
+                        startSketch,
                         method,
                         L,
                         taper1,
@@ -576,7 +578,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
                     gp_Dir dir2 = dir;
                     dir2.Reverse();
                     TopoShape prism2 = generateSingleExtrusionSide(
-                        startSketch.makeElementCopy(),
+                        startSketch,
                         method,
                         L,
                         taper1,
@@ -710,7 +712,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
             }
             else {
                 TopoShape prism1 = generateSingleExtrusionSide(
-                    startSketch.makeElementCopy(),
+                    startSketch,
                     method,
                     L,
                     taper1,
@@ -728,7 +730,7 @@ App::DocumentObjectExecReturn* FeatureExtrude::buildExtrusion(ExtrudeOptions opt
 
                 // Side 2
                 TopoShape prism2 = generateSingleExtrusionSide(
-                    startSketch.makeElementCopy(),
+                    startSketch,
                     method2,
                     L2,
                     taper2,
