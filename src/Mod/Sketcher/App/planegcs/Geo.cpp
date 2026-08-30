@@ -1151,8 +1151,8 @@ DeriVector2 OffsetCurve::Value(double u, double du, const double* derivparam) co
     }
 
     // TODO: implement properly. recall how du is involved
-    // normalDir = (basis->CalculateNormal(u, derivParam)).normalized()
-    // return basis->Value(u, du, derivparam) + normalDir * (*offset);
+    DeriVector2 normalDir = (basis->CalculateNormal(&u, derivparam)).getNormalized();
+    return basis->Value(u, du, derivparam).sum(normalDir.mult(*offset));
     return {};
 }
 
