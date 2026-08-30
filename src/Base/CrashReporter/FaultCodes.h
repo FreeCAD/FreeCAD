@@ -66,4 +66,20 @@ std::optional<FaultDescription> BaseExport describeFaultCode(std::uint32_t code)
  */
 [[nodiscard]] std::string BaseExport faultCodeName(std::uint32_t code);
 
+/**
+ * Translate from an internal OS ID to a user-readable string.
+ *
+ * @param osID The operating system identifier stored in the crash report
+ * @return A human-readable operating system name for that osID
+ */
+[[nodiscard]] std::string_view BaseExport osName(OS osID);
+
+/**
+ * Translate from an internal architecture ID to a user-readable string.
+ *
+ * @param architectureID The architecture identifier stored in the crash report
+ * @return A human-readable architecture name for that architectureID
+ */
+[[nodiscard]] std::string_view BaseExport architectureName(Architecture architectureID);
+
 }  // namespace Base::CrashReporter

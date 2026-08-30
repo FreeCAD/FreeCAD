@@ -593,21 +593,26 @@ TEST_F(CrashReporterTests, FC_REAL_CAPTURE_TEST)  // NOLINT
     // debug information the symbolicator appends "+ <offset>", which would put a byte offset into
     // the key consumers group crashes by, so the Reader trims it.
     for (const auto& frame : report.stackFrames) {
-        const auto plus = frame.symbol.rfind(" + ");
+        if (!frame.symbol.has_value()) {
+            continue;
+        }
+        const auto& symbol = frame.symbol.value();
+        const auto plus = symbol.rfind(" + ");
         const bool endsWithOffset = plus != std::string::npos
-            && frame.symbol.find_first_not_of("0123456789", plus + 3) == std::string::npos;
-        EXPECT_FALSE(endsWithOffset) << "symbol still carries an offset: " << frame.symbol;
+            && symbol.find_first_not_of("0123456789", plus + 3) == std::string::npos;
+        EXPECT_FALSE(endsWithOffset) << "symbol still carries an offset: " << symbol;
     }
 
     // `file` is a source file. A frame with no debug information has none, and must not fall back
     // to naming the object it resolved against.
     for (const auto& frame : report.stackFrames) {
-        if (!frame.file.empty()) {
-            EXPECT_NE(frame.file, frame.modulePath);
+        if (frame.file.has_value()) {
+            EXPECT_NE(frame.file.value(), frame.modulePath);
         }
     }
 
     EXPECT_TRUE(isAddressCarryingFaultCode(report.code)) << "unexpected fault code: " << report.code;
+    EXPECT_TRUE(report.faultAddress.has_value());
     EXPECT_FALSE(report.partialWrite);
 }
 

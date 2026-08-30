@@ -127,4 +127,34 @@ std::string faultCodeName(std::uint32_t code)
     return fmt::format("UNKNOWN(0x{:08X})", code);
 }
 
+std::string_view osName(OS osID)
+{
+    switch (osID) {
+        case OS::Linux:
+            return "linux";
+        case OS::macOS:
+            return "macos";
+        case OS::Windows:
+            return "windows";
+        case OS::BSDFamily:
+            return "bsd";
+        case OS::None:
+            return "unknown";
+    }
+    return "unknown";
+}
+
+std::string_view architectureName(Architecture architectureID)
+{
+    switch (architectureID) {
+        case Architecture::x64:
+            return "x86_64";
+        case Architecture::aarch64:
+            return "aarch64";
+        case Architecture::None:
+            return "unknown";
+    }
+    return "unknown";
+}
+
 }  // namespace Base::CrashReporter
