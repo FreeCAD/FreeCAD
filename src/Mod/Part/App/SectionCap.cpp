@@ -258,12 +258,11 @@ SectionCap::chainLoops(const std::vector<Segment>& segments, double tolerance)
 SectionCap::TriangleSoup SectionCap::fillLoops(
     const std::vector<std::vector<Base::Vector3d>>& loops,
     const Base::Vector3d& u,
-    const Base::Vector3d& v,
-    double stripHeight
+    const Base::Vector3d& v
 )
 {
     TriangleSoup soup;
-    if (loops.empty() || !std::isfinite(stripHeight) || stripHeight <= 0.0) {
+    if (loops.empty()) {
         return soup;
     }
 
@@ -278,13 +277,15 @@ SectionCap::TriangleSoup SectionCap::fillLoops(
         }
     }
 
+    // An edge of the boundary in plane coordinates, kept low end first so a
+    // band can ask whether it is inside the edge's span without reordering.
     struct Edge
     {
-        double a0, b0, a1, b1;
+        double bLow, bHigh;
+        double aLow, aHigh;
     };
     std::vector<Edge> edges;
-    double bMin = std::numeric_limits<double>::max();
-    double bMax = std::numeric_limits<double>::lowest();
+    std::vector<double> levels;
     for (const auto& loop : loops) {
         if (loop.size() < 3) {
             continue;
@@ -292,49 +293,46 @@ SectionCap::TriangleSoup SectionCap::fillLoops(
         for (std::size_t i = 0; i < loop.size(); ++i) {
             const Base::Vector3d& p = loop[i];
             const Base::Vector3d& q = loop[(i + 1) % loop.size()];
-            const Edge e {p * u, p * v, q * u, q * v};
-            if (!std::isfinite(e.a0) || !std::isfinite(e.b0) || !std::isfinite(e.a1)
-                || !std::isfinite(e.b1)) {
+            const double a0 = p * u;
+            const double b0 = p * v;
+            const double a1 = q * u;
+            const double b1 = q * v;
+            if (!std::isfinite(a0) || !std::isfinite(b0) || !std::isfinite(a1)
+                || !std::isfinite(b1)) {
                 continue;
             }
-            edges.push_back(e);
-            bMin = std::min({bMin, e.b0, e.b1});
-            bMax = std::max({bMax, e.b0, e.b1});
+            levels.push_back(b0);
+            // An edge lying along a level is crossed by no band and would only
+            // divide by zero below. Its ends still count as levels.
+            if (b0 == b1) {
+                continue;
+            }
+            edges.push_back(b0 < b1 ? Edge {b0, b1, a0, a1} : Edge {b1, b0, a1, a0});
         }
     }
-    if (edges.empty() || !(bMax > bMin)) {
+    if (edges.empty()) {
         return soup;
     }
 
-    // As many strips as this region spans, 
-    // The cap is bounded so a stray tiny height cannot ask for millions.
-    const int steps = std::clamp(
-        static_cast<int>(std::ceil((bMax - bMin) / stripHeight)),
-        minFillStrips,
-        maxFillStrips
-    );
+    std::sort(levels.begin(), levels.end());
+    levels.erase(std::unique(levels.begin(), levels.end()), levels.end());
+    if (levels.size() < 2) {
+        return soup;
+    }
 
-    const double height = (bMax - bMin) / static_cast<double>(steps);
+    // Reached in the order their low end comes up, so a band takes the edges
+    // that have started without looking at the rest.
+    std::sort(edges.begin(), edges.end(), [](const Edge& l, const Edge& r) {
+        return l.bLow < r.bLow;
+    });
 
-    /// Where the region's edges cross one level, left to right.
-    auto crossingsAt = [&edges](double level, std::vector<double>& out) {
-        out.clear();
-        for (const auto& e : edges) {
-            // Half open, so a vertex exactly on the level is counted once and
-            // the parity below is not flipped back by it.
-            if ((e.b0 > level) == (e.b1 > level)) {
-                continue;
-            }
-            const double t = (level - e.b0) / (e.b1 - e.b0);
-            out.push_back(e.a0 + (e.a1 - e.a0) * t);
-        }
-        std::sort(out.begin(), out.end());
+    /// Where an edge sits at one level. Only asked for levels inside its span.
+    auto crossingAt = [&edges](std::size_t index, double level) {
+        const Edge& e = edges[index];
+        return e.aLow + (e.aHigh - e.aLow) * (level - e.bLow) / (e.bHigh - e.bLow);
     };
 
-    std::vector<double> atLower;
-    std::vector<double> atUpper;
-    std::vector<double> atMiddle;
-
+    // One quad per span, so neighbouring bands meet exactly and leave no gaps.
     auto addQuad = [&soup, &u, &v, &offsetFromOrigin](double leftLower,
                                                       double rightLower,
                                                       double leftUpper,
@@ -350,37 +348,38 @@ SectionCap::TriangleSoup SectionCap::fillLoops(
                             {base, base + 1, base + 2, base, base + 2, base + 3});
     };
 
-    crossingsAt(bMin, atLower);
+    std::vector<std::size_t> active;
+    std::size_t entering = 0;
 
-    for (int k = 0; k < steps; ++k) {
-        const double lower = bMin + height * k;
-        const double upper = lower + height;
-        crossingsAt(upper, atUpper);
+    for (std::size_t band = 0; band + 1 < levels.size(); ++band) {
+        const double lower = levels[band];
+        const double upper = levels[band + 1];
 
-        // Trapezoids, so a straight boundary is followed exactly rather than as
-        // a staircase of the strip height. Only possible when both edges of the
-        // strip cross the region the same number of times.
-        if (atLower.size() == atUpper.size() && atLower.size() >= 2) {
-            for (std::size_t i = 0; i + 1 < atLower.size(); i += 2) {
-                if (atLower[i + 1] > atLower[i] || atUpper[i + 1] > atUpper[i]) {
-                    addQuad(atLower[i], atLower[i + 1], atUpper[i], atUpper[i + 1], lower, upper);
-                }
-            }
-        }
-        else {
-            // A vertex or a hole starts inside this strip, so the two edges do
-            // not pair up. Sampled mid strip instead, which is the old
-            // behaviour and steps by at most one strip height.
-            const double middle = lower + height * 0.5;
-            crossingsAt(middle, atMiddle);
-            for (std::size_t i = 0; i + 1 < atMiddle.size(); i += 2) {
-                if (atMiddle[i + 1] > atMiddle[i]) {
-                    addQuad(atMiddle[i], atMiddle[i + 1], atMiddle[i], atMiddle[i + 1], lower, upper);
-                }
-            }
+        while (entering < edges.size() && edges[entering].bLow <= lower) {
+            active.push_back(entering++);
         }
 
-        atLower.swap(atUpper);
+        // Left to right. No vertex falls inside a band, so no two edges meet
+        // inside one either, and the order halfway up is the order throughout.
+        const double middle = 0.5 * (lower + upper);
+        std::sort(active.begin(), active.end(), [&](std::size_t l, std::size_t r) {
+            return crossingAt(l, middle) < crossingAt(r, middle);
+        });
+
+        for (std::size_t i = 0; i + 1 < active.size(); i += 2) {
+            const double leftLower = crossingAt(active[i], lower);
+            const double rightLower = crossingAt(active[i + 1], lower);
+            const double leftUpper = crossingAt(active[i], upper);
+            const double rightUpper = crossingAt(active[i + 1], upper);
+            if (rightLower > leftLower || rightUpper > leftUpper) {
+                addQuad(leftLower, rightLower, leftUpper, rightUpper, lower, upper);
+            }
+        }
+
+        // Retired once the band that ends them has been drawn.
+        std::erase_if(active, [&edges, upper](std::size_t index) {
+            return edges[index].bHigh <= upper;
+        });
     }
 
     return soup;
