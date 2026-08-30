@@ -1766,8 +1766,11 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
 
     switch (ev->type()) {
         case QEvent::Enter:
-            if (Selection().hasPreselection() && !qobject_cast<View3DInventorViewer*>(o)
-                && !isUnderOverlay()) {
+            // A preselection made from the tree belongs there, and the tree drops it
+            // itself on leaving. Showing a widget under a still cursor also enters it.
+            if (Selection().hasPreselection()
+                && Selection().getPreselection().SubType != SelectionChanges::MsgSource::TreeView
+                && !qobject_cast<View3DInventorViewer*>(o) && !isUnderOverlay()) {
                 Selection().rmvPreselect();
             }
             break;
