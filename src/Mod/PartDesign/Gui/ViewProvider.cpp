@@ -29,7 +29,6 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <BRep_Builder.hxx>
 
-#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/ServiceProvider.h>
 #include <App/Document.h>
@@ -54,8 +53,6 @@
 #include "ViewProvider.h"
 #include "ViewProviderPy.h"
 
-
-FC_LOG_LEVEL_INIT("PartDesignPreview", true, true)
 
 using namespace PartDesignGui;
 
@@ -234,13 +231,11 @@ void ViewProvider::attachPreview()
 void ViewProvider::updatePreview()
 {
     ViewProviderPreviewExtension::updatePreview();
-    FC_WARN("DIAG preview geometry rebuilt, empty " << getPreviewShape().isNull());
     syncToolPreview();
 }
 
 void ViewProvider::showPreview(bool enable)
 {
-    FC_WARN("DIAG showPreview " << enable);
     ViewProviderPreviewExtension::showPreview(enable);
 
     // a fresh preview skips updatePreview(), leaving the previous owner's tool state
