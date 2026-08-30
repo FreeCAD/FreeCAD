@@ -4175,8 +4175,8 @@ void TopoShape::limitElementAtPlanarEndpoints(
             }
 
             const bool isFirst = endpoint.IsSame(firstVertex);
-            const gp_Vec tangent =
-                curve.DN(isFirst ? curve.FirstParameter() : curve.LastParameter(), 1);
+            const gp_Vec tangent
+                = curve.DN(isFirst ? curve.FirstParameter() : curve.LastParameter(), 1);
             if (tangent.SquareMagnitude() <= Precision::SquareConfusion()) {
                 continue;
             }

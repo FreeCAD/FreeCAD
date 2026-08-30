@@ -29,7 +29,6 @@ import unittest
 import FreeCAD
 import Part
 
-
 FIXTURE_PATH = Path(__file__).parent / "Fixtures" / "issue_32231_fillets.FCStd"
 
 
