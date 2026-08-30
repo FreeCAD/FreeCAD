@@ -50,7 +50,7 @@
 #include <fmt/printf.h>
 
 #include "Parameter.h"
-#include "Parameter.inl"
+#include "ParameterSchema.h"
 #include "Console.h"
 #include "Exception.h"
 #include "FileInfo.h"
@@ -2076,7 +2076,7 @@ bool ParameterManager::CheckDocument() const
 
         // Either load the XSD file from disk or use the built-in string
         // const char* xsdFile = "...";
-        std::string xsdStr(xmlSchemeString);  // NOLINT
+        std::string xsdStr(ParameterSchema);  // NOLINT
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         MemBufInputSource xsdFile(
             reinterpret_cast<const XMLByte*>(xsdStr.c_str()),
