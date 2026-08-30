@@ -395,7 +395,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
                 break
         self.assertIsNotNone(cut_idx, "G1 Z0.0 cut move should be present")
         self.assertLess(m3_idx, cut_idx, "M3 should appear before Z- cut move")
-    
 
     def test06_mark_entry_only_mode(self):
         """
@@ -644,54 +643,54 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
         )
 
     def test11_strip_Z_commands(self):
-            """
-            Test strip Z parameters functionality - removes Z parameters from movement commands.
-    
-            INPUT:
-            - Function: STRIP_Z()
-            - Parameters: postables with movement commands containing F parameters
-            - Input data: Path with G0/G1/G2/G3 commands having feed rates
-    
-            EXPECTED OUTPUT:
-            - All Z parameters removed from movement commands
-            - Non-movement commands unchanged
-            - This dissables feed rate commands for machines that do not support them
-            """
-            # Create path with various movement commands and feed rates
-            commands = [
-                Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0, "F": 3000}),  # Rapid with feed
-                Path.Command("G1", {"X": 10.0, "Y": 10.0, "Z": 0.0, "F": 1000}),  # Linear move
-                Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "F": 800}),  # Arc move
-                Path.Command("G3", {"X": 30.0, "Y": 20.0, "J": 5.0, "F": 600}),  # Arc move
-                Path.Command("M3", {"S": 1000}),  # Non-movement command
-            ]
-            self.profile_op.Path = Path.Path(commands)
-    
-            # Enable force rapid feeds
-            self._set_postprocessor_properties(STRIP_Z=True)
-    
-            # Build postables and call injection method directly
-            postables = [("section", [self.profile_op])]
-            self.post._force_rapid_feeds(postables)
-    
-            # Verify the modified path
-            result_cmds = self.profile_op.Path.Commands
-    
-            # Check that no movement commands have F parameters
-            for cmd in result_cmds:
-                if cmd.Name in ["G0", "G1", "G2", "G3"]:
-                    self.assertNotIn(
-                        "Z",
-                        cmd.Parameters,
-                        f"{cmd.Name} should not have Z parameter after strip Z parameters",
-                    )
-    
-            # Check that non-movement commands are unchanged
-            m3_cmd = next(cmd for cmd in result_cmds if cmd.Name == "M3")
-            self.assertIn("S", m3_cmd.Parameters, "M3 should retain S parameter")
-            self.assertAlmostEqual(
-                m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
-            )
+        """
+        Test strip Z parameters functionality - removes Z parameters from movement commands.
+
+        INPUT:
+        - Function: STRIP_Z()
+        - Parameters: postables with movement commands containing F parameters
+        - Input data: Path with G0/G1/G2/G3 commands having feed rates
+
+        EXPECTED OUTPUT:
+        - All Z parameters removed from movement commands
+        - Non-movement commands unchanged
+        - This dissables feed rate commands for machines that do not support them
+        """
+        # Create path with various movement commands and feed rates
+        commands = [
+            Path.Command("G0", {"X": 0.0, "Y": 0.0, "Z": 10.0, "F": 3000}),  # Rapid with feed
+            Path.Command("G1", {"X": 10.0, "Y": 10.0, "Z": 0.0, "F": 1000}),  # Linear move
+            Path.Command("G2", {"X": 20.0, "Y": 10.0, "I": 5.0, "F": 800}),  # Arc move
+            Path.Command("G3", {"X": 30.0, "Y": 20.0, "J": 5.0, "F": 600}),  # Arc move
+            Path.Command("M3", {"S": 1000}),  # Non-movement command
+        ]
+        self.profile_op.Path = Path.Path(commands)
+
+        # Enable force rapid feeds
+        self._set_postprocessor_properties(STRIP_Z=True)
+
+        # Build postables and call injection method directly
+        postables = [("section", [self.profile_op])]
+        self.post._force_rapid_feeds(postables)
+
+        # Verify the modified path
+        result_cmds = self.profile_op.Path.Commands
+
+        # Check that no movement commands have F parameters
+        for cmd in result_cmds:
+            if cmd.Name in ["G0", "G1", "G2", "G3"]:
+                self.assertNotIn(
+                    "Z",
+                    cmd.Parameters,
+                    f"{cmd.Name} should not have Z parameter after strip Z parameters",
+                )
+
+        # Check that non-movement commands are unchanged
+        m3_cmd = next(cmd for cmd in result_cmds if cmd.Name == "M3")
+        self.assertIn("S", m3_cmd.Parameters, "M3 should retain S parameter")
+        self.assertAlmostEqual(
+            m3_cmd.Parameters["S"], 1000.0, msg="M3 S parameter should be unchanged"
+        )
 
     def test_actual_machine(self):
         """Our specific `postprocessor_properties` were seen"""

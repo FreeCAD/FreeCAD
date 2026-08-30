@@ -845,7 +845,9 @@ class TestCAMSanity(PathTestBase):
 
         # Look for the test squawk from GenericSheetCutting.get_sanity_checks
         test_squawks = [s for s in all_squawks if s["Note"] == "This is a test warning message"]
-        self.assertGreater(len(test_squawks), 0, "Test squawk from GenericSheetCutting should be present")
+        self.assertGreater(
+            len(test_squawks), 0, "Test squawk from GenericSheetCutting should be present"
+        )
 
         # Verify the test squawk is classified as WARNING (critical)
         test_critical = [

@@ -26,7 +26,7 @@ It is used to take a pseudo-gcode fragment from a CAM object
 and output 'real' GCode suitable for a plasma, laser or waterjet cutters.
 
 Features:
-- Three modes for deciding how to add M3 commands to a file: 
+- Three modes for deciding how to add M3 commands to a file:
     Z_Control: Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement.
     G0_Control: Torch ignites (M3) on change from G0 to G1 and extinguishes (M5) on G1 to G0
     Spindle_Control: Any M3/M5 commands are output as-is.
@@ -140,7 +140,7 @@ class GenericSheetCutting(PostProcessor):
                 "name": "cutter_control",
                 "type": "choice",
                 "label": translate("CAM", "Control Method For Cutter"),
-                "choices": ["Z_Control", "Spindle_Control" , "G0_Control"],
+                "choices": ["Z_Control", "Spindle_Control", "G0_Control"],
                 "default": "Z_Control",
                 "help": translate(
                     "CAM",
@@ -178,16 +178,19 @@ class GenericSheetCutting(PostProcessor):
                 "type": "bool",
                 "label": translate("CAM", "Strip Z Parameters"),
                 "default": False,
-                "help": translate("CAM", "Skips Z parameters from output should the machine not support them"),
+                "help": translate(
+                    "CAM", "Skips Z parameters from output should the machine not support them"
+                ),
             },
             {
                 "name": "STRIP_F",
                 "type": "bool",
                 "label": translate("CAM", "Strip F Parameters"),
                 "default": False,
-                "help": translate("CAM", "Skips F parameters from output should the machine not support them"),
+                "help": translate(
+                    "CAM", "Skips F parameters from output should the machine not support them"
+                ),
             },
-            
         ]
 
     def __init__(
@@ -342,16 +345,16 @@ class GenericSheetCutting(PostProcessor):
                         for cmd in item.Path.Commands:
                             # Only track Z movements for this injection
                             if "Z" not in cmd.Parameters:
-                                #we are tracking spindle on manually
+                                # we are tracking spindle on manually
                                 if cmd.Name not in Constants.MCODE_SPINDLE_ON:
                                     new_commands.append(cmd)
                                 continue
 
                             # Handle torch control based on Z movement
                             # Torch ignites AT pierce_height but is TRIGGERED by a move to cut_height
-                            if not self._torch_active and CompValue(cmd.Parameters["Z"]) <= CompValue(
-                                cut_height
-                            ):
+                            if not self._torch_active and CompValue(
+                                cmd.Parameters["Z"]
+                            ) <= CompValue(cut_height):
                                 if self.values["MARK_ENTRY_ONLY"]:
                                     new_commands.append(cmd)
                                     new_commands.append(self.TorchIgniteCommand)
@@ -377,7 +380,7 @@ class GenericSheetCutting(PostProcessor):
 
                             # Update last Z position
                             self._last_z = cmd.Parameters["Z"]
-                            #we are tracking spindle on manually
+                            # we are tracking spindle on manually
                             if cmd.Name not in Constants.MCODE_SPINDLE_ON:
                                 new_commands.append(cmd)
                         # Replace Path with modified command list
@@ -388,10 +391,13 @@ class GenericSheetCutting(PostProcessor):
                     if hasattr(item, "Path") and item.Path:
                         # Reset state for each operation
                         new_commands = self._reset_cutter_state(item)
-                        prev_command = "" #Constants.GCODE_MOVE[0]
+                        prev_command = ""  # Constants.GCODE_MOVE[0]
                         for cmd in item.Path.Commands:
-                            #track G0 - G1 commands to turn torch on
-                            if cmd.Name in Constants.GCODE_MOVE and prev_command in Constants.GCODE_MOVE_RAPID:
+                            # track G0 - G1 commands to turn torch on
+                            if (
+                                cmd.Name in Constants.GCODE_MOVE
+                                and prev_command in Constants.GCODE_MOVE_RAPID
+                            ):
                                 print("torch on")
                                 if not self._torch_active:
                                     if self.values["MARK_ENTRY_ONLY"]:
@@ -402,20 +408,26 @@ class GenericSheetCutting(PostProcessor):
                                         continue
                                     else:
                                         new_commands.append(self.TorchIgniteCommand)
-                                        self._torch_active = True    
-                                
-                            #track G1 - G0 commands to turn torch off
-                            if cmd.Name in Constants.GCODE_MOVE_RAPID and prev_command in Constants.GCODE_MOVE:
+                                        self._torch_active = True
+
+                            # track G1 - G0 commands to turn torch off
+                            if (
+                                cmd.Name in Constants.GCODE_MOVE_RAPID
+                                and prev_command in Constants.GCODE_MOVE
+                            ):
                                 print("torch out")
                                 new_commands.append(self.TorchExtinguishCommand)
                                 self._torch_active = False
-                            
-                            #we are tracking spindle on manually
+
+                            # we are tracking spindle on manually
                             if cmd.Name not in Constants.MCODE_SPINDLE_ON:
                                 new_commands.append(cmd)
-                            
+
                             # Only track G0 - G1 or G1 - G0 changes
-                            if cmd.Name in Constants.GCODE_MOVE_RAPID or cmd.Name in Constants.GCODE_MOVE:
+                            if (
+                                cmd.Name in Constants.GCODE_MOVE_RAPID
+                                or cmd.Name in Constants.GCODE_MOVE
+                            ):
                                 prev_command = cmd.Name
                             else:
                                 continue
@@ -423,7 +435,7 @@ class GenericSheetCutting(PostProcessor):
                         item.Path = Path.Path(new_commands)
         else:
             return
-            
+
     def _get_operation_height(self, item, height_type, default):
         """Get operation height (StartDepth/FinalDepth) from path object."""
         try:
@@ -545,7 +557,7 @@ class GenericSheetCutting(PostProcessor):
                         new_commands.append(new_cmd)
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
-    
+
     def _strip_z_parameterts(self, postables):
         """Remove all Z parameters for machines that do not support them."""
         if not self.values["STRIP_Z"]:
@@ -569,7 +581,7 @@ class GenericSheetCutting(PostProcessor):
                         new_commands.append(new_cmd)
                     # Replace Path with modified command list
                     item.Path = Path.Path(new_commands)
-                    
+
     def _expand_postprocessor_commands(self, postables):
         """Apply sheet cutting-specific transformations to postables.
 
@@ -584,7 +596,7 @@ class GenericSheetCutting(PostProcessor):
         self._inject_cooling_delay(postables)
         self._force_rapid_feeds(postables)
         self._strip_z_parameterts(postables)
-        
+
     def get_sanity_checks(self, job):
         """Sheet cutter specific sanity checks."""
         Path.Log.track("GenericSheetCutting.get_sanity_checks() called")
@@ -652,7 +664,7 @@ class GenericSheetCutting(PostProcessor):
 
         Path.Log.track(f"GenericSheetCutting.get_sanity_checks() returning {len(squawks)} squawks")
         return squawks
-    
+
     @property
     def tooltip(self):
         tooltip: str = """
@@ -661,7 +673,7 @@ class GenericSheetCutting(PostProcessor):
         and output 'real' GCode suitable for a plasma, laser or waterjet cutters.
 
         Features:
-        - Three modes for deciding how to add M3 commands to a file: 
+        - Three modes for deciding how to add M3 commands to a file:
             Z_Control: Torch ignites (M3) on Z- movement and extinguishes (M5) on Z+ movement.
             G0_Control: Torch ignites (M3) on change from G0 to G1 and extinguishes (M5) on G1 to G0
             Spindle_Control: Any M3/M5 commands are output as-is.
