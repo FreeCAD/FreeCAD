@@ -367,7 +367,6 @@ class TestGenericSheetCutting(PathTestUtils.PathTestBase):
             Path.Command("G0", {"Z": 10.0}),
         ]
         self.profile_op.Path = Path.Path(commands)
-        original_cmd_count = len(commands)
 
         # Disable torch Z-axis control
         self._set_postprocessor_properties(cutter_control="G0_Control")
