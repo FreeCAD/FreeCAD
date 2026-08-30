@@ -74,7 +74,9 @@ constexpr int ToolButtonHeight = 26;
 constexpr int ToolButtonWidth = 26;
 constexpr int SignToggleButtonWidth = 40;
 constexpr int MoreButtonWidth = 52;
-constexpr int SymbolComboWidth = 120;
+constexpr int SymbolComboWidth = 44;
+
+constexpr int DefaultSymbolIndex = 1;  // Diameter
 constexpr int ToleranceSpinBoxWidth = 70;
 
 // others
@@ -89,10 +91,11 @@ const std::regex FormatSpecRegex(R"(%\.([0-9]+)([fFrRgGwWeE]))");
 
 struct SymbolEntry
 {
-    QString label;
-    QString text;
+    QString tooltip;
+    QString symbol;
 };
 
+// Only COMMON symbols that can't be typed
 QList<SymbolEntry> buildSymbolList()
 {
     QString diameterSymbol = QString::fromStdString(
@@ -100,17 +103,13 @@ QList<SymbolEntry> buildSymbolList()
     );
 
     return {
-        {.label = QObject::tr("Insert symbol\u2026"), .text = QString()},
-        {.label = QObject::tr("\u00B0 Degree"), .text = QStringLiteral("\u00B0")},
-        {.label = QObject::tr("TYP"), .text = QStringLiteral(" TYP")},
-        {.label = QObject::tr("%1 Diameter").arg(diameterSymbol), .text = diameterSymbol},
-        {.label = QObject::tr("S%1 Spherical diameter").arg(diameterSymbol),
-         .text = QStringLiteral("S") + diameterSymbol},
-        {.label = QObject::tr("R Radius"), .text = QStringLiteral("R")},
-        {.label = QObject::tr("SR Spherical radius"), .text = QStringLiteral("SR")},
-        {.label = QObject::tr("\u25A1 Square"), .text = QStringLiteral("\u25A1")},
-        {.label = QObject::tr("nX Repetition"), .text = QStringLiteral("nX ")},
-
+        {.tooltip = QObject::tr("Degree"), .symbol = QStringLiteral("\u00B0")},
+        {.tooltip = QObject::tr("Diameter"), .symbol = diameterSymbol},
+        {.tooltip = QObject::tr("Counterbore"), .symbol = QStringLiteral("\u2334")},
+        {.tooltip = QObject::tr("Countersink"), .symbol = QStringLiteral("\u2335")},
+        {.tooltip = QObject::tr("Downward arrow"), .symbol = QStringLiteral("\u21A7")},
+        {.tooltip = QObject::tr("Square"), .symbol = QStringLiteral("\u25A1")},
+        {.tooltip = QObject::tr("Plus/minus"), .symbol = QStringLiteral("\u00B1")},
     };
 }
 }  // namespace
@@ -243,8 +242,10 @@ void DimensionQuickEdit::buildUi()
     m_symbolCombo->setToolTip(tr("Insert a symbol at the cursor in the focused field"));
     m_symbolCombo->setFixedWidth(SymbolComboWidth);
     for (const SymbolEntry& entry : buildSymbolList()) {
-        m_symbolCombo->addItem(entry.label);
+        m_symbolCombo->addItem(entry.symbol);
+        m_symbolCombo->setItemData(m_symbolCombo->count() - 1, entry.tooltip, Qt::ToolTipRole);
     }
+    m_symbolCombo->setCurrentIndex(DefaultSymbolIndex);
 
     m_referenceBtn = makeToolButton(
         QStringLiteral("(x)"),
@@ -359,7 +360,7 @@ void DimensionQuickEdit::readFromFeature()
     m_suffixEdit->setText(QString::fromStdString(m_formatSuffix));
     m_decimals = std::clamp(decimals, 0, MaxDecimalPlaces);
     m_referenceBtn->setChecked(m_referenceActive);
-    m_symbolCombo->setCurrentIndex(0);  // since it just inserts the symbol, we reset the index back to 0
+    m_symbolCombo->setCurrentIndex(DefaultSymbolIndex);
     updateValuePreview();
 
     bool equalTol = dim->EqualTolerance.getValue();
@@ -579,15 +580,15 @@ void DimensionQuickEdit::onSymbolChanged(int index)
         return;
     }
     QList<SymbolEntry> symbols = buildSymbolList();
-    if (index <= 0 || index >= symbols.size()) {
-        return;  // index 0 is the placeholder itself
+    if (index < 0 || index >= symbols.size()) {
+        return;
     }
     QLineEdit* target = m_lastFocusedField ? m_lastFocusedField : m_prefixEdit;
 
-    target->insert(symbols[index].text);
+    target->insert(symbols[index].symbol);
     onPrefixOrSuffixChanged();
 
-    m_symbolCombo->setCurrentIndex(0);
+    m_symbolCombo->setCurrentIndex(DefaultSymbolIndex);
     target->setFocus();
 }
 
