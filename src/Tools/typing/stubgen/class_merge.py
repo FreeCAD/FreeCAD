@@ -6,7 +6,8 @@ This module owns the class-shaped half of the merge stage:
 - map binding classes onto canonical public module/symbol targets
 - plan alias exports for multiply-exposed classes
 - rewrite binding class ASTs into public import-shaped class definitions
-- append generated class stubs into the final public module tree
+- preserve binding-specific support imports and declarations in ``ApiClass``
+- render complete model classes into the final public module tree
 
 In the overall pipeline this sits on top of the generic module merge helpers in
 ``module_merge``. That module handles package paths and module-body merges;
@@ -17,7 +18,9 @@ from __future__ import annotations
 
 import ast
 import copy
+from dataclasses import replace
 from pathlib import Path
+from typing import cast
 
 from .deprecation import literal_keyword_values, structured_deprecation_message
 from .model import (
@@ -29,17 +32,22 @@ from .model import (
     PublicClassStub,
 )
 from .module_merge import (
+    api_attribute_source,
     class_body_defined_symbols,
     import_stmt_line,
-    module_names_from_classes,
     module_stub_path,
     public_stub_symbols,
+    merged_module_source,
+    top_level_symbol_names,
     type_checking_test,
 )
 from .naming import valid_identifier
 from .parsing import decorator_name, parse_python_source
+from .python_api.extract import class_from_node
+from .python_api.model import ApiClass, ApiModel, ApiModule, ApiOrigin
+from .render import render_docstring_lines
+from .signature_parser import CallableSignature
 
-TYPE_CHECKING_IMPORT_LINE = "from typing import TYPE_CHECKING"
 DEPRECATED_IMPORT_LINE = "from typing_extensions import deprecated"
 
 
@@ -113,7 +121,7 @@ class PublicClassStubTransformer(ast.NodeTransformer):
                     raise ValueError(
                         f"deprecated attribute '{name}' metadata must be a structured mapping"
                     )
-                message = structured_deprecation_message(value)
+                message = structured_deprecation_message(cast(dict[str, object], value))
                 if message is None:
                     raise ValueError(
                         f"deprecated attribute '{name}' metadata requires lifecycle fields"
@@ -258,8 +266,14 @@ class PublicClassStubTransformer(ast.NodeTransformer):
 
             visited = self.visit(item)
             if isinstance(visited, list):
-                transformed.extend(visited)
+                children = cast(list[object], visited)
+                for child in children:
+                    if not isinstance(child, ast.stmt):
+                        raise TypeError("class transformer produced a non-statement node")
+                    transformed.append(child)
             else:
+                if not isinstance(visited, ast.stmt):
+                    raise TypeError("class transformer produced a non-statement node")
                 transformed.append(visited)
             index += 1
         return transformed
@@ -713,47 +727,6 @@ def class_public_symbol(klass: BindingClass, module_name: str) -> str | None:
     )
 
 
-def class_alias_stub_line(
-    module_name: str,
-    symbol: str,
-    target_module_name: str,
-    target_symbol: str,
-) -> str:
-    if module_name == target_module_name:
-        return f"{symbol} = {target_symbol}"
-    if target_module_name.startswith(f"{module_name}."):
-        relative_module = target_module_name.removeprefix(module_name)
-        return f"from {relative_module} import {target_symbol} as {symbol}"
-    return f"from {target_module_name} import {target_symbol} as {symbol}"
-
-
-def class_public_alias_targets(
-    klass: BindingClass,
-) -> list[tuple[str, str, str, str]]:
-    targets = class_public_targets(klass)
-    canonical_target = canonical_target_from_targets(klass, targets)
-    if not canonical_target:
-        return []
-    target_module_name, target_symbol = canonical_target
-    return [
-        (module_name, symbol, target_module_name, target_symbol)
-        for module_name, symbol in targets
-        if (module_name, symbol) != canonical_target
-    ]
-
-
-def class_public_alias_line(klass: BindingClass, module_name: str) -> tuple[str, str] | None:
-    for public_module_name, symbol, target_module_name, target_symbol in class_public_alias_targets(
-        klass
-    ):
-        if public_module_name == module_name:
-            return (
-                symbol,
-                class_alias_stub_line(module_name, symbol, target_module_name, target_symbol),
-            )
-    return None
-
-
 def validate_public_class_aliases(classes: list[BindingClass]) -> None:
     errors: list[str] = []
     for klass in classes:
@@ -869,114 +842,211 @@ def public_class_stub_source(
     )
 
 
-def class_stub_lines(
-    root: Path,
-    module_classes: list[BindingClass],
-    module_name: str,
-    all_classes: list[BindingClass] | None = None,
-    include_future_import: bool = True,
-    skip_symbols: set[str] | None = None,
-    existing_source: str = "",
-) -> list[str]:
-    all_classes = all_classes or module_classes
-    header = [
-        "# Generated public class stubs from binding .pyi specs.",
-    ]
-    if include_future_import:
-        header.append("from __future__ import annotations")
-    body: list[str] = []
-    extra_import_lines: list[str] = []
-    seen: set[str] = set()
-    skip_symbols = skip_symbols or set()
-    renames = module_symbol_renames(module_classes, module_name)
-    module_symbols = {
-        symbol
-        for klass in module_classes
-        if (symbol := class_public_symbol(klass, module_name)) is not None
-    }
-    import_targets = public_import_target_index(all_classes)
-    internal_roots = known_stub_module_roots(all_classes)
-    alias_lines: list[str] = []
-    for klass in module_classes:
-        alias = class_public_alias_line(klass, module_name)
-        if not alias:
-            continue
-        symbol, line = alias
-        if symbol in seen or symbol in skip_symbols:
-            continue
-        alias_lines.append(line)
-        seen.add(symbol)
-    body.extend(alias_lines)
-    if alias_lines:
-        body.append("")
-    for klass in module_classes:
-        symbol = class_public_symbol(klass, module_name)
-        if not symbol or symbol in seen or symbol in skip_symbols:
-            continue
-        stub = public_class_stub_source(
-            root,
-            klass,
-            module_name,
-            renames,
-            module_symbols,
-            import_targets,
-            internal_roots,
-        )
-        if stub:
-            for line in stub.import_lines:
-                if line not in existing_source and line not in extra_import_lines:
-                    extra_import_lines.append(line)
-            body.append(f"# {klass.source}:{klass.line}")
-            body.append(stub.source)
-        else:
-            body.append(f"class {symbol}:  # {klass.source}:{klass.line}")
-            body.append("    ...")
-        body.append("")
-        seen.add(symbol)
-    if not body:
-        return []
-    type_checking_lines = type_checking_import_lines(root, module_classes, existing_source)
-    if type_checking_lines and TYPE_CHECKING_IMPORT_LINE not in existing_source:
-        if TYPE_CHECKING_IMPORT_LINE not in extra_import_lines:
-            extra_import_lines.append(TYPE_CHECKING_IMPORT_LINE)
-    header.extend(extra_import_lines)
-    if extra_import_lines:
-        header.append("")
-    header.extend(type_checking_lines)
-    return header + body
-
-
-def append_class_stubs(
-    out_dir: Path,
+def normalize_api_model_binding_class_headers(
     root: Path,
     classes: list[BindingClass],
-    module_names: set[str] | None = None,
+    api_model: ApiModel,
+) -> ApiModel:
+    """Normalize binding-class bases using the public class transformation rules."""
+
+    grouped = group_classes_by_module(classes)
+    import_targets = public_import_target_index(classes)
+    internal_roots = known_stub_module_roots(classes)
+    model_modules: list[ApiModule] = []
+    for module in api_model.modules:
+        api_classes: list[ApiClass] = []
+        module_classes = grouped.get(module.name, [])
+        module_symbols = {
+            symbol
+            for klass in module_classes
+            if (symbol := class_public_symbol(klass, module.name)) is not None
+        }
+        renames = module_symbol_renames(module_classes, module.name)
+        for api_class in module.classes:
+            if api_class.origin != ApiOrigin.BINDING_SPEC:
+                api_classes.append(api_class)
+                continue
+            binding_class = next(
+                (
+                    klass
+                    for klass in module_classes
+                    if class_public_symbol(klass, module.name) == api_class.name
+                ),
+                None,
+            )
+            if binding_class is None:
+                api_classes.append(api_class)
+                continue
+            stub = public_class_stub_source(
+                root,
+                binding_class,
+                module.name,
+                renames,
+                module_symbols,
+                import_targets,
+                internal_roots,
+            )
+            if stub is None:
+                api_classes.append(api_class)
+                continue
+            tree = ast.parse(stub.source)
+            class_node = next(
+                (node for node in tree.body if isinstance(node, ast.ClassDef)),
+                None,
+            )
+            if class_node is None:
+                api_classes.append(api_class)
+                continue
+            normalized_class = ast_class_api_model(
+                root,
+                binding_class,
+                module.name,
+                class_node,
+                api_class,
+                stub.import_lines,
+            )
+            api_classes.append(normalized_class)
+        model_modules.append(replace(module, classes=tuple(api_classes)))
+    return replace(api_model, modules=tuple(model_modules))
+
+
+def ast_class_api_model(
+    root: Path,
+    binding_class: BindingClass,
+    module_name: str,
+    node: ast.ClassDef,
+    existing: ApiClass,
+    transformed_imports: tuple[str, ...],
+) -> ApiClass:
+    """Build normalized callable and attribute data from a transformed class AST."""
+
+    path = root / binding_class.source
+    transformed = class_from_node(
+        root,
+        path,
+        module_name,
+        node,
+        origin=ApiOrigin.BINDING_SPEC,
+    )
+    raw_methods = {group.name: group for group in existing.methods}
+    methods = tuple(
+        replace(group, location=raw_methods.get(group.name, group).location)
+        for group in transformed.methods
+    )
+    raw_attributes = {attribute.name: attribute for attribute in existing.attributes}
+    attributes = tuple(
+        replace(attribute, location=raw_attributes.get(attribute.name, attribute).location)
+        for attribute in transformed.attributes
+    )
+    support_imports = list(transformed_imports)
+    type_checking_lines = type_checking_import_lines(root, [binding_class])
+    if type_checking_lines:
+        support_imports.append("\n".join(type_checking_lines).rstrip())
+    return replace(
+        existing,
+        doc=transformed.doc,
+        bases=tuple(ast.unparse(base) for base in node.bases),
+        methods=methods,
+        attributes=attributes,
+        decorators=transformed.decorators,
+        support_imports=tuple(support_imports),
+        support_body=transformed.support_body,
+    )
+
+
+def render_api_class_header(api_class: ApiClass) -> str:
+    if not api_class.bases:
+        return f"class {api_class.name}:"
+    return f"class {api_class.name}({', '.join(api_class.bases)}):"
+
+
+def render_api_model_class(api_class: ApiClass) -> str:
+    """Render one complete public class from the semantic API model."""
+
+    lines = [f"@{decorator}" for decorator in api_class.decorators]
+    lines.append(render_api_class_header(api_class))
+    body: list[str] = []
+    if api_class.doc:
+        body.extend(render_docstring_lines(api_class.doc))
+    body.extend(f"    {api_attribute_source(attribute)}" for attribute in api_class.attributes)
+    for group in api_class.methods:
+        for index, signature in enumerate(group.signatures):
+            decorators = list(signature.decorators)
+            decorator_names = {
+                decorator.split("(", 1)[0].split(".", 1)[-1] for decorator in decorators
+            }
+            if group.overload and "overload" not in decorator_names:
+                decorators.insert(0, "overload")
+            if signature.flags.classmethod and "classmethod" not in decorator_names:
+                decorators.insert(0, "classmethod")
+            elif signature.flags.staticmethod and "staticmethod" not in decorator_names:
+                decorators.insert(0, "staticmethod")
+            body.extend(f"    @{decorator}" for decorator in decorators)
+            display = class_method_display_signature(signature)
+            body.append(f"    def {display}:")
+            doc = signature.docstring or (group.doc if index == 0 else None)
+            if doc:
+                body.extend(f"    {line}" for line in render_docstring_lines(doc))
+            body.append("        ...")
+    for support in api_class.support_body:
+        body.extend(f"    {line}" for line in support.splitlines())
+    if not body:
+        body.append("    ...")
+    lines.extend(body)
+    return "\n".join(lines)
+
+
+def append_api_model_class_stubs(
+    target_dir: Path,
+    api_model: ApiModel,
+    module_names: set[str],
 ) -> int:
-    module_names = module_names or module_names_from_classes(classes)
-    suppressed = 0
-    for module_name, group in sorted(group_classes_by_module(classes).items()):
-        path = module_stub_path(out_dir, module_name, module_names)
+    """Materialize model classes absent from the existing generated output."""
+
+    count = 0
+    for module in api_model.modules:
+        if not module.classes:
+            continue
+        path = module_stub_path(target_dir, module.name, module_names)
         path.parent.mkdir(parents=True, exist_ok=True)
         existing = path.read_text(encoding="utf-8") if path.exists() else ""
         existing_symbols = public_stub_symbols(existing)
-        suppressed += sum(
-            1
-            for klass in group
-            if (symbol := class_public_symbol(klass, module_name)) and symbol in existing_symbols
-        )
-        class_lines = "\n".join(
-            class_stub_lines(
-                root,
-                group,
-                module_name,
-                all_classes=classes,
-                include_future_import=not existing.strip(),
-                skip_symbols=existing_symbols,
-                existing_source=existing,
-            )
-        ).rstrip()
-        if not class_lines:
+        missing = [
+            api_class for api_class in module.classes if api_class.name not in existing_symbols
+        ]
+        if not missing:
             continue
-        separator = "\n\n" if existing else ""
-        path.write_text(existing.rstrip() + separator + class_lines + "\n", encoding="utf-8")
-    return suppressed
+        prefix = existing.rstrip()
+        if not prefix:
+            prefix = "from __future__ import annotations"
+        class_source = "\n\n".join(render_api_model_class(api_class) for api_class in missing)
+        required_imports = {
+            import_line
+            for api_class in missing
+            for import_line in api_class.support_imports
+            if import_line.strip()
+        }
+        if "Any" in class_source:
+            required_imports.add("from typing import Any")
+        if any(group.overload for api_class in missing for group in api_class.methods):
+            required_imports.add("from typing import overload")
+        for import_line in sorted(required_imports):
+            if import_line not in prefix:
+                prefix = f"{prefix}\n{import_line}"
+        path.write_text(f"{prefix}\n\n{class_source}\n", encoding="utf-8")
+        count += len(missing)
+    return count
+
+
+def class_method_display_signature(
+    signature: CallableSignature,
+) -> str:
+    display = signature.display_signature
+    if signature.flags.staticmethod:
+        return display
+
+    receiver = "cls" if signature.flags.classmethod else "self"
+    opening = display.index("(") + 1
+    if display[opening] == ")":
+        return f"{display[:opening]}{receiver}{display[opening:]}"
+    return f"{display[:opening]}{receiver}, {display[opening:]}"

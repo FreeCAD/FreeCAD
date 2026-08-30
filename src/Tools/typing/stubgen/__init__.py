@@ -7,9 +7,15 @@ Module layout:
 - ``model`` holds shared dataclasses, type aliases, defaults, and regexes.
 - ``parsing`` holds syntax-oriented helpers for source scanning and AST reads.
 - ``naming`` holds tiny shared naming helpers used across the pipeline.
+- ``signature_parser`` holds reusable Python callable-signature parsing helpers.
+- ``python_api`` owns the Python API model, extraction, Markdown, sidebar, and
+  pipeline stages.
+- ``cpp_api`` owns the Doxygen, extraction, model, Markdown, and sidebar stages
+  for C++ API documentation.
 - ``discovery`` inventories C++ registrations and PyCXX contexts.
 - ``source_inputs`` reads binding specs plus curated source-adjacent stub files.
 - ``render`` formats individual stub fragments and inventory skeletons.
+- ``manifest`` writes deterministic API-surface counts for CI observability.
 - ``module_merge`` owns package paths plus module-body and support-node merges.
 - ``class_merge`` owns class alias planning and public class stub assembly.
 - ``type_context_rules`` holds the small manual escape hatch for PyCXX
@@ -17,8 +23,8 @@ Module layout:
 - ``generator`` coordinates the end-to-end pipeline and keeps the public entrypoints stable.
 - ``cli`` wires the pipeline to the public command-line interface.
 
-A useful reading order is ``model`` -> ``parsing`` ->
-``naming`` -> ``discovery`` -> ``source_inputs`` -> ``render`` ->
+A useful reading order is ``model`` -> ``parsing`` -> ``signature_parser`` ->
+``python_api`` -> ``cpp_api`` -> ``naming`` -> ``discovery`` -> ``source_inputs`` -> ``render`` ->
 ``module_merge`` -> ``class_merge`` -> ``type_context_rules`` ->
 ``generator`` -> ``cli``.
 """

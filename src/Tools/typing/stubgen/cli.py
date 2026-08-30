@@ -20,14 +20,23 @@ from pathlib import Path
 import subprocess
 import sys
 
+from .cpp_api.pipeline import CppDocsOptions, generate_cpp_docs
+from .diagnostics import MergeDiagnostics
 from .doc_lint import lint_curated_stub_docs
 from .discovery import collect_methods, collect_type_registrations
 from .generator import (
     markdown_report,
     write_outputs,
 )
-from .model import DEFAULT_OVERLAY_DIR, DEFAULT_SOURCE_DIR, DEFAULT_STUBS_OUT_DIR
+from .model import (
+    DEFAULT_API_DOCS_OUT_DIR,
+    DEFAULT_CPP_DOXYGEN_OUT_DIR,
+    DEFAULT_OVERLAY_DIR,
+    DEFAULT_SOURCE_DIR,
+    DEFAULT_STUBS_OUT_DIR,
+)
 from .parsing import iter_source_files
+from .python_api.pipeline import PythonDocsOptions, generate_python_docs
 from .source_inputs import (
     collect_binding_classes,
     load_stub_signature_overrides,
@@ -40,9 +49,6 @@ The command inventories hand-written C++ Python registrations, merges them with
 binding .pyi class specs and curated overlays, and writes public import-shaped
 stubs for type-checker use.
 """
-
-# Keep the smoke checker pinned so CI and local runs resolve the same tool version.
-PYREFLY_VERSION = "0.60.2"
 
 
 def resolve_optional_dir(root: Path, path: Path | None, default: Path | None = None) -> Path | None:
@@ -102,7 +108,86 @@ def add_generation_args(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def add_docs_args(parser: argparse.ArgumentParser, *, default_out_dir: Path) -> None:
+    add_common_path_args(parser)
+    parser.add_argument(
+        "--out-dir",
+        type=Path,
+        default=default_out_dir,
+        help=(
+            "Directory for generated MDX API docs, relative to --root unless absolute. "
+            f"Defaults to {default_out_dir}."
+        ),
+    )
+    parser.add_argument(
+        "--source-base-url",
+        help=(
+            "Optional base URL for source links in generated docs, such as a GitHub "
+            "blob URL prefix."
+        ),
+    )
+    parser.add_argument(
+        "--sidebar-out",
+        type=Path,
+        help=(
+            "Optional output path for the generated Starlight sidebar fragment. "
+            "Defaults to <out-dir>/sidebar.ts."
+        ),
+    )
+
+
+def resolve_sidebar_out(root: Path, out_dir: Path, sidebar_out: Path | None) -> Path:
+    if sidebar_out is None:
+        return out_dir / "sidebar.ts"
+    return sidebar_out if sidebar_out.is_absolute() else root / sidebar_out
+
+
+def display_path(root: Path, path: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return str(path)
+
+
 def parse_args(argv: list[str]) -> argparse.Namespace:
+    if argv and argv[0] == "docs":
+        parser = argparse.ArgumentParser(
+            description="Generate MDX API docs from curated source-adjacent stubs."
+        )
+        add_docs_args(parser, default_out_dir=DEFAULT_API_DOCS_OUT_DIR)
+        parser.set_defaults(command="docs")
+        return parser.parse_args(argv[1:])
+
+    if argv and argv[0] == "cpp-docs":
+        parser = argparse.ArgumentParser(
+            description="Generate MDX API docs from FreeCAD Doxygen XML."
+        )
+        add_docs_args(parser, default_out_dir=DEFAULT_API_DOCS_OUT_DIR)
+        parser.add_argument(
+            "--doxygen-xml-dir",
+            type=Path,
+            help=(
+                "Existing Doxygen XML directory to read. Defaults to "
+                f"{DEFAULT_CPP_DOXYGEN_OUT_DIR / 'xml'}."
+            ),
+        )
+        parser.add_argument(
+            "--doxygen-out-dir",
+            type=Path,
+            default=DEFAULT_CPP_DOXYGEN_OUT_DIR,
+            help=(
+                "Directory where generated Doxygen XML artifacts should live when "
+                f"--run-doxygen is used. Defaults to {DEFAULT_CPP_DOXYGEN_OUT_DIR}."
+            ),
+        )
+        parser.add_argument(
+            "--run-doxygen",
+            action="store_true",
+            help="Regenerate Doxygen XML before extracting C++ API docs.",
+        )
+        parser.set_defaults(command="cpp-docs")
+        return parser.parse_args(argv[1:])
+
     if argv and argv[0] == "check":
         parser = argparse.ArgumentParser(
             description="Generate binding stubs and run the smoke type checks."
@@ -171,7 +256,7 @@ def run_logged_command(
     return result.returncode, output
 
 
-def run_generate(args: argparse.Namespace) -> int:
+def run_generate(args: argparse.Namespace, *, strict_diagnostics: bool = False) -> int:
     root = args.root.resolve()
     source_dir = args.source_dir if args.source_dir.is_absolute() else root / args.source_dir
     if not source_dir.exists():
@@ -196,6 +281,7 @@ def run_generate(args: argparse.Namespace) -> int:
 
     if args.out_dir:
         out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+        diagnostic_items = []
         overlay_count = write_outputs(
             out_dir,
             root,
@@ -205,7 +291,11 @@ def run_generate(args: argparse.Namespace) -> int:
             type_registrations,
             stub_signature_overrides,
             overlay_dir,
+            diagnostics=diagnostic_items,
         )
+        diagnostics = MergeDiagnostics(tuple(diagnostic_items))
+        if diagnostics.items:
+            print_stderr(diagnostics.render() + "\n")
         summary = (
             f"Wrote {len(methods)} registrations and {len(classes)} class bindings to {out_dir} "
             f"({overlay_count} overlay stub files applied)"
@@ -213,7 +303,12 @@ def run_generate(args: argparse.Namespace) -> int:
         print(summary)
         if getattr(args, "log_dir", None):
             log_dir = args.log_dir.resolve()
-            write_log(log_dir / "python-stubs-generate.log", summary + "\n")
+            write_log(
+                log_dir / "python-stubs-generate.log",
+                summary + "\n" + (diagnostics.render() + "\n" if diagnostics.items else ""),
+            )
+        if strict_diagnostics and diagnostics.errors:
+            return 1
     else:
         print_stdout(markdown_report(methods))
     return 0
@@ -223,7 +318,7 @@ def run_check(args: argparse.Namespace) -> int:
     root = args.root.resolve()
     if args.out_dir is None:
         args.out_dir = DEFAULT_STUBS_OUT_DIR
-    generation_code = run_generate(args)
+    generation_code = run_generate(args, strict_diagnostics=True)
     if generation_code != 0:
         return generation_code
 
@@ -239,9 +334,6 @@ def run_check(args: argparse.Namespace) -> int:
     pyrefly_code, _ = run_logged_command(
         "python-stubs-pyrefly",
         [
-            "uvx",
-            "--from",
-            f"pyrefly=={PYREFLY_VERSION}",
             "pyrefly",
             "check",
             "--config",
@@ -251,6 +343,70 @@ def run_check(args: argparse.Namespace) -> int:
         log_dir,
     )
     return 0 if pyright_code == 0 and pyrefly_code == 0 else 1
+
+
+def run_generate_docs(args: argparse.Namespace) -> int:
+    root = args.root.resolve()
+    source_dir = args.source_dir if args.source_dir.is_absolute() else root / args.source_dir
+    if not source_dir.exists():
+        print_stderr(f"source directory does not exist: {source_dir}\n")
+        return 2
+
+    out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+    sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
+    result = generate_python_docs(
+        PythonDocsOptions(
+            root=root,
+            source_dir=source_dir,
+            out_dir=out_dir,
+            source_base_url=args.source_base_url,
+            sidebar_out=sidebar_out,
+        )
+    )
+    if result.diagnostics.items:
+        print_stderr(result.diagnostics.render() + "\n")
+    if result.diagnostics.errors:
+        return 1
+    print(f"Wrote {result.page_count} MDX API docs and {display_path(root, result.sidebar_path)}")
+    return 0
+
+
+def run_generate_cpp_docs(args: argparse.Namespace) -> int:
+    root = args.root.resolve()
+    out_dir = args.out_dir if args.out_dir.is_absolute() else root / args.out_dir
+    doxygen_out_dir = (
+        args.doxygen_out_dir if args.doxygen_out_dir.is_absolute() else root / args.doxygen_out_dir
+    )
+    xml_dir = (
+        None
+        if args.doxygen_xml_dir is None
+        else (
+            args.doxygen_xml_dir
+            if args.doxygen_xml_dir.is_absolute()
+            else root / args.doxygen_xml_dir
+        )
+    )
+    sidebar_out = resolve_sidebar_out(root, out_dir, args.sidebar_out)
+    try:
+        result = generate_cpp_docs(
+            CppDocsOptions(
+                root=root,
+                out_dir=out_dir,
+                doxygen_out_dir=doxygen_out_dir,
+                doxygen_xml_dir=xml_dir,
+                run_doxygen=args.run_doxygen,
+                source_base_url=args.source_base_url,
+                sidebar_out=sidebar_out,
+            )
+        )
+    except FileNotFoundError as error:
+        print_stderr(f"{error}\n")
+        return 2
+    print(
+        f"Wrote {result.page_count} C++ MDX API docs from {display_path(root, result.xml_dir)} "
+        f"and {display_path(root, result.sidebar_path)}"
+    )
+    return 0
 
 
 def run_lint_docs(args: argparse.Namespace) -> int:
@@ -284,6 +440,10 @@ def run_lint_docs(args: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
+    if args.command == "cpp-docs":
+        return run_generate_cpp_docs(args)
+    if args.command == "docs":
+        return run_generate_docs(args)
     if args.command == "check":
         return run_check(args)
     if args.command == "lint-docs":
