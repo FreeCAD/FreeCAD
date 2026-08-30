@@ -246,6 +246,29 @@ void ZoomableView::resizeEvent(QResizeEvent* event)
     updateView();
 }
 
+bool ZoomableView::viewportEvent(QEvent* event)
+{
+    // The spreadsheet has no touch interaction of its own: zooming is driven by
+    // wheelEvent() and everything else is mouse and keyboard. On macOS a passive
+    // trackpad touch (a resting palm, no button pressed) is still delivered here and
+    // reaches the scene, which moves focus away from an open cell editor. The delegate
+    // then commits and closes the editor, interrupting the user mid-typing (issue #23131).
+    //
+    // Dropping raw touch events keeps focus with the cell editor. Real clicks arrive as
+    // mouse events and are unaffected.
+    switch (event->type()) {
+        case QEvent::TouchBegin:
+        case QEvent::TouchUpdate:
+        case QEvent::TouchEnd:
+        case QEvent::TouchCancel:
+            return true;
+        default:
+            break;
+    }
+
+    return QGraphicsView::viewportEvent(event);
+}
+
 void ZoomableView::wheelEvent(QWheelEvent* event)
 {
     if (event->modifiers() & Qt::ControlModifier) {
