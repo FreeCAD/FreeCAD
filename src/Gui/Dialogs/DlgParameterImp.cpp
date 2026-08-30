@@ -384,11 +384,10 @@ void DlgParameterImp::onChangeParameterSet(int itemPos)
     ParameterManager* rcParMngr = App::GetApplication().GetParameterSet(
         ui->parameterSet->itemData(itemPos).toByteArray()
     );
-    if (!rcParMngr) {
+    if (!rcParMngr || !rcParMngr->CheckDocument()) {
         return;
     }
 
-    rcParMngr->CheckDocument();
     ui->buttonSaveToDisk->setEnabled(rcParMngr->HasSerializer());
 
     // remove all labels
