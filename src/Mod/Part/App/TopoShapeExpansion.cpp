@@ -4166,7 +4166,8 @@ void TopoShape::limitElementAtPlanarEndpoints(
         BRepAdaptor_Curve curve(edge);
         for (const auto& endpoint : {firstVertex, lastVertex}) {
             const auto faces = baseShape.findAncestorsShapes(endpoint, TopAbs_FACE);
-            NCollection_Map<TopoDS_Shape, TopTools_ShapeMapHasher> uniqueFaces;
+            using FaceMap = NCollection_Map<TopoDS_Shape, TopTools_ShapeMapHasher>;
+            FaceMap uniqueFaces;
             for (const auto& face : faces) {
                 uniqueFaces.Add(face);
             }
@@ -4187,8 +4188,8 @@ void TopoShape::limitElementAtPlanarEndpoints(
                 endpointPoint.XYZ() + gp_Vec(endpointPoint, oppositePoint).XYZ() * 0.1
             );
 
-            for (const auto& ancestor : uniqueFaces) {
-                const TopoDS_Face face = TopoDS::Face(ancestor);
+            for (FaceMap::Iterator it(uniqueFaces); it.More(); it.Next()) {
+                const TopoDS_Face face = TopoDS::Face(it.Key());
                 BRepAdaptor_Surface surface(face, false);
                 if (surface.GetType() != GeomAbs_Plane
                     || std::abs(surface.Plane().Axis().Direction().Dot(tangentDirection))
