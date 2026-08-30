@@ -678,4 +678,4 @@ class GenericSheetCutting(PostProcessor):
 # Class aliases for PostProcessorFactory
 # The factory looks for a class with title-cased postname (e.g., "Generic_Sheet_Cutting")
 Generic_Sheet_Cutting = GenericSheetCutting
-GenericSheetCutting = GenericSheetCutting  # Fallback for different title() behavior
+Genericsheetcutting = GenericSheetCutting  # Fallback for different title() behavior
