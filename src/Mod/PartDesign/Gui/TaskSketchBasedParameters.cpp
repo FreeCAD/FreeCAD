@@ -105,9 +105,15 @@ const QString TaskSketchBasedParameters::onAddSelection(
 
 void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject*, App::DocumentObject* base)
 {
-    const auto* bodyViewProvider = getViewObject<ViewProvider>()->getBodyViewProvider();
+    auto* viewObj = getViewObject<ViewProvider>();
+    if (!viewObj) {
+        return;
+    }
 
-    previouslyVisibleViewProvider = bodyViewProvider->getShownViewProvider();
+    const auto* bodyViewProvider = viewObj->getBodyViewProvider();
+    if (bodyViewProvider) {
+        previouslyVisibleViewProvider = bodyViewProvider->getShownViewProvider();
+    }
 
     if (!base) {
         return;

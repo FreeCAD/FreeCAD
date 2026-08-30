@@ -110,7 +110,8 @@ public:
                 msg.pDocName = faceSelection.getDocName();
                 msg.pObjectName = tip->getNameInDocument();
                 msg.pSubName = elements[0].c_str();
-                msg.pTypeName = tip->getTypeId().getName();
+                msg.TypeName = tip->getTypeId().getName();
+                msg.pTypeName = msg.TypeName.c_str();
 
                 faceSelection = Gui::SelectionObject {msg};
 
@@ -265,6 +266,7 @@ public:
         guidocument->openCommand(QT_TRANSLATE_NOOP("Command", "Sketch on Face"));
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = activeBody->getDocument()->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(Feat, "Label = 'Sketch'");
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         if (sketchFilter.match()) {
             FCMD_OBJ_CMD(
@@ -602,6 +604,7 @@ private:
         std::string FeatName = doc->getUniqueObjectName("Sketch");
         FCMD_OBJ_CMD(activeBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto sketch = doc->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(sketch, "Label = 'Sketch'");
 
         if (!hasSketch && support.getSize() > 0) {
             if (auto* pcAttach = sketch->getExtensionByType<Part::AttachExtension>()) {
@@ -806,6 +809,7 @@ private:
 
         FCMD_OBJ_CMD(partDesignBody, "newObject('Sketcher::SketchObject','" << FeatName << "')");
         auto Feat = doc->getObject(FeatName.c_str());
+        FCMD_OBJ_CMD(Feat, "Label = 'Sketch'");
         FCMD_OBJ_CMD(Feat, "AttachmentSupport = " << supportString);
         FCMD_OBJ_CMD(
             Feat,

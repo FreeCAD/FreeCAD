@@ -34,12 +34,12 @@
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Unit System</source>
-      <translation>단위 체계</translation>
+      <translation>단위계</translation>
     </message>
     <message>
       <location filename="../../GeneralSettingsWidget.cpp" line="240"/>
       <source>Navigation Style</source>
-      <translation>내비게이션 스타일</translation>
+      <translation>네비게이션 스타일</translation>
     </message>
   </context>
   <context>
@@ -70,17 +70,17 @@
     <message>
       <location filename="../../StartView.cpp" line="227"/>
       <source>Assembly</source>
-      <translation>어셈블리</translation>
+      <translation>조립체</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="232"/>
       <source>2D Draft</source>
-      <translation>2D 제도</translation>
+      <translation>2D 드래프트</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="232"/>
       <source>Creates a 2D Draft document</source>
-      <translation>2D 제도 문서를 생성합니다</translation>
+      <translation>2D 드래프트 문서를 만듭니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="235"/>
@@ -95,7 +95,7 @@
     <message>
       <location filename="../../StartView.cpp" line="213"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation>내용이 빈 새로운 FreeCAD 파일을 생성합니다</translation>
+      <translation>새로운 빈 FreeCAD 파일을 만듭니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="218"/>
@@ -110,7 +110,7 @@
     <message>
       <location filename="../../StartView.cpp" line="223"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation>파트 디자인 작업대에서 바디를 생성합니다</translation>
+      <translation>파트 디자인 워크벤치에서 바디를 만듭니다</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
@@ -140,7 +140,7 @@
     <message>
       <location filename="../../StartView.cpp" line="539"/>
       <source>Open First Start Setup</source>
-      <translation>첫 실행 설정 열기</translation>
+      <translation>첫 시작 설정 열기</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="540"/>
@@ -161,42 +161,42 @@
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Classic</source>
-      <translation>FreeCAD 클래식</translation>
+      <translation>FreeCAD 기본 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Dark</source>
-      <translation>FreeCAD 다크</translation>
+      <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
       <location filename="../../ThemeSelectorWidget.cpp" line="117"/>
       <source>FreeCAD Light</source>
-      <translation>FreeCAD 라이트</translation>
+      <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="251"/>
       <source>Theme</source>
       <translation>테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="253"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="254"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>더 많은 테마를 찾고 계십니까? &lt;a href="freecad:Std_AddonMgr"&gt;애드온 관리자&lt;/a&gt;에서 추가할 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="260"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 어두운 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="261"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 밝은 테마</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="262"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="263"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD 기본 테마</translation>
@@ -212,7 +212,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="20"/>
       <source>Contents</source>
-      <translation>내용</translation>
+      <translation>콘텐츠</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
@@ -223,12 +223,12 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Show examples folder contents</source>
-      <translation>예시 폴더 내용 표시</translation>
+      <translation>예시 폴더 콘텐츠 표시</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="40"/>
       <source>Show additional folder contents</source>
-      <translation>추가 폴더 내용 표시</translation>
+      <translation>추가 폴더 콘텐츠 표시</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
@@ -240,7 +240,7 @@ Multiple folders can be added using ";;" to separate paths.</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation>시작 페이지에 예제 파일을 표시합니다</translation>
+      <translation>시작 페이지에 예시 파일을 표시합니다</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
@@ -269,12 +269,12 @@ Multiple folders can be added using ";;" to separate paths.</source>
   <context>
     <name>Start::DisplayedFilesModel</name>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="130"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
       <source>Created at:</source>
       <translation>최초 작성일:</translation>
     </message>
     <message>
-      <location filename="../../../App/DisplayedFilesModel.cpp" line="131"/>
+      <location filename="../../../App/DisplayedFilesModel.cpp" line="132"/>
       <source>Modified at:</source>
       <translation>최종 수정일:</translation>
     </message>

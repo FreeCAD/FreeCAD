@@ -383,11 +383,6 @@ Najmniejszą wartością jest 0.</translation>
       <translation>Użyj generatora siatek Netgen</translation>
     </message>
     <message>
-      <location filename="../../Tessellation.ui" line="217"/>
-      <source>Fineness:</source>
-      <translation>Stopień rozdrobnienia:</translation>
-    </message>
-    <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
       <translation>Bardzo zgrubna</translation>
@@ -440,6 +435,11 @@ A value in the range of 0.1-1.</source>
 Wartość w zakresie 0,1-1.</translation>
     </message>
     <message>
+      <location filename="../../Tessellation.ui" line="217"/>
+      <source>Fineness</source>
+      <translation>Stopień rozdrobnienia</translation>
+    </message>
+    <message>
       <location filename="../../Tessellation.ui" line="312"/>
       <location filename="../../Tessellation.ui" line="345"/>
       <source>If this parameter is larger, the mesh becomes finer.
@@ -490,7 +490,7 @@ Wartość w zakresie 0,2–10.</translation>
     <message>
       <location filename="../../Tessellation.cpp" line="240"/>
       <location filename="../../Tessellation.cpp" line="246"/>
-      <source>No active document</source>
+      <source>No Active Document</source>
       <translation>Brak aktywnego dokumentu</translation>
     </message>
     <message>

@@ -93,11 +93,34 @@ def _get_hint_mod_snap():
     return [Gui.InputHint(translate("draft", "Hold %1 snap"), key)]
 
 
+def _get_hint_mod_copy():
+    key = _HINT_MOD_KEYS[params.get_param("modalt")]
+    return [Gui.InputHint(translate("draft", "Hold %1 copy"), key)]
+
+
+def _get_hint_in_cmd_shortcut(shortcut_param):
+    shortcut = params.get_param(shortcut_param)
+    if not shortcut:
+        # Empty string.
+        return ""
+    # In command shortcuts support multiple characters where each individual
+    # character is recognized separately. We only display the 1st character.
+    return shortcut[0].upper()
+
+
+def _get_hint_select_object(multiple=True):
+    if multiple:
+        text = translate("draft", "%1 select objects to modify")
+    else:
+        text = translate("draft", "%1 select object to modify")
+    return [Gui.InputHint(text, Gui.UserInput.MouseLeft)]
+
+
 def _get_hint_xyz_constrain():
     pattern = re.compile("[A-Z]")
-    shortcut_x = params.get_param("inCommandShortcutRestrictX").upper()
-    shortcut_y = params.get_param("inCommandShortcutRestrictY").upper()
-    shortcut_z = params.get_param("inCommandShortcutRestrictZ").upper()
+    shortcut_x = _get_hint_in_cmd_shortcut("inCommandShortcutRestrictX")
+    shortcut_y = _get_hint_in_cmd_shortcut("inCommandShortcutRestrictY")
+    shortcut_z = _get_hint_in_cmd_shortcut("inCommandShortcutRestrictZ")
     if (
         pattern.fullmatch(shortcut_x)
         and pattern.fullmatch(shortcut_y)
@@ -114,7 +137,7 @@ def _get_hint_xyz_constrain():
 
 def _get_hint_relative():
     pattern = re.compile("[A-Z]")
-    shortcut = params.get_param("inCommandShortcutRelative").upper()
+    shortcut = _get_hint_in_cmd_shortcut("inCommandShortcutRelative")
     if pattern.fullmatch(shortcut):
         key = getattr(Gui.UserInput, "Key" + shortcut)
         return [Gui.InputHint(translate("draft", "%1 toggle relative"), key)]
@@ -123,7 +146,7 @@ def _get_hint_relative():
 
 def _get_hint_global():
     pattern = re.compile("[A-Z]")
-    shortcut = params.get_param("inCommandShortcutGlobal").upper()
+    shortcut = _get_hint_in_cmd_shortcut("inCommandShortcutGlobal")
     if pattern.fullmatch(shortcut):
         key = getattr(Gui.UserInput, "Key" + shortcut)
         return [Gui.InputHint(translate("draft", "%1 toggle global"), key)]
@@ -132,7 +155,7 @@ def _get_hint_global():
 
 def _get_hint_continue():
     pattern = re.compile("[A-Z]")
-    shortcut = params.get_param("inCommandShortcutContinue").upper()
+    shortcut = _get_hint_in_cmd_shortcut("inCommandShortcutContinue")
     if pattern.fullmatch(shortcut):
         key = getattr(Gui.UserInput, "Key" + shortcut)
         return [Gui.InputHint(translate("draft", "%1 toggle continue"), key)]
@@ -142,7 +165,7 @@ def _get_hint_continue():
 def _get_hint_select_edge():
     mod_key = _HINT_MOD_KEYS[params.get_param("modalt")]
     pattern = re.compile("[A-Z]")
-    shortcut = params.get_param("inCommandShortcutSelectEdge").upper()
+    shortcut = _get_hint_in_cmd_shortcut("inCommandShortcutSelectEdge")
     if pattern.fullmatch(shortcut):
         shortcut_key = getattr(Gui.UserInput, "Key" + shortcut)
         return [
@@ -301,7 +324,7 @@ def get_point(target, args, noTracker=False):
         )
         info = Gui.Snapper.snapInfo
         mask = Gui.Snapper.affinity
-    if not point:
+    if point is None:
         p = Gui.ActiveDocument.ActiveView.getCursorPos()
         point = Gui.ActiveDocument.ActiveView.getPoint(p)
         info = Gui.ActiveDocument.ActiveView.getObjectInfo(p)

@@ -23,13 +23,14 @@
  ***************************************************************************/
 
 
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <Mod/Part/App/ShapeAnalysis_FreeBoundsFix.h>
+#include <Precision.hxx>
 #include <QApplication>
 #include <QMessageBox>
 #include <QTextStream>
 #include <QTimer>
 #include <QTreeWidget>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <Precision.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
@@ -203,7 +204,7 @@ void SweepWidget::findShapes()
             }
             // or all children are edges
             else if (hEdges->Length() == numChilds) {
-                ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+                Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                     hEdges,
                     Precision::Confusion(),
                     Standard_False,
@@ -282,7 +283,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
                 hEdges->Append(xp.Current());
             }
 
-            ShapeAnalysis_FreeBounds::ConnectEdgesToWires(
+            Part::Fix_ShapeAnalysis_FreeBounds_ConnectEdgesToWires(
                 hEdges,
                 Precision::Confusion(),
                 Standard_True,
@@ -408,20 +409,14 @@ bool SweepWidget::accept()
                   "App.getDocument('%5').ActiveObject.Solid=%3\n"
                   "App.getDocument('%5').ActiveObject.Frenet=%4\n"
         )
-                  .arg(
-                      list,
-                      QLatin1String(selection.c_str()),
-                      solid,
-                      frenet,
-                      QString::fromLatin1(d->document.c_str())
-                  );
+                  .arg(list, selection.c_str(), solid, frenet, d->document.c_str());
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) {
             throw Base::RuntimeError("Document doesn't exist anymore");
         }
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Sweep"));
-        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {

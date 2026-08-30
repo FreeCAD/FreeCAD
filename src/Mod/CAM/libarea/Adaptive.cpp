@@ -24,11 +24,15 @@
 
 #include "Adaptive.hpp"
 #include <iostream>
+#include <fstream>
 #include <cmath>
 #include <cstring>
 #include <ctime>
+#include <climits>
 #include <algorithm>
+#include <map>
 #include <numbers>
+#include <string>
 
 namespace ClipperLib
 {
@@ -42,6 +46,9 @@ using namespace std;
 #define SAME_POINT_TOL_SQRD_SCALED 4.0
 #define UNUSED(expr) (void)(expr)
 
+//*****************************************
+// SVG Debug Info
+//*****************************************
 //*****************************************
 // Utils - inline
 //*****************************************
@@ -410,6 +417,8 @@ double DistancePointToPathsSqrd(
 }
 
 // joins collinear segments (within the tolerance)
+// TODO when migrating to Clipper 2, this function can be deleted and replaced with SimplifyPath(s),
+// which also handles open paths correctly
 void CleanPath(const Path& inp, Path& outpt, double tolerance)
 {
     if (inp.size() < 3) {
@@ -753,52 +762,123 @@ void SmoothPaths(Paths& paths, double stepSize, long pointCount, long iterations
     ScaleDownPaths(paths, scale);
 }
 
-bool PopPathWithClosestPoint(
-    Paths& paths /*closest path is removed from collection and shifted to
-                    start with closest point */
-    ,
+// PopNextFinishingPass: Select and remove the next finishing pass to execute
+//
+// This function examines all available finishing paths (both closed and open) and selects
+// the best one to execute next based on proximity to the current tool position (p1).
+//
+// Requirements:
+//   - At least one finishing path must be available (either closed or open)
+//
+// Behavior:
+//   - Searches through both closedFinishingPaths and openFinishingPaths to find the
+//     closest point to the current tool position
+//   - For CLOSED paths: Can start at any point along the path. The path is rotated
+//     (shifted) so that execution begins at the closest point. The extraDistanceAround
+//     parameter allows advancing further along the path before starting.
+//   - For OPEN paths: Must start at the first vertex (index 0). No rotation is allowed.
+//     These paths represent segments where only part of the geometry needs finishing.
+//
+// Return:
+//   - true: A closed finishing path was selected and returned in 'result'. The path is
+//     removed from closedFinishingPaths.
+//   - false: An open finishing path was selected and returned in 'result'. The path is
+//     removed from openFinishingPaths.
+//   - If no paths remain in either list, the function returns false with an empty result.
+//
+bool PopNextFinishingPass(
+    Paths& closedFinishingPaths,
+    Paths& openFinishingPaths,
     IntPoint p1,
     Path& result,
     double extraDistanceAround = 0
 )
 {
-
-    if (paths.empty()) {
+    // Early return if no paths remain in either list
+    if (closedFinishingPaths.empty() && openFinishingPaths.empty()) {
+        result.clear();
         return false;
     }
 
     double minDistSqrd = __DBL_MAX__;
     size_t closestPathIndex = 0;
-    long closestPointIndex = 0;
-    for (size_t pathIndex = 0; pathIndex < paths.size(); pathIndex++) {
-        Path& path = paths.at(pathIndex);
+    size_t closestPointIndex = 0;
+    bool closestIsClosed = closedFinishingPaths.size() > 0;
+
+    // Search through closed finishing paths (can start at any point)
+    for (size_t pathIndex = 0; pathIndex < closedFinishingPaths.size(); pathIndex++) {
+        Path& path = closedFinishingPaths.at(pathIndex);
         for (size_t i = 0; i < path.size(); i++) {
             double dist = DistanceSqrd(p1, path.at(i));
             if (dist < minDistSqrd) {
                 minDistSqrd = dist;
                 closestPathIndex = pathIndex;
-                closestPointIndex = long(i);
+                closestPointIndex = i;
+                closestIsClosed = true;
             }
         }
     }
 
-    Path& closestPath = paths.at(closestPathIndex);
-    while (extraDistanceAround > 0) {
-        long nexti = (closestPointIndex + 1) % closestPath.size();
-        extraDistanceAround -= sqrt(DistanceSqrd(closestPath[closestPointIndex], closestPath[nexti]));
-        closestPointIndex = nexti;
+    // Search through open finishing paths (can only start at first vertex)
+    for (size_t pathIndex = 0; pathIndex < openFinishingPaths.size(); pathIndex++) {
+        Path& path = openFinishingPaths.at(pathIndex);
+        if (!path.empty()) {
+            double dist = DistanceSqrd(p1, path.at(0));
+            if (dist < minDistSqrd) {
+                minDistSqrd = dist;
+                closestPathIndex = pathIndex;
+                closestPointIndex = 0;
+                closestIsClosed = false;
+            }
+        }
     }
 
+    // Handle open path: copy as-is (no rotation) and remove from list
+    if (!closestIsClosed) {
+        Path& closestPath = openFinishingPaths.at(closestPathIndex);
+        result = closestPath;  // Copy path as-is, starting at first vertex
+        openFinishingPaths.erase(openFinishingPaths.begin() + closestPathIndex);
+        return false;  // Return false to indicate open path
+    }
+
+    // Handle closed path: rotate to start at closest point and remove from list
+    // Copy the path before erasing to avoid dangling reference
+    Path closestPath = closedFinishingPaths.at(closestPathIndex);
+    closedFinishingPaths.erase(closedFinishingPaths.begin() + closestPathIndex);
     result.clear();
-    // make new path starting with that point
-    for (size_t i = 0; i < closestPath.size(); i++) {
-        long index = closestPointIndex + long(i);
-        index = index % closestPath.size();
+
+    // Apply extraDistanceAround to advance further along the path before starting
+    // Interpolate as needed
+    while (extraDistanceAround > 0) {
+        size_t nexti = (closestPointIndex + 1) % closestPath.size();
+        const IntPoint& p1 = closestPath[closestPointIndex];
+        const IntPoint& p2 = closestPath[nexti];
+        double distToNext = sqrt(DistanceSqrd(p1, p2));
+        closestPointIndex = nexti;
+
+        if (distToNext <= extraDistanceAround) {
+            extraDistanceAround -= distToNext;
+        }
+        else {
+            // Interpolate to produce the first vertex
+            double interp = extraDistanceAround / distToNext;  // Fraction along the edge
+            IntPoint interpolated(
+                cInt(p1.X * (1 - interp) + p2.X * interp),
+                cInt(p1.Y * (1 - interp) + p2.Y * interp),
+                p1.Z
+            );
+            result.push_back(interpolated);
+            extraDistanceAround = 0;
+        }
+    }
+
+    // Output the remaining points from that start poitn
+    for (size_t offset = 0; offset < closestPath.size(); offset++) {
+        size_t index = (closestPointIndex + offset) % closestPath.size();
         result.push_back(closestPath.at(index));
     }
-    // remove the closest path
-    paths.erase(paths.begin() + closestPathIndex);
-    return true;
+
+    return true;  // Return true to indicate closed path
 }
 
 void DeduplicatePaths(const Paths& inputs, Paths& outputs)
@@ -1281,7 +1361,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
 
         vector<DoublePoint> polygon;
         for (const auto p : path) {
-            polygon.push_back({(double)p.X, (double)p.Y});
+            polygon.emplace_back((double)p.X, (double)p.Y);
         }
         polygons.push_back(polygon);
     }
@@ -1309,15 +1389,15 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
     vector<double> xs;
     for (const auto& polygon : polygons) {
         // 1.a) All polygon vertices
-        for (const auto p : polygon) {
+        for (const auto& p : polygon) {
             xs.push_back(p.X);
         }
 
         // 1.b) Intersection of all polygons with c1
         // 1.c) Intersection of all polygons with c2
         for (size_t i = 0; i < polygon.size(); i++) {
-            const auto p0 = polygon[i];
-            const auto p1 = polygon[(i + 1) % polygon.size()];
+            const auto& p0 = polygon[i];
+            const auto& p1 = polygon[(i + 1) % polygon.size()];
             if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
                 for (const auto p : inters) {
                     xs.push_back(p.X);
@@ -1366,7 +1446,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
 
     const auto interpX = [](const DoublePoint p0, const DoublePoint p1, double x) {
         const double interp = (x - p0.X) / (p1.X - p0.X);
-        const double y = p1.Y * interp + p0.Y * (1 - interp);
+        const double y = (p1.Y * interp) + (p0.Y * (1 - interp));
         return y;
     };
 
@@ -1374,7 +1454,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
     const vector<DoublePoint> circles = {c2, c1};
     double area = 0;
     double conventionalArea = 0;
-    for (size_t ix = 0; ix < xs.size() - 1; ix++) {
+    for (size_t ix = 0; ix + 1 < xs.size(); ix++) {
         const double x0 = xs[ix];
         const double x1 = xs[ix + 1];
         if (x0 == x1) {
@@ -1390,14 +1470,14 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
         vector<tuple<double, size_t, size_t>> ys;
 
         for (size_t ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
-            const auto polygon = polygons[ipolygon];
+            const auto& polygon = polygons[ipolygon];
             for (size_t iedge = 0; iedge < polygon.size(); iedge++) {
-                const auto p0 = polygon[iedge];
-                const auto p1 = polygon[(iedge + 1) % polygon.size()];
+                const auto& p0 = polygon[iedge];
+                const auto& p1 = polygon[(iedge + 1) % polygon.size()];
                 // note: we skip if the edge is vertical, p0.X == p1.X == xtest
                 if (min(p0.X, p1.X) < xtest && max(p0.X, p1.X) > xtest) {
                     const double y = interpX(p0, p1, xtest);
-                    ys.push_back({y, ipolygon, iedge});
+                    ys.emplace_back(y, ipolygon, iedge);
                 }
             }
         }
@@ -1406,9 +1486,9 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
             const DoublePoint c = circles[icircle];
             const double dx = abs(xtest - c.X);
             if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
-                const double dy = sqrt(toolRadiusScaled * toolRadiusScaled - dx * dx);
-                ys.push_back({c.Y + dy, polygons.size() + icircle, 0});
-                ys.push_back({c.Y - dy, polygons.size() + icircle, 1});
+                const double dy = sqrt((toolRadiusScaled * toolRadiusScaled) - (dx * dx));
+                ys.emplace_back(c.Y + dy, polygons.size() + icircle, 0);
+                ys.emplace_back(c.Y - dy, polygons.size() + icircle, 1);
             }
         }
 
@@ -1425,14 +1505,12 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
         // that crossing:
         //     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
         std::vector<bool> outside;
+        outside.reserve(polygons.size() + circles.size());
         for (size_t i = 0; i < polygons.size() + circles.size(); i++) {
             outside.push_back(i == (polygons.size()));  // poly_0, ..., poly_n-1, c2, c1
         }
         int outsideCount = 1;
-        for (size_t iy = 0; iy < ys.size(); iy++) {
-            const size_t ishape = std::get<1>(ys[iy]);
-            const size_t ipart = std::get<2>(ys[iy]);
-
+        for (const auto& [_, ishape, ipart] : ys) {
             const bool prevOutside = outside[ishape];
             const int prevCount = outsideCount;
             outside[ishape] = !outside[ishape];
@@ -1446,9 +1524,9 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
             if (outsideCount == 0 || prevCount == 0) {
                 if (ishape < polygons.size()) {
                     // crossed a polygon
-                    const auto polygon = polygons[ishape];
-                    const auto p0 = polygon[ipart];
-                    const auto p1 = polygon[(ipart + 1) % polygon.size()];
+                    const auto& polygon = polygons[ishape];
+                    const auto& p0 = polygon[ipart];
+                    const auto& p1 = polygon[(ipart + 1) % polygon.size()];
                     const auto y0 = interpX(p0, p1, x0);
                     const auto y1 = interpX(p0, p1, x1);
                     const double newArea = (y0 + y1) / 2 * (x1 - x0);
@@ -1482,7 +1560,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
                     const double tmidx = (x0 + x1) / 2;
                     const double tmidy = (y0 + y1) / 2;
                     const double th = sqrt(
-                        (tmidx - c.X) * (tmidx - c.X) + (tmidy - c.Y) * (tmidy - c.Y)
+                        ((tmidx - c.X) * (tmidx - c.X)) + ((tmidy - c.Y) * (tmidy - c.Y))
                     );
                     const double areaTriangle = tbase * th / 2;
                     const double areaSegment = areaSector - areaTriangle;
@@ -1491,7 +1569,7 @@ std::pair<double, double> Adaptive2d::CalcCutArea(IntPoint c1, IntPoint c2, Clea
                     // the sign of the segment area is negative for bottom half of the circle,
                     // positive for top half
                     const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
-                    const double newArea = circleSign * areaSegment + areaTrapezoid;
+                    const double newArea = (circleSign * areaSegment) + areaTrapezoid;
                     area += entranceExitSign * newArea;
                     if (xtest < c2.X) {
                         conventionalArea += entranceExitSign * newArea;
@@ -1532,6 +1610,217 @@ void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
         filterCloseValues(inputPaths);
     }
 }
+
+// Write combined SVG with all accumulated paths from all regions
+void writePreprocessingSVG(const DebugSVGInfo& svgInfo)
+{
+    // Calculate overall bounding box
+    long long minX = LLONG_MAX, minY = LLONG_MAX, maxX = LLONG_MIN, maxY = LLONG_MIN;
+
+    auto updateBBox = [&](const Paths& paths) {
+        for (const Path& path : paths) {
+            for (const auto& pt : path) {
+                minX = std::min(minX, pt.X);
+                minY = std::min(minY, pt.Y);
+                maxX = std::max(maxX, pt.X);
+                maxY = std::max(maxY, pt.Y);
+            }
+        }
+    };
+
+    // Regional collections (need unwrapping)
+    for (const Paths& regionPaths : svgInfo.allFinishingPaths) {
+        updateBBox(regionPaths);
+    }
+    for (const Paths& regionPaths : svgInfo.allToolBoundPaths) {
+        updateBBox(regionPaths);
+    }
+
+    // Single collections (direct)
+    updateBBox(svgInfo.step3Paths);
+    updateBBox(svgInfo.step4Paths);
+    updateBBox(svgInfo.step5e_inputPaths);
+
+    long long padding = std::max(maxX - minX, maxY - minY) / 10;
+    long long legendWidth = (maxX - minX) / 5;  // Legend takes 20% of width
+    minX -= padding + legendWidth;
+    minY -= padding;
+    maxX += padding;
+    maxY += padding;
+
+    std::ofstream svg("adaptive_preprocessing.svg");
+    svg << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    svg << "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" << minX << " " << -maxY << " "
+        << (maxX - minX) << " " << (maxY - minY) << "\">\n";
+
+    // Add JavaScript for toggling visibility
+    svg << "<script type=\"text/javascript\"><![CDATA[\n";
+    svg << "function toggle(id) {\n";
+    svg << "  var el = document.getElementById(id);\n";
+    svg << "  var box = document.getElementById(id + '-box');\n";
+    svg << "  if (el.style.display === 'none') {\n";
+    svg << "    el.style.display = 'inline';\n";
+    svg << "    box.setAttribute('fill', box.getAttribute('data-color'));\n";
+    svg << "  } else {\n";
+    svg << "    el.style.display = 'none';\n";
+    svg << "    box.setAttribute('fill', '#cccccc');\n";
+    svg << "  }\n";
+    svg << "}\n";
+    svg << "]]></script>\n";
+
+    auto renderPathGroup =
+        [&](const std::string& groupId, const std::string& strokeColor, const Paths& paths) {
+            svg << "<g id=\"" << groupId << "\">\n";
+            for (size_t i = 0; i < paths.size(); i++) {
+                const Path& ip = paths[i];
+                if (!ip.empty()) {
+                    // Merge consecutive edges of the same dashedness into one <path> so that
+                    // stroke-dasharray renders continuously across short segments.
+                    bool inPath = false;
+                    bool curDash = false;
+                    for (size_t j = 0; j < ip.size(); j++) {
+                        const IntPoint& p1 = ip[j];
+                        const IntPoint& p2 = (j + 1 < ip.size()) ? ip[j + 1] : ip[0];
+                        bool edgeDash = !(p1.Z == 1 && p2.Z == 1);
+
+                        if (!inPath || edgeDash != curDash) {
+                            if (inPath) {
+                                svg << "\"/>\n";
+                            }
+                            curDash = edgeDash;
+                            inPath = true;
+                            svg << "<path stroke=\"" << strokeColor << "\" stroke-width=\""
+                                << (padding / 100) << "\" fill=\"none\"";
+                            if (curDash) {
+                                svg << " stroke-dasharray=\"" << (padding / 8) << ","
+                                    << (padding / 8) << "\"";
+                            }
+                            svg << " d=\"M" << p1.X << "," << -p1.Y;
+                        }
+                        svg << " L" << p2.X << "," << -p2.Y;
+                    }
+                    if (inPath) {
+                        svg << "\"/>\n";
+                    }
+                    // Add markers for Z=1 vertices
+                    for (const auto& pt : ip) {
+                        if (pt.Z == 1) {
+                            svg << "<circle cx=\"" << pt.X << "\" cy=\"" << -pt.Y << "\" r=\""
+                                << (3 * padding / 50) << "\" fill=\"" << strokeColor << "\"/>\n";
+                        }
+                    }
+                }
+            }
+            svg << "</g>\n";
+        };
+
+    // Render all path groups
+    renderPathGroup("step3-paths", "green", svgInfo.step3Paths);
+    renderPathGroup("step4-paths", "orange", svgInfo.step4Paths);
+    renderPathGroup("step5a-paths", "cyan", svgInfo.step5a_stockRev);
+    renderPathGroup("step5b-paths", "magenta", svgInfo.step5b_outsideOfStock);
+    renderPathGroup("step5c-paths", "yellow", svgInfo.step5c_inputPathsUnion);
+    renderPathGroup("step5d-paths", "brown", svgInfo.step5d_clearedArea);
+    renderPathGroup("step5-paths", "purple", svgInfo.step5e_inputPaths);
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allToolBoundPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "tool-bound-paths-" + std::to_string(regionIdx + 1),
+            "blue",
+            svgInfo.allToolBoundPaths[regionIdx]
+        );
+    }
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allFinishingPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "finishing-paths-" + std::to_string(regionIdx + 1),
+            "red",
+            svgInfo.allFinishingPaths[regionIdx]
+        );
+    }
+    for (size_t regionIdx = 0; regionIdx < svgInfo.allFinalClearedPaths.size(); regionIdx++) {
+        renderPathGroup(
+            "final-cleared-paths-" + std::to_string(regionIdx + 1),
+            "lime",
+            svgInfo.allFinalClearedPaths[regionIdx]
+        );
+    }
+
+    // Legend (positioned in top-left within viewBox)
+    long long legendX = minX + padding / 2;
+    long long legendY = -maxY + padding;
+    long long boxSize = legendWidth / 15;
+    long long lineHeight = boxSize * 2;
+
+    // Calculate legend height based on number of entries
+    size_t numRegions = svgInfo.allToolBoundPaths.size();
+    size_t numLegendItems = 7 + numRegions * 3;  // 7 for steps 3,4,5a,5b,5c,5d,5 + 3 per region
+                                                 // (step 6, step 8, final cleared)
+    long long headingOffset = lineHeight;        // Space for heading
+
+    svg << "<g id=\"legend\">\n";
+
+    // Background for legend
+    svg << "<rect x=\"" << legendX << "\" y=\"" << legendY << "\" width=\"" << legendWidth
+        << "\" height=\"" << (lineHeight * numLegendItems + padding + headingOffset)
+        << "\" fill=\"white\" stroke=\"black\" stroke-width=\"" << (padding / 200)
+        << "\" opacity=\"0.9\"/>\n";
+
+    // Legend heading
+    svg << "<text x=\"" << (legendX + legendWidth / 2) << "\" y=\"" << (legendY + boxSize)
+        << "\" font-size=\"" << (boxSize * 1.2) << "\" text-anchor=\"middle\" font-weight=\"bold\""
+        << ">Click to Toggle</text>\n";
+
+    // Legend items (in step order)
+    int legendItem = 0;
+
+    auto renderLegendItem =
+        [&](const std::string& groupId, const std::string& color, const std::string& label) {
+            svg << "<rect id=\"" << groupId << "-box\" data-color=\"" << color << "\" x=\""
+                << (legendX + boxSize) << "\" y=\""
+                << (legendY + headingOffset + lineHeight * legendItem + boxSize) << "\" width=\""
+                << boxSize << "\" height=\"" << boxSize << "\" fill=\"" << color
+                << "\" stroke=\"black\" stroke-width=\"" << (padding / 400)
+                << "\" style=\"cursor:pointer\" onclick=\"toggle('" << groupId << "')\"/>\n";
+            svg << "<text x=\"" << (legendX + boxSize * 3) << "\" y=\""
+                << (legendY + headingOffset + lineHeight * legendItem + boxSize * 1.5)
+                << "\" font-size=\"" << boxSize << "\" style=\"cursor:pointer\" onclick=\"toggle('"
+                << groupId << "')\">" << label << "</text>\n";
+            legendItem++;
+        };
+
+    renderLegendItem("step3-paths", "green", "Step 3: Input Paths");
+    renderLegendItem("step4-paths", "orange", "Step 4: Profiling Areas");
+    renderLegendItem("step5a-paths", "cyan", "Step 5a: Stock Reversed");
+    renderLegendItem("step5b-paths", "magenta", "Step 5b: Outside Stock");
+    renderLegendItem("step5c-paths", "yellow", "Step 5c: Input Paths Union");
+    renderLegendItem("step5d-paths", "brown", "Step 5d: Cleared Area");
+    renderLegendItem("step5-paths", "purple", "Step 5e: Input Paths to be Finished");
+
+    for (size_t regionIdx = 0; regionIdx < numRegions; regionIdx++) {
+        std::string regionLabel = (numRegions > 1) ? " (Region " + std::to_string(regionIdx + 1) + ")"
+                                                   : "";
+        renderLegendItem(
+            "tool-bound-paths-" + std::to_string(regionIdx + 1),
+            "blue",
+            "Step 6: Tool Bound Paths" + regionLabel
+        );
+        renderLegendItem(
+            "finishing-paths-" + std::to_string(regionIdx + 1),
+            "red",
+            "Step 8: Finishing Paths" + regionLabel
+        );
+        renderLegendItem(
+            "final-cleared-paths-" + std::to_string(regionIdx + 1),
+            "lime",
+            "Final Cleared Area" + regionLabel
+        );
+    }
+
+    svg << "</g>\n";
+
+    svg << "</svg>";
+    svg.close();
+}
+
 
 //********************************************
 // Adaptive2d - Execute
@@ -1577,6 +1866,9 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     helixRampMaxRadiusScaled = long(helixRampTargetDiameter * scaleFactor / 2);
     helixRampMinRadiusScaled = long(helixRampMinDiameter * scaleFactor / 2);
     finishPassOffsetScaled = finishingProfile ? long(stepOverScaled * FINISHING_THICKNESS_SCALE) : 0;
+
+    // Debug variables for SVG visualization
+    DebugSVGInfo svgInfo;
 
     ClipperOffset clipof;
     Clipper clip;
@@ -1683,13 +1975,25 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     }
 
     // 3) Set Z=1 on all input paths to tag them as needing a finishing pass
+    //
+    // When finishing passes are eventually generated, they will be created only for edges with
+    // z=1 on both end vertices. This is a little bit imprecise -- ideally the segments themselves
+    // would be tagged instead of their end vertices, but clipper doesn't support that feature
+    // natively. From what I've seen this is good enough in practice, but if it becomes problematic
+    // we can try to leverage vertex z-tagging to create a more complicated system for indirectly
+    // tagging edges.
     for (Path& path : inputPaths) {
         for (IntPoint& p : path) {
             p.Z = 1;
         }
     }
+    svgInfo.step3Paths = inputPaths;
 
     // 4) Turn profiles into areas; mark new paths as unfinished (Z=0) and then union
+    //
+    // Adaptive "profiling" clears a small area offset from the input edges, but since the goal of
+    // the operation is profiling, rather than area clearing, only the input edge needs to be
+    // finished. The far sides of those areas do not require a finishing pass
     if (opType == OperationType::otProfilingOutside || opType == OperationType::otProfilingInside) {
         // offset by an extra finishPassOffsetScaled to compensate for undoing that later
         long offset = 2 * (toolRadiusScaled + helixRampMaxRadiusScaled + finishPassOffsetScaled)
@@ -1725,32 +2029,66 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         }
 
         inputPaths = fullPaths;
+        svgInfo.step4Paths = fullPaths;
+    }
+    else {
+        svgInfo.step4Paths = inputPaths;  // No change for non-profiling operations
     }
 
     // 5) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
     // clearedArea. Use Z=0 to mark the stock boundary as not needing to be finished
+    //
+    // We are working towards generating the toolBoundsPath -- the region in which the tool center
+    // is allowed to be. So far we have the basis for allowing the tool within the raw input
+    // regions. In this step, if going outside the stock is allowed, we add a boundary region
+    // outside the stock to the inputs so the tool will be allowed there too.
+    //
+    // All new paths created in this process have vertices tagged with Z=0 to prevent them from
+    // receiving finishing passes. Also, the new regions are added to the representation of
+    // already-cleared area so the algorithm knows that the tool *can* go there but does not need
+    // to.
     if (!forceInsideOut) {
-        // shrink the stock boundary to ensure overlap with input paths that hit the boundary
+
+        // 5a) Shrink the stock boundary to ensure overlap with input paths that hit the boundary
         Paths stockRev;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(stockRev, -2);
         ReversePaths(stockRev);
+        svgInfo.step5a_stockRev = stockRev;
 
-        // input paths
+        // 5b) Create outside-of-stock region
         Paths outsideOfStock;
         double overshootDistance = 4 * toolRadiusScaled + stockToLeave * scaleFactor;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
         clipof.Execute(outsideOfStock, overshootDistance);
+        svgInfo.step5b_outsideOfStock = outsideOfStock;
 
+        // 5c) Union input paths with stock regions
         clip.Clear();
         clip.AddPaths(inputPaths, PolyType::ptSubject, true);
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
-        clip.Execute(ClipType::ctUnion, inputPaths);
 
-        // cleared area
+        // Z callback: output Z=1 if both vertices of either input edge have Z=1.
+        // This callback will be invoked on new vertices created while unioning areas (i.e.
+        // intersections between segments)
+        clip.ZFillFunction(
+            [](IntPoint& e1bot, IntPoint& e1top, IntPoint& e2bot, IntPoint& e2top, IntPoint& pt) {
+                // Check if both vertices of edge 1 have Z=1
+                bool edge1HasZ1 = (e1bot.Z == 1 && e1top.Z == 1);
+                // Check if both vertices of edge 2 have Z=1
+                bool edge2HasZ1 = (e2bot.Z == 1 && e2top.Z == 1);
+                // Set output Z=1 if either edge has both vertices with Z=1
+                pt.Z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
+            }
+        );
+
+        clip.Execute(ClipType::ctUnion, inputPaths);
+        svgInfo.step5c_inputPathsUnion = inputPaths;
+
+        // 5d) Update cleared area
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
         clipof.Execute(outsideOfStock, 100 * toolRadiusScaled);
@@ -1760,50 +2098,344 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, initialClearedPaths);
+        svgInfo.step5d_clearedArea = initialClearedPaths;
+    }
+
+    // 5e) Use initialClearedPaths to zero out Z-values for parts of the input paths that do not
+    // need to be finished. This was added after the fact and I probably ought to make it a
+    // high-level step of its own, but I didn't want to renumber everything.
+    //
+    // So far, "input" paths are tagged as needing to be finished if the user input them, but not if
+    // they are generated to allow tool movement outside the stock or if they are generated as the
+    // boundary region of a path to be profiled. However, in addition to these exceptions, some
+    // (complete or incomplete) sections of user-specified input paths also do not require finishing
+    // passes because they protrude into regions that are already clear. For example, if the user
+    // runs adaptive on the same face twice, first with a large tool and then again with a small
+    // tool (with rest machining enabled), much of the boundary of the small-tool adaptive operation
+    // may already be cleared, and does not require a finishing pass. Only the input boundaries that
+    // are actually cut in the current operation require a finishing pass. (If the user wants a
+    // full-boundary finishing pass with the small tool in this scenario, they should leave some
+    // stock uncut at the boundary of the large-tool pass.)
+    //
+    // This computation is done by computing the initial non-cleared area and intersecting it with
+    // the input path boundary. The portions of the boundary present in this intersection need to be
+    // finished; the rest do not.
+    //
+    // Unfortunately, Clipper does not natively support this sort of "update z if in intersection"
+    // operation. In order build it out of clipper primitives, we start by creating a copy of the
+    // input path with z-values corresponding to the index/position in the original input. This
+    // enables us to keep track of which vertex is which after taking the intersection. Then create
+    // the updated version of the path by simultaneously iterating through the original input path
+    // and the intersection result and re-assembling the input boundary path with appropriately
+    // (z=0/z=1) tagged vertices to specify if they require a finishing pass.
+    //
+    // There is some subtlety to this tracking+reassembly process because new vertices may be
+    // generated by the intersection operation, subdividing input edges one or more times. These
+    // vertices are assigned new z-values that uniquely identify them, but these z-values do not
+    // correspond to the index of any vertex in the initial path. For these newly generated points,
+    // we separately track their position along the boundary (represented as a floating point number
+    // interpolating the positions of the vertices of their parent edges). We also check if the
+    // parent edge needs to be finished (at least as understood prior to this computation). If so,
+    // we also tag this splitting vertex as needing to be finished to preserve that property when
+    // the edge is split.
+    //
+    // During path reassembly, information about new/split-edge vertices needs to be looked up by a
+    // different process than original vertices, but all of the same information (position/order on
+    // the path, potentially requires finishing) is present, so after the information lookup is
+    // complete they can be handled the same way as original vertices.
+    {
+
+        // Clipper 1's z-callback mechanism doesn't support binding local variables, so we convert
+        // to clipper 2 for this operation. This code will go away soon when we convert all of
+        // adaptive to clipper 2
+
+        // Convert initialClearedPaths to Clipper2
+        Clipper2Lib::Paths64 initialClearedPaths2;
+        for (const auto& clearedPath : initialClearedPaths) {
+            Clipper2Lib::Path64 p;
+            for (const auto& pt : clearedPath) {
+                p.emplace_back(pt.X, pt.Y, pt.Z);
+            }
+            initialClearedPaths2.push_back(p);
+        }
+
+        // Convert stockInputPaths to Clipper2
+        Clipper2Lib::Paths64 stockInputPaths2;
+        for (const auto& stockPath : stockInputPaths) {
+            Clipper2Lib::Path64 p;
+            for (const auto& pt : stockPath) {
+                p.emplace_back(pt.X, pt.Y, pt.Z);
+            }
+            stockInputPaths2.push_back(p);
+        }
+
+        // Compute noncleared area = stock - cleared
+        Clipper2Lib::Clipper64 clipDiff;
+        clipDiff.AddSubject(stockInputPaths2);
+        clipDiff.AddClip(initialClearedPaths2);
+        Clipper2Lib::Paths64 nonclearedPaths;
+        clipDiff.Execute(
+            Clipper2Lib::ClipType::Difference,
+            Clipper2Lib::FillRule::EvenOdd,
+            nonclearedPaths
+        );
+
+        Paths updatedPaths;
+        for (const auto& path : inputPaths) {
+            // Create a copy of the path with z value specifying the index. Points are initialized
+            // with z=0 by default, so to make uninitialized-z bugs clear we skip z=0 and set z =
+            // index + 1
+            Clipper2Lib::Path64 indexedPath;
+            for (int i = 0; i < path.size(); i++) {
+                indexedPath.emplace_back(path[i].X, path[i].Y, i + 1);
+            }
+            // Explicitly close the path, before doing a boolean operation on it as an open (well,
+            // "not implicitly closed") path. Unfortunately clipper treats points as interchangeable
+            // if they have equal x and y even if z is different, so this end vertex also shares the
+            // start vertex's z-value.
+            indexedPath.push_back(indexedPath[0]);
+
+            // Prepare structures to store information about newly generated/edge-splitting points
+            const int firstNewZ = path.size() + 2;
+            int nextNewZ = firstNewZ;
+            std::map<int, double> newZPosition;
+            std::map<int, cInt> newZNeedsFinishing;
+
+            // Create a new clipper object to avoid overwriting the z callback of the main one
+            Clipper2Lib::Clipper64 clip2;
+            clip2.SetZCallback([&nextNewZ, &newZPosition, &newZNeedsFinishing, &path](
+                                   const Clipper2Lib::Point64& e1bot,
+                                   const Clipper2Lib::Point64& e1top,
+                                   const Clipper2Lib::Point64& e2bot,
+                                   const Clipper2Lib::Point64& e2top,
+                                   Clipper2Lib::Point64& pt
+                               ) {
+                // If the split-edge point is actuall at an edge then we have no need for a new
+                // z-value. Otherwise, generate a new z value
+                if (pt.x == e1bot.x && pt.y == e1bot.y) {
+                    pt.z = e1bot.z;
+                    return;
+                }
+                if (pt.x == e1top.x && pt.y == e1top.y) {
+                    pt.z = e1top.z;
+                    return;
+                }
+                pt.z = nextNewZ++;
+
+                // Compute the position of the new point by interpolating the z-values of its input
+                // parent edge (e1 is the parent edge of the subject/input path; e2 comes from the
+                // clipping/cleared area path)
+
+                // Compute distance from e1bot to e1top
+                double dx_total = e1top.x - e1bot.x;
+                double dy_total = e1top.y - e1bot.y;
+                double dist_total = sqrt(dx_total * dx_total + dy_total * dy_total);
+
+                // Compute distance from e1bot to pt
+                double dx_pt = pt.x - e1bot.x;
+                double dy_pt = pt.y - e1bot.y;
+                double dist_pt = sqrt(dx_pt * dx_pt + dy_pt * dy_pt);
+
+                // Compute interpolated position Z value. In most cases edges are z=n and z=n+1, and
+                // we do a simple interpolation. However, the final edge connects z=path.size() to
+                // z=1, and that interpolation result does not correctly specify the position of the
+                // new point. Instead, we detect that case and interpolate between path.size() and
+                // path.size() + 1.
+                double e1bot_effective = (e1bot.z == 1 && e1top.z == path.size()) ? (path.size() + 1)
+                                                                                  : e1bot.z;
+                double e1top_effective = (e1top.z == 1 && e1bot.z == path.size()) ? (path.size() + 1)
+                                                                                  : e1top.z;
+                double interp = dist_pt / dist_total;
+                double interpZ = e1bot_effective + interp * (e1top_effective - e1bot_effective);
+
+                // Update data structures for the new point
+                newZPosition[pt.z] = interpZ;
+
+                // I'm pretty sure e1bot and e1top are always original vertices, but just in case
+                // we can handle the alternative possibility
+                cInt e1bot_finishing = (e1bot.z >= 1 && e1bot.z <= path.size())
+                    ? path[e1bot.z - 1].Z
+                    : newZNeedsFinishing[e1bot.z];
+                cInt e1top_finishing = (e1top.z >= 1 && e1top.z <= path.size())
+                    ? path[e1top.z - 1].Z
+                    : newZNeedsFinishing[e1top.z];
+                newZNeedsFinishing[pt.z] = e1bot_finishing && e1top_finishing;
+            });
+
+            // Intersect the input boundary (i.e. open path intersection) with the noncleared area
+            clip2.AddOpenSubject({indexedPath});
+            clip2.AddClip(nonclearedPaths);
+            Clipper2Lib::Paths64 unusedClosedPaths, nonclearedInputs;
+            clip2.Execute(
+                Clipper2Lib::ClipType::Intersection,
+                Clipper2Lib::FillRule::EvenOdd,
+                unusedClosedPaths,
+                nonclearedInputs
+            );
+
+            // Prepare for the final reassembly process by collecting all points from the
+            // intersection result. Also remove duplicate representations of the start/end point,
+            // since we will switch back to the clipper default of implicitly-closed paths
+            std::vector<IntPoint> nonclearedPoints;
+            bool hasZ1 = false;
+            for (const auto& nonclearedPath : nonclearedInputs) {
+                for (const auto& pt : nonclearedPath) {
+                    if (pt.z != 1 || !hasZ1) {
+                        nonclearedPoints.push_back({pt.x, pt.y, pt.z});
+                    }
+                    hasZ1 |= pt.z == 1;
+                }
+            }
+            indexedPath.pop_back();  // remove duplicate start point from the input
+
+            // Further prepare for reassembly by sorting the collected points by their position
+            // (z-value for original points, newZPosition for new points). This allows us to
+            // reassemble with a single pass, simultaneously iterating through both the original
+            // input points and the intersection results in order of increasing position.
+            std::sort(
+                nonclearedPoints.begin(),
+                nonclearedPoints.end(),
+                [&newZPosition, &firstNewZ](const IntPoint& p1, const IntPoint& p2) {
+                    double val1 = (p1.Z >= firstNewZ) ? newZPosition.at(p1.Z) : (double)p1.Z;
+                    double val2 = (p2.Z >= firstNewZ) ? newZPosition.at(p2.Z) : (double)p2.Z;
+                    return val1 < val2;
+                }
+            );
+
+            // Reassemble the updated input path with new z-values.
+            //
+            // Case 1: Points present in the original input and not the intersection appear in
+            // cleared area and do not require finishing (set z=0).
+            //
+            // Case 2: Points present in the intersection and not the original input are
+            // generated/edge-splitting points and need to be added. They appear in the non-cleared
+            // area, so they should be finished if their parent edge wanted finishing (i.e. use the
+            // value in newZNeedsFinishing).
+            //
+            // Case 3: Points present in both appear in the non-cleared area, so they should be
+            // finished if they are already tagged for finishing (i.e. keep the original z-value
+            // from the input).
+            Path updatedPath;
+            auto nonclearedIt = nonclearedPoints.begin();
+            auto indexedIt = indexedPath.begin();
+
+            while (indexedIt != indexedPath.end() || nonclearedIt != nonclearedPoints.end()) {
+                // Get position of next noncleared point (if any remain)
+                double nextNonclearedPos = (nonclearedIt != nonclearedPoints.end())
+                    ? ((nonclearedIt->Z >= firstNewZ) ? newZPosition.at(nonclearedIt->Z)
+                                                      : static_cast<double>(nonclearedIt->Z))
+                    : std::numeric_limits<double>::max();
+
+                // Get position of next indexed path point (if any)
+                double nextPathPos = (indexedIt != indexedPath.end())
+                    ? static_cast<double>(indexedIt->z)
+                    : std::numeric_limits<double>::max();
+
+                if (nextPathPos < nextNonclearedPos) {
+                    // Case 1: original point is not in the noncleared region
+                    IntPoint newPt = path[indexedIt->z - 1];
+                    newPt.Z = 0;
+                    updatedPath.push_back(newPt);
+                    indexedIt++;
+                }
+                else if (nextNonclearedPos < nextPathPos) {
+                    // Case 2: newly generated/split-edge point in the noncleared region
+                    IntPoint newPt = *nonclearedIt;
+                    newPt.Z = newZNeedsFinishing.at(newPt.Z);
+                    updatedPath.push_back(newPt);
+                    nonclearedIt++;
+                }
+                else {
+                    // Case 3: the same point is present in both lists
+                    IntPoint newPt = path[indexedIt->z - 1];
+                    updatedPath.push_back(newPt);
+                    indexedIt++;
+                    nonclearedIt++;
+                }
+            }
+
+            updatedPaths.push_back(updatedPath);
+        }
+
+        inputPaths = updatedPaths;
+        svgInfo.step5e_inputPaths = inputPaths;
     }
 
     // 6) Compute toolBounds = offset(input paths, -(toolRadius + finishingThickness)).
-    // ...but clipper 1 drops Z value when doing offsets, so I need to do the offset per-curve to
-    // preserve Z value
-    Paths toolBounds;
-    for (const Path& path : inputPaths) {
-        bool orientation = Orientation(path);
-        int direction = (getPathNestingLevel(path, inputPaths) % 2 == 1) ? 1 : -1;
-        bool z1 = false;
-        for (const IntPoint& p : path) {
-            if (p.Z == 1) {
-                z1 = true;
-                break;
-            }
-        }
-
-        Paths out;
-        clipof.Clear();
-        clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(out, -(toolRadiusScaled + finishPassOffsetScaled) * direction);
-
-        for (Path& p : out) {
-            if (Orientation(p) != orientation) {
-                ReversePath(p);
-            }
-            if (z1) {
-                for (IntPoint& pp : p) {
-                    pp.Z = 1;
-                }
-            }
-            toolBounds.push_back(p);
-        }
-    }
-    // these 3 lines should work instead of the above if clipper 1 handled Z-values for offsets,
-    // like clipper 2 does:
     //
-    // clipof.Clear();
-    // clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-    // clipof.Execute(toolBounds, -(toolRadiusScaled + finishPassOffsetScaled));
+    // This represents the locations the tool center is allowed to be during the main adatpive
+    // pass, prior to applying finishing profiling.
+    //
+    // Note: Clipper1 doesn't preserve Z values when performing offset operations, so we
+    // convert to Clipper2 to perform the offset. This temporary conversion will be eliminated soon
+    // when we convert the full operation to clipper 2.
+    Clipper2Lib::Paths64 inputPaths2;
+    inputPaths2.reserve(inputPaths.size());
+    for (const auto& path : inputPaths) {
+        Clipper2Lib::Path64 p;
+        p.reserve(path.size());
+        for (const auto& pt : path) {
+            p.emplace_back(pt.X, pt.Y, pt.Z);  // IntPoint -> Point64
+        }
+        inputPaths2.emplace_back(p);
+    }
 
-    // 7) Loop over connected components using nesting level.
+    // Use ClipperOffset with Z callback to preserve Z=1 marking
+    // Note that PreserveCollinear must be set of ClipperOffset (it is already set by default on
+    // Clipper64) to avoid accidentally optimizing out collinear points with differing z-values
+    Clipper2Lib::ClipperOffset clipof2;
+    clipof2.PreserveCollinear(true);
+    clipof2.AddPaths(inputPaths2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+
+    // Z callback: output Z=1 if both vertices of either input edge have Z=1
+    clipof2.SetZCallback([](const Clipper2Lib::Point64& e1bot,
+                            const Clipper2Lib::Point64& e1top,
+                            const Clipper2Lib::Point64& e2bot,
+                            const Clipper2Lib::Point64& e2top,
+                            Clipper2Lib::Point64& pt) {
+        // Check if both vertices of edge 1 have Z=1
+        bool edge1HasZ1 = (e1bot.z == 1 && e1top.z == 1);
+        // Check if both vertices of edge 2 have Z=1
+        bool edge2HasZ1 = (e2bot.z == 1 && e2top.z == 1);
+        // Set output Z=1 if either edge has both vertices with Z=1
+        pt.z = (edge1HasZ1 || edge2HasZ1) ? 1 : 0;
+    });
+
+    Clipper2Lib::Paths64 toolBounds2;
+    clipof2.Execute(-(toolRadiusScaled + finishPassOffsetScaled), toolBounds2);
+
+    /* Convert results back to clipper1 */
+    Paths toolBounds;
+    toolBounds.reserve(toolBounds2.size());
+    for (const auto& path : toolBounds2) {
+        Path p;
+        p.reserve(path.size());
+        for (const auto& pt : path) {
+            p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> IntPoint
+        }
+        toolBounds.emplace_back(p);
+    }
+
+    // 7) Loop over connected components of toolBounds
+    //
+    // The main adaptive algorithm (ProcessPolyNode) is run on one connected component at a time
+    // to facilitate considering a helix-down entrance exclusively for the initial engagement of
+    // each component and using entrances from the cleared area for all subsequent reengagements.
+    //
+    // Note that connectivity here is determined based on the toolBounds representation, which
+    // indicates where the tool center is allowed to be. If two regions are connected only by
+    // narrow channels that do not fit the tool, they will be split up for independent processing
+    // here. This guarantees that the region provided to ProcessPolyNode can be fully cleared by
+    // repeated reengagement from the cleared area after the initial entrance (which may require
+    // helixing down).
+    //
+    // When we loop over toolBounds, we look for outer boundaries only. When we find one, we also
+    // accumulate all top-level holes inside of them. The boundary path and immediate hole paths are
+    // processed together. Any further-nested paths (i.e. appearing inside a hole) will be processed
+    // in a separate iteration of the loop.
     for (const auto& current : toolBounds) {
-        // nesting counts itself and the number of polygons containing it
+        // Nesting counts itself and the number of polygons containing it, so nesting % 2 == 1
+        // specifies exterior boundaries and nesting % 2 == 0 specifies holes
         int nesting = getPathNestingLevel(current, toolBounds);
         if (nesting % 2 != 0) {
             // current is an exterior boundary; now find all the holes directly inside it
@@ -1820,46 +2452,93 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
             }
 
-            // 8) finishingPass = offset(currentTBP, finishingThickness), filtered for paths with Z=1
-            // ...again, clipper 1 doesn't preserve Z for offsets, so do this per-curve
+            // 8) finishingPass = offset(currentTBP, finishingThickness)
+            //
+            // Now that we have currentTBP representing where the tool center may be while during
+            // the main clearing operation, we need to reconstruct the required finishing passes for
+            // that region.
+            //
+            // Note that it is
+            // important that we offset the input inward to create the TBP and then offset part of
+            // the way back outwards from the TBP to create the finishing pass, and that we do not
+            // directly compute the finishing pass from the input by only offsetting inwards. If the
+            // input has narrow channels that are just wide enough to fit the tool for a finishing
+            // pass, those regions will not be wide enough for interior clearing. If we actually
+            // executed this "finishing" pass, the tool would be slotting when it entered that
+            // region. By instead constructing our finising pass by offsetting outward from the TBP,
+            // we guarantee that all points on the finishing pass represent a small stepover cut
+            // from already-cleared area. Thin channels that just barely/exactly fit the tool will
+            // not be cut, but that is a reality of an adaptive cutting process -- such regions must
+            // be cut by a slotting operation instead.
+            //
+            // Note that clipper 1 drops z values on offset operations, so we must convert to
+            // Clipper2. This temporary measure will be eliminated soon when we convert the full
+            // operation to clipper 2.
+
+            // Convert currentTBP to Clipper2 format
+            Clipper2Lib::Paths64 currentTBP2;
+            currentTBP2.reserve(currentTBP.size());
+            for (const auto& path : currentTBP) {
+                Clipper2Lib::Path64 p;
+                p.reserve(path.size());
+                for (const auto& pt : path) {
+                    p.emplace_back(pt.X, pt.Y, pt.Z);  // IntPoint -> Point64
+                }
+                currentTBP2.emplace_back(p);
+            }
+
+            clipof2.Clear();
+            clipof2.AddPaths(currentTBP2, Clipper2Lib::JoinType::Round, Clipper2Lib::EndType::Polygon);
+
+            Clipper2Lib::Paths64 finishingPass2;
+            clipof2.Execute(finishPassOffsetScaled, finishingPass2);
+
+            // Convert results back to Clipper1 format (preserving Z values)
             Paths finishingPass;
-            for (const Path& path : currentTBP) {
-                bool orientation = Orientation(path);
-                int direction = (getPathNestingLevel(path, toolBounds) % 2 == 1) ? 1 : -1;
-                bool finshing = false;
-                for (const IntPoint& p : path) {
-                    if (p.Z == 1) {
-                        finshing = true;
-                        break;
-                    }
-                }
+            finishingPass.reserve(finishingPass2.size());
 
-                if (finshing) {
-                    Paths out;
-                    clipof.Clear();
-                    clipof.AddPath(path, JoinType::jtRound, EndType::etClosedPolygon);
-                    clipof.Execute(out, finishPassOffsetScaled * direction);
-
-                    for (Path& p : out) {
-                        if (Orientation(p) != orientation) {
-                            ReversePath(p);
-                        }
-                        finishingPass.push_back(p);
-                    }
+            for (const auto& path : finishingPass2) {
+                Path p;
+                p.reserve(path.size());
+                for (const auto& pt : path) {
+                    p.emplace_back(pt.x, pt.y, pt.z);  // Point64 -> IntPoint
                 }
+                finishingPass.emplace_back(p);
             }
 
             // 9) Compute bounds = offset(currentTBP, toolRadius)
+            //
+            // These paths represent the region that will actually be cleared by the interior
+            // clearing process. They do not include the region cleared by the finishing pass.
+            //
+            // When the interior clearing process completes, we will assert that this region is
+            // fully cleared. In order to make the numerics work correctly on this check, we
+            // actually need this region to be *slightly* smaller than its ideal/nominal size.
+            // Specifically, each offset operation we perform can produce up to 1 unit of error.
+            // (This is a necessary result of working on an integer grid because there must be an
+            // orientation for input segments where a tiny perturbation in the input orientation
+            // (which can always be achieved, even on an integer grid) changes the output location.
+            // This is an output change of 1 for an input change of epsilon, but the non-dicritized
+            // output would only have changed by epsilon. Therefore, offset operations must have
+            // potential to accumulate error of up to 1 unit per offset operation). We perform 2
+            // offset operations to produce this path (input -> TBP -> BP), and we will do 1 more
+            // when computing the cleared area. So when computing BP, we leave a buffer of 3 units
+            // to ensure it will be seen as fully cleared when checking a correct interior clearing
+            // pass. This process is a bit finicky -- take great care if you modify it!
             Paths boundPath;
             clipof.Clear();
             clipof.AddPaths(currentTBP, JoinType::jtRound, EndType::etClosedPolygon);
-            // 3 = number of offsets in computing boundPaths > max error in boundary
-            // Subtracting 3 ensures that rounding in boundPath is guaranteed to shrink it
-            // This is important for successfully filtering out boundPaths that should be fully
-            // covered by initialClearPaths
             clipof.Execute(boundPath, toolRadiusScaled - 3);
 
             // Skip path generation if bounds are fully cleared
+            //
+            // Note: should we also be checking that finishing passes (if any are required) are
+            // also clear? I'd think so, but I'm just documenting now and not going to change it.
+            // If I were to implement that, I'd do subtract(offset(finishing, toolRadius), cleared)
+            // and if the result contains any z=1 segments then there is finishing work left to do.
+            // I don't know if ProcessPolyNode is well equipped to handle a fully pre-cleared
+            // interior region with only finishing work to do; probably it has never been tested and
+            // it is not!
             {
                 Paths boundsToClear;
                 clip.Clear();
@@ -1871,10 +2550,19 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
             }
 
+            svgInfo.allToolBoundPaths.push_back(currentTBP);
+            svgInfo.allFinishingPaths.push_back(finishingPass);
+
             // 10) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths);
+            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths, &svgInfo);
         }
     }
+
+#ifdef DEBUG_SVG
+    writePreprocessingSVG(svgInfo);
+#else
+    UNUSED(svgInfo);
+#endif
 
     return results;
 }
@@ -2720,25 +3408,13 @@ void Adaptive2d::AddPathsToProgress(TPaths& progressPaths, Paths paths, MotionTy
     }
 }
 
-void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt)
-{
-    if (!pth.empty()) {
-        progressPaths.push_back(TPath());
-        progressPaths.back().first = mt;
-        for (const auto pt : pth) {
-            progressPaths.back().second.emplace_back(
-                double(pt.X) / scaleFactor,
-                double(pt.Y) / scaleFactor
-            );
-        }
-    }
-}
-
-// performs the intersection of the closed path (subject) and the area (obj), preserving
+// performs the intersection of the path (subject) and the area (obj), preserving
 // orientation and (closed-path) connectivity
-Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj)
+Paths PathIntersectArea(Clipper& clip, Path& subject, Paths& obj, bool isClosed = true)
 {
-    subject.push_back(subject[0]);  // close path explicitly before treating it as open
+    if (isClosed) {
+        subject.push_back(subject[0]);  // close path explicitly before treating it as open
+    }
 
     // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
     // this ensures new points have unique z but come between the points they're made from
@@ -2833,7 +3509,8 @@ void Adaptive2d::ProcessPolyNode(
     Paths boundPaths,
     Paths toolBoundPaths,
     Paths finishingPaths,
-    const Paths& initialClearedPaths
+    const Paths& initialClearedPaths,
+    DebugSVGInfo* svgInfo
 )
 {
     Perf_ProcessPolyNode.Start();
@@ -2855,6 +3532,13 @@ void Adaptive2d::ProcessPolyNode(
 
     CleanPolygons(boundPaths);
     SimplifyPolygons(boundPaths);
+
+    Paths tbpMinus;  // toolBoundPaths shrunk by some buffer room
+    clipof.Clear();
+    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(tbpMinus, -2);
+    CleanPolygons(tbpMinus);
+    SimplifyPolygons(tbpMinus);
 
     AddPathsToProgress(progressPaths, toolBoundPaths, MotionType::mtLinkClear);
 
@@ -2890,6 +3574,7 @@ void Adaptive2d::ProcessPolyNode(
     double perf_total_len = 0;
 
     AdaptiveOutput output;
+    output.clipperScale = double(scaleFactor);
 #ifdef DEV_MODE
     clock_t start_clock = clock();
 #endif
@@ -3283,18 +3968,21 @@ void Adaptive2d::ProcessPolyNode(
                 }
             }
 
-            Paths openPaths = PathIntersectArea(clip, rotated, toolBoundPaths);
+            // clip with tbpMinus instead of toolBoundPaths to ensure that all
+            // resulting points are inside toolBoundPaths, and not rounded to an
+            // integer coordinate outside of it
+            Paths openPaths = PathIntersectArea(clip, rotated, tbpMinus);
 
             for (Path& open : openPaths) {
                 bool added = false;
                 double dToGo = 0;  // first step is 0 -- start point
                 size_t seg = 0;
                 double segD = 0;
-                DoublePoint segDir = {1, 0};
                 while (!added && seg < open.size() - 1) {
                     // step to next point
                     IntPoint p;
-                    while (dToGo > 0 && seg < open.size() - 1) {
+                    DoublePoint segDir;
+                    do {
                         IntPoint p1 = open[seg];
                         IntPoint p2 = open[seg + 1];
                         double segLen = sqrt(DistanceSqrd(p1, p2));
@@ -3315,7 +4003,7 @@ void Adaptive2d::ProcessPolyNode(
                             seg++;
                             p = p2;  // ensures that we try the endpoint too
                         }
-                    }
+                    } while (dToGo > 0 && seg < open.size() - 1);
 
                     // Attempt to add the point
                     const auto toolDir = initToolDir(p, segDir);
@@ -3713,40 +4401,86 @@ void Adaptive2d::ProcessPolyNode(
             toolBoundPaths = tbpModified;
         }
 
-        Path finShiftedPath;
+        // Split finishingPaths into closed (all Z=1) and open (partial Z=1) paths
+        Paths closedFinishingPaths;
+        Paths openFinishingPaths;
 
-        while (!stopProcessing
-               && PopPathWithClosestPoint(finishingPaths, toolPos, finShiftedPath, stepOverScaled)) {
+        for (const auto& p : finishingPaths) {
+            // Find starting index: first Z=0, or 0 if none found
+            size_t startIdx = 0;
+            for (size_t i = 0; i < p.size(); i++) {
+                if (p[i].Z == 0) {
+                    startIdx = i;
+                    break;
+                }
+            }
+
+            // Loop through path starting at startIdx, collecting Z=1 vertices
+            Path currentPath;
+            for (size_t offset = 0; offset < p.size(); offset++) {
+                size_t i = (startIdx + offset) % p.size();
+                const IntPoint& pt = p[i];
+
+                if (pt.Z == 1) {
+                    // Add Z=1 point to current path
+                    currentPath.push_back(pt);
+                }
+                else {
+                    // Z=0: if we have accumulated points, save them to open list
+                    if (!currentPath.empty()) {
+                        openFinishingPaths.push_back(currentPath);
+                        currentPath.clear();
+                    }
+                }
+            }
+
+            // After loop completes, check what we accumulated
+            if (currentPath.size() == p.size()) {
+                // All vertices were Z=1 - add to closed list
+                closedFinishingPaths.emplace_back(p);
+            }
+            else if (currentPath.size() > 0) {
+                // Partial Z=1 segment remains - add to open list
+                openFinishingPaths.push_back(currentPath);
+            }
+            else {
+                // No Z=1 vertices found
+            }
+        }
+
+
+        Path finShiftedPath;
+        int finishingPassCount = 0;
+
+        // Create offset version of stock boundary to check if finishing passes are within tool radius
+        Paths stockExpandedPaths;
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(stockExpandedPaths, toolRadiusScaled);
+
+        while (!stopProcessing && (!closedFinishingPaths.empty() || !openFinishingPaths.empty())) {
+            bool isClosedPath = PopNextFinishingPass(
+                closedFinishingPaths,
+                openFinishingPaths,
+                toolPos,
+                finShiftedPath,
+                stepOverScaled
+            );
+            finishingPassCount++;
+
             if (finShiftedPath.empty()) {
                 continue;
             }
-            // skip finishing passes outside the stock boundary - no sense to cut where is no
-            // material
-            bool allPointsOutside = true;
-            IntPoint p1 = finShiftedPath.front();
-            for (const auto& pt : finShiftedPath) {
-
-                // midpoint
-                if (IsPointWithinCutRegion(
-                        stockInputPaths,
-                        IntPoint((p1.X + pt.X) / 2, (p1.Y + pt.Y) / 2)
-                    )) {
-                    allPointsOutside = false;
-                    break;
-                }
-                // current point
-                if (IsPointWithinCutRegion(stockInputPaths, pt)) {
-                    allPointsOutside = false;
-                    break;
-                }
-
-                p1 = pt;
-            }
-            if (allPointsOutside) {
+            // skip finishing passes outside the stock boundary that do not cut any stock
+            Path finShiftedPathCopy = finShiftedPath;
+            Paths intersection
+                = PathIntersectArea(clip, finShiftedPathCopy, stockExpandedPaths, isClosedPath);
+            if (intersection.empty()) {
                 continue;
             }
 
             progressPaths.push_back(TPath());
+            progressPaths.back().first = MotionType::mtCutting;
             // show in progress cb
             for (auto& pt : finShiftedPath) {
                 progressPaths.back().second.emplace_back(
@@ -3755,19 +4489,29 @@ void Adaptive2d::ProcessPolyNode(
                 );
             }
 
-            if (!finShiftedPath.empty()) {
-                finShiftedPath << finShiftedPath.front();  // make sure its closed
+            // For closed paths, close the loop by adding the start point at the end
+            if (isClosedPath && !finShiftedPath.empty()) {
+                progressPaths.back().second.emplace_back(
+                    double(finShiftedPath.front().X) / scaleFactor,
+                    double(finShiftedPath.front().Y) / scaleFactor
+                );
             }
 
+            // Clean path
             Path finCleaned;
             CleanPath(finShiftedPath, finCleaned, FINISHING_CLEAN_PATH_TOLERANCE);
 
-            // make sure it's closed, but don't ruin the final direction
-            if (sqrt(DistanceSqrd(finCleaned.front(), finCleaned.back()))
-                < FINISHING_CLEAN_PATH_TOLERANCE) {
-                finCleaned.pop_back();
+            // Ensure correct endpoint after cleaning
+            IntPoint endPoint = isClosedPath ? finCleaned.front() : finShiftedPath.back();
+            if (finCleaned.back() != endPoint) {
+                // make sure it ends correctly, but don't risk ruining the final direction by making
+                // a very short segment
+                if (sqrt(DistanceSqrd(endPoint, finCleaned.back())) < FINISHING_CLEAN_PATH_TOLERANCE) {
+                    finCleaned.pop_back();
+                }
+                finCleaned.push_back(endPoint);
             }
-            finCleaned.push_back(finCleaned.front());
+
             std::optional<TPaths> linkPath = FindLinkPath(
                 toolPos,
                 finCleaned[0],
@@ -3855,6 +4599,9 @@ void Adaptive2d::ProcessPolyNode(
 
     // Then calculate final cleared area
     const Paths& clearedPaths = cleared.GetCleared();
+    if (svgInfo) {
+        svgInfo->allFinalClearedPaths.push_back(clearedPaths);
+    }
     double finalClearedArea = 0.0;
     for (const Path& path : clearedPaths) {
         int nesting = getPathNestingLevel(path, clearedPaths);

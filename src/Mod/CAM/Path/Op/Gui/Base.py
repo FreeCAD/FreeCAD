@@ -28,6 +28,7 @@ import Path.Base.Gui.GetPoint as PathGetPoint
 import Path.Base.Gui.Util as PathGuiUtil
 import Path.Base.SetupSheet as PathSetupSheet
 import Path.Base.Util as PathUtil
+import Path.Dressup.Utils as PathDressupUtils
 import Path.Main.Job as PathJob
 import Path.Op.Base as PathOp
 import Path.Op.Gui.Selection as PathSelection
@@ -37,7 +38,7 @@ import PathScripts.PathUtils as PathUtils
 import importlib
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-from PySide import QtCore, QtGui, QtWidgets
+from PySide import QtCore, QtGui, QtSvg, QtWidgets
 
 __title__ = "CAM Operation UI base classes"
 __author__ = "sliptonic (Brad Collette)"
@@ -350,28 +351,20 @@ class ViewProvider(object):
                             # Get the face
                             face = selected_obj.Shape.getElement(sub)
 
-                            # Extract the normal vector
-                            # For planar faces, use the surface axis
-                            if hasattr(face.Surface, "Axis"):
-                                normal = face.Surface.Axis
-                            else:
-                                # For non-planar faces, use center of mass normal
-                                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
-                                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
-                                normal = face.normalAt(u_mid, v_mid)
+                            # Extract the normal vector at the center of the face
+                            u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
+                            v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
+                            normal = face.normalAt(u_mid, v_mid)
 
                             # Normalize the vector
                             normal.normalize()
 
-                            # Use attachment engine to set operation placement
-                            # AttachmentSupport: tuple of (object, subname)
-                            # MapMode: "FlatFace" aligns Z-axis with face normal
-                            self.operation.AttachmentSupport = (obj, (sub,))
-                            self.operation.MapMode = "FlatFace"
+                            # Store the face normal as the workplane orientation
+                            self.operation.Workplane = normal
                             FreeCAD.ActiveDocument.recompute()
 
                             FreeCAD.Console.PrintMessage(
-                                f"Attached {self.operation.Label} to {obj.Label}.{sub}\n"
+                                f"Set {self.operation.Label} workplane to {normal} from {selected_obj.Label}.{sub}\n"
                             )
 
                             # Deactivate and remove observer
@@ -402,6 +395,7 @@ class TaskPanelPage(object):
         self.obj = obj
         self.job = PathUtils.findParentJob(obj)
         self.form = self.getForm()
+        self.setToolControllerMinWidth(self.form)
         self.signalDirtyChanged = None
         self.setClean()
         self.setTitle("-")
@@ -432,6 +426,12 @@ class TaskPanelPage(object):
         """setParent() ... used to transfer parent object link to child class.
         Do not overwrite."""
         self.parent = parent
+
+    def setToolControllerMinWidth(self, form):
+        """If form has a widget named toolController, set its minimum width to 80 if possible."""
+        if hasattr(form, "toolController"):
+            tc = getattr(form, "toolController")
+            tc.setMinimumWidth(80)
 
     def onDirtyChanged(self, callback):
         """onDirtyChanged(callback) ... set callback when dirty state changes."""
@@ -595,8 +595,10 @@ class TaskPanelPage(object):
     def tcComboChanged(self, newIndex):
         if self.obj is not None and self.tcEditor:
             if newIndex == self.combo.count() - 1:
-                # Special entry: new tool controller. Show the tool dock and reset combo
-                dock = ToolBitLibraryDock(self.job, True)
+                # Special entry: new tool controller. Show the tool dock and reset combo.
+                # One toolbit at a time: the operation adopts the controller that gets
+                # added, and it can only use one.
+                dock = ToolBitLibraryDock(self.job, True, askToolNumber=True, singleSelection=True)
                 dock.open()
                 self.resetTCCombo()
             elif newIndex == self.combo.count() - 2:
@@ -610,14 +612,10 @@ class TaskPanelPage(object):
                 self.obj.ToolController = tc
                 self.setupToolController()
 
-    def updateToolControllerEditorVisibility(self):
-        if self.form.editToolController.isChecked():
-            self.tcEditor.controller.show()
-        else:
-            self.tcEditor.controller.hide()
-
     def resetToolController(self, job, tc):
         if self.obj is None:
+            return
+        if job != self.job:
             return
         self.obj.ToolController = tc
         self.setupToolController()
@@ -666,58 +664,69 @@ class TaskPanelPage(object):
 
         self.resetTCCombo()
 
-        if hasattr(self.form, "editToolController"):
-            layout = self.form.editToolController.parent().layout()
-            oldEditor = self.tcEditor
+        layout = self.form.toolController.parent().layout()
+        oldEditor = self.tcEditor
 
-            # Count the number of times the tool controller is used in other operations
-            # If it is used in other operations, we will offer the "copy tool controller" button
-            tcCount = 0
-            for job in PathUtils.GetJobs():
-                for op in job.Operations.Group:
-                    if op == self.obj:
-                        continue
-                    elif hasattr(op, "ToolController") and op.ToolController == obj.ToolController:
-                        tcCount += 1
+        # Count operations sharing this tool controller, unwrapping dressups since
+        # Operations.Group holds the dressup, not the base op the TC lives on.
+        tcCount = 0
+        selfBase = PathDressupUtils.baseOp(self.obj)
+        for job in PathUtils.GetJobs():
+            for op in job.Operations.Group:
+                opBase = PathDressupUtils.baseOp(op)
+                if opBase == selfBase:
+                    continue
+                elif (
+                    hasattr(opBase, "ToolController")
+                    and opBase.ToolController == obj.ToolController
+                ):
+                    tcCount += 1
 
-            self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
-                obj.ToolController,
-                False,
-                self.tcEditorChanged,
-                True,
-                True,
+        self.tcEditor = Path.Tool.Gui.Controller.ToolControllerEditor(
+            obj.ToolController,
+            False,
+            self.tcEditorChanged,
+            True,
+            True,
+        )
+        self.tcEditor.setupUi()
+
+        if tcCount == 1:
+            labelStr = FreeCAD.Qt.translate(
+                "CAM_Operation", "This tool controller is used by 1 other operation."
             )
-            self.tcEditor.setupUi()
-
+        else:
             labelStr = FreeCAD.Qt.translate(
                 "CAM_Operation", "This tool controller is used by {0} other operations."
             ).format(tcCount)
-            self.tcEditor.controller.tcOperationCountLabel.setText(labelStr)
-
-            # add to layout -- requires a grid layout
-            if isinstance(layout, QtWidgets.QGridLayout):
-                layout.addWidget(
-                    self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
-                )
-            else:
-                Path.Log.error(
-                    "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
-                )
-
-            self.updateToolControllerEditorVisibility()
-            self.tcEditor.updateUi()
-            checkbox = self.form.editToolController
-            checkboxSignal = (
-                checkbox.checkStateChanged
-                if hasattr(checkbox, "checkStateChanged")
-                else checkbox.stateChanged
+        showCountLabel = tcCount > 0
+        self.tcEditor.controller.tcOperationCountLabel.setWordWrap(True)
+        self.tcEditor.controller.tcOperationCountLabel.setText(
+            '<img src=":/icons/Warning.svg" width="24" height="24" style="vertical-align: bottom;"> {0}'.format(
+                labelStr
             )
-            checkboxSignal.connect(self.updateToolControllerEditorVisibility)
+        )
+        self.tcEditor.controller.tcOperationCountLabel.setVisible(showCountLabel)
 
-            if oldEditor:
-                oldEditor.updateToolController()
-                oldEditor.controller.hide()
-                layout.removeWidget(oldEditor.controller)
+        # add to layout -- requires a grid layout
+        if isinstance(layout, QtWidgets.QGridLayout):
+            layout.addWidget(
+                self.tcEditor.controller, layout.rowCount(), 0, 1, layout.columnCount()
+            )
+        else:
+            Path.Log.error(
+                "Panel uses a layout incompatible with editing tool controllers. Report a bug: it should be a QGridLayout"
+            )
+
+        self.tcEditor.controller.show()
+        self.tcEditor.updateUi()
+
+        if oldEditor:
+            oldEditor.updateToolController()
+            oldEditor.controller.hide()
+            layout.removeWidget(oldEditor.controller)
+            oldEditor.controller.setParent(None)
+            oldEditor.controller.deleteLater()
 
     def updateToolController(self, obj, combo):
         """updateToolController(obj, combo) ...
@@ -854,8 +863,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
     def supportsFaces(self):
         return self.features & PathOp.FeatureBaseFaces
 
-    def supportsPanels(self):
-        return self.features & PathOp.FeatureBasePanels
+    def supportsModels(self):
+        return self.features & PathOp.FeatureBaseModels
 
     def featureName(self):
         if self.supportsEdges() and self.supportsFaces():
@@ -875,7 +884,7 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 return False
         else:
-            if not self.supportsPanels() or "Panel" not in sel.Object.Name:
+            if not self.supportsModels() and sel.Object.isDerivedFrom("Part::Feature"):
                 return False
         return True
 
@@ -883,11 +892,17 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         Path.Log.track(selection)
         added = False
         for sel in selection:
+            if not hasattr(sel.Object, "Shape"):
+                continue
             # check each selection
             if self.selectionSupportedAsBaseGeometry(sel, False):
                 added = True
-                for sub in sel.SubElementNames:
-                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                if sel.SubElementNames:
+                    for sub in sel.SubElementNames:
+                        self.obj.Proxy.addBase(self.obj, sel.Object, sub)
+                else:
+                    self.obj.Proxy.addBase(self.obj, sel.Object, "")
+
         return added
 
     def addBase(self):
@@ -917,6 +932,8 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             if sub:
                 base = (obj, str(sub))
                 newlist.append(base)
+            else:
+                newlist.append(obj)
         Path.Log.debug("Setting new base: %s -> %s" % (self.obj.Base, newlist))
         self.obj.Base = newlist
 
@@ -1094,7 +1111,7 @@ class TaskPanelBaseLocationPage(TaskPanelPage):
 
 
 class TaskPanelHeightsPage(TaskPanelPage):
-    """Page controller for heights."""
+    """Page controller for heights and depths."""
 
     def __init__(self, obj, features):
         super(TaskPanelHeightsPage, self).__init__(obj, features)
@@ -1102,58 +1119,16 @@ class TaskPanelHeightsPage(TaskPanelPage):
         # members initialized later
         self.clearanceHeight = None
         self.safeHeight = None
+        self.startDepth = None
+        self.finalDepth = None
+        self.finishDepth = None
+        self.stepDown = None
         self.panelTitle = "Heights"
         self.OpIcon = ":/icons/CAM_Heights.svg"
         self.setIcon(self.OpIcon)
 
     def getForm(self):
         return FreeCADGui.PySideUic.loadUi(":/panels/PageHeightsEdit.ui")
-
-    def initPage(self, obj):
-        self.safeHeight = PathGuiUtil.QuantitySpinBox(self.form.safeHeight, obj, "SafeHeight")
-        self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
-            self.form.clearanceHeight, obj, "ClearanceHeight"
-        )
-
-    def getTitle(self, obj):
-        return translate("PathOp", "Heights")
-
-    def getFields(self, obj):
-        self.safeHeight.updateProperty()
-        self.clearanceHeight.updateProperty()
-
-    def setFields(self, obj):
-        self.safeHeight.updateWidget()
-        self.clearanceHeight.updateWidget()
-
-    def getSignalsForUpdate(self, obj):
-        signals = []
-        signals.append(self.form.safeHeight.editingFinished)
-        signals.append(self.form.clearanceHeight.editingFinished)
-        return signals
-
-    def pageUpdateData(self, obj, prop):
-        if prop in ["SafeHeight", "ClearanceHeight"]:
-            self.setFields(obj)
-
-
-class TaskPanelDepthsPage(TaskPanelPage):
-    """Page controller for depths."""
-
-    def __init__(self, obj, features):
-        super(TaskPanelDepthsPage, self).__init__(obj, features)
-
-        # members initialized later
-        self.startDepth = None
-        self.finalDepth = None
-        self.finishDepth = None
-        self.stepDown = None
-        self.panelTitle = "Depths"
-        self.OpIcon = ":/icons/CAM_Depths.svg"
-        self.setIcon(self.OpIcon)
-
-    def getForm(self):
-        return FreeCADGui.PySideUic.loadUi(":/panels/PageDepthsEdit.ui")
 
     def haveStartDepth(self):
         return PathOp.FeatureDepths & self.features
@@ -1170,6 +1145,10 @@ class TaskPanelDepthsPage(TaskPanelPage):
         return PathOp.FeatureStepDown & self.features
 
     def initPage(self, obj):
+        self.safeHeight = PathGuiUtil.QuantitySpinBox(self.form.safeHeight, obj, "SafeHeight")
+        self.clearanceHeight = PathGuiUtil.QuantitySpinBox(
+            self.form.clearanceHeight, obj, "ClearanceHeight"
+        )
 
         if self.haveStartDepth():
             self.startDepth = PathGuiUtil.QuantitySpinBox(self.form.startDepth, obj, "StartDepth")
@@ -1208,10 +1187,47 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finishDepth.hide()
             self.form.finishDepthLabel.hide()
 
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance = PathGuiUtil.QuantitySpinBox(
+                self.form.CollisionClearance, obj, "CollisionClearance"
+            )
+            for mode in [
+                "Clearance Height",
+                "Retract Height",
+                "Line of Sight",
+                "Tool Diameter",
+                "Tool Shape",
+            ]:
+                self.form.CollisionAvoidanceStrategy.addItem(translate("CAM_Operation", mode), mode)
+        else:
+            self.form.groupBoxLinking.hide()
+
+        self.updateHeightsDiagram()
+
+    def updateHeightsDiagram(self):
+        """Render the Clearance/Retract/Start/StepDown/FinishStepDown/Final callout graphic as
+        a single fixed-size image, independent of the fields grid next to it."""
+        haveFinish = self.haveFinishDepth()
+        resource = (
+            ":/icons/CAM_HeightsDiagram.svg"
+            if haveFinish
+            else ":/icons/CAM_HeightsDiagram_NoFinish.svg"
+        )
+        renderer = QtSvg.QSvgRenderer(resource)
+        size = renderer.defaultSize()
+        pixmap = QtGui.QPixmap(size)
+        pixmap.fill(QtCore.Qt.transparent)
+        painter = QtGui.QPainter(pixmap)
+        renderer.render(painter, QtCore.QRectF(0, 0, size.width(), size.height()))
+        painter.end()
+        self.form.heightsDiagram.setPixmap(pixmap)
+
     def getTitle(self, obj):
-        return translate("PathOp", "Depths")
+        return translate("PathOp", "Heights")
 
     def getFields(self, obj):
+        self.safeHeight.updateProperty()
+        self.clearanceHeight.updateProperty()
         if self.haveStartDepth():
             self.startDepth.updateProperty()
         if self.haveFinalDepth():
@@ -1220,8 +1236,15 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.stepDown.updateProperty()
         if self.haveFinishDepth():
             self.finishDepth.updateProperty()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateProperty()
+            mode = self.form.CollisionAvoidanceStrategy.currentData()
+            if mode and obj.CollisionAvoidanceStrategy != mode:
+                obj.CollisionAvoidanceStrategy = mode
 
     def setFields(self, obj):
+        self.safeHeight.updateWidget()
+        self.clearanceHeight.updateWidget()
         if self.haveStartDepth():
             self.startDepth.updateWidget()
         if self.haveFinalDepth():
@@ -1230,10 +1253,19 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.stepDown.updateWidget()
         if self.haveFinishDepth():
             self.finishDepth.updateWidget()
+        if PathOp.FeatureLinking & self.features:
+            self.CollisionClearance.updateWidget()
+            index = self.form.CollisionAvoidanceStrategy.findData(obj.CollisionAvoidanceStrategy)
+            if index >= 0:
+                self.form.CollisionAvoidanceStrategy.blockSignals(True)
+                self.form.CollisionAvoidanceStrategy.setCurrentIndex(index)
+                self.form.CollisionAvoidanceStrategy.blockSignals(False)
         self.updateSelection(obj, FreeCADGui.Selection.getSelectionEx())
 
     def getSignalsForUpdate(self, obj):
         signals = []
+        signals.append(self.form.safeHeight.editingFinished)
+        signals.append(self.form.clearanceHeight.editingFinished)
         if self.haveStartDepth():
             signals.append(self.form.startDepth.editingFinished)
         if self.haveFinalDepth():
@@ -1242,7 +1274,23 @@ class TaskPanelDepthsPage(TaskPanelPage):
             signals.append(self.form.stepDown.editingFinished)
         if self.haveFinishDepth():
             signals.append(self.form.finishDepth.editingFinished)
+        if PathOp.FeatureLinking & self.features:
+            signals.append(self.form.CollisionClearance.editingFinished)
+            signals.append(self.form.CollisionAvoidanceStrategy.currentIndexChanged)
         return signals
+
+    def pageUpdateData(self, obj, prop):
+        if prop in [
+            "SafeHeight",
+            "ClearanceHeight",
+            "StartDepth",
+            "FinalDepth",
+            "StepDown",
+            "FinishDepth",
+            "CollisionAvoidanceStrategy",
+            "CollisionClearance",
+        ]:
+            self.setFields(obj)
 
     def registerSignalHandlers(self, obj):
         if self.haveStartDepth():
@@ -1253,10 +1301,6 @@ class TaskPanelDepthsPage(TaskPanelPage):
             self.form.finalDepthSet.clicked.connect(
                 lambda: self.depthSet(obj, self.finalDepth, "FinalDepth")
             )
-
-    def pageUpdateData(self, obj, prop):
-        if prop in ["StartDepth", "FinalDepth", "StepDown", "FinishDepth"]:
-            self.setFields(obj)
 
     def depthSet(self, obj, spinbox, prop):
         z = self.selectionZLevel(FreeCADGui.Selection.getSelectionEx())
@@ -1290,6 +1334,47 @@ class TaskPanelDepthsPage(TaskPanelPage):
         else:
             self.form.startDepthSet.setEnabled(False)
             self.form.finalDepthSet.setEnabled(False)
+
+
+class TaskPanelToolControllerPage(TaskPanelPage):
+    """Page controller for tool controller, coolant and tool controller editing."""
+
+    def __init__(self, obj, features):
+        super(TaskPanelToolControllerPage, self).__init__(obj, features)
+
+        self.panelTitle = "Tool Controller"
+        self.OpIcon = ":/icons/CAM_ToolController.svg"
+        self.setIcon(self.OpIcon)
+
+    def getForm(self):
+        return FreeCADGui.PySideUic.loadUi(":/panels/PageToolControllerEdit.ui")
+
+    def haveCoolant(self):
+        return PathOp.FeatureCoolant & self.features
+
+    def initPage(self, obj):
+        if not self.haveCoolant():
+            self.form.coolantControllerLabel.hide()
+            self.form.coolantController.hide()
+
+    def getTitle(self, obj):
+        return translate("PathOp", "Tool Controller")
+
+    def getFields(self, obj):
+        self.updateToolController(obj, self.form.toolController)
+        if self.haveCoolant():
+            self.updateCoolant(obj, self.form.coolantController)
+
+    def setFields(self, obj):
+        self.setupToolController(obj, self.form.toolController)
+        if self.haveCoolant():
+            self.setupCoolant(obj, self.form.coolantController)
+
+    def getSignalsForUpdate(self, obj):
+        signals = [self.form.toolController.currentIndexChanged]
+        if self.haveCoolant():
+            signals.append(self.form.coolantController.currentIndexChanged)
+        return signals
 
 
 class TaskPanelDiametersPage(TaskPanelPage):
@@ -1376,12 +1461,6 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelBaseLocationPage(obj, features))
 
-        if PathOp.FeatureDepths & features or PathOp.FeatureStepDown & features:
-            if hasattr(opPage, "taskPanelDepthsPage"):
-                self.featurePages.append(opPage.taskPanelDepthsPage(obj, features))
-            else:
-                self.featurePages.append(TaskPanelDepthsPage(obj, features))
-
         if PathOp.FeatureHeights & features:
             if hasattr(opPage, "taskPanelHeightsPage"):
                 self.featurePages.append(opPage.taskPanelHeightsPage(obj, features))
@@ -1394,6 +1473,12 @@ class TaskPanel(object):
             else:
                 self.featurePages.append(TaskPanelDiametersPage(obj, features))
 
+        if (PathOp.FeatureTool | PathOp.FeatureCoolant) & features:
+            if hasattr(opPage, "taskPanelToolControllerPage"):
+                self.featurePages.append(opPage.taskPanelToolControllerPage(obj, features))
+            else:
+                self.featurePages.append(TaskPanelToolControllerPage(obj, features))
+
         self.featurePages.append(opPage)
 
         for page in self.featurePages:
@@ -1402,29 +1487,32 @@ class TaskPanel(object):
             page.onDirtyChanged(self.pageDirtyChanged)
 
         taskPanelLayout = Path.Preferences.defaultTaskPanelLayout()
+        self.taskPanelLayout = taskPanelLayout
 
         if taskPanelLayout < 2:
             opTitle = opPage.getTitle(obj)
             opPage.setTitle(translate("PathOp", "Operation"))
-            toolbox = QtGui.QToolBox()
+            tabwidget = IconTabWidget()
+            # tabwidget.setTabPosition(QtWidgets.QTabWidget.West)
             if taskPanelLayout == 0:
                 for page in self.featurePages:
-                    toolbox.addItem(page.form, page.getTitle(obj))
-                    itemIdx = toolbox.count() - 1
-                    if page.icon:
-                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
-                toolbox.setCurrentIndex(len(self.featurePages) - 1)
+                    tabwidget.addTab(
+                        page.form,
+                        QtGui.QIcon(page.icon) if page.icon else QtGui.QIcon(),
+                        page.getTitle(obj),
+                    )
+                tabwidget.setCurrentIndex(len(self.featurePages) - 1)
             else:
                 for page in reversed(self.featurePages):
-                    toolbox.addItem(page.form, page.getTitle(obj))
-                    itemIdx = toolbox.count() - 1
-                    if page.icon:
-                        toolbox.setItemIcon(itemIdx, QtGui.QIcon(page.icon))
-            toolbox.setWindowTitle(opTitle)
+                    tabwidget.addTab(
+                        page.form,
+                        QtGui.QIcon(page.icon) if page.icon else QtGui.QIcon(),
+                        page.getTitle(obj),
+                    )
+            tabwidget.setWindowTitle(opTitle)
             if opPage.getIcon(obj):
-                toolbox.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
-
-            self.form = toolbox
+                tabwidget.setWindowIcon(QtGui.QIcon(opPage.getIcon(obj)))
+            self.form = tabwidget
         elif taskPanelLayout == 2:
             forms = []
             for page in self.featurePages:
@@ -1523,7 +1611,7 @@ class TaskPanel(object):
     def panelSetFields(self):
         """panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI."""
         Path.Log.track()
-        self.obj.Proxy.sanitizeBase(self.obj)
+        self.obj.Proxy.checkBase(self.obj)
         for page in self.featurePages:
             page.pageSetFields()
 
@@ -1554,6 +1642,8 @@ class TaskPanel(object):
                 if getattr(page, "InitBase", True) and hasattr(page, "addBase"):
                     page.clearBase()
                     page.addBaseGeometry(sel)
+            if hasattr(self.obj.Proxy, "initAfterBase"):
+                self.obj.Proxy.initAfterBase(self.obj)
 
         # Update properties based upon expressions in case expression value has changed
         for prp, expr in self.obj.ExpressionEngine:
@@ -1580,7 +1670,7 @@ class TaskPanel(object):
             page.pageUpdateData(obj, prop)
 
     def needsFullSpace(self):
-        return True
+        return self.taskPanelLayout >= 2
 
     def updateSelection(self):
         sel = FreeCADGui.Selection.getSelectionEx()
@@ -1741,6 +1831,189 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
         PathSetupSheet.RegisterOperation(name, objFactory, setupProperties)
 
     return command
+
+
+class _AdaptiveTabBar(QtGui.QTabBar):
+    """QTabBar that clamps the width of icon-only tabs (empty tabText) to
+    iconOnlyMaxWidth. Tabs with a label are left at whatever the native
+    style computes for them -- we only ever shrink the hint, never invent one,
+    so icon+text tabs keep correct native layout."""
+
+    # Extra width, beyond the icon itself, to accommodate the QSS padding/margin
+    # set on QTabBar::tab in IconTabWidget (6px padding each side + ~2px border).
+    ICON_PADDING = 14
+
+    def __init__(self, *args, **kwargs):
+        super(_AdaptiveTabBar, self).__init__(*args, **kwargs)
+        self.iconOnlyMaxWidth = 24 + self.ICON_PADDING
+
+    def tabSizeHint(self, index):
+        size = super(_AdaptiveTabBar, self).tabSizeHint(index)
+        if not self.tabText(index):
+            size.setWidth(min(size.width(), self.iconOnlyMaxWidth))
+        return size
+
+
+class IconTabWidget(QtGui.QTabWidget):
+    """Tab widget that shows every tab's icon + label when there's room; if the
+    full set doesn't fit the available width, it falls back to icon-only tabs
+    (label as tooltip) for everything except the active tab. Avoiding the tab
+    bar's scroll (< >) buttons this way keeps every tab reachable at a glance.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(IconTabWidget, self).__init__(*args, **kwargs)
+        self.setStyleSheet("QTabWidget::tab-bar { alignment: left; }")
+        self.setTabBar(_AdaptiveTabBar())
+        tabbar = self.tabBar()
+        tabbar.setUsesScrollButtons(False)
+        tabbar.setElideMode(QtCore.Qt.ElideNone)
+        iconSize = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General").GetInt(
+            "ToolbarIconSize", 24
+        )
+        tabbar.setIconSize(QtCore.QSize(iconSize, iconSize))
+        tabbar.iconOnlyMaxWidth = iconSize + _AdaptiveTabBar.ICON_PADDING
+        tabbar.setLayoutDirection(QtCore.Qt.LeftToRight)
+        # Force padding and margin to make themes match.
+        tabbar.setStyleSheet("""
+            QTabBar::tab {
+                min-width: 0px;
+                padding: 6px;
+                margin: 2px;
+            }
+            """)
+        self._tabLabels = {}
+        self._updatingLabels = False
+        self._filteredAncestors = []
+        self.currentChanged.connect(self._updateTabLabels)
+        self.currentChanged.connect(self._resizeToCurrentPage)
+
+    def sizeHint(self):
+        return self._currentPageSize(super(IconTabWidget, self).sizeHint(), "sizeHint")
+
+    def minimumSizeHint(self):
+        return self._currentPageSize(
+            super(IconTabWidget, self).minimumSizeHint(), "minimumSizeHint"
+        )
+
+    def _currentPageSize(self, fallback, hintName):
+        current = self.currentWidget()
+        if current is None:
+            return fallback
+        pageSize = getattr(current, hintName)()
+        tabBarSize = self.tabBar().sizeHint()
+        height = pageSize.height() + tabBarSize.height()
+        width = max(pageSize.width(), tabBarSize.width())
+        return QtCore.QSize(width, height)
+
+    def hasHeightForWidth(self):
+        current = self.currentWidget()
+        return current.hasHeightForWidth() if current is not None else False
+
+    def heightForWidth(self, width):
+        current = self.currentWidget()
+        if current is None or not current.hasHeightForWidth():
+            return super(IconTabWidget, self).heightForWidth(width)
+        return current.heightForWidth(width) + self.tabBar().sizeHint().height()
+
+    def _resizeToCurrentPage(self, _index):
+        self.updateGeometry()
+        target = self.sizeHint()
+        parent = self.parentWidget()
+        while parent is not None:
+            if isinstance(parent, QtGui.QScrollArea):
+                target = target.expandedTo(parent.viewport().size())
+                break
+            parent = parent.parentWidget()
+        self.resize(target)
+
+    def addTab(self, widget, icon, label):
+        if self.tabPosition() == QtGui.QTabWidget.West and not icon.isNull():
+            pixmap = icon.pixmap(32, 32)
+            transform = QtGui.QTransform().rotate(90)
+            rotated_pixmap = pixmap.transformed(transform, QtCore.Qt.SmoothTransformation)
+            icon = QtGui.QIcon(rotated_pixmap)
+        index = super(IconTabWidget, self).addTab(widget, icon, "")
+        self._tabLabels[index] = label
+        self.tabBar().setTabToolTip(index, label)
+        self._updateTabLabels(self.currentIndex())
+        return index
+
+    def resizeEvent(self, event):
+        super(IconTabWidget, self).resizeEvent(event)
+        self._scheduleUpdate()
+
+    def showEvent(self, event):
+        super(IconTabWidget, self).showEvent(event)
+        self._installAncestorFilters()
+        self._scheduleUpdate()
+
+    def hideEvent(self, event):
+        self._removeAncestorFilters()
+        super(IconTabWidget, self).hideEvent(event)
+
+    def _installAncestorFilters(self):
+        self._removeAncestorFilters()
+        parent = self.parentWidget()
+        while parent is not None:
+            parent.installEventFilter(self)
+            self._filteredAncestors.append(parent)
+            parent = parent.parentWidget()
+
+    def _removeAncestorFilters(self):
+        for ancestor in self._filteredAncestors:
+            try:
+                ancestor.removeEventFilter(self)
+            except RuntimeError:
+                pass  # ancestor's c++ object was deleted before the timer fired
+        self._filteredAncestors = []
+
+    def eventFilter(self, obj, event):
+        if not isinstance(event, QtCore.QEvent):
+            return False
+        if event.type() == QtCore.QEvent.Resize:
+            self._scheduleUpdate()
+        return super(IconTabWidget, self).eventFilter(obj, event)
+
+    def _scheduleUpdate(self):
+        # Defer until the event loop catches up so ancestor geometry (dock/
+        # scroll area) has settled before we measure available width.
+        def _deferredUpdate():
+            try:
+                self._updateTabLabels(self.currentIndex())
+            except RuntimeError:
+                pass  # widget's c++ object was deleed before the timer fired
+
+        QtCore.QTimer.singleShot(0, _deferredUpdate)
+
+    def _availableWidth(self):
+        """Width to fit tabs into: the nearest ancestor QScrollArea's viewport
+        if there is one (since that's what actually resizes with the dock),
+        otherwise this widget's own width. Confirmed load-bearing: removing
+        this in testing made tabs stop reflowing on resize entirely, so
+        self.width() alone does not track the real available width here."""
+        parent = self.parentWidget()
+        while parent is not None:
+            if isinstance(parent, QtGui.QScrollArea):
+                return parent.viewport().width()
+            parent = parent.parentWidget()
+        return self.width()
+
+    def _updateTabLabels(self, current):
+        """Show every tab's label if they all fit; otherwise only the active tab."""
+        if self._updatingLabels or not self._tabLabels:
+            return
+        self._updatingLabels = True
+        try:
+            tabbar = self.tabBar()
+            for index, label in self._tabLabels.items():
+                tabbar.setTabText(index, label)
+            if tabbar.sizeHint().width() > self._availableWidth():
+                for index, label in self._tabLabels.items():
+                    if index != current:
+                        tabbar.setTabText(index, "")
+        finally:
+            self._updatingLabels = False
 
 
 FreeCADGui.addCommand("CAM_SetStartPoint", CommandSetStartPoint())

@@ -15,7 +15,6 @@ from sync_version import (
     sync_workspace_pixi_toml,
     sync_rattler_build_pixi_toml,
     sync_recipe_yaml,
-    sync_declarations_nsh,
     sync_fedora_spec,
     sync_startup_wm_class,
     sync_wayland_app_id,
@@ -74,6 +73,13 @@ class TestVersionInfo(unittest.TestCase):
     def test_conda_version_rc(self):
         version = make_version(suffix="RC1")
         self.assertEqual(version.conda, "1.2.0RC1")
+
+    def test_calver_dev_version(self):
+        version = make_version(major=26, minor=3, patch=0, suffix="dev")
+        self.assertEqual(version.simple, "26.3.0")
+        self.assertEqual(version.complete, "26.3.0-dev")
+        self.assertEqual(version.rpm, "26.3.0~dev")
+        self.assertEqual(version.conda, "26.3.0dev")
 
     def test_lowercase_name(self):
         version = make_version(name="FreeCAD")
@@ -249,14 +255,6 @@ source:
   path: ../..
 """
 
-DECLARATIONS_NSH = """\
-!define FILES_LICENSE "license.rtf"
-
-!define APP_NAME "FreeCAD"
-!define APP_VERSION_NUMBER "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}"
-!define APP_DIR "${APP_NAME} ${APP_SERIES_NAME}"
-"""
-
 FEDORA_SPEC = """\
 Name:           freecad
 Epoch:          1
@@ -374,31 +372,6 @@ class TestSyncRecipeYaml(unittest.TestCase):
             self.assertIn('version: "1.2.0"', result)
 
 
-class TestSyncDeclarationsNsh(unittest.TestCase):
-    def test_updates_app_name(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "declarations.nsh", DECLARATIONS_NSH)
-            version = make_version(name="MyCAD")
-            result, changed = sync_declarations_nsh(filepath, version)
-            self.assertTrue(changed)
-            self.assertIn('!define APP_NAME "MyCAD"', result)
-
-    def test_already_in_sync(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "declarations.nsh", DECLARATIONS_NSH)
-            version = make_version(name="FreeCAD")
-            result, changed = sync_declarations_nsh(filepath, version)
-            self.assertFalse(changed)
-
-    def test_preserves_other_defines(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            filepath = write_temp_file(Path(tmp), "declarations.nsh", DECLARATIONS_NSH)
-            version = make_version(name="MyCAD")
-            result, changed = sync_declarations_nsh(filepath, version)
-            self.assertIn("APP_VERSION_NUMBER", result)
-            self.assertIn("APP_DIR", result)
-
-
 class TestSyncFedoraSpec(unittest.TestCase):
     def test_updates_name_and_version(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -460,11 +433,6 @@ class TestRun(unittest.TestCase):
         write_temp_file(root, "pixi.toml", WORKSPACE_PIXI_TOML)
         write_temp_file(root, "package/rattler-build/pixi.toml", RATTLER_PIXI_TOML)
         write_temp_file(root, "package/rattler-build/recipe.yaml", RECIPE_YAML)
-        write_temp_file(
-            root,
-            "package/WindowsInstaller/include/declarations.nsh",
-            DECLARATIONS_NSH,
-        )
         write_temp_file(root, "package/fedora/freecad.spec", FEDORA_SPEC)
         write_temp_file(root, "src/XDGData/org.freecad.FreeCAD.desktop", DESKTOP_FILE)
         write_temp_file(root, "src/Main/MainGui.cpp", MAINGUI_CPP)

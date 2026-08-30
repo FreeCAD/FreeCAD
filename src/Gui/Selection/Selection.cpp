@@ -25,9 +25,8 @@
 
 #include <array>
 #include <set>
-#include <boost/algorithm/string/predicate.hpp>
-#include <QApplication>
 
+#include <QApplication>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -37,7 +36,6 @@
 #include <App/Link.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Interpreter.h>
 #include <Base/Tools.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/UnitsApi.h>
@@ -63,30 +61,51 @@ using namespace Gui;
 using namespace std;
 namespace sp = std::placeholders;
 
+SelectionGateFilterExternal::SelectionGateFilterExternal(const char* docName, const char* objName)
+{
+    if (docName) {
+        DocName = docName;
+        if (objName) {
+            ObjName = objName;
+        }
+    }
+}
+
+bool SelectionGateFilterExternal::allow(App::Document* doc, App::DocumentObject* obj, const char*)
+{
+    if (!doc || !obj) {
+        return true;
+    }
+    if (!DocName.empty() && doc->getName() != DocName) {
+        notAllowedReason = "Cannot select external object";
+    }
+    else if (!ObjName.empty() && ObjName == obj->getNameInDocument()) {
+        notAllowedReason = "Cannot select self";
+    }
+    else {
+        return true;
+    }
+    return false;
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 SelectionObserver::SelectionObserver(bool attach, ResolveMode resolve)
     : resolve(resolve)
     , blockedSelection(false)
 {
-    if (auto doc = App::GetApplication().getActiveDocument()) {
-        documentScopeName = doc->getName();
-    }
     if (attach) {
         attachSelection();
     }
 }
 
-SelectionObserver::SelectionObserver(
-    const ViewProviderDocumentObject* /*vp*/,
-    bool attach,
-    ResolveMode resolve
-)
+SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool attach, ResolveMode resolve)
     : resolve(resolve)
     , blockedSelection(false)
 {
-    if (auto doc = App::GetApplication().getActiveDocument()) {
-        documentScopeName = doc->getName();
+    if (vp && vp->getObject() && vp->getObject()->getDocument()) {
+        filterDocName = vp->getObject()->getDocument()->getName();
+        filterObjName = vp->getObject()->getNameInDocument();
     }
     if (attach) {
         attachSelection();
@@ -129,14 +148,18 @@ void SelectionObserver::attachSelection()
             std::bind(&SelectionObserver::_onSelectionChanged, this, sp::_1)
         );
         // NOLINTEND
+        if (!filterDocName.empty()) {
+            Selection().addSelectionGate(
+                new SelectionGateFilterExternal(filterDocName.c_str(), filterObjName.c_str())
+            );
+        }
     }
 }
 
 void SelectionObserver::_onSelectionChanged(const SelectionChanges& msg)
 {
     try {
-        if (blockedSelection
-            || (!documentScopeName.empty() && msg.pDocName && documentScopeName != msg.pDocName)) {
+        if (blockedSelection) {
             return;
         }
         onSelectionChanged(msg);
@@ -157,46 +180,43 @@ void SelectionObserver::detachSelection()
 {
     if (connectSelection.connected()) {
         connectSelection.disconnect();
+        if (!filterDocName.empty()) {
+            Selection().rmvSelectionGate();
+        }
     }
 }
 
 // -------------------------------------------
 
+bool SelectionSingleton::hasSelection() const
+{
+    return !_SelList.empty();
+}
 bool SelectionSingleton::hasPreselection() const
 {
     return !CurrentPreselection.Object.getObjectName().empty();
-}
-
-unsigned int SelectionSingleton::size(const char* pDocName) const
-{
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return 0;
-    }
-    return static_cast<unsigned int>(context.info->selList.size());
-}
-
-std::size_t SelectionSingleton::selStackBackSize(const char* pDocName) const
-{
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return 0;
-    }
-    return context.info->selStackBack.size();
-}
-std::size_t SelectionSingleton::selStackForwardSize(const char* pDocName) const
-{
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return 0;
-    }
-    return context.info->selStackForward.size();
 }
 
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection(ResolveMode resolve) const
 {
     return getSelection("*", resolve);
 }
+
+std::vector<App::SubObjectT> SelectionSingleton::getSelectionT(
+    const char* pDocName,
+    ResolveMode resolve,
+    bool single
+) const
+{
+    auto sels = getSelection(pDocName, resolve, single);
+    std::vector<App::SubObjectT> res;
+    res.reserve(sels.size());
+    for (auto& sel : sels) {
+        res.emplace_back(sel.pObject, sel.SubName);
+    }
+    return res;
+}
+
 
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(
     const char* pDocName,
@@ -209,20 +229,23 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(
         temp.reserve(1);
     }
     SelObj tempSelObj;
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return {};
+    App::Document* pcDoc = nullptr;
+    if (!pDocName || strcmp(pDocName, "*") != 0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc) {
+            return temp;
+        }
     }
 
     std::map<App::DocumentObject*, std::set<std::string>> objMap;
 
-    for (auto& sel : context.info->selList) {
+    for (auto& sel : _SelList) {
         if (!sel.pDoc) {
             continue;
         }
         const char* subelement = nullptr;
         auto obj = getObjectOfType(sel, App::DocumentObject::getClassTypeId(), resolve, &subelement);
-        if (!obj) {
+        if (!obj || (pcDoc && sel.pObject->getDocument() != pcDoc)) {
             continue;
         }
 
@@ -253,22 +276,22 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(
 
     return temp;
 }
-bool SelectionSingleton::hasSelection(const char* pDocName) const
-{
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
-    }
-    return !context.info->selList.empty();
-}
+
 bool SelectionSingleton::hasSelection(const char* pDocName, ResolveMode resolve) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
+    App::Document* pcDoc = nullptr;
+    if (!pDocName || strcmp(pDocName, "*") != 0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc) {
+            return false;
+        }
     }
-    for (auto& sel : context.info->selList) {
-        if (getObjectOfType(sel, App::DocumentObject::getClassTypeId(), resolve)) {
+    for (auto& sel : _SelList) {
+        if (!sel.pDoc) {
+            continue;
+        }
+        auto obj = getObjectOfType(sel, App::DocumentObject::getClassTypeId(), resolve);
+        if (obj && (!pcDoc || sel.pObject->getDocument() == pcDoc)) {
             return true;
         }
     }
@@ -278,11 +301,17 @@ bool SelectionSingleton::hasSelection(const char* pDocName, ResolveMode resolve)
 
 bool SelectionSingleton::hasSubSelection(const char* pDocName, bool subElement) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
+    App::Document* pcDoc = nullptr;
+    if (!pDocName || strcmp(pDocName, "*") != 0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc) {
+            return false;
+        }
     }
-    for (auto& sel : context.info->selList) {
+    for (auto& sel : _SelList) {
+        if (pcDoc && pcDoc != sel.pDoc) {
+            continue;
+        }
         if (sel.SubName.empty()) {
             continue;
         }
@@ -302,23 +331,28 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getPickedList(const 
     std::vector<SelObj> temp;
     SelObj tempSelObj;
 
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return {};
+    App::Document* pcDoc = nullptr;
+    if (!pDocName || strcmp(pDocName, "*") != 0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc) {
+            return {};
+        }
     }
 
-    for (const auto& picked : context.info->pickedList) {
-        tempSelObj.DocName = picked.DocName.c_str();
-        tempSelObj.FeatName = picked.FeatName.c_str();
-        tempSelObj.SubName = picked.SubName.c_str();
-        tempSelObj.TypeName = picked.TypeName.c_str();
-        tempSelObj.pObject = picked.pObject;
-        tempSelObj.pResolvedObject = picked.pResolvedObject;
-        tempSelObj.pDoc = picked.pDoc;
-        tempSelObj.x = picked.x;
-        tempSelObj.y = picked.y;
-        tempSelObj.z = picked.z;
-        temp.push_back(tempSelObj);
+    for (std::list<_SelObj>::const_iterator It = _PickedList.begin(); It != _PickedList.end(); ++It) {
+        if (!pcDoc || It->pDoc == pcDoc) {
+            tempSelObj.DocName = It->DocName.c_str();
+            tempSelObj.FeatName = It->FeatName.c_str();
+            tempSelObj.SubName = It->SubName.c_str();
+            tempSelObj.TypeName = It->TypeName.c_str();
+            tempSelObj.pObject = It->pObject;
+            tempSelObj.pResolvedObject = It->pResolvedObject;
+            tempSelObj.pDoc = It->pDoc;
+            tempSelObj.x = It->x;
+            tempSelObj.y = It->y;
+            tempSelObj.z = It->z;
+            temp.push_back(tempSelObj);
+        }
     }
 
     return temp;
@@ -430,11 +464,7 @@ std::vector<SelectionObject> SelectionSingleton::getSelectionEx(
     bool single
 ) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return {};
-    }
-    return getObjectList(pDocName, typeId, context.info->selList, resolve, single);
+    return getObjectList(pDocName, typeId, _SelList, resolve, single);
 }
 
 std::vector<SelectionObject> SelectionSingleton::getPickedListEx(
@@ -442,17 +472,13 @@ std::vector<SelectionObject> SelectionSingleton::getPickedListEx(
     Base::Type typeId
 ) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return {};
-    }
-    return getObjectList(pDocName, typeId, context.info->pickedList, ResolveMode::NoResolve);
+    return getObjectList(pDocName, typeId, _PickedList, ResolveMode::NoResolve);
 }
 
 std::vector<SelectionObject> SelectionSingleton::getObjectList(
     const char* pDocName,
     Base::Type typeId,
-    const std::list<SelectionDescription>& objList,
+    const std::list<_SelObj>& objList,
     ResolveMode resolve,
     bool single
 ) const
@@ -518,51 +544,35 @@ std::vector<SelectionObject> SelectionSingleton::getObjectList(
     return temp;
 }
 
-bool SelectionSingleton::needPickedList(const char* pDocName) const
+bool SelectionSingleton::needPickedList() const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
-    }
-    return context.info->needPickedList;
+    return _needPickedList;
 }
 
-SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(
-    const SelectionSingleton::SelectionContext& context,
-    const SelectionDescription& sel
-)
+SelectionSingleton::SelectionAllowance SelectionSingleton::isSelectionAllowed(const _SelObj& sel)
 {
-    if (!context.info || !context.info->gate) {
+    if (!ActiveGate) {
         return {.allowed = true, .reason = ""};
     }
     const char* subelement = nullptr;
-    auto pObject = getObjectOfType(
-        sel,
-        App::DocumentObject::getClassTypeId(),
-        context.info->resolveMode,
-        &subelement
-    );
+    auto pObject
+        = getObjectOfType(sel, App::DocumentObject::getClassTypeId(), gateResolve, &subelement);
 
 
-    if (!context.info->gate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
-        std::string copyNotAllowedReason = context.info->gate->notAllowedReason;
-        context.info->gate->notAllowedReason.clear();
+    if (!ActiveGate->allow(pObject ? pObject->getDocument() : sel.pDoc, pObject, subelement)) {
+        std::string copyNotAllowedReason = ActiveGate->notAllowedReason;
+        ActiveGate->notAllowedReason.clear();
         return {.allowed = false, .reason = copyNotAllowedReason};
     }
     return {.allowed = true, .reason = ""};
 }
 
-void SelectionSingleton::enablePickedList(bool enable, const char* pDocName)
+void SelectionSingleton::enablePickedList(bool enable)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
-    if (enable != context.info->needPickedList) {
-        context.info->needPickedList = enable;
-        context.info->pickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
+    if (enable != _needPickedList) {
+        _needPickedList = enable;
+        _PickedList.clear();
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 }
 
@@ -631,13 +641,9 @@ void SelectionSingleton::notify(SelectionChanges&& Chng)
     }
 }
 
-bool SelectionSingleton::hasPickedList(const char* pDocName) const
+bool SelectionSingleton::hasPickedList() const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
-    }
-    return !context.info->pickedList.empty();
+    return !_PickedList.empty();
 }
 
 int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList& prop) const
@@ -669,7 +675,7 @@ int SelectionSingleton::getAsPropertyLinkSubList(App::PropertyLinkSubList& prop)
 }
 
 App::DocumentObject* SelectionSingleton::getObjectOfType(
-    const SelectionDescription& sel,
+    const _SelObj& sel,
     Base::Type typeId,
     ResolveMode resolve,
     const char** subelement
@@ -712,19 +718,27 @@ vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
     ResolveMode resolve
 ) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return {};
-    }
-
-    std::set<App::DocumentObject*> objs;
-    for (auto& sel : context.info->selList) {
-        if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
-            objs.insert(pObject);
+    App::Document* pcDoc = nullptr;
+    if (!pDocName || strcmp(pDocName, "*") != 0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc) {
+            return {};
         }
     }
 
-    return std::vector<App::DocumentObject*>(objs.begin(), objs.end());
+    std::vector<App::DocumentObject*> temp;
+    std::set<App::DocumentObject*> objs;
+
+    for (auto& sel : _SelList) {
+        if (App::DocumentObject* pObject = getObjectOfType(sel, typeId, resolve)) {
+            auto ret = objs.insert(pObject);
+            if (ret.second) {
+                temp.push_back(pObject);
+            }
+        }
+    }
+
+    return temp;
 }
 
 std::vector<App::DocumentObject*> SelectionSingleton::getObjectsOfType(
@@ -746,13 +760,16 @@ unsigned int SelectionSingleton::countObjectsOfType(
     ResolveMode resolve
 ) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return 0;
+    App::Document* pcDoc = nullptr;
+    if (!pDocName || strcmp(pDocName, "*") != 0) {
+        pcDoc = getDocument(pDocName);
+        if (!pcDoc) {
+            return 0;
+        }
     }
 
-    return std::count_if(context.info->selList.begin(), context.info->selList.end(), [&](auto& sel) {
-        return getObjectOfType(sel, typeId, resolve);
+    return std::count_if(_SelList.begin(), _SelList.end(), [&](auto& sel) {
+        return (!pcDoc || pcDoc == sel.pDoc) && getObjectOfType(sel, typeId, resolve);
     });
 }
 
@@ -797,7 +814,10 @@ void SelectionSingleton::slotSelectionChanged(const SelectionChanges& msg)
             pObject->getTypeId().getName(),
             msg.x,
             msg.y,
-            msg.z
+            msg.z,
+            SelectionChanges::MsgSource::Any,
+            msg.hasPickedPoint ? SelectionChanges::PickedPoint::Valid
+                               : SelectionChanges::PickedPoint::Invalid
         );
 
         try {
@@ -842,50 +862,45 @@ bool SelectionSingleton::testSelection(
         return false;
     }
 
-    auto foundContext = docSelectionContext.find(pDoc);
-    if (foundContext == docSelectionContext.end() || !foundContext->second.gate) {
+    if (!ActiveGate) {
         return true;
     }
-    const auto& info = foundContext->second;
 
     const char* objectName = pObject->getNameInDocument();
     if (!objectName) {
         return false;
     }
 
-    SelectionDescription temp;
-    int ret = checkSelection(
-        pDoc->getName(),
-        objectName,
-        pSubName,
-        ResolveMode::NoResolve,
-        temp,
-        &info.selList
-    );
+    _SelObj temp;
+    int ret
+        = checkSelection(pDoc->getName(), objectName, pSubName, ResolveMode::NoResolve, temp, &_SelList);
     if (ret < 0) {
         return false;
     }
 
     const char* subelement = nullptr;
     auto gateObject
-        = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), info.resolveMode, &subelement);
+        = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), gateResolve, &subelement);
 
-    auto* gate = info.gate;
-    std::string notAllowedReason = gate->notAllowedReason;
-    bool allowed
-        = gate->allow(gateObject ? gateObject->getDocument() : temp.pDoc, gateObject, subelement);
-    gate->notAllowedReason = notAllowedReason;
+    std::string notAllowedReason = ActiveGate->notAllowedReason;
+    bool allowed = ActiveGate->allow(
+        gateObject ? gateObject->getDocument() : temp.pDoc,
+        gateObject,
+        subelement
+    );
+    ActiveGate->notAllowedReason = notAllowedReason;
     return allowed;
 }
 
-bool SelectionSingleton::hasSelectionGate(App::Document* pDoc) const
+bool SelectionSingleton::hasSelectionGate(App::Document* /*pDoc*/) const
 {
-    if (!pDoc) {
-        return false;
-    }
+    // if (!pDoc) {
+    //     return false;
+    // }
 
-    auto foundContext = docSelectionContext.find(pDoc);
-    return foundContext != docSelectionContext.end() && foundContext->second.gate;
+    // auto foundContext = docSelectionContext.find(pDoc);
+    // return foundContext != docSelectionContext.end() && foundContext->second.gate;
+    return ActiveGate != nullptr;
 }
 
 int SelectionSingleton::setPreselect(
@@ -895,7 +910,8 @@ int SelectionSingleton::setPreselect(
     float x,
     float y,
     float z,
-    SelectionChanges::MsgSource signal
+    SelectionChanges::MsgSource signal,
+    SelectionChanges::PickedPoint pickedPoint
 )
 {
     if (!pDocName || !pObjectName) {
@@ -913,13 +929,11 @@ int SelectionSingleton::setPreselect(
 
     rmvPreselect();
 
-    App::Document* pDoc = getDocument(pDocName);
-    if (!pDoc) {
-        return 0;
-    }
-    auto context = getSelectionContext(pDocName);
-
-    if (context.info->gate && signal != SelectionChanges::MsgSource::Internal) {
+    if (ActiveGate && signal != SelectionChanges::MsgSource::Internal) {
+        App::Document* pDoc = getDocument(pDocName);
+        if (!pDoc || !pObjectName) {
+            return 0;
+        }
         App::ElementNamePair elementName;
         auto pObject = pDoc->getObject(pObjectName);
         if (!pObject) {
@@ -927,14 +941,14 @@ int SelectionSingleton::setPreselect(
         }
 
         const char* subelement = pSubName;
-        if (context.info->resolveMode != ResolveMode::NoResolve) {
+        if (gateResolve != ResolveMode::NoResolve) {
             auto& newElementName = elementName.newName;
             auto& oldElementName = elementName.oldName;
             pObject = App::GeoFeature::resolveElement(pObject, pSubName, elementName);
             if (!pObject) {
                 return 0;
             }
-            if (context.info->resolveMode > ResolveMode::OldStyleElement) {
+            if (gateResolve > ResolveMode::OldStyleElement) {
                 subelement = !newElementName.empty() ? newElementName.c_str()
                                                      : oldElementName.c_str();
             }
@@ -942,10 +956,10 @@ int SelectionSingleton::setPreselect(
                 subelement = oldElementName.c_str();
             }
         }
-        if (!context.info->gate->allow(pObject->getDocument(), pObject, subelement)) {
+        if (!ActiveGate->allow(pObject->getDocument(), pObject, subelement)) {
             QString msg;
-            if (context.info->gate->notAllowedReason.length() > 0) {
-                msg = QObject::tr(context.info->gate->notAllowedReason.c_str());
+            if (ActiveGate->notAllowedReason.length() > 0) {
+                msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
             }
             else {
                 msg = QCoreApplication::translate("SelectionFilter", "Not allowed:");
@@ -968,7 +982,7 @@ int SelectionSingleton::setPreselect(
         mdi->restoreOverrideCursor();
     }
 
-    DocName = context.docName.c_str();
+    DocName = pDocName;
     FeatName = pObjectName;
     SubName = pSubName;
     hx = x;
@@ -979,14 +993,15 @@ int SelectionSingleton::setPreselect(
     SelectionChanges Chng(
         signal == SelectionChanges::MsgSource::Internal ? SelectionChanges::SetPreselectSignal
                                                         : SelectionChanges::SetPreselect,
-        context.docName.c_str(),
+        DocName,
         FeatName,
         SubName,
         std::string(),
         x,
         y,
         z,
-        signal
+        signal,
+        pickedPoint
     );
 
     if (Chng.Type == SelectionChanges::SetPreselect) {
@@ -1126,12 +1141,6 @@ void SelectionSingleton::rmvPreselect(bool signal)
     // reset the current preselection
     CurrentPreselection = SelectionChanges();
 
-    auto context = getSelectionContext(DocName.c_str());
-    if (context.info && context.info->gate && getMainWindow()) {
-        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
-        mdi->restoreOverrideCursor();
-    }
-
     // Reset preselection helpers
     DocName = "";
     FeatName = "";
@@ -1139,6 +1148,11 @@ void SelectionSingleton::rmvPreselect(bool signal)
     hx = 0;
     hy = 0;
     hz = 0;
+
+    if (ActiveGate && getMainWindow()) {
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        mdi->restoreOverrideCursor();
+    }
 
     FC_TRACE("rmv preselect");
 
@@ -1152,62 +1166,47 @@ const SelectionChanges& SelectionSingleton::getPreselection() const
 }
 
 // add a SelectionGate to control what is selectable
-void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve, const char* pDocName)
+void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
 {
-    App::Document* doc = getDocument(pDocName);
-    if (!doc) {
-        return;
+    if (ActiveGate) {
+        rmvSelectionGate();
     }
-    rmvSelectionGate(doc);
 
-    auto context = getSelectionContext(doc->getName());
-    context.info->resolveMode = resolve;
-    context.info->gate = gate;
+    ActiveGate = gate;
+    gateResolve = resolve;
 }
 
-const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* doc) const
+const Gui::SelectionGate* SelectionSingleton::getSelectionGate(const App::Document* /*doc*/) const
 {
-    if (doc == nullptr) {
-        return nullptr;
-    }
-    auto context = getSelectionContext(doc->getName());
-    if (!context.info) {
-        return nullptr;
-    }
-    return context.info->gate;
+    return ActiveGate;
 }
 
 // remove the active SelectionGate
-void SelectionSingleton::rmvSelectionGate(App::Document* doc)
+void SelectionSingleton::rmvSelectionGate()
 {
-    auto foundContext = docSelectionContext.find(doc);
-    if (foundContext != docSelectionContext.end() && foundContext->second.gate) {
-        delete foundContext->second.gate;
-        foundContext->second.gate = nullptr;
+    if (ActiveGate) {
+        delete ActiveGate;
+        ActiveGate = nullptr;
 
-        // if a document is about to be closed it has no MDI view any more
-        if (Gui::Application::Instance && Gui::getMainWindow()) {
-            if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
-                if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
+        if (Gui::Application::Instance) {
+            if (Gui::Document* doc = Gui::Application::Instance->activeDocument()) {
+                // if a document is about to be closed it has no MDI view any more
+                if (Gui::MDIView* mdi = doc->getActiveView()) {
                     mdi->restoreOverrideCursor();
                 }
             }
         }
     }
 }
-void SelectionSingleton::rmvSelectionGate(const char* pDocName)
-{
-    App::Document* doc = getDocument(pDocName);
-    if (!doc) {
-        return;
-    }
-    rmvSelectionGate(doc);
-}
-
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
-    return App::GetApplication().getDocumentOrActive(pDocName);
+    if (!Base::Tools::isNullOrEmpty(pDocName)) {
+        return App::GetApplication().getDocument(pDocName);
+    }
+    else {
+        return App::GetApplication().getActiveDocument();
+    }
 }
 
 int SelectionSingleton::disableCommandLog()
@@ -1229,9 +1228,7 @@ int SelectionSingleton::enableCommandLog(bool silent)
             }
         }
         else {
-            auto context = getSelectionContext(nullptr);  // get selection context of
-                                                          // current active file
-            for (auto& sel : context.info->selList) {
+            for (auto& sel : _SelList) {
                 sel.log();
             }
         }
@@ -1239,7 +1236,7 @@ int SelectionSingleton::enableCommandLog(bool silent)
     return logDisabled;
 }
 
-void SelectionSingleton::SelectionDescription::log(bool remove, bool clearPreselect)
+void SelectionSingleton::_SelObj::log(bool remove, bool clearPreselect)
 {
     if (logged && !remove) {
         return;
@@ -1264,7 +1261,7 @@ void SelectionSingleton::SelectionDescription::log(bool remove, bool clearPresel
     Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
 }
 
-std::string SelectionSingleton::SelectionDescription::getSubString() const
+std::string SelectionSingleton::_SelObj::getSubString() const
 {
     if (!SubName.empty()) {
         if (!elementName.oldName.empty() && !elementName.newName.empty()) {
@@ -1284,19 +1281,15 @@ bool SelectionSingleton::addSelection(
     float y,
     float z,
     const std::vector<SelObj>* pickedList,
-    bool clearPreselect
+    bool clearPreselect,
+    SelectionChanges::PickedPoint pickedPoint
 )
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
-    }
-
     if (pickedList) {
-        context.info->pickedList.clear();
+        _PickedList.clear();
         for (const auto& sel : *pickedList) {
-            context.info->pickedList.emplace_back();
-            auto& s = context.info->pickedList.back();
+            _PickedList.emplace_back();
+            auto& s = _PickedList.back();
             s.DocName = sel.DocName;
             s.FeatName = sel.FeatName;
             s.SubName = sel.SubName;
@@ -1307,10 +1300,10 @@ bool SelectionSingleton::addSelection(
             s.y = sel.y;
             s.z = sel.z;
         }
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
-    SelectionDescription temp;
+    _SelObj temp;
     int ret = checkSelection(pDocName, pObjectName, pSubName, ResolveMode::NoResolve, temp);
     if (ret != 0) {
         return false;
@@ -1323,7 +1316,7 @@ bool SelectionSingleton::addSelection(
 
     // check for a Selection Gate
 
-    const auto& selectionAllowance = isSelectionAllowed(context, temp);
+    const auto& selectionAllowance = isSelectionAllowed(temp);
     if (!selectionAllowance.allowed) {
         if (getMainWindow()) {
             QString msg;
@@ -1345,8 +1338,8 @@ bool SelectionSingleton::addSelection(
         temp.log(false, clearPreselect);
     }
 
-    context.info->selList.push_back(temp);
-    context.info->selStackForward.clear();
+    _SelList.push_back(temp);
+    _SelStackForward.clear();
 
     if (clearPreselect) {
         rmvPreselect();
@@ -1354,13 +1347,15 @@ bool SelectionSingleton::addSelection(
 
     SelectionChanges Chng(
         SelectionChanges::AddSelection,
-        context.docName.c_str(),
+        temp.DocName,
         temp.FeatName,
         temp.SubName,
         temp.TypeName,
         x,
         y,
-        z
+        z,
+        SelectionChanges::MsgSource::Any,
+        pickedPoint
     );
 
     FC_LOG(
@@ -1379,13 +1374,8 @@ bool SelectionSingleton::addSelection(
     return isSelected(temp.DocName.c_str(), temp.FeatName.c_str(), temp.SubName.c_str());
 }
 
-void SelectionSingleton::selStackPush(bool clearForward, bool overwrite, const char* pDocName)
+void SelectionSingleton::selStackPush(bool clearForward, bool overwrite)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
     static int stackSize;
     if (!stackSize) {
         stackSize = App::GetApplication()
@@ -1393,56 +1383,51 @@ void SelectionSingleton::selStackPush(bool clearForward, bool overwrite, const c
                         ->GetInt("SelectionStackSize", 100);
     }
     if (clearForward) {
-        context.info->selStackForward.clear();
+        _SelStackForward.clear();
     }
-    if (context.info->selList.empty()) {
+    if (_SelList.empty()) {
         return;
     }
-    if ((int)context.info->selStackBack.size() >= stackSize) {
-        context.info->selStackBack.pop_front();
+    if ((int)_SelStackBack.size() >= stackSize) {
+        _SelStackBack.pop_front();
     }
     SelStackItem item;
-    for (auto& sel : context.info->selList) {
+    for (auto& sel : _SelList) {
         item.emplace(sel.DocName.c_str(), sel.FeatName.c_str(), sel.SubName.c_str());
     }
-    if (!context.info->selStackBack.empty() && context.info->selStackBack.back() == item) {
+    if (!_SelStackBack.empty() && _SelStackBack.back() == item) {
         return;
     }
-    if (!overwrite || context.info->selStackBack.empty()) {
-        context.info->selStackBack.emplace_back();
+    if (!overwrite || _SelStackBack.empty()) {
+        _SelStackBack.emplace_back();
     }
-    context.info->selStackBack.back() = std::move(item);
+    _SelStackBack.back() = std::move(item);
 }
 
-void SelectionSingleton::selStackGoBack(int count, const char* pDocName)
+void SelectionSingleton::selStackGoBack(int count)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
-    if ((int)context.info->selStackBack.size() < count) {
-        count = context.info->selStackBack.size();
+    if ((int)_SelStackBack.size() < count) {
+        count = _SelStackBack.size();
     }
     if (count <= 0) {
         return;
     }
-    if (!context.info->selList.empty()) {
-        selStackPush(false, true, pDocName);
-        clearCompleteSelection(pDocName);
+    if (!_SelList.empty()) {
+        selStackPush(false, true);
+        clearCompleteSelection();
     }
     else {
         --count;
     }
     for (int i = 0; i < count; ++i) {
-        context.info->selStackForward.push_front(std::move(context.info->selStackBack.back()));
-        context.info->selStackBack.pop_back();
+        _SelStackForward.push_front(std::move(_SelStackBack.back()));
+        _SelStackBack.pop_back();
     }
     std::deque<SelStackItem> tmpStack;
-    context.info->selStackForward.swap(tmpStack);
-    while (!context.info->selStackBack.empty()) {
+    _SelStackForward.swap(tmpStack);
+    while (!_SelStackBack.empty()) {
         bool found = false;
-        for (auto& sobjT : context.info->selStackBack.back()) {
+        for (auto& sobjT : _SelStackBack.back()) {
             if (sobjT.getSubObject()) {
                 addSelection(
                     sobjT.getDocumentName().c_str(),
@@ -1455,39 +1440,34 @@ void SelectionSingleton::selStackGoBack(int count, const char* pDocName)
         if (found) {
             break;
         }
-        tmpStack.push_front(std::move(context.info->selStackBack.back()));
-        context.info->selStackBack.pop_back();
+        tmpStack.push_front(std::move(_SelStackBack.back()));
+        _SelStackBack.pop_back();
     }
-    context.info->selStackForward = std::move(tmpStack);
+    _SelStackForward = std::move(tmpStack);
     getMainWindow()->updateActions();
 }
 
-void SelectionSingleton::selStackGoForward(int count, const char* pDocName)
+void SelectionSingleton::selStackGoForward(int count)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
-    if ((int)context.info->selStackForward.size() < count) {
-        count = context.info->selStackForward.size();
+    if ((int)_SelStackForward.size() < count) {
+        count = _SelStackForward.size();
     }
     if (count <= 0) {
         return;
     }
-    if (!context.info->selList.empty()) {
-        selStackPush(false, true, pDocName);
-        clearCompleteSelection(pDocName);
+    if (!_SelList.empty()) {
+        selStackPush(false, true);
+        clearCompleteSelection();
     }
     for (int i = 0; i < count; ++i) {
-        context.info->selStackBack.push_back(context.info->selStackForward.front());
-        context.info->selStackForward.pop_front();
+        _SelStackBack.push_back(_SelStackForward.front());
+        _SelStackForward.pop_front();
     }
     std::deque<SelStackItem> tmpStack;
-    context.info->selStackForward.swap(tmpStack);
+    _SelStackForward.swap(tmpStack);
     while (true) {
         bool found = false;
-        for (auto& sobjT : context.info->selStackBack.back()) {
+        for (auto& sobjT : _SelStackBack.back()) {
             if (sobjT.getSubObject()) {
                 addSelection(
                     sobjT.getDocumentName().c_str(),
@@ -1500,10 +1480,10 @@ void SelectionSingleton::selStackGoForward(int count, const char* pDocName)
         if (found || tmpStack.empty()) {
             break;
         }
-        context.info->selStackBack.push_back(tmpStack.front());
+        _SelStackBack.push_back(tmpStack.front());
         tmpStack.pop_front();
     }
-    context.info->selStackForward = std::move(tmpStack);
+    _SelStackForward = std::move(tmpStack);
     getMainWindow()->updateActions();
 }
 
@@ -1513,29 +1493,24 @@ std::vector<SelectionObject> SelectionSingleton::selStackGet(
     int index
 ) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return {};
-    }
-
     const SelStackItem* item = nullptr;
     if (index >= 0) {
-        if (index >= (int)context.info->selStackBack.size()) {
+        if (index >= (int)_SelStackBack.size()) {
             return {};
         }
-        item = &context.info->selStackBack[context.info->selStackBack.size() - 1 - index];
+        item = &_SelStackBack[_SelStackBack.size() - 1 - index];
     }
     else {
         index = -index - 1;
-        if (index >= (int)context.info->selStackForward.size()) {
+        if (index >= (int)_SelStackForward.size()) {
             return {};
         }
-        item = &context.info->selStackBack[context.info->selStackForward.size() - 1 - index];
+        item = &_SelStackBack[_SelStackForward.size() - 1 - index];
     }
 
-    std::list<SelectionDescription> selList;
+    std::list<_SelObj> selList;
     for (auto& sobjT : *item) {
-        SelectionDescription sel;
+        _SelObj sel;
         if (checkSelection(
                 sobjT.getDocumentName().c_str(),
                 sobjT.getObjectName().c_str(),
@@ -1558,14 +1533,9 @@ bool SelectionSingleton::addSelections(
     const std::vector<std::string>& pSubNames
 )
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
-    }
-
-    if (!context.info->pickedList.empty()) {
-        context.info->pickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
+    if (!_PickedList.empty()) {
+        _PickedList.clear();
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     std::ostringstream ss;
@@ -1578,7 +1548,7 @@ bool SelectionSingleton::addSelections(
 
     bool update = false;
     for (const auto& pSubName : pSubNames) {
-        SelectionDescription temp;
+        _SelObj temp;
         int ret = checkSelection(pDocName, pObjectName, pSubName.c_str(), ResolveMode::NoResolve, temp);
         if (ret != 0) {
             continue;
@@ -1588,7 +1558,7 @@ bool SelectionSingleton::addSelections(
         temp.y = 0;
         temp.z = 0;
 
-        if (!isSelectionAllowed(context, temp).allowed) {
+        if (!isSelectionAllowed(temp).allowed) {
             continue;
         }
 
@@ -1602,12 +1572,12 @@ bool SelectionSingleton::addSelections(
             ss << temp.getSubString();
         }
 
-        context.info->selList.push_back(temp);
-        context.info->selStackForward.clear();
+        _SelList.push_back(temp);
+        _SelStackForward.clear();
 
         SelectionChanges Chng(
             SelectionChanges::AddSelection,
-            context.docName.c_str(),
+            temp.DocName,
             temp.FeatName,
             temp.SubName,
             temp.TypeName
@@ -1644,22 +1614,20 @@ bool SelectionSingleton::updateSelection(
         pSubName = "";
     }
 
-    auto pDoc = getDocument(pDocName);
-    if (!pDoc) {
-        return false;
-    }
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
         if (show) {
             FC_TRACE("preselect signal");
-            notify(
-                SelectionChanges(SelectionChanges::SetPreselectSignal, pDoc->getName(), FeatName, SubName)
-            );
+            notify(SelectionChanges(SelectionChanges::SetPreselectSignal, DocName, FeatName, SubName));
         }
         else {
             rmvPreselect();
         }
     }
 
+    auto pDoc = getDocument(pDocName);
+    if (!pDoc) {
+        return false;
+    }
     auto pObject = pDoc->getObject(pObjectName);
     if (!pObject) {
         return false;
@@ -1670,7 +1638,7 @@ bool SelectionSingleton::updateSelection(
 
     SelectionChanges Chng(
         show ? SelectionChanges::ShowSelection : SelectionChanges::HideSelection,
-        pDoc->getName(),
+        pDocName,
         pObjectName,
         pSubName,
         pObject->getTypeId().getName()
@@ -1725,16 +1693,11 @@ void SelectionSingleton::rmvSelection(
     const std::vector<SelObj>* pickedList
 )
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
     if (pickedList) {
-        context.info->pickedList.clear();
+        _PickedList.clear();
         for (const auto& sel : *pickedList) {
-            context.info->pickedList.emplace_back();
-            auto& s = context.info->pickedList.back();
+            _PickedList.emplace_back();
+            auto& s = _PickedList.back();
             s.DocName = sel.DocName;
             s.FeatName = sel.FeatName;
             s.SubName = sel.SubName;
@@ -1745,22 +1708,21 @@ void SelectionSingleton::rmvSelection(
             s.y = sel.y;
             s.z = sel.z;
         }
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     if (!pDocName) {
         return;
     }
 
-    SelectionDescription temp;
+    _SelObj temp;
     int ret = checkSelection(pDocName, pObjectName, pSubName, ResolveMode::NoResolve, temp);
     if (ret < 0) {
         return;
     }
 
     std::vector<SelectionChanges> changes;
-    for (auto It = context.info->selList.begin(), ItNext = It; It != context.info->selList.end();
-         It = ItNext) {
+    for (auto It = _SelList.begin(), ItNext = It; It != _SelList.end(); It = ItNext) {
         ++ItNext;
         if (It->DocName != temp.DocName || It->FeatName != temp.FeatName) {
             continue;
@@ -1785,8 +1747,8 @@ void SelectionSingleton::rmvSelection(
             It->TypeName
         );
 
-        // destroy the SelectionDescription item
-        context.info->selList.erase(It);
+        // destroy the _SelObj item
+        _SelList.erase(It);
     }
 
     // NOTE: It can happen that there are nested calls of rmvSelection()
@@ -1817,7 +1779,7 @@ struct SelInfo
     {}
 };
 
-void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
+void SelectionSingleton::setVisible(VisibleState vis)
 {
     std::set<std::pair<App::DocumentObject*, App::DocumentObject*>> filter;
     int visible;
@@ -1832,15 +1794,10 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
             visible = 0;
     }
 
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
     // Copy the selection in case it changes during this function
     std::vector<SelInfo> sels;
-    sels.reserve(context.info->selList.size());
-    for (auto& sel : context.info->selList) {
+    sels.reserve(_SelList.size());
+    for (auto& sel : _SelList) {
         if (sel.DocName.empty() || sel.FeatName.empty() || !sel.pObject) {
             continue;
         }
@@ -1952,14 +1909,9 @@ void SelectionSingleton::setVisible(VisibleState vis, const char* pDocName)
 
 void SelectionSingleton::setSelection(const char* pDocName, const std::vector<App::DocumentObject*>& sel)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
-    if (!context.info->pickedList.empty()) {
-        context.info->pickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
+    if (!_PickedList.empty()) {
+        _PickedList.clear();
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     bool touched = false;
@@ -1967,19 +1919,19 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
         if (!obj || !obj->isAttachedToDocument()) {
             continue;
         }
-        SelectionDescription temp;
+        _SelObj temp;
         int ret
             = checkSelection(pDocName, obj->getNameInDocument(), nullptr, ResolveMode::NoResolve, temp);
         if (ret != 0) {
             continue;
         }
         touched = true;
-        context.info->selList.push_back(temp);
+        _SelList.push_back(temp);
     }
 
     if (touched) {
-        context.info->selStackForward.clear();
-        notify(SelectionChanges(SelectionChanges::SetSelection, context.docName.c_str()));
+        _SelStackForward.clear();
+        notify(SelectionChanges(SelectionChanges::SetSelection, pDocName));
         getMainWindow()->updateActions();
     }
 }
@@ -1990,71 +1942,61 @@ void SelectionSingleton::clearSelection(const char* pDocName, bool clearPreSelec
     // clearSelection(0) behave as clearCompleteSelection(), which is the same
     // behavior of python Selection.clearSelection(None)
     if (!pDocName || !pDocName[0] || strcmp(pDocName, "*") == 0) {
-        clearCompleteSelection(pDocName, clearPreSelect);
+        clearCompleteSelection(clearPreSelect);
         return;
     }
-
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
+    if (!_PickedList.empty()) {
+        _PickedList.clear();
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
-    if (!context.info->pickedList.empty()) {
-        context.info->pickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
-    }
-
-    if (clearPreSelect && DocName == context.docName) {
-        rmvPreselect();
-    }
-
-    bool touched = false;
-    for (auto it = context.info->selList.begin(); it != context.info->selList.end();) {
-        if (it->DocName == context.docName.c_str()) {
-            touched = true;
-            it = context.info->selList.erase(it);
+    App::Document* pDoc;
+    pDoc = getDocument(pDocName);
+    if (pDoc) {
+        std::string docName = pDocName;
+        if (clearPreSelect && DocName == docName) {
+            rmvPreselect();
         }
-        else {
-            ++it;
+        bool touched = false;
+        for (auto it = _SelList.begin(); it != _SelList.end();) {
+            if (it->DocName == docName) {
+                touched = true;
+                it = _SelList.erase(it);
+            }
+            else {
+                ++it;
+            }
         }
-    }
-
-    if (!touched) {
-        return;
-    }
-
-    if (!logDisabled) {
-        std::ostringstream ss;
-        ss << "Gui.Selection.clearSelection('" << context.docName << "'";
-        if (!clearPreSelect) {
-            ss << ", False";
+        if (!touched) {
+            return;
         }
-        ss << ')';
-        Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
+
+        if (!logDisabled) {
+            std::ostringstream ss;
+            ss << "Gui.Selection.clearSelection('" << docName << "'";
+            if (!clearPreSelect) {
+                ss << ", False";
+            }
+            ss << ')';
+            Application::Instance->macroManager()->addLine(MacroManager::Cmt, ss.str().c_str());
+        }
+        notify(SelectionChanges(SelectionChanges::ClrSelection, docName.c_str()));
+        getMainWindow()->updateActions();
     }
-
-    notify(SelectionChanges(SelectionChanges::ClrSelection, context.docName.c_str()));
-
-    getMainWindow()->updateActions();
 }
 
-void SelectionSingleton::clearCompleteSelection(const char* pDocName, bool clearPreSelect)
+void SelectionSingleton::clearCompleteSelection(bool clearPreSelect)
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-
-    if (!context.info->pickedList.empty()) {
-        context.info->pickedList.clear();
-        notify(SelectionChanges(SelectionChanges::PickedListChanged, context.docName.c_str()));
+    if (!_PickedList.empty()) {
+        _PickedList.clear();
+        notify(SelectionChanges(SelectionChanges::PickedListChanged));
     }
 
     if (clearPreSelect) {
         rmvPreselect();
     }
 
-    if (context.info->selList.empty()) {
+    if (_SelList.empty()) {
         return;
     }
 
@@ -2069,20 +2011,20 @@ void SelectionSingleton::clearCompleteSelection(const char* pDocName, bool clear
     // objects being deselected.
 
     std::set<ViewProvider*> viewProviders;
-    for (SelectionDescription& sel : context.info->selList) {
+    for (_SelObj& sel : _SelList) {
         if (auto vp = Application::Instance->getViewProvider(sel.pObject)) {
             viewProviders.insert(vp);
         }
     }
 
     for (auto& vp : viewProviders) {
-        SelectionChanges Chng(SelectionChanges::ClrSelection, pDocName);
+        SelectionChanges Chng(SelectionChanges::ClrSelection);
         vp->onSelectionChanged(Chng);
     }
 
-    context.info->selList.clear();
+    _SelList.clear();
 
-    SelectionChanges Chng(SelectionChanges::ClrSelection, context.docName.c_str());
+    SelectionChanges Chng(SelectionChanges::ClrSelection);
 
     FC_LOG("Clear selection");
 
@@ -2097,13 +2039,8 @@ bool SelectionSingleton::isSelected(
     ResolveMode resolve
 ) const
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return false;
-    }
-
-    SelectionDescription sel;
-    return checkSelection(pDocName, pObjectName, pSubName, resolve, sel, &context.info->selList) > 0;
+    _SelObj sel;
+    return checkSelection(pDocName, pObjectName, pSubName, resolve, sel, &_SelList) > 0;
 }
 
 bool SelectionSingleton::isSelected(
@@ -2116,19 +2053,14 @@ bool SelectionSingleton::isSelected(
         return false;
     }
 
-    auto foundContext = docSelectionContext.find(pObject->getDocument());
-    if (foundContext == docSelectionContext.end()) {
-        return false;
-    }
-
-    SelectionDescription sel;
+    _SelObj sel;
     return checkSelection(
                pObject->getDocument()->getName(),
                pObject->getNameInDocument(),
                pSubName,
                resolve,
                sel,
-               &foundContext->second.selList
+               &_SelList
            )
         > 0;
 }
@@ -2138,8 +2070,8 @@ int SelectionSingleton::checkSelection(
     const char* pObjectName,
     const char* pSubName,
     ResolveMode resolve,
-    SelectionDescription& sel,
-    const std::list<SelectionDescription>* selList
+    _SelObj& sel,
+    const std::list<_SelObj>* selList
 ) const
 {
     sel.pDoc = getDocument(pDocName);
@@ -2151,7 +2083,7 @@ int SelectionSingleton::checkSelection(
     }
 
     pDocName = sel.pDoc->getName();
-    sel.DocName = pDocName == nullptr ? std::string() : pDocName;
+    sel.DocName = pDocName;
 
     if (pObjectName) {
         sel.pObject = sel.pDoc->getObject(pObjectName);
@@ -2210,13 +2142,7 @@ int SelectionSingleton::checkSelection(
         }
     }
     if (!selList) {
-        auto context = getSelectionContext(pDocName);
-        if (context.info) {
-            selList = &context.info->selList;
-        }
-        else {
-            return -1;
-        }
+        selList = &_SelList;
     }
 
     if (!pSubName) {
@@ -2254,30 +2180,6 @@ int SelectionSingleton::checkSelection(
     return 0;
 }
 
-std::string SelectionSingleton::getSelectedElement(App::DocumentObject* obj, const char* pSubName) const
-{
-    if (!obj) {
-        return {};
-    }
-    auto context = getSelectionContext(obj->getDocument()->getName());
-
-    for (auto selected : context.info->selList) {
-        if (selected.pObject == obj) {
-            auto len = selected.SubName.length();
-            if (!len) {
-                return {};
-            }
-            if (pSubName
-                && strncmp(pSubName, selected.SubName.c_str(), selected.SubName.length()) == 0) {
-                if (pSubName[len] == 0 || pSubName[len - 1] == '.') {
-                    return selected.SubName;
-                }
-            }
-        }
-    }
-    return {};
-}
-
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
 {
     if (!Obj.isAttachedToDocument()) {
@@ -2287,12 +2189,10 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
     // For safety reason, don't bother checking
     rmvPreselect();
 
-    SelectionInfo& info = docSelectionContext[Obj.getDocument()];
-
     // Remove also from the selection, if selected
     // We don't walk down the hierarchy for each selection, so there may be stray selection
     std::vector<SelectionChanges> changes;
-    for (auto it = info.selList.begin(), itNext = it; it != info.selList.end(); it = itNext) {
+    for (auto it = _SelList.begin(), itNext = it; it != _SelList.end(); it = itNext) {
         ++itNext;
         if (it->pResolvedObject == &Obj || it->pObject == &Obj) {
             changes.emplace_back(
@@ -2302,7 +2202,7 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
                 it->SubName,
                 it->TypeName
             );
-            info.selList.erase(it);
+            _SelList.erase(it);
         }
     }
     if (!changes.empty()) {
@@ -2315,16 +2215,15 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
         getMainWindow()->updateActions();
     }
 
-    if (!info.pickedList.empty()) {
+    if (!_PickedList.empty()) {
         bool changed = false;
-        for (auto it = info.pickedList.begin(), itNext = it; it != info.pickedList.end();
-             it = itNext) {
+        for (auto it = _PickedList.begin(), itNext = it; it != _PickedList.end(); it = itNext) {
             ++itNext;
             auto& sel = *it;
             if (sel.DocName == Obj.getDocument()->getName()
                 && sel.FeatName == Obj.getNameInDocument()) {
                 changed = true;
-                info.pickedList.erase(it);
+                _PickedList.erase(it);
             }
         }
         if (changed) {
@@ -2332,69 +2231,15 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
         }
     }
 }
-void SelectionSingleton::slotClosedDocument(const App::Document& doc)
+
+void SelectionSingleton::setSelectionStyle(SelectionStyle selStyle)
 {
-    // const_cast is ok because we just use doc as a key
-    docSelectionContext.erase(const_cast<App::Document*>(&doc));
+    selectionStyle = selStyle;
 }
 
-void SelectionSingleton::setSelectionStyle(SelectionStyle selStyle, const char* pDocName)
+SelectionSingleton::SelectionStyle SelectionSingleton::getSelectionStyle()
 {
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return;
-    }
-    context.info->selectionStyle = selStyle;
-}
-
-SelectionSingleton::SelectionStyle SelectionSingleton::getSelectionStyle(const char* pDocName)
-{
-    auto context = getSelectionContext(pDocName);
-    if (!context.info) {
-        return SelectionSingleton::SelectionStyle::NormalSelection;
-    }
-    return context.info->selectionStyle;
-}
-SelectionSingleton::SelectionContext SelectionSingleton::getSelectionContext(const char* pDocName)
-{
-    // Some functions might receive "*" for document selection.
-    // This is because there used to be a single selection context
-    // for the whole application so "*" meant all documents
-    // now that there is a selection context per document
-    // we interpret it as "active document" because most (all?)
-    // operations on freecad are meant to act on the current active
-    // document anyway
-    if (pDocName && strcmp(pDocName, "*") == 0) {
-        pDocName = nullptr;
-    }
-
-    if (App::Document* doc = getDocument(pDocName)) {
-        return SelectionContext {.info = &docSelectionContext[doc], .docName = doc->getName()};
-    }
-    return SelectionContext {.info = nullptr, .docName = std::string()};
-}
-SelectionSingleton::SelectionConstContext SelectionSingleton::getSelectionContext(
-    const char* pDocName
-) const
-{
-    // Some functions might receive "*" for document selection.
-    // This is because there used to be a single selection context
-    // for the whole application so "*" meant all documents
-    // now that there is a selection context per document
-    // we interpret it as "active document" because most (all?)
-    // operations on freec  ad are meant to act on the current active
-    // document anyway
-    if (pDocName && strcmp(pDocName, "*") == 0) {
-        pDocName = nullptr;
-    }
-
-    if (App::Document* doc = getDocument(pDocName)) {
-        auto foundContext = docSelectionContext.find(doc);
-        if (foundContext != docSelectionContext.end()) {
-            return SelectionConstContext {.info = &foundContext->second, .docName = doc->getName()};
-        }
-    }
-    return SelectionConstContext {.info = nullptr, .docName = std::string()};
+    return selectionStyle;
 }
 
 //**************************************************************************
@@ -2410,9 +2255,6 @@ SelectionSingleton::SelectionSingleton()
     // NOLINTBEGIN
     App::GetApplication().signalDeletedObject.connect(
         std::bind(&Gui::SelectionSingleton::slotDeletedObject, this, sp::_1)
-    );
-    App::GetApplication().signalDeleteDocument.connect(
-        std::bind(&Gui::SelectionSingleton::slotClosedDocument, this, sp::_1)
     );
 
     signalSelectionChanged.connect(
@@ -2447,280 +2289,6 @@ void SelectionSingleton::destruct()
 
 //**************************************************************************
 // Python stuff
-
-// SelectionSingleton Methods  // Methods structure
-PyMethodDef SelectionSingleton::Methods[] = {
-    {"addSelection",
-     (PyCFunction)SelectionSingleton::sAddSelection,
-     METH_VARARGS,
-     "addSelection(docName, objName, subName, x=0, y=0, z=0, clear=True) -> None\n"
-     "addSelection(obj, subName, x=0, y=0, z=0, clear=True) -> None\n"
-     "addSelection(obj, subNames, clear=True) -> None\n"
-     "\n"
-     "Add an object to the selection.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "objName : str\n    Name of the `App.DocumentObject` to add.\n"
-     "obj : App.DocumentObject\n    Object to add.\n"
-     "subName : str\n    Subelement name.\n"
-     "x : float\n    Coordinate `x` of the point to pick.\n"
-     "y : float\n    Coordinate `y` of the point to pick.\n"
-     "z : float\n    Coordinate `z` of the point to pick.\n"
-     "subNames : list of str\n    List of subelement names.\n"
-     "clear : bool\n    Clear preselection."},
-    {"updateSelection",
-     (PyCFunction)SelectionSingleton::sUpdateSelection,
-     METH_VARARGS,
-     "updateSelection(show, obj, subName) -> None\n"
-     "\n"
-     "Update an object in the selection.\n"
-     "\n"
-     "show : bool\n    Show or hide the selection.\n"
-     "obj : App.DocumentObject\n    Object to update.\n"
-     "subName : str\n    Name of the subelement to update."},
-    {"removeSelection",
-     (PyCFunction)SelectionSingleton::sRemoveSelection,
-     METH_VARARGS,
-     "removeSelection(obj, subName) -> None\n"
-     "removeSelection(docName, objName, subName) -> None\n"
-     "\n"
-     "Remove an object from the selection.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "objName : str\n    Name of the `App.DocumentObject` to remove.\n"
-     "obj : App.DocumentObject\n    Object to remove.\n"
-     "subName : str\n    Name of the subelement to remove."},
-    {"clearSelection",
-     (PyCFunction)SelectionSingleton::sClearSelection,
-     METH_VARARGS,
-     "clearSelection(docName, clearPreSelect=True) -> None\n"
-     "clearSelection(clearPreSelect=True) -> None\n"
-     "\n"
-     "Clear the selection in the given document. If no document is\n"
-     "given the complete selection is cleared.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "clearPreSelect : bool\n    Clear preselection."},
-    {"isSelected",
-     (PyCFunction)SelectionSingleton::sIsSelected,
-     METH_VARARGS,
-     "isSelected(obj, subName, resolve=ResolveMode.OldStyleElement) -> bool\n"
-     "\n"
-     "Check if a given object is selected.\n"
-     "\n"
-     "obj : App.DocumentObject\n    Object to check.\n"
-     "subName : str\n    Name of the subelement.\n"
-     "resolve : int\n    Resolve subelement reference."},
-    {"setPreselection",
-     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(SelectionSingleton::sSetPreselection)),
-     METH_VARARGS | METH_KEYWORDS,
-     "setPreselection(obj, subName, x=0, y=0, z=0, type=1) -> None\n"
-     "\n"
-     "Set preselected object.\n"
-     "\n"
-     "obj : App.DocumentObject\n    Object to preselect.\n"
-     "subName : str\n    Subelement name.\n"
-     "x : float\n    Coordinate `x` of the point to preselect.\n"
-     "y : float\n    Coordinate `y` of the point to preselect.\n"
-     "z : float\n    Coordinate `z` of the point to preselect.\n"
-     "type : int"},
-    {"getPreselection",
-     (PyCFunction)SelectionSingleton::sGetPreselection,
-     METH_VARARGS,
-     "getPreselection() -> Gui.SelectionObject\n"
-     "\n"
-     "Get preselected object."},
-    {"clearPreselection",
-     (PyCFunction)SelectionSingleton::sRemPreselection,
-     METH_VARARGS,
-     "clearPreselection() -> None\n"
-     "\n"
-     "Clear the preselection."},
-    {"countObjectsOfType",
-     (PyCFunction)SelectionSingleton::sCountObjectsOfType,
-     METH_VARARGS,
-     "countObjectsOfType(type, docName, resolve=ResolveMode.OldStyleElement) -> int\n"
-     "\n"
-     "Get the number of selected objects. If no document name is given the\n"
-     "active document is used and '*' means all documents.\n"
-     "\n"
-     "type : str\n    Object type id name.\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int"},
-    {"getSelection",
-     (PyCFunction)SelectionSingleton::sGetSelection,
-     METH_VARARGS,
-     "getSelection(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list\n"
-     "\n"
-     "Return a list of selected objects. If no document name is given\n"
-     "the active document is used and '*' means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int\n    Resolve the subname references.\n"
-     "    0: do not resolve, 1: resolve, 2: resolve with element map.\n"
-     "single : bool\n    Only return if there is only one selection."},
-    {"getPickedList",
-     (PyCFunction)SelectionSingleton::sGetPickedList,
-     1,
-     "getPickedList(docName) -> list of Gui.SelectionObject\n"
-     "\n"
-     "Return a list of SelectionObjects generated by the last mouse click.\n"
-     "If no document name is given the active document is used and '*'\n"
-     "means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`."},
-    {"enablePickedList",
-     (PyCFunction)SelectionSingleton::sEnablePickedList,
-     METH_VARARGS,
-     "enablePickedList(enable=True) -> None\n"
-     "\n"
-     "Enable/disable pick list.\n"
-     "\n"
-     "enable : bool"},
-    {"getCompleteSelection",
-     (PyCFunction)SelectionSingleton::sGetCompleteSelection,
-     METH_VARARGS,
-     "getCompleteSelection(resolve=ResolveMode.OldStyleElement) -> list\n"
-     "\n"
-     "Return a list of selected objects across all documents.\n"
-     "\n"
-     "resolve : int"},
-    {"getSelectionEx",
-     (PyCFunction)SelectionSingleton::sGetSelectionEx,
-     METH_VARARGS,
-     "getSelectionEx(docName, resolve=ResolveMode.OldStyleElement, single=False) -> list of "
-     "Gui.SelectionObject\n"
-     "\n"
-     "Return a list of SelectionObjects. If no document name is given the\n"
-     "active document is used and '*' means all documents.\n"
-     "The SelectionObjects contain a variety of information about the selection,\n"
-     "e.g. subelement names.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int\n    Resolve the subname references.\n"
-     "    0: do not resolve, 1: resolve, 2: resolve with element map.\n"
-     "single : bool\n    Only return if there is only one selection."},
-    {"getSelectionObject",
-     (PyCFunction)SelectionSingleton::sGetSelectionObject,
-     METH_VARARGS,
-     "getSelectionObject(docName, objName, subName, point) -> Gui.SelectionObject\n"
-     "\n"
-     "Return a SelectionObject.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "objName : str\n    Name of the `App.DocumentObject` to select.\n"
-     "subName : str\n    Subelement name.\n"
-     "point : tuple\n    Coordinates of the point to pick."},
-    {"setSelectionStyle",
-     (PyCFunction)SelectionSingleton::sSetSelectionStyle,
-     METH_VARARGS,
-     "setSelectionStyle(selectionStyle) -> None\n"
-     "\n"
-     "Change the selection style. 0 for normal selection, 1 for greedy selection\n"
-     "\n"
-     "selectionStyle : int"},
-    {"addObserver",
-     (PyCFunction)SelectionSingleton::sAddSelObserver,
-     METH_VARARGS,
-     "addObserver(object, resolve=ResolveMode.OldStyleElement) -> None\n"
-     "\n"
-     "Install an observer.\n"
-     "\n"
-     "object : object\n    Python object instance.\n"
-     "resolve : int"},
-    {"removeObserver",
-     (PyCFunction)SelectionSingleton::sRemSelObserver,
-     METH_VARARGS,
-     "removeObserver(object) -> None\n"
-     "\n"
-     "Uninstall an observer.\n"
-     "\n"
-     "object : object\n    Python object instance."},
-    {"addSelectionGate",
-     (PyCFunction)SelectionSingleton::sAddSelectionGate,
-     METH_VARARGS,
-     "addSelectionGate(filter, resolve=ResolveMode.OldStyleElement) -> None\n"
-     "\n"
-     "Activate the selection gate.\n"
-     "The selection gate will prohibit all selections that do not match\n"
-     "the given selection criteria.\n"
-     "\n"
-     "filter : str, SelectionFilter, object\n"
-     "resolve : int\n"
-     "\n"
-     "Examples strings are:\n"
-     "Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')\n"
-     "Gui.Selection.addSelectionGate('SELECT Robot::RobotObject')\n"
-     "\n"
-     "An instance of SelectionFilter can also be set:\n"
-     "filter = Gui.Selection.Filter('SELECT Part::Feature SUBELEMENT Edge')\n"
-     "Gui.Selection.addSelectionGate(filter)\n"
-     "\n"
-     "The most flexible approach is to write a selection gate class that\n"
-     "implements the method 'allow':\n"
-     "class Gate:\n"
-     "    def allow(self,doc,obj,sub):\n"
-     "        return (sub[0:4] == 'Face')\n"
-     "Gui.Selection.addSelectionGate(Gate())"},
-    {"removeSelectionGate",
-     (PyCFunction)SelectionSingleton::sRemoveSelectionGate,
-     METH_VARARGS,
-     "removeSelectionGate() -> None\n"
-     "\n"
-     "Remove the active selection gate."},
-    {"setVisible",
-     (PyCFunction)SelectionSingleton::sSetVisible,
-     METH_VARARGS,
-     "setVisible(visible=None) -> None\n"
-     "\n"
-     "Set visibility of all selection items.\n"
-     "\n"
-     "visible : bool, None\n    If None, then toggle visibility."},
-    {"pushSelStack",
-     (PyCFunction)SelectionSingleton::sPushSelStack,
-     METH_VARARGS,
-     "pushSelStack(clearForward=True, overwrite=False) -> None\n"
-     "\n"
-     "Push current selection to stack.\n"
-     "\n"
-     "clearForward : bool\n    Clear the forward selection stack.\n"
-     "overwrite : bool\n    Overwrite the top back selection stack with current selection."},
-    {"hasSelection",
-     (PyCFunction)SelectionSingleton::sHasSelection,
-     METH_VARARGS,
-     "hasSelection(docName, resolve=ResolveMode.NoResolve) -> bool\n"
-     "\n"
-     "Check if there is any selection. If no document name is given,\n"
-     "checks selections in all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int"},
-    {"hasSubSelection",
-     (PyCFunction)SelectionSingleton::sHasSubSelection,
-     METH_VARARGS,
-     "hasSubSelection(docName, subElement=False) -> bool\n"
-     "\n"
-     "Check if there is any selection with subname. If no document name\n"
-     "is given the active document is used and '*' means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "subElement : bool"},
-    {"getSelectionFromStack",
-     (PyCFunction)SelectionSingleton::sGetSelectionFromStack,
-     METH_VARARGS,
-     "getSelectionFromStack(docName, resolve=ResolveMode.OldStyleElement, index=0) -> list of "
-     "Gui.SelectionObject\n"
-     "\n"
-     "Return SelectionObjects from selection stack. If no document name is given\n"
-     "the active document is used and '*' means all documents.\n"
-     "\n"
-     "docName : str\n    Name of the `App.Document`.\n"
-     "resolve : int\n    Resolve the subname references.\n"
-     "    0: do not resolve, 1: resolve, 2: resolve with element map.\n"
-     "index : int\n    Select stack index.\n"
-     "    0: last pushed selection, > 0: trace back, < 0: trace forward."},
-    {nullptr, nullptr, 0, nullptr} /* Sentinel */
-};
 
 PyObject* SelectionSingleton::sAddSelection(PyObject* /*self*/, PyObject* args)
 {
@@ -2912,6 +2480,7 @@ ResolveMode toEnum(int value)
             throw Base::ValueError("Wrong enum value");
     }
 }
+
 }  // namespace
 
 PyObject* SelectionSingleton::sIsSelected(PyObject* /*self*/, PyObject* args)
@@ -3057,7 +2626,7 @@ PyObject* SelectionSingleton::sGetPreselection(PyObject* /*self*/, PyObject* arg
     return obj.getPyObject();
 }
 
-PyObject* SelectionSingleton::sRemPreselection(PyObject* /*self*/, PyObject* args)
+PyObject* SelectionSingleton::sClearPreselection(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -3211,7 +2780,7 @@ PyObject* SelectionSingleton::sSetSelectionStyle(PyObject* /*self*/, PyObject* a
     PY_CATCH;
 }
 
-PyObject* SelectionSingleton::sAddSelObserver(PyObject* /*self*/, PyObject* args)
+PyObject* SelectionSingleton::sAddObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     int resolve = 1;
@@ -3227,7 +2796,7 @@ PyObject* SelectionSingleton::sAddSelObserver(PyObject* /*self*/, PyObject* args
     PY_CATCH;
 }
 
-PyObject* SelectionSingleton::sRemSelObserver(PyObject* /*self*/, PyObject* args)
+PyObject* SelectionSingleton::sRemoveObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -3290,14 +2859,13 @@ PyObject* SelectionSingleton::sAddSelectionGate(PyObject* /*self*/, PyObject* ar
 
 PyObject* SelectionSingleton::sRemoveSelectionGate(PyObject* /*self*/, PyObject* args)
 {
-    const char* pDocName = "";
-    if (!PyArg_ParseTuple(args, "|s", &pDocName)) {
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
     PY_TRY
     {
-        Selection().rmvSelectionGate(pDocName);
+        Selection().rmvSelectionGate();
         Py_Return;
     }
     PY_CATCH;

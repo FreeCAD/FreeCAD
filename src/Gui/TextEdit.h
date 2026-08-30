@@ -67,6 +67,8 @@ public:
     //! Get the text of the current line being edited
     virtual QString getInputString();
 
+    bool hasCompletion() const;
+
 private Q_SLOTS:
     void complete();
 
@@ -121,7 +123,6 @@ protected:
     {
         return lineNumberArea;
     }
-    virtual void drawMarker(int line, int x, int y, QPainter*);
 
 private:
     SyntaxHighlighter* highlighter;

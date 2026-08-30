@@ -26,6 +26,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <memory>
 #include <QIcon>
 #include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
@@ -283,6 +284,23 @@ public:
     {}
     /// return a hit element given the picked point which contains the full node path
     virtual bool getElementPicked(const SoPickedPoint*, std::string& subname) const;
+    /** Return additional sub-element names related to a picked element.
+     *
+     * Lets a view provider expand a single pick into a set of logically related
+     * sub-elements (for example, adjacent faces of the same feature). The
+     * default implementation returns an empty vector.
+     *
+     * @param subname    the picked sub-element name (e.g. "Face1")
+     * @param pickPoint  3D pick location, used to filter results by proximity
+     * @return pairs of (element, subName), where @c element is the bare name
+     *         for display/categorization (e.g. "Face1") and @c subName is the
+     *         full sub-element reference used for selection (e.g.
+     *         "InternalFace1").
+     */
+    virtual std::vector<std::pair<std::string, std::string>> getRelatedElements(
+        const std::string& subname,
+        const SbVec3f& pickPoint
+    ) const;
     /// return a hit element to the selection path or 0
     virtual std::string getElement(const SoDetail*) const
     {
@@ -333,14 +351,26 @@ public:
 
     /** Return the bound box of this view object
      *
+     * @param subname: optional subname path to a sub object
+     * @param mat: optional initial transformation
+     * @param transform: whether to transform using current view object placement
+     * @param view: view of this view object, if null, use the current active view
+     * @param depth: current traversal depth, internal use to prevent infinite recursion.
+     *
      * This method shall work regardless whether the current view object is
      * visible or not.
      */
     Base::BoundBox3d getBoundingBox(
         const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
         bool transform = true,
-        MDIView* view = nullptr
+        const View3DInventorViewer* view = nullptr,
+        int depth = 0
     ) const;
+
+    /** Convenience function to obtain the current active viewer
+     */
+    const View3DInventorViewer* getActiveViewer() const;
 
     /**
      * Get called if the object is about to get deleted.
@@ -748,6 +778,8 @@ public:
     std::vector<std::string> getDisplayMaskModes() const;
     void setDefaultMode(int);
     int getDefaultMode() const;
+    /// Returns the underlying display mask mode, ignoring any active override mode.
+    int getActualMode() const;
     //@}
 
     virtual void setRenderCacheMode(int);
@@ -792,6 +824,15 @@ protected:
     {
         toggleVisibilityMode = mode;
     }
+
+    /// Internal use to customize bounding box retrieval
+    virtual Base::BoundBox3d _getBoundingBox(
+        const char* subname = 0,
+        const Base::Matrix4D* mat = 0,
+        bool transform = true,
+        const View3DInventorViewer* view = 0,
+        int depth = 0
+    ) const;
 
 protected:
     /// The root Separator of the ViewProvider

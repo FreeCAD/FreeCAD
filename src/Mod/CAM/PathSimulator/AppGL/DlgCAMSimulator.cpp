@@ -185,9 +185,9 @@ void DlgCAMSimulator::cloneFrom(const DlgCAMSimulator& from)
     mState = std::make_unique<MillSimulationState>(state);
 }
 
-DlgCAMSimulator* DlgCAMSimulator::instance()
+DlgCAMSimulator* DlgCAMSimulator::instance(Gui::Document* doc)
 {
-    return &ViewCAMSimulator::instance().dlg();
+    return &ViewCAMSimulator::instance(doc).dlg();
 }
 
 void DlgCAMSimulator::setAnimating(bool animating)
@@ -218,10 +218,8 @@ void DlgCAMSimulator::startSimulation(const Part::TopoShape& stock, float qualit
     Q_EMIT simulationStarted();
 }
 
-void DlgCAMSimulator::resetSimulation(Gui::Document* doc)
+void DlgCAMSimulator::resetSimulation()
 {
-    Q_EMIT documentChanged(doc);
-
     mNeedsClear = true;
 
     mGCode.clear();

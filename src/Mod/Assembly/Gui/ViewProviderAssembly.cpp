@@ -71,9 +71,7 @@
 #include <Mod/Assembly/App/AssemblyLink.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
-#include <Mod/Assembly/App/JointGroup.h>
-#include <Mod/Assembly/App/ViewGroup.h>
-#include <Mod/Assembly/App/BomGroup.h>
+#include <Mod/Assembly/App/Groups.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "TaskAssemblyMessages.h"
@@ -118,6 +116,7 @@ ViewProviderAssembly::ViewProviderAssembly()
     , moveOnlyPreselected(false)
     , moveInCommand(true)
     , ctrlPressed(false)
+    , forceSolveOnMoveForRigid(false)
     , lastClickTime(0)
     , jointVisibilitiesBackup({})
     , docsToMove({})
@@ -323,7 +322,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             [this](const QString& name) { this->onWorkbenchActivated(name); }
         );
 
-        assembly->solve();
+        assembly->recomputeFeature(true);
 
         return true;
     }
@@ -610,8 +609,14 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
             "User parameter:BaseApp/Preferences/Mod/Assembly"
         );
         bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
-        if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
-            assemblyPart->doDragStep();
+        // HACK: Re-solve assembly to update rigid groups while dragging.
+        if (solveOnMove && (dragMode != DragMode::TranslationNoSolve || forceSolveOnMoveForRigid)) {
+            if (forceSolveOnMoveForRigid) {
+                assemblyPart->solve();
+            }
+            else {
+                assemblyPart->doDragStep();
+            }
         }
         else {
             assemblyPart->redrawJointPlacements(assemblyPart->getJoints());
@@ -1098,17 +1103,19 @@ void ViewProviderAssembly::tryInitMove(const SbVec2s& cursorPos, Gui::View3DInve
         "User parameter:BaseApp/Preferences/Mod/Assembly"
     );
     bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
-    if (solveOnMove && dragMode != DragMode::TranslationNoSolve) {
+    std::vector<App::DocumentObject*> dragParts;
+    for (auto& movingObj : docsToMove) {
+        dragParts.push_back(movingObj.obj);
+    }
+    forceSolveOnMoveForRigid = assemblyPart->requiresRigidSolveForMove(dragParts);
+
+    if (solveOnMove && (dragMode != DragMode::TranslationNoSolve || forceSolveOnMoveForRigid)) {
         objectMasses.clear();
         for (auto& movingObj : docsToMove) {
             objectMasses.push_back({movingObj.obj, 10.0});
         }
 
         assemblyPart->setObjMasses(objectMasses);
-        std::vector<App::DocumentObject*> dragParts;
-        for (auto& movingObj : docsToMove) {
-            dragParts.push_back(movingObj.obj);
-        }
         assemblyPart->preDrag(dragParts);
     }
     else {
@@ -1121,6 +1128,7 @@ void ViewProviderAssembly::endMove()
     docsToMove.clear();
     partMoving = false;
     canStartDragging = false;
+    forceSolveOnMoveForRigid = false;
 
     auto* assemblyPart = getObject<AssemblyObject>();
     auto joints = assemblyPart->getJoints();
@@ -1541,7 +1549,9 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
 
     isolatedJoint = joint;
     isolatedJointVisibilityBackup = joint->Visibility.getValue();
-    joint->Visibility.setValue(true);
+    if (!isolatedJointVisibilityBackup) {
+        joint->Visibility.setValue(true);
+    }
 
     std::set<App::DocumentObject*> isolateSet = {part1, part2};
     isolateComponents(isolateSet, mode);
@@ -1552,7 +1562,9 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
 void ViewProviderAssembly::clearIsolate()
 {
     if (isolatedJoint) {
-        isolatedJoint->Visibility.setValue(isolatedJointVisibilityBackup);
+        if (!isolatedJointVisibilityBackup) {
+            isolatedJoint->Visibility.setValue(false);
+        }
         isolatedJoint = nullptr;
 
         clearJointElementHighlight();

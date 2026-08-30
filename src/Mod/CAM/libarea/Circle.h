@@ -33,6 +33,9 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "Point.h"
 
+namespace heeks
+{
+
 class Circle
 {
 public:
@@ -48,3 +51,5 @@ public:
     bool PointIsOn(const Point& p, double accuracy);
     bool LineIsOn(const Point& p0, const Point& p1, double accuracy);
 };
+
+}  // namespace heeks

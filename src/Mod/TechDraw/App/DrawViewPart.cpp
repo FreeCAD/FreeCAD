@@ -1381,8 +1381,6 @@ std::pair<Base::Vector3d, Base::Vector3d> DrawViewPart::getDirsFromFront(ProjDir
     gp_Dir gYDir = anchorCS.YDirection();
     gp_Ax1 gUpAxis(gOrg, gYDir);
     gp_Ax2 newCS;
-    gp_Dir gNewDir;
-    gp_Dir gNewXDir;
 
     double angle = std::numbers::pi / 2.0;//90*
 
@@ -1525,7 +1523,7 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
     if (prop == &Direction) {
         // Direction was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
         App::PropertyDirection tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();
@@ -1537,7 +1535,7 @@ void DrawViewPart::handleChangedPropertyType(Base::XMLReader &reader, const char
     if (prop == &XDirection) {
         // XDirection was PropertyVector, then briefly PropertyDirection, now back to PropertyVector
         App::PropertyDirection tmp;
-        if (strcmp(tmp.getTypeId().getName(), TypeName)==0) {
+        if (tmp.getTypeId().getName() == TypeName) {
             tmp.setContainer(this);
             tmp.Restore(reader);
             auto tmpValue = tmp.getValue();

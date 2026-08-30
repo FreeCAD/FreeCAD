@@ -4,9 +4,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="614"/>
+      <location filename="../../Application.cpp" line="607"/>
       <source>Unnamed</source>
       <translation>이름 없음</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>True</source>
+      <translation>참</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="569"/>
+      <source>False</source>
+      <translation>거짓</translation>
+    </message>
+    <message>
+      <location filename="../../Expression.cpp" line="587"/>
+      <source>Null</source>
+      <translation type="unfinished">Null</translation>
     </message>
   </context>
   <context>
@@ -20,7 +35,7 @@
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1255"/>
+      <location filename="../../Document.cpp" line="1248"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.
@@ -36,32 +51,32 @@ The user should then click the Refresh button in the main toolbar.
     <message>
       <location filename="../../Datums.cpp" line="267"/>
       <source>X-axis</source>
-      <translation>X-축</translation>
+      <translation>X 축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="268"/>
       <source>Y-axis</source>
-      <translation>Y-축</translation>
+      <translation>Y 축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="269"/>
       <source>Z-axis</source>
-      <translation>Z-축</translation>
+      <translation>Z축</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="270"/>
       <source>XY-plane</source>
-      <translation>XY-평면</translation>
+      <translation>XY 평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="271"/>
       <source>XZ-plane</source>
-      <translation>XZ-평면</translation>
+      <translation>XZ 평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="272"/>
       <source>YZ-plane</source>
-      <translation>YZ-평면</translation>
+      <translation>YZ 평면</translation>
     </message>
     <message>
       <location filename="../../Datums.cpp" line="273"/>

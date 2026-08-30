@@ -82,6 +82,15 @@ if (OCC_INCLUDE_DIR)
     string(REGEX MATCH "[0-9]+" OCC_MAINT ${OCC_MAINT})
 
     set(OCC_VERSION_STRING "${OCC_MAJOR}.${OCC_MINOR}.${OCC_MAINT}")
+
+    # OCC_VERSION_DEVELOPMENT is only defined for development builds (e.g. "dev", "beta", "rc1")
+    file(STRINGS ${OCC_INCLUDE_DIR}/Standard_Version.hxx OCC_DEVELOPMENT
+            REGEX "#define OCC_VERSION_DEVELOPMENT.*"
+    )
+    if (OCC_DEVELOPMENT)
+        string(REGEX MATCH "\"([^\"]*)\"" _ "${OCC_DEVELOPMENT}")
+        set(OCC_VERSION_DEVELOPMENT "${CMAKE_MATCH_1}")
+    endif ()
 endif ()
 
 # handle the QUIETLY and REQUIRED arguments and set OCC_FOUND to TRUE if
@@ -134,7 +143,11 @@ if (OCC_FOUND)
     else ()
         list(APPEND OCC_LIBRARIES TKDESTEP TKDEIGES TKDEGLTF TKDESTL)
     endif ()
-    message(STATUS "Found OpenCASCADE version: ${OCC_VERSION_STRING}")
+    if (OCC_VERSION_DEVELOPMENT)
+        message(STATUS "Found OpenCASCADE version: ${OCC_VERSION_STRING} (${OCC_VERSION_DEVELOPMENT})")
+    else ()
+        message(STATUS "Found OpenCASCADE version: ${OCC_VERSION_STRING}")
+    endif ()
     message(STATUS "  OpenCASCADE include directory: ${OCC_INCLUDE_DIR}")
     message(STATUS "  OpenCASCADE shared libraries directory: ${OCC_LIBRARY_DIR}")
 endif ()

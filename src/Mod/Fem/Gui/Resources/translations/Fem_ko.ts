@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Creates a bearing constraint</source>
-      <translation>베어링 구속을 생성합니다</translation>
+      <translation>베어링 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Creates a contact constraint between faces</source>
-      <translation>면 사이의 접촉 구속을 생성합니다</translation>
+      <translation>면 사이의 접촉 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="371"/>
       <source>Creates a displacement boundary condition for a geometric entity</source>
-      <translation>형상 엔티티에 대한 변위 경계 조건을 생성합니다</translation>
+      <translation>형상 엔티티에 대한 변위 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="425"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation>형상 엔티티에 대한 고정 경계 조건을 생성합니다</translation>
+      <translation>형상 엔티티에 대한 고정 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="535"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
-      <translation>전산 유체 역학용 면 엔티티에 유체 경계 조건을 생성합니다</translation>
+      <translation>전산 유체 역학용 면 엔티티에 유체 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="594"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation>형상 엔티티에 적용되는 힘 하중을 생성합니다</translation>
+      <translation>형상 엔티티에 적용되는 힘 하중을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="657"/>
       <source>Creates a gear constraint</source>
-      <translation>기어 구속을 생성합니다</translation>
+      <translation>기어 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -142,7 +142,7 @@
     <message>
       <location filename="../../Command.cpp" line="705"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation>면에 작용하는 열유속 하중을 생성합니다</translation>
+      <translation>면에 작용하는 열유속 하중을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Creates an initial temperature acting on a body</source>
-      <translation>바디에 작용하는 초기 온도를 생성합니다</translation>
+      <translation>바디에 작용하는 초기 온도를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="835"/>
       <source>Creates a plane multi-point constraint for a face</source>
-      <translation>면에 대한 평면 다중점 구속을 생성합니다</translation>
+      <translation>면에 대한 평면 다중점 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="892"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation>면에 작용하는 압력하중을 생성합니다.</translation>
+      <translation>면에 작용하는 압력하중을 만듭니다.</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="1015"/>
       <source>Creates a pulley constraint</source>
-      <translation>풀리 구속을 생성합니다</translation>
+      <translation>풀리 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation>면에 스프링 경계 조건을 생성합니다</translation>
+      <translation>면에 스프링 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="1068"/>
       <source>Creates a temperature/concentrated heat flux load acting on a face</source>
-      <translation>면에 작용하는 온도/집중 열유속 하중을 생성합니다</translation>
+      <translation>면에 작용하는 온도/집중 열유속 하중을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="1124"/>
       <source>Local Coordinate System</source>
-      <translation>로컬 좌표계</translation>
+      <translation>지역 좌표계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1125"/>
       <source>Creates a local coordinate system on a face</source>
-      <translation>면에 로컬 좌표계를 생성합니다</translation>
+      <translation>면에 로컬 좌표계를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -286,7 +286,7 @@
     <message>
       <location filename="../../Command.cpp" line="1281"/>
       <source>Creates a FEM mesh nodes set</source>
-      <translation>FEM 메쉬 노드 세트를 생성합니다</translation>
+      <translation>FEM 메시 노드 세트를 만듭니다</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1319"/>
@@ -296,12 +296,12 @@
     <message>
       <location filename="../../Command.cpp" line="1320"/>
       <source>Select a single FEM mesh or nodes set.</source>
-      <translation>단일 FEM 메쉬 또는 노드 세트를 선택하십시오.</translation>
+      <translation>단일 FEM 메시 또는 노드 세트를 선택하세요.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1480"/>
       <source>Select a single FEM Mesh.</source>
-      <translation>단일 FEM 메쉬를 선택하십시오.</translation>
+      <translation>단일 FEM 메시를 선택하세요.</translation>
     </message>
   </context>
   <context>
@@ -319,23 +319,23 @@
     <message>
       <location filename="../../Command.cpp" line="1222"/>
       <source>Creates a node set by polygon selection</source>
-      <translation>다각형 선택으로 노드 세트를 생성합니다</translation>
+      <translation>다각형 선택으로 노드 세트를 만듭니다</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2883"/>
+      <location filename="../../Command.cpp" line="2886"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2884"/>
+      <location filename="../../Command.cpp" line="2887"/>
       <source>Apply Changes to Pipeline</source>
       <translation>파이프라인에 변경 사항 적용</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2885"/>
+      <location filename="../../Command.cpp" line="2888"/>
       <source>Applies changes to parameters directly and not on recompute only</source>
       <translation>재계산 시에만이 아니라 매개변수에 변경 사항을 즉시 적용합니다</translation>
     </message>
@@ -343,27 +343,27 @@
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2247"/>
+      <location filename="../../Command.cpp" line="2250"/>
       <source>Fem</source>
       <translation>유한요소법</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2248"/>
+      <location filename="../../Command.cpp" line="2251"/>
       <source>Region Clip Filter</source>
       <translation>영역 클립 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2249"/>
+      <location filename="../../Command.cpp" line="2252"/>
       <source>Defines a clip filter which uses functions to define the clipped region</source>
       <translation>함수를 사용하여 클리핑 영역을 정의하는 클립 필터를 정의합니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2773"/>
+      <location filename="../../Command.cpp" line="2776"/>
       <source>Select a pipeline.</source>
-      <translation>파이프라인을 선택하십시오.</translation>
+      <translation>파이프라인을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2772"/>
+      <location filename="../../Command.cpp" line="2775"/>
       <source>Wrong selection</source>
       <translation>잘못된 선택</translation>
     </message>
@@ -371,17 +371,17 @@
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2286"/>
+      <location filename="../../Command.cpp" line="2289"/>
       <source>Fem</source>
       <translation>유한요소법</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2287"/>
+      <location filename="../../Command.cpp" line="2290"/>
       <source>Function Cut Filter</source>
       <translation>함수 절단 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2288"/>
+      <location filename="../../Command.cpp" line="2291"/>
       <source>Cuts the data along an implicit function</source>
       <translation>암시적 함수를 따라 데이터를 절단합니다</translation>
     </message>
@@ -389,17 +389,17 @@
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2323"/>
+      <location filename="../../Command.cpp" line="2326"/>
       <source>Fem</source>
       <translation>유한요소법</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2324"/>
+      <location filename="../../Command.cpp" line="2327"/>
       <source>Line Clip Filter</source>
       <translation>선 클립 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2325"/>
+      <location filename="../../Command.cpp" line="2328"/>
       <source>Defines a clip filter which clips a field along a line</source>
       <translation>선을 따라 필드를 클리핑하는 클립 필터를 정의합니다</translation>
     </message>
@@ -407,17 +407,17 @@
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2360"/>
+      <location filename="../../Command.cpp" line="2363"/>
       <source>Fem</source>
       <translation>유한요소법</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2361"/>
+      <location filename="../../Command.cpp" line="2364"/>
       <source>Data at Point Clip Filter</source>
       <translation>점 데이터 클립 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2362"/>
+      <location filename="../../Command.cpp" line="2365"/>
       <source>Defines a clip filter which clips a field data at point</source>
       <translation>점에서 필드 데이터를 클리핑하는 클립 필터를 정의합니다</translation>
     </message>
@@ -425,103 +425,103 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2625"/>
+      <location filename="../../Command.cpp" line="2628"/>
       <source>Fem</source>
       <translation>유한요소법</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2626"/>
+      <location filename="../../Command.cpp" line="2629"/>
       <source>Filter Functions</source>
       <translation>필터 함수</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2627"/>
+      <location filename="../../Command.cpp" line="2630"/>
       <source>Functions for use in postprocessing filter</source>
       <translation>후처리 필터에서 사용할 함수</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2825"/>
+      <location filename="../../Command.cpp" line="2828"/>
       <source>Plane</source>
       <translation>평면</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2835"/>
+      <location filename="../../Command.cpp" line="2838"/>
       <source>Sphere</source>
-      <translation>공모양</translation>
+      <translation>구체</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2845"/>
+      <location filename="../../Command.cpp" line="2848"/>
       <source>Cylinder</source>
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2855"/>
+      <location filename="../../Command.cpp" line="2858"/>
       <source>Box</source>
-      <translation>상자</translation>
+      <translation>박스</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2134"/>
+      <location filename="../../Command.cpp" line="2137"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>두께 [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2140"/>
+      <location filename="../../Command.cpp" line="2143"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>응력[MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2146"/>
+      <location filename="../../Command.cpp" line="2149"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>선형화된 응력</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2152"/>
+      <location filename="../../Command.cpp" line="2155"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>막</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2158"/>
+      <location filename="../../Command.cpp" line="2161"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>막 및 굽힘</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2164"/>
+      <location filename="../../Command.cpp" line="2167"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>합계</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2401"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2399"/>
+      <location filename="../../Command.cpp" line="2402"/>
       <source>Stress Linearization Plot</source>
       <translation>응력 선형화 플롯</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2400"/>
+      <location filename="../../Command.cpp" line="2403"/>
       <source>Defines a stress linearization plot</source>
       <translation>응력 선형화 플롯을 정의합니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2439"/>
-      <location filename="../../Command.cpp" line="2450"/>
+      <location filename="../../Command.cpp" line="2442"/>
+      <location filename="../../Command.cpp" line="2453"/>
       <source>Select a clip filter which clips a stress field along a line</source>
       <translation>선 따라 응력장을 클리핑하는 클립 필터를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2438"/>
-      <location filename="../../Command.cpp" line="2449"/>
+      <location filename="../../Command.cpp" line="2441"/>
+      <location filename="../../Command.cpp" line="2452"/>
       <source>Wrong selection</source>
       <translation>잘못된 선택</translation>
     </message>
@@ -529,45 +529,45 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2924"/>
+      <location filename="../../Command.cpp" line="2927"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2925"/>
+      <location filename="../../Command.cpp" line="2928"/>
       <source>Post Pipeline From Result</source>
       <translation>결과에서 후처리 파이프라인 생성</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2926"/>
+      <location filename="../../Command.cpp" line="2929"/>
       <source>Creates a post processing pipeline from a result object</source>
-      <translation>결과 객체로부터 후처리 파이프라인을 생성합니다</translation>
+      <translation>결과 객체로부터 후처리 파이프라인을 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3010"/>
+      <location filename="../../Command.cpp" line="3013"/>
       <source>Wrong selection type</source>
       <translation>잘못된 선택 유형</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3011"/>
+      <location filename="../../Command.cpp" line="3014"/>
       <source>Select a result object.</source>
-      <translation>결과 객체를 선택하십시오.</translation>
+      <translation>결과 객체를 선택하세요.</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2478"/>
+      <location filename="../../Command.cpp" line="2481"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2479"/>
+      <location filename="../../Command.cpp" line="2482"/>
       <source>Scalar Clip Filter</source>
       <translation>스칼라 클립 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2480"/>
+      <location filename="../../Command.cpp" line="2483"/>
       <source>Defines a clip filter which clips a field with a scalar value</source>
       <translation>스칼라 값으로 필드를 클리핑하는 클립 필터를 정의합니다</translation>
     </message>
@@ -575,19 +575,19 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2515"/>
+      <location filename="../../Command.cpp" line="2518"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2516"/>
+      <location filename="../../Command.cpp" line="2519"/>
       <source>Warp Filter</source>
       <translation>왜곡 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2517"/>
+      <location filename="../../Command.cpp" line="2520"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation>벡터장을 따라 형상을 지정한 배율로 왜곡합니다</translation>
+      <translation>벡터장을 따라 지오매트리을 지정한 배율로 왜곡합니다</translation>
     </message>
   </context>
   <context>
@@ -595,7 +595,7 @@
     <message>
       <location filename="../../Command.cpp" line="553"/>
       <source>Create fluid boundary condition</source>
-      <translation>유체 경계 조건 생성</translation>
+      <translation>유체 경계 조건 만들기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="261"/>
@@ -615,7 +615,7 @@
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Make fixed boundary condition for geometry</source>
-      <translation>형상에 고정 경계 조건 생성</translation>
+      <translation>지오매트리에 고정 경계 조건 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="491"/>
@@ -625,7 +625,7 @@
     <message>
       <location filename="../../Command.cpp" line="610"/>
       <source>Make force load on geometry</source>
-      <translation>형상에 힘 하중 생성</translation>
+      <translation>지오매트리에 힘 하중 생성</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="672"/>
@@ -686,7 +686,7 @@
     <message>
       <location filename="../../Command.cpp" line="1306"/>
       <source>Create nodes set</source>
-      <translation>노드 세트 생성</translation>
+      <translation>노드 세트 만들기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1450"/>
@@ -696,27 +696,27 @@
     <message>
       <location filename="../../Command.cpp" line="1462"/>
       <source>Create Elements set</source>
-      <translation>요소 세트 생성</translation>
+      <translation>요소 세트 만들기</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2061"/>
       <source>Create filter</source>
-      <translation>필터 생성</translation>
+      <translation>필터 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2659"/>
+      <location filename="../../Command.cpp" line="2662"/>
       <source>Create function</source>
-      <translation>함수 생성</translation>
+      <translation>함수 만들기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2979"/>
+      <location filename="../../Command.cpp" line="2982"/>
       <source>Create pipeline from result</source>
-      <translation>결과에서 파이프라인 생성</translation>
+      <translation>결과에서 파이프라인 만들기</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeExtension.cpp" line="189"/>
       <source>Edit Shape</source>
-      <translation type="unfinished">Edit Shape</translation>
+      <translation>형상 편집</translation>
     </message>
   </context>
   <context>
@@ -731,7 +731,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation>메쉬 그룹이 감지되었습니다. 각 그룹에 대한 값을 선택하십시오.</translation>
+      <translation>메시 그룹이 감지되었습니다. 각 그룹에 대한 값을 선택하세요.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -794,24 +794,24 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2827"/>
+      <location filename="../../Command.cpp" line="2830"/>
       <source>Create a plane function, defined by its origin and normal</source>
-      <translation>원점과 법선으로 정의된 평면 함수를 생성합니다</translation>
+      <translation>원점과 법선으로 정의된 평면 함수를 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2837"/>
+      <location filename="../../Command.cpp" line="2840"/>
       <source>Create a sphere function, defined by its center and radius</source>
-      <translation>중심과 반지름으로 정의된 구 함수를 생성합니다</translation>
+      <translation>중심과 반지름으로 정의된 구체 함수를 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2847"/>
+      <location filename="../../Command.cpp" line="2850"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
-      <translation>중심, 축, 반지름으로 정의된 원통 함수를 생성합니다</translation>
+      <translation>중심, 축, 반지름으로 정의된 원통 함수를 만듭니다</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2857"/>
+      <location filename="../../Command.cpp" line="2860"/>
       <source>Create a box function, defined by its center, length, width and height</source>
-      <translation>중심, 길이, 너비, 높이로 정의된 상자 함수를 생성합니다</translation>
+      <translation>중심, 길이, 너비, 높이로 정의된 상자 함수를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -866,7 +866,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="182"/>
       <source>Check Mesh</source>
-      <translation>메쉬 검사</translation>
+      <translation>메시 검사</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="191"/>
@@ -884,14 +884,34 @@
       <translation>시간 구간</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
+      <source>Overwrite CCX defaults</source>
+      <translation>CCX 기본값 덮어쓰기</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
+      <source>3D output, unchecked for 2D output</source>
+      <translation>3D 출력, 체크 해제 시 2D 출력</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="282"/>
       <source>Number of threads used for analysis</source>
       <translation>해석에 사용할 스레드 수</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
+      <source>Geometrical nonlinearity</source>
+      <translation>기하학적 비선형성</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="419"/>
       <source>Matrix solver</source>
       <translation>행렬 솔버</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
+      <source>Advanced solver controls</source>
+      <translation>고급 솔버 제어</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="446"/>
@@ -904,9 +924,24 @@
       <translation>최소 시간 증분</translation>
     </message>
     <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
+      <source>Use geometrical nonlinearity</source>
+      <translation>기하학적 비선형성 사용</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
+      <source>1D and 2D element output format</source>
+      <translation>1D 및 2D 요소 출력 형식</translation>
+    </message>
+    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="583"/>
       <source>Maximum time increment</source>
       <translation>최대 시간 증분</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
+      <source>No legacy results (use enhanced solver)</source>
+      <translation>레거시 결과 제외 (향상된 솔버 사용)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="649"/>
@@ -917,6 +952,21 @@
       <location filename="../../DlgSettingsFemCcx.ui" line="685"/>
       <source>Frequency Defaults</source>
       <translation>주파수 기본값</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
+      <source>Upper frequency bound</source>
+      <translation>주파수 상한</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
+      <source>Number of eigenmodes</source>
+      <translation>고유모드 개수</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
+      <source>Lower frequency bound</source>
+      <translation>주파수 하한</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="795"/>
@@ -964,44 +1014,14 @@
       <translation>반복 스케일링</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="350"/>
-      <source>Non-linear geometry</source>
-      <translation>비선형 형상</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="504"/>
-      <source>Use non-linear geometry</source>
-      <translation>비선형 형상 사용</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="426"/>
-      <source>Time incrementation control parameter</source>
-      <translation>시간 증분 제어 매개변수</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="46"/>
       <source>CalculiX path</source>
       <translation>CalculiX 설치경로</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="243"/>
-      <source>Use non ccx defaults</source>
-      <translation>ccx 기본값 대신 사용자 기본값 사용</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="266"/>
-      <source>3D Output, unchecked for 2D</source>
-      <translation>3D 출력, 2D는 체크 해제</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="590"/>
       <source>Result object</source>
       <translation>결과 객체</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="597"/>
-      <source>Pipeline only</source>
-      <translation>파이프라인만</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="600"/>
@@ -1043,36 +1063,16 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <translation>촐레스키 반복 솔버</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="551"/>
-      <source>Beam, shell element 3D output format</source>
-      <translation>빔, 셸 요소 3D 출력 형식</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="725"/>
-      <source>Eigenmode number</source>
-      <translation>고유 모드 수</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="718"/>
-      <source>High frequency limit</source>
-      <translation>고주파 한계</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemCcx.ui" line="779"/>
-      <source>Low frequency limit</source>
-      <translation>저주파 한계</translation>
-    </message>
-    <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="130"/>
       <source>Executable '%1' not found</source>
-      <translation>실행 파일 '%1'을 찾을 수 없습니다</translation>
+      <translation>'%1' 실행파일을 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
     <name>FemGui::DlgSettingsFemElmerImp</name>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="14"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="98"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="106"/>
       <source>Elmer</source>
       <translation>Elmer</translation>
     </message>
@@ -1092,59 +1092,59 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <translation>ElmerGrid 경로</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="149"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="199"/>
       <source>Log verbosity</source>
       <translation>로그 상세도</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="159"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="209"/>
       <source>Maximum output level</source>
-      <translation type="unfinished">Maximum output level</translation>
+      <translation>최대 출력 수준</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="181"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="231"/>
       <source>Number of tasks</source>
       <translation>작업 수</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="241"/>
       <source>Number of parallel tasks. Set to `1` if Elmer does not use MPI.&lt;br&gt;It is recommended to use an even number of cores to benefit from mesh symmetries&lt;br&gt;(Using 8 cores can be faster than 9 cores).&lt;br&gt;In extreme cases ElmerSolver might not converge if the core number is too high.</source>
-      <translation>병렬 작업 수입니다. Elmer가 MPI를 사용하지 않으면 `1`로 설정하십시오.&lt;br&gt;메쉬 대칭의 이점을 얻으려면 짝수 개의 코어를 사용하는 것이 좋습니다&lt;br&gt;(8코어가 9코어보다 더 빠를 수 있습니다).&lt;br&gt;극단적인 경우 코어 수가 너무 많으면 ElmerSolver가 수렴하지 않을 수 있습니다.</translation>
+      <translation>병렬 작업 수입니다. Elmer가 MPI를 사용하지 않으면 `1`로 설정하세요.&lt;br&gt;메시 대칭의 이점을 얻으려면 짝수 개의 코어를 사용하는 것이 좋습니다&lt;br&gt;(8코어가 9코어보다 더 빠를 수 있습니다).&lt;br&gt;극단적인 경우 코어 수가 너무 많으면 ElmerSolver가 수렴하지 않을 수 있습니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="207"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="257"/>
       <source>Threads per task</source>
       <translation>작업당 스레드 수</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="267"/>
       <source>Number of threads per task. Take effect if Elmer uses OpenMP.</source>
       <translation>작업당 스레드 수입니다. Elmer가 OpenMP를 사용할 때 적용됩니다.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="238"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="288"/>
       <source>Results</source>
       <translation>결과</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="244"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="294"/>
       <source>Save result in binary format</source>
       <translation>결과를 이진 형식으로 저장</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="247"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="297"/>
       <source>Use binary format</source>
       <translation>이진 형식 사용</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="263"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="313"/>
       <source>Save the index of geometric entities</source>
       <translation>형상 엔티티의 인덱스 저장</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="266"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="316"/>
       <source>Save geometry IDs</source>
-      <translation>형상 ID 저장</translation>
+      <translation>지오매트리 ID 저장</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="125"/>
@@ -1157,14 +1157,24 @@ Only takes effect if 'Pipeline only' is enabled</source>
       <translation>Elmer 바이너리</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmer.ui" line="141"/>
+      <location filename="../../DlgSettingsFemElmer.ui" line="144"/>
+      <source>MPI path</source>
+      <translation type="unfinished">MPI path</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="175"/>
+      <source>Leave blank to use default MPI binary file</source>
+      <translation type="unfinished">Leave blank to use default MPI binary file</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemElmer.ui" line="191"/>
       <source>Options</source>
       <translation>옵션</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="98"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="106"/>
       <source>Executable '%1' not found</source>
-      <translation>실행 파일 '%1'을 찾을 수 없습니다</translation>
+      <translation>'%1' 실행파일을 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
@@ -1182,7 +1192,7 @@ Only takes effect if 'Pipeline only' is enabled</source>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="28"/>
       <source>Which mesh elements to export</source>
-      <translation>내보낼 메쉬 요소</translation>
+      <translation>내보낼 메시 요소</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="35"/>
@@ -1194,7 +1204,7 @@ FEM: Only FEM elements will be exported. This means only edges
 not belonging to faces and faces not belonging to volumes.</source>
       <translation>전체: 모든 요소를 내보냅니다.
 
-최상위: 최상위 요소만 내보냅니다. 체적 메쉬에서는 체적, 셸 메쉬에서는 면을 의미합니다.
+최상위: 최상위 요소만 내보냅니다. 체적 메시에서는 체적, 셸 메시에서는 면을 의미합니다.
 
 FEM: FEM 요소만 내보냅니다. 이는 면에 속하지 않는 모서리와 체적에 속하지 않는 면만을 의미합니다.</translation>
     </message>
@@ -1209,8 +1219,8 @@ FEM: FEM 요소만 내보냅니다. 이는 면에 속하지 않는 모서리와 
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups - faces and nodes where
 the constraint or material is applied.</source>
-      <translation>메쉬 그룹도 함께 내보냅니다.
-각 해석 기능과, 서로 다른 재질이 있는 경우 각 재질은 구속 또는 재질이 적용되는 면과 노드의 두 메쉬 그룹으로 구성됩니다.</translation>
+      <translation>메시 그룹도 함께 내보냅니다.
+각 해석 기능과, 서로 다른 재질이 있는 경우 각 재질은 구속 또는 재질이 적용되는 면과 노드의 두 메시 그룹으로 구성됩니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="59"/>
@@ -1245,12 +1255,12 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="51"/>
       <source>Temporary directories</source>
-      <translation>임시 디렉토리</translation>
+      <translation>임시 디렉터리</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="54"/>
       <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
-      <translation>애플리케이션이 모든 솔버의 작업 디렉터리를 관리(생성, 삭제)하도록 합니다. 임시 디렉터리를 사용합니다.</translation>
+      <translation>애플리케이션이 모든 솔버의 작업 디렉터리를 관리(만들기, 삭제)하도록 합니다. 임시 디렉터리를 사용합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="76"/>
@@ -1260,51 +1270,51 @@ the constraint or material is applied.</source>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="206"/>
       <source>Mesh</source>
-      <translation>메쉬</translation>
+      <translation>메시</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="34"/>
       <source>Working Directory for Solving Analysis and Meshing</source>
-      <translation type="unfinished">Working Directory for Solving Analysis and Meshing</translation>
+      <translation>해석 및 메싱을 위한 작업 디렉터리</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="79"/>
       <source>Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
 (e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</source>
-      <translation type="unfinished">Create a directory in the same folder in which the FCStd file of the document is located. Use Subfolder for each object
-(e.g. for a file ./mydoc.FCStd and a solver with the label Elmer002 use ./mydoc/Elmer002).</translation>
+      <translation>문서의 FCStd 파일이 위치한 폴더에 디렉터리를 만듭니다. 각 객체마다 하위 폴더를 사용합니다
+(예: ./mydoc.FCStd 파일과 레이블이 Elmer002인 솔버의 경우 ./mydoc/Elmer002를 사용).</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="99"/>
       <source>Custom directory</source>
-      <translation type="unfinished">Custom directory</translation>
+      <translation>사용자 지정 디렉터리</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="102"/>
       <source>Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
 Leave blank to use user home directory.</source>
-      <translation type="unfinished">Create own subdirectory for each object. Name directory after the solver label prefixed with the document name.
-Leave blank to use user home directory.</translation>
+      <translation>각 객체마다 고유한 하위 디렉터리를 만듭니다. 디렉터리 이름은 문서 이름을 접두사로 하여 솔버 레이블로 지정합니다.
+비워두면 사용자 홈 디렉터리를 사용합니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="161"/>
       <source>Input File Editor</source>
-      <translation type="unfinished">Input File Editor</translation>
+      <translation>입력 파일 편집기</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="178"/>
       <source>Editor path</source>
-      <translation type="unfinished">Editor path</translation>
+      <translation>편집기 경로</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="188"/>
       <source>Leave blank to use default FreeCAD internal editor</source>
-      <translation type="unfinished">Leave blank to use default FreeCAD internal editor</translation>
+      <translation>비워 두면 기본 FreeCAD 내부 편집기를 사용합니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="217"/>
       <source>Create mesh groups for analysis reference shapes (experimental)</source>
-      <translation>해석 참조 형상에 대한 메쉬 그룹 생성(실험적)</translation>
+      <translation>해석 참조 형상에 대한 메시 그룹 만들기(실험적)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="238"/>
@@ -1316,7 +1326,7 @@ Leave blank to use user home directory.</translation>
       <source>Existing result objects will be kept
 otherwise overwritten by new solver run</source>
       <translation>기존 결과 객체를 유지합니다.
-그렇지 않으면 새 솔버 실행 결과로 덮어씁니다.</translation>
+그렇지 않으면 새 솔버 실행 결과로 덮어씁니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="253"/>
@@ -1369,12 +1379,12 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="133"/>
       <source>Executable '%1' not found</source>
-      <translation>실행 파일 '%1'을 찾을 수 없습니다</translation>
+      <translation>'%1' 실행파일을 찾을 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneralImp.cpp" line="140"/>
       <source>Directory '%1' not found</source>
-      <translation type="unfinished">Directory '%1' not found</translation>
+      <translation>'%1' 디렉터리를 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
@@ -1423,17 +1433,17 @@ adding an analysis container</source>
     <message>
       <location filename="../../DlgSettingsFemGmsh.ui" line="145"/>
       <source>Number of threads used for meshing</source>
-      <translation>메쉬 생성에 사용할 스레드 수</translation>
+      <translation>메시 생성에 사용할 스레드 수</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
-      <translation>실행 파일 '%1'을 찾을 수 없습니다</translation>
+      <translation>'%1' 실행파일을 찾을 수 없습니다</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
       <source>Silent</source>
-      <translation>조용히</translation>
+      <translation>출력 안 함</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
@@ -1498,7 +1508,7 @@ exported from FreeCAD.</source>
       <translation>VTK 결과 객체: FreeCAD FEM VTK 결과 객체를 가져옵니다
 (내보낸 객체와 동일).
 
-FEM 메쉬 객체: VTK 파일의 결과값은 무시되고 메쉬 데이터만 가져와 FreeCAD FEM 메쉬 객체를 생성합니다.
+FEM 메시 객체: VTK 파일의 결과값은 무시되고 메시 데이터만 가져와 FreeCAD FEM 메시 객체를 만듭니다.
 
 FreeCAD 결과 객체: 가져온 데이터는 FreeCAD FEM 결과 객체로 변환됩니다. 참고: 이 설정은 정확한 결과 구성 요소 이름이 필요하므로 FreeCAD에서 내보낸 VTK 파일에서만 제대로 작동합니다.</translation>
     </message>
@@ -1515,7 +1525,7 @@ FreeCAD 결과 객체: 가져온 데이터는 FreeCAD FEM 결과 객체로 변�
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="71"/>
       <source>FEM mesh object</source>
-      <translation>FEM 메쉬 객체</translation>
+      <translation>FEM 메시 객체</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
@@ -1530,12 +1540,12 @@ FreeCAD 결과 객체: 가져온 데이터는 FreeCAD FEM 결과 객체로 변�
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="95"/>
       <source>Mesh elements to export</source>
-      <translation>내보낼 메쉬 요소</translation>
+      <translation>내보낼 메시 요소</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="102"/>
       <source>Mesh element level to export</source>
-      <translation>내보낼 메쉬 요소 수준</translation>
+      <translation>내보낼 메시 요소 수준</translation>
     </message>
   </context>
   <context>
@@ -1574,7 +1584,7 @@ FreeCAD 결과 객체: 가져온 데이터는 FreeCAD FEM 결과 객체로 변�
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="78"/>
       <source>Executable '%1' not found</source>
-      <translation>실행 파일 '%1'을 찾을 수 없습니다</translation>
+      <translation>'%1' 실행파일을 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
@@ -1618,12 +1628,12 @@ FreeCAD 결과 객체: 가져온 데이터는 FreeCAD FEM 결과 객체로 변�
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="156"/>
       <source>Stiffness matrix entries</source>
-      <translation type="unfinished">Stiffness matrix entries</translation>
+      <translation>강성 행렬 항목</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="200"/>
       <source>Coincidence vector entries</source>
-      <translation type="unfinished">Coincidence vector entries</translation>
+      <translation>일치 벡터 항목</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="213"/>
@@ -1633,12 +1643,11 @@ FreeCAD 결과 객체: 가져온 데이터는 FreeCAD FEM 결과 객체로 변�
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation type="unfinished">Maximal places in coincidence vector.
-(number of knots per element times
- number of finite elements)
-You might need to increase this when using an
-iterative solver and you get the error message
-that "MAXKOI" needs to be increased.</translation>
+      <translation>일치 벡터의 최대 크기입니다.
+(요소당 매듭 수 × 유한 요소 수)
+반복 솔버를 사용할 때 "MAXKOI"를
+늘려야 한다는 오류 메시지가 나타나면
+이 값을 증가시켜야 할 수 있습니다.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88.ui" line="169"/>
@@ -1651,23 +1660,23 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="86"/>
-      <source>Succesive over-relaxation (SOR)</source>
-      <translation type="unfinished">Succesive over-relaxation (SOR)</translation>
+      <source>Successive over-relaxation (SOR)</source>
+      <translation>연속적 과잉이완 (SOR)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="87"/>
       <source>Shifted incomplete Cholesky (SIC)</source>
-      <translation type="unfinished">Shifted incomplete Cholesky (SIC)</translation>
+      <translation>이동 불완전 콜레스키 (SIC)</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="88"/>
       <source>Simple Cholesky</source>
-      <translation type="unfinished">Simple Cholesky</translation>
+      <translation>단순 콜레스키</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="106"/>
       <source>Executable '%1' not found</source>
-      <translation>실행 파일 '%1'을 찾을 수 없습니다</translation>
+      <translation>'%1' 실행파일을 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
@@ -1691,7 +1700,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="237"/>
       <location filename="../../TaskFemConstraint.cpp" line="259"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
@@ -1701,128 +1710,16 @@ that "MAXGS" needs to be increased.</source>
     </message>
   </context>
   <context>
-    <name>FemGui::TaskDlgFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="599"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="650"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintForce</name>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintGear</name>
-    <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintPulley</name>
-    <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintSpring</name>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="637"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
-    </message>
-  </context>
-  <context>
     <name>FemGui::TaskDlgMeshShapeNetgen</name>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="69"/>
       <source>Edit FEM mesh</source>
-      <translation>FEM 메쉬 편집</translation>
+      <translation>FEM 메시 편집</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="102"/>
       <source>Meshing failure</source>
-      <translation>메쉬 생성 실패</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgPost</name>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="403"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
+      <translation>메시 생성 실패</translation>
     </message>
   </context>
   <context>
@@ -1860,7 +1757,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintBearing.cpp" line="205"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="224"/>
-      <source>Selection error</source>
+      <source>Selection Error</source>
       <translation>선택 오류</translation>
     </message>
     <message>
@@ -1903,102 +1800,102 @@ that "MAXGS" needs to be increased.</source>
       <translation>삭제</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="130"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="196"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="239"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="250"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="342"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="355"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="374"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="384"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="395"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="136"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>객체에 면이 하나뿐입니다! - 마스터 면으로 이동했습니다</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
-      <source>Select slave geometry of type: </source>
-      <translation>슬레이브 형상을 선택하십시오: </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
-      <source>Face</source>
-      <translation>면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
+      <source>Select slave geometry of type: </source>
+      <translation>슬레이브 지오매트리 선택: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="201"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="214"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="234"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="244"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="255"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="347"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="389"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="400"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="440"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="449"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
       <source>click Add or Remove</source>
       <translation>추가 또는 제거를 클릭하십시오</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
-      <source>Select master geometry of type: </source>
-      <translation>마스터 형상을 선택하십시오: </translation>
+      <location filename="../../TaskFemConstraintContact.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="152"/>
+      <source>Edge, Face</source>
+      <translation>모서리, 면</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="343"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="151"/>
+      <source>Select master geometry of type: </source>
+      <translation>마스터 지오매트리 선택: </translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="348"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>접촉 구속에는 마스터 면 하나와 슬레이브 면 하나만 선택할 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="203"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="287"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="292"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="354"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="440"/>
       <source>Nothing selected!</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="210"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="240"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="215"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="245"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>접촉 구속에는 슬레이브 면을 하나만 선택할 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="221"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="296"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="367"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="226"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="449"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="230"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="375"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="235"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="380"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="396"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="256"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="401"/>
       <source>Only faces can be picked (edges in 2D models)</source>
       <translation>면만 선택할 수 있습니다(2D 모델에서는 모서리)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="356"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
       <source>Only one master for a contact constraint!</source>
       <translation>접촉 구속에는 마스터를 하나만 선택할 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="385"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="390"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>접촉 구속에는 마스터 면을 하나만 선택할 수 있습니다!</translation>
     </message>
@@ -2008,22 +1905,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="158"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="255"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="299"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
@@ -2032,15 +1919,25 @@ that "MAXGS" needs to be increased.</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="255"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="299"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="247"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="256"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="295"/>
@@ -2053,22 +1950,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="87"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="130"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
@@ -2077,15 +1964,25 @@ that "MAXGS" needs to be increased.</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="130"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="171"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="122"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="131"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="167"/>
@@ -2118,7 +2015,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="390"/>
@@ -2163,13 +2060,18 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
-      <source>Empty selection</source>
+      <source>Empty Selection</source>
       <translation>빈 선택</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Select an edge or a face.</source>
-      <translation>모서리 또는 면을 선택하십시오.</translation>
+      <translation>모서리 또는 면을 선택하세요.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
+      <source>Selected object is not a part object!</source>
+      <translation>선택한 객체는 부품 객체가 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
@@ -2177,13 +2079,8 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="693"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="703"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="712"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>잘못된 선택</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
-      <source>Selected object is not a part object!</source>
-      <translation>선택한 객체는 부품 객체가 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="676"/>
@@ -2207,30 +2104,30 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="909"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
       <source>Nothing selected!</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="909"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="859"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="868"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="905"/>
@@ -2243,22 +2140,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="93"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
@@ -2267,15 +2154,25 @@ that "MAXGS" needs to be increased.</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="126"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="208"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="135"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="217"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="144"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="181"/>
@@ -2285,13 +2182,13 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
-      <source>Wrong selection</source>
+      <source>Wrong Selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="317"/>
       <source>Select an edge or a face.</source>
-      <translation>모서리 또는 면을 선택하십시오.</translation>
+      <translation>모서리 또는 면을 선택하세요.</translation>
     </message>
   </context>
   <context>
@@ -2300,7 +2197,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintGear.cpp" line="155"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="174"/>
-      <source>Selection error</source>
+      <source>Selection Error</source>
       <translation>선택 오류</translation>
     </message>
     <message>
@@ -2324,12 +2221,18 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Edge, Face</source>
       <translation>모서리, 면</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
+      <source>Nothing selected!</source>
+      <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
@@ -2339,25 +2242,19 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="380"/>
-      <source>Selection error</source>
+      <source>Selection Error</source>
       <translation>선택 오류</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="359"/>
-      <source>Nothing selected!</source>
-      <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="291"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="300"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="312"/>
@@ -2371,7 +2268,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="98"/>
       <source>Select single geometry of type: </source>
-      <translation>형식의 단일 형상을 선택하십시오: </translation>
+      <translation>유형의 단일 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="98"/>
@@ -2388,7 +2285,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="209"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
-      <source>Selection error</source>
+      <source>Selection Error</source>
       <translation>선택 오류</translation>
     </message>
     <message>
@@ -2407,12 +2304,12 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="150"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="159"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
@@ -2430,7 +2327,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
@@ -2439,30 +2336,30 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="157"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <source>Nothing selected!</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="145"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="157"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="137"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="146"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="158"/>
@@ -2488,7 +2385,7 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
@@ -2497,30 +2394,30 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
       <source>Nothing selected!</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="150"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
@@ -2533,12 +2430,18 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="101"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
+      <source>Nothing selected!</source>
+      <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
@@ -2546,106 +2449,100 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="215"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
-      <source>Selection error</source>
+      <source>Selection Error</source>
       <translation>선택 오류</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
-      <source>Nothing selected!</source>
-      <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="207"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="216"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="211"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="164"/>
+      <source>Edge, Face</source>
+      <translation>모서리, 면</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="212"/>
       <source>Analysis feature update error</source>
       <translation>해석 기능 업데이트 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="316"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="326"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="349"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="359"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="423"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
-      <source>Selection error</source>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="327"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="342"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="374"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="392"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="436"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="470"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="479"/>
+      <source>Selection Error</source>
       <translation>선택 오류</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="318"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="328"/>
+      <source>Only one face (edge in 2D model) for rectangular local coordinate system!</source>
+      <translation type="unfinished">Only one face (edge in 2D model) for rectangular local coordinate system!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="361"/>
+      <source>Only one face (edge in 2D model) for local coordinate system!</source>
+      <translation type="unfinished">Only one face (edge in 2D model) for local coordinate system!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="375"/>
+      <source>Only faces (edges in 2D model) can be picked</source>
+      <translation type="unfinished">Only faces (edges in 2D model) can be picked</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="393"/>
+      <source>Only cylindrical faces (edges in 2D model) can be picked</source>
+      <translation type="unfinished">Only cylindrical faces (edges in 2D model) can be picked</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="437"/>
+      <source>Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</source>
+      <translation type="unfinished">Only transformable faces (edges in 2D model) can be selected! Apply a displacement boundary condition or a force load to a boundary first then apply the local coordinate system.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="310"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="470"/>
       <source>Nothing selected!</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="317"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="327"/>
-      <source>Only one face for rectangular local coordinate system!</source>
-      <translation>직사각형 로컬 좌표계에는 면 하나만 선택할 수 있습니다!</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="350"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="351"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
-      <source>Only one face for local coordinate system!</source>
-      <translation>로컬 좌표계에는 면 하나만 선택할 수 있습니다!</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="424"/>
-      <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation>변환 가능한 면만 선택할 수 있습니다! 먼저 면에 변위 경계 조건 또는 힘 하중을 적용한 다음 그 면에 로컬 좌표계를 적용하십시오.</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="342"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="479"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="164"/>
       <source>Select single geometry of type: </source>
-      <translation>형식의 단일 형상을 선택하십시오: </translation>
+      <translation>유형의 단일 지오매트리 선택: </translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
-      <source>Face</source>
-      <translation>면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="213"/>
       <source>The transformable faces have changed. Add only the transformable faces and remove non-transformable faces!</source>
       <translation>변환 가능한 면이 변경되었습니다. 변환 가능한 면만 추가하고 변환할 수 없는 면은 제거하십시오!</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
-      <source>Only faces can be picked</source>
-      <translation>면만 선택할 수 있습니다</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="380"/>
-      <source>Only cylindrical faces can be picked</source>
-      <translation>원통형 면만 선택할 수 있습니다</translation>
     </message>
   </context>
   <context>
@@ -2659,7 +2556,7 @@ that "MAXGS" needs to be increased.</source>
       <location filename="../../TaskPostBoxes.cpp" line="1095"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
-      <translation>길이:</translation>
+      <translation>길이</translation>
     </message>
   </context>
   <context>
@@ -2696,12 +2593,12 @@ that "MAXGS" needs to be increased.</source>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="69"/>
       <source>Meshing failure</source>
-      <translation>메쉬 생성 실패</translation>
+      <translation>메시 생성 실패</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="70"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
-      <translation>FEM 모듈이 NETGEN 지원 없이 빌드되었습니다. 메쉬 생성이 작동하지 않습니다!!!</translation>
+      <translation>FEM 모듈이 NETGEN 지원 없이 빌드되었습니다. 메시 생성이 작동하지 않습니다!!!</translation>
     </message>
   </context>
   <context>
@@ -2853,9 +2750,9 @@ that "MAXGS" needs to be increased.</source>
       <translation>입구 압력</translation>
     </message>
     <message>
+      <location filename="../ui/InitialPressure.ui" line="20"/>
       <location filename="../ui/ElementFluid1D.ui" line="235"/>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
-      <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
       <translation>압력</translation>
     </message>
@@ -2973,6 +2870,16 @@ that "MAXGS" needs to be increased.</source>
       <translation>조정 활성화</translation>
     </message>
     <message>
+      <location filename="../ui/ConstraintTie.ui" line="70"/>
+      <source>Reverse master</source>
+      <translation type="unfinished">Reverse master</translation>
+    </message>
+    <message>
+      <location filename="../ui/ConstraintTie.ui" line="77"/>
+      <source>Reverse slave</source>
+      <translation type="unfinished">Reverse slave</translation>
+    </message>
+    <message>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
@@ -2986,11 +2893,11 @@ that "MAXGS" needs to be increased.</source>
     </message>
     <message>
       <location filename="../ui/ConstraintCentrif.ui" line="26"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
-      <location filename="../ui/ConstraintTie.ui" line="26"/>
       <location filename="../ui/ConstraintSectionPrint.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <source>Parameter</source>
       <translation>매개 변수</translation>
     </message>
@@ -3114,16 +3021,6 @@ Note: has no effect if a solid was selected</source>
       <translation>경계 조건이 상수 전위를 정의하는지 여부</translation>
     </message>
     <message>
-      <location filename="../ui/Electromagnetic.ui" line="348"/>
-      <source>Far field approximation assuming spherical symmetry</source>
-      <translation type="unfinished">Far field approximation assuming spherical symmetry</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="351"/>
-      <source>Far field</source>
-      <translation type="unfinished">Far field</translation>
-    </message>
-    <message>
       <location filename="../ui/Electromagnetic.ui" line="361"/>
       <source>Potential constant</source>
       <translation>전위 상수</translation>
@@ -3137,46 +3034,6 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="388"/>
       <source>Normal component of electric displacement field</source>
       <translation>전기 변위장의 법선 성분</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="400"/>
-      <source>To define magnetic flux density</source>
-      <translation type="unfinished">To define magnetic flux density</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="403"/>
-      <source>Magnetic flux density</source>
-      <translation type="unfinished">Magnetic flux density</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="459"/>
-      <source>Real part of magnetic flux density x-component</source>
-      <translation type="unfinished">Real part of magnetic flux density x-component</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="481"/>
-      <source>Imaginary part of magnetic flux density x-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density x-component</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="510"/>
-      <source>Real part of magnetic flux density y-component</source>
-      <translation type="unfinished">Real part of magnetic flux density y-component</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="532"/>
-      <source>Imaginary part of magnetic flux density y-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density y-component</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="561"/>
-      <source>Real part of magnetic flux density z-component</source>
-      <translation type="unfinished">Real part of magnetic flux density z-component</translation>
-    </message>
-    <message>
-      <location filename="../ui/Electromagnetic.ui" line="583"/>
-      <source>Imaginary part of magnetic flux density z-component</source>
-      <translation type="unfinished">Imaginary part of magnetic flux density z-component</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="608"/>
@@ -3194,20 +3051,20 @@ Note: has no effect if a solid was selected</source>
       <translation>스칼라 전위와 자기 벡터 전위를 정의합니다</translation>
     </message>
     <message>
+      <location filename="../ui/Electromagnetic.ui" line="113"/>
+      <location filename="../ui/Electromagnetic.ui" line="432"/>
       <location filename="../ui/CurrentDensity.ui" line="61"/>
       <location filename="../ui/CurrentDensity.ui" line="246"/>
       <location filename="../ui/Magnetization.ui" line="39"/>
-      <location filename="../ui/Electromagnetic.ui" line="113"/>
-      <location filename="../ui/Electromagnetic.ui" line="432"/>
       <source>Real</source>
       <translation>실수부</translation>
     </message>
     <message>
+      <location filename="../ui/Electromagnetic.ui" line="123"/>
+      <location filename="../ui/Electromagnetic.ui" line="442"/>
       <location filename="../ui/CurrentDensity.ui" line="71"/>
       <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/Magnetization.ui" line="49"/>
-      <location filename="../ui/Electromagnetic.ui" line="123"/>
-      <location filename="../ui/Electromagnetic.ui" line="442"/>
       <source>Imaginary</source>
       <translation>허수부</translation>
     </message>
@@ -3220,6 +3077,56 @@ Note: has no effect if a solid was selected</source>
       <location filename="../ui/Electromagnetic.ui" line="162"/>
       <source>Imaginary part of scalar potential</source>
       <translation>스칼라 전위의 허수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="348"/>
+      <source>Far field approximation assuming spherical symmetry</source>
+      <translation>구형 대칭을 가정하는 원거리 근사</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="351"/>
+      <source>Far field</source>
+      <translation>원거리</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="400"/>
+      <source>To define magnetic flux density</source>
+      <translation>자속 밀도를 정의합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="403"/>
+      <source>Magnetic flux density</source>
+      <translation>자속 밀도</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="459"/>
+      <source>Real part of magnetic flux density x-component</source>
+      <translation>자속 밀도 x성분의 실수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="481"/>
+      <source>Imaginary part of magnetic flux density x-component</source>
+      <translation>자속 밀도 x성분의 허수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="510"/>
+      <source>Real part of magnetic flux density y-component</source>
+      <translation>자속 밀도 y성분의 실수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="532"/>
+      <source>Imaginary part of magnetic flux density y-component</source>
+      <translation>자속 밀도 y성분의 허수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="561"/>
+      <source>Real part of magnetic flux density z-component</source>
+      <translation>자속 밀도 z성분의 실수부</translation>
+    </message>
+    <message>
+      <location filename="../ui/Electromagnetic.ui" line="583"/>
+      <source>Imaginary part of magnetic flux density z-component</source>
+      <translation>자속 밀도 z성분의 허수부</translation>
     </message>
     <message>
       <location filename="../ui/Electromagnetic.ui" line="624"/>
@@ -3244,7 +3151,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
       <source>Mesh Boundary Layer Settings</source>
-      <translation>메쉬 경계층 설정</translation>
+      <translation>메시 경계층 설정</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="34"/>
@@ -3264,12 +3171,12 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/MeshGroup.ui" line="14"/>
       <source>Mesh Group</source>
-      <translation>메쉬 그룹</translation>
+      <translation>메시 그룹</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="26"/>
       <source>Identifier Used for Mesh Export</source>
-      <translation>메쉬 내보내기에 사용되는 식별자</translation>
+      <translation>메시 내보내기에 사용되는 식별자</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroup.ui" line="37"/>
@@ -3299,14 +3206,14 @@ Note: has no effect if a solid was selected</source>
       <translation>너비</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <location filename="../ui/ElementGeometry1D.ui" line="48"/>
       <location filename="../ui/ElementGeometry1D.ui" line="74"/>
       <location filename="../ui/ElementGeometry1D.ui" line="111"/>
       <location filename="../ui/ElementGeometry1D.ui" line="148"/>
       <location filename="../ui/ElementGeometry1D.ui" line="174"/>
-      <location filename="../ui/MeshRegion.ui" line="44"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="58"/>
+      <location filename="../ui/MeshRegion.ui" line="44"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="44"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -3319,7 +3226,7 @@ Note: has no effect if a solid was selected</source>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="104"/>
       <source>Diameter</source>
-      <translation>직경</translation>
+      <translation>지름</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
@@ -3327,9 +3234,9 @@ Note: has no effect if a solid was selected</source>
       <translation>외경</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <location filename="../ui/ElementGeometry1D.ui" line="167"/>
       <location filename="../ui/MeshShape.ui" line="109"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="37"/>
       <source>Thickness</source>
       <translation>두께</translation>
     </message>
@@ -3407,14 +3314,14 @@ Note: has no effect if a solid was selected</source>
       <translation>경계에 대한 법선방향</translation>
     </message>
     <message>
+      <location filename="../ui/Electromagnetic.ui" line="14"/>
       <location filename="../ui/CurrentDensity.ui" line="14"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/Magnetization.ui" line="14"/>
-      <location filename="../ui/Electromagnetic.ui" line="14"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/BodyHeatSource.ui" line="14"/>
+      <location filename="../ui/Magnetization.ui" line="14"/>
       <source>Analysis Feature Properties</source>
       <translation>해석 기능 속성</translation>
     </message>
@@ -3506,7 +3413,7 @@ with harmonic/oscillating driving current</source>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="173"/>
       <source>Concentrated</source>
-      <translation type="unfinished">Concentrated</translation>
+      <translation>집중 전하</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="23"/>
@@ -3514,193 +3421,11 @@ with harmonic/oscillating driving current</source>
       <translation>벡터 전류 밀도를 활성화하려면 사용자 지정 모드를 선택하십시오</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="43"/>
-      <location filename="../ui/MeshAdvanced.ui" line="121"/>
-      <location filename="../ui/MeshAdvanced.ui" line="526"/>
-      <location filename="../ui/MeshAdvanced.ui" line="646"/>
-      <location filename="../ui/MeshAdvanced.ui" line="682"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
-      <source>Icon</source>
-      <translation>아이콘</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="56"/>
-      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
-      <translation type="unfinished">Drag the refinement that should be altered into the Manipulate object in the document tree</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="70"/>
-      <source>Type:</source>
-      <translation type="unfinished">Type:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="84"/>
-      <source>Restrict</source>
-      <translation type="unfinished">Restrict</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="89"/>
-      <source>Threshold</source>
-      <translation type="unfinished">Threshold</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="94"/>
-      <location filename="../ui/MeshManipulate.ui" line="609"/>
-      <source>Mean</source>
-      <translation type="unfinished">Mean</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="99"/>
-      <source>Gradient</source>
-      <translation type="unfinished">Gradient</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="104"/>
-      <source>Curvature</source>
-      <translation>곡률</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="109"/>
-      <source>Laplacian</source>
-      <translation type="unfinished">Laplacian</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="138"/>
-      <source>Restrict the application of the child refinement to the selected reference elements.</source>
-      <translation type="unfinished">Restrict the application of the child refinement to the selected reference elements.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="160"/>
-      <location filename="../ui/MeshManipulate.ui" line="173"/>
-      <source>Include the boundary of the selected reference elements</source>
-      <translation type="unfinished">Include the boundary of the selected reference elements</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="163"/>
-      <source>Include boundary</source>
-      <translation type="unfinished">Include boundary</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="209"/>
-      <source>Apply a threshold to the child refinements value</source>
-      <translation type="unfinished">Apply a threshold to the child refinements value</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="236"/>
-      <location filename="../ui/MeshAdvanced.ui" line="210"/>
-      <location filename="../ui/MeshAdvanced.ui" line="399"/>
-      <location filename="../ui/MeshDistance.ui" line="68"/>
-      <source>Mesh size when distance = DistanceMaximum</source>
-      <translation type="unfinished">Mesh size when distance = DistanceMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="283"/>
-      <location filename="../ui/MeshAdvanced.ui" line="179"/>
-      <location filename="../ui/MeshDistance.ui" line="115"/>
-      <source>Distance at which the mesh size will be SizeMaximum</source>
-      <translation type="unfinished">Distance at which the mesh size will be SizeMaximum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="308"/>
-      <source>Output size</source>
-      <translation type="unfinished">Output size</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="346"/>
-      <location filename="../ui/MeshAdvanced.ui" line="337"/>
-      <location filename="../ui/MeshAdvanced.ui" line="430"/>
-      <location filename="../ui/MeshDistance.ui" line="178"/>
-      <source>Mesh size when distance &lt; DistanceMinimum</source>
-      <translation type="unfinished">Mesh size when distance &lt; DistanceMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="365"/>
-      <source>Input value</source>
-      <translation type="unfinished">Input value</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="387"/>
-      <location filename="../ui/MeshAdvanced.ui" line="368"/>
-      <location filename="../ui/MeshDistance.ui" line="219"/>
-      <source>Distance up to which the mesh size will be SizeMinimum</source>
-      <translation type="unfinished">Distance up to which the mesh size will be SizeMinimum</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="434"/>
-      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
-      <location filename="../ui/MeshAdvanced.ui" line="257"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
-      <location filename="../ui/MeshDistance.ui" line="266"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
-      <source>Diagram</source>
-      <translation type="unfinished">Diagram</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="452"/>
-      <source>Linear interpolation</source>
-      <translation type="unfinished">Linear interpolation</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="462"/>
-      <location filename="../ui/MeshDistance.ui" line="326"/>
-      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
-      <translation type="unfinished">Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="472"/>
-      <source>Stop at max input</source>
-      <translation type="unfinished">Stop at max input</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="493"/>
-      <source>Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</source>
-      <translation type="unfinished">Calculates the mean value of child refinement G:
-
-F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="508"/>
-      <location filename="../ui/MeshManipulate.ui" line="617"/>
-      <location filename="../ui/MeshManipulate.ui" line="689"/>
-      <location filename="../ui/MeshManipulate.ui" line="761"/>
-      <source>Delta</source>
-      <translation type="unfinished">Delta</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="527"/>
-      <location filename="../ui/MeshManipulate.ui" line="636"/>
-      <location filename="../ui/MeshManipulate.ui" line="708"/>
-      <location filename="../ui/MeshManipulate.ui" line="780"/>
-      <source>Delta in the aforementioned equation</source>
-      <translation type="unfinished">Delta in the aforementioned equation</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="565"/>
-      <source>Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</source>
-      <translation type="unfinished">Compute the finite difference gradient of child refinement G:
-
-F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
-</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="580"/>
-      <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshManipulate.ui" line="594"/>
-      <location filename="../ui/CurrentDensity.ui" line="78"/>
-      <location filename="../ui/Magnetization.ui" line="56"/>
       <location filename="../ui/Electromagnetic.ui" line="181"/>
       <location filename="../ui/Electromagnetic.ui" line="449"/>
+      <location filename="../ui/CurrentDensity.ui" line="78"/>
+      <location filename="../ui/Magnetization.ui" line="56"/>
+      <location filename="../ui/MeshManipulate.ui" line="594"/>
       <source>X</source>
       <translation>X</translation>
     </message>
@@ -3715,11 +3440,11 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation>전류 밀도 x성분의 허수부</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="599"/>
-      <location filename="../ui/CurrentDensity.ui" line="129"/>
-      <location filename="../ui/Magnetization.ui" line="107"/>
       <location filename="../ui/Electromagnetic.ui" line="234"/>
       <location filename="../ui/Electromagnetic.ui" line="500"/>
+      <location filename="../ui/CurrentDensity.ui" line="129"/>
+      <location filename="../ui/Magnetization.ui" line="107"/>
+      <location filename="../ui/MeshManipulate.ui" line="599"/>
       <source>Y</source>
       <translation>Y</translation>
     </message>
@@ -3734,11 +3459,11 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation>전류 밀도 y성분의 허수부</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="604"/>
-      <location filename="../ui/CurrentDensity.ui" line="180"/>
-      <location filename="../ui/Magnetization.ui" line="158"/>
       <location filename="../ui/Electromagnetic.ui" line="287"/>
       <location filename="../ui/Electromagnetic.ui" line="551"/>
+      <location filename="../ui/CurrentDensity.ui" line="180"/>
+      <location filename="../ui/Magnetization.ui" line="158"/>
+      <location filename="../ui/MeshManipulate.ui" line="604"/>
       <source>Z</source>
       <translation>Z</translation>
     </message>
@@ -3770,7 +3495,7 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
       <source>Mesh Refinement</source>
-      <translation>메쉬 세분화</translation>
+      <translation>메시 세분화</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
@@ -3778,32 +3503,79 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation>최대 요소 크기</translation>
     </message>
     <message>
-      <location filename="../ui/MeshManipulate.ui" line="14"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshPreview.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="14"/>
-      <location filename="../ui/MeshAdvanced.ui" line="14"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
-      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
       <location filename="../ui/PostHistogramIndexAppEdit.ui" line="14"/>
       <location filename="../ui/MeshShape.ui" line="14"/>
-      <location filename="../ui/MeshDistance.ui" line="14"/>
-      <location filename="../ui/MeshPreview.ui" line="14"/>
-      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="14"/>
+      <location filename="../ui/PostLineplotFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="14"/>
+      <location filename="../ui/MeshDistance.ui" line="14"/>
+      <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
+      <location filename="../ui/MeshAdvanced.ui" line="14"/>
+      <location filename="../ui/MeshManipulate.ui" line="14"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
     </message>
     <message>
+      <location filename="../ui/MeshPreview.ui" line="96"/>
+      <location filename="../ui/MeshPreview.ui" line="109"/>
+      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
+      <translation>세분화에서 가장 작은 메시 크기로, 메시 미리보기에서 녹색으로 표시됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="99"/>
+      <source>Min</source>
+      <translation>최소</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="112"/>
+      <source>1.00e+02</source>
+      <translation>1.00e+02</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="138"/>
+      <location filename="../ui/MeshPreview.ui" line="151"/>
+      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
+      <translation>세분화에서 가장 큰 메시 크기로, 메시 미리보기에서 빨간색으로 표시됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="141"/>
+      <source>Max</source>
+      <translation>최대</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="154"/>
+      <source>1.00e+03</source>
+      <translation>1.00e+03</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="184"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;세분화 메시 크기 출력을 시각화합니다. 세분화가 제공하는 메시 크기를 미리보기 메시에 색상으로 표시합니다. 미리보기는 조밀하지 않은 메시에서 세분화를 평가하므로, 메시 크기보다 작은 세부 사항이 보이지 않을 수 있습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="187"/>
+      <source>Visualize</source>
+      <translation>시각화</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreview.ui" line="197"/>
+      <source>…</source>
+      <translation>…</translation>
+    </message>
+    <message>
+      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="34"/>
       <location filename="../ui/MeshAdvanced.ui" line="971"/>
-      <location filename="../ui/PostHistogramIndexAppEdit.ui" line="34"/>
       <source>Field</source>
       <translation>필드</translation>
     </message>
     <message>
-      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
+      <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
       <translation>틀</translation>
     </message>
@@ -3835,47 +3607,21 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
       <translation>각 프레임마다 하나의 Y 필드</translation>
     </message>
     <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
-      <source>Global refinement preview settings:</source>
-      <translation type="unfinished">Global refinement preview settings:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
-      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
-      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
-      <translation type="unfinished">Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
-      <source>Auto enable on open</source>
-      <translation type="unfinished">Auto enable on open</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
-      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
-      <translation type="unfinished">Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
-      <source>Preview mesh fineness</source>
-      <translation type="unfinished">Preview mesh fineness</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="41"/>
       <source>Create a defined number of mesh nodes on edges with a structured algorithm.</source>
-      <translation type="unfinished">Create a defined number of mesh nodes on edges with a structured algorithm.</translation>
+      <translation>구조화된 알고리즘으로 모서리에 지정된 수의 메시 노드를 만듭니다.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="89"/>
       <source>Number of nodes on the edge</source>
-      <translation type="unfinished">Number of nodes on the edge</translation>
+      <translation>모서리의 노드 수</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="111"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="283"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="260"/>
       <source>Progression</source>
-      <translation type="unfinished">Progression</translation>
+      <translation>등비</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="124"/>
@@ -3884,300 +3630,77 @@ F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="137"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="245"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="222"/>
       <source>Nodes</source>
       <translation>노드</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="150"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="273"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="250"/>
       <source>Bump</source>
-      <translation type="unfinished">Bump</translation>
+      <translation>범프</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="163"/>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="268"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="245"/>
       <source>Constant</source>
       <translation>상수</translation>
     </message>
     <message>
+      <location filename="../ui/MeshTransfiniteCurve.ui" line="185"/>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="59"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="91"/>
+      <location filename="../ui/MeshDistance.ui" line="266"/>
+      <location filename="../ui/MeshAdvanced.ui" line="257"/>
+      <location filename="../ui/MeshManipulate.ui" line="434"/>
+      <source>Diagram</source>
+      <translation>다이어그램</translation>
+    </message>
+    <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="195"/>
       <source>Coefficient</source>
-      <translation type="unfinished">Coefficient</translation>
+      <translation>계수</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteCurve.ui" line="217"/>
       <source>Coefficient for bump/progression growth rate</source>
-      <translation type="unfinished">Coefficient for bump/progression growth rate</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="34"/>
-      <source>Type</source>
-      <translation>유형</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="48"/>
-      <source>AttractorAnisoCurve</source>
-      <translation type="unfinished">AttractorAnisoCurve</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="53"/>
-      <source>MathEval</source>
-      <translation type="unfinished">MathEval</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="58"/>
-      <source>MathEvalAniso</source>
-      <translation type="unfinished">MathEvalAniso</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="63"/>
-      <location filename="../ui/MeshAdvanced.ui" line="283"/>
-      <location filename="../ui/MeshDistance.ui" line="197"/>
-      <source>Distance</source>
-      <translation>거리</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="68"/>
-      <location filename="../ui/MeshAdvanced.ui" line="964"/>
-      <source>Result</source>
-      <translation>결과</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="100"/>
-      <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
-      <translation type="unfinished">Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="134"/>
-      <location filename="../ui/MeshAdvanced.ui" line="695"/>
-      <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
-      <translation type="unfinished">Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="315"/>
-      <source>Size Tangent</source>
-      <translation type="unfinished">Size Tangent</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="449"/>
-      <source>Size Normal</source>
-      <translation type="unfinished">Size Normal</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="460"/>
-      <location filename="../ui/MeshAdvanced.ui" line="916"/>
-      <source>Sampling</source>
-      <translation>샘플링</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="505"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="539"/>
-      <location filename="../ui/MeshAdvanced.ui" line="659"/>
-      <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
-      <translation type="unfinished">Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="569"/>
-      <location filename="../ui/MeshAdvanced.ui" line="583"/>
-      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
-
-Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc. Supported opperators are +, -, *, /, ^.
-
-Example: "F2 + Sin(z)"</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="576"/>
-      <location filename="../ui/MeshAdvanced.ui" line="742"/>
-      <location filename="../ui/MeshAdvanced.ui" line="756"/>
-      <location filename="../ui/MeshAdvanced.ui" line="784"/>
-      <location filename="../ui/MeshAdvanced.ui" line="798"/>
-      <location filename="../ui/MeshAdvanced.ui" line="826"/>
-      <location filename="../ui/MeshAdvanced.ui" line="847"/>
-      <source>Mesh size equation</source>
-      <translation type="unfinished">Mesh size equation</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="590"/>
-      <source>EQIcon</source>
-      <translation type="unfinished">EQIcon</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="625"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="728"/>
-      <source>M12</source>
-      <translation type="unfinished">M12</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="735"/>
-      <location filename="../ui/MeshAdvanced.ui" line="749"/>
-      <location filename="../ui/MeshAdvanced.ui" line="777"/>
-      <location filename="../ui/MeshAdvanced.ui" line="791"/>
-      <location filename="../ui/MeshAdvanced.ui" line="819"/>
-      <location filename="../ui/MeshAdvanced.ui" line="840"/>
-      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
-
-Example: "F2 + Sin(z)"</source>
-      <translation type="unfinished">Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
-functions like Sin, Log (upper case). Additionally all child refinements are
-usable via the F variable, e.g. F1, F2 etc.  Supported opperators are +, -, *, /, ^.
-
-Example: "F2 + Sin(z)"</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="763"/>
-      <source>M33</source>
-      <translation type="unfinished">M33</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="770"/>
-      <source>M22</source>
-      <translation type="unfinished">M22</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="805"/>
-      <source>M11</source>
-      <translation type="unfinished">M11</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="812"/>
-      <source>M23</source>
-      <translation type="unfinished">M23</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="833"/>
-      <source>M13</source>
-      <translation type="unfinished">M13</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="904"/>
-      <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
-      <translation type="unfinished">Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshAdvanced.ui" line="952"/>
-      <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
-      <translation type="unfinished">Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
-      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
-      <translation type="unfinished">Creates a structured mesh in a volume guided by its transfinite surfaces.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
-      <source>Select any number of 5- or 6-sided volumes</source>
-      <translation type="unfinished">Select any number of 5- or 6-sided volumes</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
-      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
-      <translation type="unfinished">All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
-      <source>Mixed mesh elements</source>
-      <translation type="unfinished">Mixed mesh elements</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
-      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
-Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
-
-Notes:
-1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works with any number of volumes, either connected or unconnected </translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
-      <source>Auto apply transfinite surfaces and curves</source>
-      <translation type="unfinished">Auto apply transfinite surfaces and curves</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
-      <source>Distribution</source>
-      <translation type="unfinished">Distribution</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
-      <source>Bump Inverted</source>
-      <translation type="unfinished">Bump Inverted</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
-      <source>Progression Inverted</source>
-      <translation type="unfinished">Progression Inverted</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
-      <source>Surface</source>
-      <translation>표면</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
-      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
-      <source>Recombine</source>
-      <translation type="unfinished">Recombine</translation>
+      <translation>범프/등비 성장 비율의 계수</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="38"/>
       <source>Define mesh size inside and outside of the shape, with possible transition layer thickness</source>
-      <translation type="unfinished">Define mesh size inside and outside of the shape, with possible transition layer thickness</translation>
+      <translation>형상 내부 및 외부의 메시 크기를 정의하며, 전이 층 두께를 지정할 수 있습니다</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="54"/>
       <location filename="../ui/MeshShape.ui" line="70"/>
       <source>Mesh size within the shape</source>
-      <translation type="unfinished">Mesh size within the shape</translation>
+      <translation>형상 내부의 메시 크기</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="57"/>
       <source>Size inside</source>
-      <translation type="unfinished">Size inside</translation>
+      <translation>내부 크기</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="80"/>
       <location filename="../ui/MeshShape.ui" line="96"/>
       <source>Mesh size outside of the shape</source>
-      <translation type="unfinished">Mesh size outside of the shape</translation>
+      <translation>형상 외부의 메시 크기</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="83"/>
       <source>Size outside</source>
-      <translation type="unfinished">Size outside</translation>
+      <translation>외부 크기</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="106"/>
       <location filename="../ui/MeshShape.ui" line="122"/>
       <source>Thickness of transition layer between in/out mesh sizes (added outside of the shape)</source>
-      <translation type="unfinished">Thickness of transition layer between in/out mesh sizes (added outside of the shape)</translation>
+      <translation>내부/외부 메시 크기 사이의 전이 층 두께(형상 외부에 추가됨)</translation>
     </message>
     <message>
       <location filename="../ui/MeshShape.ui" line="145"/>
@@ -4195,118 +3718,58 @@ Notes:
       <translation>원통</translation>
     </message>
     <message>
-      <location filename="../ui/MeshDistance.ui" line="41"/>
-      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
-      <translation type="unfinished">Define mesh element size based on the distance to the chosen reference geometries.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="140"/>
-      <source>Size</source>
-      <translation>크기</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="284"/>
-      <source>Interpolation</source>
-      <translation type="unfinished">Interpolation</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="291"/>
-      <source>Sampling size</source>
-      <translation type="unfinished">Sampling size</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="304"/>
-      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
-      <translation type="unfinished">Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshDistance.ui" line="329"/>
-      <source>Linear</source>
-      <translation type="unfinished">Linear</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="96"/>
-      <location filename="../ui/MeshPreview.ui" line="109"/>
-      <source>The smallest mesh size in the refinement, marked green in the mesh preview.</source>
-      <translation type="unfinished">The smallest mesh size in the refinement, marked green in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="99"/>
-      <source>Min:</source>
-      <translation type="unfinished">Min:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="112"/>
-      <source>1.00e+02</source>
-      <translation type="unfinished">1.00e+02</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="138"/>
-      <location filename="../ui/MeshPreview.ui" line="151"/>
-      <source>The largest mesh size in the refinement, marked red in the mesh preview.</source>
-      <translation type="unfinished">The largest mesh size in the refinement, marked red in the mesh preview.</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="141"/>
-      <source>Max:</source>
-      <translation type="unfinished">Max:</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="154"/>
-      <source>1.00e+03</source>
-      <translation type="unfinished">1.00e+03</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="184"/>
-      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Visualizes the refinement mesh size output - it shows the mesh sizes given by the refinement as colors on a preview mesh. Note that the preview evaluates the refinement on a coarse mesh; thus, details smaller than the mesh size may not be visible.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="187"/>
-      <source>Visualize</source>
-      <translation type="unfinished">Visualize</translation>
-    </message>
-    <message>
-      <location filename="../ui/MeshPreview.ui" line="197"/>
-      <source>...</source>
-      <translation type="unfinished">...</translation>
-    </message>
-    <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="95"/>
       <source>Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</source>
-      <translation type="unfinished">Select multiple faces with 3 or 4 edges, optionally with corner vertices of 3-sided faces.</translation>
+      <translation>3개 또는 4개 모서리를 가진 여러 면을 선택하세요. 3변 면의 꼭짓점을 선택할 수도 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="108"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;or&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;또는&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="124"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select a single face with more than 4 edges and additionally select the 3 or 4 corner nodes.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;4개 이상의 모서리를 가진 단일 면을 선택하고, 3개 또는 4개의 꼭짓점 노드를 추가로 선택하세요.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="147"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="150"/>
+      <location filename="../ui/MeshAdvanced.ui" line="121"/>
+      <location filename="../ui/MeshAdvanced.ui" line="526"/>
+      <location filename="../ui/MeshAdvanced.ui" line="646"/>
+      <location filename="../ui/MeshAdvanced.ui" line="682"/>
+      <location filename="../ui/MeshManipulate.ui" line="43"/>
+      <source>Icon</source>
+      <translation>아이콘</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="160"/>
       <source>The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</source>
-      <translation type="unfinished">The opposite edges (or wires between corner points) must have an equal number of mesh nodes. The easiest way to achieve this is with transfinite curves.</translation>
+      <translation>반대쪽 모서리(또는 꼭짓점 사이의 와이어)는 동일한 수의 메시 노드를 가져야 합니다. 이를 달성하는 가장 쉬운 방법은 초한 곡선을 사용하는 것입니다.</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="178"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="201"/>
       <source>Define if the triangles on the surface shall be recombined into quads</source>
-      <translation type="unfinished">Define if the triangles on the surface shall be recombined into quads</translation>
+      <translation>표면의 삼각형을 사각형으로 재결합할지 정의합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="181"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="323"/>
+      <source>Recombine</source>
+      <translation>재결합</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="188"/>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="217"/>
       <source>Define how the triangles are oriented within the transfinite mesh (if not recombined)</source>
-      <translation type="unfinished">Define how the triangles are oriented within the transfinite mesh (if not recombined)</translation>
+      <translation>초한 메시 내에서 삼각형의 방향을 정의합니다(재결합하지 않은 경우)</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="191"/>
       <source>Triangle Orientation</source>
-      <translation type="unfinished">Triangle Orientation</translation>
+      <translation>삼각형 방향</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="227"/>
@@ -4317,18 +3780,458 @@ Notes:
 1. User defined curves propagate to the opposite edges of faces, over all selected faces.
 2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
 3. Works with most faces, either connected or unconnected </source>
-      <translation type="unfinished">If activated, all edges of the selected surfaces that do not have a transfinite curve defined already become transfinite automatically.
-Use strategically placed transfinite curve definitions to guide the automatic algorithm.
+      <translation>활성화하면 선택한 표면에 속하면서 아직 초한 곡선 정의가 없는 모든 모서리가 자동으로 초한이 됩니다.
+전략적으로 배치된 초한 곡선 정의를 사용하여 자동 알고리즘을 안내하세요.
 
-Notes:
-1. User defined curves propagate to the opposite edges of faces, over all selected faces.
-2. Works only for 3- or 4-sided faces. Multi-sided faces need to be done manually.
-3. Works with most faces, either connected or unconnected </translation>
+참고: 
+1. 사용자 정의 곡선은 선택한 모든 면의 반대 모서리로 전파됩니다.
+2. 3변 또는 4변 면에서만 작동합니다. 다변 면은 수동으로 해야 합니다.
+3. 연결 또는 비연결된 대부분의 면에서 작동합니다</translation>
     </message>
     <message>
       <location filename="../ui/MeshTransfiniteSurface.ui" line="236"/>
       <source>Auto apply transfinite curves</source>
-      <translation type="unfinished">Auto apply transfinite curves</translation>
+      <translation>초한 곡선 자동 적용</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="252"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="229"/>
+      <source>Distribution</source>
+      <translation>분포</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="278"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="255"/>
+      <source>Bump Inverted</source>
+      <translation>반전된 범프</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteSurface.ui" line="288"/>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="265"/>
+      <source>Progression Inverted</source>
+      <translation>반전된 등비</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="38"/>
+      <source>Creates a structured mesh in a volume guided by its transfinite surfaces.</source>
+      <translation>초한 표면에 의해 체적 내에 구조화된 메시를 만듭니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="116"/>
+      <source>Select any number of 5- or 6-sided volumes</source>
+      <translation>5면 또는 6면 체적을 원하는 수만큼 선택하십시오</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="163"/>
+      <source>All volume surfaces must be transfinite. If the surfaces have different mesh types (quads vs. triangles) the volume must also be meshed with mixed elements enabled.</source>
+      <translation>모든 체적 표면은 초한이어야 합니다. 표면의 메시 유형이 다른 경우(사각형 vs. 삼각형) 체적도 혼합 요소를 활성화하여 메시해야 합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="183"/>
+      <source>Mixed mesh elements</source>
+      <translation>혼합 메시 요소</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="205"/>
+      <source>If activated, all edges and surfaces belonging to the selected volumes that do not have a transfinite definition already become transfinite automatically.
+Use strategically placed transfinite curve and surface definitions to guide the automatic algorithm.
+
+Notes:
+1. User-defined curves propagate to the opposite edges of faces, over all selected faces.
+2. Works with any number of volumes, either connected or unconnected </source>
+      <translation>활성화하면 선택한 체적에 속하면서 아직 초한 정의가 없는 모든 모서리와 표면이 자동으로 초한이 됩니다.
+전략적으로 배치된 초한 곡선 및 표면 정의를 사용하여 자동 알고리즘을 안내하세요.
+
+참고: 
+1. 사용자 정의 곡선은 선택한 모든 면의 반대 모서리로 전파됩니다.
+2. 연결 또는 비연결 체적에 대해 원하는 수만큼 작동합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="213"/>
+      <source>Auto apply transfinite surfaces and curves</source>
+      <translation>초한 표면 및 곡선 자동 적용</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshTransfiniteVolume.ui" line="304"/>
+      <source>Surface</source>
+      <translation>표면</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="41"/>
+      <source>Define mesh element size based on the distance to the chosen reference geometries.</source>
+      <translation>선택한 참조 형상까지의 거리를 기반으로 메시 요소 크기를 정의합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="68"/>
+      <location filename="../ui/MeshAdvanced.ui" line="210"/>
+      <location filename="../ui/MeshAdvanced.ui" line="399"/>
+      <location filename="../ui/MeshManipulate.ui" line="236"/>
+      <source>Mesh size when distance = DistanceMaximum</source>
+      <translation>거리 = 최대거리일 때의 메시 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="115"/>
+      <location filename="../ui/MeshAdvanced.ui" line="179"/>
+      <location filename="../ui/MeshManipulate.ui" line="283"/>
+      <source>Distance at which the mesh size will be SizeMaximum</source>
+      <translation>메시 크기가 최대 크기가 되는 거리</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="140"/>
+      <source>Size</source>
+      <translation>크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="178"/>
+      <location filename="../ui/MeshAdvanced.ui" line="337"/>
+      <location filename="../ui/MeshAdvanced.ui" line="430"/>
+      <location filename="../ui/MeshManipulate.ui" line="346"/>
+      <source>Mesh size when distance &lt; DistanceMinimum</source>
+      <translation>거리 &lt; 최소거리일 때의 메시 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="197"/>
+      <location filename="../ui/MeshAdvanced.ui" line="63"/>
+      <location filename="../ui/MeshAdvanced.ui" line="283"/>
+      <source>Distance</source>
+      <translation>거리</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="219"/>
+      <location filename="../ui/MeshAdvanced.ui" line="368"/>
+      <location filename="../ui/MeshManipulate.ui" line="387"/>
+      <source>Distance up to which the mesh size will be SizeMinimum</source>
+      <translation>메시 크기가 최소 크기가 되는 최대 거리</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="284"/>
+      <source>Interpolation</source>
+      <translation>보간</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="291"/>
+      <source>Sampling size</source>
+      <translation>샘플링 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="304"/>
+      <source>Number of sampling points used to discretize curves and surfaces. For surfaces, it is the sampling size per direction.</source>
+      <translation>곡선 및 면을 이산화하는 데 사용되는 샘플링 점 수입니다. 면의 경우 방향당 샘플링 크기입니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="326"/>
+      <location filename="../ui/MeshManipulate.ui" line="462"/>
+      <source>Defines if interpolation of mesh size between SizeMinimum and SizeMaximum should be a linear or a sigmoid function</source>
+      <translation>최소 크기와 최대 크기 사이의 메시 크기 보간을 선형 함수 또는 시그모이드 함수로 정의할지 결정합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshDistance.ui" line="329"/>
+      <source>Linear</source>
+      <translation>선형</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="34"/>
+      <location filename="../ui/MeshManipulate.ui" line="70"/>
+      <source>Type</source>
+      <translation>유형</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="48"/>
+      <source>AttractorAnisoCurve</source>
+      <translation>AttractorAnisoCurve</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="53"/>
+      <source>MathEval</source>
+      <translation>MathEval</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="58"/>
+      <source>MathEvalAniso</source>
+      <translation>MathEvalAniso</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="68"/>
+      <location filename="../ui/MeshAdvanced.ui" line="964"/>
+      <source>Result</source>
+      <translation>결과</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="100"/>
+      <source>Compute the distance to the selected reference edges and specify the mesh size independently in the direction normal and parallel to the nearest curve. For efficiency each curve is replaced by a set of Sampling points, to which the distance is actually computed.</source>
+      <translation>선택한 참조 모서리까지의 거리를 계산하고 가장 가까운 곡선에 수직 및 평행한 방향으로 메시 크기를 독립적으로 지정합니다. 효율을 위해 각 곡선은 실제 거리가 계산되는 샘플링 점 집합으로 대체됩니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="134"/>
+      <location filename="../ui/MeshAdvanced.ui" line="695"/>
+      <source>Anisotropic mesh refinements work only with the BAMG (2D) and MMG3D (3D) algorithms</source>
+      <translation>비등방성 메시 세분화는 BAMG(2D) 및 MMG3D(3D) 알고리즘에서만 작동합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="315"/>
+      <source>Size Tangent</source>
+      <translation>접선 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="449"/>
+      <source>Size Normal</source>
+      <translation>법선 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="460"/>
+      <location filename="../ui/MeshAdvanced.ui" line="916"/>
+      <source>Sampling</source>
+      <translation>샘플링</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="505"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the mesh size from a formula based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;좌표(x, y, z) 및 기타 세분화(F1, F2 등)를 기반으로 한 수식에서 메시 크기를 계산합니다&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="539"/>
+      <location filename="../ui/MeshAdvanced.ui" line="659"/>
+      <source>Drag refinements into the advanced mesh object in the tree to make them accessible in the Formula</source>
+      <translation>세분화를 트리의 고급 메시 객체로 드래그하여 수식에서 사용할 수 있도록 하십시오</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="569"/>
+      <location filename="../ui/MeshAdvanced.ui" line="583"/>
+      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc. Supported operators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</source>
+      <translation>3개 좌표 x, y, z(소문자)와 Sin, Log(대문자)와 같은 일반 수학 함수를 사용할 수 있습니다.
+또한 모든 하위 세분화를 F 변수(예: F1, F2 등)로 사용할 수 있습니다.
+지원되는 연산자는 +, -, *, /, ^입니다.
+
+예시: "F2 + Sin(z)"</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="576"/>
+      <location filename="../ui/MeshAdvanced.ui" line="742"/>
+      <location filename="../ui/MeshAdvanced.ui" line="756"/>
+      <location filename="../ui/MeshAdvanced.ui" line="784"/>
+      <location filename="../ui/MeshAdvanced.ui" line="798"/>
+      <location filename="../ui/MeshAdvanced.ui" line="826"/>
+      <location filename="../ui/MeshAdvanced.ui" line="847"/>
+      <source>Mesh size equation</source>
+      <translation>메시 크기 수식</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="590"/>
+      <source>EQIcon</source>
+      <translation>EQIcon</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="625"/>
+      <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Calculate the anisotropic mesh size from multiple formulas based on coordinates (x, y, z) and other refinements (F1, F2, etc.)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;좌표(x, y, z) 및 기타 세분화(F1, F2 등)를 기반으로 한 여러 수식에서 비등방성 메시 크기를 계산합니다&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="728"/>
+      <source>M12</source>
+      <translation>M12</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="735"/>
+      <location filename="../ui/MeshAdvanced.ui" line="749"/>
+      <location filename="../ui/MeshAdvanced.ui" line="777"/>
+      <location filename="../ui/MeshAdvanced.ui" line="791"/>
+      <location filename="../ui/MeshAdvanced.ui" line="819"/>
+      <location filename="../ui/MeshAdvanced.ui" line="840"/>
+      <source>Available are the 3 coordinates x,y,z (lower case) and the usual mathematical
+functions like Sin, Log (upper case). Additionally all child refinements are
+usable via the F variable, e.g. F1, F2 etc.  Supported operators are +, -, *, /, ^.
+
+Example: "F2 + Sin(z)"</source>
+      <translation>3개 좌표 x, y, z(소문자)와 Sin, Log(대문자)와 같은 일반 수학 함수를 사용할 수 있습니다.
+또한 모든 하위 세분화를 F 변수(예: F1, F2 등)로 사용할 수 있습니다.
+지원되는 연산자는 +, -, *, /, ^입니다.
+
+예시: "F2 + Sin(z)"</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="763"/>
+      <source>M33</source>
+      <translation>M33</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="770"/>
+      <source>M22</source>
+      <translation>M22</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="805"/>
+      <source>M11</source>
+      <translation>M11</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="812"/>
+      <source>M23</source>
+      <translation>M23</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="833"/>
+      <source>M13</source>
+      <translation>M13</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="904"/>
+      <source>Compute the distance to the selected reference geometry (vertex, edge and surfaces). For efficiency, curves and surfaces are replaced by a set of points</source>
+      <translation>선택한 참조 지오매트리(꼭짓점, 모서리, 면)까지의 거리를 계산합니다. 효율을 위해 곡선과 면은 점 집합으로 대체됩니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshAdvanced.ui" line="952"/>
+      <source>Uses a data field from a FEM postprocessing pipeline as mesh size. This allows you to adapt the mesh according to the physical behaviour of the result.</source>
+      <translation>FEM 후처리 파이프라인의 데이터 필드를 메시 크기로 사용합니다. 이를 통해 결과의 물리적 거동에 따라 메시를 조정할 수 있습니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="56"/>
+      <source>Drag the refinement that should be altered into the Manipulate object in the document tree</source>
+      <translation>변경할 세분화를 문서 트리의 조작 객체로 드래그하십시오</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="84"/>
+      <source>Restrict</source>
+      <translation>제한</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="89"/>
+      <source>Threshold</source>
+      <translation>임계값</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="94"/>
+      <location filename="../ui/MeshManipulate.ui" line="609"/>
+      <source>Mean</source>
+      <translation>평균</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="99"/>
+      <source>Gradient</source>
+      <translation>구배</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="104"/>
+      <source>Curvature</source>
+      <translation>곡률</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="109"/>
+      <source>Laplacian</source>
+      <translation>라플라시안</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="138"/>
+      <source>Restrict the application of the child refinement to the selected reference elements.</source>
+      <translation>하위 세분화의 적용을 선택한 참조 요소로 제한합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="160"/>
+      <location filename="../ui/MeshManipulate.ui" line="173"/>
+      <source>Include the boundary of the selected reference elements</source>
+      <translation>선택한 참조 요소의 경계를 포함합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="163"/>
+      <source>Include boundary</source>
+      <translation>경계 포함</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="209"/>
+      <source>Apply a threshold to the child refinements value</source>
+      <translation>하위 세분화 값에 임계값을 적용합니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="308"/>
+      <source>Output size</source>
+      <translation>출력 크기</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="365"/>
+      <source>Input value</source>
+      <translation>입력 값</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="452"/>
+      <source>Linear interpolation</source>
+      <translation>선형 보간</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="472"/>
+      <source>Stop at max input</source>
+      <translation>최대 입력에서 정지</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="493"/>
+      <source>Calculates the mean value of child refinement G:
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</source>
+      <translation>하위 세분화 G의 평균값을 계산합니다: 
+
+F = (G(x + delta, y, z) + G(x - delta, y, z) + G(x, y + delta, z) + G(x, y - delta, z) + G(x, y, z + delta) + G(x, y, z - delta) + G(x, y, z)) / 7
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="508"/>
+      <location filename="../ui/MeshManipulate.ui" line="617"/>
+      <location filename="../ui/MeshManipulate.ui" line="689"/>
+      <location filename="../ui/MeshManipulate.ui" line="761"/>
+      <source>Delta</source>
+      <translation>델타</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="527"/>
+      <location filename="../ui/MeshManipulate.ui" line="636"/>
+      <location filename="../ui/MeshManipulate.ui" line="708"/>
+      <location filename="../ui/MeshManipulate.ui" line="780"/>
+      <source>Delta in the aforementioned equation</source>
+      <translation>앞서 언급한 수식의 델타 값</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="565"/>
+      <source>Compute the finite difference gradient of child refinement G:
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</source>
+      <translation>하위 세분화 G의 유한 차분 구배를 계산합니다: 
+
+F = (G(Kind + Delta/2) - G(Kind - Delta/2)) / Delta
+</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshManipulate.ui" line="580"/>
+      <source>Kind</source>
+      <translation>종류</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="26"/>
+      <source>Global refinement preview settings</source>
+      <translation type="unfinished">Global refinement preview settings</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="35"/>
+      <location filename="../ui/MeshPreviewSettings.ui" line="51"/>
+      <source>Automatically enables the visualization of the refinement mesh size when opening a refinement task dialog.</source>
+      <translation>세분화 작업 대화 상자를 열 때 세분화 메시 크기의 시각화를 자동으로 활성화합니다.</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="54"/>
+      <source>Auto enable on open</source>
+      <translation>열 때 자동 활성화</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="80"/>
+      <source>Determines how fine the preview mesh is. Larger number means finer mesh (smaller mesh elements)</source>
+      <translation>미리보기 메시의 세밀도를 결정합니다. 값이 클수록 더 미세한 메시(작은 메시 요소)가 됩니다</translation>
+    </message>
+    <message>
+      <location filename="../ui/MeshPreviewSettings.ui" line="83"/>
+      <source>Preview mesh fineness</source>
+      <translation>미리보기 메시 세밀도</translation>
     </message>
   </context>
   <context>
@@ -4336,7 +4239,7 @@ Notes:
     <message>
       <location filename="../ui/MeshGmsh.ui" line="14"/>
       <source>FEM Mesh by Gmsh</source>
-      <translation>FEM 메쉬 by Gmsh</translation>
+      <translation>FEM 메시 by Gmsh</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="20"/>
@@ -4356,12 +4259,12 @@ Notes:
     <message>
       <location filename="../ui/MeshGmsh.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="80"/>
       <source>Mesh Parameters</source>
-      <translation>메쉬 매개변수</translation>
+      <translation>메시 매개변수</translation>
     </message>
     <message>
       <location filename="../ui/MeshGmsh.ui" line="91"/>
@@ -4446,13 +4349,13 @@ Notes:
     <message>
       <location filename="../../Command.cpp" line="77"/>
       <source>You need to create or activate a Analysis</source>
-      <translation>새로 생성 하거나 해석파일을 지정해서 활성화 해야 합니다.</translation>
+      <translation>해석을 만들거나 활성화해야 합니다</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostObject.cpp" line="899"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="155"/>
       <source>A dialog is already open in the task panel</source>
-      <translation>테스크 패널에 이미 다이얼로그가 열려있습니다.</translation>
+      <translation>테스크 패널에 이미 다이얼로그가 열려있습니다</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemPostObject.cpp" line="900"/>
@@ -4463,7 +4366,7 @@ Notes:
     <message>
       <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="54"/>
       <source>Meshing</source>
-      <translation>메쉬 생성</translation>
+      <translation>메시 생성</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="195"/>
@@ -4602,7 +4505,7 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>폰 미제스 응력</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="83"/>
@@ -4647,7 +4550,7 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="237"/>
       <source>Show</source>
-      <translation>보여주기</translation>
+      <translation>표시</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="300"/>
@@ -4672,12 +4575,12 @@ Notes:
     <message>
       <location filename="../ui/ResultShow.ui" line="512"/>
       <source> Full cycle</source>
-      <translation type="unfinished"> Full cycle</translation>
+      <translation>전체 주기</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="528"/>
       <source>Half cycle</source>
-      <translation type="unfinished">Half cycle</translation>
+      <translation>반 주기</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="542"/>
@@ -4689,7 +4592,7 @@ Notes:
       <source>Runs the equation given in the field below,
 outputs the results to the Min and Max fields
 and colors the result mesh accordingly</source>
-      <translation>아래 필드에 입력된 식을 계산하고 결과를 최소값 및 최대값 필드에 출력하며, 그 결과에 따라 결과 메쉬를 색상으로 표시합니다</translation>
+      <translation>아래 필드에 입력된 식을 계산하고 결과를 최소값 및 최대값 필드에 출력하며, 그 결과에 따라 결과 메시를 색상으로 표시합니다</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="553"/>
@@ -4700,7 +4603,8 @@ and colors the result mesh accordingly</source>
       <location filename="../ui/ResultShow.ui" line="572"/>
       <source>Enter here an equation to be calculated.
 For possible variables, see the description box below.</source>
-      <translation>여기에 계산시킬 수식을 넣으세요. 이용하고 싶은 변수는 밑의 박스에서 찾아보세요</translation>
+      <translation>여기에 계산시킬 수식을 넣으세요.
+이용하고 싶은 변수는 밑의 박스에서 찾아보세요</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="576"/>
@@ -4838,7 +4742,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="91"/>
       <source>Check Mesh</source>
-      <translation>메쉬 검사</translation>
+      <translation>메시 검사</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="98"/>
@@ -4891,7 +4795,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../SphereWidget.ui" line="32"/>
       <source>Center</source>
-      <translation>중심</translation>
+      <translation>가운데</translation>
     </message>
   </context>
   <context>
@@ -4907,7 +4811,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes</source>
-      <translation>메쉬es</translation>
+      <translation>메시es</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
@@ -4940,7 +4844,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation type="unfinished">Box</translation>
+      <translation>상자</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4983,7 +4887,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="59"/>
       <source>Diameter</source>
-      <translation>직경</translation>
+      <translation>지름</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="86"/>
@@ -5008,7 +4912,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="158"/>
       <source>Location</source>
-      <translation>위치: </translation>
+      <translation>위치</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
@@ -5100,43 +5004,53 @@ For possible variables, see the description box below.</source>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
-      <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>형식이 면인 마스터 형상을 선택한 후 추가 또는 제거를 클릭하십시오</translation>
+      <source>Select master geometry of type: Edge, Face; click Add or Remove</source>
+      <translation type="unfinished">Select master geometry of type: Edge, Face; click Add or Remove</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
-      <source>Select slave geometry of type: Face; click Add or Remove</source>
-      <translation>형식이 면인 슬레이브 형상을 선택한 후 추가 또는 제거를 클릭하십시오</translation>
+      <source>Select slave geometry of type: Edge, Face; click Add or Remove</source>
+      <translation type="unfinished">Select slave geometry of type: Edge, Face; click Add or Remove</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="151"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="150"/>
       <source>Parameters</source>
       <translation>매개변수</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="157"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="156"/>
       <source>Contact stiffness</source>
       <translation>접촉 강성</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="180"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="179"/>
       <source>Clearance adjustment</source>
       <translation>간극 조정</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="203"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="202"/>
       <source>Enable friction</source>
       <translation>마찰 활성화</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="210"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="209"/>
       <source>Friction coefficient</source>
       <translation>마찰 계수</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="233"/>
+      <location filename="../../TaskFemConstraintContact.ui" line="232"/>
       <source>Stick slope</source>
       <translation>스틱 기울기</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="255"/>
+      <source>Reverse master</source>
+      <translation type="unfinished">Reverse master</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.ui" line="262"/>
+      <source>Reverse slave</source>
+      <translation type="unfinished">Reverse slave</translation>
     </message>
   </context>
   <context>
@@ -5149,7 +5063,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="41"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 정점, 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 정점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="58"/>
@@ -5236,7 +5150,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 정점, 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 정점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="35"/>
@@ -5264,7 +5178,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="70"/>
       <source>Select geometry of type: Face</source>
-      <translation>형식의 형상을 선택하십시오: 면</translation>
+      <translation>유형의 지오매트리 선택: 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="85"/>
@@ -5320,7 +5234,7 @@ generated by the flow
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>면의 방향은 면의 모서리의 방향 또는 면에 직각방향 벡터에 해당 합니다.</translation>
+      <translation>모서리의 방향 또는 면의 법선 벡터의 방향이 방향으로 사용됩니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="298"/>
@@ -5368,7 +5282,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 정점, 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 정점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="47"/>
@@ -5404,7 +5318,7 @@ normal vector of the face is used as direction</source>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>면의 방향은 면의 모서리의 방향 또는 면에 직각방향 벡터에 해당 합니다.</translation>
+      <translation>모서리의 방향 또는 면의 법선 벡터의 방향이 방향으로 사용됩니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
@@ -5422,7 +5336,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
       <source>Select  geometry of type: Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="35"/>
@@ -5479,7 +5393,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select single geometry of type: Face</source>
-      <translation>형식의 단일 형상을 선택하십시오: 면</translation>
+      <translation>유형의 단일 지오매트리 선택: 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="35"/>
@@ -5497,7 +5411,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select geometry of type: Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="35"/>
@@ -5551,7 +5465,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation>형식의 형상을 선택하십시오: 면</translation>
+      <translation>유형의 지오매트리 선택: 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -5569,7 +5483,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="32"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 정점, 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 정점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="47"/>
@@ -5612,7 +5526,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="44"/>
       <source>Select single geometry of type: Face</source>
-      <translation>형식의 단일 형상을 선택하십시오: 면</translation>
+      <translation>유형의 단일 지오매트리 선택: 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="59"/>
@@ -5742,7 +5656,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="292"/>
       <source>Create Plot</source>
-      <translation>플롯 생성</translation>
+      <translation>플롯 만들기</translation>
     </message>
   </context>
   <context>
@@ -5750,7 +5664,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="17"/>
       <source>Center</source>
-      <translation>가운데</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAtPoint.ui" line="29"/>
@@ -5936,7 +5850,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskTetParameter.ui" line="71"/>
       <source>Fineness</source>
-      <translation>세분도</translation>
+      <translation>세밀도</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="82"/>
@@ -6044,7 +5958,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>&amp;Element Geometry</source>
-      <translation>요소 형상(&amp;E)</translation>
+      <translation>요소 지오매트리(&amp;E)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -6211,7 +6125,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with default solver</source>
-      <translation>기본 해석 메뉴로 해석파일을 생성하세요</translation>
+      <translation>기본 해석 메뉴로 해석파일을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6232,12 +6146,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="558"/>
       <source>FEM Examples</source>
-      <translation>FEM 예제</translation>
+      <translation>FEM 예시</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="559"/>
       <source>Opens the FEM examples</source>
-      <translation>FEM 예제를 엽니다</translation>
+      <translation>FEM 예시를 엽니다</translation>
     </message>
   </context>
   <context>
@@ -6263,7 +6177,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="637"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation>콘크리트와 같은 보강 매트릭스 재질용 재질을 생성합니다</translation>
+      <translation>콘크리트와 같은 보강 매트릭스 재질용 재질을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6271,12 +6185,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="659"/>
       <source>FEM Mesh to Mesh</source>
-      <translation>FEM 메쉬 to 메쉬</translation>
+      <translation>FEM 메시 to 메시</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
-      <translation>FEM 메쉬의 표면을 메쉬로 변환합니다</translation>
+      <translation>FEM 메시의 표면을 메시로 변환합니다</translation>
     </message>
   </context>
   <context>
@@ -6284,12 +6198,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="758"/>
       <source>Display Mesh Info</source>
-      <translation>메쉬 정보 표시</translation>
+      <translation>메시 정보 표시</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="759"/>
       <source>Displays FEM mesh information</source>
-      <translation>FEM 메쉬 정보를 표시합니다</translation>
+      <translation>FEM 메시 정보를 표시합니다</translation>
     </message>
   </context>
   <context>
@@ -6297,12 +6211,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="782"/>
       <source>Mesh From Shape by Gmsh</source>
-      <translation>Gmsh로 형상에서 메쉬 생성</translation>
+      <translation>Gmsh로 형상에서 메시 생성</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="785"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>Gmsh 메셔로 형상에서 FEM 메쉬를 생성합니다</translation>
+      <translation>Gmsh 메셔로 형상에서 FEM 메시를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6310,12 +6224,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="843"/>
       <source>Mesh From Shape by Netgen</source>
-      <translation>Netgen으로 형상에서 메쉬 생성</translation>
+      <translation>Netgen으로 형상에서 메시 생성</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="847"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Netgen 내부 메셔로 솔리드 또는 면 형상에서 FEM 메쉬를 생성합니다</translation>
+      <translation>Netgen 내부 메셔로 솔리드 또는 면 형상에서 FEM 메시를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6328,7 +6242,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1179"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
-      <translation>ccx 도구를 사용하는 표준 FEM CalculiX 솔버를 생성합니다</translation>
+      <translation>ccx 도구를 사용하여 표준 FEM 솔버인 CalculiX를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6354,7 +6268,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1236"/>
       <source>Creates a FEM solver Elmer</source>
-      <translation>FEM Elmer 솔버를 생성합니다</translation>
+      <translation>FEM Elmer 솔버를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6367,7 +6281,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1275"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation>FEM Mystran 솔버를 생성합니다</translation>
+      <translation>FEM Mystran 솔버를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6393,7 +6307,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1308"/>
       <source>Creates a FEM solver Z88</source>
-      <translation>FEM Z88 솔버를 생성합니다</translation>
+      <translation>FEM Z88 솔버를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -6425,7 +6339,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="240"/>
       <source>Elapsed Time:</source>
-      <translation>경과 시간:</translation>
+      <translation>경과 시간: </translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="300"/>
@@ -6473,7 +6387,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="162"/>
       <source>To add references: select them in the 3D view and click "Add".</source>
-      <translation>참조를 추가하려면 3D 보기에서 선택한 뒤 "추가"를 클릭하십시오.</translation>
+      <translation>참조를 추가하려면 3D 보기에서 선택한 뒤 "추가"를 클릭하세요.</translation>
     </message>
   </context>
   <context>
@@ -6504,12 +6418,12 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="304"/>
       <source>Select geometry of type: {}{}{}</source>
-      <translation>형식의 형상을 선택하십시오: {}{}{}</translation>
+      <translation>유형의 지오매트리 선택: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="333"/>
       <source>Click and select geometric elements to add them to the list.{}The following geometry elements can be selected: {}{}{}</source>
-      <translation>목록에 추가할 기하 요소를 클릭하여 선택하십시오.{}다음 형상 요소를 선택할 수 있습니다: {}{}{}</translation>
+      <translation>목록에 추가할 기하 요소를 클릭하여 선택하세요.{}다음 지오매트리 요소를 선택할 수 있습니다: {}{}{}</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="336"/>
@@ -6524,7 +6438,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="297"/>
       <source>Geometry Reference Selector</source>
-      <translation>형상 참조 선택기</translation>
+      <translation>지오매트리 참조 선택기</translation>
     </message>
     <message>
       <location filename="../../../femguiutils/selection_widgets.py" line="314"/>
@@ -6562,7 +6476,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="362"/>
       <source>von Mises stress</source>
-      <translation type="unfinished">von Mises stress</translation>
+      <translation>폰 미제스 응력</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="374"/>
@@ -6604,26 +6518,26 @@ normal vector of the face is used as direction</source>
       <source>No histogram available.
 Please select a result type first.</source>
       <translation>사용 가능한 히스토그램이 없습니다.
-먼저 결과 유형을 선택하십시오.</translation>
+먼저 결과 유형을 선택하세요.</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="617"/>
       <source>Histogram of {}</source>
       <translation>히스토그램 of {}</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="619"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="618"/>
       <source>Nodes</source>
       <translation>노드</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="770"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="769"/>
       <source>Result mesh is empty</source>
-      <translation>결과 메쉬가 비어 있습니다</translation>
+      <translation>결과 메시가 비어 있습니다</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="784"/>
-      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="793"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="783"/>
+      <location filename="../../../femtaskpanels/task_result_mechanical.py" line="792"/>
       <source>No result object</source>
       <translation>No 결과 객체</translation>
     </message>
@@ -6635,7 +6549,7 @@ Correct module found in:
 {}</source>
       <translation>
 
-올바른 모듈을 다음 위치에서 찾았습니다:
+올바른 모듈을 다음 위치에서 찾았습니다: 
 {}</translation>
     </message>
     <message>
@@ -6704,12 +6618,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="530"/>
       <source>Data used in:</source>
-      <translation>다음에 사용되는 데이터:</translation>
+      <translation>다음에 사용되는 데이터: </translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="532"/>
       <source>Data used from:</source>
-      <translation>다음에서 사용할 데이터:</translation>
+      <translation>다음에서 사용할 데이터: </translation>
     </message>
     <message>
       <location filename="../../../femguiutils/extract_link_view.py" line="541"/>
@@ -6803,14 +6717,14 @@ No matching module was found in the current Python path.</source>
       <translation>{} 편집</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="56"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="56"/>
       <source>Show Plot</source>
       <translation>플롯 표시</translation>
     </message>
     <message>
-      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <location filename="../../../femtaskpanels/task_post_lineplot.py" line="59"/>
+      <location filename="../../../femtaskpanels/task_post_histogram.py" line="59"/>
       <source>Show Data</source>
       <translation>데이터 표시</translation>
     </message>
@@ -6837,12 +6751,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="54"/>
       <source>Show Table</source>
-      <translation>표 표시</translation>
+      <translation>테이블 표시</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_post_table.py" line="64"/>
       <source>Table Data</source>
-      <translation>표 데이터</translation>
+      <translation>테이블 데이터</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_lineplot.py" line="283"/>
@@ -6957,12 +6871,17 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="188"/>
       <source>The name used in the table header. Default name is used if empty</source>
-      <translation>표 머리글에 사용할 이름입니다. 비어 있으면 기본 이름을 사용합니다</translation>
+      <translation>테이블 머리글에 사용할 이름입니다. 비어 있으면 기본 이름을 사용합니다</translation>
     </message>
     <message>
       <location filename="../../../femviewprovider/view_post_table.py" line="209"/>
       <source>default</source>
       <translation>기본값</translation>
+    </message>
+    <message>
+      <location filename="../../../femtaskpanels/base_femlogtaskpanel.py" line="243"/>
+      <source>Run</source>
+      <translation>실행</translation>
     </message>
   </context>
   <context>
@@ -7042,19 +6961,19 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2552"/>
+      <location filename="../../Command.cpp" line="2555"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2553"/>
+      <location filename="../../Command.cpp" line="2556"/>
       <source>Contours Filter</source>
       <translation>등고선 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2554"/>
-      <source>Define/create a contours filter which displays iso contours</source>
-      <translation>등치선을 표시하는 등고선 필터를 정의/생성합니다</translation>
+      <location filename="../../Command.cpp" line="2557"/>
+      <source>Defines a contours filter that displays iso contours</source>
+      <translation type="unfinished">Defines a contours filter that displays iso contours</translation>
     </message>
   </context>
   <context>
@@ -7062,7 +6981,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
       <source>Center</source>
-      <translation>가운데</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="44"/>
@@ -7100,7 +7019,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../CylinderWidget.ui" line="32"/>
       <source>Center</source>
-      <translation>가운데</translation>
+      <translation>중심</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="38"/>
@@ -7159,7 +7078,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Creates a body heat source</source>
-      <translation>바디 열원을 생성합니다</translation>
+      <translation>바디 열원을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7172,7 +7091,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="222"/>
       <source>Creates a centrifugal load</source>
-      <translation>원심 하중을 생성합니다</translation>
+      <translation>원심 하중을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7185,7 +7104,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="239"/>
       <source>Creates a current density boundary condition</source>
-      <translation>전류 밀도 경계 조건을 생성합니다</translation>
+      <translation>전류 밀도 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7198,7 +7117,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="287"/>
       <source>Creates a flow velocity boundary condition</source>
-      <translation>유동 속도 경계 조건을 생성합니다</translation>
+      <translation>유동 속도 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7211,7 +7130,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="318"/>
       <source>Creates an initial pressure condition</source>
-      <translation>초기 압력 조건을 생성합니다</translation>
+      <translation>초기 압력 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7224,7 +7143,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Creates a magnetization boundary condition</source>
-      <translation>자화 경계 조건을 생성합니다</translation>
+      <translation>자화 경계 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7237,7 +7156,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Creates a section print feature</source>
-      <translation>단면 출력 기능을 생성합니다</translation>
+      <translation>단면 출력 기능을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7250,7 +7169,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Creates a gravity load</source>
-      <translation>중력 하중을 생성합니다</translation>
+      <translation>중력 하중을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7263,7 +7182,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="368"/>
       <source>Creates a tie constraint</source>
-      <translation>타이 구속을 생성합니다</translation>
+      <translation>타이 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7271,12 +7190,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="897"/>
       <source>Mesh Refinement</source>
-      <translation>메쉬 세분화</translation>
+      <translation>메시 세분화</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="898"/>
       <source>Creates a FEM mesh refinement</source>
-      <translation>FEM 메쉬 세분화를 생성합니다</translation>
+      <translation>FEM 메시 세분화를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7289,7 +7208,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="20"/>
       <source>Select geometry of type: Vertex, Edge, Face</source>
-      <translation>형식의 형상을 선택하십시오: 정점, 모서리, 면</translation>
+      <translation>유형의 지오매트리 선택: 정점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="35"/>
@@ -7367,7 +7286,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
       <source>Angle</source>
-      <translation>각</translation>
+      <translation>각도</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="531"/>
@@ -7390,7 +7309,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="475"/>
       <source>Creates a rigid body constraint for a geometric entity</source>
-      <translation>형상 엔티티에 대한 강체 구속을 생성합니다</translation>
+      <translation>형상 엔티티에 대한 강체 구속을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7398,22 +7317,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Select geometry of type: </source>
-      <translation>형식의 형상을 선택하십시오: </translation>
+      <translation>유형의 지오매트리 선택: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Vertex, Edge, Face</source>
-      <translation>정점, 모서리, 면</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="319"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="361"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
-      <source>Selection error</source>
-      <translation>선택 오류</translation>
+      <translation>꼭짓점, 모서리, 면</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
@@ -7422,28 +7331,30 @@ No matching module was found in the current Python path.</source>
       <translation>선택된 항목이 없습니다!</translation>
     </message>
     <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="319"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
+      <source>Selection Error</source>
+      <translation>선택 오류</translation>
+    </message>
+    <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="311"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selected object is not a part!</source>
-      <translation>선택한 객체는 부품이 아닙니다!</translation>
+      <translation>선택한 대상체는 부품이 아닙니다!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="320"/>
       <source>External object selection is not supported</source>
-      <translation>외부 객체 선택은 지원되지 않습니다</translation>
+      <translation>외부 대상체 선택은 지원되지 않습니다</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="357"/>
       <source>Only one type of selection (vertex, face or edge) per constraint allowed!</source>
       <translation>각 구속마다 하나의 선택 유형(정점, 면 또는 모서리)만 허용됩니다!</translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
-    <message>
-      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
-      <source>Input error</source>
-      <translation>입력 오류</translation>
     </message>
   </context>
   <context>
@@ -7466,12 +7377,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="56"/>
       <source>Delete new meshes</source>
-      <translation>새 메쉬 삭제</translation>
+      <translation>새 메시 삭제</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="77"/>
       <source>Copy result mesh</source>
-      <translation>결과 메쉬 복사</translation>
+      <translation>결과 메시 복사</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.ui" line="49"/>
@@ -7492,23 +7403,23 @@ No matching module was found in the current Python path.</source>
       <translation>요소 지우기</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="241"/>
-      <location filename="../../TaskCreateElementSet.cpp" line="252"/>
+      <location filename="../../Command.cpp" line="1479"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="244"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="255"/>
       <location filename="../../TaskCreateElementSet.cpp" line="515"/>
       <location filename="../../TaskCreateElementSet.cpp" line="612"/>
-      <location filename="../../Command.cpp" line="1479"/>
       <source>Wrong selection</source>
       <translation>잘못된 선택</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="242"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="245"/>
       <source>Cannot copy ResultMesh to ResultMesh</source>
       <translation>ResultMesh를 ResultMesh로 복사할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../../TaskCreateElementSet.cpp" line="253"/>
+      <location filename="../../TaskCreateElementSet.cpp" line="256"/>
       <source>Mesh must be a ResultMesh</source>
-      <translation>메쉬는 ResultMesh여야 합니다</translation>
+      <translation>메시는 ResultMesh여야 합니다</translation>
     </message>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="613"/>
@@ -7525,7 +7436,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskCreateElementSet.cpp" line="813"/>
       <source>All Elements Erased - no mesh generated.</source>
-      <translation>모든 요소가 지워져 메쉬가 생성되지 않았습니다.</translation>
+      <translation>모든 요소가 지워져 메시가 생성되지 않았습니다.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1433"/>
@@ -7535,7 +7446,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1435"/>
       <source>Creates a FEM mesh elements set</source>
-      <translation>FEM 메쉬 요소 세트를 생성합니다</translation>
+      <translation>FEM 메시 요소 세트를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7561,7 +7472,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../Command.cpp" line="1381"/>
       <source>Creates a collection of elements selected by a polygon</source>
-      <translation>다각형으로 선택한 요소 모음을 생성합니다</translation>
+      <translation>다각형으로 선택한 요소 모음을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7569,7 +7480,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="14"/>
       <source>FEM Mesh by Netgen</source>
-      <translation>FEM 메쉬 by Netgen</translation>
+      <translation>FEM 메시 by Netgen</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="20"/>
@@ -7589,12 +7500,12 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="80"/>
       <source>Mesh Parameters</source>
-      <translation>메쉬 매개변수</translation>
+      <translation>메시 매개변수</translation>
     </message>
     <message>
       <location filename="../ui/MeshNetgen.ui" line="91"/>
@@ -7674,8 +7585,8 @@ No matching module was found in the current Python path.</source>
       <location filename="../ui/DlgSettingsNetgen.ui" line="85"/>
       <source>Python executable for which Netgen Python bindings are installed.
 Leave blank to use default Python executable</source>
-      <translation>Netgen Python 바인딩이 설치된 Python 실행 파일입니다.
-비워 두면 기본 Python 실행 파일을 사용합니다</translation>
+      <translation>Netgen Python 바인딩이 설치된 Python 실행파일입니다.
+비워 두면 기본 Python 실행파일을 사용합니다</translation>
     </message>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="102"/>
@@ -7700,7 +7611,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/DlgSettingsNetgen.ui" line="146"/>
       <source>Number of threads used for meshing</source>
-      <translation>메쉬 생성에 사용할 스레드 수</translation>
+      <translation>메시 생성에 사용할 스레드 수</translation>
     </message>
   </context>
   <context>
@@ -7713,7 +7624,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1198"/>
       <source>Creates a FEM solver CalculiX</source>
-      <translation>FEM CalculiX 솔버를 생성합니다</translation>
+      <translation>FEM CalculiX 솔버를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -7764,7 +7675,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostBranch.ui" line="34"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filter will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;자식 필터가 받을 입력을 선택합니다:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;직렬:&lt;/span&gt; 브랜치의 첫 번째 필터는 브랜치 입력을 자신의 입력으로 받습니다. 다음 필터는 이전 필터의 출력을 입력으로 받고, 이런 식으로 계속됩니다.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;병렬:&lt;/span&gt; 브랜치의 모든 필터는 브랜치 입력을 각자의 입력으로 받습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;자식 필터가 받을 입력을 선택합니다: &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;직렬: &lt;/span&gt; 브랜치의 첫 번째 필터는 브랜치 입력을 자신의 입력으로 받습니다. 다음 필터는 이전 필터의 출력을 입력으로 받고, 이런 식으로 계속됩니다.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;병렬: &lt;/span&gt; 브랜치의 모든 필터는 브랜치 입력을 각자의 입력으로 받습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
@@ -7774,7 +7685,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the input, the child filters will receive:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Serial:&lt;/span&gt; The first filter in the branch will get the Branches input as its own input. The next filter will then receive the firsts filters output as input, and so on.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Parallel: &lt;/span&gt;All filter in the branch will receive the Branches input as their own input. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;자식 필터들이 받을 입력을 선택합니다:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;직렬:&lt;/span&gt; 브랜치의 첫 번째 필터는 브랜치 입력을 자신의 입력으로 받습니다. 다음 필터는 이전 필터의 출력을 입력으로 받고, 이런 식으로 계속됩니다.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;병렬:&lt;/span&gt; 브랜치의 모든 필터는 브랜치 입력을 각자의 입력으로 받습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;자식 필터들이 받을 입력을 선택합니다: &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;직렬: &lt;/span&gt; 브랜치의 첫 번째 필터는 브랜치 입력을 자신의 입력으로 받습니다. 다음 필터는 이전 필터의 출력을 입력으로 받고, 이런 식으로 계속됩니다.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;병렬: &lt;/span&gt; 브랜치의 모든 필터는 브랜치 입력을 각자의 입력으로 받습니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="54"/>
@@ -7790,7 +7701,7 @@ Leave blank to use default Python executable</source>
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;브랜치 출력이 어떻게 결정되는지 선택합니다:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;통과:&lt;/span&gt; 브랜치의 자식 필터가 무엇을 하든 브랜치 출력은 입력과 동일합니다.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;추가:&lt;/span&gt; 브랜치 출력은 모든 자식 필터의 모음입니다. 자식 출력들을 함께 추가하여 브랜치 출력으로 제공합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;브랜치 출력이 어떻게 결정되는지 선택합니다: &lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;통과: &lt;/span&gt; 브랜치의 자식 필터가 무엇을 하든 브랜치 출력은 입력과 동일합니다.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight: 600;"&gt;추가: &lt;/span&gt; 브랜치 출력은 모든 자식 필터의 모음입니다. 자식 출력들을 함께 추가하여 브랜치 출력으로 제공합니다.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
@@ -7833,7 +7744,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostFrames.ui" line="89"/>
       <source>Value</source>
-      <translation>보기</translation>
+      <translation>값</translation>
     </message>
   </context>
   <context>
@@ -7876,7 +7787,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
     </message>
     <message>
       <location filename="../ui/SolverCalculiX.ui" line="129"/>
@@ -7905,9 +7816,9 @@ Leave blank to use default Python executable</source>
   <context>
     <name>TaskPostGlyph</name>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostGlyph.ui" line="22"/>
       <location filename="../ui/TaskPostGlyph.ui" line="38"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
       <translation>글리프의 형태</translation>
@@ -7948,10 +7859,10 @@ Leave blank to use default Python executable</source>
       <translation>구</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
-      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostHistogram.ui" line="66"/>
       <location filename="../ui/TaskPostHistogram.ui" line="82"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="75"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="91"/>
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
@@ -7963,9 +7874,9 @@ Leave blank to use default Python executable</source>
       <translation>방향</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostGlyph.ui" line="95"/>
       <location filename="../ui/TaskPostGlyph.ui" line="148"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="86"/>
       <location filename="../ui/TaskPostLineplot.ui" line="101"/>
       <source>None</source>
       <translation>없음</translation>
@@ -7987,9 +7898,9 @@ Leave blank to use default Python executable</source>
       <translation>자료</translation>
     </message>
     <message>
+      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostGlyph.ui" line="158"/>
       <location filename="../ui/TaskPostGlyph.ui" line="176"/>
-      <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
       <translation>글리프 크기 조정에 사용할 상수 배율</translation>
@@ -8005,8 +7916,8 @@ Leave blank to use default Python executable</source>
       <translation>설정된 배율의 ±50%만큼 배율을 변경합니다</translation>
     </message>
     <message>
-      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
+      <location filename="../ui/TaskPostGlyph.ui" line="226"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
       <translation>스케일 데이터가 벡터인 경우 이 속성은 글리프를 벡터 크기로 스케일할지 개별 구성 요소별로 스케일할지 결정합니다</translation>
@@ -8109,7 +8020,7 @@ Leave blank to use default Python executable</source>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
       <source>Show</source>
-      <translation>보여주기</translation>
+      <translation>표시</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
@@ -8168,35 +8079,35 @@ Leave blank to use default Python executable</source>
   <context>
     <name>CmdFemPostCalculatorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2589"/>
+      <location filename="../../Command.cpp" line="2592"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2590"/>
+      <location filename="../../Command.cpp" line="2593"/>
       <source>Calculator Filter</source>
       <translation>계산기 필터</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2591"/>
+      <location filename="../../Command.cpp" line="2594"/>
       <source>Creates a new field from current data</source>
-      <translation>현재 데이터에서 새 필드를 생성합니다</translation>
+      <translation>현재 데이터에서 새 필드를 만듭니다</translation>
     </message>
   </context>
   <context>
     <name>CmdFemPostBranchFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="3031"/>
+      <location filename="../../Command.cpp" line="3034"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3032"/>
+      <location filename="../../Command.cpp" line="3035"/>
       <source>Pipeline Branch</source>
       <translation>파이프라인 분기</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="3033"/>
+      <location filename="../../Command.cpp" line="3036"/>
       <source>Branches the pipeline into a new path</source>
       <translation>파이프라인을 새 경로로 분기합니다</translation>
     </message>
@@ -8240,7 +8151,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="196"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
-      <translation>표준값을 덮어쓸 진공 유전율 상수를 생성합니다</translation>
+      <translation>표준값을 덮어쓸 진공 유전율 상수를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8253,7 +8164,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="255"/>
       <source>Creates an electric charge density</source>
-      <translation>전하 밀도를 생성합니다</translation>
+      <translation>전하 밀도를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8266,7 +8177,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="303"/>
       <source>Creates an initial flow velocity condition</source>
-      <translation>초기 유동 속도 조건을 생성합니다</translation>
+      <translation>초기 유동 속도 조건을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8279,7 +8190,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="381"/>
       <source>Creates a fluid section for 1D flow</source>
-      <translation>1D 유동용 유체 단면을 생성합니다</translation>
+      <translation>1D 유동용 유체 단면을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8292,7 +8203,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Creates a beam cross section</source>
-      <translation>빔 단면을 생성합니다</translation>
+      <translation>빔 단면을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8305,7 +8216,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="405"/>
       <source>Creates a shell plate thickness</source>
-      <translation>셸 판 두께를 생성합니다</translation>
+      <translation>셸 판 두께를 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8318,7 +8229,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="416"/>
       <source>Creates a beam rotation</source>
-      <translation>빔 회전을 생성합니다</translation>
+      <translation>빔 회전을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8331,7 +8242,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="430"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
-      <translation>변형(비선형 탄성) 방정식을 생성합니다</translation>
+      <translation>변형(비선형 탄성) 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8344,7 +8255,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Creates an equation for elasticity (stress)</source>
-      <translation>탄성(응력) 방정식을 생성합니다</translation>
+      <translation>탄성(응력) 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8357,7 +8268,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="456"/>
       <source>Creates an equation for electric forces</source>
-      <translation>전기력 방정식을 생성합니다</translation>
+      <translation>전기력 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8370,7 +8281,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="469"/>
       <source>Creates an equation for electrostatic</source>
-      <translation>정전기 방정식을 생성합니다</translation>
+      <translation>정전기 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8383,7 +8294,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="480"/>
       <source>Creates an equation for flow</source>
-      <translation>유동 방정식을 생성합니다</translation>
+      <translation>유동 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8396,7 +8307,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="491"/>
       <source>Creates an equation for flux</source>
-      <translation>플럭스 방정식을 생성합니다</translation>
+      <translation>플럭스 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8409,7 +8320,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="502"/>
       <source>Creates an equation for heat</source>
-      <translation>열 방정식을 생성합니다</translation>
+      <translation>열 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8422,7 +8333,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="518"/>
       <source>Creates an equation for magnetodynamic forces</source>
-      <translation>전자기 동역학 힘 방정식을 생성합니다</translation>
+      <translation>전자기 동역학 힘 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8435,7 +8346,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="534"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
-      <translation>2D 전자기 동역학 힘 방정식을 생성합니다</translation>
+      <translation>2D 전자기 동역학 힘 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8448,7 +8359,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="547"/>
       <source>Creates an equation for static current</source>
-      <translation>정전류 방정식을 생성합니다</translation>
+      <translation>정전류 방정식을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8461,7 +8372,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="590"/>
       <source>Creates a fluid material</source>
-      <translation>유체 재질을 생성합니다</translation>
+      <translation>유체 재질을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8474,7 +8385,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="606"/>
       <source>Add non-linear mechanical properties to material</source>
-      <translation type="unfinished">Add non-linear mechanical properties to material</translation>
+      <translation>재료에 비선형 기계적 특성을 추가합니다</translation>
     </message>
   </context>
   <context>
@@ -8487,7 +8398,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="649"/>
       <source>Creates a solid material</source>
-      <translation>고체 재질을 생성합니다</translation>
+      <translation>고체 재질을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8495,12 +8406,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="715"/>
       <source>Clear FEM Mesh</source>
-      <translation>FEM 메쉬 지우기</translation>
+      <translation>FEM 메시 지우기</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="716"/>
       <source>Clears the mesh of a FEM mesh object</source>
-      <translation>FEM 메쉬 객체의 메쉬를 지웁니다</translation>
+      <translation>FEM 메시 객체의 메시를 지웁니다</translation>
     </message>
   </context>
   <context>
@@ -8508,12 +8419,12 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="832"/>
       <source>Mesh Group</source>
-      <translation>메쉬 그룹</translation>
+      <translation>메시 그룹</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="833"/>
       <source>Creates a mesh group</source>
-      <translation>메쉬 그룹을 생성합니다</translation>
+      <translation>메시 그룹을 만듭니다</translation>
     </message>
   </context>
   <context>
@@ -8552,7 +8463,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../femcommands/commands.py" line="1349"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
-      <translation>정점 데이터 시각화를 위해 메쉬 정점에 글리프를 추가하는 후처리 필터를 추가합니다</translation>
+      <translation>정점 데이터 시각화를 위해 메시 정점에 글리프를 추가하는 후처리 필터를 추가합니다</translation>
     </message>
   </context>
   <context>
@@ -8588,15 +8499,15 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../TaskPostExtraction.ui" line="107"/>
       <source>Create and add</source>
-      <translation>생성 후 추가</translation>
+      <translation>만들기 후 추가</translation>
     </message>
   </context>
   <context>
     <name>PostHistogramEdit</name>
     <message>
       <location filename="../ui/PostHistogramFieldViewEdit.ui" line="14"/>
-      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <location filename="../ui/PostLineplotFieldViewEdit.ui" line="14"/>
+      <location filename="../ui/PostTableFieldViewEdit.ui" line="14"/>
       <source>Form</source>
       <translation>양식</translation>
     </message>
@@ -8759,7 +8670,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../fempreferencepages/dlg_settings_netgen.py" line="84"/>
       <source>Executable '{}' not found</source>
-      <translation>실행 파일 '{}'을 찾을 수 없습니다</translation>
+      <translation>실행파일 '{}'을 찾을 수 없습니다</translation>
     </message>
   </context>
   <context>
@@ -8775,188 +8686,42 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../../../Init.py" line="62"/>
       <source>FEM mesh Python</source>
-      <translation type="unfinished">FEM mesh Python</translation>
+      <translation>FEM 메시 Python</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="66"/>
       <source>FEM mesh TetGen</source>
-      <translation type="unfinished">FEM mesh TetGen</translation>
+      <translation>FEM 메시 TetGen</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="75"/>
       <source>FEM mesh formats</source>
-      <translation type="unfinished">FEM mesh formats</translation>
+      <translation>FEM 메시 형식</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="81"/>
       <source>FEM mesh Nastran</source>
-      <translation type="unfinished">FEM mesh Nastran</translation>
+      <translation>FEM 메시 Nastran</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="88"/>
       <source>FEM mesh Fenics</source>
-      <translation type="unfinished">FEM mesh Fenics</translation>
+      <translation>FEM 메시 Fenics</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="96"/>
       <source>FEM mesh YAML/JSON</source>
-      <translation type="unfinished">FEM mesh YAML/JSON</translation>
+      <translation>FEM 메시 YAML/JSON</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="103"/>
       <source>FEM mesh Z88</source>
-      <translation type="unfinished">FEM mesh Z88</translation>
+      <translation>FEM 메시 Z88</translation>
     </message>
     <message>
       <location filename="../../../Init.py" line="114"/>
       <source>FEM result VTK</source>
-      <translation type="unfinished">FEM result VTK</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintElectromagnetic</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="268"/>
-      <source>Electromagnetic Boundary Condition</source>
-      <translation type="unfinished">Electromagnetic Boundary Condition</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="272"/>
-      <source>Creates an electromagnetic boundary condition</source>
-      <translation type="unfinished">Creates an electromagnetic boundary condition</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshBoundaryLayer</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="701"/>
-      <source>2D Boundary Layer</source>
-      <translation type="unfinished">2D Boundary Layer</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="705"/>
-      <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
-      <translation type="unfinished">Adds a structured layer of mesh elements on 2D model boundaries</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshClearGroups</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="735"/>
-      <source>Clear Mesh Groups</source>
-      <translation type="unfinished">Clear Mesh Groups</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="736"/>
-      <source>Remove groups from FEM mesh</source>
-      <translation type="unfinished">Remove groups from FEM mesh</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshDistance</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="908"/>
-      <source>Distance-Based Refinement</source>
-      <translation type="unfinished">Distance-Based Refinement</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="911"/>
-      <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
-      <translation type="unfinished">Sets mesh size based on the distance to vertices, edges, and faces</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshManipulate</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="921"/>
-      <source>Manipulate Refinement</source>
-      <translation type="unfinished">Manipulate Refinement</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="924"/>
-      <source>Allows to manipulate the output of a refinement in various ways</source>
-      <translation type="unfinished">Allows to manipulate the output of a refinement in various ways</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshAdvanced</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="934"/>
-      <source>Advanced Refinement Types</source>
-      <translation type="unfinished">Advanced Refinement Types</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="937"/>
-      <source>Allows to define the mesh size by various advanced means</source>
-      <translation type="unfinished">Allows to define the mesh size by various advanced means</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshShape</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="947"/>
-      <source>Shape-Based Refinement</source>
-      <translation type="unfinished">Shape-Based Refinement</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshSphere</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="951"/>
-      <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
-      <translation type="unfinished">Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshTransfiniteCurve</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="963"/>
-      <source>Structured Transfinite Curve</source>
-      <translation type="unfinished">Structured Transfinite Curve</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="967"/>
-      <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
-      <translation type="unfinished">Creates a fixed number of nodes on an edge with a structured algorithm</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshTransfiniteSurface</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="979"/>
-      <source>Structured Transfinite Surface</source>
-      <translation type="unfinished">Structured Transfinite Surface</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="982"/>
-      <source>Creates a structured mesh on a face</source>
-      <translation type="unfinished">Creates a structured mesh on a face</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_MeshTransfiniteVolume</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="994"/>
-      <source>Structured Transfinite Volume</source>
-      <translation type="unfinished">Structured Transfinite Volume</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="998"/>
-      <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
-      <translation type="unfinished">Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_CompSolvers</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1358"/>
-      <source>Solvers</source>
-      <translation type="unfinished">Solvers</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1359"/>
-      <source>Creates a FEM solver</source>
-      <translation type="unfinished">Creates a FEM solver</translation>
+      <translation>FEM 결과 VTK</translation>
     </message>
   </context>
   <context>
@@ -8964,7 +8729,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverZ88.ui" line="14"/>
       <source>Solver Z88 Control</source>
-      <translation type="unfinished">Solver Z88 Control</translation>
+      <translation>솔버 Z88 제어</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="20"/>
@@ -8984,7 +8749,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverZ88.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="74"/>
@@ -8994,7 +8759,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverZ88.ui" line="82"/>
       <source>Solver type</source>
-      <translation type="unfinished">Solver type</translation>
+      <translation>솔버 유형</translation>
     </message>
     <message>
       <location filename="../ui/SolverZ88.ui" line="122"/>
@@ -9032,7 +8797,7 @@ Leave blank to use default Python executable</source>
     <message>
       <location filename="../ui/SolverElmer.ui" line="56"/>
       <source>Path to working directory. Leave blank to use user preferences</source>
-      <translation type="unfinished">Path to working directory. Leave blank to use user preferences</translation>
+      <translation>작업 디렉터리 경로입니다. 비워두면 사용자 환경설정을 사용합니다</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="74"/>
@@ -9056,26 +8821,284 @@ Leave blank to use default Python executable</source>
     </message>
   </context>
   <context>
+    <name>self.sel_master</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="79"/>
+      <source>Master Geometry Reference Selector</source>
+      <translation type="unfinished">Master Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>self.sel_slave</name>
+    <message>
+      <location filename="../../../femtaskpanels/task_constraint_tie.py" line="84"/>
+      <source>Slave Geometry Reference Selector</source>
+      <translation type="unfinished">Slave Geometry Reference Selector</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectromagnetic</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="268"/>
+      <source>Electromagnetic Boundary Condition</source>
+      <translation>전자기 경계조건</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="272"/>
+      <source>Creates an electromagnetic boundary condition</source>
+      <translation>전자기 경계조건을 만듭니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshBoundaryLayer</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="701"/>
+      <source>2D Boundary Layer</source>
+      <translation>2D 경계층</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="705"/>
+      <source>Adds a structured layer of mesh elements on 2D model boundaries</source>
+      <translation>2D 모델 경계에 구조화된 메시 요소 층을 추가합니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshClearGroups</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="735"/>
+      <source>Clear Mesh Groups</source>
+      <translation>메시 그룹 지우기</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="736"/>
+      <source>Remove groups from FEM mesh</source>
+      <translation>FEM 메시에서 그룹 제거</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshDistance</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="908"/>
+      <source>Distance-Based Refinement</source>
+      <translation>거리 기반 세분화</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="911"/>
+      <source>Sets mesh size based on the distance to vertices, edges, and faces</source>
+      <translation>꼭짓점, 모서리, 면까지의 거리를 기반으로 메시 크기를 지정합니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshManipulate</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="921"/>
+      <source>Manipulate Refinement</source>
+      <translation>세분화 조작</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="924"/>
+      <source>Allows to manipulate the output of a refinement in various ways</source>
+      <translation>세분화 출력을 다양한 방식으로 조작할 수 있습니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshAdvanced</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="934"/>
+      <source>Advanced Refinement Types</source>
+      <translation>고급 세분화 유형</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="937"/>
+      <source>Allows to define the mesh size by various advanced means</source>
+      <translation>다양한 고급 방법으로 메시 크기를 정의할 수 있습니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshShape</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="947"/>
+      <source>Shape-Based Refinement</source>
+      <translation>형상 기반 세분화</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshSphere</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="951"/>
+      <source>Sets mesh size within and outside of a geometric shape (box, sphere, cylinder)</source>
+      <translation>기하학적 형상(상자, 구체, 원통)의 내부 및 외부 메시 크기 지정</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteCurve</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="963"/>
+      <source>Structured Transfinite Curve</source>
+      <translation>구조화된 초한 곡선</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="967"/>
+      <source>Creates a fixed number of nodes on an edge with a structured algorithm</source>
+      <translation>구조화된 알고리즘으로 모서리에 고정된 수의 노드를 만듭니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteSurface</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="979"/>
+      <source>Structured Transfinite Surface</source>
+      <translation>구조화된 초한 표면</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="982"/>
+      <source>Creates a structured mesh on a face</source>
+      <translation>면에 구조화된 메시를 만듭니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshTransfiniteVolume</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="994"/>
+      <source>Structured Transfinite Volume</source>
+      <translation>구조화된 초한 체적</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="998"/>
+      <source>Creates a structured mesh in a 4- or 5-sided volume bounded by transfinite surfaces</source>
+      <translation>초한 표면으로 둘러싸인 4면 또는 5면 체적에 구조화된 메시를 만듭니다</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_CompSolvers</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1358"/>
+      <source>Solvers</source>
+      <translation>솔버</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1359"/>
+      <source>Creates a FEM solver</source>
+      <translation>FEM 솔버 만들기</translation>
+    </message>
+  </context>
+  <context>
     <name>FemToolsCcx</name>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="419"/>
+      <location filename="../../../femtools/ccxtools.py" line="421"/>
       <source>No or wrong CalculiX binary ccx</source>
       <translation>CalculiX 바이너리 ccx가 없거나 잘못되었습니다</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="453"/>
+      <location filename="../../../femtools/ccxtools.py" line="455"/>
       <source>FEM: wrong ccx binary</source>
       <translation>FEM: 잘못된 ccx 바이너리</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="466"/>
+      <location filename="../../../femtools/ccxtools.py" line="468"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation>FEM: CalculiX 바이너리 ccx '{}'을 찾을 수 없습니다. FEM 환경설정의 CalculiX 탭에서 CalculiX 바이너리 ccx 경로를 설정하십시오.</translation>
+      <translation>FEM: CalculiX 바이너리 ccx '{}'을 찾을 수 없습니다. FEM 환경설정의 CalculiX 탭에서 CalculiX 바이너리 ccx 경로를 지정하세요.</translation>
     </message>
     <message>
-      <location filename="../../../femtools/ccxtools.py" line="478"/>
+      <location filename="../../../femtools/ccxtools.py" line="480"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation>FEM: CalculiX ccx '{}' 출력 '{}'에 예상 문구 '{}'가 포함되어 있지 않습니다. ccx 바이너리 실행 중 문제가 있습니다. FreeCAD 없이 ccx가 단독으로 실행되는지 확인하십시오.</translation>
+      <translation>FEM: CalculiX ccx '{}' 출력 '{}'에 예상 문구 '{}'가 포함되어 있지 않습니다. ccx 바이너리 실행 중 문제가 있습니다. FreeCAD 없이 ccx가 단독으로 실행되는지 확인하세요.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgPost</name>
+    <message>
+      <location filename="../../TaskPostBoxes.cpp" line="403"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPulley</name>
+    <message>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="229"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintSpring</name>
+    <message>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="334"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintContact</name>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="643"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintHeatflux</name>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="556"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintRigidBody</name>
+    <message>
+      <location filename="../../TaskFemConstraintRigidBody.cpp" line="809"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="121"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTemperature</name>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="406"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintTransform</name>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="649"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintDisplacement</name>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintBearing</name>
+    <message>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="392"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintGear</name>
+    <message>
+      <location filename="../../TaskFemConstraintGear.cpp" line="355"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
     </message>
   </context>
   <context>
@@ -9089,6 +9112,30 @@ Leave blank to use default Python executable</source>
       <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
       <source>Highest</source>
       <translation>최상위</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintForce</name>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="469"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1159"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::TaskDlgFemConstraintPressure</name>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="321"/>
+      <source>Input Error</source>
+      <translation>입력 오류</translation>
     </message>
   </context>
 </TS>

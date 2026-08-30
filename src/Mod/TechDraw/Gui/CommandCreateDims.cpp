@@ -1658,7 +1658,10 @@ void execDistanceX(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isHorizontal,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceX", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1706,7 +1709,10 @@ void execDistanceY(Gui::Command* cmd)
     //Define the geometric configuration required for a length dimension
     StringVector acceptableGeometry({"Edge", "Vertex"});
     std::vector<int> minimumCounts({1, 2});
-    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical, DimensionGeometry::isDiagonal, DimensionGeometry::isHybrid});
+    std::vector<DimensionGeometry> acceptableDimensionGeometrys({DimensionGeometry::isVertical,
+                                                                 DimensionGeometry::isDiagonal,
+                                                                 DimensionGeometry::isHybrid,
+                                                                 DimensionGeometry::isMultiEdge});
 
     execDim(cmd, "DistanceY", acceptableGeometry, minimumCounts, acceptableDimensionGeometrys);
 }
@@ -1959,7 +1965,7 @@ CmdTechDrawHorizontalExtentDimension::CmdTechDrawHorizontalExtentDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Horizontal Extent Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature.");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the horizontal extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_HorizontalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_HorizontalExtentDimension";
@@ -2084,7 +2090,7 @@ CmdTechDrawVerticalExtentDimension::CmdTechDrawVerticalExtentDimension()
     sAppModule = "TechDraw";
     sGroup = QT_TR_NOOP("TechDraw");
     sMenuText = QT_TR_NOOP("Vertical Extent Dimension");
-    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature.");
+    sToolTipText = QT_TR_NOOP("Inserts a dimension showing the vertical extent (overall length) of an object or feature");
     sWhatsThis = "TechDraw_VerticalExtentDimension";
     sStatusTip = sToolTipText;
     sPixmap = "TechDraw_VerticalExtentDimension";

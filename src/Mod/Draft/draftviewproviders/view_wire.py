@@ -111,27 +111,36 @@ class ViewProviderWire(ViewProviderDraft):
 
     def updateData(self, obj, prop):
         if (
-            prop == "Points"
+            prop == "Shape"
+            and hasattr(obj, "Closed")
             and hasattr(obj, "Points")
             and len(obj.Points) >= 2
             and hasattr(self, "coords1")
             and hasattr(self, "coords2")
         ):
+            shp = obj.Shape
+            if shp.isNull():
+                return
+
+            end_idx = 0 if obj.Closed else -1
             if utils.get_type(obj) == "BSpline":
-                shp = obj.Shape
+                edge = shp.Edges[0]  # shp.ShapeType may be "Edge"/"Wire"/"Face", we need an edge.
                 rot = obj.Placement.Rotation.inverted()
-                v1 = rot.multVec(shp.tangentAt(shp.FirstParameter))
-                v2 = -rot.multVec(shp.tangentAt(shp.LastParameter))
+                v1 = rot.multVec(edge.tangentAt(edge.FirstParameter))
+                if obj.Closed:
+                    v2 = -v1
+                else:
+                    v2 = -rot.multVec(edge.tangentAt(edge.LastParameter))
             else:
                 v1 = obj.Points[1].sub(obj.Points[0])
-                v2 = obj.Points[-2].sub(obj.Points[-1])
+                v2 = obj.Points[end_idx - 1].sub(obj.Points[end_idx])
             self.coords1.translation.setValue(*obj.Points[0])
             if not DraftVecUtils.isNull(v1):
                 v1.normalize()
                 rot1 = coin.SbRotation()
                 rot1.setValue(coin.SbVec3f(1, 0, 0), coin.SbVec3f(*v1))
                 self.coords1.rotation.setValue(rot1)
-            self.coords2.translation.setValue(*obj.Points[-1])
+            self.coords2.translation.setValue(*obj.Points[end_idx])
             if not DraftVecUtils.isNull(v2):
                 v2.normalize()
                 rot2 = coin.SbRotation()

@@ -87,6 +87,7 @@ generate_from_py(SurfaceOfExtrusion)
 generate_from_py(SurfaceOfRevolution)
 generate_from_py(PartFeature)
 generate_from_py(AttachExtension)
+generate_from_py(PreviewExtension)
 generate_from_py(Part2DObject)
 generate_from_py(AttachEngine)
 generate_from_py(TopoShape)
@@ -212,6 +213,10 @@ SET(Features_SRCS
     FeatureRevolution.h
     FeatureOffset.cpp
     FeatureOffset.h
+    LinearPatternExtension.cpp
+    LinearPatternExtension.h
+    PolarPatternExtension.cpp
+    PolarPatternExtension.h
     OCCTMessagePrinter.cpp
     OCCTMessagePrinter.h
     PartFeatures.cpp
@@ -354,6 +359,8 @@ SET(Python_SRCS
     PartFeaturePyImp.cpp
     AttachExtension.pyi
     AttachExtensionPyImp.cpp
+    PreviewExtension.pyi
+    PreviewExtensionPyImp.cpp
     Part2DObject.pyi
     Part2DObjectPyImp.cpp
     AttachEngine.pyi
@@ -544,6 +551,8 @@ SET(Part_SRCS
     BRepMesh.h
     BRepOffsetAPI_MakeOffsetFix.cpp
     BRepOffsetAPI_MakeOffsetFix.h
+    ShapeAnalysis_FreeBoundsFix.cpp
+    ShapeAnalysis_FreeBoundsFix.h
     BSplineCurveBiArcs.cpp
     BSplineCurveBiArcs.h
     CrossSection.cpp
@@ -592,6 +601,8 @@ SET(Part_SRCS
     MeasureInfo.h
     modelRefine.cpp
     modelRefine.h
+    PyException.cpp
+    PyException.h
     Tools.cpp
     Tools.h
     encodeFilename.h
@@ -606,6 +617,8 @@ SET(Part_SRCS
     FaceMakerBullseye.h
     FaceMakerBuildFace.cpp
     FaceMakerBuildFace.h
+    FaceMakerUnified.cpp
+    FaceMakerUnified.h
     WireJoiner.cpp
     WireJoiner.h
 )

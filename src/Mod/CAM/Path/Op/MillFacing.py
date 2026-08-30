@@ -163,7 +163,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                 "Facing",
                 QtCore.QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Set the stock to leave for the operation.",
+                    "Set how much stock to leave on the floor for the operation.",
                 ),
             ),
             (
@@ -278,22 +278,30 @@ class ObjectMillFacing(PathOp.ObjectOp):
         linkingArgs = {
             "start_position": None,
             "target_position": None,
-            "local_clearance": obj.SafeHeight.Value,
-            "global_clearance": obj.ClearanceHeight.Value,
-            "solids": solids,
+            "heights_clearance": (obj.SafeHeight.Value, obj.ClearanceHeight.Value),
+            "solids": None,
             "tool_shape": None,
             "tool_diameter": None,
-            "safety_margin": obj.LinkingSafetyMargin.Value,
+            "collision_clearance": obj.CollisionClearance.Value,
         }
-        if obj.LinkingMode == "Safest":
-            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
-        elif obj.LinkingMode == "Compromise":
+        if obj.CollisionAvoidanceStrategy == "Clearance Height":
+            linkingArgs["heights_clearance"] = obj.ClearanceHeight.Value
+        elif obj.CollisionAvoidanceStrategy == "Retract Height":
+            pass
+        elif obj.CollisionAvoidanceStrategy == "Line of Sight":
+            linkingArgs["solids"] = solids
+        elif obj.CollisionAvoidanceStrategy == "Tool Diameter":
+            linkingArgs["solids"] = solids
             linkingArgs["tool_diameter"] = tool_diameter
+        elif obj.CollisionAvoidanceStrategy == "Tool Shape":
+            linkingArgs["solids"] = solids
+            linkingArgs["tool_shape"] = obj.ToolController.Tool.BitBody.Shape
 
         # Determine the step-downs
         finish_step = 0.0  # No finish step for facing
+        final_depth = obj.FinalDepth.Value + obj.AxialStockToLeave.Value
         Path.Log.debug(
-            f"Depth parameters: clearance={obj.ClearanceHeight.Value}, safe={obj.SafeHeight.Value}, start={obj.StartDepth.Value}, step={obj.StepDown.Value}, final={obj.FinalDepth.Value + obj.AxialStockToLeave.Value}"
+            f"Depth parameters: clearance={obj.ClearanceHeight.Value}, safe={obj.SafeHeight.Value}, start={obj.StartDepth.Value}, step={obj.StepDown.Value}, final={final_depth}"
         )
         depthparams = PathUtils.depth_params(
             clearance_height=obj.ClearanceHeight.Value,
@@ -301,55 +309,31 @@ class ObjectMillFacing(PathOp.ObjectOp):
             start_depth=obj.StartDepth.Value,
             step_down=obj.StepDown.Value,
             z_finish_step=finish_step,
-            final_depth=obj.FinalDepth.Value + obj.AxialStockToLeave.Value,
+            final_depth=final_depth,
             user_depths=None,
         )
         Path.Log.debug(f"Depth params object: {depthparams}")
 
-        # Always use the stock object top face for facing operations
-        job = PathUtils.findParentJob(obj)
-        Path.Log.debug(f"Job: {job.Label if job else 'None'}")
-        if job and job.Stock:
-            Path.Log.debug(f"Stock: {job.Stock.Label}")
-            stock_faces = job.Stock.Shape.Faces
-            Path.Log.debug(f"Number of stock faces: {len(stock_faces)}")
-
-            # Find faces with normal pointing toward Z+ (upward)
-            z_up_faces = []
-            for face in stock_faces:
-                # Get face normal at center
-                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2
-                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2
-                normal = face.normalAt(u_mid, v_mid)
-                Path.Log.debug(f"Face normal: {normal}, Z component: {normal.z}")
-
-                # Check if normal points upward (Z+ direction) with some tolerance
-                if normal.z > 0.9:  # Allow for slight deviation from perfect vertical
-                    z_up_faces.append(face)
-                    Path.Log.debug(f"Found upward-facing face at Z={face.BoundBox.ZMax}")
-
-            if not z_up_faces:
-                Path.Log.error("No upward-facing faces found in stock")
-                raise ValueError("No upward-facing faces found in stock")
-
-            # From the upward-facing faces, select the highest one
-            top_face = max(z_up_faces, key=lambda f: f.BoundBox.ZMax)
-            Path.Log.debug(f"Selected top face ZMax: {top_face.BoundBox.ZMax}")
-            boundary_wire = top_face.OuterWire
-            Path.Log.debug(f"Wire vertices: {len(boundary_wire.Vertexes)}")
+        # Use self.stock which the base class wraps with transformed geometry
+        # when a 3+2 workplane is active.
+        if self.stock and hasattr(self.stock, "Shape") and self.stock.Shape:
+            Path.Log.debug(f"Stock: {self.stock.Label}")
+            boundary_wires = self.stock.Shape.slice(FreeCAD.Vector(0, 0, 1), final_depth)
+            if not boundary_wires:
+                Path.Log.error("No shape found at final depth")
+                raise ValueError("No shape found at final depth")
         else:
             Path.Log.error("No stock found for facing operation")
             raise ValueError("No stock found for facing operation")
 
-        boundary_wire = boundary_wire.makeOffset2D(
-            obj.StockExtension.Value, 2
-        )  # offset with intersection joins
+        # offset with intersection joins
+        boundary_wires = [w.makeOffset2D(obj.StockExtension.Value, 2) for w in boundary_wires]
 
         # Convert boundary to a rectangular polygon aligned to the cut angle.
         # Stock faces may have curved edges (e.g. cylindrical stock) and all
         # facing strategies assume a rectangular boundary.
         cut_angle = getattr(obj.Angle, "Value", obj.Angle)
-        boundary_wire = facing_common.get_angled_polygon(boundary_wire, cut_angle)
+        boundary_wire = facing_common.get_angled_polygon(boundary_wires, cut_angle)
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -419,9 +403,6 @@ class ObjectMillFacing(PathOp.ObjectOp):
         except Exception as e:
             Path.Log.error(f"Error generating toolpath: {e}")
             raise
-
-        # clear commandlist
-        self.commandlist = []
 
         # Be safe. Add first G0 to clearance height
         targetZ = obj.ClearanceHeight.Value
@@ -705,7 +686,7 @@ def Create(name, obj=None, parentJob=None):
 
 def SetupProperties():
     """SetupProperties() ... Return list of properties required for the operation."""
-    setup = []
+    setup = PathOp.SetupPropertiesLinking()
     setup.append("CutMode")
     setup.append("ClearingPattern")
     setup.append("Angle")

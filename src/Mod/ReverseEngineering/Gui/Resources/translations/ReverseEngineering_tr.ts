@@ -237,8 +237,8 @@
       <translation>Yerleşim</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation type="unfinished">Fit B-spline</translation>
     </message>
@@ -338,8 +338,8 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <source>Input Error</source>
+      <translation>Giriş hatası</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="215"/>
@@ -381,8 +381,8 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <source>Input Error</source>
+      <translation>Giriş hatası</translation>
     </message>
   </context>
   <context>
@@ -590,6 +590,26 @@
       <source>Reverse Engineering</source>
       <translation>Tersine Mühendislik</translation>
     </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation type="unfinished">&amp;Reverse Engineering</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation type="unfinished">Surface Reconstruction</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>Bölümlenme</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation type="unfinished">Approximation</translation>
+    </message>
   </context>
   <context>
     <name>ReenGui::FitBSplineCurve</name>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation type="unfinished">Iso-Parametric</translation>
+      <source>Equidistant</source>
+      <translation type="unfinished">Equidistant</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -720,9 +740,9 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
-      <translation>Girdi hatası</translation>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
+      <source>Input Error</source>
+      <translation>Giriş hatası</translation>
     </message>
   </context>
 </TS>

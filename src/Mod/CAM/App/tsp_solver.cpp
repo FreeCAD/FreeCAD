@@ -774,3 +774,441 @@ std::vector<TSPTunnel> TSPSolver::solveTunnels(
 
     return route;
 }
+
+std::vector<TSPPair> TSPSolver::solvePairs(
+    std::vector<TSPPair> pairs,
+    const TSPPoint* routeStartPoint,
+    const TSPPoint* routeEndPoint
+)
+{
+    if (pairs.empty()) {
+        return pairs;
+    }
+
+    // Set original indices
+    for (size_t i = 0; i < pairs.size(); ++i) {
+        pairs[i].index = static_cast<int>(i);
+    }
+
+    // STEP 1: Add the routeStartPoint (will be deleted at the end)
+    if (routeStartPoint) {
+        pairs.insert(
+            pairs.begin(),
+            TSPPair(routeStartPoint->x, routeStartPoint->y, routeStartPoint->x, routeStartPoint->y)
+        );
+    }
+    else {
+        // No start point specified; use the machine origin (0,0,0) as a neutral
+        // reference so the nearest-neighbour pass still has a valid starting
+        // position without biasing the route toward any particular area of the job.
+        pairs.insert(pairs.begin(), TSPPair(0.0, 0.0, 0.0, 0.0));
+    }
+
+    // STEP 2: Apply nearest neighbor algorithm
+    std::vector<TSPPair> potentialNeighbours(pairs.begin() + 1, pairs.end());
+    std::vector<TSPPair> route;
+    route.reserve(pairs.size());
+    route.push_back(pairs[0]);
+
+    while (!potentialNeighbours.empty()) {
+        double costCurrent = std::numeric_limits<double>::max();
+        bool toBeFlipped = false;
+        auto nearestNeighbour = potentialNeighbours.begin();
+
+        // Check both primary and alternative orientations in a single pass
+        for (auto it = potentialNeighbours.begin(); it != potentialNeighbours.end(); ++it) {
+            double dx = route.back().x - it->x;
+            double dy = route.back().y - it->y;
+            double costNew = dx * dx + dy * dy;
+            if (costNew < costCurrent) {
+                costCurrent = costNew;
+                toBeFlipped = false;
+                nearestNeighbour = it;
+            }
+            double dxAlt = route.back().x - it->xAlt;
+            double dyAlt = route.back().y - it->yAlt;
+            double costNewAlt = dxAlt * dxAlt + dyAlt * dyAlt;
+            if (costNewAlt < costCurrent) {
+                costCurrent = costNewAlt;
+                toBeFlipped = true;
+                nearestNeighbour = it;
+            }
+        }
+
+        if (toBeFlipped) {
+            nearestNeighbour->flipped = !nearestNeighbour->flipped;
+            std::swap(nearestNeighbour->x, nearestNeighbour->xAlt);
+            std::swap(nearestNeighbour->y, nearestNeighbour->yAlt);
+        }
+
+        route.push_back(*nearestNeighbour);
+        potentialNeighbours.erase(nearestNeighbour);
+    }
+
+    // STEP 3: Add the routeEndPoint (will be deleted at the end)
+    if (routeEndPoint) {
+        route.push_back(
+            TSPPair(routeEndPoint->x, routeEndPoint->y, routeEndPoint->x, routeEndPoint->y)
+        );
+    }
+
+    // STEP 4: Additional improvement of the route
+    size_t limitReorderI = route.size() - 2;
+    if (routeEndPoint) {
+        limitReorderI -= 1;
+    }
+    size_t limitReorderJ = route.size();
+    size_t limitRelocationI = route.size() - 1;
+    size_t limitRelocationJ = route.size() - 1;
+    int lastImprovementAtStep = 0;
+
+    while (true) {
+
+        // STEP 4.1: Apply 2-opt
+        if (lastImprovementAtStep == 1) {
+            break;
+        }
+        bool improvementFound = true;
+        while (improvementFound) {
+            improvementFound = false;
+            for (size_t i = 0; i < limitReorderI; ++i) {
+                double subRouteLengthCurrentPart = std::sqrt(
+                    std::pow(route[i].x - route[i + 1].x, 2) + std::pow(route[i].y - route[i + 1].y, 2)
+                );
+                if (i + 3 >= limitReorderJ) {
+                    continue;  // No valid j for this i; route[i+3] would be out of bounds
+                }
+                for (size_t j = i + 3; j < limitReorderJ; ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j - 1].x - route[j].x, 2)
+                                    + std::pow(route[j - 1].y - route[j].y, 2));
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[i + 1].x - route[j].x, 2)
+                        + std::pow(route[i + 1].y - route[j].y, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[i].x - route[j - 1].x, 2)
+                        + std::pow(route[i].y - route[j - 1].y, 2)
+                    );
+                    subRouteLengthNew += Base::Precision::Confusion();
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Reverse the order of pairs between i-th and j-th pair
+                        std::reverse(route.begin() + i + 1, route.begin() + j);
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[i].x - route[i + 1].x, 2)
+                            + std::pow(route[i].y - route[i + 1].y, 2)
+                        );
+                        improvementFound = true;
+                        lastImprovementAtStep = 1;
+                    }
+                }
+                // Open route: can reverse from i to end
+                if (!routeEndPoint) {
+                    double subRouteLengthCurrent = std::sqrt(
+                        std::pow(route[i].x - route[i + 1].x, 2)
+                        + std::pow(route[i].y - route[i + 1].y, 2)
+                    );
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[i].x - route[limitReorderJ - 1].x, 2)
+                        + std::pow(route[i].y - route[limitReorderJ - 1].y, 2)
+                    );
+                    subRouteLengthNew += Base::Precision::Confusion();
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Reverse the order of pairs after i-th to the last pair
+                        std::reverse(route.begin() + i + 1, route.begin() + limitReorderJ);
+                        improvementFound = true;
+                        lastImprovementAtStep = 1;
+                    }
+                }
+            }
+        }
+
+        // STEP 4.2: Apply relocation
+        if (lastImprovementAtStep == 2) {
+            break;
+        }
+        improvementFound = true;
+        while (improvementFound) {
+            improvementFound = false;
+            for (size_t i = 1; i < limitRelocationI; ++i) {
+                double subRouteLengthCurrentPart = std::sqrt(
+                    std::pow(route[i - 1].x - route[i].x, 2) + std::pow(route[i - 1].y - route[i].y, 2)
+                );
+                subRouteLengthCurrentPart += std::sqrt(
+                    std::pow(route[i].x - route[i + 1].x, 2) + std::pow(route[i].y - route[i + 1].y, 2)
+                );
+                double subRouteLengthNewPart = std::sqrt(
+                    std::pow(route[i - 1].x - route[i + 1].x, 2)
+                    + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                );
+                subRouteLengthNewPart += Base::Precision::Confusion();
+
+                // Relocate backward
+                for (size_t j = 0; j + 2 < i; ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j].x - route[j + 1].x, 2)
+                                    + std::pow(route[j].y - route[j + 1].y, 2));
+                    double subRouteLengthNew = subRouteLengthNewPart
+                        + std::sqrt(std::pow(route[j].x - route[i].x, 2)
+                                    + std::pow(route[j].y - route[i].y, 2))
+                        + std::sqrt(std::pow(route[i].x - route[j + 1].x, 2)
+                                    + std::pow(route[i].y - route[j + 1].y, 2));
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Relocate the i-th pair backward (after j-th pair)
+                        std::rotate(route.begin() + j + 1, route.begin() + i, route.begin() + i + 1);
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i].x, 2)
+                            + std::pow(route[i - 1].y - route[i].y, 2)
+                        );
+                        subRouteLengthCurrentPart += std::sqrt(
+                            std::pow(route[i].x - route[i + 1].x, 2)
+                            + std::pow(route[i].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i + 1].x, 2)
+                            + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart += Base::Precision::Confusion();
+                        improvementFound = true;
+                        lastImprovementAtStep = 2;
+                    }
+                }
+
+                // Relocate forward
+                for (size_t j = i + 1; j < limitRelocationJ; ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j].x - route[j + 1].x, 2)
+                                    + std::pow(route[j].y - route[j + 1].y, 2));
+                    double subRouteLengthNew = subRouteLengthNewPart
+                        + std::sqrt(std::pow(route[j].x - route[i].x, 2)
+                                    + std::pow(route[j].y - route[i].y, 2))
+                        + std::sqrt(std::pow(route[i].x - route[j + 1].x, 2)
+                                    + std::pow(route[i].y - route[j + 1].y, 2));
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Relocate the i-th pair forward (after j-th pair)
+                        std::rotate(route.begin() + i, route.begin() + i + 1, route.begin() + j + 1);
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i].x, 2)
+                            + std::pow(route[i - 1].y - route[i].y, 2)
+                        );
+                        subRouteLengthCurrentPart += std::sqrt(
+                            std::pow(route[i].x - route[i + 1].x, 2)
+                            + std::pow(route[i].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i + 1].x, 2)
+                            + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart += Base::Precision::Confusion();
+                        improvementFound = true;
+                        lastImprovementAtStep = 2;
+                    }
+                }
+            }
+
+            // Open route: relocate last pair
+            if (!routeEndPoint) {
+                double subRouteLengthCurrentPart = std::sqrt(
+                    std::pow(route[route.size() - 2].x - route[route.size() - 1].x, 2)
+                    + std::pow(route[route.size() - 2].y - route[route.size() - 1].y, 2)
+                );
+                for (size_t j = 0; j + 2 < route.size(); ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j].x - route[j + 1].x, 2)
+                                    + std::pow(route[j].y - route[j + 1].y, 2));
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[j].x - route[route.size() - 1].x, 2)
+                        + std::pow(route[j].y - route[route.size() - 1].y, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[route.size() - 1].x - route[j + 1].x, 2)
+                        + std::pow(route[route.size() - 1].y - route[j + 1].y, 2)
+                    );
+                    subRouteLengthNew += Base::Precision::Confusion();
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        // Relocate the last pair after j-th pair
+                        std::rotate(route.begin() + j + 1, route.end() - 1, route.end());
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[route.size() - 2].x - route[route.size() - 1].x, 2)
+                            + std::pow(route[route.size() - 2].y - route[route.size() - 1].y, 2)
+                        );
+                        improvementFound = true;
+                        lastImprovementAtStep = 2;
+                    }
+                }
+            }
+        }
+
+        // STEP 4.3: Apply relocation with alternative point
+        if (lastImprovementAtStep == 3) {
+            break;
+        }
+        improvementFound = true;
+        while (improvementFound) {
+            improvementFound = false;
+            for (size_t i = 1; i < limitRelocationI; ++i) {
+                double subRouteLengthCurrentPart = std::sqrt(
+                    std::pow(route[i - 1].x - route[i].x, 2) + std::pow(route[i - 1].y - route[i].y, 2)
+                );
+                subRouteLengthCurrentPart += std::sqrt(
+                    std::pow(route[i].x - route[i + 1].x, 2) + std::pow(route[i].y - route[i + 1].y, 2)
+                );
+                double subRouteLengthNewPart = std::sqrt(
+                    std::pow(route[i - 1].x - route[i + 1].x, 2)
+                    + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                );
+                subRouteLengthNewPart += Base::Precision::Confusion();
+
+                // Relocate backward with alternative point
+                for (size_t j = 0; j + 2 < i; ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j].x - route[j + 1].x, 2)
+                                    + std::pow(route[j].y - route[j + 1].y, 2));
+                    double subRouteLengthNew = subRouteLengthNewPart
+                        + std::sqrt(std::pow(route[j].x - route[i].xAlt, 2)
+                                    + std::pow(route[j].y - route[i].yAlt, 2))
+                        + std::sqrt(std::pow(route[i].xAlt - route[j + 1].x, 2)
+                                    + std::pow(route[i].yAlt - route[j + 1].y, 2));
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        route[i].flipped = !route[i].flipped;
+                        std::swap(route[i].x, route[i].xAlt);
+                        std::swap(route[i].y, route[i].yAlt);
+                        // Relocate the i-th pair backward (after j-th pair)
+                        std::rotate(route.begin() + j + 1, route.begin() + i, route.begin() + i + 1);
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i].x, 2)
+                            + std::pow(route[i - 1].y - route[i].y, 2)
+                        );
+                        subRouteLengthCurrentPart += std::sqrt(
+                            std::pow(route[i].x - route[i + 1].x, 2)
+                            + std::pow(route[i].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i + 1].x, 2)
+                            + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart += Base::Precision::Confusion();
+                        improvementFound = true;
+                        lastImprovementAtStep = 3;
+                    }
+                }
+
+                // When j = i - 1: try alternative point only (no relocation), no epsilon
+                {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart;
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[i - 1].x - route[i].xAlt, 2)
+                        + std::pow(route[i - 1].y - route[i].yAlt, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[i].xAlt - route[i + 1].x, 2)
+                        + std::pow(route[i].yAlt - route[i + 1].y, 2)
+                    );
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        route[i].flipped = !route[i].flipped;
+                        std::swap(route[i].x, route[i].xAlt);
+                        std::swap(route[i].y, route[i].yAlt);
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i].x, 2)
+                            + std::pow(route[i - 1].y - route[i].y, 2)
+                        );
+                        subRouteLengthCurrentPart += std::sqrt(
+                            std::pow(route[i].x - route[i + 1].x, 2)
+                            + std::pow(route[i].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i + 1].x, 2)
+                            + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart += Base::Precision::Confusion();
+                        improvementFound = true;
+                        lastImprovementAtStep = 3;
+                    }
+                }
+
+                // Relocate forward with alternative point
+                for (size_t j = i + 1; j < limitRelocationJ; ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j].x - route[j + 1].x, 2)
+                                    + std::pow(route[j].y - route[j + 1].y, 2));
+                    double subRouteLengthNew = subRouteLengthNewPart
+                        + std::sqrt(std::pow(route[j].x - route[i].xAlt, 2)
+                                    + std::pow(route[j].y - route[i].yAlt, 2))
+                        + std::sqrt(std::pow(route[i].xAlt - route[j + 1].x, 2)
+                                    + std::pow(route[i].yAlt - route[j + 1].y, 2));
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        route[i].flipped = !route[i].flipped;
+                        std::swap(route[i].x, route[i].xAlt);
+                        std::swap(route[i].y, route[i].yAlt);
+                        // Relocate the i-th pair forward (after j-th pair)
+                        std::rotate(route.begin() + i, route.begin() + i + 1, route.begin() + j + 1);
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i].x, 2)
+                            + std::pow(route[i - 1].y - route[i].y, 2)
+                        );
+                        subRouteLengthCurrentPart += std::sqrt(
+                            std::pow(route[i].x - route[i + 1].x, 2)
+                            + std::pow(route[i].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart = std::sqrt(
+                            std::pow(route[i - 1].x - route[i + 1].x, 2)
+                            + std::pow(route[i - 1].y - route[i + 1].y, 2)
+                        );
+                        subRouteLengthNewPart += Base::Precision::Confusion();
+                        improvementFound = true;
+                        lastImprovementAtStep = 3;
+                    }
+                }
+            }
+
+            // Open route: relocate last pair with alternative point
+            if (!routeEndPoint) {
+                double subRouteLengthCurrentPart = std::sqrt(
+                    std::pow(route[route.size() - 2].x - route[route.size() - 1].x, 2)
+                    + std::pow(route[route.size() - 2].y - route[route.size() - 1].y, 2)
+                );
+                for (size_t j = 0; j + 2 < route.size(); ++j) {
+                    double subRouteLengthCurrent = subRouteLengthCurrentPart
+                        + std::sqrt(std::pow(route[j].x - route[j + 1].x, 2)
+                                    + std::pow(route[j].y - route[j + 1].y, 2));
+                    double subRouteLengthNew = std::sqrt(
+                        std::pow(route[j].x - route[route.size() - 1].xAlt, 2)
+                        + std::pow(route[j].y - route[route.size() - 1].yAlt, 2)
+                    );
+                    subRouteLengthNew += std::sqrt(
+                        std::pow(route[route.size() - 1].xAlt - route[j + 1].x, 2)
+                        + std::pow(route[route.size() - 1].yAlt - route[j + 1].y, 2)
+                    );
+                    subRouteLengthNew += Base::Precision::Confusion();
+                    if (subRouteLengthNew < subRouteLengthCurrent) {
+                        route.back().flipped = !route.back().flipped;
+                        std::swap(route.back().x, route.back().xAlt);
+                        std::swap(route.back().y, route.back().yAlt);
+                        // Relocate the last pair after j-th pair
+                        std::rotate(route.begin() + j + 1, route.end() - 1, route.end());
+                        subRouteLengthCurrentPart = std::sqrt(
+                            std::pow(route[route.size() - 2].x - route.back().x, 2)
+                            + std::pow(route[route.size() - 2].y - route.back().y, 2)
+                        );
+                        improvementFound = true;
+                        lastImprovementAtStep = 3;
+                    }
+                }
+            }
+        }
+
+        if (lastImprovementAtStep == 0) {
+            break;  // No additional improvements could be made
+        }
+    }
+
+    // STEP 5: Delete temporary start and end points
+    if (!route.empty()) {
+        route.erase(route.begin());  // Remove temp start
+    }
+    if (routeEndPoint && !route.empty()) {
+        route.pop_back();  // Remove temp end
+    }
+
+    return route;
+}

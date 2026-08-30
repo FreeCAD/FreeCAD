@@ -210,8 +210,8 @@ void TaskFemConstraint::createDeleteAction(QListWidget* parentList)
 void TaskDlgFemConstraint::open()
 {
     if (!ConstraintView->getDocument()->hasPendingCommand()) {
-        const char* typeName = ConstraintView->getObject()->getTypeId().getName();
-        ConstraintView->getDocument()->openCommand(typeName);
+        const auto typeName = ConstraintView->getObject()->getTypeId().getName();
+        ConstraintView->getDocument()->openCommand(std::string {typeName}.c_str());
         ConstraintView->setVisible(true);
     }
 }

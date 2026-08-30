@@ -29,6 +29,7 @@
 
 #include <gp_Pnt.hxx>
 #include <TopoDS_Edge.hxx>
+#include <Precision.hxx>
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -43,13 +44,13 @@ struct Edgesort_gp_Pnt_Less
         Standard_Real x1, y1, z1, x2, y2, z2;
         _Left.Coord(x1, y1, z1);
         _Right.Coord(x2, y2, z2);
-        if (fabs(x1 - x2) > 0.2) {
+        if (fabs(x1 - x2) > Precision::Confusion()) {
             return x1 < x2;
         }
-        else if (fabs(y1 - y2) > 0.2) {
+        else if (fabs(y1 - y2) > Precision::Confusion()) {
             return y1 < y2;
         }
-        else if (fabs(z1 - z2) > 0.2) {
+        else if (fabs(z1 - z2) > Precision::Confusion()) {
             return z1 < z2;
         }
         return false;

@@ -60,10 +60,13 @@ import time
 import FreeCAD
 import Part
 import DraftVecUtils
-import DraftGeomUtils
 import WorkingPlane
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from draftgeoutils import circles as geo_circles
+from draftgeoutils import general as geo_general
+from draftgeoutils import geometry as geo_geometry
+from draftgeoutils import wires as geo_wires
 from draftfunctions import dxf
 from draftfunctions import rotate
 from draftmake import make_bezcurve
@@ -2442,7 +2445,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                 if res == QtWidgets.QMessageBox.Cancel:
                     FCC.PrintMessage("Aborted\n")
                     return
-        shapes = DraftGeomUtils.findWires(edges)
+        shapes = geo_wires.findWires(edges)
         for s in shapes:
             newob = addObject(s)
 
@@ -3028,7 +3031,7 @@ def projectShape(shape, direction, tess=None):
     tess : list, optional
         It defaults to `None`. If it is available, it is a list with
         two elements, `[True, segment_length]` which are used by
-        `DraftGeomUtils.cleanProjection(compound, tess[0], tess[1])`
+        `draftgeoutils.wires.cleanProjection(compound, tess[0], tess[1])`
         to create a valid compound of edges.
 
         Otherwise, a simple `Part.Compound` is produced.
@@ -3043,7 +3046,7 @@ def projectShape(shape, direction, tess=None):
 
     See also
     --------
-    TechDraw.projectEx, DraftGeomUtils.cleanProjection
+    TechDraw.projectEx, draftgeoutils.wires.cleanProjection
     """
     import TechDraw
 
@@ -3057,12 +3060,12 @@ def projectShape(shape, direction, tess=None):
         for g in groups[0:5]:
             if g:
                 edges.append(g)
-        # return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+        # return geo_wires.cleanProjection(Part.makeCompound(edges))
         if tess:
-            return DraftGeomUtils.cleanProjection(Part.makeCompound(edges), tess[0], tess[1])
+            return geo_wires.cleanProjection(Part.makeCompound(edges), tess[0], tess[1])
         else:
             return Part.makeCompound(edges)
-            # return DraftGeomUtils.cleanProjection(Part.makeCompound(edges))
+            # return geo_wires.cleanProjection(Part.makeCompound(edges))
 
 
 def getArcData(edge):
@@ -3240,7 +3243,7 @@ def getWire(wire, nospline=False, lw=True, asis=False):
         # print("processing wire ",wire.Edges)
         for edge in edges:
             v1 = edge.Vertexes[0].Point
-            if DraftGeomUtils.geomType(edge) == "Circle":
+            if geo_general.geomType(edge) == "Circle":
                 # polyline bulge -> negative makes the arc go clockwise
                 angle = edge.LastParameter - edge.FirstParameter
                 bul = math.tan(angle / 4)
@@ -3250,7 +3253,7 @@ def getWire(wire, nospline=False, lw=True, asis=False):
                 if edge.Curve.Axis.dot(Vector(0, 0, 1)) < 0:
                     bul = -bul
                 points.append(fmt(v1, bul))
-            elif (DraftGeomUtils.geomType(edge) in ["BSplineCurve", "BezierCurve", "Ellipse"]) and (
+            elif (geo_general.geomType(edge) in ["BSplineCurve", "BezierCurve", "Ellipse"]) and (
                 not nospline
             ):
                 spline = getSplineSegs(edge)
@@ -3259,7 +3262,7 @@ def getWire(wire, nospline=False, lw=True, asis=False):
                     points.append(fmt(p))
             else:
                 points.append(fmt(v1))
-        if not DraftGeomUtils.isReallyClosed(wire):
+        if not geo_wires.isReallyClosed(wire):
             v = edges[-1].Vertexes[-1].Point
             points.append(fmt(v))
         # print("wire verts: ",points)
@@ -3379,7 +3382,7 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False, layer=None, colo
             edges = Part.__sortEdges__(wire.Edges)
         for e in edges:
             processededges.append(e.hashCode())
-        if (len(wire.Edges) == 1) and (DraftGeomUtils.geomType(wire.Edges[0]) == "Circle"):
+        if (len(wire.Edges) == 1) and (geo_general.geomType(wire.Edges[0]) == "Circle"):
             center, radius, ang1, ang2 = getArcData(wire.Edges[0])
             if center is not None:
                 if len(wire.Edges[0].Vertexes) == 1:  # circle
@@ -3395,7 +3398,7 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False, layer=None, colo
                         dxfLibrary.LwPolyLine(
                             getWire(wire, nospline, asis=asis),
                             [0.0, 0.0],
-                            int(DraftGeomUtils.isReallyClosed(wire)),
+                            int(geo_wires.isReallyClosed(wire)),
                             color=color,
                             layer=layer,
                         )
@@ -3412,7 +3415,7 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False, layer=None, colo
                     dxfLibrary.PolyLine(
                         getWire(wire, nospline, lw=False, asis=asis),
                         [0.0, 0.0, 0.0],
-                        int(DraftGeomUtils.isReallyClosed(wire)),
+                        int(geo_wires.isReallyClosed(wire)),
                         color=color,
                         layer=layer,
                     )
@@ -3425,10 +3428,10 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False, layer=None, colo
         # print("lone edges ", loneedges)
         for edge in loneedges:
             # splines
-            if DraftGeomUtils.geomType(edge) in ["BSplineCurve", "BezierCurve"]:
+            if geo_general.geomType(edge) in ["BSplineCurve", "BezierCurve"]:
                 if (len(edge.Vertexes) == 1) and (edge.Curve.isClosed()) and (edge.Area > 0):
                     # special case: 1-vert closed spline, approximate as a circle
-                    c = DraftGeomUtils.getCircleFromSpline(edge)
+                    c = geo_circles.getCircleFromSpline(edge)
                     if c:
                         dxfobject.append(
                             dxfLibrary.Circle(
@@ -3446,7 +3449,7 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False, layer=None, colo
                     dxfobject.append(
                         dxfLibrary.PolyLine(points, [0.0, 0.0, 0.0], 0, color=color, layer=layer)
                     )
-            elif DraftGeomUtils.geomType(edge) == "Circle":  # curves
+            elif geo_general.geomType(edge) == "Circle":  # curves
                 center, radius, ang1, ang2 = getArcData(edge)
                 if center is not None:
                     if not isinstance(center, tuple):
@@ -3461,7 +3464,7 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False, layer=None, colo
                                 center, radius, ang1, ang2, color=getACI(ob), layer=layer
                             )
                         )
-            elif DraftGeomUtils.geomType(edge) == "Ellipse":  # ellipses:
+            elif geo_general.geomType(edge) == "Ellipse":  # ellipses:
                 if params.get_param("DiscretizeEllipses"):
                     points = []
                     spline = getSplineSegs(edge)
@@ -4055,7 +4058,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
                     base = Part.LineSegment(ob.Start, ob.End).toShape()
-                    proj = DraftGeomUtils.findDistance(ob.Dimline, base)
+                    proj = geo_geometry.findDistance(ob.Dimline, base)
                     if not proj:
                         pbase = DraftVecUtils.tup(ob.End)
                     else:

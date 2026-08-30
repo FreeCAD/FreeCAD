@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="246"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="247"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="141"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="142"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="314"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="315"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="102"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="531"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="532"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="596"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="597"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="419"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="420"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="481"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="482"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="451"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="452"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="633"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="634"/>
@@ -237,8 +237,8 @@
       <translation>배치</translation>
     </message>
     <message>
+      <location filename="../../FitBSplineCurve.cpp" line="152"/>
       <location filename="../../FitBSplineSurface.cpp" line="242"/>
-      <location filename="../../FitBSplineCurve.cpp" line="138"/>
       <source>Fit B-spline</source>
       <translation>B-스플라인 맞추기</translation>
     </message>
@@ -338,7 +338,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="171"/>
       <location filename="../../FitBSplineSurface.cpp" line="249"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
     <message>
@@ -381,7 +381,7 @@
     </message>
     <message>
       <location filename="../../Poisson.cpp" line="94"/>
-      <source>Input error</source>
+      <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
   </context>
@@ -588,7 +588,27 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="36"/>
+      <source>&amp;Reverse Engineering</source>
+      <translation type="unfinished">&amp;Reverse Engineering</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="37"/>
+      <source>Surface Reconstruction</source>
+      <translation type="unfinished">Surface Reconstruction</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="38"/>
+      <source>Segmentation</source>
+      <translation>분할</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="39"/>
+      <source>Approximation</source>
+      <translation type="unfinished">Approximation</translation>
     </message>
   </context>
   <context>
@@ -620,8 +640,8 @@
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="47"/>
-      <source>Iso-Parametric</source>
-      <translation>등매개변수</translation>
+      <source>Equidistant</source>
+      <translation type="unfinished">Equidistant</translation>
     </message>
     <message>
       <location filename="../../FitBSplineCurve.ui" line="55"/>
@@ -704,7 +724,7 @@
     <message>
       <location filename="../../Command.cpp" line="67"/>
       <source>Reverse Engineering</source>
-      <translation>리버스 엔지니어링</translation>
+      <translation>역설계</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
@@ -720,8 +740,8 @@
   <context>
     <name>ReenGui::FitBSplineCurveWidget</name>
     <message>
-      <location filename="../../FitBSplineCurve.cpp" line="89"/>
-      <source>Input error</source>
+      <location filename="../../FitBSplineCurve.cpp" line="103"/>
+      <source>Input Error</source>
       <translation>입력 오류</translation>
     </message>
   </context>

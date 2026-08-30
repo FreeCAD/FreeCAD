@@ -62,7 +62,7 @@ protected Q_SLOTS:
     void onStyleChanged();
     void onColorChanged();
     void onWeightChanged();
-    void onVisibleChanged();
+    void onVisibleChanged(bool checked);
 
 protected:
     void changeEvent(QEvent *e) override;

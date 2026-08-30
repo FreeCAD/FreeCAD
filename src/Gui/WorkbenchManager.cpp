@@ -62,14 +62,14 @@ WorkbenchManager::~WorkbenchManager()
     DockWindowManager::destruct();
 }
 
-Workbench* WorkbenchManager::createWorkbench(const std::string& name, const std::string& className)
+Workbench* WorkbenchManager::createWorkbench(const std::string& name, std::string_view className)
 {
     Workbench* wb = getWorkbench(name);
 
     if (!wb) {
         // try to create an instance now
         Base::Type type
-            = Base::Type::getTypeIfDerivedFrom(className.c_str(), Workbench::getClassTypeId(), false);
+            = Base::Type::getTypeIfDerivedFrom(className, Workbench::getClassTypeId(), false);
         wb = static_cast<Workbench*>(type.createInstance());
         // createInstance could return a null pointer
         if (!wb) {
@@ -111,7 +111,7 @@ Workbench* WorkbenchManager::getWorkbench(const std::string& name) const
     return wb;
 }
 
-bool WorkbenchManager::activate(const std::string& name, const std::string& className)
+bool WorkbenchManager::activate(const std::string& name, std::string_view className)
 {
     Workbench* wb = createWorkbench(name, className);
     if (wb) {

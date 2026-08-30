@@ -216,9 +216,9 @@ class CAMWorkbench(Workbench):
         )
         threedcmdgroup = threedopcmdlist
         if Path.Preferences.experimentalFeaturesEnabled():
-            prepcmdlist.append("CAM_PathShapeTC")
+            prepcmdlist.append("CAM_PathShape")
             extracmdlist.extend(["CAM_Area", "CAM_Area_Workplane"])
-            twodopcmdlist.append("CAM_Slot")
+            engravecmdlist.append("CAM_Flute")
 
         if Path.Preferences.advancedOCLFeaturesEnabled():
             try:
@@ -247,6 +247,11 @@ class CAMWorkbench(Workbench):
                 from Path.Op.Gui import Waterline
 
                 threedopcmdlist.extend(["CAM_Surface", "CAM_Waterline"])
+
+                if Path.Preferences.experimentalFeaturesEnabled():
+                    from Path.Op.Gui import RotarySurface  # noqa: F401
+
+                    threedopcmdlist.append("CAM_RotarySurface")
                 threedcmdgroup = ["CAM_3dTools"]
                 FreeCADGui.addCommand(
                     "CAM_3dTools",
@@ -288,6 +293,7 @@ class CAMWorkbench(Workbench):
             + ["Separator"]
             + twodopcmdlist
             + drillingcmdlist
+            + ["Separator"]
             + engravecmdlist
             + ["Separator"]
             + threedopcmdlist

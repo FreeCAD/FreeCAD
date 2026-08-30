@@ -22,9 +22,11 @@
 ***************************************************************************/"""
 
 import os
+import tempfile
 import threading
 import time
 import unittest
+import warnings
 import zipfile
 
 import FreeCAD
@@ -43,7 +45,8 @@ class TestGuiDocument(unittest.TestCase):
 
     def tearDown(self):
         # Close the document
-        FreeCAD.closeDocument("TestDoc")
+        if self.doc is not None and self.doc.Name in FreeCAD.listDocuments():
+            FreeCAD.closeDocument(self.doc.Name)
 
     def _findAutoSaver(self):
         app = QtWidgets.QApplication.instance()
@@ -95,6 +98,22 @@ class TestGuiDocument(unittest.TestCase):
                 document_xml = recovery.read("Document.xml").decode("utf-8", errors="replace")
                 self.assertIn(expected_label, document_xml)
 
+    def _writeArchiveWithoutGuiDocument(self, source_path, target_path):
+        with zipfile.ZipFile(source_path, "r") as source:
+            self.assertIn("Document.xml", source.namelist())
+            self.assertIn("GuiDocument.xml", source.namelist())
+
+            with zipfile.ZipFile(target_path, "w") as target:
+                for item in source.infolist():
+                    if item.filename == "GuiDocument.xml":
+                        continue
+
+                    target.writestr(item, source.read(item.filename))
+
+        with zipfile.ZipFile(target_path, "r") as target:
+            self.assertIn("Document.xml", target.namelist())
+            self.assertNotIn("GuiDocument.xml", target.namelist())
+
     def testGetTreeRootObject(self):
         # Create objects at the root level
         group1 = self.doc.addObject("App::DocumentObjectGroup", "Group1")
@@ -113,6 +132,35 @@ class TestGuiDocument(unittest.TestCase):
         # Check if the new function returns the correct root objects
         expected_root_objects = [group1, group2, obj1, part1]
         self.assertEqual(set(root_objects), set(expected_root_objects))
+
+    def testIssue30418(self):
+        class ViewProvider:
+            def __init__(self, vobj):
+                vobj.Proxy = self
+
+            def attach(self, vobj):
+                self.ViewObject = vobj
+                self.Object = vobj.Object
+
+            def setEdit(self, vobj, mode):
+                return True
+
+            def unsetEdit(self, vobj, mode):
+                obj = vobj.Object
+                doc = obj.Document
+                doc.removeObject(obj.Name)
+                return True
+
+        gui = FreeCADGui.getDocument(self.doc)
+
+        self.doc.openTransaction("Add object")
+        obj = self.doc.addObject("App::FeaturePython", "Object")
+        ViewProvider(obj.ViewObject)
+        self.doc.commitTransaction()
+        gui.setEdit(obj, 0)
+        self.doc.undo()
+
+        self.assertTrue(True)
 
     def testViewObjectRequiresMainThread(self):
         obj = self.doc.addObject("App::FeaturePython", "ThreadGuard")
@@ -162,12 +210,89 @@ class TestGuiDocument(unittest.TestCase):
         self.assertEqual(proxy.executed_thread_id, threading.get_ident())
         self.assertGreaterEqual(elapsed, 0.04)
 
+    def testSaveCommandDoesNotUseDeprecatedAPI(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            self.doc.saveAs(os.path.join(temp_dir, "TestDoc.FCStd"))
+            self.doc.addObject("App::FeaturePython", "ModifiedObject")
+
+            with warnings.catch_warnings(record=True) as caught_warnings:
+                warnings.simplefilter("always", DeprecationWarning)
+                FreeCADGui.runCommand("Std_Save", 0)
+
+            deprecations = [
+                warning
+                for warning in caught_warnings
+                if issubclass(warning.category, DeprecationWarning)
+            ]
+            self.assertEqual(deprecations, [])
+
     def testRecoverySnapshotIncludesGuiDocument(self):
         self.doc.addObject("App::FeaturePython", "RecoveryGuiObject")
 
         self.assertTrue(FreeCAD.writeRecoverySnapshotToTransientDir(self.doc))
 
         self._assertRecoveryArchiveContains()
+
+    def testRestoreWithoutGuiDocumentFitsViewAndRestoresVisibility(self):
+        try:
+            from pivy import coin  # noqa: F401
+        except ImportError as exc:
+            raise unittest.SkipTest(f"Coin bindings are unavailable: {exc}") from exc
+
+        try:
+            import Part  # noqa: F401
+        except ImportError as exc:
+            raise unittest.SkipTest(f"Part workbench objects are unavailable: {exc}") from exc
+
+        visible_box = self.doc.addObject("Part::Box", "VisibleBox")
+        hidden_cylinder = self.doc.addObject("Part::Cylinder", "HiddenCylinder")
+
+        visible_box.Length = 25
+        visible_box.Width = 20
+        visible_box.Height = 15
+        visible_box.Placement.Base = FreeCAD.Vector(80, 35, 45)
+        visible_box.Visibility = True
+        visible_box.ViewObject.Visibility = True
+
+        hidden_cylinder.Radius = 5
+        hidden_cylinder.Height = 20
+        hidden_cylinder.Placement.Base = FreeCAD.Vector(120, 50, 55)
+        hidden_cylinder.Visibility = False
+        hidden_cylinder.ViewObject.Visibility = False
+
+        self.doc.recompute()
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_path = os.path.join(temp_dir, "with_gui_document.FCStd")
+            target_path = os.path.join(temp_dir, "without_gui_document.FCStd")
+
+            self.doc.saveAs(source_path)
+            self._writeArchiveWithoutGuiDocument(source_path, target_path)
+
+            FreeCAD.closeDocument(self.doc.Name)
+            self.doc = None
+
+            restored_doc = FreeCAD.openDocument(target_path)
+            self.doc = restored_doc
+            try:
+                FreeCAD.setActiveDocument(restored_doc.Name)
+
+                view = FreeCADGui.getDocument(restored_doc.Name).ActiveView
+                self.assertIsNotNone(view)
+
+                self.assertTrue(restored_doc.VisibleBox.ViewObject.Visibility)
+                self.assertFalse(restored_doc.HiddenCylinder.Visibility)
+                self.assertFalse(restored_doc.HiddenCylinder.ViewObject.Visibility)
+
+                def cameraIsFitted():
+                    position = view.getCameraNode().position.getValue().getValue()
+                    return sum(abs(component) for component in position) > 10.0
+
+                self.assertTrue(self._processEventsUntil(cameraIsFitted), view.getCamera())
+            finally:
+                if self.doc is not None and self.doc.Name in FreeCAD.listDocuments():
+                    FreeCAD.closeDocument(self.doc.Name)
+                self.doc = None
 
     def testAutoSaverFlushWritesRecoverySnapshot(self):
         obj = self.doc.addObject("App::FeaturePython", "AutoSaveGuiObject")
@@ -192,6 +317,17 @@ class TestGuiDocument(unittest.TestCase):
 
         self.assertTrue(self._processEventsUntil(lambda: os.path.exists(self._recoveryArchive())))
         self._assertRecoveryArchiveContains()
+
+    def testAutoSaverStableSignalDoesNotBypassTimeout(self):
+        obj = self.doc.addObject("App::FeaturePython", "AutoSaveStableObject")
+        self._removeRecoveryArchive()
+
+        self.doc.openTransaction("AutoSaveStable")
+        obj.Label = "AutoSaveStillPending"
+        self.doc.commitTransaction()
+
+        QtWidgets.QApplication.processEvents(QtCore.QEventLoop.ProcessEventsFlag.AllEvents, 50)
+        self.assertFalse(os.path.exists(self._recoveryArchive()))
 
     def testAutoSaverCoalescesBlockedFlushesToLatestCommittedState(self):
         obj = self.doc.addObject("App::FeaturePython", "AutoSaveChurnObject")

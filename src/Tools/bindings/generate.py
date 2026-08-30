@@ -6,10 +6,12 @@
 import os
 import sys
 import getopt
+from pathlib import Path
 import model.generateModel_Module
 import model.generateModel_Python
 import templates.templateModule
 import templates.templateClassPyExport
+import templates.templateModulePyExport
 
 Usage = """generate - generates a FreeCAD Module out of an XML or Python model
 
@@ -52,6 +54,13 @@ def generate(filename, outputPath):
         Module.module = GenerateModelInst.Module[0]
         Module.Generate()
         print("Done generating: " + GenerateModelInst.Module[0].Name)
+    elif len(GenerateModelInst.PythonModule) != 0:
+        Export = templates.templateModulePyExport.TemplateModulePyExport()
+        Export.outputDir = Path(outputPath)
+        Export.inputDir = Path(filename).parent
+        Export.export = GenerateModelInst.PythonModule[0]
+        Export.Generate()
+        print("Done generating: " + GenerateModelInst.PythonModule[0].Name)
     else:
         Export = templates.templateClassPyExport.TemplateClassPyExport()
         Export.outputDir = outputPath + "/"

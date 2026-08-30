@@ -357,6 +357,45 @@ display the splash screen.</string>
          </property>
         </widget>
        </item>
+       <item row="7" column="1">
+        <widget class="Gui::PrefCheckBox" name="ComboBoxWheelEventFilter">
+         <property name="toolTip">
+          <string>Prevent the mouse wheel from changing the value of combo boxes,
+and spin boxes with hover focus</string>
+         </property>
+         <property name="text">
+          <string>Ignore mouse wheel on hover focused input fields</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>ComboBoxWheelEventFilter</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="Gui::PrefCheckBox" name="FineGrainedRecompute">
+         <property name="toolTip">
+          <string>Activate fine-grained recomputation of documents</string>
+         </property>
+         <property name="text">
+          <string>Fine-grained recompute (experimental)</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>FineGrainedRecompute</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>

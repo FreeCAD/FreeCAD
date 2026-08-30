@@ -37,6 +37,10 @@
 
 #if defined(FC_OS_WIN32)
 # include <windows.h>
+#else
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <unistd.h>
 #endif
 
 #if !defined(FC_OS_MACOSX)
@@ -217,8 +221,19 @@ void SoFCOffscreenRenderer::writeToImageFile(
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
 #else
-            FILE* fd = fopen(filename, "w");
+            const int rawFd = ::open(
+                filename,
+                O_WRONLY | O_CREAT | O_TRUNC,
+                S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
+            );
+            FILE* fd = rawFd >= 0 ? ::fdopen(rawFd, "w") : nullptr;
+            if (!fd && rawFd >= 0) {
+                ::close(rawFd);
+            }
 #endif
+            if (!fd) {
+                throw Base::FileException("Cannot open file for writing", filename);
+            }
             bool ok = writeToPostScript(fd);
             fclose(fd);
             if (!ok) {
@@ -230,8 +245,19 @@ void SoFCOffscreenRenderer::writeToImageFile(
 #ifdef FC_OS_WIN32
             FILE* fd = _wfopen(file.toStdWString().c_str(), L"w");
 #else
-            FILE* fd = fopen(filename, "w");
+            const int rawFd = ::open(
+                filename,
+                O_WRONLY | O_CREAT | O_TRUNC,
+                S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
+            );
+            FILE* fd = rawFd >= 0 ? ::fdopen(rawFd, "w") : nullptr;
+            if (!fd && rawFd >= 0) {
+                ::close(rawFd);
+            }
 #endif
+            if (!fd) {
+                throw Base::FileException("Cannot open file for writing", filename);
+            }
             bool ok = writeToRGB(fd);
             fclose(fd);
             if (!ok) {
@@ -611,7 +637,13 @@ SbBool SoQtOffscreenRenderer::renderFromBase(SoBase* base)
 {
     const SbVec2s fullsize = this->viewport.getViewportSizePixels();
 
-    QSurfaceFormat format;
+    // Start from the application-wide default format so the offscreen context inherits the OpenGL
+    // compatibility profile requested in Application::runApplication(). A freshly constructed
+    // QSurfaceFormat requests a NoProfile/2.0 context, which on Wayland with proprietary drivers
+    // resolves to a core/ES context lacking the legacy GL entry points (glBegin/glEnd, etc.) that
+    // Coin uses to draw geometry. In that case glClear still paints the background but no geometry
+    // is rendered, producing an empty image.
+    QSurfaceFormat format = QSurfaceFormat::defaultFormat();
     format.setSamples(PRIVATE(this)->numSamples);
     QOpenGLContext context;
     context.setFormat(format);

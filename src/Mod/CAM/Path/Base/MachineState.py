@@ -37,7 +37,38 @@ else:
 
 
 class MachineState:
-    def __init__(self):
+    """Track the evolution of an abstract g-code machine across
+    a limited set of parameters (`MachineState.Tracked`).
+    Parameters available as `.$key`, or `[$key]`.
+    Has logic for dealing with certain special g-codes (drill),
+    NB: Tracks G0's F distinct from all other motion F (i.e. `.G0F` vs `.F`).
+    Provides several convenience constructor usages.
+    """
+
+    # State we track, available as .$key, or [$key]
+    Tracked = [
+        "X",
+        "Y",
+        "Z",
+        "A",
+        "B",
+        "C",
+        "F",
+        "S",
+        "T",
+        "Coolant",  # true/false for on/off
+        "WCS",  # work-coordinate system Gcode
+        "Spindle",  # rpms
+        "ReturnMode",  # Z(G98) or R(G99) for drills
+        "G0F",  # F for G0's, distinct from all other move F. all G0's should have an F now.
+    ]
+
+    class _NoArg:
+        # unique object distinguishable from None
+        pass
+
+    def __init__(self, initial: None | dict = _NoArg):
+        """an initial state is optional, and doesn't have to set all Tracked properties"""
         self.WCSLIST = [
             "G53",
             "G54",
@@ -67,42 +98,93 @@ class MachineState:
         self.Coolant = False  #: bool = field(default=False)
         self.WCS = "G54"  #: str = field(default="G54")
         self.Spindle = "off"  #: str = field(default="off")
+        self.ReturnMode = "Z"  #: str = Z|R for G98/G99, for drill cycles
+        self.G0F = 0.0  #: float = field(default=None)
         self.S = 0  #: int = field(default=0)
         self.T = None  #: int = field(default=None)
+
+        # sanity
+        if missing := [k for k in self.Tracked if k not in dir(self)]:
+            raise Exception(f"Internal: didn't initialize a Tracked Parameter {missing}")
+
+        if initial is not self._NoArg:
+            self.setState(initial)
+
+        self.previous = {}
+
+    def __getitem__(self, key):
+        """Support [k] for Tracked keys"""
+        if key in self.Tracked:
+            return getattr(self, key)
+        else:
+            raise KeyError(key, f"not a MachineState.Tracked key: ({', '.join(self.Tracked)}")
 
     def addCommand(self, command):
         """Processes a command and updates the internal state of the machine.
         Returns true if the command has alterned the machine state"""
-        oldstate = self.getState()
+        self.previous = self.getState()
         if command.Name == "M6":
             self.T = int(command.Parameters["T"])
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in ["M3", "M4"]:
-            self.S = command.Parameters["S"]
+            self.S = command.Parameters.get(
+                "S", None
+            )  # e.g. Plasma may omit S during post-processing
             self.Spindle = "CW" if command.Name == "M3" else "CCW"
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
+
+        if command.Name in ["G98", "G99"]:
+            self.ReturnMode = "R" if command.Name == "G99" else "Z"
+            return not self.previous == self.getState()
 
         if command.Name in ["M2", "M5"]:
             self.S = 0
             self.Spindle = "off"
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in self.WCSLIST:
             self.WCS = command.Name
-            return not oldstate == self.getState()
+            return not self.previous == self.getState()
 
         if command.Name in Path.Geom.CmdMoveDrill:
-            oldZ = self.Z
+            # Special logic for drill: old-Z or R
             for p in command.Parameters:
-                self.__setattr__(p, command.Parameters[p])
-            self.__setattr__("Z", oldZ)
-            return not oldstate == self.getState()
 
-        for p in command.Parameters:
-            self.__setattr__(p, command.Parameters[p])
+                # Z depends on ReturnMode
+                if p == "Z":
+                    continue
 
-        return not oldstate == self.getState()
+                if p in self.Tracked:
+                    setattr(self, p, command.Parameters[p])
+
+            if self.ReturnMode == "R":
+                self.Z = command.Parameters["R"]
+            else:  # Z/G98 mode
+                oldZ = self.Z
+                r = command.Parameters.get("R", None)
+                if oldZ is None or r is None:
+                    # can't test R vs old Z
+                    # You need to establish an old Z, and specify an R
+                    # Which shouldn't happen unless testing
+                    self.Z = oldZ
+                else:
+                    self.Z = max(oldZ, r)
+
+            return not self.previous == self.getState()
+
+        # just the usual GCode Parameters (except G0's F)
+        for p in self.Tracked:
+            if p not in command.Parameters:
+                continue
+
+            # G0's F is distinct
+            if command.Name in ["G0", "G00"] and p == "F":
+                self.G0F = command.Parameters[p]
+            else:
+                setattr(self, p, command.Parameters[p])
+
+        return not self.previous == self.getState()
 
     def addCommands(self, commands):
         """Processes a command or list of commands and updates the internal state of the machine"""
@@ -114,25 +196,46 @@ class MachineState:
 
         return False
 
+    def copy(self):
+        return MachineState(self.getState())
+
+    def _save(self):
+        # save current state as .previous as a dict
+        self.previous = self.getState()
+
+    def setState(self, state: dict | None):
+        """Sets the state from a dict
+        Convenience mode: None causes all parameters=None
+        """
+        self._save()
+
+        for s in self.Tracked:
+            if state is None:
+                setattr(self, s, None)
+            elif s in state:
+                setattr(self, s, state[s])
+            else:
+                # un-mentioned are set to None ("set" not "update")
+                setattr(self, s, None)
+
+    def updateState(self, state: dict | None):
+        """Updates the state from a dict
+        Convenience mode: None causes all parameters=None
+        """
+        self._save()
+
+        for s in self.Tracked:
+            if state is None:
+                setattr(self, s, None)
+            elif s in state:
+                setattr(self, s, state[s])
+            # un-mentioned are left alone
+
     def getState(self):
         """
         Returns a dictionary of the current machine state
         """
-        state = {}
-        state["X"] = self.X
-        state["Y"] = self.Y
-        state["Z"] = self.Z
-        state["A"] = self.A
-        state["B"] = self.B
-        state["C"] = self.C
-        state["F"] = self.F
-        state["Coolant"] = self.Coolant
-        state["WCS"] = self.WCS
-        state["Spindle"] = self.Spindle
-        state["S"] = self.S
-        state["T"] = self.T
-
-        return state
+        return {k: getattr(self, k) for k in self.Tracked}
 
     def getPosition(self):
         """
@@ -142,3 +245,6 @@ class MachineState:
         # This is technical debt.  The actual position may include a rotation
         # component as well.  We should probably be returning a placement
         return FreeCAD.Vector(self.X, self.Y, self.Z)
+
+    def __str__(self):
+        return f"MachineState({self.getState()})"

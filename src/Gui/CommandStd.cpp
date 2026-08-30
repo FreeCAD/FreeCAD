@@ -310,6 +310,47 @@ void StdCmdAboutQt::activated(int iMsg)
 }
 
 //===========================================================================
+// Std_HelpGroup
+//===========================================================================
+class StdCmdHelpGroup: public Gui::GroupCommand
+{
+public:
+    StdCmdHelpGroup()
+        : GroupCommand("Std_HelpGroup")
+    {
+        sGroup = "File";
+        sMenuText = QT_TR_NOOP("Help");
+        sToolTipText = QT_TR_NOOP("Opens the documentation corresponding to the selection");
+        sWhatsThis = "Std_HelpGroup";
+        sStatusTip = sToolTipText;
+        sPixmap = "help-browser";
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Std_WhatsThis");
+        addCommand("Std_OnlineHelp");
+        addCommand();  // separator
+        addCommand("Std_FreeCADUserHub");
+        addCommand("Std_FreeCADForum");
+        addCommand("Std_ReportBug");
+        addCommand();  // separator
+        addCommand("Std_RestartInSafeMode");
+        addCommand();  // separator
+        addCommand("Std_DevHandbook");
+        addCommand("Std_PythonHelp");
+        addCommand();  // separator
+        addCommand("Std_FreeCADWebsite");
+        addCommand("Std_FreeCADDonation");
+        addCommand("Std_About");
+    }
+
+    const char* className() const override
+    {
+        return "StdCmdHelpGroup";
+    }
+};
+//===========================================================================
 // Std_WhatsThis
 //===========================================================================
 DEF_STD_CMD(StdCmdWhatsThis)
@@ -597,7 +638,7 @@ StdCmdFreeCADDonation::StdCmdFreeCADDonation()
 {
     sGroup = "Help";
     sMenuText = QT_TR_NOOP("Donate to FreeCA&D");
-    sToolTipText = QT_TR_NOOP("Support the FreeCAD development");
+    sToolTipText = QT_TR_NOOP("Opens the FreeCAD donation page");
     sWhatsThis = "Std_FreeCADDonation";
     sStatusTip = sToolTipText;
     sPixmap = "internet-web-browser";
@@ -629,7 +670,7 @@ StdCmdDevHandbook::StdCmdDevHandbook()
     sGroup = "Help";
     sMenuText = QT_TR_NOOP("Developers Handbook");
 
-    sToolTipText = QT_TR_NOOP("Handbook about FreeCAD development");
+    sToolTipText = QT_TR_NOOP("Opens the FreeCAD developers handbook");
 
     sWhatsThis = "Std_DevHandbook";
     sStatusTip = sToolTipText;
@@ -724,7 +765,7 @@ StdCmdFreeCADForum::StdCmdFreeCADForum()
 {
     sGroup = "Help";
     sMenuText = QT_TR_NOOP("FreeCAD &Forum");
-    sToolTipText = QT_TR_NOOP("The FreeCAD forum, where you can find help from other users");
+    sToolTipText = QT_TR_NOOP("Opens the FreeCAD forum to find help from other users");
     sWhatsThis = "Std_FreeCADForum";
     sStatusTip = sToolTipText;
     sPixmap = "internet-web-browser";
@@ -1078,6 +1119,7 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     rcCmdMgr.addCommand(new StdCmdDevHandbook());
+    rcCmdMgr.addCommand(new StdCmdHelpGroup());
     // rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     // rcCmdMgr.addCommand(new StdCmdDescription());
     rcCmdMgr.addCommand(new StdCmdAnnotationLabel());

@@ -115,7 +115,7 @@ protected:
     void hideEvent(QHideEvent*) override;
 
 private:
-    QString getModule(const char* type) const;
+    QString getModule(std::string_view type) const;
     QString getProperty(App::DocumentObject* obj) const;
     bool supportPart(App::DocumentObject* obj, const QString& part) const;
 

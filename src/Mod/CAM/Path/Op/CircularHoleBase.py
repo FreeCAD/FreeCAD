@@ -149,9 +149,9 @@ class ObjectOp(PathOp.ObjectOp):
                 return shape.Curve.Radius * 2
 
             if isinstance(shape, Part.Face):
-                for edge in shape.Edges:
-                    if isinstance(edge.Curve, Part.Circle):
-                        return edge.Curve.Radius * 2
+                if edges := [e for e in shape.Edges if isinstance(e.Curve, Part.Circle)]:
+                    edge = sorted(edges, key=lambda e: e.BoundBox.ZMax)[0]  # bottom circular edge
+                    return edge.Curve.Radius * 2
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
@@ -162,7 +162,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
             )
             return shape.BoundBox.XLength
-        except Part.OCCError as e:
+        except Exception as e:
             Path.Log.error(e)
 
         return 0
@@ -187,7 +187,7 @@ class ObjectOp(PathOp.ObjectOp):
                     if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
                         return FreeCAD.Vector(center.x, center.y, 0)
             return FreeCAD.Vector(shape.CenterOfMass.x, shape.CenterOfMass.y, 0)
-        except Part.OCCError as e:
+        except Exception as e:
             Path.Log.error(e)
 
         Path.Log.error(
@@ -211,7 +211,7 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track()
 
         holes = []
-        for base, subs in obj.Base:
+        for base, subs in self.baseShapes(obj):
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
                 if not self.isHoleEnabled(obj, base, sub):
@@ -243,7 +243,7 @@ class ObjectOp(PathOp.ObjectOp):
         for pos in getattr(obj, "Locations", []):
             holes.append({"x": pos.x, "y": pos.y, "d": 0})
 
-        if len(holes) > 0:
+        if holes:
             if obj.SortingMode == "Automatic":
                 # Use the c++ implementation of the TSP sorting algorithm for better performance
                 startPoint = [obj.StartPoint.x, obj.StartPoint.y]

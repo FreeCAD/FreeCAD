@@ -45,6 +45,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Tools.h>
+#include <Mod/Part/App/Datums.h>
 #include <TopTools_IndexedMapOfShape.hxx>
 
 using namespace Measure;
@@ -240,7 +241,7 @@ bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
         case MeasurementCase::EdgeEdge:
             return computeOriginEdgeEdge(s1, s2);
         case MeasurementCase::FaceEdge:
-            return computeOriginFaceEdge(s1, s2);
+            return computeOriginFaceEdge(s1);
     }
 
     // cant reach here
@@ -278,7 +279,9 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
         }
     }
 
-    _isImgOrigin = true;
+    if (!isMeasuringDatum() || !areLocationsEqual()) {
+        _isImgOrigin = true;
+    }
 
     gp_Pln pln1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
     gp_Pln pln2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
@@ -293,41 +296,47 @@ bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
         }
     }
 
-    return false;
+    outOrigin = gp_Pnt((location1().XYZ() + location2().XYZ()) / 2.0);
+    return true;
 }
 
 bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
-    TopoDS_Edge e1 = TopoDS::Edge(s1);
-    TopoDS_Edge e2 = TopoDS::Edge(s2);
-    TopoDS_Vertex common;
+    if (!isMeasuringDatum()) {
+        TopoDS_Edge e1 = TopoDS::Edge(s1);
+        TopoDS_Edge e2 = TopoDS::Edge(s2);
+        TopoDS_Vertex common;
 
-    if (TopExp::CommonVertex(e1, e2, common)) {
-        outOrigin = BRep_Tool::Pnt(common);
-        return true;
+        if (TopExp::CommonVertex(e1, e2, common)) {
+            outOrigin = BRep_Tool::Pnt(common);
+            return true;
+        }
+
+        // get geometrically same vertex
+        TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
+        TopExp::Vertices(e1, v1_1, v1_2);
+        TopExp::Vertices(e2, v2_1, v2_2);
+
+        gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
+        gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
+        gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
+        gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
+
+        double tol = Precision::Confusion();
+        if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
+            outOrigin = p1_1;
+            return true;
+        }
+        if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
+            outOrigin = p1_2;
+            return true;
+        }
+
+        _isImgOrigin = true;
     }
-
-    // get geometrically same vertex
-    TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
-    TopExp::Vertices(e1, v1_1, v1_2);
-    TopExp::Vertices(e2, v2_1, v2_2);
-
-    gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
-    gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
-    gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
-    gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
-
-    double tol = Precision::Confusion();
-    if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
-        outOrigin = p1_1;
-        return true;
+    else if (!areLocationsEqual()) {
+        _isImgOrigin = true;
     }
-    if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
-        outOrigin = p1_2;
-        return true;
-    }
-
-    _isImgOrigin = true;
 
     gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
     gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
@@ -337,9 +346,11 @@ bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
     return true;
 }
 
-bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
+bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1)
 {
-    _isImgOrigin = true;
+    if (!isMeasuringDatum() || !areLocationsEqual()) {
+        _isImgOrigin = true;
+    }
 
     bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
     gp_Vec faceNormal = ((faceIsS1) ? vector1() : vector2()).Normalized();
@@ -351,6 +362,16 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
     Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
     Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
     edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+    if (edgeDirVec.Length() < Precision::Confusion()) {
+        if (faceIsS1) {
+            outOrigin = faceLoc;
+        }
+        else {
+            outOrigin = edgeLoc;
+        }
+        return true;
+    }
 
     gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
     projection.Normalize();
@@ -372,6 +393,33 @@ bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
     return true;
 }
 
+namespace
+{
+bool isDatum(App::DocumentObject* ob, const std::vector<std::string>& subNames)
+{
+    if (!ob || !ob->isValid() || subNames.empty()) {
+        return false;
+    }
+
+    App::SubObjectT subject {ob, subNames.at(0).c_str()};
+    App::DocumentObject* subObject = subject.getSubObjectList().back();
+    if (!subObject || !subObject->isValid()) {
+        return false;
+    }
+    return Measure::isDatum(*subObject);
+}
+}  // namespace
+
+bool Measure::MeasureAngle::isMeasuringDatum()
+{
+    return ::isDatum(Element1.getValue(), Element1.getSubValues())
+        || ::isDatum(Element2.getValue(), Element2.getSubValues());
+}
+
+bool Measure::MeasureAngle::areLocationsEqual()
+{
+    return gp_Pnt(location1().XYZ()).IsEqual(gp_Pnt(location2().XYZ()), Precision::Confusion());
+}
 
 bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
 {
@@ -379,7 +427,7 @@ bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
     return true;
 }
 
-bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
+bool MeasureAngle::setDirections(TopoDS_Shape& s1)
 {
 
     direction1 = vector1();
@@ -424,6 +472,10 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
         Base::Vector3d edgeDirVec(edgeDir.X(), edgeDir.Y(), edgeDir.Z());
         Base::Vector3d normalVec(faceNormal.X(), faceNormal.Y(), faceNormal.Z());
         edgeDirVec.ProjectToPlane(Base::Vector3d(0, 0, 0), normalVec);
+
+        if (edgeDirVec.Length() < Precision::Confusion()) {
+            return true;
+        }
 
         gp_Vec projection(edgeDirVec.x, edgeDirVec.y, edgeDirVec.z);
         projection.Normalize();
@@ -505,7 +557,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
         mCase = MeasurementCase::FaceEdge;
     }
 
-    if (!setOrigin(s1, s2) || !setDirections(s1, s2)) {
+    if (!setOrigin(s1, s2) || !setDirections(s1)) {
         return new App::DocumentObjectExecReturn("Failed to Set Origin");
     }
 

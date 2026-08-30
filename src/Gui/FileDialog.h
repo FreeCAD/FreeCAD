@@ -47,7 +47,17 @@ namespace Gui
 class GuiExport DialogOptions
 {
 public:
+    enum class Backend : uint8_t
+    {
+        NonNative,
+        ViaQt,
+        ViaWin32,
+    };
+
+    static Backend fileDialogBackend();
     static bool dontUseNativeFileDialog();
+
+    static Backend colorDialogBackend();
     static bool dontUseNativeColorDialog();
 };
 

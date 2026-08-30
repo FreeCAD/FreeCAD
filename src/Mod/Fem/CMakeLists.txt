@@ -1,3 +1,4 @@
+disable_occt8_deprecation_warnings()
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
@@ -74,7 +75,9 @@ SET(FemExamples_SRCS
     femexamples/ccx_cantilever_faceload.py
     femexamples/ccx_cantilever_nodeload.py
     femexamples/ccx_cantilever_prescribeddisplacement.py
+    femexamples/ccx_cavity_radiation.py
     femexamples/ccx_disc_cyclic_symm_centrif.py
+    femexamples/ccx_radiation_benchmark.py
     femexamples/ccx_rigid_body.py
     femexamples/ccx_pipe_pressure_2D.py
     femexamples/ccx_plane_stress_plate.py
@@ -101,7 +104,9 @@ SET(FemExamples_SRCS
     femexamples/equation_magnetostatics_2D_elmer.py
     femexamples/equation_staticcurrent_elmer.py
     femexamples/frequency_beamsimple.py
+    femexamples/inductive_heating_axisymmetric.py
     femexamples/magnetic_shielding_2D.py
+    femexamples/magnetization_3D.py
     femexamples/manager.py
     femexamples/material_multiple_bendingbeam_fiveboxes.py
     femexamples/material_multiple_bendingbeam_fivefaces.py
@@ -109,6 +114,7 @@ SET(FemExamples_SRCS
     femexamples/material_nl_platewithhole.py
     femexamples/mystran_plate.py
     femexamples/rc_wall_2d.py
+    femexamples/spark_gap.py
     femexamples/square_pipe_end_twisted_edgeforces.py
     femexamples/square_pipe_end_twisted_nodeforces.py
     femexamples/thermomech_bimetal.py
