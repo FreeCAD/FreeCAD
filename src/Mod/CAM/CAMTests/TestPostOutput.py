@@ -33,6 +33,7 @@ import Path
 import Path.Post.Command as PathCommand
 from Path.Post import PostList
 import Path.Post.Utils as PostUtils
+from Path.Post.CAMErrors import CAMValueError
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 from Machine.models.machine import Machine, OutputUnits, Toolhead, ToolheadType
@@ -788,6 +789,23 @@ class TestExport2Integration(unittest.TestCase):
         cmd = Path.Command("G0 X1 F0")
         gcode = post.convert_command_to_gcode(cmd)
         self.assertNotIn(" F", gcode)
+
+    def test004_unsupported_convert(self):
+        """Test if throws on unsupported"""
+
+        machine = self._create_machine()
+        post = self._create_postprocessor(machine)
+
+        # Basic unsupported
+        cmd = Path.Command("G9999")
+        with self.assertRaisesRegex(CAMValueError, "Unsupported command") as cm:
+            gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("Unsupported command: G9999", str(cm.exception))
+
+        # But, allow ANNOT_ALLOW_UNSUPPORTED
+        cmd = Path.Command("G9999", {}, {Constants.ANNOT_ALLOW_UNSUPPORTED: "True"})
+        gcode = post.convert_command_to_gcode(cmd)
+        self.assertIn("G9999", gcode)
 
     # ===== 010-019: Basic smoke tests =====
 

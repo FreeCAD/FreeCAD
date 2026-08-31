@@ -32,6 +32,7 @@ from Path.Op import Custom
 from Path.Base.MachineState import MachineState
 from Path.Post.Processor import PostProcessor
 from Path.Post.PostList import Postable
+from Path.Post.CAMErrors import CAMValueError
 from Machine.models.machine import Machine, OutputUnits
 from CAMTests import PathTestUtils
 
@@ -63,7 +64,7 @@ class TestPathCustomConverted(PathTestUtils.PathTestBase):
             item_type="operation",
             data={},
             path=op.Path,
-            source=None,
+            source=op,
         )
         return op, postable
 
@@ -102,18 +103,16 @@ G1 X1.000
         )
 
     def test_unsupported(self):
-        """Processor allows unsupported gcode"""
+        """Processor does not allow unsupported gcode,
+        gives helpful error
+        """
         _, postable = self._make_op("G666 X1")
 
         output = []
-        self.pp._convert_item_commands(postable, output)
-        self.assertEqual(
-            "\n".join(output),
-            """(Custom)
-(Begin Custom)
-G666 X1.000
-(End Custom)""",
-        )
+        self.pp._operation = postable
+        with self.assertRaisesRegex(CAMValueError, "Unsupported command") as cm:
+            self.pp._convert_item_commands(postable, output)
+        self.assertIn("in the Custom op", str(cm.exception))  # the helpful bit
 
     def test_as_is_one_line(self):
         """Processor allows add lines without processing"""
