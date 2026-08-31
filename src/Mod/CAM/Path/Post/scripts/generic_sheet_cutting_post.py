@@ -332,7 +332,6 @@ class GenericSheetCutting(PostProcessor):
         """Handle torch ignition/extinguishment based on Z-axis movement."""
         props = self._machine.postprocessor_properties
         if props.get("cutter_control") == "Z_Control":
-            print("Z_Control")
             for section_name, sublist in postables:
                 for item in sublist:
                     if hasattr(item, "Path") and item.Path:
@@ -398,7 +397,6 @@ class GenericSheetCutting(PostProcessor):
                                 cmd.Name in Constants.GCODE_MOVE
                                 and prev_command in Constants.GCODE_MOVE_RAPID
                             ):
-                                print("torch on")
                                 if not self._torch_active:
                                     if self.values["MARK_ENTRY_ONLY"]:
                                         new_commands.append(cmd)
@@ -415,7 +413,6 @@ class GenericSheetCutting(PostProcessor):
                                 cmd.Name in Constants.GCODE_MOVE_RAPID
                                 and prev_command in Constants.GCODE_MOVE
                             ):
-                                print("torch out")
                                 new_commands.append(self.TorchExtinguishCommand)
                                 self._torch_active = False
 
