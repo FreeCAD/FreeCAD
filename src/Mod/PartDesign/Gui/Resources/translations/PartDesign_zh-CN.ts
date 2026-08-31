@@ -1743,14 +1743,14 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskExtrudeParameters</name>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1495"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1496"/>
       <source>No face selected</source>
       <translation>未选择任何面</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="183"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="236"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1259"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1260"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
@@ -1770,7 +1770,7 @@ If zero, it is equal to Radius2</source>
       <translation>选择面</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="796"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="797"/>
       <source>Select reference…</source>
       <translation>选择参考…</translation>
     </message>
@@ -1782,7 +1782,7 @@ If zero, it is equal to Radius2</source>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="67"/>
       <location filename="../../TaskExtrudeParameters.cpp" line="230"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1197"/>
       <source>No start reference selected</source>
       <translation>未选择起始参考基准</translation>
     </message>
@@ -1792,60 +1792,60 @@ If zero, it is equal to Radius2</source>
       <translation>相对于轮廓或所选起始参考基准的偏移量</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="789"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="790"/>
       <source>Sketch normal</source>
       <translation>草图法向</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="792"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="793"/>
       <source>Face normal</source>
       <translation>面法线</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="800"/>
-      <location filename="../../TaskExtrudeParameters.cpp" line="803"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="801"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="804"/>
       <source>Custom direction</source>
       <translation>自定义方向：</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1190"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
       <source>Cancel</source>
       <translation>取消</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1191"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1192"/>
       <source>Select face, plane...</source>
       <translation>选择面、平面...</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1195"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1196"/>
       <source>Pick Reference</source>
       <translation>选择参考</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1206"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1207"/>
       <source>Click on a shape in the model</source>
       <translation>点击模型中的形状</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1482"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
       <source>One sided</source>
       <translation>单侧</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1483"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
       <source>Two sided</source>
       <translation>双侧</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1484"/>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1485"/>
       <source>Symmetric</source>
       <translation>对称</translation>
     </message>
     <message>
-      <location filename="../../TaskExtrudeParameters.cpp" line="1490"/>
-      <source>Click on a face in the model</source>
-      <translation>点击模型中的一个面</translation>
+      <location filename="../../TaskExtrudeParameters.cpp" line="1491"/>
+      <source>Face selection active</source>
+      <translation>面选择已激活</translation>
     </message>
   </context>
   <context>
@@ -2134,133 +2134,164 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="57"/>
+      <location filename="../../TaskHoleParameters.cpp" line="59"/>
       <source>Counterbore</source>
       <translation>沉孔</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="58"/>
+      <location filename="../../TaskHoleParameters.cpp" line="60"/>
       <source>Countersink</source>
       <translation>埋头孔</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="59"/>
+      <location filename="../../TaskHoleParameters.cpp" line="61"/>
       <source>Counterdrill</source>
       <translation>沉头钻</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="63"/>
+      <location filename="../../TaskHoleParameters.cpp" line="65"/>
       <source>Hole Parameters</source>
       <translation>孔参数</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="72"/>
+      <location filename="../../TaskHoleParameters.cpp" line="74"/>
       <source>None</source>
       <translation>无</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="73"/>
+      <location filename="../../TaskHoleParameters.cpp" line="75"/>
       <source>ISO metric regular</source>
       <translation>ISO 米制普通螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="74"/>
+      <location filename="../../TaskHoleParameters.cpp" line="76"/>
       <source>ISO metric fine</source>
       <translation>ISO 米制细牙螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="75"/>
+      <location filename="../../TaskHoleParameters.cpp" line="77"/>
       <source>UTS coarse</source>
       <translation>UTS 统一粗牙螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="76"/>
+      <location filename="../../TaskHoleParameters.cpp" line="78"/>
       <source>UTS fine</source>
       <translation>UTS 统一细牙螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="77"/>
+      <location filename="../../TaskHoleParameters.cpp" line="79"/>
       <source>UTS extra fine</source>
       <translation>UTS 统一超细牙螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="78"/>
+      <location filename="../../TaskHoleParameters.cpp" line="80"/>
       <source>ANSI pipes</source>
       <translation>ANSI 美标管螺纹标准</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="79"/>
+      <location filename="../../TaskHoleParameters.cpp" line="81"/>
       <source>ISO/BSP pipes</source>
       <translation>ISO/BSP 国际/英标管螺纹标准</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="80"/>
+      <location filename="../../TaskHoleParameters.cpp" line="82"/>
       <source>BSW whitworth</source>
       <translation>BSW 惠氏螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="81"/>
+      <location filename="../../TaskHoleParameters.cpp" line="83"/>
       <source>BSF whitworth fine</source>
       <translation>BSF 惠氏细牙螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="82"/>
+      <location filename="../../TaskHoleParameters.cpp" line="84"/>
       <source>ISO tyre valves</source>
       <translation>ISO 轮胎气门嘴</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="712"/>
+      <location filename="../../TaskHoleParameters.cpp" line="202"/>
+      <source>Offset from the profile or selected start reference</source>
+      <translation>相对于轮廓或所选起始参考基准的偏移量</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="701"/>
+      <source>Cancel</source>
+      <translation>取消</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="702"/>
+      <source>Select face, plane...</source>
+      <translation>选择面、平面...</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="707"/>
+      <source>Pick Reference</source>
+      <translation>选择参考</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="708"/>
+      <location filename="../../TaskHoleParameters.cpp" line="1134"/>
+      <source>No start reference selected</source>
+      <translation>未选择起始参考基准</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="771"/>
       <source>Medium</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>中</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="716"/>
+      <location filename="../../TaskHoleParameters.cpp" line="775"/>
       <source>Fine</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>精细</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="720"/>
+      <location filename="../../TaskHoleParameters.cpp" line="779"/>
       <source>Coarse</source>
       <comment>Distance between thread crest and hole wall, use ISO-273 nomenclature or equivalent if possible</comment>
       <translation>粗糙</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="726"/>
+      <location filename="../../TaskHoleParameters.cpp" line="785"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>法向</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="730"/>
+      <location filename="../../TaskHoleParameters.cpp" line="789"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>关闭</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="734"/>
+      <location filename="../../TaskHoleParameters.cpp" line="793"/>
       <source>Loose</source>
       <comment>Distance between thread crest and hole wall, use ASME B18.2.8 nomenclature or equivalent if possible</comment>
       <translation>宽松</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="738"/>
+      <location filename="../../TaskHoleParameters.cpp" line="797"/>
       <source>Normal</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>法向</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="739"/>
+      <location filename="../../TaskHoleParameters.cpp" line="798"/>
       <source>Close</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>关闭</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.cpp" line="740"/>
+      <location filename="../../TaskHoleParameters.cpp" line="799"/>
       <source>Wide</source>
       <comment>Distance between thread crest and hole wall</comment>
       <translation>宽度</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.cpp" line="1140"/>
+      <source>Face</source>
+      <translation>面</translation>
     </message>
   </context>
   <context>
@@ -2914,109 +2945,142 @@ measured along the specified direction</source>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="22"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="103"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="205"/>
       <source>Type</source>
       <translation>类型</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="40"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="270"/>
       <source>Base X-axis</source>
       <translation>X 轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="22"/>
+      <source>Mode</source>
+      <translation>模式</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="45"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="271"/>
       <source>Base Y-axis</source>
       <translation>Y 轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="224"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="50"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="272"/>
       <source>Base Z-axis</source>
       <translation>Z 轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="55"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草绘轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="70"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="60"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草绘轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="154"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
+      <source>Side 1</source>
+      <translation>侧面 1</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="156"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="252"/>
+      <source>Select Face</source>
+      <translation>选择面</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="189"/>
+      <source>Side 2</source>
+      <translation>侧面 2</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.ui" line="276"/>
       <source>Symmetric to plane</source>
       <translation>相当平面对称</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="161"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="283"/>
       <source>Reversed</source>
       <translation>反转</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="120"/>
-      <source>2nd angle</source>
-      <translation>第二角度</translation>
-    </message>
-    <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="42"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="32"/>
       <source>Axis</source>
       <translation>轴线</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="280"/>
       <source>Select reference…</source>
       <translation>选择参考…</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="119"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="215"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Angle</source>
       <translation>角度</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="149"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="459"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="192"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="534"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="192"/>
+      <location filename="../../TaskRevolutionParameters.ui" line="297"/>
       <source>Recompute on change</source>
       <translation>更改时重新计算</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="217"/>
       <source>To last</source>
       <translation>直到最后</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="180"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="220"/>
       <source>Through all</source>
       <translation>通过所有</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="182"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="222"/>
       <source>To first</source>
       <translation>到起始位置</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="183"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="223"/>
       <source>Up to face</source>
       <translation>直到面</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="184"/>
-      <source>Two angles</source>
-      <translation>两个角度</translation>
+      <location filename="../../TaskRevolutionParameters.cpp" line="230"/>
+      <source>One sided</source>
+      <translation>单侧</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="447"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <source>Two sided</source>
+      <translation>双侧</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="232"/>
+      <source>Symmetric</source>
+      <translation>对称</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="555"/>
+      <source>Face selection active</source>
+      <translation>面选择已激活</translation>
+    </message>
+    <message>
+      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="560"/>
       <source>No face selected</source>
       <translation>未选择任何面</translation>
     </message>
@@ -3616,18 +3680,18 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="433"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="208"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Vertical sketch axis</source>
       <translation>垂直草绘轴</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="434"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="209"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="257"/>
       <source>Horizontal sketch axis</source>
       <translation>水平草绘轴</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="211"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="259"/>
       <source>Construction line %1</source>
       <translation>辅助线 %1</translation>
     </message>
@@ -4064,147 +4128,147 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
   <context>
     <name>TaskHoleParameters</name>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="824"/>
+      <location filename="../../TaskHoleParameters.ui" line="919"/>
       <source>Live update of changes to the thread
 Note that the calculation can take some time</source>
       <translation>实时更新对螺纹的更改
 注意计算可能需要一些时间</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1019"/>
+      <location filename="../../TaskHoleParameters.ui" line="1114"/>
       <source>Thread Depth</source>
       <translation>螺纹深度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1072"/>
+      <location filename="../../TaskHoleParameters.ui" line="1167"/>
       <source>Customize thread clearance</source>
       <translation>自定义螺纹间隙</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="699"/>
+      <location filename="../../TaskHoleParameters.ui" line="794"/>
       <source>Clearance</source>
       <translation>间隙</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="65"/>
+      <location filename="../../TaskHoleParameters.ui" line="219"/>
       <source>Head type</source>
       <translation>头部类型</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="153"/>
+      <location filename="../../TaskHoleParameters.ui" line="248"/>
       <source>Depth type</source>
       <translation>深度类型</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="245"/>
+      <location filename="../../TaskHoleParameters.ui" line="340"/>
       <source>Head diameter</source>
       <translation>头部直径</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="293"/>
+      <location filename="../../TaskHoleParameters.ui" line="388"/>
       <source>Head depth</source>
       <translation>头部深度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="668"/>
+      <location filename="../../TaskHoleParameters.ui" line="763"/>
       <source>Clearance / Passthrough</source>
       <translation>间隙 / 通过孔</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="686"/>
+      <location filename="../../TaskHoleParameters.ui" line="781"/>
       <source>Hole type</source>
       <translation>孔类型</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="828"/>
+      <location filename="../../TaskHoleParameters.ui" line="923"/>
       <source>Update thread view</source>
       <translation>更新螺纹视图</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1078"/>
+      <location filename="../../TaskHoleParameters.ui" line="1173"/>
       <source>Custom Clearance</source>
       <translation>自定义间隙</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="1091"/>
+      <location filename="../../TaskHoleParameters.ui" line="1186"/>
       <source>Custom Thread clearance value</source>
       <translation>自定义螺纹间隙大小</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="881"/>
+      <location filename="../../TaskHoleParameters.ui" line="976"/>
       <source>Direction</source>
       <translation>方向</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="49"/>
+      <location filename="../../TaskHoleParameters.ui" line="193"/>
       <source>Size</source>
       <translation>大小</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="712"/>
+      <location filename="../../TaskHoleParameters.ui" line="807"/>
       <source>Hole clearance
 Only available for holes without thread</source>
       <translation>孔位
 仅适用于无螺纹孔</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="88"/>
-      <location filename="../../TaskHoleParameters.ui" line="717"/>
+      <location filename="../../TaskHoleParameters.ui" line="170"/>
+      <location filename="../../TaskHoleParameters.ui" line="812"/>
       <source>Standard</source>
       <translation>标准</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="673"/>
+      <location filename="../../TaskHoleParameters.ui" line="768"/>
       <source>Tap drill</source>
       <translation>攻丝钻孔</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="678"/>
+      <location filename="../../TaskHoleParameters.ui" line="773"/>
       <source>Threaded</source>
       <translation>带螺纹的</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="722"/>
+      <location filename="../../TaskHoleParameters.ui" line="817"/>
       <source>Close</source>
       <translation>关闭</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="727"/>
+      <location filename="../../TaskHoleParameters.ui" line="822"/>
       <source>Wide</source>
       <translation>宽度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="805"/>
+      <location filename="../../TaskHoleParameters.ui" line="900"/>
       <source>Whether the hole gets a modelled thread</source>
       <translation>该孔是否生成一个建模螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="808"/>
+      <location filename="../../TaskHoleParameters.ui" line="903"/>
       <source>Model Thread</source>
       <translation>建模螺纹</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="861"/>
+      <location filename="../../TaskHoleParameters.ui" line="956"/>
       <source>Class</source>
       <translation>等级</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="848"/>
+      <location filename="../../TaskHoleParameters.ui" line="943"/>
       <source>Tolerance class for threaded holes according to hole profile</source>
       <translation>根据孔配置方案螺纹孔的公差等级</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="552"/>
+      <location filename="../../TaskHoleParameters.ui" line="647"/>
       <source>Diameter</source>
       <translation>直径</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="574"/>
+      <location filename="../../TaskHoleParameters.ui" line="669"/>
       <source>Hole diameter</source>
       <translation>孔直径</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="507"/>
+      <location filename="../../TaskHoleParameters.ui" line="602"/>
       <source>Depth</source>
       <translation>深度</translation>
     </message>
@@ -4214,123 +4278,160 @@ Only available for holes without thread</source>
       <translation>孔参数</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="95"/>
+      <location filename="../../TaskHoleParameters.ui" line="38"/>
+      <source>Profile and Placement</source>
+      <translation>轮廓与位置</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="52"/>
       <source>Base profile types</source>
       <translation>基本轮廓类型</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="126"/>
+      <location filename="../../TaskHoleParameters.ui" line="60"/>
       <source>Circles and arcs</source>
       <translation>圆和圆弧</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="131"/>
+      <location filename="../../TaskHoleParameters.ui" line="65"/>
       <source>Points, circles and arcs</source>
       <translation>点、圆和圆弧</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="136"/>
+      <location filename="../../TaskHoleParameters.ui" line="70"/>
       <source>Points</source>
       <translation>点</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="170"/>
-      <location filename="../../TaskHoleParameters.ui" line="989"/>
+      <location filename="../../TaskHoleParameters.ui" line="78"/>
+      <source>Start</source>
+      <translation>开始</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="86"/>
+      <source>Profile plane</source>
+      <translation>轮廓平面</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="91"/>
+      <location filename="../../TaskHoleParameters.ui" line="131"/>
+      <source>Offset</source>
+      <translation>偏移</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="96"/>
+      <location filename="../../TaskHoleParameters.ui" line="104"/>
+      <source>Reference</source>
+      <translation>参考</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="121"/>
+      <source>Pick Reference</source>
+      <translation>选择参考</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="153"/>
+      <source>Hole</source>
+      <translation>孔</translation>
+    </message>
+    <message>
+      <location filename="../../TaskHoleParameters.ui" line="265"/>
+      <location filename="../../TaskHoleParameters.ui" line="1084"/>
       <source>Dimension</source>
       <translation>尺寸</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="175"/>
+      <location filename="../../TaskHoleParameters.ui" line="270"/>
       <source>Through all</source>
       <translation>通过所有</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="197"/>
+      <location filename="../../TaskHoleParameters.ui" line="292"/>
       <source>Custom head values</source>
       <translation>自定义头部值</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="367"/>
+      <location filename="../../TaskHoleParameters.ui" line="462"/>
       <source>Drill angle</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>钻孔角度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="403"/>
+      <location filename="../../TaskHoleParameters.ui" line="498"/>
       <source>Include in depth</source>
       <extracomment>Translate it as short as possible</extracomment>
       <translation>包含在深度中</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="610"/>
+      <location filename="../../TaskHoleParameters.ui" line="705"/>
       <source>Switch direction</source>
       <translation>切换方向</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="773"/>
+      <location filename="../../TaskHoleParameters.ui" line="868"/>
       <source>Thread</source>
       <translation>螺纹铣</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="905"/>
+      <location filename="../../TaskHoleParameters.ui" line="1000"/>
       <source>&amp;Right hand</source>
       <translation>右手(&amp;R)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="921"/>
+      <location filename="../../TaskHoleParameters.ui" line="1016"/>
       <source>&amp;Left hand</source>
       <translation>左手(&amp;L)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="970"/>
+      <location filename="../../TaskHoleParameters.ui" line="1065"/>
       <source>Thread Depth Type</source>
       <translation>螺纹深度类型</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="984"/>
+      <location filename="../../TaskHoleParameters.ui" line="1079"/>
       <source>Hole depth</source>
       <translation>孔深度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="994"/>
+      <location filename="../../TaskHoleParameters.ui" line="1089"/>
       <source>Tapped (DIN76)</source>
       <translation>螺纹 (DIN76)</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="118"/>
+      <location filename="../../TaskHoleParameters.ui" line="232"/>
       <source>Cut type for screw heads</source>
       <translation>螺丝头的切割类型</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="191"/>
+      <location filename="../../TaskHoleParameters.ui" line="286"/>
       <source>Check to override the values predefined by the 'Type'</source>
       <translation>检查以覆盖“类型”预定义的值</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="306"/>
+      <location filename="../../TaskHoleParameters.ui" line="401"/>
       <source>For countersinks this is the depth of
 the screw's top below the surface</source>
       <translation>对于沉头孔，这是螺钉顶部到沉头表面的深度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="462"/>
+      <location filename="../../TaskHoleParameters.ui" line="557"/>
       <source>Countersink angle</source>
       <translation>埋头孔角度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="399"/>
+      <location filename="../../TaskHoleParameters.ui" line="494"/>
       <source>The size of the drill point will be taken into
 account for the depth of blind holes</source>
       <translation>钻孔点的大小将被计入
 盲孔的深度</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="626"/>
+      <location filename="../../TaskHoleParameters.ui" line="721"/>
       <source>Tapered</source>
       <translation>锥孔</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="639"/>
+      <location filename="../../TaskHoleParameters.ui" line="734"/>
       <source>Taper angle for the hole
 90 degree: straight hole
 under 90: smaller hole radius at the bottom
@@ -4341,7 +4442,7 @@ over 90: larger hole radius at the bottom</source>
 大于90：底部的较大孔半径</translation>
     </message>
     <message>
-      <location filename="../../TaskHoleParameters.ui" line="607"/>
+      <location filename="../../TaskHoleParameters.ui" line="702"/>
       <source>Reverses the hole direction</source>
       <translation>反转孔方向</translation>
     </message>
@@ -4626,8 +4727,8 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="571"/>
       <location filename="../../../App/FeaturePipe.cpp" line="600"/>
       <location filename="../../../App/FeatureDraft.cpp" line="335"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2091"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2149"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="433"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4721,7 +4822,7 @@ over 90: larger hole radius at the bottom</source>
       <translation>圆角操作失败。选定的边可能包含无法同时进行圆角处理的几何图形。请尝试单独对边进行圆角处理，或使用更小的圆角半径。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1739"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1783"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4743,22 +4844,27 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="518"/>
-      <location filename="../../../App/FeatureRevolved.cpp" line="132"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="208"/>
       <source>Creating a face from sketch failed</source>
       <translation>从草图创建面失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="152"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="231"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>旋转轴与草图相交</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="392"/>
+      <source>No revolution geometry was generated</source>
+      <translation>未生成旋转体几何图形</translation>
+    </message>
+    <message>
+      <location filename="../../../App/FeatureRevolved.cpp" line="418"/>
       <source>Could not revolve the sketch!</source>
       <translation>无法旋转草图！</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="69"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="118"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>无法从草图中创建面。
@@ -4810,7 +4916,7 @@ Intersecting sketch entities in a sketch are not allowed.</source>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="454"/>
       <location filename="../../../App/FeatureHelix.cpp" line="499"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2454"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2512"/>
       <source>Error: Result is not a solid</source>
       <translation>错误：结果不是实体</translation>
     </message>
@@ -4840,83 +4946,83 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>错误：无法从草图创建面</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1233"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1268"/>
       <source>Thread type is invalid</source>
       <translation>螺纹类型无效</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1752"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1796"/>
       <source>Hole error: Diameter too small</source>
       <translation>孔径错误：直径过小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1789"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1847"/>
       <source>Hole error: Unsupported length specification</source>
       <translation>孔错误：不支持的长度</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1795"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1853"/>
       <source>Hole error: Invalid hole depth</source>
       <translation>孔错误：无效的孔深度</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1821"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1879"/>
       <source>Hole error: Invalid taper angle</source>
       <translation>孔错误：无效斜角</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1845"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1903"/>
       <source>Hole error: Hole cut diameter too small</source>
       <translation>孔错误：挖孔直径太小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1850"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <source>Hole error: Hole cut depth must be less than hole depth</source>
       <translation>孔错误：孔切割深度必须小于孔深度</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1857"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1915"/>
       <source>Hole error: Hole cut depth must be greater or equal to zero</source>
       <translation>孔错误：孔切割深度必须大于等于 0</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1887"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1945"/>
       <source>Hole error: Invalid countersink</source>
       <translation>孔错误：无效的埋头孔</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1923"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1981"/>
       <source>Hole error: Invalid drill point angle</source>
       <translation>孔错误：无效的钻尖角度</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1940"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1998"/>
       <source>Hole error: Invalid drill point</source>
       <translation>孔错误：钻点无效</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1977"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2035"/>
       <source>Hole error: Could not revolve sketch</source>
       <translation>孔错误：无法旋转草图</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1984"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2042"/>
       <source>Hole error: Resulting shape is empty</source>
       <translation>孔错误：结果形状为空</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2007"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2065"/>
       <source>Hole error: Finding axis failed</source>
       <translation>孔错误：查找轴失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2063"/>
-      <location filename="../../../App/FeatureHole.cpp" line="2071"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2121"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2129"/>
       <source>Boolean operation failed on profile Edge</source>
       <translation>轮廓边缘布尔运算失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2078"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2136"/>
       <source>Boolean operation produced non-solid on profile Edge</source>
       <translation>在轮廓边缘的布尔运算产生了非实体</translation>
     </message>
@@ -4926,23 +5032,23 @@ Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>布尔操作失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2104"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2162"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>无法从草图创建面。不允许使用相交的草图实体、或草图中的多个面来制作凹槽。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2277"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2335"/>
       <source>Thread type out of range</source>
       <translation>螺线类型超出范围</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2280"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2338"/>
       <source>Thread size out of range</source>
       <translation>螺线大小超出范围</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2428"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2486"/>
       <source>Error: Thread could not be built</source>
       <translation>错误：无法构建螺纹</translation>
     </message>
@@ -5180,22 +5286,18 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>楔形的 X2 差是负数</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="96"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="156"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="171"/>
       <source>Angle of revolution too large</source>
       <translation>旋转角过大</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="103"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="164"/>
       <source>Angle of revolution too small</source>
       <translation>旋转角过小</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="110"/>
-      <source>Angles of revolution nullify each other</source>
-      <translation>旋转的角度相互抵消</translation>
-    </message>
-    <message>
-      <location filename="../../../App/FeatureRevolved.cpp" line="126"/>
+      <location filename="../../../App/FeatureRevolved.cpp" line="202"/>
       <source>Reference axis is invalid</source>
       <translation>参考坐标轴无效</translation>
     </message>
@@ -5438,7 +5540,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="803"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="946"/>
       <source>Revolution Parameters</source>
       <translation>旋转参数</translation>
     </message>
@@ -5446,7 +5548,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="813"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="956"/>
       <source>Groove Parameters</source>
       <translation>槽参数</translation>
     </message>

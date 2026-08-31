@@ -224,7 +224,7 @@
     <message>
       <location filename="../../Command.cpp" line="373"/>
       <source>Fit polynomial surface</source>
-      <translation>Přizpůsobit polynomní povrch</translation>
+      <translation>Přizpůsobit polynomiální povrch</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="646"/>

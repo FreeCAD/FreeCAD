@@ -58,7 +58,7 @@
       <translation>편집</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="869"/>
+      <location filename="../Application.cpp" line="872"/>
       <source>Import</source>
       <translation>가져오기</translation>
     </message>
@@ -749,37 +749,37 @@ while doing a left or right click and move the mouse up or down</source>
   <context>
     <name>Gui::Dialog::CameraDialog</name>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="393"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="398"/>
       <source>Camera Settings</source>
       <translation>카메라 설정</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="400"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="405"/>
       <source>Orientation</source>
       <translation>방향</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="414"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="419"/>
       <source>Q0</source>
       <translation>Q0</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="424"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="429"/>
       <source>Q1</source>
       <translation>Q1</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="434"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="439"/>
       <source>Q2</source>
       <translation>Q2</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="444"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="449"/>
       <source>Q3</source>
       <translation>Q3</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="453"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="458"/>
       <source>Current View</source>
       <translation>현재 보기</translation>
     </message>
@@ -3965,24 +3965,41 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
       <translation>궤도 스타일</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
-      <source>Rotation orbit style.
-Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
-Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
-Trackball Classic: moving the mouse will rotate the part allowing precession.
-Turntable: the part will be rotated around the Z-axis (with constrained axes).
-Free Turntable: the part will be rotated around the Z-axis.
-         </source>
-      <translation>회전 궤도 스타일입니다.
-Rounded Arcball: 화면 모서리에서 마우스를 움직이면 파트이 롤 회전만 합니다.
-Trackball: 마우스를 수평으로 움직이면 파트이 Y축을 기준으로 회전합니다.
-Trackball Classic: 마우스를 움직이면 파트이 세차 운동을 허용하며 회전합니다.
-Turntable: 파트이 Z축을 기준으로 회전합니다(축 제한 적용).
-Free Turntable: 파트이 Z축을 기준으로 자유롭게 회전합니다.
-         </translation>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
+      <source>Clarify Selection</source>
+      <translation>선택 명확히 하기</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
+      <source>Enable Clarify Selection on long press of left mouse button.
+When enabled, holding left mouse button shows a menu to select overlapping objects.
+Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
+      <translation>왼쪽 마우스 버튼을 길게 눌렀을 때 선택 구분 기능을 활성화합니다.
+이 기능이 켜져 있으면 왼쪽 마우스 버튼을 누르고 있을 때 겹치는 객체를 선택하는 메뉴가 표시됩니다.
+일부 탐색 스타일(OpenInventor, Gesture, OpenSCAD)에서는 단순 LMB 대신 Ctrl+LMB가 필요합니다.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
+      <source>Enable long press clarify selection</source>
+      <translation>길게 눌러 선택 명확히 하기 활성화</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
+      <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
+      <translation>선택 명확히 하기 메뉴를 표시하기 전까지 왼쪽 마우스 버튼을 눌러 유지할 시간을 초 단위로 설정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
+      <source>Long press timeout</source>
+      <translation>길게 누르기 제한 시간</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
+      <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
+      <translation>선택 명확히 하기가 실행되기 전까지 왼쪽 마우스 버튼을 눌러 유지할 시간을 초 단위로 설정합니다.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
       <source>Turntable</source>
       <translation>턴테이블</translation>
     </message>
@@ -3992,17 +4009,17 @@ Free Turntable: 파트이 Z축을 기준으로 자유롭게 회전합니다.
       <translation>트랙볼</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="498"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Free Turntable</source>
       <translation>자유 회전반</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="498"/>
       <source>Trackball Classic</source>
       <translation>기본 트랙볼</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="488"/>
       <source>Rounded Arcball</source>
       <translation>둥근 아크볼</translation>
     </message>
@@ -4067,40 +4084,6 @@ The value is the diameter of the sphere to fit on the screen.</source>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="790"/>
       <source>Enable spinning animations</source>
       <translation>회전 애니메이션 활성화</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="856"/>
-      <source>Clarify Selection</source>
-      <translation>선택 명확히 하기</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="862"/>
-      <source>Enable Clarify Selection on long press of left mouse button.
-When enabled, holding left mouse button shows a menu to select overlapping objects.
-Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instead of just LMB.</source>
-      <translation>왼쪽 마우스 버튼을 길게 눌렀을 때 선택 구분 기능을 활성화합니다.
-이 기능이 켜져 있으면 왼쪽 마우스 버튼을 누르고 있을 때 겹치는 객체를 선택하는 메뉴가 표시됩니다.
-일부 탐색 스타일(OpenInventor, Gesture, OpenSCAD)에서는 단순 LMB 대신 Ctrl+LMB가 필요합니다.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="867"/>
-      <source>Enable long press clarify selection</source>
-      <translation>길게 눌러 선택 명확히 하기 활성화</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="883"/>
-      <source>Time in seconds to hold left mouse button before showing clarify selection menu</source>
-      <translation>선택 명확히 하기 메뉴를 표시하기 전까지 왼쪽 마우스 버튼을 눌러 유지할 시간을 초 단위로 설정합니다.</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="886"/>
-      <source>Long press timeout</source>
-      <translation>길게 누르기 제한 시간</translation>
-    </message>
-    <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="902"/>
-      <source>Duration in seconds to hold left mouse button before clarify selection is triggered</source>
-      <translation>선택 명확히 하기가 실행되기 전까지 왼쪽 마우스 버튼을 눌러 유지할 시간을 초 단위로 설정합니다.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="774"/>
@@ -4184,6 +4167,23 @@ Select a set and then press the button to view said configurations.</source>
       <translation>마우스 구성</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="475"/>
+      <source>Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Free Turntable: the part will be rotated around the Z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+         </source>
+      <translation type="unfinished">Rotation orbit style.
+Rounded Arcball: moving the mouse in the corners of the screen will only roll the part.
+Trackball: moving the mouse horizontally will rotate the part around the Y-axis.
+Trackball Classic: moving the mouse will rotate the part allowing precession.
+Free Turntable: the part will be rotated around the Z-axis.
+Turntable: the part will be rotated around the Z-axis (with constrained axes).
+         </translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="619"/>
       <source>Zoom operations will be performed at position of mouse pointer</source>
       <translation>확대/축소 작업은 마우스 포인터 위치에서 수행됩니다</translation>
@@ -4216,62 +4216,62 @@ Zoom step of '1' means a factor of 7.5 for every zoom step.</source>
       <translation>터치스크린 틸트 제스처 비활성화하기</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="221"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="258"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
       <source>Isometric</source>
       <translation>아이소메트릭</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="222"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="259"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
       <source>Dimetric</source>
       <translation>디메트릭</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="223"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="260"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
       <source>Trimetric</source>
       <translation>트라이메트릭</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="224"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="261"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
       <source>Top</source>
       <translation>평면</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="225"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="262"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
       <source>Front</source>
       <translation>정면</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="226"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="263"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="231"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="268"/>
       <source>Left</source>
       <translation>좌측면</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="227"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="264"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="232"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="269"/>
       <source>Right</source>
       <translation>우측면</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="228"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="265"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="233"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="270"/>
       <source>Rear</source>
       <translation>배면</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="229"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="266"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="234"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="271"/>
       <source>Bottom</source>
       <translation>저면</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="230"/>
-      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="267"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="235"/>
+      <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="272"/>
       <source>Custom</source>
       <translation>사용자 지정 색상</translation>
     </message>
@@ -5662,72 +5662,72 @@ originally selected prior to opening this dialog</source>
       <translation>선택한 대상체 목록</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="654"/>
+      <location filename="../Selection/SelectionView.cpp" line="657"/>
       <source>Select Only</source>
       <translation>선택만</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="662"/>
+      <location filename="../Selection/SelectionView.cpp" line="665"/>
       <source>Zoom Fit</source>
       <translation>화면에 맞춤</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="666"/>
+      <location filename="../Selection/SelectionView.cpp" line="669"/>
       <source>Go to Selection</source>
       <translation>선택으로 가기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="669"/>
+      <location filename="../Selection/SelectionView.cpp" line="672"/>
       <source>Mark to Recompute</source>
       <translation>재계산 표시</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="671"/>
+      <location filename="../Selection/SelectionView.cpp" line="674"/>
       <source>Marks this object to be recomputed</source>
       <translation>이 객체를 재계산 대상으로 표시합니다</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="673"/>
+      <location filename="../Selection/SelectionView.cpp" line="676"/>
       <source>To Python Console</source>
       <translation>Python 콘솔로</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="680"/>
+      <location filename="../Selection/SelectionView.cpp" line="683"/>
       <source>Duplicate Subshape</source>
       <translation>하위 형상 복제</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="656"/>
+      <location filename="../Selection/SelectionView.cpp" line="659"/>
       <source>Selects only this object</source>
       <translation>이 대상체만 선택하기</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="658"/>
+      <location filename="../Selection/SelectionView.cpp" line="661"/>
       <source>Deselect</source>
       <translation>선택 해제</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="660"/>
+      <location filename="../Selection/SelectionView.cpp" line="663"/>
       <source>Deselects this object</source>
       <translation>이 객체의 선택을 취소</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="664"/>
+      <location filename="../Selection/SelectionView.cpp" line="667"/>
       <source>Selects and fits this object in the 3D window</source>
       <translation>이 객체를 선택하고 3D 창에 맞춤</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="667"/>
+      <location filename="../Selection/SelectionView.cpp" line="670"/>
       <source>Selects and locates this object in the tree view</source>
       <translation>트리 보기에서 이 객체를 선택하고 찾습니다</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="675"/>
+      <location filename="../Selection/SelectionView.cpp" line="678"/>
       <source>Reveals this object and its subelements in the Python console.</source>
       <translation>파이썬 명령창에 이 객체와 하위 요소를 표시합니다.</translation>
     </message>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="682"/>
+      <location filename="../Selection/SelectionView.cpp" line="685"/>
       <source>Creates a standalone copy of this subshape in the document</source>
       <translation>문서에서 이 하위 모양의 독립 실행형 사본을 만듭니다</translation>
     </message>
@@ -5966,7 +5966,7 @@ Save all changes?</source>
   <context>
     <name>Gui::LabelEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1502"/>
+      <location filename="../Widgets.cpp" line="1510"/>
       <source>List</source>
       <translation>목록</translation>
     </message>
@@ -7362,6 +7362,11 @@ Specify another directory?</source>
       <translation type="unfinished">Lao</translation>
     </message>
     <message>
+      <location filename="Translator.cpp" line="259"/>
+      <source>Hebrew</source>
+      <translation type="unfinished">Hebrew</translation>
+    </message>
+    <message>
       <location filename="Translator.cpp" line="221"/>
       <source>Danish</source>
       <translation>덴마크어</translation>
@@ -7831,14 +7836,14 @@ Specify another directory?</source>
   <context>
     <name>PropertyListDialog</name>
     <message>
-      <location filename="../Widgets.cpp" line="1424"/>
-      <location filename="../Widgets.cpp" line="1439"/>
+      <location filename="../Widgets.cpp" line="1432"/>
+      <location filename="../Widgets.cpp" line="1447"/>
       <source>Invalid input</source>
       <translation>잘못된 입력</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1425"/>
-      <location filename="../Widgets.cpp" line="1440"/>
+      <location filename="../Widgets.cpp" line="1433"/>
+      <location filename="../Widgets.cpp" line="1448"/>
       <source>Input in line %1 is not a number</source>
       <translation>줄에 있는 입력%1 이 숫자가 아닙니다.</translation>
     </message>
@@ -7932,35 +7937,35 @@ Specify another directory?</source>
       <translation>파이썬</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="828"/>
-      <location filename="../Application.cpp" line="935"/>
-      <location filename="../Application.cpp" line="1022"/>
+      <location filename="../Application.cpp" line="831"/>
+      <location filename="../Application.cpp" line="938"/>
+      <location filename="../Application.cpp" line="1025"/>
       <source>Unknown filetype</source>
       <translation>알 수 없는 파일유형</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="829"/>
-      <location filename="../Application.cpp" line="936"/>
+      <location filename="../Application.cpp" line="832"/>
+      <location filename="../Application.cpp" line="939"/>
       <source>Cannot open unknown filetype: %1</source>
       <translation>알 수 없는 파일유형을 열 수 없습니다: %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1012"/>
+      <location filename="../Application.cpp" line="1015"/>
       <source>Export failed</source>
       <translation>내보내기 실패</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1023"/>
+      <location filename="../Application.cpp" line="1026"/>
       <source>Cannot save to unknown filetype: %1</source>
       <translation>알 수 없는 파일유형에 저장할 수 없습니다. %1</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1221"/>
+      <location filename="../Application.cpp" line="1224"/>
       <source>Recomputation required</source>
       <translation>재계산 필요</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1222"/>
+      <location filename="../Application.cpp" line="1225"/>
       <source>Some documents require recomputation for migration purposes. It is highly recommended to perform a recomputation before any modification to avoid compatibility problems.
 
 Recompute now?</source>
@@ -7969,24 +7974,24 @@ Recompute now?</source>
 지금 재계산할까요?</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1248"/>
+      <location filename="../Application.cpp" line="1251"/>
       <source>Failed to recompute some documents.
 Check the report view for more details.</source>
       <translation>일부 문서를 재계산하지 못했습니다.
 자세한 내용은 보고서 보기를 확인하세요.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1247"/>
+      <location filename="../Application.cpp" line="1250"/>
       <source>Recompute error</source>
       <translation>재계산 오류</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1997"/>
+      <location filename="../Application.cpp" line="2000"/>
       <source>Workbench failure</source>
       <translation>작업대 실패</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1998"/>
+      <location filename="../Application.cpp" line="2001"/>
       <source>%1</source>
       <translation>%1</translation>
     </message>
@@ -8053,18 +8058,18 @@ Check the report view for more details.</source>
       <translation>예외</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1261"/>
-      <location filename="../Application.cpp" line="1276"/>
+      <location filename="../Application.cpp" line="1264"/>
+      <location filename="../Application.cpp" line="1279"/>
       <source>Error</source>
       <translation>오류</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1262"/>
+      <location filename="../Application.cpp" line="1265"/>
       <source>There were errors while loading the file. Some data might have been modified or not recovered at all. Look in the report view for more specific information about the objects involved.</source>
       <translation>파일을 불러오는 동안 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 관련된 객체에 대한 보다 구체적인 정보는 보고서 보기에서 확인하세요.</translation>
     </message>
     <message>
-      <location filename="../Application.cpp" line="1277"/>
+      <location filename="../Application.cpp" line="1280"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
       <translation>파일을 불러오는 동안 심각한 오류가 발생했습니다. 일부 데이터가 수정되었거나 전혀 복구되지 않았을 수 있습니다. 프로젝트를 저장하면 데이터가 손실될 가능성이 높습니다.</translation>
     </message>
@@ -8412,51 +8417,51 @@ Continue?</source>
       <translation>열려 있는 비간섭형 알림이 너무 많습니다. 일부 알림은 생략됩니다!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1453"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
       <translation>동일한 물리적 경로가 감지되었습니다. 존재하는 문서의 원치 않는 덮어쓰기가 발생할 수 있습니다!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1454"/>
       <source>Are you sure you want to continue?</source>
       <translation>계속 진행 하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1478"/>
+      <location filename="../Document.cpp" line="1480"/>
       <source>Check report view for more…</source>
       <translation>자세한 내용은 보고서 보기를 확인하세요…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1482"/>
+      <location filename="../Document.cpp" line="1484"/>
       <source>Physical path:</source>
       <translation>물리적 경로:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1483"/>
-      <location filename="../Document.cpp" line="1490"/>
+      <location filename="../Document.cpp" line="1485"/>
+      <location filename="../Document.cpp" line="1492"/>
       <source>Document:</source>
       <translation>문서:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1484"/>
-      <location filename="../Document.cpp" line="1491"/>
+      <location filename="../Document.cpp" line="1486"/>
+      <location filename="../Document.cpp" line="1493"/>
       <source>Path:</source>
       <translation>경로:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1502"/>
+      <location filename="../Document.cpp" line="1504"/>
       <source>Identical physical path</source>
       <translation>동일한 물리적 경로</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1514"/>
+      <location filename="../Document.cpp" line="1516"/>
       <source>Could not save document</source>
       <translation>문서를 저장할 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1515"/>
+      <location filename="../Document.cpp" line="1517"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8469,19 +8474,19 @@ Would you like to save the file with a different name?</source>
 파일을 다른 이름으로 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1529"/>
-      <location filename="../Document.cpp" line="1786"/>
-      <location filename="../Document.cpp" line="1895"/>
+      <location filename="../Document.cpp" line="1531"/>
+      <location filename="../Document.cpp" line="1788"/>
+      <location filename="../Document.cpp" line="1897"/>
       <source>Saving aborted</source>
       <translation>저장 실패</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1580"/>
+      <location filename="../Document.cpp" line="1582"/>
       <source>File Created with Older FreeCAD Version</source>
       <translation>이전 FreeCAD 버전에서 생성된 파일</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
+      <location filename="../Document.cpp" line="1585"/>
       <source>This file was created with %1, but you are using v%2.%3.
 
 Saving will upgrade the file format. The file may not be readable by older versions of FreeCAD after saving.
@@ -8496,122 +8501,122 @@ Use 'Save As…' to preserve the original file.
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1592"/>
+      <location filename="../Document.cpp" line="1594"/>
       <source>an unknown older version of FreeCAD</source>
       <translation>알 수 없는 이전 버전의 FreeCAD</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1593"/>
+      <location filename="../Document.cpp" line="1595"/>
       <source>FreeCAD version %1</source>
       <translation>FreeCAD 버전 %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1600"/>
       <source>Save</source>
       <translation>저장</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1599"/>
+      <location filename="../Document.cpp" line="1601"/>
       <source>Save As…</source>
       <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1603"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Do not show this warning again</source>
       <translation>이 경고를 다시 표시하지 않기</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1668"/>
+      <location filename="../Document.cpp" line="1670"/>
       <source>Save dependent files</source>
       <translation>종속 파일 저장하기</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1669"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>파일에 외부 종속성이 있습니다. 종속 파일도 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1715"/>
-      <location filename="../Document.cpp" line="1779"/>
+      <location filename="../Document.cpp" line="1717"/>
+      <location filename="../Document.cpp" line="1781"/>
       <source>Saving document failed</source>
       <translation>문서 저장 실패</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save document under new filename…</source>
       <translation>문서를 새 파일 이름으로 저장…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1747"/>
-      <location filename="../Document.cpp" line="1877"/>
+      <location filename="../Document.cpp" line="1749"/>
+      <location filename="../Document.cpp" line="1879"/>
       <location filename="../CommandDoc.cpp" line="673"/>
       <source>%1 document</source>
       <translation>%1 문서</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1863"/>
+      <location filename="../Document.cpp" line="1865"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>문서 사본을 새 파일 이름으로 저장…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1745"/>
-      <location filename="../Document.cpp" line="1875"/>
+      <location filename="../Document.cpp" line="1747"/>
+      <location filename="../Document.cpp" line="1877"/>
       <source>Save %1 Document</source>
       <translation>%1 문서 저장</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1801"/>
-      <location filename="../Document.cpp" line="1851"/>
+      <location filename="../Document.cpp" line="1803"/>
+      <location filename="../Document.cpp" line="1853"/>
       <source>Failed to save document</source>
       <translation>문서 저장 실패</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1802"/>
+      <location filename="../Document.cpp" line="1804"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>문서에 순환 종속성이 포함되어 있습니다. 그래도 저장하시겠습니까?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2540"/>
+      <location filename="../Document.cpp" line="2554"/>
       <source>Document not closable</source>
       <translation>문서를 닫을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2541"/>
+      <location filename="../Document.cpp" line="2555"/>
       <source>The document is not closable for the moment.</source>
       <translation>그 문서는 당분간 닫을 수 없다.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2581"/>
+      <location filename="../Document.cpp" line="2595"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>문서 '%1' 저장에 실패했습니다. 닫기를 취소할까요?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2583"/>
+      <location filename="../Document.cpp" line="2597"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>문서 저장에 실패했습니다. 닫기를 취소할까요?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2588"/>
+      <location filename="../Document.cpp" line="2602"/>
       <source>Unable to save document</source>
       <translation>문서를 저장할 수 없음</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2958"/>
+      <location filename="../Document.cpp" line="2972"/>
       <source>Undo</source>
       <translation>실행 취소</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2958"/>
+      <location filename="../Document.cpp" line="2972"/>
       <source>Redo</source>
       <translation>다시 실행</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2961"/>
+      <location filename="../Document.cpp" line="2975"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>다음 문서에 다른 이전 트랜잭션과 함께 그룹화된 트랜잭션이 있습니다.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2966"/>
+      <location filename="../Document.cpp" line="2980"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8700,7 +8705,7 @@ Choose 'Abort' to abort</source>
       <translation>%2 또는 %3에서 %1 파일을 찾을 수 없습니다</translation>
     </message>
     <message>
-      <location filename="../Navigation/NavigationStyle.cpp" line="2647"/>
+      <location filename="../Navigation/NavigationStyle.cpp" line="2659"/>
       <source>Clarify Selection</source>
       <translation>선택 명확히 하기</translation>
     </message>
@@ -10956,8 +10961,8 @@ after FreeCAD launches</source>
   <context>
     <name>Gui::ExpLineEdit</name>
     <message>
-      <location filename="../Widgets.cpp" line="1625"/>
-      <location filename="../Widgets.cpp" line="1692"/>
+      <location filename="../Widgets.cpp" line="1633"/>
+      <location filename="../Widgets.cpp" line="1700"/>
       <source>An error occurred -- see Report View for information</source>
       <translation>오류가 발생했습니다 -- 자세한 내용은 보고서 보기를 확인하세요</translation>
     </message>
@@ -14571,7 +14576,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::SelectionMenu</name>
     <message>
-      <location filename="../Selection/SelectionView.cpp" line="1182"/>
+      <location filename="../Selection/SelectionView.cpp" line="1185"/>
       <source>Whole Object</source>
       <translation>전체 대상체</translation>
     </message>
@@ -14919,12 +14924,12 @@ treated as shortcut key sequence 'F, F'.</source>
   <context>
     <name>Gui::PropertyMapEditor</name>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
+      <location filename="../Widgets.cpp" line="1913"/>
       <source>Key</source>
       <translation>키</translation>
     </message>
     <message>
-      <location filename="../Widgets.cpp" line="1905"/>
+      <location filename="../Widgets.cpp" line="1913"/>
       <source>Value</source>
       <translation>값</translation>
     </message>

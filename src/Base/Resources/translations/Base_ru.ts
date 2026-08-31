@@ -64,32 +64,32 @@
     <message>
       <location filename="../../Exception.cpp" line="323"/>
       <source>No permission to read the file</source>
-      <translation type="unfinished">No permission to read the file</translation>
+      <translation>Нет прав на чтение файла</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="325"/>
       <source>No write permission for the file or the file is read-only</source>
-      <translation type="unfinished">No write permission for the file or the file is read-only</translation>
+      <translation>Нет прав на запись в файл или файл защищен от записи</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="326"/>
       <source>File format not supported</source>
-      <translation type="unfinished">File format not supported</translation>
+      <translation>Формат файла не поддерживается</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="327"/>
       <source>Error reading from file</source>
-      <translation type="unfinished">Error reading from file</translation>
+      <translation>Ошибка чтения из файла</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="328"/>
       <source>Error writing to file</source>
-      <translation type="unfinished">Error writing to file</translation>
+      <translation>Ошибка записи в файл</translation>
     </message>
     <message>
       <location filename="../../Exception.cpp" line="330"/>
       <source>Directory does not exist</source>
-      <translation type="unfinished">Directory does not exist</translation>
+      <translation>Директория не существует</translation>
     </message>
   </context>
 </TS>

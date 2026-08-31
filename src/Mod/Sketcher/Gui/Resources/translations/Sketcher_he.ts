@@ -4226,7 +4226,6 @@ This is done by analyzing the sketch geometries and constraints.</source>
         <numerusform>%n Degrees of Freedom</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>
     <message>
@@ -8070,28 +8069,28 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="203"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="218"/>
       <source>Polygon Parameters</source>
       <translation>פרמטרים של מצולע</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="289"/>
       <source>%1 pick polygon center</source>
       <translation>%1 בחר מרכז מצולע</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="290"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="297"/>
       <source>%1/%2 increase/decrease number of sides</source>
       <translation>%1/%2 הגדל/הקטן את מספר הצדדים</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="295"/>
       <source>%1 pick rotation and size</source>
       <translation>%1 בחר סיבוב וגודל</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="296"/>
       <source>%1 confirm</source>
       <translation>אישור %1</translation>
     </message>
@@ -8419,7 +8418,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
       <translation>מעלה</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="327"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="342"/>
       <source>Sides</source>
       <translation>צדדים</translation>
     </message>
