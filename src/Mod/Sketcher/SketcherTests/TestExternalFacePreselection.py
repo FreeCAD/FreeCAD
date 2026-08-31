@@ -37,7 +37,7 @@ import unittest
 import FreeCAD
 import Part
 import Sketcher
-from SketcherTests.GuiTestCase import SketcherGuiTestCase
+from SketcherTests.Support import SketcherGuiTestCase
 
 try:
     import FreeCADGui
@@ -47,7 +47,7 @@ except (ImportError, AttributeError):
     GUI_AVAILABLE = False
 
 if GUI_AVAILABLE:
-    from PySide import QtCore, QtGui
+    from PySide import QtCore
 
 
 class TestExternalFacePreselection(SketcherGuiTestCase):
@@ -93,23 +93,41 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
         self.body = body
         self.pad = pad
 
-    def hover_for_preselection(self, viewport, center_pos, span=6, step=2):
+    def hover_for_preselection(
+        self,
+        viewport,
+        center_pos,
+        expected_sub_element=None,
+        span=6,
+        step=2,
+    ):
+        def has_expected_sub_element():
+            presel = FreeCADGui.Selection.getPreselection()
+            if not presel.ObjectName:
+                return False
+            if expected_sub_element is None:
+                return True
+            return any(expected_sub_element in name for name in presel.SubElementNames)
+
         for dy in range(-span, span + 1, step):
             for dx in range(-span, span + 1, step):
                 pos = QtCore.QPoint(center_pos.x() + dx, center_pos.y() + dy)
-                event = QtGui.QMouseEvent(
+                FreeCADGui.Selection.clearPreselection()
+                self.gui.send_mouse(
+                    viewport,
                     QtCore.QEvent.MouseMove,
                     pos,
-                    viewport.mapToGlobal(pos),
                     QtCore.Qt.NoButton,
                     QtCore.Qt.NoButton,
-                    QtCore.Qt.NoModifier,
                 )
-                QtGui.QApplication.sendEvent(viewport, event)
-                self.pump(100)
+                self.gui.wait_until(
+                    has_expected_sub_element,
+                    timeout_ms=100,
+                    description="face preselection",
+                )
 
                 presel = FreeCADGui.Selection.getPreselection()
-                if presel.ObjectName:
+                if has_expected_sub_element():
                     return presel
 
         return FreeCADGui.Selection.getPreselection()
@@ -123,8 +141,7 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
 
         from pivy import coin
 
-        FreeCADGui.ActiveDocument.setEdit(self.testSketch.Name)
-        self.pump(300)
+        self.enter_sketch_edit(self.doc, self.testSketch)
 
         view = FreeCADGui.ActiveDocument.ActiveView
         viewer = view.getViewer()
@@ -164,8 +181,7 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
 
         from pivy import coin
 
-        FreeCADGui.ActiveDocument.setEdit(self.testSketch.Name)
-        self.pump(300)
+        self.enter_sketch_edit(self.doc, self.testSketch)
 
         view = FreeCADGui.ActiveDocument.ActiveView
         viewer = view.getViewer()
@@ -201,8 +217,8 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
         """A face on the Pad must be preselectable via mouse hover
         while the External Geometry tool is active (#28639)."""
 
-        FreeCADGui.ActiveDocument.setEdit(self.testSketch.Name)
-        self.pump(300)
+        self.enter_sketch_edit(self.doc, self.testSketch)
+        self.gui.pump(300)
 
         # Add geometry + constraints so constraint icons are rendered.
         self.testSketch.addGeometry(
@@ -214,12 +230,12 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
         self.testSketch.addConstraint(Sketcher.Constraint("DistanceX", 0, 1, 0, 2, 20.0))
         self.testSketch.addConstraint(Sketcher.Constraint("DistanceY", 1, 1, 1, 2, 20.0))
         self.doc.recompute()
-        self.pump(300)
+        self.gui.pump(300)
 
         view = FreeCADGui.ActiveDocument.ActiveView
         view.viewFront()
         view.fitAll()
-        self.pump(300)
+        self.gui.pump(300)
 
         face_center_3d = FreeCAD.Vector(0, -20, 10)
 
@@ -238,20 +254,24 @@ class TestExternalFacePreselection(SketcherGuiTestCase):
             )
 
         self.assertTrue(
-            self.wait_until(face_center_is_framed, timeout_ms=5000, step_ms=100),
+            self.gui.wait_until(face_center_is_framed, timeout_ms=5000, step_ms=100),
             "Camera never framed the Pad face; getPointOnScreen stayed at the "
             "viewport edge, so no valid interior hover point could be computed.",
         )
 
         # Activate External Geometry tool
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.clearPreselection()
         FreeCADGui.runCommand("Sketcher_Projection", 0)
-        self.pump(300)
+        # The projection command creates the Coin hit-test nodes through the
+        # render event queue. Let that queue settle before probing the view.
+        self.gui.pump(300)
 
         # Simulate mouse hover over the front face center
         viewport = view.graphicsView().viewport()
         screen_pt = view.getPointOnScreen(face_center_3d)
-        hover_pos = self.viewport_to_qpoint(view, viewport, screen_pt)
-        presel = self.hover_for_preselection(viewport, hover_pos)
+        hover_pos = self.gui.active_view().viewport_to_screen(screen_pt, viewport)
+        presel = self.hover_for_preselection(viewport, hover_pos, expected_sub_element="Face")
         self.assertNotEqual(
             presel.ObjectName,
             "",

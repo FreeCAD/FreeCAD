@@ -35,6 +35,7 @@ import tempfile
 
 from PySide import QtGui, QtCore
 from PySide.QtGui import QApplication
+from Gui.TestCase import FreeCADGuiTestCase
 
 from PartDesignTests.TestMaterial import TestMaterial
 from PartDesignTests.TestActiveObject import TestActiveObject
@@ -62,31 +63,6 @@ class CallableCheckDialogWasClosed:
     def __call__(self):
         dialog = QApplication.activeModalWidget()
         self.test.assertIsNone(dialog, "Dialog box was not closed by accept()")
-
-
-class CallableCheckWarning:
-    def __init__(self, test):
-        self.test = test
-
-    def __call__(self):
-        dialog = QApplication.activeModalWidget()
-        self.test.assertIsNotNone(dialog, "Input dialog box could not be found")
-        if dialog is not None:
-            QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
-
-
-class CallableComboBox:
-    def __init__(self, test):
-        self.test = test
-
-    def __call__(self):
-        dialog = QApplication.activeModalWidget()
-        self.test.assertIsNotNone(dialog, "Warning dialog box could not be found")
-        if dialog is not None:
-            cbox = dialog.findChild(QtGui.QComboBox)
-            self.test.assertIsNotNone(cbox, "ComboBox widget could not be found")
-            if cbox is not None:
-                QtCore.QTimer.singleShot(0, dialog, QtCore.SLOT("accept()"))
 
 
 class CallableCheckExemptionDialog:
@@ -117,8 +93,9 @@ Gui = FreeCADGui
 # ---------------------------------------------------------------------------
 # define the test cases to test the FreeCAD PartDesign module
 # ---------------------------------------------------------------------------
-class PartDesignGuiTestCases(unittest.TestCase):
+class PartDesignGuiTestCases(FreeCADGuiTestCase):
     def setUp(self):
+        super().setUp()
         self.Doc = FreeCAD.newDocument("SketchGuiTest")
 
     def testRefuseToMoveSingleFeature(self):
@@ -177,9 +154,13 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BodyTarget = self.Doc.addObject("PartDesign::Body", "Body")
 
         Gui.Selection.addSelection(App.ActiveDocument.Pad)
-        cobj = CallableCheckWarning(self)
-        QtCore.QTimer.singleShot(500, cobj)
-        Gui.runCommand("PartDesign_MoveFeature")
+        state = self.gui.run_with_modal_action(
+            lambda: Gui.runCommand("PartDesign_MoveFeature"),
+            lambda dialog: dialog.accept(),
+            delay_ms=500,
+        )
+        self.assertTrue(state["seen"], "Input dialog box could not be found")
+        self.assertIsNone(state.get("error"))
         # assert dependencies of the Sketch
         self.assertEqual(len(self.BodySource.Group), 3, "Source body feature count is wrong")
         self.assertEqual(len(self.BodyTarget.Group), 0, "Target body feature count is wrong")
@@ -245,9 +226,19 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BodyTarget = self.Doc.addObject("PartDesign::Body", "Body")
 
         Gui.Selection.addSelection(App.ActiveDocument.Pad)
-        cobj = CallableComboBox(self)
-        QtCore.QTimer.singleShot(500, cobj)
-        Gui.runCommand("PartDesign_MoveFeature")
+
+        def accept_move_dialog(dialog):
+            combo_box = dialog.findChild(QtGui.QComboBox)
+            self.assertIsNotNone(combo_box, "ComboBox widget could not be found")
+            dialog.accept()
+
+        state = self.gui.run_with_modal_action(
+            lambda: Gui.runCommand("PartDesign_MoveFeature"),
+            accept_move_dialog,
+            delay_ms=500,
+        )
+        self.assertTrue(state["seen"], "Warning dialog box could not be found")
+        self.assertIsNone(state.get("error"))
         # assert dependencies of the Sketch
         self.Doc.recompute()
 
@@ -259,9 +250,6 @@ class PartDesignGuiTestCases(unittest.TestCase):
         )
         self.assertEqual(len(self.BodySource.Group), 0, "Source body feature count is wrong")
         self.assertEqual(len(self.BodyTarget.Group), 2, "Target body feature count is wrong")
-
-    def tearDown(self):
-        FreeCAD.closeDocument("SketchGuiTest")
 
 
 class PartDesignTransformed(unittest.TestCase):

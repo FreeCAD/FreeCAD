@@ -5,7 +5,8 @@
 import FreeCAD
 
 from FreeCAD import Base
-from SketcherTests.GuiTestCase import FreeCADGui, SketcherGuiTestCase
+from Gui.Wait import FreeCADGui
+from SketcherTests.Support import SketcherGuiTestCase
 
 
 class TestSketchPlacementUpdate(SketcherGuiTestCase):
@@ -73,7 +74,7 @@ class TestSketchPlacementUpdate(SketcherGuiTestCase):
         relative to the attachment face.
         """
         # enter edit mode
-        FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
+        self.enter_sketch_edit(self.doc, self.sketch)
 
         # get initial editing transform (it's a property, not a method)
         initial_transform = FreeCADGui.ActiveDocument.EditingTransform
@@ -100,7 +101,7 @@ class TestSketchPlacementUpdate(SketcherGuiTestCase):
         test that multiple AttachmentOffset changes in edit mode all update correctly.
         """
         # enter edit mode
-        FreeCADGui.ActiveDocument.setEdit(self.sketch.Name)
+        self.enter_sketch_edit(self.doc, self.sketch)
 
         transforms = []
 
@@ -155,7 +156,7 @@ class TestSketchPlacementUpdate(SketcherGuiTestCase):
         self.doc.recompute()
 
         # enter edit mode
-        FreeCADGui.ActiveDocument.setEdit(unattached.Name)
+        self.enter_sketch_edit(self.doc, unattached)
 
         initial_transform = FreeCADGui.ActiveDocument.EditingTransform
 

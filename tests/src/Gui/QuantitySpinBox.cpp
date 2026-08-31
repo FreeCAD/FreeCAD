@@ -8,7 +8,7 @@
 #include <Base/UnitsApi.h>
 
 #include "Gui/QuantitySpinBox.h"
-#include <src/App/InitApplication.h>
+#include "TestSupport.h"
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -36,7 +36,7 @@ class testQuantitySpinBox: public QObject
 public:
     testQuantitySpinBox()
     {
-        tests::initApplication();
+        GuiTest::ensureGuiApplication();
         qsb = std::make_unique<Gui::QuantitySpinBox>();
     }
 
