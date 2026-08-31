@@ -231,6 +231,7 @@ SET(Document_HPP_SRCS
     DocumentSettings.h
     Expression.h
     ExpressionParser.h
+    ExpressionPrattParser.h
     ExpressionTokenizer.h
     ExpressionVisitors.h
     FeatureCustom.h
