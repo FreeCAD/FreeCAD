@@ -64,6 +64,9 @@ TEST_F(Expression, tokenizeCompletion)
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube 0"), 9), QStringLiteral("MyCube0"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube1"), 8), QStringLiteral("MyCube1"));
     EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("My Cube 1"), 9), QStringLiteral("MyCube1"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("<<foo"), 5), QStringLiteral("<<foo"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("halfTyped"), 9), QStringLiteral("halfTyped"));
+    EXPECT_EQ(App::ExpressionTokenizer().perform(QStringLiteral("Foo @"), 5), QStringLiteral("Foo"));
 }
 
 // Token categories and source locations are covered by ExpressionParser lexer tests.

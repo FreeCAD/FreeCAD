@@ -3611,6 +3611,15 @@ std::vector<Token> Pratt::scanExpressionTokens(const App::DocumentObject* owner,
     });
 }
 
+std::vector<Token> Pratt::scanExpressionTokensTolerant(const char* buffer)
+{
+    initParser();
+    return Pratt::scanTokensTolerant(buffer, [](const std::string& name) {
+        const auto found = registered_functions.find(name);
+        return found == registered_functions.end() ? FunctionExpression::NONE : found->second;
+    });
+}
+
 }
 
 }
