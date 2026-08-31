@@ -94,6 +94,34 @@ bool isAlignedWith(const Base::Vector3d& normal, const Base::Vector3d& axis)
     constexpr double alignmentTolerance = 1e-6;
     return std::abs(std::abs(normal * axis) - 1.0) < alignmentTolerance;
 }
+
+/// Work out which way the camera is looking
+Base::Vector3d cameraViewDirection()
+{
+    auto* mdiView = qobject_cast<Gui::View3DInventor*>(Gui::Application::Instance->activeView());
+    if (!mdiView) {
+        return -Base::Vector3d::UnitZ;
+    }
+    float vx = 0.0F;
+    float vy = 0.0F;
+    float vz = 0.0F;
+    mdiView->getViewer()->getViewDirection().getValue(vx, vy, vz);
+    return Base::Vector3d(vx, vy, vz);
+}
+
+
+/// Helps in picking initial preset.
+/// Returns a normal vector that is aligned with axis and points in the same
+/// direction as the camera's view vector, unless current is already aligned
+/// with axis, in which case it is returned (possibly negated to match the
+/// camera's view direction). 
+Base::Vector3d presetNormal(const Base::Vector3d& axis, const Base::Vector3d& current)
+{
+    if (isAlignedWith(current, axis)) {
+        return (current * axis < 0.0) ? -axis : axis;
+    }
+    return (cameraViewDirection() * axis < 0.0) ? axis : -axis;
+}
 }  // namespace
 
 
@@ -307,6 +335,10 @@ void SectionAnalysisWidget::setupGizmos()
 
     gizmoContainer = Gui::GizmoContainer::create({offsetGizmo, tiltGizmo1, tiltGizmo2}, viewProvider);
 
+    // Dont show the blue line. 
+    // The SoArrowBase negative-height bug makes it point the wrong way, and the arrowhead is already on the other end.
+    offsetGizmo->getDraggerContainer()->getDragger()->baseGeomVisible = false;
+
     // After create(), because initDragger() applies the theme colours and would
     // otherwise overwrite these. Two arcs in one colour are indistinguishable,
     // so each takes the colour of the axis it turns about.
@@ -430,8 +462,8 @@ void SectionAnalysisWidget::setGizmoPositions()
 
     // By tip, not by base: the gizmo carries the offset as its own translation,
     // so placing the base on the plane counted it twice.
-    offsetGizmo->setDraggerTip(tip, normal);
     offsetGizmo->setMultFactor(feature->FlipCut.getValue() ? -1.0 : 1.0);
+    offsetGizmo->setDraggerTip(tip, normal);
 
     // Both arcs on the arrow, never below it.
     // They are told apart within the plane, by putting their
@@ -560,32 +592,20 @@ void SectionAnalysisWidget::applyPresetAngleLabels(Preset preset)
 void SectionAnalysisWidget::onPresetChanged(int index)
 {
     Base::Vector3d normal;
+    const Base::Vector3d curN = feature->PlaneNormal.getValue();
     switch (static_cast<Preset>(index)) {
         case Preset::XY:
-            normal = Base::Vector3d::UnitZ;
+            normal = presetNormal(Base::Vector3d::UnitZ, curN);
             break;
         case Preset::XZ:
-            normal = Base::Vector3d::UnitY;
+            normal = presetNormal(Base::Vector3d::UnitY, curN);
             break;
         case Preset::YZ:
-            normal = Base::Vector3d::UnitX;
+            normal = presetNormal(Base::Vector3d::UnitX, curN);
             break;
-        case Preset::ViewDirection: {
-            // View Direction: get camera direction
-            auto* mdiView = qobject_cast<Gui::View3DInventor*>(
-                Gui::Application::Instance->activeView()
-            );
-            if (mdiView) {
-                SbVec3f vd = mdiView->getViewer()->getViewDirection();
-                float vx, vy, vz;
-                vd.getValue(vx, vy, vz);
-                normal = Base::Vector3d(-vx, -vy, -vz);  // face toward camera
-            }
-            else {
-                normal = Base::Vector3d::UnitZ;
-            }
+        case Preset::ViewDirection:
+            normal = -cameraViewDirection();  // face toward camera
             break;
-        }
         default:
             // Blank combo: nothing to apply, the plane keeps the pose it has.
             applyPresetAngleLabels(static_cast<Preset>(index));
@@ -601,15 +621,6 @@ void SectionAnalysisWidget::onPresetChanged(int index)
         angle1Spin->setValue(0.0);
         angle2Spin->setValue(0.0);
     }
-
-    // Auto-flip for presets where default normal faces away from typical viewing
-    // View Direction (3) doesn't need flip since we already face toward camera
-    bool needFlip = (static_cast<Preset>(index) == Preset::XZ);
-    {
-        const QSignalBlocker blockFlip(flipCheck);
-        flipCheck->setChecked(needFlip);
-    }
-    feature->FlipCut.setValue(needFlip);
 
     feature->PlaneNormal.setValue(normal);
     angleBaseNormal = normal;
@@ -652,27 +663,10 @@ void SectionAnalysisWidget::angleReferenceFrame(
     Base::Vector3d& angle2Axis
 ) const
 {
+    // The orientation captured when the panel opened or a preset was picked
+    // but never used again when changes were made
+    baseNormal = angleBaseNormal;
 
-
-    // The preset gives the base orientation; the sign is taken from the current
-    // normal so a section created facing -X keeps facing that way.
-    const Base::Vector3d curN = feature->PlaneNormal.getValue();
-    switch (static_cast<Preset>(presetCombo->currentIndex())) {
-        case Preset::XY:
-            baseNormal = Base::Vector3d(0, 0, (curN.z < 0) ? -1.0 : 1.0);
-            break;
-        case Preset::XZ:
-            baseNormal = Base::Vector3d(0, (curN.y < 0) ? -1.0 : 1.0, 0);
-            break;
-        case Preset::YZ:
-            baseNormal = Base::Vector3d((curN.x < 0) ? -1.0 : 1.0, 0, 0);
-            break;
-        default:
-            // View direction, or no preset: the base is the captured orientation,
-            // not the live normal, which applyAngles() has already rotated.
-            baseNormal = angleBaseNormal;
-            break;
-    }
     // Rotate about world axes lying in the plane, not about an arbitrary frame:
     // the angles are meant to read as "tilt about X", and the boxes are labelled
     // that way.
