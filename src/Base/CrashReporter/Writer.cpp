@@ -71,8 +71,8 @@
 #endif
 
 static std::atomic_flag writing;
-static std::string resolvedCrashFilePath;    // Stored in UTF-8 (so on Windows, convert first)
-# ifdef FC_HAVE_CPPTRACE
+static std::string resolvedCrashFilePath;  // Stored in UTF-8 (so on Windows, convert first)
+#ifdef FC_HAVE_CPPTRACE
 static bool canCaptureSignalSafely = false;  // Determined during the prewarm phase
 #endif
 
