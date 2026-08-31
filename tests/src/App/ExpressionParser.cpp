@@ -474,6 +474,92 @@ TEST_F(ExpressionParserTest, unitSpellingsAreContextualNames)
     EXPECT_EQ(parsePrattQuantity("10 mm * kg"), Base::Quantity::parse("10 mm*kg"));
 }
 
+TEST_F(ExpressionParserTest, handwrittenLexerMatchesFlexForCoreGrammar)
+{
+    for (const auto* expression : {
+             "0", "1", "42", ".5", "1e2", "pi", "True", "false", "None",
+             "-2^2", "2 + 3 * 4", "1 <= 2 ? 3 : 4", "sqrt(9)",
+             "pow(2, 3)", "sum(1; 2; 3)", "Foo", "Sketch.Foo", "Foo[1:2]",
+             "Doc#Sketch.Foo", "mm.Foo", "in.Bar", "10 mm * kg", "2 mm/s * 3"}) {
+        const auto handwritten =
+            Pratt::Detail::parseHandwrittenTokenStream(this_obj(), expression);
+        const auto flex = Pratt::Detail::parseFlexTokenStream(this_obj(), expression);
+        EXPECT_EQ(handwritten->toString(), flex->toString()) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, handwrittenLexerMatchesLiteralStringsAndCells)
+{
+    for (const auto* expression : {
+             "<<(Line 1\\nLine 2)>>", "<<(tab\\tquote\\\"slash\\\\)>>",
+             ".<<(Sub object)>>.Foo", "Sketch.<<(Sub object)>>.Foo", "A1",
+             "$A1", "A$1", "$A$1", "sum(A1:B2, C3:D4)"}) {
+        const auto handwritten =
+            Pratt::Detail::parseHandwrittenTokenStream(this_obj(), expression);
+        const auto flex = Pratt::Detail::parseFlexTokenStream(this_obj(), expression);
+        EXPECT_EQ(handwritten->toString(), flex->toString()) << expression;
+    }
+
+    for (const auto* expression : {"<<unterminated", "<<line\nbreak>>", "<<bad>text>>"}) {
+        EXPECT_THROW(Pratt::Detail::parseHandwrittenTokenStream(this_obj(), expression),
+                     Base::ParserError)
+            << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, handwrittenLexerMatchesUsUnitsAndUtf8)
+{
+    for (const auto* expression : {
+             "1' 2\"", "12\"", "2 ft + 3 in", "\xE2\x88\x92" "2 + 5",
+             "10 \xC2\xB5m", "90 \xC2\xB0", "\xC3\x84nderung",
+             "\xC3\x84nderung.Wert", "sin(90 deg)"}) {
+        const auto handwritten =
+            Pratt::Detail::parseHandwrittenTokenStream(this_obj(), expression);
+        const auto flex = Pratt::Detail::parseFlexTokenStream(this_obj(), expression);
+        EXPECT_EQ(handwritten->toString(), flex->toString()) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, handwrittenLexerMatchesCompletePrattSurface)
+{
+    for (const auto* expression : {
+             "--5", "(2 + 3) * 4", "8 / 4 / 2", "10 % 3", "2^3^2",
+             "1 != 2", "1 < 2", "2 > 1", "1 >= 1", "0 ? 2 : 3",
+             "1 ? 2 : 0 ? 3 : 4", "abs(-5)", "mod(10, 3)",
+             "and(True, 1, 2 > 1)", "or(False; 0; 3)",
+             "parsequant(<<(1 + 2) m>>)", "str(1 m + 2 mm)",
+             ".Foo", ".A1", ".<<(Sub object)>>.Foo", "Foo.Bar.Baz",
+             "Foo[0][1].Bar", "Foo[1:2].Bar.Baz[0]", "Foo[::2]",
+             "Foo[:2:3]", "sum(A1:B2, C3:D4; 5)", "0 mm", "1.25 mm",
+             "1e3 mm", "1mm + 1mm", "2 cm * 1 mm", "2 mm^2",
+             "(2 mm)^2", "24 V / (2 A)", "360 deg + pi rad", "1,25 mm",
+             ",5 + 1"}) {
+        const auto handwritten =
+            Pratt::Detail::parseHandwrittenTokenStream(this_obj(), expression);
+        const auto flex = Pratt::Detail::parseFlexTokenStream(this_obj(), expression);
+        EXPECT_EQ(handwritten->toString(), flex->toString()) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, handwrittenLexerFailureCategoriesMatchFlex)
+{
+    for (const auto* expression : {
+             "", "-", "+", "1 +", "(1", "1)", "1 ? 2", "1 ? : 3",
+             "1 == ", "sqrt()", "sqrt(1, 2)", "sum(1,)", "1 mm kg",
+             "Foo[]", "Foo[:]", "Foo[::]", "Foo[1:2:]", "list(1, 2)[0]",
+             "(Foo)[0]", "1[0]", "<<unterminated", "<<bad>text>>", "@"}) {
+        EXPECT_EQ(exceptionCategory(
+                      [this, expression] {
+                          Pratt::Detail::parseHandwrittenTokenStream(this_obj(), expression);
+                      }),
+                  exceptionCategory(
+                      [this, expression] {
+                          Pratt::Detail::parseFlexTokenStream(this_obj(), expression);
+                      }))
+            << expression;
+    }
+}
+
 TEST_F(ExpressionParserTest, prattIdentifierPathsMatchGeneratedParser)
 {
     for (const auto* expression : {
@@ -631,6 +717,9 @@ TEST_F(ExpressionParserTest, productionParserCanOptIntoPratt)
               Base::Quantity::parse("10 mm*kg"));
     EXPECT_EQ(parse(this_obj(), "mm.Foo")->toString(), "mm.Foo");
     EXPECT_EQ(parse(this_obj(), "in.Bar")->toString(), "in.Bar");
+    EXPECT_EQ(parse(this_obj(), "1' 2\"")->toString(), "1 ' + 2 \"");
+    EXPECT_EQ(parse(this_obj(), "<<(Line 1\\nLine 2)>>")->toString(),
+              "<<(Line 1\\nLine 2)>>");
 }
 
 }  // namespace App::ExpressionParser::Test
