@@ -666,6 +666,7 @@ SET(Tests_SRCS
     CAMTests/TestPostToolProcessing.py
     CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
+    CAMTests/TestPostTapping.py
     CAMTests/TestGcodeProcessingUtils.py
     CAMTests/TestFeedsSpeedsResolver.py
     CAMTests/TestFeedsSpeedsToolBitPresets.py
