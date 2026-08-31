@@ -5344,11 +5344,10 @@ bool ViewProviderSketch::isInEditMode() const
 {
     return editCoinManager != nullptr;
 }
-void ViewProviderSketch::generateContextMenu()
+void ViewProviderSketch::buildSelectionContextMenu(Gui::MenuItem& menu) const
 {
-    if (blockContextMenu) return;
-
     int selectedEdges = 0;
+    int selectedInternalEdges = 0;
     int selectedLines = 0;
     int selectedConics = 0;
     int selectedPoints = 0;
@@ -5359,26 +5358,39 @@ void ViewProviderSketch::generateContextMenu()
     int selectedEndPoints = 0;
     bool onlyOrigin = false;
 
-    Gui::MenuItem menu;
     menu.setCommand("Sketcher Context");
 
     std::vector<Gui::SelectionObject> selection =
         Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
 
+    const auto selectedSketch =
+        std::find_if(selection.cbegin(), selection.cend(), [this](const auto& item) {
+            return item.getObject() == getSketchObject();
+        });
+
     // if something is selected, count different elements in the current selection
-    if (selection.size() > 0) {
-        const std::vector<std::string> SubNames = selection[0].getSubNames();
+    if (selectedSketch != selection.cend()) {
+        const std::vector<std::string> SubNames = selectedSketch->getSubNames();
         const Sketcher::SketchObject* obj;
         bool shouldAddChangeConstraintValue = false;
-        if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
-            obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-            for (auto& name : SubNames) {
-                int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
-                const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
+        if (selectedSketch->getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
+            obj = getSketchObject();
+            for (const auto& name : SubNames) {
                 if (name.substr(0, 4) == "Edge" || name.substr(0, 12) == "ExternalEdge") {
-                    ++selectedEdges;
+                    int geoId;
+                    Sketcher::PointPos posId;
+                    getIdsFromName(name, obj, geoId, posId);
+                    if (!isEdge(geoId, posId)) {
+                        continue;
+                    }
+                    const Part::Geometry* geo = obj->getGeometry(geoId);
 
+                    ++selectedEdges;
                     if (geoId >= 0) {
+                        ++selectedInternalEdges;
+                    }
+
+                    if (geo) {
                         if (isLineSegment(*geo)) {
                             ++selectedLines;
                         }
@@ -5392,6 +5404,7 @@ void ViewProviderSketch::generateContextMenu()
                 }
                 else if (name.substr(0, 4) == "Vert") {
                     ++selectedPoints;
+                    int geoId;
                     Sketcher::PointPos posId;
                     getIdsFromName(name, obj, geoId, posId);
                     if (isBsplineKnotOrEndPoint(obj, geoId, posId)) {
@@ -5456,7 +5469,6 @@ void ViewProviderSketch::generateContextMenu()
 
                     menu << "Sketcher_ConstrainEqual";
                 }
-                menu << "Sketcher_ConstrainBlock";
             }
             else if (selectedConics > 1 && selectedLines == 0) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
@@ -5535,8 +5547,14 @@ void ViewProviderSketch::generateContextMenu()
             }
         }
 
+        // Block accepts any set of internal edges, including conics and B-splines.
+        if (selectedPoints == 0 && selectedEdges > 0
+            && selectedInternalEdges == selectedEdges && !onlyOrigin) {
+            menu << "Sketcher_ConstrainBlock";
+        }
+
         // context menu if only constraints are selected
-        else if (selectedConstraints >= 1) {
+        if (selectedConstraints >= 1 && selectedPoints == 0 && selectedEdges == 0) {
             if (shouldAddChangeConstraintValue) {
                 menu << "Sketcher_ChangeDimensionConstraint";
             }
@@ -5603,7 +5621,30 @@ void ViewProviderSketch::generateContextMenu()
              << "Separator"
              << "Sketcher_LeaveSketch";
     }
-    // create context menu
+}
+
+std::vector<std::string> ViewProviderSketch::getSelectionContextMenuCommands() const
+{
+    Gui::MenuItem menu;
+    buildSelectionContextMenu(menu);
+
+    std::vector<std::string> commands;
+    commands.reserve(menu.count());
+    for (const Gui::MenuItem* item : menu.getItems()) {
+        commands.push_back(item->command());
+    }
+    return commands;
+}
+
+void ViewProviderSketch::generateContextMenu()
+{
+    if (blockContextMenu) {
+        return;
+    }
+
+    Gui::MenuItem menu;
+    buildSelectionContextMenu(menu);
+
     Gui::Application::Instance->setupContextMenu("Sketch", &menu);
     QMenu contextMenu(
         qobject_cast<Gui::View3DInventor*>(this->getActiveView())->getViewer()->getGLWidget());

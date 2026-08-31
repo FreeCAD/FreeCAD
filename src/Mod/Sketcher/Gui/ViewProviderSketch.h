@@ -89,8 +89,9 @@ class Geometry;
 
 namespace Gui
 {
+class MenuItem;
 class View3DInventorViewer;
-}
+}  // namespace Gui
 
 namespace Sketcher
 {
@@ -895,6 +896,9 @@ private:
 
     /** @name Selection functions */
     //@{
+    void buildSelectionContextMenu(Gui::MenuItem& menu) const;
+    std::vector<std::string> getSelectionContextMenuCommands() const;
+
     /// box selection method
     void doBoxSelection(
         const SbVec2s& startPos,
