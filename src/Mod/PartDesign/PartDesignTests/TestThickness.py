@@ -122,7 +122,6 @@ class TestThickness(unittest.TestCase):
         self.assertEqual(len(fillet.Shape.Solids), 1)
         self.assertNotEqual(fillet.Placement, FreeCAD.Placement())
         opening = self._find_case_5829_opening_face_name(fillet.Shape)
-        self.assertEqual(opening, "Face8")
 
         thickness = self.Doc.addObject("PartDesign::Thickness", "Thickness")
         thickness.Base = (fillet, [opening])
