@@ -124,6 +124,29 @@ protected:
         }
     }
 
+    std::string simplifiedValue(const char* text, bool usePratt)
+    {
+        auto expression = usePratt ? Pratt::Detail::parseFlexTokenStream(thisObj, text)
+                                   : parse(thisObj, text);
+        const auto value = expression->simplify()->getValueAsAny();
+        std::ostringstream output;
+        boost::PrintTo(value, &output);
+        return output.str();
+    }
+
+    Base::Quantity parsePrattQuantity(const char* text)
+    {
+        auto expression = Pratt::Detail::parseFlexTokenStream(thisObj, text);
+        return App::any_cast<Base::Quantity>(expression->simplify()->getValueAsAny());
+    }
+
+    std::string parsedText(const char* text, bool usePratt)
+    {
+        const auto expression = usePratt ? Pratt::Detail::parseFlexTokenStream(thisObj, text)
+                                         : parse(thisObj, text);
+        return expression->toString();
+    }
+
 private:
     std::string docName;
     App::Document* thisDoc {};
@@ -403,6 +426,111 @@ TEST(ExpressionPrattParserTest, bindingPowersMatchCurrentGrammar)
               (std::optional<BindingPower> {{BindingPowers::power, BindingPowers::power}}));
     EXPECT_GT(BindingPowers::prefix, BindingPowers::power);
     EXPECT_GT(BindingPowers::quantity, BindingPowers::multiplicative);
+}
+
+TEST_F(ExpressionParserTest, prattScalarArithmeticMatchesGeneratedParser)
+{
+    for (const auto* expression : {
+             "0", "42", ".5", "1e2", "pi", "True", "false", "None", "+5", "-5",
+             "--5", "2 + 3 * 4", "(2 + 3) * 4", "8 / 4 / 2", "10 % 3", "2^3^2",
+             "-2^2", "-(2^2)", "1 == 1", "1 != 2", "1 < 2", "2 > 1", "1 <= 1",
+             "1 >= 1", "1 ? 2 : 3", "0 ? 2 : 3", "1 ? 2 : 0 ? 3 : 4",
+             "1 + 2 > 2 ? 10 / 2 : 0", "\xE2\x88\x92" "2 + 5"}) {
+        EXPECT_EQ(simplifiedValue(expression, true), simplifiedValue(expression, false))
+            << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, incompletePrattFeatureGroupsFailExplicitly)
+{
+    // Flex classifies these names as units before the parser sees the path context.
+    for (const auto* expression : {"mm.Foo", "in.Bar"}) {
+        EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), expression),
+                     Base::ParserError)
+            << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattIdentifierPathsMatchGeneratedParser)
+{
+    for (const auto* expression : {
+             "Foo", "A1", ".Foo", ".A1", ".<<(Sub object)>>.Foo", "Sketch.Foo",
+             "Sketch.A1", "Sketch.<<(Sub object)>>.Foo", "Doc#Sketch.Foo",
+             "<<(Document label)>>#Sketch.Foo", "Doc#Sketch.<<(Sub object)>>.Foo",
+             "Foo.Bar.Baz", "Foo[0]", "Foo[1:]", "Foo[:2]", "Foo[::2]",
+             "Foo[1:2]", "Foo[1::2]", "Foo[:2:3]", "Foo[1:2:3]",
+             "Foo[0][1].Bar", "Foo[1:2].Bar.Baz[0]"}) {
+        EXPECT_EQ(parsedText(expression, true), parsedText(expression, false)) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattIdentifierValuesMatchGeneratedParser)
+{
+    this_obj()->addDynamicProperty("App::PropertyFloat", "Foo");
+    this_obj()->addDynamicProperty("App::PropertyQuantity", "Bar");
+
+    for (const auto* expression : {"Placement.Base.x", "Sketch.Foo", "Sketch.Bar"}) {
+        EXPECT_EQ(simplifiedValue(expression, true), simplifiedValue(expression, false))
+            << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattRangesMatchGeneratedParser)
+{
+    for (const auto* expression : {"sum(A1:B2)", "sum(A1:B2, C3:D4; 5)"}) {
+        EXPECT_EQ(parsedText(expression, true), parsedText(expression, false)) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattFunctionsMatchGeneratedParser)
+{
+    for (const auto* expression : {
+             "abs(-5)", "sqrt(9)", "sqrt(9) * 2", "pow(2, 3)", "mod(10, 3)",
+             "sum(1, 2, 3)", "sum(1; 2, 3)", "sum(abs(-1), pow(2, 3), sqrt(9))",
+             "not(False)", "and(True, 1, 2 > 1)", "or(False; 0; 3)",
+             "sqrt(9 mm^2)", "pow(2 mm, 3)", "atan2(1 mm, 1 mm)",
+             "<<(Line 1\\nLine 2)>>", "str(1 m + 2 mm)",
+             "parsequant(<<(1 + 2) m>>)", "parsequant(str(1 m + 2 mm))"}) {
+        EXPECT_EQ(simplifiedValue(expression, true), simplifiedValue(expression, false))
+            << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattFunctionsPreserveSyntaxRestrictions)
+{
+    EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), "sqrt()"),
+                 Base::ParserError);
+    EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), "sum()"),
+                 Base::ParserError);
+    EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), "list(1, 2)[0]"),
+                 Base::ParserError);
+    EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), "(Foo)[0]"),
+                 Base::ParserError);
+    EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), "1[0]"),
+                 Base::ParserError);
+    EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), "Foo[:]"),
+                 Base::ParserError);
+}
+
+TEST_F(ExpressionParserTest, prattQuantitiesMatchGeneratedParser)
+{
+    for (const auto* expression : {
+             "0 mm", "-5 mm", "+5 mm", "1.25 mm", "1e3 mm", "1mm + 1mm",
+             "1 mm * 3", "1 mm * 2 cm", "2 cm * 1 mm", "2 mm^2", "(2 mm)^2",
+             "2 mm/s * 3", "24 V / (2 A)", "360 deg + pi rad", "1' 2\""}) {
+        EXPECT_EQ(simplifiedValue(expression, true), simplifiedValue(expression, false))
+            << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattUnitContinuationIsLocal)
+{
+    EXPECT_EQ(parsePrattQuantity("10 mm * kg"), Base::Quantity::parse("10 mm*kg"));
+    EXPECT_EQ(parsePrattQuantity("1234000 mm*kg/s^2"),
+              Base::Quantity::parse("1234000 mm*kg/s^2"));
+    EXPECT_EQ(parsePrattQuantity("10 mm * 3"), Base::Quantity::parse("30 mm"));
+    EXPECT_EQ(parsePrattQuantity("24 V / (2 A)"),
+              Base::Quantity(12'000'000, Base::Unit::ElectricalResistance));
 }
 
 }  // namespace App::ExpressionParser::Test

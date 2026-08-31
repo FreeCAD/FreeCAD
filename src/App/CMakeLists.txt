@@ -181,6 +181,7 @@ SET(Document_CPP_SRCS
     DocumentSettings.cpp
     DocumentSettingsPyImp.cpp
     Expression.cpp
+    ExpressionPrattParser.cpp
     ExpressionTokenizer.cpp
     FeaturePython.cpp
     FeatureTest.cpp

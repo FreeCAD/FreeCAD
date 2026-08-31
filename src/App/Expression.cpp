@@ -36,6 +36,7 @@
 #include <boost/math/special_functions/round.hpp>
 #include <boost/math/special_functions/trunc.hpp>
 
+#include <algorithm>
 #include <numbers>
 #include <limits>
 #include <sstream>
@@ -59,6 +60,7 @@
 #include <Base/Precision.h>
 
 #include "ExpressionParser.h"
+#include "ExpressionPrattParser.h"
 
 
 using namespace Base;
@@ -3724,6 +3726,178 @@ static void initParser(const App::DocumentObject *owner)
     }
 }
 
+namespace
+{
+using Pratt::Token;
+using Pratt::TokenKind;
+
+class FlexTokenStream final: public Pratt::TokenStream
+{
+public:
+    explicit FlexTokenStream(std::vector<Token> tokens)
+        : tokenList(std::move(tokens))
+    {}
+
+    const Token& peek(std::size_t offset = 0) override
+    {
+        const auto requested = cursor + offset;
+        return tokenList[std::min(requested, tokenList.size() - 1)];
+    }
+
+    Token take() override
+    {
+        const auto token = peek();
+        if (cursor + 1 < tokenList.size()) {
+            ++cursor;
+        }
+        return token;
+    }
+
+    std::size_t position() const override
+    {
+        return cursor;
+    }
+
+    void rewind(std::size_t position) override
+    {
+        cursor = std::min(position, tokenList.size() - 1);
+    }
+
+private:
+    std::vector<Token> tokenList;
+    std::size_t cursor {0};
+};
+
+TokenKind translateTokenKind(int token)
+{
+    switch (token) {
+        case 0:
+            return TokenKind::End;
+        case FUNC:
+            return TokenKind::Function;
+        case ONE:
+        case NUM:
+            return TokenKind::Number;
+        case INTEGER:
+            return TokenKind::Integer;
+        case CONSTANT:
+            return TokenKind::Constant;
+        case IDENTIFIER:
+            return TokenKind::Name;
+        case CELLADDRESS:
+            return TokenKind::CellAddress;
+        case UNIT:
+            return TokenKind::Unit;
+        case USUNIT:
+            return TokenKind::UsBuildingUnit;
+        case STRING:
+            return TokenKind::String;
+        case MINUSSIGN:
+            return TokenKind::Minus;
+        case EQ:
+            return TokenKind::Equal;
+        case NEQ:
+            return TokenKind::NotEqual;
+        case LT:
+            return TokenKind::Less;
+        case GT:
+            return TokenKind::Greater;
+        case LTE:
+            return TokenKind::LessEqual;
+        case GTE:
+            return TokenKind::GreaterEqual;
+        case '+':
+            return TokenKind::Plus;
+        case '*':
+            return TokenKind::Multiply;
+        case '/':
+            return TokenKind::Divide;
+        case '%':
+            return TokenKind::Modulo;
+        case '^':
+            return TokenKind::Power;
+        case '?':
+            return TokenKind::Question;
+        case ':':
+            return TokenKind::Colon;
+        case ',':
+            return TokenKind::Comma;
+        case ';':
+            return TokenKind::Semicolon;
+        case '.':
+            return TokenKind::Dot;
+        case '#':
+            return TokenKind::Hash;
+        case '(':
+            return TokenKind::LeftParen;
+        case ')':
+            return TokenKind::RightParen;
+        case '[':
+            return TokenKind::LeftBracket;
+        case ']':
+            return TokenKind::RightBracket;
+        default:
+            throw Base::ParserError(fmt::format("Unsupported lexer token {}", token));
+    }
+}
+
+Token translateToken(int token)
+{
+    Token result;
+    result.kind = translateTokenKind(token);
+    result.lexeme = token == 0 ? std::string() : std::string(yytext);
+    result.column = static_cast<std::size_t>(last_column);
+
+    switch (token) {
+        case FUNC:
+            result.value = Pratt::FunctionToken {
+                yylval.func.first,
+                yylval.func.first == FunctionExpression::NONE ? yylval.func.second : std::string()};
+            break;
+        case ONE:
+        case NUM:
+            result.value = yylval.fvalue;
+            break;
+        case INTEGER:
+            result.value = yylval.ivalue;
+            break;
+        case CONSTANT:
+            result.value = yylval.constant.fvalue;
+            result.lexeme = yylval.constant.name;
+            break;
+        case IDENTIFIER:
+        case CELLADDRESS:
+        case STRING:
+            result.value = yylval.string;
+            break;
+        case UNIT:
+        case USUNIT:
+            result.value = yylval.quantity.scaler;
+            break;
+        default:
+            break;
+    }
+    return result;
+}
+}  // namespace
+
+ExpressionPtr Pratt::Detail::parseFlexTokenStream(const App::DocumentObject* owner, const char* buffer)
+{
+    YY_BUFFER_STATE flexBuffer = ExpressionParser_scan_string(buffer);
+    StringBufferCleaner cleaner(flexBuffer);
+    initParser(owner);
+
+    std::vector<Token> tokens;
+    int token = 0;
+    do {
+        token = ExpressionParserlex();
+        tokens.push_back(translateToken(token));
+    } while (token != 0);
+
+    FlexTokenStream stream(std::move(tokens));
+    return Pratt::Parser(owner, stream).parse();
+}
+
 std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
 {
     ExpressionParser::YY_BUFFER_STATE buf = ExpressionParser_scan_string(str.c_str());
@@ -3867,4 +4041,3 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
-
