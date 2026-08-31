@@ -2,8 +2,14 @@
 
 set(Forms_Scripts
     Init.py
+    importBlend.py
     Forms/__init__.py
     Forms/additive.py
+    Forms/blender_bridge.py
+    Forms/blend_export.py
+    Forms/blend_import.py
+    Forms/blender_create.py
+    Forms/blender_extract.py
     Forms/brep.py
     Forms/cage.py
     Forms/box.py
@@ -11,7 +17,9 @@ set(Forms_Scripts
     Forms/edit_tools.py
     Forms/elementmap.py
     Forms/feedback.py
+    Forms/form.py
     Forms/interaction.py
+    Forms/imported.py
     Forms/operations.py
     Forms/placement.py
     Forms/pipe.py
@@ -73,6 +81,8 @@ endif(BUILD_GUI)
 
 set(Forms_TestScripts
     FormsTests/__init__.py
+    FormsTests/TestBlendExport.py
+    FormsTests/TestBlendImport.py
     FormsTests/TestBRep.py
     FormsTests/TestTopology.py
 )
@@ -95,7 +105,7 @@ if(BUILD_GUI)
 endif(BUILD_GUI)
 
 install(
-    FILES Init.py
+    FILES Init.py importBlend.py
     DESTINATION Mod/Forms
 )
 
@@ -111,7 +121,7 @@ if(BUILD_GUI)
 endif(BUILD_GUI)
 
 install(
-    FILES Forms/__init__.py Forms/additive.py Forms/brep.py Forms/cage.py Forms/box.py Forms/edit.py Forms/edit_tools.py Forms/elementmap.py Forms/feedback.py Forms/interaction.py Forms/operations.py Forms/placement.py Forms/pipe.py Forms/primitives.py Forms/symmetry.py Forms/surface.py Forms/taskpanels.py Forms/tmesh.py Forms/toolbar.py Forms/topology.py
+    FILES Forms/__init__.py Forms/additive.py Forms/blender_bridge.py Forms/blend_export.py Forms/blend_import.py Forms/blender_create.py Forms/blender_extract.py Forms/brep.py Forms/cage.py Forms/box.py Forms/edit.py Forms/edit_tools.py Forms/elementmap.py Forms/feedback.py Forms/form.py Forms/imported.py Forms/interaction.py Forms/operations.py Forms/placement.py Forms/pipe.py Forms/primitives.py Forms/symmetry.py Forms/surface.py Forms/taskpanels.py Forms/tmesh.py Forms/toolbar.py Forms/topology.py
     DESTINATION Mod/Forms/Forms
 )
 
@@ -121,6 +131,6 @@ install(
 )
 
 install(
-    FILES FormsTests/__init__.py FormsTests/TestBRep.py FormsTests/TestTopology.py
+    FILES FormsTests/__init__.py FormsTests/TestBlendExport.py FormsTests/TestBlendImport.py FormsTests/TestBRep.py FormsTests/TestTopology.py
     DESTINATION Mod/Forms/FormsTests
 )

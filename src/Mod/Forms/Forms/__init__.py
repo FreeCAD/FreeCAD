@@ -87,6 +87,20 @@ def create_surface(body, source, subelement, name="FormSurface"):
     return _create_surface(body, source, subelement, name)
 
 
+def create_form(document=None, name="Form"):
+    """Create an empty generic editable Form."""
+    from .form import create_form as _create_form
+
+    return _create_form(document, name)
+
+
+def create_imported(document=None, name="Form"):
+    """Compatibility alias for :func:`create_form`."""
+    from .form import create_form as _create_imported
+
+    return _create_imported(document, name)
+
+
 def create_additive_form(body, base_feature, primitive="Box", name=None, placement=None, path_object=None):
     """Create an additive Forms primitive inside a Part Design Body."""
     from .additive import create_additive_form as _create_additive_form
@@ -239,6 +253,8 @@ __all__ = [
     "create_torus",
     "create_tube",
     "create_surface",
+    "create_form",
+    "create_imported",
     "create_additive_form",
     "create_subtractive_form",
     "move_form_to_body",
