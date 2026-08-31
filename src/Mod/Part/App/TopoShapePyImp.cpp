@@ -908,14 +908,12 @@ PyObject* TopoShapePy::sewShape(PyObject* args)
         return nullptr;
     }
 
-    try {
-        getTopoShapePtr()->sewShape();
+    PY_TRY
+    {
+        getTopoShapePtr()->sewShape(tolerance);
         Py_Return;
     }
-    catch (Standard_Failure& e) {
-        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
-        return nullptr;
-    }
+    PY_CATCH_OCC
 }
 
 PyObject* TopoShapePy::childShapes(PyObject* args) const

@@ -442,13 +442,20 @@ def _assemble_tmesh_root_grids(fine_grids, cells):
 
 def _shape_from_tmesh_surfaces(surfaces, mesh, closed, tolerance):
     """Create logical leaf faces as exact parameter trims of root surfaces."""
+    from .elementmap import name_patch_face
+
     faces = []
     for face_id in sorted(mesh.faces):
         leaf = mesh.faces[face_id]
         u_values = [point[0] for point in leaf.parameters]
         v_values = [point[1] for point in leaf.parameters]
         faces.append(
-            surfaces[leaf.root].toShape(min(u_values), max(u_values), min(v_values), max(v_values))
+            name_patch_face(
+                surfaces[leaf.root].toShape(
+                    min(u_values), max(u_values), min(v_values), max(v_values)
+                ),
+                face_id,
+            )
         )
     if not closed and len(faces) == 1:
         if faces[0].isNull() or not faces[0].isValid():
@@ -1102,8 +1109,19 @@ def _make_dissolved_surfaces(grids, layouts):
     return surfaces
 
 
-def _solid_from_surfaces(surfaces, sewing_tolerance):
-    faces = [surface.toShape() for surface in surfaces]
+def _named_surface_faces(surfaces, face_ids=None):
+    from .elementmap import name_patch_face
+
+    if face_ids is None:
+        face_ids = range(len(surfaces))
+    return [
+        name_patch_face(surface.toShape(), face_id)
+        for surface, face_id in zip(surfaces, face_ids)
+    ]
+
+
+def _solid_from_surfaces(surfaces, sewing_tolerance, face_ids=None):
+    faces = _named_surface_faces(surfaces, face_ids)
     sewed = Part.makeCompound(faces)
     sewed.sewShape(max(float(sewing_tolerance), 1.0e-7))
     if len(sewed.Shells) != 1:
@@ -1119,8 +1137,8 @@ def _solid_from_surfaces(surfaces, sewing_tolerance):
     return solid
 
 
-def _open_shape_from_surfaces(surfaces, sewing_tolerance):
-    faces = [surface.toShape() for surface in surfaces]
+def _open_shape_from_surfaces(surfaces, sewing_tolerance, face_ids=None):
+    faces = _named_surface_faces(surfaces, face_ids)
     if len(faces) == 1:
         if faces[0].isNull() or not faces[0].isValid():
             raise ConversionError("OCCT rejected the converted open surface")
@@ -1323,7 +1341,8 @@ def cage_to_solid(
         if deviation <= tolerance:
             break
 
-    solid = _solid_from_surfaces(surfaces, tolerance)
+    face_ids = ["_".join(str(index) for index in group) for group, _coords in layouts]
+    solid = _solid_from_surfaces(surfaces, tolerance, face_ids)
     return solid, deviation, level + level_offset
 
 
@@ -1383,5 +1402,6 @@ def cage_to_surface(
         if deviation <= tolerance:
             break
 
-    shape = _open_shape_from_surfaces(surfaces, tolerance)
+    face_ids = ["_".join(str(index) for index in group) for group, _coords in layouts]
+    shape = _open_shape_from_surfaces(surfaces, tolerance, face_ids)
     return shape, deviation, level + level_offset
