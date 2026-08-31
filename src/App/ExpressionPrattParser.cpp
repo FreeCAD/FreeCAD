@@ -125,6 +125,64 @@ ExpressionPtr Parser::parse()
     return expression;
 }
 
+std::unique_ptr<UnitExpression> Parser::parseUnit()
+{
+    if (tokens.peek().kind == TokenKind::End) {
+        throw Base::ParserError("Expected unit expression");
+    }
+
+    ExpressionPtr expression;
+    if (nextTokenStartsUnitAtom()) {
+        expression = parseUnitExpression();
+    }
+    else if (isNumberToken(tokens.peek().kind) && tokens.peek(1).kind == TokenKind::Divide) {
+        const auto numeratorToken = tokens.take();
+        auto numerator = numberExpression(owner, numeratorToken);
+        const auto* number = freecad_cast<NumberExpression*>(numerator.get());
+        if (!number || number->getValue() != 1.0) {
+            throw Expression::Exception("Expression is not a unit.");
+        }
+        tokens.take();
+        auto denominator = parseUnitExpression();
+        expression = std::make_unique<OperatorExpression>(owner,
+                                                          numerator.release(),
+                                                          OperatorExpression::DIV,
+                                                          denominator.release());
+    }
+    else {
+        throw Expression::Exception("Expression is not a unit.");
+    }
+
+    if (tokens.peek().kind != TokenKind::End) {
+        throw Base::ParserError(fmt::format("Unexpected token '{}' at column {}",
+                                            tokens.peek().lexeme,
+                                            tokens.peek().column));
+    }
+
+    auto simplified = expression->simplify();
+    if (const auto* number = freecad_cast<NumberExpression*>(simplified.get())) {
+        return std::make_unique<UnitExpression>(number->getOwner(), number->getQuantity());
+    }
+    if (!freecad_cast<UnitExpression*>(simplified.get())) {
+        throw Expression::Exception("Expression is not a unit.");
+    }
+    return std::unique_ptr<UnitExpression>(
+        static_cast<UnitExpression*>(simplified.release()));
+}
+
+ObjectIdentifier Parser::parsePath()
+{
+    auto expression = parseIdentifier();
+    if (tokens.peek().kind != TokenKind::End || expression->hasComponent()) {
+        throw Base::ParserError("Expression is not an object identifier path");
+    }
+    const auto* variable = freecad_cast<VariableExpression*>(expression.get());
+    if (!variable) {
+        throw Base::ParserError("Expression is not an object identifier path");
+    }
+    return variable->getPath();
+}
+
 ExpressionPtr Parser::parseExpression(int minimumBindingPower)
 {
     auto left = parsePrimary();
@@ -529,10 +587,13 @@ ExpressionPtr Parser::parseUnitExpression(int minimumBindingPower)
 ExpressionPtr Parser::parseUnitAtom()
 {
     const auto token = tokens.take();
-    if (token.kind == TokenKind::Unit || token.kind == TokenKind::UsBuildingUnit) {
+    if (token.kind == TokenKind::UsBuildingUnit) {
         return std::make_unique<UnitExpression>(owner,
                                                 std::get<Base::Quantity>(token.value),
                                                 token.lexeme);
+    }
+    if (token.kind == TokenKind::Name && token.unitCandidate) {
+        return std::make_unique<UnitExpression>(owner, *token.unitCandidate, token.lexeme);
     }
     if (token.kind == TokenKind::LeftParen) {
         auto expression = parseUnitExpression();
@@ -544,9 +605,9 @@ ExpressionPtr Parser::parseUnitAtom()
 
 bool Parser::nextTokenStartsUnitAtom(std::size_t offset)
 {
-    const auto kind = tokens.peek(offset).kind;
-    return kind == TokenKind::Unit || kind == TokenKind::UsBuildingUnit
-        || kind == TokenKind::LeftParen;
+    const auto& token = tokens.peek(offset);
+    return token.kind == TokenKind::UsBuildingUnit || token.kind == TokenKind::LeftParen
+        || (token.kind == TokenKind::Name && token.unitCandidate.has_value());
 }
 
 }  // namespace App::ExpressionParser::Pratt

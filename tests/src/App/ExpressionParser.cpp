@@ -147,6 +147,30 @@ protected:
         return expression->toString();
     }
 
+    template<typename Callable>
+    static std::string exceptionCategory(Callable&& callable)
+    {
+        try {
+            callable();
+            return "none";
+        }
+        catch (const Base::ParserError&) {
+            return "ParserError";
+        }
+        catch (const Expression::Exception&) {
+            return "Expression::Exception";
+        }
+        catch (const Base::ExpressionError&) {
+            return "ExpressionError";
+        }
+        catch (const Base::RuntimeError&) {
+            return "RuntimeError";
+        }
+        catch (const Base::Exception&) {
+            return "Base::Exception";
+        }
+    }
+
 private:
     std::string docName;
     App::Document* thisDoc {};
@@ -441,14 +465,13 @@ TEST_F(ExpressionParserTest, prattScalarArithmeticMatchesGeneratedParser)
     }
 }
 
-TEST_F(ExpressionParserTest, incompletePrattFeatureGroupsFailExplicitly)
+TEST_F(ExpressionParserTest, unitSpellingsAreContextualNames)
 {
-    // Flex classifies these names as units before the parser sees the path context.
     for (const auto* expression : {"mm.Foo", "in.Bar"}) {
-        EXPECT_THROW(Pratt::Detail::parseFlexTokenStream(this_obj(), expression),
-                     Base::ParserError)
-            << expression;
+        EXPECT_EQ(parsedText(expression, true), expression);
     }
+
+    EXPECT_EQ(parsePrattQuantity("10 mm * kg"), Base::Quantity::parse("10 mm*kg"));
 }
 
 TEST_F(ExpressionParserTest, prattIdentifierPathsMatchGeneratedParser)
@@ -479,6 +502,59 @@ TEST_F(ExpressionParserTest, prattRangesMatchGeneratedParser)
 {
     for (const auto* expression : {"sum(A1:B2)", "sum(A1:B2, C3:D4; 5)"}) {
         EXPECT_EQ(parsedText(expression, true), parsedText(expression, false)) << expression;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattPathEntryPointMatchesVariablePaths)
+{
+    for (const auto* pathText : {
+             "Foo", "A1", ".Foo", ".<<(Sub object)>>.Foo", "Sketch.Foo",
+             "Sketch.<<(Sub object)>>.Foo", "Doc#Sketch.Foo",
+             "Doc#Sketch.<<(Sub object)>>.Foo", "Foo.Bar.Baz"}) {
+        const auto generated = parse(this_obj(), pathText);
+        const auto* variable = freecad_cast<VariableExpression*>(generated.get());
+        ASSERT_NE(variable, nullptr) << pathText;
+        EXPECT_EQ(Pratt::Detail::parseFlexPath(this_obj(), pathText).toString(),
+                  variable->getPath().toString())
+            << pathText;
+    }
+    const auto generated = parse(this_obj(), "Foo[0]");
+    const auto* variable = freecad_cast<VariableExpression*>(generated.get());
+    ASSERT_NE(variable, nullptr);
+    EXPECT_EQ(Pratt::Detail::parseFlexPath(this_obj(), "Foo[0]").toString(),
+              variable->getPath().toString());
+    EXPECT_THROW(Pratt::Detail::parseFlexPath(this_obj(), "Foo[1 + 2]"),
+                 Base::ParserError);
+}
+
+TEST_F(ExpressionParserTest, prattUnitEntryPointMatchesGeneratedParser)
+{
+    for (const auto* unitText : {"mm", "kg*m/s^2", "m^-2", "(kg*m)/s^2", "1/mm"}) {
+        EXPECT_EQ(Pratt::Detail::parseFlexUnit(this_obj(), unitText)->getQuantity(),
+                  parseUnit(this_obj(), unitText)->getQuantity())
+            << unitText;
+    }
+
+    for (const auto* unitText : {"", "2 mm", "mm + kg", "2/mm"}) {
+        EXPECT_EQ(exceptionCategory(
+                      [this, unitText] { Pratt::Detail::parseFlexUnit(this_obj(), unitText); }),
+                  exceptionCategory([this, unitText] { parseUnit(this_obj(), unitText); }))
+            << unitText;
+    }
+}
+
+TEST_F(ExpressionParserTest, prattFailuresMatchGeneratedParserCategories)
+{
+    for (const auto* expression : {
+             "", "-", "+", "1 +", "(1", "1)", "1 ? 2", "1 ? : 3", "1 == ",
+             "sqrt()", "sqrt(1, 2)", "sum(1,)", "1 mm kg", "Foo[]", "Foo[:]",
+             "Foo[::]", "Foo[1:2:]", "list(1, 2)[0]", "(Foo)[0]", "1[0]"}) {
+        EXPECT_EQ(exceptionCategory(
+                      [this, expression] {
+                          Pratt::Detail::parseFlexTokenStream(this_obj(), expression);
+                      }),
+                  exceptionCategory([this, expression] { parse(this_obj(), expression); }))
+            << expression;
     }
 }
 
@@ -531,6 +607,30 @@ TEST_F(ExpressionParserTest, prattUnitContinuationIsLocal)
     EXPECT_EQ(parsePrattQuantity("10 mm * 3"), Base::Quantity::parse("30 mm"));
     EXPECT_EQ(parsePrattQuantity("24 V / (2 A)"),
               Base::Quantity(12'000'000, Base::Unit::ElectricalResistance));
+}
+
+TEST_F(ExpressionParserTest, productionParserCanOptIntoPratt)
+{
+    const auto preferences = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Expression");
+    struct PreferenceCleaner
+    {
+        ParameterGrp::handle preferences;
+        ~PreferenceCleaner()
+        {
+            preferences->RemoveBool("UsePrattParser");
+        }
+    } cleaner {preferences};
+
+    preferences->RemoveBool("UsePrattParser");
+    EXPECT_THROW(parse(this_obj(), "10 mm * kg"), Base::ParserError);
+
+    preferences->SetBool("UsePrattParser", true);
+    const auto expression = parse(this_obj(), "10 mm * kg");
+    EXPECT_EQ(App::any_cast<Base::Quantity>(expression->simplify()->getValueAsAny()),
+              Base::Quantity::parse("10 mm*kg"));
+    EXPECT_EQ(parse(this_obj(), "mm.Foo")->toString(), "mm.Foo");
+    EXPECT_EQ(parse(this_obj(), "in.Bar")->toString(), "in.Bar");
 }
 
 }  // namespace App::ExpressionParser::Test
